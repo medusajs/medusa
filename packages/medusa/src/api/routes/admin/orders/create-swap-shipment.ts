@@ -86,5 +86,5 @@ export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => value === "true")
-  no_notification: boolean
+  no_notification?: boolean
 }

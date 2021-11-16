@@ -119,13 +119,13 @@ export class AdminPostOrdersOrderClaimsClaimReq {
   @IsOptional()
   @Type(() => Item)
   @ValidateNested({ each: true })
-  claim_items: Item[]
+  claim_items?: Item[]
 
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ShippingMethod)
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @IsBoolean()
   @IsOptional()

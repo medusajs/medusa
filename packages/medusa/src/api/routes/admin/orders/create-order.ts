@@ -59,7 +59,7 @@ import { validator } from "../../../../utils/validator"
  *             description: id of the customer
  *             type: string
  *           payment_method:
- *             description:
+ *             description: payment method chosen for the order
  *             type: object
  *             required:
  *               - provider_id

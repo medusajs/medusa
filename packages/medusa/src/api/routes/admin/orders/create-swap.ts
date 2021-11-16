@@ -76,7 +76,7 @@ import { validator } from "../../../../utils/validator"
  *                 - price
  *               properties:
  *                 option_id:
- *                   desciption: The id of the Shipping Option to override with a custom price.
+ *                   description: The id of the Shipping Option to override with a custom price.
  *                   type: string
  *                 price:
  *                   description: The custom price of the Shipping Option.
@@ -248,7 +248,7 @@ export class AdminPostOrdersOrderSwapsReq {
   @IsNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => ReturnItem)
-  return_items?: ReturnItem[]
+  return_items: ReturnItem[]
 
   @IsObject()
   @IsOptional()
@@ -298,7 +298,7 @@ class ReturnShipping {
   @IsInt()
   @IsOptional()
   @Type(() => Number)
-  price: number
+  price?: number
 }
 
 class CustomShippingOption {

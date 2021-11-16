@@ -351,7 +351,7 @@ class ClaimService extends BaseService {
    * @param {Object} config - config object
    * @param {Object}  config.metadata - config metadata
    * @param {boolean|undefined}  config.no_notification - config no notification
-   * @return {Object} created claim
+   * @return {Claim} created claim
    */
   createFulfillment(
     id,

@@ -346,19 +346,19 @@ export class AdminPostOrdersOrderClaimsReq {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ReturnShipping)
-  return_shipping: ReturnShipping
+  return_shipping?: ReturnShipping
 
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => AdditionalItem)
-  additional_items: AdditionalItem[]
+  additional_items?: AdditionalItem[]
 
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ShippingMethod)
-  shipping_methods: ShippingMethod[]
+  shipping_methods?: ShippingMethod[]
 
   @IsInt()
   @IsOptional()
@@ -429,12 +429,12 @@ class Item {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  tags: string[]
+  tags?: string[]
 
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  images: string[]
+  images?: string[]
 }
 
 class AdditionalItem {

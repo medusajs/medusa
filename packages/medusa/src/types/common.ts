@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer"
 import { IsOptional, IsString, IsNumber, IsDate } from "class-validator"
 import { Type } from "class-transformer"
-import { IsType } from "../utils/is-type"
+import { transform } from "../utils/validators/date-transform"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
@@ -20,30 +20,22 @@ export type PaginatedResponse = { limit: number; offset: number; count: number }
 export class DateComparisonOperator {
   @IsOptional()
   @IsDate()
-  @Transform(({ value }) =>
-    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
-  )
+  @Transform(transform)
   lt?: Date
 
   @IsOptional()
   @IsDate()
-  @Transform(({ value }) =>
-    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
-  )
+  @Transform(transform)
   gt?: Date
 
   @IsOptional()
   @IsDate()
-  @Transform(({ value }) =>
-    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
-  )
+  @Transform(transform)
   gte?: Date
 
   @IsOptional()
   @IsDate()
-  @Transform(({ value }) =>
-    !isNaN(Date.parse(value)) ? new Date(value) : new Date(Number(value) * 1000)
-  )
+  @Transform(transform)
   lte?: Date
 }
 

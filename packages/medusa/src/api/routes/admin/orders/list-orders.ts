@@ -12,25 +12,25 @@ import { Selector } from "../../../../types/orders"
  * description: "Retrieves a list of Orders"
  * x-authenticated: true
  * parameters:
- *   - (path) q {string} Query used for searching orders.
- *   - (path) id {string} Id of the order to search for.
- *   - (path) status {string[]} Status to search for.
- *   - (path) fulfillment_status {string[]} Fulfillment status to search for.
- *   - (path) payment_status {string[]} Payment status to search for.
- *   - (path) display_id {string} Display id to search for.
- *   - (path) cart_id {string} to search for.
- *   - (path) customer_id {string} to search for.
- *   - (path) email {string} to search for.
- *   - (path) region_id {string} to search for.
- *   - (path) currency_code {string} to search for.
- *   - (path) tax_rate {string} to search for.
- *   - (path) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
- *   - (path) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
- *   - (path) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
- *   - (path) offset {string} How many orders to skip in the result.
- *   - (path) limit {string} Limit the number of orders returned.
- *   - (path) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (path) fields {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) q {string} Query used for searching orders.
+ *   - (query) id {string} Id of the order to search for.
+ *   - (query) status {string[]} Status to search for.
+ *   - (query) fulfillment_status {string[]} Fulfillment status to search for.
+ *   - (query) payment_status {string[]} Payment status to search for.
+ *   - (query) display_id {string} Display id to search for.
+ *   - (query) cart_id {string} to search for.
+ *   - (query) customer_id {string} to search for.
+ *   - (query) email {string} to search for.
+ *   - (query) region_id {string} to search for.
+ *   - (query) currency_code {string} to search for.
+ *   - (query) tax_rate {string} to search for.
+ *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
+ *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
+ *   - (query) offset {string} How many orders to skip in the result.
+ *   - (query) limit {string} Limit the number of orders returned.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  * tags:
  *   - Order
  * responses:
@@ -99,17 +99,17 @@ export default async (req, res) => {
 export class AdminGetOrdersParams extends Selector {
   @IsString()
   @IsOptional()
-  offset: string
+  offset?: string
 
   @IsString()
   @IsOptional()
-  limit: string
+  limit?: string
 
   @IsString()
   @IsOptional()
-  expand: string
+  expand?: string
 
   @IsString()
   @IsOptional()
-  fields: string
+  fields?: string
 }
