@@ -19,48 +19,15 @@ import { validator } from "../../../../utils/validator"
  * description: "Retrieves a list of Notifications."
  * x-authenticated: true
  * parameters:
- *   - in: query
- *     name: offset
- *     schema:
- *       type: integer
- *     description: The number of notifications to skip before starting to collect the notifications set
- *   - in: query
- *     name: limit
- *     schema:
- *       type: integer
- *     description: The number of notifications to return
- *   - in: query
- *     name: fields
- *     schema:
- *       type: string
- *     description: The fields to include in the result set
- *   - in: query
- *     name: expand
- *     schema:
- *       type: string
- *     description: The fields to populate
- *   - in: query
- *     name: event_name
- *     schema:
- *       type: string
- *   - in: query
- *     name: resource_type
- *     schema:
- *       type: string
- *   - in: query
- *     name: resource_id
- *     schema:
- *       type: string
- *   - in: query
- *     name: to
- *     schema:
- *       type: string
- *   - in: query
- *     name: include_resends
- *     schema:
- *       type: boolean
- *     description: Whether the result set should include resends or not
- *
+ *   - (query) offset=0 {integer} The number of notifications to skip before starting to collect the notifications set
+ *   - (query) limit=50 {integer} The number of notifications to return
+ *   - (query) fields {string} The fields to include in the result set
+ *   - (query) expand {string} The fields to populate
+ *   - (query) event_name {string}
+ *   - (query) resource_type {string}
+ *   - (query) resource_id {string}
+ *   - (query) to {string}
+ *   - (query) include_resends {boolean} Whether the result set should include resent notifications or not
  * tags:
  *   - Notification
  * responses:
