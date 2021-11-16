@@ -1,10 +1,10 @@
 import { IsString } from "class-validator"
 import { IsOptional } from "class-validator"
-import { validator } from "../../../../utils/validator"
 import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "."
+import { validator } from "../../../../utils/validator"
 import { NotificationService } from "../../../../services"
 
 /**

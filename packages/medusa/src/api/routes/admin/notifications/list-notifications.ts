@@ -5,12 +5,12 @@ import {
   IsString,
 } from "class-validator"
 import _ from "lodash"
-import { NotificationService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
+import { NotificationService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /notifications
