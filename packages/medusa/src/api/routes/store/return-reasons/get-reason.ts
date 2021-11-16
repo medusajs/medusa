@@ -1,5 +1,4 @@
-import { defaultStoreReturnReasonRelations, defaultStoreReturnReasonFields } from "."
-import { ReturnReason } from "../../../../"
+import { defaultStoreReturnReasonFields, defaultStoreReturnReasonRelations } from "."
 import ReturnReasonService from "../../../../services/return-reason"
 
 /**

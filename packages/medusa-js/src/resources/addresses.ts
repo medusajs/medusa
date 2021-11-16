@@ -2,9 +2,9 @@ import {
   StoreCustomerRes,
   StorePostCustomersCustomerAddressesAddressReq,
   StorePostCustomersCustomerAddressesReq,
-} from '@medusajs/medusa';
-import { AxiosPromise } from 'axios';
-import BaseResource from './base';
+} from "@medusajs/medusa"
+import { AxiosPromise } from "axios"
+import BaseResource from "./base"
 
 class AddressesResource extends BaseResource {
   /**
@@ -12,9 +12,11 @@ class AddressesResource extends BaseResource {
    * @param {StorePostCustomersCustomerAddressesReq} payload contains information to create an address
    * @return {AxiosPromise<StoreCustomerResponse>}
    */
-  addAddress(payload: StorePostCustomersCustomerAddressesReq): AxiosPromise<StoreCustomerRes> {
-    const path = `/store/customers/me/addresses`;
-    return this.client.request('POST', path, payload);
+  addAddress(
+    payload: StorePostCustomersCustomerAddressesReq
+  ): AxiosPromise<StoreCustomerRes> {
+    const path = `/store/customers/me/addresses`
+    return this.client.request("POST", path, payload)
   }
 
   /**
@@ -23,8 +25,8 @@ class AddressesResource extends BaseResource {
    * @return {AxiosPromise<StoreCustomerResponse>}
    */
   deleteAddress(address_id: string): AxiosPromise<StoreCustomerRes> {
-    const path = `/store/customers/me/addresses/${address_id}`;
-    return this.client.request('DELETE', path);
+    const path = `/store/customers/me/addresses/${address_id}`
+    return this.client.request("DELETE", path)
   }
 
   /**
@@ -35,11 +37,11 @@ class AddressesResource extends BaseResource {
    */
   updateAddress(
     address_id: string,
-    payload: StorePostCustomersCustomerAddressesAddressReq,
+    payload: StorePostCustomersCustomerAddressesAddressReq
   ): AxiosPromise<StoreCustomerRes> {
-    const path = `/store/customers/me/addresses/${address_id}`;
-    return this.client.request('POST', path, payload);
+    const path = `/store/customers/me/addresses/${address_id}`
+    return this.client.request("POST", path, payload)
   }
 }
 
-export default AddressesResource;
+export default AddressesResource
