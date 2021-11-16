@@ -1,3 +1,3 @@
-type QuerySelector = {
+export type QuerySelector = {
   q?: string
 }
