@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
@@ -58,10 +59,12 @@ export default async (req, res) => {
 export class AdminGetCustomersParams extends Selector {
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   limit?: number
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   offset?: number
 
   @IsString()

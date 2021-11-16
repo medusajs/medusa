@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { Customer } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -15,8 +16,12 @@ export default (app) => {
   return app
 }
 
-export type AdminCustomerRes = {
+export type AdminCustomersRes = {
   customer: Customer
+}
+
+export type AdminCustomersListRes = PaginatedResponse & {
+  customers: Customer[]
 }
 
 export * from "./create-customer"
