@@ -20,7 +20,11 @@ export default (app) => {
   /**
    * Get an order
    */
-  route.get("/:id", middlewares.wrap(require("./get-order").default))
+  route.get(
+    "/:id",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./get-order").default)
+  )
 
   /**
    * Create a new order

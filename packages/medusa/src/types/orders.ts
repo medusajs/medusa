@@ -52,17 +52,17 @@ export class Selector {
   @IsArray()
   @IsEnum(OrderStatus, { each: true })
   @IsOptional()
-  status?: string
+  status?: string[]
 
   @IsArray()
   @IsEnum(FulfillmentStatus, { each: true })
   @IsOptional()
-  fulfillment_status?: string
+  fulfillment_status?: string[]
 
   @IsArray()
   @IsEnum(PaymentStatus)
   @IsOptional()
-  payment_status?: string
+  payment_status?: string[]
 
   @IsString()
   @IsOptional()

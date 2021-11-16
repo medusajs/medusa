@@ -1197,6 +1197,44 @@ describe("/admin/orders", () => {
       ])
     })
 
+    it("lists all orders with a fulfillment status = fulfilled", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/orders?fulfillment_status[]=fulfilled", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => console.log(err))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toEqual([
+        expect.objectContaining({
+          id: "test-order",
+        }),
+      ])
+    })
+
+    it("fails to lists all orders with an invalid status", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      await api
+        .get("/admin/orders?status[]=test", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("invalid_data")
+          expect(err.response.data.message).toEqual(
+            "each value in status must be a valid enum value"
+          )
+        })
+    })
+
     it("list all orders with matching order email", async () => {
       const api = useApi()
 
