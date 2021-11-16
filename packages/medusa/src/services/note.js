@@ -1,9 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { NoteRepository } from "../repositories/note"
 import { TransactionManager } from "typeorm"
-import { Note } from ".."
-import { CreateNoteInput } from "../types/note"
 
 class NoteService extends BaseService {
   static Events = {
@@ -30,7 +27,7 @@ class NoteService extends BaseService {
    * @param {EntityManager} transactionManager - the manager to use
    * @return {NoteService} a cloned note service
    */
-  withTransaction(transactionManager): NoteService {
+  withTransaction(transactionManager) {
     if (!TransactionManager) {
       return this
     }
@@ -51,7 +48,7 @@ class NoteService extends BaseService {
    * @param {object} config - any options needed to query for the result.
    * @return {Promise<Note>} which resolves to the requested note.
    */
-  async retrieve(id: string, config = {}): Promise<Note> {
+  async retrieve(id, config = {}) {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
     const validatedId = this.validateId_(id)
@@ -72,6 +69,7 @@ class NoteService extends BaseService {
   /** Fetches all notes related to the given selector
    * @param {Object} selector - the query object for find
    * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
+   * @param {string[]} config.relations - the configuration used to find the objects. contains relations, skip, and take.
    * @return {Promise<Note[]>} notes related to the given search.
    */
   async list(
@@ -79,12 +77,10 @@ class NoteService extends BaseService {
     config = {
       skip: 0,
       take: 50,
-      relations: [] as string[],
+      relations: [],
     }
-  ): Promise<Note[]> {
-    const noteRepo = this.manager_.getCustomRepository(
-      this.noteRepository_
-    ) as NoteRepository
+  ) {
+    const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
 
     const query = this.buildQuery_(selector, config)
 
@@ -97,18 +93,13 @@ class NoteService extends BaseService {
    * @param {*} config - any configurations if needed, including meta data
    * @return {Promise} resolves to the creation result
    */
-  async create(
-    data: CreateNoteInput,
-    config = { metadata: {} }
-  ): Promise<Note> {
+  async create(data, config = { metadata: {} }) {
     const { metadata } = config
 
     const { resource_id, resource_type, value, author_id } = data
 
     return this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(
-        this.noteRepository_
-      ) as NoteRepository
+      const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const toCreate = {
         resource_id,
@@ -135,11 +126,9 @@ class NoteService extends BaseService {
    * @param {*} value - the new value
    * @return {Promise} resolves to the updated element
    */
-  async update(noteId: string, value: string): Promise<Note> {
+  async update(noteId, value) {
     return this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(
-        this.noteRepository_
-      ) as NoteRepository
+      const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId, { relations: ["author"] })
 
@@ -160,11 +149,9 @@ class NoteService extends BaseService {
    * @param {*} noteId - id of the note to delete
    * @return {Promise}
    */
-  async delete(noteId: string): Promise<any> {
+  async delete(noteId) {
     return this.atomicPhase_(async (manager) => {
-      const noteRepo = manager.getCustomRepository(
-        this.noteRepository_
-      ) as NoteRepository
+      const noteRepo = manager.getCustomRepository(this.noteRepository_)
 
       const note = await this.retrieve(noteId)
 
