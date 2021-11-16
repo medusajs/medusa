@@ -42,47 +42,51 @@ export default async (req, res) => {
   const notificationService: NotificationService = req.scope.resolve(
     "notificationService"
   )
-  const { limit, offset, ...validatedQuery } = await validator(
-    AdminGetNotificationsParams,
-    req.query
-  )
+  const {
+    limit,
+    offset,
+    fields,
+    expand,
+    event_name,
+    resource_id,
+    resource_type,
+    to,
+    include_resends,
+  } = await validator(AdminGetNotificationsParams, req.query)
 
   const selector: any = {}
 
   let includeFields: string[] = []
-  if (validatedQuery.fields) {
-    includeFields = validatedQuery.fields.split(",")
+  if (fields) {
+    includeFields = fields.split(",")
   }
 
   let expandFields: string[] = []
-  if (validatedQuery.expand) {
-    expandFields = validatedQuery.expand.split(",")
+  if (expand) {
+    expandFields = expand.split(",")
   }
 
-  if (validatedQuery.event_name) {
-    const values = validatedQuery.event_name.split(",")
+  if (event_name) {
+    const values = event_name.split(",")
     selector.event_name = values.length > 1 ? values : values[0]
   }
 
-  if (validatedQuery.resource_type) {
-    const values = validatedQuery.resource_type.split(",")
+  if (resource_type) {
+    const values = resource_type.split(",")
     selector.resource_type = values.length > 1 ? values : values[0]
   }
 
-  if (validatedQuery.resource_id) {
-    const values = validatedQuery.resource_id.split(",")
+  if (resource_id) {
+    const values = resource_id.split(",")
     selector.resource_id = values.length > 1 ? values : values[0]
   }
 
-  if (validatedQuery.to) {
-    const values = validatedQuery.to.split(",")
+  if (to) {
+    const values = to.split(",")
     selector.to = values.length > 1 ? values : values[0]
   }
 
-  if (
-    !validatedQuery.include_resends ||
-    validatedQuery.include_resends === "false"
-  ) {
+  if (!include_resends || include_resends === "false") {
     selector.parent_id = null
   }
 
@@ -100,8 +104,8 @@ export default async (req, res) => {
 
   const notifications = await notificationService.list(selector, listConfig)
 
-  const fields = [...listConfig.select, ...listConfig.relations]
-  const data = notifications.map((o) => _.pick(o, fields))
+  const resultFields = [...listConfig.select, ...listConfig.relations]
+  const data = notifications.map((o) => _.pick(o, resultFields))
 
   res.json({ notifications: data, offset, limit })
 }
