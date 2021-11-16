@@ -1,5 +1,6 @@
 import { Router } from "express"
 import middlewares from "../../../middlewares"
+import { Region } from "./../../../../"
 
 const route = Router()
 
@@ -11,3 +12,14 @@ export default (app) => {
 
   return app
 }
+
+export type StoreRegionsListRes = {
+  regions: Region[]
+}
+
+export class StoreRegionsRes {
+  region: Region
+}
+
+export * from "./get-region"
+export * from "./list-regions"

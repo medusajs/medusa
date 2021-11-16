@@ -17,6 +17,7 @@ export default (container, config) => {
 
 export * from "./routes/admin/variants"
 export * from "./routes/store/carts"
+export * from "./routes/store/regions"
 export * from "./routes/store/auth"
 export * from "./routes/store/products"
 export * from "./routes/store/gift-cards"
