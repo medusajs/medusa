@@ -99,9 +99,6 @@ export const allowedAdminDraftOrdersFields = [
 
 export const allowedAdminDraftOrdersRelations = ["cart"]
 
-export class AdminDraftOrdersListRes {
-  draft_order: DraftOrder
-}
 export class AdminPostDraftOrdersDraftOrderRegisterPaymentRes {
   order: Order
 }
