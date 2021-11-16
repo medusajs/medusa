@@ -88,7 +88,3 @@ export default async (req, res) => {
 
   res.status(200).json({ order })
 }
-
-export class AdminPostDraftOrdersDraftOrderRegisterPaymentRes {
-  order: Order
-}

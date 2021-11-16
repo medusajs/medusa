@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -128,10 +129,12 @@ export class AdminPostDraftOrdersDraftOrderLineItemsItemReq {
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   unit_price?: number
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   quantity?: number
 
   @IsObject()

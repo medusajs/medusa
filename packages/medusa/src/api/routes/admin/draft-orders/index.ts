@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { DraftOrder } from "../../../.."
+import { DraftOrder, Order } from "../../../.."
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
 
@@ -101,11 +101,15 @@ export const allowedAdminDraftOrdersRelations = ["cart"]
 export class AdminDraftOrdersRes {
   draft_order: DraftOrder
 }
+export class AdminPostDraftOrdersDraftOrderRegisterPaymentRes {
+  order: Order
+}
 
-export class AdminDraftOrdersDeleteRes {
-  id: string
-  object: string
-  deleted: boolean
+export class AdminGetDraftOrdersRes {
+  draft_orders: DraftOrder[]
+  count: number
+  offset: number
+  limit: number
 }
 
 export * from "./create-draft-order"

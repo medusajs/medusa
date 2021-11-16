@@ -72,26 +72,6 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  // const schema = Validator.object().keys({
-  //   region_id: Validator.string().optional(),
-  //   country_code: Validator.string().optional(),
-  //   email: Validator.string().email().optional(),
-  //   billing_address: Validator.object().optional(),
-  //   shipping_address: Validator.object().optional(),
-  //   discounts: Validator.array()
-  //     .items({
-  //       code: Validator.string(),
-  //     })
-  //     .optional(),
-  //   customer_id: Validator.string().optional(),
-  //   no_notification_order: Validator.boolean().optional(),
-  // })
-
-  // const { value, error } = schema.validate(req.body)
-  // if (error) {
-  //   throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  // }
-
   const validated = await validator(AdminPostDraftOrdersDraftOrderReq, req.body)
 
   const draftOrderService: DraftOrderService =
