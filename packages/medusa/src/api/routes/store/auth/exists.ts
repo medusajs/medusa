@@ -1,3 +1,4 @@
+import CustomerService from "../../../../services/customer"
 /**
  * @oas [get] /auth/{email}
  * operationId: "GetAuthEmail"
@@ -21,7 +22,8 @@ export default async (req, res) => {
   const { email } = req.params
 
   try {
-    const customerService = req.scope.resolve("customerService")
+    const customerService: CustomerService =
+      req.scope.resolve("customerService")
     const customer = await customerService.retrieveByEmail(email)
     res.status(200).json({ exists: !!customer.password_hash })
   } catch (err) {
