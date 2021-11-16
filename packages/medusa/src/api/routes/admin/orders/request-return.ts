@@ -264,7 +264,7 @@ export default async (req, res) => {
 type ReturnObj = {
   order_id?: string
   idempotency_key?: string
-  items?: Item[]
+  items?: OrdersReturnItem[]
   shipping_method?: ReturnShipping
   refund_amount?: number
   no_notification?: boolean
