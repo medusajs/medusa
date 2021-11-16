@@ -1,16 +1,12 @@
-import {
-  IsBooleanString,
-  IsNumberString,
-  IsOptional,
-  IsString,
-} from "class-validator"
+import { Type } from "class-transformer"
+import { IsBooleanString, IsOptional, IsString } from "class-validator"
 import _ from "lodash"
+import { NotificationService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
-import { NotificationService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /notifications
@@ -46,10 +42,10 @@ export default async (req, res) => {
   const notificationService: NotificationService = req.scope.resolve(
     "notificationService"
   )
-  const validatedQuery = await validator(AdminGetNotificationsParams, req.query)
-
-  const limit = validatedQuery.limit ? parseInt(validatedQuery.limit) : 50
-  const offset = validatedQuery.offset ? parseInt(validatedQuery.offset) : 0
+  const { limit, offset, ...validatedQuery } = await validator(
+    AdminGetNotificationsParams,
+    req.query
+  )
 
   const selector: any = {}
 
@@ -112,12 +108,12 @@ export default async (req, res) => {
 
 export class AdminGetNotificationsParams {
   @IsOptional()
-  @IsNumberString()
-  limit?: string
+  @Type(() => Number)
+  limit?: number = 50
 
   @IsOptional()
-  @IsNumberString()
-  offset?: string
+  @Type(() => Number)
+  offset?: number = 0
 
   @IsOptional()
   @IsString()
