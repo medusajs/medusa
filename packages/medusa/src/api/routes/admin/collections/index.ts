@@ -2,6 +2,7 @@ import { Router } from "express"
 import { ProductCollection } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 
