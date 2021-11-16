@@ -66,6 +66,7 @@ import { validator } from "../../../../utils/validator"
  *         required:
  *          - order_id
  *          - return_items
+ *          - additional_items
  * tags:
  *   - Swap
  * responses:
