@@ -70,21 +70,27 @@ export class StorePostCustomersCustomerReq {
   @IsOptional()
   @IsType([AddressPayload, String])
   billing_address: AddressPayload | string
+
   @IsOptional()
   @IsString()
   first_name: string
+
   @IsOptional()
   @IsString()
   last_name: string
+
   @IsOptional()
   @IsString()
   password: string
+
   @IsOptional()
   @IsString()
   phone: string
+
   @IsOptional()
   @IsEmail()
   email: string
+
   @IsOptional()
   @IsObject()
   metadata: object

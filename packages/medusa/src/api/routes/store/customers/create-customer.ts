@@ -11,7 +11,6 @@ import { validator } from "../../../../utils/validator"
  * operationId: PostCustomers
  * summary: Create a Customer
  * description: "Creates a Customer account."
- * x-authenticated: true
  * parameters:
  *   - (body) email=* {string} The Customer's email address.
  *   - (body) first_name=* {string} The Customer's first name.
@@ -52,10 +51,13 @@ export default async (req, res) => {
 export class StorePostCustomersReq {
   @IsString()
   first_name: string
+
   @IsString()
   last_name: string
+
   @IsEmail()
   email: string
+
   @IsString()
   password: string
 }

@@ -55,8 +55,10 @@ export default async (req, res) => {
 export class StorePostCustomersResetPasswordReq {
   @IsEmail()
   email: string
+
   @IsString()
   token: string
+
   @IsString()
   password: string
 }

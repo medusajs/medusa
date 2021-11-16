@@ -85,13 +85,16 @@ export class StoreGetCustomersCustomerOrdersParams {
   @IsNumber()
   @Type(() => Number)
   limit?: number
+
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   offset?: number
+
   @IsOptional()
   @IsString()
   fields?: string
+
   @IsOptional()
   @IsString()
   expand?: string
