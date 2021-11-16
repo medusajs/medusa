@@ -1,6 +1,6 @@
-import { StoreGetOrdersReq, StoreOrderResponse } from '@medusajs/medusa';
-import { AxiosPromise } from 'axios';
-import BaseResource from './base';
+import { StoreGetOrdersReq, StoreOrderRes } from "@medusajs/medusa"
+import { AxiosPromise } from "axios"
+import BaseResource from "./base"
 
 class OrdersResource extends BaseResource {
   /**
@@ -8,9 +8,9 @@ class OrdersResource extends BaseResource {
    * @param {string} id is required
    * @return {AxiosPromise<StoreOrderResponse>}
    */
-  retrieve(id: string): AxiosPromise<StoreOrderResponse> {
-    const path = `/store/orders/${id}`;
-    return this.client.request('GET', path);
+  retrieve(id: string): AxiosPromise<StoreOrderRes> {
+    const path = `/store/orders/${id}`
+    return this.client.request("GET", path)
   }
 
   /**
@@ -18,9 +18,9 @@ class OrdersResource extends BaseResource {
    * @param {string} cart_id is required
    * @return {AxiosPromise<StoreOrderResponse>}
    */
-  retrieveByCartId(cart_id: string): AxiosPromise<StoreOrderResponse> {
-    const path = `/store/orders/cart/${cart_id}`;
-    return this.client.request('GET', path);
+  retrieveByCartId(cart_id: string): AxiosPromise<StoreOrderRes> {
+    const path = `/store/orders/cart/${cart_id}`
+    return this.client.request("GET", path)
   }
 
   /**
@@ -28,21 +28,21 @@ class OrdersResource extends BaseResource {
    * @param {StoreGetOrdersReq} payload used to look up the order
    * @return {AxiosPromise<StoreOrderResponse>}
    */
-  lookupOrder(payload: StoreGetOrdersReq): AxiosPromise<StoreOrderResponse> {
-    let path = `/store/orders?`;
+  lookupOrder(payload: StoreGetOrdersReq): AxiosPromise<StoreOrderRes> {
+    let path = `/store/orders?`
 
     const queryString = Object.entries(payload).map(([key, value]) => {
-      let val = value;
+      let val = value
       if (Array.isArray(value)) {
-        val = value.join(',');
+        val = value.join(",")
       }
 
-      return `${key}=${encodeURIComponent(val)}`;
-    });
-    path = `/store/orders?${queryString.join('&')}`;
+      return `${key}=${encodeURIComponent(val)}`
+    })
+    path = `/store/orders?${queryString.join("&")}`
 
-    return this.client.request('GET', path, payload);
+    return this.client.request("GET", path, payload)
   }
 }
 
-export default OrdersResource;
+export default OrdersResource

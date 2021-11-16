@@ -1,5 +1,4 @@
 import { IdMap } from "medusa-test-utils"
-import jwt from "jsonwebtoken"
 import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 

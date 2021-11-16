@@ -31,7 +31,7 @@ import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
  *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetOrdersReq, req.query)
+  const validated = await validator(StoreGetOrdersParams, req.query)
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
