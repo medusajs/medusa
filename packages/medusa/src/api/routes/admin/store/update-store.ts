@@ -7,6 +7,7 @@ import { validator } from "../../../../utils/validator"
  * operationId: "PostStore"
  * summary: "Update Store details."
  * description: "Updates the Store details"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:

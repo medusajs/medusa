@@ -4,6 +4,7 @@ import { PaymentProviderService } from "../../../../services"
  * operationId: "GetStorePaymentProviders"
  * summary: "Retrieve configured Payment Providers"
  * description: "Retrieves the configured Payment Providers"
+ * x-authenticated: true
  * tags:
  *   - Store
  * responses:

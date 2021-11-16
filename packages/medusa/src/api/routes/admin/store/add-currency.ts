@@ -4,6 +4,7 @@ import { StoreService } from "../../../../services"
  * operationId: "PostStoreCurrenciesCode"
  * summary: "Add a Currency Code"
  * description: "Adds a Currency Code to the available currencies."
+ * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The 3 character ISO currency code.
  * tags:

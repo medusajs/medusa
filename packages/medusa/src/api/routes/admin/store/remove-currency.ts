@@ -5,6 +5,7 @@ import { StoreService } from "../../../../services"
  * operationId: "DeleteStoreCurrenciesCode"
  * summary: "Remvoe a Currency Code"
  * description: "Removes a Currency Code from the available currencies."
+ * x-authenticated: true
  * parameters:
  *   - (path) code=* {string} The 3 character ISO currency code.
  * tags:

@@ -9,6 +9,7 @@ import {
  * operationId: "GetStore"
  * summary: "Retrieve Store details."
  * description: "Retrieves the Store details"
+ * x-authenticated: true
  * tags:
  *   - Store
  * responses:
