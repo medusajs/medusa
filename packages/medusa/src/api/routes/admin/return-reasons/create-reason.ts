@@ -1,14 +1,23 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { IsOptional, IsString } from "class-validator"
+import {
+  defaultAdminReturnReasonsFields,
+  defaultAdminReturnReasonsRelations,
+} from "."
+import { ReturnReasonService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /return-reasons
  * operationId: "PostReturnReasons"
  * summary: "Create a Return Reason"
  * description: "Creates a Return Reason"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
+ *     required:
+ *      - label
+ *      - value
  *       schema:
  *         properties:
  *           label:
@@ -16,6 +25,9 @@ import { defaultRelations, defaultFields } from "./"
  *             type: string
  *           value:
  *             description: "The value that the Return Reason will be identified by. Must be unique."
+ *             type: string
+ *            parent_return_reason_id:
+ *             description: "The id of the parent return reason."
  *             type: string
  *           description:
  *             description: "An optional description to for the Reason."
@@ -36,26 +48,32 @@ import { defaultRelations, defaultFields } from "./"
  *               $ref: "#/components/schemas/return_reason"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    value: Validator.string().required(),
-    label: Validator.string().required(),
-    parent_return_reason_id: Validator.string().optional(),
-    description: Validator.string().optional().allow(""),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(AdminPostReturnReasonsReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const returnReasonService = req.scope.resolve("returnReasonService")
-  const result = await returnReasonService.create(value)
+  const returnReasonService: ReturnReasonService = req.scope.resolve(
+    "returnReasonService"
+  )
+  const result = await returnReasonService.create(validated)
 
   const reason = await returnReasonService.retrieve(result.id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminReturnReasonsFields,
+    relations: defaultAdminReturnReasonsRelations,
   })
 
   res.status(200).json({ return_reason: reason })
+}
+
+export class AdminPostReturnReasonsReq {
+  @IsString()
+  value: string
+  @IsString()
+  label: string
+  @IsOptional()
+  @IsString()
+  parent_return_reason_id?: string
+  @IsOptional()
+  @IsString()
+  description?: string
+  @IsOptional()
+  metadata?: object
 }
