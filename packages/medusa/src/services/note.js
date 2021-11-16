@@ -69,7 +69,9 @@ class NoteService extends BaseService {
   /** Fetches all notes related to the given selector
    * @param {Object} selector - the query object for find
    * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
-   * @param {string[]} config.relations - the configuration used to find the objects. contains relations, skip, and take.
+   * @param {string[]} config.relations - Which relations to include in the resulting list of Notes.
+   * @param {number} config.take - How many Notes to take in the resulting list of Notes.
+   * @param {number} config.skip - How many Notes to skip in the resulting list of Notes.
    * @return {Promise<Note[]>} notes related to the given search.
    */
   async list(

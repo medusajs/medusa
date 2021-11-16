@@ -1,4 +1,3 @@
-// import { MedusaError, Validator } from "medusa-core-utils"
 import { IsOptional, IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"

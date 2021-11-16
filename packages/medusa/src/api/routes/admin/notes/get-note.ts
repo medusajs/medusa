@@ -1,4 +1,3 @@
-import { Note } from "../../../.."
 import NoteService from "../../../../services/note"
 
 /**

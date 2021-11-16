@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { Note } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -20,10 +21,13 @@ export default (app) => {
   return app
 }
 
-export class AdminNoteRes {
+export type AdminNoteRes = {
   note: Note
 }
 
+export type AdminGetNotesRes = PaginatedResponse & {
+  notes: Note[]
+}
 export * from "./create-note"
 export * from "./delete-note"
 export * from "./get-note"
