@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsArray, IsOptional, IsString } from "class-validator"
 import { StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -44,21 +44,22 @@ export default async (req, res) => {
 export class AdminPostStoreReq {
   @IsOptional()
   @IsString()
-  name: string
+  name?: string
 
   @IsString()
   @IsOptional()
-  swap_link_template: string
+  swap_link_template?: string
 
   @IsString()
   @IsOptional()
-  payment_link_template: string
+  payment_link_template?: string
 
   @IsString()
   @IsOptional()
-  default_currency_code: string
+  default_currency_code?: string
 
+  @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  currencies: string[]
+  currencies: string[] = []
 }
