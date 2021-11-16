@@ -21,7 +21,7 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  * @oas [post] /discounts
  * operationId: "PostDiscounts"
  * summary: "Creates a Discount"
- * x-auhtenticated: true
+ * x-authenticated: true
  * description: "Creates a Discount with a given set of rules that define how the Discount behaves."
  * requestBody:
  *   content:

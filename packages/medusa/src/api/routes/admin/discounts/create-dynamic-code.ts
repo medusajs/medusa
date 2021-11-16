@@ -12,7 +12,7 @@ import { validator } from "../../../../utils/validator"
  * operationId: "PostDiscountsDiscountDynamicCodes"
  * summary: "Create a dynamic Discount code"
  * description: "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour."
- * x-auhtenticated: true
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Discount to create the dynamic code from."
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
