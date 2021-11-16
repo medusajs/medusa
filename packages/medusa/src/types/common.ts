@@ -13,7 +13,11 @@ export interface FindConfig<Entity> {
 }
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }
-
+export type DeleteRes = {
+  id: string
+  object: string
+  deleted: boolean
+}
 export class AddressPayload {
   @IsOptional()
   @IsString()
