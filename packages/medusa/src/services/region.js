@@ -365,12 +365,10 @@ class RegionService extends BaseService {
    * Lists all regions based on a query
    * @param {object} selector - query object for find
    * @param {object} config - configuration settings
+   * @param {string[]} config.relations - configuration settings
    * @return {Promise} result of the find operation
    */
-  async list(
-    selector = {},
-    config = { relations: [] as string[], skip: 0, take: 10 }
-  ): Promise<Region[]> {
+  async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
     const regionRepo = this.manager_.getCustomRepository(this.regionRepository_)
 
     const query = this.buildQuery_(selector, config)
@@ -382,7 +380,7 @@ class RegionService extends BaseService {
    * @param {string} regionId - the region to delete
    * @return {Promise} the result of the delete operation
    */
-  async delete(regionId): Promise<any> {
+  async delete(regionId) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
@@ -410,7 +408,7 @@ class RegionService extends BaseService {
    * @param {string} code - a 2 digit alphanumeric ISO country code.
    * @return {Promise} the result of the update operation
    */
-  async addCountry(regionId, code): Promise<Region> {
+  async addCountry(regionId, code) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
@@ -447,7 +445,7 @@ class RegionService extends BaseService {
    * @param {string} code - a 2 digit alphanumeric ISO country code to remove
    * @return {Promise} the result of the update operation
    */
-  async removeCountry(regionId, code): Promise<Region> {
+  async removeCountry(regionId, code) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
@@ -483,10 +481,7 @@ class RegionService extends BaseService {
    * @param {string} providerId - the provider to add to the region
    * @return {Promise} the result of the update operation
    */
-  async addPaymentProvider(
-    regionId: string,
-    providerId: string
-  ): Promise<Region> {
+  async addPaymentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
       const ppRepo = manager.getCustomRepository(
@@ -533,10 +528,7 @@ class RegionService extends BaseService {
    * @param {string} providerId - the provider to add to the region
    * @return {Promise} the result of the update operation
    */
-  async addFulfillmentProvider(
-    regionId: string,
-    providerId: string
-  ): Promise<Region> {
+  async addFulfillmentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
       const fpRepo = manager.getCustomRepository(
@@ -580,10 +572,7 @@ class RegionService extends BaseService {
    * @param {string} providerId - the provider to remove from the region
    * @return {Promise} the result of the update operation
    */
-  async removePaymentProvider(
-    regionId: string,
-    providerId: string
-  ): Promise<Region> {
+  async removePaymentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
@@ -617,10 +606,7 @@ class RegionService extends BaseService {
    * @param {string} providerId - the provider to remove from the region
    * @return {Promise} the result of the update operation
    */
-  async removeFulfillmentProvider(
-    regionId: string,
-    providerId: string
-  ): Promise<Region> {
+  async removeFulfillmentProvider(regionId, providerId) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
 
