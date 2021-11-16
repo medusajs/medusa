@@ -1,6 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator"
 import DiscountService from "../../../../services/discount"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [delete] /discounts/{id}/dynamic-codes/{code}
@@ -24,10 +22,8 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { discount_id, code } = await validator(
-    AdminDeleteDiscountsDiscountDynamicCodesCodeParams,
-    req.params
-  )
+  const { discount_id, code } = req.params
+
   const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.deleteDynamicCode(discount_id, code)
 
@@ -36,14 +32,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ discount })
-}
-
-export class AdminDeleteDiscountsDiscountDynamicCodesCodeParams {
-  @IsString()
-  @IsNotEmpty()
-  discount_id: string
-
-  @IsString()
-  @IsNotEmpty()
-  code: string
 }

@@ -2,6 +2,7 @@ import { Router } from "express"
 import { Discount } from "../../../.."
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { PaginatedResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -86,15 +87,12 @@ export const defaultAdminDiscountsRelations = [
   "rule.valid_for",
 ]
 
-export class AdminDiscountResponse {
+export type AdminDiscountRes = {
   discount: Discount
 }
 
-export class AdminGetDiscountsRes {
+export type AdminGetDiscountsRes = PaginatedResponse & {
   discounts: Discount[]
-  count: number
-  offset: number
-  limit: number
 }
 
 export * from "./add-region"

@@ -1,7 +1,5 @@
-import { IsNotEmpty, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
-import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts/{id}
  * operationId: "GetDiscountsDiscount"
@@ -23,10 +21,8 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { discount_id } = await validator(
-    AdminGetDiscountsDiscountParams,
-    req.params
-  )
+  const { discount_id } = req.params
+
   const discountService: DiscountService = req.scope.resolve("discountService")
   const data = await discountService.retrieve(discount_id, {
     select: defaultAdminDiscountsFields,
@@ -34,10 +30,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ discount: data })
-}
-
-export class AdminGetDiscountsDiscountParams {
-  @IsString()
-  @IsNotEmpty()
-  discount_id: string
 }

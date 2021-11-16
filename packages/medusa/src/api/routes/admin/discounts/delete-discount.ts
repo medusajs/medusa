@@ -1,6 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator"
 import DiscountService from "../../../../services/discount"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [delete] /discounts/{id}
@@ -29,10 +27,8 @@ import { validator } from "../../../../utils/validator"
  *               type: boolean
  */
 export default async (req, res) => {
-  const { discount_id } = await validator(
-    AdminDeleteDiscountsDiscountParams,
-    req.params
-  )
+  const { discount_id } = req.params
+
   const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.delete(discount_id)
 
@@ -41,10 +37,4 @@ export default async (req, res) => {
     object: "discount",
     deleted: true,
   })
-}
-
-export class AdminDeleteDiscountsDiscountParams {
-  @IsString()
-  @IsNotEmpty()
-  discount_id: string
 }

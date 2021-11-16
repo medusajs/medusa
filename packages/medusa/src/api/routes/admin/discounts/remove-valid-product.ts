@@ -1,7 +1,5 @@
 import DiscountService from "../../../../services/discount"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-import { IsNotEmpty, IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{id}/products/{product_id}
  * operationId: "DeleteDiscountsDiscountProductsProduct"
@@ -24,10 +22,8 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { discount_id, variant_id } = await validator(
-    AdminDeleteDiscountsDiscountProductsProductParams,
-    req.params
-  )
+  const { discount_id, variant_id } = req.params
+
   const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.removeValidProduct(discount_id, variant_id)
 
@@ -37,14 +33,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ discount })
-}
-
-export class AdminDeleteDiscountsDiscountProductsProductParams {
-  @IsString()
-  @IsNotEmpty()
-  discount_id: string
-
-  @IsString()
-  @IsNotEmpty()
-  variant_id: string
 }

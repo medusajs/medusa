@@ -1,8 +1,6 @@
-import { IsNotEmpty, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
-import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{id}/regions/{region_id}
  * operationId: "PostDiscountsDiscountRegionsRegion"
@@ -25,10 +23,8 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { discount_id, region_id } = await validator(
-    AdminPostDiscountsDiscountRegionsRegionParams,
-    req.params
-  )
+  const { discount_id, region_id } = req.params
+
   const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.addRegion(discount_id, region_id)
 
@@ -38,14 +34,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ discount })
-}
-
-export class AdminPostDiscountsDiscountRegionsRegionParams {
-  @IsString()
-  @IsNotEmpty()
-  discount_id: string
-
-  @IsString()
-  @IsNotEmpty()
-  region_id: string
 }

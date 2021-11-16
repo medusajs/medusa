@@ -1,7 +1,5 @@
 import DiscountService from "../../../../services/discount"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-import { IsNotEmpty, IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /discounts/{id}/regions/{region_id}
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
@@ -24,10 +22,8 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { discount_id, region_id } = await validator(
-    AdminDeleteDiscountsDiscountRegionsRegionParams,
-    req.params
-  )
+  const { discount_id, region_id } = req.params
+
   const discountService: DiscountService = req.scope.resolve("discountService")
   await discountService.removeRegion(discount_id, region_id)
 
@@ -37,14 +33,4 @@ export default async (req, res) => {
   })
 
   res.status(200).json({ discount })
-}
-
-export class AdminDeleteDiscountsDiscountRegionsRegionParams {
-  @IsString()
-  @IsNotEmpty()
-  discount_id: string
-
-  @IsString()
-  @IsNotEmpty()
-  region_id: string
 }
