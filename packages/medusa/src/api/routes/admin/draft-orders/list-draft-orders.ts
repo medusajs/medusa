@@ -30,7 +30,7 @@ export default async (req, res) => {
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
 
-  const validated = await validator(AdminGetDraftOrdersReq, req.query)
+  const validated = await validator(AdminGetDraftOrdersParams, req.query)
   const limit = validated.limit || 50
   const offset = validated.offset || 0
 
