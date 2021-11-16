@@ -29,6 +29,6 @@ export class AdminStoresRes {
   store: Store
 }
 
-export class AdminPaymentProvidersList {
+export type AdminPaymentProvidersList = {
   payment_providers: PaymentProvider[]
 }
