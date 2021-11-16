@@ -1,11 +1,5 @@
 import { Type } from "class-transformer"
-import {
-  IsBoolean,
-  IsDate,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from "class-validator"
+import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 import { GiftCardService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -72,7 +66,7 @@ export default async (req, res) => {
 
 export class AdminPostGiftCardsGiftCardReq {
   @IsOptional()
-  @IsNumber({ maxDecimalPlaces: 0 })
+  @IsInt()
   balance?: number
 
   @IsOptional()
