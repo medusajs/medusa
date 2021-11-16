@@ -1,4 +1,8 @@
-import { defaultRelations } from "."
+import { Type } from "class-transformer"
+import { IsBoolean, IsNumber, IsOptional } from "class-validator"
+import { defaultStoreProductsRelations } from "."
+import { ProductService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /products
@@ -29,21 +33,23 @@ import { defaultRelations } from "."
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const productService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve("productService")
 
-  const limit = parseInt(req.query.limit) || 100
-  const offset = parseInt(req.query.offset) || 0
+  const validated = await validator(StoreGetProductsParams, req.query)
+
+  const limit = validated.limit || 100
+  const offset = validated.offset || 0
 
   const selector = {}
 
-  if ("is_giftcard" in req.query && req.query.is_giftcard === "true") {
-    selector.is_giftcard = req.query.is_giftcard === "true"
+  if (validated.is_giftcard && validated.is_giftcard === true) {
+    selector["is_giftcard"] = validated.is_giftcard
   }
 
-  selector.status = ["published"]
+  selector["status"] = ["published"]
 
   const listConfig = {
-    relations: defaultRelations,
+    relations: defaultStoreProductsRelations,
     skip: offset,
     take: limit,
   }
@@ -54,4 +60,19 @@ export default async (req, res) => {
   )
 
   res.json({ products, count, offset, limit })
+}
+
+export class StoreGetProductsParams {
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  limit?: number
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  offset?: number
+  @IsOptional()
+  @IsBoolean()
+  @Type(() => Boolean)
+  is_giftcard?: boolean
 }
