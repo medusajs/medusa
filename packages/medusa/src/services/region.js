@@ -1,6 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Region } from "../models/region"
 import { countries } from "../utils/countries"
 
 /**
@@ -365,7 +364,6 @@ class RegionService extends BaseService {
    * Lists all regions based on a query
    * @param {object} selector - query object for find
    * @param {object} config - configuration settings
-   * @param {string[]} config.relations - configuration settings
    * @return {Promise} result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 10 }) {
