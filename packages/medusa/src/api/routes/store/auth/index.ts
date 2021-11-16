@@ -1,3 +1,4 @@
+import { Customer } from "./../../../.."
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 
@@ -16,6 +17,10 @@ export default (app) => {
   route.post("/", middlewares.wrap(require("./create-session").default))
 
   return app
+}
+
+export class StoreAuthRes {
+  customer: Customer
 }
 
 export class StoreGetAuthEmailRes {
