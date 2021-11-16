@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsBooleanString, IsOptional, IsString } from "class-validator"
+import { IsBooleanString, IsInt, IsOptional, IsString } from "class-validator"
 import _ from "lodash"
 import { NotificationService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -112,10 +112,12 @@ export default async (req, res) => {
 
 export class AdminGetNotificationsParams {
   @IsOptional()
+  @IsInt()
   @Type(() => Number)
   limit?: number = 50
 
   @IsOptional()
+  @IsInt()
   @Type(() => Number)
   offset?: number = 0
 
