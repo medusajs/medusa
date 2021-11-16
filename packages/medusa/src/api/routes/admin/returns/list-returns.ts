@@ -1,3 +1,7 @@
+import { Type } from "class-transformer"
+import { IsNumber, IsOptional } from "class-validator"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /returns
  * operationId: "GetReturns"
@@ -20,8 +24,10 @@
 export default async (req, res) => {
   const returnService = req.scope.resolve("returnService")
 
-  const limit = parseInt(req.query.limit) || 50
-  const offset = parseInt(req.query.offset) || 0
+  const validated = await validator(AdminGetReturnsParams, req.query)
+
+  const limit = validated.limit || 50
+  const offset = validated.offset || 0
 
   const selector = {}
 
@@ -35,4 +41,15 @@ export default async (req, res) => {
   const returns = await returnService.list(selector, { ...listConfig })
 
   res.json({ returns, count: returns.length, offset, limit })
+}
+
+export class AdminGetReturnsParams {
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  limit?: number
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  offset?: number
 }

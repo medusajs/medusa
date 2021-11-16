@@ -1,4 +1,13 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { OrderService, ReturnService, SwapService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /returns/{id}/receive
@@ -11,6 +20,8 @@ import { MedusaError, Validator } from "medusa-core-utils"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - items
  *         properties:
  *           items:
  *             description: The Line Items that have been received.
@@ -41,38 +52,24 @@ import { MedusaError, Validator } from "medusa-core-utils"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .required(),
-    refund: Validator.number().integer().optional(),
-  })
+  const validated = await validator(AdminPostReturnsReturnReceiveReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const returnService = req.scope.resolve("returnService")
-  const orderService = req.scope.resolve("orderService")
-  const swapService = req.scope.resolve("swapService")
+  const returnService: ReturnService = req.scope.resolve("returnService")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve("swapService")
   const entityManager = req.scope.resolve("manager")
 
   let receivedReturn
   await entityManager.transaction(async (manager) => {
-    let refundAmount = value.refund
+    let refundAmount = validated.refund
 
-    if (typeof value.refund !== "undefined" && value.refund < 0) {
+    if (typeof validated.refund !== "undefined" && validated.refund < 0) {
       refundAmount = 0
     }
 
     receivedReturn = await returnService
       .withTransaction(manager)
-      .receive(id, value.items, refundAmount, true)
+      .receive(id, validated.items, refundAmount, true)
 
     if (receivedReturn.order_id) {
       await orderService
@@ -94,4 +91,21 @@ export default async (req, res) => {
   receivedReturn = await returnService.retrieve(id, { relations: ["swap"] })
 
   res.status(200).json({ return: receivedReturn })
+}
+
+export class Item {
+  @IsString()
+  item_id: string
+  @IsNumber()
+  quantity: number
+}
+
+export class AdminPostReturnsReturnReceiveReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  items: Item[]
+  @IsOptional()
+  @IsNumber()
+  refund: number
 }
