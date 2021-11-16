@@ -3,15 +3,18 @@ import {
   IsArray,
   IsBoolean,
   IsInt,
-  IsNotEmpty,
-  IsObject,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { Return } from "../../../.."
+import {
+  EventBusService,
+  OrderService,
+  ReturnService,
+} from "../../../../services"
+import { OrdersReturnItem } from "../../../../types/orders"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -26,6 +29,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - items
  *         properties:
  *           items:
  *             description: The Line Items that will be returned.
@@ -101,9 +106,9 @@ export default async (req, res) => {
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   try {
-    const orderService = req.scope.resolve("orderService")
-    const returnService = req.scope.resolve("returnService")
-    const eventBus = req.scope.resolve("eventBusService")
+    const orderService: OrderService = req.scope.resolve("orderService")
+    const returnService: ReturnService = req.scope.resolve("returnService")
+    const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
     let inProgress = true
     let err = false
@@ -268,8 +273,8 @@ type ReturnObj = {
 export class AdminPostOrdersOrderReturnsReq {
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => Item)
-  items: Item[]
+  @Type(() => OrdersReturnItem)
+  items: OrdersReturnItem[]
 
   @IsOptional()
   @ValidateNested()
@@ -307,23 +312,4 @@ class ReturnShipping {
   @IsOptional()
   @Type(() => Number)
   price?: number
-}
-
-class Item {
-  @IsString()
-  @IsNotEmpty()
-  item_id: string
-
-  @IsInt()
-  @IsNotEmpty()
-  @Type(() => Number)
-  quantity: number
-
-  @IsString()
-  @IsOptional()
-  reason_id?: string
-
-  @IsString()
-  @IsOptional()
-  note?: string
 }

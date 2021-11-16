@@ -9,7 +9,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"

@@ -11,6 +11,26 @@ import { Selector } from "../../../../types/orders"
  * summary: "List Orders"
  * description: "Retrieves a list of Orders"
  * x-authenticated: true
+ * parameters:
+ *   - (path) q {string} Query used for searching orders.
+ *   - (path) id {string} Id of the order to search for.
+ *   - (path) status {string[]} Status to search for.
+ *   - (path) fulfillment_status {string[]} Fulfillment status to search for.
+ *   - (path) payment_status {string[]} Payment status to search for.
+ *   - (path) display_id {string} Display id to search for.
+ *   - (path) cart_id {string} to search for.
+ *   - (path) customer_id {string} to search for.
+ *   - (path) email {string} to search for.
+ *   - (path) region_id {string} to search for.
+ *   - (path) currency_code {string} to search for.
+ *   - (path) tax_rate {string} to search for.
+ *   - (path) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
+ *   - (path) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
+ *   - (path) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
+ *   - (path) offset {string} How many orders to skip in the result.
+ *   - (path) limit {string} Limit the number of orders returned.
+ *   - (path) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
+ *   - (path) fields {string} (Comma separated) Which fields should be included in each order of the result.
  * tags:
  *   - Order
  * responses:

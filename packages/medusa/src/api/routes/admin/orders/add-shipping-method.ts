@@ -1,3 +1,4 @@
+import { Type } from "class-transformer"
 import {
   IsInt,
   IsNotEmpty,
@@ -6,6 +7,7 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -39,7 +41,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve("orderService")
 
   await orderService.addShippingMethod(
     id,
@@ -61,6 +63,7 @@ export default async (req, res) => {
 export class AdminPostOrdersOrderShippingMethodsReq {
   @IsInt()
   @IsNotEmpty()
+  @Type(() => Number)
   price: number
 
   @IsString()

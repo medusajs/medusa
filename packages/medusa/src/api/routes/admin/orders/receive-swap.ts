@@ -6,7 +6,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { MedusaError, Validator } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService, SwapService } from "../../../../services"

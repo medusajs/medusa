@@ -6,7 +6,6 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { validator } from "../../../../utils/validator"
 /**

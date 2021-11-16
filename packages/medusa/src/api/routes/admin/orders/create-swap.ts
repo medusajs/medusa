@@ -72,10 +72,10 @@ import { validator } from "../../../../utils/validator"
  *             type: array
  *             items:
  *               required:
- *                 - optionr_id
+ *                 - option_id
  *                 - price
  *               properties:
- *                 optionr_id:
+ *                 option_id:
  *                   desciption: The id of the Shipping Option to override with a custom price.
  *                   type: string
  *                 price:
