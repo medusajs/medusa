@@ -2,6 +2,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
 import { selector } from "../../../../types/note"
+import { Type } from "class-transformer"
 /**
  * @oas [get] /notes
  * operationId: "GetNotes"
