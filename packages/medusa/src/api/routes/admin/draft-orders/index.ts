@@ -2,6 +2,7 @@ import { Router } from "express"
 import { DraftOrder, Order } from "../../../.."
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { PaginatedResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -105,11 +106,8 @@ export class AdminPostDraftOrdersDraftOrderRegisterPaymentRes {
   order: Order
 }
 
-export class AdminGetDraftOrdersRes {
+export type AdminGetDraftOrdersRes = PaginatedResponse & {
   draft_orders: DraftOrder[]
-  count: number
-  offset: number
-  limit: number
 }
 
 export * from "./create-draft-order"

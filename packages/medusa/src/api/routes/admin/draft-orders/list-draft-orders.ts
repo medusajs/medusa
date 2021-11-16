@@ -6,6 +6,7 @@ import {
 import { DraftOrderService } from "../../../../services"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
+import { Type } from "class-transformer"
 /**
  * @oas [get] /draft-orders
  * operationId: "GetDraftOrders"
@@ -64,9 +65,11 @@ export class AdminGetDraftOrdersReq {
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   limit?: number
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   offset?: number
 }
