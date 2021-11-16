@@ -25,7 +25,7 @@ export type AdminNotesRes = {
   note: Note
 }
 
-export type AdminGetNotesRes = PaginatedResponse & {
+export type AdminNotesListRes = PaginatedResponse & {
   notes: Note[]
 }
 export * from "./create-note"
