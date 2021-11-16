@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsNotEmpty, IsOptional, IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
 
@@ -54,14 +54,14 @@ export default async (req, res) => {
 
 export class AdminPostNotesReq {
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   resource_id: string
 
   @IsString()
-  @IsOptional()
-  resource_type?: string
+  @IsNotEmpty()
+  resource_type: string
 
   @IsString()
-  @IsOptional()
-  value?: string
+  @IsNotEmpty()
+  value: string
 }
