@@ -17,7 +17,7 @@ export const ProductCollectionServiceMock = {
     return Promise.resolve({ id, title: value })
   }),
   list: jest.fn().mockImplementation((data) => {
-    return Promise.resolve([{ id: IdMap.getId("col"), title: "Suits" }])
+    return Promise.resolve([[{ id: IdMap.getId("col"), title: "Suits" }]])
   }),
   listAndCount: jest.fn().mockImplementation((data) => {
     return Promise.resolve([[{ id: IdMap.getId("col"), title: "Suits" }], 1])

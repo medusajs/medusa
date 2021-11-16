@@ -15,15 +15,15 @@ describe("GET /store/collections", () => {
     })
 
     it("calls list from productCollectionService", () => {
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledWith(
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         { skip: 0, take: 20, order: { title: "ASC" }, relations: [] }
       )
     })
 
     it("returns collections", () => {
-      expect(subject.body.collections[0].id).toEqual(IdMap.getId("col"))
+      expect(subject.body.collections[0][0].id).toEqual(IdMap.getId("col"))
     })
   })
 
@@ -37,8 +37,8 @@ describe("GET /store/collections", () => {
     })
 
     it("calls list from productCollectionService", () => {
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledWith(
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         { q: "suits" },
         { skip: 0, take: 20, order: { title: "ASC" }, relations: [] }
       )
@@ -55,8 +55,8 @@ describe("GET /store/collections", () => {
     })
 
     it("calls list from productCollectionService", () => {
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledWith(
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           skip: 10,
@@ -85,8 +85,8 @@ describe("GET /store/collections", () => {
     })
 
     it(`calls productCollectionService with '${column}' '${order}'`, () => {
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledTimes(1)
-      expect(ProductCollectionServiceMock.list).toHaveBeenCalledWith(
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
           skip: 0,
