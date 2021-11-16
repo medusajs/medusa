@@ -1,4 +1,5 @@
-import { IsNumberString, IsOptional } from "class-validator"
+import { Type } from "class-transformer"
+import { IsOptional } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
 /**
@@ -22,11 +23,11 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req, res) => {
-  const validatedQuery = await validator(StoreGetCollectionsParams, req.query)
+  const { limit, offset } = await validator(
+    StoreGetCollectionsParams,
+    req.query
+  )
   const selector = {}
-
-  const limit = validatedQuery.limit ? parseInt(req.query.limit) : 10
-  const offset = validatedQuery.offset ? parseInt(req.query.offset) : 0
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
@@ -47,10 +48,10 @@ export default async (req, res) => {
 
 export class StoreGetCollectionsParams {
   @IsOptional()
-  @IsNumberString()
-  limit?: string
+  @Type(() => Number)
+  limit?: number = 10
 
   @IsOptional()
-  @IsNumberString()
-  offset?: string
+  @Type(() => Number)
+  offset?: number = 0
 }
