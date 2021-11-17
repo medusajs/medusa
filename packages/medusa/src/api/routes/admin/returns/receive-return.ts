@@ -6,6 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
 import { OrderService, ReturnService, SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -57,7 +58,7 @@ export default async (req, res) => {
   const returnService: ReturnService = req.scope.resolve("returnService")
   const orderService: OrderService = req.scope.resolve("orderService")
   const swapService: SwapService = req.scope.resolve("swapService")
-  const entityManager = req.scope.resolve("manager")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   let receivedReturn
   await entityManager.transaction(async (manager) => {
@@ -96,6 +97,7 @@ export default async (req, res) => {
 export class Item {
   @IsString()
   item_id: string
+
   @IsNumber()
   quantity: number
 }
@@ -105,6 +107,7 @@ export class AdminPostReturnsReturnReceiveReq {
   @ValidateNested({ each: true })
   @Type(() => Item)
   items: Item[]
+
   @IsOptional()
   @IsNumber()
   refund: number

@@ -1,5 +1,6 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional } from "class-validator"
+import { ReturnService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -7,6 +8,9 @@ import { validator } from "../../../../utils/validator"
  * operationId: "GetReturns"
  * summary: "List Returns"
  * description: "Retrieves a list of Returns"
+ * parameters:
+ *   - (path) limit {number} The upper limit for the amount of responses returned.
+ *   - (path) offset {number} The offset of the list returned.
  * tags:
  *   - Return
  * responses:
@@ -22,34 +26,37 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/return"
  */
 export default async (req, res) => {
-  const returnService = req.scope.resolve("returnService")
+  const returnService: ReturnService = req.scope.resolve("returnService")
 
   const validated = await validator(AdminGetReturnsParams, req.query)
-
-  const limit = validated.limit || 50
-  const offset = validated.offset || 0
 
   const selector = {}
 
   const listConfig = {
     relations: ["swap", "order"],
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
     order: { created_at: "DESC" },
   }
 
   const returns = await returnService.list(selector, { ...listConfig })
 
-  res.json({ returns, count: returns.length, offset, limit })
+  res.json({
+    returns,
+    count: returns.length,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetReturnsParams {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  limit?: number
+  limit?: number = 50
+
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  offset?: number
+  offset?: number = 0
 }
