@@ -56,6 +56,7 @@ export class AdminPostDiscountsDiscountDynamicCodesReq {
   code: string
 
   @IsNumber()
+  @IsOptional()
   usage_limit = 1
 
   @IsObject()
