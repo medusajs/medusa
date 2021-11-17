@@ -25,7 +25,7 @@ export default (app) => {
   return app
 }
 
-export class AdminStoresRes {
+export type AdminStoresRes = {
   store: Store
 }
 
