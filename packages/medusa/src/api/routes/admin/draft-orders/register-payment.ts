@@ -1,5 +1,4 @@
 import { EntityManager } from "typeorm"
-import { Order } from "../../../.."
 import {
   CartService,
   DraftOrderService,
@@ -7,8 +6,8 @@ import {
   PaymentProviderService,
 } from "../../../../services"
 import {
-  defaultFields as defaultOrderFields,
-  defaultRelations as defaultOrderRelations,
+  defaultAdminOrdersFields as defaultOrderFields,
+  defaultAdminOrdersRelations as defaultOrderRelations,
 } from "../orders/index"
 
 /**
