@@ -39,6 +39,8 @@ import { validator } from "../../../../utils/validator"
  *         - subtitle
  *         - description
  *       schema:
+ *         required:
+ *           - title
  *         properties:
  *           title:
  *             description: "The title of the Product"

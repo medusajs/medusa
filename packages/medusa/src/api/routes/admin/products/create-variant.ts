@@ -27,6 +27,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - title
+ *           - prices
+ *           - options
  *         properties:
  *           title:
  *             description: The title to identify the Product Variant by.
