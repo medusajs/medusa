@@ -15,6 +15,8 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
+ *       required:
+ *         - title
  *       schema:
  *         properties:
  *           title:

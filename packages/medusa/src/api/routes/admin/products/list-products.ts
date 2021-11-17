@@ -11,6 +11,7 @@ import {
 import * as _ from "lodash"
 import { identity } from "lodash"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
@@ -65,7 +66,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validatedParams = await validator(AdminGetProductsParams, req.query)
 
-  const productService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve("productService")
 
   const limit = validatedParams?.limit || 50
   const offset = validatedParams?.offset || 0

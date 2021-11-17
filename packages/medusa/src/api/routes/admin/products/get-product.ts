@@ -1,4 +1,5 @@
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductService } from "../../../../services"
 
 /**
  * @oas [get] /products/{id}
@@ -23,7 +24,7 @@ import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  const productService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve("productService")
 
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
