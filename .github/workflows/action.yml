@@ -1,7 +1,5 @@
 name: Medusa Pipeline
-on: 
-  pull_request:
-    types: [synchronize]
+on: [push]
 
 jobs:
   unit-tests:
