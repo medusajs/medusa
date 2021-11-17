@@ -60,7 +60,7 @@ describe("POST /store/carts/:id", () => {
       )
     })
 
-    it("calls get product from productSerice", () => {
+    it("calls get product from productService", () => {
       expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(2)
       expect(CartServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("emptyCart"),

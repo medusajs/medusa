@@ -1,4 +1,3 @@
-const { dropDatabase } = require("pg-god")
 const path = require("path")
 
 const setupServer = require("../../../helpers/setup-server")
