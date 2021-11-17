@@ -396,7 +396,7 @@ class ProductVariantReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq
+  prices: ProductVariantPricesReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)
