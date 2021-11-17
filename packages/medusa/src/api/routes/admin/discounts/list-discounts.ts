@@ -33,8 +33,6 @@ export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  const limit = validated.limit || 20
-  const offset = validated.offset || 0
   const selector: ListSelector = {}
 
   if (validated.q) {
@@ -47,8 +45,8 @@ export default async (req, res) => {
   const listConfig = {
     select: defaultAdminDiscountsFields,
     relations: defaultAdminDiscountsRelations,
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
     order: { created_at: "DESC" },
   }
   const [discounts, count] = await discountService.listAndCount(
@@ -56,7 +54,12 @@ export default async (req, res) => {
     listConfig
   )
 
-  res.status(200).json({ discounts, count, offset, limit })
+  res.status(200).json({
+    discounts,
+    count,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetDiscountsParams {
@@ -77,12 +80,12 @@ export class AdminGetDiscountsParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  limit = 20
 
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  offset = 0
 
   @IsString()
   @IsOptional()
