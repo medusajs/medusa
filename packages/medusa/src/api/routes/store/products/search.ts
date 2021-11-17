@@ -29,15 +29,15 @@ export default async (req, res) => {
 export class StorePostSearchReq {
   @IsOptional()
   @IsString()
-  q: string
+  q?: string
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  offset: number
+  offset?: number
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  limit: number
+  limit?: number
   @IsOptional()
-  filter: any
+  filter?: any
 }

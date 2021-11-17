@@ -67,7 +67,7 @@ import { validator } from "../../../../utils/validator"
  *                 quantity:
  *                   description: The quantity of the Product Variant to ship.
  *                   type: integer
- *          custom_shipping_options:
+ *           custom_shipping_options:
  *             description: The custom shipping options to potentially create a Shipping Method from.
  *             type: array
  *             items:

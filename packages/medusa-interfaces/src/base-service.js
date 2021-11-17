@@ -78,10 +78,6 @@ class BaseService {
       query.withDeleted = true
     }
 
-    if ("deleted_at" in selector) {
-      query.withDeleted = true
-    }
-
     if ("skip" in config) {
       query.skip = config.skip
     }
