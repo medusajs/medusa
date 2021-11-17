@@ -1,4 +1,4 @@
-import { IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -49,5 +49,6 @@ export default async (req, res) => {
 
 export class AdminPostShippingProfilesProfileReq {
   @IsString()
-  name: string
+  @IsOptional()
+  name?: string
 }

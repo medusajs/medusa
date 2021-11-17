@@ -12,6 +12,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - name
  *         properties:
  *           name:
  *             description: "The name of the Shipping Profile"
