@@ -3,7 +3,6 @@ import {
   StorePostSearchReq,
   StorePostSearchRes,
   StoreProductsListRes,
-  StoreProductsRes,
 } from "@medusajs/medusa"
 import { AxiosPromise } from "axios"
 import BaseResource from "./base"

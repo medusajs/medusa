@@ -1,8 +1,11 @@
+import NoteService from "../../../../services/note"
+
 /**
  * @oas [delete] /notes/{id}
  * operationId: "DeleteNotesNote"
  * summary: "Deletes a Note"
  * description: "Deletes a Note."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Note to delete.
  * tags:
@@ -24,7 +27,7 @@
 export default async (req, res) => {
   const { id } = req.params
 
-  const noteService = req.scope.resolve("noteService")
+  const noteService: NoteService = req.scope.resolve("noteService")
   await noteService.delete(id)
 
   res.status(200).json({ id, deleted: true })
