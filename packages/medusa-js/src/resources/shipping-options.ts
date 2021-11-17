@@ -1,40 +1,42 @@
-import { StoreShippingOptionsListRes } from '@medusajs/medusa';
-import { AxiosPromise } from 'axios';
-import { StoreGetShippingOptionsParamsObject } from '../types';
-import BaseResource from './base';
+import { StoreShippingOptionsListRes } from "@medusajs/medusa"
+import { AxiosPromise } from "axios"
+import { StoreGetShippingOptionsParamsObject } from "../types"
+import BaseResource from "./base"
 
 class ShippingOptionsResource extends BaseResource {
   /**
    * @description Lists shiping options available for a cart
-   * @param cart_id
-   * @returns AxiosPromise<StoreShippingOptionsListRes>
+   * @param {string} cart_id
+   * @return {AxiosPromise<StoreShippingOptionsListRes>}
    */
   listCartOptions(cart_id: string): AxiosPromise<StoreShippingOptionsListRes> {
-    let path = `/store/shipping-options/${cart_id}`;
-    return this.client.request('GET', path);
+    const path = `/store/shipping-options/${cart_id}`
+    return this.client.request("GET", path)
   }
 
   /**
    * @description Lists shiping options available
-   * @param query 
-   * @returns AxiosPromise<StoreShippingOptionsListRes>
+   * @param {StoreGetShippingOptionsParamsObject} query
+   * @return {AxiosPromise<StoreShippingOptionsListRes>}
    */
-  list(query?: StoreGetShippingOptionsParamsObject): AxiosPromise<StoreShippingOptionsListRes> {
-    let path = `/store/shipping-options`;
+  list(
+    query?: StoreGetShippingOptionsParamsObject
+  ): AxiosPromise<StoreShippingOptionsListRes> {
+    let path = `/store/shipping-options`
 
     const queryString = Object.entries(query || {}).map(([key, value]) => {
-      let val = value;
+      let val = value
       if (Array.isArray(value)) {
-        val = value.join(',');
+        val = value.join(",")
       }
 
-      return `${key}=${val}`;
-    });
+      return `${key}=${val}`
+    })
 
-    path = `/store/shipping-options?${queryString.join('&')}`;
-    
-    return this.client.request('GET', path);
+    path = `/store/shipping-options?${queryString.join("&")}`
+
+    return this.client.request("GET", path)
   }
 }
 
-export default ShippingOptionsResource;
+export default ShippingOptionsResource

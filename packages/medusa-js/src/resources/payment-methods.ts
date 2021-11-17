@@ -1,16 +1,16 @@
-import BaseResource from './base';
-import * as Types from '../types';
+import BaseResource from "./base"
+import { AxiosPromise } from "axios"
 
 class PaymentMethodsResource extends BaseResource {
   /**
    * Lists customer payment methods
-   * @param id id of cart
-   * @returns AsyncResult<{ payment_methods: object[] }>
+   * @param {string} id id of cart
+   * @return {AxiosPromise<{ payment_methods: object[] }>}
    */
-  list(id: string): Types.AsyncResult<{ payment_methods: object[] }> {
-    const path = `/store/carts/${id}/payment-methods`;
-    return this.client.request('GET', path);
+  list(id: string): AxiosPromise<{ payment_methods: object[] }> {
+    const path = `/store/carts/${id}/payment-methods`
+    return this.client.request("GET", path)
   }
 }
 
-export default PaymentMethodsResource;
+export default PaymentMethodsResource
