@@ -15,6 +15,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - title
  *         properties:
  *           title:
  *             description: "The title the Product Option will be identified by i.e. \"Size\""

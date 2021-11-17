@@ -11,11 +11,17 @@ import {
   Validate,
   ValidateNested,
 } from "class-validator"
+import { EntityManager } from "typeorm"
 import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
   ProductStatus,
 } from "."
+import {
+  ProductService,
+  ProductVariantService,
+  ShippingProfileService,
+} from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
 
@@ -29,6 +35,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - title
  *         properties:
  *           title:
  *             description: "The title of the Product"
@@ -203,11 +211,15 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
 
-  const productService = req.scope.resolve("productService")
-  const productVariantService = req.scope.resolve("productVariantService")
-  const shippingProfileService = req.scope.resolve("shippingProfileService")
+  const productService: ProductService = req.scope.resolve("productService")
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    "shippingProfileService"
+  )
 
-  const entityManager = req.scope.resolve("manager")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   let newProduct
   await entityManager.transaction(async (manager) => {
