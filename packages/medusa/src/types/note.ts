@@ -6,7 +6,7 @@ export interface CreateNoteInput {
   value: string
   resource_type: string
   resource_id: string
-  author_id: string
+  author_id?: string
   author?: User
   metadata?: JSON
 }

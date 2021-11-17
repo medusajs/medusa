@@ -2,7 +2,7 @@ import NoteService from "../../../../services/note"
 
 /**
  * @oas [get] /notes/{id}
- * operationId: "GetNoteNote"
+ * operationId: "GetNotesNote"
  * summary: "Get Note"
  * description: "Retrieves a single note using its id"
  * x-authenticated: true
