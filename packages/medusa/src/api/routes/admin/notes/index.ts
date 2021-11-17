@@ -1,5 +1,8 @@
 import { Router } from "express"
+import { Note } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 
@@ -18,3 +21,16 @@ export default (app) => {
 
   return app
 }
+
+export type AdminNotesRes = {
+  note: Note
+}
+
+export type AdminNotesListRes = PaginatedResponse & {
+  notes: Note[]
+}
+export * from "./create-note"
+export * from "./delete-note"
+export * from "./get-note"
+export * from "./list-notes"
+export * from "./update-note"
