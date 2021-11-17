@@ -62,7 +62,7 @@ export default async (req, res) => {
 
   const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.update(region_id, validated)
-  const region: Region = await regionService.retrieve(region_id, {
+  const region = await regionService.retrieve(region_id, {
     select: defaultAdminRegionFields,
     relations: defaultAdminRegionRelations,
   })

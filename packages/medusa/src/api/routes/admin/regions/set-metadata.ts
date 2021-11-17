@@ -37,7 +37,7 @@ export default async (req, res) => {
   const regionService: RegionService = req.scope.resolve("regionService")
   await regionService.setMetadata(id, validated.key, validated.value)
 
-  const region: Region = await regionService.retrieve(id, {
+  const region = await regionService.retrieve(id, {
     select: defaultAdminRegionFields,
     relations: defaultAdminRegionRelations,
   })

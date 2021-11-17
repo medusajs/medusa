@@ -1,4 +1,3 @@
-import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import FulfillmentProviderService from "../../../../services/fulfillment-provider"
 import { FulfillmentOption } from "."
@@ -31,7 +30,7 @@ export default async (req, res) => {
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
   const regionService: RegionService = req.scope.resolve("regionService")
-  const region: Region = await regionService.retrieve(region_id, {
+  const region = await regionService.retrieve(region_id, {
     relations: ["fulfillment_providers"],
   })
 

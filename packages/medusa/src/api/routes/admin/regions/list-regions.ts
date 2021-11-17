@@ -43,31 +43,33 @@ export default async (req, res) => {
 
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const limit: number = validated.limit || 50
-  const offset: number = validated.offset || 0
-
   const selector = {}
 
   const listConfig = {
     select: defaultAdminRegionFields,
     relations: defaultAdminRegionRelations,
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
   }
 
   const regions: Region[] = await regionService.list(selector, listConfig)
 
-  res.json({ regions, count: regions.length, offset, limit })
+  res.json({
+    regions,
+    count: regions.length,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetRegionsParams {
   @IsInt()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  limit?: number = 50
 
   @IsInt()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  offset?: number = 0
 }
