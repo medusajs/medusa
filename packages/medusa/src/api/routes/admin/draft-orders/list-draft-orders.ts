@@ -32,8 +32,6 @@ export default async (req, res) => {
     req.scope.resolve("draftOrderService")
 
   const validated = await validator(AdminGetDraftOrdersParams, req.query)
-  const limit = validated.limit || 50
-  const offset = validated.offset || 0
 
   const selector: DraftOrderListSelector = {}
 
@@ -44,8 +42,8 @@ export default async (req, res) => {
   const listConfig = {
     select: defaultAdminDraftOrdersFields,
     relations: defaultAdminDraftOrdersRelations,
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
     order: { created_at: "DESC" },
   }
 
@@ -54,7 +52,12 @@ export default async (req, res) => {
     listConfig
   )
 
-  res.json({ draft_orders: draftOrders, count, offset, limit })
+  res.json({
+    draft_orders: draftOrders,
+    count,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetDraftOrdersParams {
