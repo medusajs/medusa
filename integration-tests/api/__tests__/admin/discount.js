@@ -157,6 +157,60 @@ describe("/admin/discounts", () => {
       await db.teardown()
     })
 
+    it("creates a discount with a rule", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+        })
+      )
+
+      const test = await api.get(
+        `/admin/discounts/${response.data.discount.id}`,
+        { headers: { Authorization: "Bearer test_token" } }
+      )
+
+      expect(test.status).toEqual(200)
+      expect(test.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          rule: expect.objectContaining({
+            value: 10,
+            type: "percentage",
+            description: "test",
+            allocation: "total",
+          }),
+        })
+      )
+    })
+
     it("creates a discount and updates it", async () => {
       const api = useApi()
 
