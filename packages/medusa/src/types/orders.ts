@@ -40,7 +40,7 @@ enum PaymentStatus {
   requires_action = "requires_action",
 }
 
-export class Selector {
+export class AdminListOrdersSelector {
   @IsString()
   @IsOptional()
   q?: string

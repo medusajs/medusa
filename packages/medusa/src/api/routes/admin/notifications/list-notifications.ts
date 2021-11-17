@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
 import { IsBooleanString, IsInt, IsOptional, IsString } from "class-validator"
-import _ from "lodash"
+import { pick } from "lodash"
 import { NotificationService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import {
@@ -105,9 +105,9 @@ export default async (req, res) => {
   const notifications = await notificationService.list(selector, listConfig)
 
   const resultFields = [...listConfig.select, ...listConfig.relations]
-  const data = notifications.map((o) => _.pick(o, resultFields))
+  const data = notifications.map((o) => pick(o, resultFields))
 
-  res.json({ notifications: data, offset, limit })
+  res.json({ notifications: data })
 }
 
 export class AdminGetNotificationsParams {

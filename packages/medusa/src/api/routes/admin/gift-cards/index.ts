@@ -58,16 +58,10 @@ export type AdminGiftCardsRes = {
   gift_card: GiftCard
 }
 
-export type AdminGiftCardDeleteRes = DeleteResponse
+export type AdminGiftCardsDeleteRes = DeleteResponse
 
 export type AdminGiftCardsListRes = PaginatedResponse & {
   gift_cards: GiftCard[]
-}
-
-export type AdminGiftCardsDeleteRes = {
-  id: string
-  object: string
-  deleted: boolean
 }
 
 export * from "./create-gift-card"

@@ -1,4 +1,4 @@
-import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
@@ -126,11 +126,11 @@ export class AdminPostDraftOrdersDraftOrderLineItemsItemReq {
   @IsOptional()
   title?: string
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
   unit_price?: number
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
   quantity?: number
 

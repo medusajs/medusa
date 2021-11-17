@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 import { GiftCardService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -53,12 +53,12 @@ export default async (req, res) => {
 
 export class AdminGetGiftCardsParams {
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   @Type(() => Number)
   limit = 50
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   @Type(() => Number)
   offset = 0
 

@@ -20,6 +20,6 @@ export type AdminAppsRes = {
   apps: Oauth
 }
 
-export type AdminGetAppsRes = {
+export type AdminAppsListRes = {
   apps: Oauth[]
 }

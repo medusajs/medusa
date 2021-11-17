@@ -3,7 +3,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { FindConfig } from "../../../../types/common"
-import { Selector } from "../../../../types/customers"
+import { AdminListCustomerSelector } from "../../../../types/customers"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /customers
@@ -28,7 +28,7 @@ export default async (req, res) => {
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
-  const selector: Selector = {}
+  const selector: AdminListCustomerSelector = {}
 
   if (validated.q) {
     selector.q = validated.q
@@ -58,7 +58,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetCustomersParams extends Selector {
+export class AdminGetCustomersParams extends AdminListCustomerSelector {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

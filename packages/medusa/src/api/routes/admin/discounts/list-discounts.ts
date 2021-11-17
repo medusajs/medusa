@@ -1,5 +1,5 @@
 import { Type, Transform } from "class-transformer"
-import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { ListSelector } from "../../../../types/discount"
@@ -11,12 +11,12 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * description: "Retrieves a list of Discounts"
  * parameters:
- *   - (path) q {string} Search query applied on results.
- *   - (path) is_dynamic {boolean} Return only dynamic discounts.
- *   - (path) is_disabled {boolean} Return only disabled discounts.
- *   - (path) limit {number} The number of items in the response
- *   - (path) offset {number} The offset of items in response
- *   - (path) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) q {string} Search query applied on results.
+ *   - (query) is_dynamic {boolean} Return only dynamic discounts.
+ *   - (query) is_disabled {boolean} Return only disabled discounts.
+ *   - (query) limit {number} The number of items in the response
+ *   - (query) offset {number} The offset of items in response
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
  * tags:
  *   - Discount
  * responses:
@@ -77,12 +77,12 @@ export class AdminGetDiscountsParams {
   @Transform(({ value }) => value === "true")
   is_disabled?: boolean
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
   @Type(() => Number)
   limit = 20
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
   @Type(() => Number)
   offset = 0

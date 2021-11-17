@@ -1,4 +1,4 @@
-import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
+import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
@@ -98,7 +98,7 @@ export default async (req, res) => {
       await lineItemService.withTransaction(manager).create({
         cart_id: draftOrder.cart_id,
         has_shipping: true,
-        title: validated.title || "Custom item",
+        title: validated.title,
         allow_discounts: false,
         unit_price: validated.unit_price || 0,
         quantity: validated.quantity,
@@ -119,9 +119,9 @@ export default async (req, res) => {
 export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsString()
   @IsOptional()
-  title?: string
+  title?: string = "Custom item"
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
   unit_price?: number
 
@@ -129,7 +129,7 @@ export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsOptional()
   variant_id?: string
 
-  @IsNumber()
+  @IsInt()
   quantity: number
 
   @IsObject()

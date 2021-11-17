@@ -1,9 +1,9 @@
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { validator } from "../../../../utils/validator"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import _, { identity } from "lodash"
+import { identity, omit, pick, pickBy } from "lodash"
 import { OrderService } from "../../../../services"
-import { Selector } from "../../../../types/orders"
+import { AdminListOrdersSelector } from "../../../../types/orders"
 import { Type } from "class-transformer"
 
 /**
@@ -71,7 +71,7 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const filterableFields = _.omit(value, [
+  const filterableFields = omit(value, [
     "limit",
     "offset",
     "expand",
@@ -80,7 +80,7 @@ export default async (req, res) => {
   ])
 
   const [orders, count] = await orderService.listAndCount(
-    _.pickBy(filterableFields, identity),
+    pickBy(filterableFields, identity),
     listConfig
   )
 
@@ -88,13 +88,13 @@ export default async (req, res) => {
 
   const fields = [...includeFields, ...expandFields]
   if (fields.length) {
-    data = orders.map((o) => _.pick(o, fields))
+    data = orders.map((o) => pick(o, fields))
   }
 
   res.json({ orders: data, count, offset: value.offset, limit: value.limit })
 }
 
-export class AdminGetOrdersParams extends Selector {
+export class AdminGetOrdersParams extends AdminListOrdersSelector {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

@@ -49,7 +49,7 @@ export const allowedAdminNotificationsFields = [
   "updated_at",
 ]
 
-export type AdminNotificationsListRes = PaginatedResponse & {
+export type AdminNotificationsListRes = {
   notifications: Notification[]
 }
 

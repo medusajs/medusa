@@ -1,6 +1,6 @@
 import { IsOptional, IsString } from "class-validator"
 
-export class Selector {
+export class AdminListCustomerSelector {
   @IsString()
   @IsOptional()
   q?: string
