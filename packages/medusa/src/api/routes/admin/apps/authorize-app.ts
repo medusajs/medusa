@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator"
+import { OauthService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /apps
@@ -37,8 +38,8 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/OAuth"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminPostAuthorizationsReq, req.body)
-  const oauthService = req.scope.resolve("oauthService")
+  const validated = await validator(AdminPostAppsReq, req.body)
+  const oauthService: OauthService = req.scope.resolve("oauthService")
   const data = await oauthService.generateToken(
     validated.application_name,
     validated.code,
@@ -47,7 +48,7 @@ export default async (req, res) => {
   res.status(200).json({ apps: data })
 }
 
-export class AdminPostAuthorizationsReq {
+export class AdminPostAppsReq {
   @IsString()
   @IsNotEmpty()
   application_name: string
