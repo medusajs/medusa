@@ -86,49 +86,49 @@ export default async (req, res) => {
 export class AdminPostDiscountsDiscountReq {
   @IsString()
   @IsOptional()
-  code: string
+  code?: string
 
   @IsOptional()
   @ValidateNested()
   @Type(() => AdminUpdateDiscountRule)
-  rule: AdminUpdateDiscountRule
+  rule?: AdminUpdateDiscountRule
 
   @IsBoolean()
   @IsOptional()
-  is_dynamic: boolean
+  is_dynamic?: boolean
 
   @IsBoolean()
   @IsOptional()
-  is_disabled: boolean
+  is_disabled?: boolean
 
   @IsDate()
   @IsOptional()
   @Type(() => Date)
-  starts_at: Date
+  starts_at?: Date
 
   @IsDate()
   @IsOptional()
   @IsGreaterThan("starts_at")
   @Type(() => Date)
-  ends_at: Date
+  ends_at?: Date
 
   @IsISO8601Duration()
   @IsOptional()
-  valid_duration: string
+  valid_duration?: string
 
   @IsNumber()
   @IsOptional()
   @IsPositive()
-  usage_limit: number
+  usage_limit?: number
 
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  regions: string[]
+  regions?: string[]
 
   @IsObject()
   @IsOptional()
-  metadata: object
+  metadata?: object
 }
 
 export class AdminUpdateDiscountRule {
@@ -138,7 +138,7 @@ export class AdminUpdateDiscountRule {
 
   @IsString()
   @IsOptional()
-  description: string
+  description?: string
 
   @IsString()
   @IsNotEmpty()
@@ -154,5 +154,5 @@ export class AdminUpdateDiscountRule {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  valid_for: string
+  valid_for?: string
 }
