@@ -1,5 +1,4 @@
 import _ from "lodash"
-import { User } from "../../../.."
 import UserService from "../../../../services/user"
 
 /**
@@ -31,4 +30,3 @@ export default async (req, res) => {
     res.sendStatus(400)
   }
 }
-

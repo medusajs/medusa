@@ -1,7 +1,6 @@
 import _ from "lodash"
 import jwt from "jsonwebtoken"
 import config from "../../../../config"
-import { User } from "../../../.."
 import { validator } from "../../../../utils/validator"
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 import AuthService from "../../../../services/auth"
