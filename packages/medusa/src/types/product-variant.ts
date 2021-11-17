@@ -1,5 +1,5 @@
 import { IsBoolean, IsNumber, IsString, ValidateNested } from "class-validator"
-import { IsType } from "../utils/is-type"
+import { IsType } from "../utils/validators/is-type"
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,

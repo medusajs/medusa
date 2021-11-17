@@ -59,7 +59,9 @@ describe("POST /admin/collections", () => {
 
     it("returns error details", () => {
       expect(subject.body.type).toEqual("invalid_data")
-      expect(subject.body.message[0].message).toEqual(`"title" is required`)
+      expect(subject.body.message).toEqual(
+        "title should not be empty, title must be a string"
+      )
     })
   })
 })

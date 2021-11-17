@@ -1,8 +1,7 @@
-import { request } from "../../../../../helpers/test-request"
 import { IdMap } from "medusa-test-utils"
+import { defaultStoreProductsRelations } from ".."
+import { request } from "../../../../../helpers/test-request"
 import { ProductServiceMock } from "../../../../../services/__mocks__/product"
-import { defaultRelations } from ".."
-import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("Get product by id", () => {
   describe("get product by id successfull", () => {
@@ -22,7 +21,7 @@ describe("Get product by id", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("product1"),
-        { relations: defaultRelations }
+        { relations: defaultStoreProductsRelations }
       )
     })
 
@@ -52,13 +51,13 @@ describe("Get product by id", () => {
     it("endpoint called with defaultRelations", () => {
       expect(ProductServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("variantsWithPrices"),
-        { relations: defaultRelations }
+        { relations: defaultStoreProductsRelations }
       )
     })
 
     it("returns product with variant prices", () => {
       expect(
-        subject.body.product.variants.some(variant => variant.prices)
+        subject.body.product.variants.some((variant) => variant.prices)
       ).toEqual(true)
       expect(subject.body.product.variants[0].prices[0].amount).toEqual(100)
     })
