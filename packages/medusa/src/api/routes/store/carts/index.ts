@@ -1,6 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Cart } from "../../../../models/cart"
+import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -125,6 +126,8 @@ export const defaultStoreCartRelations = [
 export type StoreCartsCartRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
 }
+
+export type StoreCartsDeleteRes = DeleteResponse
 
 export * from "./add-shipping-method"
 export * from "./create-cart"
