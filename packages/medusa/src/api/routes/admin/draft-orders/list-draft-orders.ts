@@ -65,10 +65,10 @@ export class AdminGetDraftOrdersParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  limit = 50
 
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  offset = 0
 }
