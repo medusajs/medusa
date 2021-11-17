@@ -286,7 +286,7 @@ export default async (req, res) => {
 class ProductTypeReq {
   @IsString()
   @IsOptional()
-  id: string
+  id?: string
 
   @IsString()
   value: string
@@ -295,7 +295,7 @@ class ProductTypeReq {
 class ProductTagReq {
   @IsString()
   @IsOptional()
-  id: string
+  id?: string
 
   @IsString()
   value: string
@@ -323,7 +323,7 @@ class ProductVariantPricesReq {
 
   @IsOptional()
   @IsInt()
-  sale_amount: number
+  sale_amount?: number
 }
 
 class ProductVariantReq {
@@ -351,6 +351,7 @@ class ProductVariantReq {
   hs_code?: string
 
   @IsNumber()
+  @IsOptional()
   inventory_quantity = 0
 
   @IsBoolean()

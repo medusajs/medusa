@@ -72,33 +72,33 @@ export default async (req, res) => {
 export class AdminPostRegionsRegionReq {
   @IsString()
   @IsOptional()
-  name: string
+  name?: string
 
   @IsString()
   @IsOptional()
-  currency_code: string
+  currency_code?: string
 
   @IsString()
   @IsOptional()
-  tax_code: string
+  tax_code?: string
 
   @IsNumber()
   @IsOptional()
-  tax_rate: number
+  tax_rate?: number
 
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  payment_providers: string[]
+  payment_providers?: string[]
 
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  fulfillment_providers: string[]
+  fulfillment_providers?: string[]
 
   // iso_2 country codes
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  countries: string[]
+  countries?: string[]
 }

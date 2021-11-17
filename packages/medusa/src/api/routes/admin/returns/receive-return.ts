@@ -110,5 +110,5 @@ export class AdminPostReturnsReturnReceiveReq {
 
   @IsOptional()
   @IsNumber()
-  refund: number
+  refund?: number
 }

@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsEnum,
+  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
@@ -224,7 +225,7 @@ export default async (req, res) => {
 class ProductTypeReq {
   @IsString()
   @IsOptional()
-  id: string
+  id?: string
 
   @IsString()
   value: string
@@ -233,7 +234,7 @@ class ProductTypeReq {
 class ProductTagReq {
   @IsString()
   @IsOptional()
-  id: string
+  id?: string
 
   @IsString()
   value: string
@@ -254,14 +255,12 @@ class ProductVariantPricesReq {
   @Validate(XorConstraint, ["region_id"])
   currency_code?: string
 
-  @IsNumber()
-  @Type(() => Number)
+  @IsInt()
   amount: number
 
   @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
-  sale_amount: number
+  @IsInt()
+  sale_amount?: number
 }
 
 class ProductVariantReq {
@@ -293,10 +292,9 @@ class ProductVariantReq {
   @IsOptional()
   hs_code?: string
 
-  @IsNumber()
+  @IsInt()
   @IsOptional()
-  @Type(() => Number)
-  inventory_quantity: number
+  inventory_quantity?: number
 
   @IsBoolean()
   @IsOptional()
@@ -308,22 +306,18 @@ class ProductVariantReq {
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   weight?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   length?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   height?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   width?: number
 
   @IsString()
@@ -346,7 +340,7 @@ class ProductVariantReq {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq
+  prices: ProductVariantPricesReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)
@@ -402,7 +396,7 @@ export class AdminPostProductsProductReq {
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()
-  tags?: ProductTagReq
+  tags?: ProductTagReq[]
 
   @IsOptional()
   @Type(() => ProductVariantReq)
@@ -412,22 +406,18 @@ export class AdminPostProductsProductReq {
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   weight?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   length?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   height?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   width?: number
 
   @IsString()

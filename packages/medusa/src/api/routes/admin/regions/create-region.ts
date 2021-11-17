@@ -80,7 +80,7 @@ export class AdminPostRegionsReq {
 
   @IsString()
   @IsOptional()
-  tax_code: string
+  tax_code?: string
 
   @IsNumber()
   tax_rate: number

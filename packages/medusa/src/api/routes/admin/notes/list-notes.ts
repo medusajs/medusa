@@ -54,7 +54,7 @@ export default async (req, res) => {
 export class AdminGetNotesParams {
   @IsString()
   @IsOptional()
-  resource_id: string
+  resource_id?: string
 
   @IsNumber()
   @IsOptional()

@@ -37,8 +37,9 @@ export default async (req, res) => {
 export class AdminUpdateUserRequest {
   @IsString()
   @IsOptional()
-  name: string
+  name?: string
+
   @IsString()
   @IsOptional()
-  api_token: string
+  api_token?: string
 }

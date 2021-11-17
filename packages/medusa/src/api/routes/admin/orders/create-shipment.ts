@@ -80,5 +80,5 @@ export class AdminPostOrdersOrderShipmentReq {
 
   @IsBoolean()
   @IsOptional()
-  no_notification: boolean
+  no_notification?: boolean
 }

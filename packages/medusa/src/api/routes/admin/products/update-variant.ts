@@ -164,7 +164,7 @@ class ProductVariantPricesReq {
 
   @IsOptional()
   @IsInt()
-  sale_amount: number
+  sale_amount?: number
 }
 
 class AdminPostProductsProductVariantsVariantReq {
@@ -243,6 +243,7 @@ class AdminPostProductsProductVariantsVariantReq {
 
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })
+  @IsOptional()
   @IsArray()
   options: ProductVariantOptionReq[] = []
 }

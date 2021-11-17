@@ -62,16 +62,16 @@ export default async (req, res) => {
 export class AdminPostReturnReasonsReasonReq {
   @IsOptional()
   @IsString()
-  label: string
+  label?: string
 
   @IsOptional()
   @IsString()
-  value: string
+  value?: string
 
   @IsOptional()
   @IsString()
-  description: string
+  description?: string
 
   @IsOptional()
-  metadata: object
+  metadata?: object
 }

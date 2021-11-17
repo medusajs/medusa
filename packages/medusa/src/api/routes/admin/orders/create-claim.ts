@@ -437,7 +437,7 @@ class Item {
 class AdditionalItem {
   @IsString()
   @IsNotEmpty()
-  variant_id?: string
+  variant_id: string
 
   @IsInt()
   @IsNotEmpty()

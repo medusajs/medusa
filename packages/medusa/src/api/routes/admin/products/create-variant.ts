@@ -160,13 +160,11 @@ class ProductVariantPricesReq {
   currency_code?: string
 
   @IsInt()
-  @Type(() => Number)
   amount: number
 
   @IsOptional()
   @IsInt()
-  @Type(() => Number)
-  sale_amount: number
+  sale_amount?: number
 }
 
 export class AdminPostProductsProductVariantsReq {
@@ -194,6 +192,7 @@ export class AdminPostProductsProductVariantsReq {
   hs_code?: string
 
   @IsNumber()
+  @IsOptional()
   inventory_quantity = 0
 
   @IsBoolean()

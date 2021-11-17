@@ -55,7 +55,7 @@ export class AdminCreateUserRequest {
 
   @IsOptional()
   @IsString()
-  name: string
+  name?: string
 
   @IsString()
   password: string
