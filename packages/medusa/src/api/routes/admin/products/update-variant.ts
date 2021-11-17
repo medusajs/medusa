@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
+  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
@@ -158,13 +159,11 @@ class ProductVariantPricesReq {
   @Validate(XorConstraint, ["region_id"])
   currency_code?: string
 
-  @IsNumber()
-  @Type(() => Number)
+  @IsInt()
   amount: number
 
   @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
+  @IsInt()
   sale_amount: number
 }
 
@@ -195,7 +194,6 @@ class AdminPostProductsProductVariantsVariantReq {
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   inventory_quantity: number
 
   @IsBoolean()
@@ -208,22 +206,18 @@ class AdminPostProductsProductVariantsVariantReq {
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   weight?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   length?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   height?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   width?: number
 
   @IsString()

@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsEnum,
+  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
@@ -301,13 +302,11 @@ class ProductVariantPricesReq {
   @Validate(XorConstraint, ["region_id"])
   currency_code?: string
 
-  @IsNumber()
-  @Type(() => Number)
+  @IsInt()
   amount: number
 
   @IsOptional()
-  @IsNumber()
-  @Type(() => Number)
+  @IsInt()
   sale_amount: number
 }
 
@@ -336,7 +335,6 @@ class ProductVariantReq {
   hs_code?: string
 
   @IsNumber()
-  @Type(() => Number)
   inventory_quantity = 0
 
   @IsBoolean()

@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
+  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
@@ -154,12 +155,12 @@ class ProductVariantPricesReq {
   @Validate(XorConstraint, ["region_id"])
   currency_code?: string
 
-  @IsNumber()
+  @IsInt()
   @Type(() => Number)
   amount: number
 
   @IsOptional()
-  @IsNumber()
+  @IsInt()
   @Type(() => Number)
   sale_amount: number
 }
