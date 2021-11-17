@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsInt, IsNumberString, IsOptional } from "class-validator"
+import { IsInt, IsOptional } from "class-validator"
 import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 /**

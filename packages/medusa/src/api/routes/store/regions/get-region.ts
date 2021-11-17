@@ -1,4 +1,3 @@
-import { Region } from "./../../../../"
 import RegionService from "../../../../services/region"
 /**
  * @oas [get] /regions/{id}
