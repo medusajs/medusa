@@ -40,9 +40,3 @@ export default async (req, res) => {
     deleted: true,
   })
 }
-
-export type AdminDeleteShippingProfilesProfileRes = {
-  id: string
-  object: string
-  deleted: boolean
-}

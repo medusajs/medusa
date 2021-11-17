@@ -1,6 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { ShippingProfile } from "../../../.."
+import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -39,6 +40,8 @@ export const defaultAdminShippingProfilesFields = [
   "deleted_at",
   "metadata",
 ]
+
+export type AdminDeleteShippingProfileRes = DeleteResponse
 
 export const defaultAdminShippingProfilesRelations = [
   "products",
