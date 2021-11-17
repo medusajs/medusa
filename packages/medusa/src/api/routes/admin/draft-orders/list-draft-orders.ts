@@ -1,4 +1,3 @@
-import { DraftOrder } from "../../../.."
 import {
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,

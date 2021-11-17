@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsObject, IsOptional, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
