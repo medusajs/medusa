@@ -1,8 +1,8 @@
 import { Type, Transform } from "class-transformer"
 import { IsBoolean, IsNumber, IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
+import { ListSelector } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts
@@ -35,7 +35,7 @@ export default async (req, res) => {
   const discountService: DiscountService = req.scope.resolve("discountService")
   const limit = validated.limit || 20
   const offset = validated.offset || 0
-  const selector: GetDiscountsConfig = {}
+  const selector: ListSelector = {}
 
   if (validated.q) {
     selector.q = validated.q
@@ -57,12 +57,6 @@ export default async (req, res) => {
   )
 
   res.status(200).json({ discounts, count, offset, limit })
-}
-
-export class GetDiscountsConfig {
-  q?: string
-  is_dynamic?: boolean
-  is_disabled?: boolean
 }
 
 export class AdminGetDiscountsParams {

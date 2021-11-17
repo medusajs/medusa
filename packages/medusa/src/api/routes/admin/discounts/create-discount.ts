@@ -12,7 +12,6 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminDiscountsRelations } from "."
-import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { validator } from "../../../../utils/validator"
@@ -26,6 +25,9 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  * requestBody:
  *   content:
  *     application/json:
+ *       required:
+ *         - code
+ *         - rule
  *       schema:
  *         properties:
  *           code:
@@ -77,7 +79,7 @@ export default async (req, res) => {
 
   const discountService: DiscountService = req.scope.resolve("discountService")
   const created = await discountService.create(validated)
-  const discount: Discount = await discountService.retrieve(
+  const discount = await discountService.retrieve(
     created.id,
     defaultAdminDiscountsRelations
   )
@@ -143,7 +145,6 @@ export class AdminPostDiscountsDiscountRule {
   type: string
 
   @IsNumber()
-  @Type(() => Number)
   value: number
 
   @IsString()

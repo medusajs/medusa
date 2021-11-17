@@ -2,14 +2,14 @@ import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
 /**
- * @oas [post] /discounts/{id}/products/{product_id}
+ * @oas [post] /discounts/{id}/products/{variant_id}
  * operationId: "PostDiscountsDiscountProductsProduct"
  * summary: "Adds Product availability"
  * description: "Adds a Product to the list of Products that a Discount can be used for."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Discount.
- *   - (path) product_id=* {string} The id of the Product.
+ *   - (path) variant_id=* {string} The id of the Product.
  * tags:
  *   - Discount
  * responses:

@@ -2,7 +2,7 @@ import { Router } from "express"
 import { Discount } from "../../../.."
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
-import { PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -90,6 +90,8 @@ export const defaultAdminDiscountsRelations = [
 export type AdminDiscountsRes = {
   discount: Discount
 }
+
+export type AdminDiscountsDeleteRes = DeleteResponse
 
 export type AdminDiscountsListRes = PaginatedResponse & {
   discounts: Discount[]
