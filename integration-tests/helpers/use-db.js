@@ -109,7 +109,10 @@ module.exports = {
         )
 
         const databaseName = "medusa-integration"
-        await createDatabase({ databaseName }, pgGodCredentials)
+        await createDatabase(
+          { databaseName, errorIfNonExist: true },
+          pgGodCredentials
+        )
 
         const connection = await createConnection({
           type: "postgres",
