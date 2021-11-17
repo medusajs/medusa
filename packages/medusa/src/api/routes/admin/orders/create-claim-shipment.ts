@@ -16,6 +16,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
  *             description: The id of the Fulfillment.

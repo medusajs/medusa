@@ -1,4 +1,3 @@
-import { Transform } from "class-transformer"
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
@@ -70,6 +69,5 @@ export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
   no_notification?: boolean
 }

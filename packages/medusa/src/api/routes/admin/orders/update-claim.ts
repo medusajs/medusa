@@ -1,4 +1,4 @@
-import { Type, Transform } from "class-transformer"
+import { Type } from "class-transformer"
 import {
   IsArray,
   ValidateNested,
@@ -129,8 +129,6 @@ export class AdminPostOrdersOrderClaimsClaimReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value && value.toString() === "true")
-  @Type(() => Boolean)
   no_notification?: boolean
 
   @IsObject()
@@ -149,7 +147,6 @@ class ShippingMethod {
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   price?: number
 }
 

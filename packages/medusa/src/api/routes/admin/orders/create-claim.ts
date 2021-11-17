@@ -1,4 +1,4 @@
-import { Type, Transform } from "class-transformer"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsOptional,
@@ -27,6 +27,9 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - type
+ *           - claim_items
  *         properties:
  *           type:
  *             description: "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items."
@@ -362,19 +365,16 @@ export class AdminPostOrdersOrderClaimsReq {
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   refund_amount?: number
 
   @IsObject()
   @IsOptional()
   @ValidateNested()
   @Type(() => AddressPayload)
-  shipping_address: AddressPayload
+  shipping_address?: AddressPayload
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value && value.toString() === "true")
-  @Type(() => Boolean)
   no_notification?: boolean
 
   @IsObject()
@@ -389,7 +389,6 @@ class ReturnShipping {
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   price?: number
 }
 
@@ -404,7 +403,6 @@ class ShippingMethod {
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   price?: number
 }
 
@@ -415,7 +413,6 @@ class Item {
 
   @IsInt()
   @IsNotEmpty()
-  @Type(() => Number)
   quantity: number
 
   @IsString()
@@ -444,5 +441,5 @@ class AdditionalItem {
 
   @IsInt()
   @IsNotEmpty()
-  quantity?: number
+  quantity: number
 }

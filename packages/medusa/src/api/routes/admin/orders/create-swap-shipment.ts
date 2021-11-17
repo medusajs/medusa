@@ -1,4 +1,3 @@
-import { Transform } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,6 +6,7 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { OrderService, SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
@@ -55,8 +55,8 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService = req.scope.resolve("orderService")
-  const swapService = req.scope.resolve("swapService")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve("swapService")
 
   await swapService.createShipment(
     swap_id,
@@ -85,6 +85,5 @@ export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
   no_notification?: boolean
 }

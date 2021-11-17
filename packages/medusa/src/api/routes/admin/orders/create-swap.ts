@@ -1,4 +1,4 @@
-import { Transform, Type } from "class-transformer"
+import { Type } from "class-transformer"
 import {
   IsOptional,
   IsArray,
@@ -12,6 +12,12 @@ import {
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import {
+  IdempotencyKeyService,
+  OrderService,
+  ReturnService,
+  SwapService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -104,7 +110,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostOrdersOrderSwapsReq, req.body)
 
-  const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    "idempotencyKeyService"
+  )
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -124,9 +132,9 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const orderService = req.scope.resolve("orderService")
-  const swapService = req.scope.resolve("swapService")
-  const returnService = req.scope.resolve("returnService")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve("swapService")
+  const returnService: ReturnService = req.scope.resolve("returnService")
 
   let inProgress = true
   let err = false
@@ -270,12 +278,10 @@ export class AdminPostOrdersOrderSwapsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value && value.toString() === "true")
   no_notification?: boolean
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value && value.toString() === "true")
   allow_backorder?: boolean = true
 }
 
@@ -286,7 +292,6 @@ class ReturnItem {
 
   @IsNumber()
   @IsNotEmpty()
-  @Type(() => Number)
   quantity: number
 }
 
@@ -297,7 +302,6 @@ class ReturnShipping {
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   price?: number
 }
 
@@ -308,7 +312,6 @@ class CustomShippingOption {
 
   @IsInt()
   @IsNotEmpty()
-  @Type(() => Number)
   price: number
 }
 
@@ -319,6 +322,5 @@ class AdditionalItem {
 
   @IsNumber()
   @IsNotEmpty()
-  @Type(() => Number)
   quantity: number
 }

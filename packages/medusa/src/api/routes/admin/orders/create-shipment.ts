@@ -1,4 +1,3 @@
-import { Transform } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -7,6 +6,7 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/shipment
@@ -20,6 +20,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
  *             description: The id of the Fulfillment.
@@ -49,7 +51,7 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostOrdersOrderShipmentReq, req.body)
 
-  const orderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve("orderService")
 
   await orderService.createShipment(
     id,
@@ -78,6 +80,5 @@ export class AdminPostOrdersOrderShipmentReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
   no_notification: boolean
 }

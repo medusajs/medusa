@@ -1,4 +1,4 @@
-import { Transform, Type } from "class-transformer"
+import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -287,19 +287,14 @@ export class AdminPostOrdersOrderReturnsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Type(() => Boolean)
-  @Transform(({ value }) => value && value.toString() === "true")
   receive_now?: boolean = false
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value && value.toString() === "true")
-  @Type(() => Boolean)
   no_notification?: boolean
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   refund?: number
 }
 
@@ -310,6 +305,5 @@ class ReturnShipping {
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   price?: number
 }

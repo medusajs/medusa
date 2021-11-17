@@ -110,7 +110,7 @@ import { validator } from "../../../../utils/validator"
  */
 
 export default async (req, res) => {
-  const validated = await validator(AdminPostOrderReq, req.body)
+  const validated = await validator(AdminPostOrdersReq, req.body)
 
   const orderService = req.scope.resolve("orderService")
   let order = await orderService.create(validated)
@@ -119,7 +119,7 @@ export default async (req, res) => {
   res.status(200).json({ order })
 }
 
-export class AdminPostOrderReq {
+export class AdminPostOrdersReq {
   @IsString()
   @IsOptional()
   status?: string
@@ -166,7 +166,6 @@ export class AdminPostOrderReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value && value.toString() === "true")
   no_notification?: boolean
 }
 
@@ -191,7 +190,6 @@ class ShippingMethod {
 
   @IsInt()
   @IsNotEmpty()
-  @Type(() => Number)
   price: number
 
   @IsObject()

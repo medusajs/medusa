@@ -24,6 +24,8 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - items
  *         properties:
  *           items:
  *             description: The Line Items to include in the Fulfillment.

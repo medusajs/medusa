@@ -1,9 +1,10 @@
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { validator } from "../../../../utils/validator"
-import { IsOptional, IsString } from "class-validator"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import _, { identity } from "lodash"
 import { OrderService } from "../../../../services"
 import { Selector } from "../../../../types/orders"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /orders
@@ -50,9 +51,6 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const limit = parseInt(value.limit || "") || 50
-  const offset = parseInt(value.offset || "") || 0
-
   let includeFields: string[] = []
   if (value.fields) {
     includeFields = value.fields.split(",")
@@ -68,8 +66,8 @@ export default async (req, res) => {
   const listConfig = {
     select: includeFields.length ? includeFields : defaultAdminOrdersFields,
     relations: expandFields.length ? expandFields : defaultAdminOrdersRelations,
-    skip: offset,
-    take: limit,
+    skip: value.offset,
+    take: value.limit,
     order: { created_at: "DESC" },
   }
 
@@ -93,17 +91,19 @@ export default async (req, res) => {
     data = orders.map((o) => _.pick(o, fields))
   }
 
-  res.json({ orders: data, count, offset, limit })
+  res.json({ orders: data, count, offset: value.offset, limit: value.limit })
 }
 
 export class AdminGetOrdersParams extends Selector {
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  offset?: string
+  @Type(() => Number)
+  offset = 0
 
-  @IsString()
+  @IsNumber()
   @IsOptional()
-  limit?: string
+  @Type(() => Number)
+  limit = 50
 
   @IsString()
   @IsOptional()

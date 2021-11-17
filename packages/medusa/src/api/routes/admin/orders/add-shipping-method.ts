@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsInt,
   IsNotEmpty,
@@ -63,7 +62,6 @@ export default async (req, res) => {
 export class AdminPostOrdersOrderShippingMethodsReq {
   @IsInt()
   @IsNotEmpty()
-  @Type(() => Number)
   price: number
 
   @IsString()

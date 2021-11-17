@@ -2,6 +2,7 @@ import { Router } from "express"
 import { Order } from "../../../.."
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -224,6 +225,12 @@ export default (app) => {
 
 export type AdminOrdersRes = {
   order: Order
+}
+
+export type AdminDeleteRes = DeleteResponse
+
+export type AdminOrdersListRes = PaginatedResponse & {
+  orders: Order[]
 }
 
 export const defaultAdminOrdersRelations = [

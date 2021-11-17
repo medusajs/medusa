@@ -1,4 +1,3 @@
-import { Transform, Type } from "class-transformer"
 import {
   IsBoolean,
   IsInt,
@@ -78,7 +77,6 @@ export default async (req, res) => {
 export class AdminPostOrdersOrderRefundsReq {
   @IsInt()
   @IsNotEmpty()
-  @Type(() => Number)
   amount: number
 
   @IsString()
@@ -91,6 +89,5 @@ export class AdminPostOrdersOrderRefundsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
   no_notification?: boolean
 }

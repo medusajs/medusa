@@ -155,7 +155,6 @@ export class AdminPostOrdersOrderReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value && value.toString() === "true")
   no_notification?: boolean
 }
 
@@ -180,7 +179,6 @@ class ShippingMethod {
 
   @IsInt()
   @IsOptional()
-  @Type(() => Number)
   price?: number
 
   @IsObject()
