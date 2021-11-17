@@ -238,13 +238,12 @@ class ProductCollectionService extends BaseService {
         .orderBy(order)
         .getManyAndCount()
 
-      return [
-        productCollectionRepo.findWithRelations(
-          rels,
-          raw[0].map((i) => i.id)
-        ),
-        raw[1],
-      ]
+      const collections = await productCollectionRepo.findWithRelations(
+        rels,
+        raw[0].map((i) => i.id)
+      )
+
+      return [collections, raw[1]]
     }
 
     return productCollectionRepo.findWithRelationsAndCount(rels, query)
