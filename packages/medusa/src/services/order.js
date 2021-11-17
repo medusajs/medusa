@@ -619,7 +619,7 @@ class OrderService extends BaseService {
    * have been created in regards to the shipment.
    * @param {string} orderId - the id of the order that has been shipped
    * @param {string} fulfillmentId - the fulfillment that has now been shipped
-   * @param {TrackingLink[]} trackingLinks - array of tracking numebers
+   * @param {TrackingLink[] | undefined} trackingLinks - array of tracking numebers
    *   associated with the shipment
    * @param {Object} config - the config of the order that has been shipped
    * @param {Dictionary<String, String>} metadata - optional metadata to add to

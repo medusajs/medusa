@@ -68,9 +68,6 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
 
-  const limit = validatedParams?.limit || 50
-  const offset = validatedParams?.offset || 0
-
   let includeFields: string[] = []
   if (validatedParams.fields) {
     includeFields = validatedParams.fields!.split(",")
@@ -86,8 +83,8 @@ export default async (req, res) => {
     relations: expandFields.length
       ? expandFields
       : defaultAdminProductRelations,
-    skip: offset,
-    take: limit,
+    skip: validatedParams.offset,
+    take: validatedParams.limit,
   }
 
   const filterableFields = _.omit(validatedParams, [
@@ -103,7 +100,12 @@ export default async (req, res) => {
     listConfig
   )
 
-  res.json({ products, count, offset, limit })
+  res.json({
+    products,
+    count,
+    offset: validatedParams.offset,
+    limit: validatedParams.limit,
+  })
 }
 
 export enum ProductStatus {
@@ -117,12 +119,12 @@ export class AdminGetProductsPaginationParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  offset?: number = 0
 
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  limit?: number = 50
 
   @IsString()
   @IsOptional()
@@ -189,7 +191,7 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 
-  @IsString()
+  @ValidateNested()
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator

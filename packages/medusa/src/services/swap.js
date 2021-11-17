@@ -292,7 +292,7 @@ class SwapService extends BaseService {
    * and an optional return shipping method.
    * @param {Order} order - the order to base the swap off.
    * @param {Array<ReturnItem>} returnItems - the items to return in the swap.
-   * @param {Array<PreliminaryLineItem>} additionalItems - the items to send to
+   * @param {Array<PreliminaryLineItem> | undefined} additionalItems - the items to send to
    *  the customer.
    * @param {ReturnShipping?} returnShipping - an optional shipping method for
    *  returning the returnItems.
@@ -1052,7 +1052,7 @@ class SwapService extends BaseService {
    * @param {string} swapId - the id of the swap that has been shipped.
    * @param {string} fulfillmentId - the id of the specific fulfillment that
    *   has been shipped
-   * @param {TrackingLink[]} trackingLinks - the tracking numbers associated
+   * @param {TrackingLink[] | undefined} trackingLinks - the tracking numbers associated
    *   with the shipment
    * @param {object} config - optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag.
    * @return {Promise<Swap>} the updated swap with new fulfillments and status.
