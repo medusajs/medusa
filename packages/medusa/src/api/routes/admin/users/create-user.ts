@@ -3,6 +3,41 @@ import _ from "lodash"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
 
+/**
+ * @oas [post] /users
+ * operationId: "PostUsers"
+ * summary: "Create a User"
+ * description: "Creates a User"
+ * x-authenticated: true
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - email
+ *           - password
+ *         properties:
+ *           email:
+ *             description: "The Users email."
+ *             type: string
+ *           name:
+ *             description: "The name of the User."
+ *             type: string
+ *           password:
+ *             description: "The Users password."
+ *             type: string
+ * tags:
+ *   - Users
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             user:
+ *               $ref: "#/components/schemas/user"
+ */
 export default async (req, res) => {
   const validated = await validator(AdminCreateUserRequest, req.body)
 
@@ -17,9 +52,11 @@ export default async (req, res) => {
 export class AdminCreateUserRequest {
   @IsEmail()
   email: string
+
   @IsOptional()
   @IsString()
   name: string
+
   @IsString()
   password: string
 }

@@ -2,6 +2,28 @@ import { IsEmail } from "class-validator"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
 
+/**
+ * @oas [post] /users/password-token
+ * operationId: "PostUsersUserPasswordToken"
+ * summary: "Generate a password token for a User."
+ * description: "Generates a password token for a User with a given email."
+ * x-authenticated: true
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - email
+ *         properties:
+ *           email:
+ *             description: "The Users email."
+ *             type: string
+ * tags:
+ *   - Users
+ * responses:
+ *   204:
+ *     description: OK
+ */
 export default async (req, res) => {
   const validated = await validator(AdminResetPasswordTokenRequest, req.body)
 
