@@ -16,7 +16,7 @@ export default (app) => {
 
 export const defaultStoreVariantRelations = ["prices", "options"]
 
-export class StoreVariantsRes {
+export type StoreVariantsRes = {
   variant: ProductVariant
 }
 

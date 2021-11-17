@@ -25,6 +25,10 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - order_id
+ *           - return_items
+ *           - additional_items
  *         properties:
  *           order_id:
  *             type: string
@@ -33,6 +37,9 @@ import { validator } from "../../../../utils/validator"
  *             description: "The items to include in the Return."
  *             type: array
  *             items:
+ *               required:
+ *                 - item_id
+ *                 - quantity
  *               properties:
  *                 item_id:
  *                   description: The id of the Line Item from the Order.
@@ -46,9 +53,6 @@ import { validator } from "../../../../utils/validator"
  *                 note_id:
  *                   description: The id of the note
  *                   type: string
- *               required:
- *                 - item_id
- *                 - quantity
  *           return_shipping_option:
  *             type: string
  *             description: The id of the Shipping Option to create the Shipping Method from.
@@ -56,6 +60,9 @@ import { validator } from "../../../../utils/validator"
  *             description: "The items to exchange the returned items to."
  *             type: array
  *             items:
+ *               required:
+ *                 - variant_id
+ *                 - quantity
  *               properties:
  *                 variant_id:
  *                   description: The id of the Product Variant to send.

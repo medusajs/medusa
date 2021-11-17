@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsBoolean, IsNumber, IsOptional } from "class-validator"
+import { IsBoolean, IsInt, IsNumber, IsOptional } from "class-validator"
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -37,9 +37,6 @@ export default async (req, res) => {
 
   const validated = await validator(StoreGetProductsParams, req.query)
 
-  const limit = validated.limit || 100
-  const offset = validated.offset || 0
-
   const selector = {}
 
   if (validated.is_giftcard && validated.is_giftcard === true) {
@@ -50,8 +47,8 @@ export default async (req, res) => {
 
   const listConfig = {
     relations: defaultStoreProductsRelations,
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
   }
 
   const [products, count] = await productService.listAndCount(
@@ -59,18 +56,23 @@ export default async (req, res) => {
     listConfig
   )
 
-  res.json({ products, count, offset, limit })
+  res.json({
+    products,
+    count,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class StoreGetProductsParams {
-  @IsOptional()
-  @IsNumber()
+  @IsInt()
   @Type(() => Number)
-  limit?: number
-  @IsOptional()
-  @IsNumber()
+  limit = 100
+
+  @IsInt()
   @Type(() => Number)
-  offset?: number
+  offset = 0
+
   @IsOptional()
   @IsBoolean()
   @Type(() => Boolean)

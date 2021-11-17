@@ -20,7 +20,7 @@ export const allowedStoreGiftCardRelations = ["region"]
 
 export const allowedStoreGiftCardFields = ["id", "code", "value", "balance"]
 
-export class StoreGiftCardsRes {
+export type StoreGiftCardsRes = {
   gift_card: GiftCard
 }
 

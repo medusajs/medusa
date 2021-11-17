@@ -17,7 +17,7 @@ export type StoreRegionsListRes = {
   regions: Region[]
 }
 
-export class StoreRegionsRes {
+export type StoreRegionsRes = {
   region: Region
 }
 

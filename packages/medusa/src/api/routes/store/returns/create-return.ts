@@ -1,11 +1,19 @@
-import { Type } from 'class-transformer';
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from 'class-validator';
-import { MedusaError } from "medusa-core-utils";
-import EventBusService from '../../../../services/event-bus';
-import IdempotencyKeyService from '../../../../services/idempotency-key';
-import OrderService from '../../../../services/order';
-import ReturnService from '../../../../services/return';
-import { validator } from "../../../../utils/validator";
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Min,
+  ValidateNested,
+} from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import EventBusService from "../../../../services/event-bus"
+import IdempotencyKeyService from "../../../../services/idempotency-key"
+import OrderService from "../../../../services/order"
+import ReturnService from "../../../../services/return"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /returns
@@ -61,7 +69,9 @@ import { validator } from "../../../../utils/validator";
 export default async (req, res) => {
   const returnDto = await validator(StorePostReturnsReq, req.body)
 
-  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve("idempotencyKeyService")
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    "idempotencyKeyService"
+  )
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -236,15 +246,15 @@ class Item {
 export class StorePostReturnsReq {
   @IsString()
   @IsNotEmpty()
-  order_id: string;
+  order_id: string
 
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => Item)
-  items: Item[];
+  items: Item[]
 
   @IsOptional()
   @ValidateNested()
   @Type(() => ReturnShipping)
-  return_shipping?: ReturnShipping;
+  return_shipping?: ReturnShipping
 }

@@ -21,10 +21,13 @@ import CustomerService from "../../../../services/customer"
  */
 export default async (req, res) => {
   const id = req.user.customer_id
+
   const customerService: CustomerService = req.scope.resolve("customerService")
+
   const customer = await customerService.retrieve(id, {
     relations: defaultStoreCustomersRelations,
     select: defaultStoreCustomersFields,
   })
+
   res.json({ customer })
 }

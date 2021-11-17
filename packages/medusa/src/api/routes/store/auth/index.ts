@@ -19,11 +19,11 @@ export default (app) => {
   return app
 }
 
-export class StoreAuthRes {
+export type StoreAuthRes = {
   customer: Customer
 }
 
-export class StoreGetAuthEmailRes {
+export type StoreGetAuthEmailRes = {
   exists: boolean
 }
 

@@ -30,14 +30,17 @@ export class StorePostSearchReq {
   @IsOptional()
   @IsString()
   q?: string
+
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   offset?: number
+
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
   limit?: number
+
   @IsOptional()
   filter?: any
 }

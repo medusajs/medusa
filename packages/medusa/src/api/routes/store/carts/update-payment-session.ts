@@ -1,4 +1,4 @@
-import { Allow } from "class-validator"
+import { IsObject } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -47,6 +47,6 @@ export default async (req, res) => {
 }
 
 export class StorePostCartsCartPaymentSessionUpdateReq {
-  @Allow()
+  @IsObject()
   data: object
 }

@@ -115,32 +115,40 @@ class Discount {
 export class StorePostCartsCartReq {
   @IsOptional()
   @IsString()
-  region_id: string
+  region_id?: string
+
   @IsOptional()
   @IsString()
-  country_code: string
+  country_code?: string
+
   @IsEmail()
   @IsOptional()
-  email: string
+  email?: string
+
   @IsOptional()
   @IsType([AddressPayload, String])
-  billing_address: AddressPayload | string
+  billing_address?: AddressPayload | string
+
   @IsOptional()
   @IsType([AddressPayload, String])
-  shipping_address: AddressPayload | string
+  shipping_address?: AddressPayload | string
+
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => GiftCard)
-  gift_cards: GiftCard[]
+  gift_cards?: GiftCard[]
+
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => Discount)
-  discounts: Discount[]
+  discounts?: Discount[]
+
   @IsString()
   @IsOptional()
-  customer_id: string
+  customer_id?: string
+
   @IsOptional()
-  context: object
+  context?: object
 }

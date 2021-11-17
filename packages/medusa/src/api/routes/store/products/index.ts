@@ -35,8 +35,8 @@ export type StoreProductsRes = {
   product: Product
 }
 
-export class StorePostSearchRes {
-  hits: any[];
+export type StorePostSearchRes = {
+  hits: any[]
   [k: string]: any
 }
 

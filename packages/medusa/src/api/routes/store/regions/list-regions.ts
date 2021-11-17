@@ -1,4 +1,5 @@
-import { IsNumberString, IsOptional } from "class-validator"
+import { Type } from "class-transformer"
+import { IsInt, IsNumberString, IsOptional } from "class-validator"
 import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
 /**
@@ -30,11 +31,9 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const validated = await validator(StoreGetRegionsParams, req.query)
-  const regionService: RegionService = req.scope.resolve("regionService")
+  const { limit, offset } = await validator(StoreGetRegionsParams, req.query)
 
-  const limit = validated.limit ? parseInt(validated.limit) : 100
-  const offset = validated.offset ? parseInt(req.query.offset) : 0
+  const regionService: RegionService = req.scope.resolve("regionService")
 
   const selector = {}
 
@@ -51,10 +50,12 @@ export default async (req, res) => {
 
 export class StoreGetRegionsParams {
   @IsOptional()
-  @IsNumberString()
-  limit?: string
+  @IsInt()
+  @Type(() => Number)
+  limit?: number = 100
 
   @IsOptional()
-  @IsNumberString()
-  offset?: string
+  @IsInt()
+  @Type(() => Number)
+  offset?: number = 0
 }

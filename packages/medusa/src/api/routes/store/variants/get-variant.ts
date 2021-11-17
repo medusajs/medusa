@@ -26,6 +26,7 @@ export default async (req, res) => {
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
+
   const variant = await variantService.retrieve(id, {
     relations: defaultStoreVariantRelations,
   })

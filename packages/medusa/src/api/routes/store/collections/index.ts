@@ -21,7 +21,7 @@ export type StoreCollectionsListRes = PaginatedResponse & {
   collections: ProductCollection[]
 }
 
-export class StoreCollectionsRes {
+export type StoreCollectionsRes {
   collection: ProductCollection
 }
 

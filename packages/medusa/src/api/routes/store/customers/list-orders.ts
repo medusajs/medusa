@@ -13,6 +13,11 @@ import {
  * summary: Retrieve Customer Orders
  * description: "Retrieves a list of a Customer's Orders."
  * x-authenticated: true
+ * parameters:
+ *   - (query) limit {integer} How many addresses to return.
+ *   - (query) offset {integer} The offset in the resulting addresses.
+ *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting addresses.
+ *   - (query) expand {string} (Comma separated string) Which relations should be expanded in the resulting addresses.
  * tags:
  *   - Customer
  * responses:
@@ -50,9 +55,6 @@ export default async (req, res) => {
     req.query
   )
 
-  const limit = validated.limit || 10
-  const offset = validated.offset || 0
-
   let includeFields: string[] = []
   if (validated.fields) {
     includeFields = validated.fields.split(",")
@@ -72,26 +74,26 @@ export default async (req, res) => {
   const listConfig = {
     select: includeFields.length ? includeFields : allowedStoreOrdersFields,
     relations: expandFields.length ? expandFields : allowedStoreOrdersRelations,
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
     order: { created_at: "DESC" },
   }
 
   const [orders, count] = await orderService.listAndCount(selector, listConfig)
 
-  res.json({ orders, count, offset, limit })
+  res.json({ orders, count, offset: validated.offset, limit: validated.limit })
 }
 
 export class StoreGetCustomersCustomerOrdersParams {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  limit?: number
+  limit = 10
 
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  offset?: number
+  offset = 0
 
   @IsOptional()
   @IsString()

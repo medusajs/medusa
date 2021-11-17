@@ -57,6 +57,7 @@ export default async (req, res) => {
 export class StorePostCartsCartPaymentMethodUpdateReq {
   @IsString()
   provider_id: string
+
   @IsOptional()
-  data: object
+  data?: object
 }

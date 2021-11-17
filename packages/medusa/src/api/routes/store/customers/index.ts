@@ -106,7 +106,7 @@ export type StoreCustomersListOrdersRes = PaginatedResponse & {
   orders: Order[]
 }
 
-export class StoreCustomersListPaymentMethodsRes {
+export type StoreCustomersListPaymentMethodsRes = {
   payment_methods: {
     provider_id: string
     data: object

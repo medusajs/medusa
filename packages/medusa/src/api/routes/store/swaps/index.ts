@@ -43,7 +43,7 @@ export const defaultStoreSwapFields = [
   "idempotency_key",
 ]
 
-export class StoreSwapsRes {
+export type StoreSwapsRes = {
   swap: Swap
 }
 

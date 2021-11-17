@@ -1,6 +1,7 @@
 import { Type } from "class-transformer"
 import { IsEmail, IsNumber, IsOptional, IsString } from "class-validator"
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -26,7 +27,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(StoreGetOrdersParams, req.query)
 
-  const orderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve("orderService")
 
   const orders = await orderService.list(
     {

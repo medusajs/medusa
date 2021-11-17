@@ -1,4 +1,4 @@
-import { ReturnReason } from './../../../../';
+import { ReturnReason } from "./../../../../"
 import { Router } from "express"
 import middlewares from "../../../middlewares"
 
@@ -36,13 +36,13 @@ export const defaultStoreReturnReasonRelations = [
   "return_reason_children",
 ]
 
-export class StoreReturnReasonsListRes {
+export type StoreReturnReasonsListRes = {
   return_reasons: ReturnReason[]
 }
 
-export class StoreReturnReasonsRes {
+export type StoreReturnReasonsRes = {
   return_reasons: ReturnReason
 }
 
-export * from './get-reason'
-export * from './list-reasons'
+export * from "./get-reason"
+export * from "./list-reasons"

@@ -69,29 +69,29 @@ export default async (req, res) => {
 export class StorePostCustomersCustomerReq {
   @IsOptional()
   @IsType([AddressPayload, String])
-  billing_address: AddressPayload | string
+  billing_address?: AddressPayload | string
 
   @IsOptional()
   @IsString()
-  first_name: string
+  first_name?: string
 
   @IsOptional()
   @IsString()
-  last_name: string
+  last_name?: string
 
   @IsOptional()
   @IsString()
-  password: string
+  password?: string
 
   @IsOptional()
   @IsString()
-  phone: string
+  phone?: string
 
   @IsOptional()
   @IsEmail()
-  email: string
+  email?: string
 
   @IsOptional()
   @IsObject()
-  metadata: object
+  metadata?: object
 }

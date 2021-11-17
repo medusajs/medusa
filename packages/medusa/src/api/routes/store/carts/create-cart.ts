@@ -145,6 +145,7 @@ export class Item {
   @IsNotEmpty()
   @IsString()
   variant_id: string
+
   @IsNotEmpty()
   @IsInt()
   quantity: number
@@ -152,15 +153,18 @@ export class Item {
 export class StorePostCartReq {
   @IsOptional()
   @IsString()
-  region_id: string
+  region_id?: string
+
   @IsOptional()
   @IsString()
-  country_code: string
+  country_code?: string
+
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => Item)
-  items: Item[]
+  items?: Item[]
+
   @IsOptional()
-  context: object
+  context?: object
 }

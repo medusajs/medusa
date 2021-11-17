@@ -1,4 +1,5 @@
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
+import { OrderService } from "../../../../services"
 
 /**
  * @oas [get] /orders/cart/{cart_id}
@@ -22,7 +23,7 @@ import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 export default async (req, res) => {
   const { cart_id } = req.params
 
-  const orderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve("orderService")
   const order = await orderService.retrieveByCartId(cart_id, {
     select: defaultStoreOrdersFields,
     relations: defaultStoreOrdersRelations,

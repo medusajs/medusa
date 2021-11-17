@@ -16,7 +16,7 @@ export default (app) => {
   return app
 }
 
-export class StoreShippingOptionsListRes {
+export type StoreShippingOptionsListRes = {
   shipping_options: ShippingOption[]
 }
 

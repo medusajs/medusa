@@ -22,6 +22,8 @@ export default async (req, res) => {
   const { cart_id } = req.params
 
   const swapService: SwapService = req.scope.resolve("swapService")
+
   const swap = await swapService.retrieveByCartId(cart_id)
+
   res.json({ swap })
 }

@@ -31,10 +31,13 @@ import StoreService from "../../../../services/store"
  */
 export default async (req, res) => {
   const id = req.user.customer_id
+
   const storeService: StoreService = req.scope.resolve("storeService")
+
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
   )
+
   const customerService: CustomerService = req.scope.resolve("customerService")
 
   const customer: Customer = await customerService.retrieve(id)
