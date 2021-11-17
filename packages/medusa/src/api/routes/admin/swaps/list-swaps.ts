@@ -1,5 +1,7 @@
+import { Type } from "class-transformer"
+import { IsInt, IsOptional } from "class-validator"
 import { SwapService } from "../../../../services"
-
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /swaps
  * operationId: "GetSwaps"
@@ -23,8 +25,7 @@ import { SwapService } from "../../../../services"
 export default async (req, res) => {
   const swapService: SwapService = req.scope.resolve("swapService")
 
-  const limit = parseInt(req.query.limit) || 50
-  const offset = parseInt(req.query.offset) || 0
+  const { offset, limit } = await validator(AdminGetSwapsParams, req.query)
 
   const selector = {}
 
@@ -37,4 +38,16 @@ export default async (req, res) => {
   const swaps = await swapService.list(selector, { ...listConfig })
 
   res.json({ swaps, count: swaps.length, offset, limit })
+}
+
+export class AdminGetSwapsParams {
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  limit?: number = 50
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  offset?: number = 0
 }
