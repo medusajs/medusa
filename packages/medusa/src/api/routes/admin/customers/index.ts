@@ -1,4 +1,6 @@
 import { Router } from "express"
+import { Customer } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -13,3 +15,16 @@ export default (app) => {
   route.post("/:id", middlewares.wrap(require("./update-customer").default))
   return app
 }
+
+export type AdminCustomersRes = {
+  customer: Customer
+}
+
+export type AdminCustomersListRes = PaginatedResponse & {
+  customers: Customer[]
+}
+
+export * from "./create-customer"
+export * from "./get-customer"
+export * from "./list-customers"
+export * from "./update-customer"

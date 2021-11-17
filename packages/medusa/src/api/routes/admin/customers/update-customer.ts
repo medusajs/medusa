@@ -1,10 +1,13 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-
+import { IsEmail, IsOptional, IsString } from "class-validator"
+import CustomerService from "../../../../services/customer"
+import { MedusaError } from "medusa-core-utils"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /customers/{id}
  * operationId: "PostCustomersCustomer"
  * summary: "Update a Customer"
  * description: "Updates a Customer."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Customer.
  * requestBody:
@@ -22,8 +25,11 @@ import { Validator, MedusaError } from "medusa-core-utils"
  *             type: string
  *             description:  The Customer's last name.
  *           phone:
+ *             type: string
  *             description: The Customer's phone number.
- *             type: object
+ *           password:
+ *             type: string
+ *             description: The Customer's password.
  * tags:
  *   - Customer
  * responses:
@@ -39,34 +45,45 @@ import { Validator, MedusaError } from "medusa-core-utils"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    email: Validator.string().optional(),
-    first_name: Validator.string().optional(),
-    last_name: Validator.string().optional(),
-    password: Validator.string().optional(),
-    phone: Validator.string().optional(),
-  })
+  const validated = await validator(AdminPostCustomersCustomerReq, req.body)
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const customerService = req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve("customerService")
 
   let customer = await customerService.retrieve(id)
 
-  if (value.email && customer.has_account) {
+  if (validated.email && customer.has_account) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       "Email cannot be changed when the user has registered their account"
     )
   }
 
-  await customerService.update(id, value)
+  await customerService.update(id, validated)
 
   customer = await customerService.retrieve(id, {
     relations: ["orders"],
   })
   res.status(200).json({ customer })
+}
+
+export class AdminPostCustomersCustomerReq {
+  @IsEmail()
+  @IsOptional()
+  email?: string
+
+  @IsString()
+  @IsOptional()
+  first_name?: string
+
+  @IsString()
+  @IsOptional()
+  last_name?: string
+
+  @IsString()
+  @IsOptional()
+  password?: string
+
+  @IsString()
+  @IsOptional()
+  phone?: string
 }

@@ -22,6 +22,7 @@ export default async (req, res) => {
   const customerService: CustomerService = req.scope.resolve(
     "customerService"
   ) as CustomerService
+
   const customer = await customerService.retrieveByEmail(validated.email)
 
   // Will generate a token and send it to the customer via an email provider
