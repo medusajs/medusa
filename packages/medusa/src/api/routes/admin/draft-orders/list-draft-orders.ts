@@ -7,6 +7,7 @@ import { DraftOrderService } from "../../../../services"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { Type } from "class-transformer"
+import { DraftOrderListSelector } from "../../../../types/draft-orders"
 /**
  * @oas [get] /draft-orders
  * operationId: "GetDraftOrders"
@@ -34,7 +35,7 @@ export default async (req, res) => {
   const limit = validated.limit || 50
   const offset = validated.offset || 0
 
-  const selector: DraftOrderSelector = {}
+  const selector: DraftOrderListSelector = {}
 
   if (validated.q) {
     selector.q = validated.q
@@ -55,8 +56,6 @@ export default async (req, res) => {
 
   res.json({ draft_orders: draftOrders, count, offset, limit })
 }
-
-type DraftOrderSelector = { q?: string }
 
 export class AdminGetDraftOrdersParams {
   @IsString()

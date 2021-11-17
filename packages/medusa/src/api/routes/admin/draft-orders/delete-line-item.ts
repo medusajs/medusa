@@ -1,4 +1,3 @@
-import { IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
@@ -8,7 +7,6 @@ import {
 } from "."
 import { DraftOrder } from "../../../.."
 import { CartService, DraftOrderService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
 /**
  * @oas [delete] /draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem

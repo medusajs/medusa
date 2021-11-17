@@ -129,12 +129,10 @@ export class AdminPostDraftOrdersDraftOrderLineItemsItemReq {
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   unit_price?: number
 
   @IsNumber()
   @IsOptional()
-  @Type(() => Number)
   quantity?: number
 
   @IsObject()

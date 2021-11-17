@@ -30,6 +30,11 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - email
+ *           - items
+ *           - region_id
+ *           - shipping_methods
  *         properties:
  *           status:
  *             description: "The status of the draft order"

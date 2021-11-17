@@ -2,7 +2,7 @@ import { Router } from "express"
 import { DraftOrder, Order } from "../../../.."
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
-import { PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 
 const route = Router()
 
@@ -99,9 +99,15 @@ export const allowedAdminDraftOrdersFields = [
 
 export const allowedAdminDraftOrdersRelations = ["cart"]
 
-export class AdminPostDraftOrdersDraftOrderRegisterPaymentRes {
+export type AdminPostDraftOrdersDraftOrderRegisterPaymentRes = {
   order: Order
 }
+
+export type AdminDraftOrdersRes = {
+  draft_order: DraftOrder
+}
+
+export type AdminDraftOrdersDeleteRes = DeleteResponse
 
 export type AdminDraftOrdersListRes = PaginatedResponse & {
   draft_orders: DraftOrder[]
