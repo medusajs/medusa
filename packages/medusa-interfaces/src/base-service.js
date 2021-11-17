@@ -24,7 +24,6 @@ class BaseService {
         if (typeof value === "undefined") {
           return acc
         }
-
         switch (true) {
           case value instanceof FindOperator:
             acc[key] = value
@@ -75,6 +74,10 @@ class BaseService {
       where: build(selector),
     }
     
+    if ("deleted_at" in selector) {
+      query.withDeleted = true
+    }
+
     if ("deleted_at" in selector) {
       query.withDeleted = true
     }

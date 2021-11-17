@@ -1,11 +1,24 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { Type, Transform } from "class-transformer"
+import {
+  IsArray,
+  ValidateNested,
+  IsOptional,
+  IsString,
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsObject,
+} from "class-validator"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { ClaimService, OrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/claims/{claim_id}
  * operationId: "PostOrdersOrderClaimsClaim"
  * summary: "Update a Claim"
  * description: "Updates a Claim."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) claim_id=* {string} The id of the Claim.
@@ -83,48 +96,107 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id, claim_id } = req.params
 
-  const schema = Validator.object().keys({
-    claim_items: Validator.array()
-      .items({
-        id: Validator.string().required(),
-        note: Validator.string().allow(null, ""),
-        reason: Validator.string().allow(null, ""),
-        images: Validator.array().items({
-          id: Validator.string().optional(),
-          url: Validator.string().optional(),
-        }),
-        tags: Validator.array().items({
-          id: Validator.string().optional(),
-          value: Validator.string().optional(),
-        }),
-        metadata: Validator.object().optional(),
-      })
-      .optional(),
-    shipping_methods: Validator.array()
-      .items({
-        id: Validator.string().optional(),
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    no_notification: Validator.boolean().optional(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(
+    AdminPostOrdersOrderClaimsClaimReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const claimService: ClaimService = req.scope.resolve("claimService")
 
-  const orderService = req.scope.resolve("orderService")
-  const claimService = req.scope.resolve("claimService")
-
-  await claimService.update(claim_id, value)
+  await claimService.update(claim_id, validated)
 
   const data = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order: data })
+}
+
+export class AdminPostOrdersOrderClaimsClaimReq {
+  @IsArray()
+  @IsOptional()
+  @Type(() => Item)
+  @ValidateNested({ each: true })
+  claim_items?: Item[]
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => ShippingMethod)
+  shipping_methods?: ShippingMethod[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value && value.toString() === "true")
+  @Type(() => Boolean)
+  no_notification?: boolean
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+}
+
+class ShippingMethod {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price?: number
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  id: string
+
+  @IsString()
+  @IsOptional()
+  note?: string
+
+  @IsString()
+  @IsOptional()
+  reason?: string
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Image)
+  images: Image[]
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Tag)
+  tags: Tag[]
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+}
+
+class Image {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  url?: string
+}
+
+class Tag {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  value?: string
 }

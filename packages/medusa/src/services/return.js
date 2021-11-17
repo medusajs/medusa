@@ -497,7 +497,7 @@ class ReturnService extends BaseService {
    * mismatches.
    * @param {string} return_id - the orderId to return to
    * @param {Item[]} received_items - the items received after return.
-   * @param {number} refund_amount - the amount to return
+   * @param {number | undefined} refund_amount - the amount to return
    * @param {bool} allow_mismatch - whether to ignore return/received
    * product mismatch
    * @return {Promise} the result of the update operation

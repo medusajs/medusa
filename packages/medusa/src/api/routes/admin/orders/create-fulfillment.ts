@@ -1,11 +1,23 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
-
+import { Transform, Type } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { OrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/fulfillments
  * operationId: "PostOrdersOrderFulfillments"
  * summary: "Create a Fulfillment"
  * description: "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * requestBody:
@@ -45,33 +57,48 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .required(),
-    no_notification: Validator.boolean().optional(),
-    metadata: Validator.object().optional(),
-  })
+  const validated = await validator(
+    AdminPostOrdersOrderFulfillmentsReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const orderService: OrderService = req.scope.resolve("orderService")
 
-  const orderService = req.scope.resolve("orderService")
-
-  await orderService.createFulfillment(id, value.items, {
-    metadata: value.metadata,
-    no_notification: value.no_notification,
+  await orderService.createFulfillment(id, validated.items, {
+    metadata: validated.metadata,
+    no_notification: validated.no_notification,
   })
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })
+}
+
+export class AdminPostOrdersOrderFulfillmentsReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  items: Item[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  no_notification?: boolean
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  quantity: number
 }

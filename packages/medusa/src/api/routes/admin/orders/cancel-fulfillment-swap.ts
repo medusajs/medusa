@@ -1,11 +1,17 @@
 import { MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import {
+  FulfillmentService,
+  OrderService,
+  SwapService,
+} from "../../../../services"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersSwapFulfillmentsCancel"
  * summary: "Cancels a fulfilmment related to a Swap"
  * description: "Registers a Fulfillment as canceled."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order which the Swap relates to.
  *   - (path) swap_id=* {string} The id of the Swap which the Fulfillment relates to.
@@ -25,9 +31,10 @@ import { defaultRelations, defaultFields } from "."
 export default async (req, res) => {
   const { id, swap_id, fulfillment_id } = req.params
 
-  const fulfillmentService = req.scope.resolve("fulfillmentService")
-  const swapService = req.scope.resolve("swapService")
-  const orderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve("swapService")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const fulfillmentService: FulfillmentService =
+    req.scope.resolve("fulfillmentService")
 
   const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 
@@ -50,8 +57,8 @@ export default async (req, res) => {
   await swapService.cancelFulfillment(fulfillment_id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })

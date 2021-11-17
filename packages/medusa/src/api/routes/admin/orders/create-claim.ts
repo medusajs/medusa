@@ -1,11 +1,26 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { Type, Transform } from "class-transformer"
+import {
+  IsArray,
+  IsOptional,
+  ValidateNested,
+  IsBoolean,
+  IsObject,
+  IsString,
+  IsInt,
+  IsNotEmpty,
+  IsEnum,
+} from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { AddressPayload } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/claims
  * operationId: "PostOrdersOrderClaims"
  * summary: "Create a Claim"
  * description: "Creates a Claim."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * requestBody:
@@ -50,53 +65,53 @@ import { defaultRelations, defaultFields } from "./"
  *                   description: A list of image URL's that will be associated with the Claim
  *                   items:
  *                     type: string
- *           return_shipping:
- *             description: Optional details for the Return Shipping Method, if the items are to be sent back.
- *             type: object
- *             properties:
- *               option_id:
- *                 type: string
- *                 description: The id of the Shipping Option to create the Shipping Method from.
- *               price:
- *                 type: integer
- *                 description: The price to charge for the Shipping Method.
- *           additional_items:
- *             description: The new items to send to the Customer when the Claim type is Replace.
- *             type: array
- *             items:
- *               properties:
- *                 variant_id:
- *                   description: The id of the Product Variant to ship.
- *                   type: string
- *                 quantity:
- *                   description: The quantity of the Product Variant to ship.
- *                   type: integer
- *           shipping_methods:
- *             description: The Shipping Methods to send the additional Line Items with.
- *             type: array
- *             items:
+ *            return_shipping:
+ *              description: Optional details for the Return Shipping Method, if the items are to be sent back.
+ *              type: object
+ *              properties:
+ *                option_id:
+ *                  type: string
+ *                  description: The id of the Shipping Option to create the Shipping Method from.
+ *                price:
+ *                  type: integer
+ *                  description: The price to charge for the Shipping Method.
+ *            additional_items:
+ *              description: The new items to send to the Customer when the Claim type is Replace.
+ *              type: array
+ *              items:
  *                properties:
- *                  id:
- *                    description: The id of an existing Shipping Method
+ *                  variant_id:
+ *                    description: The id of the Product Variant to ship.
  *                    type: string
- *                  option_id:
- *                    description: The id of the Shipping Option to create a Shipping Method from
- *                    type: string
- *                  price:
- *                    description: The price to charge for the Shipping Method
+ *                  quantity:
+ *                    description: The quantity of the Product Variant to ship.
  *                    type: integer
- *           shipping_address:
- *             type: object
- *             description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
- *           refund_amount:
- *             description: The amount to refund the Customer when the Claim type is `refund`.
- *             type: integer
- *           no_notification:
- *             description: If set to true no notification will be send related to this Claim.
- *             type: boolean
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *            shipping_methods:
+ *              description: The Shipping Methods to send the additional Line Items with.
+ *              type: array
+ *              items:
+ *                 properties:
+ *                   id:
+ *                     description: The id of an existing Shipping Method
+ *                     type: string
+ *                   option_id:
+ *                     description: The id of the Shipping Option to create a Shipping Method from
+ *                     type: string
+ *                   price:
+ *                     description: The price to charge for the Shipping Method
+ *                     type: integer
+ *            shipping_address:
+ *              type: object
+ *              description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
+ *            refund_amount:
+ *              description: The amount to refund the Customer when the Claim type is `refund`.
+ *              type: integer
+ *            no_notification:
+ *              description: If set to true no notification will be send related to this Claim.
+ *              type: boolean
+ *            metadata:
+ *              description: An optional set of key-value pairs to hold additional information.
+ *              type: object
  * tags:
  *   - Order
  * responses:
@@ -109,54 +124,12 @@ import { defaultRelations, defaultFields } from "./"
  *             order:
  *               $ref: "#/components/schemas/order"
  */
+
 export default async (req, res) => {
   const { id } = req.params
-  const schema = Validator.object().keys({
-    type: Validator.string().valid("replace", "refund").required(),
-    claim_items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-        note: Validator.string().optional(),
-        reason: Validator.string().valid(
-          "missing_item",
-          "wrong_item",
-          "production_failure",
-          "other"
-        ),
-        tags: Validator.array().items(Validator.string()),
-        images: Validator.array().items(Validator.string()),
-      })
-      .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    additional_items: Validator.array()
-      .items({
-        variant_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .optional(),
-    shipping_methods: Validator.array()
-      .items({
-        id: Validator.string().optional(),
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    refund_amount: Validator.number().integer().optional(),
-    shipping_address: Validator.object().optional(),
-    no_notification: Validator.boolean().optional(),
-    metadata: Validator.object().optional(),
-  })
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const value = await validator(AdminPostOrdersOrderClaimsReq, req.body)
+
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
   const headerKey = req.get("Idempotency-Key") || ""
@@ -302,8 +275,8 @@ export default async (req, res) => {
             }
 
             order = await orderService.withTransaction(manager).retrieve(id, {
-              select: defaultFields,
-              relations: defaultRelations,
+              select: defaultAdminOrdersFields,
+              relations: defaultAdminOrdersRelations,
             })
 
             return {
@@ -345,4 +318,131 @@ export default async (req, res) => {
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
+}
+
+enum ClaimTypes {
+  replace = "replace",
+  refund = "refund",
+}
+
+enum ClaimItemReason {
+  missing_item = "missing_item",
+  wrong_item = "wrong_item",
+  production_failure = "production_failure",
+  other = "other",
+}
+
+export class AdminPostOrdersOrderClaimsReq {
+  @IsEnum(ClaimTypes)
+  @IsNotEmpty()
+  type: ClaimTypes
+
+  @IsArray()
+  @IsNotEmpty()
+  @Type(() => Item)
+  @ValidateNested({ each: true })
+  claim_items: Item[]
+
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => ReturnShipping)
+  return_shipping?: ReturnShipping
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => AdditionalItem)
+  additional_items?: AdditionalItem[]
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => ShippingMethod)
+  shipping_methods?: ShippingMethod[]
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  refund_amount?: number
+
+  @IsObject()
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => AddressPayload)
+  shipping_address: AddressPayload
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value && value.toString() === "true")
+  @Type(() => Boolean)
+  no_notification?: boolean
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+}
+
+class ReturnShipping {
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price?: number
+}
+
+class ShippingMethod {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price?: number
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  @Type(() => Number)
+  quantity: number
+
+  @IsString()
+  @IsOptional()
+  note?: string
+
+  @IsEnum(ClaimItemReason)
+  @IsOptional()
+  reason?: ClaimItemReason
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  tags?: string[]
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  images?: string[]
+}
+
+class AdditionalItem {
+  @IsString()
+  @IsNotEmpty()
+  variant_id?: string
+
+  @IsInt()
+  @IsNotEmpty()
+  quantity?: number
 }

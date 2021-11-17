@@ -1,17 +1,36 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { Transform, Type } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import {
+  EventBusService,
+  OrderService,
+  ReturnService,
+} from "../../../../services"
+import { OrdersReturnItem } from "../../../../types/orders"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/returns
  * operationId: "PostOrdersOrderReturns"
  * summary: "Request a Return"
  * description: "Requests a Return. If applicable a return label will be created and other plugins notified."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - items
  *         properties:
  *           items:
  *             description: The Line Items that will be returned.
@@ -64,30 +83,7 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-        reason_id: Validator.string().optional(),
-        note: Validator.string().optional(),
-      })
-      .required(),
-    return_shipping: Validator.object()
-      .keys({
-        option_id: Validator.string().optional(),
-        price: Validator.number().integer().optional(),
-      })
-      .optional(),
-    receive_now: Validator.boolean().default(false),
-    no_notification: Validator.boolean().optional(),
-    refund: Validator.number().integer().optional(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const value = await validator(AdminPostOrdersOrderReturnsReq, req.body)
 
   const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
 
@@ -110,9 +106,9 @@ export default async (req, res) => {
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   try {
-    const orderService = req.scope.resolve("orderService")
-    const returnService = req.scope.resolve("returnService")
-    const eventBus = req.scope.resolve("eventBusService")
+    const orderService: OrderService = req.scope.resolve("orderService")
+    const returnService: ReturnService = req.scope.resolve("returnService")
+    const eventBus: EventBusService = req.scope.resolve("eventBusService")
 
     let inProgress = true
     let err = false
@@ -123,7 +119,7 @@ export default async (req, res) => {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async (manager) => {
-              const returnObj = {
+              const returnObj: ReturnObj = {
                 order_id: id,
                 idempotency_key: idempotencyKey.idempotency_key,
                 items: value.items,
@@ -136,7 +132,7 @@ export default async (req, res) => {
               if (typeof value.refund !== "undefined" && value.refund < 0) {
                 returnObj.refund_amount = 0
               } else {
-                if (value.refund >= 0) {
+                if (value.refund && value.refund >= 0) {
                   returnObj.refund_amount = value.refund
                 }
               }
@@ -216,8 +212,8 @@ export default async (req, res) => {
               }
 
               order = await orderService.withTransaction(manager).retrieve(id, {
-                select: defaultFields,
-                relations: defaultRelations,
+                select: defaultAdminOrdersFields,
+                relations: defaultAdminOrdersRelations,
               })
 
               return {
@@ -263,4 +259,57 @@ export default async (req, res) => {
     console.log(err)
     throw err
   }
+}
+
+type ReturnObj = {
+  order_id?: string
+  idempotency_key?: string
+  items?: OrdersReturnItem[]
+  shipping_method?: ReturnShipping
+  refund_amount?: number
+  no_notification?: boolean
+}
+
+export class AdminPostOrdersOrderReturnsReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => OrdersReturnItem)
+  items: OrdersReturnItem[]
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => ReturnShipping)
+  return_shipping?: ReturnShipping
+
+  @IsString()
+  @IsOptional()
+  note?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @Type(() => Boolean)
+  @Transform(({ value }) => value && value.toString() === "true")
+  receive_now?: boolean = false
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value && value.toString() === "true")
+  @Type(() => Boolean)
+  no_notification?: boolean
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  refund?: number
+}
+
+class ReturnShipping {
+  @IsString()
+  @IsOptional()
+  option_id?: string
+
+  @IsInt()
+  @IsOptional()
+  @Type(() => Number)
+  price?: number
 }

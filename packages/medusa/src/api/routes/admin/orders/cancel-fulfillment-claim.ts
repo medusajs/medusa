@@ -1,11 +1,17 @@
 import { MedusaError } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "."
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import {
+  ClaimService,
+  FulfillmentService,
+  OrderService,
+} from "../../../../services"
 
 /**
- * @oas [post] orders//{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
+ * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel
  * operationId: "PostOrdersClaimFulfillmentsCancel"
  * summary: "Cancels a fulfilmment related to a Claim"
  * description: "Registers a Fulfillment as canceled."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order which the Claim relates to.
  *   - (path) claim_id=* {string} The id of the Claim which the Fulfillment relates to.
@@ -25,9 +31,10 @@ import { defaultRelations, defaultFields } from "."
 export default async (req, res) => {
   const { id, claim_id, fulfillment_id } = req.params
 
-  const fulfillmentService = req.scope.resolve("fulfillmentService")
-  const claimService = req.scope.resolve("claimService")
-  const orderService = req.scope.resolve("orderService")
+  const fulfillmentService: FulfillmentService =
+    req.scope.resolve("fulfillmentService")
+  const claimService: ClaimService = req.scope.resolve("claimService")
+  const orderService: OrderService = req.scope.resolve("orderService")
 
   const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 
@@ -50,8 +57,8 @@ export default async (req, res) => {
   await claimService.cancelFulfillment(fulfillment_id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
   res.json({ order })
 }

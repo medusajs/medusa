@@ -1,11 +1,15 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
-
+import { Transform } from "class-transformer"
+import { IsBoolean, IsObject, IsOptional } from "class-validator"
+import { EntityManager } from "typeorm"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { ClaimService, OrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments
  * operationId: "PostOrdersOrderClaimsClaimFulfillments"
  * summary: "Create a Claim Fulfillment"
  * description: "Creates a Fulfillment for a Claim."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) claim_id=* {string} The id of the Claim.
@@ -35,31 +39,37 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id, claim_id } = req.params
 
-  const schema = Validator.object().keys({
-    metadata: Validator.object().optional(),
-    no_notification: Validator.boolean().optional(),
-  })
+  const validated = await validator(
+    AdminPostOrdersOrderClaimsClaimFulfillmentsReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const orderService = req.scope.resolve("orderService")
-  const claimService = req.scope.resolve("claimService")
-  const entityManager = req.scope.resolve("manager")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const claimService: ClaimService = req.scope.resolve("claimService")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
     await claimService.withTransaction(manager).createFulfillment(claim_id, {
-      metadata: value.metadata,
-      no_notification: value.no_notification,
+      metadata: validated.metadata,
+      no_notification: validated.no_notification,
     })
   })
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })
+}
+
+export class AdminPostOrdersOrderClaimsClaimFulfillmentsReq {
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  no_notification?: boolean
 }

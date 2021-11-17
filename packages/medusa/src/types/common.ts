@@ -1,3 +1,5 @@
+import { Transform } from "class-transformer"
+import { transformDate } from "../utils/validators/date-transform"
 import { Type } from "class-transformer"
 import { IsDate, IsNumber, IsOptional, IsString } from "class-validator"
 import "reflect-metadata"
@@ -23,17 +25,25 @@ export type DeleteResponse = {
 }
 
 export class DateComparisonOperator {
+  @IsOptional()
   @IsDate()
-  lt?: Date | string
+  @Transform(transformDate)
+  lt?: Date
 
+  @IsOptional()
   @IsDate()
-  gt?: Date | string
+  @Transform(transformDate)
+  gt?: Date
 
+  @IsOptional()
   @IsDate()
-  gte?: Date | string
+  @Transform(transformDate)
+  gte?: Date
 
+  @IsOptional()
   @IsDate()
-  lte?: Date | string
+  @Transform(transformDate)
+  lte?: Date
 }
 
 export class StringComparisonOperator {

@@ -1,11 +1,21 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
+import { Transform, Type } from "class-transformer"
+import {
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { OrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/refunds
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * requestBody:
@@ -42,29 +52,45 @@ import { defaultRelations, defaultFields } from "./"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const schema = Validator.object().keys({
-    amount: Validator.number().integer().required(),
-    reason: Validator.string().required(),
-    note: Validator.string().allow("").optional(),
-    no_notification: Validator.boolean().optional(),
-  })
 
-  const { value, error } = schema.validate(req.body)
+  const validated = await validator(AdminPostOrdersOrderRefundsReq, req.body)
 
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const orderService: OrderService = req.scope.resolve("orderService")
 
-  const orderService = req.scope.resolve("orderService")
-
-  await orderService.createRefund(id, value.amount, value.reason, value.note, {
-    no_notification: value.no_notification,
-  })
+  await orderService.createRefund(
+    id,
+    validated.amount,
+    validated.reason,
+    validated.note,
+    {
+      no_notification: validated.no_notification,
+    }
+  )
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })
+}
+
+export class AdminPostOrdersOrderRefundsReq {
+  @IsInt()
+  @IsNotEmpty()
+  @Type(() => Number)
+  amount: number
+
+  @IsString()
+  @IsNotEmpty()
+  reason: string
+
+  @IsString()
+  @IsOptional()
+  note?: string
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  no_notification?: boolean
 }

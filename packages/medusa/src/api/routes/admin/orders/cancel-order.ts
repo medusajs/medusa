@@ -1,10 +1,12 @@
-import { defaultFields, defaultRelations } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { OrderService } from "../../../../services"
 
 /**
  * @oas [post] /orders/{id}/cancel
  * operationId: "PostOrdersOrderCancel"
  * summary: "Cancel an Order"
  * description: "Registers an Order as canceled. This triggers a flow that will cancel any created Fulfillments and Payments, may fail if the Payment or Fulfillment Provider is unable to cancel the Payment/Fulfillment."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * tags:
@@ -22,12 +24,12 @@ import { defaultFields, defaultRelations } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  const orderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve("orderService")
   await orderService.cancel(id)
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })

@@ -6,6 +6,7 @@ import {
   ValidationArguments,
   ValidationOptions,
 } from "class-validator"
+import { isDate } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { validator } from "../validator"
 
@@ -27,6 +28,14 @@ async function typeValidator(
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           `Number validation failed: ${plain} is not a number`
+        )
+      }
+      return true
+    case Date:
+      if (!isDate(new Date(plain as string))) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Date validation failed: ${plain} is not a date`
         )
       }
       return true

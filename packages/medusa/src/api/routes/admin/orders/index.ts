@@ -1,5 +1,7 @@
 import { Router } from "express"
+import { Order } from "../../../.."
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 
@@ -18,7 +20,11 @@ export default (app) => {
   /**
    * Get an order
    */
-  route.get("/:id", middlewares.wrap(require("./get-order").default))
+  route.get(
+    "/:id",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./get-order").default)
+  )
 
   /**
    * Create a new order
@@ -216,7 +222,11 @@ export default (app) => {
   return app
 }
 
-export const defaultRelations = [
+export type AdminOrdersRes = {
+  order: Order
+}
+
+export const defaultAdminOrdersRelations = [
   "customer",
   "billing_address",
   "shipping_address",
@@ -253,7 +263,7 @@ export const defaultRelations = [
   "swaps.fulfillments",
 ]
 
-export const defaultFields = [
+export const defaultAdminOrdersFields = [
   "id",
   "status",
   "fulfillment_status",
@@ -285,7 +295,7 @@ export const defaultFields = [
   "no_notification",
 ]
 
-export const allowedFields = [
+export const allowedAdminOrdersFields = [
   "id",
   "status",
   "fulfillment_status",
@@ -314,7 +324,7 @@ export const allowedFields = [
   "no_notification",
 ]
 
-export const allowedRelations = [
+export const allowedAdminOrdersRelations = [
   "customer",
   "region",
   "billing_address",
@@ -333,7 +343,7 @@ export const allowedRelations = [
   "swaps.additional_items",
 ]
 
-export const filterableFields = [
+export const filterableAdminOrdersFields = [
   "id",
   "status",
   "fulfillment_status",
@@ -349,3 +359,32 @@ export const filterableFields = [
   "created_at",
   "updated_at",
 ]
+
+export * from "./add-shipping-method"
+export * from "./archive-order"
+export * from "./cancel-claim"
+export * from "./cancel-fulfillment"
+export * from "./cancel-fulfillment-claim"
+export * from "./cancel-fulfillment-swap"
+export * from "./cancel-order"
+export * from "./cancel-swap"
+export * from "./capture-payment"
+export * from "./complete-order"
+export * from "./create-claim"
+export * from "./create-claim-shipment"
+export * from "./create-fulfillment"
+export * from "./create-order"
+export * from "./create-shipment"
+export * from "./create-swap"
+export * from "./create-swap-shipment"
+export * from "./delete-metadata"
+export * from "./fulfill-claim"
+export * from "./fulfill-swap"
+export * from "./get-order"
+export * from "./list-orders"
+export * from "./process-swap-payment"
+export * from "./receive-swap"
+export * from "./refund-payment"
+export * from "./request-return"
+export * from "./update-claim"
+export * from "./update-order"

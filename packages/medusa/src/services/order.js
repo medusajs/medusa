@@ -211,7 +211,7 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
     let q
-    if ("q" in selector) {
+    if (selector.q) {
       q = selector.q
       delete selector.q
     }
@@ -886,23 +886,23 @@ class OrderService extends BaseService {
         ...rest
       } = update
 
-      if ("metadata" in update) {
+      if (update.metadata) {
         order.metadata = this.setMetadata_(order, metadata)
       }
 
-      if ("shipping_address" in update) {
+      if (update.shipping_address) {
         await this.updateShippingAddress_(order, shipping_address)
       }
 
-      if ("billing_address" in update) {
+      if (update.billing_address) {
         await this.updateBillingAddress_(order, billing_address)
       }
 
-      if ("no_notification" in update) {
+      if (update.no_notification) {
         order.no_notification = no_notification
       }
 
-      if ("items" in update) {
+      if (update.items) {
         for (const item of items) {
           await this.lineItemService_.withTransaction(manager).create({
             ...item,
@@ -1307,7 +1307,7 @@ class OrderService extends BaseService {
    * @param {string} orderId - id of the order to refund.
    * @param {float} refundAmount - the amount to refund.
    * @param {string} reason - the reason to refund.
-   * @param {string} note - note for refund.
+   * @param {string | undefined} note - note for refund.
    * @param {Object} config - the config for refund.
    * @return {Promise} the result of the refund operation.
    */

@@ -1,11 +1,14 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { ClaimService, OrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/shipments
  * operationId: "PostOrdersOrderClaimsClaimShipments"
  * summary: "Create Claim Shipment"
  * description: "Registers a Claim Fulfillment as shipped."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) claim_id=* {string} The id of the Claim.
@@ -37,29 +40,35 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id, claim_id } = req.params
 
-  const schema = Validator.object().keys({
-    fulfillment_id: Validator.string().required(),
-    tracking_numbers: Validator.array().items(Validator.string()).optional(),
-  })
+  const validated = await validator(
+    AdminPostOrdersOrderClaimsClaimShipmentsReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const orderService = req.scope.resolve("orderService")
-  const claimService = req.scope.resolve("claimService")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const claimService: ClaimService = req.scope.resolve("claimService")
 
   await claimService.createShipment(
     claim_id,
-    value.fulfillment_id,
-    value.tracking_numbers.map((n) => ({ tracking_number: n }))
+    validated.fulfillment_id,
+    validated.tracking_numbers?.map((n) => ({ tracking_number: n }))
   )
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })
+}
+
+export class AdminPostOrdersOrderClaimsClaimShipmentsReq {
+  @IsString()
+  @IsNotEmpty()
+  fulfillment_id: string
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  tracking_numbers?: string[]
 }

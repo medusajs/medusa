@@ -1,11 +1,19 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultRelations, defaultFields } from "./"
-
+import { Transform } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
  * summary: "Create a Shipment"
  * description: "Registers a Fulfillment as shipped."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  * requestBody:
@@ -39,30 +47,37 @@ import { defaultRelations, defaultFields } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    fulfillment_id: Validator.string().required(),
-    tracking_numbers: Validator.array().items(Validator.string()).optional(),
-    no_notification: Validator.boolean().optional(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(AdminPostOrdersOrderShipmentReq, req.body)
 
   const orderService = req.scope.resolve("orderService")
 
   await orderService.createShipment(
     id,
-    value.fulfillment_id,
-    value.tracking_numbers.map((n) => ({ tracking_number: n })),
-    { no_notification: value.no_notification }
+    validated.fulfillment_id,
+    validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
+    { no_notification: validated.no_notification }
   )
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })
+}
+
+export class AdminPostOrdersOrderShipmentReq {
+  @IsString()
+  @IsNotEmpty()
+  fulfillment_id: string
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  tracking_numbers?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  no_notification: boolean
 }

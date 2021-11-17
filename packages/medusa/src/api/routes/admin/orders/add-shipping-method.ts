@@ -1,11 +1,21 @@
-import { Validator, MedusaError } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { Type } from "class-transformer"
+import {
+  IsInt,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { OrderService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /orders/{id}/shipping-methods
  * operationId: "PostOrdersOrderShippingMethods"
  * summary: "Add a Shipping Method"
  * description: "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (body) price=* {integer} The price (excluding VAT) that should be charged for the Shipping Method
@@ -26,27 +36,41 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    price: Validator.number().integer().integer().allow(0).required(),
-    option_id: Validator.string().required(),
-    data: Validator.object().optional().default({}),
-  })
+  const validated = await validator(
+    AdminPostOrdersOrderShippingMethodsReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const orderService: OrderService = req.scope.resolve("orderService")
 
-  const orderService = req.scope.resolve("orderService")
-
-  await orderService.addShippingMethod(id, value.option_id, value.data, {
-    price: value.price,
-  })
+  await orderService.addShippingMethod(
+    id,
+    validated.option_id,
+    validated.data,
+    {
+      price: validated.price,
+    }
+  )
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })
+}
+
+export class AdminPostOrdersOrderShippingMethodsReq {
+  @IsInt()
+  @IsNotEmpty()
+  @Type(() => Number)
+  price: number
+
+  @IsString()
+  @IsNotEmpty()
+  option_id: string
+
+  @IsObject()
+  @IsOptional()
+  data?: object = {}
 }

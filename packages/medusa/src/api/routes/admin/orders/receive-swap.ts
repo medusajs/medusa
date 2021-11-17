@@ -1,11 +1,21 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
-
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsInt,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { EntityManager } from "typeorm"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { OrderService, SwapService } from "../../../../services"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/receive
  * operationId: "PostOrdersOrderSwapsSwapReceive"
  * summary: "Receive a Swap"
  * description: "Registers a Swap as received."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) swap_id=* {string} The id of the Swap.
@@ -40,28 +50,19 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
-  const schema = Validator.object().keys({
-    items: Validator.array()
-      .items({
-        item_id: Validator.string().required(),
-        quantity: Validator.number().required(),
-      })
-      .required(),
-  })
+  const validated = await validator(
+    AdminPostOrdersOrderSwapsSwapReceiveReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
-
-  const orderService = req.scope.resolve("orderService")
-  const swapService = req.scope.resolve("swapService")
-  const entityManager = req.scope.resolve("manager")
+  const orderService: OrderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve("swapService")
+  const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {
     await swapService
       .withTransaction(manager)
-      .receiveReturn(swap_id, value.items)
+      .receiveReturn(swap_id, validated.items)
 
     await orderService
       .withTransaction(manager)
@@ -69,9 +70,26 @@ export default async (req, res) => {
   })
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.status(200).json({ order })
+}
+
+export class AdminPostOrdersOrderSwapsSwapReceiveReq {
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Item)
+  items: Item[]
+}
+
+class Item {
+  @IsString()
+  @IsNotEmpty()
+  item_id: string
+
+  @IsInt()
+  @IsNotEmpty()
+  quantity: number
 }

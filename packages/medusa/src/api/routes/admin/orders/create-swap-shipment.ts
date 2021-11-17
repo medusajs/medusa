@@ -1,11 +1,19 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
-
+import { Transform } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
  * operationId: "PostOrdersOrderSwapsSwapShipments"
  * summary: "Create Swap Shipment"
  * description: "Registers a Swap Fulfillment as shipped."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
  *   - (path) swap_id=* {string} The id of the Swap.
@@ -13,6 +21,8 @@ import { defaultFields, defaultRelations } from "./"
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - fulfillment_id
  *         properties:
  *           fulfillment_id:
  *             description: The id of the Fulfillment.
@@ -40,31 +50,41 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
-  const schema = Validator.object().keys({
-    fulfillment_id: Validator.string().required(),
-    tracking_numbers: Validator.array().items(Validator.string()).optional(),
-    no_notification: Validator.boolean().optional(),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(
+    AdminPostOrdersOrderSwapsSwapShipmentsReq,
+    req.body
+  )
 
   const orderService = req.scope.resolve("orderService")
   const swapService = req.scope.resolve("swapService")
 
   await swapService.createShipment(
     swap_id,
-    value.fulfillment_id,
-    value.tracking_numbers.map((n) => ({ tracking_number: n })),
-    { no_notification: value.no_notification }
+    validated.fulfillment_id,
+    validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
+    { no_notification: validated.no_notification }
   )
 
   const order = await orderService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminOrdersFields,
+    relations: defaultAdminOrdersRelations,
   })
 
   res.json({ order })
+}
+
+export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
+  @IsString()
+  @IsNotEmpty()
+  fulfillment_id: string
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  tracking_numbers?: string[]
+
+  @IsBoolean()
+  @IsOptional()
+  @Transform(({ value }) => value === "true")
+  no_notification?: boolean
 }
