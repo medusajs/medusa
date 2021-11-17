@@ -42,23 +42,28 @@ export default async (req, res) => {
     select: defaultAdminGiftCardFields,
     relations: defaultAdminGiftCardRelations,
     order: { created_at: "DESC" },
-    limit: limit,
-    skip: offset,
+    limit: validated.limit,
+    skip: validated.offset,
   })
 
-  res.status(200).json({ gift_cards: giftCards })
+  res.status(200).json({
+    gift_cards: giftCards,
+    count: giftCards.length,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetGiftCardsParams {
   @IsOptional()
   @IsString()
   @Type(() => Number)
-  limit?: number
+  limit = 50
 
   @IsOptional()
   @IsString()
   @Type(() => Number)
-  offset?: number
+  offset = 0
 
   @IsOptional()
   @IsString()

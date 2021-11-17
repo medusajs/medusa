@@ -1,6 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { GiftCard } from "../../../.."
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -57,7 +58,9 @@ export type AdminGiftCardsRes = {
   gift_card: GiftCard
 }
 
-export type AdminGiftCardsListRes = {
+export type AdminGiftCardDeleteRes = DeleteResponse
+
+export type AdminGiftCardsListRes = PaginatedResponse & {
   gift_cards: GiftCard[]
 }
 
