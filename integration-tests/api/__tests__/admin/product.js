@@ -734,6 +734,46 @@ describe("/admin/products", () => {
       )
     })
 
+    it("creates a product that is not discountable", async () => {
+      const api = useApi()
+
+      const payload = {
+        title: "Test",
+        discountable: false,
+        description: "test-product-description",
+        type: { value: "test-type" },
+        images: ["test-image.png", "test-image-2.png"],
+        collection_id: "test-collection",
+        tags: [{ value: "123" }, { value: "456" }],
+        options: [{ title: "size" }, { title: "color" }],
+        variants: [
+          {
+            title: "Test variant",
+            inventory_quantity: 10,
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "large" }, { value: "green" }],
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          discountable: false,
+        })
+      )
+    })
+
     it("Sets variant ranks when creating a product", async () => {
       const api = useApi()
 
