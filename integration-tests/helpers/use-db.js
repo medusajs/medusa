@@ -6,7 +6,7 @@ const { createConnection } = require("typeorm")
 
 const DB_USERNAME = process.env.DB_USERNAME || "postgres"
 const DB_PASSWORD = process.env.DB_PASSWORD || ""
-const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration`
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@127.0.0.1/medusa-integration`
 
 const pgGodCredentials = {
   user: DB_USERNAME,
