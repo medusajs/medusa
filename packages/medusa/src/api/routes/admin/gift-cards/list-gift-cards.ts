@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsOptional, IsString } from "class-validator"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 import { GiftCardService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -27,9 +27,6 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetGiftCardsParams, req.query)
 
-  const limit = validated.limit || 50
-  const offset = validated.offset || 0
-
   const selector = {}
 
   if (validated.q && typeof validated.q !== "undefined") {
@@ -56,12 +53,12 @@ export default async (req, res) => {
 
 export class AdminGetGiftCardsParams {
   @IsOptional()
-  @IsString()
+  @IsNumber()
   @Type(() => Number)
   limit = 50
 
   @IsOptional()
-  @IsString()
+  @IsNumber()
   @Type(() => Number)
   offset = 0
 
