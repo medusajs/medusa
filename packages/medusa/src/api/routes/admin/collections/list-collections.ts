@@ -30,9 +30,6 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetCollectionsParams, req.query)
 
-  const limit = validated.limit || 10
-  const offset = validated.offset || 0
-
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
@@ -40,8 +37,8 @@ export default async (req, res) => {
   const listConfig = {
     select: defaultAdminCollectionsFields,
     relations: defaultAdminCollectionsRelations,
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
   }
 
   const [collections, count] = await productCollectionService.listAndCount(
@@ -49,17 +46,22 @@ export default async (req, res) => {
     listConfig
   )
 
-  res.status(200).json({ collections, count, offset, limit })
+  res.status(200).json({
+    collections,
+    count,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetCollectionsParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  limit = 10
 
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  offset = 0
 }
