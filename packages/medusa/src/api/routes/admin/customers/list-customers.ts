@@ -28,9 +28,6 @@ export default async (req, res) => {
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
-  const limit = validated.limit || 50
-  const offset = validated.offset || 0
-
   const selector: Selector = {}
 
   if (validated.q) {
@@ -44,8 +41,8 @@ export default async (req, res) => {
 
   const listConfig: FindConfig<Customer> = {
     relations: expandFields,
-    skip: offset,
-    take: limit,
+    skip: validated.offset,
+    take: validated.limit,
   }
 
   const [customers, count] = await customerService.listAndCount(
@@ -53,19 +50,24 @@ export default async (req, res) => {
     listConfig
   )
 
-  res.json({ customers, count, offset, limit })
+  res.json({
+    customers,
+    count,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetCustomersParams extends Selector {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  limit = 50
 
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  offset = 0
 
   @IsString()
   @IsOptional()
