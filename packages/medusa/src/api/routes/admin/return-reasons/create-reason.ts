@@ -15,10 +15,10 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
- *     required:
- *      - label
- *      - value
  *       schema:
+ *         required:
+ *          - label
+ *          - value
  *         properties:
  *           label:
  *             description: "The label to display to the Customer."
@@ -66,14 +66,18 @@ export default async (req, res) => {
 export class AdminPostReturnReasonsReq {
   @IsString()
   value: string
+
   @IsString()
   label: string
+
   @IsOptional()
   @IsString()
   parent_return_reason_id?: string
+
   @IsOptional()
   @IsString()
   description?: string
+
   @IsOptional()
   metadata?: object
 }
