@@ -1,13 +1,14 @@
+import { AxiosPromise } from 'axios';
+import { StoreSwapsRes, StorePostSwapsReq } from '@medusajs/medusa';
 import BaseResource from './base';
-import * as Types from '../types';
 
 class SwapsResource extends BaseResource {
   /**
    * @description Creates a swap from a cart
-   * @param payload contains the id of the cart
-   * @returns AsyncResult<{ swap: Swap }>
+   * @param payload 
+   * @returns AxiosPromise<StoreSwapsRes>
    */
-  create(payload: { cart_id: string }): Types.AsyncResult<{ swap: Types.Swap }> {
+  create(payload: StorePostSwapsReq): AxiosPromise<StoreSwapsRes> {
     const path = `/store/swaps`;
     return this.client.request('POST', path, payload);
   }
@@ -15,9 +16,9 @@ class SwapsResource extends BaseResource {
   /**
    * @description Retrieves a swap by cart id
    * @param cart_id id of cart
-   * @returns AsyncResult<{ swap: Swap }>
+   * @returns AxiosPromise<StoreSwapsRes>
    */
-  retrieveByCartId(cart_id: string): Types.AsyncResult<{ swap: Types.Swap }> {
+  retrieveByCartId(cart_id: string): AxiosPromise<StoreSwapsRes> {
     const path = `/store/swaps/${cart_id}`;
     return this.client.request('GET', path);
   }

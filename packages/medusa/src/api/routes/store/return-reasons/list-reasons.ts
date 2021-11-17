@@ -1,6 +1,5 @@
-import { defaultStoreReturnReasonRelations, defaultStoreReturnReasonFields } from ".";
-import { ReturnReason } from './../../../../models/return-reason';
-import ReturnReasonService from "../../../../services/return-reason"
+import { defaultStoreReturnReasonFields, defaultStoreReturnReasonRelations } from ".";
+import ReturnReasonService from "../../../../services/return-reason";
 
 /**
  * @oas [get] /return-reasons

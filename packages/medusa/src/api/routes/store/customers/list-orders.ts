@@ -3,10 +3,8 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import OrderService from "../../../../services/order"
 import { validator } from "../../../../utils/validator"
 import {
-  allowedFields,
-  allowedRelations,
-  defaultFields,
-  defaultRelations,
+  allowedStoreOrdersFields,
+  allowedStoreOrdersRelations,
 } from "../orders"
 
 /**
@@ -58,18 +56,22 @@ export default async (req, res) => {
   let includeFields: string[] = []
   if (validated.fields) {
     includeFields = validated.fields.split(",")
-    includeFields = includeFields.filter((f) => allowedFields.includes(f))
+    includeFields = includeFields.filter((f) =>
+      allowedStoreOrdersFields.includes(f)
+    )
   }
 
   let expandFields: string[] = []
   if (validated.expand) {
     expandFields = validated.expand.split(",")
-    expandFields = expandFields.filter((f) => allowedRelations.includes(f))
+    expandFields = expandFields.filter((f) =>
+      allowedStoreOrdersRelations.includes(f)
+    )
   }
 
   const listConfig = {
-    select: includeFields.length ? includeFields : defaultFields,
-    relations: expandFields.length ? expandFields : defaultRelations,
+    select: includeFields.length ? includeFields : allowedStoreOrdersFields,
+    relations: expandFields.length ? expandFields : allowedStoreOrdersRelations,
     skip: offset,
     take: limit,
     order: { created_at: "DESC" },

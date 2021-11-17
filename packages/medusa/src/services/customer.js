@@ -168,6 +168,11 @@ class CustomerService extends BaseService {
     return customerRepo.find(query)
   }
 
+  /**
+   * @param {Object} selector - the query object for find
+   * @param {FindConfig<Customer>} config - the config object containing query settings
+   * @return {Promise} the result of the find operation
+   */
   async listAndCount(
     selector,
     config = { relations: [], skip: 0, take: 50, order: { created_at: "DESC" } }

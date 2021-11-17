@@ -66,12 +66,16 @@ class BaseService {
 
         return acc
       }, {})
-
+      
       return where
     }
 
     const query = {
       where: build(selector),
+    }
+    
+    if ("deleted_at" in selector) {
+      query.withDeleted = true
     }
 
     if ("deleted_at" in selector) {

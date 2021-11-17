@@ -18,6 +18,12 @@ export interface FindConfig<Entity> {
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }
 
+export type DeleteResponse = {
+  id: string
+  object: string
+  deleted: boolean
+}
+
 export class DateComparisonOperator {
   @IsOptional()
   @IsDate()
