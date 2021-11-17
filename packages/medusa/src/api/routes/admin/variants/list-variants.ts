@@ -6,13 +6,17 @@ import { ProductVariant } from "../../../../models/product-variant"
 import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
 import { Type } from "class-transformer"
-import { IsInt, IsOptional } from "class-validator"
+import { IsInt, IsOptional, IsString } from "class-validator"
 /**
  * @oas [get] /variants
  * operationId: "GetVariants"
  * summary: "List Product Variants."
  * description: "Retrieves a list of Product Variants"
  * x-authenticated: true
+ * parameters:
+ *   - (query) q {string} Query used for searching variants.
+ *   - (query) offset {string} How many variants to skip in the result.
+ *   - (query) limit {string} Limit the number of variants returned.
  * tags:
  *   - Product Variant
  * responses:
@@ -32,7 +36,10 @@ export default async (req, res) => {
     "productVariantService"
   )
 
-  const { offset, limit } = await validator(AdminGetVariantsParams, req.query)
+  const { offset, limit, q } = await validator(
+    AdminGetVariantsParams,
+    req.query
+  )
 
   const selector: FilterableProductVariantProps = {}
 
@@ -53,6 +60,10 @@ export default async (req, res) => {
 }
 
 export class AdminGetVariantsParams {
+  @IsString()
+  @IsOptional()
+  q?: string
+
   @IsInt()
   @IsOptional()
   @Type(() => Number)
