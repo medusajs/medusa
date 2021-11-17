@@ -295,7 +295,7 @@ describe("/admin/products", () => {
       }
     })
 
-    it("returns a list of products with giftcard in list", async () => {
+    it("returns a list of products with only giftcard in list", async () => {
       const api = useApi()
 
       const payload = {

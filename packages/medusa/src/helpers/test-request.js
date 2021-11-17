@@ -1,26 +1,25 @@
-import { MockManager } from "medusa-test-utils"
-import { createContainer, asValue } from "awilix"
+import { asValue, createContainer } from "awilix"
 import express from "express"
-import cookieParser from "cookie-parser"
-import supertest from "supertest"
 import jwt from "jsonwebtoken"
-import session from "express-session"
-import servicesLoader from "../loaders/services"
+import { MockManager } from "medusa-test-utils"
+import "reflect-metadata"
+import supertest from "supertest"
+import config from "../config"
 import apiLoader from "../loaders/api"
 import passportLoader from "../loaders/passport"
-import config from "../config"
+import servicesLoader from "../loaders/services"
 
-let adminSessionOpts = {
+const adminSessionOpts = {
   cookieName: "session",
   secret: "test",
 }
 export { adminSessionOpts }
+export { clientSessionOpts }
 
-let clientSessionOpts = {
+const clientSessionOpts = {
   cookieName: "session",
   secret: "test",
 }
-export { clientSessionOpts }
 
 const testApp = express()
 
@@ -60,7 +59,7 @@ const supertestRequest = supertest(testApp)
 export async function request(method, url, opts = {}) {
   let { payload, headers } = opts
 
-  let req = supertestRequest[method.toLowerCase()](url)
+  const req = supertestRequest[method.toLowerCase()](url)
   headers = headers || {}
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
@@ -89,7 +88,7 @@ export async function request(method, url, opts = {}) {
     headers.Cookie = JSON.stringify(opts.clientSession) || ""
   }
 
-  for (let name in headers) {
+  for (const name in headers) {
     req.set(name, headers[name])
   }
 
@@ -114,14 +113,14 @@ export async function request(method, url, opts = {}) {
     }
   }
 
-  //let c =
+  // let c =
   //  res.headers["set-cookie"] && cookie.parse(res.headers["set-cookie"][0])
-  //res.adminSession =
+  // res.adminSession =
   //  c &&
   //  c[adminSessionOpts.cookieName] &&
   //  sessions.util.decode(adminSessionOpts, c[adminSessionOpts.cookieName])
   //    .content
-  //res.clientSession =
+  // res.clientSession =
   //  c &&
   //  c[clientSessionOpts.cookieName] &&
   //  sessions.util.decode(clientSessionOpts, c[clientSessionOpts.cookieName])

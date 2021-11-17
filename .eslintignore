@@ -26,15 +26,11 @@
 /packages/medusa/src/api/routes/store/returns
 
 # JS Client
-/packages/medusa-js/src/resources/addresses.ts
 /packages/medusa-js/src/resources/auth.ts
-/packages/medusa-js/src/resources/customers.ts
 /packages/medusa-js/src/resources/gift-cards.ts
 /packages/medusa-js/src/resources/line-items.ts
-/packages/medusa-js/src/resources/orders.ts
 /packages/medusa-js/src/resources/payment-methods.ts
 /packages/medusa-js/src/resources/product-variants.ts
-/packages/medusa-js/src/resources/products.ts
 /packages/medusa-js/src/resources/regions.ts
 /packages/medusa-js/src/resources/return-reasons.ts
 /packages/medusa-js/src/resources/returns.ts

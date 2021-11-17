@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken"
-import Scrypt from "scrypt-kdf"
 import _ from "lodash"
-import { Validator, MedusaError } from "medusa-core-utils"
+import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import Scrypt from "scrypt-kdf"
 import { Brackets, ILike } from "typeorm"
 
 /**
@@ -168,6 +168,11 @@ class CustomerService extends BaseService {
     return customerRepo.find(query)
   }
 
+  /**
+   * @param {Object} selector - the query object for find
+   * @param {FindConfig<Customer>} config - the config object containing query settings
+   * @return {Promise} the result of the find operation
+   */
   async listAndCount(
     selector,
     config = { relations: [], skip: 0, take: 50, order: { created_at: "DESC" } }
@@ -398,7 +403,9 @@ class CustomerService extends BaseService {
 
       if ("billing_address_id" in update || "billing_address" in update) {
         const address = billing_address_id || billing_address
-        await this.updateBillingAddress_(customer, address, addrRepo)
+        if (typeof address !== "undefined") {
+          await this.updateBillingAddress_(customer, address, addrRepo)
+        }
       }
 
       for (const [key, value] of Object.entries(rest)) {
