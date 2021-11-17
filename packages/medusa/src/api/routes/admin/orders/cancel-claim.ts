@@ -10,7 +10,7 @@ import { ClaimService, OrderService } from "../../../../services"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Order.
- *   . (path) claim_id=* {string} The id of the Claim.
+ *   - (path) claim_id=* {string} The id of the Claim.
  * tags:
  *   - Claim
  * responses:
@@ -21,7 +21,7 @@ import { ClaimService, OrderService } from "../../../../services"
  *         schema:
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/claim"
+ *               $ref: "#/components/schemas/claim_order"
  */
 export default async (req, res) => {
   const { id, claim_id } = req.params

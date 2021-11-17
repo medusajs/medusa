@@ -30,6 +30,8 @@ export async function validator<T, V>(
     ...config,
   })
 
+  console.log(">>> :", errors)
+
   const errorMessages = reduceErrorMessages(errors)
 
   if (errors?.length) {

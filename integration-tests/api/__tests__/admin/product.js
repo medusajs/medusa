@@ -144,6 +144,9 @@ describe("/admin/products", () => {
       const notExpected = [
         expect.objectContaining({ status: "draft" }),
         expect.objectContaining({ status: "rejected" }),
+        expect.objectContaining({
+          id: "test-product_filtering_4",
+        }),
       ]
 
       const response = await api
@@ -173,6 +176,48 @@ describe("/admin/products", () => {
           expect.not.arrayContaining([notExpect])
         )
       }
+    })
+
+    it("returns a list of deleted products with free text query", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?deleted_at[gt]=01-26-1990&q=test", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_4",
+        }),
+      ])
+    })
+
+    it("returns a list of deleted products", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?deleted_at[gt]=01-26-1990", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_4",
+        }),
+      ])
     })
 
     it("returns a list of products in collection", async () => {

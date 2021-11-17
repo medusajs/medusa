@@ -18,6 +18,7 @@ type CustomOptions = {
   order?: OrderByCondition
   skip?: number
   take?: number
+  withDeleted?: boolean
 }
 
 type FindWithRelationsOptions = CustomOptions
@@ -58,6 +59,10 @@ export class ProductRepository extends Repository<Product> {
         .andWhere(`tags.id IN (:...ids)`, { ids: tags.value })
     }
 
+    if (optionsWithoutRelations.withDeleted) {
+      qb = qb.withDeleted()
+    }
+
     let entities: Product[]
     let count = 0
     if (shouldCount) {
@@ -89,7 +94,8 @@ export class ProductRepository extends Repository<Product> {
 
   private async queryProductsWithIds(
     entityIds: string[],
-    groupedRelations: { [toplevel: string]: string[] }
+    groupedRelations: { [toplevel: string]: string[] },
+    withDeleted = false
   ): Promise<Product[]> {
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(([toplevel, rels]) => {
@@ -124,12 +130,22 @@ export class ProductRepository extends Repository<Product> {
           )
         }
 
-        return querybuilder
-          .where(
+        if (withDeleted) {
+          querybuilder = querybuilder
+            .where("products.id IN (:...entitiesIds)", {
+              entitiesIds: entityIds,
+            })
+            .withDeleted()
+        } else {
+          querybuilder = querybuilder.where(
             "products.deleted_at IS NULL AND products.id IN (:...entitiesIds)",
-            { entitiesIds: entityIds }
+            {
+              entitiesIds: entityIds,
+            }
           )
-          .getMany()
+        }
+
+        return querybuilder.getMany()
       })
     ).then(flatten)
 
@@ -143,7 +159,9 @@ export class ProductRepository extends Repository<Product> {
     let count: number
     let entities: Product[]
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations)
+      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
+        withDeleted: idsOrOptionsWithoutRelations.withDeleted ?? false,
+      })
       count = entities.length
     } else {
       const result = await this.queryProducts(
@@ -171,8 +189,10 @@ export class ProductRepository extends Repository<Product> {
     const groupedRelations = this.getGroupedRelations(relations)
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
-      groupedRelations
+      groupedRelations,
+      idsOrOptionsWithoutRelations.withDeleted
     )
+
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
     const entitiesToReturn =
       this.mergeEntitiesWithRelations(entitiesAndRelations)
@@ -182,11 +202,14 @@ export class ProductRepository extends Repository<Product> {
 
   public async findWithRelations(
     relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = { where: {} }
+    idsOrOptionsWithoutRelations: FindWithRelationsOptions = {},
+    withDeleted = false
   ): Promise<Product[]> {
     let entities: Product[]
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
-      entities = await this.findByIds(idsOrOptionsWithoutRelations)
+      entities = await this.findByIds(idsOrOptionsWithoutRelations, {
+        withDeleted,
+      })
     } else {
       const result = await this.queryProducts(
         idsOrOptionsWithoutRelations,
@@ -208,8 +231,10 @@ export class ProductRepository extends Repository<Product> {
     const groupedRelations = this.getGroupedRelations(relations)
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
-      groupedRelations
+      groupedRelations,
+      withDeleted
     )
+
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
     const entitiesToReturn =
       this.mergeEntitiesWithRelations(entitiesAndRelations)
