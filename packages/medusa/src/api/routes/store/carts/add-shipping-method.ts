@@ -65,6 +65,7 @@ export default async (req, res) => {
 export class StorePostCartsCartShippingMethodReq {
   @IsString()
   option_id: string
+
   @IsOptional()
-  data: object = {}
+  data?: object = {}
 }

@@ -45,6 +45,8 @@ import { validator } from "../../../../utils/validator"
  *             description: "An array of Gift Card codes to add to the Cart."
  *             type: array
  *             items:
+ *               required:
+ *                 - code
  *               properties:
  *                 code:
  *                   description: "The code that a Gift Card is identified by."
@@ -53,6 +55,8 @@ import { validator } from "../../../../utils/validator"
  *             description: "An array of Discount codes to add to the Cart."
  *             type: array
  *             items:
+ *               required:
+ *                 - code
  *               properties:
  *                 code:
  *                   description: "The code that a Discount is identifed by."

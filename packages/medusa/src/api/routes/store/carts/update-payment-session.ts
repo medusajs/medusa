@@ -11,7 +11,6 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
  *   - (path) provider_id=* {string} The id of the payment provider.
- *   - (body) provider_id=* {string} The id of the Payment Provider responsible for the Payment Session to update.
  *   - (body) data=* {object} The data to update the payment session with.
  * tags:
  *   - Cart
