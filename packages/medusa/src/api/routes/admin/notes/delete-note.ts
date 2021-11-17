@@ -30,5 +30,5 @@ export default async (req, res) => {
   const noteService: NoteService = req.scope.resolve("noteService")
   await noteService.delete(id)
 
-  res.status(200).json({ id, deleted: true })
+  res.status(200).json({ id, object: "note", deleted: true })
 }

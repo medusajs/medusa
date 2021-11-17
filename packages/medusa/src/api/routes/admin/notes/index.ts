@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { Note } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
 
@@ -25,6 +25,8 @@ export default (app) => {
 export type AdminNotesRes = {
   note: Note
 }
+
+export type AdminNotesDeleteRes = DeleteResponse
 
 export type AdminNotesListRes = PaginatedResponse & {
   notes: Note[]

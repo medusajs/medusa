@@ -30,9 +30,6 @@ import { Type } from "class-transformer"
 export default async (req, res) => {
   const validated = await validator(AdminGetNotesParams, req.query)
 
-  const limit = validated.limit || 50
-  const offset = validated.offset || 0
-
   const selector: selector = {}
 
   if (validated.resource_id) {
@@ -41,12 +38,17 @@ export default async (req, res) => {
 
   const noteService: NoteService = req.scope.resolve("noteService")
   const notes = await noteService.list(selector, {
-    take: limit,
-    skip: offset,
+    take: validated.limit,
+    skip: validated.offset,
     relations: ["author"],
   })
 
-  res.status(200).json({ notes, count: notes.length, offset, limit })
+  res.status(200).json({
+    notes,
+    count: notes.length,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
 export class AdminGetNotesParams {
@@ -57,10 +59,10 @@ export class AdminGetNotesParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit?: number
+  limit = 50
 
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset?: number
+  offset = 0
 }
