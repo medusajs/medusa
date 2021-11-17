@@ -1,17 +1,36 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Validate,
+  ValidateNested,
+} from "class-validator"
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductService, ProductVariantService } from "../../../../services"
+import { XorConstraint } from "../../../../types/validators/xor"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /products/{id}/variants
  * operationId: "PostProductsProductVariants"
  * summary: "Create a Product Variant"
  * description: "Creates a Product Variant. Each Product Variant must have a unique combination of Product Option Values."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  * requestBody:
  *   content:
  *     application/json:
  *       schema:
+ *         required:
+ *           - title
+ *           - prices
+ *           - options
  *         properties:
  *           title:
  *             description: The title to identify the Product Variant by.
@@ -105,58 +124,126 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const schema = Validator.object().keys({
-    title: Validator.string().required(),
-    sku: Validator.string().allow(""),
-    ean: Validator.string().allow(""),
-    upc: Validator.string().allow(""),
-    barcode: Validator.string().allow(""),
-    hs_code: Validator.string().allow(""),
-    inventory_quantity: Validator.number().default(0),
-    allow_backorder: Validator.boolean().optional(),
-    manage_inventory: Validator.boolean().optional(),
-    weight: Validator.number().allow(null).optional(),
-    length: Validator.number().allow(null).optional(),
-    height: Validator.number().allow(null).optional(),
-    width: Validator.number().allow(null).optional(),
-    origin_country: Validator.string().allow(""),
-    mid_code: Validator.string().allow(""),
-    material: Validator.string().allow(""),
-    metadata: Validator.object().optional(),
-    prices: Validator.array()
-      .items(
-        Validator.object()
-          .keys({
-            region_id: Validator.string().empty(null),
-            currency_code: Validator.string().required(),
-            amount: Validator.number().integer().required(),
-            sale_amount: Validator.number().optional(),
-          })
-          .xor("region_id", "currency_code")
-      )
-      .required(),
-    options: Validator.array()
-      .items({
-        option_id: Validator.string().required(),
-        value: Validator.string().required(),
-      })
-      .default([]),
-  })
+  const validated = await validator(
+    AdminPostProductsProductVariantsReq,
+    req.body
+  )
 
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
+  const productService: ProductService = req.scope.resolve("productService")
 
-  const productVariantService = req.scope.resolve("productVariantService")
-  const productService = req.scope.resolve("productService")
-
-  await productVariantService.create(id, value)
+  await productVariantService.create(id, validated)
 
   const product = await productService.retrieve(id, {
-    select: defaultFields,
-    relations: defaultRelations,
+    select: defaultAdminProductFields,
+    relations: defaultAdminProductRelations,
   })
 
   res.json({ product })
+}
+
+class ProductVariantOptionReq {
+  @IsString()
+  value: string
+
+  @IsString()
+  option_id: string
+}
+
+class ProductVariantPricesReq {
+  @Validate(XorConstraint, ["currency_code"])
+  region_id?: string
+
+  @Validate(XorConstraint, ["region_id"])
+  currency_code?: string
+
+  @IsInt()
+  @Type(() => Number)
+  amount: number
+
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  sale_amount: number
+}
+
+export class AdminPostProductsProductVariantsReq {
+  @IsString()
+  title: string
+
+  @IsString()
+  @IsOptional()
+  sku?: string
+
+  @IsString()
+  @IsOptional()
+  ean?: string
+
+  @IsString()
+  @IsOptional()
+  upc?: string
+
+  @IsString()
+  @IsOptional()
+  barcode?: string
+
+  @IsString()
+  @IsOptional()
+  hs_code?: string
+
+  @IsNumber()
+  inventory_quantity = 0
+
+  @IsBoolean()
+  @IsOptional()
+  allow_backorder?: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  manage_inventory?: boolean
+
+  @IsNumber()
+  @IsOptional()
+  weight?: number
+
+  @IsNumber()
+  @IsOptional()
+  length?: number
+
+  @IsNumber()
+  @IsOptional()
+  height?: number
+
+  @IsNumber()
+  @IsOptional()
+  width?: number
+
+  @IsString()
+  @IsOptional()
+  origin_country?: string
+
+  @IsString()
+  @IsOptional()
+  mid_code?: string
+
+  @IsString()
+  @IsOptional()
+  material?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => ProductVariantPricesReq)
+  prices: ProductVariantPricesReq[]
+
+  @IsOptional()
+  @Type(() => ProductVariantOptionReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  options: ProductVariantOptionReq[] = []
 }

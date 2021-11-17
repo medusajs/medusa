@@ -1,23 +1,22 @@
-import { BaseService } from "medusa-interfaces"
-import { SelectQueryBuilder, EntityManager, IsNull, ILike } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-
-import { ProductOptionValue } from "../models/product-option-value"
+import { BaseService } from "medusa-interfaces"
+import { EntityManager, ILike, IsNull, SelectQueryBuilder } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
+import { ProductOptionValue } from "../models/product-option-value"
 import { ProductVariant } from "../models/product-variant"
-import { ProductVariantRepository } from "../repositories/product-variant"
-import { ProductOptionValueRepository } from "../repositories/product-option-value"
-import { ProductRepository } from "../repositories/product"
 import { MoneyAmountRepository } from "../repositories/money-amount"
+import { ProductRepository } from "../repositories/product"
+import { ProductOptionValueRepository } from "../repositories/product-option-value"
+import { ProductVariantRepository } from "../repositories/product-variant"
 import EventBusService from "../services/event-bus"
 import RegionService from "../services/region"
 import { FindConfig } from "../types/common"
 import {
-  FilterableProductVariantProps,
   CreateProductVariantInput,
-  UpdateProductVariantInput,
+  FilterableProductVariantProps,
   ProductVariantPrice,
+  UpdateProductVariantInput,
 } from "../types/product-variant"
 
 /**

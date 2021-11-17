@@ -1,10 +1,10 @@
-import { ValidateNested, IsString, IsNumber, IsBoolean } from "class-validator"
+import { IsBoolean, IsNumber, IsString, ValidateNested } from "class-validator"
+import { IsType } from "../utils/validators/is-type"
 import {
+  DateComparisonOperator,
   NumericalComparisonOperator,
   StringComparisonOperator,
-  DateComparisonOperator,
 } from "./common"
-import { IsType } from "../utils/validators/is-type"
 
 export type ProductVariantPrice = {
   currency_code?: string
@@ -20,7 +20,7 @@ export type ProductVariantOption = {
 
 export type CreateProductVariantInput = {
   title?: string
-  product_id: string
+  product_id?: string
   sku?: string
   barcode?: string
   ean?: string
@@ -39,7 +39,7 @@ export type CreateProductVariantInput = {
   width?: number
   options: ProductVariantOption[]
   prices: ProductVariantPrice[]
-  metadata?: JSON
+  metadata?: object
 }
 
 export type UpdateProductVariantInput = {
@@ -62,7 +62,7 @@ export type UpdateProductVariantInput = {
   width?: number
   options: ProductVariantOption[]
   prices: ProductVariantPrice[]
-  metadata?: JSON
+  metadata?: object
 }
 
 export class FilterableProductVariantProps {

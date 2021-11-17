@@ -1,8 +1,11 @@
+import { ProductService } from "../../../../services"
+
 /**
  * @oas [delete] /products/{id}
  * operationId: "DeleteProductsProduct"
  * summary: "Delete a Product"
  * description: "Deletes a Product and it's associated Product Variants."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Product.
  * tags:
@@ -26,7 +29,7 @@
 export default async (req, res) => {
   const { id } = req.params
 
-  const productService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve("productService")
   await productService.delete(id)
   res.json({
     id,
