@@ -5,7 +5,6 @@ import ProductService from "../../../../services/product"
 import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
-  console.log(">>> :")
   // As we want to allow wildcards, we pass a config allowing this
   const validated = await validator(StorePostSearchReq, req.body, {
     whitelist: false,

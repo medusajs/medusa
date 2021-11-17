@@ -12,7 +12,7 @@ import { Product } from "../models/product"
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
 type CustomOptions = {
-  where: DefaultWithoutRelations["where"] & {
+  where?: DefaultWithoutRelations["where"] & {
     tags?: FindOperator<ProductTag>
   }
   order?: OrderByCondition
