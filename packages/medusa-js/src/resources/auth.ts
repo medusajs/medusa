@@ -1,12 +1,13 @@
+import { AxiosPromise } from 'axios';
+import { StoreGetAuthEmailRes, StorePostAuthReq, StoreAuthRes } from '@medusajs/medusa';
 import BaseResource from './base';
-import * as Types from '../types';
 
 class AuthResource extends BaseResource {
   /**
    * @description Authenticates a customer using email and password combination
-   * @returns AsyncResult<{ customer: Customer }>
+   * @returns AxiosPromise<StoreAuthRes>
    */
-  authenticate(payload: Types.AuthCreateSessionResource): Types.AsyncResult<{ customer: Types.Customer }> {
+  authenticate(payload: StorePostAuthReq): AxiosPromise<StoreAuthRes> {
     const path = `/store/auth`;
     return this.client.request('POST', path, payload);
   }
@@ -14,9 +15,9 @@ class AuthResource extends BaseResource {
   /**
    * @description Retrieves an authenticated session
    * Usually used to check if authenticated session is alive.
-   * @returns AsyncResult<{ customer: Customer }>
+   * @returns AxiosPromise<StoreAuthRes>
    */
-  getSession(): Types.AsyncResult<{ customer: Types.Customer }> {
+  getSession(): AxiosPromise<StoreAuthRes> {
     const path = `/store/auth`;
     return this.client.request('GET', path);
   }
@@ -24,9 +25,9 @@ class AuthResource extends BaseResource {
   /**
    * @description Check if email exists
    * @param email is required
-   * @returns AsyncResult<{ exists: boolean }>
+   * @returns AxiosPromise<StoreGetAuthEmailRes>
    */
-  exists(email: string): Types.AsyncResult<{ exists: boolean }> {
+  exists(email: string): AxiosPromise<StoreGetAuthEmailRes> {
     const path = `/store/auth/${email}`;
     return this.client.request('GET', path);
   }

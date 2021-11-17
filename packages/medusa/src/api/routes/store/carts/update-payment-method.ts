@@ -17,12 +17,12 @@ import { validator } from "../../../../utils/validator"
  *         required:
  *           - provider_id
  *         properties:
- *           region_id:
+ *           provider_id:
  *             type: string
- *             description: The id of the Region to create the Cart in.
- *           country_code:
- *             type: string
- *             description: "The 2 character ISO country code to create the Cart in."
+ *             description: The id of the Payment Provider.
+ *           data:
+ *             type: object
+ *             description: ""
  * tags:
  *   - Cart
  * responses:

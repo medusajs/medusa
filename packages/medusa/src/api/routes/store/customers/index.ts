@@ -98,7 +98,7 @@ export const allowedStoreCustomersFields = [
   "metadata",
 ]
 
-export type StoreCustomerRes = {
+export type StoreCustomersRes = {
   customer: Omit<Customer, "password_hash">
 }
 

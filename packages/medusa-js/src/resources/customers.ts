@@ -1,6 +1,6 @@
 import {
-  StoreCustomerRes,
   StoreCustomersListOrdersRes,
+  StoreCustomersRes,
   StoreGetCustomersCustomerOrdersParams,
   StorePostCustomersCustomerPasswordTokenReq,
   StorePostCustomersCustomerReq,
@@ -18,18 +18,18 @@ class CustomerResource extends BaseResource {
   /**
    * Creates a customer
    * @param {StorePostCustomersReq} payload information of customer
-   * @return { AxiosPromise<StoreCustomerRes>}
+   * @return { AxiosPromise<StoreCustomersRes>}
    */
-  create(payload: StorePostCustomersReq): AxiosPromise<StoreCustomerRes> {
+  create(payload: StorePostCustomersReq): AxiosPromise<StoreCustomersRes> {
     const path = `/store/customers`
     return this.client.request("POST", path, payload)
   }
 
   /**
    * Retrieves the customer that is currently logged
-   * @return {AxiosPromise<StoreCustomerRes>}
+   * @return {AxiosPromise<StoreCustomersRes>}
    */
-  retrieve(): AxiosPromise<StoreCustomerRes> {
+  retrieve(): AxiosPromise<StoreCustomersRes> {
     const path = `/store/customers/me`
     return this.client.request("GET", path)
   }
@@ -37,11 +37,11 @@ class CustomerResource extends BaseResource {
   /**
    * Updates a customer
    * @param {StorePostCustomersCustomerReq} payload information to update customer with
-   * @return {AxiosPromise<StoreCustomerRes>}
+   * @return {AxiosPromise<StoreCustomersRes>}
    */
   update(
     payload: StorePostCustomersCustomerReq
-  ): AxiosPromise<StoreCustomerRes> {
+  ): AxiosPromise<StoreCustomersRes> {
     const path = `/store/customers/me`
     return this.client.request("POST", path, payload)
   }
@@ -76,11 +76,11 @@ class CustomerResource extends BaseResource {
   /**
    * Resets customer password
    * @param {StorePostCustomersCustomerPasswordTokenReq} payload info used to reset customer password
-   * @return {AxiosPromise<StoreCustomerRes>}
+   * @return {AxiosPromise<StoreCustomersRes>}
    */
   resetPassword(
     payload: StorePostCustomersCustomerPasswordTokenReq
-  ): AxiosPromise<StoreCustomerRes> {
+  ): AxiosPromise<StoreCustomersRes> {
     const path = `/store/customers/password-reset`
     return this.client.request("POST", path, payload)
   }
