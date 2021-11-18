@@ -24,6 +24,21 @@
 /packages/medusa/src/api/routes/store/return-reasons
 /packages/medusa/src/api/routes/store/returns
 
+# JS Client
+/packages/medusa-js/src/resources/auth.ts
+/packages/medusa-js/src/resources/gift-cards.ts
+/packages/medusa-js/src/resources/line-items.ts
+/packages/medusa-js/src/resources/payment-methods.ts
+/packages/medusa-js/src/resources/product-variants.ts
+/packages/medusa-js/src/resources/regions.ts
+/packages/medusa-js/src/resources/return-reasons.ts
+/packages/medusa-js/src/resources/returns.ts
+/packages/medusa-js/src/resources/shipping-options.ts
+/packages/medusa-js/src/resources/swaps.ts
+/packages/medusa-js/src/resources/collections.ts
+/packages/medusa-js/src/types/
+/packages/medusa-js/src/error.ts
+
 
 # END OF FILES TODO
 

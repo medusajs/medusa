@@ -60,4 +60,30 @@ describe("POST /admin/store", () => {
       })
     })
   })
+
+  describe("throws when currencies is not an array", () => {
+    let subject
+
+    beforeAll(async () => {
+      jest.clearAllMocks()
+      subject = await request("POST", "/admin/store", {
+        payload: {
+          currencies: "DKK",
+        },
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
+        },
+      })
+    })
+
+    it("returns 400", () => {
+      expect(subject.status).toEqual(400)
+    })
+
+    it("throws a descriptive error", () => {
+      expect(subject.body.message).toEqual("currencies must be an array")
+    })
+  })
 })

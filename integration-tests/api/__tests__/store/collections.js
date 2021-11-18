@@ -92,6 +92,8 @@ describe("/store/collections", () => {
           },
         ],
         count: 3,
+        limit: 10,
+        offset: 0,
       })
     })
   })
