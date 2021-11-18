@@ -125,20 +125,20 @@ export const orders = {
 }
 
 export const OrderServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve(orders.testOrder)
   }),
-  registerReturnReceived: jest.fn().mockImplementation(data => {
+  registerReturnReceived: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  createFromCart: jest.fn().mockImplementation(data => {
+  createFromCart: jest.fn().mockImplementation((data) => {
     return Promise.resolve(orders.testOrder)
   }),
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((data) => {
     if (data === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
     }
@@ -159,7 +159,7 @@ export const OrderServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  retrieve: jest.fn().mockImplementation(orderId => {
+  retrieve: jest.fn().mockImplementation((orderId) => {
     if (orderId === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
     }
@@ -168,14 +168,14 @@ export const OrderServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  retrieveByCartId: jest.fn().mockImplementation(cartId => {
+  retrieveByCartId: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve({ id: IdMap.getId("test-order") })
   }),
-  decorate: jest.fn().mockImplementation(order => {
+  decorate: jest.fn().mockImplementation((order) => {
     order.decorated = true
     return order
   }),
-  cancel: jest.fn().mockImplementation(order => {
+  cancel: jest.fn().mockImplementation((order) => {
     if (order === IdMap.getId("test-order")) {
       orders.testOrder.status = "cancelled"
       return Promise.resolve(orders.testOrder)
@@ -183,36 +183,39 @@ export const OrderServiceMock = {
     return Promise.resolve(undefined)
   }),
 
-  cancelFulfillment: jest.fn().mockImplementation(f => {
+  cancelFulfillment: jest.fn().mockImplementation((f) => {
     return Promise.resolve({ f })
   }),
 
-  archive: jest.fn().mockImplementation(order => {
+  archive: jest.fn().mockImplementation((order) => {
     if (order === IdMap.getId("processed-order")) {
       orders.processedOrder.status = "archived"
       return Promise.resolve(orders.processedOrder)
     }
     return Promise.resolve(undefined)
   }),
-  createFulfillment: jest.fn().mockImplementation(order => {
+  createFulfillment: jest.fn().mockImplementation((order) => {
     if (order === IdMap.getId("test-order")) {
       orders.testOrder.fulfillment_status = "fulfilled"
       return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)
   }),
-  capturePayment: jest.fn().mockImplementation(order => {
+  capturePayment: jest.fn().mockImplementation((order) => {
     if (order === IdMap.getId("test-order")) {
       orders.testOrder.payment_status = "captured"
       return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)
   }),
-  receiveReturn: jest.fn().mockImplementation(order => {
+  receiveReturn: jest.fn().mockImplementation((order) => {
     if (order === IdMap.getId("test-order")) {
       return Promise.resolve(orders.testOrder)
     }
     return Promise.resolve(undefined)
+  }),
+  list: jest.fn().mockImplementation(() => {
+    return Promise.resolve([orders.testOrder])
   }),
 }
 

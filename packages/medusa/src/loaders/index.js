@@ -1,34 +1,34 @@
-import { createContainer, asValue } from "awilix"
-import requestIp from "request-ip"
-import { getManager } from "typeorm"
+import { asValue, createContainer } from "awilix"
 import { getConfigFile } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
-
-import expressLoader from "./express"
-import redisLoader from "./redis"
-import databaseLoader from "./database"
-import repositoriesLoader from "./repositories"
+import "reflect-metadata"
+import requestIp from "request-ip"
+import { getManager } from "typeorm"
 import apiLoader from "./api"
+import databaseLoader from "./database"
+import defaultsLoader from "./defaults"
+import expressLoader from "./express"
+import Logger from "./logger"
 import modelsLoader from "./models"
-import servicesLoader from "./services"
-import subscribersLoader from "./subscribers"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
-import defaultsLoader from "./defaults"
-import Logger from "./logger"
+import redisLoader from "./redis"
+import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
+import servicesLoader from "./services"
+import subscribersLoader from "./subscribers"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   const container = createContainer()
-  container.registerAdd = function(name, registration) {
-    let storeKey = name + "_STORE"
+  container.registerAdd = function (name, registration) {
+    const storeKey = name + "_STORE"
 
     if (this.registrations[storeKey] === undefined) {
       this.register(storeKey, asValue([]))
     }
-    let store = this.resolve(storeKey)
+    const store = this.resolve(storeKey)
 
     if (this.registrations[name] === undefined) {
       this.register(name, asArray(store))
@@ -167,6 +167,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
 
 function asArray(resolvers) {
   return {
-    resolve: (container, opts) => resolvers.map(r => container.build(r, opts)),
+    resolve: (container, opts) =>
+      resolvers.map((r) => container.build(r, opts)),
   }
 }

@@ -2,15 +2,19 @@ import { flatten, groupBy, map, merge } from "lodash"
 import {
   EntityRepository,
   FindManyOptions,
+  FindOperator,
   OrderByCondition,
   Repository,
 } from "typeorm"
+import { ProductTag } from ".."
 import { Product } from "../models/product"
 
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
 type CustomOptions = {
-  where?: DefaultWithoutRelations["where"] & { tags?: string[] }
+  where?: DefaultWithoutRelations["where"] & {
+    tags?: FindOperator<ProductTag>
+  }
   order?: OrderByCondition
   skip?: number
   take?: number
@@ -34,19 +38,25 @@ export class ProductRepository extends Repository<Product> {
     optionsWithoutRelations: FindWithRelationsOptions,
     shouldCount = false
   ): Promise<[Product[], number]> {
-    const tags = optionsWithoutRelations.where.tags
-    delete optionsWithoutRelations.where.tags
+    const tags = optionsWithoutRelations?.where?.tags
+    delete optionsWithoutRelations?.where?.tags
     let qb = this.createQueryBuilder("product")
       .select(["product.id"])
-      .where(optionsWithoutRelations.where)
       .skip(optionsWithoutRelations.skip)
       .take(optionsWithoutRelations.take)
-      .orderBy(optionsWithoutRelations.order)
+
+    qb = optionsWithoutRelations.where
+      ? qb.where(optionsWithoutRelations.where)
+      : qb
+
+    qb = optionsWithoutRelations.order
+      ? qb.orderBy(optionsWithoutRelations.order)
+      : qb
 
     if (tags) {
       qb = qb
         .leftJoinAndSelect("product.tags", "tags")
-        .andWhere(`tags.id IN (:...ids)`, { ids: tags._value })
+        .andWhere(`tags.id IN (:...ids)`, { ids: tags.value })
     }
 
     if (optionsWithoutRelations.withDeleted) {
@@ -54,7 +64,7 @@ export class ProductRepository extends Repository<Product> {
     }
 
     let entities: Product[]
-    let count = null
+    let count = 0
     if (shouldCount) {
       const result = await qb.getManyAndCount()
       entities = result[0]
@@ -144,7 +154,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findWithRelationsAndCount(
     relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = {}
+    idsOrOptionsWithoutRelations: FindWithRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
     let count: number
     let entities: Product[]
@@ -234,7 +244,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findOneWithRelations(
     relations: Array<keyof Product> = [],
-    optionsWithoutRelations: Omit<FindManyOptions<Product>, "relations"> = {}
+    optionsWithoutRelations: FindWithRelationsOptions = { where: {} }
   ): Promise<Product> {
     // Limit 1
     optionsWithoutRelations.take = 1

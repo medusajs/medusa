@@ -1,0 +1,34 @@
+{
+  "name": "@medusajs/medusa-js",
+  "version": "1.0.1-canary.1",
+  "description": "Client for Medusa Commerce Rest API",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "test": "jest --config jestconfig.json"
+  },
+  "author": "Oliver Juhl",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "retry-axios": "^2.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/medusajs/medusa-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/medusajs/medusa-js/issues"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.19",
+    "eslint": "^8.2.0",
+    "jest": "^26.6.3",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.3"
+  }
+}

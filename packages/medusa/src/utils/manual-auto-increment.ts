@@ -1,12 +1,22 @@
+import { getConfigFile } from "medusa-core-utils"
 import path from "path"
 import { getConnection } from "typeorm"
-import { getConfigFile } from "medusa-core-utils"
 
 export async function manualAutoIncrement(
   tableName: string
 ): Promise<number | null> {
-  const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
-  const dbType = configModule.projectConfig.database_type
+  let dbType
+  try {
+    const { configModule } = getConfigFile(
+      path.resolve("."),
+      `medusa-config`
+    ) as any
+    dbType = configModule.projectConfig.database_type
+  } catch (error) {
+    // Default to Postgres to allow for e.g. migrations to run
+    dbType = "postgres"
+  }
+
   if (dbType === "sqlite") {
     const connection = getConnection()
     const [rec] = await connection.query(

@@ -1,8 +1,8 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import {
-  ProductServiceMock,
   products,
+  ProductServiceMock,
 } from "../../../../../services/__mocks__/product"
 
 describe("GET /admin/products", () => {

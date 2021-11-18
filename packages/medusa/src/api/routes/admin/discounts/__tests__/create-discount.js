@@ -80,7 +80,7 @@ describe("POST /admin/discounts", () => {
     })
 
     it("returns error", () => {
-      expect(subject.body.message[0].message).toEqual(
+      expect(subject.body.message).toEqual(
         `"valid_duration" must be a valid ISO 8601 duration`
       )
     })
@@ -160,7 +160,9 @@ describe("POST /admin/discounts", () => {
     })
 
     it("returns error", () => {
-      expect(subject.body.message[0].message).toEqual(`"rule.type" is required`)
+      expect(subject.body.message).toEqual(
+        `type should not be empty, type must be a string`
+      )
     })
   })
 
@@ -193,8 +195,8 @@ describe("POST /admin/discounts", () => {
     })
 
     it("returns error", () => {
-      expect(subject.body.message[0].message).toEqual(
-        `"ends_at" must be greater than "ref:starts_at"`
+      expect(subject.body.message).toEqual(
+        `"ends_at" must be greater than "starts_at"`
       )
     })
   })
@@ -231,8 +233,8 @@ describe("POST /admin/discounts", () => {
     it("returns error", () => {
       expect(DiscountServiceMock.create).toHaveBeenCalledWith({
         code: "TEST",
-          is_dynamic: true,
-          is_disabled: false,
+        is_dynamic: true,
+        is_disabled: false,
         rule: {
           description: "Test",
           type: "fixed",

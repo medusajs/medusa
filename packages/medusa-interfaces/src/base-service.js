@@ -21,6 +21,11 @@ class BaseService {
   buildQuery_(selector, config = {}) {
     const build = (obj) => {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
+        // Undefined values indicate that they have no significance to the query. 
+        // If the query is looking for rows where a column is not set it should use null instead of undefined
+        if (typeof value === "undefined") {
+          return acc
+        }
         switch (true) {
           case value instanceof FindOperator:
             acc[key] = value

@@ -107,13 +107,13 @@ class AlgoliaService extends SearchService {
     const { paginationOptions, filter, additionalOptions } = options
     if ("limit" in paginationOptions) {
       paginationOptions["length"] = paginationOptions.limit
-      delete paginationOptions.limit 
+      delete paginationOptions.limit
     }
-    
+
     return this.client_.initIndex(indexName).search(query, {
       filters: filter,
       ...paginationOptions,
-      ...additionalOptions
+      ...additionalOptions,
     })
   }
 

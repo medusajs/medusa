@@ -33,11 +33,11 @@ describe("POST /admin/products/:id", () => {
       expect(ProductServiceMock.update).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("product1"),
-        {
+        expect.objectContaining({
           title: "Product 1",
           description: "Updated test description",
           handle: "handle",
-        }
+        })
       )
     })
   })
