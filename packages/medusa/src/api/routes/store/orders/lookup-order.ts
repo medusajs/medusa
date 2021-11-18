@@ -72,5 +72,6 @@ export class StoreGetOrdersParams {
 
   @IsOptional()
   @ValidateNested()
+  @Type(() => ShippingAddressPayload)
   shipping_address?: ShippingAddressPayload
 }
