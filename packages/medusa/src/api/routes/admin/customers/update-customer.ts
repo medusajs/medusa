@@ -1,7 +1,9 @@
-import { IsEmail, IsOptional, IsString } from "class-validator"
-import CustomerService from "../../../../services/customer"
-import { MedusaError } from "medusa-core-utils"
-import { validator } from "../../../../utils/validator"
+import { IsEmail, IsObject, IsOptional, IsString } from 'class-validator';
+import { MedusaError } from 'medusa-core-utils';
+
+import CustomerService from '../../../../services/customer';
+import { validator } from '../../../../utils/validator';
+
 /**
  * @oas [post] /customers/{id}
  * operationId: "PostCustomersCustomer"
@@ -86,4 +88,8 @@ export class AdminPostCustomersCustomerReq {
   @IsString()
   @IsOptional()
   phone?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object;
 }

@@ -1,6 +1,8 @@
-import { IsEmail, IsOptional, IsString } from "class-validator"
-import { CustomerService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import { IsEmail, IsObject, IsOptional, IsString } from 'class-validator';
+
+import { CustomerService } from '../../../../services';
+import { validator } from '../../../../utils/validator';
+
 /**
  * @oas [post] /customers
  * operationId: "PostCustomers"
@@ -48,4 +50,8 @@ export class AdminPostCustomersReq {
   @IsString()
   @IsOptional()
   phone?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object;
 }
