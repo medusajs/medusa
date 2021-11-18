@@ -157,6 +157,7 @@ describe("/admin/customers", () => {
             first_name: "newf",
             last_name: "newl",
             email: "new@email.com",
+            metadata: { foo: "bar" },
           },
           {
             headers: {
@@ -174,6 +175,7 @@ describe("/admin/customers", () => {
           first_name: "newf",
           last_name: "newl",
           email: "new@email.com",
+          metadata: { foo: "bar" },
         })
       )
     })
