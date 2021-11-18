@@ -1,6 +1,6 @@
-import { EntityRepository, Repository } from "typeorm"
-import { Swap } from "../models/swap"
 import { flatten, groupBy, map, merge } from "lodash"
+import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { Swap } from "../models/swap"
 
 @EntityRepository(Swap)
 export class SwapRepository extends Repository<Swap> {
@@ -34,7 +34,7 @@ export class SwapRepository extends Repository<Swap> {
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
 
-    return map(entities, e => merge({}, ...entitiesAndRelationsById[e.id]))
+    return map(entities, (e) => merge({}, ...entitiesAndRelationsById[e.id]))
   }
 
   public async findOneWithRelations(

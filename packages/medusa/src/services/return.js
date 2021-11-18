@@ -1,5 +1,5 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
 
 /**
  * Handles Returns
@@ -496,8 +496,8 @@ class ReturnService extends BaseService {
    * allowMismatch argument to true, will process the return, ignoring any
    * mismatches.
    * @param {string} return_id - the orderId to return to
-   * @param {string[]} received_items - the items received after return.
-   * @param {number} refund_amount - the amount to return
+   * @param {Item[]} received_items - the items received after return.
+   * @param {number | undefined} refund_amount - the amount to return
    * @param {bool} allow_mismatch - whether to ignore return/received
    * product mismatch
    * @return {Promise} the result of the update operation

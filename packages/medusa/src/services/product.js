@@ -448,7 +448,9 @@ class ProductService extends BaseService {
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        product[key] = value
+        if (typeof value !== `undefined`) {
+          product[key] = value
+        }
       }
 
       const result = await productRepo.save(product)

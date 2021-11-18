@@ -1,23 +1,17 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  DeleteDateColumn,
+  Entity,
   Index,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-
+import { resolveDbType } from "../utils/db-aware-column"
 import { Currency } from "./currency"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
@@ -38,17 +32,15 @@ export class MoneyAmount {
   amount: number
 
   @Column({ type: "int", nullable: true, default: null })
-  sale_amount: number
+  sale_amount?: number
 
   @Index()
   @Column({ nullable: true })
   variant_id: string
 
-  @ManyToOne(
-    () => ProductVariant,
-    variant => variant.prices,
-    { onDelete: "cascade" }
-  )
+  @ManyToOne(() => ProductVariant, (variant) => variant.prices, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
@@ -70,8 +62,10 @@ export class MoneyAmount {
   deleted_at: Date
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): undefined | void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `ma_${id}`
   }

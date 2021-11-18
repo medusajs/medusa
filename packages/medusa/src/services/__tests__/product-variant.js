@@ -227,45 +227,6 @@ describe("ProductVariantService", () => {
     })
   })
 
-  describe("publishVariant", () => {
-    const productVariantRepository = MockRepository({
-      findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
-    })
-
-    const productVariantService = new ProductVariantService({
-      manager: MockManager,
-      eventBusService,
-      productVariantRepository,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
-    it("sucessfully publishes a product", async () => {
-      const result = await productVariantService.publish(IdMap.getId("ironman"))
-
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "product-variant.updated",
-        {
-          id: IdMap.getId("ironman"),
-        }
-      )
-
-      expect(productVariantRepository.save).toHaveBeenCalledTimes(1)
-      expect(productVariantRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("ironman"),
-        published: true,
-      })
-
-      expect(result).toEqual({
-        id: IdMap.getId("ironman"),
-        published: true,
-      })
-    })
-  })
-
   describe("update", () => {
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
