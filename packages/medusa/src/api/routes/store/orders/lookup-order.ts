@@ -1,5 +1,11 @@
 import { Type } from "class-transformer"
-import { IsEmail, IsNumber, IsOptional, IsString } from "class-validator"
+import {
+  IsEmail,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -63,4 +69,8 @@ export class StoreGetOrdersParams {
 
   @IsEmail()
   email: string
+
+  @IsOptional()
+  @ValidateNested()
+  shipping_address?: ShippingAddressPayload
 }
