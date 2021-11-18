@@ -1,8 +1,7 @@
-import { IsEmail, IsObject, IsOptional, IsString } from 'class-validator';
-import { MedusaError } from 'medusa-core-utils';
-
-import CustomerService from '../../../../services/customer';
-import { validator } from '../../../../utils/validator';
+import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
+import CustomerService from "../../../../services/customer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customers/{id}
@@ -32,6 +31,9 @@ import { validator } from '../../../../utils/validator';
  *           password:
  *             type: string
  *             description: The Customer's password.
+ *           metadata:
+ *             type: object
+ *             description: Metadata for the customer.
  * tags:
  *   - Customer
  * responses:
@@ -91,5 +93,5 @@ export class AdminPostCustomersCustomerReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object;
+  metadata?: object
 }
