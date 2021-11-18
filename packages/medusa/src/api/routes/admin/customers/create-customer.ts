@@ -1,6 +1,7 @@
-import { IsEmail, IsOptional, IsString } from "class-validator"
+import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { CustomerService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /customers
  * operationId: "PostCustomers"
@@ -12,6 +13,7 @@ import { validator } from "../../../../utils/validator"
  *   - (body) first_name=* {string} The Customer's first name.
  *   - (body) last_name=* {string} The Customer's last name.
  *   - (body) phone {string} The Customer's phone number.
+ *   - (body) metadata {object} Metadata for the customer.
  * tags:
  *   - Customer
  * responses:
@@ -48,4 +50,8 @@ export class AdminPostCustomersReq {
   @IsString()
   @IsOptional()
   phone?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
 }
