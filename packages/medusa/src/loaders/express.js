@@ -1,9 +1,8 @@
-import session from "express-session"
+import createStore from "connect-redis"
 import cookieParser from "cookie-parser"
+import session from "express-session"
 import morgan from "morgan"
 import redis from "redis"
-import createStore from "connect-redis"
-
 import config from "../config"
 
 export default async ({ app, configModule }) => {
@@ -17,7 +16,7 @@ export default async ({ app, configModule }) => {
     sameSite = "none"
   }
 
-  let sessionOpts = {
+  const sessionOpts = {
     resave: true,
     saveUninitialized: true,
     cookieName: "session",
@@ -32,7 +31,12 @@ export default async ({ app, configModule }) => {
 
   if (configModule.projectConfig.redis_url) {
     const RedisStore = createStore(session)
-    const redisClient = redis.createClient(configModule.projectConfig.redis_url)
+    const redisClient = redis.createClient(
+      configModule.projectConfig.redis_url,
+      {
+        ...(configModule.projectConfig?.redis_config || {}),
+      }
+    )
     sessionOpts.store = new RedisStore({ client: redisClient })
   }
 
