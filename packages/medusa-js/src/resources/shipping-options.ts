@@ -1,6 +1,8 @@
-import { StoreShippingOptionsListRes } from "@medusajs/medusa"
+import {
+  StoreGetShippingOptionsParams,
+  StoreShippingOptionsListRes,
+} from "@medusajs/medusa"
 import { AxiosPromise } from "axios"
-import { StoreGetShippingOptionsParamsObject } from "../types"
 import BaseResource from "./base"
 
 class ShippingOptionsResource extends BaseResource {
@@ -20,7 +22,7 @@ class ShippingOptionsResource extends BaseResource {
    * @return {AxiosPromise<StoreShippingOptionsListRes>}
    */
   list(
-    query?: StoreGetShippingOptionsParamsObject
+    query?: StoreGetShippingOptionsParams
   ): AxiosPromise<StoreShippingOptionsListRes> {
     let path = `/store/shipping-options`
 

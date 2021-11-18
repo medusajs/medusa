@@ -1,5 +1,5 @@
 import {
-  StoreCustomerRes,
+  StoreCustomersRes,
   StorePostCustomersCustomerAddressesAddressReq,
   StorePostCustomersCustomerAddressesReq,
 } from "@medusajs/medusa"
@@ -14,7 +14,7 @@ class AddressesResource extends BaseResource {
    */
   addAddress(
     payload: StorePostCustomersCustomerAddressesReq
-  ): AxiosPromise<StoreCustomerRes> {
+  ): AxiosPromise<StoreCustomersRes> {
     const path = `/store/customers/me/addresses`
     return this.client.request("POST", path, payload)
   }
@@ -22,9 +22,9 @@ class AddressesResource extends BaseResource {
   /**
    * Deletes an address of a customer
    * @param {string} address_id id of the address to delete
-   * @return {AxiosPromise<StoreCustomerResponse>}
+   * @return {AxiosPromise<StoreCustomersResponse>}
    */
-  deleteAddress(address_id: string): AxiosPromise<StoreCustomerRes> {
+  deleteAddress(address_id: string): AxiosPromise<StoreCustomersRes> {
     const path = `/store/customers/me/addresses/${address_id}`
     return this.client.request("DELETE", path)
   }
@@ -33,12 +33,12 @@ class AddressesResource extends BaseResource {
    * Update an address of a customer
    * @param {string} address_id id of customer
    * @param {StorePostCustomersCustomerAddressesAddressReq} payload address update
-   * @return {StoreCustomerResponse}
+   * @return {StoreCustomersResponse}
    */
   updateAddress(
     address_id: string,
     payload: StorePostCustomersCustomerAddressesAddressReq
-  ): AxiosPromise<StoreCustomerRes> {
+  ): AxiosPromise<StoreCustomersRes> {
     const path = `/store/customers/me/addresses/${address_id}`
     return this.client.request("POST", path, payload)
   }

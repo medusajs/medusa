@@ -1,7 +1,10 @@
-import BaseResource from "./base"
+import {
+  StoreGetVariantsParams,
+  StoreVariantsListRes,
+  StoreVariantsRes,
+} from "@medusajs/medusa"
 import { AxiosPromise } from "axios"
-import { StoreVariantsListRes, StoreVariantsRes } from "@medusajs/medusa"
-import { StoreVariantsListParamsObject } from "../types"
+import BaseResource from "./base"
 
 class ProductVariantsResource extends BaseResource {
   /**
@@ -19,9 +22,7 @@ class ProductVariantsResource extends BaseResource {
    * @param {StoreVariantsListParamsObject} query
    * @return {AxiosPromise<StoreVariantsListRes>}
    */
-  list(
-    query?: StoreVariantsListParamsObject
-  ): AxiosPromise<StoreVariantsListRes> {
+  list(query?: StoreGetVariantsParams): AxiosPromise<StoreVariantsListRes> {
     const path = `/store/variants`
 
     const search = Object.entries(query || {}).map(([key, value]) => {

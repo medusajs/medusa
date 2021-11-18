@@ -1,13 +1,18 @@
 import axios, { AxiosError, AxiosInstance } from "axios"
 import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
-import * as Types from "./types"
-import { RequestOptions } from "./types"
 
 export interface Config {
   baseUrl: string
   maxRetries: number
 }
+export interface RequestOptions {
+  apiKey?: string
+  timeout?: number
+  numberOfRetries?: number
+}
+
+export type RequestMethod = "DELETE" | "POST" | "GET"
 
 const defaultConfig = {
   maxRetries: 0,
@@ -87,8 +92,8 @@ class Client {
    * @return {object}
    */
   setHeaders(
-    userHeaders: object,
-    method: Types.RequestMethod,
+    userHeaders: RequestOptions,
+    method: RequestMethod,
     path: string
   ): object {
     let defaultHeaders: object = {
@@ -125,18 +130,21 @@ class Client {
 
     rax.attach(client)
 
-    // @ts-ignore
     client.defaults.raxConfig = {
       instance: client,
       retry: config.maxRetries,
       backoffType: "exponential",
       shouldRetry: (err: AxiosError): boolean => {
         const cfg = rax.getConfig(err)
-        return this.shouldRetryCondition(
-          err,
-          cfg.currentRetryAttempt,
-          cfg.retry
-        )
+        if (cfg) {
+          return this.shouldRetryCondition(
+            err,
+            cfg.currentRetryAttempt || 1,
+            cfg.retry || 3
+          )
+        } else {
+          return false
+        }
       },
     }
 
@@ -168,10 +176,10 @@ class Client {
    * @return {object}
    */
   async request(
-    method: Types.RequestMethod,
+    method: RequestMethod,
     path: string,
     payload: object = {},
-    options?: RequestOptions
+    options: RequestOptions = {}
   ): Promise<any> {
     const reqOpts = {
       method,
