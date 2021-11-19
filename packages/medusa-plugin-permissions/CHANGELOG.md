@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.30](https://github.com/medusajs/medusa/compare/medusa-plugin-permissions@1.1.29...medusa-plugin-permissions@1.1.30) (2021-11-19)
+
+### Features
+
+- Typescript for API layer ([#817](https://github.com/medusajs/medusa/issues/817)) ([373532e](https://github.com/medusajs/medusa/commit/373532ecbc8196f47e71af95a8cf82a14a4b1f9e))
+
 ## [1.1.29](https://github.com/medusajs/medusa/compare/medusa-plugin-permissions@1.1.28...medusa-plugin-permissions@1.1.29) (2021-10-18)
 
 **Note:** Version bump only for package medusa-plugin-permissions
