@@ -22,7 +22,7 @@ const Content = ({ data, api }) => {
       >
         <main className="DocSearch-content">
           {data.sections.map((s, i) => {
-            return <Section key={i} data={s} />
+            return <Section key={i} data={s} api={api} />
           })}
         </main>
       </Box>
