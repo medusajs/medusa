@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.28](https://github.com/medusajs/medusa/compare/medusa-fulfillment-manual@1.1.27...medusa-fulfillment-manual@1.1.28) (2021-11-19)
+
+**Note:** Version bump only for package medusa-fulfillment-manual
+
 ## [1.1.27](https://github.com/medusajs/medusa/compare/medusa-fulfillment-manual@1.1.26...medusa-fulfillment-manual@1.1.27) (2021-11-19)
 
 **Note:** Version bump only for package medusa-fulfillment-manual

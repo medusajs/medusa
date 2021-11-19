@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-js",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Client for Medusa Commerce Rest API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
