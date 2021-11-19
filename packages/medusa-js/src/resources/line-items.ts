@@ -1,5 +1,5 @@
 import {
-  StoreCartsCartRes,
+  StoreCartsRes,
   StoreCartsDeleteRes,
   StorePostCartsCartLineItemsItemReq,
   StorePostCartsCartLineItemsReq,
@@ -17,7 +17,7 @@ class LineItemsResource extends BaseResource {
   create(
     cart_id: string,
     payload: StorePostCartsCartLineItemsReq
-  ): AxiosPromise<StoreCartsCartRes> {
+  ): AxiosPromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/line-items`
     return this.client.request("POST", path, payload)
   }
@@ -34,7 +34,7 @@ class LineItemsResource extends BaseResource {
     cart_id: string,
     line_id: string,
     payload: StorePostCartsCartLineItemsItemReq
-  ): AxiosPromise<StoreCartsCartRes> {
+  ): AxiosPromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/line-items/${line_id}`
     return this.client.request("POST", path, payload)
   }
