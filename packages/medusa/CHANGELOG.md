@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.54](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.52...@medusajs/medusa@1.1.54) (2021-11-19)
+
+### Bug Fixes
+
+- /api/routes/store/auth pass linting ([#645](https://github.com/medusajs/medusa/issues/645)) ([40ad748](https://github.com/medusajs/medusa/commit/40ad748cc3c38bad97690b83c3b4b19c6d6365c3))
+- /api/routes/store/customers pass linting ([#646](https://github.com/medusajs/medusa/issues/646)) ([7cc94dc](https://github.com/medusajs/medusa/commit/7cc94dc479ee26df2d5a031bfeb9eb3709d03776))
+- add product count to storefront ([#719](https://github.com/medusajs/medusa/issues/719)) ([45b344f](https://github.com/medusajs/medusa/commit/45b344fbe1a570620c4e47cf959bdb605fffddef))
+- adds options to default relations in storefront product endpoints ([#712](https://github.com/medusajs/medusa/issues/712)) ([e82737a](https://github.com/medusajs/medusa/commit/e82737a03545f69a833d8329f52daef39cfca46d))
+- api/routes/store/products pass linting ([#644](https://github.com/medusajs/medusa/issues/644)) ([2966242](https://github.com/medusajs/medusa/commit/2966242bc812f9e75f0bb9cca5662b66836fc6d8))
+- delete region causes cascade error ([#672](https://github.com/medusajs/medusa/issues/672)) ([0a65eca](https://github.com/medusajs/medusa/commit/0a65eca3de4f339178315e88b4220bd92ebe2736))
+- lint in packages/medusa/src/services/swap.js pass linting ([#587](https://github.com/medusajs/medusa/issues/587)) ([3156a0d](https://github.com/medusajs/medusa/commit/3156a0de31749c1f32d5bdfe2cf8f1a8044bb42e))
+- make /api/routes/admin/gift-cards,routes/store/gift-cards,/routes/store/orders pass linting ([#643](https://github.com/medusajs/medusa/issues/643)) ([60e9432](https://github.com/medusajs/medusa/commit/60e943260b804efe1dec3e139e47180322e5b52e))
+- make /swaps pass eslint ([#665](https://github.com/medusajs/medusa/issues/665)) ([623d5f2](https://github.com/medusajs/medusa/commit/623d5f2b6d3881e2334fa48be80928ab9340a7ce))
+- make api/routes/admin/apps pass eslint ([#641](https://github.com/medusajs/medusa/issues/641)) ([c9234c2](https://github.com/medusajs/medusa/commit/c9234c2343e19b32b335b93f4fa53e54398a5fe6))
+- make api/routes/store/swaps pass eslint ([#678](https://github.com/medusajs/medusa/issues/678)) ([d9ee127](https://github.com/medusajs/medusa/commit/d9ee1272841ef047cceb6047fc34b8e42b5f580f))
+- make discounts pass eslint ([3df2b42](https://github.com/medusajs/medusa/commit/3df2b4279f363e746f3514d8d8aa78b0e8fa3906))
+- make it possible to update order shipping address ([#668](https://github.com/medusajs/medusa/issues/668)) ([e0fa06f](https://github.com/medusajs/medusa/commit/e0fa06fe964b8000ca539efa875ed6c322f6d57b))
+- make packages/medusa/src/api/routes/admin/auth and 3 others pass eslint ([#666](https://github.com/medusajs/medusa/issues/666)) ([95f80f8](https://github.com/medusajs/medusa/commit/95f80f8a6635d1cba74d3c7ccbf794809af2d0bb))
+- make packages/medusa/src/api/routes/admin/notes pass eslint ([#690](https://github.com/medusajs/medusa/issues/690)) ([f011662](https://github.com/medusajs/medusa/commit/f01166272db7dc2d1b783223a7ea5c9e662a028b))
+- make packages/medusa/src/api/routes/admin/orders pass eslint ([#649](https://github.com/medusajs/medusa/issues/649)) ([dc88210](https://github.com/medusajs/medusa/commit/dc8821095c65e73569bdda1c4a24762f7eb746fe))
+- make packages/medusa/src/api/routes/admin/return-reasons pass eslint ([#654](https://github.com/medusajs/medusa/issues/654)) ([a8fc89a](https://github.com/medusajs/medusa/commit/a8fc89af066836224e4f760115d13ba85f89a359))
+- make packages/medusa/src/api/routes/admin/returns pass eslint ([#653](https://github.com/medusajs/medusa/issues/653)) ([2f7deea](https://github.com/medusajs/medusa/commit/2f7deea1d0309b5a78d66b0dd0d3c2204717c02b))
+- make packages/medusa/src/api/routes/admin/shipping-options pass eslint ([#674](https://github.com/medusajs/medusa/issues/674)) ([bd86d3c](https://github.com/medusajs/medusa/commit/bd86d3c995b27bae5c8d97a21eb900b6dd112068))
+- make packages/medusa/src/api/routes/admin/shipping-profiles pass eslint ([#642](https://github.com/medusajs/medusa/issues/642)) ([ce4d361](https://github.com/medusajs/medusa/commit/ce4d3616d733b5472ebfc00b49ab17c5aa53daef))
+- make packages/medusa/src/api/routes/admin/store pass eslint ([#686](https://github.com/medusajs/medusa/issues/686)) ([7a230ec](https://github.com/medusajs/medusa/commit/7a230ec7e96cae6628f9b68a41dc6da89559dfe9))
+- make packages/medusa/src/api/routes/admin/upload pass eslint ([#627](https://github.com/medusajs/medusa/issues/627)) ([5fbce42](https://github.com/medusajs/medusa/commit/5fbce429489cba79340ae738c54a533bdc627a28))
+- make packages/medusa/src/api/routes/admin/users pass eslint ([a6a612c](https://github.com/medusajs/medusa/commit/a6a612c941924722c51e389359393436655cfc65))
+- make packages/medusa/src/api/routes/store/carts pass eslint ([#652](https://github.com/medusajs/medusa/issues/652)) ([1ba63cc](https://github.com/medusajs/medusa/commit/1ba63cce08d03edd47b3e651d60a34cf58d5c1e3))
+- make packages/medusa/src/api/routes/store/shipping-options pass linting ([#648](https://github.com/medusajs/medusa/issues/648)) ([5cb1b56](https://github.com/medusajs/medusa/commit/5cb1b5687ee80448dfecd0c8ba683ccdfc6900fc))
+- make packages/medusa/src/services/cart.js pass eslint ([#700](https://github.com/medusajs/medusa/issues/700)) ([0caba0d](https://github.com/medusajs/medusa/commit/0caba0d49113210af4f6d507e273e8b451a5eaaf))
+- Make packages/medusa/src/services/claim-item.js pass linting ([#626](https://github.com/medusajs/medusa/issues/626)) ([0d30369](https://github.com/medusajs/medusa/commit/0d3036978a8203f9fb6e64a2bc82a19ef697db05))
+- Make packages/medusa/src/services/oauth.js pass linting ([#604](https://github.com/medusajs/medusa/issues/604)) ([14608b0](https://github.com/medusajs/medusa/commit/14608b0f682e858ee38e4b996693962a25116749))
+- make packages/medusa/src/services/payment-provider.js pass eslint ([#549](https://github.com/medusajs/medusa/issues/549)) ([caf4357](https://github.com/medusajs/medusa/commit/caf4357c4d1a2199ab1399dfabd18876dd0642c7)), closes [#692](https://github.com/medusajs/medusa/issues/692)
+- Make packages/medusa/src/services/product-variant.js pass linting ([#693](https://github.com/medusajs/medusa/issues/693)) ([a351398](https://github.com/medusajs/medusa/commit/a3513983790eaf78285d32f1797d1d11eb446e5e))
+- make packages/medusa/src/services/shipping-profile.js pass eslint ([#582](https://github.com/medusajs/medusa/issues/582)) ([2c415ea](https://github.com/medusajs/medusa/commit/2c415ea520ed700a0a474111b83021a699fbc851))
+- make packages/medusa/src/services/totals.js pass eslint ([23e83af](https://github.com/medusajs/medusa/commit/23e83aff1cd858401fba42668f641270128068e1))
+- make variants pass eslint ([a1e446c](https://github.com/medusajs/medusa/commit/a1e446c1214a79a799da46b3d1bdd62c64b99ebf))
+- make variants pass eslint ([#647](https://github.com/medusajs/medusa/issues/647)) ([f4307c7](https://github.com/medusajs/medusa/commit/f4307c702a6c1420d1e344adc8b5ed880d9f1f8d))
+- **medusa:** add total count for list queries in product ([#710](https://github.com/medusajs/medusa/issues/710)) ([109d400](https://github.com/medusajs/medusa/commit/109d4007204964f0a89759f48a6e2d5afc0b1dd9))
+- Prepare routes for linting ([#603](https://github.com/medusajs/medusa/issues/603)) ([3e68069](https://github.com/medusajs/medusa/commit/3e68069a8959a2bf75f8639389cdd35b6a8058e7))
+- updates documentation and fixes script blockers ([#765](https://github.com/medusajs/medusa/issues/765)) ([3ea6aea](https://github.com/medusajs/medusa/commit/3ea6aea5beb2a50d1a3345fa3833eadb32d0a346))
+
+### Features
+
+- admin api - allow customers to be created and updated with metadata ([#824](https://github.com/medusajs/medusa/issues/824)) ([2d9879e](https://github.com/medusajs/medusa/commit/2d9879ea090898c08ad86a0ebc44d5b8965b5166))
+- Algolia plugin for medusa ([#718](https://github.com/medusajs/medusa/issues/718)) ([8ce9b20](https://github.com/medusajs/medusa/commit/8ce9b20222e1f4db75f730898549f0ed09eb1574))
+- Allow retrieval of soft-deleted products ([#723](https://github.com/medusajs/medusa/issues/723)) ([1e50aee](https://github.com/medusajs/medusa/commit/1e50aee4feb55092560dd4a9c51a0671363e8576))
+- **medusa:** adds collection endpoints to storefront ([#711](https://github.com/medusajs/medusa/issues/711)) ([5812756](https://github.com/medusajs/medusa/commit/58127564d7110c674fb14fdd97fbc080afba156d))
+- Typescript for API layer ([#817](https://github.com/medusajs/medusa/issues/817)) ([373532e](https://github.com/medusajs/medusa/commit/373532ecbc8196f47e71af95a8cf82a14a4b1f9e))
+
 ## [1.1.53](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.52...@medusajs/medusa@1.1.53) (2021-11-19)
 
 ### Bug Fixes
