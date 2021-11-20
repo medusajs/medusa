@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.33...medusa-plugin-contentful@1.1.34) (2021-11-19)
+
+**Note:** Version bump only for package medusa-plugin-contentful
+
+## [1.1.33](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.32...medusa-plugin-contentful@1.1.33) (2021-11-19)
+
+### Bug Fixes
+
+- ignore tests in build output ([#579](https://github.com/medusajs/medusa/issues/579)) ([53178cb](https://github.com/medusajs/medusa/commit/53178cbda3b4f5e9ac30829c99b4d4df6616a0cf))
+
 ## [1.1.32](https://github.com/medusajs/medusa/compare/medusa-plugin-contentful@1.1.31...medusa-plugin-contentful@1.1.32) (2021-10-25)
 
 ### Bug Fixes

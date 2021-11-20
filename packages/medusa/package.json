@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.1.52",
+  "version": "1.1.55",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "bin": {
@@ -26,7 +26,7 @@
     "cross-env": "^5.2.1",
     "eslint": "^7.32.0",
     "jest": "^25.5.2",
-    "medusa-interfaces": "^1.1.27",
+    "medusa-interfaces": "^1.1.29",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "sqlite3": "^5.0.2",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@hapi/joi": "^16.1.8",
-    "@medusajs/medusa-cli": "^1.1.22",
+    "@medusajs/medusa-cli": "^1.1.23",
     "@types/lodash": "^4.14.168",
     "awilix": "^4.2.3",
     "body-parser": "^1.19.0",
@@ -72,8 +72,8 @@
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^1.1.26",
-    "medusa-test-utils": "^1.1.29",
+    "medusa-core-utils": "^1.1.28",
+    "medusa-test-utils": "^1.1.31",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "passport": "^0.4.0",
