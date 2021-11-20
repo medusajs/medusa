@@ -18,12 +18,12 @@ The custom functionality will do a number of things:
 
 We will begin our custom implementation by adding a custom service. In you project create a new file at `/src/services/welcome.js`. Open the newly created file and add a class:
 
-```javascript
-import { BaseService } from "medusa-interfaces";
+```jsx
+import { BaseService } from "medusa-interfaces"
 
 class WelcomeService extends BaseService {
   constructor({}) {
-    super();
+    super()
   }
 
   async registerOptin(cartId, optin) {}
@@ -31,7 +31,7 @@ class WelcomeService extends BaseService {
   async sendWelcome(orderId) {}
 }
 
-export default WelcomeService;
+export default WelcomeService
 ```
 
 We will be filling out each of the methods in turn, but before we get to that it should be noted that placing files in `/src/services` has a special meaning in Medusa projects. When Medusa starts up it will look for files in this folder and register exports from these files to the global container. The global container holds all services and repositories in your Medusa project allowing for dependency injection. Dependency injection is a software development technique in which objects only receive other objects that it depends upon.
@@ -40,7 +40,7 @@ We will be filling out each of the methods in turn, but before we get to that it
 
 We will see dependency injection in action now when implementing the constructor:
 
-```javascript
+```jsx
 constructor({ cartService, orderService }) {
   super()
 
@@ -58,7 +58,7 @@ In the constructor we specify that our `WelcomeService` will depend upon the `ca
 
 The `registerOption` function will take two arguments: `cartId` and `optin`, where `cartId` holds the id of the cart that we wish to register optin for and `optin` is a boolean to indicate if the customer has accepted or optin or not. We will save the `optin` preferences in the cart's `metadata` field, so that it can be persisted for the future when we need to evaluate if we should send the welcome or not.
 
-```javascript
+```jsx
 async registerOptin(cartId, optin) {
   if (typeof optin !== "boolean") {
     throw new Error("optin must be a boolean value.")
@@ -78,7 +78,7 @@ The `registerOptin` implementation simply validates that the provided argument i
 
 The final function to implement in our class is the `sendWelcome` function that takes one argument `orderId` which holds the id of an order that we will evaluate whether to send a welcome for. In the implementation we leverage that when an order is created from a cart all the cart's metadata is copied to the order. We can therefore check `metadata.welcome_optin` to evaluate if the customer has allowed us to send a welcome to their email.
 
-```javascript
+```jsx
 async sendWelcome(orderId) {
   const order = await this.orderService_.retrieve(orderId, {
     select: ["email", "customer_id", "metadata"]
@@ -125,54 +125,54 @@ Similarly to the `/src/services` directory, the `/src/api` directory has a speci
 
 Create a new file at `/src/api/index.js` and add the following controller:
 
-```javascript
-import { Router } from "express";
-import bodyParser from "body-parser";
+```jsx
+import { Router } from "express"
+import bodyParser from "body-parser"
 
 export default () => {
-  const app = Router();
+  const app = Router()
 
   app.post("/welcome/:cart_id", bodyParser.json(), async (req, res) => {
     // TODO
-  });
+  })
 
-  return app;
-};
+  return app
+}
 ```
 
 ### Controller implementation
 
 Our endpoint controller's implementation will be very simple. It will extract the `id` from the path paramater and the `optin` flag from the request body. We will then use these values to call our the `WelcomeService`, which will take care of updating the cart metadata for later.
 
-```javascript
+```jsx
 app.post("/welcome/:cart_id", bodyParser.json(), async (req, res) => {
-  const { cart_id } = req.params;
-  const { optin } = req.body;
+  const { cart_id } = req.params
+  const { optin } = req.body
 
   // Validate that the optin value was provided.
   // If not respond with a Bad Request status
   if (typeof optin !== "boolean") {
     res.status(400).json({
       message: "You must provide an boolean optin value in the request body",
-    });
-    return;
+    })
+    return
   }
 
-  const welcomeService = req.scope.resolve("welcomeService");
+  const welcomeService = req.scope.resolve("welcomeService")
 
   try {
-    await welcomeService.registerOptin(cart_id, optin);
+    await welcomeService.registerOptin(cart_id, optin)
 
     res.status(200).json({
       success: true,
-    });
+    })
   } catch (err) {
     // This is not supposed to happen.
     res.status(500).json({
       message: "Something unexpected happened.",
-    });
+    })
   }
-});
+})
 ```
 
 In the implementation above we are first validating that the request body is structured correctly so that we can proceed with our opt-in registration. If the validation fails we respond with 400 Bad Request which is an HTTP code that indicates that the client that sent the request has not provided the correct values.
@@ -220,20 +220,20 @@ The response should contain the cart with the metadata field set like this:
 
 The final thing that we will add in this part of the tutorial is the subscriber that listens for the `order.placed` event and sends out emails if the user has opted in for welcomes. Again we will leverage one of the special directories in Medusa that makes dependency injection easy and automatic. The directory to place a file in this time is the `/src/subscribers` directory, which treats exports as subscribers and makes sure the inject dependencies in a similar fashion to what we saw with services. To get started with our implementation create a file at `/src/subscribers/welcome.js` and add the following:
 
-```javascript
+```jsx
 class WelcomeSubscriber {
   constructor({ welcomeService, eventBusService }) {
-    this.welcomeService_ = welcomeService;
+    this.welcomeService_ = welcomeService
 
-    eventBusService.subscribe("order.placed", this.handleWelcome);
+    eventBusService.subscribe("order.placed", this.handleWelcome)
   }
 
   handleWelcome = async (data) => {
-    return await this.welcomeService_.sendWelcome(data.id);
-  };
+    return await this.welcomeService_.sendWelcome(data.id)
+  }
 }
 
-export default WelcomeSubscriber;
+export default WelcomeSubscriber
 ```
 
 The implementation above is all that is needed to automate the `sendWelcome` function to be called every time a new order is created. The subscriber class here delegates all of the business logic to the `sendWelcome` function, where we are checking for opt-in and first time buyers.
