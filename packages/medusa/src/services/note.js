@@ -9,7 +9,7 @@ class NoteService extends BaseService {
     DELETED: "note.deleted",
   }
 
-  constructor({ manager, noteRepository, eventBusService, userService }) {
+  constructor({ manager, noteRepository, eventBusService }) {
     super()
 
     /** @private @const {EntityManager} */
@@ -35,7 +35,7 @@ class NoteService extends BaseService {
     const cloned = new NoteService({
       manager: transactionManager,
       noteRepository: this.noteRepository_,
-      eventBus: this.eventBus_,
+      eventBusService: this.eventBus_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -44,9 +44,9 @@ class NoteService extends BaseService {
 
   /**
    * Retrieves a specific note.
-   * @param {*} id - the id of the note to retrieve.
-   * @param {*} config - any options needed to query for the result.
-   * @return {Promise} which resolves to the requested note.
+   * @param {string} id - the id of the note to retrieve.
+   * @param {object} config - any options needed to query for the result.
+   * @return {Promise<Note>} which resolves to the requested note.
    */
   async retrieve(id, config = {}) {
     const noteRepo = this.manager_.getCustomRepository(this.noteRepository_)
@@ -69,6 +69,9 @@ class NoteService extends BaseService {
   /** Fetches all notes related to the given selector
    * @param {Object} selector - the query object for find
    * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
+   * @param {string[]} config.relations - Which relations to include in the resulting list of Notes.
+   * @param {number} config.take - How many Notes to take in the resulting list of Notes.
+   * @param {number} config.skip - How many Notes to skip in the resulting list of Notes.
    * @return {Promise<Note[]>} notes related to the given search.
    */
   async list(
@@ -88,7 +91,7 @@ class NoteService extends BaseService {
 
   /**
    * Creates a note associated with a given author
-   * @param {object} data - the note to create
+   * @param {CreateNoteInput} data - the note to create
    * @param {*} config - any configurations if needed, including meta data
    * @return {Promise} resolves to the creation result
    */

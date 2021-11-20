@@ -63,10 +63,10 @@ export const products = {
 }
 
 export const ProductServiceMock = {
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     if (data.title === "Test Product") {
       return Promise.resolve(products.product1)
     }
@@ -76,14 +76,14 @@ export const ProductServiceMock = {
     return Promise.resolve({ ...data })
   }),
   count: jest.fn().mockReturnValue(4),
-  publish: jest.fn().mockImplementation(_ => {
+  publish: jest.fn().mockImplementation((_) => {
     return Promise.resolve({
       id: IdMap.getId("publish"),
       name: "Product 1",
       published: true,
     })
   }),
-  delete: jest.fn().mockImplementation(_ => {
+  delete: jest.fn().mockImplementation((_) => {
     return Promise.resolve()
   }),
   createVariant: jest.fn().mockImplementation((productId, value) => {
@@ -111,7 +111,7 @@ export const ProductServiceMock = {
     .mockReturnValue(
       Promise.resolve([{ id: IdMap.getId("1") }, { id: IdMap.getId("2") }])
     ),
-  retrieve: jest.fn().mockImplementation(productId => {
+  retrieve: jest.fn().mockImplementation((productId) => {
     if (productId === IdMap.getId("product1")) {
       return Promise.resolve(products.product1)
     }
@@ -135,7 +135,10 @@ export const ProductServiceMock = {
   update: jest.fn().mockImplementation((product, data) => {
     return Promise.resolve(products.product1)
   }),
-  list: jest.fn().mockImplementation(data => {
+  listAndCount: jest.fn().mockImplementation((data) => {
+    return Promise.resolve([[products.product1, products.product2], 2])
+  }),
+  list: jest.fn().mockImplementation((data) => {
     // Used to retrieve a product based on a variant id see
     // ProductVariantService.addOptionValue
     if (data.variants === IdMap.getId("giftCardVar")) {

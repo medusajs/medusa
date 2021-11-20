@@ -16,18 +16,38 @@ module.exports = {
     semi: `off`,
     "no-unused-expressions": `off`,
     camelcase: `off`,
+    "no-invalid-this": `off`,
   },
   env: {
     es6: true,
     node: true,
     jest: true,
   },
+  ignorePatterns: [`**/models`, `**/repositories`],
   overrides: [
     {
       files: [`*.ts`],
       parser: `@typescript-eslint/parser`,
       plugins: [`@typescript-eslint/eslint-plugin`],
       extends: [`plugin:@typescript-eslint/recommended`],
+      rules: {
+        "@typescript-eslint/explicit-function-return-type": ["error"],
+        "@typescript-eslint/no-non-null-assertion": ["off"],
+      },
+    },
+    {
+      files: ["**/api/**/*.js", "**/api/**/*.ts"],
+      rules: {
+        "valid-jsdoc": ["off"],
+      },
+    },
+    {
+      files: ["**/api/**/*.ts"],
+      rules: {
+        "valid-jsdoc": ["off"],
+        "@typescript-eslint/explicit-function-return-type": ["off"],
+        "@typescript-eslint/no-var-requires": ["off"],
+      },
     },
   ],
 }

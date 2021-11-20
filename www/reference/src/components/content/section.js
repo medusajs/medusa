@@ -12,7 +12,7 @@ import NavigationContext from "../../context/navigation-context"
 import ChevronDown from "../icons/chevron-down"
 import useInView from "../../hooks/use-in-view"
 
-const Section = ({ data }) => {
+const Section = ({ data, api }) => {
   const { section } = data
   const [isExpanded, setIsExpanded] = useState(false)
   const { openSections, updateSection, updateMetadata } = useContext(
@@ -20,11 +20,11 @@ const Section = ({ data }) => {
   )
 
   const endpoints = section.paths
-    .map(p => {
+    .map((p) => {
       let path = p.name
       let ep = []
 
-      p.methods.forEach(m => {
+      p.methods.forEach((m) => {
         ep.push({ method: m.method, endpoint: path })
       })
 
@@ -184,6 +184,7 @@ const Section = ({ data }) => {
                   {p.methods.map((m, i) => {
                     return (
                       <Method
+                        api={api}
                         key={i}
                         data={m}
                         section={convertToKebabCase(section.section_name)}

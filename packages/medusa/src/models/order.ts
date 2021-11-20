@@ -1,44 +1,43 @@
 import {
-  Entity,
-  Generated,
   BeforeInsert,
-  Index,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Generated,
+  Index,
   JoinColumn,
   JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import {
-  resolveDbType,
-  resolveDbGenerationStrategy,
   DbAwareColumn,
+  resolveDbGenerationStrategy,
+  resolveDbType,
 } from "../utils/db-aware-column"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
-
 import { Address } from "./address"
-import { LineItem } from "./line-item"
+import { Cart } from "./cart"
+import { ClaimOrder } from "./claim-order"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
-import { Region } from "./region"
 import { Discount } from "./discount"
+import { DraftOrder } from "./draft-order"
+import { Fulfillment } from "./fulfillment"
 import { GiftCard } from "./gift-card"
 import { GiftCardTransaction } from "./gift-card-transaction"
+import { LineItem } from "./line-item"
 import { Payment } from "./payment"
-import { Cart } from "./cart"
-import { Fulfillment } from "./fulfillment"
-import { Return } from "./return"
 import { Refund } from "./refund"
-import { Swap } from "./swap"
-import { ClaimOrder } from "./claim-order"
+import { Region } from "./region"
+import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
-import { DraftOrder } from "./draft-order"
+import { Swap } from "./swap"
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -174,53 +173,29 @@ export class Order {
   })
   gift_cards: GiftCard[]
 
-  @OneToMany(
-    () => ShippingMethod,
-    method => method.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => ShippingMethod, (method) => method.order, {
+    cascade: ["insert"],
+  })
   shipping_methods: ShippingMethod[]
 
-  @OneToMany(
-    () => Payment,
-    payment => payment.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => Payment, (payment) => payment.order, { cascade: ["insert"] })
   payments: Payment[]
 
-  @OneToMany(
-    () => Fulfillment,
-    fulfillment => fulfillment.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.order, {
+    cascade: ["insert"],
+  })
   fulfillments: Fulfillment[]
 
-  @OneToMany(
-    () => Return,
-    ret => ret.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => Return, (ret) => ret.order, { cascade: ["insert"] })
   returns: Return[]
 
-  @OneToMany(
-    () => ClaimOrder,
-    co => co.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => ClaimOrder, (co) => co.order, { cascade: ["insert"] })
   claims: ClaimOrder[]
 
-  @OneToMany(
-    () => Refund,
-    ref => ref.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => Refund, (ref) => ref.order, { cascade: ["insert"] })
   refunds: Refund[]
 
-  @OneToMany(
-    () => Swap,
-    swap => swap.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => Swap, (swap) => swap.order, { cascade: ["insert"] })
   swaps: Swap[]
 
   @Column({ nullable: true })
@@ -230,17 +205,12 @@ export class Order {
   @JoinColumn({ name: "draft_order_id" })
   draft_order: DraftOrder
 
-  @OneToMany(
-    () => LineItem,
-    lineItem => lineItem.order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
+    cascade: ["insert"],
+  })
   items: LineItem[]
 
-  @OneToMany(
-    () => GiftCardTransaction,
-    gc => gc.order
-  )
+  @OneToMany(() => GiftCardTransaction, (gc) => gc.order)
   gift_card_transactions: GiftCardTransaction[]
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
@@ -256,7 +226,7 @@ export class Order {
   metadata: any
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: Boolean
+  no_notification: boolean
 
   @Column({ nullable: true })
   idempotency_key: string
@@ -273,14 +243,18 @@ export class Order {
   gift_card_total: number
 
   @BeforeInsert()
-  private async beforeInsert() {
+  private async beforeInsert(): Promise<void> {
     if (!this.id) {
       const id = ulid()
       this.id = `order_${id}`
     }
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
-      this.display_id = await manualAutoIncrement("order")
+      const disId = await manualAutoIncrement("order")
+
+      if (disId) {
+        this.display_id = disId
+      }
     }
   }
 }

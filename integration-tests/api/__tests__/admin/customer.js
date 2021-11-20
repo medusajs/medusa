@@ -1,4 +1,3 @@
-const { dropDatabase } = require("pg-god")
 const path = require("path")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -158,6 +157,7 @@ describe("/admin/customers", () => {
             first_name: "newf",
             last_name: "newl",
             email: "new@email.com",
+            metadata: { foo: "bar" },
           },
           {
             headers: {
@@ -175,6 +175,7 @@ describe("/admin/customers", () => {
           first_name: "newf",
           last_name: "newl",
           email: "new@email.com",
+          metadata: { foo: "bar" },
         })
       )
     })
