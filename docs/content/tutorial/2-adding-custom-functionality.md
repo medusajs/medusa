@@ -18,7 +18,7 @@ The custom functionality will do a number of things:
 
 We will begin our custom implementation by adding a custom service. In you project create a new file at `/src/services/welcome.js`. Open the newly created file and add a class:
 
-```jsx
+```javascript
 import { BaseService } from "medusa-interfaces"
 
 class WelcomeService extends BaseService {
@@ -40,7 +40,7 @@ We will be filling out each of the methods in turn, but before we get to that it
 
 We will see dependency injection in action now when implementing the constructor:
 
-```jsx
+```javascript
 constructor({ cartService, orderService }) {
   super()
 
@@ -58,7 +58,7 @@ In the constructor we specify that our `WelcomeService` will depend upon the `ca
 
 The `registerOption` function will take two arguments: `cartId` and `optin`, where `cartId` holds the id of the cart that we wish to register optin for and `optin` is a boolean to indicate if the customer has accepted or optin or not. We will save the `optin` preferences in the cart's `metadata` field, so that it can be persisted for the future when we need to evaluate if we should send the welcome or not.
 
-```jsx
+```javascript
 async registerOptin(cartId, optin) {
   if (typeof optin !== "boolean") {
     throw new Error("optin must be a boolean value.")
@@ -78,7 +78,7 @@ The `registerOptin` implementation simply validates that the provided argument i
 
 The final function to implement in our class is the `sendWelcome` function that takes one argument `orderId` which holds the id of an order that we will evaluate whether to send a welcome for. In the implementation we leverage that when an order is created from a cart all the cart's metadata is copied to the order. We can therefore check `metadata.welcome_optin` to evaluate if the customer has allowed us to send a welcome to their email.
 
-```jsx
+```javascript
 async sendWelcome(orderId) {
   const order = await this.orderService_.retrieve(orderId, {
     select: ["email", "customer_id", "metadata"]
@@ -125,7 +125,7 @@ Similarly to the `/src/services` directory, the `/src/api` directory has a speci
 
 Create a new file at `/src/api/index.js` and add the following controller:
 
-```jsx
+```javascript
 import { Router } from "express"
 import bodyParser from "body-parser"
 
@@ -144,7 +144,7 @@ export default () => {
 
 Our endpoint controller's implementation will be very simple. It will extract the `id` from the path paramater and the `optin` flag from the request body. We will then use these values to call our the `WelcomeService`, which will take care of updating the cart metadata for later.
 
-```jsx
+```javascript
 app.post("/welcome/:cart_id", bodyParser.json(), async (req, res) => {
   const { cart_id } = req.params
   const { optin } = req.body
@@ -220,7 +220,7 @@ The response should contain the cart with the metadata field set like this:
 
 The final thing that we will add in this part of the tutorial is the subscriber that listens for the `order.placed` event and sends out emails if the user has opted in for welcomes. Again we will leverage one of the special directories in Medusa that makes dependency injection easy and automatic. The directory to place a file in this time is the `/src/subscribers` directory, which treats exports as subscribers and makes sure the inject dependencies in a similar fashion to what we saw with services. To get started with our implementation create a file at `/src/subscribers/welcome.js` and add the following:
 
-```jsx
+```javascript
 class WelcomeSubscriber {
   constructor({ welcomeService, eventBusService }) {
     this.welcomeService_ = welcomeService
