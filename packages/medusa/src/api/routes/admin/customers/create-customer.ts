@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminPostCustomersReq, req.bodyn)
+  const validated = await validator(AdminPostCustomersReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   const customer = await customerService.create(validated)
