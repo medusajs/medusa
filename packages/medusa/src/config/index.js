@@ -9,6 +9,20 @@ if (!envFound) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️")
 }
 
+const jwtSecret =
+  process.env.NODE_ENV === "test"
+    ? "test"
+    : process.env.NODE_ENV === "development"
+    ? "development"
+    : process.env.JWT_SECRET
+
+const cookieSecret =
+  process.env.NODE_ENV === "test"
+    ? "test"
+    : process.env.NODE_ENV === "development"
+    ? "development"
+    : process.env.COOKIE_SECRET
+
 const config = {
   /**
    * Your favorite port
@@ -21,10 +35,8 @@ const config = {
   /**
    * Your secret sauce
    */
-  jwtSecret: process.env.NODE_ENV === "test" ? "test" : process.env.JWT_SECRET,
-
-  cookieSecret:
-    process.env.NODE_ENV === "test" ? "test" : process.env.COOKIE_SECRET,
+  jwtSecret,
+  cookieSecret,
 
   /**
    * Used by winston logger
