@@ -159,7 +159,7 @@ article {
 .sidebar-bg {
   height: 100%;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 400;
 }
 
 /* Medusa logo */
@@ -180,7 +180,8 @@ a.menu__link--sublist::after {
 }
 
 .menu__list-item > a {
-  font-weight: bold;
+  font-weight: 450;
+  color: #1f1f1f;
 }
 
 /* Pagination */
