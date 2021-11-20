@@ -1,5 +1,5 @@
 ---
-title: Plugins in Medusa
+title: Plugins
 ---
 
 # Plugins

@@ -5,17 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import React, { useState, useRef, useCallback, useMemo } from "react"
-import { createPortal } from "react-dom"
-import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
-import { useHistory } from "@docusaurus/router"
-import { useBaseUrlUtils } from "@docusaurus/useBaseUrl"
-import Link from "@docusaurus/Link"
-import Head from "@docusaurus/Head"
-import useSearchQuery from "@theme/hooks/useSearchQuery"
 import { DocSearchButton, useDocSearchKeyboardEvents } from "@docsearch/react"
-import useAlgoliaContextualFacetFilters from "@theme/hooks/useAlgoliaContextualFacetFilters"
+import Head from "@docusaurus/Head"
+import Link from "@docusaurus/Link"
+import { useHistory } from "@docusaurus/router"
 import { translate } from "@docusaurus/Translate"
+import { useBaseUrlUtils } from "@docusaurus/useBaseUrl"
+import useDocusaurusContext from "@docusaurus/useDocusaurusContext"
+import useAlgoliaContextualFacetFilters from "@theme/hooks/useAlgoliaContextualFacetFilters"
+import useSearchQuery from "@theme/hooks/useSearchQuery"
+import React, { useCallback, useMemo, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import styles from "./styles.module.css"
 
 let DocSearchModal = null
@@ -46,7 +46,7 @@ const replaceUrl = (item) => {
 
 function Hit({ hit, children }) {
   if (hit.url.includes("/api/store") || hit.url.includes("/api/admin")) {
-    let url = replaceUrl(hit)
+    const url = replaceUrl(hit)
     return <a href={url}>{children}</a>
   }
 
@@ -131,13 +131,13 @@ function DocSearch({ contextualSearch, ...props }) {
 
   const navigator = useRef({
     navigate({ item }) {
-      let url = replaceUrl(item)
-      //Need to type out the entire URL to prevent it from attempting to open the page
-      //as part of the docusaurus project. Which will fail.
+      const url = replaceUrl(item)
+      // Need to type out the entire URL to prevent it from attempting to open the page
+      // as part of the docusaurus project. Which will fail.
       window.location = `https://docs.medusa-commerce.com${url}`
     },
     navigateNewTab({ item }) {
-      let url = replaceUrl(item)
+      const url = replaceUrl(item)
       const windowReference = window.open(url, "_blank", "noopener")
 
       if (windowReference) {
