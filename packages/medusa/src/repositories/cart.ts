@@ -1,5 +1,5 @@
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
 import { flatten, groupBy, map, merge } from "lodash"
+import { EntityRepository, FindManyOptions, Repository } from "typeorm"
 import { Cart } from "../models/cart"
 
 @EntityRepository(Cart)
@@ -32,7 +32,7 @@ export class CartRepository extends Repository<Cart> {
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, entityAndRelations =>
+    return map(entitiesAndRelationsById, (entityAndRelations) =>
       merge({}, ...entityAndRelations)
     )
   }

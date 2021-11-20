@@ -1,7 +1,8 @@
 import React from "react"
 import { Flex, Box, Text } from "theme-ui"
+import CopyToClipboard from "../CopyToClipboard"
 
-const CodeBox = ({ header, children }) => {
+const CodeBox = ({ header, children, shell, content, allowCopy }) => {
   return (
     <Box
       sx={{
@@ -23,9 +24,25 @@ const CodeBox = ({ header, children }) => {
           borderRadius: "8px 8px 0 0",
         }}
       >
-        <Text variant="small" sx={{ fontWeight: "400" }}>
-          {header}
-        </Text>
+        <Flex
+          sx={{
+            height: "100%",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+          }}
+        >
+          <Text variant="small" sx={{ fontWeight: "400" }}>
+            {header.toUpperCase()}
+          </Text>
+          {allowCopy ? (
+            <CopyToClipboard
+              copyText={content}
+              tooltipText={"Copy to clipboard"}
+            />
+          ) : (
+            <></>
+          )}
+        </Flex>
       </Box>
       <Box
         sx={{

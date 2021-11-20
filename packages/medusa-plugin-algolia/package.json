@@ -1,0 +1,46 @@
+{
+  "name": "medusa-plugin-algolia",
+  "version": "0.0.3",
+  "description": "Search support for algolia",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-plugin-algolia"
+  },
+  "author": "rolwin100",
+  "license": "MIT",
+  "scripts": {
+    "build": "babel src -d .",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "medusa-interfaces": "1.x",
+    "typeorm": "0.x"
+  },
+  "dependencies": {
+    "algoliasearch": "^4.10.5",
+    "body-parser": "^1.19.0",
+    "lodash": "^4.17.21",
+    "medusa-core-utils": "^1.1.28",
+    "medusa-interfaces": "^1.1.29"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/node": "^7.7.4",
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "@babel/plugin-transform-instanceof": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.7.6",
+    "@babel/preset-env": "^7.7.5",
+    "@babel/register": "^7.7.4",
+    "@babel/runtime": "^7.9.6",
+    "client-sessions": "^0.8.0",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0",
+    "jest": "^25.5.2"
+  },
+  "gitHead": "aa460f63591f9625f1fe98749b34172e528bed7f"
+}

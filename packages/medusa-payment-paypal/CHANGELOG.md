@@ -3,11 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.31](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.30...medusa-payment-paypal@1.0.31) (2021-11-11)
+## [1.0.32](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.30...medusa-payment-paypal@1.0.32) (2021-11-19)
 
-### Bug Fixes
+**Note:** Version bump only for package medusa-payment-paypal
 
-- account for lowest currency unit in paypal ([#761](https://github.com/medusajs/medusa/issues/761)) ([b30a2af](https://github.com/medusajs/medusa/commit/b30a2af94de32476d82bbe4727ee7b224d6437fe))
+## [1.0.31](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.30...medusa-payment-paypal@1.0.31) (2021-11-19)
+
+**Note:** Version bump only for package medusa-payment-paypal
 
 ## [1.0.30](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.29...medusa-payment-paypal@1.0.30) (2021-10-18)
 

@@ -1344,7 +1344,7 @@ describe("CartService", () => {
 
       expect(() => {
         cartService.findCustomShippingOption(cartCSO, "some-other-so")
-      }).toThrow(MedusaError)
+      }).toThrow(Error)
     })
   })
 

@@ -1,26 +1,10 @@
 # FILES TODO
 
-/packages/medusa/src/services/cart.js
-/packages/medusa/src/services/claim-item.js
-/packages/medusa/src/services/event-bus.js
 /packages/medusa/src/services/fulfillment-provider.js
-/packages/medusa/src/services/inventory.js
 /packages/medusa/src/services/middleware.js
-/packages/medusa/src/services/oauth.js
-/packages/medusa/src/services/payment-provider.js
-/packages/medusa/src/services/product-collection.js
-/packages/medusa/src/services/product-variant.js
-/packages/medusa/src/services/product.js
-/packages/medusa/src/services/return.js
-/packages/medusa/src/services/shipping-profile.js
-/packages/medusa/src/services/store.js
-/packages/medusa/src/services/swap.js
-/packages/medusa/src/services/totals.js
-
 /packages/medusa/src/subscribers/notification.js
 /packages/medusa/src/subscribers/order.js
 /packages/medusa/src/subscribers/product.js
-
 /packages/medusa/src/loaders/api.js
 /packages/medusa/src/loaders/database.js
 /packages/medusa/src/loaders/defaults.js
@@ -34,17 +18,36 @@
 /packages/medusa/src/loaders/repositories.js
 /packages/medusa/src/loaders/services.js
 /packages/medusa/src/loaders/subscribers.js
+/packages/medusa/src/api/routes/admin/auth
+/packages/medusa/src/api/routes/admin/collections
+/packages/medusa/src/api/routes/store/carts
+/packages/medusa/src/api/routes/store/return-reasons
+/packages/medusa/src/api/routes/store/returns
+
+# JS Client
+/packages/medusa-js/src/resources/auth.ts
+/packages/medusa-js/src/resources/gift-cards.ts
+/packages/medusa-js/src/resources/line-items.ts
+/packages/medusa-js/src/resources/payment-methods.ts
+/packages/medusa-js/src/resources/product-variants.ts
+/packages/medusa-js/src/resources/regions.ts
+/packages/medusa-js/src/resources/return-reasons.ts
+/packages/medusa-js/src/resources/returns.ts
+/packages/medusa-js/src/resources/shipping-options.ts
+/packages/medusa-js/src/resources/swaps.ts
+/packages/medusa-js/src/resources/collections.ts
+/packages/medusa-js/src/types/
+/packages/medusa-js/src/error.ts
+
 
 # END OF FILES TODO
 
-/packages/medusa/src/api
 /packages/medusa/src/models
 /packages/medusa/src/repositories
 /packages/medusa/src/commands
 /packages/medusa/src/helpers
 /packages/medusa/src/migrations
 /packages/medusa/src/utils
-
 /integration-tests
 /docs
 /docs-util
