@@ -1,5 +1,5 @@
 import { IdMap } from "medusa-test-utils"
-import { defaultFields, defaultRelations } from ".."
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
@@ -27,8 +27,8 @@ describe("GET /admin/discounts", () => {
       expect(DiscountServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
-          select: defaultFields,
-          relations: defaultRelations,
+          select: defaultAdminDiscountsFields,
+          relations: defaultAdminDiscountsRelations,
           skip: 0,
           take: 20,
           order: { created_at: "DESC" },
@@ -64,8 +64,8 @@ describe("GET /admin/discounts", () => {
       expect(DiscountServiceMock.listAndCount).toHaveBeenCalledWith(
         { q: "OLI", is_dynamic: false, is_disabled: false },
         {
-          select: defaultFields,
-          relations: defaultRelations,
+          select: defaultAdminDiscountsFields,
+          relations: defaultAdminDiscountsRelations,
           skip: 20,
           take: 40,
           order: { created_at: "DESC" },
@@ -97,8 +97,8 @@ describe("GET /admin/discounts", () => {
       expect(DiscountServiceMock.listAndCount).toHaveBeenCalledWith(
         { is_dynamic: true },
         {
-          select: defaultFields,
-          relations: defaultRelations,
+          select: defaultAdminDiscountsFields,
+          relations: defaultAdminDiscountsRelations,
           skip: 0,
           take: 20,
           order: { created_at: "DESC" },
@@ -130,8 +130,8 @@ describe("GET /admin/discounts", () => {
       expect(DiscountServiceMock.listAndCount).toHaveBeenCalledWith(
         { is_disabled: true },
         {
-          select: defaultFields,
-          relations: defaultRelations,
+          select: defaultAdminDiscountsFields,
+          relations: defaultAdminDiscountsRelations,
           skip: 0,
           take: 20,
           order: { created_at: "DESC" },

@@ -346,7 +346,13 @@ class ClaimService extends BaseService {
       return result
     })
   }
-
+  /**
+   * @param {string} id - the object containing all data required to create a claim
+   * @param {Object} config - config object
+   * @param {Object | undefined}  config.metadata - config metadata
+   * @param {boolean|undefined}  config.no_notification - config no notification
+   * @return {Claim} created claim
+   */
   createFulfillment(
     id,
     config = {

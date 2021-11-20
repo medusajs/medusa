@@ -4,7 +4,7 @@ import Redis from "ioredis"
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
- * @interface
+ * @class
  */
 class EventBusService {
   constructor(
@@ -13,7 +13,7 @@ class EventBusService {
     singleton = true
   ) {
     const opts = {
-      createClient: type => {
+      createClient: (type) => {
         switch (type) {
           case "client":
             return redisClient
@@ -127,7 +127,10 @@ class EventBusService {
   }
 
   /**
-   *
+   * Adds a function to a list of event subscribers.
+   * @param {string} event - the event that the subscriber will listen for.
+   * @param {func} subscriber - the function to be called when a certain event
+   * happens. Subscribers must return a Promise.
    */
   registerCronHandler_(event, subscriber) {
     if (typeof subscriber !== "function") {
@@ -165,7 +168,7 @@ class EventBusService {
   }
 
   async sleep(ms) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(resolve, ms)
     })
   }
@@ -194,7 +197,7 @@ class EventBusService {
       const jobs = await sjRepo.find({}, listConfig)
 
       await Promise.all(
-        jobs.map(job => {
+        jobs.map((job) => {
           this.queue_
             .add(
               { eventName: job.event_name, data: job.data },
@@ -212,13 +215,10 @@ class EventBusService {
 
   /**
    * Handles incoming jobs.
-   * @param job {{ eventName: (string), data: (any) }}
-   *    eventName - the name of the event to process
-   *    data - data to send to the subscriber
-   *
-   * @returns {Promise} resolves to the results of the subscriber calls.
+   * @param {Object} job The job object
+   * @return {Promise} resolves to the results of the subscriber calls.
    */
-  worker_ = job => {
+  worker_ = (job) => {
     const { eventName, data } = job.data
     const eventObservers = this.observers_[eventName] || []
     const wildcardObservers = this.observers_["*"] || []
@@ -230,8 +230,8 @@ class EventBusService {
     )
 
     return Promise.all(
-      observers.map(subscriber => {
-        return subscriber(data, eventName).catch(err => {
+      observers.map((subscriber) => {
+        return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )
@@ -242,14 +242,19 @@ class EventBusService {
     )
   }
 
-  cronWorker_ = job => {
+  /**
+   * Handles incoming jobs.
+   * @param {Object} job The job object
+   * @return {Promise} resolves to the results of the subscriber calls.
+   */
+  cronWorker_ = (job) => {
     const { eventName, data } = job.data
     const observers = this.cronHandlers_[eventName] || []
     this.logger_.info(`Processing cron job: ${eventName}`)
 
     return Promise.all(
-      observers.map(subscriber => {
-        return subscriber(data, eventName).catch(err => {
+      observers.map((subscriber) => {
+        return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(
             `An error occured while processing ${eventName}: ${err}`
           )
@@ -265,7 +270,7 @@ class EventBusService {
    * @param {object} data - the data to be sent with the event
    * @param {string} cron - the cron pattern
    * @param {function} handler - the handler to call on each cron job
-   * @return void
+   * @return {void}
    */
   createCronJob(eventName, data, cron, handler) {
     this.logger_.info(`Registering ${eventName}`)

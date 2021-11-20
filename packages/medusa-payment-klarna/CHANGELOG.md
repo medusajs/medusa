@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.33](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.32...medusa-payment-klarna@1.1.33) (2021-11-19)
+
+**Note:** Version bump only for package medusa-payment-klarna
+
+## [1.1.32](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.31...medusa-payment-klarna@1.1.32) (2021-11-19)
+
+**Note:** Version bump only for package medusa-payment-klarna
+
 ## [1.1.31](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.30...medusa-payment-klarna@1.1.31) (2021-10-18)
 
 **Note:** Version bump only for package medusa-payment-klarna
