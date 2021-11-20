@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-klarna",
-  "version": "1.1.31",
+  "version": "1.1.33",
   "description": "Klarna Payment provider for Medusa Commerce",
   "main": "index.js",
   "repository": {
@@ -40,8 +40,8 @@
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.26",
-    "medusa-test-utils": "^1.1.29"
+    "medusa-core-utils": "^1.1.28",
+    "medusa-test-utils": "^1.1.31"
   },
-  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+  "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
 }

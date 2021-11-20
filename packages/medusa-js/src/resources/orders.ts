@@ -37,7 +37,7 @@ class OrdersResource extends BaseResource {
         val = value.join(",")
       }
 
-      return `${key}=${encodeURIComponent(val)}`
+      return `${key}=${encodeURIComponent(val as string)}`
     })
     path = `/store/orders?${queryString.join("&")}`
 
