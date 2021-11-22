@@ -1,4 +1,4 @@
-import { ClassConstructor, plainToClass } from "class-transformer"
+import { ClassConstructor, plainToInstance } from "class-transformer"
 import { validate, ValidationError, ValidatorOptions } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 
@@ -22,7 +22,7 @@ export async function validator<T, V>(
   plain: V,
   config: ValidatorOptions = {}
 ): Promise<T> {
-  const toValidate = plainToClass(typedClass, plain)
+  const toValidate = plainToInstance(typedClass, plain)
   // @ts-ignore
   const errors = await validate(toValidate, {
     whitelist: true,
