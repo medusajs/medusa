@@ -212,6 +212,7 @@ describe("/store/carts", () => {
           ],
           order: {
             id: "test-order",
+            display_id: expect.any(Number),
             created_at: expect.any(String),
             updated_at: expect.any(String),
           },
