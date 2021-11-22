@@ -1,6 +1,6 @@
 {
   "name": "medusa-interfaces",
-  "version": "1.1.29",
+  "version": "1.1.30",
   "description": "Core interfaces for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -35,7 +35,7 @@
     "typeorm": "0.x"
   },
   "dependencies": {
-    "medusa-core-utils": "^1.1.28"
+    "medusa-core-utils": "^1.1.29"
   },
   "gitHead": "a69b1e85be1da3b1b5bc4c5446471252623c8808"
 }
