@@ -1,18 +1,18 @@
-import { AxiosPromise } from "axios"
 import {
   StoreCollectionsRes,
   StoreCollectionsListRes,
   StoreGetCollectionsParams,
 } from "@medusajs/medusa"
+import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
 class CollectionsResource extends BaseResource {
   /**
    * @description Retrieves a single collection
    * @param {string} id id of the collection
-   * @return {AxiosPromise<StoreCollectionsRes>}
+   * @return {ResponsePromise<StoreCollectionsRes>}
    */
-  retrieve(id: string): AxiosPromise<StoreCollectionsRes> {
+  retrieve(id: string): ResponsePromise<StoreCollectionsRes> {
     const path = `/store/collections/${id}`
     return this.client.request("GET", path)
   }
@@ -20,11 +20,11 @@ class CollectionsResource extends BaseResource {
   /**
    * @description Retrieves a list of collections
    * @param {string} query is optional. Can contain a limit and offset for the returned list
-   * @return {AxiosPromise<StoreCollectionsListRes>}
+   * @return {ResponsePromise<StoreCollectionsListRes>}
    */
   list(
     query?: StoreGetCollectionsParams
-  ): AxiosPromise<StoreCollectionsListRes> {
+  ): ResponsePromise<StoreCollectionsListRes> {
     let path = `/store/collections`
 
     if (query) {
