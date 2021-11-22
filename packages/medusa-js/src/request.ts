@@ -190,9 +190,9 @@ class Client {
       headers: this.setHeaders(options, method, path),
     }
 
-    const { data, status } = await this.axiosClient(reqOpts)
+    const { data, ...response } = await this.axiosClient(reqOpts)
 
-    return this.createRawResponse(data, status)
+    return { ...data, response }
   }
 }
 
