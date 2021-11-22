@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-algolia",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Search support for algolia",
   "main": "index.js",
   "repository": {
@@ -24,8 +24,8 @@
     "algoliasearch": "^4.10.5",
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.1.20",
-    "medusa-interfaces": "1.x"
+    "medusa-core-utils": "^1.1.28",
+    "medusa-interfaces": "^1.1.29"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
@@ -41,5 +41,6 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2"
-  }
+  },
+  "gitHead": "aa460f63591f9625f1fe98749b34172e528bed7f"
 }
