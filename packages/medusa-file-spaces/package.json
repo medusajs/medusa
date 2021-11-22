@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-spaces",
-  "version": "1.1.31",
+  "version": "1.1.32",
   "description": "Digital Ocean Spaces file connector for Medusa",
   "main": "index.js",
   "repository": {
@@ -40,8 +40,8 @@
     "aws-sdk": "^2.710.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.28",
-    "medusa-test-utils": "^1.1.31",
+    "medusa-core-utils": "^1.1.29",
+    "medusa-test-utils": "^1.1.32",
     "stripe": "^8.50.0"
   },
   "gitHead": "aa460f63591f9625f1fe98749b34172e528bed7f"

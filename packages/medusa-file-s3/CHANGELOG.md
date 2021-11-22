@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7](https://github.com/medusajs/medusa/compare/medusa-file-s3@1.0.6...medusa-file-s3@1.0.7) (2021-11-22)
+
+**Note:** Version bump only for package medusa-file-s3
+
+
+
+
+
 ## [1.0.6](https://github.com/medusajs/medusa/compare/medusa-file-s3@1.0.5...medusa-file-s3@1.0.6) (2021-11-19)
 
 **Note:** Version bump only for package medusa-file-s3
