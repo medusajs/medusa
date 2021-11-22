@@ -1,4 +1,5 @@
 import { Router } from "express"
+import { Invite } from "../../../../models/invite"
 import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 const route = Router()
@@ -30,3 +31,13 @@ export default (app) => {
 }
 
 export type AdminInviteDeleteRes = DeleteResponse
+
+export type AdminListInvitesRes = {
+  invites: Invite[]
+}
+
+export * from "./accept-invite"
+export * from "./create-invite"
+export * from "./delete-invite"
+export * from "./list-invites"
+export * from "./resend-invite"
