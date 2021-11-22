@@ -44,7 +44,7 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
       expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(1)
       expect(ProductVariantServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("variant1"),
-        {
+        expect.objectContaining({
           title: "hi",
           prices: [
             {
@@ -56,7 +56,7 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
               amount: 100,
             },
           ],
-        }
+        })
       )
     })
 

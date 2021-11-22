@@ -12,7 +12,7 @@ Object {
   "last_name": "testesen",
   "metadata": null,
   "orders": Array [],
-  "phone": "12345678",
+  "phone": null,
   "updated_at": Any<String>,
 }
 `;

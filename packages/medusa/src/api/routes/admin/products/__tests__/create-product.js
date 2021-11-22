@@ -210,7 +210,9 @@ describe("POST /admin/products", () => {
 
     it("returns error details", () => {
       expect(subject.body.type).toEqual("invalid_data")
-      expect(subject.body.message[0].message).toEqual(`"title" is required`)
+      expect(subject.body.message).toEqual(
+        expect.stringContaining(`title must be a string`)
+      )
     })
   })
 })

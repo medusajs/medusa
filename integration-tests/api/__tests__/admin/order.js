@@ -3,7 +3,6 @@ const {
   ReturnReason,
   Order,
   LineItem,
-  ProductVariant,
   CustomShippingOption,
 } = require("@medusajs/medusa")
 
@@ -71,6 +70,59 @@ describe("/admin/orders", () => {
           console.log(err)
         })
       expect(response.status).toEqual(200)
+    })
+  })
+
+  describe("POST /admin/orders/:id", () => {
+    beforeEach(async () => {
+      await adminSeeder(dbConnection)
+      await orderSeeder(dbConnection)
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("updates a shipping adress", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/orders/test-order",
+          {
+            email: "test@test.com",
+            shipping_address: {
+              address_1: "Some Street",
+              address_2: "",
+              province: "",
+              postal_code: "1235",
+              city: "losangeles",
+              country_code: "us",
+            },
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order.shipping_address).toMatchSnapshot({
+        id: expect.any(String),
+        address_1: "Some Street",
+        address_2: "",
+        province: "",
+        postal_code: "1235",
+        city: "losangeles",
+        country_code: "us",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
     })
   })
 
@@ -163,7 +215,6 @@ describe("/admin/orders", () => {
 
     it("cancels an order and increments inventory_quantity", async () => {
       const api = useApi()
-      const manager = dbConnection.manager
 
       const initialInventoryRes = await api.get("/store/variants/test-variant")
 
@@ -357,6 +408,38 @@ describe("/admin/orders", () => {
           }),
         ])
       )
+    })
+
+    it("creates a claim on order with discount", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/orders/discount-order/claims",
+        {
+          type: "refund",
+          claim_items: [
+            {
+              item_id: "test-item",
+              quantity: 1,
+              reason: "production_failure",
+              tags: ["fluff"],
+              images: ["https://test.image.com"],
+            },
+          ],
+          additional_items: [
+            {
+              variant_id: "test-variant",
+              quantity: 1,
+            },
+          ],
+        },
+        {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        }
+      )
+      expect(response.status).toEqual(200)
     })
 
     it("creates a claim on a claim", async () => {
@@ -1054,7 +1137,7 @@ describe("/admin/orders", () => {
         }
       )
 
-      //Find variant that should have its inventory_quantity updated
+      // Find variant that should have its inventory_quantity updated
       const toTest = returned.data.order.items.find((i) => i.id === "test-item")
 
       expect(returned.status).toEqual(200)
@@ -1087,7 +1170,7 @@ describe("/admin/orders", () => {
         }
       )
 
-      //Find variant that should have its inventory_quantity updated
+      // Find variant that should have its inventory_quantity updated
       const toTest = returned.data.order.items.find((i) => i.id === "test-item")
 
       expect(returned.status).toEqual(200)
@@ -1144,6 +1227,44 @@ describe("/admin/orders", () => {
           id: "test-order-w-r",
         }),
       ])
+    })
+
+    it("lists all orders with a fulfillment status = fulfilled", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/orders?fulfillment_status[]=fulfilled", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => console.log(err))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.orders).toEqual([
+        expect.objectContaining({
+          id: "test-order",
+        }),
+      ])
+    })
+
+    it("fails to lists all orders with an invalid status", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      await api
+        .get("/admin/orders?status[]=test", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("invalid_data")
+          expect(err.response.data.message).toEqual(
+            "each value in status must be a valid enum value"
+          )
+        })
     })
 
     it("list all orders with matching order email", async () => {
@@ -1639,7 +1760,7 @@ describe("/admin/orders", () => {
 
       expect(returnOnOrder.status).toEqual(200)
 
-      const captured = await api.post(
+      await api.post(
         "/admin/orders/test-order/capture",
         {},
         {
