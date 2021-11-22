@@ -1519,6 +1519,12 @@
   dependencies:
     "@hapi/hoek" "^9.0.0"
 
+"@kiwicopple/prism-react-renderer@github:kiwicopple/prism-react-renderer":
+  version "1.0.2"
+  resolved "https://codeload.github.com/kiwicopple/prism-react-renderer/tar.gz/4a09100a587bce2d94d7ac8ed3564a61c6e70781"
+  dependencies:
+    prismjs "^1.22.0"
+
 "@mdx-js/mdx@^1.6.21":
   version "1.6.22"
   resolved "https://registry.yarnpkg.com/@mdx-js/mdx/-/mdx-1.6.22.tgz#8a723157bf90e78f17dc0f27995398e6c731f1ba"
@@ -6608,6 +6614,11 @@ prism-react-renderer@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prism-react-renderer/-/prism-react-renderer-1.2.1.tgz#392460acf63540960e5e3caa699d851264e99b89"
   integrity sha512-w23ch4f75V1Tnz8DajsYKvY5lF7H1+WvzvLUcF0paFxkTHSp42RS0H5CttdN2Q8RR3DRGZ9v5xD/h3n8C8kGmg==
+
+prismjs@^1.22.0:
+  version "1.25.0"
+  resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.25.0.tgz#6f822df1bdad965734b310b315a23315cf999756"
+  integrity sha512-WCjJHl1KEWbnkQom1+SzftbtXMKQoezOCYs5rECqMN+jP+apI7ftoflyqigqzopSO3hMhTEb0mFClA8lkolgEg==
 
 prismjs@^1.23.0:
   version "1.24.1"
