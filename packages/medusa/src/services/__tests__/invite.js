@@ -6,7 +6,7 @@ import { MedusaError } from "medusa-core-utils"
 describe("InviteService", () => {
   describe("list", () => {
     const inviteRepo = MockRepository({
-      find: q => {
+      find: (q) => {
         return Promise.resolve([{ id: "invite-test-id" }])
       },
     })
@@ -55,7 +55,7 @@ describe("InviteService", () => {
 
   describe("accept", () => {
     const inviteRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         if (q.where.id === "accepted") {
           return Promise.resolve(null)
         }
@@ -73,7 +73,7 @@ describe("InviteService", () => {
     })
 
     const userRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         if (q.where.user_id === "test_user") {
           return Promise.resolve({})
         }
@@ -85,13 +85,13 @@ describe("InviteService", () => {
     })
 
     const createMock = {
-      create: jest.fn().mockImplementation(data => {
+      create: jest.fn().mockImplementation((data) => {
         return Promise.resolve({ ...data, email: "test@test.com" })
       }),
     }
 
     const userServiceMock = {
-      withTransaction: jest.fn().mockImplementation(m => {
+      withTransaction: jest.fn().mockImplementation((m) => {
         return createMock
       }),
     }
@@ -116,7 +116,7 @@ describe("InviteService", () => {
           }),
           {}
         )
-        .catch(err => {
+        .catch((err) => {
           expect(err).toEqual(
             new MedusaError(MedusaError.Types.INVALID_DATA, "Invalid invite")
           )
@@ -125,9 +125,10 @@ describe("InviteService", () => {
 
     it("fails to accept an with an invalid token", async () => {
       expect.assertions(2)
-      await inviteService.accept("totally.valid.token", {}).catch(err => {
+      await inviteService.accept("totally.valid.token", {}).catch((err) => {
+        console.log(err)
         expect(err.message).toEqual("Token is not valid")
-        expect(err.name).toEqual("invalid_data")
+        expect(err.type).toEqual("invalid_data")
       })
     })
 
@@ -141,7 +142,7 @@ describe("InviteService", () => {
           }),
           {}
         )
-        .catch(err => {
+        .catch((err) => {
           expect(err).toEqual(
             new MedusaError(
               MedusaError.Types.INVALID_DATA,
@@ -178,7 +179,7 @@ describe("InviteService", () => {
 
   describe("resend", () => {
     const inviteRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         return Promise.resolve({
           id: q.id,
           role: "admin",

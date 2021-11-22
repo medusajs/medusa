@@ -1,14 +1,15 @@
 import { Router } from "express"
+import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 const route = Router()
 
-export const unauthenticatedInviteRoutes = app => {
+export const unauthenticatedInviteRoutes = (app) => {
   app.use("/invites", route)
 
   route.post("/accept", middlewares.wrap(require("./accept-invite").default))
 }
 
-export default app => {
+export default (app) => {
   app.use("/invites", route)
 
   route.get("/", middlewares.wrap(require("./list-invites").default))
@@ -27,3 +28,5 @@ export default app => {
 
   return app
 }
+
+export type AdminInviteDeleteRes = DeleteResponse

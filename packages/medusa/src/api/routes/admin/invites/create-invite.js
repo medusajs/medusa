@@ -2,12 +2,8 @@ import { Validator, MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
-    user: Validator.string()
-      .email()
-      .trim(),
-    role: Validator.string()
-      .trim()
-      .required(),
+    user: Validator.string().email().trim(),
+    role: Validator.string().trim().required(),
   })
   const { value, error } = schema.validate(req.body)
 

@@ -1,4 +1,4 @@
-import { Validator, MedusaError } from "medusa-core-utils"
+import { Validator } from "medusa-core-utils"
 
 export default async (req, res) => {
   const schema = Validator.object().keys({
