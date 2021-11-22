@@ -6,7 +6,7 @@ import {
   StorePostCartsCartReq,
   StorePostCartsCartShippingMethodReq,
 } from "@medusajs/medusa"
-import { AxiosPromise } from "axios"
+import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 import LineItemsResource from "./line-items"
 
@@ -17,12 +17,12 @@ class CartsResource extends BaseResource {
    * Adds a shipping method to cart
    * @param {string} cart_id Id of cart
    * @param {StorePostCartsCartShippingMethodReq} payload Containg id of shipping option and optional data
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
   addShippingMethod(
     cart_id: string,
     payload: StorePostCartsCartShippingMethodReq
-  ): AxiosPromise<StoreCartsRes> {
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/shipping-methods`
     return this.client.request("POST", path, payload)
   }
@@ -34,9 +34,9 @@ class CartsResource extends BaseResource {
    * The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
    * If not provuided, we will generate one for the request.
    * @param {string} cart_id is required
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
-  complete(cart_id: string): AxiosPromise<StoreCartsRes> {
+  complete(cart_id: string): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/complete`
     return this.client.request("POST", path)
   }
@@ -45,9 +45,9 @@ class CartsResource extends BaseResource {
    * Creates a cart
    * @param {StorePostCartReq} payload is optional and can contain a region_id and items.
    * The cart will contain the payload, if provided. Otherwise it will be empty
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
-  create(payload?: StorePostCartReq): AxiosPromise<StoreCartsRes> {
+  create(payload?: StorePostCartReq): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts`
     return this.client.request("POST", path, payload)
   }
@@ -57,9 +57,9 @@ class CartsResource extends BaseResource {
    * Initializes the payment sessions that can be used to pay for the items of the cart.
    * This is usually called when a customer proceeds to checkout.
    * @param {string} cart_id is required
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
-  createPaymentSessions(cart_id: string): AxiosPromise<StoreCartsRes> {
+  createPaymentSessions(cart_id: string): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions`
     return this.client.request("POST", path)
   }
@@ -68,9 +68,12 @@ class CartsResource extends BaseResource {
    * Removes a discount from cart.
    * @param {string} cart_id is required
    * @param {string} code discount code to remove
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
-  deleteDiscount(cart_id: string, code: string): AxiosPromise<StoreCartsRes> {
+  deleteDiscount(
+    cart_id: string,
+    code: string
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/discounts/${code}`
     return this.client.request("DELETE", path)
   }
@@ -80,12 +83,12 @@ class CartsResource extends BaseResource {
    * Can be useful in case a payment has failed
    * @param {string} cart_id is required
    * @param {string} provider_id the provider id of the session e.g. "stripe"
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
   deletePaymentSession(
     cart_id: string,
     provider_id: string
-  ): AxiosPromise<StoreCartsRes> {
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
     return this.client.request("DELETE", path)
   }
@@ -94,12 +97,12 @@ class CartsResource extends BaseResource {
    * Refreshes a payment session.
    * @param {string} cart_id is required
    * @param {string} provider_id the provider id of the session e.g. "stripe"
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
   refreshPaymentSession(
     cart_id: string,
     provider_id: string
-  ): AxiosPromise<StoreCartsRes> {
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}/refresh`
     return this.client.request("POST", path)
   }
@@ -107,9 +110,9 @@ class CartsResource extends BaseResource {
   /**
    * Retrieves a cart
    * @param {string} cart_id is required
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
-  retrieve(cart_id: string): AxiosPromise<StoreCartsRes> {
+  retrieve(cart_id: string): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}`
     return this.client.request("GET", path)
   }
@@ -118,12 +121,12 @@ class CartsResource extends BaseResource {
    * Refreshes a payment session.
    * @param {string} cart_id is required
    * @param {StorePostCartsCartPaymentSessionReq} payload the provider id of the session e.g. "stripe"
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
   setPaymentSession(
     cart_id: string,
     payload: StorePostCartsCartPaymentSessionReq
-  ): AxiosPromise<StoreCartsRes> {
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-session`
     return this.client.request("POST", path, payload)
   }
@@ -132,12 +135,12 @@ class CartsResource extends BaseResource {
    * Updates a cart
    * @param {string} cart_id is required
    * @param {StorePostCartsCartReq} payload is required and can contain region_id, email, billing and shipping address
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
   update(
     cart_id: string,
     payload: StorePostCartsCartReq
-  ): AxiosPromise<StoreCartsRes> {
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}`
     return this.client.request("POST", path, payload)
   }
@@ -146,12 +149,12 @@ class CartsResource extends BaseResource {
    * Updates the payment method
    * @param {string} cart_id is required
    * @param {StorePostCartsCartPaymentSessionUpdateReq} payload is required
-   * @return {AxiosPromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCartsRes>}
    */
   updatePaymentSession(
     cart_id: string,
     payload: StorePostCartsCartPaymentSessionUpdateReq
-  ): AxiosPromise<StoreCartsRes> {
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-session/update`
     return this.client.request("POST", path, payload)
   }
