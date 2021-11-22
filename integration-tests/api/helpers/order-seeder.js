@@ -181,7 +181,6 @@ module.exports = async (connection, data = {}) => {
     id: "test-method",
     order_id: "test-order",
     shipping_option_id: "test-option",
-    order_id: "test-order",
     price: 1000,
     data: {},
   })
@@ -357,12 +356,12 @@ module.exports = async (connection, data = {}) => {
   const discountedOrder = manager.create(Order, {
     id: "discount-order",
     customer_id: "test-customer",
-    email: "test@email.com",
+    email: "test-discount@email.com",
     payment_status: "captured",
     fulfillment_status: "fulfilled",
     discounts: [discount],
     billing_address: {
-      id: "test-billing-address",
+      id: "test-discount-billing-address",
       first_name: "lebron",
     },
     shipping_address: {
@@ -375,12 +374,13 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
     payments: [payment],
     items: [],
+    ...data,
   })
 
   await manager.save(discountedOrder)
 
   const dli = manager.create(LineItem, {
-    id: "test-item",
+    id: "test-item-1",
     fulfilled_quantity: 1,
     returned_quantity: 0,
     title: "Line Item",
