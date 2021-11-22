@@ -28,12 +28,8 @@ describe("/admin/users", () => {
 
   describe("GET /admin/users", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await userSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await userSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -100,28 +96,24 @@ describe("/admin/users", () => {
     let user
     beforeEach(async () => {
       const api = useApi()
-      try {
-        await adminSeeder(dbConnection)
-        await userSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+      await userSeeder(dbConnection)
 
-        const response = await api
-          .post(
-            "/admin/users",
-            {
-              email: "test@forgottenPassword.com",
-              role: "member",
-              password: "test123453",
-            },
-            {
-              headers: { Authorization: "Bearer test_token" },
-            }
-          )
-          .catch((err) => console.log(err))
+      const response = await api
+        .post(
+          "/admin/users",
+          {
+            email: "test@forgottenPassword.com",
+            role: "member",
+            password: "test123453",
+          },
+          {
+            headers: { Authorization: "Bearer test_token" },
+          }
+        )
+        .catch((err) => console.log(err))
 
-        user = response.data.user
-      } catch (err) {
-        throw err
-      }
+      user = response.data.user
     })
 
     afterEach(async () => {
@@ -292,7 +284,7 @@ describe("/admin/users", () => {
 
         const token = "test.test.test"
 
-        const result = await api
+        await api
           .post("/admin/users/reset-password", {
             token,
             email: "test@forgottenpassword.com",
@@ -308,12 +300,8 @@ describe("/admin/users", () => {
 
   describe("DELETE /admin/users", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await userSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await userSeeder(dbConnection)
     })
 
     afterEach(async () => {

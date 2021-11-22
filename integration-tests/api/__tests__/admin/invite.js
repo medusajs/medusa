@@ -28,12 +28,8 @@ describe("/admin/invites", () => {
 
   describe("GET /admin/users", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await userSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await userSeeder(dbConnection)
     })
 
     afterEach(async () => {
@@ -83,28 +79,24 @@ describe("/admin/invites", () => {
     let user
     beforeEach(async () => {
       const api = useApi()
-      try {
-        await adminSeeder(dbConnection)
-        await userSeeder(dbConnection)
+      await adminSeeder(dbConnection)
+      await userSeeder(dbConnection)
 
-        const response = await api
-          .post(
-            "/admin/users",
-            {
-              email: "test@forgottenPassword.com",
-              role: "member",
-              password: "test123453",
-            },
-            {
-              headers: { Authorization: "Bearer test_token" },
-            }
-          )
-          .catch((err) => console.log(JSON.stringify(err)))
+      const response = await api
+        .post(
+          "/admin/users",
+          {
+            email: "test@forgottenPassword.com",
+            role: "member",
+            password: "test123453",
+          },
+          {
+            headers: { Authorization: "Bearer test_token" },
+          }
+        )
+        .catch((err) => console.log(err))
 
-        user = response.data.user
-      } catch (err) {
-        throw err
-      }
+      user = response.data.user
     })
 
     afterEach(async () => {
@@ -288,7 +280,7 @@ describe("/admin/invites", () => {
         const token =
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbnZpdGVfaWQiOiJpbnZpdGVfMDFGSFFWNlpBOERRRlgySjM3UVo5SjZTOTAiLCJyb2xlIjoiYWRtaW4iLCJ1c2VyX2VtYWlsIjoic2ZAc2RmLmNvbSIsImlhdCI6MTYzMzk2NDAyMCwiZXhwIjoxNjM0NTY4ODIwfQ.ZsmDvunBxhRW1iRqvfEfWixJLZ1zZVzaEYST38Vbl00"
 
-        const result = await api
+        await api
           .post("/admin/invites/accept", {
             token,
             user: {
@@ -312,7 +304,7 @@ describe("/admin/invites", () => {
           headers: { Authorization: "Bearer test_token" },
         })
 
-        const { token, ...rest } = inviteResponse.data.invites[0]
+        const { token } = inviteResponse.data.invites[0]
 
         const user = {
           first_name: "test",
@@ -333,13 +325,11 @@ describe("/admin/invites", () => {
           token,
         }
 
-        const secondAcceptResponse = await api
-          .post("/admin/invites/accept", secondPayload)
-          .catch((err) => {
-            expect(err.response.status).toEqual(400)
-            expect(err.response.data.message).toEqual("Invalid invite")
-            expect(err.response.data.type).toEqual("invalid_data")
-          })
+        await api.post("/admin/invites/accept", secondPayload).catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual("Invalid invite")
+          expect(err.response.data.type).toEqual("invalid_data")
+        })
         expect(createResponse.status).toEqual(200)
       })
     })
@@ -347,12 +337,8 @@ describe("/admin/invites", () => {
 
   describe("DELETE /admin/users", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await userSeeder(dbConnection)
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await userSeeder(dbConnection)
     })
 
     afterEach(async () => {
