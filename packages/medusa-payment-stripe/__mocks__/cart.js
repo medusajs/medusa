@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = exports.CartServiceMock = exports.carts = void 0;
+exports["default"] = exports.carts = exports.CartServiceMock = void 0;
 
 var _medusaTestUtils = require("medusa-test-utils");
 
