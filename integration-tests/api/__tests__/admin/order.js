@@ -410,6 +410,40 @@ describe("/admin/orders", () => {
       )
     })
 
+    it("creates a claim on order with discount", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/orders/discount-order/claims",
+          {
+            type: "refund",
+            claim_items: [
+              {
+                item_id: "test-item-1",
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant",
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => console.log(err))
+      expect(response.status).toEqual(200)
+    })
+
     it("creates a claim on a claim", async () => {
       const api = useApi()
 
@@ -1194,6 +1228,9 @@ describe("/admin/orders", () => {
         expect.objectContaining({
           id: "test-order-w-r",
         }),
+        expect.objectContaining({
+          id: "discount-order",
+        }),
       ])
     })
 
@@ -1212,6 +1249,9 @@ describe("/admin/orders", () => {
       expect(response.data.orders).toEqual([
         expect.objectContaining({
           id: "test-order",
+        }),
+        expect.objectContaining({
+          id: "discount-order",
         }),
       ])
     })
@@ -1267,10 +1307,14 @@ describe("/admin/orders", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(1)
+      expect(response.data.count).toEqual(2)
       expect(response.data.orders).toEqual([
         expect.objectContaining({
           id: "test-order",
+          shipping_address: expect.objectContaining({ first_name: "lebron" }),
+        }),
+        expect.objectContaining({
+          id: "discount-order",
           shipping_address: expect.objectContaining({ first_name: "lebron" }),
         }),
       ])
@@ -1305,6 +1349,9 @@ describe("/admin/orders", () => {
         }),
         expect.objectContaining({
           id: "test-order-w-r",
+        }),
+        expect.objectContaining({
+          id: "discount-order",
         }),
       ])
     })
@@ -1355,6 +1402,9 @@ describe("/admin/orders", () => {
         expect.objectContaining({
           id: "test-order-w-r",
         }),
+        expect.objectContaining({
+          id: "discount-order",
+        }),
       ])
     })
 
@@ -1403,6 +1453,9 @@ describe("/admin/orders", () => {
         }),
         expect.objectContaining({
           id: "test-order-w-r",
+        }),
+        expect.objectContaining({
+          id: "discount-order",
         }),
       ])
     })
