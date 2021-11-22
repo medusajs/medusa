@@ -84,46 +84,46 @@ describe("/admin/orders", () => {
       await db.teardown()
     })
 
-    //   it("updates a shipping adress", async () => {
-    //     const api = useApi()
+    it("updates a shipping adress", async () => {
+      const api = useApi()
 
-    //     const response = await api
-    //       .post(
-    //         "/admin/orders/test-order",
-    //         {
-    //           email: "test@test.com",
-    //           shipping_address: {
-    //             address_1: "Some Street",
-    //             address_2: "",
-    //             province: "",
-    //             postal_code: "1235",
-    //             city: "losangeles",
-    //             country_code: "us",
-    //           },
-    //         },
-    //         {
-    //           headers: {
-    //             authorization: "Bearer test_token",
-    //           },
-    //         }
-    //       )
-    //       .catch((err) => {
-    //         console.log(err.response.data)
-    //       })
+      const response = await api
+        .post(
+          "/admin/orders/test-order",
+          {
+            email: "test@test.com",
+            shipping_address: {
+              address_1: "Some Street",
+              address_2: "",
+              province: "",
+              postal_code: "1235",
+              city: "losangeles",
+              country_code: "us",
+            },
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err.response.data)
+        })
 
-    //     expect(response.status).toEqual(200)
-    //     expect(response.data.order.shipping_address).toMatchSnapshot({
-    //       id: expect.any(String),
-    //       address_1: "Some Street",
-    //       address_2: "",
-    //       province: "",
-    //       postal_code: "1235",
-    //       city: "losangeles",
-    //       country_code: "us",
-    //       created_at: expect.any(String),
-    //       updated_at: expect.any(String),
-    //     })
-    //   })
+      expect(response.status).toEqual(200)
+      expect(response.data.order.shipping_address).toMatchSnapshot({
+        id: expect.any(String),
+        address_1: "Some Street",
+        address_2: "",
+        province: "",
+        postal_code: "1235",
+        city: "losangeles",
+        country_code: "us",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
   })
 
   describe("GET /admin/orders", () => {
