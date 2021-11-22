@@ -287,7 +287,7 @@ Object {
       "created_at": Any<String>,
       "currency_code": "usd",
       "customer_id": "test-customer",
-      "display_id": 6,
+      "display_id": Any<Number>,
       "draft_order_id": null,
       "email": "test@email.com",
       "fulfillment_status": "fulfilled",
