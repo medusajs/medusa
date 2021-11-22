@@ -15,7 +15,7 @@
   "author": "Oliver Juhl",
   "license": "MIT",
   "dependencies": {
-    "@medusajs/medusa": "^1.1.54",
+    "@medusajs/medusa": "^1.1.55",
     "axios": "^0.21.0",
     "retry-axios": "^2.6.0"
   },
