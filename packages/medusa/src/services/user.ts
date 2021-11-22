@@ -81,8 +81,8 @@ class UserService extends BaseService {
   }
 
   /**
-   * @param {Object} config - the configuration object for the query
    * @param {FilterableUserProps} selector - the query object for find
+   * @param {Object} config - the configuration object for the query
    * @return {Promise} the result of the find operation
    */
   async list(selector: FilterableUserProps, config = {}): Promise<User[]> {

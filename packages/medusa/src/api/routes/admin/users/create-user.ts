@@ -1,7 +1,7 @@
 import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator"
 import _ from "lodash"
+import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
-import { UserRole } from "../../../../types/user"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -68,9 +68,9 @@ export class AdminCreateUserRequest {
   @IsString()
   last_name?: string
 
-  @IsEnum(UserRole)
+  @IsEnum(UserRoles)
   @IsOptional()
-  role?: string
+  role?: UserRoles
 
   @IsString()
   password: string

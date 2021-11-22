@@ -42,5 +42,5 @@ export class AdminPostInvitesReq {
   user: string
 
   @IsEnum(UserRoles)
-  role: string
+  role: UserRoles
 }

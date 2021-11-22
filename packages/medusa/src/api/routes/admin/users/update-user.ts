@@ -1,6 +1,6 @@
 import { IsEnum, IsObject, IsOptional, IsString } from "class-validator"
+import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
-import { UserRole } from "../../../../types/user"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -46,9 +46,9 @@ export class AdminUpdateUserRequest {
   @IsOptional()
   last_name?: string
 
-  @IsEnum(UserRole)
+  @IsEnum(UserRoles)
   @IsOptional()
-  role?: string
+  role?: UserRoles
 
   @IsString()
   @IsOptional()

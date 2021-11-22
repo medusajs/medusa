@@ -1,7 +1,9 @@
 import InviteService from "../invite"
-import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
+import { MockManager, MockRepository } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { MedusaError } from "medusa-core-utils"
+
+// const _MockManager
 
 describe("InviteService", () => {
   describe("list", () => {
@@ -12,7 +14,7 @@ describe("InviteService", () => {
     })
 
     const inviteService = new InviteService({
-      manager: MockManager,
+      manager: { getCustomRepository: jest.fn(() => inviteRepo) },
       userService: {},
       userRepository: {},
       inviteRepository: inviteRepo,
@@ -20,7 +22,7 @@ describe("InviteService", () => {
     })
 
     it("calls invite repository find", async () => {
-      const result = await inviteService.list({ id: "test" })
+      await inviteService.list({ id: "test" })
 
       expect(inviteRepo.find).toHaveBeenCalledTimes(1)
       expect(inviteRepo.find).toHaveBeenCalledWith({
@@ -47,10 +49,6 @@ describe("InviteService", () => {
 
       expect(res).toEqual(expect.objectContaining({ data: "test" }))
     })
-  })
-
-  describe("create", () => {
-    const a = {}
   })
 
   describe("accept", () => {
@@ -189,7 +187,7 @@ describe("InviteService", () => {
     })
 
     const inviteService = new InviteService({
-      manager: MockManager,
+      manager: { getCustomRepository: jest.fn(() => inviteRepo) },
       userService: {},
       userRepository: {},
       inviteRepository: inviteRepo,

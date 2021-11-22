@@ -1,12 +1,26 @@
 import { BaseService } from "medusa-interfaces"
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import config from "../config"
 import { MedusaError } from "medusa-core-utils"
+import { Invite } from "../models/invite"
+import { User } from ".."
+import { EntityManager } from "typeorm"
+import { EventBusService, UserService } from "."
+import { InviteRepository } from "../repositories/invite"
+import { UserRepository } from "../repositories/user"
+import { ListInvite } from "../types/invites"
+import { UserRoles } from "../models/user"
 
 class InviteService extends BaseService {
   static Events = {
     CREATED: "invite.created",
   }
+
+  private manager_: EntityManager
+  private userService_: UserService
+  private userRepo_: UserRepository
+  private inviteRepository_: InviteRepository
+  private eventBus_: EventBusService
 
   constructor({
     manager,
@@ -33,7 +47,7 @@ class InviteService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
-  withTransaction(manager) {
+  withTransaction(manager): InviteService {
     if (!manager) {
       return this
     }
@@ -51,8 +65,8 @@ class InviteService extends BaseService {
     return cloned
   }
 
-  async list(selector, config = {}) {
-    const inviteRepo = this.manager_.getCustomRepository(this.inviteRepository_)
+  async list(selector, config = {}): Promise<ListInvite[]> {
+    const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
 
     const query = this.buildQuery_(selector, config)
 
@@ -76,12 +90,12 @@ class InviteService extends BaseService {
    * @param {string} role - role to assign to the user
    * @return {Promise} the result of create
    */
-  async create(user, role) {
+  async create(user: string, role: UserRoles): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
-      const inviteRepository = this.manager_.getCustomRepository(
-        this.inviteRepository_
-      )
-      const userRepo = this.manager_.getCustomRepository(this.userRepo_)
+      const inviteRepository =
+        this.manager_.getCustomRepository(InviteRepository)
+
+      const userRepo = this.manager_.getCustomRepository(UserRepository)
 
       const userEntity = await userRepo.findOne({
         where: { email: user },
@@ -134,9 +148,10 @@ class InviteService extends BaseService {
    *   castable as an ObjectId
    * @return {Promise} the result of the delete operation.
    */
-  async delete(inviteId) {
+  async delete(inviteId): Promise<void> {
     return this.atomicPhase_(async (manager) => {
-      const inviteRepo = manager.getCustomRepository(this.inviteRepository_)
+      const inviteRepo: InviteRepository =
+        manager.getCustomRepository(InviteRepository)
 
       // Should not fail, if invite does not exist, since delete is idempotent
       const invite = await inviteRepo.findOne({ where: { id: inviteId } })
@@ -151,13 +166,19 @@ class InviteService extends BaseService {
     })
   }
 
-  generateToken(data) {
-    return jwt.sign(data, config.jwtSecret, {
-      expiresIn: "7d",
-    })
+  generateToken(data): string {
+    if (config.jwtSecret) {
+      return jwt.sign(data, config.jwtSecret, {
+        expiresIn: "7d",
+      })
+    }
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Please configure JwtSecret"
+    )
   }
 
-  async accept(token, user_) {
+  async accept(token, user_): Promise<User> {
     let decoded
     try {
       decoded = this.verifyToken(token)
@@ -209,14 +230,27 @@ class InviteService extends BaseService {
     }, "SERIALIZABLE")
   }
 
-  verifyToken(token) {
-    return jwt.verify(token, config.jwtSecret)
+  verifyToken(token): JwtPayload | string {
+    if (config.jwtSecret) {
+      return jwt.verify(token, config.jwtSecret)
+    }
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Please configure JwtSecret"
+    )
   }
 
-  async resend(id) {
-    const inviteRepo = this.manager_.getCustomRepository(this.inviteRepository_)
+  async resend(id): Promise<any> {
+    const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
 
     const invite = await inviteRepo.findOne({ id })
+
+    if (!invite) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Invite doesn't exist`
+      )
+    }
 
     const token = this.generateToken({
       invite_id: invite.id,
