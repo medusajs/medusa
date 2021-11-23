@@ -10,6 +10,14 @@ import { UserRepository } from "../repositories/user"
 import { ListInvite } from "../types/invites"
 import { UserRoles } from "../models/user"
 
+type InviteServiceProps = {
+  manager: EntityManager
+  userService: UserService
+  userRepository: UserRepository
+  inviteRepository: InviteRepository
+  eventBusService: EventBusService
+}
+
 class InviteService extends BaseService {
   static Events = {
     CREATED: "invite.created",
@@ -27,7 +35,7 @@ class InviteService extends BaseService {
     userRepository,
     inviteRepository,
     eventBusService,
-  }) {
+  }: InviteServiceProps) {
     super()
 
     /** @private @constant {EntityManager} */
