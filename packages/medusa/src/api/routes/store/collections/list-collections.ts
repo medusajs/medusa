@@ -1,7 +1,13 @@
 import { Type } from "class-transformer"
-import { IsArray, IsEnum, IsInt, IsOptional } from "class-validator"
+import {
+  IsArray,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  ValidateNested,
+} from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
-import { OrderingEnum } from "../../../../types/common"
+import { DateComparisonOperator, OrderingEnum } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -14,6 +20,8 @@ import { validator } from "../../../../utils/validator"
  *   - (query) limit=10 {integer} The number of collections to return
  *   - (query) q {string} Query based on title and handle of Collections
  *   - (query) order=title {string} Order result based on either title or created_at / updated_at. Prefix '-' to indicate DESC
+ *   - (query) created_at {DateComaprisonOperator} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
+ *   - (query) updated_at {DateComaprisonOperator} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
  * tags:
  *   - Collection
  * responses:
@@ -28,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   try {
-    const { limit, offset, order, q } = await validator(
+    const { limit, offset, order, q, created_at, updated_at } = await validator(
       StoreGetCollectionsParams,
       req.query
     )
@@ -38,6 +46,8 @@ export default async (req, res) => {
 
     const selector = {
       q,
+      created_at,
+      updated_at,
     }
 
     const listConfig = {
@@ -81,4 +91,14 @@ export class StoreGetCollectionsParams {
   @IsEnum(OrderingEnum)
   @IsOptional()
   order: OrderingEnum = OrderingEnum.asc_title
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }
