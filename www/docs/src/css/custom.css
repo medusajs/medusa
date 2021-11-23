@@ -20,14 +20,14 @@
   --ifm-medusa-gray: #f0f0f0;
 
   /* Fonts */
-  --ifm-code-font-size: 90%;
-  --ifm-font-family-base: "Open Sans";
+  --ifm-code-font-size: 80%;
+  --ifm-font-family-base: "custom-font",BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
 
   /* Sidebar */
   --doc-sidebar-width: 350px !important;
 
   /* Docs Page */
-  --ifm-docs-page-max-width: 700px;
+  --ifm-docs-page-max-width: 850px;
 
   /* Toc */
   --ifm-toc-border-color: #f0f0f0;
@@ -46,6 +46,18 @@ html[data-theme="dark"] {
   --ifm-medusa-gray: #292929;
   --ifm-menu-color: #fff;
   --ifm-toc-border-color: #333;
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h1, h2, h3 {
+  font-weight: normal;
+}
+
+p {
+  font-weight: 450;
 }
 
 /* DocSearch */
@@ -73,6 +85,16 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
+.navbar {
+  z-index: 1000;
+  font-size: 14px;
+}
+
+/* Medusa logo */
+.navbar__brand {
+  width: 100px;
+}
+
 .navbar-github-link:before {
   content: "";
   width: 24px;
@@ -90,8 +112,14 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 
 article {
   max-width: var(--ifm-docs-page-max-width);
-  margin-left: auto;
-  margin-right: auto;
+}
+
+@media screen and (min-width: 966px) {
+  article {
+    margin-left: 50px;
+    margin-right: 50px;
+    max-width: none
+  }
 }
 
 .docusaurus-highlight-code-line {
@@ -129,8 +157,14 @@ article {
 }
 
 .sidebar-bg {
-  background: var(--ifm-medusa-gray);
   height: 100%;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+/* Medusa logo */
+.sidebar-bg img {
+ width: 100px;   
 }
 
 .padding-top--md {
@@ -138,8 +172,16 @@ article {
 }
 
 a.menu__link.menu__link--active.active {
-  border-left: 4px solid var(--ifm-color-primary);
-  padding-left: 12px;
+  padding-left: 16px;
+}
+
+a.menu__link--sublist::after {
+  background: var(--ifm-menu-link-sublist-icon) 50% / 1rem 2rem;
+}
+
+.menu__list-item > a {
+  font-weight: 450;
+  color: #1f1f1f;
 }
 
 /* Pagination */
@@ -181,10 +223,35 @@ footer .footer__title {
   width: 150px;
 }
 
-.footer--dark {
-  --ifm-footer-background-color: #333;
+footer {
+  background-color: #ffffff !important;
+  border-top: 1px solid var(--ifm-toc-border-color);
 }
 
 .react-toggle {
   display: none;
+}
+
+/* Cards */
+
+.card {
+  border: 1px solid #1f1f1f;
+  border-radius: 8px;
+}
+
+.col {
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+}
+
+.prism-code {
+  background-color: none;
+  word-break: break-word;
+  font-size: 0.8rem;
+  outline: none !important;
+}
+.prism-code div,
+.prism-code div:focus,
+.prism-code div:active {
+  outline: none !important;
 }

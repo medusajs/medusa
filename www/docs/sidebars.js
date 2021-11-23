@@ -13,23 +13,18 @@ module.exports = {
   tutorialSidebar: [
     {
       type: "doc",
+      id: "homepage",
+      label: "Overview",
+    },
+    {
+      type: "doc",
       id: "quickstart/quick-start",
       label: "Quickstart",
     },
-    // {
-    //   type: 'category',
-    //   label: 'Quickstart',
-    //   items: [
-    //     {
-    //       type: 'doc',
-    //       id: 'quickstart/quick-start-docker',
-    //       label: 'Quickstart w. Docker (Coming soon!)',
-    //     },
-    //   ],
-    // },
     {
       type: "category",
       label: "Tutorials",
+      collapsed: false,
       items: [
         {
           type: "doc",
@@ -43,20 +38,12 @@ module.exports = {
           type: "doc",
           id: "tutorial/adding-custom-functionality",
         },
-        // {
-        //   type: "doc",
-        //   id: "tutorial/linking-your-local-project-with-medusa-cloud",
-        // },
       ],
     },
     {
       type: "category",
       label: "How to",
       items: [
-        {
-          type: "doc",
-          id: "how-to/plugins",
-        },
         {
           type: "doc",
           id: "how-to/notification-api",
@@ -100,6 +87,10 @@ module.exports = {
         {
           type: "doc",
           id: "guides/fulfillment-api",
+        },
+        {
+          type: "doc",
+          id: "guides/plugins",
         },
         {
           type: "doc",

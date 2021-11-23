@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.57](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.56...@medusajs/medusa@1.1.57) (2021-11-23)
+
+### Bug Fixes
+
+- bumps class-transformer to 0.5.1 ([#837](https://github.com/medusajs/medusa/issues/837)) ([38b0e29](https://github.com/medusajs/medusa/commit/38b0e295b23eccd281288d854d5876ff418de91d))
+
+## [1.1.56](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.55...@medusajs/medusa@1.1.56) (2021-11-22)
+
+### Bug Fixes
+
+- Addresses breaking change from library `class-transformer` ([#835](https://github.com/medusajs/medusa/issues/835)) ([f387b49](https://github.com/medusajs/medusa/commit/f387b4919fb115b9f904b9ecb9f3bf30a89174ac))
+
 ## [1.1.55](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.52...@medusajs/medusa@1.1.55) (2021-11-19)
 
 ### Bug Fixes
