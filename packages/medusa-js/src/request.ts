@@ -152,22 +152,6 @@ class Client {
   }
 
   /**
-   * Format the response data as:
-   *  { cart: { id: "some_cart", ... } }
-   * @param {object} data Axios response data
-   * @param {number} status Axios response status code
-   * @return {object}
-   */
-  createRawResponse(data: object, status: number): object {
-    const res = { status }
-    Object.entries(data).map(([key, value]) => {
-      res[key] = value
-    })
-
-    return res as any // eslint-disable-line
-  }
-
-  /**
    * Axios request
    * @param {Types.RequestMethod} method request method
    * @param {string} path request path
@@ -190,9 +174,11 @@ class Client {
       headers: this.setHeaders(options, method, path),
     }
 
-    const { data, status } = await this.axiosClient(reqOpts)
+    // e.g. data = { cart: { ... } }, response = { status, headers, ... }
+    const { data, ...response } = await this.axiosClient(reqOpts)
 
-    return this.createRawResponse(data, status)
+    // e.g. would return an object like of this shape { cart, response }
+    return { ...data, response }
   }
 }
 

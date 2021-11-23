@@ -12,6 +12,7 @@ import ReturnReasonsResource from "./resources/return-reasons"
 import ReturnsResource from "./resources/returns"
 import ShippingOptionsResource from "./resources/shipping-options"
 import SwapsResource from "./resources/swaps"
+import PaymentMethodsResource from "./resources/payment-methods"
 
 class Medusa {
   private client: Client
@@ -28,6 +29,7 @@ class Medusa {
   public swaps: SwapsResource
   public collections: CollectionsResource
   public giftCards: GiftCardsResource
+  public paymentMethods: PaymentMethodsResource
 
   constructor(config: Config) {
     this.client = new Client(config)
@@ -45,7 +47,10 @@ class Medusa {
     this.swaps = new SwapsResource(this.client)
     this.collections = new CollectionsResource(this.client)
     this.giftCards = new GiftCardsResource(this.client)
+    this.paymentMethods = new PaymentMethodsResource(this.client)
   }
 }
 
 export default Medusa
+
+export * from "./typings"
