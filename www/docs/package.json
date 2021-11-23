@@ -17,6 +17,7 @@
     "@docusaurus/core": "2.0.0-beta.3",
     "@docusaurus/preset-classic": "2.0.0-beta.3",
     "@docusaurus/theme-search-algolia": "^2.0.0-beta.3",
+    "@kiwicopple/prism-react-renderer": "github:kiwicopple/prism-react-renderer",
     "@mdx-js/react": "^1.6.21",
     "@svgr/webpack": "^5.5.0",
     "clsx": "^1.1.1",
