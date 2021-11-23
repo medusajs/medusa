@@ -1974,9 +1974,9 @@ babel-preset-jest@^25.5.0:
     babel-preset-current-node-syntax "^0.1.2"
 
 babel-preset-medusa-package@^1.1.17:
-  version "1.1.17"
-  resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.17.tgz#1c2d11c8891fb97693c3cb40f110faa80f6466be"
-  integrity sha512-cYkHr4Q5ZkOlz5lIqQEr6omw5l/KszL7vjicWGmJ0pj+2eAEi7gMtrDmoMEKhx2XbVSaT1zBxN/IzllVVP268w==
+  version "1.1.18"
+  resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.18.tgz#6a491ae387cf43a318835a5cb9620215b6af5155"
+  integrity sha512-BJJSbe7jh2qeuQEhMDbyZoWxEsMdENCXKc8lmfZpvPZtjcWNYHEuRqLJ1GdIEz2uYh+1RcPn5yk6xbjVHquV5g==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.12.1"
     "@babel/plugin-proposal-decorators" "^7.12.1"
@@ -1985,6 +1985,7 @@ babel-preset-medusa-package@^1.1.17:
     "@babel/plugin-transform-instanceof" "^7.12.1"
     "@babel/plugin-transform-runtime" "^7.12.1"
     "@babel/preset-env" "^7.12.7"
+    "@babel/preset-typescript" "^7.16.0"
     babel-plugin-transform-typescript-metadata "^0.3.1"
     core-js "^3.7.0"
 
@@ -2963,9 +2964,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.896:
-  version "1.3.904"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.904.tgz#52a353994faeb0f2a9fab3606b4e0614d1af7b58"
-  integrity sha512-x5uZWXcVNYkTh4JubD7KSC1VMKz0vZwJUqVwY3ihsW0bst1BXDe494Uqbg3Y0fDGVjJqA8vEeGuvO5foyH2+qw==
+  version "1.3.906"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.906.tgz#144e212691e35fa8c294431e2ecb51e4b03f7577"
+  integrity sha512-UjoECdcOYIVzWmrbtNnYpPrDuu+RtiO5W08Vdbid9ydGQMSdnqtJUtvOqQEAVQqpoXN9kSW9YnQufvzLQMYQOw==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -5386,20 +5387,20 @@ medusa-core-utils@^0.1.27:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-core-utils@^1.1.28:
-  version "1.1.28"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.28.tgz#dfbec54f50357ed517cd45c136ccb4704317f96c"
-  integrity sha512-2jlDvK/j89hBkK+9vMUBC4IOuwNmydiAo8cncqhuF3hZsC4ahZNxypq7DpFG9bDpWYN/04OupYQjxAUKMfvnDQ==
+medusa-core-utils@^1.1.28, medusa-core-utils@^1.1.29:
+  version "1.1.29"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.29.tgz#3ad1c21aae18d627063a6548504e24ce70031015"
+  integrity sha512-knlHwetXkyYjkGNU/a6JVT9IkKtYa5UD45I5C0jAs9BqzacKN/WCxeKzOwCJPBMP1LrSBajwm45kgvICUerWzA==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
 medusa-interfaces@^1.1.29:
-  version "1.1.29"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.29.tgz#39784928380afc2a660cca4c3067f000e55578a9"
-  integrity sha512-WjvBpIi5JLBrmwC60vBB8p2M5vv2ndnZtUxKC+JWfUtNh+TLZkl/KKW2LCbkom4lN+brybK7oriQX/CZ5R+NMQ==
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.30.tgz#9a6fa19a88854db67b0c82cef9061afda560bd3a"
+  integrity sha512-OQVPO/6Gr5OJOWjSCaDQcTZDMCo7cJoQP4w5P/+XoTM6YvD7PpJhVJR17W7du5XIXoiM5i/eFDi3/Gb7nsZdJg==
   dependencies:
-    medusa-core-utils "^1.1.28"
+    medusa-core-utils "^1.1.29"
 
 medusa-telemetry@^0.0.10:
   version "0.0.10"
@@ -5417,12 +5418,12 @@ medusa-telemetry@^0.0.10:
     uuid "^8.3.2"
 
 medusa-test-utils@^1.1.31:
-  version "1.1.31"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.31.tgz#6dae478ca9d7c5ff0ea0f1cccb20c2f11ed60e7e"
-  integrity sha512-DmU6xiQJ4v367ULFVZPf7c7USlIsMiUtGrZ6NUKBQOiaw0b+ZIb0Si09Gz3nxnf36elKzMyBKI8sxh2uzjhEqg==
+  version "1.1.32"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.32.tgz#c0797b517d9d4475483147514a383b2c4ed88b8c"
+  integrity sha512-RBme+gBI7pmRiFcrxvU4dO4a509zLINrRZwW4p1UiQwg2JCfzTt9iMwhV9Mn6Z+SDAP2n1M2TFBYmNYuXwoJGQ==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
-    medusa-core-utils "^1.1.28"
+    medusa-core-utils "^1.1.29"
     randomatic "^3.1.1"
 
 merge-descriptors@1.0.1:

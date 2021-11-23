@@ -41,10 +41,10 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
     } else {
       const qb = this.createQueryBuilder("product_collection")
         .select(["product_collection.id"])
-        .where(idsOrOptionsWithoutRelations.where)
+        .where(idsOrOptionsWithoutRelations.where!)
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
-        .orderBy(idsOrOptionsWithoutRelations.order)
+        .orderBy(idsOrOptionsWithoutRelations.order!)
 
       const result = await getResults(qb)
       entities = result[0]
@@ -97,7 +97,7 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
             "product_collections.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
             { entitiesIds }
           )
-          .orderBy(idsOrOptionsWithoutRelations.order)
+          .orderBy(idsOrOptionsWithoutRelations.order!)
           .getMany()
       })
     ).then(flatten)
@@ -133,7 +133,7 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
 
   public async findOneWithRelations(
     relations: Array<keyof ProductCollection> = [],
-    optionsWithoutRelations: DefaultWithoutRelations = {}
+    optionsWithoutRelations: CustomOptions = { where: {} }
   ): Promise<ProductCollection> {
     // Limit 1
     optionsWithoutRelations.take = 1
