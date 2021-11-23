@@ -25,7 +25,7 @@
     "@babel/preset-env": "^7.13.9",
     "@babel/preset-typescript": "^7.16.0",
     "@babel/runtime": "^7.13.9",
-    "class-transformer": "^0.4.0",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.13.1",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
