@@ -3,13 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.4](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.3...@medusajs/medusa-js@1.0.4) (2021-11-22)
+## [1.0.5](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.4...@medusajs/medusa-js@1.0.5) (2021-11-23)
 
 **Note:** Version bump only for package @medusajs/medusa-js
 
+## [1.0.4](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.3...@medusajs/medusa-js@1.0.4) (2021-11-22)
 
-
-
+**Note:** Version bump only for package @medusajs/medusa-js
 
 ## [1.0.3](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.2...@medusajs/medusa-js@1.0.3) (2021-11-19)
 
