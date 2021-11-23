@@ -3,13 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.30](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.29...medusa-core-utils@1.1.30) (2021-11-23)
+
+### Bug Fixes
+
+- bumps class-transformer to 0.5.1 ([#837](https://github.com/medusajs/medusa/issues/837)) ([38b0e29](https://github.com/medusajs/medusa/commit/38b0e295b23eccd281288d854d5876ff418de91d))
+
 ## [1.1.29](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.28...medusa-core-utils@1.1.29) (2021-11-22)
 
 **Note:** Version bump only for package medusa-core-utils
-
-
-
-
 
 ## [1.1.28](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.27...medusa-core-utils@1.1.28) (2021-11-19)
 
