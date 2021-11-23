@@ -60,7 +60,7 @@ You will find that the Webshipper plugin has an implementation for `createReturn
 
 ### `canCalculate(fulfillmentOption)`
 
-If implemented this method can be used to dynamically calcluate prices based on a cart's contents or details. The method returns a boolean value indicating if a given fulfillment option can have a dynamically calculated price or not.
+If implemented this method can be used to dynamically calculate prices based on a cart's contents or details. The method returns a boolean value indicating if a given fulfillment option can have a dynamically calculated price or not.
 
 ### `calculatePrice(fulfillmentOption, fulfillmentData, cart)`
 
