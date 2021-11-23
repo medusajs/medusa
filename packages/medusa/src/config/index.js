@@ -1,4 +1,7 @@
 import dotenv from "dotenv"
+import { getConfigFile } from "medusa-core-utils"
+import path from "path"
+import Logger from "../loaders/logger"
 
 // Set the NODE_ENV to 'development' by default
 process.env.NODE_ENV = process.env.NODE_ENV || "development"
@@ -9,19 +12,19 @@ if (!envFound) {
   throw new Error("⚠️  Couldn't find .env file  ⚠️")
 }
 
-const jwtSecret =
-  process.env.NODE_ENV === "test"
-    ? "test"
-    : process.env.NODE_ENV === "development"
-    ? "development"
-    : process.env.JWT_SECRET
+const { configModule } = getConfigFile(path.resolve("."), `medusa-config`)
 
-const cookieSecret =
-  process.env.NODE_ENV === "test"
-    ? "test"
-    : process.env.NODE_ENV === "development"
-    ? "development"
-    : process.env.COOKIE_SECRET
+const isProd = process.env.NODE_ENV === "production"
+if (!configModule?.projectConfig?.jwt_secret && isProd) {
+  Logger.warn("jwt_secret in medusa-config.js is required in production")
+}
+
+if (!configModule?.projectConfig?.cookie_secret && isProd) {
+  Logger.warn("cookie_secret in medusa-config.js is required in production")
+}
+
+const jwtSecret = configModule?.projectConfig?.jwt_secret || "test"
+const cookieSecret = configModule?.projectConfig?.cookie_secret || "test"
 
 const config = {
   /**
