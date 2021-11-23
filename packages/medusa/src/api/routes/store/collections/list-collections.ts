@@ -1,7 +1,9 @@
 import { Type } from "class-transformer"
-import { IsOptional, IsInt } from "class-validator"
+import { IsArray, IsEnum, IsInt, IsOptional } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
+import { OrderingEnum } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
@@ -10,6 +12,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (query) offset=0 {integer} The number of collections to skip before starting to collect the collections set
  *   - (query) limit=10 {integer} The number of collections to return
+ *   - (query) q {string} Query based on title and handle of Collections
+ *   - (query) order=title {string} Order result based on either title or created_at / updated_at. Prefix '-' to indicate DESC
  * tags:
  *   - Collection
  * responses:
@@ -24,18 +28,25 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   try {
-    const { limit, offset } = await validator(
+    const { limit, offset, order, q } = await validator(
       StoreGetCollectionsParams,
       req.query
     )
-    const selector = {}
 
     const productCollectionService: ProductCollectionService =
       req.scope.resolve("productCollectionService")
 
+    const selector = {
+      q,
+    }
+
     const listConfig = {
       skip: offset,
       take: limit,
+      // We use a prefix of '-' to indicate a descending order type.
+      order: {
+        [order.replace("-", "")]: order[0] === "-" ? "DESC" : "ASC",
+      },
     }
 
     const [collections, count] = await productCollectionService.listAndCount(
@@ -59,4 +70,15 @@ export class StoreGetCollectionsParams {
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
+
+  @IsOptional()
+  q?: string
+
+  @IsOptional()
+  @IsArray()
+  tags?: string[]
+
+  @IsEnum(OrderingEnum)
+  @IsOptional
+  order: OrderingEnum = OrderingEnum.asc_title
 }

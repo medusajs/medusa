@@ -1,8 +1,7 @@
-import { Transform } from "class-transformer"
-import { transformDate } from "../utils/validators/date-transform"
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import { IsDate, IsNumber, IsOptional, IsString } from "class-validator"
 import "reflect-metadata"
+import { transformDate } from "../utils/validators/date-transform"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
@@ -14,6 +13,17 @@ export interface FindConfig<Entity> {
   take?: number
   relations?: string[]
   order?: "ASC" | "DESC"
+}
+
+export enum OrderingEnum {
+  asc_title = "title",
+  desc_title = "-title",
+  asc_handle = "handle",
+  desc_handle = "-handle",
+  asc_created = "created_at",
+  desc_created = "-created_at",
+  asc_updated = "updated_at",
+  desc_updated = "-updated_at",
 }
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }

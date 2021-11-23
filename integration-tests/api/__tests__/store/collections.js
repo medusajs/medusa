@@ -96,5 +96,45 @@ describe("/store/collections", () => {
         offset: 0,
       })
     })
+
+    it("respects search using q", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/collections?q=1")
+
+      expect(response.data.collections.length).toEqual(1)
+      expect(response.data.collections[0].id).toEqual("test-collection1")
+    })
+
+    it(`orders and uses q parameter`, async () => {
+      const api = useApi()
+
+      const response = await api.get(`/store/collections?order=title&q=1`)
+
+      expect(response.data.collections[0].id).toEqual("test-collection1")
+    })
+
+    describe.each([["title"], ["handle"]])(
+      "Test order functionality",
+      (order) => {
+        it(`orders ASC for ${order}`, async () => {
+          const api = useApi()
+
+          const response = await api.get(`/store/collections?order=${order}`)
+
+          expect(response.data.collections[0].id).toEqual("test-collection")
+          expect(response.data.collections[1].id).toEqual("test-collection1")
+        })
+
+        it(`orders DESC for ${order}`, async () => {
+          const api = useApi()
+
+          const response = await api.get(`/store/collections?order=-${order}`)
+
+          expect(response.data.collections[0].id).toEqual("test-collection2")
+          expect(response.data.collections[1].id).toEqual("test-collection1")
+        })
+      }
+    )
   })
 })

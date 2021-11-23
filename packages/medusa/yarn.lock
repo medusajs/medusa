@@ -1974,9 +1974,9 @@ babel-preset-jest@^25.5.0:
     babel-preset-current-node-syntax "^0.1.2"
 
 babel-preset-medusa-package@^1.1.17:
-  version "1.1.18"
-  resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.18.tgz#6a491ae387cf43a318835a5cb9620215b6af5155"
-  integrity sha512-BJJSbe7jh2qeuQEhMDbyZoWxEsMdENCXKc8lmfZpvPZtjcWNYHEuRqLJ1GdIEz2uYh+1RcPn5yk6xbjVHquV5g==
+  version "1.1.17"
+  resolved "https://registry.yarnpkg.com/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.17.tgz#1c2d11c8891fb97693c3cb40f110faa80f6466be"
+  integrity sha512-cYkHr4Q5ZkOlz5lIqQEr6omw5l/KszL7vjicWGmJ0pj+2eAEi7gMtrDmoMEKhx2XbVSaT1zBxN/IzllVVP268w==
   dependencies:
     "@babel/plugin-proposal-class-properties" "^7.12.1"
     "@babel/plugin-proposal-decorators" "^7.12.1"
@@ -1985,7 +1985,6 @@ babel-preset-medusa-package@^1.1.17:
     "@babel/plugin-transform-instanceof" "^7.12.1"
     "@babel/plugin-transform-runtime" "^7.12.1"
     "@babel/preset-env" "^7.12.7"
-    "@babel/preset-typescript" "^7.16.0"
     babel-plugin-transform-typescript-metadata "^0.3.1"
     core-js "^3.7.0"
 

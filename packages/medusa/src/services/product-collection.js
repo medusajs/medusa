@@ -1,5 +1,5 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
 
 /**
  * Provides layer to manipulate product collections.
@@ -137,35 +137,58 @@ class ProductCollectionService extends BaseService {
     })
   }
 
-  /**
+/**
    * Lists product collections
    * @param {Object} selector - the query object for find
    * @param {Object} config - the config to be used for find
    * @return {Promise} the result of the find operation
    */
-  async list(selector = {}, config = { skip: 0, take: 20 }) {
-    const productCollectionRepo = this.manager_.getCustomRepository(
-      this.productCollectionRepository_
-    )
+ async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
+  const productCollectionRepo = this.manager_.getCustomRepository(
+    this.productCollectionRepository_
+  )
 
-    const query = this.buildQuery_(selector, config)
-    return await productCollectionRepo.find(query)
+  let q
+  if ("q" in selector) {
+    q = selector.q
+    delete selector.q
   }
 
-  /**
-   * Lists product collections and add count.
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the config to be used for find
-   * @return {Promise} the result of the find operation
-   */
-  async listAndCount(selector = {}, config = { skip: 0, take: 20 }) {
-    const productCollectionRepo = this.manager_.getCustomRepository(
-      this.productCollectionRepository_
-    )
+  const query = this.buildQuery_(selector, config)
 
-    const query = this.buildQuery_(selector, config)
-    return await productCollectionRepo.findAndCount(query)
+  if (config.relations && config.relations.length > 0) {
+    query.relations = config.relations
   }
+  const rels = query.relations
+  delete query.relations
+
+  if (q) {
+    const where = query.where
+    const order = query.order
+    delete where.title
+    delete where.handle
+    const raw = await productCollectionRepo
+      .createQueryBuilder("product_collection")
+      .select(["product_collection.id"])
+      .where(where)
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`product_collection.title ILIKE :q`, {
+            q: `%${q}%`,
+          }).orWhere(`product_collection.handle ILIKE :q`, { q: `%${q}%` })
+        })
+      )
+      .orderBy(order)
+      .getMany()
+
+    return productCollectionRepo.findWithRelations(
+      rels,
+      raw.map((i) => i.id)
+    )
+  }
+
+  return productCollectionRepo.findWithRelations(rels, query)
+}
 }
 
 export default ProductCollectionService
