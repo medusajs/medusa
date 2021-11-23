@@ -18,7 +18,7 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
-        { skip: 0, take: 20, order: { title: "ASC" }, relations: [] }
+        { skip: 0, take: 10, order: { title: "ASC" }, relations: [] }
       )
     })
 
@@ -40,7 +40,7 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         { q: "suits" },
-        { skip: 0, take: 20, order: { title: "ASC" }, relations: [] }
+        { skip: 0, take: 10, order: { title: "ASC" }, relations: [] }
       )
     })
   })
@@ -90,7 +90,7 @@ describe("GET /store/collections", () => {
         {},
         {
           skip: 0,
-          take: 20,
+          take: 10,
           order: { [column]: order },
           relations: [],
         }
@@ -127,8 +127,12 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
+          order: {
+            title: "ASC",
+          },
           skip: 0,
           take: 5,
+          relations: [],
         }
       )
     })
@@ -151,8 +155,12 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
+          order: {
+            title: "ASC",
+          },
           skip: 10,
           take: 10,
+          relations: [],
         }
       )
     })
@@ -175,8 +183,12 @@ describe("GET /store/collections", () => {
       expect(ProductCollectionServiceMock.listAndCount).toHaveBeenCalledWith(
         {},
         {
+          order: {
+            title: "ASC",
+          },
           skip: 10,
           take: 20,
+          relations: [],
         }
       )
     })

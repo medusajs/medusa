@@ -33,18 +33,24 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
     const getResults = async (
       qb: SelectQueryBuilder<ProductCollection>
     ): Promise<[ProductCollection[], number]> =>
-      shouldCount ? [await qb.getMany(), 0] : await qb.getManyAndCount()
+      shouldCount ? await qb.getManyAndCount() : [await qb.getMany(), 0]
 
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
       count = entities.length
     } else {
-      const qb = this.createQueryBuilder("product_collection")
+      let qb = this.createQueryBuilder("product_collection")
         .select(["product_collection.id"])
-        .where(idsOrOptionsWithoutRelations.where!)
         .skip(idsOrOptionsWithoutRelations.skip)
         .take(idsOrOptionsWithoutRelations.take)
-        .orderBy(idsOrOptionsWithoutRelations.order!)
+
+      qb = idsOrOptionsWithoutRelations.where
+        ? qb.where(idsOrOptionsWithoutRelations.where)
+        : qb
+
+      qb = idsOrOptionsWithoutRelations.order
+        ? qb.orderBy(idsOrOptionsWithoutRelations.order)
+        : qb
 
       const result = await getResults(qb)
       entities = result[0]
@@ -63,7 +69,7 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
         entitiesIds,
         idsOrOptionsWithoutRelations
       )
-      return [result, result.length]
+      return [result, count]
     }
 
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -77,8 +83,13 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
     }
 
     const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(([_, rels]) => {
+      Object.entries(groupedRelations).map(([toplevel, rels]) => {
         let querybuilder = this.createQueryBuilder("product_collections")
+
+        querybuilder = querybuilder.leftJoinAndSelect(
+          `product_collections.${toplevel}`,
+          toplevel
+        )
 
         for (const rel of rels) {
           const [_, rest] = rel.split(".")
@@ -92,13 +103,16 @@ export class ProductCollectionRepository extends Repository<ProductCollection> {
           )
         }
 
-        return querybuilder
-          .where(
-            "product_collections.deleted_at IS NULL AND product_collection.id IN (:...entitiesIds",
-            { entitiesIds }
-          )
-          .orderBy(idsOrOptionsWithoutRelations.order!)
-          .getMany()
+        querybuilder = querybuilder.where(
+          "product_collections.deleted_at IS NULL AND product_collections.id IN (:...entitiesIds)",
+          { entitiesIds }
+        )
+
+        querybuilder = idsOrOptionsWithoutRelations.order
+          ? querybuilder.orderBy(idsOrOptionsWithoutRelations.order)
+          : querybuilder
+
+        return querybuilder.getMany()
       })
     ).then(flatten)
 

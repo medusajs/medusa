@@ -35,39 +35,37 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req, res) => {
-  try {
-    const { limit, offset, order, q, created_at, updated_at } = await validator(
-      StoreGetCollectionsParams,
-      req.query
-    )
+  const { limit, offset, order, q, created_at, updated_at } = await validator(
+    StoreGetCollectionsParams,
+    req.query
+  )
 
-    const productCollectionService: ProductCollectionService =
-      req.scope.resolve("productCollectionService")
+  const productCollectionService: ProductCollectionService = req.scope.resolve(
+    "productCollectionService"
+  )
 
-    const selector = {
-      q,
-      created_at,
-      updated_at,
-    }
-
-    const listConfig = {
-      skip: offset,
-      take: limit,
-      // We use a prefix of '-' to indicate a descending order type.
-      order: {
-        [order.replace("-", "")]: order[0] === "-" ? "DESC" : "ASC",
-      },
-    }
-
-    const [collections, count] = await productCollectionService.listAndCount(
-      selector,
-      listConfig
-    )
-
-    res.status(200).json({ collections, count, limit, offset })
-  } catch (err) {
-    console.log(err)
+  const selector = {
+    q,
+    created_at,
+    updated_at,
   }
+
+  const listConfig = {
+    skip: offset,
+    take: limit,
+    // We use a prefix of '-' to indicate a descending order type.
+    order: {
+      [order.replace("-", "")]: order[0] === "-" ? "DESC" : "ASC",
+    },
+    relations: [],
+  }
+
+  const [collections, count] = await productCollectionService.listAndCount(
+    selector,
+    listConfig
+  )
+
+  res.status(200).json({ collections, count, limit, offset })
 }
 
 export class StoreGetCollectionsParams {
