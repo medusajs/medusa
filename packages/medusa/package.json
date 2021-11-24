@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.1.55",
+  "version": "1.1.57",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "bin": {
@@ -26,7 +26,7 @@
     "cross-env": "^5.2.1",
     "eslint": "^7.32.0",
     "jest": "^25.5.2",
-    "medusa-interfaces": "^1.1.29",
+    "medusa-interfaces": "^1.1.31",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "sqlite3": "^5.0.2",
@@ -54,7 +54,7 @@
     "body-parser": "^1.19.0",
     "bull": "^3.12.1",
     "chokidar": "^3.4.2",
-    "class-transformer": "^0.4.0",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.13.1",
     "connect-redis": "^5.0.0",
     "cookie-parser": "^1.4.4",
@@ -72,8 +72,8 @@
     "joi": "^17.3.0",
     "joi-objectid": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
-    "medusa-core-utils": "^1.1.28",
-    "medusa-test-utils": "^1.1.31",
+    "medusa-core-utils": "^1.1.30",
+    "medusa-test-utils": "^1.1.33",
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "passport": "^0.4.0",
@@ -92,5 +92,5 @@
     "uuid": "^8.3.1",
     "winston": "^3.2.1"
   },
-  "gitHead": "5afd0dfbabaebfb6b09f0e2f055386ac76059372"
+  "gitHead": "7770046479c361f375842a8605b15e5d7bc24624"
 }

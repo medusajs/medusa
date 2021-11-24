@@ -2334,10 +2334,10 @@ ci-info@^3.2.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.2.0.tgz#2876cb948a498797b5236f0095bc057d0dca38b6"
   integrity sha512-dVqRX7fLUm8J6FgHJ418XuIgDLZDkYcDFTeL6TA2gt5WlIZUQrrH6EZrNClwT/H0FateUsZkGIOPRrLbP+PR9A==
 
-class-transformer@^0.4.0:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.4.1.tgz#eb86449fb5dc8333acbf880c96214acfa0d8dedf"
-  integrity sha512-mbBtth1BFa+pN2fmx6/NmMNxxyu9Mw9rx3rzKWBH7yoG+bfSoJOnEJ3qmB6yEKvoO502zUxSV2AqN7EUypC2Tg==
+class-transformer@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/class-transformer/-/class-transformer-0.5.1.tgz#24147d5dffd2a6cea930a3250a677addf96ab336"
+  integrity sha512-SQa1Ws6hUbfC98vKGxZH3KFY0Y1lm5Zm0SY8XX9zbK7FJCyVEac3ATW0RIpwzW+oOfmHE5PMPufDG9hCfoEOMw==
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -2964,9 +2964,9 @@ ee-first@1.1.1:
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
 electron-to-chromium@^1.3.896:
-  version "1.3.906"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.906.tgz#144e212691e35fa8c294431e2ecb51e4b03f7577"
-  integrity sha512-UjoECdcOYIVzWmrbtNnYpPrDuu+RtiO5W08Vdbid9ydGQMSdnqtJUtvOqQEAVQqpoXN9kSW9YnQufvzLQMYQOw==
+  version "1.3.904"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.904.tgz#52a353994faeb0f2a9fab3606b4e0614d1af7b58"
+  integrity sha512-x5uZWXcVNYkTh4JubD7KSC1VMKz0vZwJUqVwY3ihsW0bst1BXDe494Uqbg3Y0fDGVjJqA8vEeGuvO5foyH2+qw==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -5387,7 +5387,7 @@ medusa-core-utils@^0.1.27:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-core-utils@^1.1.28, medusa-core-utils@^1.1.29:
+medusa-core-utils@^1.1.29:
   version "1.1.29"
   resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.29.tgz#3ad1c21aae18d627063a6548504e24ce70031015"
   integrity sha512-knlHwetXkyYjkGNU/a6JVT9IkKtYa5UD45I5C0jAs9BqzacKN/WCxeKzOwCJPBMP1LrSBajwm45kgvICUerWzA==
@@ -5395,7 +5395,7 @@ medusa-core-utils@^1.1.28, medusa-core-utils@^1.1.29:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^1.1.29:
+medusa-interfaces@^1.1.30:
   version "1.1.30"
   resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.30.tgz#9a6fa19a88854db67b0c82cef9061afda560bd3a"
   integrity sha512-OQVPO/6Gr5OJOWjSCaDQcTZDMCo7cJoQP4w5P/+XoTM6YvD7PpJhVJR17W7du5XIXoiM5i/eFDi3/Gb7nsZdJg==
@@ -5417,7 +5417,7 @@ medusa-telemetry@^0.0.10:
     remove-trailing-slash "^0.1.1"
     uuid "^8.3.2"
 
-medusa-test-utils@^1.1.31:
+medusa-test-utils@^1.1.32:
   version "1.1.32"
   resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.32.tgz#c0797b517d9d4475483147514a383b2c4ed88b8c"
   integrity sha512-RBme+gBI7pmRiFcrxvU4dO4a509zLINrRZwW4p1UiQwg2JCfzTt9iMwhV9Mn6Z+SDAP2n1M2TFBYmNYuXwoJGQ==
