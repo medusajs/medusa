@@ -71,24 +71,37 @@ At this point we have set everything up, and the Stripe payment provider is now 
 
 However, as Medusa allows for different payment providers in different regions (and multiple providers in each) we should first make Stripe a valid payment option in our default region. To do so, open the admin panel (`http://localhost:7000`) login, and navigate to `Settings > Region settings > Edit Default Region`. Here you should now be able to select stripe as a payment provider:
 
+<center>
+
 ![Change payment provider](https://i.imgur.com/mVIDYz4.png)
+</center>
 
 After doing this, and clicking save, we are ready to accept payments using Stripe. So, navigate to your storefront (`http://localhost:8000`) and go through the checkout process:
 
-![Checkout process](https://i.imgur.com/2pm9JyR.gif)
+<center>
 
+![Checkout process](https://i.imgur.com/2pm9JyR.gif)
+</center>
 After doing so, you should be able to see an uncaptured payment in the Stripe. Here, you navigate to the payments tab, where you should see the following (depending on your choices during the checkout process):
 
+<center>
+
 ![Uncaptured payment](https://i.imgur.com/LX6UR40.png)
+</center>
 
 To then capture the payment, navigate back to the admin panel (`http://localhost:7000/`), and dig into the relevant order, and capture the payment:
 
+<center>
+
 ![Capture payment](https://i.imgur.com/y5UxxpS.gif)
 
+</center>
+
 The capture is then reflected in the payment overview in Stripe as well, giving you access to all of Stripes analytical capabilities:
+<center>
 
 ![Captured payment](https://i.imgur.com/edv84Nq.png)
-
+</center>
 
 ### Summary 
 
