@@ -42,7 +42,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
-          --health-cmd "pg_isready -q -h db"
+          --health-cmd "pg_isready -h db"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
