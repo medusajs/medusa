@@ -21,11 +21,11 @@ The first step is to install the `medusa-payment-stripe` plugin in your Medusa p
 
 ```bash
 # yarn
-yarn add medusa-plugin-meilisearch
+yarn add medusa-payment-stripe
 
 
 # npm
-npm install medusa-plugin-meilisearch
+npm install medusa-payment-stripe
 ```
 
 Then in your `medusa-config.js` , add the plugin to your `plugins` array:
