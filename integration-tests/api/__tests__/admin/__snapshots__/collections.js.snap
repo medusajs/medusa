@@ -18,7 +18,7 @@ exports[`/admin/collections /admin/collections lists collections 1`] = `
 Object {
   "collections": Array [
     Object {
-      "created_at": "2021-11-24T12:04:01.679Z",
+      "created_at": "2021-11-24T13:03:59.359Z",
       "deleted_at": null,
       "handle": "test-collection",
       "id": "test-collection",
@@ -78,10 +78,10 @@ Object {
         },
       ],
       "title": "Test collection",
-      "updated_at": "2021-11-24T12:04:01.679Z",
+      "updated_at": "2021-11-24T13:03:59.359Z",
     },
     Object {
-      "created_at": "2021-11-24T12:04:01.681Z",
+      "created_at": "2021-11-24T13:03:59.363Z",
       "deleted_at": null,
       "handle": "test-collection1",
       "id": "test-collection1",
@@ -141,10 +141,10 @@ Object {
         },
       ],
       "title": "Test collection 1",
-      "updated_at": "2021-11-24T12:04:01.681Z",
+      "updated_at": "2021-11-24T13:03:59.363Z",
     },
     Object {
-      "created_at": "2021-11-24T12:04:01.683Z",
+      "created_at": "2021-11-24T13:03:59.366Z",
       "deleted_at": null,
       "handle": "test-collection2",
       "id": "test-collection2",
@@ -178,7 +178,7 @@ Object {
         },
       ],
       "title": "Test collection 2",
-      "updated_at": "2021-11-24T12:04:01.683Z",
+      "updated_at": "2021-11-24T13:03:59.366Z",
     },
   ],
   "count": 3,
