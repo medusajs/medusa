@@ -36,33 +36,41 @@ const DbTestUtil = {
   },
 
   teardown: async function () {
-    const entities = this.db_.entityMetadatas
-    const manager = this.db_.manager
+    try {
+      const entities = this.db_.entityMetadatas
+      const manager = this.db_.manager
 
-    if (connectionType === "sqlite") {
-      await manager.query(`PRAGMA foreign_keys = OFF`)
-    } else {
-      await manager.query(`SET session_replication_role = 'replica';`)
-    }
-
-    for (const entity of entities) {
-      if (keepTables.includes(entity.tableName)) {
-        continue
+      if (connectionType === "sqlite") {
+        await manager.query(`PRAGMA foreign_keys = OFF`)
+      } else {
+        await manager.query(`SET session_replication_role = 'replica';`)
       }
 
-      await manager.query(`DELETE FROM "${entity.tableName}";`)
-    }
-    if (connectionType === "sqlite") {
-      await manager.query(`PRAGMA foreign_keys = ON`)
-    } else {
-      await manager.query(`SET session_replication_role = 'origin';`)
+      for (const entity of entities) {
+        if (keepTables.includes(entity.tableName)) {
+          continue
+        }
+
+        await manager.query(`DELETE FROM "${entity.tableName}";`)
+      }
+      if (connectionType === "sqlite") {
+        await manager.query(`PRAGMA foreign_keys = ON`)
+      } else {
+        await manager.query(`SET session_replication_role = 'origin';`)
+      }
+    } catch (e) {
+      console.debug(e)
     }
   },
 
   shutdown: async function () {
-    await this.db_.close()
-    const databaseName = "medusa-integration"
-    return await dropDatabase({ databaseName }, pgGodCredentials)
+    try {
+      await this.db_.close()
+      const databaseName = "medusa-integration"
+      return await dropDatabase({ databaseName }, pgGodCredentials)
+    } catch (e) {
+      console.debug(e)
+    }
   },
 }
 
@@ -70,63 +78,67 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd }) {
-    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    try {
+      const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
 
-    const modelsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `models`
-    )).default
-    const entities = modelsLoader({}, { register: false })
+      const modelsLoader = require(path.join(
+        cwd,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `loaders`,
+        `models`
+      )).default
+      const entities = modelsLoader({}, { register: false })
 
-    const { projectConfig } = require(configPath)
-    if (projectConfig.database_type === "sqlite") {
-      connectionType = "sqlite"
-      const dbConnection = await createConnection({
-        type: "sqlite",
-        database: projectConfig.database_database,
-        synchronize: true,
-        entities,
-      })
+      const { projectConfig } = require(configPath)
+      if (projectConfig.database_type === "sqlite") {
+        connectionType = "sqlite"
+        const dbConnection = await createConnection({
+          type: "sqlite",
+          database: projectConfig.database_database,
+          synchronize: true,
+          entities,
+        })
 
-      instance.setDb(dbConnection)
-      return dbConnection
-    } else {
-      const migrationDir = path.resolve(
-        path.join(
-          cwd,
-          `node_modules`,
-          `@medusajs`,
-          `medusa`,
-          `dist`,
-          `migrations`
+        instance.setDb(dbConnection)
+        return dbConnection
+      } else {
+        const migrationDir = path.resolve(
+          path.join(
+            cwd,
+            `node_modules`,
+            `@medusajs`,
+            `medusa`,
+            `dist`,
+            `migrations`
+          )
         )
-      )
 
-      const databaseName = "medusa-integration"
-      await createDatabase({ databaseName }, pgGodCredentials)
+        const databaseName = "medusa-integration"
+        await createDatabase({ databaseName }, pgGodCredentials)
 
-      const connection = await createConnection({
-        type: "postgres",
-        url: DB_URL,
-        migrations: [`${migrationDir}/*.js`],
-      })
+        const connection = await createConnection({
+          type: "postgres",
+          url: DB_URL,
+          migrations: [`${migrationDir}/*.js`],
+        })
 
-      await connection.runMigrations()
-      await connection.close()
+        await connection.runMigrations()
+        await connection.close()
 
-      const dbConnection = await createConnection({
-        type: "postgres",
-        url: DB_URL,
-        entities,
-      })
+        const dbConnection = await createConnection({
+          type: "postgres",
+          url: DB_URL,
+          entities,
+        })
 
-      instance.setDb(dbConnection)
-      return dbConnection
+        instance.setDb(dbConnection)
+        return dbConnection
+      }
+    } catch (e) {
+      console.debug(e)
     }
   },
   useDb: function () {
