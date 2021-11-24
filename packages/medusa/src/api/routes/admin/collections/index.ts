@@ -1,8 +1,8 @@
 import { Router } from "express"
+import "reflect-metadata"
 import { ProductCollection } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-import "reflect-metadata"
 
 const route = Router()
 
@@ -20,7 +20,15 @@ export default (app) => {
   return app
 }
 
-export const defaultAdminCollectionsFields = ["id", "title", "handle"]
+export const defaultAdminCollectionsFields = [
+  "id",
+  "title",
+  "handle",
+  "metadata",
+  "created_at",
+  "updated_at",
+  "deleted_at",
+]
 export const defaultAdminCollectionsRelations = ["products"]
 
 export type AdminCollectionsListRes = PaginatedResponse & {
