@@ -42,10 +42,10 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_USER: postgres
         options: >-
-          --health-cmd "pg_isready -h medusa-integration"
+          --health-cmd "psql -h localhost -p 5432 -U postgres -v ON_ERROR_STOP=1 -c 'select version()'"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 20
+          --health-retries 5
         ports:
           - 5432:5432
 
