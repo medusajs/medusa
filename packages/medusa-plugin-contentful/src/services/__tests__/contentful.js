@@ -54,6 +54,7 @@ describe("ContentfulService", () => {
         space_id: "test_id",
         environment: "master",
         access_token: "test_token",
+        entities: { collections: true}
       }
     )
 
@@ -181,6 +182,7 @@ describe("ContentfulService", () => {
 
   describe("Collections", () => {
     afterEach(() => {
+      entry.fields = []
       jest.clearAllMocks()
     })
 
@@ -259,6 +261,7 @@ describe("ContentfulService", () => {
         space_id: "test_id",
         environment: "master",
         access_token: "test_token",
+        entities: { collections: true}
       }
     )
 
@@ -372,6 +375,71 @@ describe("ContentfulService", () => {
           })
         )
       })
+
+      describe("without collections configured", () => {
+        beforeAll(() => {
+          service.options_.entities.collections = false
+        })
+
+        afterAll(() => {
+          service.options_.entities.collections = true
+        })
+
+        it("Doesn't add collection to created product on creation", async () => {
+          const product = {
+            id: "collectionTesting",
+            title: "title",
+            handle: "handle",
+            collection: { id: "test_id" },
+            collection_id: "test_id",
+          }
+          await service.createProductInContentful(product)
+  
+          expect(environment.createEntryWithId).toHaveBeenCalledTimes(1)
+          expect(environment.createEntryWithId).toHaveBeenCalledWith(
+            "product",
+            "collectionTesting",
+            {
+              fields: expect.not.objectContaining({
+                collection_entry: {
+                  "en-US": {
+                    sys: {
+                      type: "Link",
+                      linkType: "Entry",
+                      id: "test_id",
+                    },
+                  },
+                },
+              }),
+            }
+          )
+        })
+  
+        it("Doesn't add collection to product on update", async () => {
+          const product = {
+            id: "collectionTesting",
+            fields: ["collection"],
+          }
+  
+          await service.updateProductInContentful(product)
+
+          expect(entry.update).toHaveBeenCalledTimes(1)
+          expect(entry.publish).toHaveBeenCalledTimes(1)
+          expect(entry.fields).toEqual(
+            expect.not.objectContaining({
+              collection_entry: {
+                "en-US": {
+                  sys: {
+                    type: "Link",
+                    linkType: "Entry",
+                    id: "test_id",
+                  },
+                },
+              },
+            })
+          )
+        })
+      })
     })
 
     describe("collections", () => {
@@ -436,12 +504,50 @@ describe("ContentfulService", () => {
         )
       })
 
+      
+
       it("archiveProductCollectionInContentful doesn't call archiveEntryWithId with collection id if collection exists", async () => {
         const collection = { id: "test" }
 
         await service.archiveProductCollectionInContentful(collection)
 
         expect(service.archiveEntryWidthId).toHaveBeenCalledTimes(0)
+      })
+
+      describe("without collections configured", () => {
+        beforeAll(() => {
+          service.options_.entities.collections = false
+        })
+
+        afterAll(() => {
+          service.options_.entities.collections = true
+        })
+
+        it("createProductCollectionInContentful doesn't call createEntryWithId", async () => {
+          const collection = { id: "test", title: "title", handle: "handle" }
+          await service.createProductCollectionInContentful(collection)
+  
+          expect(environment.createEntryWithId).toHaveBeenCalledTimes(0)
+        })
+  
+        it("updateProductCollectionInContentful doesn't call update on contentful entity", async () => {
+          const collection = {
+            id: "test",
+            fields: ["title", "handle"],
+          }
+          await service.updateProductCollectionInContentful(collection)
+  
+          expect(entry.update).toHaveBeenCalledTimes(0)
+          expect(entry.publish).toHaveBeenCalledTimes(0)
+        })
+  
+        it("archiveProductCollectionInContentful does not call archiveEntryWithId", async () => {
+          const collection = { id: "nonExistingId" }
+  
+          await service.archiveProductCollectionInContentful(collection)
+  
+          expect(service.archiveEntryWidthId).toHaveBeenCalledTimes(0)
+        })
       })
     })
   })
