@@ -54,7 +54,6 @@
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
   },
   "dependencies": {
-    "@docusaurus/theme-search-algolia": "^2.0.0-beta.3",
     "global": "^4.4.0",
     "import-from": "^3.0.0",
     "oas-normalize": "^5.0.1",
