@@ -117,6 +117,7 @@ class InviteService extends BaseService {
         // if no invite is found, create a new one
         const created = await inviteRepository.create({
           role,
+          token: "",
           user_email: user,
         })
 
@@ -203,7 +204,6 @@ class InviteService extends BaseService {
       if (
         !invite ||
         invite?.user_email !== user_email ||
-        invite?.token !== token ||
         new Date() > invite.expires_at
       ) {
         throw new MedusaError(MedusaError.Types.INVALID_DATA, `Invalid invite`)

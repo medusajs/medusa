@@ -59,6 +59,7 @@ describe("/admin/invites", () => {
           role: "member",
           accepted: false,
           token: expect.any(String),
+          expires_at: expect.any(String),
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
@@ -69,6 +70,7 @@ describe("/admin/invites", () => {
           accepted: false,
           token: expect.any(String),
           created_at: expect.any(String),
+          expires_at: expect.any(String),
           updated_at: expect.any(String),
         },
       ])
