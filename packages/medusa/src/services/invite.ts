@@ -77,18 +77,7 @@ class InviteService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
 
-    const invites = await inviteRepo.find(query)
-
-    return invites.map((inv) => {
-      return {
-        token: this.generateToken({
-          invite_id: inv.id,
-          role: inv.role,
-          user_email: inv.user_email,
-        }),
-        ...inv,
-      }
-    })
+    return await inviteRepo.find(query)
   }
 
   /**
@@ -134,17 +123,22 @@ class InviteService extends BaseService {
         invite = await inviteRepository.save(created)
       }
 
-      const token = this.generateToken({
+      invite.token = this.generateToken({
         invite_id: invite.id,
         role,
         user_email: user,
       })
 
+      invite.expires_at = new Date()
+      invite.expires_at.setDate(invite.expires_at.getDate() + 7)
+
+      invite = await inviteRepository.save(invite)
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(InviteService.Events.CREATED, {
           id: invite.id,
-          token,
+          token: invite.token,
         })
     })
   }
@@ -200,11 +194,18 @@ class InviteService extends BaseService {
 
     return this.atomicPhase_(async (m) => {
       const userRepo = m.getCustomRepository(this.userRepo_)
-      const inviteRepo = m.getCustomRepository(this.inviteRepository_)
+      const inviteRepo: InviteRepository = m.getCustomRepository(
+        this.inviteRepository_
+      )
 
       const invite = await inviteRepo.findOne({ where: { id: invite_id } })
 
-      if (invite?.user_email !== user_email) {
+      if (
+        !invite ||
+        invite?.user_email !== user_email ||
+        invite?.token !== token ||
+        new Date() > invite.expires_at
+      ) {
         throw new MedusaError(MedusaError.Types.INVALID_DATA, `Invalid invite`)
       }
 
@@ -220,9 +221,10 @@ class InviteService extends BaseService {
         )
       }
 
+      // use the email of the user who actually accepted the invite
       const user = await this.userService_.withTransaction(m).create(
         {
-          email: user_email,
+          email: invite.user_email,
           role: invite.role,
           first_name: user_.first_name,
           last_name: user_.last_name,
@@ -230,7 +232,6 @@ class InviteService extends BaseService {
         user_.password
       )
 
-      // use the email of the user who actually accepted the invite
       await inviteRepo.delete({ id: invite.id })
 
       return user
@@ -259,17 +260,22 @@ class InviteService extends BaseService {
       )
     }
 
-    const token = this.generateToken({
+    invite.token = this.generateToken({
       invite_id: invite.id,
       role: invite.role,
       user_email: invite.user_email,
     })
 
+    invite.expires_at = new Date()
+    invite.expires_at.setDate(invite.expires_at.getDate() + 7)
+
+    await inviteRepo.save(invite)
+
     await this.eventBus_
       .withTransaction(this.manager_)
       .emit(InviteService.Events.CREATED, {
         id: invite.id,
-        token,
+        token: invite.token,
       })
   }
 }
