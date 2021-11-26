@@ -1,5 +1,4 @@
 import { IdMap } from "medusa-test-utils"
-import { defaultFields, defaultRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { CartServiceMock } from "../../../../../services/__mocks__/cart"
 import { OrderServiceMock } from "../../../../../services/__mocks__/order"

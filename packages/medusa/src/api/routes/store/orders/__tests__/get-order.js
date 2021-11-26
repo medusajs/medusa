@@ -1,5 +1,5 @@
 import { IdMap } from "medusa-test-utils"
-import { defaultFields, defaultRelations } from ".."
+import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { OrderServiceMock } from "../../../../../services/__mocks__/order"
 
@@ -22,7 +22,10 @@ describe("GET /store/orders", () => {
       expect(OrderServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(OrderServiceMock.retrieve).toHaveBeenCalledWith(
         IdMap.getId("test-order"),
-        { select: defaultFields, relations: defaultRelations }
+        {
+          select: defaultStoreOrdersFields,
+          relations: defaultStoreOrdersRelations,
+        }
       )
     })
 

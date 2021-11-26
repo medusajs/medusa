@@ -1,4 +1,3 @@
-const { dropDatabase } = require("pg-god")
 const path = require("path")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -133,6 +132,55 @@ describe("/admin/customers", () => {
     })
   })
 
+  describe("POST /admin/customers", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Correctly creates customer", async () => {
+      const api = useApi()
+      const response = await api
+        .post(
+          "/admin/customers",
+          {
+            first_name: "newf",
+            last_name: "newl",
+            email: "new@email.com",
+            password: "newpassword",
+            metadata: { foo: "bar" },
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(201)
+      expect(response.data.customer).toEqual(
+        expect.objectContaining({
+          first_name: "newf",
+          last_name: "newl",
+          email: "new@email.com",
+          metadata: { foo: "bar" },
+        })
+      )
+    })
+  })
+
   describe("POST /admin/customers/:id", () => {
     beforeEach(async () => {
       try {
@@ -158,6 +206,7 @@ describe("/admin/customers", () => {
             first_name: "newf",
             last_name: "newl",
             email: "new@email.com",
+            metadata: { foo: "bar" },
           },
           {
             headers: {
@@ -175,6 +224,7 @@ describe("/admin/customers", () => {
           first_name: "newf",
           last_name: "newl",
           email: "new@email.com",
+          metadata: { foo: "bar" },
         })
       )
     })

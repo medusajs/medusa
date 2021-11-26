@@ -15,6 +15,9 @@
   transition: all var(--ifm-transition-fast)
     var(--ifm-transition-timing-default);
   width: 100%;
+  max-width: 175px;
+  border-radius: 8px;
+  background-color: #f5f6f7;
 }
 
 .DocSearch-Container {

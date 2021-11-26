@@ -312,8 +312,10 @@ class DiscountService extends BaseService {
         }
       }
 
-      for (const [key, value] of Object.entries(rest)) {
-        discount[key] = value
+      for (const key of Object.keys(rest).filter(
+        (k) => rest[k] !== undefined
+      )) {
+        discount[key] = rest[key]
       }
 
       discount.code = discount.code.toUpperCase()
