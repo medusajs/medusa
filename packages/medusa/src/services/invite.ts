@@ -10,6 +10,9 @@ import { UserRepository } from "../repositories/user"
 import { ListInvite } from "../types/invites"
 import { UserRoles } from "../models/user"
 
+// 7 days
+const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
+
 type InviteServiceProps = {
   manager: EntityManager
   userService: UserService
@@ -72,6 +75,16 @@ class InviteService extends BaseService {
     return cloned
   }
 
+  generateToken(data): string {
+    if (config.jwtSecret) {
+      return jwt.sign(data, config.jwtSecret)
+    }
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      "Please configure JwtSecret"
+    )
+  }
+
   async list(selector, config = {}): Promise<ListInvite[]> {
     const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
 
@@ -84,9 +97,14 @@ class InviteService extends BaseService {
    * Updates an account_user.
    * @param {string} user - user emails
    * @param {string} role - role to assign to the user
+   * @param {number} validDuration - role to assign to the user
    * @return {Promise} the result of create
    */
-  async create(user: string, role: UserRoles): Promise<void> {
+  async create(
+    user: string,
+    role: UserRoles,
+    validDuration = DEFAULT_VALID_DURATION
+  ): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
       const inviteRepository =
         this.manager_.getCustomRepository(InviteRepository)
@@ -131,7 +149,9 @@ class InviteService extends BaseService {
       })
 
       invite.expires_at = new Date()
-      invite.expires_at.setDate(invite.expires_at.getDate() + 7)
+      invite.expires_at.setMilliseconds(
+        invite.expires_at.getMilliseconds() + validDuration
+      )
 
       invite = await inviteRepository.save(invite)
 
@@ -166,18 +186,6 @@ class InviteService extends BaseService {
 
       return Promise.resolve()
     })
-  }
-
-  generateToken(data): string {
-    if (config.jwtSecret) {
-      return jwt.sign(data, config.jwtSecret, {
-        expiresIn: "7d",
-      })
-    }
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "Please configure JwtSecret"
-    )
   }
 
   async accept(token, user_): Promise<User> {
