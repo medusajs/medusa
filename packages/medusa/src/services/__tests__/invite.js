@@ -60,12 +60,20 @@ describe("InviteService", () => {
         if (q.where.id === "existingUser") {
           return Promise.resolve({
             user_email: "existing@medusa-commerce.com",
+            token: inviteService.generateToken({
+              user_email: "existing@medusa-commerce.com",
+              invite_id: "existingUser",
+            }),
           })
         }
         return Promise.resolve({
           id: q.where.id,
           role: "admin",
           user_email: "test@test.com",
+          token: inviteService.generateToken({
+            user_email: "test@test.com",
+            invite_id: q.where.id,
+          }),
         })
       },
     })
