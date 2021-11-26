@@ -34,6 +34,12 @@ export class Invite {
   @Column({ default: false })
   accepted: boolean
 
+  @Column()
+  token: string
+
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  expires_at: Date
+
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
@@ -47,8 +53,10 @@ export class Invite {
   metadata: any
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `invite_${id}`
   }
