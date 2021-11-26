@@ -69,7 +69,7 @@ GATSBY_STRIPE_KEY=<your key here>
 
 At this point we have set everything up, and the Stripe payment provider is now enabled in your Medusa project. So, go ahead and start up your medusa project, the gatsby starter, and the admin panel!
 
-However, as Medusa allows for different payment providers in different regions (and multiple providers in each) we should first make Stripe a valid payment option in our default region. To do so, open the admin panel (`http://localhost:7000`) login, and navigate to `Settings > Region settings > Edit Default Region`. Here you should now be able to select stripe as a payment provider:
+However, as Medusa allows for different payment providers in different regions (and multiple providers in each) we should first make Stripe a valid payment option in our default region. To do so, open the admin panel (`http://localhost:7000`) login, and navigate to `Settings > Region settings > Edit Default Region`. Here you should now be able to select Stripe as a payment provider:
 
 <center>
 
@@ -80,9 +80,9 @@ After doing this, and clicking save, we are ready to accept payments using Strip
 
 <center>
 
-![Checkout process](https://i.imgur.com/2pm9JyR.gif)
+![Checkout process](https://i.imgur.com/qhanISL.gif)
 </center>
-After doing so, you should be able to see an uncaptured payment in the Stripe. Here, you navigate to the payments tab, where you should see the following (depending on your choices during the checkout process):
+After doing so, you should be able to see an uncaptured payment in  Stripe. Here, you navigate to the payments tab, where you should see the following (depending on your choices during the checkout process):
 
 <center>
 
@@ -97,7 +97,7 @@ To then capture the payment, navigate back to the admin panel (`http://localhost
 
 </center>
 
-The capture is then reflected in the payment overview in Stripe as well, giving you access to all of Stripes analytical capabilities:
+The capture is then reflected in the payment overview in Stripe as well, giving you access to all of Stripe's analytical capabilities:
 <center>
 
 ![Captured payment](https://i.imgur.com/edv84Nq.png)
