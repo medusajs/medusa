@@ -227,22 +227,25 @@ class ContentfulService extends BaseService {
     }
 
     if (p.collection) {
-      const collection = await environment.getEntry(p.collection_id)
-
-      const contentfulEntity = {
-        sys: {
-          type: "Link",
-          linkType: "Entry",
-          id: collection.sys.id,
-        },
-      }
-
       fields[this.getCustomField("collection", "product")] = {
-        "en-US": p.collection?.title || collection.fields.title["en-US"],
+        "en-US": p.collection?.title 
       }
 
-      fields[this.getCustomField("collection_entry", "product")] = {
-        "en-US": contentfulEntity,
+      if(this.options_.entities?.collections){
+        const collection = await environment.getEntry(p.collection_id)
+
+        const contentfulEntity = {
+          sys: {
+            type: "Link",
+            linkType: "Entry",
+            id: collection.sys.id,
+          },
+        }
+        
+        
+        fields[this.getCustomField("collection_entry", "product")] = {
+          "en-US": contentfulEntity,
+        }
       }
     }
 
@@ -520,22 +523,24 @@ class ContentfulService extends BaseService {
     }
 
     if (p.collection) {
-      const collection = await environment.getEntry(p.collection_id)
-
-      const contentfulEntity = {
-        sys: {
-          type: "Link",
-          linkType: "Entry",
-          id: collection.sys.id,
-        },
-      }
-
+      
       productEntryFields[this.getCustomField("collection", "product")] = {
-        "en-US": p.collection?.title || collection.fields.title["en-US"],
+        "en-US": p.collection?.title
       }
+      
+      if(this.options_.entities?.collections){
+        const collection = await environment.getEntry(p.collection_id)
 
-      productEntryFields[this.getCustomField("collection_entry", "product")] = {
-        "en-US": contentfulEntity,
+        const contentfulEntity = {
+          sys: {
+            type: "Link",
+            linkType: "Entry",
+            id: collection.sys.id,
+          },
+        }
+        productEntryFields[this.getCustomField("collection_entry", "product")] = {
+          "en-US": contentfulEntity,
+        }
       }
     }
 
@@ -640,8 +645,7 @@ class ContentfulService extends BaseService {
     const hasType = await this.getType("collection")
       .then(() => true)
       .catch(() => false)
-    if (!hasType) {
-      console.log("couldn't find collection")
+    if (!hasType || !this.options_.entities?.collections) {
       return Promise.resolve()
     }
 
@@ -676,8 +680,7 @@ class ContentfulService extends BaseService {
     const hasType = await this.getType("collection")
       .then(() => true)
       .catch(() => false)
-    if (!hasType) {
-      console.log("couldn't find collection")
+    if (!hasType || !this.options_.entities?.collections) {
       return Promise.resolve()
     }
 
@@ -728,7 +731,7 @@ class ContentfulService extends BaseService {
   async archiveProductCollectionInContentful(collection) {
     let productCollectionEntity
     const ignore = await this.shouldIgnore_(collection.id, "contentful")
-    if (ignore) {
+    if (ignore || !this.options_.entities?.collections) {
       return Promise.resolve()
     }
 
