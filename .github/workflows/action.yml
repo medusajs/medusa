@@ -32,6 +32,28 @@ jobs:
       - name: Run unit tests
         run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
 
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Run eslint
+        run: yarn lint
+
   integration-tests:
     runs-on: ubuntu-latest
 
@@ -86,6 +108,6 @@ jobs:
         working-directory: integration-tests/api
 
       - name: Run integration tests
-        run: yarn test:integration --maxWorkers=50%
+        run: yarn test:integration --maxWorkers=50% --silent=false
         env:
           DB_PASSWORD: postgres
