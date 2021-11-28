@@ -51,6 +51,9 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
+      - name: Install packages
+        run: yarn
+
       - name: Run eslint
         run: yarn lint
 
