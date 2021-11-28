@@ -12,6 +12,7 @@ module.exports = ({ cwd, verbose }) => {
       env: {
         ...process.env,
         NODE_ENV: "development",
+        WORKER_ID: parseInt(process.env.JEST_WORKER_ID || "1"),
         JWT_SECRET: "test",
         COOKIE_SECRET: "test",
       },

@@ -61,7 +61,7 @@ const DbTestUtil = {
 
   shutdown: async function () {
     await this.db_.close()
-    const databaseName = "medusa-integration"
+    const databaseName = `medusa-integration-${process.env.JEST_WORKER_ID}`
     return await dropDatabase({ databaseName }, pgGodCredentials)
   },
 }
@@ -70,63 +70,70 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd }) {
-    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    try {
+      const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
 
-    const modelsLoader = require(path.join(
-      cwd,
-      `node_modules`,
-      `@medusajs`,
-      `medusa`,
-      `dist`,
-      `loaders`,
-      `models`
-    )).default
-    const entities = modelsLoader({}, { register: false })
+      const modelsLoader = require(path.join(
+        cwd,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `loaders`,
+        `models`
+      )).default
+      const entities = modelsLoader({}, { register: false })
 
-    const { projectConfig } = require(configPath)
-    if (projectConfig.database_type === "sqlite") {
-      connectionType = "sqlite"
-      const dbConnection = await createConnection({
-        type: "sqlite",
-        database: projectConfig.database_database,
-        synchronize: true,
-        entities,
-      })
+      const { projectConfig } = require(configPath)
+      if (projectConfig.database_type === "sqlite") {
+        connectionType = "sqlite"
+        const dbConnection = await createConnection({
+          type: "sqlite",
+          database: projectConfig.database_database,
+          synchronize: true,
+          entities,
+        })
 
-      instance.setDb(dbConnection)
-      return dbConnection
-    } else {
-      const migrationDir = path.resolve(
-        path.join(
-          cwd,
-          `node_modules`,
-          `@medusajs`,
-          `medusa`,
-          `dist`,
-          `migrations`
+        instance.setDb(dbConnection)
+        return dbConnection
+      } else {
+        const migrationDir = path.resolve(
+          path.join(
+            cwd,
+            `node_modules`,
+            `@medusajs`,
+            `medusa`,
+            `dist`,
+            `migrations`
+          )
         )
+
+        const databaseName = `medusa-integration-${process.env.JEST_WORKER_ID}`
+        await createDatabase({ databaseName }, pgGodCredentials)
+
+        const connection = await createConnection({
+          type: "postgres",
+          url: `${DB_URL}-${process.env.JEST_WORKER_ID}`,
+          migrations: [`${migrationDir}/*.js`],
+        })
+
+        await connection.runMigrations()
+        await connection.close()
+
+        const dbConnection = await createConnection({
+          type: "postgres",
+          url: `${DB_URL}-${process.env.JEST_WORKER_ID}`,
+          entities,
+        })
+
+        instance.setDb(dbConnection)
+        return dbConnection
+      }
+    } catch (err) {
+      console.log(
+        "====================================ERROR===================================="
       )
-
-      const databaseName = "medusa-integration"
-      await createDatabase({ databaseName }, pgGodCredentials)
-
-      const connection = await createConnection({
-        type: "postgres",
-        url: DB_URL,
-        migrations: [`${migrationDir}/*.js`],
-      })
-
-      await connection.runMigrations()
-      await connection.close()
-
-      const dbConnection = await createConnection({
-        type: "postgres",
-        url: DB_URL,
-        entities,
-      })
-
-      instance.setDb(dbConnection)
-      return dbConnection
+      console.log(err)
     }
   },
   useDb: function () {
