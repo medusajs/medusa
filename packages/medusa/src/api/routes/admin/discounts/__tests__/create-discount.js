@@ -6,7 +6,7 @@ describe("POST /admin/discounts", () => {
   describe("successful creation", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "TEST",
@@ -35,16 +35,21 @@ describe("POST /admin/discounts", () => {
       expect(DiscountServiceMock.create).toHaveBeenCalledTimes(1)
       expect(DiscountServiceMock.create).toHaveBeenCalledWith({
         code: "TEST",
-        rule: {
-          description: "Test",
-          type: "fixed",
-          value: 10,
-          allocation: "total",
-        },
-        starts_at: new Date("02/02/2021 13:45"),
         ends_at: new Date("03/14/2021 04:30"),
         is_disabled: false,
         is_dynamic: false,
+        metadata: {},
+        regions: [],
+        rule: {
+          allocation: "total",
+          description: "Test",
+          type: "fixed",
+          valid_for: [],
+          value: 10,
+        },
+        starts_at: new Date("02/02/2021 13:45"),
+        usage_limit: undefined,
+        valid_duration: undefined,
       })
     })
   })
@@ -52,7 +57,7 @@ describe("POST /admin/discounts", () => {
   describe("unsuccessful creation with dynamic discount using an invalid iso8601 duration", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/discounts", {
         payload: {
@@ -81,7 +86,7 @@ describe("POST /admin/discounts", () => {
 
     it("returns error", () => {
       expect(subject.body.message).toEqual(
-        `"valid_duration" must be a valid ISO 8601 duration`
+        `"valid_duration" must be a valid ISO 8601 duration`,
       )
     })
   })
@@ -89,7 +94,7 @@ describe("POST /admin/discounts", () => {
   describe("successful creation with dynamic discount", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/discounts", {
         payload: {
@@ -120,15 +125,20 @@ describe("POST /admin/discounts", () => {
       expect(DiscountServiceMock.create).toHaveBeenCalledTimes(1)
       expect(DiscountServiceMock.create).toHaveBeenCalledWith({
         code: "TEST",
-        rule: {
-          description: "Test",
-          type: "fixed",
-          value: 10,
-          allocation: "total",
-        },
-        starts_at: new Date("02/02/2021 13:45"),
+        ends_at: undefined,
         is_disabled: false,
         is_dynamic: true,
+        metadata: {},
+        regions: [],
+        rule: {
+          allocation: "total",
+          description: "Test",
+          type: "fixed",
+          valid_for: [],
+          value: 10,
+        },
+        starts_at: new Date("02/02/2021 13:45"),
+        usage_limit: undefined,
         valid_duration: "P1Y2M03DT04H05M",
       })
     })
@@ -137,7 +147,7 @@ describe("POST /admin/discounts", () => {
   describe("fails on invalid data", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "10%OFF",
@@ -161,7 +171,7 @@ describe("POST /admin/discounts", () => {
 
     it("returns error", () => {
       expect(subject.body.message).toEqual(
-        `type should not be empty, type must be a string`
+        `type should not be empty, type must be a string`,
       )
     })
   })
@@ -169,7 +179,7 @@ describe("POST /admin/discounts", () => {
   describe("fails on invalid date intervals", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", "/admin/discounts", {
         payload: {
           code: "TEST",
@@ -196,7 +206,7 @@ describe("POST /admin/discounts", () => {
 
     it("returns error", () => {
       expect(subject.body.message).toEqual(
-        `"ends_at" must be greater than "starts_at"`
+        `"ends_at" must be greater than "starts_at"`,
       )
     })
   })
@@ -204,7 +214,7 @@ describe("POST /admin/discounts", () => {
   describe("succesfully creates a dynamic discount without setting valid duration", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/discounts", {
         payload: {
@@ -240,7 +250,10 @@ describe("POST /admin/discounts", () => {
           type: "fixed",
           value: 10,
           allocation: "total",
+          valid_for: [],
         },
+        metadata: {},
+        regions: [],
         starts_at: new Date("03/14/2021 14:30"),
       })
     })

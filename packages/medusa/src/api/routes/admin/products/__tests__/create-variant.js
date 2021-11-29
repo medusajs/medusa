@@ -6,7 +6,7 @@ describe("POST /admin/products/:id/variants", () => {
   describe("successful add variant", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request(
         "POST",
         `/admin/products/${IdMap.getId("productWithOptions")}/variants`,
@@ -25,7 +25,7 @@ describe("POST /admin/products/:id/variants", () => {
               userId: IdMap.getId("admin_user"),
             },
           },
-        }
+        },
       )
     })
 
@@ -38,16 +38,33 @@ describe("POST /admin/products/:id/variants", () => {
       expect(ProductVariantServiceMock.create).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
         {
+          allow_backorder: undefined,
+          barcode: undefined,
+          ean: undefined,
+          height: undefined,
+          hs_code: undefined,
           inventory_quantity: 0,
-          title: "Test Product Variant",
+          length: undefined,
+          manage_inventory: undefined,
+          material: undefined,
+          metadata: {},
+          mid_code: undefined,
           options: [],
+          origin_country: undefined,
           prices: [
             {
-              currency_code: "DKK",
               amount: 1234,
+              currency_code: "DKK",
+              region_id: undefined,
+              sale_amount: undefined,
             },
           ],
-        }
+          sku: undefined,
+          title: "Test Product Variant",
+          upc: undefined,
+          weight: undefined,
+          width: undefined,
+        },
       )
     })
 

@@ -6,7 +6,7 @@ describe("POST /admin/orders/:id", () => {
   describe("successfully updates an order", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request(
         "POST",
         `/admin/orders/${IdMap.getId("test-order")}`,
@@ -19,7 +19,7 @@ describe("POST /admin/orders/:id", () => {
               userId: IdMap.getId("admin_user"),
             },
           },
-        }
+        },
       )
     })
 
@@ -32,14 +32,23 @@ describe("POST /admin/orders/:id", () => {
       expect(OrderServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("test-order"),
         {
+          billing_address: {},
+          customer_id: undefined,
+          discounts: [],
           email: "oliver@test.dk",
-        }
+          items: [],
+          no_notification: undefined,
+          payment_method: {},
+          region: undefined,
+          shipping_address: {},
+          shipping_method: [],
+        },
       )
     })
   })
 
   describe("handles failed update operation", () => {
-    it("throws if metadata is to be updated", async () => {
+    it("throws if metadata is to be updated", async() => {
       try {
         await request("POST", `/admin/orders/${IdMap.getId("test-order")}`, {
           payload: {
@@ -55,7 +64,7 @@ describe("POST /admin/orders/:id", () => {
       } catch (error) {
         expect(error.status).toEqual(400)
         expect(error.message).toEqual(
-          "Use setMetadata to update metadata fields"
+          "Use setMetadata to update metadata fields",
         )
       }
     })

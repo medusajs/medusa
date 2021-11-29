@@ -37,6 +37,8 @@ describe("POST /admin/collections/:id", () => {
         IdMap.getId("col"),
         {
           title: "Suits and vests",
+          metadata: {},
+          handle: undefined
         }
       )
     })

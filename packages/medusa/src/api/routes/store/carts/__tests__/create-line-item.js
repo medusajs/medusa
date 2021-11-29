@@ -34,7 +34,7 @@ describe("POST /store/carts/:id", () => {
         IdMap.getId("testVariant"),
         IdMap.getId("testRegion"),
         3,
-        { metadata: undefined }
+        { metadata: {} }
       )
     })
 
@@ -73,7 +73,7 @@ describe("POST /store/carts/:id", () => {
         IdMap.getId("fail"),
         IdMap.getId("testRegion"),
         3,
-        { metadata: undefined }
+        { metadata: {} }
       )
     })
 

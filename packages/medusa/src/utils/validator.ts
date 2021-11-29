@@ -23,8 +23,8 @@ export async function validator<T, V>(
   config: ValidatorOptions = {}
 ): Promise<T> {
   const toValidate = plainToInstance(typedClass, plain)
-  // @ts-ignore
-  const errors = await validate(toValidate, {
+
+  const errors = await validate(toValidate as unknown as object, {
     whitelist: true,
     forbidNonWhitelisted: true,
     ...config,

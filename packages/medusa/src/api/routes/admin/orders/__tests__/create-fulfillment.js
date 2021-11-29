@@ -42,7 +42,7 @@ describe("POST /admin/orders/:id/fulfillment", () => {
             quantity: 1,
           },
         ],
-        { metadata: undefined, no_notification: undefined }
+        { metadata: {}, no_notification: undefined }
       )
     })
 

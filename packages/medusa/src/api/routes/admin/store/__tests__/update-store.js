@@ -6,7 +6,7 @@ describe("POST /admin/store", () => {
   describe("successful creation", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/store", {
         payload: {
@@ -28,6 +28,11 @@ describe("POST /admin/store", () => {
       expect(StoreServiceMock.update).toHaveBeenCalledTimes(1)
       expect(StoreServiceMock.update).toHaveBeenCalledWith({
         name: "New Name",
+        currencies: [],
+        default_currency_code: undefined,
+        payment_link_template: undefined,
+        swap_link_template: undefined,
+
       })
     })
   })
@@ -35,7 +40,7 @@ describe("POST /admin/store", () => {
   describe("successful creation", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/store", {
         payload: {
@@ -64,7 +69,7 @@ describe("POST /admin/store", () => {
   describe("throws when currencies is not an array", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/store", {
         payload: {

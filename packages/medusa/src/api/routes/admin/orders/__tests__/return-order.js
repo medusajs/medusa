@@ -45,11 +45,13 @@ describe("POST /admin/orders/:id/return", () => {
           {
             item_id: IdMap.getId("existingLine"),
             quantity: 10,
+            note: undefined,
+            reason_id: undefined
           },
         ],
         refund_amount: 10,
         no_notification: true,
-        shipping_method: undefined,
+        shipping_method: {},
       })
     })
   })
@@ -95,11 +97,13 @@ describe("POST /admin/orders/:id/return", () => {
           {
             item_id: IdMap.getId("existingLine"),
             quantity: 10,
+            note: undefined,
+            reason_id: undefined
           },
         ],
         refund_amount: 0,
+        shipping_method: {},
         no_notification: true,
-        shipping_method: undefined,
       })
     })
   })
@@ -145,11 +149,13 @@ describe("POST /admin/orders/:id/return", () => {
           {
             item_id: IdMap.getId("existingLine"),
             quantity: 10,
+            note: undefined,
+            reason_id: undefined
           },
         ],
+        shipping_method: {},
         refund_amount: 0,
         no_notification: true,
-        shipping_method: undefined,
       })
     })
   })

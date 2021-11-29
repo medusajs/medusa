@@ -153,6 +153,5 @@ export class AdminUpdateDiscountRule {
 
   @IsArray()
   @IsOptional()
-  @IsString({ each: true })
   valid_for?: string[] = []
 }

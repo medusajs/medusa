@@ -8,7 +8,7 @@ describe("POST /admin/products", () => {
   describe("successful creation with variants", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", "/admin/products", {
         payload: {
           title: "Test Product with variants",
@@ -41,7 +41,7 @@ describe("POST /admin/products", () => {
       })
     })
 
-    afterAll(async () => {
+    afterAll(async() => {
       jest.clearAllMocks()
     })
 
@@ -54,22 +54,39 @@ describe("POST /admin/products", () => {
       expect(ProductVariantServiceMock.create).toHaveBeenCalledWith(
         IdMap.getId("productWithOptions"),
         {
-          title: "Test",
-          variant_rank: 0,
-          prices: [
-            {
-              currency_code: "USD",
-              amount: 100,
-            },
-          ],
+          allow_backorder: undefined,
+          barcode: undefined,
+          ean: undefined,
+          height: undefined,
+          hs_code: undefined,
+          inventory_quantity: 0,
+          length: undefined,
+          manage_inventory: undefined,
+          material: undefined,
+          metadata: {},
+          mid_code: undefined,
           options: [
             {
-              option_id: IdMap.getId("option1"),
+              option_id:  IdMap.getId("option1"),
               value: "100",
             },
           ],
-          inventory_quantity: 0,
-        }
+          origin_country: undefined,
+          prices: [
+            {
+              amount: 100,
+              currency_code: "USD",
+              region_id: undefined,
+              sale_amount: undefined,
+            },
+          ],
+          sku: undefined,
+          title: "Test",
+          upc: undefined,
+          variant_rank: 0,
+          weight: undefined,
+          width: undefined,
+        },
       )
     })
   })
@@ -77,7 +94,7 @@ describe("POST /admin/products", () => {
   describe("successful creation test", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", "/admin/products", {
         payload: {
           title: "Test Product",
@@ -114,12 +131,26 @@ describe("POST /admin/products", () => {
         is_giftcard: false,
         options: [{ title: "Denominations" }],
         profile_id: IdMap.getId("default_shipping_profile"),
+        height: undefined,
+        hs_code: undefined,
+        images: [],
+        collection_id: undefined,
+        length: undefined,
+        material: undefined,
+        metadata: {},
+        mid_code: undefined,
+        origin_country: undefined,
+        subtitle: undefined,
+        thumbnail: undefined,
+        type: {},
+        weight: undefined,
+        width: undefined,
       })
     })
 
     it("calls shipping profile default", () => {
       expect(ShippingProfileServiceMock.retrieveDefault).toHaveBeenCalledTimes(
-        1
+        1,
       )
       expect(ShippingProfileServiceMock.retrieveDefault).toHaveBeenCalledWith()
     })
@@ -128,7 +159,7 @@ describe("POST /admin/products", () => {
   describe("successful creation of gift card product", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       jest.clearAllMocks()
       subject = await request("POST", "/admin/products", {
         payload: {
@@ -165,23 +196,42 @@ describe("POST /admin/products", () => {
     it("calls service createDraft", () => {
       expect(ProductServiceMock.create).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.create).toHaveBeenCalledWith({
-        title: "Gift Card",
-        discountable: true,
+        collection_id: undefined,
         description: "make someone happy",
-        options: [{ title: "Denominations" }],
+        discountable: true,
         handle: "test-gift-card",
+        height: undefined,
+        hs_code: undefined,
+        images: [],
         is_giftcard: true,
-        status: "draft",
+        length: undefined,
+        material: undefined,
+        metadata: {},
+        mid_code: undefined,
+        options: [
+          {
+            title: "Denominations",
+          },
+        ],
+        origin_country: undefined,
         profile_id: IdMap.getId("giftCardProfile"),
+        status: "draft",
+        subtitle: undefined,
+        tags: [],
+        thumbnail: undefined,
+        title: "Gift Card",
+        type: {},
+        weight: undefined,
+        width: undefined,
       })
     })
 
     it("calls profile service", () => {
       expect(
-        ShippingProfileServiceMock.retrieveGiftCardDefault
+        ShippingProfileServiceMock.retrieveGiftCardDefault,
       ).toHaveBeenCalledTimes(1)
       expect(
-        ShippingProfileServiceMock.retrieveGiftCardDefault
+        ShippingProfileServiceMock.retrieveGiftCardDefault,
       ).toHaveBeenCalledWith()
     })
   })
@@ -189,7 +239,7 @@ describe("POST /admin/products", () => {
   describe("invalid data returns error details", () => {
     let subject
 
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", "/admin/products", {
         payload: {
           description: "Test Description",
@@ -211,7 +261,7 @@ describe("POST /admin/products", () => {
     it("returns error details", () => {
       expect(subject.body.type).toEqual("invalid_data")
       expect(subject.body.message).toEqual(
-        expect.stringContaining(`title must be a string`)
+        expect.stringContaining(`title must be a string`),
       )
     })
   })

@@ -33,6 +33,7 @@ describe("POST /admin/collections", () => {
       expect(ProductCollectionServiceMock.create).toHaveBeenCalledWith({
         title: "Suits",
         handle: "suits",
+        metadata: {}
       })
     })
   })

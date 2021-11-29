@@ -56,6 +56,10 @@ describe("POST /store/carts/:id", () => {
               code: "TESTCODE",
             },
           ],
+          context: {},
+          country_code: undefined,
+          customer_id: undefined,
+          gift_cards: []
         }
       )
     })
