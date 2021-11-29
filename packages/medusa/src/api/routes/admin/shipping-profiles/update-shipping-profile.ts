@@ -37,9 +37,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const profileService: ShippingProfileService = req.scope.resolve(
-    "shippingProfileService"
-  )
+  const profileService: ShippingProfileService = req.scope.resolve(ServiceIdentifiers.shippingProfileService)
 
   await profileService.update(profile_id, validated)
 

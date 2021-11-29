@@ -25,7 +25,7 @@ import { ProductService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
 
-  const productService: ProductService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
   const variants = await productService.retrieveVariants(id)
 
   res.json({ variants })

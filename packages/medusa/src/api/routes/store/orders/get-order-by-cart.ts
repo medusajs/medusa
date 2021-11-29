@@ -23,7 +23,7 @@ import { OrderService } from "../../../../services"
 export default async (req, res) => {
   const { cart_id } = req.params
 
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
   const order = await orderService.retrieveByCartId(cart_id, {
     select: defaultStoreOrdersFields,
     relations: defaultStoreOrdersRelations,

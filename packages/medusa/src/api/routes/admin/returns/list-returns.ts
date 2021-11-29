@@ -26,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/return"
  */
 export default async (req, res) => {
-  const returnService: ReturnService = req.scope.resolve("returnService")
+  const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
 
   const validated = await validator(AdminGetReturnsParams, req.query)
 

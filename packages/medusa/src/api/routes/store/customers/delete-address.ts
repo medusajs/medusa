@@ -1,5 +1,5 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [delete] /customers/me/addresses/{address_id}
@@ -26,7 +26,7 @@ export default async (req, res) => {
 
   const { address_id } = req.params
 
-  const customerService: CustomerService = req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
 
   await customerService.removeAddress(id, address_id)
 

@@ -1,6 +1,6 @@
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../.."
-import DiscountService from "../../../../services/discount"
+import { DiscountService, ServiceIdentifiers } from "../../../../services"
 /**
  * @oas [post] /discounts/{id}/regions/{region_id}
  * operationId: "PostDiscountsDiscountRegionsRegion"
@@ -25,7 +25,9 @@ import DiscountService from "../../../../services/discount"
 export default async (req, res) => {
   const { discount_id, region_id } = req.params
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discountService: DiscountService = req.scope.resolve(
+    ServiceIdentifiers.discountService
+  )
   await discountService.addRegion(discount_id, region_id)
 
   const discount: Discount = await discountService.retrieve(discount_id, {

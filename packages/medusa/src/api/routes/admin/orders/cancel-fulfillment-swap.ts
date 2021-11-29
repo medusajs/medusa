@@ -31,10 +31,10 @@ import {
 export default async (req, res) => {
   const { id, swap_id, fulfillment_id } = req.params
 
-  const swapService: SwapService = req.scope.resolve("swapService")
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
   const fulfillmentService: FulfillmentService =
-    req.scope.resolve("fulfillmentService")
+    req.scope.resolve(ServiceIdentifiers.fulfillmentService)
 
   const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 

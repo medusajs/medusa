@@ -37,7 +37,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validatedBody = await validator(AdminPostStoreReq, req.body)
 
-  const storeService: StoreService = req.scope.resolve("storeService")
+  const storeService: StoreService = req.scope.resolve(ServiceIdentifiers.storeService)
 
   const store = await storeService.update(validatedBody)
 

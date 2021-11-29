@@ -29,7 +29,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const draftOrderService: DraftOrderService =
-    req.scope.resolve("draftOrderService")
+    req.scope.resolve(ServiceIdentifiers.draftOrderService)
   await draftOrderService.delete(id)
 
   res.json({

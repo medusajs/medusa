@@ -1,4 +1,4 @@
-import ProductCollectionService from "../../../../services/product-collection"
+import { ProductCollectionService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [delete] /collections/{id}
@@ -29,9 +29,7 @@ import ProductCollectionService from "../../../../services/product-collection"
 export default async (req, res) => {
   const { id } = req.params
 
-  const productCollectionService: ProductCollectionService = req.scope.resolve(
-    "productCollectionService"
-  )
+  const productCollectionService: ProductCollectionService = req.scope.resolve(ServiceIdentifiers.productCollectionService)
   await productCollectionService.delete(id)
 
   res.json({

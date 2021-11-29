@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
 import { IsOptional, IsInt } from "class-validator"
-import ProductCollectionService from "../../../../services/product-collection"
+import { ProductCollectionService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /collections
@@ -31,7 +31,7 @@ export default async (req, res) => {
     const selector = {}
 
     const productCollectionService: ProductCollectionService =
-      req.scope.resolve("productCollectionService")
+      req.scope.resolve(ServiceIdentifiers.productCollectionService)
 
     const listConfig = {
       skip: offset,

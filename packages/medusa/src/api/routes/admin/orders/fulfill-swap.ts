@@ -1,7 +1,11 @@
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { OrderService, SwapService } from "../../../../services"
+import {
+  OrderService,
+  ServiceIdentifiers,
+  SwapService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments
@@ -43,9 +47,15 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService: OrderService = req.scope.resolve("orderService")
-  const swapService: SwapService = req.scope.resolve("swapService")
-  const entityManager: EntityManager = req.scope.resolve("manager")
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const swapService: SwapService = req.scope.resolve(
+    ServiceIdentifiers.swapService
+  )
+  const entityManager: EntityManager = req.scope.resolve(
+    "manager"
+  )
 
   await entityManager.transaction(async (manager) => {
     await swapService.withTransaction(manager).createFulfillment(swap_id, {

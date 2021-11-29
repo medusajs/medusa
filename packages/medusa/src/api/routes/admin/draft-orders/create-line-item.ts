@@ -62,9 +62,9 @@ export default async (req, res) => {
   )
 
   const draftOrderService: DraftOrderService =
-    req.scope.resolve("draftOrderService")
-  const cartService: CartService = req.scope.resolve("cartService")
-  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
+    req.scope.resolve(ServiceIdentifiers.draftOrderService)
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
+  const lineItemService: LineItemService = req.scope.resolve(ServiceIdentifiers.lineItemService)
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

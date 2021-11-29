@@ -1,5 +1,5 @@
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import NoteService from "../../../../services/note"
+import { NoteService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { selector } from "../../../../types/note"
 import { Type } from "class-transformer"
@@ -36,7 +36,7 @@ export default async (req, res) => {
     selector.resource_id = validated.resource_id
   }
 
-  const noteService: NoteService = req.scope.resolve("noteService")
+  const noteService: NoteService = req.scope.resolve(ServiceIdentifiers.noteService)
   const notes = await noteService.list(selector, {
     take: validated.limit,
     skip: validated.offset,

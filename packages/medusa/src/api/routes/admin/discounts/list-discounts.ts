@@ -1,7 +1,7 @@
 import { Type, Transform } from "class-transformer"
 import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-import DiscountService from "../../../../services/discount"
+import { DiscountService, ServiceIdentifiers } from "../../../../services"
 import { ListSelector } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
 /**
@@ -32,7 +32,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
   const selector: ListSelector = {}
 
   if (validated.q) {

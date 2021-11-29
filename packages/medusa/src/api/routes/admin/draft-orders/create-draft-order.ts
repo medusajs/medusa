@@ -126,7 +126,7 @@ export default async (req, res) => {
   ])
 
   const draftOrderService: DraftOrderService =
-    req.scope.resolve("draftOrderService")
+    req.scope.resolve(ServiceIdentifiers.draftOrderService)
   let draftOrder: DraftOrder = await draftOrderService.create(value)
 
   draftOrder = await draftOrderService.retrieve(draftOrder.id, {

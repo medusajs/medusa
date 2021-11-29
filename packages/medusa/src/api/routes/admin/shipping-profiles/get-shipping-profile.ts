@@ -26,9 +26,7 @@ import { ShippingProfileService } from "../../../../services"
  */
 export default async (req, res) => {
   const { profile_id } = req.params
-  const profileService: ShippingProfileService = req.scope.resolve(
-    "shippingProfileService"
-  )
+  const profileService: ShippingProfileService = req.scope.resolve(ServiceIdentifiers.shippingProfileService)
 
   const profile = await profileService.retrieve(profile_id, {
     select: defaultAdminShippingProfilesFields,

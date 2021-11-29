@@ -1,4 +1,4 @@
-import DiscountService from "../../../../services/discount"
+import { DiscountService, ServiceIdentifiers } from "../../../../services"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 /**
  * @oas [post] /discounts/{id}/products/{product_id}
@@ -24,7 +24,7 @@ import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 export default async (req, res) => {
   const { discount_id, variant_id } = req.params
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
   await discountService.removeValidProduct(discount_id, variant_id)
 
   const discount = await discountService.retrieve(discount_id, {

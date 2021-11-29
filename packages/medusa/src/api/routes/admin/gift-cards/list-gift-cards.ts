@@ -33,7 +33,7 @@ export default async (req, res) => {
     selector["q"] = validated.q
   }
 
-  const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
+  const giftCardService: GiftCardService = req.scope.resolve(ServiceIdentifiers.giftCardService)
 
   const giftCards = await giftCardService.list(selector, {
     select: defaultAdminGiftCardFields,

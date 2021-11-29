@@ -1,3 +1,4 @@
+import { ServiceIdentifiers } from "../../../../services"
 /**
  * @oas [get] /shipping-options/{id}
  * operationId: "GetShippingOptionsOption"
@@ -17,9 +18,12 @@
  *             shipping_option:
  *               $ref: "#/components/schemas/shipping_option"
  */
+
 export default async (req, res) => {
   const { option_id } = req.params
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService = req.scope.resolve(
+    ServiceIdentifiers.shippingOptionService
+  )
   const data = await optionService.retrieve(option_id)
 
   res.status(200).json({ shipping_option: data })

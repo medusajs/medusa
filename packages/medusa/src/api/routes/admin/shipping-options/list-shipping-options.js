@@ -1,5 +1,6 @@
 import _ from "lodash"
 import { defaultFields, defaultRelations } from "./"
+import { ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [get] /shipping-options
@@ -23,7 +24,9 @@ import { defaultFields, defaultRelations } from "./"
 export default async (req, res) => {
   const query = _.pick(req.query, ["region_id", "is_return", "admin_only"])
 
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService = req.scope.resolve(
+    ServiceIdentifiers.shippingOptionService
+  )
   const data = await optionService.list(query, {
     select: defaultFields,
     relations: defaultRelations,

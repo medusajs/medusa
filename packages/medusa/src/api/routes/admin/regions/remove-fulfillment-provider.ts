@@ -1,4 +1,4 @@
-import RegionService from "../../../../services/region"
+import { RegionService, ServiceIdentifiers } from "../../../../services"
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
@@ -24,7 +24,7 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  */
 export default async (req, res) => {
   const { region_id, provider_id } = req.params
-  const regionService: RegionService = req.scope.resolve("regionService")
+  const regionService: RegionService = req.scope.resolve(ServiceIdentifiers.regionService)
 
   await regionService.removeFulfillmentProvider(region_id, provider_id)
 

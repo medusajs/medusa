@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import OrderService from "../../../../services/order"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import {
   allowedStoreOrdersFields,
@@ -44,7 +44,7 @@ import {
 export default async (req, res) => {
   const id: string = req.user.customer_id
 
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
 
   const selector = {
     customer_id: id,

@@ -1,3 +1,5 @@
+import { ServiceIdentifiers } from "../../../../services"
+
 /**
  * @oas [delete] /shipping-options/{id}
  * operationId: "DeleteShippingOptionsOption"
@@ -25,7 +27,9 @@
  */
 export default async (req, res) => {
   const { option_id } = req.params
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService = req.scope.resolve(
+    ServiceIdentifiers.shippingOptionService
+  )
 
   await optionService.delete(option_id)
 

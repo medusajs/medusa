@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator"
-import NoteService from "../../../../services/note"
+import { NoteService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -40,7 +40,7 @@ export default async (req, res) => {
 
   const userId: string = req.user.id || req.user.userId
 
-  const noteService: NoteService = req.scope.resolve("noteService")
+  const noteService: NoteService = req.scope.resolve(ServiceIdentifiers.noteService)
 
   const result = await noteService.create({
     resource_id: validated.resource_id,

@@ -1,5 +1,5 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+import { CartService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions
@@ -23,7 +23,7 @@ import { CartService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
 
-  const cartService: CartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   await cartService.setPaymentSessions(id)
 

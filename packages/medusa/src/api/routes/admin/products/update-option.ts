@@ -42,7 +42,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const productService: ProductService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
 
   await productService.updateOption(id, option_id, validated)
 

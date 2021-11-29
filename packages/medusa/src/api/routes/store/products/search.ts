@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { SearchService } from "../../../../services"
-import ProductService from "../../../../services/product"
+import { ProductService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
@@ -15,7 +15,7 @@ export default async (req, res) => {
 
   const paginationOptions = { offset, limit }
 
-  const searchService: SearchService = req.scope.resolve("searchService")
+  const searchService: SearchService = req.scope.resolve(ServiceIdentifiers.searchService)
 
   const results = await searchService.search(ProductService.IndexName, q, {
     paginationOptions,

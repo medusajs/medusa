@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
 import { IsInt, IsOptional } from "class-validator"
-import RegionService from "../../../../services/region"
+import { RegionService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /regions
@@ -33,7 +33,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { limit, offset } = await validator(StoreGetRegionsParams, req.query)
 
-  const regionService: RegionService = req.scope.resolve("regionService")
+  const regionService: RegionService = req.scope.resolve(ServiceIdentifiers.regionService)
 
   const selector = {}
 

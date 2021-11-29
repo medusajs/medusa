@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import config from "../../../../config"
 import { validator } from "../../../../utils/validator"
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
-import AuthService from "../../../../services/auth"
+import { AuthService, ServiceIdentifiers } from "../../../../services"
 import { MedusaError } from "medusa-core-utils"
 
 /**
@@ -36,7 +36,7 @@ export default async (req, res) => {
   }
   const validated = await validator(AdminPostAuthReq, req.body)
 
-  const authService: AuthService = req.scope.resolve("authService")
+  const authService: AuthService = req.scope.resolve(ServiceIdentifiers.authService)
   const result = await authService.authenticate(
     validated.email,
     validated.password

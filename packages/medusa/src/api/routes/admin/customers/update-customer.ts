@@ -1,6 +1,6 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -51,7 +51,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostCustomersCustomerReq, req.body)
 
-  const customerService: CustomerService = req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve(
+    ServiceIdentifiers.customerService
+  )
 
   let customer = await customerService.retrieve(id)
 

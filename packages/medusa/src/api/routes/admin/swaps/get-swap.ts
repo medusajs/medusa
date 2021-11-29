@@ -24,7 +24,7 @@ import { SwapService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
 
-  const swapService: SwapService = req.scope.resolve("swapService")
+  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
 
   const swap = await swapService.retrieve(id, {
     select: defaultAdminSwapFields,

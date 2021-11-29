@@ -43,9 +43,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const notificationService: NotificationService = req.scope.resolve(
-    "notificationService"
-  )
+  const notificationService: NotificationService = req.scope.resolve(ServiceIdentifiers.notificationService)
 
   const config: any = {}
 

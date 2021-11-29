@@ -23,7 +23,7 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
 export default async (req, res) => {
   const { id } = req.params
 
-  const giftCardService = req.scope.resolve("giftCardService")
+  const giftCardService = req.scope.resolve(ServiceIdentifiers.giftCardService)
   const giftCard = await giftCardService.retrieve(id, {
     select: defaultAdminGiftCardFields,
     relations: defaultAdminGiftCardRelations,

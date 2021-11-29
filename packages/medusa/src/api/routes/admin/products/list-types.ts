@@ -21,7 +21,7 @@ import { ProductService } from "../../../../services"
  *                 $ref: "#/components/schemas/product_type"
  */
 export default async (req, res) => {
-  const productService: ProductService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
 
   const types = await productService.listTypes()
 

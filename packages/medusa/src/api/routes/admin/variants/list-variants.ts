@@ -3,7 +3,7 @@ import { defaultAdminVariantFields, defaultAdminVariantRelations } from "./"
 import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import { FindConfig } from "../../../../types/common"
 import { ProductVariant } from "../../../../models/product-variant"
-import ProductVariantService from "../../../../services/product-variant"
+import { ProductVariantService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { Type } from "class-transformer"
 import { IsInt, IsOptional, IsString } from "class-validator"
@@ -32,9 +32,7 @@ import { IsInt, IsOptional, IsString } from "class-validator"
  *                 $ref: "#/components/schemas/product_variant"
  */
 export default async (req, res) => {
-  const variantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
+  const variantService: ProductVariantService = req.scope.resolve(ServiceIdentifiers.productVariantService)
 
   const { offset, limit, q } = await validator(
     AdminGetVariantsParams,

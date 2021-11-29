@@ -1,5 +1,6 @@
 import { MedusaError, Validator } from "medusa-core-utils"
 import { defaultFields, defaultRelations } from "./"
+import { ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [post] /shipping-options/{id}
@@ -68,7 +69,9 @@ export default async (req, res) => {
     throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
   }
 
-  const optionService = req.scope.resolve("shippingOptionService")
+  const optionService = req.scope.resolve(
+    ServiceIdentifiers.shippingOptionService
+  )
 
   await optionService.update(option_id, value)
 

@@ -113,7 +113,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostOrdersReq, req.body)
 
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
   let order = await orderService.create(validated)
   order = await orderService.decorate(order, [], ["region"])
 

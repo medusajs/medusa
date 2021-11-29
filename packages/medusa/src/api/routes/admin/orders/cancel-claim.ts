@@ -26,8 +26,8 @@ import { ClaimService, OrderService } from "../../../../services"
 export default async (req, res) => {
   const { id, claim_id } = req.params
 
-  const claimService: ClaimService = req.scope.resolve("claimService")
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const claimService: ClaimService = req.scope.resolve(ServiceIdentifiers.claimService)
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
 
   const claim = await claimService.retrieve(claim_id)
 

@@ -1,4 +1,4 @@
-import SwapService from "../../../../services/swap"
+import { SwapService, ServiceIdentifiers } from "../../../../services"
 /**
  * @oas [get] /swaps/{cart_id}
  * operationId: GetSwapsSwapCartId
@@ -21,7 +21,7 @@ import SwapService from "../../../../services/swap"
 export default async (req, res) => {
   const { cart_id } = req.params
 
-  const swapService: SwapService = req.scope.resolve("swapService")
+  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
 
   const swap = await swapService.retrieveByCartId(cart_id)
 

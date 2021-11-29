@@ -1,4 +1,4 @@
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 /**
  * @oas [get] /auth
  * operationId: "GetAuth"
@@ -20,7 +20,7 @@ import CustomerService from "../../../../services/customer"
 export default async (req, res) => {
   if (req.user && req.user.customer_id) {
     const customerService: CustomerService =
-      req.scope.resolve("customerService")
+      req.scope.resolve(ServiceIdentifiers.customerService)
 
     const customer = await customerService.retrieve(req.user.customer_id, {
       relations: ["shipping_addresses", "orders", "orders.items"],

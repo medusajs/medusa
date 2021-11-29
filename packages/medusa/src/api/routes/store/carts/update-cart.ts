@@ -84,7 +84,7 @@ export default async (req, res) => {
 
   const validated = await validator(StorePostCartsCartReq, req.body)
 
-  const cartService: CartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   // Update the cart
   await cartService.update(id, validated)

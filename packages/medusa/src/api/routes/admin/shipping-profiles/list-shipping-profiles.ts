@@ -21,9 +21,7 @@ import { ShippingProfileService } from "../../../../services"
  *                 $ref: "#/components/schemas/shipping_profile"
  */
 export default async (req, res) => {
-  const profileService: ShippingProfileService = req.scope.resolve(
-    "shippingProfileService"
-  )
+  const profileService: ShippingProfileService = req.scope.resolve(ServiceIdentifiers.shippingProfileService)
 
   const data = await profileService.list()
 

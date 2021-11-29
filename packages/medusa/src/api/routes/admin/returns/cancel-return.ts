@@ -26,16 +26,16 @@ import {
 export default async (req, res) => {
   const { id } = req.params
 
-  const returnService: ReturnService = req.scope.resolve("returnService")
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
 
   let result = await returnService.cancel(id)
 
   if (result.swap_id) {
-    const swapService = req.scope.resolve("swapService")
+    const swapService = req.scope.resolve(ServiceIdentifiers.swapService)
     result = await swapService.retrieve(result.swap_id)
   } else if (result.claim_order_id) {
-    const claimService = req.scope.resolve("claimService")
+    const claimService = req.scope.resolve(ServiceIdentifiers.claimService)
     result = await claimService.retrieve(result.claim_order_id)
   }
 

@@ -1,6 +1,10 @@
 import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { FulfillmentService, OrderService } from "../../../../services"
+import {
+  FulfillmentService,
+  OrderService,
+  ServiceIdentifiers,
+} from "../../../../services"
 
 /**
  * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
@@ -26,9 +30,12 @@ import { FulfillmentService, OrderService } from "../../../../services"
 export default async (req, res) => {
   const { id, fulfillment_id } = req.params
 
-  const orderService: OrderService = req.scope.resolve("orderService")
-  const fulfillmentService: FulfillmentService =
-    req.scope.resolve("fulfillmentService")
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const fulfillmentService: FulfillmentService = req.scope.resolve(
+    ServiceIdentifiers.fulfillmentService
+  )
 
   const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 

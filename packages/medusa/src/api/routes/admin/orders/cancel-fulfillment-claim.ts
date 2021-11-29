@@ -32,9 +32,9 @@ export default async (req, res) => {
   const { id, claim_id, fulfillment_id } = req.params
 
   const fulfillmentService: FulfillmentService =
-    req.scope.resolve("fulfillmentService")
-  const claimService: ClaimService = req.scope.resolve("claimService")
-  const orderService: OrderService = req.scope.resolve("orderService")
+    req.scope.resolve(ServiceIdentifiers.fulfillmentService)
+  const claimService: ClaimService = req.scope.resolve(ServiceIdentifiers.claimService)
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
 
   const fulfillment = await fulfillmentService.retrieve(fulfillment_id)
 

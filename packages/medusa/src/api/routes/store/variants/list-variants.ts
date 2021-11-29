@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultStoreVariantRelations } from "."
-import ProductVariantService from "../../../../services/product-variant"
+import { ProductVariantService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -52,9 +52,7 @@ export default async (req, res) => {
     selector = { id: ids.split(",") }
   }
 
-  const variantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
+  const variantService: ProductVariantService = req.scope.resolve(ServiceIdentifiers.productVariantService)
   const variants = await variantService.list(selector, listConfig)
 
   res.json({ variants })

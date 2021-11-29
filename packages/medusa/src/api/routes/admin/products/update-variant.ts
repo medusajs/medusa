@@ -126,10 +126,8 @@ export default async (req, res) => {
     req.body
   )
 
-  const productService: ProductService = req.scope.resolve("productService")
-  const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
+  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
+  const productVariantService: ProductVariantService = req.scope.resolve(ServiceIdentifiers.productVariantService)
 
   await productVariantService.update(variant_id, {
     product_id: id,

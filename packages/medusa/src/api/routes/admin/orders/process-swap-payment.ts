@@ -26,8 +26,8 @@ import { OrderService, SwapService } from "../../../../services"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
-  const orderService: OrderService = req.scope.resolve("orderService")
-  const swapService: SwapService = req.scope.resolve("swapService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

@@ -45,9 +45,7 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostReturnReasonsReasonReq, req.body)
 
-  const returnReasonService: ReturnReasonService = req.scope.resolve(
-    "returnReasonService"
-  )
+  const returnReasonService: ReturnReasonService = req.scope.resolve(ServiceIdentifiers.returnReasonService)
 
   await returnReasonService.update(id, validated)
 

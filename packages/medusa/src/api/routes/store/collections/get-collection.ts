@@ -1,4 +1,4 @@
-import ProductCollectionService from "../../../../services/product-collection"
+import { ProductCollectionService, ServiceIdentifiers } from "../../../../services"
 /**
  * @oas [get] /collections/{id}
  * operationId: "GetCollectionsCollection"
@@ -21,9 +21,7 @@ import ProductCollectionService from "../../../../services/product-collection"
 
 export default async (req, res) => {
   const { id } = req.params
-  const productCollectionService: ProductCollectionService = req.scope.resolve(
-    "productCollectionService"
-  )
+  const productCollectionService: ProductCollectionService = req.scope.resolve(ServiceIdentifiers.productCollectionService)
 
   const collection = await productCollectionService.retrieve(id)
   res.status(200).json({ collection })

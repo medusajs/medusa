@@ -1,5 +1,5 @@
 import { IsString } from "class-validator"
-import NoteService from "../../../../services/note"
+import { NoteService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -38,7 +38,7 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostNotesNoteReq, req.body)
 
-  const noteService: NoteService = req.scope.resolve("noteService")
+  const noteService: NoteService = req.scope.resolve(ServiceIdentifiers.noteService)
   const note = await noteService.update(id, validated.value)
 
   res.status(200).json({ note })

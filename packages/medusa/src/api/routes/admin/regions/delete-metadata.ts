@@ -1,6 +1,6 @@
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { Region } from "../../../.."
-import RegionService from "../../../../services/region"
+import { RegionService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [delete] /regions/{id}/metadata/{key}
@@ -26,7 +26,7 @@ import RegionService from "../../../../services/region"
 export default async (req, res) => {
   const { id, key } = req.params
 
-  const regionService: RegionService = req.scope.resolve("regionService")
+  const regionService: RegionService = req.scope.resolve(ServiceIdentifiers.regionService)
   await regionService.deleteMetadata(id, key)
 
   const region: Region = await regionService.retrieve(id, {

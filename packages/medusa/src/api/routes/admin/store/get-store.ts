@@ -23,12 +23,10 @@ import {
  *               $ref: "#/components/schemas/store"
  */
 export default async (req, res) => {
-  const storeService: StoreService = req.scope.resolve("storeService")
-  const paymentProviderService: PaymentProviderService = req.scope.resolve(
-    "paymentProviderService"
-  )
+  const storeService: StoreService = req.scope.resolve(ServiceIdentifiers.storeService)
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(ServiceIdentifiers.paymentProviderService)
   const fulfillmentProviderService: FulfillmentProviderService =
-    req.scope.resolve("fulfillmentProviderService")
+    req.scope.resolve(ServiceIdentifiers.fulfillmentProviderService)
 
   const data = await storeService.retrieve(["currencies", "default_currency"])
   const paymentProviders = await paymentProviderService.list()

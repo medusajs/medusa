@@ -42,9 +42,7 @@ import {
 export default async (req, res) => {
   const { id } = req.params
 
-  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
-    "idempotencyKeyService"
-  )
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(ServiceIdentifiers.idempotencyKeyService)
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -65,9 +63,9 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const cartService: CartService = req.scope.resolve("cartService")
-  const orderService: OrderService = req.scope.resolve("orderService")
-  const swapService: SwapService = req.scope.resolve("swapService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
 
   let inProgress = true
   let err = false

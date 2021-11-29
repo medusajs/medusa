@@ -1,5 +1,5 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
-import ProductCollectionService from "../../../../services/product-collection"
+import { ProductCollectionService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /collections/{id}
@@ -39,9 +39,7 @@ export default async (req, res) => {
   const { id } = req.params
 
   const validated = await validator(AdminPostCollectionsCollectionReq, req.body)
-  const productCollectionService: ProductCollectionService = req.scope.resolve(
-    "productCollectionService"
-  )
+  const productCollectionService: ProductCollectionService = req.scope.resolve(ServiceIdentifiers.productCollectionService)
 
   const updated = await productCollectionService.update(id, validated)
   const collection = await productCollectionService.retrieve(updated.id)

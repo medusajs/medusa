@@ -22,7 +22,7 @@ import { StoreService } from "../../../../services"
 export default async (req, res) => {
   const { currency_code } = req.params
 
-  const storeService: StoreService = req.scope.resolve("storeService")
+  const storeService: StoreService = req.scope.resolve(ServiceIdentifiers.storeService)
   const data = await storeService.addCurrency(currency_code)
   res.status(200).json({ store: data })
 }

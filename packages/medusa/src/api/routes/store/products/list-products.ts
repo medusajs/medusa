@@ -33,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const productService: ProductService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
 
   const validated = await validator(StoreGetProductsParams, req.query)
 

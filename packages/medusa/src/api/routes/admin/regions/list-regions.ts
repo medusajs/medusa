@@ -1,6 +1,6 @@
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
-import RegionService from "../../../../services/region"
+import { RegionService, ServiceIdentifiers } from "../../../../services"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 import { IsInt, IsOptional } from "class-validator"
 import { Type } from "class-transformer"
@@ -41,7 +41,7 @@ import { Type } from "class-transformer"
 export default async (req, res) => {
   const validated = await validator(AdminGetRegionsParams, req.query)
 
-  const regionService: RegionService = req.scope.resolve("regionService")
+  const regionService: RegionService = req.scope.resolve(ServiceIdentifiers.regionService)
 
   const selector = {}
 

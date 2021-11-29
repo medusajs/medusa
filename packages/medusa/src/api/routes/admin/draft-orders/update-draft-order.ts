@@ -75,8 +75,8 @@ export default async (req, res) => {
   const validated = await validator(AdminPostDraftOrdersDraftOrderReq, req.body)
 
   const draftOrderService: DraftOrderService =
-    req.scope.resolve("draftOrderService")
-  const cartService: CartService = req.scope.resolve("cartService")
+    req.scope.resolve(ServiceIdentifiers.draftOrderService)
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   const draftOrder = await draftOrderService.retrieve(id)
 

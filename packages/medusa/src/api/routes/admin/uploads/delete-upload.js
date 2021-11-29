@@ -1,6 +1,8 @@
+import { ServiceIdentifiers } from "../../../../services"
+
 export default async (req, res) => {
   try {
-    const fileService = req.scope.resolve("fileService")
+    const fileService = req.scope.resolve(ServiceIdentifiers.fileService)
 
     await fileService.delete(req.body.file)
 

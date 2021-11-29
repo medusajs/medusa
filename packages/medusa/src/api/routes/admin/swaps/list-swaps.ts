@@ -23,7 +23,7 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/swap"
  */
 export default async (req, res) => {
-  const swapService: SwapService = req.scope.resolve("swapService")
+  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
 
   const { offset, limit } = await validator(AdminGetSwapsParams, req.query)
 

@@ -31,10 +31,8 @@ import { ProductService, ProductVariantService } from "../../../../services"
 export default async (req, res) => {
   const { id, variant_id } = req.params
 
-  const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
-  )
-  const productService: ProductService = req.scope.resolve("productService")
+  const productVariantService: ProductVariantService = req.scope.resolve(ServiceIdentifiers.productVariantService)
+  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
 
   await productVariantService.delete(variant_id)
 

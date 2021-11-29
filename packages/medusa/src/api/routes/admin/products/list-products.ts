@@ -66,7 +66,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validatedParams = await validator(AdminGetProductsParams, req.query)
 
-  const productService: ProductService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
 
   let includeFields: string[] = []
   if (validatedParams.fields) {

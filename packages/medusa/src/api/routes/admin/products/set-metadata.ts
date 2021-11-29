@@ -44,7 +44,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const productService = req.scope.resolve("productService")
+  const productService = req.scope.resolve(ServiceIdentifiers.productService)
   await productService.update(id, {
     metadata: { [validated.key]: validated.value },
   })

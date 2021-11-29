@@ -49,7 +49,7 @@ import { Type } from "class-transformer"
 export default async (req, res) => {
   const value = await validator(AdminGetOrdersParams, req.query)
 
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
 
   let includeFields: string[] = []
   if (value.fields) {

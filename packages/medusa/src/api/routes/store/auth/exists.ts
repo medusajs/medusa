@@ -1,4 +1,4 @@
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 /**
  * @oas [get] /auth/{email}
  * operationId: "GetAuthEmail"
@@ -23,7 +23,7 @@ export default async (req, res) => {
 
   try {
     const customerService: CustomerService =
-      req.scope.resolve("customerService")
+      req.scope.resolve(ServiceIdentifiers.customerService)
     const customer = await customerService.retrieveByEmail(email)
     res.status(200).json({ exists: !!customer.password_hash })
   } catch (err) {

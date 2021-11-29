@@ -48,7 +48,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostGiftCardsReq, req.body)
 
-  const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
+  const giftCardService: GiftCardService = req.scope.resolve(ServiceIdentifiers.giftCardService)
 
   const newly = await giftCardService.create({
     ...validated,

@@ -1,4 +1,4 @@
-import { OauthService } from "../../../../services"
+import { OauthService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [get] /apps
@@ -19,7 +19,9 @@ import { OauthService } from "../../../../services"
  *              $ref: "#/components/schemas/OAuth"
  */
 export default async (req, res) => {
-  const oauthService: OauthService = req.scope.resolve("oauthService")
+  const oauthService: OauthService = req.scope.resolve(
+    ServiceIdentifiers.oauthService
+  )
   const data = await oauthService.list({})
 
   res.status(200).json({ apps: data })

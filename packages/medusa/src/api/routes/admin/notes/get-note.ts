@@ -1,4 +1,4 @@
-import NoteService from "../../../../services/note"
+import { NoteService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [get] /notes/{id}
@@ -23,7 +23,7 @@ import NoteService from "../../../../services/note"
 export default async (req, res) => {
   const { id } = req.params
 
-  const noteService: NoteService = req.scope.resolve("noteService")
+  const noteService: NoteService = req.scope.resolve(ServiceIdentifiers.noteService)
   const note = await noteService.retrieve(id, { relations: ["author"] })
 
   res.status(200).json({ note })

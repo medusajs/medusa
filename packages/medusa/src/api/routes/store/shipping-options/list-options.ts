@@ -1,6 +1,6 @@
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
-import ProductService from "../../../../services/product"
-import ShippingOptionService from "../../../../services/shipping-option"
+import { ProductService, ServiceIdentifiers } from "../../../../services"
+import { ShippingOptionService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -32,9 +32,11 @@ export default async (req, res) => {
   const productIds =
     (validated.product_ids && validated.product_ids.split(",")) || []
   const regionId = validated.region_id
-  const productService: ProductService = req.scope.resolve("productService")
+  const productService: ProductService = req.scope.resolve(
+    ServiceIdentifiers.productService
+  )
   const shippingOptionService: ShippingOptionService = req.scope.resolve(
-    "shippingOptionService"
+    ServiceIdentifiers.shippingOptionService
   )
 
   // should be selector

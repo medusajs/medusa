@@ -133,7 +133,7 @@ export default async (req, res) => {
 
   const value = await validator(AdminPostOrdersOrderClaimsReq, req.body)
 
-  const idempotencyKeyService = req.scope.resolve("idempotencyKeyService")
+  const idempotencyKeyService = req.scope.resolve(ServiceIdentifiers.idempotencyKeyService)
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -153,9 +153,9 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const orderService = req.scope.resolve("orderService")
-  const claimService = req.scope.resolve("claimService")
-  const returnService = req.scope.resolve("returnService")
+  const orderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const claimService = req.scope.resolve(ServiceIdentifiers.claimService)
+  const returnService = req.scope.resolve(ServiceIdentifiers.returnService)
 
   let inProgress = true
   let err = false

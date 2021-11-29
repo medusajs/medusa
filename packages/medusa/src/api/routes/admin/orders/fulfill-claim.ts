@@ -43,8 +43,8 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService: OrderService = req.scope.resolve("orderService")
-  const claimService: ClaimService = req.scope.resolve("claimService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const claimService: ClaimService = req.scope.resolve(ServiceIdentifiers.claimService)
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

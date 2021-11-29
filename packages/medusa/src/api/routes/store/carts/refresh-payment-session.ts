@@ -23,7 +23,7 @@ import { CartService } from "../../../../services"
 export default async (req, res) => {
   const { id, provider_id } = req.params
 
-  const cartService: CartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   await cartService.refreshPaymentSession(id, provider_id)
   const cart = await cartService.retrieve(id, {

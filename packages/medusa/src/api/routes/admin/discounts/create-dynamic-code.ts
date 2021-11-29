@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import DiscountService from "../../../../services/discount"
+import { DiscountService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{id}/dynamic-codes
@@ -37,7 +37,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
   const created = await discountService.createDynamicCode(
     discount_id,
     validated

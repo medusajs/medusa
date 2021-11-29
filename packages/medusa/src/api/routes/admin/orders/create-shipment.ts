@@ -51,7 +51,7 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostOrdersOrderShipmentReq, req.body)
 
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
 
   await orderService.createShipment(
     id,

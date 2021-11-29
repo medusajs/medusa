@@ -1,4 +1,4 @@
-import DiscountService from "../../../../services/discount"
+import { DiscountService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [delete] /discounts/{id}/dynamic-codes/{code}
@@ -24,7 +24,7 @@ import DiscountService from "../../../../services/discount"
 export default async (req, res) => {
   const { discount_id, code } = req.params
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
   await discountService.deleteDynamicCode(discount_id, code)
 
   const discount = await discountService.retrieve(discount_id, {

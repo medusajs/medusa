@@ -55,9 +55,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostReturnsReturnReceiveReq, req.body)
 
-  const returnService: ReturnService = req.scope.resolve("returnService")
-  const orderService: OrderService = req.scope.resolve("orderService")
-  const swapService: SwapService = req.scope.resolve("swapService")
+  const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   let receivedReturn

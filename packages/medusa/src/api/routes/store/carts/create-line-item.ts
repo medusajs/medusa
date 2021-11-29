@@ -33,8 +33,8 @@ export default async (req, res) => {
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
-  const cartService: CartService = req.scope.resolve("cartService")
+  const lineItemService: LineItemService = req.scope.resolve(ServiceIdentifiers.lineItemService)
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)

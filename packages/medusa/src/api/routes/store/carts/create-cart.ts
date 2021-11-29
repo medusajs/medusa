@@ -67,8 +67,8 @@ export default async (req, res) => {
     user_agent: req.get("user-agent"),
   }
 
-  const lineItemService: LineItemService = req.scope.resolve("lineItemService")
-  const cartService: CartService = req.scope.resolve("cartService")
+  const lineItemService: LineItemService = req.scope.resolve(ServiceIdentifiers.lineItemService)
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   const entityManager: EntityManager = req.scope.resolve("manager")
 
@@ -76,7 +76,7 @@ export default async (req, res) => {
     // Add a default region if no region has been specified
     let regionId = validated.region_id
     if (!validated.region_id) {
-      const regionService = req.scope.resolve("regionService")
+      const regionService = req.scope.resolve(ServiceIdentifiers.regionService)
       const regions = await regionService.withTransaction(manager).list({})
 
       if (!regions?.length) {
@@ -104,7 +104,7 @@ export default async (req, res) => {
     }
 
     if (req.user && req.user.customer_id) {
-      const customerService = req.scope.resolve("customerService")
+      const customerService = req.scope.resolve(ServiceIdentifiers.customerService)
       const customer = await customerService
         .withTransaction(manager)
         .retrieve(req.user.customer_id)

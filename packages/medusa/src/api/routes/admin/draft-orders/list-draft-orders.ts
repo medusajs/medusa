@@ -28,7 +28,7 @@ import { DraftOrderListSelector } from "../../../../types/draft-orders"
 
 export default async (req, res) => {
   const draftOrderService: DraftOrderService =
-    req.scope.resolve("draftOrderService")
+    req.scope.resolve(ServiceIdentifiers.draftOrderService)
 
   const validated = await validator(AdminGetDraftOrdersParams, req.query)
 

@@ -1,4 +1,4 @@
-import DiscountService from "../../../../services/discount"
+import { DiscountService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [delete] /discounts/{id}
@@ -29,7 +29,7 @@ import DiscountService from "../../../../services/discount"
 export default async (req, res) => {
   const { discount_id } = req.params
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
   await discountService.delete(discount_id)
 
   res.json({

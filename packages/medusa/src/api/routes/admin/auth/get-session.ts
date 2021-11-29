@@ -1,5 +1,5 @@
 import _ from "lodash"
-import UserService from "../../../../services/user"
+import { UserService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [get] /auth
@@ -21,7 +21,7 @@ import UserService from "../../../../services/user"
  */
 export default async (req, res) => {
   try {
-    const userService: UserService = req.scope.resolve("userService")
+    const userService: UserService = req.scope.resolve(ServiceIdentifiers.userService)
     const user = await userService.retrieve(req.user.userId)
 
     const cleanRes = _.omit(user, ["password_hash"])

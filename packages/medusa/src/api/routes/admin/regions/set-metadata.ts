@@ -1,6 +1,6 @@
 import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
-import RegionService from "../../../../services/region"
+import { RegionService, ServiceIdentifiers } from "../../../../services"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
 
 /**
@@ -33,7 +33,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const regionService: RegionService = req.scope.resolve("regionService")
+  const regionService: RegionService = req.scope.resolve(ServiceIdentifiers.regionService)
   await regionService.setMetadata(id, validated.key, validated.value)
 
   const region = await regionService.retrieve(id, {

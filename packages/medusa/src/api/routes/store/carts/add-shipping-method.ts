@@ -34,7 +34,7 @@ export default async (req, res) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const cartService: CartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   await manager.transaction(async (m) => {
     const txCartService = cartService.withTransaction(m)

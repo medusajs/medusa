@@ -1,6 +1,6 @@
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
@@ -55,7 +55,7 @@ export default async (req, res) => {
 
   const validated = await validator(StorePostCustomersCustomerReq, req.body)
 
-  const customerService: CustomerService = req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
   await customerService.update(id, validated)
 
   const customer = await customerService.retrieve(id, {

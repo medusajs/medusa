@@ -31,7 +31,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const cartService: CartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   let cart = await cartService.setPaymentSession(id, validated.provider_id)
   cart = await cartService.retrieve(id, {

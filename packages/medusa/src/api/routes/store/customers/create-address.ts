@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 import { AddressCreatePayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
@@ -42,7 +42,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const customerService: CustomerService = req.scope.resolve("customerService")
+  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
 
   let customer = await customerService.addAddress(id, validated.address)
   customer = await customerService.retrieve(id, {

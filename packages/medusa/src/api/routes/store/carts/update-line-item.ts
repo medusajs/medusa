@@ -35,7 +35,7 @@ export default async (req, res) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const cartService: CartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   await manager.transaction(async (m) => {
     // If the quantity is 0 that is effectively deletion

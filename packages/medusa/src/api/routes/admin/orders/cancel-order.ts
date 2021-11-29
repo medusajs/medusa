@@ -24,7 +24,7 @@ import { OrderService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
 
-  const orderService: OrderService = req.scope.resolve("orderService")
+  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
   await orderService.cancel(id)
 
   const order = await orderService.retrieve(id, {

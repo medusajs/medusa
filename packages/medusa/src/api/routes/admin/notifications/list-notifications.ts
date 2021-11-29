@@ -39,9 +39,7 @@ import {
  *                 $ref: "#/components/schemas/notification"
  */
 export default async (req, res) => {
-  const notificationService: NotificationService = req.scope.resolve(
-    "notificationService"
-  )
+  const notificationService: NotificationService = req.scope.resolve(ServiceIdentifiers.notificationService)
   const {
     limit,
     offset,

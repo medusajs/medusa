@@ -4,7 +4,7 @@ import {
   defaultAdminCollectionsFields,
   defaultAdminCollectionsRelations,
 } from "."
-import ProductCollectionService from "../../../../services/product-collection"
+import { ProductCollectionService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /collections
@@ -30,9 +30,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetCollectionsParams, req.query)
 
-  const productCollectionService: ProductCollectionService = req.scope.resolve(
-    "productCollectionService"
-  )
+  const productCollectionService: ProductCollectionService = req.scope.resolve(ServiceIdentifiers.productCollectionService)
 
   const listConfig = {
     select: defaultAdminCollectionsFields,

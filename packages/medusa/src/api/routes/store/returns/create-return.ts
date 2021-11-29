@@ -9,10 +9,10 @@ import {
   ValidateNested,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import EventBusService from "../../../../services/event-bus"
-import IdempotencyKeyService from "../../../../services/idempotency-key"
-import OrderService from "../../../../services/order"
-import ReturnService from "../../../../services/return"
+import { EventBusService, ServiceIdentifiers } from "../../../../services"
+import { IdempotencyKeyService, ServiceIdentifiers } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
+import { ReturnService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -69,9 +69,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const returnDto = await validator(StorePostReturnsReq, req.body)
 
-  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
-    "idempotencyKeyService"
-  )
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(ServiceIdentifiers.idempotencyKeyService)
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -92,9 +90,9 @@ export default async (req, res) => {
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   try {
-    const orderService: OrderService = req.scope.resolve("orderService")
-    const returnService: ReturnService = req.scope.resolve("returnService")
-    const eventBus: EventBusService = req.scope.resolve("eventBusService")
+    const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+    const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
+    const eventBus: EventBusService = req.scope.resolve(ServiceIdentifiers.eventBusService)
 
     let inProgress = true
     let err = false

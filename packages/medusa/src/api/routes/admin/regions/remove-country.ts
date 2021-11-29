@@ -1,4 +1,4 @@
-import RegionService from "../../../../services/region"
+import { RegionService, ServiceIdentifiers } from "../../../../services"
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 
 /**
@@ -25,7 +25,9 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 export default async (req, res) => {
   const { region_id, country_code } = req.params
 
-  const regionService: RegionService = req.scope.resolve("regionService")
+  const regionService: RegionService = req.scope.resolve(
+    ServiceIdentifiers.regionService
+  )
   await regionService.removeCountry(region_id, country_code)
 
   const region = await regionService.retrieve(region_id, {

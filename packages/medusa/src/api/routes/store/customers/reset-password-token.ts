@@ -1,5 +1,5 @@
 import { IsEmail } from "class-validator"
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -22,8 +22,8 @@ export default async (req, res) => {
   )
 
   const customerService: CustomerService = req.scope.resolve(
-    "customerService"
-  ) as CustomerService
+    ServiceIdentifiers.customerService
+  )
 
   const customer = await customerService.retrieveByEmail(validated.email)
 

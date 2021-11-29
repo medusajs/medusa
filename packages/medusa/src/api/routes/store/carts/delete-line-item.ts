@@ -26,7 +26,7 @@ export default async (req, res) => {
   const { id, line_id } = req.params
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const cartService: CartService = req.scope.resolve("cartService")
+  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
 
   await manager.transaction(async (m) => {
     // Remove the line item

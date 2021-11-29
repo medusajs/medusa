@@ -1,6 +1,6 @@
 import { IsEmail, IsString } from "class-validator"
 import jwt from "jsonwebtoken"
-import UserService from "../../../../services/user"
+import { UserService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -42,7 +42,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminResetPasswordRequest, req.body)
 
-  const userService: UserService = req.scope.resolve("userService")
+  const userService: UserService = req.scope.resolve(ServiceIdentifiers.userService)
   const user = await userService.retrieveByEmail(validated.email)
 
   const decodedToken = jwt.verify(validated.token, user.password_hash) as {

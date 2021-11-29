@@ -25,9 +25,7 @@ import { ReturnReasonService } from "../../../../services"
  *                 $ref: "#/components/schemas/return_reason"
  */
 export default async (req, res) => {
-  const returnReasonService: ReturnReasonService = req.scope.resolve(
-    "returnReasonService"
-  )
+  const returnReasonService: ReturnReasonService = req.scope.resolve(ServiceIdentifiers.returnReasonService)
 
   const query = { parent_return_reason_id: null }
   const data = await returnReasonService.list(query, {

@@ -1,5 +1,5 @@
 import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
-import CustomerService from "../../../../services/customer"
+import { CustomerService, ServiceIdentifiers } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
@@ -41,9 +41,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const customerService: CustomerService = req.scope.resolve(
-    "customerService"
-  ) as CustomerService
+  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService) as CustomerService
 
   let customer = await customerService.updateAddress(id, address_id, validated)
 
