@@ -135,24 +135,24 @@ export class StorePostCartsCartReq {
 
   @IsOptional()
   @IsType([AddressPayload, String])
-  shipping_address?: AddressPayload | string
+  shipping_address?: AddressPayload | string = {} as AddressPayload
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => GiftCard)
-  gift_cards?: GiftCard[]
+  gift_cards?: GiftCard[] = []
 
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => Discount)
-  discounts?: Discount[]
+  discounts?: Discount[] = []
 
   @IsString()
   @IsOptional()
   customer_id?: string
 
   @IsOptional()
-  context?: object
+  context?: object = {}
 }

@@ -149,7 +149,7 @@ export class AdminPostOrdersReq {
 
   @IsArray()
   @IsOptional()
-  discounts?: object[]
+  discounts?: object[] = []
 
   @IsString()
   @IsNotEmpty()
@@ -177,7 +177,7 @@ class PaymentMethod {
 
   @IsObject()
   @IsOptional()
-  data?: object
+  data?: object = {}
 }
 
 class ShippingMethod {
@@ -195,9 +195,9 @@ class ShippingMethod {
 
   @IsObject()
   @IsOptional()
-  data?: object
+  data?: object = {}
 
   @IsArray()
   @IsOptional()
-  items?: object[]
+  items?: object[] = []
 }

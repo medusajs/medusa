@@ -13,11 +13,7 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-  ProductStatus,
-} from "."
+import { defaultAdminProductFields, defaultAdminProductRelations, ProductStatus } from "."
 import { ProductService } from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
@@ -334,13 +330,13 @@ class ProductVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  prices: ProductVariantPricesReq[] = []
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)
@@ -386,7 +382,7 @@ export class AdminPostProductsProductReq {
   @IsOptional()
   @Type(() => ProductTypeReq)
   @ValidateNested()
-  type?: ProductTypeReq
+  type?: ProductTypeReq = {} as ProductTypeReq
 
   @IsOptional()
   @IsString()
@@ -396,13 +392,13 @@ export class AdminPostProductsProductReq {
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()
-  tags?: ProductTagReq[]
+  tags?: ProductTagReq[] = []
 
   @IsOptional()
   @Type(() => ProductVariantReq)
   @ValidateNested({ each: true })
   @IsArray()
-  variants?: ProductVariantReq[]
+  variants?: ProductVariantReq[] = []
 
   @IsNumber()
   @IsOptional()
@@ -438,5 +434,5 @@ export class AdminPostProductsProductReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }

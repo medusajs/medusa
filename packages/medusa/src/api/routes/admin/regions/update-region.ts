@@ -89,16 +89,16 @@ export class AdminPostRegionsRegionReq {
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  payment_providers?: string[]
+  payment_providers?: string[] = []
 
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  fulfillment_providers?: string[]
+  fulfillment_providers?: string[] = []
 
   // iso_2 country codes
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  countries?: string[]
+  countries?: string[] = []
 }

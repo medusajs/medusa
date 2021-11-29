@@ -72,5 +72,5 @@ export class StorePostCartsCartLineItemsReq {
   quantity: number
 
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }

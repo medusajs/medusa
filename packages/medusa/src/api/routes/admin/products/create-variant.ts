@@ -126,11 +126,11 @@ export default async (req, res) => {
 
   const validated = await validator(
     AdminPostProductsProductVariantsReq,
-    req.body
+    req.body,
   )
 
   const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
+    "productVariantService",
   )
   const productService: ProductService = req.scope.resolve("productService")
 
@@ -233,8 +233,8 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
-
+  metadata?: object = {}
+  
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductVariantPricesReq)

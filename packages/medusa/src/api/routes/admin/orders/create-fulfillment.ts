@@ -87,12 +87,12 @@ export class AdminPostOrdersOrderFulfillmentsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => value === "true")
+  @Transform(({ value }) => Boolean(value))
   no_notification?: boolean
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }
 
 class Item {

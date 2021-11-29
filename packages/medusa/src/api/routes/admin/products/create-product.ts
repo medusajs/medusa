@@ -12,16 +12,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-  ProductStatus,
-} from "."
-import {
-  ProductService,
-  ProductVariantService,
-  ShippingProfileService,
-} from "../../../../services"
+import { defaultAdminProductFields, defaultAdminProductRelations, ProductStatus } from "."
+import { ProductService, ProductVariantService, ShippingProfileService } from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
 
@@ -217,10 +209,10 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
   const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService"
+    "productVariantService",
   )
   const shippingProfileService: ShippingProfileService = req.scope.resolve(
-    "shippingProfileService"
+    "shippingProfileService",
   )
 
   const entityManager: EntityManager = req.scope.resolve("manager")
@@ -253,7 +245,7 @@ export default async (req, res) => {
 
       const optionIds =
         validated?.options?.map(
-          (o) => newProduct.options.find((newO) => newO.title === o.title).id
+          (o) => newProduct.options.find((newO) => newO.title === o.title).id,
         ) || []
 
       await Promise.all(
@@ -270,7 +262,7 @@ export default async (req, res) => {
           await productVariantService
             .withTransaction(manager)
             .create(newProduct.id, variant)
-        })
+        }),
       )
     }
   })
@@ -392,7 +384,7 @@ class ProductVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -426,7 +418,7 @@ export class AdminPostProductsReq {
 
   @IsArray()
   @IsOptional()
-  images?: string[]
+  images?: string[] = []
 
   @IsString()
   @IsOptional()
@@ -443,7 +435,7 @@ export class AdminPostProductsReq {
   @IsOptional()
   @Type(() => ProductTypeReq)
   @ValidateNested()
-  type?: ProductTypeReq
+  type?: ProductTypeReq = {} as ProductTypeReq
 
   @IsOptional()
   @IsString()
@@ -453,19 +445,19 @@ export class AdminPostProductsReq {
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()
-  tags?: ProductTagReq
+  tags?: ProductTagReq[] = []
 
   @IsOptional()
   @Type(() => ProductOptionReq)
   @ValidateNested({ each: true })
   @IsArray()
-  options?: ProductOptionReq[]
+  options?: ProductOptionReq[] = []
 
   @IsOptional()
   @Type(() => ProductVariantReq)
   @ValidateNested({ each: true })
   @IsArray()
-  variants?: ProductVariantReq[]
+  variants?: ProductVariantReq[] = []
 
   @IsNumber()
   @IsOptional()
@@ -501,5 +493,5 @@ export class AdminPostProductsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }

@@ -120,16 +120,16 @@ export class AdminPostOrdersOrderReq {
   @IsOptional()
   @ValidateNested()
   @Type(() => AddressPayload)
-  billing_address?: AddressPayload
+  billing_address?: AddressPayload = {} as AddressPayload
 
   @IsOptional()
   @ValidateNested()
   @Type(() => AddressPayload)
-  shipping_address?: AddressPayload
+  shipping_address?: AddressPayload = {} as AddressPayload
 
   @IsArray()
   @IsOptional()
-  items?: object[]
+  items?: object[] = []
 
   @IsString()
   @IsOptional()
@@ -137,7 +137,7 @@ export class AdminPostOrdersOrderReq {
 
   @IsArray()
   @IsOptional()
-  discounts?: object[]
+  discounts?: object[] = []
 
   @IsString()
   @IsOptional()
@@ -146,12 +146,12 @@ export class AdminPostOrdersOrderReq {
   @IsOptional()
   @ValidateNested()
   @Type(() => PaymentMethod)
-  payment_method?: PaymentMethod
+  payment_method?: PaymentMethod = {} as PaymentMethod
 
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => ShippingMethod)
-  shipping_method?: ShippingMethod[]
+  shipping_method?: ShippingMethod[] = []
 
   @IsBoolean()
   @IsOptional()
@@ -165,7 +165,7 @@ class PaymentMethod {
 
   @IsObject()
   @IsOptional()
-  data?: object
+  data?: object = {}
 }
 
 class ShippingMethod {
@@ -183,9 +183,9 @@ class ShippingMethod {
 
   @IsObject()
   @IsOptional()
-  data?: object
+  data?: object = {}
 
   @IsArray()
   @IsOptional()
-  items?: object[]
+  items?: object[] = []
 }

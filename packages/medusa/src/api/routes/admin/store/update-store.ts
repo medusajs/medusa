@@ -64,5 +64,5 @@ export class AdminPostStoreReq {
   @IsArray()
   @IsString({ each: true })
   @IsOptional()
-  currencies?: string[]
+  currencies?: string[] = []
 }

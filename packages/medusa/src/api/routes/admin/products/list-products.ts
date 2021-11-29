@@ -146,15 +146,16 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
 
   @IsOptional()
   @IsEnum(ProductStatus, { each: true })
-  status?: ProductStatus[]
+  @IsArray()
+  status?: ProductStatus[] = []
 
   @IsArray()
   @IsOptional()
-  collection_id?: string[]
+  collection_id?: string[] = []
 
   @IsArray()
   @IsOptional()
-  tags?: string[]
+  tags?: string[] = []
 
   @IsString()
   @IsOptional()

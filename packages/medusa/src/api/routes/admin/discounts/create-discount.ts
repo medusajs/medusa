@@ -128,11 +128,11 @@ export class AdminPostDiscountsReq {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  regions?: string[]
+  regions?: string[] = []
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }
 
 export class AdminPostDiscountsDiscountRule {
@@ -154,5 +154,5 @@ export class AdminPostDiscountsDiscountRule {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  valid_for?: string[]
+  valid_for?: string[] = []
 }

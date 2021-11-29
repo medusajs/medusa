@@ -262,13 +262,13 @@ export class AdminPostOrdersOrderSwapsReq {
   @IsOptional()
   @ValidateNested()
   @Type(() => ReturnShipping)
-  return_shipping?: ReturnShipping
+  return_shipping?: ReturnShipping = {} as ReturnShipping
 
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => AdditionalItem)
-  additional_items?: AdditionalItem[]
+  additional_items?: AdditionalItem[] = []
 
   @IsArray()
   @IsOptional()

@@ -152,17 +152,17 @@ export class AdminPostDraftOrdersReq {
 
   @IsOptional()
   @Type(() => AddressPayload)
-  billing_address?: AddressPayload
+  billing_address?: AddressPayload = {} as AddressPayload
 
   @IsOptional()
   @Type(() => AddressPayload)
-  shipping_address?: AddressPayload
+  shipping_address?: AddressPayload = {} as AddressPayload
 
   @IsArray()
   @Type(() => Item)
   @IsNotEmpty()
   @ValidateNested({ each: true })
-  items: Item[]
+  items: Item[] = []
 
   @IsString()
   region_id: string
@@ -171,7 +171,7 @@ export class AdminPostDraftOrdersReq {
   @IsOptional()
   @Type(() => Discount)
   @ValidateNested({ each: true })
-  discounts?: Discount[]
+  discounts?: Discount[] = []
 
   @IsString()
   @IsOptional()
@@ -185,7 +185,7 @@ export class AdminPostDraftOrdersReq {
   @Type(() => ShippingMethod)
   @IsNotEmpty()
   @ValidateNested({ each: true })
-  shipping_methods: ShippingMethod[]
+  shipping_methods: ShippingMethod[] = []
 
   @IsObject()
   @IsOptional()

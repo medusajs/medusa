@@ -93,5 +93,5 @@ export class AdminPostCustomersCustomerReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }

@@ -72,5 +72,5 @@ export class AdminPostOrdersOrderClaimsClaimShipmentsReq {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  tracking_numbers?: string[]
+  tracking_numbers?: string[] = []
 }

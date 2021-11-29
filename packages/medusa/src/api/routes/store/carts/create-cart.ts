@@ -163,8 +163,8 @@ export class StorePostCartReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => Item)
-  items?: Item[]
+  items?: Item[] = []
 
   @IsOptional()
-  context?: object
+  context?: object = {}
 }

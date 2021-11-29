@@ -1,8 +1,9 @@
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
 import { EntityManager } from "typeorm"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { OrderService, SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments
  * operationId: "PostOrdersOrderSwapsSwapFulfillments"
@@ -40,7 +41,7 @@ export default async (req, res) => {
 
   const validated = await validator(
     AdminPostOrdersOrderSwapsSwapFulfillmentsReq,
-    req.body
+    req.body,
   )
 
   const orderService: OrderService = req.scope.resolve("orderService")
@@ -65,7 +66,7 @@ export default async (req, res) => {
 export class AdminPostOrdersOrderSwapsSwapFulfillmentsReq {
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 
   @IsBoolean()
   @IsOptional()

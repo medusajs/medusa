@@ -279,7 +279,7 @@ export class AdminPostOrdersOrderReturnsReq {
   @IsOptional()
   @ValidateNested()
   @Type(() => ReturnShipping)
-  return_shipping?: ReturnShipping
+  return_shipping?: ReturnShipping = {} as ReturnShipping
 
   @IsString()
   @IsOptional()

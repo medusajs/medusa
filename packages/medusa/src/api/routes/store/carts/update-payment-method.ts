@@ -59,5 +59,5 @@ export class StorePostCartsCartPaymentMethodUpdateReq {
   provider_id: string
 
   @IsOptional()
-  data?: object
+  data?: object = {}
 }

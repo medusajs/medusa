@@ -60,5 +60,5 @@ export class AdminPostCollectionsCollectionReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }

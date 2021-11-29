@@ -119,17 +119,17 @@ export class AdminPostDraftOrdersDraftOrderReq {
 
   @IsOptional()
   @Type(() => AddressPayload)
-  billing_address?: AddressPayload
+  billing_address?: AddressPayload = {} as AddressPayload
 
   @IsOptional()
   @Type(() => AddressPayload)
-  shipping_address?: AddressPayload
+  shipping_address?: AddressPayload = {} as AddressPayload
 
   @IsArray()
   @IsOptional()
   @Type(() => Discount)
   @ValidateNested({ each: true })
-  discounts?: Discount[]
+  discounts?: Discount[] = []
 
   @IsString()
   @IsOptional()

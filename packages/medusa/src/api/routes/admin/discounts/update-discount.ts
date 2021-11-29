@@ -91,7 +91,7 @@ export class AdminPostDiscountsDiscountReq {
   @IsOptional()
   @ValidateNested()
   @Type(() => AdminUpdateDiscountRule)
-  rule?: AdminUpdateDiscountRule
+  rule?: AdminUpdateDiscountRule = {} as AdminUpdateDiscountRule
 
   @IsBoolean()
   @IsOptional()
@@ -124,11 +124,11 @@ export class AdminPostDiscountsDiscountReq {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  regions?: string[]
+  regions?: string[] = []
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: object = {}
 }
 
 export class AdminUpdateDiscountRule {
@@ -154,5 +154,5 @@ export class AdminUpdateDiscountRule {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  valid_for?: string
+  valid_for?: string = []
 }

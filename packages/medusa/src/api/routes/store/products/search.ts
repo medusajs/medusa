@@ -34,12 +34,12 @@ export class StorePostSearchReq {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  offset?: number
+  offset?: number = 0
 
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
-  limit?: number
+  limit?: number = 20
 
   @IsOptional()
   filter?: any
