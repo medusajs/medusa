@@ -1,7 +1,7 @@
 const path = require("path")
 const { spawn } = require("child_process")
-
 const { setPort } = require("./use-api")
+const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
 
 module.exports = ({ cwd, verbose }) => {
   const serverPath = path.join(__dirname, "test-server.js")
@@ -12,7 +12,7 @@ module.exports = ({ cwd, verbose }) => {
       env: {
         ...process.env,
         NODE_ENV: "development",
-        WORKER_ID: parseInt(process.env.JEST_WORKER_ID || "1"),
+        WORKER_ID: workerId,
         JWT_SECRET: "test",
         COOKIE_SECRET: "test",
       },
