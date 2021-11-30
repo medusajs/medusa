@@ -69,12 +69,12 @@ export class AdminGetDiscountsParams {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Transform(({ value }) => value === "true")
   is_dynamic?: boolean
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Transform(({ value }) => value === "true")
   is_disabled?: boolean
 
   @IsInt()

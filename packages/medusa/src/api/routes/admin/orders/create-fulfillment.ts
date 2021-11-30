@@ -87,7 +87,7 @@ export class AdminPostOrdersOrderFulfillmentsReq {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => Boolean(value))
+  @Transform(({ value }) => value === "true")
   no_notification?: boolean
 
   @IsObject()

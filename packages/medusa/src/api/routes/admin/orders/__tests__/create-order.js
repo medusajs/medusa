@@ -88,6 +88,9 @@ describe("POST /admin/orders", () => {
           first_name: "Virgil",
           last_name: "Van Dijk",
           address_1: "24 Dunks Drive",
+          address_2: undefined,
+          company: undefined,
+          metadata: {},
           city: "Los Angeles",
           country_code: "US",
           province: "CA",
@@ -98,12 +101,16 @@ describe("POST /admin/orders", () => {
           first_name: "Virgil",
           last_name: "Van Dijk",
           address_1: "24 Dunks Drive",
+          address_2: undefined,
+          company: undefined,
+          metadata: {},
           city: "Los Angeles",
           country_code: "US",
           province: "CA",
           postal_code: "93011",
           phone: "+1 (222) 333 4444",
         },
+        discounts: [],
         items: [
           {
             _id: IdMap.getId("existingLine"),
@@ -138,6 +145,8 @@ describe("POST /admin/orders", () => {
             items: [],
           },
         ],
+        no_notification: undefined,
+        status: undefined
       })
     })
   })

@@ -99,7 +99,7 @@ export class AddressPayload {
   phone: string
 
   @IsOptional()
-  metadata: object
+  metadata: object = {}
 
   @IsOptional()
   @IsString()

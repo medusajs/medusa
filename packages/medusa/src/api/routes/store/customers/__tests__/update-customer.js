@@ -1,15 +1,12 @@
 import { IdMap } from "medusa-test-utils"
-import {
-  defaultStoreCustomersFields,
-  defaultStoreCustomersRelations,
-} from "../"
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "../"
 import { request } from "../../../../../helpers/test-request"
 import { CustomerServiceMock } from "../../../../../services/__mocks__/customer"
 
 describe("POST /store/customers/me", () => {
   describe("successfully updates a customer", () => {
     let subject
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", `/store/customers/me`, {
         payload: {
           first_name: "LeBron",
@@ -36,7 +33,11 @@ describe("POST /store/customers/me", () => {
           first_name: "LeBron",
           last_name: "James",
           email: "test@email.com",
-        }
+          metadata: {},
+          password: undefined,
+          phone: undefined,
+          billing_address: {},
+        },
       )
     })
 
@@ -47,7 +48,7 @@ describe("POST /store/customers/me", () => {
         {
           relations: defaultStoreCustomersRelations,
           select: defaultStoreCustomersFields,
-        }
+        },
       )
     })
 
@@ -62,7 +63,7 @@ describe("POST /store/customers/me", () => {
 
   describe("fails update a customer with a billing address with an invalid type", () => {
     let subject
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", `/store/customers/me`, {
         payload: {
           billing_address: 42,
@@ -90,7 +91,7 @@ describe("POST /store/customers/me", () => {
 
   describe("successfully updates a customer with billing address id", () => {
     let subject
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", `/store/customers/me`, {
         payload: {
           billing_address: "test",
@@ -112,8 +113,14 @@ describe("POST /store/customers/me", () => {
       expect(CustomerServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("lebron"),
         {
+          email: undefined,
+          first_name: undefined,
+          last_name: undefined,
           billing_address: "test",
-        }
+          metadata: {},
+          password: undefined,
+          phone: undefined,
+        },
       )
     })
 
@@ -124,7 +131,7 @@ describe("POST /store/customers/me", () => {
 
   describe("successfully updates a customer with billing address object", () => {
     let subject
-    beforeAll(async () => {
+    beforeAll(async() => {
       subject = await request("POST", `/store/customers/me`, {
         payload: {
           billing_address: {
@@ -163,7 +170,13 @@ describe("POST /store/customers/me", () => {
             postal_code: "2100",
             phone: "+1 (222) 333 4444",
           },
-        }
+          email: undefined,
+          first_name: undefined,
+          last_name: undefined,
+          metadata: {},
+          password: undefined,
+          phone: undefined,
+        },
       )
     })
 

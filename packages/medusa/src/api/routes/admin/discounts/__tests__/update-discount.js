@@ -40,11 +40,21 @@ describe("POST /admin/discounts", () => {
         IdMap.getId("total10"),
         {
           code: "10TOTALOFF",
+          ends_at: undefined,
+          is_disabled: undefined,
+          is_dynamic: undefined,
+          metadata: {},
+          regions: [],
+          starts_at: undefined,
+          usage_limit: undefined,
+          valid_duration: undefined,
           rule: {
             id: "1234",
             type: "fixed",
             value: 10,
             allocation: "total",
+            descriptions: undefined,
+            valid_for: []
           },
         }
       )
@@ -132,14 +142,21 @@ describe("POST /admin/discounts", () => {
         IdMap.getId("total10"),
         {
           code: "10TOTALOFF",
+          ends_at: undefined,
+          is_disabled: undefined,
+          metadata: {},
+          regions: [],
           rule: {
             id: "1234",
             type: "fixed",
             value: 10,
             allocation: "total",
+            description: undefined,
+            valid_for: []
           },
           starts_at: new Date("02/02/2021 13:45"),
           is_dynamic: true,
+          usage_limit: undefined,
           valid_duration: "P1Y2M03DT04H05M",
         }
       )

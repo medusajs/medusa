@@ -209,10 +209,10 @@ export default async (req, res) => {
 
   const productService: ProductService = req.scope.resolve("productService")
   const productVariantService: ProductVariantService = req.scope.resolve(
-    "productVariantService",
+    "productVariantService"
   )
   const shippingProfileService: ShippingProfileService = req.scope.resolve(
-    "shippingProfileService",
+    "shippingProfileService"
   )
 
   const entityManager: EntityManager = req.scope.resolve("manager")
@@ -245,7 +245,7 @@ export default async (req, res) => {
 
       const optionIds =
         validated?.options?.map(
-          (o) => newProduct.options.find((newO) => newO.title === o.title).id,
+          (o) => newProduct.options.find((newO) => newO.title === o.title)?.id,
         ) || []
 
       await Promise.all(

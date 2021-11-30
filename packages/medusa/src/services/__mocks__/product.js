@@ -4,15 +4,28 @@ export const products = {
   product1: {
     id: IdMap.getId("product1"),
     title: "Product 1",
+    options: [{
+        id: IdMap.getId("option1"),
+        title: "Denominations",
+        values: [IdMap.getId("optionValue1")],
+    }],
+    variants: [],
+    tags: []
   },
   publishProduct: {
     id: IdMap.getId("publish"),
     title: "Product 1",
     published: true,
+    options: [],
+    variants: [],
+    tags: []
   },
   product2: {
     id: IdMap.getId("product2"),
     title: "Product 2",
+    options: [],
+    variants: [],
+    tags: []
   },
   productWithOptions: {
     id: IdMap.getId("productWithOptions"),
@@ -25,10 +38,13 @@ export const products = {
         values: [IdMap.getId("optionValue1")],
       },
     ],
+    tags: []
   },
   variantsWithPrices: {
     id: IdMap.getId("variantsWithPrices"),
     title: "Variant with prices",
+    tags: [],
+    options: [],
     variants: [
       {
         id: IdMap.getId("variant_with_prices"),
