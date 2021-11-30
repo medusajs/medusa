@@ -117,17 +117,17 @@ export default async (req, res) => {
         country_code: validated.country_code.toLowerCase(),
       }
     }
-
+    
     let cart = await cartService.withTransaction(manager).create(toCreate)
     if (validated.items) {
       await Promise.all(
-        validated.items.map(async (i) => {
-          await lineItemService.withTransaction(manager).create({
-            cart_id: cart.id,
-            variant_id: i.variant_id,
-            quantity: i.quantity,
-            region_id: validated.region_id,
-          })
+        validated.items.map(async i => {
+          const lineItem = await lineItemService
+            .withTransaction(manager)
+            .generate(i.variant_id, regionId, i.quantity)
+          await cartService
+            .withTransaction(manager)
+            .addLineItem(cart.id, lineItem)
         })
       )
     }
