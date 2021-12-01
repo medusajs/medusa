@@ -1,3 +1,3 @@
 # Medusa Docs
 
-Visit: docs.medusa-commerce.com to browse docs.
+Visit: docs.medusajs.com to browse docs.
