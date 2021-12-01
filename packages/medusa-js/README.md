@@ -6,7 +6,7 @@ The Medusa JS Client provides easy access to the Medusa API from a client writte
 
 ## Documentation
 
-See our [API reference](https://docs.medusa-commerce.com/api/store).
+See our [API reference](https://docs.medusajs.com/api/store).
 
 ## Installation
 

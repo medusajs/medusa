@@ -1,6 +1,6 @@
 # Quickstart
 
-This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment).
+This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](https://docs.medusajs.com/tutorial/set-up-your-development-environment).
 
 ## Getting started
 
@@ -21,7 +21,7 @@ This quickstart is intended for experienced developers, that are accustomed with
    curl localhost:9000/store/products | python -m json.tool
    ```
 
-After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusa-commerce.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
+After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusajs.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
 
 ## What's next?
 
@@ -34,4 +34,4 @@ We have created two starters for you that can help you lay a foundation for your
 
 <!-- ### Link you local development to Medusa Cloud (Coming soon!)
 
-With your project in local development you can link your Medusa instance to Medusa Cloud - this will allow you to manage your store, view orders and test out the amazing functionalities that you are building. [Get started here](https://docs.medusa-commerce.com/tutorial/linking-your-local-project-with-medusa-cloud). -->
+With your project in local development you can link your Medusa instance to Medusa Cloud - this will allow you to manage your store, view orders and test out the amazing functionalities that you are building. [Get started here](https://docs.medusajs.com/tutorial/linking-your-local-project-with-medusa-cloud). -->
