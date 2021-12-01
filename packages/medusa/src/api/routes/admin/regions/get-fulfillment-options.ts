@@ -1,7 +1,6 @@
 import RegionService from "../../../../services/region"
 import FulfillmentProviderService from "../../../../services/fulfillment-provider"
 import { FulfillmentOption } from "."
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [get] /regions/{id}/fulfillment-options
