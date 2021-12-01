@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://www.medusa-commerce.com">
+  <a href="https://www.medusajs.com">
     <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/129161578-19b83dc8-fac5-4520-bd48-53cba676edd2.png" width="100" />
   </a>
 </p>
@@ -9,12 +9,12 @@
 
 <h4 align="center">
   <a href="https://github.com/medusajs/admin">Medusa Admin</a> |
-  <a href="https://www.medusa-commerce.com">Website</a> |
+  <a href="https://www.medusajs.com">Website</a> |
   <a href="https://roadmap.medusa-commerce.com">Roadmap</a> |
-  <a href="https://www.medusa-commerce.com/blog">Blog</a> |
+  <a href="https://www.medusajs.com/blog">Blog</a> |
   <a href="https://www.linkedin.com/company/medusa-commerce">LinkedIn</a> |
   <a href="https://twitter.com/medusajs">Twitter</a> |
-  <a href="https://docs.medusa-commerce.com">Documentation</a> |
+  <a href="https://docs.medusajs.com">Documentation</a> |
   <a href="https://medusajs.notion.site/medusajs/Medusa-Home-3485f8605d834a07949b17d1a9f7eafd">Notion</a>
 </h4>
 
@@ -60,7 +60,7 @@ Medusa is an open-source headless commerce engine that enables developers to cre
 
 We have a prebuilt admin dashboard that you can use to configure and manage your store find it here: [Medusa Admin](https://github.com/medusajs/admin)
 
-After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusa-commerce.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
+After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusajs.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
 
 ## 🛒 Setting up a storefront for your Medusa project
 

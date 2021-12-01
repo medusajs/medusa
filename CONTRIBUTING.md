@@ -5,7 +5,7 @@ Thank you for considering contributing to Medusa! This document will outline how
 ## Prerequisites
 
 - **You're familiar with GitHub Issues and Pull Requests**
-- **You've read the [docs](https://docs.medusa-commerce.com).**
+- **You've read the [docs](https://docs.medusajs.com).**
 - **You've setup a test project with `medusa new`**
 
 ## Issues before PRs

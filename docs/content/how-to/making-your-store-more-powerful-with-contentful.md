@@ -4,7 +4,7 @@ title: Making your store more powerful with Contentful
 
 # Making your store more powerful with Contentful
 
-In [part 1](https://docs.medusa-commerce.com/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa/) of this series you have set up [Medusa](https://medusa-commerce.com) with Contentful as your CMS system and added a Gatsby storefront. In this part you will get a further introduction to Contentful and learn how [`medusa-plugin-contentful`](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-contentful) can be leveraged to make your store more powerful. Apart from a front page, product pages and a checkout flow, most ecommerce stores also need miscalleneous pages like About and Contact pages. In this guide you will add a Rich Text content module to your Contentful space so that you can make this pages cool. You will also see how the content modules can be used to give your product pages more life.
+In [part 1](https://docs.medusajs.com/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa/) of this series you have set up [Medusa](https://medusa-commerce.com) with Contentful as your CMS system and added a Gatsby storefront. In this part you will get a further introduction to Contentful and learn how [`medusa-plugin-contentful`](https://github.com/medusajs/medusa/tree/master/packages/medusa-plugin-contentful) can be leveraged to make your store more powerful. Apart from a front page, product pages and a checkout flow, most ecommerce stores also need miscalleneous pages like About and Contact pages. In this guide you will add a Rich Text content module to your Contentful space so that you can make this pages cool. You will also see how the content modules can be used to give your product pages more life.
 
 What you will do in this guide:
 
@@ -306,5 +306,5 @@ In this guide you created a new content model for Rich Text input in Contentful 
 
 In the next part of this guide you will learn how to implement further commerce functionalities to your site such as adding support for discount codes, region based shopping and more. (Coming soon)
 
-- [Deploying Medusa on Heroku](https://docs.medusa-commerce.com/how-to/deploying-on-heroku)
-- [Deploying Medusa Admin on Netlify](https://docs.medusa-commerce.com/how-to/deploying-admin-on-netlify)
+- [Deploying Medusa on Heroku](https://docs.medusajs.com/how-to/deploying-on-heroku)
+- [Deploying Medusa Admin on Netlify](https://docs.medusajs.com/how-to/deploying-admin-on-netlify)

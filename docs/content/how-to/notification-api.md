@@ -6,7 +6,7 @@ title: Notifications and automated flows
 
 ### Introduction
 
-Plugins offer a way to extend and integrate the core functionality of Medusa. For a walkthrough of the implementation details behind these, please see [Plugins in Medusa](https://docs.medusa-commerce.com/how-to/plugins).
+Plugins offer a way to extend and integrate the core functionality of Medusa. For a walkthrough of the implementation details behind these, please see [Plugins in Medusa](https://docs.medusajs.com/how-to/plugins).
 
 Medusa makes it possible for plugins to implement the Notification API. The API allows for different types of implementations of notifications (emails, text messages, Slack messages, etc), that are sent as a reaction to events in Medusa. All Notifications are stored in the database with information about the receiver of the notification and what plugin was in charge of sending it. This allows merchants to resend notifications, but also gives an overview of what communication has been sent to customers.
 
