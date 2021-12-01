@@ -100,7 +100,7 @@ const Topbar = ({ data, api }) => {
           justifyContent: "flex-end",
         }}
       >
-        <Link variant="topbar" mr={3} href="https://docs.medusa-commerce.com">
+        <Link variant="topbar" mr={3} href="https://docs.medusajs.com">
           Docs
         </Link>
         <Link

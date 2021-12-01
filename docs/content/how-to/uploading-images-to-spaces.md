@@ -4,7 +4,7 @@ In order to work with images in Medusa, you need a file service plugin responsib
 
 ### Before you start
 
-At this point, you should have an instance of our store engine running. If not, we have a [full guide](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) for setting up your local environment.
+At this point, you should have an instance of our store engine running. If not, we have a [full guide](https://docs.medusajs.com/tutorial/set-up-your-development-environment) for setting up your local environment.
 
 ### Set up up DigitalOcean
 

@@ -5,7 +5,7 @@ title: Checkouts
 # Checkouts
 
 ## Introduction
-The purpose of this guide is to describe a checkout flow in Medusa. It is assumed that you've completed our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or [Tutorial](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) and are familiar with the technologies we use in our stack. Additionally, having an understanding of the [core API](https://docs.medusa-commerce.com/api/store/auth) would serve as a great foundation for this walkthrough.
+The purpose of this guide is to describe a checkout flow in Medusa. It is assumed that you've completed our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or [Tutorial](https://docs.medusajs.com/tutorial/set-up-your-development-environment) and are familiar with the technologies we use in our stack. Additionally, having an understanding of the [core API](https://docs.medusajs.com/api/store/auth) would serve as a great foundation for this walkthrough.
 > All code snippets in the following guide, use the JS SDK distributed through **npm**. To install it, run `yarn add @medusajs/medusa-js` or `npm install @medusajs/medusa-js`.
 
 ## Glossary
