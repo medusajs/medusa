@@ -1,6 +1,7 @@
 import RegionService from "../../../../services/region"
 import FulfillmentProviderService from "../../../../services/fulfillment-provider"
 import { FulfillmentOption } from "."
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [get] /regions/{id}/fulfillment-options
@@ -25,10 +26,11 @@ import { FulfillmentOption } from "."
  *                 type: object
  */
 export default async (req, res) => {
-  const { region_id } = req.query
+  const { region_id } = req.params
 
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
+
   const regionService: RegionService = req.scope.resolve("regionService")
   const region = await regionService.retrieve(region_id, {
     relations: ["fulfillment_providers"],
