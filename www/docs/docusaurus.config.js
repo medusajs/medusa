@@ -8,7 +8,7 @@ const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 module.exports = {
   title: "Medusa Commerce",
   tagline: "Explore and learn how to use Medusa",
-  url: "https://docs.medusa-commerce.com",
+  url: "https://docs.medusajs.com",
   baseUrl: "/",
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
@@ -47,7 +47,7 @@ module.exports = {
       },
       items: [
         {
-          href: "https://docs.medusa-commerce.com",
+          href: "https://docs.medusajs.com",
           label: "Overview",
         },
         {
@@ -56,7 +56,7 @@ module.exports = {
           label: "Tutorial",
         },
         {
-          href: `https://docs.medusa-commerce.com/api/store`,
+          href: `https://docs.medusajs.com/api/store`,
           target: "_self",
           label: "Reference",
         },
