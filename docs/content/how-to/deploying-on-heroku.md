@@ -6,7 +6,7 @@ title: "Deploying on Heroku"
 
 This is a guide for deploying a Medusa project on Heroku. Heroku is at PaaS that allows you to easily deploy your applications in the cloud.
 
-> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
+> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
 
 ### 1. Install the Heroku CLI
 
@@ -197,5 +197,5 @@ You now have a production ready application running on Heroku. This can be scale
 
 Furthermore, you can deploy a Medusa Admin for your application, such that you can start managing your store from an interface.
 
-- [Deploy Admin on Netlify](https://docs.medusa-commerce.com/how-to/deploying-admin-on-netlify)
+- [Deploy Admin on Netlify](https://docs.medusajs.com/how-to/deploying-admin-on-netlify)
 - Deploy Admin on Gatsby Cloud (Coming soon)

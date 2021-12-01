@@ -12,4 +12,4 @@ Upload files to a DigitalOcean Space.
   endpoint: [endpoint of you DigitalOcean space],
 ```
 
-Follow [this guide](https://docs.medusa-commerce.com/how-to/uploading-images-to-spaces) to configure the plugin.
+Follow [this guide](https://docs.medusajs.com/how-to/uploading-images-to-spaces) to configure the plugin.
