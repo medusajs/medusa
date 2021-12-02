@@ -217,7 +217,7 @@ class StripeProviderService extends PaymentService {
     )
 
     if (payment_method) {
-      await this.stripe_.paymentIntents.confirm(sessionData.id)
+      return await this.stripe_.paymentIntents.confirm(sessionData.id)
     }
     return updatedData
   }
