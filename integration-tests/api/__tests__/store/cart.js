@@ -15,6 +15,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
+const { exportAllDeclaration } = require("@babel/types")
 
 jest.setTimeout(30000)
 
@@ -531,18 +532,60 @@ describe("/store/carts", () => {
     it("adds a normal shipping method to cart", async () => {
       const api = useApi()
 
-      const cartWithShippingMethod = await api.post(
-        "/store/carts/test-cart/shipping-methods",
-        {
-          option_id: "test-option",
-        },
-        { withCredentials: true }
+      const cartWithShippingMethod = await api
+        .post(
+          "/store/carts/test-cart/shipping-methods",
+          {
+            option_id: "test-option-2",
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(cartWithShippingMethod.data.cart.shipping_methods).toContainEqual(
+        expect.objectContaining({ shipping_option_id: "test-option-2" })
+      )
+      expect(cartWithShippingMethod.data.cart.shipping_methods.length).toEqual(
+        1
+      )
+      expect(cartWithShippingMethod.status).toEqual(200)
+    })
+
+    it("adds a normal shipping method to cart once with multiple requests", async () => {
+      const api = useApi()
+      try {
+        const promises = [
+          api.post("/store/carts/test-cart/shipping-methods", {
+            option_id: "test-option-2",
+          }),
+          api.post("/store/carts/test-cart/shipping-methods", {
+            option_id: "test-option-2",
+          }),
+          api.post("/store/carts/test-cart/shipping-methods", {
+            option_id: "test-option-2",
+          }),
+          api.post("/store/carts/test-cart/shipping-methods", {
+            option_id: "test-option-2",
+          }),
+        ]
+
+        await Promise.all(promises)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+
+      const cartWithShippingMethod = await api.get("/store/carts/test-cart")
+
+      console.log(cartWithShippingMethod.data.cart.shipping_methods)
+
+      expect(cartWithShippingMethod.data.cart.shipping_methods.length).toEqual(
+        1
       )
 
       expect(cartWithShippingMethod.data.cart.shipping_methods).toContainEqual(
-        expect.objectContaining({ shipping_option_id: "test-option" })
+        expect.objectContaining({ shipping_option_id: "test-option-2" })
       )
-      expect(cartWithShippingMethod.status).toEqual(200)
     })
 
     it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
