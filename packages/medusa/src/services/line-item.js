@@ -90,7 +90,7 @@ class LineItemService extends BaseService {
   }
 
   async generate(variantId, regionId, quantity, config = {}) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const variant = await this.productVariantService_
         .withTransaction(manager)
         .retrieve(variantId, {
@@ -104,7 +104,7 @@ class LineItemService extends BaseService {
       let price
       let shouldMerge = true
 
-      if (config.unit_price && typeof config.unit_price !== `undefined`) {
+      if (config.unit_price !== undefined && config.unit_price !== null) {
         // if custom unit_price, we ensure positive values
         // and we choose to not merge the items
         shouldMerge = false
@@ -142,7 +142,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the created line item
    */
   async create(lineItem) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -160,7 +160,7 @@ class LineItemService extends BaseService {
    * @return {LineItem} the update line item
    */
   async update(id, update) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
@@ -188,7 +188,7 @@ class LineItemService extends BaseService {
    * @return {Promise} the result of the delete operation
    */
   async delete(id) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
       )
