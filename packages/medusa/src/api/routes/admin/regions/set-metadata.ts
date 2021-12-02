@@ -33,7 +33,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const regionService: RegionService = req.scope.resolve(ServiceIdentifiers.regionService)
+  const regionService: RegionService = req.scope.resolve(
+    ServiceIdentifiers.regionService
+  )
   await regionService.setMetadata(id, validated.key, validated.value)
 
   const region = await regionService.retrieve(id, {

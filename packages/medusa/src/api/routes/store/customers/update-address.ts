@@ -41,7 +41,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService) as CustomerService
+  const customerService: CustomerService = req.scope.resolve(
+    ServiceIdentifiers.customerService
+  ) as CustomerService
 
   let customer = await customerService.updateAddress(id, address_id, validated)
 

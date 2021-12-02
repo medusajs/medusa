@@ -1,5 +1,5 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+import { CartService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [delete] /carts/{id}/payment-sessions/{provider_id}

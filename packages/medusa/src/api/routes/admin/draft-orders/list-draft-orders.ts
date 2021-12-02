@@ -2,7 +2,7 @@ import {
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
 } from "."
-import { DraftOrderService } from "../../../../services"
+import { DraftOrderService, ServiceIdentifiers } from "../../../../services"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { Type } from "class-transformer"
@@ -27,8 +27,9 @@ import { DraftOrderListSelector } from "../../../../types/draft-orders"
  */
 
 export default async (req, res) => {
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
 
   const validated = await validator(AdminGetDraftOrdersParams, req.query)
 

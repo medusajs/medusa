@@ -1,4 +1,8 @@
-import { OrderService, ReturnService } from "../../../../services"
+import {
+  OrderService,
+  ReturnService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import {
   defaultAdminOrdersFields,
   defaultAdminOrdersRelations,
@@ -26,8 +30,12 @@ import {
 export default async (req, res) => {
   const { id } = req.params
 
-  const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const returnService: ReturnService = req.scope.resolve(
+    ServiceIdentifiers.returnService
+  )
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   let result = await returnService.cancel(id)
 

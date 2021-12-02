@@ -6,7 +6,11 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { OrderService, SwapService } from "../../../../services"
+import {
+  OrderService,
+  ServiceIdentifiers,
+  SwapService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/shipments
@@ -55,8 +59,12 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const swapService: SwapService = req.scope.resolve(
+    ServiceIdentifiers.swapService
+  )
 
   await swapService.createShipment(
     swap_id,

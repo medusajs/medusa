@@ -1,5 +1,5 @@
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { OrderService } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [get] /orders/{id}
@@ -24,7 +24,9 @@ import { OrderService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   const order = await orderService.retrieve(id, {
     select: defaultAdminOrdersFields,

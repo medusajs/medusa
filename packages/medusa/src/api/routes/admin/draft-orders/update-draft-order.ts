@@ -11,7 +11,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { CartService, DraftOrderService } from "../../../../services"
+import { CartService, DraftOrderService, ServiceIdentifiers } from "../../../../services"
 import { Type } from "class-transformer"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
@@ -74,9 +74,12 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostDraftOrdersDraftOrderReq, req.body)
 
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
-  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
+  const cartService: CartService = req.scope.resolve(
+    ServiceIdentifiers.cartService
+  )
 
   const draftOrder = await draftOrderService.retrieve(id)
 

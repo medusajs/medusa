@@ -2,7 +2,7 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
-import { ReturnReasonService } from "../../../../services"
+import { ReturnReasonService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [get] /return-reasons
@@ -25,7 +25,9 @@ import { ReturnReasonService } from "../../../../services"
  *                 $ref: "#/components/schemas/return_reason"
  */
 export default async (req, res) => {
-  const returnReasonService: ReturnReasonService = req.scope.resolve(ServiceIdentifiers.returnReasonService)
+  const returnReasonService: ReturnReasonService = req.scope.resolve(
+    ServiceIdentifiers.returnReasonService
+  )
 
   const query = { parent_return_reason_id: null }
   const data = await returnReasonService.list(query, {

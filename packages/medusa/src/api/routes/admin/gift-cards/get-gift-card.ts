@@ -1,4 +1,5 @@
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
+import { ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [get] /gift-cards/{id}

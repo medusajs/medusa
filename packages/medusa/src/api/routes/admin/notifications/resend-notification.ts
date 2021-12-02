@@ -5,7 +5,7 @@ import {
   defaultAdminNotificationsRelations,
 } from "."
 import { validator } from "../../../../utils/validator"
-import { NotificationService } from "../../../../services"
+import { NotificationService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [post] /notifications/{id}/resend
@@ -43,7 +43,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const notificationService: NotificationService = req.scope.resolve(ServiceIdentifiers.notificationService)
+  const notificationService: NotificationService = req.scope.resolve(
+    ServiceIdentifiers.notificationService
+  )
 
   const config: any = {}
 

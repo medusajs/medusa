@@ -1,6 +1,7 @@
 import {
   FulfillmentProviderService,
   PaymentProviderService,
+  ServiceIdentifiers,
   StoreService,
 } from "../../../../services"
 
@@ -23,8 +24,12 @@ import {
  *               $ref: "#/components/schemas/store"
  */
 export default async (req, res) => {
-  const storeService: StoreService = req.scope.resolve(ServiceIdentifiers.storeService)
-  const paymentProviderService: PaymentProviderService = req.scope.resolve(ServiceIdentifiers.paymentProviderService)
+  const storeService: StoreService = req.scope.resolve(
+    ServiceIdentifiers.storeService
+  )
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(
+    ServiceIdentifiers.paymentProviderService
+  )
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve(ServiceIdentifiers.fulfillmentProviderService)
 

@@ -41,7 +41,9 @@ import { Type } from "class-transformer"
 export default async (req, res) => {
   const validated = await validator(AdminGetRegionsParams, req.query)
 
-  const regionService: RegionService = req.scope.resolve(ServiceIdentifiers.regionService)
+  const regionService: RegionService = req.scope.resolve(
+    ServiceIdentifiers.regionService
+  )
 
   const selector = {}
 

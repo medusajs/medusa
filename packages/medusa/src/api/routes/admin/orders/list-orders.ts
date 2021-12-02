@@ -2,7 +2,7 @@ import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { validator } from "../../../../utils/validator"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { identity, omit, pick, pickBy } from "lodash"
-import { OrderService } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 import { AdminListOrdersSelector } from "../../../../types/orders"
 import { Type } from "class-transformer"
 
@@ -49,7 +49,9 @@ import { Type } from "class-transformer"
 export default async (req, res) => {
   const value = await validator(AdminGetOrdersParams, req.query)
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   let includeFields: string[] = []
   if (value.fields) {

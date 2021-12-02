@@ -24,7 +24,9 @@ import { DiscountService, ServiceIdentifiers } from "../../../../services"
 export default async (req, res) => {
   const { discount_id, code } = req.params
 
-  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
+  const discountService: DiscountService = req.scope.resolve(
+    ServiceIdentifiers.discountService
+  )
   await discountService.deleteDynamicCode(discount_id, code)
 
   const discount = await discountService.retrieve(discount_id, {

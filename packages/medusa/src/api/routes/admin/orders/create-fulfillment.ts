@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { OrderService } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/fulfillments
@@ -64,7 +64,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   await orderService.createFulfillment(id, validated.items, {
     metadata: validated.metadata,

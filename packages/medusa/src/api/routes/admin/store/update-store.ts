@@ -1,5 +1,5 @@
 import { IsArray, IsOptional, IsString } from "class-validator"
-import { StoreService } from "../../../../services"
+import { ServiceIdentifiers, StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -37,7 +37,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validatedBody = await validator(AdminPostStoreReq, req.body)
 
-  const storeService: StoreService = req.scope.resolve(ServiceIdentifiers.storeService)
+  const storeService: StoreService = req.scope.resolve(
+    ServiceIdentifiers.storeService
+  )
 
   const store = await storeService.update(validatedBody)
 

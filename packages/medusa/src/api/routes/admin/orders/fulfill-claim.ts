@@ -1,7 +1,11 @@
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { ClaimService, OrderService } from "../../../../services"
+import {
+  ClaimService,
+  OrderService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/fulfillments
@@ -43,8 +47,12 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const claimService: ClaimService = req.scope.resolve(ServiceIdentifiers.claimService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const claimService: ClaimService = req.scope.resolve(
+    ServiceIdentifiers.claimService
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

@@ -1,7 +1,7 @@
 import { IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+import { CartService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**

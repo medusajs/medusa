@@ -1,8 +1,11 @@
 import { IsEmail, IsNotEmpty } from "class-validator"
 import jwt from "jsonwebtoken"
 import config from "../../../../config"
-import { AuthService, ServiceIdentifiers } from "../../../../services"
-import { CustomerService, ServiceIdentifiers } from "../../../../services"
+import {
+  AuthService,
+  CustomerService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -28,8 +31,12 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(StorePostAuthReq, req.body)
 
-  const authService: AuthService = req.scope.resolve(ServiceIdentifiers.authService)
-  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
+  const authService: AuthService = req.scope.resolve(
+    ServiceIdentifiers.authService
+  )
+  const customerService: CustomerService = req.scope.resolve(
+    ServiceIdentifiers.customerService
+  )
 
   const result = await authService.authenticateCustomer(
     validated.email,

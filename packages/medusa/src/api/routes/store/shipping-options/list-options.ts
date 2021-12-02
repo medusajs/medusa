@@ -1,6 +1,9 @@
 import { IsBooleanString, IsOptional, IsString } from "class-validator"
-import { ProductService, ServiceIdentifiers } from "../../../../services"
-import { ShippingOptionService, ServiceIdentifiers } from "../../../../services"
+import {
+  ProductService,
+  ShippingOptionService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**

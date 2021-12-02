@@ -1,3 +1,5 @@
+import { ServiceIdentifiers } from "../../../../services"
+
 /**
  * @oas [delete] /gift-cards/{id}
  * operationId: "DeleteGiftCardsGiftCard"
@@ -24,6 +26,7 @@
  *             deleted:
  *               type: boolean
  */
+
 export default async (req, res) => {
   const { id } = req.params
 

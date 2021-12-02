@@ -32,7 +32,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)
 
-  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
+  const discountService: DiscountService = req.scope.resolve(
+    ServiceIdentifiers.discountService
+  )
   const selector: ListSelector = {}
 
   if (validated.q) {

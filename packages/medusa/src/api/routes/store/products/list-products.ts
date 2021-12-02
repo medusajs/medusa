@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsBoolean, IsInt, IsNumber, IsOptional } from "class-validator"
 import { defaultStoreProductsRelations } from "."
-import { ProductService } from "../../../../services"
+import { ProductService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -33,7 +33,9 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
+  const productService: ProductService = req.scope.resolve(
+    ServiceIdentifiers.productService
+  )
 
   const validated = await validator(StoreGetProductsParams, req.query)
 

@@ -1,5 +1,8 @@
 import { IsOptional, IsString } from "class-validator"
-import { ShippingProfileService } from "../../../../services"
+import {
+  ServiceIdentifiers,
+  ShippingProfileService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -37,7 +40,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const profileService: ShippingProfileService = req.scope.resolve(ServiceIdentifiers.shippingProfileService)
+  const profileService: ShippingProfileService = req.scope.resolve(
+    ServiceIdentifiers.shippingProfileService
+  )
 
   await profileService.update(profile_id, validated)
 

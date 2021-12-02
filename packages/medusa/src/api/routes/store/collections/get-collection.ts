@@ -21,7 +21,9 @@ import { ProductCollectionService, ServiceIdentifiers } from "../../../../servic
 
 export default async (req, res) => {
   const { id } = req.params
-  const productCollectionService: ProductCollectionService = req.scope.resolve(ServiceIdentifiers.productCollectionService)
+  const productCollectionService: ProductCollectionService = req.scope.resolve(
+    ServiceIdentifiers.productCollectionService
+  )
 
   const collection = await productCollectionService.retrieve(id)
   res.status(200).json({ collection })

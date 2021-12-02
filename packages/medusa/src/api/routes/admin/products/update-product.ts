@@ -18,7 +18,7 @@ import {
   defaultAdminProductRelations,
   ProductStatus,
 } from "."
-import { ProductService } from "../../../../services"
+import { ProductService, ServiceIdentifiers } from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
 
@@ -210,7 +210,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostProductsProductReq, req.body)
 
-  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
+  const productService: ProductService = req.scope.resolve(
+    ServiceIdentifiers.productService
+  )
 
   await productService.update(id, validated)
 

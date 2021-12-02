@@ -1,5 +1,8 @@
 import { IsString } from "class-validator"
-import { ShippingProfileService } from "../../../../services"
+import {
+  ServiceIdentifiers,
+  ShippingProfileService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -33,7 +36,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostShippingProfilesReq, req.body)
 
-  const profileService: ShippingProfileService = req.scope.resolve(ServiceIdentifiers.shippingProfileService)
+  const profileService: ShippingProfileService = req.scope.resolve(
+    ServiceIdentifiers.shippingProfileService
+  )
   const data = await profileService.create(validated)
 
   res.status(200).json({ shipping_profile: data })

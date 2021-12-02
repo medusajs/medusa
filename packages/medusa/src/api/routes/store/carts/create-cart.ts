@@ -11,7 +11,7 @@ import { MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService, LineItemService } from "../../../../services"
+import { CartService, LineItemService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**

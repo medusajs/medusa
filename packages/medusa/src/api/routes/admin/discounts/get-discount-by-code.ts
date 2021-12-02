@@ -23,7 +23,9 @@ import { DiscountService, ServiceIdentifiers } from "../../../../services"
 export default async (req, res) => {
   const { code } = req.params
 
-  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
+  const discountService: DiscountService = req.scope.resolve(
+    ServiceIdentifiers.discountService
+  )
   const discount = await discountService.retrieveByCode(
     code,
     defaultAdminDiscountsRelations

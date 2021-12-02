@@ -1,5 +1,8 @@
-import { CartService, ServiceIdentifiers } from "../../../../services"
-import { ShippingProfileService, ServiceIdentifiers } from "../../../../services"
+import {
+  CartService,
+  ShippingProfileService,
+  ServiceIdentifiers,
+} from "../../../../services"
 
 /**
  * @oas [get] /shipping-options/{cart_id}
@@ -25,8 +28,12 @@ import { ShippingProfileService, ServiceIdentifiers } from "../../../../services
 export default async (req, res) => {
   const { cart_id } = req.params
 
-  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
-  const shippingProfileService: ShippingProfileService = req.scope.resolve(ServiceIdentifiers.shippingProfileService)
+  const cartService: CartService = req.scope.resolve(
+    ServiceIdentifiers.cartService
+  )
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    ServiceIdentifiers.shippingProfileService
+  )
 
   const cart = await cartService.retrieve(cart_id, {
     select: ["subtotal"],

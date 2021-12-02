@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsBooleanString, IsInt, IsOptional, IsString } from "class-validator"
 import { pick } from "lodash"
-import { NotificationService } from "../../../../services"
+import { NotificationService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import {
   defaultAdminNotificationsFields,
@@ -39,7 +39,9 @@ import {
  *                 $ref: "#/components/schemas/notification"
  */
 export default async (req, res) => {
-  const notificationService: NotificationService = req.scope.resolve(ServiceIdentifiers.notificationService)
+  const notificationService: NotificationService = req.scope.resolve(
+    ServiceIdentifiers.notificationService
+  )
   const {
     limit,
     offset,

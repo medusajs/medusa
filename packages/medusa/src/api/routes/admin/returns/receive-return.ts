@@ -7,7 +7,12 @@ import {
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-import { OrderService, ReturnService, SwapService } from "../../../../services"
+import {
+  OrderService,
+  ReturnService,
+  ServiceIdentifiers,
+  SwapService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -55,9 +60,15 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostReturnsReturnReceiveReq, req.body)
 
-  const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
+  const returnService: ReturnService = req.scope.resolve(
+    ServiceIdentifiers.returnService
+  )
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const swapService: SwapService = req.scope.resolve(
+    ServiceIdentifiers.swapService
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   let receivedReturn

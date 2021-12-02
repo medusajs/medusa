@@ -5,7 +5,11 @@ import {
   defaultAdminDraftOrdersCartFields,
 } from "."
 import { DraftOrder } from "../../../.."
-import { CartService, DraftOrderService } from "../../../../services"
+import {
+  CartService,
+  DraftOrderService,
+  ServiceIdentifiers,
+} from "../../../../services"
 
 /**
  * @oas [get] /draft-orders/{id}
@@ -31,9 +35,12 @@ import { CartService, DraftOrderService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
 
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
-  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
+  const cartService: CartService = req.scope.resolve(
+    ServiceIdentifiers.cartService
+  )
 
   const draftOrder: DraftOrder = await draftOrderService.retrieve(id, {
     select: defaultAdminDraftOrdersFields,

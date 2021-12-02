@@ -13,6 +13,7 @@ import {
   EventBusService,
   OrderService,
   ReturnService,
+  ServiceIdentifiers,
 } from "../../../../services"
 import { OrdersReturnItem } from "../../../../types/orders"
 import { validator } from "../../../../utils/validator"
@@ -85,7 +86,9 @@ export default async (req, res) => {
 
   const value = await validator(AdminPostOrdersOrderReturnsReq, req.body)
 
-  const idempotencyKeyService = req.scope.resolve(ServiceIdentifiers.idempotencyKeyService)
+  const idempotencyKeyService = req.scope.resolve(
+    ServiceIdentifiers.idempotencyKeyService
+  )
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -106,9 +109,15 @@ export default async (req, res) => {
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
   try {
-    const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-    const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
-    const eventBus: EventBusService = req.scope.resolve(ServiceIdentifiers.eventBusService)
+    const orderService: OrderService = req.scope.resolve(
+      ServiceIdentifiers.orderService
+    )
+    const returnService: ReturnService = req.scope.resolve(
+      ServiceIdentifiers.returnService
+    )
+    const eventBus: EventBusService = req.scope.resolve(
+      ServiceIdentifiers.eventBusService
+    )
 
     let inProgress = true
     let err = false

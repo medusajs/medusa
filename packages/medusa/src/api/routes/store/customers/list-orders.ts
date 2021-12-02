@@ -44,7 +44,9 @@ import {
 export default async (req, res) => {
   const id: string = req.user.customer_id
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   const selector = {
     customer_id: id,

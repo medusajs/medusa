@@ -73,7 +73,9 @@ export default async (req, res) => {
   const { discount_id } = req.params
 
   const validated = await validator(AdminPostDiscountsDiscountReq, req.body)
-  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
+  const discountService: DiscountService = req.scope.resolve(
+    ServiceIdentifiers.discountService
+  )
   await discountService.update(discount_id, validated)
   const discount = await discountService.retrieve(discount_id, {
     select: defaultAdminDiscountsFields,

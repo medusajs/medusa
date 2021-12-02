@@ -37,7 +37,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const discountService: DiscountService = req.scope.resolve(ServiceIdentifiers.discountService)
+  const discountService: DiscountService = req.scope.resolve(
+    ServiceIdentifiers.discountService
+  )
   const created = await discountService.createDynamicCode(
     discount_id,
     validated

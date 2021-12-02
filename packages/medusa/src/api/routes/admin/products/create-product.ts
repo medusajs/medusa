@@ -20,6 +20,7 @@ import {
 import {
   ProductService,
   ProductVariantService,
+  ServiceIdentifiers,
   ShippingProfileService,
 } from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
@@ -215,9 +216,15 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
 
-  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
-  const productVariantService: ProductVariantService = req.scope.resolve(ServiceIdentifiers.productVariantService)
-  const shippingProfileService: ShippingProfileService = req.scope.resolve(ServiceIdentifiers.shippingProfileService)
+  const productService: ProductService = req.scope.resolve(
+    ServiceIdentifiers.productService
+  )
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    ServiceIdentifiers.productVariantService
+  )
+  const shippingProfileService: ShippingProfileService = req.scope.resolve(
+    ServiceIdentifiers.shippingProfileService
+  )
 
   const entityManager: EntityManager = req.scope.resolve("manager")
 

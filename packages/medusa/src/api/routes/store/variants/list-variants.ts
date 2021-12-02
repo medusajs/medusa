@@ -52,7 +52,9 @@ export default async (req, res) => {
     selector = { id: ids.split(",") }
   }
 
-  const variantService: ProductVariantService = req.scope.resolve(ServiceIdentifiers.productVariantService)
+  const variantService: ProductVariantService = req.scope.resolve(
+    ServiceIdentifiers.productVariantService
+  )
   const variants = await variantService.list(selector, listConfig)
 
   res.json({ variants })

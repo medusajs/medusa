@@ -1,4 +1,4 @@
-import { CartService } from "../../../../services"
+import { CartService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions/{provider_id}

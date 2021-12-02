@@ -29,7 +29,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminUpdateUserRequest, req.body)
 
-  const userService: UserService = req.scope.resolve(ServiceIdentifiers.userService)
+  const userService: UserService = req.scope.resolve(
+    ServiceIdentifiers.userService
+  )
   const data = await userService.update(user_id, validated)
   res.status(200).json({ user: data })
 }

@@ -14,6 +14,7 @@ import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -133,7 +134,9 @@ export default async (req, res) => {
 
   const value = await validator(AdminPostOrdersOrderClaimsReq, req.body)
 
-  const idempotencyKeyService = req.scope.resolve(ServiceIdentifiers.idempotencyKeyService)
+  const idempotencyKeyService = req.scope.resolve(
+    ServiceIdentifiers.idempotencyKeyService
+  )
 
   const headerKey = req.get("Idempotency-Key") || ""
 

@@ -11,7 +11,11 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService, ProductVariantService } from "../../../../services"
+import {
+  ProductService,
+  ProductVariantService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
 
@@ -129,8 +133,12 @@ export default async (req, res) => {
     req.body
   )
 
-  const productVariantService: ProductVariantService = req.scope.resolve(ServiceIdentifiers.productVariantService)
-  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    ServiceIdentifiers.productVariantService
+  )
+  const productService: ProductService = req.scope.resolve(
+    ServiceIdentifiers.productService
+  )
 
   await productVariantService.create(id, validated)
 

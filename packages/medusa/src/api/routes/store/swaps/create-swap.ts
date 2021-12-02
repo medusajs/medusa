@@ -1,19 +1,14 @@
 import { Type } from "class-transformer"
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-  ValidateNested,
-} from "class-validator"
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { defaultStoreSwapFields, defaultStoreSwapRelations } from "."
-import { IdempotencyKeyService, ServiceIdentifiers } from "../../../../services"
-import { OrderService, ServiceIdentifiers } from "../../../../services"
-import { ReturnService, ServiceIdentifiers } from "../../../../services"
-import { SwapService, ServiceIdentifiers } from "../../../../services"
+import {
+  IdempotencyKeyService,
+  OrderService,
+  ReturnService,
+  ServiceIdentifiers,
+  SwapService,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -89,7 +84,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const swapDto = await validator(StorePostSwapsReq, req.body)
 
-  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(ServiceIdentifiers.idempotencyKeyService)
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    ServiceIdentifiers.idempotencyKeyService,
+  )
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -99,7 +96,7 @@ export default async (req, res) => {
       headerKey,
       req.method,
       req.params,
-      req.path
+      req.path,
     )
   } catch (error) {
     res.status(409).send("Failed to create idempotency key")
@@ -109,9 +106,15 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
-  const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const swapService: SwapService = req.scope.resolve(
+    ServiceIdentifiers.swapService
+  )
+  const returnService: ReturnService = req.scope.resolve(
+    ServiceIdentifiers.returnService
+  )
 
   let inProgress = true
   let err = false
@@ -146,7 +149,7 @@ export default async (req, res) => {
                 {
                   idempotency_key: idempotencyKey.idempotency_key,
                   no_notification: true,
-                }
+                },
               )
 
             await swapService.withTransaction(manager).createCart(swap.id)
@@ -159,7 +162,7 @@ export default async (req, res) => {
             return {
               recovery_point: "swap_created",
             }
-          }
+          },
         )
 
         if (error) {
@@ -182,7 +185,7 @@ export default async (req, res) => {
             if (!swaps.length) {
               throw new MedusaError(
                 MedusaError.Types.INVALID_DATA,
-                "Swap not found"
+                "Swap not found",
               )
             }
 
@@ -195,7 +198,7 @@ export default async (req, res) => {
               response_code: 200,
               response_body: { swap },
             }
-          }
+          },
         )
 
         if (error) {
@@ -219,7 +222,7 @@ export default async (req, res) => {
             recovery_point: "finished",
             response_code: 500,
             response_body: { message: "Unknown recovery point" },
-          }
+          },
         )
         break
     }

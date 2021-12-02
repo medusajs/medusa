@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
-import { GiftCardService } from "../../../../services"
+import { GiftCardService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -52,7 +52,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostGiftCardsGiftCardReq, req.body)
 
-  const giftCardService: GiftCardService = req.scope.resolve(ServiceIdentifiers.giftCardService)
+  const giftCardService: GiftCardService = req.scope.resolve(
+    ServiceIdentifiers.giftCardService
+  )
 
   await giftCardService.update(id, validated)
 

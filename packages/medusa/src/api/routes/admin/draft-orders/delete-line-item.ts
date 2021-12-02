@@ -6,7 +6,11 @@ import {
   defaultAdminDraftOrdersFields,
 } from "."
 import { DraftOrder } from "../../../.."
-import { CartService, DraftOrderService } from "../../../../services"
+import {
+  CartService,
+  DraftOrderService,
+  ServiceIdentifiers,
+} from "../../../../services"
 /**
  * @oas [delete] /draft-orders/{id}/line-items/{line_id}
  * operationId: DeleteDraftOrdersDraftOrderLineItemsItem
@@ -32,9 +36,12 @@ import { CartService, DraftOrderService } from "../../../../services"
 export default async (req, res) => {
   const { id, line_id } = req.params
 
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
-  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
+  const cartService: CartService = req.scope.resolve(
+    ServiceIdentifiers.cartService
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

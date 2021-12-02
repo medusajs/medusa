@@ -6,7 +6,7 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { OrderService } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /orders/{id}/shipment
@@ -51,7 +51,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostOrdersOrderShipmentReq, req.body)
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   await orderService.createShipment(
     id,

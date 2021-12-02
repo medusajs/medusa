@@ -1,7 +1,9 @@
-import { ProductService } from "../../../../services"
+import { ProductService, ServiceIdentifiers } from "../../../../services"
 
 export default async (req, res) => {
-  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
+  const productService: ProductService = req.scope.resolve(
+    ServiceIdentifiers.productService
+  )
 
   const tags = await productService.listTagsByUsage()
 

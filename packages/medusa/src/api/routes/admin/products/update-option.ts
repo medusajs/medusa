@@ -1,6 +1,6 @@
 import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService } from "../../../../services"
+import { ProductService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -42,7 +42,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const productService: ProductService = req.scope.resolve(ServiceIdentifiers.productService)
+  const productService: ProductService = req.scope.resolve(
+    ServiceIdentifiers.productService
+  )
 
   await productService.updateOption(id, option_id, validated)
 

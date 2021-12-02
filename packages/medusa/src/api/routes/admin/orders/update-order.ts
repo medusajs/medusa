@@ -10,7 +10,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { OrderService } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
@@ -100,7 +100,9 @@ export default async (req, res) => {
 
   const value = await validator(AdminPostOrdersOrderReq, req.body)
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   await orderService.update(id, value)
 

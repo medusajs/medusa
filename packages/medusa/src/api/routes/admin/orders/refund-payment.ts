@@ -6,7 +6,7 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { OrderService } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -54,7 +54,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostOrdersOrderRefundsReq, req.body)
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   await orderService.createRefund(
     id,

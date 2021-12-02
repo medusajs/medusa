@@ -15,7 +15,9 @@ export default async (req, res) => {
 
   const paginationOptions = { offset, limit }
 
-  const searchService: SearchService = req.scope.resolve(ServiceIdentifiers.searchService)
+  const searchService: SearchService = req.scope.resolve(
+    ServiceIdentifiers.searchService
+  )
 
   const results = await searchService.search(ProductService.IndexName, q, {
     paginationOptions,

@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import {
   CartService,
   IdempotencyKeyService,
-  OrderService,
+  OrderService, ServiceIdentifiers,
   SwapService,
 } from "../../../../services"
 

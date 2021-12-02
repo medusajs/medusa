@@ -1,4 +1,4 @@
-import { OrderService } from "../../../../services"
+import { OrderService, ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [delete] /order/{id}/metadata/{key}
@@ -24,7 +24,9 @@ import { OrderService } from "../../../../services"
 export default async (req, res) => {
   const { id, key } = req.params
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
 
   await orderService.deleteMetadata(id, key)
 

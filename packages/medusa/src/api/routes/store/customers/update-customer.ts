@@ -55,7 +55,9 @@ export default async (req, res) => {
 
   const validated = await validator(StorePostCustomersCustomerReq, req.body)
 
-  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
+  const customerService: CustomerService = req.scope.resolve(
+    ServiceIdentifiers.customerService
+  )
   await customerService.update(id, validated)
 
   const customer = await customerService.retrieve(id, {

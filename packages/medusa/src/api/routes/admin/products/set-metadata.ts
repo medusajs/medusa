@@ -1,6 +1,7 @@
 import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { validator } from "../../../../utils/validator"
+import { ServiceIdentifiers } from "../../../../services"
 
 /**
  * @oas [post] /products/{id}/metadata

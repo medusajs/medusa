@@ -26,7 +26,9 @@ export default async (req, res) => {
 
   const { address_id } = req.params
 
-  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
+  const customerService: CustomerService = req.scope.resolve(
+    ServiceIdentifiers.customerService
+  )
 
   await customerService.removeAddress(id, address_id)
 

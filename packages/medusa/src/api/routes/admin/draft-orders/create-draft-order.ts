@@ -17,7 +17,7 @@ import {
   defaultAdminDraftOrdersRelations,
 } from "."
 import { DraftOrder } from "../../../.."
-import { DraftOrderService } from "../../../../services"
+import { DraftOrderService, ServiceIdentifiers } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 /**
@@ -125,8 +125,9 @@ export default async (req, res) => {
     "billing_address",
   ])
 
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
   let draftOrder: DraftOrder = await draftOrderService.create(value)
 
   draftOrder = await draftOrderService.retrieve(draftOrder.id, {

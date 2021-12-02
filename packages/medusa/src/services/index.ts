@@ -74,4 +74,5 @@ export const ServiceIdentifiers = {
   totalsService: "totalsService",
   transactionService: "transactionService",
   userService: "userService",
+  fileService: "fileService",
 }

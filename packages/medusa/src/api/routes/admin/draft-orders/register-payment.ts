@@ -4,6 +4,7 @@ import {
   DraftOrderService,
   OrderService,
   PaymentProviderService,
+  ServiceIdentifiers,
 } from "../../../../services"
 import {
   defaultAdminOrdersFields as defaultOrderFields,
@@ -34,11 +35,18 @@ import {
 export default async (req, res) => {
   const { id } = req.params
 
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
-  const paymentProviderService: PaymentProviderService = req.scope.resolve(ServiceIdentifiers.paymentProviderService)
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(
+    ServiceIdentifiers.paymentProviderService
+  )
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const cartService: CartService = req.scope.resolve(
+    ServiceIdentifiers.cartService
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   let result

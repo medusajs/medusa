@@ -10,6 +10,7 @@ import {
   CartService,
   DraftOrderService,
   LineItemService,
+  ServiceIdentifiers,
 } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
@@ -61,10 +62,15 @@ export default async (req, res) => {
     req.body
   )
 
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
-  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
-  const lineItemService: LineItemService = req.scope.resolve(ServiceIdentifiers.lineItemService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
+  const cartService: CartService = req.scope.resolve(
+    ServiceIdentifiers.cartService
+  )
+  const lineItemService: LineItemService = req.scope.resolve(
+    ServiceIdentifiers.lineItemService
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

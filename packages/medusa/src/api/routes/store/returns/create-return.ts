@@ -1,18 +1,13 @@
 import { Type } from "class-transformer"
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-  ValidateNested,
-} from "class-validator"
+import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, Min, ValidateNested } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { EventBusService, ServiceIdentifiers } from "../../../../services"
-import { IdempotencyKeyService, ServiceIdentifiers } from "../../../../services"
-import { OrderService, ServiceIdentifiers } from "../../../../services"
-import { ReturnService, ServiceIdentifiers } from "../../../../services"
+import {
+  EventBusService,
+  IdempotencyKeyService,
+  OrderService,
+  ReturnService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -79,7 +74,7 @@ export default async (req, res) => {
       headerKey,
       req.method,
       req.params,
-      req.path
+      req.path,
     )
   } catch (error) {
     res.status(409).send("Failed to create idempotency key")
@@ -140,7 +135,7 @@ export default async (req, res) => {
               return {
                 recovery_point: "return_requested",
               }
-            }
+            },
           )
 
           if (error) {
@@ -162,12 +157,12 @@ export default async (req, res) => {
                 },
                 {
                   relations: ["items", "items.reason"],
-                }
+                },
               )
               if (!ret.length) {
                 throw new MedusaError(
                   MedusaError.Types.INVALID_DATA,
-                  `Return not found`
+                  `Return not found`,
                 )
               }
               ret = ret[0]
@@ -176,7 +171,7 @@ export default async (req, res) => {
                 response_code: 200,
                 response_body: { return: ret },
               }
-            }
+            },
           )
 
           if (error) {
@@ -200,7 +195,7 @@ export default async (req, res) => {
               recovery_point: "finished",
               response_code: 500,
               response_body: { message: "Unknown recovery point" },
-            }
+            },
           )
           break
       }

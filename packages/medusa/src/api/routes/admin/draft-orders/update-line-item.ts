@@ -7,7 +7,11 @@ import {
   defaultAdminDraftOrdersFields,
 } from "."
 import { DraftOrder } from "../../../.."
-import { CartService, DraftOrderService } from "../../../../services"
+import {
+  CartService,
+  DraftOrderService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /draft-orders/{id}/line-items/{line_id}
@@ -53,9 +57,12 @@ export default async (req, res) => {
     req.body
   )
 
-  const draftOrderService: DraftOrderService =
-    req.scope.resolve(ServiceIdentifiers.draftOrderService)
-  const cartService: CartService = req.scope.resolve(ServiceIdentifiers.cartService)
+  const draftOrderService: DraftOrderService = req.scope.resolve(
+    ServiceIdentifiers.draftOrderService
+  )
+  const cartService: CartService = req.scope.resolve(
+    ServiceIdentifiers.cartService
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

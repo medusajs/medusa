@@ -1,6 +1,10 @@
 import { EntityManager } from "typeorm"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
-import { OrderService, SwapService } from "../../../../services"
+import {
+  OrderService,
+  ServiceIdentifiers,
+  SwapService,
+} from "../../../../services"
 
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/process-payment
@@ -26,8 +30,12 @@ import { OrderService, SwapService } from "../../../../services"
 export default async (req, res) => {
   const { id, swap_id } = req.params
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const swapService: SwapService = req.scope.resolve(
+    ServiceIdentifiers.swapService
+  )
   const entityManager: EntityManager = req.scope.resolve("manager")
 
   await entityManager.transaction(async (manager) => {

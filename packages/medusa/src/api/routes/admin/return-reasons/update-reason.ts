@@ -3,7 +3,7 @@ import {
   defaultAdminReturnReasonsFields,
   defaultAdminReturnReasonsRelations,
 } from "."
-import { ReturnReasonService } from "../../../../services"
+import { ReturnReasonService, ServiceIdentifiers } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -45,7 +45,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostReturnReasonsReasonReq, req.body)
 
-  const returnReasonService: ReturnReasonService = req.scope.resolve(ServiceIdentifiers.returnReasonService)
+  const returnReasonService: ReturnReasonService = req.scope.resolve(
+    ServiceIdentifiers.returnReasonService
+  )
 
   await returnReasonService.update(id, validated)
 

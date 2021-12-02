@@ -10,7 +10,11 @@ import {
   IsObject,
 } from "class-validator"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
-import { ClaimService, OrderService } from "../../../../services"
+import {
+  ClaimService,
+  OrderService,
+  ServiceIdentifiers,
+} from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -101,8 +105,12 @@ export default async (req, res) => {
     req.body
   )
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const claimService: ClaimService = req.scope.resolve(ServiceIdentifiers.claimService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const claimService: ClaimService = req.scope.resolve(
+    ServiceIdentifiers.claimService
+  )
 
   await claimService.update(claim_id, validated)
 

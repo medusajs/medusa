@@ -1,7 +1,10 @@
 import { Customer } from "../../../.."
-import { CustomerService, ServiceIdentifiers } from "../../../../services"
-import { PaymentProviderService, ServiceIdentifiers } from "../../../../services"
-import { StoreService, ServiceIdentifiers } from "../../../../services"
+import {
+  CustomerService,
+  PaymentProviderService,
+  StoreService,
+  ServiceIdentifiers,
+} from "../../../../services"
 
 /**
  * @oas [get] /customers/me/payment-methods
@@ -32,11 +35,17 @@ import { StoreService, ServiceIdentifiers } from "../../../../services"
 export default async (req, res) => {
   const id = req.user.customer_id
 
-  const storeService: StoreService = req.scope.resolve(ServiceIdentifiers.storeService)
+  const storeService: StoreService = req.scope.resolve(
+    ServiceIdentifiers.storeService
+  )
 
-  const paymentProviderService: PaymentProviderService = req.scope.resolve(ServiceIdentifiers.paymentProviderService)
+  const paymentProviderService: PaymentProviderService = req.scope.resolve(
+    ServiceIdentifiers.paymentProviderService
+  )
 
-  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
+  const customerService: CustomerService = req.scope.resolve(
+    ServiceIdentifiers.customerService
+  )
 
   const customer: Customer = await customerService.retrieve(id)
 

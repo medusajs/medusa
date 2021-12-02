@@ -16,6 +16,7 @@ import {
   IdempotencyKeyService,
   OrderService,
   ReturnService,
+  ServiceIdentifiers,
   SwapService,
 } from "../../../../services"
 import { validator } from "../../../../utils/validator"
@@ -110,7 +111,9 @@ export default async (req, res) => {
 
   const validated = await validator(AdminPostOrdersOrderSwapsReq, req.body)
 
-  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(ServiceIdentifiers.idempotencyKeyService)
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    ServiceIdentifiers.idempotencyKeyService
+  )
 
   const headerKey = req.get("Idempotency-Key") || ""
 
@@ -130,9 +133,15 @@ export default async (req, res) => {
   res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
   res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
 
-  const orderService: OrderService = req.scope.resolve(ServiceIdentifiers.orderService)
-  const swapService: SwapService = req.scope.resolve(ServiceIdentifiers.swapService)
-  const returnService: ReturnService = req.scope.resolve(ServiceIdentifiers.returnService)
+  const orderService: OrderService = req.scope.resolve(
+    ServiceIdentifiers.orderService
+  )
+  const swapService: SwapService = req.scope.resolve(
+    ServiceIdentifiers.swapService
+  )
+  const returnService: ReturnService = req.scope.resolve(
+    ServiceIdentifiers.returnService
+  )
 
   let inProgress = true
   let err = false

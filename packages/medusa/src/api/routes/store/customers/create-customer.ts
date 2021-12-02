@@ -32,7 +32,9 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(StorePostCustomersReq, req.body)
 
-  const customerService: CustomerService = req.scope.resolve(ServiceIdentifiers.customerService)
+  const customerService: CustomerService = req.scope.resolve(
+    ServiceIdentifiers.customerService
+  )
   let customer: Customer = await customerService.create(validated)
 
   // Add JWT to cookie
