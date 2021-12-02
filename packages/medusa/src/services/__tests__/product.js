@@ -114,7 +114,9 @@ describe("ProductService", () => {
         title: "Suit",
         options: [],
         tags: [{ value: "title" }, { value: "title2" }],
-        type: "type-1",
+        type: {
+          value: "type-1"
+        },
         variants: [
           {
             id: "test1",
@@ -436,7 +438,6 @@ describe("ProductService", () => {
 
     const productService = new ProductService({
       manager: MockManager,
-      eventBusService,
       productRepository,
       eventBusService,
     })

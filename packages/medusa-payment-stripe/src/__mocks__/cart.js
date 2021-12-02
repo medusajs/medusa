@@ -60,7 +60,6 @@ export const carts = {
         product: {
           id: IdMap.getId("product"),
         },
-        quantity: 1,
         quantity: 10,
       },
     ],
