@@ -198,21 +198,26 @@ class BaseService {
    */
   setMetadata_(obj, metadata) {
     const existing = obj.metadata || {}
-    const newData = {}
-    for (const [key, value] of Object.entries(metadata)) {
+
+    const updated = Object.entries(metadata).reduce((acc, [key, value]) => {
+
       if (typeof key !== "string") {
         throw new MedusaError(
           MedusaError.Types.INVALID_ARGUMENT,
           "Key type is invalid. Metadata keys must be strings"
         )
       }
-      newData[key] = value
-    }
 
-    const updated = {
-      ...existing,
-      ...newData,
-    }
+      // If the value is passed explicitly as null, we can safely remove the key.
+      if (value === null) {
+        delete acc[key];
+        return acc;
+      }
+
+      acc[key] = value
+      return acc
+    }, existing)
+
 
     return updated
   }
