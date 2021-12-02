@@ -221,9 +221,19 @@ class StripeProviderService extends PaymentService {
 
   async updatePaymentData(sessionData, update) {
     try {
-      return await this.stripe_.paymentIntents.update(sessionData.id, {
-        ...update.data,
-      })
+      const { payment_method, ...rest } = update.data
+      const updatedData = await this.stripe_.paymentIntents.update(
+        sessionData.id,
+        {
+          payment_method,
+          ...rest,
+        }
+      )
+
+      if (payment_method) {
+        await this.stripe_.paymentIntents.confirm(sessionData.id)
+      }
+      return updatedData
     } catch (error) {
       throw error
     }
