@@ -1,7 +1,8 @@
 import { IsOptional, IsString } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+import { CartService, ShippingOptionService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -35,24 +36,39 @@ export default async (req, res) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const cartService: CartService = req.scope.resolve("cartService")
+  const shippingOptionService_: ShippingOptionService = req.scope.resolve(
+    "shippingOptionService"
+  )
 
-  await manager.transaction(async (m) => {
-    const txCartService = cartService.withTransaction(m)
+  try {
+    await manager.transaction(async (m) => {
+      const txCartService = cartService.withTransaction(m)
 
-    await txCartService.addShippingMethod(
-      id,
-      validated.option_id,
-      validated.data
-    )
-
-    const updated = await txCartService.retrieve(id, {
-      relations: ["payment_sessions"],
+      await txCartService.addShippingMethod(
+        id,
+        validated.option_id,
+        validated.data
+      )
     })
-
-    if (updated.payment_sessions?.length) {
-      await txCartService.setPaymentSessions(id)
+  } catch (error) {
+    if (error.code === "23505") {
+      await shippingOptionService_.updateShippingMethodForCart(
+        validated.option_id,
+        id,
+        validated.data
+      )
+    } else {
+      throw error
     }
+  }
+
+  const updated = await cartService.retrieve(id, {
+    relations: ["payment_sessions"],
   })
+
+  if (updated.payment_sessions?.length) {
+    await cartService.setPaymentSessions(id)
+  }
 
   const updatedCart = await cartService.retrieve(id, {
     select: defaultStoreCartFields,

@@ -7,6 +7,7 @@ import {
   ManyToOne,
   OneToOne,
   JoinColumn,
+  Unique,
   Index,
 } from "typeorm"
 import { ulid } from "ulid"
@@ -24,6 +25,7 @@ import { ShippingOption } from "./shipping-option"
 )
 @Check(`"price" >= 0`)
 @Entity()
+@Unique("unique shipping option for cart", ["cart_id", "shipping_option_id"])
 export class ShippingMethod {
   @PrimaryColumn()
   id: string

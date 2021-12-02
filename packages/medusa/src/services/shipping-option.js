@@ -179,6 +179,14 @@ class ShippingOptionService extends BaseService {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
       const method = await methodRepo.findOne({ where: { id } })
 
+      if ("data" in update && update.data !== undefined) {
+        method.data = update.data
+      }
+
+      if ("price" in update && update.price !== undefined) {
+        method.price = update.price
+      }
+
       if ("return_id" in update) {
         method.return_id = update.return_id
       }
@@ -207,7 +215,7 @@ class ShippingOptionService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
       return methodRepo.remove(sm)
-    })
+    }, "SERIALIZABLE")
   }
 
   /**
@@ -284,6 +292,23 @@ class ShippingOptionService extends BaseService {
         where: { id: created.id },
         relations: ["shipping_option"],
       })
+    })
+  }
+
+  /**
+   * Creates a shipping method for a given cart.
+   * @param {string} optionId - the id of the option to use for the method.
+   * @param {string} cartId - the cart for which the shipping option is updated.
+   * @param {object} update - the update which is applied to the cart.
+   * @return {Promise<ShippingMethod>} the resulting shipping method.
+   */
+  async updateShippingMethodForCart(optionId, cartId, update) {
+    return this.atomicPhase_(async (manager) => {
+      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const method = await methodRepo.findOne({
+        where: { shipping_option_id: optionId, cart_id: cartId },
+      })
+      return await this.updateShippingMethod(method.id, update)
     })
   }
 
