@@ -183,7 +183,7 @@ class StripeProviderService extends PaymentService {
    */
   async retrievePayment(data) {
     try {
-      return this.stripe_.paymentIntents.retrieve(data.id)
+      return await this.stripe_.paymentIntents.retrieve(data.id)
     } catch (error) {
       throw error
     }
@@ -221,7 +221,7 @@ class StripeProviderService extends PaymentService {
 
   async updatePaymentData(sessionData, update) {
     try {
-      return this.stripe_.paymentIntents.update(sessionData.id, {
+      return await this.stripe_.paymentIntents.update(sessionData.id, {
         ...update.data,
       })
     } catch (error) {
@@ -240,13 +240,13 @@ class StripeProviderService extends PaymentService {
       const stripeId = cart.customer?.metadata?.stripe_id || undefined
 
       if (stripeId !== sessionData.customer) {
-        return this.createPayment(cart)
+        return await this.createPayment(cart)
       } else {
         if (cart.total && sessionData.amount === Math.round(cart.total)) {
           return sessionData
         }
 
-        return this.stripe_.paymentIntents.update(sessionData.id, {
+        return await this.stripe_.paymentIntents.update(sessionData.id, {
           amount: Math.round(cart.total),
         })
       }
@@ -258,7 +258,7 @@ class StripeProviderService extends PaymentService {
   async deletePayment(payment) {
     try {
       const { id } = payment.data
-      return this.stripe_.paymentIntents.cancel(id).catch((err) => {
+      return await this.stripe_.paymentIntents.cancel(id).catch((err) => {
         if (err.statusCode === 400) {
           return
         }
@@ -277,7 +277,7 @@ class StripeProviderService extends PaymentService {
    */
   async updatePaymentIntentCustomer(paymentIntentId, customerId) {
     try {
-      return this.stripe_.paymentIntents.update(paymentIntentId, {
+      return await this.stripe_.paymentIntents.update(paymentIntentId, {
         customer: customerId,
       })
     } catch (error) {
