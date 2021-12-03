@@ -7,7 +7,7 @@ class DigitalOceanService extends FileService {
     super()
 
     this.bucket_ = options.bucket
-    this.spacesUrl_ = options.spaces_url
+    this.spacesUrl_ = options.spaces_url?.replace(/\/$/, "")
     this.accessKeyId_ = options.access_key_id
     this.secretAccessKey_ = options.secret_access_key
     this.region_ = options.region
@@ -36,6 +36,10 @@ class DigitalOceanService extends FileService {
         if (err) {
           reject(err)
           return
+        }
+
+        if (this.spacesUrl_) {
+          resolve({ url: `${this.spacesUrl_}/${data.Key}` })
         }
 
         resolve({ url: data.Location })
