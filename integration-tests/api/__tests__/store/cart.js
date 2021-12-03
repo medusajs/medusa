@@ -561,23 +561,14 @@ describe("/store/carts", () => {
           api.post("/store/carts/test-cart/shipping-methods", {
             option_id: "test-option-2",
           }),
-          api.post("/store/carts/test-cart/shipping-methods", {
-            option_id: "test-option-2",
-          }),
-          api.post("/store/carts/test-cart/shipping-methods", {
-            option_id: "test-option-2",
-          }),
         ]
 
         await Promise.all(promises)
       } catch (err) {
         console.log(err)
-        throw err
       }
 
       const cartWithShippingMethod = await api.get("/store/carts/test-cart")
-
-      console.log(cartWithShippingMethod.data.cart.shipping_methods)
 
       expect(cartWithShippingMethod.data.cart.shipping_methods.length).toEqual(
         1
