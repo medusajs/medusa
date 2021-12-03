@@ -1,6 +1,5 @@
-const templateDb = require("./helpers/useTemplateDb")
+const dbFactory = require("./helpers/use-template-db")
 
 module.exports = async () => {
-  console.log("setup")
-  await templateDb.createDb_()
+  await dbFactory.createTemplateDb_()
 }

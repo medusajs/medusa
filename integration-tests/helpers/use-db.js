@@ -1,9 +1,9 @@
 const path = require("path")
 require("dotenv").config({ path: path.join(__dirname, "../.env") })
 
-const { dropDatabase, createDatabase } = require("pg-god")
+const { dropDatabase } = require("pg-god")
 const { createConnection } = require("typeorm")
-const templateDb = require("./useTemplateDb")
+const dbFactory = require("./use-template-db")
 
 const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
 const DB_USERNAME = process.env.DB_USERNAME || "postgres"
@@ -72,51 +72,44 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd }) {
-    try {
-      const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
 
-      const modelsLoader = require(path.join(
-        cwd,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `loaders`,
-        `models`
-      )).default
-      const entities = modelsLoader({}, { register: false })
+    const modelsLoader = require(path.join(
+      cwd,
+      `node_modules`,
+      `@medusajs`,
+      `medusa`,
+      `dist`,
+      `loaders`,
+      `models`
+    )).default
+    const entities = modelsLoader({}, { register: false })
 
-      const { projectConfig } = require(configPath)
-      if (projectConfig.database_type === "sqlite") {
-        connectionType = "sqlite"
-        const dbConnection = await createConnection({
-          type: "sqlite",
-          database: projectConfig.database_database,
-          synchronize: true,
-          entities,
-        })
+    const { projectConfig } = require(configPath)
+    if (projectConfig.database_type === "sqlite") {
+      connectionType = "sqlite"
+      const dbConnection = await createConnection({
+        type: "sqlite",
+        database: projectConfig.database_database,
+        synchronize: true,
+        entities,
+      })
 
-        instance.setDb(dbConnection)
-        return dbConnection
-      } else {
-        const databaseName = `medusa-integration-${workerId}`
+      instance.setDb(dbConnection)
+      return dbConnection
+    } else {
+      const databaseName = `medusa-integration-${workerId}`
 
-        await templateDb.createFromTemplate(databaseName)
+      await dbFactory.createFromTemplate(databaseName)
 
-        const dbConnection = await createConnection({
-          type: "postgres",
-          url: DB_URL,
-          entities,
-        })
+      const dbConnection = await createConnection({
+        type: "postgres",
+        url: DB_URL,
+        entities,
+      })
 
-        instance.setDb(dbConnection)
-        return dbConnection
-      }
-    } catch (err) {
-      console.log(
-        "====================================ERROR===================================="
-      )
-      console.log(err)
+      instance.setDb(dbConnection)
+      return dbConnection
     }
   },
   useDb: function () {

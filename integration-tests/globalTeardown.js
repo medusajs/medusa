@@ -1,5 +1,5 @@
-const templateDb = require("./helpers/useTemplateDb")
+const dbFactory = require("./helpers/use-template-db")
 
 module.exports = async () => {
-  await templateDb.destroy()
+  await dbFactory.destroy()
 }

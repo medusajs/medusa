@@ -13,22 +13,14 @@ const pgGodCredentials = {
   password: DB_PASSWORD,
 }
 
-class TemplateDb {
+class DatabaseFactory {
   constructor() {
     this.connection_ = null
+    this.masterConnectionName = "name"
+    this.templateDbName = "medusa-integration-template"
   }
 
-  async createMasterConnection() {
-    const connection = await createConnection({
-      type: "postgres",
-      name: "master",
-      url: `${DB_URL}`,
-    })
-
-    return connection
-  }
-
-  async createDb_() {
+  async createTemplateDb_() {
     try {
       const connection = await this.getMasterConnection()
 
@@ -45,40 +37,51 @@ class TemplateDb {
         )
       )
 
-      const templateDbName = "medusa-integration-template"
-
       await dropDatabase(
         {
-          databaseName: templateDbName,
+          databaseName: this.templateDbName,
           errorIfNonExist: false,
         },
         pgGodCredentials
       )
-      await createDatabase({ databaseName: templateDbName }, pgGodCredentials)
+      await createDatabase(
+        { databaseName: this.templateDbName },
+        pgGodCredentials
+      )
 
       const templateDbConnection = await createConnection({
         type: "postgres",
         name: "templateConnection",
-        url: `${DB_URL}/${templateDbName}`,
+        url: `${DB_URL}/${this.templateDbName}`,
         migrations: [`${migrationDir}/*.js`],
       })
 
-      const res = await templateDbConnection.runMigrations()
+      await templateDbConnection.runMigrations()
       await templateDbConnection.close()
 
       return connection
     } catch (err) {
-      console.log("createdb heeeeeeeeeeeeeeere")
+      console.log("error in createTemplateDb_")
       console.log(err)
     }
   }
 
   async getMasterConnection() {
     try {
-      return await getConnection("master")
+      return await getConnection(this.masterConnectionName)
     } catch (err) {
       return await this.createMasterConnection()
     }
+  }
+
+  async createMasterConnection() {
+    const connection = await createConnection({
+      type: "postgres",
+      name: this.masterConnectionName,
+      url: `${DB_URL}`,
+    })
+
+    return connection
   }
 
   async createFromTemplate(dbName) {
@@ -86,18 +89,16 @@ class TemplateDb {
 
     await connection.query(`DROP DATABASE IF EXISTS "${dbName}";`)
     await connection.query(
-      `CREATE DATABASE "${dbName}" TEMPLATE "medusa-integration-template";`
+      `CREATE DATABASE "${dbName}" TEMPLATE "${this.templateDbName}";`
     )
   }
 
   async destroy() {
     let connection = await this.getMasterConnection()
 
-    await connection.query(
-      `DROP DATABASE IF EXISTS "medusa-integration-template";`
-    )
+    await connection.query(`DROP DATABASE IF EXISTS "${this.templateDbName}";`)
     await connection.close()
   }
 }
 
-module.exports = new TemplateDb()
+module.exports = new DatabaseFactory()
