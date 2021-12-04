@@ -151,7 +151,7 @@ class EventBusService {
    * @param {?any} options - options to add the job with
    * @return {BullJob} - the job from our queue
    */
-  async emit(eventName, data, options) {
+  async emit(eventName, data, options = {}) {
     if (this.transactionManager_) {
       const stagedJobRepository = this.transactionManager_.getCustomRepository(
         this.stagedJobRepository_
