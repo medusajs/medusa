@@ -12,6 +12,7 @@ export interface ITaxCalculationStrategy {
 }
 
 export function isTaxCalculationStrategy(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any
 ): object is ITaxCalculationStrategy {
   return object.kind_ === "TAX_CALCULATION_STRATEGY"

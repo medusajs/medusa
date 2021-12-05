@@ -22,6 +22,7 @@ export default ({ container, configModule }: LoaderOptions): void => {
 
   const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach((fn) => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const loaded = require(fn).default
     const name = formatRegistrationName(fn)
     container.register({
