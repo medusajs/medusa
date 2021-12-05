@@ -3,7 +3,6 @@ import { LineItem } from "../models/line-item"
 import { TaxCalculationContext } from "./tax-service"
 
 export interface ITaxCalculationStrategy {
-  kind_: "TAX_CALCULATION_STRATEGY"
   calculate(
     items: LineItem[],
     taxLines: object[],
