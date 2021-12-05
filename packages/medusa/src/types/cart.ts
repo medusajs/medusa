@@ -1,5 +1,6 @@
 import { ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
+import { CartType } from "../models/cart"
 import {
   AddressPayload,
   DateComparisonOperator,
@@ -56,6 +57,7 @@ export type CartCreateProps = {
   gift_cards?: GiftCard[]
   discounts?: Discount[]
   customer_id?: string
+  type?: CartType
   context?: object
   metadata?: object
 }

@@ -402,8 +402,25 @@ class CartService extends BaseService {
         toCreate.shipping_address = addr
       }
 
+      if (data.billing_address_id) {
+        const addr = await addressRepo.findOne(data.billing_address_id)
+        toCreate.billing_address = addr
+      }
+
       if (data.context) {
         toCreate.context = data.context
+      }
+
+      if (data.type) {
+        toCreate.type = data.type
+      }
+
+      if (data.metadata) {
+        toCreate.metadata = data.metadata
+      }
+
+      if (data.discounts) {
+        toCreate.discounts = data.discounts
       }
 
       if (!data.shipping_address) {
