@@ -1,11 +1,11 @@
 # medusa-file-minio
 
-Upload files to a MiniO server.
+Upload files to a MinIO server.
 
 ## Options
 
 ```
-  endpoint: [endpoint of your MiniO server],
+  endpoint: [endpoint of your MinIO server],
   bucket: [name of your bucket],
   access_key_id: [access-key],
   secret_access_key: [secret-access-key],

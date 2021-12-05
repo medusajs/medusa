@@ -1,7 +1,7 @@
 {
   "name": "medusa-file-minio",
   "version": "1.0.0",
-  "description": "Minio server file connector for Medusa",
+  "description": "MinIO server file connector for Medusa",
   "main": "index.js",
   "repository": {
     "type": "git",

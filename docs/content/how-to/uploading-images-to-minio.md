@@ -1,6 +1,6 @@
-# Uploading images to MiniO
+# Uploading images to MinIO
 
-In order to work with images in Medusa, you need a file service plugin responsible for hosting. Following this guide will allow you to upload images to MiniO bucket.
+In order to work with images in Medusa, you need a file service plugin responsible for hosting. Following this guide will allow you to upload images to MinIO bucket.
 
 ### Before you start
 
@@ -8,9 +8,9 @@ At this point, you should have an instance of our store engine running. If not, 
 
 ### Set up up AWS
 
-#### Create an MiniO bucket
+#### Create an MinIO bucket
 
-In the MiniO console create a new bucket, then click into that bucket and change the `Access Policy` to `public`.
+In the MinIO console create a new bucket, then click into that bucket and change the `Access Policy` to `public`.
 
 Be aware, that this will allow for anyone to acces your bucket. Avoid storing sensitive data.
 
