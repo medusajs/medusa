@@ -36,9 +36,8 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
 {
     resolve: `medusa-file-minio`,
     options: {
-        minio_url: "https://minio.server.com",
+        endpoint: "minio.server.com",
         bucket: "test",
-        region: "eu-west-1"
         access_key_id: "YOUR-ACCESS-KEY",
         secret_access_key: "YOUR-SECRET-KEY",
     },

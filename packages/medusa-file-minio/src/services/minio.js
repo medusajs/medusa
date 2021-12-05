@@ -7,11 +7,11 @@ class MinioService extends FileService {
     super()
 
     this.bucket_ = options.bucket
-    this.minioUrl_ = options.minio_url
     this.accessKeyId_ = options.access_key_id
     this.secretAccessKey_ = options.secret_access_key
-    this.region_ = options.region
     this.endpoint_ = options.endpoint
+    this.s3ForcePathStyle_ = true
+    this.signatureVersion_ = "v4"
   }
 
   upload(file) {
@@ -19,10 +19,9 @@ class MinioService extends FileService {
     aws.config.update({
       accessKeyId: this.accessKeyId_,
       secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
       endpoint: this.endpoint_,
-      s3ForcePathStyle: true,
-      signatureVersion: "v4",
+      s3ForcePathStyle: this.s3ForcePathStyle_,
+      signatureVersion: this.signatureVersion_,
     })
 
     const s3 = new aws.S3()
@@ -35,6 +34,7 @@ class MinioService extends FileService {
 
     return new Promise((resolve, reject) => {
       s3.upload(params, (err, data) => {
+        console.log(data, err)
         if (err) {
           reject(err)
           return
@@ -50,10 +50,9 @@ class MinioService extends FileService {
     aws.config.update({
       accessKeyId: this.accessKeyId_,
       secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
       endpoint: this.endpoint_,
-      s3ForcePathStyle: true,
-      signatureVersion: "v4",
+      s3ForcePathStyle: this.s3ForcePathStyle_,
+      signatureVersion: this.signatureVersion_,
     })
 
     const s3 = new aws.S3()
