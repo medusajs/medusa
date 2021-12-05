@@ -6,6 +6,8 @@ import {
   SwapService,
 } from "../../../../services"
 
+import { Order } from "../../../../models/order"
+
 /**
  * @oas [post] /carts/{id}/complete
  * summary: "Complete a Cart"
@@ -140,7 +142,7 @@ export default async (req, res) => {
                 relations: ["payment", "payment_sessions"],
               })
 
-            let order
+            let order: Order
 
             // If cart is part of swap, we register swap as complete
             switch (cart.type) {
@@ -179,6 +181,15 @@ export default async (req, res) => {
               }
               // case "payment_link":
               default: {
+                if (typeof cart.total === "undefined") {
+                  return {
+                    response_code: 500,
+                    response_body: {
+                      message: "Unexpected states",
+                    },
+                  }
+                }
+
                 if (!cart.payment && cart.total > 0) {
                   throw new MedusaError(
                     MedusaError.Types.INVALID_DATA,

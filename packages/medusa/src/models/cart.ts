@@ -145,7 +145,7 @@ export class Cart {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address: Address | null
 
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
     cascade: ["insert", "remove"],
@@ -172,7 +172,7 @@ export class Cart {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount
+  discounts: Discount[]
 
   @ManyToMany(() => GiftCard)
   @JoinTable({
@@ -186,7 +186,7 @@ export class Cart {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard
+  gift_cards: GiftCard[]
 
   @Index()
   @Column({ nullable: true })
@@ -196,7 +196,7 @@ export class Cart {
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
-  payment_session: PaymentSession
+  payment_session: PaymentSession | null
 
   @OneToMany(() => PaymentSession, (paymentSession) => paymentSession.cart, {
     cascade: true,
@@ -217,7 +217,7 @@ export class Cart {
   shipping_methods: ShippingMethod[]
 
   @DbAwareColumn({ type: "enum", enum: CartType, default: "default" })
-  type: boolean
+  type: CartType
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at: Date
@@ -243,15 +243,14 @@ export class Cart {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   context: any
 
-  // Total fields
-  shipping_total: number
-  discount_total: number
-  tax_total: number
-  refunded_total: number
-  total: number
-  subtotal: number
-  refundable_amount: number
-  gift_card_total: number
+  shipping_total?: number
+  discount_total?: number
+  tax_total?: number
+  refunded_total?: number
+  total?: number
+  subtotal?: number
+  refundable_amount?: number
+  gift_card_total?: number
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {

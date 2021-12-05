@@ -1,6 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Cart } from "../../../../models/cart"
+import { TotaledCart } from "../../../../types/cart"
 import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
@@ -97,7 +98,7 @@ export default (app, container) => {
   return app
 }
 
-export const defaultStoreCartFields = [
+export const defaultStoreCartFields: (keyof TotaledCart)[] = [
   "subtotal",
   "tax_total",
   "shipping_total",
