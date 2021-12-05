@@ -142,7 +142,7 @@ export class Order {
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
   currency: Currency
 
-  @Column({ type: "decimal" })
+  @Column({ type: "real" })
   tax_rate: number
 
   @ManyToMany(() => Discount, { cascade: ["insert"] })
@@ -339,7 +339,7 @@ export class Order {
  *   currency_code:
  *     type: string
  *   tax_rate:
- *     type: integer
+ *     type: number
  *   discounts:
  *     type: array
  *     items:
