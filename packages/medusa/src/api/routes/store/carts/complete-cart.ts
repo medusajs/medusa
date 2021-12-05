@@ -185,7 +185,7 @@ export default async (req, res) => {
                   return {
                     response_code: 500,
                     response_body: {
-                      message: "Unexpected states",
+                      message: "Unexpected state",
                     },
                   }
                 }
