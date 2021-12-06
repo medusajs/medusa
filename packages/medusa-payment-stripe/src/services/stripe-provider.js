@@ -244,17 +244,11 @@ class StripeProviderService extends PaymentService {
   }
 
   async deletePayment(payment) {
-    try {
-      const { id } = payment.data
-      return await this.stripe_.paymentIntents.cancel(id).catch((err) => {
-        if (err.statusCode === 400) {
-          return
-        }
-        throw err
-      })
-    } catch (error) {
-      throw error
-    }
+    const { id } = payment.data
+    return this.stripe_.paymentIntents.cancel(id).catch((err) => {
+      if (err.statusCode === 400) return
+      throw err
+    })
   }
 
   /**
