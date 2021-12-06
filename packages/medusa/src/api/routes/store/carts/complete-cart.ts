@@ -38,6 +38,10 @@ import {
  *              properties:
  *                cart:
  *                  $ref: "#/components/schemas/cart"
+ *            - type: object
+ *              properties:
+ *                cart:
+ *                  $ref: "#/components/schemas/swap"
  */
 export default async (req, res) => {
   const { id } = req.params
