@@ -45,9 +45,13 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
-      - name: Install
-        run: yarn install
-      - name: Assert changed
+
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: unit-tests
+
+      - name: Run linter
         run: yarn lint
 
   integration-tests:
