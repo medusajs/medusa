@@ -52,7 +52,7 @@ jobs:
           extension: unit-tests
 
       - name: Run linter
-        run: yarn lint
+        run: yarn lint --fix
 
   integration-tests:
     runs-on: ubuntu-latest
