@@ -142,7 +142,7 @@ export class Order {
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
   currency: Currency
 
-  @Column({ type: "int" })
+  @Column({ type: "real" })
   tax_rate: number
 
   @ManyToMany(() => Discount, { cascade: ["insert"] })
@@ -173,29 +173,57 @@ export class Order {
   })
   gift_cards: GiftCard[]
 
-  @OneToMany(() => ShippingMethod, (method) => method.order, {
-    cascade: ["insert"],
-  })
+  @OneToMany(
+    () => ShippingMethod,
+    method => method.order,
+    {
+      cascade: ["insert"],
+    }
+  )
   shipping_methods: ShippingMethod[]
 
-  @OneToMany(() => Payment, (payment) => payment.order, { cascade: ["insert"] })
+  @OneToMany(
+    () => Payment,
+    payment => payment.order,
+    { cascade: ["insert"] }
+  )
   payments: Payment[]
 
-  @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.order, {
-    cascade: ["insert"],
-  })
+  @OneToMany(
+    () => Fulfillment,
+    fulfillment => fulfillment.order,
+    {
+      cascade: ["insert"],
+    }
+  )
   fulfillments: Fulfillment[]
 
-  @OneToMany(() => Return, (ret) => ret.order, { cascade: ["insert"] })
+  @OneToMany(
+    () => Return,
+    ret => ret.order,
+    { cascade: ["insert"] }
+  )
   returns: Return[]
 
-  @OneToMany(() => ClaimOrder, (co) => co.order, { cascade: ["insert"] })
+  @OneToMany(
+    () => ClaimOrder,
+    co => co.order,
+    { cascade: ["insert"] }
+  )
   claims: ClaimOrder[]
 
-  @OneToMany(() => Refund, (ref) => ref.order, { cascade: ["insert"] })
+  @OneToMany(
+    () => Refund,
+    ref => ref.order,
+    { cascade: ["insert"] }
+  )
   refunds: Refund[]
 
-  @OneToMany(() => Swap, (swap) => swap.order, { cascade: ["insert"] })
+  @OneToMany(
+    () => Swap,
+    swap => swap.order,
+    { cascade: ["insert"] }
+  )
   swaps: Swap[]
 
   @Column({ nullable: true })
@@ -205,12 +233,19 @@ export class Order {
   @JoinColumn({ name: "draft_order_id" })
   draft_order: DraftOrder
 
-  @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
-    cascade: ["insert"],
-  })
+  @OneToMany(
+    () => LineItem,
+    lineItem => lineItem.order,
+    {
+      cascade: ["insert"],
+    }
+  )
   items: LineItem[]
 
-  @OneToMany(() => GiftCardTransaction, (gc) => gc.order)
+  @OneToMany(
+    () => GiftCardTransaction,
+    gc => gc.order
+  )
   gift_card_transactions: GiftCardTransaction[]
 
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
@@ -304,7 +339,7 @@ export class Order {
  *   currency_code:
  *     type: string
  *   tax_rate:
- *     type: integer
+ *     type: number
  *   discounts:
  *     type: array
  *     items:
