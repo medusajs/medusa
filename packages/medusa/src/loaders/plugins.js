@@ -1,7 +1,6 @@
 import glob from "glob"
 import { EntitySchema } from "typeorm"
 import {
-  BaseModel,
   BaseService,
   PaymentService,
   FulfillmentService,
@@ -30,7 +29,6 @@ export default async ({ rootDirectory, container, app, activityId }) => {
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
-      registerStrategies(pluginDetails, container)
       registerMedusaApi(pluginDetails, container)
       registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
@@ -118,12 +116,17 @@ function registerStrategies(pluginDetails, container) {
     return
   }
 
-  if (isTaxCalculationStrategy(module)) {
+  if (isTaxCalculationStrategy(module.prototype)) {
     container.register({
-      [name]: asFunction(
-        (cradle) => new loaded(cradle, pluginDetails.options)
+      taxCalculationStrategy: asFunction(
+        (cradle) => new module(cradle, pluginDetails.options)
       ).singleton(),
     })
+  } else {
+    const logger = container.resolve("logger")
+    logger.warn(
+      `${pluginDetails.resolve}/strategies/tax-calculation did not export a class that implements ITaxCalculationStrategy. Your Medusa server will still work, but if you have written custom tax calculation logic it will not be used. Make sure to implement the ITaxCalculationStrategy interface.`
+    )
   }
 }
 
@@ -309,46 +312,6 @@ async function registerServices(pluginDetails, container) {
             (cradle) => new loaded(cradle, pluginDetails.options)
           ),
           [`searchService`]: aliasTo(name),
-        })
-      } else {
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ),
-        })
-      }
-    })
-  )
-}
-
-async function registerStrategies(pluginDetails, container) {
-  const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
-  await Promise.all(
-    files.map(async (fn) => {
-      const loaded = require(fn).default
-      const name = formatRegistrationName(fn)
-
-      if (!(loaded.prototype instanceof BaseService)) {
-        const logger = container.resolve("logger")
-        const message = `Services must inherit from BaseService, please check ${fn}`
-        logger.error(message)
-        throw new Error(message)
-      }
-
-      if (loaded.prototype instanceof PaymentService) {
-        // Register our payment providers to paymentProviders
-        container.registerAdd(
-          "paymentProviders",
-          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
-        )
-
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which payment provider we need to use
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ),
-          [`pp_${loaded.identifier}`]: aliasTo(name),
         })
       } else {
         container.register({

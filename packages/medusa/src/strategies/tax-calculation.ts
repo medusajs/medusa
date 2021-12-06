@@ -6,7 +6,7 @@ import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 class TaxCalculationStrategy implements ITaxCalculationStrategy {
   async calculate(
     items: LineItem[],
-    taxLines: object[],
+    taxLines: any[], // eslint-disable-line
     calculationContext: TaxCalculationContext
   ): Promise<number> {
     let result = 0
@@ -16,10 +16,10 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
       let taxableAmount = i.quantity * i.unit_price
 
-      if (calculationContext.region.giftcards_taxable) {
-        taxableAmount -=
-          (allocations.gift_card && allocations.gift_card.amount) || 0
-      }
+      // if (calculationContext.region.giftcards_taxable */) {
+      taxableAmount -=
+        (allocations.gift_card && allocations.gift_card.amount) || 0
+      // }
 
       taxableAmount -=
         (allocations.discount && allocations.discount.amount) || 0

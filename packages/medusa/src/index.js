@@ -1,6 +1,9 @@
 // API payloads
 export * from "./api"
 
+// Interfaces
+export * from "./interfaces"
+
 // Models
 export { Address } from "./models/address"
 export { Cart } from "./models/cart"
