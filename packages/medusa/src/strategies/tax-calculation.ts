@@ -16,10 +16,12 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
       let taxableAmount = i.quantity * i.unit_price
 
-      // if (calculationContext.region.giftcards_taxable */) {
-      taxableAmount -=
-        (allocations.gift_card && allocations.gift_card.amount) || 0
-      // }
+      // TODO: Temporary until further implementation of taxes
+      let region = calculationContext.region as any // eslint-disable-line
+      if (region.giftcards_taxable) {
+        taxableAmount -=
+          (allocations.gift_card && allocations.gift_card.amount) || 0
+      }
 
       taxableAmount -=
         (allocations.discount && allocations.discount.amount) || 0
