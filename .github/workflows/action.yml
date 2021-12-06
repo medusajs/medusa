@@ -45,7 +45,8 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
-
+      - name: Install
+        run: yarn install
       - name: Assert changed
         run: yarn lint
 
