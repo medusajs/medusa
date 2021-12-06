@@ -1,8 +1,7 @@
 import { IsOptional, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService, ShippingOptionService } from "../../../../services"
+import { CartService, IdempotencyKeyService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -34,48 +33,121 @@ export default async (req, res) => {
     req.body
   )
 
-  const manager: EntityManager = req.scope.resolve("manager")
-  const cartService: CartService = req.scope.resolve("cartService")
-  const shippingOptionService_: ShippingOptionService = req.scope.resolve(
-    "shippingOptionService"
+  const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(
+    "idempotencyKeyService"
   )
 
-  try {
-    await manager.transaction(async (m) => {
-      const txCartService = cartService.withTransaction(m)
+  const headerKey = req.get("Idempotency-Key") || ""
 
-      await txCartService.addShippingMethod(
-        id,
-        validated.option_id,
-        validated.data
-      )
-    })
+  let idempotencyKey
+  try {
+    idempotencyKey = await idempotencyKeyService.initializeRequest(
+      headerKey,
+      req.method,
+      req.params,
+      req.path
+    )
   } catch (error) {
-    if (error.code === "23505") {
-      await shippingOptionService_.updateShippingMethodForCart(
-        validated.option_id,
-        id,
-        validated.data
-      )
-    } else {
-      throw error
+    console.log(error)
+    res.status(409).send("Failed to create idempotency key")
+    return
+  }
+
+  res.setHeader("Access-Control-Expose-Headers", "Idempotency-Key")
+  res.setHeader("Idempotency-Key", idempotencyKey.idempotency_key)
+
+  const cartService: CartService = req.scope.resolve("cartService")
+
+  let inProgress = true
+  let err: MedusaError | null = null
+
+  while (inProgress) {
+    switch (idempotencyKey.recovery_point) {
+      case "started": {
+        const { key, error } = await idempotencyKeyService.workStage(
+          idempotencyKey.idempotency_key,
+          async (manager) => {
+            try {
+              await cartService
+                .withTransaction(manager)
+                .addShippingMethod(id, validated.option_id, validated.data)
+
+              const updated = await cartService
+                .withTransaction(manager)
+                .retrieve(id, {
+                  relations: ["payment_sessions"],
+                })
+
+              if (updated.payment_sessions?.length) {
+                await cartService
+                  .withTransaction(manager)
+                  .setPaymentSessions(id)
+              }
+
+              const cart = await cartService
+                .withTransaction(manager)
+                .retrieve(id, {
+                  select: defaultStoreCartFields,
+                  relations: defaultStoreCartRelations,
+                })
+
+              return {
+                response_code: 200,
+                response_body: { cart },
+              }
+            } catch (fejl) {
+              if (fejl?.code === "23505") {
+                throw new MedusaError(
+                  MedusaError.Types.INVALID_DATA,
+                  "Cannot add existing shipping option, update shipping option instead"
+                )
+              }
+              return {
+                response_code: 400,
+                response_body: {
+                  message: error,
+                },
+              }
+            }
+          }
+        )
+
+        if (error) {
+          inProgress = false
+          err = error
+        } else {
+          idempotencyKey = key
+        }
+
+        break
+      }
+
+      case "finished": {
+        inProgress = false
+        break
+      }
+
+      default:
+        idempotencyKey = await idempotencyKeyService.update(
+          idempotencyKey.idempotency_key,
+          {
+            recovery_point: "finished",
+            response_code: 500,
+            response_body: { message: "Unknown recovery point" },
+          }
+        )
+
+        break
     }
   }
 
-  const updated = await cartService.retrieve(id, {
-    relations: ["payment_sessions"],
-  })
-
-  if (updated.payment_sessions?.length) {
-    await cartService.setPaymentSessions(id)
+  if (err) {
+    if (err?.code !== "25P02") {
+      throw err
+    }
   }
 
-  const updatedCart = await cartService.retrieve(id, {
-    select: defaultStoreCartFields,
-    relations: defaultStoreCartRelations,
-  })
-
-  res.status(200).json({ cart: updatedCart })
+  res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
 export class StorePostCartsCartShippingMethodReq {
