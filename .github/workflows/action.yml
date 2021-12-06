@@ -47,7 +47,7 @@ jobs:
           cache: "yarn"
 
       - name: Assert changed
-        run: eslint --ext .js,.jsx,.ts,.tsx --fix
+        run: yarn lint
 
   integration-tests:
     runs-on: ubuntu-latest
