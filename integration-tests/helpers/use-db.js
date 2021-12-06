@@ -1,13 +1,14 @@
 const path = require("path")
 require("dotenv").config({ path: path.join(__dirname, "../.env") })
 
-const { dropDatabase, createDatabase } = require("pg-god")
+const { dropDatabase } = require("pg-god")
 const { createConnection } = require("typeorm")
+const dbFactory = require("./use-template-db")
 
 const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
 const DB_USERNAME = process.env.DB_USERNAME || "postgres"
 const DB_PASSWORD = process.env.DB_PASSWORD || ""
-const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration`
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration-${workerId}`
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -71,67 +72,44 @@ const instance = DbTestUtil
 
 module.exports = {
   initDb: async function ({ cwd }) {
-    try {
-      const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
 
-      const modelsLoader = require(path.join(
-        cwd,
-        `node_modules`,
-        `@medusajs`,
-        `medusa`,
-        `dist`,
-        `loaders`,
-        `models`
-      )).default
-      const entities = modelsLoader({}, { register: false })
+    const modelsLoader = require(path.join(
+      cwd,
+      `node_modules`,
+      `@medusajs`,
+      `medusa`,
+      `dist`,
+      `loaders`,
+      `models`
+    )).default
+    const entities = modelsLoader({}, { register: false })
 
-      const { projectConfig } = require(configPath)
-      if (projectConfig.database_type === "sqlite") {
-        connectionType = "sqlite"
-        const dbConnection = await createConnection({
-          type: "sqlite",
-          database: projectConfig.database_database,
-          synchronize: true,
-          entities,
-        })
+    const { projectConfig } = require(configPath)
+    if (projectConfig.database_type === "sqlite") {
+      connectionType = "sqlite"
+      const dbConnection = await createConnection({
+        type: "sqlite",
+        database: projectConfig.database_database,
+        synchronize: true,
+        entities,
+      })
 
-        instance.setDb(dbConnection)
-        return dbConnection
-      } else {
-        const migrationDir = path.resolve(
-          path.join(
-            cwd,
-            `node_modules`,
-            `@medusajs`,
-            `medusa`,
-            `dist`,
-            `migrations`
-          )
-        )
+      instance.setDb(dbConnection)
+      return dbConnection
+    } else {
+      const databaseName = `medusa-integration-${workerId}`
 
-        const databaseName = `medusa-integration-${workerId}`
-        await createDatabase({ databaseName }, pgGodCredentials)
+      await dbFactory.createFromTemplate(databaseName)
 
-        const connection = await createConnection({
-          type: "postgres",
-          url: `${DB_URL}-${workerId}`,
-          migrations: [`${migrationDir}/*.js`],
-        })
+      const dbConnection = await createConnection({
+        type: "postgres",
+        url: DB_URL,
+        entities,
+      })
 
-        await connection.runMigrations()
-        await connection.close()
-
-        const dbConnection = await createConnection({
-          type: "postgres",
-          url: `${DB_URL}-${workerId}`,
-          entities,
-        })
-
-        instance.setDb(dbConnection)
-        return dbConnection
-      }
-    } catch (err) {
-      console.log(err)
+      instance.setDb(dbConnection)
+      return dbConnection
     }
   },
   useDb: function () {

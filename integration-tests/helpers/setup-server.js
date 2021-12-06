@@ -7,6 +7,7 @@ module.exports = ({ cwd, verbose }) => {
   const serverPath = path.join(__dirname, "test-server.js")
 
   return new Promise((resolve, reject) => {
+    const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
     const medusaProcess = spawn("node", [path.resolve(serverPath)], {
       cwd,
       env: {
