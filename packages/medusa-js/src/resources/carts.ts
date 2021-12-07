@@ -148,14 +148,16 @@ class CartsResource extends BaseResource {
   /**
    * Updates the payment method
    * @param {string} cart_id is required
+   * @param {string} provider_id is required
    * @param {StorePostCartsCartPaymentSessionUpdateReq} payload is required
    * @return {ResponsePromise<StoreCartsRes>}
    */
   updatePaymentSession(
     cart_id: string,
+    provider_id: string,
     payload: StorePostCartsCartPaymentSessionUpdateReq
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/payment-session/update`
+    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
     return this.client.request("POST", path, payload)
   }
 }
