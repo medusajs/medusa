@@ -1,20 +1,62 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { EntityManager, FindOneOptions } from "typeorm"
+import {
+  FulfillmentProviderService,
+  ProductService,
+  RegionService,
+  TotalsService,
+} from "."
+import {
+  Cart,
+  Order,
+  ShippingMethod,
+  ShippingOption,
+  ShippingOptionRequirement,
+} from ".."
+import { ShippingOptionPriceType } from "../models/shipping-option"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
+import { ShippingOptionRepository } from "../repositories/shipping-option"
+import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
+import { RetrieveOptions } from "../types/common"
+import {
+  CreateShippingMethod,
+  ShippingMethodUpdate,
+  ShippingRequirement,
+} from "../types/shipping-options"
+
+type ShippingOptionServiceProps = {
+  shippingOptionRepository: typeof ShippingOptionRepository
+  shippingMethodRepository: typeof ShippingMethodRepository
+  shippingOptionRequirementRepository: typeof ShippingOptionRequirementRepository
+  fulfillmentProviderService: FulfillmentProviderService
+  regionService: RegionService
+  totalsService: TotalsService
+  manager: EntityManager
+}
 
 /**
  * Provides layer to manipulate profiles.
  * @extends BaseService
  */
 class ShippingOptionService extends BaseService {
+  private manager_: EntityManager
+  private optionRepository_: typeof ShippingOptionRepository
+  private methodRepository_: typeof ShippingMethodRepository
+  private requirementRepository_: typeof ShippingOptionRequirementRepository
+  private providerService_: FulfillmentProviderService
+  private regionService_: RegionService
+  private totalsService_: TotalsService
+
   constructor({
     manager,
     shippingOptionRepository,
-    shippingOptionRequirementRepository,
     shippingMethodRepository,
+    shippingOptionRequirementRepository,
     fulfillmentProviderService,
     regionService,
     totalsService,
-  }) {
+  }: ShippingOptionServiceProps) {
     super()
 
     /** @private @const {EntityManager} */
@@ -29,7 +71,7 @@ class ShippingOptionService extends BaseService {
     /** @private @const {ShippingOptionRequirementRepository} */
     this.requirementRepository_ = shippingOptionRequirementRepository
 
-    /** @private @const {ProductService} */
+    /** @private @const {FulfillmentProviderService} */
     this.providerService_ = fulfillmentProviderService
 
     /** @private @const {RegionService} */
@@ -39,7 +81,7 @@ class ShippingOptionService extends BaseService {
     this.totalsService_ = totalsService
   }
 
-  withTransaction(transactionManager) {
+  withTransaction(transactionManager): ShippingOptionService {
     if (!transactionManager) {
       return this
     }
@@ -65,7 +107,10 @@ class ShippingOptionService extends BaseService {
    * @param {string} optionId - the id to validate the requirement
    * @return {ShippingRequirement} a validated shipping requirement
    */
-  async validateRequirement_(requirement, optionId) {
+  async validateRequirement_(
+    requirement: ShippingOptionRequirement,
+    optionId?: string
+  ): Promise<ShippingOptionRequirement> {
     if (!requirement.type) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -83,13 +128,13 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    const reqRepo = this.manager_.getCustomRepository(
-      this.requirementRepository_
-    )
+    const reqRepo: ShippingOptionRequirementRepository =
+      this.manager_.getCustomRepository(this.requirementRepository_)
 
-    const existingReq = await reqRepo.findOne({
-      where: { id: requirement.id },
-    })
+    const existingReq: ShippingOptionRequirement | undefined =
+      await reqRepo.findOne({
+        where: { id: requirement.id },
+      })
 
     if (!existingReq && requirement.id) {
       throw new MedusaError(MedusaError.Types.INVALID_DATA, "ID does not exist")
@@ -110,8 +155,8 @@ class ShippingOptionService extends BaseService {
       })
     } else {
       const created = reqRepo.create({
-        shipping_option_id: optionId,
         ...requirement,
+        shipping_option_id: optionId,
       })
 
       req = await reqRepo.save(created)
@@ -125,7 +170,10 @@ class ShippingOptionService extends BaseService {
    * @param {object} config - config object
    * @return {Promise} the result of the find operation
    */
-  async list(selector, config = { skip: 0, take: 50 }) {
+  async list(
+    selector,
+    config = { skip: 0, take: 50 }
+  ): Promise<ShippingOption[]> {
     const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
 
     const query = this.buildQuery_(selector, config)
@@ -137,13 +185,16 @@ class ShippingOptionService extends BaseService {
    * Throws in case of DB Error and if profile was not found.
    * @param {string} optionId - the id of the profile to get.
    * @param {object} options - the options to get a profile
-   * @return {Promise<Product>} the profile document.
+   * @return {Promise<ShippingOption>} the profile document.
    */
-  async retrieve(optionId, options = {}) {
+  async retrieve(
+    optionId,
+    options: RetrieveOptions<ShippingOption> = {}
+  ): Promise<ShippingOption> {
     const soRepo = this.manager_.getCustomRepository(this.optionRepository_)
     const validatedId = this.validateId_(optionId)
 
-    const query = {
+    const query: FindOneOptions<ShippingOption> = {
       where: { id: validatedId },
     }
 
@@ -171,31 +222,47 @@ class ShippingOptionService extends BaseService {
    * Updates a shipping method's associations. Useful when a cart is completed
    * and its methods should be copied to an order/swap entity.
    * @param {string} id - the id of the shipping method to update
-   * @param {object} update - the values to update the method with
+   * @param {ShippingMethodUpdate} update - the values to update the method with
    * @return {Promise<ShippingMethod>} the resulting shipping method
    */
-  async updateShippingMethod(id, update) {
+  async updateShippingMethod(
+    id: string,
+    update: ShippingMethodUpdate
+  ): Promise<ShippingMethod> {
     return this.atomicPhase_(async (manager) => {
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
+        this.methodRepository_
+      )
       const method = await methodRepo.findOne({ where: { id } })
 
-      if ("return_id" in update) {
-        method.return_id = update.return_id
-      }
+      if (method) {
+        if ("data" in update && update.data !== undefined) {
+          method.data = update.data
+        }
 
-      if ("swap_id" in update) {
-        method.swap_id = update.swap_id
-      }
+        if ("price" in update && update.price !== undefined) {
+          method.price = update.price
+        }
 
-      if ("order_id" in update) {
-        method.order_id = update.order_id
-      }
+        if ("return_id" in update && update.return_id) {
+          method.return_id = update.return_id
+        }
 
-      if ("claim_order_id" in update) {
-        method.claim_order_id = update.claim_order_id
-      }
+        if ("swap_id" in update && update.swap_id) {
+          method.swap_id = update.swap_id
+        }
 
-      return methodRepo.save(method)
+        if ("order_id" in update && update.order_id) {
+          method.order_id = update.order_id
+        }
+
+        if ("claim_order_id" in update && update.claim_order_id) {
+          method.claim_order_id = update.claim_order_id
+        }
+
+        return methodRepo.save(method)
+      }
+      return undefined
     })
   }
 
@@ -203,9 +270,11 @@ class ShippingOptionService extends BaseService {
    * Removes a given shipping method
    * @param {ShippingMethod} sm - the shipping method to remove
    */
-  async deleteShippingMethod(sm) {
+  async deleteShippingMethod(sm): Promise<ShippingMethod> {
     return this.atomicPhase_(async (manager) => {
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
+        this.methodRepository_
+      )
       return methodRepo.remove(sm)
     })
   }
@@ -217,17 +286,41 @@ class ShippingOptionService extends BaseService {
    * @param {object} config - the cart to create the shipping method for.
    * @return {ShippingMethod} the resulting shipping method.
    */
-  async createShippingMethod(optionId, data, config) {
+  async createShippingMethod(
+    optionId: string,
+    data: any,
+    config
+  ): Promise<ShippingMethod> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
       })
 
-      const methodRepo = manager.getCustomRepository(this.methodRepository_)
+      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
+        this.methodRepository_
+      )
 
       if ("cart" in config) {
         this.validateCartOption(option, config.cart || {})
       }
+
+      // DELETE FROM shipping_method WHERE id in (
+      //   SELECT sm.id FROM shipping_method sm
+      //   LEFT JOIN shipping_option so ON so.id = sm.option_id
+      //   WHERE sm.cart_id = cartId
+      //   HAVING so.profile_id = option.profile_id
+      // )
+
+      // if (config.cart?.id || config.cart_id) {
+      //   methodRepo.deleteCartMethods(
+      //     config.cart?.id || config.cart_id,
+      //     option.profile_id
+      //   )
+      // methodRepo.delete({
+      //   cart_id: config.cart?.id || config.cart_id,
+      //   shipping_option_id: optionId,
+      // })
+      // }
 
       const validatedData = await this.providerService_.validateFulfillmentData(
         option,
@@ -242,7 +335,7 @@ class ShippingOptionService extends BaseService {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
       }
 
-      const toCreate = {
+      const toCreate: CreateShippingMethod = {
         shipping_option_id: option.id,
         data: validatedData,
         price: methodPrice,
@@ -288,6 +381,32 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
+   * Creates a shipping method for a given cart.
+   * @param {string} optionId - the id of the option to use for the method.
+   * @param {string} cartId - the cart for which the shipping option is updated.
+   * @param {ShippingMethodUpdate} update - the update which is applied to the cart.
+   * @return {Promise<ShippingMethod>} the resulting shipping method.
+   */
+  async updateShippingMethodForCart(
+    optionId: string,
+    cartId: string,
+    update: ShippingMethodUpdate
+  ): Promise<ShippingMethod> {
+    return this.atomicPhase_(async (manager) => {
+      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
+        this.methodRepository_
+      )
+      const method = await methodRepo.findOne({
+        where: { shipping_option_id: optionId, cart_id: cartId },
+      })
+      if (method) {
+        return await this.updateShippingMethod(method.id, update)
+      }
+      return undefined
+    })
+  }
+
+  /**
    * Checks if a given option id is a valid option for a cart. If it is the
    * option is returned with the correct price. Throws when region_ids do not
    * match, or when the shipping option requirements are not satisfied.
@@ -295,7 +414,7 @@ class ShippingOptionService extends BaseService {
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  validateCartOption(option, cart) {
+  validateCartOption(option, cart: Cart): ShippingOption | null {
     if (option.is_return) {
       return null
     }
@@ -307,17 +426,19 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    const subtotal = cart.subtotal
-    const requirementResults = option.requirements.map((requirement) => {
-      switch (requirement.type) {
-        case "max_subtotal":
-          return requirement.amount > subtotal
-        case "min_subtotal":
-          return requirement.amount <= subtotal
-        default:
-          return true
+    const subtotal = cart.subtotal || 0
+    const requirementResults: boolean[] = option.requirements.map(
+      (requirement) => {
+        switch (requirement.type) {
+          case "max_subtotal":
+            return requirement.amount > subtotal
+          case "min_subtotal":
+            return requirement.amount <= subtotal
+          default:
+            return true
+        }
       }
-    })
+    )
 
     if (!requirementResults.every(Boolean)) {
       throw new MedusaError(
@@ -336,7 +457,7 @@ class ShippingOptionService extends BaseService {
    * @param {ShippingOption} data - the data to create shipping options
    * @return {Promise<ShippingOption>} the result of the create operation
    */
-  async create(data) {
+  async create(data: ShippingOption): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = await optionRepo.create(data)
@@ -371,7 +492,7 @@ class ShippingOptionService extends BaseService {
       }
 
       if ("requirements" in data) {
-        const acc = []
+        const acc: ShippingRequirement[] = []
         for (const r of data.requirements) {
           const validated = await this.validateRequirement_(r)
 
@@ -406,18 +527,15 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
-   * @typedef ShippingOptionPrice
-   * @property {string} type - one of flat_rate, calculated
-   * @property {number} value - the value if available
-   */
-
-  /**
    * Validates a shipping option price
-   * @param {ShippingOptionPrice} priceType - the price to validate
+   * @param {ShippingOptionPriceType} priceType - the price to validate
    * @param {ShippingOption} option - the option to validate against
-   * @return {Promise<ShippingOptionPrice>} the validated price
+   * @return {Promise<ShippingOptionPriceType>} the validated price
    */
-  async validatePriceType_(priceType, option) {
+  async validatePriceType_(
+    priceType,
+    option
+  ): Promise<ShippingOptionPriceType> {
     if (
       !priceType ||
       (priceType !== "flat_rate" && priceType !== "calculated")
@@ -429,10 +547,10 @@ class ShippingOptionService extends BaseService {
     }
 
     if (priceType === "calculated") {
-      const canCalculate = await this.providerService_.canCalculate(
-        option.provider_id,
-        option.data
-      )
+      const canCalculate = await this.providerService_.canCalculate({
+        provider_id: option.provider_id,
+        data: option.data,
+      })
       if (!canCalculate) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -453,7 +571,7 @@ class ShippingOptionService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  async update(optionId, update) {
+  async update(optionId, update): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
@@ -478,7 +596,7 @@ class ShippingOptionService extends BaseService {
       }
 
       if ("requirements" in update) {
-        const acc = []
+        const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
 
@@ -555,7 +673,7 @@ class ShippingOptionService extends BaseService {
    *   castable as an ObjectId
    * @return {Promise} the result of the delete operation.
    */
-  async delete(optionId) {
+  async delete(optionId: string): Promise<any> {
     try {
       const option = await this.retrieve(optionId)
 
@@ -571,19 +689,16 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
-   * @typedef ShippingRequirement
-   * @property {string} type - one of max_subtotal, min_subtotal
-   * @property {number} amount - the value to match against
-   */
-
-  /**
    * Adds a requirement to a shipping option. Only 1 requirement of each type
    * is allowed.
    * @param {string} optionId - the option to add the requirement to.
-   * @param {ShippingRequirement} requirement - the requirement for the option.
+   * @param {ShippingOptionRequirement} requirement - the requirement for the option.
    * @return {Promise} the result of update
    */
-  async addRequirement(optionId, requirement) {
+  async addRequirement(
+    optionId: string,
+    requirement: ShippingOptionRequirement
+  ): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
@@ -609,7 +724,7 @@ class ShippingOptionService extends BaseService {
    * @param {string} requirementId - the id of the requirement to remove
    * @return {Promise} the result of update
    */
-  async removeRequirement(requirementId) {
+  async removeRequirement(requirementId: string): Promise<any> {
     return this.atomicPhase_(async (manager) => {
       try {
         const reqRepo = manager.getCustomRepository(this.requirementRepository_)
@@ -634,8 +749,12 @@ class ShippingOptionService extends BaseService {
    * @param {string[]} expandFields - fields to expand.
    * @return {ShippingOption} the decorated ShippingOption.
    */
-  async decorate(optionId, fields = [], expandFields = []) {
-    const requiredFields = ["id", "metadata"]
+  async decorate(
+    optionId,
+    fields: (keyof ShippingOption)[] = [],
+    expandFields: string[] = []
+  ): Promise<ShippingOption> {
+    const requiredFields: (keyof ShippingOption)[] = ["id", "metadata"]
 
     fields = fields.concat(requiredFields)
 
@@ -653,7 +772,7 @@ class ShippingOptionService extends BaseService {
    * @param {object} metadata - object for metadata field
    * @return {Promise} resolves to the updated result.
    */
-  async setMetadata_(option, metadata) {
+  async setMetadata_(option, metadata): Promise<object> {
     const existing = option.metadata || {}
     const newData = {}
     for (const [key, value] of Object.entries(metadata)) {
@@ -686,7 +805,11 @@ class ShippingOptionService extends BaseService {
    *   retrieved.
    * @return {Promise<Number>} the price of the shipping option.
    */
-  async getPrice_(option, data, cart) {
+  async getPrice_(
+    option: ShippingOption,
+    data: object,
+    cart: Cart | Order
+  ): Promise<number | null> {
     if (option.price_type === "calculated") {
       return this.providerService_.calculatePrice(option, data, cart)
     }

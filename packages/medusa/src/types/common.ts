@@ -8,6 +8,11 @@ export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
 }
 
+export type RetrieveOptions<T> = {
+  select?: (keyof T)[]
+  relations?: (keyof T)[]
+}
+
 export type TotalField =
   | "shipping_total"
   | "discount_total"
