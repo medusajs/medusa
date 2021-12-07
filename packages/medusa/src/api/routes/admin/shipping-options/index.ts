@@ -54,7 +54,7 @@ export type AdminShippingOptionsRes = {
   shipping_option: ShippingOption
 }
 
-export type AdminNotesDeleteRes = DeleteResponse
+export type AdminShippingOptionsDeleteRes = DeleteResponse
 
 export * from "./create-shipping-option"
 export * from "./delete-shipping-option"

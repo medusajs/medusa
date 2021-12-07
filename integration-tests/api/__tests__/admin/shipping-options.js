@@ -419,7 +419,6 @@ describe("/admin/shipping-options", () => {
       })
 
       expect(res.status).toEqual(200)
-      expect(res.data.shipping_options.length).toEqual(1)
       expect(res.data.shipping_options).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -439,12 +438,37 @@ describe("/admin/shipping-options", () => {
       })
 
       expect(res.status).toEqual(200)
-      expect(res.data.shipping_options.length).toEqual(1)
       expect(res.data.shipping_options).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-option-req-return",
             is_return: true,
+          }),
+        ])
+      )
+    })
+
+    it("lists shipping options without return and admin options", async () => {
+      const api = useApi()
+      const res = await api.get(
+        `/admin/shipping-options?is_return=false&admin_only=true`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.shipping_options).not.toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-option-req-return",
+            is_return: true,
+          }),
+          expect.objectContaining({
+            id: "test-option-req-admin-only",
+            admin_only: true,
           }),
         ])
       )
