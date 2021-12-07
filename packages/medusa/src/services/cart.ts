@@ -372,8 +372,6 @@ class CartService extends BaseService {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
-      const toCreate: DeepPartial<Cart> = {}
-
       const { region_id } = data
       if (!region_id) {
         throw new MedusaError(
@@ -385,42 +383,28 @@ class CartService extends BaseService {
       const region = await this.regionService_.retrieve(region_id, {
         relations: ["countries"],
       })
-
-      toCreate.region_id = region.id
-
       const regCountries = region.countries.map(({ iso_2 }) => iso_2)
 
-      if (data.email) {
+      const toCreate: DeepPartial<Cart> = {}
+      toCreate.region_id = region.id
+
+      if (typeof data.email !== "undefined") {
         const customer = await this.createOrFetchUserFromEmail_(data.email)
         toCreate.customer = customer
         toCreate.customer_id = customer.id
         toCreate.email = customer.email
       }
 
-      if (data.shipping_address_id) {
+      if (typeof data.shipping_address_id !== "undefined") {
         const addr = await addressRepo.findOne(data.shipping_address_id)
+        if (addr && !regCountries.includes(addr.country_code)) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Shipping country not in region"
+          )
+        }
+
         toCreate.shipping_address = addr
-      }
-
-      if (data.billing_address_id) {
-        const addr = await addressRepo.findOne(data.billing_address_id)
-        toCreate.billing_address = addr
-      }
-
-      if (data.context) {
-        toCreate.context = data.context
-      }
-
-      if (data.type) {
-        toCreate.type = data.type
-      }
-
-      if (data.metadata) {
-        toCreate.metadata = data.metadata
-      }
-
-      if (data.discounts) {
-        toCreate.discounts = data.discounts
       }
 
       if (!data.shipping_address) {
@@ -440,6 +424,21 @@ class CartService extends BaseService {
         }
 
         toCreate.shipping_address = data.shipping_address
+      }
+
+      const remainingFields: (keyof Cart)[] = [
+        "billing_address_id",
+        "context",
+        "type",
+        "metadata",
+        "discounts",
+        "gift_cards",
+      ]
+
+      for (const k of remainingFields) {
+        if (typeof data[k] !== "undefined") {
+          toCreate[k] = data[k]
+        }
       }
 
       const inProgress = cartRepo.create(toCreate)
