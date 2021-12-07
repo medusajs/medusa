@@ -34,6 +34,7 @@ jobs:
 
   linting:
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.5
@@ -52,7 +53,7 @@ jobs:
           extension: unit-tests
 
       - name: Run linter
-        run: yarn lint --fix
+        run: yarn lint --fix | grep "error\|warning"
 
   integration-tests:
     runs-on: ubuntu-latest
