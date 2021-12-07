@@ -7,16 +7,6 @@ import {
   StringComparisonOperator,
 } from "./common"
 
-export type TotalField =
-  | "shipping_total"
-  | "discount_total"
-  | "tax_total"
-  | "refunded_total"
-  | "total"
-  | "subtotal"
-  | "refundable_amount"
-  | "gift_card_total"
-
 export class FilterableCartProps {
   @ValidateNested()
   @IsType([String, [String], StringComparisonOperator])

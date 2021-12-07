@@ -16,13 +16,12 @@ import { LineItem } from "../models/line-item"
 import { ShippingMethod } from "../models/shipping-method"
 import { CustomShippingOption } from "../models/custom-shipping-option"
 
-import { FindConfig } from "../types/common"
+import { TotalField, FindConfig } from "../types/common"
 import {
   FilterableCartProps,
   LineItemUpdate,
   CartUpdateProps,
   CartCreateProps,
-  TotalField,
 } from "../types/cart"
 
 import EventBusService from "./event-bus"
