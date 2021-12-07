@@ -67,47 +67,29 @@ export default async (req, res) => {
         const { key, error } = await idempotencyKeyService.workStage(
           idempotencyKey.idempotency_key,
           async (manager) => {
-            try {
-              await cartService
-                .withTransaction(manager)
-                .addShippingMethod(id, validated.option_id, validated.data)
+            const txCartService = cartService.withTransaction(manager)
+            await txCartService.addShippingMethod(
+              id,
+              validated.option_id,
+              validated.data
+            )
 
-              const updated = await cartService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  relations: ["payment_sessions"],
-                })
+            const updated = await txCartService.retrieve(id, {
+              relations: ["payment_sessions"],
+            })
 
-              if (updated.payment_sessions?.length) {
-                await cartService
-                  .withTransaction(manager)
-                  .setPaymentSessions(id)
-              }
+            if (updated.payment_sessions?.length) {
+              await txCartService.setPaymentSessions(id)
+            }
 
-              const cart = await cartService
-                .withTransaction(manager)
-                .retrieve(id, {
-                  select: defaultStoreCartFields,
-                  relations: defaultStoreCartRelations,
-                })
+            const cart = await txCartService.retrieve(id, {
+              select: defaultStoreCartFields,
+              relations: defaultStoreCartRelations,
+            })
 
-              return {
-                response_code: 200,
-                response_body: { cart },
-              }
-            } catch (fejl) {
-              if (fejl?.code === "23505") {
-                throw new MedusaError(
-                  MedusaError.Types.INVALID_DATA,
-                  "Cannot add existing shipping option, update shipping option instead"
-                )
-              }
-              return {
-                response_code: 400,
-                response_body: {
-                  message: error,
-                },
-              }
+            return {
+              response_code: 200,
+              response_body: { cart },
             }
           }
         )
@@ -142,9 +124,7 @@ export default async (req, res) => {
   }
 
   if (err) {
-    if (err?.code !== "25P02") {
-      throw err
-    }
+    throw err
   }
 
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)

@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { DbErrorCodes } from "../types/db-error-codes"
 
 /* Provides layer to manipulate carts.
  * @implements BaseService
@@ -1377,9 +1378,20 @@ class CartService extends BaseService {
             cart,
           }
 
-      const newMethod = await this.shippingOptionService_
-        .withTransaction(manager)
-        .createShippingMethod(optionId, data, shippingMethodConfig)
+      let newMethod
+      try {
+        newMethod = await this.shippingOptionService_
+          .withTransaction(manager)
+          .createShippingMethod(optionId, data, shippingMethodConfig)
+      } catch (error) {
+        if (error?.code === DbErrorCodes.UNIQUE_VIOLATION) {
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            "Cannot add existing shipping option, update shipping option instead"
+          )
+        }
+        throw error
+      }
 
       const methods = [newMethod]
       if (shipping_methods.length) {
