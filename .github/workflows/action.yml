@@ -53,8 +53,8 @@ jobs:
           extension: unit-tests
 
       - name: Run linter
-        run: yarn lint | grep "error\|warning" | while read -r line; do echo "::warning :: $line" ; done
-
+        run: yarn lint |  grep  "error\|warning"  | while  read  -r  line; do echo "::warning :: $line" ; done
+        
   integration-tests:
     runs-on: ubuntu-latest
 
