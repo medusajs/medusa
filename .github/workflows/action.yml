@@ -53,7 +53,7 @@ jobs:
 
       - name: Run linter
         continue-on-error: true
-        run: 'yarn lint |  grep  "error\|warning"  | while  read  -r  line; do echo "::warning :: $line" ; done'
+        run: 'yarn lint | grep "error\|warning" | while read -r line; do echo "::warning :: $line" ; done'
 
   integration-tests:
     runs-on: ubuntu-latest
