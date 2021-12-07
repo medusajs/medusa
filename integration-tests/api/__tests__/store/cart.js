@@ -512,7 +512,7 @@ describe("/store/carts", () => {
           type: "swap",
         })
 
-        const cartWithCustomSo = await manager.save(_cart)
+        await manager.save(_cart)
 
         await manager.insert(CustomShippingOption, {
           id: "another-cso-test",
@@ -551,21 +551,21 @@ describe("/store/carts", () => {
       expect(cartWithShippingMethod.status).toEqual(200)
     })
 
-    it("adds a normal shipping method to cart once with multiple requests", async () => {
+    it("Fails to re-add shipping method to cart", async () => {
+      expect.assertions(4)
       const api = useApi()
+      await api.post("/store/carts/test-cart/shipping-methods", {
+        option_id: "test-option-2",
+      })
       try {
-        const promises = [
-          api.post("/store/carts/test-cart/shipping-methods", {
-            option_id: "test-option-2",
-          }),
-          api.post("/store/carts/test-cart/shipping-methods", {
-            option_id: "test-option-2",
-          }),
-        ]
-
-        await Promise.all(promises)
+        await api.post("/store/carts/test-cart/shipping-methods", {
+          option_id: "test-option-2",
+        })
       } catch (err) {
-        console.log(err)
+        expect(err.response.data.type).toEqual("duplicate_error")
+        expect(err.response.data.message).toEqual(
+          "Cannot add existing shipping option, update shipping option instead"
+        )
       }
 
       const cartWithShippingMethod = await api.get("/store/carts/test-cart")
@@ -576,6 +576,34 @@ describe("/store/carts", () => {
 
       expect(cartWithShippingMethod.data.cart.shipping_methods).toContainEqual(
         expect.objectContaining({ shipping_option_id: "test-option-2" })
+      )
+    })
+
+    it("Gets the same response from adding shipping method with the same idempotency key", async () => {
+      const api = useApi()
+      const addShippingMethodResult = await api
+        .post("/store/carts/test-cart/shipping-methods", {
+          option_id: "test-option-2",
+        })
+        .catch((err) => console.log(err))
+
+      const idempotentResult = await api
+        .post(
+          "/store/carts/test-cart/shipping-methods",
+          {
+            option_id: "test-option-2",
+          },
+          {
+            headers: {
+              "idempotency-key":
+                addShippingMethodResult.headers["idempotency-key"],
+            },
+          }
+        )
+        .catch((err) => console.log(err))
+
+      expect(addShippingMethodResult.data.cart).toEqual(
+        idempotentResult.data.cart
       )
     })
 
@@ -665,13 +693,15 @@ describe("/store/carts", () => {
     it("adds no more than 1 shipping method per shipping profile", async () => {
       const api = useApi()
       const addShippingMethod = async (option_id) => {
-        return await api.post(
-          "/store/carts/test-cart/shipping-methods",
-          {
-            option_id,
-          },
-          { withCredentials: true }
-        )
+        return await api
+          .post(
+            "/store/carts/test-cart/shipping-methods",
+            {
+              option_id,
+            },
+            { withCredentials: true }
+          )
+          .catch((err) => console.log(err))
       }
 
       await addShippingMethod("test-option")
