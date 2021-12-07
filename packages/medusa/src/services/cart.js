@@ -1385,6 +1385,10 @@ class CartService extends BaseService {
           .createShippingMethod(optionId, data, shippingMethodConfig)
       } catch (error) {
         if (error?.code === DbErrorCodes.UNIQUE_VIOLATION) {
+          newMethod = await this.shippingOptionService_
+            .withTransaction(manager)
+            .updateShippingMethodForCart(optionId, cart.id, data)
+
           throw new MedusaError(
             MedusaError.Types.DUPLICATE_ERROR,
             "Cannot add existing shipping option, update shipping option instead"
