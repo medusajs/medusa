@@ -1,11 +1,21 @@
-import { MedusaError, Validator } from "medusa-core-utils"
-import { defaultFields, defaultRelations } from "./"
+import { Type } from "class-transformer"
+import {
+  IsArray,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import { defaultFields, defaultRelations } from "."
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /shipping-options
  * operationId: "PostShippingOptions"
  * summary: "Create Shipping Option"
  * description: "Creates a Shipping Option"
+ * x-authenticated: true
  * requestBody:
  *   content:
  *     application/json:
@@ -52,6 +62,12 @@ import { defaultFields, defaultRelations } from "./"
  *           is_return:
  *             description: Whether the Shipping Option defines a return shipment.
  *             type: boolean
+ *           admin_only:
+ *             description: If true, the option can be used for draft orders
+ *             type: boolean
+ *           metadata:
+ *             description: An optional set of key-value pairs with additional information.
+ *             type: object
  * tags:
  *   - Shipping Option
  * responses:
@@ -65,45 +81,72 @@ import { defaultFields, defaultRelations } from "./"
  *               $ref: "#/components/schemas/shipping_option"
  */
 export default async (req, res) => {
-  const schema = Validator.object().keys({
-    name: Validator.string().required(),
-    region_id: Validator.string().required(),
-    provider_id: Validator.string().required(),
-    profile_id: Validator.string(),
-    data: Validator.object().required(),
-    price_type: Validator.string().required(),
-    amount: Validator.number().integer().optional(),
-    requirements: Validator.array()
-      .items(
-        Validator.object({
-          type: Validator.string().required(),
-          amount: Validator.number().integer().required(),
-        })
-      )
-      .optional(),
-    is_return: Validator.boolean().default(false),
-    admin_only: Validator.boolean().default(false),
-  })
-
-  const { value, error } = schema.validate(req.body)
-  if (error) {
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, error.details)
-  }
+  const validated = await validator(AdminPostShippingOptionsReq, req.body)
 
   const optionService = req.scope.resolve("shippingOptionService")
   const shippingProfileService = req.scope.resolve("shippingProfileService")
 
   // Add to default shipping profile
-  if (!value.profile_id) {
+  if (!validated.profile_id) {
     const { id } = await shippingProfileService.retrieveDefault()
-    value.profile_id = id
+    validated.profile_id = id
   }
 
-  const result = await optionService.create(value)
+  const result = await optionService.create(validated)
   const data = await optionService.retrieve(result.id, {
     select: defaultFields,
     relations: defaultRelations,
   })
 
   res.status(200).json({ shipping_option: data })
+}
+
+class OptionRequirement {
+  @IsString()
+  type: string
+  @IsNumber()
+  amount: number
+}
+
+export class AdminPostShippingOptionsReq {
+  @IsString()
+  name: string
+
+  @IsString()
+  region_id: string
+
+  @IsString()
+  provider_id: string
+
+  @IsOptional()
+  @IsString()
+  profile_id?: string
+
+  @IsObject()
+  data: object
+
+  @IsString()
+  price_type: string
+
+  @IsOptional()
+  @IsNumber()
+  amount?: number
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => OptionRequirement)
+  requirements?: OptionRequirement[]
+
+  @IsOptional()
+  @Type(() => Boolean)
+  admin_only?: boolean = false
+
+  @IsOptional()
+  @Type(() => Boolean)
+  is_return?: boolean = false
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
 }
