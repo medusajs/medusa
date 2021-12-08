@@ -22,6 +22,7 @@ This quickstart is intended for experienced developers, that are accustomed with
    ```
 
 After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusajs.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
+We have a prebuilt admin dashboard that you can use to configure and manage your store find it here: [Medusa Admin](https://github.com/medusajs/admin)
 
 ## What's next?
 
@@ -31,6 +32,8 @@ We have created two starters for you that can help you lay a foundation for your
 
 - [Nextjs Starter](https://github.com/medusajs/nextjs-starter-medusa)
 - [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
+
+> Note: Medusa runs on port 9000 by default and the storefront starters are both configured to run on port 8000. If you wish to run your storefront starter on another port you should update your CORS settings in your project's `medusa-config.js`.
 
 <!-- ### Link you local development to Medusa Cloud (Coming soon!)
 

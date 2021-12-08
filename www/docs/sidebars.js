@@ -23,7 +23,24 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Tutorials",
+      collapsed: false,
+      label: "Storefront starters",
+      items: [
+        {
+          type: "doc",
+          id: "starters/gatsby-medusa-starter",
+          label: "Quickstart: Gatsby",
+        },
+        {
+          type: "doc",
+          id: "starters/nextjs-medusa-starter",
+          label: "Quickstart: Next.js",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Tutorial",
       collapsed: false,
       items: [
         {
@@ -104,27 +121,129 @@ module.exports = {
     },
     {
       type: "category",
-      label: "Deploy",
+      label: "Add a plugin",
+      items: [
+        {
+          type: "doc",
+          id: "add-plugins/contentful",
+          label: "CMS: Contentful",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/strapi",
+          label: "CMS: Strapi",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/segment",
+          label: "Analytics: Segment",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/meilisearch",
+          label: "Search: MeiliSearch",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/algolia",
+          label: "Search: Algolia",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/spaces",
+          label: "File: Spaces",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/s3",
+          label: "File: S3",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/stripe",
+          label: "Payment: Stripe",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/klarna",
+          label: "Payment: Klarna",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/paypal",
+          label: "Payment: PayPal",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/sendgrid",
+          label: "Notification: SendGrid",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/slack",
+          label: "Bot: Slack",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Deployment",
       items: [
         {
           type: "doc",
           id: "how-to/deploying-on-heroku",
+          label: "Deploy: Heroku",
         },
         {
           type: "doc",
           id: "how-to/deploying-on-qovery",
+          label: "Deploy: Qovery",
         },
         {
           type: "doc",
           id: "how-to/deploying-on-digital-ocean",
+          label: "Deploy: DigitalOcean",
         },
         {
           type: "doc",
           id: "how-to/deploying-admin-on-netlify",
+          label: "Deploy: Admin on Netlify",
         },
         {
           type: "doc",
           id: "how-to/deploying-gatsby-on-netlify",
+          label: "Deploy: Gatsby on Netlify",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Troubleshooting",
+      items: [
+        {
+          type: "doc",
+          id: "troubleshooting/cors-issues",
+          label: "CORS issues",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/transaction-error-in-checkout",
+          label: "Error 409 in checkout",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/missing-payment-providers",
+          label: "Payment provider (Stripe) not showing in checkout",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/redis-events",
+          label: "Redis not emitting events",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/signing-in-to-admin",
+          label: "Signing in to Medusa Admin",
         },
       ],
     },
