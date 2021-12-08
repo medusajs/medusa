@@ -55,12 +55,22 @@ class TaxProviderService extends BaseService {
     return cloned
   }
 
-  getTaxProvider(region: Region): ITaxService {
+  retrieveProvider(region: Region): ITaxService {
+    let provider: ITaxService
     if (region.tax_provider_id) {
-      return this.container_[`tp_${region.tax_provider_id}`] as ITaxService
+      provider = this.container_[`tp_${region.tax_provider_id}`] as ITaxService
+    } else {
+      provider = this.container_["systemTaxService"] as ITaxService
     }
 
-    return this.container_["systemTaxService"] as ITaxService
+    if (!provider) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Could not find a tax provider with id: ${region.tax_provider_id}`
+      )
+    }
+
+    return provider
   }
 
   async getTaxLines(
@@ -73,13 +83,13 @@ class TaxProviderService extends BaseService {
           item: l,
           rates: await this.getRegionRatesForProduct(
             l.variant.product_id,
-            order.region
+            calculationContext.region
           ),
         }
       })
     )
 
-    const taxProvider = this.getTaxProvider(order.region)
+    const taxProvider = this.retrieveProvider(calculationContext.region)
     const providerLines = await taxProvider.calculateLineItemTaxes(
       calculationLines,
       calculationContext
@@ -109,7 +119,7 @@ class TaxProviderService extends BaseService {
       return cacheHit
     }
 
-    let toReturn: TaxServiceRate[]
+    let toReturn: TaxServiceRate[] = []
     if (region.tax_rates.length > 0) {
       const productRates = await this.productTaxRateService_.list({
         product_id: productId,
@@ -135,13 +145,15 @@ class TaxProviderService extends BaseService {
       }
     }
 
-    toReturn = [
-      {
-        rate: region.tax_rate,
-        name: "default",
-        code: "default",
-      },
-    ]
+    if (toReturn.length === 0) {
+      toReturn = [
+        {
+          rate: region.tax_rate,
+          name: "default",
+          code: "default",
+        },
+      ]
+    }
 
     await this.setCache(productId, region.id, toReturn)
 

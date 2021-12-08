@@ -21,6 +21,7 @@
     "@babel/core": "^7.14.3",
     "@babel/preset-typescript": "^7.13.0",
     "@types/express": "^4.17.13",
+    "@types/jest": "^27.0.3",
     "@types/jsonwebtoken": "^8.5.5",
     "babel-preset-medusa-package": "^1.1.19",
     "cross-env": "^5.2.1",
