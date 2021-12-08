@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ShopifyCollectionService create normalizes a collection from Shopify 1`] = `
+Object {
+  "handle": "spring",
+  "metadata": Object {
+    "sh_body": "spring collection",
+    "sh_id": "spring",
+  },
+  "title": "Spring",
+}
+`;
