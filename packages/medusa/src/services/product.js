@@ -115,7 +115,7 @@ class ProductService extends BaseService {
     }
   ) {
     const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_,
+      this.productRepository_
     )
     const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
     if (priceIndex >= 0 && config.relations) {
@@ -131,7 +131,7 @@ class ProductService extends BaseService {
       return productRepo.findWithRelations(
         relations,
         raw.map((i) => i.id),
-        query.withDeleted ?? false,
+        query.withDeleted ?? false
       )
     }
 
@@ -170,7 +170,7 @@ class ProductService extends BaseService {
     }
   ) {
     const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_,
+      this.productRepository_
     )
 
     const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
@@ -188,7 +188,7 @@ class ProductService extends BaseService {
       const products = await productRepo.findWithRelations(
         relations,
         raw.map((i) => i.id),
-        query.withDeleted ?? false,
+        query.withDeleted ?? false
       )
       return [products, count]
     }
@@ -221,7 +221,7 @@ class ProductService extends BaseService {
    */
   count(selector = {}) {
     const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_,
+      this.productRepository_
     )
     const query = this.buildQuery_(selector)
     return productRepo.count(query)
@@ -237,7 +237,7 @@ class ProductService extends BaseService {
    */
   async retrieve(productId, config = { include_discount_prices: false }) {
     const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_,
+      this.productRepository_
     )
     const validatedId = this.validateId_(productId)
 
@@ -264,7 +264,7 @@ class ProductService extends BaseService {
     if (!product) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product with id: ${productId} was not found`,
+        `Product with id: ${productId} was not found`
       )
     }
 
@@ -394,7 +394,7 @@ class ProductService extends BaseService {
 
   async listTypes() {
     const productTypeRepository = this.manager_.getCustomRepository(
-      this.productTypeRepository_,
+      this.productTypeRepository_
     )
 
     return await productTypeRepository.find({})
@@ -402,17 +402,17 @@ class ProductService extends BaseService {
 
   async listTagsByUsage(count = 10) {
     const tags = await this.manager_.query(
-        `
-                SELECT ID, O.USAGE_COUNT, PT.VALUE
-                FROM PRODUCT_TAG PT
-                         LEFT JOIN
-                     (SELECT COUNT(*) AS USAGE_COUNT,
-                             PRODUCT_TAG_ID
-                      FROM PRODUCT_TAGS
-                      GROUP BY PRODUCT_TAG_ID) O ON O.PRODUCT_TAG_ID = PT.ID
-                ORDER BY O.USAGE_COUNT DESC
-                LIMIT $1`,
-      [count],
+      `
+      SELECT ID, O.USAGE_COUNT, PT.VALUE
+      FROM PRODUCT_TAG PT
+               LEFT JOIN
+           (SELECT COUNT(*) AS USAGE_COUNT,
+                   PRODUCT_TAG_ID
+            FROM PRODUCT_TAGS
+            GROUP BY PRODUCT_TAG_ID) O ON O.PRODUCT_TAG_ID = PT.ID
+      ORDER BY O.USAGE_COUNT DESC
+      LIMIT $1`,
+      [count]
     )
 
     return tags
@@ -420,7 +420,7 @@ class ProductService extends BaseService {
 
   async upsertProductType_(type) {
     const productTypeRepository = this.manager_.getCustomRepository(
-      this.productTypeRepository_,
+      this.productTypeRepository_
     )
 
     if (type === null || !type?.value) {
@@ -449,7 +449,7 @@ class ProductService extends BaseService {
 
   async upsertProductTags_(tags) {
     const productTagRepository = this.manager_.getCustomRepository(
-      this.productTagRepository_,
+      this.productTagRepository_
     )
 
     const newTags = []
@@ -476,10 +476,10 @@ class ProductService extends BaseService {
    * @return {Promise} resolves to the creation result.
    */
   async create(productObject) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const optionRepo = manager.getCustomRepository(
-        this.productOptionRepository_,
+        this.productOptionRepository_
       )
 
       const { options, tags, type, images, ...rest } = productObject
@@ -536,7 +536,7 @@ class ProductService extends BaseService {
 
   async upsertImages_(images) {
     const imageRepository = this.manager_.getCustomRepository(
-      this.imageRepository_,
+      this.imageRepository_
     )
 
     const productImages = []
@@ -566,10 +566,10 @@ class ProductService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(productId, update) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productVariantRepo = manager.getCustomRepository(
-        this.productVariantRepository_,
+        this.productVariantRepository_
       )
 
       const product = await this.retrieve(productId, {
@@ -617,7 +617,7 @@ class ProductService extends BaseService {
             if (!variant) {
               throw new MedusaError(
                 MedusaError.Types.NOT_FOUND,
-                `Variant with id: ${newVariant.id} is not associated with this product`,
+                `Variant with id: ${newVariant.id} is not associated with this product`
               )
             }
 
@@ -666,13 +666,13 @@ class ProductService extends BaseService {
    * @return {Promise} empty promise
    */
   async delete(productId) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       // Should not fail, if product does not exist, since delete is idempotent
       const product = await productRepo.findOne(
         { id: productId },
-        { relations: ["variants"] },
+        { relations: ["variants"] }
       )
 
       if (!product) {
@@ -700,9 +700,9 @@ class ProductService extends BaseService {
    * @return {Promise} the result of the model update operation
    */
   async addOption(productId, optionTitle) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
-        this.productOptionRepository_,
+        this.productOptionRepository_
       )
 
       const product = await this.retrieve(productId, {
@@ -712,7 +712,7 @@ class ProductService extends BaseService {
       if (product.options.find((o) => o.title === optionTitle)) {
         throw new MedusaError(
           MedusaError.Types.DUPLICATE_ERROR,
-          `An option with the title: ${optionTitle} already exists`,
+          `An option with the title: ${optionTitle} already exists`
         )
       }
 
@@ -739,7 +739,7 @@ class ProductService extends BaseService {
   }
 
   async reorderVariants(productId, variantOrder) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       const product = await this.retrieve(productId, {
@@ -749,7 +749,7 @@ class ProductService extends BaseService {
       if (product.variants.length !== variantOrder.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product variants and new variant order differ in length.`,
+          `Product variants and new variant order differ in length.`
         )
       }
 
@@ -758,7 +758,7 @@ class ProductService extends BaseService {
         if (!variant) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Product has no variant with id: ${vId}`,
+            `Product has no variant with id: ${vId}`
           )
         }
 
@@ -783,7 +783,7 @@ class ProductService extends BaseService {
    * @return {Promise} the result of the update operation
    */
   async reorderOptions(productId, optionOrder) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       const product = await this.retrieve(productId, { relations: ["options"] })
@@ -791,7 +791,7 @@ class ProductService extends BaseService {
       if (product.options.length !== optionOrder.length) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Product options and new options order differ in length.`,
+          `Product options and new options order differ in length.`
         )
       }
 
@@ -800,7 +800,7 @@ class ProductService extends BaseService {
         if (!option) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Product has no option with id: ${oId}`,
+            `Product has no option with id: ${oId}`
           )
         }
 
@@ -824,9 +824,9 @@ class ProductService extends BaseService {
    * @return {Promise} the updated product
    */
   async updateOption(productId, optionId, data) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
-        this.productOptionRepository_,
+        this.productOptionRepository_
       )
 
       const product = await this.retrieve(productId, { relations: ["options"] })
@@ -835,12 +835,12 @@ class ProductService extends BaseService {
 
       const optionExists = product.options.some(
         (o) =>
-          o.title.toUpperCase() === title.toUpperCase() && o.id !== optionId,
+          o.title.toUpperCase() === title.toUpperCase() && o.id !== optionId
       )
       if (optionExists) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `An option with title ${title} already exists`,
+          `An option with title ${title} already exists`
         )
       }
 
@@ -874,9 +874,9 @@ class ProductService extends BaseService {
    * @return {Promise} the updated product
    */
   async deleteOption(productId, optionId) {
-    return this.atomicPhase_(async(manager) => {
+    return this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
-        this.productOptionRepository_,
+        this.productOptionRepository_
       )
 
       const product = await this.retrieve(productId, {
@@ -902,14 +902,14 @@ class ProductService extends BaseService {
       const firstVariant = product.variants[0]
 
       const valueToMatch = firstVariant.options.find(
-        (o) => o.option_id === optionId,
+        (o) => o.option_id === optionId
       ).value
 
       const equalsFirst = await Promise.all(
-        product.variants.map(async(v) => {
+        product.variants.map(async (v) => {
           const option = v.options.find((o) => o.option_id === optionId)
           return option.value === valueToMatch
-        }),
+        })
       )
 
       if (!equalsFirst.every((v) => v)) {
@@ -1025,7 +1025,7 @@ class ProductService extends BaseService {
             .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
             .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
             .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
-        }),
+        })
       )
       .skip(query.skip)
       .take(query.take)
