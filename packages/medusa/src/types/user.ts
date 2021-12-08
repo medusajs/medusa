@@ -1,4 +1,4 @@
-import { User } from "../models/user"
+import { User, UserRoles } from "../models/user"
 import { PartialPick } from "./common"
 
 export interface CreateUserInput {
@@ -7,6 +7,7 @@ export interface CreateUserInput {
   first_name?: string
   last_name?: string
   api_token?: string
+  role?: UserRoles
   metadata?: JSON
 }
 
@@ -16,7 +17,14 @@ export interface UpdateUserInput {
   last_name?: string
   readonly password_hash?: string
   api_token?: string
+  role?: UserRoles
   metadata?: JSON
+}
+
+export enum UserRole {
+  MEMBER = "member",
+  ADMIN = "admin",
+  DEVELOPER = "developer",
 }
 
 export type FilterableUserProps = PartialPick<

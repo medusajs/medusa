@@ -54,6 +54,9 @@ export class Store {
   @Column({ nullable: true })
   payment_link_template: string
 
+  @Column({ nullable: true })
+  invite_link_template: string
+
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
