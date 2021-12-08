@@ -248,19 +248,19 @@ class ShippingOptionService extends BaseService {
           method.price = update.price
         }
 
-        if ("return_id" in update && update.return_id) {
+        if ("return_id" in update && update.return_id !== undefined) {
           method.return_id = update.return_id
         }
 
-        if ("swap_id" in update && update.swap_id) {
+        if ("swap_id" in update && update.swap_id !== undefined) {
           method.swap_id = update.swap_id
         }
 
-        if ("order_id" in update && update.order_id) {
+        if ("order_id" in update && update.order_id !== undefined) {
           method.order_id = update.order_id
         }
 
-        if ("claim_order_id" in update && update.claim_order_id) {
+        if ("claim_order_id" in update && update.claim_order_id !== undefined) {
           method.claim_order_id = update.claim_order_id
         }
 
@@ -315,7 +315,7 @@ class ShippingOptionService extends BaseService {
       )
 
       let methodPrice
-      if ("price" in config && config.price) {
+      if ("price" in config && config.price !== undefined) {
         methodPrice = config.price
       } else {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
@@ -477,7 +477,7 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if ("requirements" in data) {
+      if ("requirements" in data && data.requirements) {
         const acc: ShippingRequirement[] = []
         for (const r of data.requirements) {
           const validated = await this.validateRequirement_(r)
@@ -566,7 +566,7 @@ class ShippingOptionService extends BaseService {
         relations: ["requirements"],
       })
 
-      if ("metadata" in update) {
+      if ("metadata" in update && update.metadata) {
         option.metadata = await this.setMetadata_(option, update.metadata)
       }
 
@@ -577,7 +577,7 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if ("is_return" in update) {
+      if ("is_return" in update && update.is_return !== undefined) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "is_return cannot be changed after creation"

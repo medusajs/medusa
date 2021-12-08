@@ -559,33 +559,35 @@ describe("/admin/orders", () => {
     it("creates a claim with return shipping", async () => {
       const api = useApi()
 
-      const response = await api.post(
-        "/admin/orders/test-order/claims",
-        {
-          type: "replace",
-          claim_items: [
-            {
-              item_id: "test-item",
-              quantity: 1,
-              reason: "production_failure",
-              tags: ["fluff"],
-              images: ["https://test.image.com"],
-            },
-          ],
-          additional_items: [
-            {
-              variant_id: "test-variant",
-              quantity: 1,
-            },
-          ],
-          return_shipping: { option_id: "test-return-option", price: 0 },
-        },
-        {
-          headers: {
-            authorization: "Bearer test_token",
+      const response = await api
+        .post(
+          "/admin/orders/test-order/claims",
+          {
+            type: "replace",
+            claim_items: [
+              {
+                item_id: "test-item",
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant",
+                quantity: 1,
+              },
+            ],
+            return_shipping: { option_id: "test-return-option", price: 0 },
           },
-        }
-      )
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
 

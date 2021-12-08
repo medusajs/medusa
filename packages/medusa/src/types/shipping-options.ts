@@ -27,14 +27,15 @@ export type ShippingOptionUpdate = {
   amount?: number
   name?: string
   admin_only?: boolean
+  is_return?: boolean
   region_id?: string
   provider_id?: string
   requirements?: ShippingOptionRequirement[]
 }
 
 export type CreateShippingMethod = {
-  data: any
-  shipping_option_id: string
+  data?: any
+  shipping_option_id?: string
   price?: number
   return_id?: string
   swap_id?: string
