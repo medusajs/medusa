@@ -631,15 +631,13 @@ describe("/store/carts", () => {
     it("adds no more than 1 shipping method per shipping profile", async () => {
       const api = useApi()
       const addShippingMethod = async (option_id) => {
-        return await api
-          .post(
-            "/store/carts/test-cart/shipping-methods",
-            {
-              option_id,
-            },
-            { withCredentials: true }
-          )
-          .catch((err) => console.log(err))
+        return await api.post(
+          "/store/carts/test-cart/shipping-methods",
+          {
+            option_id,
+          },
+          { withCredentials: true }
+        )
       }
 
       await addShippingMethod("test-option")
