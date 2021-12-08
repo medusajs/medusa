@@ -150,6 +150,9 @@ export class Product {
   @Column({ default: true })
   discountable: boolean
 
+  @Column({ nullable: true })
+  external_id: string
+
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
