@@ -18,10 +18,12 @@ import { ShippingOptionPriceType } from "../models/shipping-option"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import { RetrieveOptions } from "../types/common"
+import { FindConfig, RetrieveOptions } from "../types/common"
 import {
   CreateShippingMethod,
+  CreateShippingMethodDto,
   ShippingMethodUpdate,
+  ShippingOptionUpdate,
   ShippingRequirement,
 } from "../types/shipping-options"
 
@@ -167,14 +169,16 @@ class ShippingOptionService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
-   * @param {object} config - config object
-   * @return {Promise} the result of the find operation
+   * @param {FindConfig<ShippingOption>} config - config object
+   * @return {Promise<ShippingOption[]>} the result of the find operation
    */
   async list(
     selector,
-    config = { skip: 0, take: 50 }
+    config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
-    const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
+    const optRepo: ShippingOptionRepository = this.manager_.getCustomRepository(
+      this.optionRepository_
+    )
 
     const query = this.buildQuery_(selector, config)
     return optRepo.find(query)
@@ -184,7 +188,7 @@ class ShippingOptionService extends BaseService {
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
    * @param {string} optionId - the id of the profile to get.
-   * @param {object} options - the options to get a profile
+   * @param {RetrieveOptions<ShippingOption>} options - the options to get a profile
    * @return {Promise<ShippingOption>} the profile document.
    */
   async retrieve(
@@ -229,7 +233,7 @@ class ShippingOptionService extends BaseService {
     id: string,
     update: ShippingMethodUpdate
   ): Promise<ShippingMethod> {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async (manager: EntityManager) => {
       const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
         this.methodRepository_
       )
@@ -270,8 +274,8 @@ class ShippingOptionService extends BaseService {
    * Removes a given shipping method
    * @param {ShippingMethod} sm - the shipping method to remove
    */
-  async deleteShippingMethod(sm): Promise<ShippingMethod> {
-    return this.atomicPhase_(async (manager) => {
+  async deleteShippingMethod(sm: ShippingMethod): Promise<ShippingMethod> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
       const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
         this.methodRepository_
       )
@@ -288,8 +292,8 @@ class ShippingOptionService extends BaseService {
    */
   async createShippingMethod(
     optionId: string,
-    data: any,
-    config
+    data: object,
+    config: CreateShippingMethodDto
   ): Promise<ShippingMethod> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
@@ -300,27 +304,9 @@ class ShippingOptionService extends BaseService {
         this.methodRepository_
       )
 
-      if ("cart" in config) {
-        this.validateCartOption(option, config.cart || {})
+      if ("cart" in config && config.cart) {
+        this.validateCartOption(option, config.cart)
       }
-
-      // DELETE FROM shipping_method WHERE id in (
-      //   SELECT sm.id FROM shipping_method sm
-      //   LEFT JOIN shipping_option so ON so.id = sm.option_id
-      //   WHERE sm.cart_id = cartId
-      //   HAVING so.profile_id = option.profile_id
-      // )
-
-      // if (config.cart?.id || config.cart_id) {
-      //   methodRepo.deleteCartMethods(
-      //     config.cart?.id || config.cart_id,
-      //     option.profile_id
-      //   )
-      // methodRepo.delete({
-      //   cart_id: config.cart?.id || config.cart_id,
-      //   shipping_option_id: optionId,
-      // })
-      // }
 
       const validatedData = await this.providerService_.validateFulfillmentData(
         option,
@@ -329,7 +315,7 @@ class ShippingOptionService extends BaseService {
       )
 
       let methodPrice
-      if ("price" in config) {
+      if ("price" in config && config.price) {
         methodPrice = config.price
       } else {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
@@ -412,7 +398,7 @@ class ShippingOptionService extends BaseService {
    * match, or when the shipping option requirements are not satisfied.
    * @param {object} option - the option object to check
    * @param {Cart} cart - the cart object to check against
-   * @return {ShippingOption} the validated shipping option
+   * @return {ShippingOption | null} the validated shipping option
    */
   validateCartOption(option, cart: Cart): ShippingOption | null {
     if (option.is_return) {
@@ -533,8 +519,8 @@ class ShippingOptionService extends BaseService {
    * @return {Promise<ShippingOptionPriceType>} the validated price
    */
   async validatePriceType_(
-    priceType,
-    option
+    priceType: ShippingOptionPriceType,
+    option: ShippingOption
   ): Promise<ShippingOptionPriceType> {
     if (
       !priceType ||
@@ -568,10 +554,13 @@ class ShippingOptionService extends BaseService {
    * will throw errors if metadata or product updates are attempted.
    * @param {string} optionId - the id of the option. Must be a string that
    *   can be casted to an ObjectId
-   * @param {object} update - an object with the update values.
-   * @return {Promise} resolves to the update result.
+   * @param {ShippingOptionUpdate} update - an object with the update values.
+   * @return {Promise<ShippingOption>} resolves to the update result.
    */
-  async update(optionId, update): Promise<ShippingOption> {
+  async update(
+    optionId: string,
+    update: ShippingOptionUpdate
+  ): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
@@ -595,7 +584,7 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if ("requirements" in update) {
+      if ("requirements" in update && update.requirements) {
         const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
@@ -639,7 +628,7 @@ class ShippingOptionService extends BaseService {
         option.requirements = acc
       }
 
-      if ("price_type" in update) {
+      if ("price_type" in update && update.price_type) {
         option.price_type = await this.validatePriceType_(
           update.price_type,
           option
@@ -649,19 +638,25 @@ class ShippingOptionService extends BaseService {
         }
       }
 
-      if ("amount" in update && option.price_type !== "calculated") {
+      if (
+        "amount" in update &&
+        update.amount &&
+        option.price_type !== "calculated"
+      ) {
         option.amount = update.amount
       }
 
-      if ("name" in update) {
+      if ("name" in update && update.name) {
         option.name = update.name
       }
 
-      if ("admin_only" in update) {
+      if ("admin_only" in update && update.admin_only) {
         option.admin_only = update.admin_only
       }
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo: ShippingOptionRepository = manager.getCustomRepository(
+        this.optionRepository_
+      )
       const result = await optionRepo.save(option)
       return result
     })
@@ -673,7 +668,7 @@ class ShippingOptionService extends BaseService {
    *   castable as an ObjectId
    * @return {Promise} the result of the delete operation.
    */
-  async delete(optionId: string): Promise<any> {
+  async delete(optionId: string): Promise<ShippingOption | void> {
     try {
       const option = await this.retrieve(optionId)
 
@@ -752,7 +747,7 @@ class ShippingOptionService extends BaseService {
   async decorate(
     optionId,
     fields: (keyof ShippingOption)[] = [],
-    expandFields: string[] = []
+    expandFields: (keyof ShippingOption)[] = []
   ): Promise<ShippingOption> {
     const requiredFields: (keyof ShippingOption)[] = ["id", "metadata"]
 
@@ -768,9 +763,9 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Dedicated method to set metadata for a shipping option.
-   * @param {object} option - the option to set metadata for.
+   * @param {ShippingOption} option - the option to set metadata for.
    * @param {object} metadata - object for metadata field
-   * @return {Promise} resolves to the updated result.
+   * @return {Promise<object>} resolves to the updated result.
    */
   async setMetadata_(option, metadata): Promise<object> {
     const existing = option.metadata || {}
@@ -808,7 +803,7 @@ class ShippingOptionService extends BaseService {
   async getPrice_(
     option: ShippingOption,
     data: object,
-    cart: Cart | Order
+    cart: Cart | Order | undefined
   ): Promise<number | null> {
     if (option.price_type === "calculated") {
       return this.providerService_.calculatePrice(option, data, cart)
