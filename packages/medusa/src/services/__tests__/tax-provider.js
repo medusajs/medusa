@@ -52,7 +52,7 @@ describe("TaxProviderService", () => {
       manager: MockManager,
       taxLineRepository: MockRepository({ create: (d) => d }),
       systemTaxService: {
-        calculateLineItemTaxes: mockCalculateLineItemTaxes,
+        getTaxLines: mockCalculateLineItemTaxes,
       },
     }
 

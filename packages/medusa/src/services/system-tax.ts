@@ -14,7 +14,7 @@ class SystemTaxService extends BaseService implements ITaxService {
     super()
   }
 
-  async calculateLineItemTaxes(
+  async getTaxLines(
     lines: TaxCalculationLine[],
     context: TaxCalculationContext // eslint-disable-line
   ): Promise<ProviderTaxLine[]> {

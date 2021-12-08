@@ -90,7 +90,7 @@ class TaxProviderService extends BaseService {
     )
 
     const taxProvider = this.retrieveProvider(calculationContext.region)
-    const providerLines = await taxProvider.calculateLineItemTaxes(
+    const providerLines = await taxProvider.getTaxLines(
       calculationLines,
       calculationContext
     )
