@@ -33,7 +33,7 @@ If you want to jump straight to the code for this series you can checkout:
 
 ## Prerequisites
 
-> For a full guide to how to set up your development environment for Medusa please see [the tutorial](https://docs.medusa-commerce.com/tutorials/set-up-your-development-environment)
+> For a full guide to how to set up your development environment for Medusa please see [the tutorial](https://docs.medusajs.com/tutorials/set-up-your-development-environment)
 
 In order to get you started with your Gatsby, Contentful, Medusa store you must complete a couple of installations:
 
@@ -142,7 +142,7 @@ module.exports = {
 
 #### `/src`
 
-In the `/src` directory there are 4 special subdirectories that are added for you already. These special directories can be used to add custom functionality to your store. Custom functionality can include custom endpoints (configured in `/api`), custom business logic (configured in `/services`), pub/sub-like subscriptions for asyncrhonous integration tasks (configured in `/subscribers`) and finally loader functions to be called when your Medusa server starts up (configured in `/loaders`). If you want to learn more about how to add custom functionality you can checkout [the tutorial](https://docs.medusa-commerce.com/tutorials/adding-custom-functionality).
+In the `/src` directory there are 4 special subdirectories that are added for you already. These special directories can be used to add custom functionality to your store. Custom functionality can include custom endpoints (configured in `/api`), custom business logic (configured in `/services`), pub/sub-like subscriptions for asyncrhonous integration tasks (configured in `/subscribers`) and finally loader functions to be called when your Medusa server starts up (configured in `/loaders`). If you want to learn more about how to add custom functionality you can checkout [the tutorial](https://docs.medusajs.com/tutorials/adding-custom-functionality).
 
 #### `/data`
 

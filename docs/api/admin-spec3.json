@@ -145,6 +145,187 @@
         }
       }
     },
+    "/customers": {
+      "post": {
+        "operationId": "PostCustomers",
+        "summary": "Create a Customer",
+        "description": "Creates a Customer.",
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "first_name",
+                  "last_name"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email address."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "operationId": "GetCustomersCustomer",
+        "summary": "Retrieve a Customer",
+        "description": "Retrieves a Customer.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomersCustomer",
+        "summary": "Update a Customer",
+        "description": "Updates a Customer.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email. Only providable if user not registered."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "description": "The Customer's phone number.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/collections": {
       "post": {
         "operationId": "PostCollections",
@@ -348,703 +529,6 @@
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers": {
-      "post": {
-        "operationId": "PostCustomers",
-        "summary": "Create a Customer",
-        "description": "Creates a Customer.",
-        "parameters": [],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "first_name",
-                  "last_name"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email address."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/{id}": {
-      "get": {
-        "operationId": "GetCustomersCustomer",
-        "summary": "Retrieve a Customer",
-        "description": "Retrieves a Customer.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomersCustomer",
-        "summary": "Update a Customer",
-        "description": "Updates a Customer.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "description": "The Customer's phone number.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders": {
-      "post": {
-        "operationId": "PostDraftOrders",
-        "summary": "Create a Draft Order",
-        "description": "Creates a Draft Order",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "status": {
-                    "description": "The status of the draft order",
-                    "type": "string"
-                  },
-                  "email": {
-                    "description": "The email of the customer of the draft order",
-                    "type": "string"
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "variant_id": {
-                          "description": "The id of the Product Variant to generate the Line Item from.",
-                          "type": "string"
-                        },
-                        "unit_price": {
-                          "description": "The potential custom price of the item.",
-                          "type": "integer"
-                        },
-                        "title": {
-                          "description": "The potential custom title of the item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        },
-                        "metadata": {
-                          "description": "The optional key-value map with additional details about the Line Item.",
-                          "type": "object"
-                        }
-                      }
-                    }
-                  },
-                  "region_id": {
-                    "description": "The id of the region for the draft order",
-                    "type": "string"
-                  },
-                  "discounts": {
-                    "description": "The discounts to add on the draft order",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "code": {
-                          "description": "The code of the discount to apply",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "customer_id": {
-                    "description": "The id of the customer to add on the draft order",
-                    "type": "string"
-                  },
-                  "no_notification_order": {
-                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
-                    "type": "boolean"
-                  },
-                  "shipping_methods": {
-                    "description": "The shipping methods for the draft order",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "option_id": {
-                          "description": "The id of the shipping option in use",
-                          "type": "string"
-                        },
-                        "data": {
-                          "description": "The optional additional data needed for the shipping method",
-                          "type": "object"
-                        },
-                        "price": {
-                          "description": "The potential custom price of the shipping",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "metadata": {
-                    "description": "The optional key-value map with additional details about the Draft Order.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetDraftOrders",
-        "summary": "List Draft Orders",
-        "description": "Retrieves an list of Draft Orders",
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}/line-items": {
-      "post": {
-        "operationId": "PostDraftOrdersDraftOrderLineItems",
-        "summary": "Create a Line Item for Draft Order",
-        "description": "Creates a Line Item for the Draft Order",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "variant_id": {
-                    "description": "The id of the Product Variant to generate the Line Item from.",
-                    "type": "string"
-                  },
-                  "unit_price": {
-                    "description": "The potential custom price of the item.",
-                    "type": "integer"
-                  },
-                  "title": {
-                    "description": "The potential custom title of the item.",
-                    "type": "string"
-                  },
-                  "quantity": {
-                    "description": "The quantity of the Line Item.",
-                    "type": "integer"
-                  },
-                  "metadata": {
-                    "description": "The optional key-value map with additional details about the Line Item.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}": {
-      "delete": {
-        "operationId": "DeleteDraftOrdersDraftOrder",
-        "summary": "Delete a Draft Order",
-        "description": "Deletes a Draft Order",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Draft Order."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetDraftOrdersDraftOrder",
-        "summary": "Retrieve a Draft Order",
-        "description": "Retrieves a Draft Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}/line-items/{line_id}": {
-      "delete": {
-        "operationId": "DeleteDraftOrdersDraftOrderLineItemsItem",
-        "summary": "Delete a Line Item",
-        "description": "Removes a Line Item from a Draft Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "line_id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostDraftOrdersDraftOrderLineItemsItem",
-        "summary": "Update a Line Item for a Draft Order",
-        "description": "Updates a Line Item for a Draft Order",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "unit_price": {
-                    "description": "The potential custom price of the item.",
-                    "type": "integer"
-                  },
-                  "title": {
-                    "description": "The potential custom title of the item.",
-                    "type": "string"
-                  },
-                  "quantity": {
-                    "description": "The quantity of the Line Item.",
-                    "type": "integer"
-                  },
-                  "metadata": {
-                    "description": "The optional key-value map with additional details about the Line Item.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}/register-payment": {
-      "post": {
-        "summary": "Registers a payment for a Draft Order",
-        "operationId": "PostDraftOrdersDraftOrderRegisterPayment",
-        "description": "Registers a payment for a Draft Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The Draft Order id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/draft-orders/{id}": {
-      "post": {
-        "operationId": "PostDraftOrdersDraftOrder",
-        "summary": "Update a Draft Order\"",
-        "description": "Updates a Draft Order.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "region_id": {
-                    "type": "string",
-                    "description": "The id of the Region to create the Draft Order in."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "An email to be used on the Draft Order."
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "discounts": {
-                    "description": "An array of Discount codes to add to the Draft Order.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Discount is identifed by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "no_notification_order": {
-                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
-                    "type": "boolean"
-                  },
-                  "customer_id": {
-                    "description": "The id of the Customer to associate the Draft Order with.",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
                     }
                   }
                 }
@@ -1599,6 +1083,526 @@
         }
       }
     },
+    "/draft-orders": {
+      "post": {
+        "operationId": "PostDraftOrders",
+        "summary": "Create a Draft Order",
+        "description": "Creates a Draft Order",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "status": {
+                    "description": "The status of the draft order",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "The email of the customer of the draft order",
+                    "type": "string"
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "The Address to be used for shipping.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "items": {
+                    "description": "The Line Items that have been received.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "variant_id": {
+                          "description": "The id of the Product Variant to generate the Line Item from.",
+                          "type": "string"
+                        },
+                        "unit_price": {
+                          "description": "The potential custom price of the item.",
+                          "type": "integer"
+                        },
+                        "title": {
+                          "description": "The potential custom title of the item.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        },
+                        "metadata": {
+                          "description": "The optional key-value map with additional details about the Line Item.",
+                          "type": "object"
+                        }
+                      }
+                    }
+                  },
+                  "region_id": {
+                    "description": "The id of the region for the draft order",
+                    "type": "string"
+                  },
+                  "discounts": {
+                    "description": "The discounts to add on the draft order",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "code": {
+                          "description": "The code of the discount to apply",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "customer_id": {
+                    "description": "The id of the customer to add on the draft order",
+                    "type": "string"
+                  },
+                  "no_notification_order": {
+                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
+                    "type": "boolean"
+                  },
+                  "shipping_methods": {
+                    "description": "The shipping methods for the draft order",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "option_id": {
+                          "description": "The id of the shipping option in use",
+                          "type": "string"
+                        },
+                        "data": {
+                          "description": "The optional additional data needed for the shipping method",
+                          "type": "object"
+                        },
+                        "price": {
+                          "description": "The potential custom price of the shipping",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "description": "The optional key-value map with additional details about the Draft Order.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetDraftOrders",
+        "summary": "List Draft Orders",
+        "description": "Retrieves an list of Draft Orders",
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draft-orders/{id}/line-items": {
+      "post": {
+        "operationId": "PostDraftOrdersDraftOrderLineItems",
+        "summary": "Create a Line Item for Draft Order",
+        "description": "Creates a Line Item for the Draft Order",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "variant_id": {
+                    "description": "The id of the Product Variant to generate the Line Item from.",
+                    "type": "string"
+                  },
+                  "unit_price": {
+                    "description": "The potential custom price of the item.",
+                    "type": "integer"
+                  },
+                  "title": {
+                    "description": "The potential custom title of the item.",
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "description": "The quantity of the Line Item.",
+                    "type": "integer"
+                  },
+                  "metadata": {
+                    "description": "The optional key-value map with additional details about the Line Item.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draft-orders/{id}": {
+      "delete": {
+        "operationId": "DeleteDraftOrdersDraftOrder",
+        "summary": "Delete a Draft Order",
+        "description": "Deletes a Draft Order",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Draft Order."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetDraftOrdersDraftOrder",
+        "summary": "Retrieve a Draft Order",
+        "description": "Retrieves a Draft Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draft-orders/{id}/line-items/{line_id}": {
+      "delete": {
+        "operationId": "DeleteDraftOrdersDraftOrderLineItemsItem",
+        "summary": "Delete a Line Item",
+        "description": "Removes a Line Item from a Draft Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "line_id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostDraftOrdersDraftOrderLineItemsItem",
+        "summary": "Update a Line Item for a Draft Order",
+        "description": "Updates a Line Item for a Draft Order",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "unit_price": {
+                    "description": "The potential custom price of the item.",
+                    "type": "integer"
+                  },
+                  "title": {
+                    "description": "The potential custom title of the item.",
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "description": "The quantity of the Line Item.",
+                    "type": "integer"
+                  },
+                  "metadata": {
+                    "description": "The optional key-value map with additional details about the Line Item.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draft-orders/{id}/register-payment": {
+      "post": {
+        "summary": "Registers a payment for a Draft Order",
+        "operationId": "PostDraftOrdersDraftOrderRegisterPayment",
+        "description": "Registers a payment for a Draft Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The Draft Order id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/draft-orders/{id}": {
+      "post": {
+        "operationId": "PostDraftOrdersDraftOrder",
+        "summary": "Update a Draft Order\"",
+        "description": "Updates a Draft Order.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "region_id": {
+                    "type": "string",
+                    "description": "The id of the Region to create the Draft Order in."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "An email to be used on the Draft Order."
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "The Address to be used for shipping.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "discounts": {
+                    "description": "An array of Discount codes to add to the Draft Order.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Discount is identifed by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "no_notification_order": {
+                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
+                    "type": "boolean"
+                  },
+                  "customer_id": {
+                    "description": "The id of the Customer to associate the Draft Order with.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/gift-cards": {
       "post": {
         "operationId": "PostGiftCards",
@@ -1835,6 +1839,207 @@
         }
       }
     },
+    "/notes": {
+      "post": {
+        "operationId": "PostNotes",
+        "summary": "Creates a Note",
+        "description": "Creates a Note which can be associated with any resource as required.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "resource_id": {
+                    "type": "string",
+                    "description": "The id of the resource which the Note relates to."
+                  },
+                  "resource_type": {
+                    "type": "string",
+                    "description": "The type of resource which the Note relates to."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The content of the Note to create."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Note"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "note": {
+                      "$ref": "#/components/schemas/note"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetNotes",
+        "summary": "List Notes",
+        "description": "Retrieves a list of notes",
+        "tags": [
+          "Note"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "notes": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/note"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notes/{id}": {
+      "delete": {
+        "operationId": "DeleteNotesNote",
+        "summary": "Deletes a Note",
+        "description": "Deletes a Note.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Note to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Note"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Note."
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether or not the Note was deleted."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetNoteNote",
+        "summary": "Get Note",
+        "description": "Retrieves a single note using its id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the note to retrieve.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Note"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "note": {
+                      "$ref": "#/components/schemas/note"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostNotesNote",
+        "summary": "Updates a Note",
+        "description": "Updates a Note associated with some resource",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Note to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "value": {
+                    "type": "string",
+                    "description": "The updated description of the Note."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Note"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "note": {
+                      "$ref": "#/components/schemas/note"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/notifications": {
       "get": {
         "operationId": "GetNotifications",
@@ -1966,6 +2171,208 @@
         }
       }
     },
+    "/orders/{id}/claims/{claim_id}/cancel": {
+      "post": {
+        "operationId": "PostOrdersClaimCancel",
+        "summary": "Cancels a Claim",
+        "description": "Cancels a Claim",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "claim_id",
+            "required": true,
+            "description": "The id of the Claim.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Claim"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/claim_order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel": {
+      "post": {
+        "operationId": "PostOrdersClaimFulfillmentsCancel",
+        "summary": "Cancels a fulfilmment related to a Claim",
+        "description": "Registers a Fulfillment as canceled.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order which the Claim relates to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "claim_id",
+            "required": true,
+            "description": "The id of the Claim which the Fulfillment relates to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "fulfillment_id",
+            "required": true,
+            "description": "The id of the Fulfillment.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Fulfillment"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "fulfillment": {
+                      "$ref": "#/components/schemas/fulfillment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel": {
+      "post": {
+        "operationId": "PostOrdersSwapFulfillmentsCancel",
+        "summary": "Cancels a fulfilmment related to a Swap",
+        "description": "Registers a Fulfillment as canceled.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order which the Swap relates to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "swap_id",
+            "required": true,
+            "description": "The id of the Swap which the Fulfillment relates to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "fulfillment_id",
+            "required": true,
+            "description": "The id of the Fulfillment.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Fulfillment"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "fulfillment": {
+                      "$ref": "#/components/schemas/fulfillment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/fulfillments/{fulfillment_id}/cancel": {
+      "post": {
+        "operationId": "PostOrdersOrderFulfillmentsCancel",
+        "summary": "Cancels a fulfilmment",
+        "description": "Registers a Fulfillment as canceled.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order which the Fulfillment relates to.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "fulfillment_id",
+            "required": true,
+            "description": "The id of the Fulfillment",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Fulfillment"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "fulfillment": {
+                      "$ref": "#/components/schemas/fulfillment"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/{id}/cancel": {
       "post": {
         "operationId": "PostOrdersOrderCancel",
@@ -1994,6 +2401,52 @@
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/swaps/{swap_id}/cancel": {
+      "post": {
+        "operationId": "PostOrdersSwapCancel",
+        "summary": "Cancels a Swap",
+        "description": "Cancels a Swap",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "swap_id",
+            "required": true,
+            "description": "The id of the Swap.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Swap"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/swap"
                     }
                   }
                 }
@@ -2542,8 +2995,28 @@
                       }
                     }
                   },
+                  "custom_shipping_options": {
+                    "description": "The custom shipping options to potentially create a Shipping Method from.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "option_id": {
+                          "description": "The id of the Shipping Option to override with a custom price.",
+                          "type": "string"
+                        },
+                        "price": {
+                          "description": "The custom price of the Shipping Option.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
                   "no_notification": {
                     "description": "If set to true no notification will be send related to this Swap.",
+                    "type": "boolean"
+                  },
+                  "allow_backorder": {
+                    "description": "If true, swaps can be completed with items out of stock",
                     "type": "boolean"
                   }
                 }
@@ -5181,6 +5654,51 @@
         }
       }
     },
+    "/return-reason/{id}": {
+      "delete": {
+        "operationId": "DeleteReturnReason",
+        "summary": "Delete a return reason",
+        "description": "Deletes a return reason.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the return reason",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return Reason"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted return reason"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/return-reasons/{id}": {
       "get": {
         "operationId": "GetReturnReasonsReason",
@@ -5270,102 +5788,6 @@
                   "properties": {
                     "return_reason": {
                       "$ref": "#/components/schemas/return_reason"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns": {
-      "get": {
-        "operationId": "GetReturns",
-        "summary": "List Returns",
-        "description": "Retrieves a list of Returns",
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "returns": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/return"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns/{id}receive": {
-      "post": {
-        "operationId": "PostReturnsReturnReceive",
-        "summary": "Receive a Return",
-        "description": "Registers a Return as received. Updates statuses on Orders and Swaps accordingly.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Return.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "refund": {
-                    "description": "The amount to refund.",
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "return": {
-                      "$ref": "#/components/schemas/return"
                     }
                   }
                 }
@@ -6110,6 +6532,139 @@
           }
         }
       }
+    },
+    "/returns/{id}/cancel": {
+      "post": {
+        "operationId": "PostReturnsReturnCancel",
+        "summary": "Cancel a Return",
+        "description": "Registers a Return as canceled.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns": {
+      "get": {
+        "operationId": "GetReturns",
+        "summary": "List Returns",
+        "description": "Retrieves a list of Returns",
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "returns": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns/{id}/receive": {
+      "post": {
+        "operationId": "PostReturnsReturnReceive",
+        "summary": "Receive a Return",
+        "description": "Registers a Return as received. Updates statuses on Orders and Swaps accordingly.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "items": {
+                    "description": "The Line Items that have been received.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "refund": {
+                    "description": "The amount to refund.",
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return": {
+                      "$ref": "#/components/schemas/return"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -6458,6 +7013,11 @@
             "description": "The amount that will be refunded in conjunction with the claim",
             "type": "integer"
           },
+          "canceled_at": {
+            "description": "The date with timezone at which the Swap was canceled.",
+            "type": "string",
+            "format": "date-time"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time"
@@ -6564,6 +7124,56 @@
           "name": {
             "description": "The written name of the currency",
             "type": "string"
+          }
+        }
+      },
+      "custom_shipping_option": {
+        "title": "Custom Shipping Option",
+        "description": "Custom Shipping Options are 'overriden' Shipping Options. Store managers can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option",
+        "x-resourceId": "custom_shipping_option",
+        "properties": {
+          "id": {
+            "description": "The id of the Custom Shipping Option. This value will be prefixed with `cso_`.",
+            "type": "string"
+          },
+          "price": {
+            "description": "The custom price set that will override the shipping option's original price",
+            "type": "integer"
+          },
+          "shipping_option_id": {
+            "description": "The id of the Shipping Option that the custom shipping option overrides",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/shipping_option"
+              }
+            ]
+          },
+          "cart_id": {
+            "description": "The id of the Cart that the custom shipping option is attached to",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/cart"
+              }
+            ]
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
           }
         }
       },
@@ -7242,6 +7852,56 @@
             "description": "The date with timezone at which the resource was deleted.",
             "type": "string",
             "format": "date-time"
+          }
+        }
+      },
+      "note": {
+        "title": "Note",
+        "description": "Notes are elements which we can use in association with different resources to allow users to describe additional information in relation to these.",
+        "x-resourceId": "note",
+        "properties": {
+          "id": {
+            "description": "The id of the Note. This value will be prefixed by `note_`.",
+            "type": "string"
+          },
+          "resource_type": {
+            "description": "The type of resource that the Note refers to.",
+            "type": "string"
+          },
+          "resource_id": {
+            "description": "The id of the resource that the Note refers to.",
+            "type": "string"
+          },
+          "value": {
+            "description": "The contents of the note.",
+            "type": "string"
+          },
+          "author": {
+            "description": "The author of the note.",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/user"
+              }
+            ]
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
           }
         }
       },
@@ -8824,6 +9484,10 @@
             "description": "The id of the Cart that the Customer will use to confirm the Swap.",
             "type": "string"
           },
+          "allow_backorder": {
+            "description": "If true, swaps can be completed with items out of stock",
+            "type": "boolean"
+          },
           "confirmed_at": {
             "description": "The date with timezone at which the Swap was confirmed by the Customer.",
             "type": "string",
@@ -8836,6 +9500,11 @@
           },
           "updated_at": {
             "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "canceled_at": {
+            "description": "The date with timezone at which the Swap was canceled.",
             "type": "string",
             "format": "date-time"
           },

@@ -13,6 +13,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
 const cartSeeder = require("../../helpers/cart-seeder")
+const productSeeder = require("../../helpers/product-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
 
 jest.setTimeout(30000)
@@ -86,6 +87,39 @@ describe("/store/carts", () => {
           "A region is required to create a cart"
         )
       }
+    })
+
+    it("creates a cart with items", async () => {
+      await productSeeder(dbConnection)
+      const api = useApi()
+
+      const response = await api.post("/store/carts", {
+        items: [
+          {
+            variant_id: "test-variant_1",
+            quantity: 1,
+          },
+          {
+            variant_id: "test-variant_2",
+            quantity: 2,
+          },
+        ],
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          variant_id: "test-variant_1",
+          quantity: 1,
+        }),
+        expect.objectContaining({
+          variant_id: "test-variant_2",
+          quantity: 2,
+        }),
+      ])
+
+      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      expect(getRes.status).toEqual(200)
     })
 
     it("creates a cart with country", async () => {
@@ -378,7 +412,7 @@ describe("/store/carts", () => {
         expect(e.response.status).toBe(409)
       }
 
-      //check to see if payment has been cancelled and cart is not completed
+      // check to see if payment has been cancelled and cart is not completed
       const res = await api.get(`/store/carts/test-cart-2`)
       expect(res.data.cart.payment.canceled_at).not.toBe(null)
       expect(res.data.cart.completed_at).toBe(null)
@@ -414,7 +448,7 @@ describe("/store/carts", () => {
         expect(e.response.status).toBe(409)
       }
 
-      //check to see if payment has been cancelled and cart is not completed
+      // check to see if payment has been cancelled and cart is not completed
       const res = await api.get(`/store/carts/swap-cart`)
       expect(res.data.cart.payment_authorized_at).toBe(null)
       expect(res.data.cart.payment.canceled_at).not.toBe(null)
@@ -450,7 +484,7 @@ describe("/store/carts", () => {
         console.log(error)
       }
 
-      //check to see if payment is authorized and cart is completed
+      // check to see if payment is authorized and cart is completed
       const res = await api.get(`/store/carts/swap-cart`)
       expect(res.data.cart.payment_authorized_at).not.toBe(null)
       expect(res.data.cart.completed_at).not.toBe(null)
@@ -477,7 +511,7 @@ describe("/store/carts", () => {
           type: "swap",
         })
 
-        let cartWithCustomSo = await manager.save(_cart)
+        const cartWithCustomSo = await manager.save(_cart)
 
         await manager.insert(CustomShippingOption, {
           id: "another-cso-test",
@@ -683,7 +717,7 @@ describe("/store/carts", () => {
     it("updates empty cart.customer_id on cart retrieval", async () => {
       const api = useApi()
 
-      let customer = await api.post(
+      const customer = await api.post(
         "/store/customers",
         {
           email: "oli@test.dk",
@@ -712,7 +746,7 @@ describe("/store/carts", () => {
     it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {
       const api = useApi()
 
-      let customer = await api.post(
+      const customer = await api.post(
         "/store/customers",
         {
           email: "oli@test.dk",
@@ -743,5 +777,60 @@ describe("/store/carts", () => {
       expect(response.data.cart.customer_id).toEqual(customer.data.customer.id)
       expect(response.status).toEqual(200)
     })
+  })
+
+  describe("shipping address + region updates", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("updates region only - single to multipe countries", async () => {
+      const api = useApi()
+
+      const { data, status } = await api
+        .post(`/store/carts/test-cart`, {
+          region_id: `test-region-multiple`,
+        })
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.cart.region_id).toEqual("test-region-multiple")
+      expect(data.cart.shipping_address).toMatchSnapshot({
+        id: expect.any(String),
+        country_code: null,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+
+    it("updates region only - single to multipe countries", async () => {
+      const api = useApi()
+
+      const { data, status } = await api
+        .post(`/store/carts/test-cart`, {
+          shipping_address: null,
+        })
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.cart.shipping_address).toEqual(null)
+    })
+
+    // it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {})
   })
 })

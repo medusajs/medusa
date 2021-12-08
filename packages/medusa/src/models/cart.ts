@@ -83,37 +83,33 @@
  */
 
 import {
-  Entity,
+  AfterLoad,
   BeforeInsert,
-  Index,
   Column,
-  DeleteDateColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  DeleteDateColumn,
+  Entity,
+  Index,
   JoinColumn,
   JoinTable,
-  AfterLoad,
-  Timestamp,
-  BeforeUpdate,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-
-import { Region } from "./region"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Address } from "./address"
-import { LineItem } from "./line-item"
-import { Discount } from "./discount"
 import { Customer } from "./customer"
-import { PaymentSession } from "./payment-session"
-import { Payment } from "./payment"
+import { Discount } from "./discount"
 import { GiftCard } from "./gift-card"
+import { LineItem } from "./line-item"
+import { Payment } from "./payment"
+import { PaymentSession } from "./payment-session"
+import { Region } from "./region"
 import { ShippingMethod } from "./shipping-method"
-import { CustomShippingOption } from "./custom-shipping-option"
 
 export enum CartType {
   DEFAULT = "default",
@@ -149,13 +145,11 @@ export class Cart {
     cascade: ["insert", "remove", "soft-remove"],
   })
   @JoinColumn({ name: "shipping_address_id" })
-  shipping_address: Address
+  shipping_address: Address | null
 
-  @OneToMany(
-    () => LineItem,
-    lineItem => lineItem.cart,
-    { cascade: ["insert", "remove"] }
-  )
+  @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
+    cascade: ["insert", "remove"],
+  })
   items: LineItem[]
 
   @Index()
@@ -178,7 +172,7 @@ export class Cart {
       referencedColumnName: "id",
     },
   })
-  discounts: Discount
+  discounts: Discount[]
 
   @ManyToMany(() => GiftCard)
   @JoinTable({
@@ -192,7 +186,7 @@ export class Cart {
       referencedColumnName: "id",
     },
   })
-  gift_cards: GiftCard
+  gift_cards: GiftCard[]
 
   @Index()
   @Column({ nullable: true })
@@ -202,13 +196,11 @@ export class Cart {
   @JoinColumn({ name: "customer_id" })
   customer: Customer
 
-  payment_session: PaymentSession
+  payment_session: PaymentSession | null
 
-  @OneToMany(
-    () => PaymentSession,
-    paymentSession => paymentSession.cart,
-    { cascade: true }
-  )
+  @OneToMany(() => PaymentSession, (paymentSession) => paymentSession.cart, {
+    cascade: true,
+  })
   payment_sessions: PaymentSession[]
 
   @Index()
@@ -219,15 +211,13 @@ export class Cart {
   @JoinColumn({ name: "payment_id" })
   payment: Payment
 
-  @OneToMany(
-    () => ShippingMethod,
-    method => method.cart,
-    { cascade: ["soft-remove", "remove"] }
-  )
+  @OneToMany(() => ShippingMethod, (method) => method.cart, {
+    cascade: ["soft-remove", "remove"],
+  })
   shipping_methods: ShippingMethod[]
 
   @DbAwareColumn({ type: "enum", enum: CartType, default: "default" })
-  type: boolean
+  type: CartType
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at: Date
@@ -253,27 +243,28 @@ export class Cart {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   context: any
 
-  // Total fields
-  shipping_total: number
-  discount_total: number
-  tax_total: number
-  refunded_total: number
-  total: number
-  subtotal: number
-  refundable_amount: number
-  gift_card_total: number
+  shipping_total?: number
+  discount_total?: number
+  tax_total?: number
+  refunded_total?: number
+  total?: number
+  subtotal?: number
+  refundable_amount?: number
+  gift_card_total?: number
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): undefined | void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `cart_${id}`
   }
 
   @AfterLoad()
-  private afterLoad() {
+  private afterLoad(): void {
     if (this.payment_sessions) {
-      this.payment_session = this.payment_sessions.find(p => p.is_selected)
+      this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
     }
   }
 }

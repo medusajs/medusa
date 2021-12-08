@@ -1,20 +1,19 @@
-import { Router } from "express"
 import cors from "cors"
-
+import { Router } from "express"
 import middlewares from "../../middlewares"
-
 import authRoutes from "./auth"
-import productRoutes from "./products"
 import cartRoutes from "./carts"
-import orderRoutes from "./orders"
+import collectionRoutes from "./collections"
 import customerRoutes from "./customers"
-import shippingOptionRoutes from "./shipping-options"
+import giftCardRoutes from "./gift-cards"
+import orderRoutes from "./orders"
+import productRoutes from "./products"
 import regionRoutes from "./regions"
-import returnRoutes from "./returns"
 import returnReasonRoutes from "./return-reasons"
+import returnRoutes from "./returns"
+import shippingOptionRoutes from "./shipping-options"
 import swapRoutes from "./swaps"
 import variantRoutes from "./variants"
-import giftCardRoutes from "./gift-cards"
 
 const route = Router()
 
@@ -32,6 +31,7 @@ export default (app, container, config) => {
   route.use(middlewares.authenticateCustomer())
 
   authRoutes(route)
+  collectionRoutes(route)
   customerRoutes(route, container)
   productRoutes(route)
   orderRoutes(route)

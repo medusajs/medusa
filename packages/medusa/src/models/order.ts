@@ -1,44 +1,43 @@
 import {
-  Entity,
-  Generated,
   BeforeInsert,
-  Index,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Generated,
+  Index,
   JoinColumn,
   JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import {
-  resolveDbType,
-  resolveDbGenerationStrategy,
   DbAwareColumn,
+  resolveDbGenerationStrategy,
+  resolveDbType,
 } from "../utils/db-aware-column"
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
-
 import { Address } from "./address"
-import { LineItem } from "./line-item"
+import { Cart } from "./cart"
+import { ClaimOrder } from "./claim-order"
 import { Currency } from "./currency"
 import { Customer } from "./customer"
-import { Region } from "./region"
 import { Discount } from "./discount"
+import { DraftOrder } from "./draft-order"
+import { Fulfillment } from "./fulfillment"
 import { GiftCard } from "./gift-card"
 import { GiftCardTransaction } from "./gift-card-transaction"
+import { LineItem } from "./line-item"
 import { Payment } from "./payment"
-import { Cart } from "./cart"
-import { Fulfillment } from "./fulfillment"
-import { Return } from "./return"
 import { Refund } from "./refund"
-import { Swap } from "./swap"
-import { ClaimOrder } from "./claim-order"
+import { Region } from "./region"
+import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
-import { DraftOrder } from "./draft-order"
+import { Swap } from "./swap"
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -143,7 +142,7 @@ export class Order {
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
   currency: Currency
 
-  @Column({ type: "int" })
+  @Column({ type: "real" })
   tax_rate: number
 
   @ManyToMany(() => Discount, { cascade: ["insert"] })
@@ -177,7 +176,9 @@ export class Order {
   @OneToMany(
     () => ShippingMethod,
     method => method.order,
-    { cascade: ["insert"] }
+    {
+      cascade: ["insert"],
+    }
   )
   shipping_methods: ShippingMethod[]
 
@@ -191,7 +192,9 @@ export class Order {
   @OneToMany(
     () => Fulfillment,
     fulfillment => fulfillment.order,
-    { cascade: ["insert"] }
+    {
+      cascade: ["insert"],
+    }
   )
   fulfillments: Fulfillment[]
 
@@ -233,7 +236,9 @@ export class Order {
   @OneToMany(
     () => LineItem,
     lineItem => lineItem.order,
-    { cascade: ["insert"] }
+    {
+      cascade: ["insert"],
+    }
   )
   items: LineItem[]
 
@@ -256,7 +261,7 @@ export class Order {
   metadata: any
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: Boolean
+  no_notification: boolean
 
   @Column({ nullable: true })
   idempotency_key: string
@@ -276,14 +281,18 @@ export class Order {
   gift_card_total: number
 
   @BeforeInsert()
-  private async beforeInsert() {
+  private async beforeInsert(): Promise<void> {
     if (!this.id) {
       const id = ulid()
       this.id = `order_${id}`
     }
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
-      this.display_id = await manualAutoIncrement("order")
+      const disId = await manualAutoIncrement("order")
+
+      if (disId) {
+        this.display_id = disId
+      }
     }
   }
 }
@@ -333,7 +342,7 @@ export class Order {
  *   currency_code:
  *     type: string
  *   tax_rate:
- *     type: integer
+ *     type: number
  *   discounts:
  *     type: array
  *     items:

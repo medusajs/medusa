@@ -104,7 +104,7 @@ class LineItemService extends BaseService {
       let price
       let shouldMerge = true
 
-      if (config.unit_price && typeof config.unit_price !== `undefined`) {
+      if (config.unit_price !== undefined && config.unit_price !== null) {
         // if custom unit_price, we ensure positive values
         // and we choose to not merge the items
         shouldMerge = false
