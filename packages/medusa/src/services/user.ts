@@ -82,11 +82,12 @@ class UserService extends BaseService {
 
   /**
    * @param {FilterableUserProps} selector - the query object for find
+   * @param {Object} config - the configuration object for the query
    * @return {Promise} the result of the find operation
    */
-  async list(selector: FilterableUserProps): Promise<User[]> {
+  async list(selector: FilterableUserProps, config = {}): Promise<User[]> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
-    return userRepo.find({ where: selector })
+    return userRepo.find(this.buildQuery_(selector, config))
   }
 
   /**
@@ -308,11 +309,14 @@ class UserService extends BaseService {
    * @return {string} the generated JSON web token
    */
   async generateResetPasswordToken(userId: string): Promise<string> {
-    const user = await this.retrieve(userId)
+    const user = await this.retrieve(userId, {
+      select: ["id", "email", "password_hash"],
+    })
     const secret = user.password_hash
     const expiry = Math.floor(Date.now() / 1000) + 60 * 15
-    const payload = { user_id: user.id, exp: expiry }
+    const payload = { user_id: user.id, email: user.email, exp: expiry }
     const token = jwt.sign(payload, secret)
+
     // Notify subscribers
     this.eventBus_.emit(UserService.Events.PASSWORD_RESET, {
       email: user.email,

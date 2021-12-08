@@ -4,7 +4,8 @@ import cors from "cors"
 import middlewares from "../../middlewares"
 import authRoutes from "./auth"
 import productRoutes from "./products"
-import userRoutes from "./users"
+import userRoutes, { unauthenticatedUserRoutes } from "./users"
+import inviteRoutes, { unauthenticatedInviteRoutes } from "./invites"
 import regionRoutes from "./regions"
 import shippingOptionRoutes from "./shipping-options"
 import shippingProfileRoutes from "./shipping-profiles"
@@ -40,6 +41,12 @@ export default (app, container, config) => {
   // Unauthenticated routes
   authRoutes(route)
 
+  // reset password
+  unauthenticatedUserRoutes(route)
+
+  // accept invite
+  unauthenticatedInviteRoutes(route)
+
   const middlewareService = container.resolve("middlewareService")
   // Calls all middleware that has been registered to run before authentication.
   middlewareService.usePreAuthentication(app)
@@ -70,6 +77,7 @@ export default (app, container, config) => {
   notificationRoutes(route)
   returnReasonRoutes(route)
   noteRoutes(route)
+  inviteRoutes(route)
 
   return app
 }

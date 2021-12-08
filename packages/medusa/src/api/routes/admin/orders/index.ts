@@ -1,8 +1,8 @@
 import { Router } from "express"
 import { Order } from "../../../.."
 import middlewares from "../../../middlewares"
-import "reflect-metadata"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import "reflect-metadata"
 
 const route = Router()
 
