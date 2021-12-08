@@ -395,15 +395,15 @@ class OrderService extends BaseService {
 
   /**
    * Gets an order by id.
-   * @param {string} orderId - id of order to retrieve
+   * @param {string} externalId - id of order to retrieve
+   * @param {object} config - query config to get order by
    * @return {Promise<Order>} the order document
    */
   async retrieveByExternalId(externalId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     const query = {
       where: { external_id: externalId },

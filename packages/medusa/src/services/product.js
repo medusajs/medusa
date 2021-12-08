@@ -204,7 +204,8 @@ class ProductService extends BaseService {
   /**
    * Gets a product by handle.
    * Throws in case of DB Error and if product was not found.
-   * @param {string} handle - handle of the product to get.
+   * @param {string} productHandle - handle of the product to get.
+   * @param {object} config - details about what to get from the product
    * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieveByHandle(productHandle, config = {}) {
@@ -240,6 +241,7 @@ class ProductService extends BaseService {
    * Gets a product by external id.
    * Throws in case of DB Error and if product was not found.
    * @param {string} externalId - handle of the product to get.
+   * @param {object} config - details about what to get from the product
    * @return {Promise<Product>} the result of the find one operation.
    */
   async retrieveByExternalId(externalId, config = {}) {

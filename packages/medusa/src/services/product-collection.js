@@ -73,6 +73,7 @@ class ProductCollectionService extends BaseService {
   /**
    * Retrieves a product collection by id.
    * @param {string} collectionHandle - the handle of the collection to retrieve.
+   * @param {object} config - query config for request
    * @return {Promise<ProductCollection>} the collection.
    */
   async retrieveByHandle(collectionHandle, config = {}) {
