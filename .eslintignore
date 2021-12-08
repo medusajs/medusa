@@ -58,6 +58,7 @@
 /packages/medusa-cli
 /packages/medusa-core-utils
 /packages/medusa-dev-cli
+/packages/medusa-file-minio
 /packages/medusa-file-s3
 /packages/medusa-file-spaces
 /packages/medusa-fulfillment-manual
