@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.31](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.30...medusa-core-utils@1.1.31) (2021-12-08)
+
+### Bug Fixes
+
+- **medusa:** migrate cart service to typescript ([#884](https://github.com/medusajs/medusa/issues/884)) ([ed04132](https://github.com/medusajs/medusa/commit/ed041325332e47c5939a301dfd8ace8ad6dbc28d))
+
+### Features
+
+- medusa-source-shopify loader ([#563](https://github.com/medusajs/medusa/issues/563)) ([577bcc2](https://github.com/medusajs/medusa/commit/577bcc23d44c87b91b2b685fd4ddfc5d21a0aa47))
+
 ## [1.1.30](https://github.com/medusajs/medusa/compare/medusa-core-utils@1.1.29...medusa-core-utils@1.1.30) (2021-11-23)
 
 ### Bug Fixes
