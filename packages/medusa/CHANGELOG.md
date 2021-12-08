@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.58](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.57...@medusajs/medusa@1.1.58) (2021-12-08)
+
+### Bug Fixes
+
+- create cart with items ([#851](https://github.com/medusajs/medusa/issues/851)) ([74bc9c6](https://github.com/medusajs/medusa/commit/74bc9c618f66fbb0c741b19ee46ea9db47f2e3c5))
+- ensures that delayed restock notifications are being sent ([#881](https://github.com/medusajs/medusa/issues/881)) ([329767e](https://github.com/medusajs/medusa/commit/329767e27980253d456030dd5aad648662d39e3d))
+- medusa-js complete cart types + oas comments ([#889](https://github.com/medusajs/medusa/issues/889)) ([487356a](https://github.com/medusajs/medusa/commit/487356a96ffc3886cf233e89e0b17dc3b6a665e5))
+- **medusa:** migrate cart service to typescript ([#884](https://github.com/medusajs/medusa/issues/884)) ([ed04132](https://github.com/medusajs/medusa/commit/ed041325332e47c5939a301dfd8ace8ad6dbc28d))
+- **medusa:** order tax_rate type ([#879](https://github.com/medusajs/medusa/issues/879)) ([89472b7](https://github.com/medusajs/medusa/commit/89472b7d88f930a12a2ac7a972ab7e15a0232ee1))
+- refresh payment session oas comment ([#888](https://github.com/medusajs/medusa/issues/888)) ([efadffe](https://github.com/medusajs/medusa/commit/efadffe37a0d61f844e3aa6991f60ebb6a883e95))
+- return reasons type ([#893](https://github.com/medusajs/medusa/issues/893)) ([e8b6d21](https://github.com/medusajs/medusa/commit/e8b6d2139dd167b0a46c7221a91e0b5bda3a89c6))
+- widen range of discount limit conditions ([#895](https://github.com/medusajs/medusa/issues/895)) ([7d6fc5c](https://github.com/medusajs/medusa/commit/7d6fc5c9e18a1533f2dbf54a588fd3a71f07dcc2))
+
+### Features
+
+- Admin shipping options routes to Typescript ([#891](https://github.com/medusajs/medusa/issues/891)) ([6579c13](https://github.com/medusajs/medusa/commit/6579c13111b4bf5edb87380fdd701eb25dfef65d))
+- medusa-source-shopify loader ([#563](https://github.com/medusajs/medusa/issues/563)) ([577bcc2](https://github.com/medusajs/medusa/commit/577bcc23d44c87b91b2b685fd4ddfc5d21a0aa47))
+
 ## [1.1.57](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.56...@medusajs/medusa@1.1.57) (2021-11-23)
 
 ### Bug Fixes
