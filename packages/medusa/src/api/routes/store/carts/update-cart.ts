@@ -9,6 +9,7 @@ import {
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
+import { CartUpdateProps } from "../../../../types/cart"
 import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
 
@@ -87,7 +88,25 @@ export default async (req, res) => {
   const cartService: CartService = req.scope.resolve("cartService")
 
   // Update the cart
-  await cartService.update(id, validated)
+  const { shipping_address, billing_address, ...rest } = validated
+
+  const toUpdate: CartUpdateProps = {
+    ...rest,
+  }
+
+  if (typeof shipping_address === "string") {
+    toUpdate.shipping_address_id = shipping_address
+  } else {
+    toUpdate.shipping_address = shipping_address
+  }
+
+  if (typeof billing_address === "string") {
+    toUpdate.billing_address_id = billing_address
+  } else {
+    toUpdate.billing_address = billing_address
+  }
+
+  await cartService.update(id, toUpdate)
 
   // If the cart has payment sessions update these
   const updated = await cartService.retrieve(id, {

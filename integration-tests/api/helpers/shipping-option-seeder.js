@@ -43,6 +43,30 @@ module.exports = async (connection, data = {}) => {
     is_return: false,
   })
 
+  await manager.insert(ShippingOption, {
+    id: "test-option-req-admin-only",
+    name: "With req",
+    profile_id: defaultProfile.id,
+    region_id: "region",
+    admin_only: true,
+    provider_id: "test-ful",
+    data: {},
+    price_type: "flat_rate",
+    amount: 2000,
+    is_return: false,
+  })
+  await manager.insert(ShippingOption, {
+    id: "test-option-req-return",
+    name: "With req",
+    profile_id: defaultProfile.id,
+    region_id: "region",
+    is_return: true,
+    provider_id: "test-ful",
+    data: {},
+    price_type: "flat_rate",
+    amount: 2000,
+  })
+
   await manager.insert(ShippingOptionRequirement, {
     id: "option-req",
     shipping_option_id: "test-option-req",
