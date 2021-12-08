@@ -11,11 +11,6 @@ describe("POST /admin/users/password-token", () => {
         payload: {
           email: "vandijk@test.dk",
         },
-        adminSession: {
-          jwt: {
-            userId: IdMap.getId("admin_user"),
-          },
-        },
       })
     })
 
