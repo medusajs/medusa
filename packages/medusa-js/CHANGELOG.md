@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.6...@medusajs/medusa-js@1.0.7) (2021-12-08)
+
+### Bug Fixes
+
+- complete cart return type ([#902](https://github.com/medusajs/medusa-js/issues/902)) ([2e837fc](https://github.com/medusajs/medusa-js/commit/2e837fcdeeb1f9608c5b0c612c75c87c042d8286))
+
 ## [1.0.6](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.5...@medusajs/medusa-js@1.0.6) (2021-12-08)
 
 ### Bug Fixes
