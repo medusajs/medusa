@@ -71,6 +71,30 @@ class ProductCollectionService extends BaseService {
   }
 
   /**
+   * Retrieves a product collection by id.
+   * @param {string} collectionHandle - the handle of the collection to retrieve.
+   * @param {object} config - query config for request
+   * @return {Promise<ProductCollection>} the collection.
+   */
+  async retrieveByHandle(collectionHandle, config = {}) {
+    const collectionRepo = this.manager_.getCustomRepository(
+      this.productCollectionRepository_
+    )
+
+    const query = this.buildQuery_({ handle: collectionHandle }, config)
+    const collection = await collectionRepo.findOne(query)
+
+    if (!collection) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product collection with handle: ${collectionHandle} was not found`
+      )
+    }
+
+    return collection
+  }
+
+  /**
    * Creates a product collection
    * @param {object} collection - the collection to create
    * @return {Promise<ProductCollection>} created collection
@@ -149,7 +173,22 @@ class ProductCollectionService extends BaseService {
     )
 
     const query = this.buildQuery_(selector, config)
-    return productCollectionRepo.find(query)
+    return await productCollectionRepo.find(query)
+  }
+
+  /**
+   * Lists product collections and add count.
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(selector = {}, config = { skip: 0, take: 20 }) {
+    const productCollectionRepo = this.manager_.getCustomRepository(
+      this.productCollectionRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return await productCollectionRepo.findAndCount(query)
   }
 }
 

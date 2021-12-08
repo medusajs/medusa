@@ -1,18 +1,17 @@
 import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   ManyToOne,
-  Column,
   PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
 
@@ -28,10 +27,7 @@ export class ProductOptionValue {
   @Column()
   option_id: string
 
-  @ManyToOne(
-    () => ProductOption,
-    option => option.values
-  )
+  @ManyToOne(() => ProductOption, (option) => option.values)
   @JoinColumn({ name: "option_id" })
   option: ProductOption
 
@@ -39,11 +35,9 @@ export class ProductOptionValue {
   @Column()
   variant_id: string
 
-  @ManyToOne(
-    () => ProductVariant,
-    variant => variant.options,
-    { onDelete: "cascade" }
-  )
+  @ManyToOne(() => ProductVariant, (variant) => variant.options, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
@@ -60,8 +54,10 @@ export class ProductOptionValue {
   metadata: any
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void | undefined {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `optval_${id}`
   }

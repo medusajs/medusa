@@ -17,6 +17,7 @@ Object {
     "deleted_at": null,
     "description": "test-product-description",
     "discountable": true,
+    "external_id": null,
     "handle": "test-product",
     "height": null,
     "hs_code": null,
@@ -141,6 +142,18 @@ Object {
         "material": null,
         "metadata": null,
         "mid_code": null,
+        "options": Array [
+          Object {
+            "created_at": Any<String>,
+            "deleted_at": null,
+            "id": "test-variant-option",
+            "metadata": null,
+            "option_id": "test-option",
+            "updated_at": Any<String>,
+            "value": "Default variant",
+            "variant_id": "test-variant",
+          },
+        ],
         "origin_country": null,
         "prices": Array [
           Object {
@@ -178,6 +191,18 @@ Object {
         "material": null,
         "metadata": null,
         "mid_code": null,
+        "options": Array [
+          Object {
+            "created_at": Any<String>,
+            "deleted_at": null,
+            "id": "test-variant-option-2",
+            "metadata": null,
+            "option_id": "test-option",
+            "updated_at": Any<String>,
+            "value": "Default variant 2",
+            "variant_id": "test-variant_2",
+          },
+        ],
         "origin_country": null,
         "prices": Array [
           Object {
@@ -215,6 +240,18 @@ Object {
         "material": null,
         "metadata": null,
         "mid_code": null,
+        "options": Array [
+          Object {
+            "created_at": Any<String>,
+            "deleted_at": null,
+            "id": "test-variant-option-1",
+            "metadata": null,
+            "option_id": "test-option",
+            "updated_at": Any<String>,
+            "value": "Default variant 1",
+            "variant_id": "test-variant_1",
+          },
+        ],
         "origin_country": null,
         "prices": Array [
           Object {

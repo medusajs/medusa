@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.23](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.22...@medusajs/medusa-cli@1.1.23) (2021-11-11)
+
+**Note:** Version bump only for package @medusajs/medusa-cli
+
 ## [1.1.22](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.21...@medusajs/medusa-cli@1.1.22) (2021-10-18)
 
 **Note:** Version bump only for package @medusajs/medusa-cli

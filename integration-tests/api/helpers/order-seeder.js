@@ -1,16 +1,17 @@
 const {
-  ShippingProfile,
   Customer,
-  MoneyAmount,
+  Discount,
+  DiscountRule,
   LineItem,
-  Country,
-  ShippingOption,
-  ShippingMethod,
+  MoneyAmount,
+  Order,
+  Payment,
   Product,
   ProductVariant,
   Region,
-  Payment,
-  Order,
+  ShippingMethod,
+  ShippingOption,
+  ShippingProfile,
   Swap,
 } = require("@medusajs/medusa")
 
@@ -180,7 +181,6 @@ module.exports = async (connection, data = {}) => {
     id: "test-method",
     order_id: "test-order",
     shipping_option_id: "test-option",
-    order_id: "test-order",
     price: 1000,
     data: {},
   })
@@ -320,4 +320,77 @@ module.exports = async (connection, data = {}) => {
     id: "o-pay4",
     ...paymentTemplate(),
   })
+
+  const drule = manager.create(DiscountRule, {
+    id: "test-rule",
+    description: "Test Discount",
+    type: "percentage",
+    value: 10,
+    allocation: "total",
+  })
+
+  const discount = manager.create(Discount, {
+    id: "test-discount-o",
+    code: "TEST1234",
+    is_dynamic: false,
+    rule: drule,
+    is_disabled: false,
+    regions: [
+      {
+        id: "test-region",
+      },
+    ],
+  })
+  await manager.save(discount)
+
+  const payment = manager.create(Payment, {
+    id: "test-payment-d",
+    amount: 10000,
+    currency_code: "usd",
+    amount_refunded: 0,
+    provider_id: "test-pay",
+    captured_at: new Date(),
+    data: {},
+  })
+
+  const discountedOrder = manager.create(Order, {
+    id: "discount-order",
+    customer_id: "test-customer",
+    email: "test-discount@email.com",
+    payment_status: "captured",
+    fulfillment_status: "fulfilled",
+    discounts: [discount],
+    billing_address: {
+      id: "test-discount-billing-address",
+      first_name: "lebron",
+    },
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    tax_rate: 0,
+    payments: [payment],
+    items: [],
+    ...data,
+  })
+
+  await manager.save(discountedOrder)
+
+  const dli = manager.create(LineItem, {
+    id: "test-item-1",
+    fulfilled_quantity: 1,
+    returned_quantity: 0,
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    order_id: "discount-order",
+  })
+
+  await manager.save(dli)
 }

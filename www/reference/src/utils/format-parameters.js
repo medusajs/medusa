@@ -1,9 +1,10 @@
-export const formatMethodParams = method => {
+export const formatMethodParams = (method) => {
   const { parameters, requestBody } = method
 
   const params = []
+  const body = []
   if (parameters && parameters.length > 0) {
-    parameters.map(p => {
+    parameters.map((p) => {
       return params.push({
         property: p.name,
         description: p.description,
@@ -14,16 +15,16 @@ export const formatMethodParams = method => {
   }
   if (requestBody) {
     const { required, properties } = requestBody
-    properties.map(p => {
-      return params.push({
+    properties.map((p) => {
+      return body.push({
         property: p.property,
         description: p.description,
-        required: required ? required.some(req => req === p.property) : false,
+        required: required ? required.some((req) => req === p.property) : false,
         type: p.type,
         nestedModel: p.nestedModel,
       })
     })
   }
 
-  return { properties: params }
+  return { properties: params, body }
 }

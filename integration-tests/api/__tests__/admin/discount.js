@@ -29,32 +29,42 @@ describe("/admin/discounts", () => {
   describe("GET /admin/discounts", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule",
-          description: "Test discount rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount",
-          code: "TESTING",
-          rule_id: "test-discount-rule",
-          is_dynamic: false,
-          is_disabled: false,
-        })
-        await manager.insert(Discount, {
-          id: "messi-discount",
-          code: "BARCA100",
-          rule_id: "test-discount-rule",
-          is_dynamic: false,
-          is_disabled: false,
-        })
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Test discount rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount",
+        code: "TESTING",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+      })
+      await manager.insert(Discount, {
+        id: "messi-discount",
+        code: "BARCA100",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+      })
+      await manager.insert(Discount, {
+        id: "dynamic-discount",
+        code: "Dyn100",
+        rule_id: "test-discount-rule",
+        is_dynamic: true,
+        is_disabled: false,
+      })
+      await manager.insert(Discount, {
+        id: "disabled-discount",
+        code: "Dis100",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: true,
+      })
     })
 
     afterEach(async () => {
@@ -85,6 +95,50 @@ describe("/admin/discounts", () => {
         ])
       )
     })
+
+    it("lists dynamic discounts ", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts?is_dynamic=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.discounts).toEqual([
+        expect.objectContaining({
+          id: "dynamic-discount",
+          code: "Dyn100",
+        }),
+      ])
+    })
+
+    it("lists disabled discounts ", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts?is_disabled=true", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.discounts).toEqual([
+        expect.objectContaining({
+          id: "disabled-discount",
+          code: "Dis100",
+        }),
+      ])
+    })
   })
 
   describe("POST /admin/discounts", () => {
@@ -101,6 +155,60 @@ describe("/admin/discounts", () => {
     afterEach(async () => {
       const db = useDb()
       await db.teardown()
+    })
+
+    it("creates a discount with a rule", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+        })
+      )
+
+      const test = await api.get(
+        `/admin/discounts/${response.data.discount.id}`,
+        { headers: { Authorization: "Bearer test_token" } }
+      )
+
+      expect(test.status).toEqual(200)
+      expect(test.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          rule: expect.objectContaining({
+            value: 10,
+            type: "percentage",
+            description: "test",
+            allocation: "total",
+          }),
+        })
+      )
     })
 
     it("creates a discount and updates it", async () => {
@@ -591,11 +699,11 @@ describe("/admin/discounts", () => {
         )
         .catch((err) => {
           expect(err.response.status).toEqual(400)
-          expect(err.response.data.message).toEqual([
+          expect(err.response.data).toEqual(
             expect.objectContaining({
-              message: `"ends_at" must be greater than "ref:starts_at"`,
-            }),
-          ])
+              message: `"ends_at" must be greater than "starts_at"`,
+            })
+          )
         })
     })
   })
@@ -604,25 +712,21 @@ describe("/admin/discounts", () => {
     let manager
     beforeEach(async () => {
       manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule",
-          description: "Test discount rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount",
-          code: "TESTING",
-          rule_id: "test-discount-rule",
-          is_dynamic: false,
-          is_disabled: false,
-        })
-      } catch (err) {
-        throw err
-      }
+      await adminSeeder(dbConnection)
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Test discount rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount",
+        code: "TESTING",
+        rule_id: "test-discount-rule",
+        is_dynamic: false,
+        is_disabled: false,
+      })
     })
 
     afterEach(async () => {

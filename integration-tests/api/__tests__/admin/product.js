@@ -145,6 +145,9 @@ describe("/admin/products", () => {
       const notExpected = [
         expect.objectContaining({ status: "draft" }),
         expect.objectContaining({ status: "rejected" }),
+        expect.objectContaining({
+          id: "test-product_filtering_4",
+        }),
       ]
 
       const response = await api
@@ -180,7 +183,10 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const notExpected = [
-        expect.objectContaining({ collection: expect.any(Object), type: expect.any(Object) }),
+        expect.objectContaining({
+          collection: expect.any(Object),
+          type: expect.any(Object),
+        }),
       ]
 
       const response = await api
@@ -212,6 +218,47 @@ describe("/admin/products", () => {
       }
     })
 
+    it("returns a list of deleted products with free text query", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?deleted_at[gt]=01-26-1990&q=test", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_4",
+        }),
+      ])
+    })
+
+    it("returns a list of deleted products", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?deleted_at[gt]=01-26-1990", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_4",
+        }),
+      ])
+    })
 
     it("returns a list of products in collection", async () => {
       const api = useApi()
@@ -333,7 +380,7 @@ describe("/admin/products", () => {
       }
     })
 
-    it("returns a list of products with giftcard in list", async () => {
+    it("returns a list of products with only giftcard in list", async () => {
       const api = useApi()
 
       const payload = {
@@ -634,7 +681,6 @@ describe("/admin/products", () => {
           options: expect.any(Array),
           tags: expect.any(Array),
           variants: expect.any(Array),
-          created_at: expect.any(String),
           updated_at: expect.any(String),
         },
         {
@@ -646,7 +692,6 @@ describe("/admin/products", () => {
           options: expect.any(Array),
           tags: expect.any(Array),
           variants: expect.any(Array),
-          created_at: expect.any(String),
           updated_at: expect.any(String),
         },
         {
@@ -658,7 +703,6 @@ describe("/admin/products", () => {
           options: expect.any(Array),
           tags: expect.any(Array),
           variants: expect.any(Array),
-          created_at: expect.any(String),
           updated_at: expect.any(String),
         },
       ])
@@ -775,6 +819,46 @@ describe("/admin/products", () => {
       )
     })
 
+    it("creates a product that is not discountable", async () => {
+      const api = useApi()
+
+      const payload = {
+        title: "Test",
+        discountable: false,
+        description: "test-product-description",
+        type: { value: "test-type" },
+        images: ["test-image.png", "test-image-2.png"],
+        collection_id: "test-collection",
+        tags: [{ value: "123" }, { value: "456" }],
+        options: [{ title: "size" }, { title: "color" }],
+        variants: [
+          {
+            title: "Test variant",
+            inventory_quantity: 10,
+            prices: [{ currency_code: "usd", amount: 100 }],
+            options: [{ value: "large" }, { value: "green" }],
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          discountable: false,
+        })
+      )
+    })
+
     it("Sets variant ranks when creating a product", async () => {
       const api = useApi()
 
@@ -883,7 +967,6 @@ describe("/admin/products", () => {
 
       const payload = {
         collection_id: null,
-        type: null,
         variants: [
           {
             id: "test-variant",
@@ -937,7 +1020,6 @@ describe("/admin/products", () => {
               ],
             }),
           ],
-          type: null,
           status: "published",
           collection: null,
           type: expect.objectContaining({

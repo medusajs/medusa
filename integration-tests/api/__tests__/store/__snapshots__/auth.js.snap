@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/auth creates store session correctly 1`] = `
+exports[`/store/auth creates store session correctly 1`] = `
 Object {
   "billing_address_id": null,
   "created_at": Any<String>,
@@ -12,7 +12,7 @@ Object {
   "last_name": "testesen",
   "metadata": null,
   "orders": Array [],
-  "phone": "12345678",
+  "phone": null,
   "updated_at": Any<String>,
 }
 `;

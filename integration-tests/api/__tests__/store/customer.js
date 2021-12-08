@@ -261,18 +261,20 @@ describe("/store/customers", () => {
 
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
-      const response = await api.post(
-        `/store/customers/me`,
-        {
-          password: "test",
-          metadata: { key: "value" },
-        },
-        {
-          headers: {
-            Cookie: authCookie,
+      const response = await api
+        .post(
+          `/store/customers/me`,
+          {
+            password: "test",
+            metadata: { key: "value" },
           },
-        }
-      )
+          {
+            headers: {
+              Cookie: authCookie,
+            },
+          }
+        )
+        .catch((e) => console.log("err", e))
 
       expect(response.status).toEqual(200)
       expect(response.data.customer).not.toHaveProperty("password_hash")
@@ -291,7 +293,6 @@ describe("/store/customers", () => {
         password: "test",
       })
 
-      const customerId = authResponse.data.customer.id
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api.post(
@@ -337,7 +338,6 @@ describe("/store/customers", () => {
         password: "test",
       })
 
-      const customerId = authResponse.data.customer.id
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api.post(
@@ -375,7 +375,6 @@ describe("/store/customers", () => {
         password: "test",
       })
 
-      const customerId = authResponse.data.customer.id
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const check = await api.post(
