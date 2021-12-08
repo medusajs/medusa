@@ -202,6 +202,78 @@ class ProductService extends BaseService {
   }
 
   /**
+   * Gets a product by handle.
+   * Throws in case of DB Error and if product was not found.
+   * @param {string} productHandle - handle of the product to get.
+   * @param {object} config - details about what to get from the product
+   * @return {Promise<Product>} the result of the find one operation.
+   */
+  async retrieveByHandle(productHandle, config = {}) {
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+
+    const query = { where: { handle: productHandle } }
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+    const product = await productRepo.findOneWithRelations(rels, query)
+
+    if (!product) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product with handle: ${productHandle} was not found`
+      )
+    }
+
+    return product
+  }
+
+  /**
+   * Gets a product by external id.
+   * Throws in case of DB Error and if product was not found.
+   * @param {string} externalId - handle of the product to get.
+   * @param {object} config - details about what to get from the product
+   * @return {Promise<Product>} the result of the find one operation.
+   */
+  async retrieveByExternalId(externalId, config = {}) {
+    const productRepo = this.manager_.getCustomRepository(
+      this.productRepository_
+    )
+
+    const query = { where: { external_id: externalId } }
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+    const product = await productRepo.findOneWithRelations(rels, query)
+
+    if (!product) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Product with exteral_id: ${externalId} was not found`
+      )
+    }
+
+    return product
+  }
+
+  /**
    * Gets all variants belonging to a product.
    * @param {string} productId - the id of the product to get variants from.
    * @return {Promise} an array of variants

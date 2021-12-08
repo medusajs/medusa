@@ -3,6 +3,7 @@
  * operationId: "DeleteShippingOptionsOption"
  * summary: "Delete a Shipping Option"
  * description: "Deletes a Shipping Option."
+ * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Shipping Option.
  * tags:

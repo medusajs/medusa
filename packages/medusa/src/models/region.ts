@@ -37,7 +37,7 @@ export class Region {
   @JoinColumn({ name: "currency_code", referencedColumnName: "code" })
   currency: Currency
 
-  @Column({ type: "decimal" })
+  @Column({ type: "real" })
   tax_rate: number
 
   @OneToMany(() => TaxRate, (tr) => tr.region)

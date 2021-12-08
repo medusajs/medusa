@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.13](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.12...medusa-payment-manual@1.0.13) (2021-12-08)
+
+**Note:** Version bump only for package medusa-payment-manual
+
 ## [1.0.12](https://github.com/medusajs/medusa/compare/medusa-payment-manual@1.0.11...medusa-payment-manual@1.0.12) (2021-11-23)
 
 **Note:** Version bump only for package medusa-payment-manual

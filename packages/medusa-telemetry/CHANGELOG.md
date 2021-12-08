@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/medusajs/medusa/compare/medusa-telemetry@0.0.10...medusa-telemetry@0.0.11) (2021-12-08)
+
+### Features
+
+- medusa-source-shopify loader ([#563](https://github.com/medusajs/medusa/issues/563)) ([577bcc2](https://github.com/medusajs/medusa/commit/577bcc23d44c87b91b2b685fd4ddfc5d21a0aa47))
+
 ## [0.0.10](https://github.com/medusajs/medusa/compare/medusa-telemetry@0.0.9...medusa-telemetry@0.0.10) (2021-11-11)
 
 **Note:** Version bump only for package medusa-telemetry

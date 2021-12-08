@@ -110,12 +110,20 @@ class RestockNotificationService extends BaseService {
    * @param {string} variantId - the variant id to trigger restock for
    * @return The resulting restock notification
    */
-  triggerRestock(variantId) {
+  async triggerRestock(variantId) {
     const delay = this.options_?.trigger_delay ?? 0
-    setTimeout(() => this.restockExecute_(variantId), delay)
+    if (delay) {
+      return await this.eventBus_.emit(
+        "restock-notification.execute",
+        { variant_id: variantId },
+        { delay }
+      )
+    }
+
+    return await this.restockExecute(variantId)
   }
 
-  async restockExecute_(variantId) {
+  async restockExecute(variantId) {
     return await this.atomicPhase_(async (manager) => {
       const restockRepo = manager.getRepository(this.restockNotificationModel_)
 

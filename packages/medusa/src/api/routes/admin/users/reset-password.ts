@@ -1,5 +1,8 @@
-import { IsEmail, IsString } from "class-validator"
+import { IsEmail, IsOptional, IsString } from "class-validator"
 import jwt from "jsonwebtoken"
+import _ from "lodash"
+import { MedusaError } from "medusa-core-utils"
+import { User } from "../../../.."
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
 
@@ -42,26 +45,55 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminResetPasswordRequest, req.body)
 
-  const userService: UserService = req.scope.resolve("userService")
-  const user = await userService.retrieveByEmail(validated.email)
+  try {
+    const userService: UserService = req.scope.resolve("userService")
 
-  const decodedToken = jwt.verify(validated.token, user.password_hash) as {
-    user_id: string
+    const decoded = (await jwt.decode(validated.token)) as payload
+
+    let user: User
+    try {
+      user = await userService.retrieveByEmail(
+        validated.email || decoded?.email,
+        {
+          select: ["id", "password_hash"],
+        }
+      )
+    } catch (err) {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, "invalid token")
+    }
+
+    const verifiedToken = (await jwt.verify(
+      validated.token,
+      user.password_hash
+    )) as payload
+    if (!verifiedToken || verifiedToken.user_id !== user.id) {
+      res.status(401).send("Invalid or expired password reset token")
+      return
+    }
+
+    const userResult = await userService.setPassword_(
+      user.id,
+      validated.password
+    )
+
+    res.status(200).json({ user: _.omit(userResult, ["password_hash"]) })
+  } catch (error) {
+    if (error.message === "invalid token") {
+      throw new MedusaError(MedusaError.Types.INVALID_DATA, error.message)
+    }
+    throw error
   }
-
-  if (!decodedToken || decodedToken.user_id !== user.id) {
-    res.status(401).send("Invalid or expired password reset token")
-    return
-  }
-
-  const data = await userService.setPassword(user.id, validated.password)
-
-  res.status(200).json({ user: data })
 }
 
+export type payload = {
+  email: string
+  user_id: string
+  password: string
+}
 export class AdminResetPasswordRequest {
   @IsEmail()
-  email: string
+  @IsOptional()
+  email?: string
 
   @IsString()
   token: string

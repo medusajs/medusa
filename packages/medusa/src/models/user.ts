@@ -11,12 +11,26 @@ import {
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
+export enum UserRoles {
+  ADMIN = "admin",
+  MEMBER = "member",
+  DEVELOPER = "developer",
+}
+
 @Entity()
 export class User {
   @PrimaryColumn()
   id: string
 
-  @Index({ unique: true })
+  @DbAwareColumn({
+    type: "enum",
+    enum: UserRoles,
+    nullable: true,
+    default: UserRoles.MEMBER,
+  })
+  role: UserRoles
+
+  @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   email: string
 

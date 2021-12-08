@@ -201,7 +201,7 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Removes a given shipping method
-   * @param {string} sm - the shipping method to remove
+   * @param {ShippingMethod} sm - the shipping method to remove
    */
   async deleteShippingMethod(sm) {
     return this.atomicPhase_(async (manager) => {
