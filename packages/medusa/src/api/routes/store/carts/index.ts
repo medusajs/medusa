@@ -1,9 +1,8 @@
 import { Router } from "express"
 import "reflect-metadata"
-import { Cart } from "../../../../models/cart"
+import { Cart, Order, Swap } from "../../../../"
 import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-
 const route = Router()
 
 export default (app, container) => {
@@ -125,6 +124,17 @@ export const defaultStoreCartRelations = [
 
 export type StoreCartsRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
+}
+
+export type StoreCompleteCartRes = {
+  type: "cart"
+  data: Cart
+} | {
+  type: "order"
+  data: Order
+} | {
+  type: "swap"
+  data: Swap
 }
 
 export type StoreCartsDeleteRes = DeleteResponse
