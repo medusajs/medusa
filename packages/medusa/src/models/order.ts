@@ -175,7 +175,7 @@ export class Order {
 
   @OneToMany(
     () => ShippingMethod,
-    method => method.order,
+    (method) => method.order,
     {
       cascade: ["insert"],
     }
@@ -184,14 +184,14 @@ export class Order {
 
   @OneToMany(
     () => Payment,
-    payment => payment.order,
+    (payment) => payment.order,
     { cascade: ["insert"] }
   )
   payments: Payment[]
 
   @OneToMany(
     () => Fulfillment,
-    fulfillment => fulfillment.order,
+    (fulfillment) => fulfillment.order,
     {
       cascade: ["insert"],
     }
@@ -200,28 +200,28 @@ export class Order {
 
   @OneToMany(
     () => Return,
-    ret => ret.order,
+    (ret) => ret.order,
     { cascade: ["insert"] }
   )
   returns: Return[]
 
   @OneToMany(
     () => ClaimOrder,
-    co => co.order,
+    (co) => co.order,
     { cascade: ["insert"] }
   )
   claims: ClaimOrder[]
 
   @OneToMany(
     () => Refund,
-    ref => ref.order,
+    (ref) => ref.order,
     { cascade: ["insert"] }
   )
   refunds: Refund[]
 
   @OneToMany(
     () => Swap,
-    swap => swap.order,
+    (swap) => swap.order,
     { cascade: ["insert"] }
   )
   swaps: Swap[]
@@ -235,7 +235,7 @@ export class Order {
 
   @OneToMany(
     () => LineItem,
-    lineItem => lineItem.order,
+    (lineItem) => lineItem.order,
     {
       cascade: ["insert"],
     }
@@ -244,7 +244,7 @@ export class Order {
 
   @OneToMany(
     () => GiftCardTransaction,
-    gc => gc.order
+    (gc) => gc.order
   )
   gift_card_transactions: GiftCardTransaction[]
 
@@ -265,6 +265,9 @@ export class Order {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @Column({ type: "varchar", nullable: true })
+  external_id: string | null
 
   // Total fields
   shipping_total: number
