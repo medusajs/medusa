@@ -165,7 +165,7 @@ Update `scripts` to include the following:
 ...
 ```
 
-### 6. Launch you Medusa app
+### 6. Launch your Medusa app
 
 Finally, we need to commit and push our changes to Heroku:
 
