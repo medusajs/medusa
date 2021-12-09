@@ -18,10 +18,12 @@ import { ShippingOptionPriceType } from "../models/shipping-option"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import { RetrieveOptions } from "../types/common"
+import { FindConfig, RetrieveOptions } from "../types/common"
 import {
   CreateShippingMethod,
+  CreateShippingMethodDto,
   ShippingMethodUpdate,
+  ShippingOptionUpdate,
   ShippingRequirement,
 } from "../types/shipping-options"
 
@@ -167,14 +169,16 @@ class ShippingOptionService extends BaseService {
 
   /**
    * @param {Object} selector - the query object for find
-   * @param {object} config - config object
-   * @return {Promise} the result of the find operation
+   * @param {FindConfig<ShippingOption>} config - config object
+   * @return {Promise<ShippingOption[]>} the result of the find operation
    */
   async list(
     selector,
-    config = { skip: 0, take: 50 }
+    config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
-    const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
+    const optRepo: ShippingOptionRepository = this.manager_.getCustomRepository(
+      this.optionRepository_
+    )
 
     const query = this.buildQuery_(selector, config)
     return optRepo.find(query)
@@ -184,7 +188,7 @@ class ShippingOptionService extends BaseService {
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
    * @param {string} optionId - the id of the profile to get.
-   * @param {object} options - the options to get a profile
+   * @param {RetrieveOptions<ShippingOption>} options - the options to get a profile
    * @return {Promise<ShippingOption>} the profile document.
    */
   async retrieve(
@@ -229,7 +233,7 @@ class ShippingOptionService extends BaseService {
     id: string,
     update: ShippingMethodUpdate
   ): Promise<ShippingMethod> {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async (manager: EntityManager) => {
       const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
         this.methodRepository_
       )
@@ -244,19 +248,19 @@ class ShippingOptionService extends BaseService {
           method.price = update.price
         }
 
-        if ("return_id" in update && update.return_id) {
+        if ("return_id" in update && update.return_id !== undefined) {
           method.return_id = update.return_id
         }
 
-        if ("swap_id" in update && update.swap_id) {
+        if ("swap_id" in update && update.swap_id !== undefined) {
           method.swap_id = update.swap_id
         }
 
-        if ("order_id" in update && update.order_id) {
+        if ("order_id" in update && update.order_id !== undefined) {
           method.order_id = update.order_id
         }
 
-        if ("claim_order_id" in update && update.claim_order_id) {
+        if ("claim_order_id" in update && update.claim_order_id !== undefined) {
           method.claim_order_id = update.claim_order_id
         }
 
@@ -268,10 +272,10 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Removes a given shipping method
-   * @param {string} sm - the shipping method to remove
+   * @param {ShippingMethod} sm - the shipping method to remove
    */
-  async deleteShippingMethod(sm): Promise<ShippingMethod> {
-    return this.atomicPhase_(async (manager) => {
+  async deleteShippingMethod(sm: ShippingMethod): Promise<ShippingMethod> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
       const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
         this.methodRepository_
       )
@@ -283,13 +287,15 @@ class ShippingOptionService extends BaseService {
    * Creates a shipping method for a given cart.
    * @param {string} optionId - the id of the option to use for the method.
    * @param {object} data - the optional provider data to use.
-   * @param {object} config - the cart to create the shipping method for.
+   * @param {CreateShippingMethodDto} config - the cart to create the shipping method for.
+   * @param {ShippingMethod[]} shippingMethods - the shipping methods already attached to the cart.
    * @return {ShippingMethod} the resulting shipping method.
    */
   async createShippingMethod(
     optionId: string,
-    data: any,
-    config
+    data: object,
+    config: CreateShippingMethodDto,
+    shippingMethods: ShippingMethod[]
   ): Promise<ShippingMethod> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
@@ -300,9 +306,11 @@ class ShippingOptionService extends BaseService {
         this.methodRepository_
       )
 
-      if ("cart" in config) {
-        this.validateCartOption(option, config.cart || {})
+      if ("cart" in config && config.cart) {
+        this.validateCartOption(option, config.cart)
       }
+
+      await this.prepareCart(shippingMethods, option.profile_id)
 
       // DELETE FROM shipping_method WHERE id in (
       //   SELECT sm.id FROM shipping_method sm
@@ -329,7 +337,7 @@ class ShippingOptionService extends BaseService {
       )
 
       let methodPrice
-      if ("price" in config) {
+      if ("price" in config && config.price !== undefined) {
         methodPrice = config.price
       } else {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
@@ -383,14 +391,30 @@ class ShippingOptionService extends BaseService {
   /**
    * Prepares cart for adding a new shipping option by removing existing
    * shipping options with the same profile id
-   * @param {string} cart_id id of the cart to prepare
-   * @param {string} option_id shipping option id to remove for the new shipping option to be added
+   * @param {ShippingMethod[]} shippingMethods id of the cart to prepare
+   * @param {string} profileId profile for the shipping option to remove for the new shipping option to be added
    * @return {Promise} nothing
    */
-  async prepareCart(cart_id: string, option_id: string): Promise<any> {
-    const methodRepo = this.manager_.getCustomRepository(this.methodRepository_)
+  async prepareCart(
+    shippingMethods: ShippingMethod[],
+    profileId: string
+  ): Promise<void> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      if (!shippingMethods?.length) {
+        return
+      }
 
-    return undefined
+      const methodRepo: ShippingMethodRepository =
+        this.manager_.getCustomRepository(this.methodRepository_)
+
+      const collidingShippingMethods = shippingMethods
+        .filter((sm) => sm.shipping_option.profile_id === profileId)
+        .map((sm) => sm.id)
+
+      if (collidingShippingMethods.length > 0) {
+        await methodRepo.delete(collidingShippingMethods)
+      }
+    }, "SERIALIZABLE")
   }
   /**
    * Creates a shipping method for a given cart.
@@ -424,7 +448,7 @@ class ShippingOptionService extends BaseService {
    * match, or when the shipping option requirements are not satisfied.
    * @param {object} option - the option object to check
    * @param {Cart} cart - the cart object to check against
-   * @return {ShippingOption} the validated shipping option
+   * @return {ShippingOption | null} the validated shipping option
    */
   validateCartOption(option, cart: Cart): ShippingOption | null {
     if (option.is_return) {
@@ -438,7 +462,7 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    const subtotal = cart.subtotal
+    const subtotal = cart.subtotal || 0
     const requirementResults: boolean[] = option.requirements.map(
       (requirement) => {
         switch (requirement.type) {
@@ -503,7 +527,7 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if ("requirements" in data) {
+      if ("requirements" in data && data.requirements) {
         const acc: ShippingRequirement[] = []
         for (const r of data.requirements) {
           const validated = await this.validateRequirement_(r)
@@ -545,8 +569,8 @@ class ShippingOptionService extends BaseService {
    * @return {Promise<ShippingOptionPriceType>} the validated price
    */
   async validatePriceType_(
-    priceType,
-    option
+    priceType: ShippingOptionPriceType,
+    option: ShippingOption
   ): Promise<ShippingOptionPriceType> {
     if (
       !priceType ||
@@ -580,16 +604,19 @@ class ShippingOptionService extends BaseService {
    * will throw errors if metadata or product updates are attempted.
    * @param {string} optionId - the id of the option. Must be a string that
    *   can be casted to an ObjectId
-   * @param {object} update - an object with the update values.
-   * @return {Promise} resolves to the update result.
+   * @param {ShippingOptionUpdate} update - an object with the update values.
+   * @return {Promise<ShippingOption>} resolves to the update result.
    */
-  async update(optionId, update): Promise<ShippingOption> {
+  async update(
+    optionId: string,
+    update: ShippingOptionUpdate
+  ): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
         relations: ["requirements"],
       })
 
-      if ("metadata" in update) {
+      if ("metadata" in update && update.metadata) {
         option.metadata = await this.setMetadata_(option, update.metadata)
       }
 
@@ -600,14 +627,14 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if ("is_return" in update) {
+      if ("is_return" in update && update.is_return !== undefined) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "is_return cannot be changed after creation"
         )
       }
 
-      if ("requirements" in update) {
+      if ("requirements" in update && update.requirements) {
         const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
@@ -651,7 +678,7 @@ class ShippingOptionService extends BaseService {
         option.requirements = acc
       }
 
-      if ("price_type" in update) {
+      if ("price_type" in update && update.price_type) {
         option.price_type = await this.validatePriceType_(
           update.price_type,
           option
@@ -661,19 +688,25 @@ class ShippingOptionService extends BaseService {
         }
       }
 
-      if ("amount" in update && option.price_type !== "calculated") {
+      if (
+        "amount" in update &&
+        update.amount &&
+        option.price_type !== "calculated"
+      ) {
         option.amount = update.amount
       }
 
-      if ("name" in update) {
+      if ("name" in update && update.name) {
         option.name = update.name
       }
 
-      if ("admin_only" in update) {
+      if ("admin_only" in update && update.admin_only) {
         option.admin_only = update.admin_only
       }
 
-      const optionRepo = manager.getCustomRepository(this.optionRepository_)
+      const optionRepo: ShippingOptionRepository = manager.getCustomRepository(
+        this.optionRepository_
+      )
       const result = await optionRepo.save(option)
       return result
     })
@@ -685,7 +718,7 @@ class ShippingOptionService extends BaseService {
    *   castable as an ObjectId
    * @return {Promise} the result of the delete operation.
    */
-  async delete(optionId: string): Promise<any> {
+  async delete(optionId: string): Promise<ShippingOption | void> {
     try {
       const option = await this.retrieve(optionId)
 
@@ -764,7 +797,7 @@ class ShippingOptionService extends BaseService {
   async decorate(
     optionId,
     fields: (keyof ShippingOption)[] = [],
-    expandFields: string[] = []
+    expandFields: (keyof ShippingOption)[] = []
   ): Promise<ShippingOption> {
     const requiredFields: (keyof ShippingOption)[] = ["id", "metadata"]
 
@@ -780,9 +813,9 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Dedicated method to set metadata for a shipping option.
-   * @param {object} option - the option to set metadata for.
+   * @param {ShippingOption} option - the option to set metadata for.
    * @param {object} metadata - object for metadata field
-   * @return {Promise} resolves to the updated result.
+   * @return {Promise<object>} resolves to the updated result.
    */
   async setMetadata_(option, metadata): Promise<object> {
     const existing = option.metadata || {}
@@ -820,7 +853,7 @@ class ShippingOptionService extends BaseService {
   async getPrice_(
     option: ShippingOption,
     data: object,
-    cart: Cart | Order
+    cart: Cart | Order | undefined
   ): Promise<number | null> {
     if (option.price_type === "calculated") {
       return this.providerService_.calculatePrice(option, data, cart)

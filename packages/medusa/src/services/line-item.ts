@@ -1,5 +1,8 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { LineItem, ShippingMethod } from ".."
+import { LineItemRepository } from "../repositories/line-item"
+import { GenerateConfig } from "../types/line-item"
 
 /**
  * Provides layer to manipulate line items.
@@ -35,7 +38,7 @@ class LineItemService extends BaseService {
     this.cartRepository_ = cartRepository
   }
 
-  withTransaction(transactionManager) {
+  withTransaction(transactionManager): LineItemService {
     if (!transactionManager) {
       return this
     }
@@ -57,7 +60,7 @@ class LineItemService extends BaseService {
   async list(
     selector,
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }
-  ) {
+  ): Promise<LineItem[]> {
     const liRepo = this.manager_.getCustomRepository(this.lineItemRepository_)
     const query = this.buildQuery_(selector, config)
     return liRepo.find(query)
@@ -69,7 +72,7 @@ class LineItemService extends BaseService {
    * @param {object} config - the config to be used at query building
    * @return {LineItem} the line item
    */
-  async retrieve(id, config = {}) {
+  async retrieve(id, config = {}): Promise<LineItem> {
     const lineItemRepository = this.manager_.getCustomRepository(
       this.lineItemRepository_
     )
@@ -89,7 +92,12 @@ class LineItemService extends BaseService {
     return lineItem
   }
 
-  async generate(variantId, regionId, quantity, config = {}) {
+  async generate(
+    variantId,
+    regionId,
+    quantity,
+    config: GenerateConfig = {}
+  ): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
       const variant = await this.productVariantService_
         .withTransaction(manager)
@@ -104,7 +112,7 @@ class LineItemService extends BaseService {
       let price
       let shouldMerge = true
 
-      if (config.unit_price && typeof config.unit_price !== `undefined`) {
+      if (config.unit_price !== undefined && config.unit_price !== null) {
         // if custom unit_price, we ensure positive values
         // and we choose to not merge the items
         shouldMerge = false
@@ -141,7 +149,7 @@ class LineItemService extends BaseService {
    * @param {LineItem} lineItem - the line item object to create
    * @return {LineItem} the created line item
    */
-  async create(lineItem) {
+  async create(lineItem): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
@@ -159,7 +167,7 @@ class LineItemService extends BaseService {
    * @param {object} update - the properties to update on line item
    * @return {LineItem} the update line item
    */
-  async update(id, update) {
+  async update(id, update): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_
@@ -183,11 +191,41 @@ class LineItemService extends BaseService {
   }
 
   /**
+   * Updates a line item
+   * @param {LineItem[]} lineItems - the id of the line item to update
+   * @param {ShippingMethod[]} shippingMethods - the properties to update on line item
+   * @return {Promise<LineItem[]>} the update line item
+   */
+  async updateHasShipping(
+    lineItems: LineItem[],
+    shippingMethods: ShippingMethod[]
+  ): Promise<LineItem[]> {
+    return this.atomicPhase_(async (manager) => {
+      const lineItemRepository: LineItemRepository =
+        manager.getCustomRepository(this.lineItemRepository_)
+
+      const shippingProfiles = shippingMethods.map(
+        (sm) => sm.shipping_option.profile_id
+      )
+
+      lineItems.forEach((li) => {
+        li.has_shipping =
+          shippingProfiles.find(
+            (sp) => sp === li.variant?.product?.profile_id
+          ) !== undefined
+      })
+
+      const result = await lineItemRepository.save(lineItems)
+      return result
+    })
+  }
+
+  /**
    * Deletes a line item.
    * @param {string} id - the id of the line item to delete
    * @return {Promise} the result of the delete operation
    */
-  async delete(id) {
+  async delete(id): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const lineItemRepository = manager.getCustomRepository(
         this.lineItemRepository_

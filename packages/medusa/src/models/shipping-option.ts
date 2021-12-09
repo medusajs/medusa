@@ -66,7 +66,7 @@ export class ShippingOption {
   price_type: ShippingOptionPriceType
 
   @Column({ type: "int", nullable: true })
-  amount: number
+  amount: number | null
 
   @Column({ default: false })
   is_return: boolean
@@ -74,11 +74,9 @@ export class ShippingOption {
   @Column({ default: false })
   admin_only: boolean
 
-  @OneToMany(
-    () => ShippingOptionRequirement,
-    req => req.shipping_option,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => ShippingOptionRequirement, (req) => req.shipping_option, {
+    cascade: ["insert"],
+  })
   requirements: ShippingOptionRequirement[]
 
   @DbAwareColumn({ type: "jsonb" })
@@ -98,7 +96,9 @@ export class ShippingOption {
 
   @BeforeInsert()
   private beforeInsert() {
-    if (this.id) return
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `so_${id}`
   }

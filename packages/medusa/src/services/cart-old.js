@@ -1378,6 +1378,8 @@ class CartService extends BaseService {
             cart,
           }
 
+      await this.shippingOptionService_.prepareCart(cart.id, optionId)
+
       let newMethod
       try {
         newMethod = await this.shippingOptionService_

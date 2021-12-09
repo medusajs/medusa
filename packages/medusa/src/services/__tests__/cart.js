@@ -320,6 +320,7 @@ describe("CartService", () => {
       withTransaction: function () {
         return this
       },
+      updateHasShipping: jest.fn(),
     }
 
     const shippingOptionService = {
@@ -1314,7 +1315,7 @@ describe("CartService", () => {
       jest.clearAllMocks()
     })
 
-    let cartService = new CartService({})
+    const cartService = new CartService({})
 
     it("given a cart with custom shipping options and a shipping option id corresponding to a custom shipping option, then it should return a custom shipping option", async () => {
       const cartCSO = [
@@ -1396,6 +1397,7 @@ describe("CartService", () => {
 
     const lineItemService = {
       update: jest.fn(),
+      updateHasShipping: jest.fn(),
       withTransaction: function () {
         return this
       },
@@ -1456,7 +1458,8 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
         IdMap.getId("option"),
         data,
-        { cart: cart1 }
+        { cart: cart1 },
+        []
       )
     })
 
@@ -1469,17 +1472,13 @@ describe("CartService", () => {
         IdMap.getId("profile1"),
         data
       )
+
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
         IdMap.getId("profile1"),
         data,
-        { cart: cart2 }
+        { cart: cart2 },
+        cart2.shipping_methods
       )
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
-        id: IdMap.getId("ship1"),
-        shipping_option: {
-          profile_id: IdMap.getId("profile1"),
-        },
-      })
     })
 
     it("successfully adds additional shipping method", async () => {
@@ -1502,7 +1501,8 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
         IdMap.getId("additional"),
         data,
-        { cart: cart2 }
+        { cart: cart2 },
+        cart2.shipping_methods
       )
     })
 
@@ -1526,13 +1526,11 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
         IdMap.getId("profile1"),
         data,
-        { cart: cart3 }
+        { cart: cart3 },
+        []
       )
 
-      expect(lineItemService.update).toHaveBeenCalledTimes(1)
-      expect(lineItemService.update).toHaveBeenCalledWith(IdMap.getId("line"), {
-        has_shipping: true,
-      })
+      expect(lineItemService.updateHasShipping).toHaveBeenCalledTimes(1)
     })
 
     it("successfully adds a shipping method from a custom shipping option and custom price", async () => {
@@ -1560,7 +1558,8 @@ describe("CartService", () => {
         {
           cart_id: IdMap.getId("cart-with-custom-so"),
           price: 0,
-        }
+        },
+        []
       )
     })
   })
