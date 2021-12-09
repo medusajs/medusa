@@ -95,6 +95,10 @@ module.exports = {
           type: "doc",
           id: "how-to/uploading-images-to-s3",
         },
+        {
+          type: "doc",
+          id: "how-to/uploading-images-to-minio",
+        },
       ],
     },
     {
@@ -157,6 +161,11 @@ module.exports = {
           type: "doc",
           id: "add-plugins/s3",
           label: "File: S3",
+        },
+        {
+          type: "doc",
+          id: "add-plugins/minio",
+          label: "File: MinIO",
         },
         {
           type: "doc",
