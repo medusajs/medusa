@@ -18,11 +18,11 @@ export class TaxRate {
   @PrimaryColumn()
   id: string
 
-  @Column({ nullable: true })
-  rate: number
+  @Column({ type: "real", nullable: true })
+  rate: number | null
 
-  @Column({ nullable: true })
-  code: string
+  @Column({ type: "varchar", nullable: true })
+  code: string | null
 
   @Column()
   name: string
@@ -47,71 +47,31 @@ export class TaxRate {
   private beforeInsert() {
     if (this.id) return
     const id = ulid()
-    this.id = `trate_${id}`
+    this.id = `txr_${id}`
   }
 }
 
 /**
- * @schema line_item
- * title: "Line Item"
- * description: "Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims."
+ * @schema tax_rate
+ * title: "Tax Rate"
+ * description: "A Tax Rate can be used to associate a certain rate to charge on products within a given Region"
  * x-resourceId: line_item
  * properties:
  *   id:
- *     description: "The id of the Line Item. This value will be prefixed by `item_`."
+ *     description: "The id of the Tax Rate. This value will be prefixed by `txr_`."
  *     type: string
- *   cart_id:
- *     description: "The id of the Cart that the Line Item belongs to."
+ *   rate:
+ *     description: "The numeric rate to charge"
+ *     type: number
+ *   code:
+ *     description: "A code to identify the tax type by"
  *     type: string
- *   order_id:
- *     description: "The id of the Order that the Line Item belongs to."
+ *   name:
+ *     description: "A human friendly name for the tax"
  *     type: string
- *   swap_id:
- *     description: "The id of the Swap that the Line Item belongs to."
+ *   region_id:
+ *     description: "The id of the Region that the rate belongs to"
  *     type: string
- *   claim_order_id:
- *     description: "The id of the Claim that the Line Item belongs to."
- *     type: string
- *   title:
- *     description: "The title of the Line Item, this should be easily identifiable by the Customer."
- *     type: string
- *   description:
- *     description: "A more detailed description of the contents of the Line Item."
- *     type: string
- *   thumbnail:
- *     description: "A URL string to a small image of the contents of the Line Item."
- *     type: string
- *   is_giftcard:
- *     description: "Flag to indicate if the Line Item is a Gift Card."
- *     type: boolean
- *   should_merge:
- *     description: "Flag to indicate if new Line Items with the same variant should be merged or added as an additional Line Item."
- *     type: boolean
- *   allow_discounts:
- *     description: "Flag to indicate if the Line Item should be included when doing discount calculations."
- *     type: boolean
- *   unit_price:
- *     description: "The price of one unit of the content in the Line Item. This should be in the currency defined by the Cart/Order/Swap/Claim that the Line Item belongs to."
- *     type: boolean
- *   variant_id:
- *     description: "The id of the Product Variant contained in the Line Item."
- *     type: string
- *   variant:
- *     description: "The Product Variant contained in the Line Item."
- *     anyOf:
- *       - $ref: "#/components/schemas/product_variant"
- *   quantity:
- *     description: "The quantity of the content in the Line Item."
- *     type: integer
- *   fulfilled_quantity:
- *     description: "The quantity of the Line Item that has been fulfilled."
- *     type: integer
- *   returned_quantity:
- *     description: "The quantity of the Line Item that has been returned."
- *     type: integer
- *   shipped_quantity:
- *     description: "The quantity of the Line Item that has been shipped."
- *     type: integer
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

@@ -5,7 +5,7 @@ import {
   TaxCalculationLine,
   TaxCalculationContext,
 } from "../interfaces/tax-service"
-import { ProviderTaxLine } from "../types/tax-line"
+import { ProviderTaxLine } from "../types/tax-service"
 
 class SystemTaxService extends BaseService implements ITaxService {
   static identifier = "system"
@@ -20,7 +20,7 @@ class SystemTaxService extends BaseService implements ITaxService {
   ): Promise<ProviderTaxLine[]> {
     return lines.flatMap((l) => {
       return l.rates.map((r) => ({
-        rate: r.rate,
+        rate: r.rate || 0,
         name: r.name,
         code: r.code,
         item_id: l.item.id,
