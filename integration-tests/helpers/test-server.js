@@ -2,13 +2,8 @@ const path = require("path")
 const express = require("express")
 const getPort = require("get-port")
 const importFrom = require("import-from")
-const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
 
 const initialize = async () => {
-  const configPath = path.resolve(path.join(process.cwd(), `medusa-config.js`))
-  const configModule = require(configPath)
-  configModule.projectConfig.database_url = `${configModule.projectConfig.database_url}-${workerId}`
-
   const app = express()
 
   const loaders = importFrom(
@@ -19,7 +14,6 @@ const initialize = async () => {
   const { dbConnection } = await loaders({
     directory: path.resolve(process.cwd()),
     expressApp: app,
-    configModule,
   })
 
   const PORT = await getPort()

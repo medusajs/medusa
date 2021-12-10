@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.27](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.26...medusa-plugin-restock-notification@0.0.27) (2021-12-08)
+
+### Bug Fixes
+
+- ensures that delayed restock notifications are being sent ([#881](https://github.com/medusajs/medusa/issues/881)) ([329767e](https://github.com/medusajs/medusa/commit/329767e27980253d456030dd5aad648662d39e3d))
+
 ## [0.0.26](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.25...medusa-plugin-restock-notification@0.0.26) (2021-11-23)
 
 **Note:** Version bump only for package medusa-plugin-restock-notification

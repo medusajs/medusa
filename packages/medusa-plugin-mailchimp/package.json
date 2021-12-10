@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-mailchimp",
-  "version": "1.1.33",
+  "version": "1.1.34",
   "description": "Mailchimp newsletter subscriptions",
   "main": "index.js",
   "repository": {
@@ -40,8 +40,8 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mailchimp-api-v3": "^1.14.0",
-    "medusa-core-utils": "^1.1.30",
-    "medusa-test-utils": "^1.1.33"
+    "medusa-core-utils": "^1.1.31",
+    "medusa-test-utils": "^1.1.34"
   },
   "gitHead": "7770046479c361f375842a8605b15e5d7bc24624"
 }

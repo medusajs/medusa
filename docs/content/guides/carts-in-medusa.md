@@ -137,7 +137,7 @@ In Medusa payments are handled through the long lived entities called _Payment S
 const { cart } = await client.carts.createPaymentSessions(cartId)
 ```
 
-You can read more about Payment Sessions in our [guide to checkouts](https://docs.medusa-commerce.com/guides/checkouts).
+You can read more about Payment Sessions in our [guide to checkouts](https://docs.medusajs.com/guides/checkouts).
 
 ## Changing the Cart region
 
@@ -158,6 +158,6 @@ When changing the Cart region you should be aware of a couple of things:
 
 ## What's next?
 
-Carts are at the core of the shopping process in Medusa and provide all the necessary functionality to gather products for purchase. If you want to read a more detailed guide about how to complete checkouts please go to our [Checkout Guide](https://docs.medusa-commerce.com/guides/checkout).
+Carts are at the core of the shopping process in Medusa and provide all the necessary functionality to gather products for purchase. If you want to read a more detailed guide about how to complete checkouts please go to our [Checkout Guide](https://docs.medusajs.com/guides/checkout).
 
 If you have questions or issues feel free to reach out via our [Discord server](https://discord.gg/xpCwq3Kfn8) for direct access to the Medusa engineering team.

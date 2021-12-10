@@ -57,7 +57,7 @@ class InventoryService extends BaseService {
    * allows backorders or if the inventory quantity is greater than `quantity`.
    * @param {string} variantId - the id of the variant to check
    * @param {number} quantity - the number of units to check availability for
-   * @return {boolean} true if the inventory covers the quantity
+   * @return {Promise<boolean>} true if the inventory covers the quantity
    */
   async confirmInventory(variantId, quantity) {
     // if variantId is undefined then confirm inventory as it

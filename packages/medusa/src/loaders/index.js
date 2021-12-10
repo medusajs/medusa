@@ -18,13 +18,8 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import subscribersLoader from "./subscribers"
 
-export default async ({
-  directory: rootDirectory,
-  expressApp,
-  configModule,
-}) => {
-  configModule =
-    configModule || getConfigFile(rootDirectory, `medusa-config`).configModule
+export default async ({ directory: rootDirectory, expressApp }) => {
+  const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   const container = createContainer()
   container.registerAdd = function(name, registration) {
@@ -172,6 +167,7 @@ export default async ({
 
 function asArray(resolvers) {
   return {
-    resolve: (container, opts) => resolvers.map(r => container.build(r, opts)),
+    resolve: (container, opts) =>
+      resolvers.map((r) => container.build(r, opts)),
   }
 }

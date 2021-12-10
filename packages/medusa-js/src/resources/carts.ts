@@ -1,5 +1,6 @@
 import {
   StoreCartsRes,
+  StoreCompleteCartRes,
   StorePostCartReq,
   StorePostCartsCartPaymentSessionReq,
   StorePostCartsCartPaymentSessionUpdateReq,
@@ -34,9 +35,9 @@ class CartsResource extends BaseResource {
    * The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
    * If not provuided, we will generate one for the request.
    * @param {string} cart_id is required
-   * @return {ResponsePromise<StoreCartsRes>}
+   * @return {ResponsePromise<StoreCompleteCartRes>}
    */
-  complete(cart_id: string): ResponsePromise<StoreCartsRes> {
+  complete(cart_id: string): ResponsePromise<StoreCompleteCartRes> {
     const path = `/store/carts/${cart_id}/complete`
     return this.client.request("POST", path)
   }
@@ -148,14 +149,16 @@ class CartsResource extends BaseResource {
   /**
    * Updates the payment method
    * @param {string} cart_id is required
+   * @param {string} provider_id is required
    * @param {StorePostCartsCartPaymentSessionUpdateReq} payload is required
    * @return {ResponsePromise<StoreCartsRes>}
    */
   updatePaymentSession(
     cart_id: string,
+    provider_id: string,
     payload: StorePostCartsCartPaymentSessionUpdateReq
   ): ResponsePromise<StoreCartsRes> {
-    const path = `/store/carts/${cart_id}/payment-session/update`
+    const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
     return this.client.request("POST", path, payload)
   }
 }

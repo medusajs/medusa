@@ -10,9 +10,11 @@ import {
 import { MedusaError } from "medusa-core-utils"
 import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
+
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { AddressPayload } from "../../../../types/common"
 
 /**
  * @oas [post] /carts
@@ -74,8 +76,11 @@ export default async (req, res) => {
 
   await entityManager.transaction(async (manager) => {
     // Add a default region if no region has been specified
-    let regionId = validated.region_id
-    if (!validated.region_id) {
+    let regionId: string
+
+    if (typeof validated.region_id !== "undefined") {
+      regionId = validated.region_id
+    } else {
       const regionService = req.scope.resolve("regionService")
       const regions = await regionService.withTransaction(manager).list({})
 
@@ -90,11 +95,11 @@ export default async (req, res) => {
     }
 
     const toCreate: {
-      region_id: string | undefined
+      region_id: string
       context: object
       customer_id?: string
       email?: string
-      shipping_address?: object
+      shipping_address?: Partial<AddressPayload>
     } = {
       region_id: regionId,
       context: {
@@ -122,12 +127,12 @@ export default async (req, res) => {
     if (validated.items) {
       await Promise.all(
         validated.items.map(async (i) => {
-          await lineItemService.withTransaction(manager).create({
-            cart_id: cart.id,
-            variant_id: i.variant_id,
-            quantity: i.quantity,
-            region_id: validated.region_id,
-          })
+          const lineItem = await lineItemService
+            .withTransaction(manager)
+            .generate(i.variant_id, regionId, i.quantity)
+          await cartService
+            .withTransaction(manager)
+            .addLineItem(cart.id, lineItem)
         })
       )
     }

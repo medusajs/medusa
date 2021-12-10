@@ -2,7 +2,7 @@
 
 This is a guide for deploying a Medusa project to Qovery. Qovery is a Continuous Deployment Platform, that provides you with the developer experience of Heroku on top of your cloud provider (e.g. AWS, DigitalOcean).
 
-> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusa-commerce.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusa-commerce.com/how-to/create-medusa-app) for a small walkthrough.
+> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
 
 ### 1. Qovery Console
 
@@ -118,5 +118,5 @@ You now have an application running on Qovery. This can be scaled and configured
 
 Furthermore, you can deploy Medusa Admin for your application, such that you can start managing your store from an interface.
 
-- [Deploy Admin on Netlify](https://docs.medusa-commerce.com/how-to/deploying-admin-on-netlify)
+- [Deploy Admin on Netlify](https://docs.medusajs.com/how-to/deploying-admin-on-netlify)
 - Deploy Admin on Gatsby Cloud (Coming soon)

@@ -12,7 +12,8 @@ describe("POST /admin/users/:id", () => {
         `/admin/users/${IdMap.getId("test-user")}`,
         {
           payload: {
-            name: "Oliver Juhl",
+            first_name: "Oliver",
+            last_name: "Juhl",
           },
           adminSession: {
             jwt: {
@@ -32,7 +33,8 @@ describe("POST /admin/users/:id", () => {
       expect(UserServiceMock.update).toHaveBeenCalledWith(
         IdMap.getId("test-user"),
         {
-          name: "Oliver Juhl",
+          first_name: "Oliver",
+          last_name: "Juhl",
         }
       )
     })

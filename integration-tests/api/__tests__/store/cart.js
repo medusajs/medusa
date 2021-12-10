@@ -13,6 +13,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
 const cartSeeder = require("../../helpers/cart-seeder")
+const productSeeder = require("../../helpers/product-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
 
 jest.setTimeout(30000)
@@ -86,6 +87,39 @@ describe("/store/carts", () => {
           "A region is required to create a cart"
         )
       }
+    })
+
+    it("creates a cart with items", async () => {
+      await productSeeder(dbConnection)
+      const api = useApi()
+
+      const response = await api.post("/store/carts", {
+        items: [
+          {
+            variant_id: "test-variant_1",
+            quantity: 1,
+          },
+          {
+            variant_id: "test-variant_2",
+            quantity: 2,
+          },
+        ],
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          variant_id: "test-variant_1",
+          quantity: 1,
+        }),
+        expect.objectContaining({
+          variant_id: "test-variant_2",
+          quantity: 2,
+        }),
+      ])
+
+      const getRes = await api.post(`/store/carts/${response.data.cart.id}`)
+      expect(getRes.status).toEqual(200)
     })
 
     it("creates a cart with country", async () => {

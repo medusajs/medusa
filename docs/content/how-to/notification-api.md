@@ -6,7 +6,7 @@ title: Notifications and automated flows
 
 ### Introduction
 
-Plugins offer a way to extend and integrate the core functionality of Medusa. For a walkthrough of the implementation details behind these, please see [Plugins in Medusa](https://docs.medusa-commerce.com/how-to/plugins).
+Plugins offer a way to extend and integrate the core functionality of Medusa. For a walkthrough of the implementation details behind these, please see [Plugins in Medusa](https://docs.medusajs.com/how-to/plugins).
 
 Medusa makes it possible for plugins to implement the Notification API. The API allows for different types of implementations of notifications (emails, text messages, Slack messages, etc), that are sent as a reaction to events in Medusa. All Notifications are stored in the database with information about the receiver of the notification and what plugin was in charge of sending it. This allows merchants to resend notifications, but also gives an overview of what communication has been sent to customers.
 
@@ -20,11 +20,11 @@ The Notification API works by subscribing to all events that are emitted to the 
 class MyNotification {
   constructor({ notificationService }) {
     // Subscribe to order.placed events
-    notificationService.subscribe("order.placed", "my-service");
+    notificationService.subscribe("order.placed", "my-service")
   }
 }
 
-export default MyNotification;
+export default MyNotification
 ```
 
 The above code tells the notification service to send `order.placed` events to the `my-service` notification service implemented in your plugin.
@@ -35,47 +35,47 @@ For a plugin to work with the Notification API you must implement 2 methods `sen
 // src/services/my-notification.js
 
 class MyService extends NotificationService {
-  static identifier = "my-service";
+  static identifier = "my-service"
 
   constructor({ orderService }, options) {
-    super();
+    super()
 
-    this.options_ = options;
-    this.orderService_ = orderService;
+    this.options_ = options
+    this.orderService_ = orderService
   }
 
   async sendNotification(eventName, eventData, attachmentGenerator) {
-    let sendData;
+    let sendData
     switch (eventName) {
       case "order.placed":
-        sendData = await this.orderService_.retrieve(eventData.id);
-        break;
+        sendData = await this.orderService_.retrieve(eventData.id)
+        break
       default:
         // If the return value is undefined no notification will be stored
-        return;
+        return
     }
 
     await CoolEmailSender.send({
       email: sendData.email,
       templateData: sendData,
-    });
+    })
 
-    return { to: sendData.email, data: sendData };
+    return { to: sendData.email, data: sendData }
   }
 
   async resendNotification(notification, config, attachmentGenerator) {
-    const recipient = config.to || notification.to;
+    const recipient = config.to || notification.to
 
     await CoolEmailSender.send({
       email: recipient,
       templateData: notification.data,
-    });
+    })
 
-    return { to: sendOptions.to, data: notification.data };
+    return { to: sendOptions.to, data: notification.data }
   }
 }
 
-export default MyService;
+export default MyService
 ```
 
 > **Note:** a notification service must have a static property called `identifier` this is used to determine which classes are called when subscribing to different events. In this case the service identifier is `my-service` so to subscribe to notifications you must use:
