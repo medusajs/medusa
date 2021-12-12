@@ -511,7 +511,7 @@ class ProductService extends BaseService {
         product = await productRepo.save(product)
 
         product.options = await Promise.all(
-          options.map(async (o) => {
+          (options || []).map(async (o) => {
             const res = optionRepo.create({ ...o, product_id: product.id })
             await optionRepo.save(res)
             return res
