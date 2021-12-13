@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosInstance } from "axios"
+import axios, { AxiosError, AxiosInstance, AxiosRequestHeaders } from "axios"
 import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
 
@@ -95,7 +95,7 @@ class Client {
     userHeaders: RequestOptions,
     method: RequestMethod,
     path: string
-  ): object {
+  ): AxiosRequestHeaders {
     let defaultHeaders: object = {
       Accept: "application/json",
       "Content-Type": "application/json",
