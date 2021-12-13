@@ -1,7 +1,10 @@
 import {
   AdminDiscountsDeleteRes,
+  AdminDiscountsListRes,
   AdminDiscountsRes,
+  AdminGetDiscountsParams,
   AdminPostDiscountsDiscountDynamicCodesReq,
+  AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
@@ -10,8 +13,6 @@ import BaseResource from "../base"
 class AdminDiscountsResource extends BaseResource {
   /**
    * @description Adds region to discount
-   * @param id - discount id
-   * @param regionId - region to add
    */
   addRegion(id: string, regionId: string): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/regions/${regionId}`
@@ -20,8 +21,6 @@ class AdminDiscountsResource extends BaseResource {
 
   /**
    * @description Add valid product
-   * @param id - discount id
-   * @param productId - product to add
    */
   addValidProduct(
     id: string,
@@ -32,8 +31,7 @@ class AdminDiscountsResource extends BaseResource {
   }
 
   /**
-   * @description Add valid product
-   * @param payload - data of discount to create
+   * @description Creates discounts
    */
   create(payload: AdminPostDiscountsReq): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts`
@@ -41,9 +39,18 @@ class AdminDiscountsResource extends BaseResource {
   }
 
   /**
+   * @description Updates discount
+   */
+  update(
+    id: string,
+    payload: AdminPostDiscountsDiscountReq
+  ): ResponsePromise<AdminDiscountsRes> {
+    const path = `/admin/discounts/${id}`
+    return this.client.request("POST", path, payload)
+  }
+
+  /**
    * @description Creates a dynamic discount code
-   * @param id - id of parent discount
-   * @param payload - data of dynamic discount code to create
    */
   createDynamicCode(
     id: string,
@@ -54,9 +61,7 @@ class AdminDiscountsResource extends BaseResource {
   }
 
   /**
-   * @description Creates a dynamic discount code
-   * @param id - id of parent discount
-   * @param payload - data of dynamic discount code to create
+   * @description Deletes a discount
    */
   delete(id: string): ResponsePromise<AdminDiscountsDeleteRes> {
     const path = `/admin/discounts/${id}`
@@ -64,9 +69,7 @@ class AdminDiscountsResource extends BaseResource {
   }
 
   /**
-   * @description Creates a dynamic discount code
-   * @param id - id of parent discount
-   * @param code - code of dynamic discount to delete
+   * @description Deletes a dynamic discount
    */
   deleteDynamicCode(
     id: string,
@@ -78,12 +81,57 @@ class AdminDiscountsResource extends BaseResource {
 
   /**
    * @description Retrieves a discount
-   * @param id - id of parent discount
-   * @param payload - data of dynamic discount code to create
    */
   retrieve(id: string): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}`
-    return this.client.request("GET", path, payload)
+    return this.client.request("GET", path)
+  }
+
+  /**
+   * @description Retrieves a discount by code
+   */
+  retrieveByCode(code: string): ResponsePromise<AdminDiscountsRes> {
+    const path = `/admin/discounts/code/${code}`
+    return this.client.request("GET", path)
+  }
+
+  /**
+   * @description Lists discounts
+   */
+  list(query: AdminGetDiscountsParams): ResponsePromise<AdminDiscountsListRes> {
+    let path = `/admin/discounts`
+
+    if (query) {
+      const queryString = Object.entries(query).map(([key, value]) => {
+        return `${key}=${value}`
+      })
+
+      path = `/admin/discounts?${queryString.join("&")}`
+    }
+
+    return this.client.request("GET", path)
+  }
+
+  /**
+   * @description Removes a region from a discount
+   */
+  removeRegion(
+    id: string,
+    regionId: string
+  ): ResponsePromise<AdminDiscountsRes> {
+    const path = `/admin/discounts/${id}/regions/${regionId}`
+    return this.client.request("DELETE", path)
+  }
+
+  /**
+   * @description Removes a valid product from a discount
+   */
+  removeValidProduct(
+    id: string,
+    productId: string
+  ): ResponsePromise<AdminDiscountsRes> {
+    const path = `/admin/discounts/${id}/products/${productId}`
+    return this.client.request("DELETE", path)
   }
 }
 

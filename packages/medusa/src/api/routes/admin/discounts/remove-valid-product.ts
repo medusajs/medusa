@@ -22,10 +22,10 @@ import DiscountService from "../../../../services/discount"
  *               $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
-  const { discount_id, variant_id } = req.params
+  const { discount_id, product_id } = req.params
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  await discountService.removeValidProduct(discount_id, variant_id)
+  await discountService.removeValidProduct(discount_id, product_id)
 
   const discount = await discountService.retrieve(discount_id, {
     select: defaultAdminDiscountsFields,

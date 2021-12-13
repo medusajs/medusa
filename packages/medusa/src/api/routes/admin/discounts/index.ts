@@ -41,11 +41,11 @@ export default (app) => {
 
   // Discount valid variants management
   route.post(
-    "/:discount_id/products/:variant_id",
+    "/:discount_id/products/:product_id",
     middlewares.wrap(require("./add-valid-product").default)
   )
   route.delete(
-    "/:discount_id/products/:variant_id",
+    "/:discount_id/products/:product_id",
     middlewares.wrap(require("./remove-valid-product").default)
   )
 
