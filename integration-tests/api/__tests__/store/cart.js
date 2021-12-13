@@ -493,6 +493,19 @@ describe("/store/carts", () => {
   })
 
   describe("POST /store/carts/:id/shipping-methods", () => {
+    const addShippingMethod = async (cart_id, option_id) => {
+      const api = useApi()
+      return await api
+        .post(
+          `/store/carts/${cart_id}/shipping-methods`,
+          {
+            option_id,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+    }
+
     beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
@@ -552,21 +565,15 @@ describe("/store/carts", () => {
     })
 
     it("Fails to re-add shipping method to cart", async () => {
-      expect.assertions(4)
       const api = useApi()
+
       await api.post("/store/carts/test-cart/shipping-methods", {
         option_id: "test-option-2",
       })
-      try {
-        await api.post("/store/carts/test-cart/shipping-methods", {
-          option_id: "test-option-2",
-        })
-      } catch (err) {
-        expect(err.response.data.type).toEqual("duplicate_error")
-        expect(err.response.data.message).toEqual(
-          "Cannot add existing shipping option, update shipping option instead"
-        )
-      }
+
+      await api.post("/store/carts/test-cart/shipping-methods", {
+        option_id: "test-option-2",
+      })
 
       const cartWithShippingMethod = await api.get("/store/carts/test-cart")
 
@@ -690,24 +697,50 @@ describe("/store/carts", () => {
       expect(cartWithGiftcard.status).toEqual(200)
     })
 
-    it("adds no more than 1 shipping method per shipping profile", async () => {
-      const api = useApi()
-      const addShippingMethod = async (option_id) => {
-        return await api
-          .post(
-            "/store/carts/test-cart/shipping-methods",
-            {
-              option_id,
-            },
-            { withCredentials: true }
-          )
-          .catch((err) => console.log(err))
-      }
-
-      await addShippingMethod("test-option")
+    it("sets hasShipping on lines with the profiles associated with the shipping methods", async () => {
       const cartWithAnotherShippingMethod = await addShippingMethod(
+        "test-cart-4",
         "test-option-2"
-      )
+      ).catch((err) => console.log(err))
+
+      expect(cartWithAnotherShippingMethod.data.cart.items.length).toEqual(2)
+      expect(cartWithAnotherShippingMethod.data.cart.items).toEqual([
+        expect.objectContaining({
+          id: "test-item-3",
+          has_shipping: true,
+        }),
+        expect.objectContaining({
+          id: "test-item-4",
+          has_shipping: false,
+        }),
+      ])
+      expect(cartWithAnotherShippingMethod.status).toEqual(200)
+    })
+
+    it("sets shipping price to 0 if free shipping discount is present on the cart", async () => {
+      const cartWithAnotherShippingMethod = await addShippingMethod(
+        "test-cart-5",
+        "test-option-2"
+      ).catch((err) => console.log(err))
+
+      expect(
+        cartWithAnotherShippingMethod.data.cart.shipping_methods.length
+      ).toEqual(1)
+      expect(cartWithAnotherShippingMethod.data.cart.shipping_methods).toEqual([
+        expect.objectContaining({
+          shipping_option_id: "test-option-2",
+          price: 0,
+        }),
+      ])
+      expect(cartWithAnotherShippingMethod.status).toEqual(200)
+    })
+
+    it("adds no more than 1 shipping method per shipping profile", async () => {
+      await addShippingMethod("test-cart", "test-option")
+      const cartWithAnotherShippingMethod = await addShippingMethod(
+        "test-cart",
+        "test-option-2"
+      ).catch((err) => console.log(err))
 
       expect(
         cartWithAnotherShippingMethod.data.cart.shipping_methods.length

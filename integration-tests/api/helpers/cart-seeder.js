@@ -240,7 +240,7 @@ module.exports = async (connection, data = {}) => {
     is_disabled: false,
     starts_at: tenDaysAgo,
     ends_at: tenDaysFromToday,
-    valid_duration: "P1M", //one month
+    valid_duration: "P1M", // one month
   })
 
   DynamicDiscount.regions = [r]
@@ -533,4 +533,73 @@ module.exports = async (connection, data = {}) => {
     cart_id: "test-cart-3",
   })
   await manager.save(li2)
+
+  const cart4 = manager.create(Cart, {
+    id: "test-cart-4",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    completed_at: null,
+    items: [],
+  })
+  await manager.save(cart4)
+
+  const li3 = manager.create(LineItem, {
+    id: "test-item-3",
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    cart_id: "test-cart-4",
+  })
+  await manager.save(li3)
+
+  const li4 = manager.create(LineItem, {
+    id: "test-item-4",
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "giftcard-denom",
+    cart_id: "test-cart-4",
+  })
+  await manager.save(li4)
+
+  const cart5 = manager.create(Cart, {
+    id: "test-cart-5",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    completed_at: null,
+    items: [],
+    discounts: [freeDisc],
+  })
+  await manager.save(cart5)
+
+  const li5 = manager.create(LineItem, {
+    id: "test-item-5",
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant",
+    cart_id: "test-cart-5",
+  })
+  await manager.save(li5)
 }
