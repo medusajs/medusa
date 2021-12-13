@@ -1663,7 +1663,7 @@ class CartService extends BaseService {
     // If the cart contains items we want to change the unit_price field of each
     // item to correspond to the price given in the region
     if (cart.items.length) {
-      cart.items = await Promise.all(
+      cart.items = (await Promise.all(
         cart.items
           .map(async (item) => {
             const availablePrice = await this.productVariantService_
@@ -1685,7 +1685,7 @@ class CartService extends BaseService {
             }
           })
           .filter(Boolean)
-      )
+      )) as LineItem[]
     }
 
     /*
