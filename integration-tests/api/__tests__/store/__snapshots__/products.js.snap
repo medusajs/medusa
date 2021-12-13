@@ -17,6 +17,7 @@ Object {
     "deleted_at": null,
     "description": "test-product-description",
     "discountable": true,
+    "external_id": null,
     "handle": "test-product",
     "height": null,
     "hs_code": null,

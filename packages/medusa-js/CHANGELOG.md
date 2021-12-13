@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.7](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.6...@medusajs/medusa-js@1.0.7) (2021-12-08)
+
+### Bug Fixes
+
+- complete cart return type ([#902](https://github.com/medusajs/medusa-js/issues/902)) ([2e837fc](https://github.com/medusajs/medusa-js/commit/2e837fcdeeb1f9608c5b0c612c75c87c042d8286))
+
+## [1.0.6](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.5...@medusajs/medusa-js@1.0.6) (2021-12-08)
+
+### Bug Fixes
+
+- medusa-js complete cart types + oas comments ([#889](https://github.com/medusajs/medusa-js/issues/889)) ([487356a](https://github.com/medusajs/medusa-js/commit/487356a96ffc3886cf233e89e0b17dc3b6a665e5))
+- medusa-js fine-tuning ([#836](https://github.com/medusajs/medusa-js/issues/836)) ([ded496c](https://github.com/medusajs/medusa-js/commit/ded496cee5c8fb9b28b664e308dfb782e441c99b))
+- update payment session route ([#887](https://github.com/medusajs/medusa-js/issues/887)) ([e006402](https://github.com/medusajs/medusa-js/commit/e0064026eddc44c437aa09fc06d38b0005ab80c8))
+
 ## [1.0.5](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.4...@medusajs/medusa-js@1.0.5) (2021-11-23)
 
 **Note:** Version bump only for package @medusajs/medusa-js

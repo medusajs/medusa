@@ -5387,20 +5387,20 @@ medusa-core-utils@^0.1.27:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-medusa-core-utils@^1.1.29:
-  version "1.1.29"
-  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.29.tgz#3ad1c21aae18d627063a6548504e24ce70031015"
-  integrity sha512-knlHwetXkyYjkGNU/a6JVT9IkKtYa5UD45I5C0jAs9BqzacKN/WCxeKzOwCJPBMP1LrSBajwm45kgvICUerWzA==
+medusa-core-utils@^1.1.30:
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/medusa-core-utils/-/medusa-core-utils-1.1.30.tgz#6fe670a9df1ddbbd786f7a3a89c167eb3596aea2"
+  integrity sha512-vWtSr2uZzRRv3HfUc9rclLxmMx+7lL+5qFZrgSZK5Wf19jO4Jp15wWgNsf3bp7Bf5ICaPfT96G1jbyqiMvI6HA==
   dependencies:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^1.1.30:
-  version "1.1.30"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.30.tgz#9a6fa19a88854db67b0c82cef9061afda560bd3a"
-  integrity sha512-OQVPO/6Gr5OJOWjSCaDQcTZDMCo7cJoQP4w5P/+XoTM6YvD7PpJhVJR17W7du5XIXoiM5i/eFDi3/Gb7nsZdJg==
+medusa-interfaces@^1.1.31:
+  version "1.1.31"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.31.tgz#50180132fa6b785c595ebba0e9c4c80cb7eba948"
+  integrity sha512-85IEL2K7E1hBB9L2VrLok1KiYOdnoQxY3cGm5VcjYzkxJSxb3GjDcbptRIaq199w/j4ZfAyDXusXzLrfaZHcLw==
   dependencies:
-    medusa-core-utils "^1.1.29"
+    medusa-core-utils "^1.1.30"
 
 medusa-telemetry@^0.0.10:
   version "0.0.10"
@@ -5417,13 +5417,13 @@ medusa-telemetry@^0.0.10:
     remove-trailing-slash "^0.1.1"
     uuid "^8.3.2"
 
-medusa-test-utils@^1.1.32:
-  version "1.1.32"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.32.tgz#c0797b517d9d4475483147514a383b2c4ed88b8c"
-  integrity sha512-RBme+gBI7pmRiFcrxvU4dO4a509zLINrRZwW4p1UiQwg2JCfzTt9iMwhV9Mn6Z+SDAP2n1M2TFBYmNYuXwoJGQ==
+medusa-test-utils@^1.1.33:
+  version "1.1.33"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.33.tgz#0c2f159f0cd5f3d3e79f5aabb30286a9bf839ef9"
+  integrity sha512-VM29+5h4NM3isIKh1AqssCbvj+aC/Meqqf+c3PNdhtK93+jNmahadpYtGPhT5i/8lMOqnleatAgfnhjq8a7X9A==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
-    medusa-core-utils "^1.1.29"
+    medusa-core-utils "^1.1.30"
     randomatic "^3.1.1"
 
 merge-descriptors@1.0.1:
@@ -7062,10 +7062,15 @@ side-channel@^1.0.4:
     get-intrinsic "^1.0.2"
     object-inspect "^1.9.0"
 
-signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
+signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.6.tgz#24e630c4b0f03fea446a2bd299e62b4a6ca8d0af"
   integrity sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==
+
+signal-exit@^3.0.3:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.5.tgz#9e3e8cc0c75a99472b44321033a7702e7738252f"
+  integrity sha512-KWcOiKeQj6ZyXx7zq4YxSMgHRlod4czeBQZrPb8OKcohcqAXShm7E20kEMle9WBt26hFcAf0qLOcp5zmY7kOqQ==
 
 simple-swizzle@^0.2.2:
   version "0.2.2"

@@ -148,9 +148,10 @@ class EventBusService {
    * Calls all subscribers when an event occurs.
    * @param {string} eventName - the name of the event to be process.
    * @param {?any} data - the data to send to the subscriber.
+   * @param {?any} options - options to add the job with
    * @return {BullJob} - the job from our queue
    */
-  async emit(eventName, data) {
+  async emit(eventName, data, options = {}) {
     if (this.transactionManager_) {
       const stagedJobRepository = this.transactionManager_.getCustomRepository(
         this.stagedJobRepository_
@@ -163,7 +164,11 @@ class EventBusService {
 
       return stagedJobRepository.save(created)
     } else {
-      this.queue_.add({ eventName, data }, { removeOnComplete: true })
+      const opts = { removeOnComplete: true }
+      if (typeof options.delay === "number") {
+        opts.delay = options.delay
+      }
+      this.queue_.add({ eventName, data }, opts)
     }
   }
 

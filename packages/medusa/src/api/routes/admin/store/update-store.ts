@@ -19,6 +19,12 @@ import { validator } from "../../../../utils/validator"
  *           swap_link_template:
  *             description: "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart id"
  *             type: string
+ *           payment_link_template:
+ *             description: "A template for payment links links - use `{{cart_id}}` to insert the Cart id"
+ *             type: string
+ *           invite_link_template:
+ *             description: "A template for invite links - use `{{invite_token}}` to insert the invite token"
+ *             type: string
  *           default_currency_code:
  *             description: "The default currency code for the Store."
  *             type: string
@@ -56,6 +62,10 @@ export class AdminPostStoreReq {
   @IsString()
   @IsOptional()
   payment_link_template?: string
+
+  @IsString()
+  @IsOptional()
+  invite_link_template?: string
 
   @IsString()
   @IsOptional()

@@ -57,7 +57,7 @@ export const UserServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  setPassword: jest.fn().mockImplementation(userId => {
+  setPassword_: jest.fn().mockImplementation(userId => {
     if (userId === IdMap.getId("test-user")) {
       return Promise.resolve(users.testUser)
     }

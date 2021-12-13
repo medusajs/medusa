@@ -1,12 +1,11 @@
 import {
   StoreCartsRes,
-  StoreOrdersRes,
+  StoreCompleteCartRes,
   StorePostCartReq,
   StorePostCartsCartPaymentSessionReq,
   StorePostCartsCartPaymentSessionUpdateReq,
   StorePostCartsCartReq,
   StorePostCartsCartShippingMethodReq,
-  StoreSwapsRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
@@ -36,11 +35,9 @@ class CartsResource extends BaseResource {
    * The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
    * If not provuided, we will generate one for the request.
    * @param {string} cart_id is required
-   * @return {ResponsePromise<StoreCartsRes | StoreSwapsRes | StoreOrdersRes>}
+   * @return {ResponsePromise<StoreCompleteCartRes>}
    */
-  complete(
-    cart_id: string
-  ): ResponsePromise<StoreCartsRes | StoreSwapsRes | StoreOrdersRes> {
+  complete(cart_id: string): ResponsePromise<StoreCompleteCartRes> {
     const path = `/store/carts/${cart_id}/complete`
     return this.client.request("POST", path)
   }

@@ -10,6 +10,7 @@ Object {
   "id": "admin_user",
   "last_name": null,
   "metadata": null,
+  "role": "admin",
   "updated_at": Any<String>,
 }
 `;
