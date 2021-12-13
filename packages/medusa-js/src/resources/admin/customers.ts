@@ -7,7 +7,7 @@ import {
 import { ResponsePromise } from "../.."
 import BaseResource from "../base"
 
-class AdminCustomerResource extends BaseResource {
+class AdminCustomersResource extends BaseResource {
   /**
    * Creates a customer
    * @param {AdminPostCustomersReq} payload information of customer
@@ -64,4 +64,4 @@ class AdminCustomerResource extends BaseResource {
   }
 }
 
-export default AdminCustomerResource
+export default AdminCustomersResource
