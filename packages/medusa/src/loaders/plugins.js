@@ -301,10 +301,8 @@ async function registerServices(pluginDetails, container) {
 }
 
 /**
- * Registers a plugin's models at the right location in our container. Models
- * must inherit from BaseModel. Models are registered directly in the container.
- * Names are camelCase formatted and namespaced by the folder i.e:
- * models/example-person -> examplePersonModel
+ * Registers a plugin's subscribers at the right location in our container.
+ * Subscribers are registered directly in the container.
  * @param {object} pluginDetails - the plugin details including plugin options,
  *    version, id, resolved path, etc. See resolvePlugin
  * @param {object} container - the container where the services will be
@@ -326,10 +324,8 @@ function registerSubscribers(pluginDetails, container) {
 }
 
 /**
- * Registers a plugin's models at the right location in our container. Models
- * must inherit from BaseModel. Models are registered directly in the container.
- * Names are camelCase formatted and namespaced by the folder i.e:
- * models/example-person -> examplePersonModel
+ * Registers a plugin's repositories at the right location in our container.
+ * repositories are registered directly in the container.
  * @param {object} pluginDetails - the plugin details including plugin options,
  *    version, id, resolved path, etc. See resolvePlugin
  * @param {object} container - the container where the services will be

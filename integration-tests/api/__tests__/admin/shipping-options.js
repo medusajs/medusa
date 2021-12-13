@@ -383,4 +383,95 @@ describe("/admin/shipping-options", () => {
       }
     })
   })
+  describe("GET /admin/shipping-options", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await shippingOptionSeeder(dbConnection)
+      } catch (err) {
+        console.error(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("lists shipping options", async () => {
+      const api = useApi()
+      const res = await api.get(`/admin/shipping-options`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(res.status).toEqual(200)
+    })
+
+    it("lists admin only shipping options", async () => {
+      const api = useApi()
+      const res = await api.get(`/admin/shipping-options?admin_only=true`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-option-req-admin-only",
+            admin_only: true,
+          }),
+        ])
+      )
+    })
+
+    it("lists return shipping options", async () => {
+      const api = useApi()
+      const res = await api.get(`/admin/shipping-options?is_return=true`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-option-req-return",
+            is_return: true,
+          }),
+        ])
+      )
+    })
+
+    it("lists shipping options without return and admin options", async () => {
+      const api = useApi()
+      const res = await api.get(
+        `/admin/shipping-options?is_return=false&admin_only=true`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(res.status).toEqual(200)
+      expect(res.data.shipping_options).not.toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-option-req-return",
+            is_return: true,
+          }),
+          expect.objectContaining({
+            id: "test-option-req-admin-only",
+            admin_only: true,
+          }),
+        ])
+      )
+    })
+  })
 })

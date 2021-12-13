@@ -394,6 +394,44 @@ class OrderService extends BaseService {
   }
 
   /**
+   * Gets an order by id.
+   * @param {string} externalId - id of order to retrieve
+   * @param {object} config - query config to get order by
+   * @return {Promise<Order>} the order document
+   */
+  async retrieveByExternalId(externalId, config = {}) {
+    const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
+
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
+
+    const query = {
+      where: { external_id: externalId },
+    }
+
+    if (relations && relations.length > 0) {
+      query.relations = relations
+    }
+
+    if (select && select.length > 0) {
+      query.select = select
+    }
+
+    const rels = query.relations
+    delete query.relations
+    const raw = await orderRepo.findOneWithRelations(rels, query)
+    if (!raw) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Order with external id ${externalId} was not found`
+      )
+    }
+
+    const order = this.decorateTotals_(raw, totalsToSelect)
+    return order
+  }
+
+  /**
    * Checks the existence of an order by cart id.
    * @param {string} cartId - cart id to find order
    * @return {Promise<Order>} the order document

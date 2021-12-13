@@ -11,6 +11,7 @@ module.exports = async (connection, data = {}) => {
     id: "admin_user",
     email: "admin@medusa.js",
     api_token: "test_token",
+    role: "admin",
     password_hash,
     ...data,
   })
