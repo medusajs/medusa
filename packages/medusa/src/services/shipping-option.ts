@@ -1,12 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager, FindOneOptions } from "typeorm"
-import {
-  FulfillmentProviderService,
-  ProductService,
-  RegionService,
-  TotalsService,
-} from "."
+import { FulfillmentProviderService, RegionService, TotalsService } from "."
 import {
   Cart,
   Order,
@@ -18,7 +13,7 @@ import { ShippingOptionPriceType } from "../models/shipping-option"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import { FindConfig, RetrieveOptions } from "../types/common"
+import { FindConfig } from "../types/common"
 import {
   CreateShippingMethod,
   CreateShippingMethodDto,
@@ -188,12 +183,12 @@ class ShippingOptionService extends BaseService {
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
    * @param {string} optionId - the id of the profile to get.
-   * @param {RetrieveOptions<ShippingOption>} options - the options to get a profile
+   * @param {FindConfig<ShippingOption>} options - the options to get a profile
    * @return {Promise<ShippingOption>} the profile document.
    */
   async retrieve(
     optionId,
-    options: RetrieveOptions<ShippingOption> = {}
+    options: FindConfig<ShippingOption> = {}
   ): Promise<ShippingOption> {
     const soRepo = this.manager_.getCustomRepository(this.optionRepository_)
     const validatedId = this.validateId_(optionId)
