@@ -1,6 +1,9 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
+import { EntityManager } from "typeorm"
+import { ProductService, ProductVariantService, RegionService } from "."
 import { LineItem, ShippingMethod } from ".."
+import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { GenerateConfig } from "../types/line-item"
 
@@ -8,7 +11,23 @@ import { GenerateConfig } from "../types/line-item"
  * Provides layer to manipulate line items.
  * @extends BaseService
  */
+
+export type LineItemServiceProps = {
+  manager: EntityManager
+  lineItemRepository: typeof LineItemRepository
+  productVariantService: ProductVariantService
+  productService: ProductService
+  regionService: RegionService
+  cartRepository: typeof CartRepository
+}
 class LineItemService extends BaseService {
+  private manager_: EntityManager
+  private lineItemRepository_: typeof LineItemRepository
+  private productVariantService_: ProductVariantService
+  private productService_: ProductService
+  private regionService_: RegionService
+  private cartRepository_: typeof CartRepository
+
   constructor({
     manager,
     lineItemRepository,
@@ -16,7 +35,7 @@ class LineItemService extends BaseService {
     productService,
     regionService,
     cartRepository,
-  }) {
+  }: LineItemServiceProps) {
     super()
 
     /** @private @const {EntityManager} */
