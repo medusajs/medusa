@@ -1,12 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 import { ProductService, ProductVariantService, RegionService } from "."
 import { LineItem, ShippingMethod } from ".."
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { GenerateConfig } from "../types/line-item"
-
+import { FindConfig } from "../types/common"
 /**
  * Provides layer to manipulate line items.
  * @extends BaseService
@@ -57,7 +57,7 @@ class LineItemService extends BaseService {
     this.cartRepository_ = cartRepository
   }
 
-  withTransaction(transactionManager): LineItemService {
+  withTransaction(transactionManager: EntityManager): LineItemService {
     if (!transactionManager) {
       return this
     }
@@ -91,7 +91,10 @@ class LineItemService extends BaseService {
    * @param {object} config - the config to be used at query building
    * @return {LineItem} the line item
    */
-  async retrieve(id, config = {}): Promise<LineItem> {
+  async retrieve(
+    id: string,
+    config: FindConfig<LineItem> = {}
+  ): Promise<LineItem> {
     const lineItemRepository = this.manager_.getCustomRepository(
       this.lineItemRepository_
     )
@@ -111,10 +114,18 @@ class LineItemService extends BaseService {
     return lineItem
   }
 
+  /**
+   *
+   * @param {string} variantId the variant on the lineitem
+   * @param {string} regionId Region of the order
+   * @param {string} quantity quantity of the item on the lineitem
+   * @param {GenerateConfig} config configuration for generating the lineitem
+   * @return {Promise<LineItem>} the generated lineitem
+   */
   async generate(
-    variantId,
-    regionId,
-    quantity,
+    variantId: string,
+    regionId: string,
+    quantity: number,
     config: GenerateConfig = {}
   ): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
@@ -128,7 +139,7 @@ class LineItemService extends BaseService {
         .withTransaction(manager)
         .retrieve(regionId)
 
-      let price
+      let price: number
       let shouldMerge = true
 
       if (config.unit_price !== undefined && config.unit_price !== null) {
@@ -165,14 +176,13 @@ class LineItemService extends BaseService {
 
   /**
    * Create a line item
-   * @param {LineItem} lineItem - the line item object to create
-   * @return {LineItem} the created line item
+   * @param {DeepPartial<LineItem>} lineItem - the line item object to create
+   * @return {Promise<LineItem>} the created line item
    */
-  async create(lineItem): Promise<LineItem> {
+  async create(lineItem: DeepPartial<LineItem>): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemRepository = manager.getCustomRepository(
-        this.lineItemRepository_
-      )
+      const lineItemRepository: LineItemRepository =
+        manager.getCustomRepository(this.lineItemRepository_)
 
       const created = await lineItemRepository.create(lineItem)
       const result = await lineItemRepository.save(created)
@@ -186,11 +196,10 @@ class LineItemService extends BaseService {
    * @param {object} update - the properties to update on line item
    * @return {LineItem} the update line item
    */
-  async update(id, update): Promise<LineItem> {
+  async update(id: string, update: Partial<LineItem>): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemRepository = manager.getCustomRepository(
-        this.lineItemRepository_
-      )
+      const lineItemRepository: LineItemRepository =
+        manager.getCustomRepository(this.lineItemRepository_)
 
       const lineItem = await this.retrieve(id)
 
@@ -201,7 +210,9 @@ class LineItemService extends BaseService {
       }
 
       for (const [key, value] of Object.entries(rest)) {
-        lineItem[key] = value
+        if (typeof value !== "undefined") {
+          lineItem[key] = value
+        }
       }
 
       const result = await lineItemRepository.save(lineItem)
@@ -244,11 +255,10 @@ class LineItemService extends BaseService {
    * @param {string} id - the id of the line item to delete
    * @return {Promise} the result of the delete operation
    */
-  async delete(id): Promise<void> {
+  async delete(id: string): Promise<void> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemRepository = manager.getCustomRepository(
-        this.lineItemRepository_
-      )
+      const lineItemRepository: LineItemRepository =
+        manager.getCustomRepository(this.lineItemRepository_)
 
       const lineItem = await lineItemRepository.findOne({ where: { id } })
 
