@@ -1,7 +1,7 @@
-import DiscountService from "../../../../services/discount"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import DiscountService from "../../../../services/discount"
 /**
- * @oas [post] /discounts/{id}/products/{product_id}
+ * @oas [delete] /discounts/{id}/products/{product_id}
  * operationId: "DeleteDiscountsDiscountProductsProduct"
  * summary: "Remove Product availability"
  * description: "Removes a Product from the list of Products that a Discount can be used for."
