@@ -16,9 +16,9 @@ yarn add @medusajs/medusa-react react-query
 
 ## Quick Start
 
-In order to use the hooks exposed by medusa-react, you will need to include the `MedusaProvider` somewhere up in your component tree. The `MedusaProvider` takes a `medusaClient` prop which will be used to interact with your Medusa backend. Under the hood, `medusa-react` uses the `medusa-js` client library (built on top of axios).
+In order to use the hooks exposed by medusa-react, you will need to include the `MedusaProvider` somewhere up in your component tree. The `MedusaProvider` takes a `baseUrl` prop which should point to your Medusa server. Under the hood, `medusa-react` uses the `medusa-js` client library (built on top of axios) to interact with your server.
 
-In addition, because medusa-react is built on top of react-query, you can pass an object representing react-query's QueryClient props to be passed along by `MedusaProvider`.
+In addition, because medusa-react is built on top of react-query, you can pass an object representing react-query's QueryClient props,which will be passed along by `MedusaProvider`.
 
 ```jsx
 // App.tsx
@@ -53,6 +53,12 @@ const App = () => {
 export default App
 ```
 
+The hooks exposed by `medusa-react` fall into two main categories: queries and mutations.
+
+### Queries
+
+Queries simply wrap around react-query's `useQuery` hook to fetch some data from your medusa server
+
 ```jsx
 // ./my-storefront.tsx
 import * as React from "react"
@@ -69,24 +75,70 @@ const MyStorefront = () => {
 }
 ```
 
-The `useProducts` hooks makes use of react-query's `useQuery`. This means that along with the response returned from the Medusa backend, the `useProducts` hook also returns what `useQuery` returns, hence why in the example above, isLoading is also returned.
+In general, the queries will return everything react-query returns from `useQuery` except the `data` field, which will be flattened out. In addition, you can also access the HTTP response object returned from the `medusa-js` client including things like `status`, `headers`, etc.
 
-So, in other words, we can express what our query hooks return as the following:
+So, in other words, we can express what the above query returns as the following:
 
-```javascript
-const { ...APIResponse, response, ...reactQueryUtils } = useSomeQuery();
-```
+```typescript
+import { UseQueryResult } from "react-query"
 
-The `response` object will include everything related to the HTTP response received by the client. Because the `medusa-js` client uses axios, the `response` object will be of type:
+// This is what a Medusa server returns when you hit the GET /store/products endpoint
+type ProductsResponse = {
+  products: Product[]
+  limit: number
+  offset: number
+}
 
-```
-interface HTTPResponse {
-  status: number
-  statusText: string
-  headers: Record<string, string> & {
-    "set-cookie"?: string[]
+// UseProductsQuery refers to what's returned by the useProducts hook
+type UseProductsQuery = ProductsResponse &
+  Omit<UseQueryResult, "data"> & {
+    response: {
+      status: number
+      statusText: string
+      headers: Record<string, string> & {
+        "set-cookie"?: string[]
+      }
+      config: any
+      request?: any
+    }
   }
-  config: any
-  request?: any
+
+// More generally ...
+
+type QueryReturnType = APIResponse &
+  Omit<UseQueryResult, "data"> & {
+    response: {
+      status: number
+      statusText: string
+      headers: Record<string, string> & {
+        "set-cookie"?: string[]
+      }
+      config: any
+      request?: any
+    }
+  }
+```
+
+### Mutations
+
+Mutations wrap around react-query's `useMutation` to mutate data on your medusa server.
+
+```jsx
+import * as React from "react"
+import { useCreateCart } from "@medusajs/medusa-react"
+
+const CreateCartButton = () => {
+  const createCart = useCreateCart()
+  const handleClick = () => {
+    createCart.mutate({}) // create an empty cart
+  }
+
+  return (
+    <Button isLoading={createCart.isLoading} onClick={handleClick}>
+      Create cart
+    </Button>
+  )
 }
 ```
+
+The mutation hooks will return exactly what react-query's `useMutation` returns. In addition, the options you pass in to the hooks will be passed along to `useMutation`.
