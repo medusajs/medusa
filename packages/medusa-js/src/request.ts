@@ -2,16 +2,9 @@ import axios, { AxiosError, AxiosInstance } from "axios"
 import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
 
-const unAuthenticatedAdminEndpoints = {
-  "/admin/auth": true,
-  "/admin/users/password-token": true,
-  "/admin/users/reset-password": true,
-  "/admin/invites/accept": true,
-}
 export interface Config {
   baseUrl: string
   maxRetries: number
-  apiKey: string
 }
 export interface RequestOptions {
   apiKey?: string
@@ -24,7 +17,6 @@ export type RequestMethod = "DELETE" | "POST" | "GET"
 const defaultConfig = {
   maxRetries: 0,
   baseUrl: "http://localhost:9000",
-  apiKey: "",
 }
 
 class Client {
@@ -110,16 +102,9 @@ class Client {
     }
 
     // TODO: if route is an authenticated route, add api key
-    if (
-      path.startsWith("/admin") &&
-      !(
-        method === "POST" &&
-        typeof unAuthenticatedAdminEndpoints[path] !== "undefined"
-      )
-    ) {
+    if (path.startsWith("/admin")) {
       defaultHeaders = {
         ...defaultHeaders,
-        Authorization: `Bearer ${this.config.apiKey}`,
       }
     }
 
@@ -139,9 +124,6 @@ class Client {
    * @return {AxiosInstance}
    */
   createClient(config: Config): AxiosInstance {
-    if (!config.apiKey) {
-      console.warn("No API key has been set")
-    }
     const client = axios.create({
       baseURL: config.baseUrl,
     })

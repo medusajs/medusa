@@ -1,8 +1,8 @@
-import AuthResource from "../auth"
 import BaseResource from "../base"
+import CollectionsResource from "../collections"
 
 class Admin extends BaseResource {
-  public auth = new AuthResource(this.client)
+  public collections = new CollectionsResource(this.client)
 }
 
 export default Admin
