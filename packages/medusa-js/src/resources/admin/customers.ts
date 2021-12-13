@@ -10,8 +10,7 @@ import BaseResource from "../base"
 class AdminCustomersResource extends BaseResource {
   /**
    * Creates a customer
-   * @param {AdminPostCustomersReq} payload information of customer
-   * @return { ResponsePromise<AdminCustomersRes>}
+   * @param payload information of customer
    */
   create(payload: AdminPostCustomersReq): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers`
@@ -20,9 +19,8 @@ class AdminCustomersResource extends BaseResource {
 
   /**
    * Updates a customer
-   * @param {string} id customer id
-   * @param {AdminPostCustomersReq} payload data to update customer with
-   * @return { ResponsePromise<AdminCustomersRes>}
+   * @param id customer id
+   * @param payload data to update customer with
    */
   update(
     id: string,
@@ -34,8 +32,7 @@ class AdminCustomersResource extends BaseResource {
 
   /**
    * Retrieves a customer
-   * @param {string} id customer id
-   * @return { ResponsePromise<AdminCustomersRes>}
+   * @param id customer id
    */
   retrieve(id: string): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
@@ -44,8 +41,7 @@ class AdminCustomersResource extends BaseResource {
 
   /**
    * Lists customers
-   * @param {AdminGetCustomersParams} query optional
-   * @return { ResponsePromise<AdminCustomersRes>}
+   * @param query optional
    */
   list(
     query?: AdminGetCustomersParams
