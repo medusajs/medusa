@@ -122,6 +122,7 @@ class TotalsService extends BaseService {
     const allocationMap = this.getAllocationMap(object)
     const calculationContext: TaxCalculationContext = {
       shipping_address: object.shipping_address,
+      shipping_methods: object.shipping_methods,
       customer: object.customer,
       region: object.region,
       allocation_map: allocationMap,
