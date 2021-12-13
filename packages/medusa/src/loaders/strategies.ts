@@ -10,7 +10,7 @@ type LoaderOptions = {
 }
 
 /**
- * Registers all services in the services directory
+ * Registers all strategies in the strategies directory
  */
 export default ({ container, configModule }: LoaderOptions): void => {
   const isTest = process.env.NODE_ENV === "test"
