@@ -16,6 +16,7 @@ import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
+import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
@@ -91,6 +92,16 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   container.register({
     manager: asValue(dbConnection.manager),
   })
+
+  const stratActivity = Logger.activity("Initializing strategies")
+  track("STRATEGIES_INIT_STARTED")
+  strategiesLoader({
+    container,
+    configModule,
+    activityId: servicesActivity,
+  })
+  const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
+  track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
   const servicesActivity = Logger.activity("Initializing services")
   track("SERVICES_INIT_STARTED")
