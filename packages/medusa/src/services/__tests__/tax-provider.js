@@ -50,7 +50,7 @@ describe("TaxProviderService", () => {
     ])
     const container = {
       manager: MockManager,
-      taxLineRepository: MockRepository({ create: (d) => d }),
+      lineItemTaxLineRepository: MockRepository({ create: (d) => d }),
       systemTaxService: {
         getTaxLines: mockCalculateLineItemTaxes,
       },
@@ -80,8 +80,10 @@ describe("TaxProviderService", () => {
 
       expect(rates).toEqual(expected)
 
-      expect(container.taxLineRepository.create).toHaveBeenCalledTimes(1)
-      expect(container.taxLineRepository.create).toHaveBeenCalledWith(
+      expect(container.lineItemTaxLineRepository.create).toHaveBeenCalledTimes(
+        1
+      )
+      expect(container.lineItemTaxLineRepository.create).toHaveBeenCalledWith(
         expected[0]
       )
 

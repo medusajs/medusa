@@ -38,7 +38,7 @@ const toTest = [
         email: "test@testson.com",
       },
       region: {
-        giftcards_taxable: false,
+        gift_cards_taxable: false,
       },
       allocation_map: {
         item_1: {
@@ -89,7 +89,7 @@ const toTest = [
         email: "test@testson.com",
       },
       region: {
-        giftcards_taxable: true,
+        gift_cards_taxable: true,
       },
       allocation_map: {
         item_1: {
