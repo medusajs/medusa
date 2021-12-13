@@ -14,8 +14,7 @@ class AdminAuthResource extends BaseResource {
   }
 
   /**
-   * @description Retrieves an authenticated session
-   * Usually used to check if authenticated session is alive.
+   * @description destroys an authenticated session
    * @return {ResponsePromise<void>}
    */
   deleteSession(): ResponsePromise<void> {
@@ -24,8 +23,7 @@ class AdminAuthResource extends BaseResource {
   }
 
   /**
-   * @description Retrieves an authenticated session
-   * Usually used to check if authenticated session is alive.
+   * @description Creates an authenticated session
    * @param {AdminPostAuthReq} payload
    * @return {ResponsePromise<AdminAuthRes>}
    */

@@ -1,8 +1,8 @@
-import AuthResource from "../auth"
 import BaseResource from "../base"
+import AdminAuthResource from "./auth"
 
 class Admin extends BaseResource {
-  public auth = new AuthResource(this.client)
+  public auth = new AdminAuthResource(this.client)
 }
 
 export default Admin

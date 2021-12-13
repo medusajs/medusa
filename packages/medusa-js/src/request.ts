@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid"
 export interface Config {
   baseUrl: string
   maxRetries: number
-  apiKey?: string
 }
 export interface RequestOptions {
   apiKey?: string
