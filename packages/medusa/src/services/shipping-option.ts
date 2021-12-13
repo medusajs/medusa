@@ -1,12 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager, FindOneOptions } from "typeorm"
-import {
-  FulfillmentProviderService,
-  ProductService,
-  RegionService,
-  TotalsService,
-} from "."
+import { DeepPartial, EntityManager, FindOneOptions } from "typeorm"
+import { FulfillmentProviderService, RegionService, TotalsService } from "."
 import {
   Cart,
   Order,
@@ -18,9 +13,8 @@ import { ShippingOptionPriceType } from "../models/shipping-option"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { ShippingOptionRepository } from "../repositories/shipping-option"
 import { ShippingOptionRequirementRepository } from "../repositories/shipping-option-requirement"
-import { FindConfig, RetrieveOptions } from "../types/common"
+import { FindConfig } from "../types/common"
 import {
-  CreateShippingMethod,
   CreateShippingMethodDto,
   ShippingMethodUpdate,
   ShippingOptionUpdate,
@@ -188,12 +182,12 @@ class ShippingOptionService extends BaseService {
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
    * @param {string} optionId - the id of the profile to get.
-   * @param {RetrieveOptions<ShippingOption>} options - the options to get a profile
+   * @param {FindConfig<ShippingOption>} options - the options to get a profile
    * @return {Promise<ShippingOption>} the profile document.
    */
   async retrieve(
     optionId,
-    options: RetrieveOptions<ShippingOption> = {}
+    options: FindConfig<ShippingOption> = {}
   ): Promise<ShippingOption> {
     const soRepo = this.manager_.getCustomRepository(this.optionRepository_)
     const validatedId = this.validateId_(optionId)
@@ -240,27 +234,30 @@ class ShippingOptionService extends BaseService {
       const method = await methodRepo.findOne({ where: { id } })
 
       if (method) {
-        if ("data" in update && update.data !== undefined) {
+        if (typeof update.data !== undefined) {
           method.data = update.data
         }
 
-        if ("price" in update && update.price !== undefined) {
+        if (update.price && typeof update.price !== undefined) {
           method.price = update.price
         }
 
-        if ("return_id" in update && update.return_id !== undefined) {
+        if (update.return_id && typeof update.return_id !== undefined) {
           method.return_id = update.return_id
         }
 
-        if ("swap_id" in update && update.swap_id !== undefined) {
+        if (update.swap_id && typeof update.swap_id !== undefined) {
           method.swap_id = update.swap_id
         }
 
-        if ("order_id" in update && update.order_id !== undefined) {
+        if (update.order_id && typeof update.order_id !== undefined) {
           method.order_id = update.order_id
         }
 
-        if ("claim_order_id" in update && update.claim_order_id !== undefined) {
+        if (
+          update.claim_order_id &&
+          typeof update.claim_order_id !== undefined
+        ) {
           method.claim_order_id = update.claim_order_id
         }
 
@@ -321,7 +318,7 @@ class ShippingOptionService extends BaseService {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
       }
 
-      const toCreate: CreateShippingMethod = {
+      const toCreate: DeepPartial<ShippingMethod> = {
         shipping_option_id: option.id,
         data: validatedData,
         price: methodPrice,
@@ -351,9 +348,9 @@ class ShippingOptionService extends BaseService {
         toCreate.claim_order_id = config.claim_order_id
       }
 
-      if (config.draft_order_id) {
-        toCreate.draft_order_id = config.draft_order_id
-      }
+      // if (config.draft_order_id) {
+      //   toCreate.draft_order_id = config.draft_order_id
+      // }
 
       const method = await methodRepo.create(toCreate)
 
@@ -421,6 +418,12 @@ class ShippingOptionService extends BaseService {
           case "min_subtotal":
             return requirement.amount <= subtotal
           default:
+            if (typeof subtotal === "undefined") {
+              throw new MedusaError(
+                MedusaError.Types.UNEXPECTED_STATE,
+                "subtotal of the cart cannot be undefined"
+              )
+            }
             return true
         }
       }
@@ -566,25 +569,32 @@ class ShippingOptionService extends BaseService {
         relations: ["requirements"],
       })
 
-      if ("metadata" in update && update.metadata) {
+      if (typeof update.metadata !== "undefined") {
         option.metadata = await this.setMetadata_(option, update.metadata)
       }
 
-      if (update.region_id || update.provider_id || update.data) {
+      if (
+        typeof update.region_id !== "undefined" ||
+        typeof update.provider_id !== "undefined" ||
+        typeof update.data !== "undefined"
+      ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Region and Provider cannot be updated after creation"
         )
       }
 
-      if ("is_return" in update && update.is_return !== undefined) {
+      if (
+        typeof update.is_return !== "undefined" &&
+        update.is_return !== undefined
+      ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "is_return cannot be changed after creation"
         )
       }
 
-      if ("requirements" in update && update.requirements) {
+      if (typeof update.requirements !== "undefined" && update.requirements) {
         const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
@@ -628,7 +638,7 @@ class ShippingOptionService extends BaseService {
         option.requirements = acc
       }
 
-      if ("price_type" in update && update.price_type) {
+      if (typeof update.price_type !== "undefined" && update.price_type) {
         option.price_type = await this.validatePriceType_(
           update.price_type,
           option
@@ -639,18 +649,18 @@ class ShippingOptionService extends BaseService {
       }
 
       if (
-        "amount" in update &&
+        typeof update.amount !== "undefined" &&
         update.amount &&
         option.price_type !== "calculated"
       ) {
         option.amount = update.amount
       }
 
-      if ("name" in update && update.name) {
+      if (typeof update.name !== "undefined" && update.name) {
         option.name = update.name
       }
 
-      if ("admin_only" in update && update.admin_only) {
+      if (typeof update.admin_only !== "undefined" && update.admin_only) {
         option.admin_only = update.admin_only
       }
 
@@ -719,7 +729,7 @@ class ShippingOptionService extends BaseService {
    * @param {string} requirementId - the id of the requirement to remove
    * @return {Promise} the result of update
    */
-  async removeRequirement(requirementId: string): Promise<any> {
+  async removeRequirement(requirementId: string): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       try {
         const reqRepo = manager.getCustomRepository(this.requirementRepository_)
