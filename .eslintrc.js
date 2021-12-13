@@ -42,6 +42,13 @@ module.exports = {
       },
     },
     {
+      // Medusa JS client
+      files: ["**/medusa-js/**/resources/**/*.ts"],
+      rules: {
+        "valid-jsdoc": ["off"],
+      },
+    },
+    {
       files: ["**/api/**/*.ts"],
       rules: {
         "valid-jsdoc": ["off"],
