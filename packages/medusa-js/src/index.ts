@@ -1,21 +1,24 @@
 import MedusaError from "./error"
 import Client, { Config } from "./request"
+import Admin from "./resources/admin"
 import AuthResource from "./resources/auth"
 import CartsResource from "./resources/carts"
 import CollectionsResource from "./resources/collections"
 import CustomersResource from "./resources/customers"
 import GiftCardsResource from "./resources/gift-cards"
 import OrdersResource from "./resources/orders"
+import PaymentMethodsResource from "./resources/payment-methods"
 import ProductsResource from "./resources/products"
 import RegionsResource from "./resources/regions"
 import ReturnReasonsResource from "./resources/return-reasons"
 import ReturnsResource from "./resources/returns"
 import ShippingOptionsResource from "./resources/shipping-options"
 import SwapsResource from "./resources/swaps"
-import PaymentMethodsResource from "./resources/payment-methods"
 
 class Medusa {
   private client: Client
+  public admin: Admin
+
   public auth: AuthResource
   public carts: CartsResource
   public customers: CustomersResource
@@ -33,6 +36,8 @@ class Medusa {
 
   constructor(config: Config) {
     this.client = new Client(config)
+
+    this.admin = new Admin(this.client)
 
     this.auth = new AuthResource(this.client)
     this.carts = new CartsResource(this.client)
