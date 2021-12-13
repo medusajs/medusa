@@ -18,7 +18,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
       // TODO: Temporary until further implementation of taxes
       let region = calculationContext.region as any // eslint-disable-line
-      if (region.giftcards_taxable) {
+      if (region.gift_cards_taxable) {
         taxableAmount -=
           (allocations.gift_card && allocations.gift_card.amount) || 0
       }

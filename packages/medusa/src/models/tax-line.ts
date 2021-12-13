@@ -1,32 +1,14 @@
 import {
-  Entity,
-  BeforeInsert,
   CreateDateColumn,
   UpdateDateColumn,
-  Check,
-  Index,
   Column,
   PrimaryColumn,
-  ManyToOne,
-  JoinColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
-import { LineItem } from "./line-item"
-
-@Entity()
 export class TaxLine {
   @PrimaryColumn()
   id: string
-
-  @Index()
-  @Column()
-  item_id: string
-
-  @ManyToOne(() => LineItem, (li) => li.tax_lines)
-  @JoinColumn({ name: "item_id" })
-  item: LineItem
 
   @Column()
   rate: number
@@ -45,13 +27,6 @@ export class TaxLine {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `tl_${id}`
-  }
 }
 
 /**

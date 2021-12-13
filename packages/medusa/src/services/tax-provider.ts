@@ -4,8 +4,8 @@ import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import Redis from "ioredis"
 
-import { TaxLineRepository } from "../repositories/tax-line"
-import { TaxLine } from "../models/tax-line"
+import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
+import { LineItemTaxLine } from "../models/line-item-tax-line"
 import { Region } from "../models/region"
 import { Cart } from "../models/cart"
 import { Order } from "../models/order"
@@ -30,14 +30,14 @@ class TaxProviderService extends BaseService {
   private manager_: EntityManager
   private transactionManager_: EntityManager
   private productTaxRateService_: ProductTaxRateService
-  private taxLineRepo_: typeof TaxLineRepository
+  private taxLineRepo_: typeof LineItemTaxLineRepository
   private redis_: Redis
 
   constructor(container: AwilixContainer) {
     super()
 
     this.container_ = container
-    this.taxLineRepo_ = container["taxLineRepository"]
+    this.taxLineRepo_ = container["lineItemTaxLineRepository"]
     this.productTaxRateService_ = container["productTaxRateService"]
     this.eventBus_ = container["eventBusService"]
     this.manager_ = container["manager"]
@@ -76,7 +76,7 @@ class TaxProviderService extends BaseService {
   async getTaxLines(
     order: Cart | Order,
     calculationContext: TaxCalculationContext
-  ): Promise<TaxLine[]> {
+  ): Promise<LineItemTaxLine[]> {
     const calculationLines: TaxCalculationLine[] = await Promise.all(
       order.items.map(async (l) => {
         return {
@@ -95,12 +95,10 @@ class TaxProviderService extends BaseService {
       calculationContext
     )
 
-    const taxLineRepo: TaxLineRepository = this.manager_.getCustomRepository(
-      this.taxLineRepo_
-    )
+    const liTaxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
 
     return providerLines.map((pl) => {
-      return taxLineRepo.create({
+      return liTaxLineRepo.create({
         item_id: pl.item_id,
         rate: pl.rate,
         name: pl.name,

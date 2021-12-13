@@ -40,19 +40,25 @@ export class Region {
   @Column({ type: "real" })
   tax_rate: number
 
-  @OneToMany(() => TaxRate, (tr) => tr.region)
+  @OneToMany(
+    () => TaxRate,
+    (tr) => tr.region
+  )
   tax_rates: TaxRate[]
 
   @Column({ nullable: true })
   tax_code: string
 
   @Column({ default: true })
-  giftcards_taxable: boolean
+  gift_cards_taxable: boolean
 
   @Column({ default: true })
   automatic_taxes: boolean
 
-  @OneToMany(() => Country, (c) => c.region)
+  @OneToMany(
+    () => Country,
+    (c) => c.region
+  )
   countries: Country[]
 
   @Column({ type: "text", nullable: true })
