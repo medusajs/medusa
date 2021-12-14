@@ -1,20 +1,19 @@
-import { RegionInfo } from "./../../src/types"
-import { ProductVariant } from "@medusajs/medusa"
+import { RegionInfo, ProductVariantInfo } from "./../../src/types"
 import { fixtures } from "./../../mocks/data/"
 import {
-  calculateVariantPrice,
-  findVariantPrice,
+  computeVariantPrice,
+  getVariantPrice,
   computeAmount,
   formatAmount,
-  convertToLocale,
+  formatVariantPrice,
 } from "./../../src/"
 
-describe("findVariantPrice", () => {
+describe("getVariantPrice", () => {
   test("finds the variant price and returns its amount", () => {
     const variant = fixtures.get("product_variant")
     const region = fixtures.get("region")
-    const amount = findVariantPrice(
-      variant as unknown as ProductVariant,
+    const amount = getVariantPrice(
+      variant as unknown as ProductVariantInfo,
       region
     )
 
@@ -23,8 +22,8 @@ describe("findVariantPrice", () => {
 
   test("when no region is provided, then it should return 0", () => {
     const variant = fixtures.get("product_variant")
-    const amount = findVariantPrice(
-      variant as unknown as ProductVariant,
+    const amount = getVariantPrice(
+      variant as unknown as ProductVariantInfo,
       {} as RegionInfo
     )
 
@@ -33,13 +32,13 @@ describe("findVariantPrice", () => {
 
   test("when no product variant is provided, then it should return 0", () => {
     const region = fixtures.get("region")
-    const amount = findVariantPrice({} as ProductVariant, region)
+    const amount = getVariantPrice({} as ProductVariantInfo, region)
 
     expect(amount).toEqual(0)
   })
 
   test("when no product variant and region are provided, then it should return 0", () => {
-    const amount = findVariantPrice({} as ProductVariant, {} as RegionInfo)
+    const amount = getVariantPrice({} as ProductVariantInfo, {} as RegionInfo)
 
     expect(amount).toEqual(0)
   })
@@ -48,16 +47,19 @@ describe("findVariantPrice", () => {
 describe("computeAmount", () => {
   test("given an amount and a region, it should return a decimal amount not including taxes", () => {
     const region = fixtures.get("region")
-    const amount = computeAmount(3000, region, false)
+    const amount = computeAmount({ amount: 3000, region, includeTaxes: false })
 
     expect(amount).toEqual(30)
   })
 
   test("given an amount and a region, it should return a decimal amount including taxes", () => {
     const region = fixtures.get("region")
-    const amount = computeAmount(3000, {
-      ...region,
-      tax_rate: 10,
+    const amount = computeAmount({
+      amount: 3000,
+      region: {
+        ...region,
+        tax_rate: 10,
+      },
     })
 
     expect(amount).toEqual(33)
@@ -65,20 +67,20 @@ describe("computeAmount", () => {
 
   test("when no region is provided, then it should return the decimal amount", () => {
     const region = fixtures.get("region")
-    const amount = computeAmount(2000, region)
+    const amount = computeAmount({ amount: 2000, region })
 
     expect(amount).toEqual(20)
   })
 })
 
-describe("calculateVariantPrice", () => {
+describe("computeVariantPrice", () => {
   test("finds the variant price and returns a decimal amount not including taxes", () => {
     const variant = fixtures.get("product_variant")
     const region = fixtures.get("region")
-    const price = calculateVariantPrice(
-      variant as unknown as ProductVariant,
-      region
-    )
+    const price = computeVariantPrice({
+      variant: variant as unknown as ProductVariantInfo,
+      region,
+    })
 
     expect(price).toEqual(10)
   })
@@ -86,44 +88,82 @@ describe("calculateVariantPrice", () => {
   test("finds the variant price and returns a decimal amount including taxes", () => {
     const variant = fixtures.get("product_variant")
     const region = fixtures.get("region")
-    const price = calculateVariantPrice(
-      variant as unknown as ProductVariant,
-      {
+    const price = computeVariantPrice({
+      variant: variant as unknown as ProductVariantInfo,
+      region: {
         ...region,
         tax_rate: 15,
       },
-      true
-    )
+      includeTaxes: true,
+    })
 
     expect(price).toEqual(11.5)
   })
 })
 
-describe("convertToLocale", () => {
-  test("given an amount and currency code (usd), should return a localized version of the amount with the same currency code", () => {
-    const price = convertToLocale({
-      amount: 15,
-      currency_code: "usd",
+describe("formatVariantPrice", () => {
+  test("given a variant and region, should return a decimal localized amount including taxes and the region's currency code", () => {
+    const region = fixtures.get("region")
+    const variant = fixtures.get("product_variant")
+    const price = formatVariantPrice({
+      variant: variant as unknown as ProductVariantInfo,
+      region: {
+        ...region,
+        tax_rate: 15,
+      },
     })
 
-    expect(price).toBe("$15.00")
+    expect(price).toEqual("$11.50")
+  })
+
+  test("given a variant, region, and 1 digit, should return a decimal (1 fraction digit) localized amount including taxes and the region's currency code", () => {
+    const region = fixtures.get("region")
+    const variant = fixtures.get("product_variant")
+    const price = formatVariantPrice({
+      variant: variant as unknown as ProductVariantInfo,
+      region: {
+        ...region,
+        tax_rate: 15,
+      },
+      maximumFractionDigits: 1,
+    })
+
+    expect(price).toEqual("$11.5")
+  })
+
+  test("given a variant, region, and a custom locale, should return a decimal localized amount including taxes and the region's currency code", () => {
+    const region = fixtures.get("region")
+    const variant = fixtures.get("product_variant")
+    const price = formatVariantPrice({
+      variant: variant as unknown as ProductVariantInfo,
+      region: {
+        ...region,
+        tax_rate: 15,
+      },
+      locale: "fr-FR",
+    })
+
+    expect(price.replace(/\s/, " ")).toEqual("11,50 $US") // Yup
   })
 })
 
 describe("formatAmount", () => {
   test("given an amount and region, should return a decimal localized amount including taxes and the region's currency code", () => {
     const region = fixtures.get("region")
-    const price = formatAmount(3000, {
-      ...region,
-      tax_rate: 15,
+    const price = formatAmount({
+      amount: 3000,
+      region: {
+        ...region,
+        tax_rate: 15,
+      },
     })
 
-    expect(price).toBe("$34.50")
+    expect(price).toEqual("$34.50")
   })
 
   test("given an amount and no region, should return a decimal localized amount", () => {
-    const price = formatAmount(3000, {} as RegionInfo)
+    const price = formatAmount({ amount: 3000, region: {} as RegionInfo })
 
-    expect(price).toBe(30)
+    expect(price).toEqual("30")
   })
 })

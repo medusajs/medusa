@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { useLocalStorage } from "../hooks/utils"
 import { RegionInfo, ProductVariant } from "../types"
-import { findVariantPrice } from "../utils"
+import { getVariantPrice } from "../utils"
 import { isArray, isEmpty, isObject } from "lodash"
 
 interface Item {
@@ -122,7 +122,7 @@ export const generateBagState = (state: BagState, items: Item[]) => {
 const generateItems = (region: RegionInfo, items: Item[]) => {
   return items.map((item) => ({
     ...item,
-    total: findVariantPrice(item.variant, region),
+    total: getVariantPrice(item.variant, region),
   }))
 }
 

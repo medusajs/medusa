@@ -145,40 +145,77 @@ The mutation hooks will return exactly what react-query's [`useMutation`](https:
 
 ### Utilities
 
-A set of utility functions are also exported from the library to make your life easier when dealing with displaying money amounts
+A set of utility functions are also exposed from the library to make your life easier when dealing with displaying money amounts
 
-#### `calculateVariantPrice()`
+#### `formatVariantPrice()`
 
-- `calculateVariantPrice(variant: ProductVariant, region: RegionInfo, includeTaxes = true): number`
+- `formatVariantPrice(params: FormatVariantPriceParams): string`
 
-```
+```typescript
+type FormatVariantPriceParams = {
+  variant: ProductVariantInfo
+  region: RegionInfo
+  includeTaxes?: boolean
+  minimumFractionDigits?: number
+  maximumFractionDigits?: number
+  locale?: string
+}
+
+type ProductVariantInfo = Pick<ProductVariant, "prices">
+
 type RegionInfo = {
-  currency_code: string;
-  tax_code: string;
-  tax_rate: number;
+  currency_code: string
+  tax_code: string
+  tax_rate: number
+}
+```
+
+Given a variant and region, will return a string representing the localized amount (i.e: `$19.50`)
+
+The behavior of minimumFractionDigits and maximumFractionDigits is the same as the one explained by MDN [here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat). In fact, in order to convert the decimal amount, we use the browser's `Intl.NumberFormat` method.
+
+#### `computeVariantPrice()`
+
+- `computeVariantPrice(params: ComputeVariantPriceParams): number`
+
+```typescript
+type ComputeVariantPriceParams = {
+  variant: ProductVariantInfo
+  region: RegionInfo
+  includeTaxes?: boolean
 }
 ```
 
 Determines a variant's price based on the region provided. Returns a decimal number representing the amount.
 
-#### `convertToLocale()`
+#### `formatAmount()`
 
-- `convertToLocale(params: ConvertToLocaleParams): string`
+- `formatAmount(params: FormatAmountParams): string`
 
-```
-type ConvertToLocaleParams = {
+```typescript
+type FormatAmountParams = {
   amount: number
-  currency_code: string
-  digits?: number // defaults to 2
-  locale?: string // default to "en-us"
+  region: RegionInfo
+  includeTaxes?: boolean
+  minimumFractionDigits?: number
+  maximumFractionDigits?: number
+  locale?: string
 }
 ```
 
-Takes an amount, a currency code, a locale, and a number of digits representing the [minimum fraction digits](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat). Returns a localized string representing the amount (i.e: "$10.99").
+Returns a localized string based on the input params representing the amount (i.e: "$10.99").
 
 #### `computeAmount()`
 
-- `computeAmount(amount: number, region: RegionInfo, includeTaxes = true): number`
+- `computeAmount(params: ComputeAmountParams): number`
+
+```typescript
+type ComputeAmountParams = {
+  amount: number
+  region: RegionInfo
+  includeTaxes?: boolean
+}
+```
 
 Takes an integer amount, a region, and includeTaxes boolean. Returns a decimal amount including (or excluding) taxes.
 
