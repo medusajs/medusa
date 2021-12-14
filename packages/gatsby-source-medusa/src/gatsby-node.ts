@@ -14,7 +14,7 @@ import { createOperations } from "./operations"
 export function pluginOptionsSchema({ Joi }: PluginOptionsSchemaArgs): any {
   return Joi.object({
     storeUrl: Joi.string().required(),
-    authToken: Joi.string().optional(),
+    apiKey: Joi.string().optional(),
   })
 }
 
@@ -36,7 +36,7 @@ async function sourceAllNodes(
   ]
 
   // if auth token is provided then source orders
-  if (pluginOptions.authToken) {
+  if (pluginOptions.apiKey) {
     operations.push(createOrdersOperation)
   }
 
@@ -83,7 +83,7 @@ async function sourceUpdatedNodes(
     incrementalCollectionsOperation(lastBuildTime),
   ]
 
-  if (pluginOptions.authToken) {
+  if (pluginOptions.apiKey) {
     operations.push(incrementalOrdersOperation(lastBuildTime))
   }
 
