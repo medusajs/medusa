@@ -27,7 +27,7 @@ const defaultRelations = [
   "rule.valid_for",
 ]
 
-describe("DELETE /admin/discounts/:discount_id/products/:variant_id", () => {
+describe("DELETE /admin/discounts/:discount_id/products/:product_id", () => {
   describe("successful addition", () => {
     let subject
 
