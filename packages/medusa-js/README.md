@@ -32,7 +32,7 @@ const { cart } = await medusa.carts.create({})
 
 ### Authentication
 
-Authentication can be achieved in two ways using the `medusa-js` client, either by utilizing API keys or by using cookie based authentication, each with their own unique usecase.
+Authentication can be achieved in two ways using the `medusa-js` client, either by utilizing API keys or by using cookie based authentication, each with their own unique use case.
 
 #### **Using API keys**
 
@@ -40,7 +40,7 @@ API keys can only be used for admin functionality in Medusa because only users o
 
 #### **Using cookies**
 
-Authentication using cookies is done automatically by axois when authenticating using the `auth` endpoints. After authenticating all subsequent calls will be authenticated.
+Authentication using cookies is done automatically by Axios when authenticating using the `auth` endpoints. After authentication all subsequent calls will be authenticated.
 
 _note: Cookie based authentication cannot be used in plain `node.js` applications due to the limitations of axios and `useCredentials` not setting the `Cookie` request header when `set-cookie` is present in the response headers. For pure `node.js` applications use authentication with api keys(see above)_
 
