@@ -37,16 +37,16 @@
     "tabWidth": 2,
     "trailingComma": "es5"
   },
-  "name": "@medusajs/medusa-hooks",
+  "name": "medusa-react",
   "author": "Zakaria S. El Asri",
-  "module": "dist/medusa-hooks.esm.js",
+  "module": "dist/medusa-react.esm.js",
   "size-limit": [
     {
-      "path": "dist/medusa-hooks.cjs.production.min.js",
+      "path": "dist/medusa-react.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/medusa-hooks.esm.js",
+      "path": "dist/medusa-react.esm.js",
       "limit": "10 KB"
     }
   ],
