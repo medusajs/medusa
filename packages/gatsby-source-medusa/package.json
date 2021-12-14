@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-medusa",
-  "version": "0.0.42",
+  "version": "0.0.44",
   "description": "Gatsby source plugin for building websites using Medusa Commerce as a data source",
   "scripts": {
     "test": "jest --watchAll",
@@ -19,10 +19,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/gatsby-source-medusa"
+    "url": "https://github.com/medusajs/medusa.git",
+    "directory": "packages/gatsby-source-medusa"
   },
   "bugs": {
-    "url": "https://github.com/medusajs/gatsby-source-medusa/issues"
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "dependencies": {
     "axios": "^0.24.0",
