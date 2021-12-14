@@ -36,7 +36,11 @@ module.exports = {
       },
     },
     {
-      files: ["**/api/**/*.js", "**/api/**/*.ts"],
+      files: [
+        "**/api/**/*.js",
+        "**/api/**/*.ts",
+        "**/medusa-js/**/resources/**/*.ts",
+      ],
       rules: {
         "valid-jsdoc": ["off"],
       },
