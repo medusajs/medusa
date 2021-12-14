@@ -4,7 +4,7 @@ export const processNode = (
   node: any,
   fieldName: string,
   createContentDigest: (this: void, input: string | object) => string
-) => {
+): any[] => {
   const nodeId: string = node.id
   const nodeContent = JSON.stringify(node)
   const nodeContentDigest = createContentDigest(nodeContent)
@@ -24,8 +24,8 @@ export const processNode = (
           internal: {
             type: "MedusaImages",
             content: nodeImageContent,
-            contentDigest: nodeImageContentDigest
-          }
+            contentDigest: nodeImageContentDigest,
+          },
         })
 
         return imageData
@@ -41,8 +41,8 @@ export const processNode = (
     internal: {
       type: `Medusa${capitalize(fieldName)}`,
       content: nodeContent,
-      contentDigest: nodeContentDigest
-    }
+      contentDigest: nodeContentDigest,
+    },
   })
 
   return [nodeData, ...images]

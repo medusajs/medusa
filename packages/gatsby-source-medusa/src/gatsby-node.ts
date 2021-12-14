@@ -5,16 +5,16 @@ import {
   PluginOptionsSchemaArgs,
   Reporter,
   SourceNodesArgs,
-  Store
+  Store,
 } from "gatsby"
 import { createRemoteFileNode } from "gatsby-source-filesystem"
 import { makeSourceFromOperation } from "./make-source-from-operation"
 import { createOperations } from "./operations"
 
-export function pluginOptionsSchema({ Joi }: PluginOptionsSchemaArgs) {
+export function pluginOptionsSchema({ Joi }: PluginOptionsSchemaArgs): any {
   return Joi.object({
     storeUrl: Joi.string().required(),
-    authToken: Joi.string().optional()
+    authToken: Joi.string().optional(),
   })
 }
 
@@ -26,13 +26,13 @@ async function sourceAllNodes(
     createProductsOperation,
     createRegionsOperation,
     createOrdersOperation,
-    createCollectionsOperation
+    createCollectionsOperation,
   } = createOperations(pluginOptions, gatsbyApi)
 
   const operations = [
     createProductsOperation,
     createRegionsOperation,
-    createCollectionsOperation
+    createCollectionsOperation,
   ]
 
   // if auth token is provided then source orders
@@ -51,7 +51,7 @@ const medusaNodeTypes = [
   "MedusaRegions",
   "MedusaProducts",
   "MedusaOrders",
-  "MedusaCollections"
+  "MedusaCollections",
 ]
 
 async function sourceUpdatedNodes(
@@ -62,7 +62,7 @@ async function sourceUpdatedNodes(
     incrementalProductsOperation,
     incrementalRegionsOperation,
     incrementalOrdersOperation,
-    incrementalCollectionsOperation
+    incrementalCollectionsOperation,
   } = createOperations(pluginOptions, gatsbyApi)
 
   const lastBuildTime = new Date(
@@ -80,7 +80,7 @@ async function sourceUpdatedNodes(
   const operations = [
     incrementalProductsOperation(lastBuildTime),
     incrementalRegionsOperation(lastBuildTime),
-    incrementalCollectionsOperation(lastBuildTime)
+    incrementalCollectionsOperation(lastBuildTime),
   ]
 
   if (pluginOptions.authToken) {
@@ -118,40 +118,45 @@ export async function sourceNodes(
     pluginStatus !== undefined
       ? {
           ...pluginStatus,
-          [`lastBuildTime`]: Date.now()
+          [`lastBuildTime`]: Date.now(),
         }
       : {
-          [`lastBuildTime`]: Date.now()
+          [`lastBuildTime`]: Date.now(),
         }
   )
 }
 
-export function createResolvers({ createResolvers }: CreateResolversArgs) {
+export function createResolvers({ createResolvers }: CreateResolversArgs): any {
   const resolvers = {
     MedusaProducts: {
       images: {
         type: ["MedusaImages"],
-        resolve: async (source: any, _args: any, context: any, _info: any) => {
+        resolve: async (
+          source: any,
+          _args: any,
+          context: any,
+          _info: any
+        ): Promise<any> => {
           const { entries } = await context.nodeModel.findAll({
             query: {
-              filter: { parent: { id: { eq: source.id } } }
+              filter: { parent: { id: { eq: source.id } } },
             },
-            type: "MedusaImages"
+            type: "MedusaImages",
           })
           return entries
-        }
-      }
-    }
+        },
+      },
+    },
   }
   createResolvers(resolvers)
 }
 
 export async function createSchemaCustomization({
-  actions: { createTypes }
+  actions: { createTypes },
 }: {
-  actions: { createTypes: Function }
+  actions: { createTypes: any }
   schema: any
-}) {
+}): Promise<void> {
   createTypes(`
     type MedusaProducts implements Node {
       thumbnail: File @link(from: "fields.localThumbnail")
@@ -169,53 +174,53 @@ export async function onCreateNode({
   createNodeId,
   node,
   store,
-  reporter
+  reporter,
 }: {
-  actions: { createNode: Function; createNodeField: Function }
+  actions: { createNode: any; createNodeField: any }
   cache: GatsbyCache
-  createNodeId: Function
+  createNodeId: any
   node: Node
   store: Store
   reporter: Reporter
-}) {
+}): Promise<void> {
   if (node.internal.type === `MedusaProducts`) {
     if (node.thumbnail !== null) {
-      let thumbnailNode: Node | null = await createRemoteFileNode({
+      const thumbnailNode: Node | null = await createRemoteFileNode({
         url: `${node.thumbnail}`,
         parentNodeId: node.id,
         createNode,
         createNodeId,
         cache,
         store,
-        reporter
+        reporter,
       })
 
       if (thumbnailNode) {
         createNodeField({
           node,
           name: `localThumbnail`,
-          value: thumbnailNode.id
+          value: thumbnailNode.id,
         })
       }
     }
   }
 
   if (node.internal.type === `MedusaImages`) {
-    let imageNode: Node | null = await createRemoteFileNode({
+    const imageNode: Node | null = await createRemoteFileNode({
       url: `${node.url}`,
       parentNodeId: node.id,
       createNode,
       createNodeId,
       cache,
       store,
-      reporter
+      reporter,
     })
 
     if (imageNode) {
       createNodeField({
         node,
         name: `localImage`,
-        value: imageNode.id
+        value: imageNode.id,
       })
     }
   }

@@ -5,7 +5,7 @@ interface MedusaPluginOptions {
 
 interface MedusaProductImage {
   url: string
-  metadata: {} | null
+  metadata: Record<string, unknown> | null
   id: string
   created_at: string
   updated_at: string

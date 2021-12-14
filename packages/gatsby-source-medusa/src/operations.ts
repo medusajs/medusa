@@ -1,11 +1,11 @@
-import { SourceNodesArgs } from "gatsby";
-import { createClient } from "./client";
+import { SourceNodesArgs } from "gatsby"
+import { createClient } from "./client"
 
 export function createOperations(
   options: MedusaPluginOptions,
   { reporter }: SourceNodesArgs
 ): IOperations {
-  const client = createClient(options, reporter);
+  const client = createClient(options, reporter)
 
   function createOperation(
     name: "products" | "collections" | "regions" | "orders",
@@ -14,7 +14,7 @@ export function createOperations(
     return {
       execute: (): Promise<any[]> => client[name](queryString),
       name: name,
-    };
+    }
   }
 
   return {
@@ -22,13 +22,13 @@ export function createOperations(
     createCollectionsOperation: createOperation("collections"),
     createRegionsOperation: createOperation("regions"),
     createOrdersOperation: createOperation("orders"),
-    incrementalProductsOperation: (date: Date) =>
+    incrementalProductsOperation: (date: Date): any =>
       createOperation("products", date.toISOString()),
-    incrementalCollectionsOperation: (date: Date) =>
+    incrementalCollectionsOperation: (date: Date): any =>
       createOperation("collections", date.toISOString()),
-    incrementalRegionsOperation: (date: Date) =>
+    incrementalRegionsOperation: (date: Date): any =>
       createOperation("regions", date.toISOString()),
-    incrementalOrdersOperation: (date: Date) =>
+    incrementalOrdersOperation: (date: Date): any =>
       createOperation("orders", date.toISOString()),
-  };
+  }
 }

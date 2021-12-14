@@ -10,7 +10,7 @@ function medusaRequest(
     method: "GET",
     withCredentials: true,
     url: path,
-    headers: headers
+    headers: headers,
   }
 
   const client = axios.create({ baseURL: storeURL })
@@ -21,15 +21,15 @@ function medusaRequest(
 export const createClient = (
   options: MedusaPluginOptions,
   reporter: Reporter
-) => {
+): any => {
   const { storeUrl, authToken } = options
 
   /**
    *
    * @param {string} date used fetch products updated since the specified date
-   * @returns
+   * @return {Promise<any[]>}
    */
-  async function products(date?: string) {
+  async function products(date?: string): Promise<any[]> {
     let products: any[] = []
     let offset = 0
     let count = 1
@@ -54,9 +54,9 @@ export const createClient = (
   /**
    *
    * @param {string} date used fetch regions updated since the specified date
-   * @returns
+   * @return {Promise<any[]>}
    */
-  async function regions(date?: string) {
+  async function regions(date?: string): Promise<any[]> {
     const regions = await medusaRequest(storeUrl, `/store/regions`)
       .then(({ data }) => {
         return data.regions
@@ -73,11 +73,11 @@ export const createClient = (
   /**
    *
    * @param {string} date used fetch regions updated since the specified date
-   * @returns
+   * @return {Promise<any[]>}
    */
-  async function orders(date?: string) {
+  async function orders(date?: string): Promise<any[]> {
     const orders = await medusaRequest(storeUrl, `/admin/orders`, {
-      Authorization: `Bearer ${authToken}`
+      Authorization: `Bearer ${authToken}`,
     })
       .then(({ data }) => {
         return data.orders
@@ -95,9 +95,9 @@ export const createClient = (
   /**
    *
    * @param {string} date used fetch regions updated since the specified date
-   * @returns
+   * @return {Promise<any[]>}
    */
-  async function collections(date?: string) {
+  async function collections(date?: string): Promise<any[]> {
     let collections: any[] = []
     let offset = 0
     let count = 1
@@ -123,6 +123,6 @@ export const createClient = (
     products,
     collections,
     regions,
-    orders
+    orders,
   }
 }
