@@ -3,18 +3,17 @@ import * as rax from "retry-axios"
 import { v4 as uuidv4 } from "uuid"
 
 const unAuthenticatedAdminEndpoints = {
-  "/admin/auth": true,
-  "/admin/users/password-token": true,
-  "/admin/users/reset-password": true,
-  "/admin/invites/accept": true,
+  "/admin/auth": "POST",
+  "/admin/users/password-token": "POST",
+  "/admin/users/reset-password": "POST",
+  "/admin/invites/accept": "POST",
 }
 export interface Config {
   baseUrl: string
   maxRetries: number
-  apiKey: string
+  apiKey?: string
 }
 export interface RequestOptions {
-  apiKey?: string
   timeout?: number
   numberOfRetries?: number
 }
@@ -91,6 +90,13 @@ class Client {
       .join("-")
   }
 
+  isAuthenticated(path, method): boolean {
+    return (
+      path.startsWith("/admin") &&
+      unAuthenticatedAdminEndpoints[path] !== method
+    )
+  }
+
   /**
    * Creates all the initial headers.
    * We add the idempotency key, if the request is configured to retry.
@@ -109,14 +115,7 @@ class Client {
       "Content-Type": "application/json",
     }
 
-    // TODO: if route is an authenticated route, add api key
-    if (
-      path.startsWith("/admin") &&
-      !(
-        method === "POST" &&
-        typeof unAuthenticatedAdminEndpoints[path] !== "undefined"
-      )
-    ) {
+    if (this.config.apiKey && this.isAuthenticated(path, method)) {
       defaultHeaders = {
         ...defaultHeaders,
         Authorization: `Bearer ${this.config.apiKey}`,
