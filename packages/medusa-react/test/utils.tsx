@@ -52,16 +52,16 @@ export function createCartWrapper() {
 
   return ({
     children,
-    initialBagState,
+    initialSessionCartState,
     initialCartState,
   }: {
-    initialBagState?: SessionCartState
+    initialSessionCartState?: SessionCartState
     initialCartState?: Cart
     children?: React.ReactNode
   }) => {
     return (
       <MedusaProvider queryClientProviderProps={{ client: qc }} baseUrl="">
-        <SessionCartProvider initialState={initialBagState}>
+        <SessionCartProvider initialState={initialSessionCartState}>
           <CartProvider initialState={initialCartState}>
             {children}
           </CartProvider>
