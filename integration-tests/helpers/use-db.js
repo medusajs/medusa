@@ -1,12 +1,14 @@
 const path = require("path")
 require("dotenv").config({ path: path.join(__dirname, "../.env") })
 
-const { dropDatabase, createDatabase } = require("pg-god")
+const { dropDatabase } = require("pg-god")
 const { createConnection } = require("typeorm")
+const dbFactory = require("./use-template-db")
 
+const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
 const DB_USERNAME = process.env.DB_USERNAME || "postgres"
 const DB_PASSWORD = process.env.DB_PASSWORD || ""
-const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration`
+const DB_URL = `postgres://${DB_USERNAME}:${DB_PASSWORD}@localhost/medusa-integration-${workerId}`
 
 const pgGodCredentials = {
   user: DB_USERNAME,
@@ -61,7 +63,7 @@ const DbTestUtil = {
 
   shutdown: async function () {
     await this.db_.close()
-    const databaseName = "medusa-integration"
+    const databaseName = `medusa-integration-${workerId}`
     return await dropDatabase({ databaseName }, pgGodCredentials)
   },
 }
@@ -96,28 +98,9 @@ module.exports = {
       instance.setDb(dbConnection)
       return dbConnection
     } else {
-      const migrationDir = path.resolve(
-        path.join(
-          cwd,
-          `node_modules`,
-          `@medusajs`,
-          `medusa`,
-          `dist`,
-          `migrations`
-        )
-      )
+      const databaseName = `medusa-integration-${workerId}`
 
-      const databaseName = "medusa-integration"
-      await createDatabase({ databaseName }, pgGodCredentials)
-
-      const connection = await createConnection({
-        type: "postgres",
-        url: DB_URL,
-        migrations: [`${migrationDir}/*.js`],
-      })
-
-      await connection.runMigrations()
-      await connection.close()
+      await dbFactory.createFromTemplate(databaseName)
 
       const dbConnection = await createConnection({
         type: "postgres",
