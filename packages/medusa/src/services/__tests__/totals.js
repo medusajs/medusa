@@ -60,9 +60,15 @@ const discounts = {
 }
 
 describe("TotalsService", () => {
+  const container = {
+    taxProviderService: {},
+    taxCalculationStrategy: {},
+  }
+
   describe("getAllocationItemDiscounts", () => {
     let res
-    const totalsService = new TotalsService()
+
+    const totalsService = new TotalsService(container)
 
     beforeEach(() => {
       jest.clearAllMocks()
@@ -187,7 +193,7 @@ describe("TotalsService", () => {
 
   describe("getDiscountTotal", () => {
     let res
-    const totalsService = new TotalsService()
+    const totalsService = new TotalsService(container)
 
     const discountCart = {
       id: "discount_cart",
@@ -275,7 +281,7 @@ describe("TotalsService", () => {
 
   describe("getRefundTotal", () => {
     let res
-    const totalsService = new TotalsService()
+    const totalsService = new TotalsService(container)
     const orderToRefund = {
       id: "refund-order",
       tax_rate: 25,
@@ -441,7 +447,7 @@ describe("TotalsService", () => {
   })
   describe("getShippingTotal", () => {
     let res
-    const totalsService = new TotalsService()
+    const totalsService = new TotalsService(container)
 
     beforeEach(() => {
       jest.clearAllMocks()
@@ -468,27 +474,50 @@ describe("TotalsService", () => {
     })
   })
   describe("getTaxTotal", () => {
-    let res
-    const totalsService = new TotalsService()
+    let res, totalsService
+
+    const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
+    const calculateMock = jest.fn(() => Promise.resolve(20.3))
+    const getAllocationMapMock = jest.fn(() => ({}))
+
+    const cradle = {
+      taxProviderService: {
+        getTaxLines: getTaxLinesMock,
+      },
+      taxCalculationStrategy: {
+        calculate: calculateMock,
+      },
+    }
 
     beforeEach(() => {
       jest.clearAllMocks()
+
+      totalsService = new TotalsService(cradle)
+      totalsService.getAllocationMap = getAllocationMapMock
     })
 
-    it("calculates tax", async () => {
+    it("uses order tax lines", async () => {
       const order = {
+        tax_rate: 14.2,
         region: {
           tax_rate: 25,
+        },
+        customer: {
+          test: "test",
+        },
+        shipping_address: {
+          test: "test",
         },
         items: [
           {
             unit_price: 20,
             quantity: 2,
+            tax_lines: [{ id: "orderline1" }],
           },
         ],
         shipping_methods: [
           {
-            _id: IdMap.getId("expensiveShipping"),
+            id: IdMap.getId("expensiveShipping"),
             name: "Expensive Shipping",
             price: 100,
             provider_id: "default_provider",
@@ -500,15 +529,94 @@ describe("TotalsService", () => {
         ],
       }
 
-      res = totalsService.getTaxTotal(order)
+      res = await totalsService.getTaxTotal(order)
 
-      expect(res).toEqual(35)
+      expect(res).toEqual(20)
+
+      expect(getAllocationMapMock).toHaveBeenCalledTimes(1)
+      expect(getAllocationMapMock).toHaveBeenCalledWith(order)
+
+      expect(getTaxLinesMock).toHaveBeenCalledTimes(0)
+
+      expect(calculateMock).toHaveBeenCalledTimes(1)
+      expect(calculateMock).toHaveBeenCalledWith(
+        order.items,
+        [{ id: "orderline1" }],
+        {
+          shipping_address: order.shipping_address,
+          shipping_methods: order.shipping_methods,
+          customer: order.customer,
+          region: order.region,
+          allocation_map: {},
+        }
+      )
+    })
+
+    it("calculates tax", async () => {
+      const order = {
+        region: {
+          tax_rate: 25,
+        },
+        customer: {
+          test: "test",
+        },
+        shipping_address: {
+          test: "test",
+        },
+        items: [
+          {
+            unit_price: 20,
+            quantity: 2,
+          },
+        ],
+        shipping_methods: [
+          {
+            id: IdMap.getId("expensiveShipping"),
+            name: "Expensive Shipping",
+            price: 100,
+            provider_id: "default_provider",
+            profile_id: IdMap.getId("default"),
+            data: {
+              extra: "hi",
+            },
+          },
+        ],
+      }
+
+      res = await totalsService.getTaxTotal(order)
+
+      expect(res).toEqual(20)
+
+      expect(getAllocationMapMock).toHaveBeenCalledTimes(1)
+      expect(getAllocationMapMock).toHaveBeenCalledWith(order)
+
+      expect(getTaxLinesMock).toHaveBeenCalledTimes(1)
+      expect(getTaxLinesMock).toHaveBeenCalledWith(order, {
+        shipping_address: order.shipping_address,
+        shipping_methods: order.shipping_methods,
+        customer: order.customer,
+        region: order.region,
+        allocation_map: {},
+      })
+
+      expect(calculateMock).toHaveBeenCalledTimes(1)
+      expect(calculateMock).toHaveBeenCalledWith(
+        order.items,
+        [{ id: "line1" }],
+        {
+          shipping_address: order.shipping_address,
+          shipping_methods: order.shipping_methods,
+          customer: order.customer,
+          region: order.region,
+          allocation_map: {},
+        }
+      )
     })
   })
 
   describe("getTotal", () => {
     let res
-    const totalsService = new TotalsService()
+    const totalsService = new TotalsService(container)
 
     beforeEach(() => {
       jest.clearAllMocks()
@@ -538,7 +646,13 @@ describe("TotalsService", () => {
           },
         ],
       }
-      res = totalsService.getTotal(order)
+      const getTaxTotalMock = jest.fn(() => 35)
+      totalsService.getTaxTotal = getTaxTotalMock
+      res = await totalsService.getTotal(order)
+
+      expect(getTaxTotalMock).toHaveBeenCalledTimes(1)
+      expect(getTaxTotalMock).toHaveBeenCalledWith(order)
+
       expect(res).toEqual(175)
     })
   })

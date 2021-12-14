@@ -114,11 +114,6 @@ class TotalsService extends BaseService {
    * @return {int} tax total
    */
   async getTaxTotal(object: Cart | Order): Promise<number> {
-    // const subtotal = this.getSubtotal(object)
-    // const shippingTotal = this.getShippingTotal(object)
-    // const discountTotal = this.getDiscountTotal(object)
-    // const giftCardTotal = this.getGiftCardTotal(object)
-
     const allocationMap = this.getAllocationMap(object)
     const calculationContext: TaxCalculationContext = {
       shipping_address: object.shipping_address,
@@ -129,7 +124,9 @@ class TotalsService extends BaseService {
     }
 
     let taxLines: TaxLine[]
-    if (object instanceof Order) {
+
+    // Only Orders has a tax_rate
+    if ("tax_rate" in object) {
       taxLines = object.items.flatMap((li) => {
         return li.tax_lines
       })
