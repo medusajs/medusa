@@ -10,14 +10,14 @@ interface Item {
   readonly total?: number
 }
 
-export interface BagState {
+export interface SessionCartState {
   region: RegionInfo
   items: Item[]
   totalItems: number
-  bagTotal: number
+  total: number
 }
 
-interface BagContextState extends BagState {
+interface SessionCartContextState extends SessionCartState {
   setRegion: (region: RegionInfo) => void
   addItem: (item: Item) => void
   removeItem: (id: string) => void
@@ -27,10 +27,12 @@ interface BagContextState extends BagState {
   incrementItemQuantity: (id: string) => void
   decrementItemQuantity: (id: string) => void
   getItem: (id: string) => Item | undefined
-  clearBag: () => void
+  clearItems: () => void
 }
 
-const BagContext = React.createContext<BagContextState | null>(null)
+const SessionCartContext = React.createContext<SessionCartContextState | null>(
+  null
+)
 
 enum ACTION_TYPES {
   INIT,
@@ -54,13 +56,13 @@ type Action =
   | { type: ACTION_TYPES.SET_ITEMS; payload: Item[] }
   | { type: ACTION_TYPES.CLEAR_ITEMS }
 
-const reducer = (state: BagState, action: Action) => {
+const reducer = (state: SessionCartState, action: Action) => {
   switch (action.type) {
     case ACTION_TYPES.INIT: {
       return state
     }
     case ACTION_TYPES.SET_REGION: {
-      return generateBagState(
+      return generateCartState(
         {
           ...state,
           region: action.payload,
@@ -76,7 +78,7 @@ const reducer = (state: BagState, action: Action) => {
         state.items.splice(duplicateVariantIndex, 1)
       }
       const items = [...state.items, action.payload]
-      return generateBagState(state, items)
+      return generateCartState(state, items)
     }
     case ACTION_TYPES.UPDATE_ITEM: {
       const items = state.items.map((item) =>
@@ -85,22 +87,22 @@ const reducer = (state: BagState, action: Action) => {
           : item
       )
 
-      return generateBagState(state, items)
+      return generateCartState(state, items)
     }
     case ACTION_TYPES.REMOVE_ITEM: {
       const items = state.items.filter(
         (item) => item.variant.id !== action.payload.id
       )
-      return generateBagState(state, items)
+      return generateCartState(state, items)
     }
     case ACTION_TYPES.SET_ITEMS: {
-      return generateBagState(state, action.payload)
+      return generateCartState(state, action.payload)
     }
     case ACTION_TYPES.CLEAR_ITEMS: {
       return {
         ...state,
         items: [],
-        bagTotal: 0,
+        total: 0,
         totalItems: 0,
       }
     }
@@ -109,13 +111,13 @@ const reducer = (state: BagState, action: Action) => {
   }
 }
 
-export const generateBagState = (state: BagState, items: Item[]) => {
+export const generateCartState = (state: SessionCartState, items: Item[]) => {
   const newItems = generateItems(state.region, items)
   return {
     ...state,
     items: newItems,
     totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
-    bagTotal: calculateBagTotal(newItems),
+    total: calculateSessionCartTotal(newItems),
   }
 }
 
@@ -126,31 +128,31 @@ const generateItems = (region: RegionInfo, items: Item[]) => {
   }))
 }
 
-const calculateBagTotal = (items: Item[]) => {
+const calculateSessionCartTotal = (items: Item[]) => {
   return items.reduce(
     (total, item) => total + item.quantity * (item.total || 0),
     0
   )
 }
 
-interface BagProviderProps {
+interface SessionCartProviderProps {
   children: React.ReactNode
-  initialState?: BagState
+  initialState?: SessionCartState
 }
 
-const defaultInitialState: BagState = {
+const defaultInitialState: SessionCartState = {
   region: {} as RegionInfo,
   items: [],
-  bagTotal: 0,
+  total: 0,
   totalItems: 0,
 }
 
-export const BagProvider = ({
+export const SessionCartProvider = ({
   initialState = defaultInitialState,
   children,
-}: BagProviderProps) => {
+}: SessionCartProviderProps) => {
   const [saved, save] = useLocalStorage(
-    "medusa-bag",
+    "medusa-session-cart",
     JSON.stringify(initialState)
   )
 
@@ -249,14 +251,14 @@ export const BagProvider = ({
     })
   }
 
-  const clearBag = () => {
+  const clearItems = () => {
     dispatch({
       type: ACTION_TYPES.CLEAR_ITEMS,
     })
   }
 
   return (
-    <BagContext.Provider
+    <SessionCartContext.Provider
       value={{
         ...state,
         setRegion,
@@ -268,18 +270,20 @@ export const BagProvider = ({
         removeItem,
         getItem,
         setItems,
-        clearBag,
+        clearItems,
       }}
     >
       {children}
-    </BagContext.Provider>
+    </SessionCartContext.Provider>
   )
 }
 
-export const useBag = () => {
-  const context = useContext(BagContext)
+export const useSessionCart = () => {
+  const context = useContext(SessionCartContext)
   if (!context) {
-    throw new Error("useBag should be used as a child of BagProvider")
+    throw new Error(
+      "useSessionCart should be used as a child of SessionCartProvider"
+    )
   }
   return context
 }

@@ -1,22 +1,22 @@
-import { generateBagState } from "../../src/contexts/bag"
+import { generateCartState } from "../../src/contexts/session-cart"
 import { ProductVariant } from "@medusajs/medusa"
-import { useBag } from "../../src"
+import { useSessionCart } from "../../src"
 import { act, renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../mocks/data"
-import { createBagWrapper } from "../utils"
+import { createSessionCartWrapper } from "../utils"
 
-const initialBagState = {
+const initialSessionCartState = {
   region: fixtures.get("region"),
   totalItems: 0,
-  bagTotal: 0,
+  total: 0,
   items: [],
 }
 
-describe("useBag hook", () => {
+describe("useSessionCart hook", () => {
   describe("sets a region", () => {
     test("success", async () => {
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
       })
       const { setRegion } = result.current
 
@@ -24,20 +24,20 @@ describe("useBag hook", () => {
         setRegion(fixtures.get("region"))
       })
 
-      const { region, bagTotal, totalItems } = result.current
+      const { region, total, totalItems } = result.current
 
       expect(region).toEqual(fixtures.get("region"))
-      expect(bagTotal).toEqual(0)
+      expect(total).toEqual(0)
       expect(totalItems).toEqual(0)
     })
   })
 
   describe("item operations", () => {
     test("addItem", () => {
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: initialBagState,
+          initialState: initialSessionCartState,
         },
       })
       const { addItem } = result.current
@@ -50,10 +50,10 @@ describe("useBag hook", () => {
         })
       })
 
-      const { items, totalItems, bagTotal } = result.current
+      const { items, totalItems, total } = result.current
 
       expect(totalItems).toBe(1)
-      expect(bagTotal).toBe(1000)
+      expect(total).toBe(1000)
       expect(items).toEqual([
         {
           variant: expect.objectContaining(variant),
@@ -65,10 +65,10 @@ describe("useBag hook", () => {
 
     test("updateItem", () => {
       const variant = fixtures.get("product_variant")
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: generateBagState(initialBagState, [
+          initialState: generateCartState(initialSessionCartState, [
             {
               variant: variant as unknown as ProductVariant,
               quantity: 1,
@@ -92,10 +92,10 @@ describe("useBag hook", () => {
         })
       })
 
-      const { items, totalItems, bagTotal } = result.current
+      const { items, totalItems, total } = result.current
 
       expect(totalItems).toBe(5)
-      expect(bagTotal).toBe(5 * 1000)
+      expect(total).toBe(5 * 1000)
       expect(items).toEqual([
         {
           variant: expect.objectContaining(variant),
@@ -115,10 +115,10 @@ describe("useBag hook", () => {
 
     test("removeItem", () => {
       const variant = fixtures.get("product_variant")
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: generateBagState(initialBagState, [
+          initialState: generateCartState(initialSessionCartState, [
             {
               variant: variant as unknown as ProductVariant,
               quantity: 3,
@@ -140,10 +140,10 @@ describe("useBag hook", () => {
         removeItem(variant.id)
       })
 
-      const { items, totalItems, bagTotal } = result.current
+      const { items, totalItems, total } = result.current
 
       expect(totalItems).toBe(1)
-      expect(bagTotal).toBe(1000)
+      expect(total).toBe(1000)
       expect(items).toEqual([
         {
           variant: {
@@ -158,10 +158,10 @@ describe("useBag hook", () => {
 
     test("incrementItemQuantity", () => {
       const variant = fixtures.get("product_variant")
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: generateBagState(initialBagState, [
+          initialState: generateCartState(initialSessionCartState, [
             {
               variant: variant as unknown as ProductVariant,
               quantity: 2,
@@ -176,10 +176,10 @@ describe("useBag hook", () => {
         incrementItemQuantity(variant.id)
       })
 
-      const { items, totalItems, bagTotal } = result.current
+      const { items, totalItems, total } = result.current
 
       expect(totalItems).toBe(3)
-      expect(bagTotal).toBe(3 * 1000)
+      expect(total).toBe(3 * 1000)
       expect(items).toEqual([
         {
           variant,
@@ -191,10 +191,10 @@ describe("useBag hook", () => {
 
     test("decrementItemQuantity", () => {
       const variant = fixtures.get("product_variant")
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: generateBagState(initialBagState, [
+          initialState: generateCartState(initialSessionCartState, [
             {
               variant: variant as unknown as ProductVariant,
               quantity: 4,
@@ -209,10 +209,10 @@ describe("useBag hook", () => {
         decrementItemQuantity(variant.id)
       })
 
-      const { items, totalItems, bagTotal } = result.current
+      const { items, totalItems, total } = result.current
 
       expect(totalItems).toBe(3)
-      expect(bagTotal).toBe(3 * 1000)
+      expect(total).toBe(3 * 1000)
       expect(items).toEqual([
         {
           variant,
@@ -224,10 +224,10 @@ describe("useBag hook", () => {
 
     test("setItems", () => {
       const variant = fixtures.get("product_variant")
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: generateBagState(initialBagState, [
+          initialState: generateCartState(initialSessionCartState, [
             {
               variant: variant as unknown as ProductVariant,
               quantity: 4,
@@ -250,10 +250,10 @@ describe("useBag hook", () => {
         ])
       })
 
-      const { items, totalItems, bagTotal } = result.current
+      const { items, totalItems, total } = result.current
 
       expect(totalItems).toBe(1)
-      expect(bagTotal).toBe(1000)
+      expect(total).toBe(1000)
       expect(items).toEqual([
         {
           variant: expect.objectContaining({
@@ -267,10 +267,10 @@ describe("useBag hook", () => {
 
     test("getItem", () => {
       const variant = fixtures.get("product_variant")
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: generateBagState(initialBagState, [
+          initialState: generateCartState(initialSessionCartState, [
             {
               variant: variant as unknown as ProductVariant,
               quantity: 1,
@@ -292,12 +292,12 @@ describe("useBag hook", () => {
       })
     })
 
-    test("clearBag", () => {
+    test("clearItems", () => {
       const variant = fixtures.get("product_variant")
-      const { result } = renderHook(() => useBag(), {
-        wrapper: createBagWrapper(),
+      const { result } = renderHook(() => useSessionCart(), {
+        wrapper: createSessionCartWrapper(),
         initialProps: {
-          initialState: generateBagState(initialBagState, [
+          initialState: generateCartState(initialSessionCartState, [
             {
               variant: variant as unknown as ProductVariant,
               quantity: 4,
@@ -306,16 +306,16 @@ describe("useBag hook", () => {
         },
       })
 
-      const { clearBag } = result.current
+      const { clearItems } = result.current
 
       act(() => {
-        clearBag()
+        clearItems()
       })
 
-      const { items, totalItems, bagTotal } = result.current
+      const { items, totalItems, total } = result.current
 
       expect(totalItems).toBe(0)
-      expect(bagTotal).toBe(0)
+      expect(total).toBe(0)
       expect(items).toEqual([])
     })
   })

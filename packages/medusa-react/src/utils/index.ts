@@ -21,9 +21,9 @@ export const formatVariantPrice = ({
 }: FormatVariantPriceParams) => {
   const amount = computeVariantPrice({ variant, region, includeTaxes })
 
-  return formatAmount({
+  return convertToLocale({
     amount,
-    region,
+    currency_code: region?.currency_code,
     ...rest,
   })
 }

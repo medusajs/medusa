@@ -1,6 +1,11 @@
 import * as React from "react"
 import { QueryClient } from "react-query"
-import { BagProvider, BagState, CartProvider, MedusaProvider } from "../src"
+import {
+  SessionCartProvider,
+  SessionCartState,
+  CartProvider,
+  MedusaProvider,
+} from "../src"
 import { Cart } from "../src/types"
 
 const createTestQueryClient = () =>
@@ -22,19 +27,21 @@ export function createWrapper() {
   )
 }
 
-export function createBagWrapper() {
+export function createSessionCartWrapper() {
   const qc = createTestQueryClient()
 
   return ({
     children,
     initialState,
   }: {
-    initialState: BagState
+    initialState: SessionCartState
     children?: React.ReactNode
   }) => {
     return (
       <MedusaProvider queryClientProviderProps={{ client: qc }} baseUrl="">
-        <BagProvider initialState={initialState}>{children}</BagProvider>
+        <SessionCartProvider initialState={initialState}>
+          {children}
+        </SessionCartProvider>
       </MedusaProvider>
     )
   }
@@ -48,17 +55,17 @@ export function createCartWrapper() {
     initialBagState,
     initialCartState,
   }: {
-    initialBagState?: BagState
+    initialBagState?: SessionCartState
     initialCartState?: Cart
     children?: React.ReactNode
   }) => {
     return (
       <MedusaProvider queryClientProviderProps={{ client: qc }} baseUrl="">
-        <BagProvider initialState={initialBagState}>
+        <SessionCartProvider initialState={initialBagState}>
           <CartProvider initialState={initialCartState}>
             {children}
           </CartProvider>
-        </BagProvider>
+        </SessionCartProvider>
       </MedusaProvider>
     )
   }

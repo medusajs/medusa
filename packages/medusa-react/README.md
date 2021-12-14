@@ -221,24 +221,24 @@ Takes an integer amount, a region, and includeTaxes boolean. Returns a decimal a
 
 ### Context Providers (Experimental)
 
-In order to make building custom storefronts easier, we also expose a `BagProvider` and a `CartProvider` . At first, the two sound very similar to each other, however, the main distinction between the two is that the `BagProvider` never interacts with your medusa server.
+In order to make building custom storefronts easier, we also expose a `SessionCartProvider` and a `CartProvider` . At first, the two sound very similar to each other, however, the main distinction between the two is that the `SessionCartProvider` never interacts with your medusa server.
 
 The main goal behind the provider is to manage the state related to your users' cart experience. In other words, the provider keeps track of the items users add to their cart and help you interact with those items through a set of helpful methods like `addItem`, `updateQuantity`, `removeItem` , etc.
 
 On the other hand the `CartProvider` makes use of some of the hooks already exposed by `medusa-react` to help you create a cart (on the medusa backend), start the checkout flow, authorize payment sessions, etc. It also manages one single global piece of state which represents a cart, exactly like the one created on your medusa backend.
 
-You can think of a `bag` as a purely client-side lightweight cart, in other words, just a javascript object living in your browser, whereas `cart` is the entity which you have stored in your database.
+You can think of a `sessionCart` as a purely client-side lightweight cart, in other words, just a javascript object living in your browser, whereas `cart` is the entity which you have stored in your database.
 
-### BagProvider
+### SessionCart
 
-The first step to using the `BagProvider` is by inserting it somewhere up in your component tree.
+The first step to using the `SessionCartProvider` is by inserting it somewhere up in your component tree.
 
 ```jsx
 // App.tsx
 
 import * as React from "react"
 import { QueryClient } from "react-query"
-import { MedusaProvider, BagProvider } from "medusa-react"
+import { MedusaProvider, SessionCartProvider } from "medusa-react"
 import MyStorefront from "./my-storefront"
 
 // Your react-query's query client config
@@ -258,9 +258,9 @@ const App = () => {
       queryClientProviderProps={{ client: queryClient }}
       baseUrl="http://localhost:9000"
     >
-      <BagProvider>
+      <SessionCartProvider>
         <MyStorefront />
-      </BagProvider>
+      </SessionCartProvider>
     </MedusaProvider>
   )
 }

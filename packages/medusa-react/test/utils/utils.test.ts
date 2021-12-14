@@ -143,7 +143,7 @@ describe("formatVariantPrice", () => {
       locale: "fr-FR",
     })
 
-    expect(price.replace(/\s/, " ")).toEqual("11,50 $US") // Yup
+    expect(price.replace(/\s/, " ")).toEqual("11,50 $US")
   })
 })
 

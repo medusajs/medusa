@@ -1,3 +1,3 @@
 export * from "./medusa"
-export * from "./bag"
+export * from "./session-cart"
 export * from "./cart"
