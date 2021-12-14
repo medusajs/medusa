@@ -729,7 +729,7 @@ class ProductService extends BaseService {
       if (!productOption) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Option with id: ${optionId} does not exists`
+          `Option with id: ${optionId} does not exist`
         )
       }
 
@@ -793,7 +793,7 @@ class ProductService extends BaseService {
       if (!equalsFirst.every((v) => v)) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `To delete an option, first delete all variants, such that when option is deleted, no duplicate variants will exist.`
+          `To delete an option, first delete all variants, such that when an option is deleted, no duplicate variants will exist.`
         )
       }
 
