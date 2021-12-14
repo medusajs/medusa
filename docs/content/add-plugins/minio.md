@@ -1,4 +1,4 @@
-# Uploading images to MinIO
+# MinIO
 
 In order to work with images in Medusa, you need a file service plugin responsible for hosting. Following this guide will allow you to upload images to MinIO bucket.
 
