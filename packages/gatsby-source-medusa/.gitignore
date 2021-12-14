@@ -1,0 +1,10 @@
+node_modules
+
+.DS_Store
+
+*.js
+*.js.map
+*.d.ts
+!/types/*.d.ts
+
+!jest.config.js

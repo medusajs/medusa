@@ -6,6 +6,8 @@ const pkgs = glob
 
 module.exports = {
   testEnvironment: `node`,
+  globalSetup: "<rootDir>/integration-tests/globalSetup.js",
+  globalTeardown: "<rootDir>/integration-tests/globalTeardown.js",
   rootDir: `../`,
   roots: pkgs,
   testPathIgnorePatterns: [
