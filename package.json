@@ -51,7 +51,7 @@
     "jest": "jest",
     "test": "jest",
     "prettier": "prettier",
-    "test:integration": "jest --config=integration-tests/jest.config.js --runInBand",
+    "test:integration": "jest --config=integration-tests/jest.config.js",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
   },
   "dependencies": {
