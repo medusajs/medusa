@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`helper functions should return return a new node from processNode 1`] = `
+Array [
+  Object {
+    "children": Array [],
+    "description": "A test product",
+    "id": "prod_test_1234",
+    "internal": Object {
+      "content": "{\\"id\\":\\"prod_test_1234\\",\\"title\\":\\"Test Shirt\\",\\"description\\":\\"A test product\\",\\"unit_price\\":2500}",
+      "contentDigest": "digest_string",
+      "type": "MedusaProduct",
+    },
+    "parent": null,
+    "title": "Test Shirt",
+    "unit_price": 2500,
+  },
+]
+`;
