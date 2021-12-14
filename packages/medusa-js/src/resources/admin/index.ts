@@ -6,6 +6,7 @@ import AdminDraftOrdersResource from "./draft-orders"
 import AdminGiftCardsResource from "./gift-cards"
 import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
+import AdminUsersResource from "./users"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -15,6 +16,7 @@ class Admin extends BaseResource {
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
   public notes = new AdminNotesResource(this.client)
+  public users = new AdminUsersResource(this.client)
 }
 
 export default Admin
