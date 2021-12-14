@@ -16,6 +16,7 @@ export default (container, config) => {
 }
 
 // Admin
+export * from "./routes/admin/collections"
 export * from "./routes/admin/auth"
 export * from "./routes/admin/customers"
 export * from "./routes/admin/discounts"
