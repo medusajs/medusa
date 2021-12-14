@@ -23,7 +23,6 @@ export type RequestMethod = "DELETE" | "POST" | "GET"
 const defaultConfig = {
   maxRetries: 0,
   baseUrl: "http://localhost:9000",
-  apiKey: "",
 }
 
 class Client {
@@ -90,7 +89,7 @@ class Client {
       .join("-")
   }
 
-  isAuthenticated(path, method): boolean {
+  requiresAuthentication(path, method): boolean {
     return (
       path.startsWith("/admin") &&
       unAuthenticatedAdminEndpoints[path] !== method
@@ -115,7 +114,7 @@ class Client {
       "Content-Type": "application/json",
     }
 
-    if (this.config.apiKey && this.isAuthenticated(path, method)) {
+    if (this.config.apiKey && this.requiresAuthentication(path, method)) {
       defaultHeaders = {
         ...defaultHeaders,
         Authorization: `Bearer ${this.config.apiKey}`,
@@ -138,9 +137,6 @@ class Client {
    * @return {AxiosInstance}
    */
   createClient(config: Config): AxiosInstance {
-    if (!config.apiKey) {
-      console.warn("No API key has been set")
-    }
     const client = axios.create({
       baseURL: config.baseUrl,
     })
