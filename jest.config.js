@@ -1,22 +1,25 @@
-const path = require(`path`);
-const glob = require(`glob`);
-const fs = require(`fs`);
+const path = require(`path`)
+const glob = require(`glob`)
+const fs = require(`fs`)
 
-const pkgs = glob
-  .sync(`./packages/*`)
-  .map((p) => p.replace(/^\./, `<rootDir>`));
+const pkgs = glob.sync(`./packages/*`).map((p) => p.replace(/^\./, `<rootDir>`))
 
-const reMedusa = /medusa$/;
-const medusaDir = pkgs.find((p) => reMedusa.exec(p));
-const medusaBuildDirs = [`dist`].map((dir) => path.join(medusaDir, dir));
+const reMedusa = /medusa$/
+const medusaDir = pkgs.find((p) => reMedusa.exec(p))
+const medusaBuildDirs = [`dist`].map((dir) => path.join(medusaDir, dir))
 const builtTestsDirs = pkgs
   .filter((p) => fs.existsSync(path.join(p, `src`)))
-  .map((p) => path.join(p, `__tests__`));
-const distDirs = pkgs.map((p) => path.join(p, `dist`));
-const ignoreDirs = [].concat(medusaBuildDirs, builtTestsDirs, distDirs);
+  .map((p) => path.join(p, `__tests__`))
+const distDirs = pkgs.map((p) => path.join(p, `dist`))
+const ignoreDirs = [].concat(
+  medusaBuildDirs,
+  builtTestsDirs,
+  distDirs,
+  "<rootDir>/packages/medusa-react/*"
+)
 
-const coverageDirs = pkgs.map((p) => path.join(p, `src/**/*.js`));
-const useCoverage = !!process.env.GENERATE_JEST_REPORT;
+const coverageDirs = pkgs.map((p) => path.join(p, `src/**/*.js`))
+const useCoverage = !!process.env.GENERATE_JEST_REPORT
 
 module.exports = {
   notify: true,
@@ -46,4 +49,4 @@ module.exports = {
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
   // setupFiles: [`<rootDir>/.jestSetup.js`],
-};
+}
