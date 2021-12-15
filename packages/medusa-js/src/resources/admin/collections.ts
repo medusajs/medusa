@@ -59,7 +59,7 @@ class AdminCollectionsResource extends BaseResource {
   /**
    * @description Lists collections matching a query
    * @param query Query for searching collections
-   * @returns a list of colllections matching the query.
+   * @returns a list of collections matching the query.
    */
   list(
     query?: AdminGetCollectionsParams
