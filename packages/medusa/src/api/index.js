@@ -14,6 +14,7 @@ export default (container, config) => {
 
   return app
 }
+export * from "./routes/admin/variants"
 
 // Admin
 export * from "./routes/admin/collections"
@@ -27,6 +28,8 @@ export * from "./routes/admin/notes"
 export * from "./routes/admin/notifications"
 export * from "./routes/admin/store"
 export * from "./routes/admin/variants"
+export * from "./routes/admin/returns"
+export * from "./routes/admin/orders"
 // Store
 export * from "./routes/store/auth"
 export * from "./routes/store/carts"
