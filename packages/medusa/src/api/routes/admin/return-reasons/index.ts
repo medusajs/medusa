@@ -1,5 +1,6 @@
 import { Router } from "express"
 import { ReturnReason } from "../../../.."
+import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -52,11 +53,13 @@ export const defaultAdminReturnReasonsRelations = [
 ]
 
 export type AdminReturnReasonRes = {
-  return_reasons: ReturnReason
+  return_reason: ReturnReason
 }
 
 export type AdminReturnReasonsListRes = {
   return_reasons: ReturnReason[]
 }
+
+export type AdminReturnReasonsDeleteRes = DeleteResponse
 
 export * from "./create-reason"
