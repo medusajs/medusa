@@ -12,7 +12,7 @@ class AdminShippingProfilesResource extends BaseResource {
   create(
     payload: AdminPostShippingProfilesReq
   ): ResponsePromise<AdminShippingProfilesRes> {
-    const path = `/admin/shippng-profiles/`
+    const path = `/admin/shipping-profiles/`
     return this.client.request("POST", path, payload)
   }
 
@@ -20,22 +20,22 @@ class AdminShippingProfilesResource extends BaseResource {
     id: string,
     payload: AdminPostShippingProfilesProfileReq
   ): ResponsePromise<AdminShippingProfilesRes> {
-    const path = `/admin/shippng-profiles/${id}`
+    const path = `/admin/shipping-profiles/${id}`
     return this.client.request("POST", path, payload)
   }
 
   delete(id: string): ResponsePromise<AdminDeleteShippingProfileRes> {
-    const path = `/admin/shippng-profiles/${id}`
+    const path = `/admin/shipping-profiles/${id}`
     return this.client.request("DELETE", path)
   }
 
   retrieve(id: string): ResponsePromise<AdminShippingProfilesRes> {
-    const path = `/admin/shippng-profiles/${id}`
+    const path = `/admin/shipping-profiles/${id}`
     return this.client.request("GET", path)
   }
 
   list(): ResponsePromise<AdminShippingProfilesListRes> {
-    const path = `/admin/shippng-profiles/`
+    const path = `/admin/shipping-profiles/`
     return this.client.request("GET", path)
   }
 }
