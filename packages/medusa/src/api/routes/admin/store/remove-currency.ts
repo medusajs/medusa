@@ -3,7 +3,7 @@ import { StoreService } from "../../../../services"
 /**
  * @oas [delete] /store/currencies/{code}
  * operationId: "DeleteStoreCurrenciesCode"
- * summary: "Remvoe a Currency Code"
+ * summary: "Remove a Currency Code"
  * description: "Removes a Currency Code from the available currencies."
  * x-authenticated: true
  * parameters:
