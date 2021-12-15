@@ -1,11 +1,9 @@
 jest.unmock("axios")
-import axios from "axios"
 import MockAdapter from "axios-mock-adapter"
-
-import KlarnaProviderService from "../klarna-provider"
 import { carts } from "../../__mocks__/cart"
-import { TotalsServiceMock } from "../../__mocks__/totals"
 import { RegionServiceMock } from "../../__mocks__/region"
+import { TotalsServiceMock } from "../../__mocks__/totals"
+import KlarnaProviderService from "../klarna-provider"
 
 describe("KlarnaProviderService", () => {
   describe("createPayment", () => {
@@ -38,7 +36,6 @@ describe("KlarnaProviderService", () => {
     it("creates Klarna order", async () => {
       const result = await klarnaProviderService.createPayment(carts.frCart)
 
-      // expect(mockAxios.post).toHaveBeenCalledTimes(1)
       expect(result).toEqual({
         order_id: "123456789",
         order_amount: 100,
