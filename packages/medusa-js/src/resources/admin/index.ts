@@ -9,6 +9,7 @@ import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
 import AdminSwapsResource from "./swaps"
 import AdminShippingProfilesResource from "./shipping-profiles"
+import AdminStoresResource from "./store"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -21,6 +22,7 @@ class Admin extends BaseResource {
   public notes = new AdminNotesResource(this.client)
   public swaps = new AdminSwapsResource(this.client)
   public shippingProfiles = new AdminShippingProfilesResource(this.client)
+  public store = new AdminStoresResource(this.client)
 }
 
 export default Admin
