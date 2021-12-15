@@ -35,11 +35,11 @@ export default (app) => {
   return app
 }
 export type AdminUserRes = {
-  user: _.Omit<User, "password_hash">
+  user: Omit<User, "password_hash">
 }
 
 export type AdminUsersListRes = {
-  users: _.Omit<User, "password_hash">[]
+  users: Omit<User, "password_hash">[]
 }
 
 export type AdminDeleteUserRes = DeleteResponse
