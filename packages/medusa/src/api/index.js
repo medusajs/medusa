@@ -28,6 +28,7 @@ export * from "./routes/admin/notifications"
 export * from "./routes/admin/shipping-profiles"
 export * from "./routes/admin/store"
 export * from "./routes/admin/variants"
+export * from "./routes/admin/swaps"
 // Store
 export * from "./routes/store/auth"
 export * from "./routes/store/carts"
