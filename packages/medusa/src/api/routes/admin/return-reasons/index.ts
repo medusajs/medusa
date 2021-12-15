@@ -52,7 +52,7 @@ export const defaultAdminReturnReasonsRelations = [
   "return_reason_children",
 ]
 
-export type AdminReturnReasonRes = {
+export type AdminReturnReasonsRes = {
   return_reason: ReturnReason
 }
 
@@ -63,3 +63,4 @@ export type AdminReturnReasonsListRes = {
 export type AdminReturnReasonsDeleteRes = DeleteResponse
 
 export * from "./create-reason"
+export * from "./update-reason"

@@ -2,8 +2,8 @@ import {
   AdminPostReturnReasonsReq,
   AdminReturnReasonsRes,
   AdminReturnReasonsDeleteRes,
-  AdminReturnReasonRes,
   AdminReturnReasonsListRes,
+  AdminPostReturnReasonsReasonReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -29,7 +29,7 @@ class AdminReturnReasonsResource extends BaseResource {
    */
   update(
     id: string,
-    payload: AdminPostReturnReasonsReq
+    payload: AdminPostReturnReasonsReasonReq
   ): ResponsePromise<AdminReturnReasonsRes> {
     const path = `/admin/return-reasons/${id}`
     return this.client.request("POST", path, payload)
@@ -50,7 +50,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * @param id id of the return reason to retrieve.
    * @returns the return reason with the given id
    */
-  retrieve(id: string): ResponsePromise<AdminReturnReasonRes> {
+  retrieve(id: string): ResponsePromise<AdminReturnReasonsRes> {
     const path = `/admin/return-reasons/${id}`
     return this.client.request("GET", path)
   }
