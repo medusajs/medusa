@@ -61,8 +61,13 @@ export const carts = {
     shipping_methods: [
       {
         id: IdMap.getId("freeShipping"),
+        name: "Free shipping",
         data: {
           name: "test",
+        },
+        shipping_option: {
+          id: IdMap.getId("freeShipping"),
+          name: "Free shipping",
         },
         profile_id: "default_profile",
       },
@@ -70,6 +75,7 @@ export const carts = {
     shipping_options: [
       {
         id: IdMap.getId("freeShipping"),
+        name: "Free shipping",
         profile_id: "default_profile",
       },
     ],
