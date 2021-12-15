@@ -16,6 +16,7 @@ import {
   AdminPostOrdersOrderClaimsReq,
   AdminPostOrdersOrderClaimsClaimFulfillmentsReq,
   AdminPostOrdersOrderClaimsClaimShipmentsReq,
+  AdminPostOrdersOrderClaimsClaimReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -202,7 +203,7 @@ class AdminOrdersResource extends BaseResource {
   updateClaim(
     id: string,
     claimId: string,
-    payload: AdminPostOrdersOrderClaimsReq
+    payload: AdminPostOrdersOrderClaimsClaimReq
   ): ResponsePromise<AdminOrdersRes> {
     const path = `/admin/orders/${id}/claims/${claimId}`
     return this.client.request("POST", path, payload)
