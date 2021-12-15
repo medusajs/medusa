@@ -58,7 +58,7 @@ class AdminReturnReasonsResource extends BaseResource {
   /**
    * @description Lists return reasons matching a query
    * @param query Query for searching return reasons
-   * @returns a list of colllections matching the query.
+   * @returns a list of return reasons matching the query.
    */
   list(): ResponsePromise<AdminReturnReasonsListRes> {
     const path = `/admin/return-reasons`
