@@ -26,6 +26,7 @@ export * from "./routes/admin/invites"
 export * from "./routes/admin/notes"
 export * from "./routes/admin/notifications"
 export * from "./routes/admin/store"
+export * from "./routes/admin/products"
 export * from "./routes/admin/variants"
 // Store
 export * from "./routes/store/auth"
