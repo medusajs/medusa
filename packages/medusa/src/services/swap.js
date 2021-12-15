@@ -131,6 +131,7 @@ class SwapService extends BaseService {
       relationSet.add("cart.discounts.rule.valid_for")
       relationSet.add("cart.shipping_methods")
       relationSet.add("cart.region")
+      relationSet.add("cart.region.tax_rates")
       relations = [...relationSet]
 
       select = select.filter((v) => !totalFields.includes(v))

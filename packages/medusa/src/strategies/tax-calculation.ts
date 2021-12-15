@@ -1,12 +1,12 @@
 import { LineItem } from "../models/line-item"
-// import { TaxLine } from "../models/tax-line"
+import { LineItemTaxLine } from "../models/line-item-tax-line"
 import { TaxCalculationContext } from "../interfaces/tax-service"
 import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 
 class TaxCalculationStrategy implements ITaxCalculationStrategy {
   async calculate(
     items: LineItem[],
-    taxLines: any[], // eslint-disable-line
+    taxLines: LineItemTaxLine[],
     calculationContext: TaxCalculationContext
   ): Promise<number> {
     let result = 0

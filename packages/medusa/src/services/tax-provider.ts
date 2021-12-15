@@ -79,12 +79,24 @@ class TaxProviderService extends BaseService {
   ): Promise<LineItemTaxLine[]> {
     const calculationLines: TaxCalculationLine[] = await Promise.all(
       order.items.map(async (l) => {
+        if (l.variant && l.variant.product_id) {
+          return {
+            item: l,
+            rates: await this.getRegionRatesForProduct(
+              l.variant.product_id,
+              calculationContext.region
+            ),
+          }
+        }
+
+        /*
+         * If the line item is custom and therefore not associated with a
+         * product we assume no taxes - we should consider adding rate overrides
+         * to custom lines at some point
+         */
         return {
           item: l,
-          rates: await this.getRegionRatesForProduct(
-            l.variant.product_id,
-            calculationContext.region
-          ),
+          rates: [],
         }
       })
     )
@@ -118,15 +130,16 @@ class TaxProviderService extends BaseService {
     }
 
     let toReturn: TaxServiceRate[] = []
-    if (region.tax_rates.length > 0) {
+    const regionRates = region.tax_rates
+    if (regionRates !== null && regionRates.length > 0) {
       const productRates = await this.productTaxRateService_.list({
         product_id: productId,
-        rate_id: region.tax_rates.map((tr) => tr.id),
+        rate_id: regionRates.map((tr) => tr.id),
       })
 
       if (productRates.length > 0) {
         toReturn = productRates.map((pr) => {
-          const rate = region.tax_rates.find((rr) => rr.id === pr.rate_id)
+          const rate = regionRates.find((rr) => rr.id === pr.rate_id)
           if (!rate) {
             throw new MedusaError(
               MedusaError.Types.UNEXPECTED_STATE,
