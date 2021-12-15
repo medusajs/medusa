@@ -7,11 +7,9 @@ class AdminVariantsResource extends BaseResource {
     let path = `/admin/variants`
 
     if (query) {
-      const queryString = Object.entries(query)
-        .map(([key, value]) => {
-          return typeof value !== "undefined" ? `${key}=${value}` : undefined
-        })
-        .filter(Boolean)
+      const queryString = Object.entries(query).map(([key, value]) => {
+        return `${key}=${value}`
+      })
 
       path = `/admin/variants?${queryString.join("&")}`
     }
