@@ -8,6 +8,8 @@ import AdminGiftCardsResource from "./gift-cards"
 import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
 import AdminReturnReasonsResource from "./return-reasons"
+import AdminSwapsResource from "./swaps"
+import AdminShippingProfilesResource from "./shipping-profiles"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -19,6 +21,8 @@ class Admin extends BaseResource {
   public invites = new AdminInvitesResource(this.client)
   public notes = new AdminNotesResource(this.client)
   public returnReasons = new AdminReturnReasonsResource(this.client)
+  public swaps = new AdminSwapsResource(this.client)
+  public shippingProfiles = new AdminShippingProfilesResource(this.client)
 }
 
 export default Admin
