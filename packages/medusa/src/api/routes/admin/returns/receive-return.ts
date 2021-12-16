@@ -94,7 +94,7 @@ export default async (req, res) => {
   res.status(200).json({ return: receivedReturn })
 }
 
-export class Item {
+class Item {
   @IsString()
   item_id: string
 
