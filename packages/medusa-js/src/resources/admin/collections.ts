@@ -51,7 +51,7 @@ class AdminCollectionsResource extends BaseResource {
    * @param id id of the collection to retrieve.
    * @returns the collection with the given id
    */
-  retrieve(id: string): ResponsePromise<AdminCollectionsListRes> {
+  retrieve(id: string): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
     return this.client.request("GET", path)
   }

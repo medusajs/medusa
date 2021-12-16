@@ -16,18 +16,17 @@ const pgGodCredentials = {
 class DatabaseFactory {
   constructor() {
     this.connection_ = null
-    this.masterConnectionName = "name"
+    this.masterConnectionName = "master"
     this.templateDbName = "medusa-integration-template"
   }
 
   async createTemplateDb_() {
     try {
+      const cwd = path.resolve(path.join(__dirname, ".."))
       const connection = await this.getMasterConnection()
-
       const migrationDir = path.resolve(
         path.join(
-          process.cwd(),
-          "integration-tests",
+          cwd,
           "api",
           `node_modules`,
           `@medusajs`,
