@@ -13,6 +13,7 @@ import AdminReturnReasonsResource from "./return-reasons"
 import AdminVariantsResource from "./variants"
 import AdminSwapsResource from "./swaps"
 import AdminShippingProfilesResource from "./shipping-profiles"
+import AdminStoresResource from "./store"
 import AdminShippingOptionsResource from "./shipping-options"
 import AdminRegionsResource from "./regions"
 
@@ -31,6 +32,7 @@ class Admin extends BaseResource {
   public variants = new AdminVariantsResource(this.client)
   public swaps = new AdminSwapsResource(this.client)
   public shippingProfiles = new AdminShippingProfilesResource(this.client)
+  public store = new AdminStoresResource(this.client)
   public shippingOptions = new AdminShippingOptionsResource(this.client)
   public regions = new AdminRegionsResource(this.client)
 }
