@@ -51,7 +51,7 @@ class AdminCollectionsResource extends BaseResource {
    * @param id id of the collection to retrieve.
    * @returns the collection with the given id
    */
-  retrieve(id: string): ResponsePromise<AdminCollectionsListRes> {
+  retrieve(id: string): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
     return this.client.request("GET", path)
   }
@@ -59,7 +59,7 @@ class AdminCollectionsResource extends BaseResource {
   /**
    * @description Lists collections matching a query
    * @param query Query for searching collections
-   * @returns a list of colllections matching the query.
+   * @returns a list of collections matching the query.
    */
   list(
     query?: AdminGetCollectionsParams
@@ -68,8 +68,9 @@ class AdminCollectionsResource extends BaseResource {
 
     if (query) {
       const queryString = Object.entries(query).map(([key, value]) => {
-        return typeof value !== "undefined" ? `${key}=${value}` : ""
+        return `${key}=${value}`
       })
+
       path = `/admin/collections?${queryString.join("&")}`
     }
 

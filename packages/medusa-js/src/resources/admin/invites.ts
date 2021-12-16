@@ -33,5 +33,5 @@ class AdminInvitesResource extends BaseResource {
     return this.client.request("POST", path, {})
   }
 }
-1
+
 export default AdminInvitesResource
