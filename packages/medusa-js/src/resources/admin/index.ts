@@ -10,6 +10,7 @@ import AdminNotesResource from "./notes"
 import AdminVariantsResource from "./variants"
 import AdminSwapsResource from "./swaps"
 import AdminShippingProfilesResource from "./shipping-profiles"
+import AdminRegionsResource from "./regions"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -23,6 +24,7 @@ class Admin extends BaseResource {
   public variants = new AdminVariantsResource(this.client)
   public swaps = new AdminSwapsResource(this.client)
   public shippingProfiles = new AdminShippingProfilesResource(this.client)
+  public regions = new AdminRegionsResource(this.client)
 }
 
 export default Admin
