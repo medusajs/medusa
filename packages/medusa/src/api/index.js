@@ -28,8 +28,11 @@ export * from "./routes/admin/notifications"
 export * from "./routes/admin/shipping-profiles"
 export * from "./routes/admin/store"
 export * from "./routes/admin/variants"
+export * from "./routes/admin/return-reasons"
 export * from "./routes/admin/swaps"
 export * from "./routes/admin/shipping-options"
+export * from "./routes/admin/regions"
+
 // Store
 export * from "./routes/store/auth"
 export * from "./routes/store/carts"
