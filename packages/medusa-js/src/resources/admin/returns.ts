@@ -15,22 +15,22 @@ class AdminReturnsResource extends BaseResource {
    */
   cancel(id: string): ResponsePromise<AdminOrdersRes> {
     const path = `/admin/returns/${id}/cancel`
-    return this.client.request("DELETE", path)
+    return this.client.request("POST", path)
   }
 
   /**
    * @description receive a return
    * @param id id of the return to receive.
-   * @returns the return with the given id
+   * @returns the return
    */
   receive(id: string): ResponsePromise<AdminReturnsRes> {
     const path = `/admin/returns/${id}/receive`
-    return this.client.request("GET", path)
+    return this.client.request("POST", path)
   }
 
   /**
-   * @description Lists returns matching a query
-   * @param query Query for searching returns
+   * @description lists returns matching a query
+   * @param query query for searching returns
    * @returns a list of returns matching the query
    */
   list(query?: AdminGetReturnsParams): ResponsePromise<AdminReturnsListRes> {
