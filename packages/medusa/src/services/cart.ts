@@ -679,14 +679,7 @@ class CartService extends BaseService {
         const smRepo: ShippingMethodRepository =
           this.manager_.getCustomRepository(this.shippingMethodRepository_)
 
-        await smRepo
-          .createQueryBuilder("shipping_method")
-          .update("shipping_method")
-          .set({ price: 0 })
-          .where("shipping_method.id IN (:...ids)", {
-            ids: cart.shipping_methods.map((sm) => sm.id),
-          })
-          .execute()
+        await smRepo.setFreeShippingForMethods(cart.shipping_methods)
       } else {
         await Promise.all(
           cart.shipping_methods.map(async (sm) => {

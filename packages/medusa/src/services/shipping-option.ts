@@ -307,24 +307,6 @@ class ShippingOptionService extends BaseService {
 
       await this.prepareCart(shippingMethods, option.profile_id)
 
-      // DELETE FROM shipping_method WHERE id in (
-      //   SELECT sm.id FROM shipping_method sm
-      //   LEFT JOIN shipping_option so ON so.id = sm.option_id
-      //   WHERE sm.cart_id = cartId
-      //   HAVING so.profile_id = option.profile_id
-      // )
-
-      // if (config.cart?.id || config.cart_id) {
-      //   methodRepo.deleteCartMethods(
-      //     config.cart?.id || config.cart_id,
-      //     option.profile_id
-      //   )
-      // methodRepo.delete({
-      //   cart_id: config.cart?.id || config.cart_id,
-      //   shipping_option_id: optionId,
-      // })
-      // }
-
       const validatedData = await this.providerService_.validateFulfillmentData(
         option,
         data,
@@ -410,31 +392,6 @@ class ShippingOptionService extends BaseService {
         await methodRepo.delete(collidingShippingMethods)
       }
     }, "SERIALIZABLE")
-  }
-  /**
-   * Creates a shipping method for a given cart.
-   * @param {string} optionId - the id of the option to use for the method.
-   * @param {string} cartId - the cart for which the shipping option is updated.
-   * @param {ShippingMethodUpdate} update - the update which is applied to the cart.
-   * @return {Promise<ShippingMethod>} the resulting shipping method.
-   */
-  async updateShippingMethodForCart(
-    optionId: string,
-    cartId: string,
-    update: ShippingMethodUpdate
-  ): Promise<ShippingMethod> {
-    return this.atomicPhase_(async (manager) => {
-      const methodRepo: ShippingMethodRepository = manager.getCustomRepository(
-        this.methodRepository_
-      )
-      const method = await methodRepo.findOne({
-        where: { shipping_option_id: optionId, cart_id: cartId },
-      })
-      if (method) {
-        return await this.updateShippingMethod(method.id, update)
-      }
-      return undefined
-    })
   }
 
   /**
@@ -695,7 +652,7 @@ class ShippingOptionService extends BaseService {
         option.name = update.name
       }
 
-      if ("admin_only" in update && update.admin_only) {
+      if (typeof update.admin_only !== "undefined" && update.admin_only) {
         option.admin_only = update.admin_only
       }
 
