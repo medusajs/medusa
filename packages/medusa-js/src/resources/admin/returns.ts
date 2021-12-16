@@ -1,6 +1,6 @@
 import {
   AdminGetReturnsParams,
-  AdminOrdersRes,
+  AdminReturnsCancelRes,
   AdminReturnsListRes,
   AdminReturnsRes,
 } from "@medusajs/medusa"
@@ -13,7 +13,7 @@ class AdminReturnsResource extends BaseResource {
    * @param id id of return to cancel
    * @returns the order for which the return was canceled
    */
-  cancel(id: string): ResponsePromise<AdminOrdersRes> {
+  cancel(id: string): ResponsePromise<AdminReturnsCancelRes> {
     const path = `/admin/returns/${id}/cancel`
     return this.client.request("POST", path)
   }
