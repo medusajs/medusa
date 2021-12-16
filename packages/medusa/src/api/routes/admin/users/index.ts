@@ -1,4 +1,7 @@
 import { Router } from "express"
+import _ from "lodash"
+import { User } from "../../../.."
+import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 const route = Router()
 
@@ -31,3 +34,21 @@ export default (app) => {
 
   return app
 }
+export type AdminUserRes = {
+  user: Omit<User, "password_hash">
+}
+
+export type AdminUsersListRes = {
+  users: Omit<User, "password_hash">[]
+}
+
+export type AdminDeleteUserRes = DeleteResponse
+
+export * from "./reset-password"
+export * from "./reset-password-token"
+
+export * from "./create-user"
+export * from "./delete-user"
+export * from "./get-user"
+export * from "./list-users"
+export * from "./update-user"
