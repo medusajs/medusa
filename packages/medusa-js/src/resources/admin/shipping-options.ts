@@ -42,7 +42,7 @@ class AdminShippingOptionsResource extends BaseResource {
    * @returns deleted response
    */
   delete(id: string): ResponsePromise<AdminShippingOptionsDeleteRes> {
-    const path = `/admin/shipping options/${id}`
+    const path = `/admin/shipping-options/${id}`
     return this.client.request("DELETE", path)
   }
 
@@ -70,7 +70,7 @@ class AdminShippingOptionsResource extends BaseResource {
       const queryString = Object.entries(query).map(([key, value]) => {
         return typeof value !== "undefined" ? `${key}=${value}` : ""
       })
-      path = `/admin/shipping options?${queryString.join("&")}`
+      path = `/admin/shipping-options?${queryString.join("&")}`
     }
 
     return this.client.request("GET", path)
