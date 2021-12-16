@@ -159,14 +159,14 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description adds a fulfillment provider to a region
+   * @description retrieves the list of fulfillment options available in a region
    * @param id region id
-   * @returns updated region
+   * @returns list of fulfillment options
    */
-  retrieveFulfillmentProviders(
+  retrieveFulfillmentOptions(
     id: string
   ): ResponsePromise<AdminGetRegionsRegionFulfillmentOptionsRes> {
-    const path = `/admin/regions/${id}/fulfillment-providers`
+    const path = `/admin/regions/${id}/fulfillment-options`
     return this.client.request("GET", path)
   }
 
@@ -185,7 +185,7 @@ class AdminRegionsResource extends BaseResource {
   }
 
   /**
-   * @description remove a payment provider from a region
+   * @description removes a payment provider from a region
    * @param id region id
    * @param provider_id the id of the payment provider
    * @returns updated region
