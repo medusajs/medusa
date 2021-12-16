@@ -568,7 +568,7 @@ class ShippingOptionService extends BaseService {
         relations: ["requirements"],
       })
 
-      if ("metadata" in update && update.metadata) {
+      if (typeof update.metadata !== undefined) {
         option.metadata = await this.setMetadata_(option, update.metadata)
       }
 
@@ -579,14 +579,14 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if ("is_return" in update && update.is_return !== undefined) {
+      if (typeof update.is_return !== "undefined") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "is_return cannot be changed after creation"
         )
       }
 
-      if ("requirements" in update && update.requirements) {
+      if (typeof update.requirements !== "undefined") {
         const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
@@ -630,7 +630,7 @@ class ShippingOptionService extends BaseService {
         option.requirements = acc
       }
 
-      if ("price_type" in update && update.price_type) {
+      if (typeof update.price_type !== "undefined") {
         option.price_type = await this.validatePriceType_(
           update.price_type,
           option
@@ -641,18 +641,17 @@ class ShippingOptionService extends BaseService {
       }
 
       if (
-        "amount" in update &&
-        update.amount &&
+        typeof update.amount !== "undefined" &&
         option.price_type !== "calculated"
       ) {
         option.amount = update.amount
       }
 
-      if ("name" in update && update.name) {
+      if (typeof update.name !== "undefined") {
         option.name = update.name
       }
 
-      if (typeof update.admin_only !== "undefined" && update.admin_only) {
+      if (typeof update.admin_only !== "undefined") {
         option.admin_only = update.admin_only
       }
 
