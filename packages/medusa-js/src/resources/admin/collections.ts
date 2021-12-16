@@ -68,8 +68,9 @@ class AdminCollectionsResource extends BaseResource {
 
     if (query) {
       const queryString = Object.entries(query).map(([key, value]) => {
-        return typeof value !== "undefined" ? `${key}=${value}` : ""
+        return `${key}=${value}`
       })
+
       path = `/admin/collections?${queryString.join("&")}`
     }
 
