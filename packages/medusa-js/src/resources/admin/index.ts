@@ -7,6 +7,7 @@ import AdminDraftOrdersResource from "./draft-orders"
 import AdminGiftCardsResource from "./gift-cards"
 import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
+import AdminOrdersResource from "./orders"
 import AdminReturnReasonsResource from "./return-reasons"
 import AdminVariantsResource from "./variants"
 import AdminSwapsResource from "./swaps"
@@ -22,6 +23,7 @@ class Admin extends BaseResource {
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
   public notes = new AdminNotesResource(this.client)
+  public orders = new AdminOrdersResource(this.client)
   public returnReasons = new AdminReturnReasonsResource(this.client)
   public variants = new AdminVariantsResource(this.client)
   public swaps = new AdminSwapsResource(this.client)
