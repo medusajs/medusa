@@ -27,10 +27,12 @@ export * from "./routes/admin/notes"
 export * from "./routes/admin/notifications"
 export * from "./routes/admin/shipping-profiles"
 export * from "./routes/admin/store"
+export * from "./routes/admin/orders"
 export * from "./routes/admin/variants"
 export * from "./routes/admin/return-reasons"
 export * from "./routes/admin/swaps"
 export * from "./routes/admin/returns"
+export * from "./routes/admin/shipping-options"
 export * from "./routes/admin/regions"
 
 // Store
