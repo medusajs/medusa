@@ -14,7 +14,6 @@ export default (container, config) => {
 
   return app
 }
-export * from "./routes/admin/variants"
 
 // Admin
 export * from "./routes/admin/collections"
