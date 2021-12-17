@@ -119,7 +119,7 @@ export default async (req, res) => {
 export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsString()
   @IsOptional()
-  title?: string = "Custom item"
+  title = "Custom item"
 
   @IsInt()
   @IsOptional()

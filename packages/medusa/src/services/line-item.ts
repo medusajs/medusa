@@ -5,7 +5,11 @@ import { ProductService, ProductVariantService, RegionService } from "."
 import { LineItem, ShippingMethod } from ".."
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
-import { GenerateConfig } from "../types/line-item"
+import {
+  createLineItemDto,
+  GenerateConfig,
+  updateLineItemDto,
+} from "../types/line-item"
 import { FindConfig } from "../types/common"
 /**
  * Provides layer to manipulate line items.
@@ -176,10 +180,10 @@ class LineItemService extends BaseService {
 
   /**
    * Create a line item
-   * @param {DeepPartial<LineItem>} lineItem - the line item object to create
+   * @param {createLineItemDto} lineItem - the line item object to create
    * @return {Promise<LineItem>} the created line item
    */
-  async create(lineItem: DeepPartial<LineItem>): Promise<LineItem> {
+  async create(lineItem: createLineItemDto): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
       const lineItemRepository: LineItemRepository =
         manager.getCustomRepository(this.lineItemRepository_)
@@ -193,10 +197,10 @@ class LineItemService extends BaseService {
   /**
    * Updates a line item
    * @param {string} id - the id of the line item to update
-   * @param {object} update - the properties to update on line item
+   * @param {updateLineItemDto} update - the properties to update on line item
    * @return {LineItem} the update line item
    */
-  async update(id: string, update: Partial<LineItem>): Promise<LineItem> {
+  async update(id: string, update: updateLineItemDto): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
       const lineItemRepository: LineItemRepository =
         manager.getCustomRepository(this.lineItemRepository_)
