@@ -205,7 +205,7 @@ export default (app) => {
   )
 
   /**
-   * Creates claim fulfillment
+   * Creates claim shipment
    */
   route.post(
     "/:id/claims/:claim_id/shipments",

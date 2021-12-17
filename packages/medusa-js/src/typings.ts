@@ -1,7 +1,15 @@
-import { AxiosResponse } from "axios"
+export interface HTTPResponse {
+  status: number
+  statusText: string
+  headers: Record<string, string> & {
+    "set-cookie"?: string[]
+  }
+  config: any
+  request?: any
+}
 
 export type Response<T> = T & {
-  response: Omit<AxiosResponse<T>, "data">
+  response: HTTPResponse
 }
 
 export type ResponsePromise<T = any> = Promise<Response<T>>

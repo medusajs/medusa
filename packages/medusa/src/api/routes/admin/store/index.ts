@@ -32,3 +32,5 @@ export type AdminStoresRes = {
 export type AdminPaymentProvidersList = {
   payment_providers: PaymentProvider[]
 }
+
+export * from "./update-store"
