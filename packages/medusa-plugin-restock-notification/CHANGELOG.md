@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.28](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.27...medusa-plugin-restock-notification@0.0.28) (2021-12-17)
+
+
+### Features
+
+* add medusa-react ([#913](https://github.com/medusajs/medusa/issues/913)) ([d0d8dd7](https://github.com/medusajs/medusa/commit/d0d8dd7bf62eaac71df8714c2dfb4f204d192f51))
+
+
+
+
+
 ## [0.0.27](https://github.com/medusajs/medusa/compare/medusa-plugin-restock-notification@0.0.26...medusa-plugin-restock-notification@0.0.27) (2021-12-08)
 
 ### Bug Fixes
