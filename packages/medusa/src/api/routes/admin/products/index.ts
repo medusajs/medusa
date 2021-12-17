@@ -1,7 +1,8 @@
 import { Router } from "express"
-import { Product } from "../../../.."
+import { Product, ProductTag, ProductType } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
+import "reflect-metadata"
 
 const route = Router()
 
@@ -128,13 +129,6 @@ export const allowedAdminProductRelations = [
   "collection",
 ]
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
 export type AdminProductsDeleteOptionRes = {
   option_id: string
   object: "option"
@@ -159,6 +153,30 @@ export type AdminProductsListRes = PaginatedResponse & {
   products: Product[]
 }
 
+export type AdminProductsListTypesRes = {
+  types: ProductType[]
+}
+
+export type AdminProductsListTagsRes = {
+  types: ProductTag[]
+}
+
 export type AdminProductsRes = {
   product: Product
 }
+
+export * from "./add-option"
+export * from "./create-product"
+export * from "./create-variant"
+export * from "./delete-option"
+export * from "./delete-product"
+export * from "./delete-variant"
+export * from "./get-product"
+export * from "./get-variants"
+export * from "./list-products"
+export * from "./list-tag-usage-count"
+export * from "./list-types"
+export * from "./set-metadata"
+export * from "./update-option"
+export * from "./update-product"
+export * from "./update-variant"
