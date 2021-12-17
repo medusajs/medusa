@@ -128,13 +128,6 @@ export const allowedAdminProductRelations = [
   "collection",
 ]
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
 export type AdminProductsDeleteOptionRes = {
   option_id: string
   object: "option"
