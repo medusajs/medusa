@@ -20,11 +20,11 @@ The Notification API works by subscribing to all events that are emitted to the 
 class MyNotification {
   constructor({ notificationService }) {
     // Subscribe to order.placed events
-    notificationService.subscribe("order.placed", "my-service")
+    notificationService.subscribe("order.placed", "my-service");
   }
 }
 
-export default MyNotification
+export default MyNotification;
 ```
 
 The above code tells the notification service to send `order.placed` events to the `my-service` notification service implemented in your plugin.
@@ -35,47 +35,47 @@ For a plugin to work with the Notification API you must implement 2 methods `sen
 // src/services/my-notification.js
 
 class MyService extends NotificationService {
-  static identifier = "my-service"
+  static identifier = "my-service";
 
   constructor({ orderService }, options) {
-    super()
+    super();
 
-    this.options_ = options
-    this.orderService_ = orderService
+    this.options_ = options;
+    this.orderService_ = orderService;
   }
 
   async sendNotification(eventName, eventData, attachmentGenerator) {
-    let sendData
+    let sendData;
     switch (eventName) {
       case "order.placed":
-        sendData = await this.orderService_.retrieve(eventData.id)
-        break
+        sendData = await this.orderService_.retrieve(eventData.id);
+        break;
       default:
         // If the return value is undefined no notification will be stored
-        return
+        return;
     }
 
     await CoolEmailSender.send({
       email: sendData.email,
       templateData: sendData,
-    })
+    });
 
-    return { to: sendData.email, data: sendData }
+    return { to: sendData.email, data: sendData };
   }
 
   async resendNotification(notification, config, attachmentGenerator) {
-    const recipient = config.to || notification.to
+    const recipient = config.to || notification.to;
 
     await CoolEmailSender.send({
       email: recipient,
       templateData: notification.data,
-    })
+    });
 
-    return { to: sendOptions.to, data: notification.data }
+    return { to: sendOptions.to, data: notification.data };
   }
 }
 
-export default MyService
+export default MyService;
 ```
 
 > **Note:** a notification service must have a static property called `identifier` this is used to determine which classes are called when subscribing to different events. In this case the service identifier is `my-service` so to subscribe to notifications you must use:
