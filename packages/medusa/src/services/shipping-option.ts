@@ -568,7 +568,7 @@ class ShippingOptionService extends BaseService {
         relations: ["requirements"],
       })
 
-      if (typeof update.metadata !== undefined) {
+      if (typeof update.metadata !== "undefined") {
         option.metadata = await this.setMetadata_(option, update.metadata)
       }
 
