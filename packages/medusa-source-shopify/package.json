@@ -46,5 +46,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "jest": "^27.2.0"
-  }
+  },
+  "gitHead": "c46300d58fbfd0b2dc2c02745ae143e6247e885b"
 }
