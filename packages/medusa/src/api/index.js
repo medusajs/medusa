@@ -15,9 +15,29 @@ export default (container, config) => {
   return app
 }
 
+// Admin
+export * from "./routes/admin/collections"
+export * from "./routes/admin/auth"
+export * from "./routes/admin/customers"
+export * from "./routes/admin/discounts"
+export * from "./routes/admin/draft-orders"
+export * from "./routes/admin/gift-cards"
+export * from "./routes/admin/invites"
+export * from "./routes/admin/notes"
 export * from "./routes/admin/notifications"
+export * from "./routes/admin/shipping-profiles"
 export * from "./routes/admin/store"
+export * from "./routes/admin/users"
+export * from "./routes/admin/orders"
 export * from "./routes/admin/variants"
+export * from "./routes/admin/return-reasons"
+export * from "./routes/admin/swaps"
+export * from "./routes/admin/store"
+export * from "./routes/admin/returns"
+export * from "./routes/admin/shipping-options"
+export * from "./routes/admin/regions"
+
+// Store
 export * from "./routes/store/auth"
 export * from "./routes/store/carts"
 export * from "./routes/store/collections"
