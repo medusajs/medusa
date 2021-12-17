@@ -167,7 +167,7 @@ class ProductVariantPricesReq {
   sale_amount?: number
 }
 
-class AdminPostProductsProductVariantsVariantReq {
+export class AdminPostProductsProductVariantsVariantReq {
   @IsString()
   @IsOptional()
   title?: string
