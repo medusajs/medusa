@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.25](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.24...@medusajs/medusa-cli@1.1.25) (2021-12-17)
+
+
+### Features
+
+* add medusa-react ([#913](https://github.com/medusajs/medusa/issues/913)) ([d0d8dd7](https://github.com/medusajs/medusa/commit/d0d8dd7bf62eaac71df8714c2dfb4f204d192f51))
+
+
+
+
+
 ## [1.1.24](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.1.23...@medusajs/medusa-cli@1.1.24) (2021-12-08)
 
 **Note:** Version bump only for package @medusajs/medusa-cli
