@@ -20,6 +20,11 @@ import {
   LineDiscountAmount,
 } from "../types/totals"
 
+type TotalsServiceProps = {
+  taxProviderService: TaxProviderService
+  taxCalculationStrategy: ITaxCalculationStrategy
+}
+
 /**
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
@@ -28,7 +33,10 @@ class TotalsService extends BaseService {
   private taxProviderService_: TaxProviderService
   private taxCalculationStrategy_: ITaxCalculationStrategy
 
-  constructor({ taxProviderService, taxCalculationStrategy }) {
+  constructor({
+    taxProviderService,
+    taxCalculationStrategy,
+  }: TotalsServiceProps) {
     super()
 
     this.taxProviderService_ = taxProviderService
