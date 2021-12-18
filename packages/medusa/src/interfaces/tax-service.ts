@@ -6,7 +6,12 @@ import { Customer } from "../models/customer"
 import { ProviderTaxLine, TaxServiceRate } from "../types/tax-service"
 import { LineAllocationsMap } from "../types/totals"
 
-export type TaxCalculationLine = {
+export type ShippingTaxCalculationLine = {
+  shipping_method: ShippingMethod
+  rates: TaxServiceRate[]
+}
+
+export type ItemTaxCalculationLine = {
   item: LineItem
   rates: TaxServiceRate[]
 }
@@ -21,7 +26,8 @@ export type TaxCalculationContext = {
 
 export interface ITaxService {
   getTaxLines(
-    lines: TaxCalculationLine[],
+    lines: ItemTaxCalculationLine[],
+    shippingLines: ShippingTaxCalculationLine[],
     context: TaxCalculationContext
   ): Promise<ProviderTaxLine[]>
 }
