@@ -58,9 +58,9 @@ class TaxProviderService extends BaseService {
   retrieveProvider(region: Region): ITaxService {
     let provider: ITaxService
     if (region.tax_provider_id) {
-      provider = this.container_[`tp_${region.tax_provider_id}`] as ITaxService
+      provider = this.container_[`tp_${region.tax_provider_id}`]
     } else {
-      provider = this.container_["systemTaxService"] as ITaxService
+      provider = this.container_["systemTaxService"]
     }
 
     if (!provider) {
@@ -74,11 +74,11 @@ class TaxProviderService extends BaseService {
   }
 
   async getTaxLines(
-    order: Cart | Order,
+    cartOrOrder: Cart | Order,
     calculationContext: TaxCalculationContext
   ): Promise<LineItemTaxLine[]> {
-    const calculationLines: TaxCalculationLine[] = await Promise.all(
-      order.items.map(async (l) => {
+    const calculationLines = await Promise.all(
+      cartOrOrder.items.map(async (l) => {
         if (l.variant && l.variant.product_id) {
           return {
             item: l,
@@ -110,6 +110,7 @@ class TaxProviderService extends BaseService {
     const liTaxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
 
     return providerLines.map((pl) => {
+      // Only creates entity; does not persist to db
       return liTaxLineRepo.create({
         item_id: pl.item_id,
         rate: pl.rate,
@@ -124,7 +125,7 @@ class TaxProviderService extends BaseService {
     productId: string,
     region: Region
   ): Promise<TaxServiceRate[]> {
-    const cacheHit = await this.getCacheHit(productId, region.id)
+    const cacheHit = await this.getCacheEntry(productId, region.id)
     if (cacheHit) {
       return cacheHit
     }
@@ -189,10 +190,10 @@ class TaxProviderService extends BaseService {
     )
   }
 
-  async getCacheHit(
+  async getCacheEntry(
     productId: string,
     regionId: string
-  ): Promise<TaxServiceRate[] | false> {
+  ): Promise<TaxServiceRate[] | null> {
     const cacheKey = this.getCacheKey(productId, regionId)
 
     try {
@@ -207,7 +208,7 @@ class TaxProviderService extends BaseService {
       await this.redis_.del(cacheKey)
     }
 
-    return false
+    return null
   }
 }
 

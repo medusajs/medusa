@@ -120,7 +120,7 @@ describe("TaxProviderService", () => {
       }
 
       const providerService = new TaxProviderService(container)
-      providerService.getCacheHit = jest.fn(() => null)
+      providerService.getCacheEntry = jest.fn(() => null)
       providerService.setCache = jest.fn()
 
       const rates = await providerService.getRegionRatesForProduct("prod_id", {
@@ -138,8 +138,8 @@ describe("TaxProviderService", () => {
       ]
       expect(rates).toEqual(expected)
 
-      expect(providerService.getCacheHit).toHaveBeenCalledTimes(1)
-      expect(providerService.getCacheHit).toHaveBeenCalledWith(
+      expect(providerService.getCacheEntry).toHaveBeenCalledTimes(1)
+      expect(providerService.getCacheEntry).toHaveBeenCalledWith(
         "prod_id",
         "reg_id"
       )
@@ -158,7 +158,7 @@ describe("TaxProviderService", () => {
       }
 
       const providerService = new TaxProviderService(container)
-      providerService.getCacheHit = jest.fn(() => null)
+      providerService.getCacheEntry = jest.fn(() => null)
       providerService.setCache = jest.fn()
 
       const rates = await providerService.getRegionRatesForProduct("prod_id", {
@@ -202,7 +202,7 @@ describe("TaxProviderService", () => {
       }
 
       const providerService = new TaxProviderService(container)
-      providerService.getCacheHit = jest.fn(() => null)
+      providerService.getCacheEntry = jest.fn(() => null)
       providerService.setCache = jest.fn()
 
       const rates = await providerService.getRegionRatesForProduct("prod_id", {
@@ -248,7 +248,7 @@ describe("TaxProviderService", () => {
       }
 
       const providerService = new TaxProviderService(container)
-      providerService.getCacheHit = jest.fn(() => null)
+      providerService.getCacheEntry = jest.fn(() => null)
       providerService.setCache = jest.fn()
 
       await expect(
