@@ -2,8 +2,7 @@ import { LineItem } from "../models/line-item"
 import { Region } from "../models/region"
 import { Address } from "../models/address"
 import { Customer } from "../models/customer"
-import { ProviderTaxLine } from "../types/tax-line"
-import { TaxServiceRate } from "../types/tax-service"
+import { ProviderTaxLine, TaxServiceRate } from "../types/tax-service"
 import { LineAllocationsMap } from "../types/totals"
 
 export type TaxCalculationLine = {
@@ -19,7 +18,7 @@ export type TaxCalculationContext = {
 }
 
 export interface ITaxService {
-  calculateLineItemTaxes(
+  getTaxLines(
     lines: TaxCalculationLine[],
     context: TaxCalculationContext
   ): Promise<ProviderTaxLine[]>

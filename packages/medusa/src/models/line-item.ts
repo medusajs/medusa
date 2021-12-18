@@ -1,5 +1,6 @@
 import {
   Entity,
+  OneToMany,
   BeforeInsert,
   CreateDateColumn,
   UpdateDateColumn,
@@ -13,6 +14,7 @@ import {
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
+import { LineItemTaxLine } from "./line-item-tax-line"
 import { Swap } from "./swap"
 import { Cart } from "./cart"
 import { Order } from "./order"
@@ -34,7 +36,7 @@ export class LineItem {
 
   @ManyToOne(
     () => Cart,
-    cart => cart.items
+    (cart) => cart.items
   )
   @JoinColumn({ name: "cart_id" })
   cart: Cart
@@ -45,7 +47,7 @@ export class LineItem {
 
   @ManyToOne(
     () => Order,
-    order => order.items
+    (order) => order.items
   )
   @JoinColumn({ name: "order_id" })
   order: Order
@@ -56,7 +58,7 @@ export class LineItem {
 
   @ManyToOne(
     () => Swap,
-    swap => swap.additional_items
+    (swap) => swap.additional_items
   )
   @JoinColumn({ name: "swap_id" })
   swap: Swap
@@ -67,10 +69,16 @@ export class LineItem {
 
   @ManyToOne(
     () => ClaimOrder,
-    co => co.additional_items
+    (co) => co.additional_items
   )
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
+
+  @OneToMany(
+    () => LineItemTaxLine,
+    (tl) => tl.item
+  )
+  tax_lines: LineItemTaxLine[]
 
   @Column()
   title: string
