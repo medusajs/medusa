@@ -2,7 +2,8 @@ import _ from "lodash"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
-import { TaxLine } from "../models/tax-line"
+import { LineItemTaxLine } from "../models/line-item-tax-line"
+import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { Order } from "../models/order"
 import { Cart } from "../models/cart"
 import { LineItem } from "../models/line-item"
@@ -125,14 +126,13 @@ class TotalsService extends BaseService {
     const allocationMap = this.getAllocationMap(object)
     const calculationContext: TaxCalculationContext = {
       shipping_address: object.shipping_address,
-      shipping_methods: object.shipping_methods,
+      shipping_methods: object.shipping_methods || [],
       customer: object.customer,
       region: object.region,
       allocation_map: allocationMap,
     }
 
-    let taxLines: TaxLine[]
-
+    let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     // Only Orders have a tax_rate
     if ("tax_rate" in object) {
       taxLines = object.items.flatMap((li) => {

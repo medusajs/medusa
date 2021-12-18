@@ -1,11 +1,12 @@
 import { LineItem } from "../models/line-item"
-// import { TaxLine } from "../models/tax-line"
 import { TaxCalculationContext } from "./tax-service"
+import { LineItemTaxLine } from "../models/line-item-tax-line"
+import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 
 export interface ITaxCalculationStrategy {
   calculate(
     items: LineItem[],
-    taxLines: object[], // TaxLine[]
+    taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[],
     calculationContext: TaxCalculationContext
   ): Promise<number>
 }

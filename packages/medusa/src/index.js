@@ -5,6 +5,7 @@ export * from "./api"
 export * from "./interfaces"
 
 // Models
+export { ShippingTaxRate } from "./models/shipping-tax-rate"
 export { ProductTaxRate } from "./models/product-tax-rate"
 export { TaxRate } from "./models/tax-rate"
 export { ShippingMethodTaxLine } from "./models/shipping-method-tax-line"

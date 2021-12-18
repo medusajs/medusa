@@ -20,7 +20,7 @@ export type TaxCalculationContext = {
   shipping_address: Address | null
   customer: Customer
   region: Region
-  shipping_methods: ShippingMethod[] | null
+  shipping_methods: ShippingMethod[]
   allocation_map: LineAllocationsMap
 }
 

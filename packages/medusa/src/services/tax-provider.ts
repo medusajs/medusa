@@ -41,6 +41,7 @@ class TaxProviderService extends BaseService {
     this.taxLineRepo_ = container["lineItemTaxLineRepository"]
     this.smTaxLineRepo_ = container["shippingMethodTaxLineRepository"]
     this.productTaxRateService_ = container["productTaxRateService"]
+    this.shippingTaxRateService_ = container["shippingTaxRateService"]
     this.eventBus_ = container["eventBusService"]
     this.manager_ = container["manager"]
     this.redis_ = container["redisClient"]

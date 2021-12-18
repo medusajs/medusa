@@ -11,6 +11,10 @@ import {
   AddressFactoryData,
   simpleAddressFactory,
 } from "./simple-address-factory"
+import {
+  ShippingMethodFactoryData,
+  simpleShippingMethodFactory,
+} from "./simple-shipping-method-factory"
 
 export type CartFactoryData = {
   id?: string
@@ -18,6 +22,7 @@ export type CartFactoryData = {
   email?: string | null
   line_items?: LineItemFactoryData[]
   shipping_address?: AddressFactoryData
+  shipping_methods?: ShippingMethodFactoryData[]
 }
 
 export const simpleCartFactory = async (
@@ -50,6 +55,11 @@ export const simpleCartFactory = async (
   })
 
   const cart = await manager.save(toSave)
+
+  const shippingMethods = data.shipping_methods || []
+  for (const sm of shippingMethods) {
+    await simpleShippingMethodFactory(connection, { ...sm, cart_id: id })
+  }
 
   const items = data.line_items
   for (const item of items) {
