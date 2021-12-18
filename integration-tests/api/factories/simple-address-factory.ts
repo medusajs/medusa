@@ -13,7 +13,7 @@ export type AddressFactoryData = {
 export const simpleAddressFactory = async (
   connection: Connection,
   data: AddressFactoryData = {},
-  seed: number | undefined
+  seed?: number
 ): Promise<Address> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)

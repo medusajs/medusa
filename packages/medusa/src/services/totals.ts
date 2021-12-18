@@ -125,7 +125,7 @@ class TotalsService extends BaseService {
 
     let taxLines: TaxLine[]
 
-    // Only Orders has a tax_rate
+    // Only Orders have a tax_rate
     if ("tax_rate" in object) {
       taxLines = object.items.flatMap((li) => {
         return li.tax_lines

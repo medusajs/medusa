@@ -5,6 +5,10 @@ export * from "./api"
 export * from "./interfaces"
 
 // Models
+export { ProductTaxRate } from "./models/product-tax-rate"
+export { TaxRate } from "./models/tax-rate"
+export { ShippingMethodTaxLine } from "./models/shipping-method-tax-line"
+export { LineItemTaxLine } from "./models/line-item-tax-line"
 export { Address } from "./models/address"
 export { Cart } from "./models/cart"
 export { ClaimImage } from "./models/claim-image"

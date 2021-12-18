@@ -11,6 +11,7 @@ import {
   ShippingMethod,
   Address,
   Product,
+  ProductOption,
   ProductVariant,
   MoneyAmount,
   LineItem,
@@ -18,12 +19,20 @@ import {
   PaymentSession,
 } from "@medusajs/medusa"
 
+import {
+  simpleProductVariantFactory,
+  ProductVariantFactoryData,
+} from "./simple-product-variant-factory"
+
 export type ProductFactoryData = {
   id?: string
   is_giftcard?: boolean
+  title?: string
+  options?: { id: string; title: string }[]
+  variants?: ProductVariantFactoryData[]
 }
 
-export const simpleLineItemFactory = async (
+export const simpleProductFactory = async (
   connection: Connection,
   data: ProductFactoryData = {},
   seed?: number
@@ -42,16 +51,49 @@ export const simpleLineItemFactory = async (
     type: "gift_card",
   })
 
+  const prodId = data.id || `simple-product-${Math.random() * 1000}`
   const toSave = manager.create(Product, {
-    id: "giftcard-product",
-    title: "Giftcard",
-    is_giftcard: true,
-    discountable: false,
+    id: prodId,
+    title: data.title || faker.commerce.productName(),
+    is_giftcard: data.is_giftcard || false,
+    discountable: !data.is_giftcard,
     profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
-    options: [{ id: "denom", title: "Denomination" }],
   })
 
   const product = await manager.save(toSave)
+
+  const optionId = `${prodId}-option`
+  const options = data.options || [{ id: optionId, title: "Size" }]
+  for (const o of options) {
+    await manager.insert(ProductOption, {
+      id: o.id,
+      title: o.title,
+      product_id: prodId,
+    })
+  }
+
+  const variants = data.variants || [
+    {
+      id: "simple-test-variant",
+      title: "Test",
+      product_id: prodId,
+      prices: [{ currency: "usd", amount: 100 }],
+      options: [{ option_id: optionId, value: "Large" }],
+    },
+  ]
+
+  for (const pv of variants) {
+    const factoryData = {
+      ...pv,
+      product_id: prodId,
+    }
+    if (typeof pv.options === "undefined") {
+      factoryData.options = [
+        { option_id: optionId, value: faker.commerce.productAdjective() },
+      ]
+    }
+    await simpleProductVariantFactory(connection, factoryData)
+  }
 
   return product
 }
