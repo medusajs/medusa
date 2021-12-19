@@ -1,6 +1,7 @@
 interface MedusaPluginOptions {
   storeUrl: string
   apiKey: string
+  authToken: string
 }
 
 interface MedusaProductImage {
