@@ -26,7 +26,7 @@ export const createClient = (
 
   /**
    *
-   * @param {string} date used fetch products updated since the specified date
+   * @param {string} _date used fetch products updated since the specified date
    * @return {Promise<any[]>}
    */
   async function products(_date?: string): Promise<any[]> {
@@ -53,7 +53,7 @@ export const createClient = (
 
   /**
    *
-   * @param {string} date used fetch regions updated since the specified date
+   * @param {string} _date used fetch regions updated since the specified date
    * @return {Promise<any[]>}
    */
   async function regions(_date?: string): Promise<any[]> {
@@ -72,7 +72,7 @@ export const createClient = (
 
   /**
    *
-   * @param {string} date used fetch regions updated since the specified date
+   * @param {string} _date used fetch regions updated since the specified date
    * @return {Promise<any[]>}
    */
   async function orders(_date?: string): Promise<any[]> {
@@ -94,7 +94,7 @@ export const createClient = (
 
   /**
    *
-   * @param {string} date used fetch regions updated since the specified date
+   * @param {string} _date used fetch regions updated since the specified date
    * @return {Promise<any[]>}
    */
   async function collections(_date?: string): Promise<any[]> {
