@@ -24,8 +24,7 @@
     "algoliasearch": "^4.10.5",
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
-    "medusa-core-utils": "^1.1.31",
-    "medusa-interfaces": "^1.1.32"
+    "medusa-core-utils": "^1.1.31"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
@@ -40,7 +39,9 @@
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
-    "jest": "^25.5.2"
+    "jest": "^25.5.2",
+    "medusa-interfaces": "^1.1.32",
+    "typeorm": "^0.2.41"
   },
   "gitHead": "7770046479c361f375842a8605b15e5d7bc24624"
 }
