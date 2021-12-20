@@ -45,16 +45,6 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
       }
     }
 
-    for (const sm of calculationContext.shipping_methods) {
-      const amount = sm.price
-      const lineRates = taxLines.filter(
-        (tl) => "shipping_method_id" in tl && tl.shipping_method_id === sm.id
-      )
-      for (const lineRate of lineRates) {
-        result += amount * lineRate.rate
-      }
-    }
-
     return Math.round(result)
   }
 }

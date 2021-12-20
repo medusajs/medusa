@@ -21,7 +21,7 @@ describe("Order Taxes", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     } catch (error) {
       console.log(error)
     }
@@ -160,6 +160,8 @@ describe("Order Taxes", () => {
             tax_lines: [
               {
                 rate: 10,
+                name: "default",
+                code: "default",
               },
             ],
           },
