@@ -1,6 +1,6 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import { ShippingMethod } from "@medusajs/medusa"
+import { ShippingMethodTaxLine, ShippingMethod } from "@medusajs/medusa"
 
 import {
   ShippingOptionFactoryData,
@@ -14,6 +14,7 @@ export type ShippingMethodFactoryData = {
   data?: object
   price?: number
   shipping_option: string | ShippingOptionFactoryData
+  tax_lines?: ShippingMethodTaxLine[]
 }
 
 export const simpleShippingMethodFactory = async (
@@ -42,11 +43,26 @@ export const simpleShippingMethodFactory = async (
   const toSave = manager.create(ShippingMethod, {
     id,
     cart_id: data.cart_id,
+    order_id: data.order_id,
     shipping_option_id: shippingOptionId,
     data: data.data || {},
     price: typeof data.price !== "undefined" ? data.price : 500,
   })
 
   const shippingMethod = await manager.save(toSave)
+
+  if (typeof data.tax_lines !== "undefined") {
+    const taxLinesToSave = data.tax_lines.map((tl) =>
+      manager.create(ShippingMethodTaxLine, {
+        shipping_method_id: shippingMethod.id,
+        rate: tl.rate,
+        code: tl.code || "default",
+        name: tl.name || "default",
+      })
+    )
+
+    await manager.save(taxLinesToSave)
+  }
+
   return shippingMethod
 }

@@ -47,6 +47,7 @@ export const simpleLineItemFactory = async (
 
   const id = data.id || `simple-line-${Math.random() * 1000}`
   const toSave = manager.create(LineItem, {
+    id,
     cart_id: data.cart_id,
     order_id: data.order_id,
     title: data.title || faker.commerce.productName(),
@@ -67,14 +68,16 @@ export const simpleLineItemFactory = async (
   const line = await manager.save(toSave)
 
   if (typeof data.tax_lines !== "undefined") {
-    for (const tl of data.tax_lines) {
-      manager.insert(LineItemTaxLine, {
+    const taxLinesToSave = data.tax_lines.map((tl) =>
+      manager.create(LineItemTaxLine, {
         item_id: id,
         rate: tl.rate,
         code: tl.code,
         name: tl.name,
       })
-    }
+    )
+
+    await manager.save(taxLinesToSave)
   }
 
   return line

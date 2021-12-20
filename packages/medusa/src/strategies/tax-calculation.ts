@@ -31,7 +31,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
         (tl) => "item_id" in tl && tl.item_id === i.id
       )
       for (const lineRate of lineRates) {
-        result += taxableAmount * lineRate.rate
+        result += taxableAmount * (lineRate.rate / 100)
       }
     }
 
@@ -41,7 +41,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
         (tl) => "shipping_method_id" in tl && tl.shipping_method_id === sm.id
       )
       for (const lineRate of lineRates) {
-        result += amount * lineRate.rate
+        result += amount * (lineRate.rate / 100)
       }
     }
 

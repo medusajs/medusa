@@ -4,18 +4,11 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
-const {
-  simpleProductTaxRateFactory,
-  simpleShippingTaxRateFactory,
-  simpleShippingOptionFactory,
-  simpleCartFactory,
-  simpleRegionFactory,
-  simpleProductFactory,
-} = require("../../factories")
+const { simpleOrderFactory, simpleProductFactory } = require("../../factories")
 
 jest.setTimeout(30000)
 
-describe("Manual Cart Taxes", () => {
+describe("Order Taxes", () => {
   let medusaProcess
   let dbConnection
 
@@ -44,7 +37,7 @@ describe("Manual Cart Taxes", () => {
     return await doAfterEach()
   })
 
-  test("manual taxes; default tax rate", async () => {
+  test("can calculate taxes for legacy tax system", async () => {
     await simpleProductFactory(
       dbConnection,
       {
@@ -58,20 +51,19 @@ describe("Manual Cart Taxes", () => {
       100
     )
 
-    await simpleCartFactory(
+    const order = await simpleOrderFactory(
       dbConnection,
       {
-        id: "test-cart",
+        email: "test@testson.com",
         region: {
           id: "test-region",
           name: "Test region",
-          tax_rate: 12,
-          automatic_taxes: false,
+          tax_rate: 12.5,
         },
         line_items: [
           {
             variant_id: "test-variant",
-            unit_price: 100,
+            unit_price: 1000,
           },
         ],
       },
@@ -80,13 +72,13 @@ describe("Manual Cart Taxes", () => {
 
     const api = useApi()
 
-    const response = await api.get("/store/carts/test-cart")
+    const response = await api.get(`/store/orders/${order.id}`)
     expect(response.status).toEqual(200)
-    expect(response.data.cart.tax_total).toEqual(null)
-    expect(response.data.cart.total).toEqual(100)
+    expect(response.data.order.tax_total).toEqual(125)
+    expect(response.data.order.total).toEqual(1125)
   })
 
-  test("manual taxes; always forces taxes for payment sessions", async () => {
+  test("calculates taxes correctly", async () => {
     await simpleProductFactory(
       dbConnection,
       {
@@ -100,20 +92,27 @@ describe("Manual Cart Taxes", () => {
       100
     )
 
-    await simpleCartFactory(
+    const order = await simpleOrderFactory(
       dbConnection,
       {
-        id: "test-cart",
+        email: "test@testson.com",
+        tax_rate: null,
         region: {
           id: "test-region",
           name: "Test region",
-          tax_rate: 12,
-          automatic_taxes: false,
+          tax_rate: null,
         },
         line_items: [
           {
             variant_id: "test-variant",
-            unit_price: 100,
+            unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 20,
+                name: "default",
+                code: "default",
+              },
+            ],
           },
         ],
       },
@@ -122,17 +121,17 @@ describe("Manual Cart Taxes", () => {
 
     const api = useApi()
 
-    const response = await api.post("/store/carts/test-cart/payment-sessions")
+    const response = await api.get(`/store/orders/${order.id}`)
     expect(response.status).toEqual(200)
-    const [paySession] = response.data.cart.payment_sessions
-    expect(paySession.data.tax_total).toEqual(12)
-    expect(paySession.data.total).toEqual(112)
+    expect(response.data.order.tax_total).toEqual(200)
+    expect(response.data.order.total).toEqual(1200)
   })
 
-  test("manual tax calculation w. multiple tax rate overrides", async () => {
-    const product1 = await simpleProductFactory(
+  test("calculates taxes correctly w. shipping method", async () => {
+    await simpleProductFactory(
       dbConnection,
       {
+        id: "test-product",
         variants: [
           {
             id: "test-variant",
@@ -142,51 +141,40 @@ describe("Manual Cart Taxes", () => {
       100
     )
 
-    const product2 = await simpleProductFactory(
+    const order = await simpleOrderFactory(
       dbConnection,
       {
-        variants: [
+        email: "test@testson.com",
+        tax_rate: null,
+        region: {
+          id: "test-region",
+          name: "Test region",
+          tax_rate: null,
+        },
+        shipping_methods: [
           {
-            id: "test-variant-2",
+            price: 1000,
+            shipping_option: {
+              region_id: "test-region",
+            },
+            tax_lines: [
+              {
+                rate: 10,
+              },
+            ],
           },
         ],
-      },
-      100
-    )
-
-    const region = await simpleRegionFactory(dbConnection, {
-      name: "Test region",
-      tax_rate: 12,
-    })
-
-    await simpleProductTaxRateFactory(dbConnection, {
-      product_id: product1.id,
-      rate: {
-        region_id: region.id,
-        rate: 25,
-      },
-    })
-
-    await simpleProductTaxRateFactory(dbConnection, {
-      product_id: product2.id,
-      rate: {
-        region_id: region.id,
-        rate: 20,
-      },
-    })
-
-    const cart = await simpleCartFactory(
-      dbConnection,
-      {
-        region: region.id,
         line_items: [
           {
             variant_id: "test-variant",
-            unit_price: 100,
-          },
-          {
-            variant_id: "test-variant-2",
-            unit_price: 50,
+            unit_price: 1000,
+            tax_lines: [
+              {
+                rate: 20,
+                name: "default",
+                code: "default",
+              },
+            ],
           },
         ],
       },
@@ -195,10 +183,9 @@ describe("Manual Cart Taxes", () => {
 
     const api = useApi()
 
-    const response = await api.post(`/store/carts/${cart.id}/taxes`)
-
+    const response = await api.get(`/store/orders/${order.id}`)
     expect(response.status).toEqual(200)
-    expect(response.data.cart.tax_total).toEqual(35)
-    expect(response.data.cart.total).toEqual(185)
+    expect(response.data.order.tax_total).toEqual(300)
+    expect(response.data.order.total).toEqual(2300)
   })
 })

@@ -156,9 +156,24 @@ class TotalsService extends BaseService {
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     // Only Orders have a tax_rate
     if ("tax_rate" in object) {
-      taxLines = object.items.flatMap((li) => {
-        return li.tax_lines
-      })
+      if (object.tax_rate === null) {
+        taxLines = object.items.flatMap((li) => li.tax_lines)
+
+        const shippingTaxLines = object.shipping_methods.flatMap(
+          (sm) => sm.tax_lines
+        )
+
+        taxLines = taxLines.concat(shippingTaxLines)
+      } else {
+        const subtotal = this.getSubtotal(object)
+        const shippingTotal = this.getShippingTotal(object)
+        const discountTotal = this.getDiscountTotal(object)
+        const giftCardTotal = this.getGiftCardTotal(object)
+        return this.rounded(
+          (subtotal - discountTotal - giftCardTotal + shippingTotal) *
+            (object.tax_rate / 100)
+        )
+      }
     } else {
       taxLines = await this.taxProviderService_.getTaxLines(
         object,

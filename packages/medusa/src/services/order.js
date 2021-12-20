@@ -201,7 +201,9 @@ class OrderService extends BaseService {
 
     const raw = await orderRepo.find(query)
 
-    return raw.map((r) => this.decorateTotals_(r, totalsToSelect))
+    return await Promise.all(
+      raw.map(async (r) => await this.decorateTotals_(r, totalsToSelect))
+    )
   }
 
   async listAndCount(
@@ -258,7 +260,9 @@ class OrderService extends BaseService {
 
     const raw = await orderRepo.findWithRelations(rels, query)
     const count = await orderRepo.count(query)
-    const orders = raw.map((r) => this.decorateTotals_(r, totalsToSelect))
+    const orders = await Promise.all(
+      raw.map(async (r) => await this.decorateTotals_(r, totalsToSelect))
+    )
 
     return [orders, count]
   }
@@ -293,6 +297,7 @@ class OrderService extends BaseService {
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
+      relationSet.add("items.tax_lines")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("claims")
@@ -304,6 +309,7 @@ class OrderService extends BaseService {
       relationSet.add("gift_card_transactions")
       relationSet.add("refunds")
       relationSet.add("shipping_methods")
+      relationSet.add("shipping_methods.tax_lines")
       relationSet.add("region")
       relations = [...relationSet]
 
@@ -352,7 +358,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const order = this.decorateTotals_(raw, totalsToSelect)
+    const order = await this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -389,7 +395,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const order = this.decorateTotals_(raw, totalsToSelect)
+    const order = await this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -427,7 +433,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const order = this.decorateTotals_(raw, totalsToSelect)
+    const order = await this.decorateTotals_(raw, totalsToSelect)
     return order
   }
 
@@ -1398,7 +1404,7 @@ class OrderService extends BaseService {
     })
   }
 
-  decorateTotals_(order, totalsFields = []) {
+  async decorateTotals_(order, totalsFields = []) {
     if (totalsFields.includes("shipping_total")) {
       order.shipping_total = this.totalsService_.getShippingTotal(order)
     }
@@ -1409,13 +1415,13 @@ class OrderService extends BaseService {
       order.discount_total = this.totalsService_.getDiscountTotal(order)
     }
     if (totalsFields.includes("tax_total")) {
-      order.tax_total = this.totalsService_.getTaxTotal(order)
+      order.tax_total = await this.totalsService_.getTaxTotal(order)
     }
     if (totalsFields.includes("subtotal")) {
       order.subtotal = this.totalsService_.getSubtotal(order)
     }
     if (totalsFields.includes("total")) {
-      order.total = this.totalsService_.getTotal(order)
+      order.total = await this.totalsService_.getTotal(order)
     }
     if (totalsFields.includes("refunded_total")) {
       order.refunded_total = this.totalsService_.getRefundedTotal(order)

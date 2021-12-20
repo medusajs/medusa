@@ -65,7 +65,7 @@ describe("Automatic Cart Taxes", () => {
         region: {
           id: "test-region",
           name: "Test region",
-          tax_rate: 0.12,
+          tax_rate: 12,
         },
         line_items: [
           {
@@ -106,7 +106,7 @@ describe("Automatic Cart Taxes", () => {
         region: {
           id: "test-region",
           name: "Test region",
-          tax_rate: 0.12,
+          tax_rate: 12,
         },
         shipping_methods: [
           {
@@ -150,14 +150,14 @@ describe("Automatic Cart Taxes", () => {
 
     const region = await simpleRegionFactory(dbConnection, {
       name: "Test region",
-      tax_rate: 0.12,
+      tax_rate: 12,
     })
 
     await simpleProductTaxRateFactory(dbConnection, {
       product_id: product.id,
       rate: {
         region_id: region.id,
-        rate: 0.25,
+        rate: 25,
       },
     })
 
@@ -198,7 +198,7 @@ describe("Automatic Cart Taxes", () => {
 
     const region = await simpleRegionFactory(dbConnection, {
       name: "Test region",
-      tax_rate: 0.12,
+      tax_rate: 12,
     })
 
     const option = await simpleShippingOptionFactory(dbConnection, {
@@ -210,7 +210,7 @@ describe("Automatic Cart Taxes", () => {
       shipping_option_id: option.id,
       rate: {
         region_id: region.id,
-        rate: 0.25,
+        rate: 25,
       },
     })
 
@@ -269,14 +269,14 @@ describe("Automatic Cart Taxes", () => {
 
     const region = await simpleRegionFactory(dbConnection, {
       name: "Test region",
-      tax_rate: 0.12,
+      tax_rate: 12,
     })
 
     await simpleProductTaxRateFactory(dbConnection, {
       product_id: product1.id,
       rate: {
         region_id: region.id,
-        rate: 0.25,
+        rate: 25,
       },
     })
 
@@ -284,7 +284,7 @@ describe("Automatic Cart Taxes", () => {
       product_id: product2.id,
       rate: {
         region_id: region.id,
-        rate: 0.2,
+        rate: 20,
       },
     })
 
