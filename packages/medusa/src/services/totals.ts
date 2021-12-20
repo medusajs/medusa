@@ -46,8 +46,8 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates subtotal of a given cart or order.
-   * @param {object} object - object to calculate total for
-   * @return {int} the calculated subtotal
+   * @param object - object to calculate total for
+   * @return the calculated subtotal
    */
   async getTotal(object: Cart | Order): Promise<number> {
     const subtotal = this.getSubtotal(object)
@@ -81,9 +81,9 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates subtotal of a given cart or order.
-   * @param {(Cart|Order)} object - cart or order to calculate subtotal for
-   * @param {Object} opts - options
-   * @return {int} the calculated subtotal
+   * @param object - cart or order to calculate subtotal for
+   * @param opts - options
+   * @return the calculated subtotal
    */
   getSubtotal(object: Cart | Order, opts: SubtotalOptions = {}): number {
     let subtotal = 0
@@ -106,8 +106,8 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates shipping total
-   * @param {Cart | Object} object - cart or order to calculate subtotal for
-   * @return {int} shipping total
+   * @param object - cart or order to calculate subtotal for
+   * @return shipping total
    */
   getShippingTotal(object: Cart | Order): number {
     const { shipping_methods } = object
@@ -119,8 +119,8 @@ class TotalsService extends BaseService {
   /**
    * Calculates tax total
    * Currently based on the Danish tax system
-   * @param {Cart | Object} object - cart or order to calculate subtotal for
-   * @return {int} tax total
+   * @param object - cart or order to calculate subtotal for
+   * @return tax total
    */
   async getTaxTotal(object: Cart | Order): Promise<number> {
     const allocationMap = this.getAllocationMap(object)
@@ -254,9 +254,9 @@ class TotalsService extends BaseService {
    * Calculates refund total of line items.
    * If any of the items to return have been discounted, we need to
    * apply the discount again before refunding them.
-   * @param {Order} order - cart or order to calculate subtotal for
-   * @param {[LineItem]} lineItems -
-   * @return {int} the calculated subtotal
+   * @param order - cart or order to calculate subtotal for
+   * @param lineItems -
+   * @return the calculated subtotal
    */
   getRefundTotal(order: Order, lineItems: LineItem[]): number {
     let itemIds = order.items.map((i) => i.id)
@@ -292,13 +292,12 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates either fixed or percentage discount of a variant
-   * @param {string} lineItem - id of line item
-   * @param {string} variant - id of variant in line item
-   * @param {int} variantPrice - price of the variant based on region
-   * @param {int} value - discount value
-   * @param {string} discountType - the type of discount (fixed or percentage)
-   * @return {{ string, string, int }} triples of lineitem, variant and
-   *    applied discount
+   * @param lineItem - id of line item
+   * @param variant - id of variant in line item
+   * @param variantPrice - price of the variant based on region
+   * @param value - discount value
+   * @param discountType - the type of discount (fixed or percentage)
+   * @return triples of lineitem, variant and applied discount
    */
   calculateDiscount_(
     lineItem: LineItem,
@@ -338,10 +337,9 @@ class TotalsService extends BaseService {
    * make sure to only apply the discount on valid variants. And finally we
    * return ether an array of percentages discounts or fixed discounts
    * alongside the variant on which the discount was applied.
-   * @param {Discount} discount - the discount to which we do the calculation
-   * @param {Cart} cart - the cart to calculate discounts for
-   * @return {[{ string, string, int }]} array of triples of lineitem, variant
-   *    and applied discount
+   * @param discount - the discount to which we do the calculation
+   * @param cart - the cart to calculate discounts for
+   * @return array of triples of lineitem, variant and applied discount
    */
   getAllocationItemDiscounts(
     discount: Discount,
@@ -452,8 +450,8 @@ class TotalsService extends BaseService {
   /**
    * Calculates the total discount amount for each of the different supported
    * discount types. If discounts aren't present or invalid returns 0.
-   * @param {Cart} cart - the cart to calculate discounts for
-   * @return {int} the total discounts amount
+   * @param cart - the cart to calculate discounts for
+   * @return the total discounts amount
    */
   getDiscountTotal(cart: Cart | Order): number {
     const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })

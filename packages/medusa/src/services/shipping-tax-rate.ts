@@ -39,9 +39,10 @@ class ShippingTaxRateService extends BaseService {
   }
 
   /**
-   * @param {FilterableShippingVariantProps} selector - the query object for find
-   * @param {FindConfig<ShippingVariant>} config - query config object for variant retrieval
-   * @return {Promise} the result of the find operation
+   * Lists Shipping Tax Rates given a certain query.
+   * @param selector - the query object for find
+   * @param config - query config object for variant retrieval
+   * @return the result of the find operation
    */
   async list(
     selector: FilterableShippingTaxRateProps,
