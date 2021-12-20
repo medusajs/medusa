@@ -1,4 +1,5 @@
-import { IsOptional, IsString } from "class-validator"
+import { IsEnum, IsObject, IsOptional, IsString } from "class-validator"
+import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
 
@@ -10,7 +11,9 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) user_id=* {string} The id of the User.
- *   - (body) name {string} The name of the User.
+ *   - (body) first_name {string} The name of the User.
+ *   - (body) last_name {string} The name of the User.
+ *   - (body) role {string} The role of the User(admin, member, developer).
  *   - (body) api_token {string} The api_token of the User.
  * tags:
  *   - Users
@@ -37,9 +40,21 @@ export default async (req, res) => {
 export class AdminUpdateUserRequest {
   @IsString()
   @IsOptional()
-  name?: string
+  first_name?: string
+
+  @IsString()
+  @IsOptional()
+  last_name?: string
+
+  @IsEnum(UserRoles)
+  @IsOptional()
+  role?: UserRoles
 
   @IsString()
   @IsOptional()
   api_token?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: JSON
 }

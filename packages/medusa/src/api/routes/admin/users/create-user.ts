@@ -1,5 +1,6 @@
-import { IsEmail, IsOptional, IsString } from "class-validator"
+import { IsEmail, IsEnum, IsOptional, IsString } from "class-validator"
 import _ from "lodash"
+import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
 
@@ -20,8 +21,14 @@ import { validator } from "../../../../utils/validator"
  *           email:
  *             description: "The Users email."
  *             type: string
- *           name:
+ *           first_name:
  *             description: "The name of the User."
+ *             type: string
+ *           last_name:
+ *             description: "The name of the User."
+ *             type: string
+ *           role:
+ *             description: "Userrole assigned to the user."
  *             type: string
  *           password:
  *             description: "The Users password."
@@ -42,11 +49,11 @@ export default async (req, res) => {
   const validated = await validator(AdminCreateUserRequest, req.body)
 
   const userService: UserService = req.scope.resolve("userService")
-  const data = _.pick(validated, ["email", "name"])
+  const data = _.omit(validated, ["password"])
 
   const user = await userService.create(data, validated.password)
 
-  res.status(200).json({ user })
+  res.status(200).json({ user: _.omit(user, ["password_hash"]) })
 }
 
 export class AdminCreateUserRequest {
@@ -55,7 +62,15 @@ export class AdminCreateUserRequest {
 
   @IsOptional()
   @IsString()
-  name?: string
+  first_name?: string
+
+  @IsOptional()
+  @IsString()
+  last_name?: string
+
+  @IsEnum(UserRoles)
+  @IsOptional()
+  role?: UserRoles
 
   @IsString()
   password: string

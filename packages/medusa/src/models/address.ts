@@ -50,45 +50,45 @@ export class Address {
   id: string
 
   @Index()
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   customer_id: string | null
 
   @ManyToOne(() => Customer)
   @JoinColumn({ name: "customer_id" })
   customer: Customer | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   company: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   first_name: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   last_name: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   address_1: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   address_2: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   city: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   country_code: string | null
 
   @ManyToOne(() => Country)
   @JoinColumn({ name: "country_code", referencedColumnName: "iso_2" })
   country: Country | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   province: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   postal_code: string | null
 
-  @Column({ type: "text", nullable: true })
+  @Column({ type: "varchar", nullable: true })
   phone: string | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })

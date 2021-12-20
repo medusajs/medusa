@@ -6,7 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 jest.setTimeout(30000)
 
-describe("/admin/auth", () => {
+describe("/store/auth", () => {
   let medusaProcess
   let dbConnection
 

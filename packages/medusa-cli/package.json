@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-cli",
-  "version": "1.1.23",
+  "version": "1.1.25",
   "description": "Command Line interface for Medusa Commerce",
   "main": "dist/index.js",
   "bin": {
@@ -52,7 +52,7 @@
     "joi-objectid": "^3.0.1",
     "meant": "^1.0.1",
     "medusa-core-utils": "^0.1.27",
-    "medusa-telemetry": "^0.0.10",
+    "medusa-telemetry": "^0.0.11",
     "netrc-parser": "^3.1.6",
     "open": "^8.0.6",
     "ora": "^5.4.1",
@@ -66,5 +66,5 @@
     "winston": "^3.3.3",
     "yargs": "^15.3.1"
   },
-  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+  "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
 }

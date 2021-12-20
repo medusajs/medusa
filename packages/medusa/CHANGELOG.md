@@ -3,6 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.60](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.59...@medusajs/medusa@1.1.60) (2021-12-17)
+
+
+### Features
+
+* Add Discount Admin endpoint to JS client ([#919](https://github.com/medusajs/medusa/issues/919)) ([2ca1a87](https://github.com/medusajs/medusa/commit/2ca1a8762da5bc30a246e2e77521071ed91e6c12))
+* add medusa-react ([#913](https://github.com/medusajs/medusa/issues/913)) ([d0d8dd7](https://github.com/medusajs/medusa/commit/d0d8dd7bf62eaac71df8714c2dfb4f204d192f51))
+* add returns admin endpoints to medusa-js ([#935](https://github.com/medusajs/medusa/issues/935)) ([b9d6f95](https://github.com/medusajs/medusa/commit/b9d6f95dbd32c096e59057797fd0cf479ff23c7b))
+* add store admin endpoints to medusa-js ([#938](https://github.com/medusajs/medusa/issues/938)) ([31fad74](https://github.com/medusajs/medusa/commit/31fad7439cc4b95e269e7b6bc5d813cb2479329c))
+* Adds Auth Admin API to `medusa-js` ([#917](https://github.com/medusajs/medusa/issues/917)) ([5c47184](https://github.com/medusajs/medusa/commit/5c47184b1035fc36440ff95750a4bb461904246d))
+* Adds Customer Admin routes to JS client ([#918](https://github.com/medusajs/medusa/issues/918)) ([25fe224](https://github.com/medusajs/medusa/commit/25fe224a10842a7ac93ed496a6724ef113b41916))
+* medusa js admin regions ([#939](https://github.com/medusajs/medusa/issues/939)) ([8532c96](https://github.com/medusajs/medusa/commit/8532c966b59082ac60d221bc3bb7f92d6f94e5e4))
+* medusa js admin shipping options ([#934](https://github.com/medusajs/medusa/issues/934)) ([8b1b551](https://github.com/medusajs/medusa/commit/8b1b551260c8f3764135ed65bd099b8e9a0f23da))
+* medusa-js admin return reasons ([#931](https://github.com/medusajs/medusa/issues/931)) ([0acc462](https://github.com/medusajs/medusa/commit/0acc462e1ebe51368ceedeea85d6f51c6fc3bfc4))
+
+
+
+
+
+## [1.1.59](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.58...@medusajs/medusa@1.1.59) (2021-12-08)
+
+### Bug Fixes
+
+- complete cart return type ([#902](https://github.com/medusajs/medusa/issues/902)) ([2e837fc](https://github.com/medusajs/medusa/commit/2e837fcdeeb1f9608c5b0c612c75c87c042d8286))
+
+## [1.1.58](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.57...@medusajs/medusa@1.1.58) (2021-12-08)
+
+### Bug Fixes
+
+- create cart with items ([#851](https://github.com/medusajs/medusa/issues/851)) ([74bc9c6](https://github.com/medusajs/medusa/commit/74bc9c618f66fbb0c741b19ee46ea9db47f2e3c5))
+- ensures that delayed restock notifications are being sent ([#881](https://github.com/medusajs/medusa/issues/881)) ([329767e](https://github.com/medusajs/medusa/commit/329767e27980253d456030dd5aad648662d39e3d))
+- medusa-js complete cart types + oas comments ([#889](https://github.com/medusajs/medusa/issues/889)) ([487356a](https://github.com/medusajs/medusa/commit/487356a96ffc3886cf233e89e0b17dc3b6a665e5))
+- **medusa:** migrate cart service to typescript ([#884](https://github.com/medusajs/medusa/issues/884)) ([ed04132](https://github.com/medusajs/medusa/commit/ed041325332e47c5939a301dfd8ace8ad6dbc28d))
+- **medusa:** order tax_rate type ([#879](https://github.com/medusajs/medusa/issues/879)) ([89472b7](https://github.com/medusajs/medusa/commit/89472b7d88f930a12a2ac7a972ab7e15a0232ee1))
+- refresh payment session oas comment ([#888](https://github.com/medusajs/medusa/issues/888)) ([efadffe](https://github.com/medusajs/medusa/commit/efadffe37a0d61f844e3aa6991f60ebb6a883e95))
+- return reasons type ([#893](https://github.com/medusajs/medusa/issues/893)) ([e8b6d21](https://github.com/medusajs/medusa/commit/e8b6d2139dd167b0a46c7221a91e0b5bda3a89c6))
+- widen range of discount limit conditions ([#895](https://github.com/medusajs/medusa/issues/895)) ([7d6fc5c](https://github.com/medusajs/medusa/commit/7d6fc5c9e18a1533f2dbf54a588fd3a71f07dcc2))
+
+### Features
+
+- Admin shipping options routes to Typescript ([#891](https://github.com/medusajs/medusa/issues/891)) ([6579c13](https://github.com/medusajs/medusa/commit/6579c13111b4bf5edb87380fdd701eb25dfef65d))
+- medusa-source-shopify loader ([#563](https://github.com/medusajs/medusa/issues/563)) ([577bcc2](https://github.com/medusajs/medusa/commit/577bcc23d44c87b91b2b685fd4ddfc5d21a0aa47))
+
 ## [1.1.57](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.56...@medusajs/medusa@1.1.57) (2021-11-23)
 
 ### Bug Fixes

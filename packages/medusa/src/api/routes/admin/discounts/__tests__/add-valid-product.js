@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { DiscountServiceMock } from "../../../../../services/__mocks__/discount"
 
-describe("POST /admin/discounts/:discount_id/variants/:variant_id", () => {
+describe("POST /admin/discounts/:discount_id/products/:product_id", () => {
   describe("successful addition", () => {
     let subject
 

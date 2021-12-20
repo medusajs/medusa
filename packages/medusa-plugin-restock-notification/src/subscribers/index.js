@@ -7,6 +7,16 @@ class VariantSubscriber {
       "product-variant.updated",
       this.handleVariantUpdate
     )
+
+    eventBusService.subscribe(
+      "restock-notification.execute",
+      this.handleDelayedExecute
+    )
+  }
+
+  handleDelayedExecute = async (data) => {
+    const { variant_id } = data
+    return await this.restockNotificationService_.restockExecute(variant_id)
   }
 
   handleVariantUpdate = async (data) => {

@@ -1047,7 +1047,7 @@ class CartService extends BaseService {
     if (discount.usage_limit) {
       discount.usage_count = discount.usage_count || 0
 
-      if (discount.usage_limit === discount.usage_count) {
+      if (discount.usage_count >= discount.usage_limit) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Discount has been used maximum allowed times"

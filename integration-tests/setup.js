@@ -12,5 +12,9 @@ const pgGodCredentials = {
 }
 
 afterAll(() => {
-  dropDatabase({ databaseName: "medusa-integration" }, pgGodCredentials)
+  const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
+  dropDatabase(
+    { databaseName: `medusa-integration-${workerId}` },
+    pgGodCredentials
+  )
 })

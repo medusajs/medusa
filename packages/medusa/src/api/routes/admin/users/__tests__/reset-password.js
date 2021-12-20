@@ -34,8 +34,8 @@ describe("POST /admin/users/reset-password", () => {
           },
         },
       })
-      expect(UserServiceMock.setPassword).toHaveBeenCalledTimes(1)
-      expect(UserServiceMock.setPassword).toHaveBeenCalledWith(
+      expect(UserServiceMock.setPassword_).toHaveBeenCalledTimes(1)
+      expect(UserServiceMock.setPassword_).toHaveBeenCalledWith(
         IdMap.getId("vandijk"),
         "new-password"
       )

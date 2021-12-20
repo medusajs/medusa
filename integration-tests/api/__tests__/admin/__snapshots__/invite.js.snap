@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/invites GET /admin/users lists invites 1`] = `
+Array [
+  Object {
+    "accepted": false,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "expires_at": Any<String>,
+    "id": "memberInvite",
+    "metadata": null,
+    "role": "member",
+    "token": Any<String>,
+    "updated_at": Any<String>,
+    "user_email": "invite-member@test.com",
+  },
+  Object {
+    "accepted": false,
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "expires_at": Any<String>,
+    "id": "adminInvite",
+    "metadata": null,
+    "role": "admin",
+    "token": Any<String>,
+    "updated_at": Any<String>,
+    "user_email": "invite-admin@test.com",
+  },
+]
+`;
