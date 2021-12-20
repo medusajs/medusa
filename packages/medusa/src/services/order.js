@@ -580,7 +580,6 @@ class OrderService extends BaseService {
         email: cart.email,
         customer_id: cart.customer_id,
         cart_id: cart.id,
-        tax_rate: region.tax_rate,
         currency_code: region.currency_code,
         metadata: cart.metadata || {},
       }

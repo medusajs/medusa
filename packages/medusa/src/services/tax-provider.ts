@@ -76,6 +76,14 @@ class TaxProviderService extends BaseService {
     return provider
   }
 
+  async createTaxLines(
+    cart: Cart,
+    calculationContext: TaxCalculationContext
+  ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
+    const taxLines = await this.getTaxLines(cart, calculationContext)
+    return this.manager_.save(taxLines)
+  }
+
   async getTaxLines(
     cartOrOrder: Cart | Order,
     calculationContext: TaxCalculationContext

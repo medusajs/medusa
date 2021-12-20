@@ -144,14 +144,7 @@ class TotalsService extends BaseService {
       return null
     }
 
-    const allocationMap = this.getAllocationMap(object)
-    const calculationContext: TaxCalculationContext = {
-      shipping_address: object.shipping_address,
-      shipping_methods: object.shipping_methods || [],
-      customer: object.customer,
-      region: object.region,
-      allocation_map: allocationMap,
-    }
+    const calculationContext = this.getCalculationContext(object)
 
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     // Only Orders have a tax_rate
@@ -530,6 +523,17 @@ class TotalsService extends BaseService {
     }
 
     return this.rounded(Math.min(subtotal, toReturn))
+  }
+
+  getCalculationContext(cartOrOrder: Cart | Order): TaxCalculationContext {
+    const allocationMap = this.getAllocationMap(cartOrOrder)
+    return {
+      shipping_address: cartOrOrder.shipping_address,
+      shipping_methods: cartOrOrder.shipping_methods || [],
+      customer: cartOrOrder.customer,
+      region: cartOrOrder.region,
+      allocation_map: allocationMap,
+    }
   }
 
   rounded(value: number): number {
