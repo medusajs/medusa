@@ -298,7 +298,7 @@ class ShippingOptionService extends BaseService {
         this.methodRepository_
       )
 
-      if ("cart" in config && config.cart) {
+      if (typeof config.cart !== "undefined") {
         this.validateCartOption(option, config.cart)
       }
 
@@ -573,9 +573,9 @@ class ShippingOptionService extends BaseService {
       }
 
       if (
-        typeof update.region_id !== "undefined" ||
-        typeof update.provider_id !== "undefined" ||
-        typeof update.data !== "undefined"
+        "region_id" in update ||
+        "provider_id" in update ||
+        "data" in update
       ) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
@@ -583,10 +583,7 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if (
-        typeof update.is_return !== "undefined" &&
-        update.is_return !== undefined
-      ) {
+      if (typeof update.is_return !== "undefined") {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "is_return cannot be changed after creation"
