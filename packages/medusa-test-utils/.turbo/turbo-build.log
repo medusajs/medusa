@@ -1,0 +1,2 @@
+$ babel src --out-dir dist/ --ignore **/__tests__
+Successfully compiled 4 files with Babel (2274ms).

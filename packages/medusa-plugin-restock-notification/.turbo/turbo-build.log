@@ -1,0 +1,2 @@
+$ babel src -d . --ignore **/__tests__ --extensions ".ts,.js"
+Successfully compiled 9 files with Babel (3296ms).

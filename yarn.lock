@@ -26966,6 +26966,11 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
+turbo@^1.0.19:
+  version "1.0.19"
+  resolved "https://registry.yarnpkg.com/turbo/-/turbo-1.0.19.tgz#5c666b7b497e443269da2c553d00fe23dbcc6914"
+  integrity sha512-/gdEdpdludyHX+344JQ84bglK33dI4IWTtGkBkfJnSQW+lC3/JFAu9jy+4zNK2gdzxjwcB2/qQK+Pv53SZd1Kw==
+
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
@@ -27142,7 +27147,7 @@ typeorm@^0.2.31:
     yargs "^17.0.1"
     zen-observable-ts "^1.0.0"
 
-typescript@^3.7.3, typescript@^4.4.4, typescript@^4.5.0, typescript@^4.5.2:
+typescript@^3.7.3, typescript@^4.4.0, typescript@^4.4.4, typescript@^4.5.2:
   version "4.5.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.4.tgz#a17d3a0263bf5c8723b9c52f43c5084edf13c2e8"
   integrity sha512-VgYs2A2QIRuGphtzFV7aQJduJ2gyfTljngLzjpfW9FoYZF6xuw1W0vW9ghCKLfcWrCFxK81CSGRAvS1pn4fIUg==

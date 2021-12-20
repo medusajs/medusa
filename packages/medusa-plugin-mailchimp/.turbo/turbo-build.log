@@ -1,0 +1,2 @@
+$ babel src -d .
+Successfully compiled 7 files with Babel (4846ms).

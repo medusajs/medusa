@@ -1,0 +1,11 @@
+$ jest
+No tests found, exiting with code 1
+Run with `--passWithNoTests` to exit with code 0
+In /home/zakaria/Workspace/medusa/packages/medusa-plugin-twilio-sms
+  5 files checked.
+  testMatch: **/__tests__/**/*.[jt]s?(x), **/?(*.)+(spec|test).[tj]s?(x) - 0 matches
+  testPathIgnorePatterns: /node_modules/ - 5 matches
+  testRegex:  - 0 matches
+Pattern:  - 0 matches
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
+error Command failed with exit code 1.

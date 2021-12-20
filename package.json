@@ -39,6 +39,7 @@
     "prettier": "^2.1.1",
     "resolve-cwd": "^3.0.0",
     "ts-jest": "^27.1.1",
+    "turbo": "^1.0.19",
     "typeorm": "^0.2.31"
   },
   "lint-staged": {
@@ -50,12 +51,26 @@
     "hooks:uninstall": "husky uninstall",
     "publish:next": "lerna publish --canary --preid next --dist-tag next",
     "bootstrap": "lerna bootstrap",
+    "build": "turbo run build",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "jest": "jest",
     "test": "jest",
     "prettier": "prettier",
     "test:integration": "jest --config=integration-tests/jest.config.js",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
+  },
+  "turbo": {
+    "pipeline": {
+      "build": {
+        "dependsOn": ["^build"]
+      },
+      "test": {
+        "outputs": []
+      },
+      "lint": {
+        "outputs": []
+      }
+    }
   },
   "dependencies": {
     "global": "^4.4.0",
@@ -64,6 +79,6 @@
     "swagger-inline": "^3.2.2"
   },
   "resolutions": {
-    "**/tsdx/typescript": "^4.5.0"
+    "**/tsdx/typescript": "^4.4.0"
   }
 }

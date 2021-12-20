@@ -1,0 +1,5 @@
+$ microbundle -i src/index.ts --no-pkg-main --target=node -f=cjs --sourcemap=false --compress --alias worker_threads=@ascorbic/worker-threads-shim
+rpt2: options error TS5069: [31mOption 'declarationDir' cannot be specified without specifying option 'declaration' or option 'composite'.[39m
+Build "createMedusaApp" to dist:
+      65.6 kB: index.js.gz
+      56.5 kB: index.js.br

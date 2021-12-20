@@ -1,0 +1,2 @@
+$ babel src -d . --ignore **/__tests__
+Successfully compiled 16 files with Babel (8455ms).

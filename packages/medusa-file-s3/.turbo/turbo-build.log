@@ -1,0 +1,3 @@
+$ babel src -d .
+Successfully compiled 1 file with Babel (7741ms).
+warning package.json: "dependencies" has dependency "medusa-test-utils" with range "^1.1.35" that collides with a dependency in "devDependencies" of the same name with version "^0.3.0"
