@@ -252,6 +252,7 @@ class CartService extends BaseService {
       // relationSet.add("discounts.parent_discount.regions")
       relationSet.add("shipping_methods")
       relationSet.add("region")
+      relationSet.add("region.tax_rates")
       relations = Array.from(relationSet.values())
 
       select = select.filter((v) => !totalFields.includes(v))

@@ -655,6 +655,7 @@ describe("CartService", () => {
           "discounts.rule",
           "discounts.rule.valid_for",
           "discounts.regions",
+          "region.tax_rates",
         ],
         {
           where: { id: "withpays" },
