@@ -238,26 +238,23 @@ class ShippingOptionService extends BaseService {
           method.data = update.data
         }
 
-        if (update.price && typeof update.price !== undefined) {
+        if (typeof update.price !== "undefined") {
           method.price = update.price
         }
 
-        if (update.return_id && typeof update.return_id !== undefined) {
+        if (typeof update.return_id !== "undefined") {
           method.return_id = update.return_id
         }
 
-        if (update.swap_id && typeof update.swap_id !== undefined) {
+        if (typeof update.swap_id !== "undefined") {
           method.swap_id = update.swap_id
         }
 
-        if (update.order_id && typeof update.order_id !== undefined) {
+        if (typeof update.order_id !== "undefined") {
           method.order_id = update.order_id
         }
 
-        if (
-          update.claim_order_id &&
-          typeof update.claim_order_id !== undefined
-        ) {
+        if (typeof update.claim_order_id !== "undefined") {
           method.claim_order_id = update.claim_order_id
         }
 
@@ -312,7 +309,7 @@ class ShippingOptionService extends BaseService {
       )
 
       let methodPrice
-      if ("price" in config && config.price !== undefined) {
+      if (config.price !== "undefined") {
         methodPrice = config.price
       } else {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
@@ -405,7 +402,10 @@ class ShippingOptionService extends BaseService {
       )
     }
 
-    const subtotal = cart.subtotal || 0
+    if (typeof cart.subtotal === "undefined") {
+      throw new MedusaError(MedusaError.Types.UNEXPECTED_STATE, "Cart subtotal must be defined for cart option validation")
+    }
+    const subtotal = cart.subtotal
     const requirementResults: boolean[] = option.requirements.map(
       (requirement) => {
         switch (requirement.type) {
@@ -590,7 +590,7 @@ class ShippingOptionService extends BaseService {
         )
       }
 
-      if (typeof update.requirements !== "undefined" && update.requirements) {
+      if (typeof update.requirements !== "undefined") {
         const acc: ShippingOptionRequirement[] = []
         for (const r of update.requirements) {
           const validated = await this.validateRequirement_(r, optionId)
@@ -634,7 +634,7 @@ class ShippingOptionService extends BaseService {
         option.requirements = acc
       }
 
-      if (typeof update.price_type !== "undefined" && update.price_type) {
+      if (typeof update.price_type !== "undefined") {
         option.price_type = await this.validatePriceType_(
           update.price_type,
           option
@@ -645,18 +645,17 @@ class ShippingOptionService extends BaseService {
       }
 
       if (
-        typeof update.amount !== "undefined" &&
-        update.amount &&
+        typeof update.amount !== "undefined" && 
         option.price_type !== "calculated"
       ) {
         option.amount = update.amount
       }
 
-      if (typeof update.name !== "undefined" && update.name) {
+      if (typeof update.name !== "undefined") {
         option.name = update.name
       }
 
-      if (typeof update.admin_only !== "undefined" && update.admin_only) {
+      if (typeof update.admin_only !== "undefined") {
         option.admin_only = update.admin_only
       }
 
