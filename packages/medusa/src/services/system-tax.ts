@@ -2,7 +2,8 @@ import { BaseService } from "medusa-interfaces"
 
 import {
   ITaxService,
-  TaxCalculationLine,
+  ItemTaxCalculationLine,
+  ShippingTaxCalculationLine,
   TaxCalculationContext,
 } from "../interfaces/tax-service"
 import { ProviderTaxLine } from "../types/tax-service"
@@ -15,10 +16,11 @@ class SystemTaxService extends BaseService implements ITaxService {
   }
 
   async getTaxLines(
-    lines: TaxCalculationLine[],
+    itemLines: ItemTaxCalculationLine[],
+    shippingLines: ShippingTaxCalculationLine[],
     context: TaxCalculationContext // eslint-disable-line
   ): Promise<ProviderTaxLine[]> {
-    return lines.flatMap((l) => {
+    let taxLines: ProviderTaxLine[] = itemLines.flatMap((l) => {
       return l.rates.map((r) => ({
         rate: r.rate || 0,
         name: r.name,
@@ -26,6 +28,19 @@ class SystemTaxService extends BaseService implements ITaxService {
         item_id: l.item.id,
       }))
     })
+
+    taxLines = taxLines.concat(
+      shippingLines.flatMap((l) => {
+        return l.rates.map((r) => ({
+          rate: r.rate || 0,
+          name: r.name,
+          code: r.code,
+          shipping_method_id: l.shipping_method.id,
+        }))
+      })
+    )
+
+    return taxLines
   }
 }
 

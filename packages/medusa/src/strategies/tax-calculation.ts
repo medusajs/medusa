@@ -1,12 +1,13 @@
 import { LineItem } from "../models/line-item"
 import { LineItemTaxLine } from "../models/line-item-tax-line"
+import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { TaxCalculationContext } from "../interfaces/tax-service"
 import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 
 class TaxCalculationStrategy implements ITaxCalculationStrategy {
   async calculate(
     items: LineItem[],
-    taxLines: LineItemTaxLine[],
+    taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[],
     calculationContext: TaxCalculationContext
   ): Promise<number> {
     let result = 0
@@ -26,9 +27,21 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
       taxableAmount -=
         (allocations.discount && allocations.discount.amount) || 0
 
-      const lineRates = taxLines.filter((tl) => tl.item_id === i.id)
+      const lineRates = taxLines.filter(
+        (tl) => "item_id" in tl && tl.item_id === i.id
+      )
       for (const lineRate of lineRates) {
         result += taxableAmount * lineRate.rate
+      }
+    }
+
+    for (const sm of calculationContext.shipping_methods) {
+      const amount = sm.price
+      const lineRates = taxLines.filter(
+        (tl) => "shipping_method_id" in tl && tl.shipping_method_id === sm.id
+      )
+      for (const lineRate of lineRates) {
+        result += amount * lineRate.rate
       }
     }
 

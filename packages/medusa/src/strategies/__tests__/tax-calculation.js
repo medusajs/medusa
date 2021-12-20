@@ -37,6 +37,7 @@ const toTest = [
       customer: {
         email: "test@testson.com",
       },
+      shipping_methods: [],
       region: {
         gift_cards_taxable: false,
       },
@@ -91,6 +92,7 @@ const toTest = [
       region: {
         gift_cards_taxable: true,
       },
+      shipping_methods: [],
       allocation_map: {
         item_1: {
           discount: {

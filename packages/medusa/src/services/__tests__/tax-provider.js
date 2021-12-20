@@ -101,6 +101,7 @@ describe("TaxProviderService", () => {
             rates: [],
           },
         ],
+        [],
         calcContext
       )
     })
@@ -281,6 +282,7 @@ describe("TaxProviderService", () => {
 
 const getTaxLineFactory = ({ items, region }) => {
   const cart = {
+    shipping_methods: [],
     items: items.map((i) => {
       return {
         id: i.id,
@@ -296,6 +298,7 @@ const getTaxLineFactory = ({ items, region }) => {
     customer: {},
     allocation_map: {},
     shipping_address: {},
+    shipping_methods: [],
   }
 
   return { cart, calculationContext }
