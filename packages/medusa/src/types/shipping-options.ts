@@ -21,15 +21,12 @@ export type ShippingMethodUpdate = {
 }
 
 export type ShippingOptionUpdate = {
-  data?: object
   metadata?: object
   price_type?: ShippingOptionPriceType
   amount?: number
   name?: string
   admin_only?: boolean
   is_return?: boolean
-  region_id?: string
-  provider_id?: string
   requirements?: ShippingOptionRequirement[]
 }
 
