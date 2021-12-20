@@ -167,9 +167,6 @@ class TotalsService extends BaseService {
             (object.tax_rate / 100)
         )
       }
-      taxLines = object.items.flatMap((li) => {
-        return li.tax_lines
-      })
     } else {
       taxLines = await this.taxProviderService_.getTaxLines(
         object,

@@ -75,7 +75,7 @@ export const simpleOrderFactory = async (
 
   const shippingMethods = data.shipping_methods || []
   for (const sm of shippingMethods) {
-    await simpleShippingMethodFactory(connection, { ...sm, order_id: id })
+    await simpleShippingMethodFactory(connection, { ...sm, order_id: order.id })
   }
 
   const items = data.line_items

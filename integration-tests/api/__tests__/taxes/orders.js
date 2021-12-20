@@ -166,6 +166,8 @@ describe("Order Taxes", () => {
             tax_lines: [
               {
                 rate: 10,
+                name: "default",
+                code: "default",
               },
             ],
           },
