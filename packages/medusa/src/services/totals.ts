@@ -26,6 +26,10 @@ type TotalsServiceProps = {
   taxCalculationStrategy: ITaxCalculationStrategy
 }
 
+type GetTotalsOptions = {
+  force_taxes?: boolean
+}
+
 /**
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
@@ -46,12 +50,16 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates subtotal of a given cart or order.
-   * @param {object} object - object to calculate total for
-   * @return {int} the calculated subtotal
+   * @param object - object to calculate total for
+   * @param options - options to calculate by
+   * @return the calculated subtotal
    */
-  async getTotal(object: Cart | Order): Promise<number> {
+  async getTotal(
+    object: Cart | Order,
+    options: GetTotalsOptions = {}
+  ): Promise<number> {
     const subtotal = this.getSubtotal(object)
-    const taxTotal = await this.getTaxTotal(object)
+    const taxTotal = (await this.getTaxTotal(object, options.force_taxes)) || 0
     const discountTotal = this.getDiscountTotal(object)
     const giftCardTotal = this.getGiftCardTotal(object)
     const shippingTotal = this.getShippingTotal(object)
@@ -81,9 +89,9 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates subtotal of a given cart or order.
-   * @param {(Cart|Order)} object - cart or order to calculate subtotal for
-   * @param {Object} opts - options
-   * @return {int} the calculated subtotal
+   * @param object - cart or order to calculate subtotal for
+   * @param opts - options
+   * @return the calculated subtotal
    */
   getSubtotal(object: Cart | Order, opts: SubtotalOptions = {}): number {
     let subtotal = 0
@@ -106,8 +114,8 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates shipping total
-   * @param {Cart | Object} object - cart or order to calculate subtotal for
-   * @return {int} shipping total
+   * @param object - cart or order to calculate subtotal for
+   * @return shipping total
    */
   getShippingTotal(object: Cart | Order): number {
     const { shipping_methods } = object
@@ -119,10 +127,23 @@ class TotalsService extends BaseService {
   /**
    * Calculates tax total
    * Currently based on the Danish tax system
-   * @param {Cart | Object} object - cart or order to calculate subtotal for
-   * @return {int} tax total
+   * @param object - cart or order to calculate tax total for
+   * @param forceTaxes - whether taxes should be calculated regardless
+   *   of region settings
+   * @return tax total
    */
-  async getTaxTotal(object: Cart | Order): Promise<number> {
+  async getTaxTotal(
+    object: Cart | Order,
+    forceTaxes = false
+  ): Promise<number | null> {
+    if (
+      !object.region.automatic_taxes &&
+      !forceTaxes &&
+      "payment_session" in object
+    ) {
+      return null
+    }
+
     const allocationMap = this.getAllocationMap(object)
     const calculationContext: TaxCalculationContext = {
       shipping_address: object.shipping_address,
@@ -254,9 +275,9 @@ class TotalsService extends BaseService {
    * Calculates refund total of line items.
    * If any of the items to return have been discounted, we need to
    * apply the discount again before refunding them.
-   * @param {Order} order - cart or order to calculate subtotal for
-   * @param {[LineItem]} lineItems -
-   * @return {int} the calculated subtotal
+   * @param order - cart or order to calculate subtotal for
+   * @param lineItems - the line items to calculate refund total for
+   * @return the calculated subtotal
    */
   getRefundTotal(order: Order, lineItems: LineItem[]): number {
     let itemIds = order.items.map((i) => i.id)
@@ -292,13 +313,12 @@ class TotalsService extends BaseService {
 
   /**
    * Calculates either fixed or percentage discount of a variant
-   * @param {string} lineItem - id of line item
-   * @param {string} variant - id of variant in line item
-   * @param {int} variantPrice - price of the variant based on region
-   * @param {int} value - discount value
-   * @param {string} discountType - the type of discount (fixed or percentage)
-   * @return {{ string, string, int }} triples of lineitem, variant and
-   *    applied discount
+   * @param lineItem - id of line item
+   * @param variant - id of variant in line item
+   * @param variantPrice - price of the variant based on region
+   * @param value - discount value
+   * @param discountType - the type of discount (fixed or percentage)
+   * @return triples of lineitem, variant and applied discount
    */
   calculateDiscount_(
     lineItem: LineItem,

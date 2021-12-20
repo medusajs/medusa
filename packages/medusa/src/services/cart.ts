@@ -59,6 +59,10 @@ type CartConstructorProps = {
   customShippingOptionService: CustomShippingOptionService
 }
 
+type TotalsConfig = {
+  force_taxes?: boolean
+}
+
 /* Provides layer to manipulate carts.
  * @implements BaseService
  */
@@ -267,14 +271,17 @@ class CartService extends BaseService {
 
   async decorateTotals_(
     cart: Cart,
-    totalsToSelect: TotalField[]
+    totalsToSelect: TotalField[],
+    options: TotalsConfig = { force_taxes: false }
   ): Promise<Cart> {
-    const totals: { [K in TotalField]?: number } = {}
+    const totals: { [K in TotalField]?: number | null } = {}
 
     for (const key of totalsToSelect) {
       switch (key) {
         case "total": {
-          totals.total = await this.totalsService_.getTotal(cart)
+          totals.total = await this.totalsService_.getTotal(cart, {
+            force_taxes: options.force_taxes,
+          })
           break
         }
         case "shipping_total": {
@@ -285,7 +292,10 @@ class CartService extends BaseService {
           totals.discount_total = this.totalsService_.getDiscountTotal(cart)
           break
         case "tax_total":
-          totals.tax_total = await this.totalsService_.getTaxTotal(cart)
+          totals.tax_total = await this.totalsService_.getTaxTotal(
+            cart,
+            options.force_taxes
+          )
           break
         case "gift_card_total":
           totals.gift_card_total = this.totalsService_.getGiftCardTotal(cart)
@@ -320,11 +330,13 @@ class CartService extends BaseService {
    * Gets a cart by id.
    * @param {string} cartId - the id of the cart to get.
    * @param {Object} options - the options to get a cart
+   * @param {Object} totalsConfig - configuration for retrieval of totals
    * @return {Promise<Cart>} the cart document.
    */
   async retrieve(
     cartId: string,
-    options: FindConfig<Cart> = {}
+    options: FindConfig<Cart> = {},
+    totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
     const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
     const validatedId = this.validateId_(cartId)
@@ -359,7 +371,7 @@ class CartService extends BaseService {
       )
     }
 
-    return await this.decorateTotals_(raw, totalsToSelect)
+    return await this.decorateTotals_(raw, totalsToSelect, totalsConfig)
   }
 
   /**
@@ -1169,18 +1181,10 @@ class CartService extends BaseService {
   }
 
   /**
-   * A payment method represents a way for the customer to pay. The payment
-   * method will typically come from one of the payment sessions.
-   * @typedef {object} PaymentMethod
-   * @property {string} provider_id - the identifier of the payment method's
-   *     provider
-   * @property {object} data - the data associated with the payment method
-   */
-
-  /**
    * Updates the currently selected payment session.
-   * @param {string} cartId - the id of the cart to update the payment session for
-   * @param {object} update - the data to update the payment session with
+   * @param cartId - the id of the cart to update the payment session for
+   * @param update - the data to update the payment session with
+   * @return the resulting cart
    */
   async updatePaymentSession(cartId: string, update: object): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -1346,36 +1350,42 @@ class CartService extends BaseService {
       const cartId =
         typeof cartOrCartId === `string` ? cartOrCartId : cartOrCartId.id
 
-      const cart = await this.retrieve(cartId, {
-        select: [
-          "gift_card_total",
-          "subtotal",
-          "tax_total",
-          "shipping_total",
-          "discount_total",
-          "total",
-        ],
-        relations: [
-          "items",
-          "discounts",
-          "discounts.rule",
-          "discounts.rule.valid_for",
-          "gift_cards",
-          "billing_address",
-          "shipping_address",
-          "region",
-          "region.payment_providers",
-          "payment_sessions",
-          "customer",
-        ],
-      })
+      const cart = await this.retrieve(
+        cartId,
+        {
+          select: [
+            "total",
+            "subtotal",
+            "tax_total",
+            "discount_total",
+            "shipping_total",
+            "gift_card_total",
+          ],
+          relations: [
+            "items",
+            "discounts",
+            "discounts.rule",
+            "discounts.rule.valid_for",
+            "gift_cards",
+            "shipping_methods",
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.tax_rates",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        },
+        { force_taxes: true }
+      )
 
-      const region = cart.region
+      const { total, region } = cart
 
-      if (typeof cart.total === "undefined") {
+      if (typeof total === "undefined") {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "cart.total should be defined"
+          "cart.total must be defined"
         )
       }
 
@@ -1384,7 +1394,7 @@ class CartService extends BaseService {
       if (cart.payment_sessions && cart.payment_sessions.length) {
         for (const session of cart.payment_sessions) {
           if (
-            cart.total <= 0 ||
+            total <= 0 ||
             !region.payment_providers.find(
               ({ id }) => id === session.provider_id
             )
@@ -1401,7 +1411,7 @@ class CartService extends BaseService {
         }
       }
 
-      if (cart.total > 0) {
+      if (total > 0) {
         // If only one payment session exists, we preselect it
         if (region.payment_providers.length === 1 && !cart.payment_session) {
           const p = region.payment_providers[0]

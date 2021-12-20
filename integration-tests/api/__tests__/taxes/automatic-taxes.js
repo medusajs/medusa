@@ -15,7 +15,7 @@ const {
 
 jest.setTimeout(30000)
 
-describe("Cart Taxes", () => {
+describe("Automatic Cart Taxes", () => {
   let medusaProcess
   let dbConnection
 
@@ -44,7 +44,7 @@ describe("Cart Taxes", () => {
     return await doAfterEach()
   })
 
-  test("automatic taxes; default tax rate", async () => {
+  test("correct calculation w. default tax rate", async () => {
     await simpleProductFactory(
       dbConnection,
       {
@@ -85,7 +85,7 @@ describe("Cart Taxes", () => {
     expect(response.data.cart.total).toEqual(112)
   })
 
-  test("automatic taxes; default tax rate w. shipping", async () => {
+  test("correct calculation w. default tax rate w. shipping", async () => {
     await simpleProductFactory(
       dbConnection,
       {
@@ -135,7 +135,7 @@ describe("Cart Taxes", () => {
     expect(response.data.cart.total).toEqual(224)
   })
 
-  test("automatic taxes; tax rate override", async () => {
+  test("correct calculation w. tax rate override", async () => {
     const product = await simpleProductFactory(
       dbConnection,
       {
@@ -183,7 +183,7 @@ describe("Cart Taxes", () => {
     expect(response.data.cart.total).toEqual(125)
   })
 
-  test("automatic taxes; tax rate override w. shipping", async () => {
+  test("correct calculation w. tax rate override w. shipping", async () => {
     await simpleProductFactory(
       dbConnection,
       {
@@ -242,7 +242,7 @@ describe("Cart Taxes", () => {
     expect(response.data.cart.total).toEqual(237)
   })
 
-  test("automatic taxes; multiple tax rate overrides", async () => {
+  test("correct calculation w. multiple tax rate overrides", async () => {
     const product1 = await simpleProductFactory(
       dbConnection,
       {

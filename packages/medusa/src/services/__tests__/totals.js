@@ -646,12 +646,12 @@ describe("TotalsService", () => {
           },
         ],
       }
-      const getTaxTotalMock = jest.fn(() => 35)
+      const getTaxTotalMock = jest.fn(() => Promise.resolve(35))
       totalsService.getTaxTotal = getTaxTotalMock
       res = await totalsService.getTotal(order)
 
       expect(getTaxTotalMock).toHaveBeenCalledTimes(1)
-      expect(getTaxTotalMock).toHaveBeenCalledWith(order)
+      expect(getTaxTotalMock).toHaveBeenCalledWith(order, undefined)
 
       expect(res).toEqual(175)
     })

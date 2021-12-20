@@ -28,6 +28,7 @@ export const simpleRegionFactory = async (
     name: data.name || "Test Region",
     currency_code: data.currency_code || "usd",
     tax_rate: data.tax_rate || 0,
+    payment_providers: [{ id: "test-pay" }],
     automatic_taxes:
       typeof data.automatic_taxes !== "undefined" ? data.automatic_taxes : true,
   })
