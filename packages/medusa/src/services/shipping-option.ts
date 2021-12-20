@@ -309,7 +309,7 @@ class ShippingOptionService extends BaseService {
       )
 
       let methodPrice
-      if (config.price !== "undefined") {
+      if (typeof config.price !== "undefined") {
         methodPrice = config.price
       } else {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
@@ -403,7 +403,10 @@ class ShippingOptionService extends BaseService {
     }
 
     if (typeof cart.subtotal === "undefined") {
-      throw new MedusaError(MedusaError.Types.UNEXPECTED_STATE, "Cart subtotal must be defined for cart option validation")
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Cart subtotal must be defined for cart option validation"
+      )
     }
     const subtotal = cart.subtotal
     const requirementResults: boolean[] = option.requirements.map(
@@ -645,7 +648,7 @@ class ShippingOptionService extends BaseService {
       }
 
       if (
-        typeof update.amount !== "undefined" && 
+        typeof update.amount !== "undefined" &&
         option.price_type !== "calculated"
       ) {
         option.amount = update.amount
