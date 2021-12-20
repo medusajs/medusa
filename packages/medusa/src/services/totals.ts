@@ -174,6 +174,9 @@ class TotalsService extends BaseService {
             (object.tax_rate / 100)
         )
       }
+      taxLines = object.items.flatMap((li) => {
+        return li.tax_lines
+      })
     } else {
       taxLines = await this.taxProviderService_.getTaxLines(
         object,
@@ -373,10 +376,9 @@ class TotalsService extends BaseService {
    * make sure to only apply the discount on valid variants. And finally we
    * return ether an array of percentages discounts or fixed discounts
    * alongside the variant on which the discount was applied.
-   * @param {Discount} discount - the discount to which we do the calculation
-   * @param {Cart} cart - the cart to calculate discounts for
-   * @return {[{ string, string, int }]} array of triples of lineitem, variant
-   *    and applied discount
+   * @param discount - the discount to which we do the calculation
+   * @param cart - the cart to calculate discounts for
+   * @return array of triples of lineitem, variant and applied discount
    */
   getAllocationItemDiscounts(
     discount: Discount,
@@ -487,8 +489,8 @@ class TotalsService extends BaseService {
   /**
    * Calculates the total discount amount for each of the different supported
    * discount types. If discounts aren't present or invalid returns 0.
-   * @param {Cart} cart - the cart to calculate discounts for
-   * @return {int} the total discounts amount
+   * @param cart - the cart to calculate discounts for
+   * @return the total discounts amount
    */
   getDiscountTotal(cart: Cart | Order): number {
     const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
