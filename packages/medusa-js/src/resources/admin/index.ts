@@ -18,6 +18,7 @@ import AdminShippingProfilesResource from "./shipping-profiles"
 import AdminStoresResource from "./store"
 import AdminShippingOptionsResource from "./shipping-options"
 import AdminRegionsResource from "./regions"
+import AdminNotificationsResource from "./notifications"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -39,6 +40,7 @@ class Admin extends BaseResource {
   public store = new AdminStoresResource(this.client)
   public shippingOptions = new AdminShippingOptionsResource(this.client)
   public regions = new AdminRegionsResource(this.client)
+  public notifications = new AdminNotificationsResource(this.client)
 }
 
 export default Admin
