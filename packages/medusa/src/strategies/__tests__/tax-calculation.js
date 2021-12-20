@@ -24,12 +24,12 @@ const toTest = [
       {
         item_id: "item_1",
         name: "Name 1",
-        rate: 0.0825,
+        rate: 8.25,
       },
       {
         item_id: "item_1",
         name: "Name 2",
-        rate: 0.125,
+        rate: 12.5,
       },
     ],
     context: {
@@ -76,12 +76,12 @@ const toTest = [
       {
         item_id: "item_1",
         name: "Name 1",
-        rate: 0.0825,
+        rate: 8.25,
       },
       {
         item_id: "item_1",
         name: "Name 2",
-        rate: 0.125,
+        rate: 12.5,
       },
     ],
     context: {

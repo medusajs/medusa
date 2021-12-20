@@ -498,7 +498,7 @@ describe("TotalsService", () => {
 
     it("uses order tax lines", async () => {
       const order = {
-        tax_rate: 14.2,
+        tax_rate: null,
         region: {
           tax_rate: 25,
         },
