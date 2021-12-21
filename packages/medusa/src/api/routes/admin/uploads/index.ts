@@ -19,3 +19,10 @@ export default (app) => {
 
   return app
 }
+
+export type AdminUploadsRes = {
+  uploads: any[]
+}
+
+export * from "./create-upload"
+export * from "./delete-upload"
