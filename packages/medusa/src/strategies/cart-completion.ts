@@ -134,8 +134,6 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
                   relations: ["payment", "payment_sessions"],
                 })
 
-              let order: Order
-
               // If cart is part of swap, we register swap as complete
               switch (cart.type) {
                 case "swap": {
@@ -189,6 +187,7 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
                     )
                   }
 
+                  let order: Order
                   try {
                     order = await orderService
                       .withTransaction(manager)
@@ -231,25 +230,25 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
                       throw error
                     }
                   }
+
+                  order = await orderService
+                    .withTransaction(manager)
+                    .retrieve(order.id, {
+                      select: [
+                        "subtotal",
+                        "tax_total",
+                        "shipping_total",
+                        "discount_total",
+                        "total",
+                      ],
+                      relations: ["shipping_address", "items", "payments"],
+                    })
+
+                  return {
+                    response_code: 200,
+                    response_body: { data: order, type: "order" },
+                  }
                 }
-              }
-
-              order = await orderService
-                .withTransaction(manager)
-                .retrieve(order.id, {
-                  select: [
-                    "subtotal",
-                    "tax_total",
-                    "shipping_total",
-                    "discount_total",
-                    "total",
-                  ],
-                  relations: ["shipping_address", "items", "payments"],
-                })
-
-              return {
-                response_code: 200,
-                response_body: { data: order, type: "order" },
               }
             }
           )
