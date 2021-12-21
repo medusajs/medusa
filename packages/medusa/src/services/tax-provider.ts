@@ -21,8 +21,7 @@ import ShippingTaxRateService from "./shipping-tax-rate"
 const CACHE_TIME = 30 // seconds
 
 /**
- * Provides layer to manipulate users.
- * @extends BaseService
+ * Finds tax providers and assists in tax related operations.
  */
 class TaxProviderService extends BaseService {
   private container_: AwilixContainer
@@ -58,6 +57,11 @@ class TaxProviderService extends BaseService {
     return cloned
   }
 
+  /**
+   * Retrieves the relevant tax provider for the given region.
+   * @param region - the region to get tax provider for.
+   * @return the region specific tax provider
+   */
   retrieveProvider(region: Region): ITaxService {
     let provider: ITaxService
     if (region.tax_provider_id) {
@@ -76,6 +80,12 @@ class TaxProviderService extends BaseService {
     return provider
   }
 
+  /**
+   * Persists the tax lines relevant for an order to the database.
+   * @param cart - the cart to create tax lines for
+   * @param calculationContext - the calculation context to get tax lines by
+   * @return the newly created tax lines
+   */
   async createTaxLines(
     cart: Cart,
     calculationContext: TaxCalculationContext
@@ -84,6 +94,16 @@ class TaxProviderService extends BaseService {
     return this.manager_.save(taxLines)
   }
 
+  /**
+   * Gets the relevant tax lines for an order or cart. If an order is provided
+   * the order's tax lines will be returned. If a cart is provided the tax lines
+   * will be computed from the tax rules and potentially a 3rd party tax plugin.
+   * Note: this method doesn't persist the tax lines. Use createTaxLines if you
+   * wish to persist the tax lines to the DB layer.
+   * @param cartOrOrder - the cart or order to get tax lines for
+   * @param calculationContext - the calculation context to get tax lines by
+   * @return the computed tax lines
+   */
   async getTaxLines(
     cartOrOrder: Cart | Order,
     calculationContext: TaxCalculationContext
@@ -163,6 +183,13 @@ class TaxProviderService extends BaseService {
     })
   }
 
+  /**
+   * Gets the tax rates configured for a shipping option. The rates a cached
+   * between calls.
+   * @param optionId - the option id of the shipping method.
+   * @param region - the region to get configured rates for.
+   * @return the tax rates configured for the shipping option.
+   */
   async getRegionRatesForShipping(
     optionId: string,
     region: Region
@@ -214,6 +241,13 @@ class TaxProviderService extends BaseService {
     return toReturn
   }
 
+  /**
+   * Gets the tax rates configured for a product. The rates a cached between
+   * calls.
+   * @param productId - the product id to get rates for
+   * @param region - the region to get configured rates for.
+   * @return the tax rates configured for the shipping option.
+   */
   async getRegionRatesForProduct(
     productId: string,
     region: Region
@@ -265,11 +299,24 @@ class TaxProviderService extends BaseService {
     return toReturn
   }
 
-  getCacheKey(productId: string, regionId: string): string {
+  /**
+   * The cache key to get cache hits by.
+   * @param productId - the product id to cache
+   * @param regionId - the region id to cache
+   * @return the cache key to use for the id set
+   */
+  private getCacheKey(productId: string, regionId: string): string {
     return `txrtcache:${productId}:${regionId}`
   }
 
-  async setCache(
+  /**
+   * Sets the cache results for a set of ids
+   * @param productId - the product id to cache
+   * @param regionId - the region id to cache
+   * @param value - tax rates to cache
+   * @return promise that resolves after the cache has been set
+   */
+  private async setCache(
     productId: string,
     regionId: string,
     value: TaxServiceRate[]
@@ -283,7 +330,13 @@ class TaxProviderService extends BaseService {
     )
   }
 
-  async getCacheEntry(
+  /**
+   * Gets the cache results for a set of ids
+   * @param productId - the product id to cache
+   * @param regionId - the region id to cache
+   * @return the cached result or null
+   */
+  private async getCacheEntry(
     productId: string,
     regionId: string
   ): Promise<TaxServiceRate[] | null> {

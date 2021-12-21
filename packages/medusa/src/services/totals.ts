@@ -68,6 +68,11 @@ class TotalsService extends BaseService {
     return subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal
   }
 
+  /**
+   * Gets the total payments made on an order
+   * @param order - the order to calculate paid amount for
+   * @return the total paid amount
+   */
   getPaidTotal(order: Order): number {
     const total = order.payments?.reduce((acc, next) => {
       acc += next.amount
@@ -77,6 +82,12 @@ class TotalsService extends BaseService {
     return total
   }
 
+  /**
+   * The total paid for swaps. May be negative in case of negative swap
+   * difference.
+   * @param order - the order to calculate swap total for
+   * @return the swap total
+   */
   getSwapTotal(order: Order): number {
     let swapTotal = 0
     if (order.swaps && order.swaps.length) {
@@ -184,27 +195,34 @@ class TotalsService extends BaseService {
     return this.rounded(toReturn)
   }
 
-  getAllocationMap(order: Cart | Order): LineAllocationsMap {
+  /**
+   * Gets a map of discounts and gift cards that apply to line items in an
+   * order. The function calculates the amount of a discount or gift card that
+   * applies to a specific line item.
+   * @param orderOrCart - the order or cart to get an allocation map for
+   * @return the allocation map for the line items in the cart or order.
+   */
+  getAllocationMap(orderOrCart: Cart | Order): LineAllocationsMap {
     let lineDiscounts: LineDiscountAmount[] = []
 
-    const discount = order.discounts.find(
+    const discount = orderOrCart.discounts.find(
       ({ rule }) => rule.type !== "free_shipping"
     )
     if (discount) {
-      lineDiscounts = this.getLineDiscounts(order, discount)
+      lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
     }
 
     let lineGiftCards: LineDiscountAmount[] = []
-    if (order.gift_cards && order.gift_cards.length) {
-      const subtotal = this.getSubtotal(order)
-      const giftCardTotal = this.getGiftCardTotal(order)
+    if (orderOrCart.gift_cards && orderOrCart.gift_cards.length) {
+      const subtotal = this.getSubtotal(orderOrCart)
+      const giftCardTotal = this.getGiftCardTotal(orderOrCart)
 
       // If the fixed discount exceeds the subtotal we should
       // calculate a 100% discount
       const nominator = Math.min(giftCardTotal, subtotal)
       const percentage = nominator / subtotal
 
-      lineGiftCards = order.items.map((l) => {
+      lineGiftCards = orderOrCart.items.map((l) => {
         return {
           item: l,
           amount: l.unit_price * l.quantity * percentage,
@@ -245,15 +263,26 @@ class TotalsService extends BaseService {
     return allocationMap
   }
 
-  getRefundedTotal(object: Order): number {
-    if (!object.refunds) {
+  /**
+   * Gets the total refund amount for an order.
+   * @param order - the order to get total refund amount for.
+   * @return the total refunded amount for an order.
+   */
+  getRefundedTotal(order: Order): number {
+    if (!order.refunds) {
       return 0
     }
 
-    const total = object.refunds.reduce((acc, next) => acc + next.amount, 0)
+    const total = order.refunds.reduce((acc, next) => acc + next.amount, 0)
     return this.rounded(total)
   }
 
+  /**
+   * The amount that can be refunded for a given line item.
+   * @param cartOrOrder - cart or order to use as context for the calculation
+   * @param lineItem - the line item to calculate the refund amount for.
+   * @return the line item refund amount.
+   */
   getLineItemRefund(cartOrOrder: Cart | Order, lineItem: LineItem): number {
     const { discounts } = cartOrOrder
     const tax_rate =
@@ -398,23 +427,32 @@ class TotalsService extends BaseService {
     return discounts
   }
 
+  /**
+   * Returns the discount amount allocated to the line items of an order.
+   * @param cartOrOrder - the cart or order to get line discount allocations for
+   * @param discount - the discount to use as context for the calculation
+   * @return the allocations that the discount has on the items in the cart or
+   *   order
+   */
   getLineDiscounts(
-    cart: Cart | Order,
+    cartOrOrder: Cart | Order,
     discount: Discount
   ): LineDiscountAmount[] {
-    const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
+    const subtotal = this.getSubtotal(cartOrOrder, {
+      excludeNonDiscounts: true,
+    })
 
-    let merged: LineItem[] = [...cart.items]
+    let merged: LineItem[] = [...cartOrOrder.items]
 
     // merge items from order with items from order swaps
-    if ("swaps" in cart && cart.swaps.length) {
-      for (const s of cart.swaps) {
+    if ("swaps" in cartOrOrder && cartOrOrder.swaps.length) {
+      for (const s of cartOrOrder.swaps) {
         merged = [...merged, ...s.additional_items]
       }
     }
 
-    if ("claims" in cart && cart.claims.length) {
-      for (const c of cart.claims) {
+    if ("claims" in cartOrOrder && cartOrOrder.claims.length) {
+      for (const c of cartOrOrder.claims) {
         merged = [...merged, ...c.additional_items]
       }
     }
@@ -442,7 +480,7 @@ class TotalsService extends BaseService {
     } else if (allocation === "item") {
       const allocationDiscounts = this.getAllocationItemDiscounts(
         discount,
-        cart
+        cartOrOrder
       )
       return merged.map((item) => {
         const discounted = allocationDiscounts.find(
@@ -458,21 +496,27 @@ class TotalsService extends BaseService {
     return merged.map((i) => ({ item: i, amount: 0 }))
   }
 
-  getGiftCardTotal(cart: Cart | Order): number {
-    const giftCardable = this.getSubtotal(cart) - this.getDiscountTotal(cart)
+  /**
+   * Gets the gift card amount on a cart or order.
+   * @param cartOrOrder - the cart or order to get gift card amount for
+   * @return the gift card amount applied to the cart or order
+   */
+  getGiftCardTotal(cartOrOrder: Cart | Order): number {
+    const giftCardable =
+      this.getSubtotal(cartOrOrder) - this.getDiscountTotal(cartOrOrder)
 
-    if ("gift_card_transactions" in cart) {
-      return cart.gift_card_transactions.reduce(
+    if ("gift_card_transactions" in cartOrOrder) {
+      return cartOrOrder.gift_card_transactions.reduce(
         (acc, next) => acc + next.amount,
         0
       )
     }
 
-    if (!cart.gift_cards || !cart.gift_cards.length) {
+    if (!cartOrOrder.gift_cards || !cartOrOrder.gift_cards.length) {
       return 0
     }
 
-    const toReturn = cart.gift_cards.reduce(
+    const toReturn = cartOrOrder.gift_cards.reduce(
       (acc, next) => acc + next.balance,
       0
     )
@@ -482,19 +526,21 @@ class TotalsService extends BaseService {
   /**
    * Calculates the total discount amount for each of the different supported
    * discount types. If discounts aren't present or invalid returns 0.
-   * @param cart - the cart to calculate discounts for
+   * @param cartOrOrder - the cart or order to calculate discounts for
    * @return the total discounts amount
    */
-  getDiscountTotal(cart: Cart | Order): number {
-    const subtotal = this.getSubtotal(cart, { excludeNonDiscounts: true })
+  getDiscountTotal(cartOrOrder: Cart | Order): number {
+    const subtotal = this.getSubtotal(cartOrOrder, {
+      excludeNonDiscounts: true,
+    })
 
-    if (!cart.discounts || !cart.discounts.length) {
+    if (!cartOrOrder.discounts || !cartOrOrder.discounts.length) {
       return 0
     }
 
     // we only support having free shipping and one other discount, so first
     // find the discount, which is not free shipping.
-    const discount = cart.discounts.find(
+    const discount = cartOrOrder.discounts.find(
       ({ rule }) => rule.type !== "free_shipping"
     )
 
@@ -510,13 +556,16 @@ class TotalsService extends BaseService {
     } else if (type === "percentage" && allocation === "item") {
       const itemPercentageDiscounts = this.getAllocationItemDiscounts(
         discount,
-        cart
+        cartOrOrder
       )
       toReturn = _.sumBy(itemPercentageDiscounts, (d) => d.amount)
     } else if (type === "fixed" && allocation === "total") {
       toReturn = value
     } else if (type === "fixed" && allocation === "item") {
-      const itemFixedDiscounts = this.getAllocationItemDiscounts(discount, cart)
+      const itemFixedDiscounts = this.getAllocationItemDiscounts(
+        discount,
+        cartOrOrder
+      )
       toReturn = _.sumBy(itemFixedDiscounts, (d) => d.amount)
     }
 
@@ -527,6 +576,11 @@ class TotalsService extends BaseService {
     return this.rounded(Math.min(subtotal, toReturn))
   }
 
+  /**
+   * Prepares the calculation context for a tax total calculation.
+   * @param cartOrOrder - the cart or order to get the calculation context for
+   * @return the tax calculation context
+   */
   getCalculationContext(cartOrOrder: Cart | Order): TaxCalculationContext {
     const allocationMap = this.getAllocationMap(cartOrOrder)
     return {
@@ -538,6 +592,11 @@ class TotalsService extends BaseService {
     }
   }
 
+  /**
+   * Rounds a number using Math.round.
+   * @param value - the value to round
+   * @return the rounded value
+   */
   rounded(value: number): number {
     return Math.round(value)
   }
