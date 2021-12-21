@@ -7,12 +7,11 @@ const toTest = [
     /*
      * Subtotal = 2 * 100 = 200
      * Taxable amount = 200 - 10 = 190
-     * Taxline 1 = 190 * 0.0825 = 15.675
-     * Taxline 2 = 190 * 0.125 = 13.75
-     * Total tax = 39.425
-     * Rounded = 39
+     * Taxline 1 = 190 * 0.0825 = 15.675 = 16
+     * Taxline 2 = 190 * 0.125 = 13.75 = 14
+     * Total tax = 40
      */
-    expected: 39,
+    expected: 40,
     items: [
       {
         id: "item_1",
@@ -59,12 +58,11 @@ const toTest = [
     /*
      * Subtotal = 2 * 100 = 200
      * Taxable amount = 200 - 10 = 180
-     * Taxline 1 = 180 * 0.0825 = 14.85
-     * Taxline 2 = 180 * 0.125 = 22.5
-     * Total tax = 37.35
-     * Rounded = 37
+     * Taxline 1 = 180 * 0.0825 = 15
+     * Taxline 2 = 180 * 0.125 = 23
+     * Total tax = 38
      */
-    expected: 37,
+    expected: 38,
     items: [
       {
         id: "item_1",
