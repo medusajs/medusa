@@ -400,7 +400,7 @@ class CartService extends BaseService {
       ]
 
       for (const k of remainingFields) {
-        if (typeof data[k] !== "undefined") {
+        if (typeof data[k] !== "undefined" && k !== "object") {
           toCreate[k] = data[k]
         }
       }

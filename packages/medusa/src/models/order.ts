@@ -74,6 +74,8 @@ export class Order {
   @PrimaryColumn()
   id: string
 
+  readonly object = "order"
+
   @DbAwareColumn({ type: "enum", enum: OrderStatus, default: "pending" })
   status: OrderStatus
 

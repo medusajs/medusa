@@ -124,6 +124,8 @@ export class Cart {
   @PrimaryColumn()
   id: string
 
+  readonly object = "cart"
+
   @Column({ nullable: true })
   email: string
 

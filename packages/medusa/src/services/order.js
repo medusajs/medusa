@@ -318,7 +318,7 @@ class OrderService extends BaseService {
 
     return {
       relations,
-      select,
+      select: ["tax_rate", ...select],
       totalsToSelect,
     }
   }
