@@ -1,5 +1,5 @@
-import _ from "lodash"
 import axios from "axios"
+import _ from "lodash"
 import { PaymentService } from "medusa-interfaces"
 
 class KlarnaProviderService extends PaymentService {
@@ -68,7 +68,7 @@ class KlarnaProviderService extends PaymentService {
     if (cart.shipping_methods.length) {
       const { name, price } = cart.shipping_methods.reduce(
         (acc, next) => {
-          acc.name = [...acc.name, next.data.name]
+          acc.name = [...acc.name, next?.shipping_option.name]
           acc.price += next.price
           return acc
         },
@@ -76,7 +76,7 @@ class KlarnaProviderService extends PaymentService {
       )
 
       order_lines.push({
-        name: name.join(" + "),
+        name: name?.join(" + ") || "Shipping fee",
         quantity: 1,
         type: "shipping_fee",
         unit_price: price * (1 + tax),

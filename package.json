@@ -35,6 +35,7 @@
     "pg-god": "^1.0.11",
     "prettier": "^2.1.1",
     "resolve-cwd": "^3.0.0",
+    "ts-jest": "^27.1.1",
     "typeorm": "^0.2.31"
   },
   "lint-staged": {
@@ -50,7 +51,7 @@
     "jest": "jest",
     "test": "jest",
     "prettier": "prettier",
-    "test:integration": "jest --config=integration-tests/jest.config.js --runInBand",
+    "test:integration": "jest --config=integration-tests/jest.config.js",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
   },
   "dependencies": {

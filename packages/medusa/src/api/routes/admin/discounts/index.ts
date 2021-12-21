@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { Discount } from "../../../.."
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { Discount } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -41,11 +41,11 @@ export default (app) => {
 
   // Discount valid variants management
   route.post(
-    "/:discount_id/products/:variant_id",
+    "/:discount_id/products/:product_id",
     middlewares.wrap(require("./add-valid-product").default)
   )
   route.delete(
-    "/:discount_id/products/:variant_id",
+    "/:discount_id/products/:product_id",
     middlewares.wrap(require("./remove-valid-product").default)
   )
 
