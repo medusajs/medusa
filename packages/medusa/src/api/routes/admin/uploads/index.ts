@@ -1,5 +1,6 @@
 import { Router } from "express"
 import multer from "multer"
+import { DeleteResponse } from "../../../../types/common"
 
 import middlewares from "../../../middlewares"
 
@@ -20,9 +21,11 @@ export default (app) => {
   return app
 }
 
-export type AdminUploadsRes = {
+export type AdminUploadRes = {
   uploads: any[]
 }
+
+export type AdminDeleteUploadRes = DeleteResponse
 
 export * from "./create-upload"
 export * from "./delete-upload"

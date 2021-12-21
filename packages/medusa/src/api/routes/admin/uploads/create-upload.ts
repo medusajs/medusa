@@ -1,12 +1,7 @@
 import fs from "fs"
-import { MedusaError } from "medusa-core-utils"
 
 export default async (req, res) => {
   try {
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      JSON.stringify(req.files)
-    )
     const fileService = req.scope.resolve("fileService")
 
     const result = await Promise.all(
@@ -23,4 +18,9 @@ export default async (req, res) => {
     console.log(err)
     throw err
   }
+}
+
+export class IAdminPostUploadsFile {
+  originalName: string
+  path: string
 }

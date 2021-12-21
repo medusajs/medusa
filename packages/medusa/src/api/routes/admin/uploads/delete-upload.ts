@@ -4,7 +4,7 @@ export default async (req, res) => {
 
     await fileService.delete(req.body.file)
 
-    res.status(200).send("Deleted image")
+    res.status(200).send({ id: "", object: "file", deleted: true })
   } catch (err) {
     console.log(err)
     throw err
