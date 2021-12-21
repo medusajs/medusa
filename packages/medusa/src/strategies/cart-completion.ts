@@ -50,6 +50,21 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async (manager: EntityManager) => {
+              const cart = await cartService
+                .withTransaction(manager)
+                .retrieve(id)
+
+              if (cart.completed_at) {
+                return {
+                  response_code: 409,
+                  response_body: {
+                    code: MedusaError.Codes.CART_INCOMPATIBLE_STATE,
+                    message: "Cart has already been completed",
+                    type: MedusaError.Types.NOT_ALLOWED,
+                  },
+                }
+              }
+
               await cartService.withTransaction(manager).createTaxLines(id)
 
               return {
@@ -70,20 +85,7 @@ class CartCompletionStrategy implements ICartCompletionStrategy {
           const { key, error } = await idempotencyKeyService.workStage(
             idempotencyKey.idempotency_key,
             async (manager: EntityManager) => {
-              let cart = await cartService.withTransaction(manager).retrieve(id)
-
-              if (cart.completed_at) {
-                return {
-                  response_code: 409,
-                  response_body: {
-                    code: MedusaError.Codes.CART_INCOMPATIBLE_STATE,
-                    message: "Cart has already been completed",
-                    type: MedusaError.Types.NOT_ALLOWED,
-                  },
-                }
-              }
-
-              cart = await cartService
+              const cart = await cartService
                 .withTransaction(manager)
                 .authorizePayment(id, {
                   ...context,
