@@ -29,4 +29,4 @@ export type AdminUploadRes = {
 export type AdminDeleteUploadRes = DeleteResponse
 
 export * from "./create-upload"
-export * from "./delete-upload"
+// export * from "./delete-upload"

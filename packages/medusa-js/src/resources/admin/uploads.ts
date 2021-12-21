@@ -1,8 +1,4 @@
-import {
-  AdminUploadRes,
-  AdminDeleteUploadRes,
-  IAdminPostUploadsFile,
-} from "@medusajs/medusa"
+import { AdminUploadRes, IAdminPostUploadsFile } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 import FormData from "form-data"
