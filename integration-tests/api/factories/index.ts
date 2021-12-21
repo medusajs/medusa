@@ -1,3 +1,4 @@
+export * from "./simple-order-factory"
 export * from "./simple-cart-factory"
 export * from "./simple-region-factory"
 export * from "./simple-line-item-factory"

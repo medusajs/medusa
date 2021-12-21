@@ -15,8 +15,22 @@ class TestPayService extends PaymentService {
     return Promise.resolve([])
   }
 
-  async createPayment() {
-    return {}
+  async createPayment(cart) {
+    const fields = [
+      "total",
+      "subtotal",
+      "tax_total",
+      "discount_total",
+      "shipping_total",
+      "gift_card_total",
+    ]
+
+    const data = {}
+    for (const k of fields) {
+      data[k] = cart[k]
+    }
+
+    return data
   }
 
   async retrievePayment(data) {

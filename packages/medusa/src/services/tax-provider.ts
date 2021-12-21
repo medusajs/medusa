@@ -105,7 +105,7 @@ class TaxProviderService extends BaseService {
     )
 
     const shippingCalculationLines = await Promise.all(
-      cartOrOrder.shipping_methods.map(async (sm) => {
+      calculationContext.shipping_methods.map(async (sm) => {
         return {
           shipping_method: sm,
           rates: await this.getRegionRatesForShipping(

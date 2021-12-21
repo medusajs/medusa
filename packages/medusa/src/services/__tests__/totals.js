@@ -474,7 +474,8 @@ describe("TotalsService", () => {
     })
   })
   describe("getTaxTotal", () => {
-    let res, totalsService
+    let res
+    let totalsService
 
     const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
     const calculateMock = jest.fn(() => Promise.resolve(20.3))
@@ -498,7 +499,7 @@ describe("TotalsService", () => {
 
     it("uses order tax lines", async () => {
       const order = {
-        tax_rate: 14.2,
+        tax_rate: null,
         region: {
           tax_rate: 25,
         },
@@ -522,6 +523,7 @@ describe("TotalsService", () => {
             price: 100,
             provider_id: "default_provider",
             profile_id: IdMap.getId("default"),
+            tax_lines: [],
             data: {
               extra: "hi",
             },
@@ -646,12 +648,12 @@ describe("TotalsService", () => {
           },
         ],
       }
-      const getTaxTotalMock = jest.fn(() => 35)
+      const getTaxTotalMock = jest.fn(() => Promise.resolve(35))
       totalsService.getTaxTotal = getTaxTotalMock
       res = await totalsService.getTotal(order)
 
       expect(getTaxTotalMock).toHaveBeenCalledTimes(1)
-      expect(getTaxTotalMock).toHaveBeenCalledWith(order)
+      expect(getTaxTotalMock).toHaveBeenCalledWith(order, undefined)
 
       expect(res).toEqual(175)
     })
