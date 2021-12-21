@@ -474,7 +474,8 @@ describe("TotalsService", () => {
     })
   })
   describe("getTaxTotal", () => {
-    let res, totalsService
+    let res
+    let totalsService
 
     const getTaxLinesMock = jest.fn(() => Promise.resolve([{ id: "line1" }]))
     const calculateMock = jest.fn(() => Promise.resolve(20.3))
@@ -522,6 +523,7 @@ describe("TotalsService", () => {
             price: 100,
             provider_id: "default_provider",
             profile_id: IdMap.getId("default"),
+            tax_lines: [],
             data: {
               extra: "hi",
             },
