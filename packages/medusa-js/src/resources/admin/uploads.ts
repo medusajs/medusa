@@ -20,15 +20,6 @@ class AdminUploadsResource extends BaseResource {
 
     return this.client.request("POST", path, payload, {}, this.headers)
   }
-
-  delete(file: IAdminPostUploadsFile): ResponsePromise<AdminDeleteUploadRes> {
-    const path = `/admin/uploads`
-
-    const payload = new FormData()
-    payload.append("file", file)
-
-    return this.client.request("DELETE", path)
-  }
 }
 
 export default AdminUploadsResource

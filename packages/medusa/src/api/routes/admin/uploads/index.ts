@@ -16,7 +16,8 @@ export default (app) => {
     middlewares.wrap(require("./create-upload").default)
   )
 
-  route.post("/delete", middlewares.wrap(require("./delete-upload").default))
+  // removed on purpose
+  // route.post("/delete", middlewares.wrap(require("./delete-upload").default))
 
   return app
 }

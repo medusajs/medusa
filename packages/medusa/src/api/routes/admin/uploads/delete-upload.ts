@@ -1,5 +1,5 @@
 /**
- * @oas [delete] /uploads
+ * [delete] /uploads
  * operationId: "AdminDeleteUpload"
  * summary: "Removes an uploaded file"
  * description: "Removes an uploaded file using the installed fileservice"
