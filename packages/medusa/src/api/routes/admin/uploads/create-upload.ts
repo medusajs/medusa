@@ -1,5 +1,22 @@
 import fs from "fs"
 
+/**
+ * @oas [post] /
+ * operationId: "PostUploads"
+ * summary: "Uploads an array of files"
+ * description: "Uploads an array of files to the specific fileservice that is installed in medusa."
+ * x-authenticated: true
+ * tags:
+ *   - Uploads
+ * responses:
+ *   200:
+ *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             uploads
+ */
 export default async (req, res) => {
   try {
     const fileService = req.scope.resolve("fileService")
