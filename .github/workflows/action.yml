@@ -86,7 +86,6 @@ jobs:
         working-directory: integration-tests/api
 
       - name: Run integration tests
-        run: yarn test
-        working-directory: integration-tests/api
+        run: yarn test:integration --maxWorkers=50% --silent=false
         env:
           DB_PASSWORD: postgres

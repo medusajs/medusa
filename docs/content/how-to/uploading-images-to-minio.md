@@ -6,7 +6,7 @@ In order to work with images in Medusa, you need a file service plugin responsib
 
 At this point, you should have an instance of our store engine running. If not, we have a [full guide](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) for setting up your local environment.
 
-### Set up up AWS
+### Set up MinIO
 
 #### Create an MinIO bucket
 
@@ -50,4 +50,4 @@ The two access keys in the options are the ones created in the previous section.
 
 ### Try it out
 
-Finally, run your Medusa server alongside our admin system to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in an MiniO server.
+Finally, run your Medusa server alongside our admin system to try out your new file service. Upon editing or creating products, you can now upload thumbnails and images, that are stored in an MinIO server.
