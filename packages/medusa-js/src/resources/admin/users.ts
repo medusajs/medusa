@@ -88,5 +88,5 @@ class AdminUsersResource extends BaseResource {
     return this.client.request("GET", path)
   }
 }
-1
+
 export default AdminUsersResource

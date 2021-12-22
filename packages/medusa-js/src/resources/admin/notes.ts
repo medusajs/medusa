@@ -33,7 +33,7 @@ class AdminNotesResource extends BaseResource {
     return this.client.request("GET", path)
   }
 
-  list(query: AdminGetNotesParams): ResponsePromise<AdminNotesListRes> {
+  list(query?: AdminGetNotesParams): ResponsePromise<AdminNotesListRes> {
     let path = `/admin/notes/`
 
     if (query) {
