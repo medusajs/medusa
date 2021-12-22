@@ -13,6 +13,8 @@ import { DiscountRuleType } from "../models/discount-rule"
 import TaxProviderService from "./tax-provider"
 import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 import { TaxCalculationContext } from "../interfaces/tax-service"
+import { isCart } from "../types/cart"
+import { isOrder } from "../types/orders"
 
 import {
   SubtotalOptions,
@@ -138,9 +140,9 @@ class TotalsService extends BaseService {
     forceTaxes = false
   ): Promise<number | null> {
     if (
-      !cartOrOrder.region.automatic_taxes &&
+      isCart(cartOrOrder) &&
       !forceTaxes &&
-      cartOrOrder.object === "cart"
+      !cartOrOrder.region.automatic_taxes
     ) {
       return null
     }
@@ -149,7 +151,7 @@ class TotalsService extends BaseService {
 
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     // Only Orders have a tax_rate
-    if (cartOrOrder.object === "order") {
+    if (isOrder(cartOrOrder)) {
       if (cartOrOrder.tax_rate === null) {
         taxLines = cartOrOrder.items.flatMap((li) => li.tax_lines)
 
