@@ -9,7 +9,7 @@ import BaseResource from "../base"
 
 class AdminNotificationsResource extends BaseResource {
   list(
-    query: AdminGetNotificationsParams
+    query?: AdminGetNotificationsParams
   ): ResponsePromise<AdminNotificationsListRes> {
     let path = `/admin/notifications`
 
