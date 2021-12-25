@@ -64,7 +64,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * @description Lists draft orders
    */
   list(
-    query: AdminGetDraftOrdersParams
+    query?: AdminGetDraftOrdersParams
   ): ResponsePromise<AdminDraftOrdersListRes> {
     let path = `/admin/draft-orders`
 
