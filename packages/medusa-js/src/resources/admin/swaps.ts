@@ -12,7 +12,7 @@ class AdminSwapsResource extends BaseResource {
     return this.client.request("GET", path)
   }
 
-  list(query: AdminGetSwapsParams): ResponsePromise<AdminSwapsListRes> {
+  list(query?: AdminGetSwapsParams): ResponsePromise<AdminSwapsListRes> {
     let path = `/admin/swaps/`
 
     if (query) {
