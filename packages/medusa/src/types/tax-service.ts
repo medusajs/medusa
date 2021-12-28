@@ -17,7 +17,7 @@ export type ProviderShippingMethodTaxLine = {
   name: string
   code: string | null
   metadata?: JSON
-  shipping_method_id?: string
+  shipping_method_id: string
 }
 
 /**
@@ -27,7 +27,7 @@ export type ProviderLineItemTaxLine = {
   rate: number
   name: string
   code: string | null
-  item_id?: string
+  item_id: string
   metadata?: JSON
 }
 
