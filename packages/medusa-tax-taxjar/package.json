@@ -1,0 +1,28 @@
+{
+  "name": "medusa-tax-taxjar",
+  "version": "0.0.11",
+  "description": "Tax Jar plugin for Medusa",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-tax-taxjar"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Sebastian Rindom",
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  },
+  "scripts": {
+    "watch": "tsc --build --watch",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "taxjar": "^4.0.0"
+  },
+  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+}
