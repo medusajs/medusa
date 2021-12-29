@@ -32,6 +32,7 @@ import LineItemService from "./line-item"
 import PaymentProviderService from "./payment-provider"
 import ShippingOptionService from "./shipping-option"
 import CustomerService from "./customer"
+import TaxProviderService from "./tax-provider"
 import DiscountService from "./discount"
 import GiftCardService from "./gift-card"
 import TotalsService from "./totals"
@@ -45,6 +46,7 @@ type CartConstructorProps = {
   addressRepository: typeof AddressRepository
   paymentSessionRepository: typeof PaymentSessionRepository
   eventBusService: EventBusService
+  taxProviderService: TaxProviderService
   paymentProviderService: PaymentProviderService
   productService: ProductService
   productVariantService: ProductVariantService
@@ -86,6 +88,7 @@ class CartService extends BaseService {
   private shippingOptionService_: ShippingOptionService
   private discountService_: DiscountService
   private giftCardService_: GiftCardService
+  private taxProviderService_: TaxProviderService
   private totalsService_: TotalsService
   private addressRepository_: typeof AddressRepository
   private paymentSessionRepository_: typeof PaymentSessionRepository
@@ -100,6 +103,7 @@ class CartService extends BaseService {
     paymentProviderService,
     productService,
     productVariantService,
+    taxProviderService,
     regionService,
     lineItemService,
     shippingOptionService,
@@ -114,59 +118,25 @@ class CartService extends BaseService {
   }: CartConstructorProps) {
     super()
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
-
-    /** @private @const {ShippingMethodRepository} */
     this.shippingMethodRepository_ = shippingMethodRepository
-
-    /** @private @const {CartRepository} */
     this.cartRepository_ = cartRepository
-
-    /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
-
-    /** @private @const {ProductService} */
     this.productService_ = productService
-
-    /** @private @const {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @const {LineItemService} */
     this.lineItemService_ = lineItemService
-
-    /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
-
-    /** @private @const {CustomerService} */
     this.customerService_ = customerService
-
-    /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
-
-    /** @private @const {DiscountService} */
     this.discountService_ = discountService
-
-    /** @private @const {GiftCardService} */
     this.giftCardService_ = giftCardService
-
-    /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
-
-    /** @private @const {AddressRepository} */
     this.addressRepository_ = addressRepository
-
-    /** @private @const {PaymentSessionRepository} */
     this.paymentSessionRepository_ = paymentSessionRepository
-
-    /** @private @const {InventoryService} */
     this.inventoryService_ = inventoryService
-
-    /** @private @const {CustomShippingOptionService} */
     this.customShippingOptionService_ = customShippingOptionService
+    this.taxProviderService_ = taxProviderService
   }
 
   withTransaction(transactionManager: EntityManager): CartService {
@@ -176,6 +146,7 @@ class CartService extends BaseService {
 
     const cloned = new CartService({
       manager: transactionManager,
+      taxProviderService: this.taxProviderService_,
       cartRepository: this.cartRepository_,
       eventBusService: this.eventBus_,
       paymentProviderService: this.paymentProviderService_,
@@ -429,7 +400,7 @@ class CartService extends BaseService {
       ]
 
       for (const k of remainingFields) {
-        if (typeof data[k] !== "undefined") {
+        if (typeof data[k] !== "undefined" && k !== "object") {
           toCreate[k] = data[k]
         }
       }
@@ -1852,6 +1823,30 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
       return result
+    })
+  }
+
+  async createTaxLines(id: string): Promise<Cart> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const cart = await this.retrieve(id, {
+        relations: [
+          "items",
+          "gift_cards",
+          "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
+          "shipping_methods",
+          "region",
+          "region.tax_rates",
+        ],
+      })
+      const calculationContext = this.totalsService_.getCalculationContext(cart)
+
+      await this.taxProviderService_
+        .withTransaction(manager)
+        .createTaxLines(cart, calculationContext)
+
+      return cart
     })
   }
 

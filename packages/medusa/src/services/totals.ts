@@ -13,6 +13,8 @@ import { DiscountRuleType } from "../models/discount-rule"
 import TaxProviderService from "./tax-provider"
 import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 import { TaxCalculationContext } from "../interfaces/tax-service"
+import { isCart } from "../types/cart"
+import { isOrder } from "../types/orders"
 
 import {
   SubtotalOptions,
@@ -138,25 +140,18 @@ class TotalsService extends BaseService {
     forceTaxes = false
   ): Promise<number | null> {
     if (
-      !cartOrOrder.region.automatic_taxes &&
+      isCart(cartOrOrder) &&
       !forceTaxes &&
-      "payment_session" in cartOrOrder
+      !cartOrOrder.region.automatic_taxes
     ) {
       return null
     }
 
-    const allocationMap = this.getAllocationMap(cartOrOrder)
-    const calculationContext: TaxCalculationContext = {
-      shipping_address: cartOrOrder.shipping_address,
-      shipping_methods: cartOrOrder.shipping_methods || [],
-      customer: cartOrOrder.customer,
-      region: cartOrOrder.region,
-      allocation_map: allocationMap,
-    }
+    const calculationContext = this.getCalculationContext(cartOrOrder)
 
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     // Only Orders have a tax_rate
-    if ("tax_rate" in cartOrOrder) {
+    if (isOrder(cartOrOrder)) {
       if (cartOrOrder.tax_rate === null) {
         taxLines = cartOrOrder.items.flatMap((li) => li.tax_lines)
 
@@ -532,6 +527,17 @@ class TotalsService extends BaseService {
     }
 
     return this.rounded(Math.min(subtotal, toReturn))
+  }
+
+  getCalculationContext(cartOrOrder: Cart | Order): TaxCalculationContext {
+    const allocationMap = this.getAllocationMap(cartOrOrder)
+    return {
+      shipping_address: cartOrOrder.shipping_address,
+      shipping_methods: cartOrOrder.shipping_methods || [],
+      customer: cartOrOrder.customer,
+      region: cartOrOrder.region,
+      allocation_map: allocationMap,
+    }
   }
 
   rounded(value: number): number {

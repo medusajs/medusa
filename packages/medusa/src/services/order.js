@@ -316,9 +316,14 @@ class OrderService extends BaseService {
       select = select.filter((v) => !totalFields.includes(v))
     }
 
+    const toSelect = [...select]
+    if (toSelect.length > 0 && toSelect.indexOf("tax_rate") === -1) {
+      toSelect.push("tax_rate")
+    }
+
     return {
       relations,
-      select,
+      select: toSelect,
       totalsToSelect,
     }
   }
@@ -580,7 +585,6 @@ class OrderService extends BaseService {
         email: cart.email,
         customer_id: cart.customer_id,
         cart_id: cart.id,
-        tax_rate: region.tax_rate,
         currency_code: region.currency_code,
         metadata: cart.metadata || {},
       }
