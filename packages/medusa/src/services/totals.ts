@@ -237,11 +237,13 @@ class TotalsService extends BaseService {
       if (allocationMap[ld.item.id]) {
         allocationMap[ld.item.id].discount = {
           amount: ld.amount,
+          unit_amount: ld.amount / ld.item.quantity,
         }
       } else {
         allocationMap[ld.item.id] = {
           discount: {
             amount: ld.amount,
+            unit_amount: ld.amount / ld.item.quantity,
           },
         }
       }
@@ -251,11 +253,13 @@ class TotalsService extends BaseService {
       if (allocationMap[lgc.item.id]) {
         allocationMap[lgc.item.id].gift_card = {
           amount: lgc.amount,
+          unit_amount: lgc.amount / lgc.item.quantity,
         }
       } else {
         allocationMap[lgc.item.id] = {
           discount: {
             amount: lgc.amount,
+            unit_amount: lgc.amount / lgc.item.quantity,
           },
         }
       }
@@ -280,36 +284,36 @@ class TotalsService extends BaseService {
 
   /**
    * The amount that can be refunded for a given line item.
-   * @param cartOrOrder - cart or order to use as context for the calculation
+   * @param order - order to use as context for the calculation
    * @param lineItem - the line item to calculate the refund amount for.
    * @return the line item refund amount.
    */
-  getLineItemRefund(cartOrOrder: Cart | Order, lineItem: LineItem): number {
-    const { discounts } = cartOrOrder
-    const tax_rate =
-      "tax_rate" in cartOrOrder
-        ? cartOrOrder.tax_rate
-        : cartOrOrder.region.tax_rate
-
-    const taxRate = (tax_rate || 0) / 100
-
-    const discount = discounts.find(({ rule }) => rule.type !== "free_shipping")
-
-    if (!discount || !lineItem.allow_discounts) {
-      return lineItem.unit_price * lineItem.quantity * (1 + taxRate)
-    }
-
-    const lineDiscounts = this.getLineDiscounts(cartOrOrder, discount)
-    const discountedLine = lineDiscounts.find(
-      (line) => line.item.id === lineItem.id
-    ) as LineDiscountAmount
+  getLineItemRefund(order: Order, lineItem: LineItem): number {
+    const allocationMap = this.getAllocationMap(order)
 
     const discountAmount =
-      (discountedLine.amount / discountedLine.item.quantity) * lineItem.quantity
+      (allocationMap[lineItem.id]?.discount?.unit_amount || 0) *
+      lineItem.quantity
+    const lineSubtotal =
+      lineItem.unit_price * lineItem.quantity - discountAmount
 
-    return this.rounded(
-      (lineItem.unit_price * lineItem.quantity - discountAmount) * (1 + taxRate)
-    )
+    /*
+     * Used for backcompat with old tax system
+     */
+    if (order.tax_rate !== null) {
+      const taxRate = order.tax_rate / 100
+      return this.rounded(lineSubtotal * (1 + taxRate))
+    }
+
+    /*
+     * New tax system uses the tax lines registerd on the line items
+     */
+    const taxTotal = lineItem.tax_lines.reduce((acc, next) => {
+      const taxRate = next.rate / 100
+      return acc + this.rounded(lineSubtotal * taxRate)
+    }, 0)
+
+    return lineSubtotal + taxTotal
   }
 
   /**
@@ -475,7 +479,7 @@ class TotalsService extends BaseService {
 
         return {
           item,
-          amount: lineTotal * percentage,
+          amount: item.allow_discounts ? lineTotal * percentage : 0,
         }
       })
     } else if (allocation === "item") {

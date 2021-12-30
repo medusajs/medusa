@@ -3,11 +3,13 @@ import { LineItem } from "../models/line-item"
 /** The amount of a gift card allocated to a line item */
 export type GiftCardAllocation = {
   amount: number
+  unit_amount: number
 }
 
 /** The amount of a discount allocated to a line item */
 export type DiscountAllocation = {
   amount: number
+  unit_amount: number
 }
 
 /**
