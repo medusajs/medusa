@@ -1,10 +1,4 @@
 import {
-  AdminGetNotesParams,
-  AdminNotesDeleteRes,
-  AdminNotesListRes,
-  AdminNotesRes,
-  AdminPostNotesNoteReq,
-  AdminPostNotesReq,
   AdminPostProductsProductReq,
   AdminPostProductsReq,
   AdminProductsListTypesRes,
