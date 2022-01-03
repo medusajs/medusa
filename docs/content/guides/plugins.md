@@ -49,6 +49,7 @@ To quickly get started with the implementation, we advise you to copy `/services
 ├── README.md
 └── package.json
 ```
+Please note that you will need some build step before being able to properly load your plugin, since Medusa expects to find the directories (`api`, `services`, `subscribers`, `loaders`…) within the npm package root. In the simplest case, this could be you manually copying the folders from `src`.
 
 It is worth mentioning the difference between building a generic and a non-generic plugin. A non-generic plugin has a specific purpose such as processing payments or creating fulfillments. Medusa core depends on a specific implementation from such plugins, which is why we've created interfaces that enforce this. These can be found in `medusa-interfaces`.
 
