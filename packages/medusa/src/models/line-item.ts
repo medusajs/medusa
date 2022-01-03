@@ -34,10 +34,7 @@ export class LineItem {
   @Column({ nullable: true })
   cart_id: string
 
-  @ManyToOne(
-    () => Cart,
-    (cart) => cart.items
-  )
+  @ManyToOne(() => Cart, (cart) => cart.items)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
@@ -45,10 +42,7 @@ export class LineItem {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    (order) => order.items
-  )
+  @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: "order_id" })
   order: Order
 
@@ -56,10 +50,7 @@ export class LineItem {
   @Column({ nullable: true })
   swap_id: string
 
-  @ManyToOne(
-    () => Swap,
-    (swap) => swap.additional_items
-  )
+  @ManyToOne(() => Swap, (swap) => swap.additional_items)
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
@@ -67,17 +58,11 @@ export class LineItem {
   @Column({ nullable: true })
   claim_order_id: string
 
-  @ManyToOne(
-    () => ClaimOrder,
-    (co) => co.additional_items
-  )
+  @ManyToOne(() => ClaimOrder, (co) => co.additional_items)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
-  @OneToMany(
-    () => LineItemTaxLine,
-    (tl) => tl.item
-  )
+  @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
   tax_lines: LineItemTaxLine[]
 
   @Column()
@@ -88,6 +73,9 @@ export class LineItem {
 
   @Column({ nullable: true })
   thumbnail: string
+
+  @Column({ default: false })
+  is_return: boolean
 
   @Column({ default: false })
   is_giftcard: boolean

@@ -185,6 +185,18 @@ class TotalsService extends BaseService {
         cartOrOrder,
         calculationContext
       )
+
+      if (cartOrOrder.type === "swap") {
+        const returnTaxLines = cartOrOrder.items.flatMap((i) => {
+          if (i.is_return) {
+            return i.tax_lines
+          }
+
+          return []
+        })
+
+        taxLines = taxLines.concat(returnTaxLines)
+      }
     }
 
     const toReturn = await this.taxCalculationStrategy_.calculate(
@@ -308,6 +320,13 @@ class TotalsService extends BaseService {
     /*
      * New tax system uses the tax lines registerd on the line items
      */
+    if (typeof lineItem.tax_lines === "undefined") {
+      throw new MedusaError(
+        MedusaError.Types.UNEXPECTED_STATE,
+        "Tax calculation did not receive tax_lines"
+      )
+    }
+
     const taxTotal = lineItem.tax_lines.reduce((acc, next) => {
       const taxRate = next.rate / 100
       return acc + this.rounded(lineSubtotal * taxRate)
@@ -584,15 +603,20 @@ class TotalsService extends BaseService {
   /**
    * Prepares the calculation context for a tax total calculation.
    * @param cartOrOrder - the cart or order to get the calculation context for
+   * @param isReturn - wether the calculation context is for a return
    * @return the tax calculation context
    */
-  getCalculationContext(cartOrOrder: Cart | Order): TaxCalculationContext {
+  getCalculationContext(
+    cartOrOrder: Cart | Order,
+    isReturn = false
+  ): TaxCalculationContext {
     const allocationMap = this.getAllocationMap(cartOrOrder)
     return {
       shipping_address: cartOrOrder.shipping_address,
       shipping_methods: cartOrOrder.shipping_methods || [],
       customer: cartOrOrder.customer,
       region: cartOrOrder.region,
+      is_return: isReturn,
       allocation_map: allocationMap,
     }
   }

@@ -11,13 +11,13 @@ export class taxLines1639427769523 implements MigrationInterface {
       `CREATE TABLE "tax_provider" ("id" character varying NOT NULL, "is_installed" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_b198bf82ba6a317c11763d99b99" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
-      `CREATE TABLE "line_item_tax_line" ("id" character varying NOT NULL, "rate" integer NOT NULL, "name" character varying NOT NULL, "code" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "metadata" jsonb, "item_id" character varying NOT NULL, CONSTRAINT "PK_4a0f4322fcd5ce4af85727f89a8" PRIMARY KEY ("id"))`
+      `CREATE TABLE "line_item_tax_line" ("id" character varying NOT NULL, "rate" real NOT NULL, "name" character varying NOT NULL, "code" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "metadata" jsonb, "item_id" character varying NOT NULL, CONSTRAINT "PK_4a0f4322fcd5ce4af85727f89a8" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_5077fa54b0d037e984385dfe8a" ON "line_item_tax_line" ("item_id") `
     )
     await queryRunner.query(
-      `CREATE TABLE "shipping_method_tax_line" ("id" character varying NOT NULL, "rate" integer NOT NULL, "name" character varying NOT NULL, "code" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "metadata" jsonb, "shipping_method_id" character varying NOT NULL, CONSTRAINT "PK_54c94f5908aacbd51cf0a73edb1" PRIMARY KEY ("id"))`
+      `CREATE TABLE "shipping_method_tax_line" ("id" character varying NOT NULL, "rate" real NOT NULL, "name" character varying NOT NULL, "code" character varying, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "metadata" jsonb, "shipping_method_id" character varying NOT NULL, CONSTRAINT "PK_54c94f5908aacbd51cf0a73edb1" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_926ca9f29014af8091722dede0" ON "shipping_method_tax_line" ("shipping_method_id") `

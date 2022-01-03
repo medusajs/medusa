@@ -14,6 +14,7 @@ class ReturnService extends BaseService {
     returnItemRepository,
     shippingOptionService,
     returnReasonService,
+    taxProviderService,
     fulfillmentProviderService,
     inventoryService,
     orderService,
@@ -34,6 +35,8 @@ class ReturnService extends BaseService {
 
     /** @private @const {ReturnItemRepository} */
     this.lineItemService_ = lineItemService
+
+    this.taxProviderService_ = taxProviderService
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
@@ -59,6 +62,7 @@ class ReturnService extends BaseService {
       totalsService: this.totalsService_,
       lineItemService: this.lineItemService_,
       returnRepository: this.returnRepository_,
+      taxProviderService: this.taxProviderService_,
       returnItemRepository: this.returnItemRepository_,
       shippingOptionService: this.shippingOptionService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
@@ -335,9 +339,14 @@ class ReturnService extends BaseService {
           relations: [
             "swaps",
             "swaps.additional_items",
+            "swaps.additional_items.tax_lines",
             "claims",
             "claims.additional_items",
+            "claims.additional_items.tax_lines",
             "items",
+            "items.tax_lines",
+            "region",
+            "region.tax_rates",
           ],
         })
 
@@ -369,7 +378,6 @@ class ReturnService extends BaseService {
         }
       } else {
         toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
-
         if (data.shipping_method) {
           toRefund = Math.max(
             0,
@@ -416,7 +424,7 @@ class ReturnService extends BaseService {
       const result = await returnRepository.save(created)
 
       if (method) {
-        await this.shippingOptionService_
+        const shippingMethod = await this.shippingOptionService_
           .withTransaction(manager)
           .createShippingMethod(
             method.option_id,
@@ -426,6 +434,13 @@ class ReturnService extends BaseService {
               return_id: result.id,
             }
           )
+
+        const calculationContext =
+          this.totalsService_.getCalculationContext(order)
+
+        await this.taxProviderService_
+          .withTransaction(manager)
+          .createShippingTaxLines(shippingMethod, calculationContext)
       }
 
       return result

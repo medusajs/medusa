@@ -1,6 +1,11 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import { Customer, Order } from "@medusajs/medusa"
+import {
+  Customer,
+  Order,
+  PaymentStatus,
+  FulfillmentStatus,
+} from "@medusajs/medusa"
 
 import {
   DiscountFactoryData,
@@ -22,6 +27,8 @@ import {
 
 export type OrderFactoryData = {
   id?: string
+  payment_status?: PaymentStatus
+  fulfillment_status?: FulfillmentStatus
   region?: RegionFactoryData | string
   email?: string | null
   currency_code?: string
@@ -76,6 +83,9 @@ export const simpleOrderFactory = async (
   const toSave = manager.create(Order, {
     id,
     discounts,
+    payment_status: data.payment_status ?? PaymentStatus.AWAITING,
+    fulfillment_status:
+      data.fulfillment_status ?? FulfillmentStatus.NOT_FULFILLED,
     customer_id: customer.id,
     email: customer.email,
     region_id: regionId,

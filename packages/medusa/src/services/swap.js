@@ -27,6 +27,7 @@ class SwapService extends BaseService {
     returnService,
     lineItemService,
     paymentProviderService,
+    shippingMethodTaxLineRepository,
     shippingOptionService,
     fulfillmentService,
     orderService,
@@ -71,6 +72,9 @@ class SwapService extends BaseService {
     /** @private @const {EventBusService} */
     this.eventBus_ = eventBusService
 
+    /** @private @const {typeof ShippingMethodTaxLineRepository} */
+    this.shippingTaxLineRepo_ = shippingMethodTaxLineRepository
+
     /** @private @const {CustomShippingOptionService} */
     this.customShippingOptionService_ = customShippingOptionService
   }
@@ -88,6 +92,7 @@ class SwapService extends BaseService {
       totalsService: this.totalsService_,
       returnService: this.returnService_,
       lineItemService: this.lineItemService_,
+      shippingMethodTaxLineRepository: this.shippingTaxLineRepo_,
       paymentProviderService: this.paymentProviderService_,
       shippingOptionService: this.shippingOptionService_,
       orderService: this.orderService_,
@@ -549,6 +554,7 @@ class SwapService extends BaseService {
           "return_order",
           "return_order.items",
           "return_order.shipping_method",
+          "return_order.shipping_method.tax_lines",
         ],
       })
 
@@ -603,9 +609,12 @@ class SwapService extends BaseService {
         })
       }
 
-      // If the swap has a return shipping method the price has to be added to the
-      // cart.
+      // If the swap has a return shipping method the price has to be added to
+      // the cart.
       if (swap.return_order && swap.return_order.shipping_method) {
+        const shippingTaxLineRepo = this.manager_.getCustomRepository(
+          this.shippingTaxLineRepo_
+        )
         await this.lineItemService_.withTransaction(manager).create({
           cart_id: cart.id,
           title: "Return shipping",
@@ -613,51 +622,26 @@ class SwapService extends BaseService {
           has_shipping: true,
           allow_discounts: false,
           unit_price: swap.return_order.shipping_method.price,
-          metadata: {
-            is_return_line: true,
-          },
+          is_return: true,
+          tax_lines: swap.return_order.shipping_method.tax_lines.map((tl) => {
+            return shippingTaxLineRepo.create({
+              name: tl.name,
+              code: tl.code,
+              rate: tl.rate,
+              metadata: tl.metadata,
+            })
+          }),
         })
       }
 
-      for (const r of swap.return_order.items) {
-        let allItems = [...order.items]
-
-        if (order.swaps && order.swaps.length) {
-          for (const s of order.swaps) {
-            allItems = [...allItems, ...s.additional_items]
-          }
-        }
-
-        if (order.claims && order.claims.length) {
-          for (const c of order.claims) {
-            allItems = [...allItems, ...c.additional_items]
-          }
-        }
-
-        const lineItem = allItems.find((i) => i.id === r.item_id)
-
-        const toCreate = {
-          cart_id: cart.id,
-          thumbnail: lineItem.thumbnail,
-          title: lineItem.title,
-          variant_id: lineItem.variant_id,
-          unit_price: -1 * lineItem.unit_price,
-          quantity: r.quantity,
-          allow_discounts: lineItem.allow_discounts,
-          metadata: {
-            ...lineItem.metadata,
-            is_return_line: true,
-          },
-        }
-
-        await this.lineItemService_.withTransaction(manager).create(toCreate)
-      }
+      await this.lineItemService_
+        .withTransaction(manager)
+        .createReturnLines(swap.return_order.id, cart.id)
 
       swap.cart_id = cart.id
 
       const swapRepo = manager.getCustomRepository(this.swapRepository_)
-      const result = await swapRepo.save(swap)
-      return result
+      return await swapRepo.save(swap)
     })
   }
 

@@ -300,8 +300,10 @@ class OrderService extends BaseService {
       relationSet.add("items.tax_lines")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
+      relationSet.add("swaps.additional_items.tax_lines")
       relationSet.add("claims")
       relationSet.add("claims.additional_items")
+      relationSet.add("claims.additional_items.tax_lines")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
       relationSet.add("discounts.rule.valid_for")
@@ -363,8 +365,7 @@ class OrderService extends BaseService {
       )
     }
 
-    const order = await this.decorateTotals_(raw, totalsToSelect)
-    return order
+    return await this.decorateTotals_(raw, totalsToSelect)
   }
 
   /**

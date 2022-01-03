@@ -8,10 +8,15 @@ import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
 import { LineItemTaxLine } from "../models/line-item-tax-line"
 import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
+import { ShippingMethod } from "../models/shipping-method"
 import { Region } from "../models/region"
 import { Cart } from "../models/cart"
 import { Order } from "../models/order"
-import { ITaxService, TaxCalculationContext } from "../interfaces/tax-service"
+import {
+  ITaxService,
+  ItemTaxCalculationLine,
+  TaxCalculationContext,
+} from "../interfaces/tax-service"
 
 import { TaxServiceRate } from "../types/tax-service"
 
@@ -54,6 +59,8 @@ class TaxProviderService extends BaseService {
     const cloned = new TaxProviderService(this.container_)
 
     cloned.transactionManager_ = transactionManager
+    cloned.manager_ = transactionManager
+
     return cloned
   }
 
@@ -95,6 +102,74 @@ class TaxProviderService extends BaseService {
   }
 
   /**
+   * Persists the tax lines relevant for a shipping method to the database. Used
+   * for return shipping methods.
+   * @param shippingMethod - the shipping method to create tax lines for
+   * @param calculationContext - the calculation context to get tax lines by
+   * @return the newly created tax lines
+   */
+  async createShippingTaxLines(
+    shippingMethod: ShippingMethod,
+    calculationContext: TaxCalculationContext
+  ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
+    const taxLines = await this.getShippingTaxLines(
+      shippingMethod,
+      calculationContext
+    )
+    return this.manager_.save(taxLines)
+  }
+
+  /**
+   * Gets the relevant tax lines for a shipping method. Note: this method
+   * doesn't persist the tax lines. Use createShippingTaxLines if you wish to
+   * persist the tax lines to the DB layer.
+   * @param shippingMethod - the shipping method to get tax lines for
+   * @param calculationContext - the calculation context to get tax lines by
+   * @return the computed tax lines
+   */
+  async getShippingTaxLines(
+    shippingMethod: ShippingMethod,
+    calculationContext: TaxCalculationContext
+  ): Promise<ShippingMethodTaxLine[]> {
+    const calculationLines = [
+      {
+        shipping_method: shippingMethod,
+        rates: await this.getRegionRatesForShipping(
+          shippingMethod.shipping_option_id,
+          calculationContext.region
+        ),
+      },
+    ]
+
+    const taxProvider = this.retrieveProvider(calculationContext.region)
+    const providerLines = await taxProvider.getTaxLines(
+      [],
+      calculationLines,
+      calculationContext
+    )
+
+    const smTaxLineRepo = this.manager_.getCustomRepository(this.smTaxLineRepo_)
+
+    // .create only creates entities nothing is persisted in DB
+    return providerLines.map((pl) => {
+      if (!("shipping_method_id" in pl)) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Expected only shipping method tax lines"
+        )
+      }
+
+      return smTaxLineRepo.create({
+        shipping_method_id: pl.shipping_method_id,
+        rate: pl.rate,
+        name: pl.name,
+        code: pl.code,
+        metadata: pl.metadata,
+      })
+    })
+  }
+
+  /**
    * Gets the relevant tax lines for an order or cart. If an order is provided
    * the order's tax lines will be returned. If a cart is provided the tax lines
    * will be computed from the tax rules and potentially a 3rd party tax plugin.
@@ -110,6 +185,10 @@ class TaxProviderService extends BaseService {
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
     const calculationLines = await Promise.all(
       cartOrOrder.items.map(async (l) => {
+        if (l.is_return) {
+          return null
+        }
+
         if (l.variant && l.variant.product_id) {
           return {
             item: l,
@@ -146,7 +225,7 @@ class TaxProviderService extends BaseService {
 
     const taxProvider = this.retrieveProvider(calculationContext.region)
     const providerLines = await taxProvider.getTaxLines(
-      calculationLines,
+      calculationLines.filter((v) => v !== null) as ItemTaxCalculationLine[],
       shippingCalculationLines,
       calculationContext
     )
