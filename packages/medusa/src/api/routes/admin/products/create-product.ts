@@ -450,7 +450,7 @@ export class AdminPostProductsReq {
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()
-  tags?: ProductTagReq
+  tags?: ProductTagReq[]
 
   @IsOptional()
   @Type(() => ProductOptionReq)
