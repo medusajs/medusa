@@ -356,18 +356,10 @@ class ReturnService extends BaseService {
         this.validateReturnLineItem_
       )
 
-      if (data.shipping_method) {
-        if (typeof data.shipping_method.price === "undefined") {
-          const opt = await this.shippingOptionService_.retrieve(
-            data.shipping_method.option_id
-          )
-          data.shipping_method.price = opt.amount
-        }
-      }
-
       let toRefund = data.refund_amount
       if (typeof toRefund !== "undefined") {
-        // refundable from order
+        // Merchant wants to do a custom refund amount; we check if amount is
+        // refundable
         const refundable = order.refundable_amount
 
         if (toRefund > refundable) {
@@ -377,13 +369,8 @@ class ReturnService extends BaseService {
           )
         }
       } else {
+        // Merchant hasn't specified refund amount so we calculate it
         toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
-        if (data.shipping_method) {
-          toRefund = Math.max(
-            0,
-            toRefund - data.shipping_method.price * (1 + order.tax_rate / 100)
-          )
-        }
       }
 
       const method = data.shipping_method
@@ -438,9 +425,22 @@ class ReturnService extends BaseService {
         const calculationContext =
           this.totalsService_.getCalculationContext(order)
 
-        await this.taxProviderService_
+        const taxLines = await this.taxProviderService_
           .withTransaction(manager)
           .createShippingTaxLines(shippingMethod, calculationContext)
+
+        const shippingTotal =
+          shippingMethod.price +
+          taxLines.reduce(
+            (acc, tl) =>
+              acc + Math.round(shippingMethod.price * (tl.rate / 100)),
+            0
+          )
+
+        if (typeof data.refund_amount === "undefined") {
+          result.refund_amount = toRefund - shippingTotal
+          return await returnRepository.save(result)
+        }
       }
 
       return result
