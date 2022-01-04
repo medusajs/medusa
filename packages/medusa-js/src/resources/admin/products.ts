@@ -1,4 +1,8 @@
 import {
+  AdminGetProductsParams,
+  AdminPostProductsProductMetadataReq,
+  AdminPostProductsProductOptionsOption,
+  AdminPostProductsProductOptionsReq,
   AdminPostProductsProductReq,
   AdminPostProductsProductVariantsReq,
   AdminPostProductsProductVariantsVariantReq,
@@ -9,7 +13,7 @@ import {
   AdminProductsListRes,
   AdminProductsListTagsRes,
   AdminProductsListTypesRes,
-  AdminProductsRes,
+  AdminProductsRes
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
