@@ -85,7 +85,7 @@ In the API reference docs you can find all the available requests that are expos
 
 ### Setup Stripe as a payment provider (Guide coming soon)
 
-One of the first things you may want to do when building out your store would be to add a payment provider. Your starter project comes with a dummy payment provider that simply fakes payments being processed. In the real world you want a payment provider that can handle credit card information securely and make sure that funds are being transfered to your account. Stripe is one of the most popular payment providers and Medusa has an official plugin that you can easily install in your project.
+One of the first things you may want to do when building out your store would be to add a payment provider. Your starter project comes with a dummy payment provider that simply fakes payments being processed. In the real world you want a payment provider that can handle credit card information securely and make sure that funds are being transferred to your account. Stripe is one of the most popular payment providers and Medusa has an official plugin that you can easily install in your project.
 
 ## Summary
 
