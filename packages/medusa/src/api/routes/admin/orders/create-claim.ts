@@ -318,22 +318,26 @@ export default async (req, res) => {
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
-enum ClaimTypes {
+enum ClaimTypeEnum {
   replace = "replace",
   refund = "refund",
 }
 
-enum ClaimItemReason {
+type ClaimType = `${ClaimTypeEnum}`
+
+enum ClaimItemReasonEnum {
   missing_item = "missing_item",
   wrong_item = "wrong_item",
   production_failure = "production_failure",
   other = "other",
 }
 
+type ClaimItemReasonType = `${ClaimItemReasonEnum}`
+
 export class AdminPostOrdersOrderClaimsReq {
-  @IsEnum(ClaimTypes)
+  @IsEnum(ClaimTypeEnum)
   @IsNotEmpty()
-  type: ClaimTypes
+  type: ClaimType
 
   @IsArray()
   @IsNotEmpty()
@@ -414,9 +418,9 @@ class Item {
   @IsOptional()
   note?: string
 
-  @IsEnum(ClaimItemReason)
+  @IsEnum(ClaimItemReasonEnum)
   @IsOptional()
-  reason?: ClaimItemReason
+  reason?: ClaimItemReasonType
 
   @IsArray()
   @IsOptional()
