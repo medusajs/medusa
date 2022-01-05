@@ -20,8 +20,7 @@ import {
 
 import { TaxServiceRate } from "../types/tax-service"
 
-import ProductTaxRateService from "./product-tax-rate"
-import ShippingTaxRateService from "./shipping-tax-rate"
+import TaxRateService from "./tax-rate"
 
 const CACHE_TIME = 30 // seconds
 
@@ -32,8 +31,7 @@ class TaxProviderService extends BaseService {
   private container_: AwilixContainer
   private manager_: EntityManager
   private transactionManager_: EntityManager
-  private productTaxRateService_: ProductTaxRateService
-  private shippingTaxRateService_: ShippingTaxRateService
+  private taxRateService_: TaxRateService
   private taxLineRepo_: typeof LineItemTaxLineRepository
   private smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   private redis_: Redis
@@ -44,8 +42,7 @@ class TaxProviderService extends BaseService {
     this.container_ = container
     this.taxLineRepo_ = container["lineItemTaxLineRepository"]
     this.smTaxLineRepo_ = container["shippingMethodTaxLineRepository"]
-    this.productTaxRateService_ = container["productTaxRateService"]
-    this.shippingTaxRateService_ = container["shippingTaxRateService"]
+    this.taxRateService_ = container["taxRateService"]
     this.eventBus_ = container["eventBusService"]
     this.manager_ = container["manager"]
     this.redis_ = container["redisClient"]
@@ -263,7 +260,7 @@ class TaxProviderService extends BaseService {
   }
 
   /**
-   * Gets the tax rates configured for a shipping option. The rates a cached
+   * Gets the tax rates configured for a shipping option. The rates are cached
    * between calls.
    * @param optionId - the option id of the shipping method.
    * @param region - the region to get configured rates for.
@@ -281,25 +278,17 @@ class TaxProviderService extends BaseService {
     let toReturn: TaxServiceRate[] = []
     const regionRates = region.tax_rates
     if (regionRates !== null && regionRates.length > 0) {
-      const optionRates = await this.shippingTaxRateService_.list({
-        shipping_option_id: optionId,
-        rate_id: regionRates.map((tr) => tr.id),
-      })
+      const optionRates = await this.taxRateService_.listByShippingOption(
+        optionId,
+        { region_id: region.id }
+      )
 
       if (optionRates.length > 0) {
         toReturn = optionRates.map((pr) => {
-          const rate = regionRates.find((rr) => rr.id === pr.rate_id)
-          if (!rate) {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              "An error occured while calculating tax rates"
-            )
-          }
-
           return {
-            rate: rate.rate,
-            name: rate.name,
-            code: rate.code,
+            rate: pr.rate,
+            name: pr.name,
+            code: pr.code,
           }
         })
       }
@@ -321,7 +310,7 @@ class TaxProviderService extends BaseService {
   }
 
   /**
-   * Gets the tax rates configured for a product. The rates a cached between
+   * Gets the tax rates configured for a product. The rates are cached between
    * calls.
    * @param productId - the product id to get rates for
    * @param region - the region to get configured rates for.
@@ -339,25 +328,16 @@ class TaxProviderService extends BaseService {
     let toReturn: TaxServiceRate[] = []
     const regionRates = region.tax_rates
     if (regionRates !== null && regionRates.length > 0) {
-      const productRates = await this.productTaxRateService_.list({
-        product_id: productId,
-        rate_id: regionRates.map((tr) => tr.id),
+      const productRates = await this.taxRateService_.listByProduct(productId, {
+        region_id: region.id,
       })
 
       if (productRates.length > 0) {
         toReturn = productRates.map((pr) => {
-          const rate = regionRates.find((rr) => rr.id === pr.rate_id)
-          if (!rate) {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              "An error occured while calculating tax rates"
-            )
-          }
-
           return {
-            rate: rate.rate,
-            name: rate.name,
-            code: rate.code,
+            rate: pr.rate,
+            name: pr.name,
+            code: pr.code,
           }
         })
       }

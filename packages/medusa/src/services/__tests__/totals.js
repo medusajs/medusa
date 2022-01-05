@@ -548,6 +548,7 @@ describe("TotalsService", () => {
         {
           shipping_address: order.shipping_address,
           shipping_methods: order.shipping_methods,
+          is_return: false,
           customer: order.customer,
           region: order.region,
           allocation_map: {},
@@ -597,6 +598,7 @@ describe("TotalsService", () => {
       expect(getTaxLinesMock).toHaveBeenCalledWith(order, {
         shipping_address: order.shipping_address,
         shipping_methods: order.shipping_methods,
+        is_return: false,
         customer: order.customer,
         region: order.region,
         allocation_map: {},
@@ -609,6 +611,7 @@ describe("TotalsService", () => {
         {
           shipping_address: order.shipping_address,
           shipping_methods: order.shipping_methods,
+          is_return: false,
           customer: order.customer,
           region: order.region,
           allocation_map: {},

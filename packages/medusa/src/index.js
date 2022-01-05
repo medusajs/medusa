@@ -7,6 +7,7 @@ export * from "./interfaces"
 // Models
 export * from "./models/shipping-tax-rate"
 export * from "./models/product-tax-rate"
+export * from "./models/product-type-tax-rate"
 export * from "./models/tax-rate"
 export * from "./models/shipping-method-tax-line"
 export * from "./models/line-item-tax-line"

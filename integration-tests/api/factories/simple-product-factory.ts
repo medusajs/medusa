@@ -1,6 +1,7 @@
 import { Connection } from "typeorm"
 import faker from "faker"
 import {
+  ShippingProfileType,
   Customer,
   Region,
   Cart,
@@ -11,6 +12,7 @@ import {
   ShippingMethod,
   Address,
   Product,
+  ProductType,
   ProductOption,
   ProductVariant,
   MoneyAmount,
@@ -28,6 +30,7 @@ export type ProductFactoryData = {
   id?: string
   is_giftcard?: boolean
   title?: string
+  type?: string
   options?: { id: string; title: string }[]
   variants?: ProductVariantFactoryData[]
 }
@@ -44,16 +47,26 @@ export const simpleProductFactory = async (
   const manager = connection.manager
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
-    type: "default",
+    type: ShippingProfileType.DEFAULT,
   })
 
   const gcProfile = await manager.findOne(ShippingProfile, {
-    type: "gift_card",
+    type: ShippingProfileType.GIFT_CARD,
   })
+
+  let typeId: string
+  if (typeof data.type !== "undefined") {
+    const toSave = manager.create(ProductType, {
+      value: data.type,
+    })
+    const res = await manager.save(toSave)
+    typeId = res.id
+  }
 
   const prodId = data.id || `simple-product-${Math.random() * 1000}`
   const toSave = manager.create(Product, {
     id: prodId,
+    type_id: typeId,
     title: data.title || faker.commerce.productName(),
     is_giftcard: data.is_giftcard || false,
     discountable: !data.is_giftcard,

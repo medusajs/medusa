@@ -7,6 +7,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const {
   simpleProductTaxRateFactory,
   simpleShippingTaxRateFactory,
+  simpleProductTypeTaxRateFactory,
   simpleShippingOptionFactory,
   simpleCartFactory,
   simpleRegionFactory,
@@ -28,7 +29,7 @@ describe("Automatic Cart Taxes", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     } catch (error) {
       console.log(error)
     }
@@ -133,6 +134,166 @@ describe("Automatic Cart Taxes", () => {
     expect(response.status).toEqual(200)
     expect(response.data.cart.tax_total).toEqual(24)
     expect(response.data.cart.total).toEqual(224)
+  })
+
+  test("correct calculation w. same type + prod tax rate", async () => {
+    const product = await simpleProductFactory(
+      dbConnection,
+      {
+        type: "Pants",
+        variants: [
+          {
+            id: "test-variant",
+          },
+        ],
+      },
+      100
+    )
+
+    const region = await simpleRegionFactory(dbConnection, {
+      name: "Test region",
+      tax_rate: 12,
+    })
+
+    const prodRate = await simpleProductTaxRateFactory(dbConnection, {
+      product_id: product.id,
+      rate: {
+        region_id: region.id,
+        rate: 10,
+      },
+    })
+
+    await simpleProductTypeTaxRateFactory(dbConnection, {
+      product_type_id: product.type_id,
+      rate: prodRate.rate_id,
+    })
+
+    const cart = await simpleCartFactory(
+      dbConnection,
+      {
+        region: region.id,
+        line_items: [
+          {
+            variant_id: "test-variant",
+            unit_price: 100,
+          },
+        ],
+      },
+      100
+    )
+
+    const api = useApi()
+
+    const response = await api.get(`/store/carts/${cart.id}`)
+    expect(response.status).toEqual(200)
+    expect(response.data.cart.tax_total).toEqual(10)
+    expect(response.data.cart.total).toEqual(110)
+  })
+
+  test("correct calculation w. type + prod tax rate", async () => {
+    const product = await simpleProductFactory(
+      dbConnection,
+      {
+        type: "Pants",
+        variants: [
+          {
+            id: "test-variant",
+          },
+        ],
+      },
+      100
+    )
+
+    const region = await simpleRegionFactory(dbConnection, {
+      name: "Test region",
+      tax_rate: 12,
+    })
+
+    await simpleProductTaxRateFactory(dbConnection, {
+      product_id: product.id,
+      rate: {
+        region_id: region.id,
+        rate: 10,
+      },
+    })
+
+    await simpleProductTypeTaxRateFactory(dbConnection, {
+      product_type_id: product.type_id,
+      rate: {
+        region_id: region.id,
+        rate: 25,
+      },
+    })
+
+    const cart = await simpleCartFactory(
+      dbConnection,
+      {
+        region: region.id,
+        line_items: [
+          {
+            variant_id: "test-variant",
+            unit_price: 100,
+          },
+        ],
+      },
+      100
+    )
+
+    const api = useApi()
+
+    const response = await api.get(`/store/carts/${cart.id}`)
+    expect(response.status).toEqual(200)
+    expect(response.data.cart.tax_total).toEqual(35)
+    expect(response.data.cart.total).toEqual(135)
+  })
+
+  test("correct calculation w. tax rate override type", async () => {
+    const product = await simpleProductFactory(
+      dbConnection,
+      {
+        type: "Pants",
+        variants: [
+          {
+            id: "test-variant",
+          },
+        ],
+      },
+      100
+    )
+
+    const region = await simpleRegionFactory(dbConnection, {
+      name: "Test region",
+      tax_rate: 12,
+    })
+
+    await simpleProductTypeTaxRateFactory(dbConnection, {
+      product_type_id: product.type_id,
+      rate: {
+        region_id: region.id,
+        rate: 25,
+      },
+    })
+
+    const cart = await simpleCartFactory(
+      dbConnection,
+      {
+        region: region.id,
+        line_items: [
+          {
+            variant_id: "test-variant",
+            unit_price: 100,
+          },
+        ],
+      },
+      100
+    )
+
+    const api = useApi()
+
+    const response = await api.get(`/store/carts/${cart.id}`)
+    expect(response.status).toEqual(200)
+    expect(response.data.cart.tax_total).toEqual(25)
+    expect(response.data.cart.total).toEqual(125)
   })
 
   test("correct calculation w. tax rate override", async () => {
