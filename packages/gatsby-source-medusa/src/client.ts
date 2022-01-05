@@ -22,7 +22,7 @@ export const createClient = (
   options: MedusaPluginOptions,
   reporter: Reporter
 ): any => {
-  const { storeUrl, authToken } = options
+  const { storeUrl, apiKey } = options
 
   /**
    *
@@ -77,7 +77,7 @@ export const createClient = (
    */
   async function orders(date?: string): Promise<any[]> {
     const orders = await medusaRequest(storeUrl, `/admin/orders`, {
-      Authorization: `Bearer ${authToken}`,
+      Authorization: `Bearer ${apiKey}`,
     })
       .then(({ data }) => {
         return data.orders

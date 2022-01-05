@@ -167,9 +167,9 @@ export async function createSchemaCustomization({
       is_giftcard: Boolean!
       status: String!
       thumbnail: File @link(from: "fields.localThumbnail")
-      options: [MedusaProductOption]!
-      variants: [MedusaProductVariant]!
-      collection: MedusaCollection
+      options: [MedusaProductOptions]!
+      variants: [MedusaProductVariants]!
+      collection: MedusaCollections @link(from: "collection_id")
       collection_id: String
       profile_id: String!
       discountable: Boolean!
@@ -181,24 +181,28 @@ export async function createSchemaCustomization({
       width: Int
     }
     type MedusaImages implements Node {
+      id: ID!
+      url: String!
+      created_at: Date!
+      updated_at: Date!
       image: File @link(from: "fields.localImage")
     }
-    type MedusaCollection implements Node {
+    type MedusaCollections implements Node {
       id: ID!
       handle: String!
       title: String!
       created_at: Date!
       updated_at: Date!
     }
-    type MedusaProductOption @dontInfer {
+    type MedusaProductOptions @dontInfer {
       id: ID!
       title: String!
       product_id: String!
-      values: [MedusaProductOptionValue]!
+      values: [MedusaProductOptionValues]!
       created_at: Date!
       updated_at: Date!
     }
-    type MedusaProductOptionValue @dontInfer {
+    type MedusaProductOptionValues @dontInfer {
       id: ID!
       value: String!
       created_at: Date!
@@ -206,11 +210,11 @@ export async function createSchemaCustomization({
       option_id: String!
       variant_id: String!
     }
-    type MedusaProductVariant @dontInfer {
+    type MedusaProductVariants @dontInfer {
       id: ID!
       title: String!
       product_id: String!
-      prices: [MedusaMoneyAmount]!
+      prices: [MedusaMoneyAmounts]!
       sku: String
       barcode: String
       upc: String
@@ -226,41 +230,17 @@ export async function createSchemaCustomization({
       length: Int
       height: Int
       width: Int
-      options: [MedusaProductOptionValue]!
+      options: [MedusaProductOptionValues]!
       created_at: Date!
       updated_at: Date!
     }
-    type MedusaMoneyAmount @dontInfer {
+    type MedusaMoneyAmounts @dontInfer {
       id: ID!
       amount: Int!
       currency_code: String!
       created_at: Date!
       updated_at: Date!
       variant_id: String!
-    }
-    type MedusaImage @dontInfer {
-      id: ID!
-      url: String!
-      created_at: Date!
-      updated_at: Date!
-    }
-    type MedusaRegion implements Node {
-      id: ID!
-      name: String!
-      tax_rate: Float!
-      currency_code: String!
-      created_at: Date!
-      updated_at: Date!
-      countries: [MedusaCountry]!
-    }
-    type MedusaCountry @dontInfer {
-      id: ID!
-      display_name: String!
-      iso_2: String!
-      iso_3: String!
-      name: String!
-      num_code: Int!
-      region_id: String!
     }
   `)
 }
