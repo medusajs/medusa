@@ -29,7 +29,7 @@ describe("Automatic Cart Taxes", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: true })
+      medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
     }

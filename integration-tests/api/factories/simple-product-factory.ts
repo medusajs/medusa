@@ -2,23 +2,10 @@ import { Connection } from "typeorm"
 import faker from "faker"
 import {
   ShippingProfileType,
-  Customer,
-  Region,
-  Cart,
-  DiscountRule,
-  Discount,
   ShippingProfile,
-  ShippingOption,
-  ShippingMethod,
-  Address,
   Product,
   ProductType,
   ProductOption,
-  ProductVariant,
-  MoneyAmount,
-  LineItem,
-  Payment,
-  PaymentSession,
 } from "@medusajs/medusa"
 
 import {
@@ -87,7 +74,7 @@ export const simpleProductFactory = async (
 
   const variants = data.variants || [
     {
-      id: "simple-test-variant",
+      id: `simple-test-variant-${Math.random() * 1000}`,
       title: "Test",
       product_id: prodId,
       prices: [{ currency: "usd", amount: 100 }],

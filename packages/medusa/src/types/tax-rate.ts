@@ -18,14 +18,14 @@ export type UpdateTaxRateInput = {
   region_id?: string
   code?: string
   name?: string
-  rate?: number
+  rate?: number | null
 }
 
 export type CreateTaxRateInput = {
   region_id: string
   code: string
   name: string
-  rate?: number
+  rate?: number | null
 }
 
 export type TaxRateListByConfig = {

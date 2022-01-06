@@ -1,5 +1,11 @@
 import { unionBy } from "lodash"
-import { EntityRepository, Repository } from "typeorm"
+import {
+  SelectQueryBuilder,
+  EntityRepository,
+  FindManyOptions,
+  FindOptionsUtils,
+  Repository,
+} from "typeorm"
 import { TaxRate } from "../models/tax-rate"
 import { ProductTaxRate } from "../models/product-tax-rate"
 import { ProductTypeTaxRate } from "../models/product-type-tax-rate"
@@ -8,8 +14,90 @@ import { Product } from "../models/product"
 import { ShippingMethod } from "../models/shipping-method"
 import { TaxRateListByConfig } from "../types/tax-rate"
 
+const resolveableFields = [
+  "product_count",
+  "product_type_count",
+  "shipping_option_count",
+]
+
 @EntityRepository(TaxRate)
 export class TaxRateRepository extends Repository<TaxRate> {
+  getFindQueryBuilder(findOptions: FindManyOptions<TaxRate>) {
+    let qb = this.createQueryBuilder("tr")
+    const cleanOptions = findOptions
+
+    const resolverFields: string[] = []
+    if (typeof findOptions.select !== "undefined") {
+      let selectableCols: (keyof TaxRate)[] = []
+      for (const k of findOptions.select) {
+        if (!resolveableFields.includes(k)) {
+          selectableCols.push(k)
+        } else {
+          resolverFields.push(k)
+        }
+      }
+      cleanOptions.select = selectableCols
+    }
+
+    FindOptionsUtils.applyFindManyOptionsOrConditionsToQueryBuilder(
+      qb,
+      cleanOptions
+    )
+
+    if (resolverFields.length > 0) {
+      this.applyResolutionsToQueryBuilder(qb, resolverFields)
+    }
+
+    return qb
+  }
+
+  async findWithResolution(findOptions: FindManyOptions<TaxRate>) {
+    const qb = this.getFindQueryBuilder(findOptions)
+    return await qb.getMany()
+  }
+
+  async findOneWithResolution(findOptions: FindManyOptions<TaxRate>) {
+    const qb = this.getFindQueryBuilder(findOptions)
+    return await qb.getOne()
+  }
+
+  async findAndCountWithResolution(findOptions: FindManyOptions<TaxRate>) {
+    const qb = this.getFindQueryBuilder(findOptions)
+    return await qb.getManyAndCount()
+  }
+
+  applyResolutionsToQueryBuilder(
+    qb: SelectQueryBuilder<TaxRate>,
+    resolverFields: string[]
+  ): SelectQueryBuilder<TaxRate> {
+    for (const k of resolverFields) {
+      switch (k) {
+        case "product_count":
+          qb.loadRelationCountAndMap(
+            `${qb.alias}.product_count`,
+            `${qb.alias}.products`
+          )
+          break
+        case "product_type_count":
+          qb.loadRelationCountAndMap(
+            `${qb.alias}.product_type_count`,
+            `${qb.alias}.product_types`
+          )
+          break
+        case "shipping_option_count":
+          qb.loadRelationCountAndMap(
+            `${qb.alias}.shipping_option_count`,
+            `${qb.alias}.shipping_options`
+          )
+          break
+        default:
+          break
+      }
+    }
+
+    return qb
+  }
+
   async addToProduct(
     id: string,
     productIds: string[]
@@ -21,9 +109,9 @@ export class TaxRateRepository extends Repository<TaxRate> {
       .values(toInsert)
       .execute()
 
-    return this.createQueryBuilder()
+    return await this.manager
+      .createQueryBuilder(ProductTaxRate, "ptr")
       .select()
-      .from(ProductTaxRate, "ptr")
       .where(insertResult.identifiers)
       .getMany()
   }
@@ -42,9 +130,9 @@ export class TaxRateRepository extends Repository<TaxRate> {
       .values(toInsert)
       .execute()
 
-    return this.createQueryBuilder()
+    return await this.manager
+      .createQueryBuilder(ProductTypeTaxRate, "ptr")
       .select()
-      .from(ProductTypeTaxRate, "ptr")
       .where(insertResult.identifiers)
       .getMany()
   }
@@ -63,9 +151,9 @@ export class TaxRateRepository extends Repository<TaxRate> {
       .values(toInsert)
       .execute()
 
-    return this.createQueryBuilder()
+    return await this.manager
+      .createQueryBuilder(ShippingTaxRate, "str")
       .select()
-      .from(ShippingTaxRate, "str")
       .where(insertResult.identifiers)
       .getMany()
   }
