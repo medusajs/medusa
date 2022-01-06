@@ -158,7 +158,7 @@ export type AdminProductsListTypesRes = {
 }
 
 export type AdminProductsListTagsRes = {
-  types: ProductTag[]
+  tags: ProductTag[]
 }
 
 export type AdminProductsRes = {
