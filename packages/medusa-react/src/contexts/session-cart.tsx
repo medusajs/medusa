@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import { useLocalStorage } from "../hooks/utils"
 import { RegionInfo, ProductVariant } from "../types"
-import { getVariantPrice } from "../utils"
+import { getVariantPrice } from "../helpers"
 import { isArray, isEmpty, isObject } from "lodash"
 
 interface Item {

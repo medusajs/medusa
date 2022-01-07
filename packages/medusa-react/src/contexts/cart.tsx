@@ -6,7 +6,7 @@ import {
   useSetPaymentSession,
   useUpdateCart,
   useCreatePaymentSession,
-} from "../hooks/carts"
+} from "../hooks/store/"
 import { Cart } from "../types"
 
 interface CartState {

@@ -61,6 +61,7 @@
     "@storybook/react": "^6.3.12",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
+    "@types/jest": "^27.0.3",
     "@types/lodash": "^4.14.177",
     "@types/react": "^17.0.33",
     "@types/react-dom": "^17.0.10",
@@ -83,8 +84,8 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.1.60",
-    "@medusajs/medusa-js": "^1.0.8",
+    "@medusajs/medusa": "1.1.60-dev-1641512804236",
+    "@medusajs/medusa-js": "1.0.8-dev-1641512804236",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "react-query": "^3.31.0"

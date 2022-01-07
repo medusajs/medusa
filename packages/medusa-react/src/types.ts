@@ -3,7 +3,12 @@ import {
   ProductVariant as ProductVariantEntity,
   StoreCartsRes,
 } from "@medusajs/medusa"
-import { QueryKey, UseQueryOptions } from "react-query"
+import {
+  QueryClient,
+  QueryKey,
+  UseMutationOptions,
+  UseQueryOptions,
+} from "react-query"
 
 export type UseQueryOptionsWrapper<
   // Return type of queryFn
@@ -29,3 +34,18 @@ type ConvertDateToString<T extends {}> = {
 }
 
 export type Cart = StoreCartsRes["cart"]
+
+export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
+  all: [TKey]
+  lists: () => [...TQueryKey<TKey>["all"], "list"]
+  list: (
+    query?: TListQuery
+  ) => [
+    ...ReturnType<TQueryKey<TKey>["lists"]>,
+    { query: TListQuery | undefined }
+  ]
+  details: () => [...TQueryKey<TKey>["all"], "detail"]
+  detail: (
+    id: TDetailQuery
+  ) => [...ReturnType<TQueryKey<TKey>["details"]>, TDetailQuery]
+}

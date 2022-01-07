@@ -1,0 +1,65 @@
+import {
+  useAdminProduct,
+  useAdminProducts,
+  useAdminProductTags,
+  useAdminProductTypes,
+} from "../../../../src"
+import { renderHook } from "@testing-library/react-hooks"
+import { fixtures } from "../../../../mocks/data"
+import { createWrapper } from "../../../utils"
+
+describe("useAdminProducts hook", () => {
+  test("returns a list of products", async () => {
+    const products = fixtures.list("product")
+    const { result, waitFor } = renderHook(() => useAdminProducts(), {
+      wrapper: createWrapper(),
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.response.status).toEqual(200)
+    expect(result.current.products).toEqual(products)
+  })
+})
+
+describe("useAdminProductTypes hook", () => {
+  test("returns a list of product types", async () => {
+    const types = fixtures.list("product_type")
+    const { result, waitFor } = renderHook(() => useAdminProductTypes(), {
+      wrapper: createWrapper(),
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.response.status).toEqual(200)
+    expect(result.current.types).toEqual(types)
+  })
+})
+
+describe("useAdminProductTags hook", () => {
+  test("returns a list of product tags", async () => {
+    const tags = fixtures.list("product_tag")
+    const { result, waitFor } = renderHook(() => useAdminProductTags(), {
+      wrapper: createWrapper(),
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.response.status).toEqual(200)
+    expect(result.current.tags).toEqual(tags)
+  })
+})
+
+describe("useAdminProduct hook", () => {
+  test("returns a product", async () => {
+    const product = fixtures.get("product")
+    const { result, waitFor } = renderHook(() => useAdminProduct(product.id), {
+      wrapper: createWrapper(),
+    })
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.response.status).toEqual(200)
+    expect(result.current.product).toEqual(product)
+  })
+})
