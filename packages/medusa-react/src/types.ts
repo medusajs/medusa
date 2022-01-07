@@ -35,6 +35,42 @@ type ConvertDateToString<T extends {}> = {
 
 export type Cart = StoreCartsRes["cart"]
 
+export type QueryKeys<
+  TInvalidationKey extends QueryKey,
+  TUpdateKey extends QueryKey
+> = {
+  invalidationQueryKey: TInvalidationKey
+  updateQueryKey: TUpdateKey
+}
+
+export type UseOptionsFactory = <
+  TData,
+  TError,
+  TVariables,
+  TContext,
+  TUpdateKey extends QueryKey,
+  TInvalidationKey extends QueryKey
+>(
+  options: UseMutationOptions<TData, TError, TVariables, TContext>,
+  {
+    updateQueryKey,
+    invalidationQueryKey,
+  }: QueryKeys<TInvalidationKey, TUpdateKey>,
+  config?: any
+) => UseMutationOptions<TData, TError, TVariables, TContext>
+
+export type OptionsBuilder = <
+  TData,
+  TError,
+  TVariables,
+  TContext,
+  TKey extends QueryKey
+>(
+  queryClient: QueryClient,
+  queryKey: TKey,
+  options: UseMutationOptions<TData, TError, TVariables, TContext>
+) => UseMutationOptions<TData, TError, TVariables, TContext>
+
 export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   all: [TKey]
   lists: () => [...TQueryKey<TKey>["all"], "list"]
