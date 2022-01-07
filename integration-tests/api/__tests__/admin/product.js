@@ -7,7 +7,6 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const { ProductVariant } = require("@medusajs/medusa")
-const { hasUncaughtExceptionCaptureCallback } = require("process")
 
 jest.setTimeout(50000)
 
