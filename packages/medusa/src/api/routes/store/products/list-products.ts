@@ -30,6 +30,7 @@ import { validator } from "../../../../utils/validator"
  *   - (query) type {string} to search for.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting products was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting products was updated, i.e. less than, greater than etc.
+ *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting products was deleted, i.e. less than, greater than etc.
  *   - (query) offset {string} How many products to skip in the result.
  *   - (query) limit {string} Limit the number of products returned.
  * tags:
@@ -60,13 +61,17 @@ export default async (req, res) => {
 
   const validated = await validator(StoreGetProductsParams, req.query)
 
-  const filterableFields = omit(validated, ["limit", "offset"])
+  const filterableFields: StoreGetProductsParams = omit(validated, [
+    "limit",
+    "offset",
+  ])
 
   if (validated.is_giftcard && validated.is_giftcard === true) {
     filterableFields.is_giftcard = validated.is_giftcard
   }
 
-  filterableFields.status = ["published"]
+  // get only published products for store endpoint
+  filterableFields["status"] = ["published"]
 
   const listConfig = {
     relations: defaultStoreProductsRelations,
@@ -111,11 +116,6 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @IsArray()
   @IsOptional()
   collection_id?: string[]
-
-  @IsOptional()
-  @IsString({ each: true })
-  @IsArray()
-  status = ["published"]
 
   @IsArray()
   @IsOptional()
