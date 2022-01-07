@@ -1,6 +1,19 @@
 import { Type } from "class-transformer"
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import {
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import _, { identity } from "lodash"
+import {
+  FulfillmentStatus,
+  OrderStatus,
+  PaymentStatus,
+} from "../../../../models/order"
 import OrderService from "../../../../services/order"
+import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import {
   allowedStoreOrdersFields,
@@ -14,6 +27,20 @@ import {
  * description: "Retrieves a list of a Customer's Orders."
  * x-authenticated: true
  * parameters:
+ *   - (query) q {string} Query used for searching orders.
+ *   - (query) id {string} Id of the order to search for.
+ *   - (query) status {string[]} Status to search for.
+ *   - (query) fulfillment_status {string[]} Fulfillment status to search for.
+ *   - (query) payment_status {string[]} Payment status to search for.
+ *   - (query) display_id {string} Display id to search for.
+ *   - (query) cart_id {string} to search for.
+ *   - (query) email {string} to search for.
+ *   - (query) region_id {string} to search for.
+ *   - (query) currency_code {string} to search for.
+ *   - (query) tax_rate {string} to search for.
+ *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
+ *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
  *   - (query) limit {integer} How many addresses to return.
  *   - (query) offset {integer} The offset in the resulting addresses.
  *   - (query) fields {string} (Comma separated string) Which fields should be included in the resulting addresses.
@@ -46,14 +73,12 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const selector = {
-    customer_id: id,
-  }
-
   const validated = await validator(
     StoreGetCustomersCustomerOrdersParams,
     req.query
   )
+
+  validated.customer_id = id
 
   let includeFields: string[] = []
   if (validated.fields) {
@@ -79,12 +104,22 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const [orders, count] = await orderService.listAndCount(selector, listConfig)
+  const filterableFields = _.omit(validated, [
+    "limit",
+    "offset",
+    "expand",
+    "fields",
+  ])
+
+  const [orders, count] = await orderService.listAndCount(
+    _.pickBy(filterableFields, identity),
+    listConfig
+  )
 
   res.json({ orders, count, offset: validated.offset, limit: validated.limit })
 }
 
-export class StoreGetCustomersCustomerOrdersParams {
+export class StoreGetCustomersCustomerOrdersPaginationParams {
   @IsOptional()
   @IsNumber()
   @Type(() => Number)
@@ -102,4 +137,69 @@ export class StoreGetCustomersCustomerOrdersParams {
   @IsOptional()
   @IsString()
   expand?: string
+}
+
+export class StoreGetCustomersCustomerOrdersParams extends StoreGetCustomersCustomerOrdersPaginationParams {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  q?: string
+
+  @IsOptional()
+  @IsEnum(OrderStatus, { each: true })
+  status?: OrderStatus[]
+
+  @IsOptional()
+  @IsEnum(FulfillmentStatus, { each: true })
+  fulfillment_status?: FulfillmentStatus[]
+
+  @IsOptional()
+  @IsEnum(PaymentStatus, { each: true })
+  payment_status?: PaymentStatus[]
+
+  @IsString()
+  @IsOptional()
+  display_id?: string
+
+  @IsString()
+  @IsOptional()
+  customer_id?: string
+
+  @IsString()
+  @IsOptional()
+  cart_id?: string
+
+  @IsString()
+  @IsOptional()
+  email?: string
+
+  @IsString()
+  @IsOptional()
+  region_id?: string
+
+  @IsString()
+  @IsOptional()
+  currency_code?: string
+
+  @IsString()
+  @IsOptional()
+  tax_rate?: string
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  canceled_at?: DateComparisonOperator
 }
