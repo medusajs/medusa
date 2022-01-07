@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsNumber, IsOptional, ValidateNested } from "class-validator"
+import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import _, { identity } from "lodash"
 import {
   defaultAdminCollectionsFields,
@@ -74,6 +74,14 @@ export class AdminGetCollectionsPaginationParams {
 }
 
 export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationParams {
+  @IsOptional()
+  @IsString()
+  title?: string
+
+  @IsOptional()
+  @IsString()
+  handle?: string
+
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
