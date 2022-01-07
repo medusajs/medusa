@@ -2,7 +2,6 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
-  IsInt,
   IsNumber,
   IsOptional,
   IsString,
