@@ -48,7 +48,9 @@ class AdminGiftCardsResource extends BaseResource {
   /**
    * @description Lists gift cards
    */
-  list(query: AdminGetGiftCardsParams): ResponsePromise<AdminGiftCardsListRes> {
+  list(
+    query?: AdminGetGiftCardsParams
+  ): ResponsePromise<AdminGiftCardsListRes> {
     let path = `/admin/gift-cards/`
 
     if (query) {

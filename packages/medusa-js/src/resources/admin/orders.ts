@@ -40,7 +40,7 @@ class AdminOrdersResource extends BaseResource {
     return this.client.request("GET", path)
   }
 
-  list(query: AdminGetOrdersParams): ResponsePromise<AdminOrdersListRes> {
+  list(query?: AdminGetOrdersParams): ResponsePromise<AdminOrdersListRes> {
     let path = `/admin/orders`
 
     if (query) {

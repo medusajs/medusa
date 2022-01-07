@@ -7,7 +7,7 @@ const HitComponent = ({ hit, children }) => {
   const { goTo, api } = useContext(NavigationContext)
   let { url, type, hierarchy } = hit
 
-  /** Get the API that is not currenty being viewed, so we can create
+  /** Get the API that is not currently being viewed, so we can create
    * an URL that goes to the other API.
    */
   const getOtherAPI = () => {
