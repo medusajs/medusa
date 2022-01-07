@@ -1,14 +1,9 @@
 import {
-  Region,
   ProductVariant as ProductVariantEntity,
+  Region,
   StoreCartsRes,
 } from "@medusajs/medusa"
-import {
-  QueryClient,
-  QueryKey,
-  UseMutationOptions,
-  UseQueryOptions,
-} from "react-query"
+import { QueryKey, UseQueryOptions } from "react-query"
 
 export type UseQueryOptionsWrapper<
   // Return type of queryFn
