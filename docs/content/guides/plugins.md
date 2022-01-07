@@ -34,6 +34,8 @@ We've already gone through the process of building custom services, endpoints, a
 
 To quickly get started with the implementation, we advise you to copy `/services/welcome.js`, `/api/index.js`, `/subscribers/welcome.js` and the config files from the tutorial and add them in `/src`. As a result, you should have the following folder structure:
 
+> Please note: since the container resolution paths are automatically generated from the used directories and filenames you should avoid pre- or suffixing your file (e.g. `services/welcomeService.js` would result in the service being registered as `WelcomeServiceService`).
+
 ```js
 .
 ├── src
@@ -49,6 +51,7 @@ To quickly get started with the implementation, we advise you to copy `/services
 ├── README.md
 └── package.json
 ```
+Please note that you will need some build step before being able to properly load your plugin, since Medusa expects to find the directories (`api`, `services`, `subscribers`, `loaders`…) within the npm package root. In the simplest case, this could be you manually copying the folders from `src`.
 
 It is worth mentioning the difference between building a generic and a non-generic plugin. A non-generic plugin has a specific purpose such as processing payments or creating fulfillments. Medusa core depends on a specific implementation from such plugins, which is why we've created interfaces that enforce this. These can be found in `medusa-interfaces`.
 

@@ -102,12 +102,14 @@ class Client {
    * @param {object} userHeaders user supplied headers
    * @param {Types.RequestMethod} method request method
    * @param {string} path request path
+   * @param {object} customHeaders user supplied headers
    * @return {object}
    */
   setHeaders(
     userHeaders: RequestOptions,
     method: RequestMethod,
-    path: string
+    path: string,
+    customHeaders: object = {}
   ): AxiosRequestHeaders {
     let defaultHeaders: object = {
       Accept: "application/json",
@@ -126,7 +128,12 @@ class Client {
       defaultHeaders["Idempotency-Key"] = uuidv4()
     }
 
-    return Object.assign({}, defaultHeaders, this.normalizeHeaders(userHeaders))
+    return Object.assign(
+      {},
+      defaultHeaders,
+      this.normalizeHeaders(userHeaders),
+      customHeaders
+    )
   }
 
   /**
@@ -170,13 +177,15 @@ class Client {
    * @param {string} path request path
    * @param {object} payload request payload
    * @param {RequestOptions} options axios configuration
+   * @param {object} customHeaders custom request headers
    * @return {object}
    */
   async request(
     method: RequestMethod,
     path: string,
     payload: object = {},
-    options: RequestOptions = {}
+    options: RequestOptions = {},
+    customHeaders: object = {}
   ): Promise<any> {
     const reqOpts = {
       method,
@@ -184,7 +193,7 @@ class Client {
       url: path,
       data: payload,
       json: true,
-      headers: this.setHeaders(options, method, path),
+      headers: this.setHeaders(options, method, path, customHeaders),
     }
 
     // e.g. data = { cart: { ... } }, response = { status, headers, ... }
