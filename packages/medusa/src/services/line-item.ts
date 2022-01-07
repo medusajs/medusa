@@ -6,9 +6,9 @@ import { LineItem, ShippingMethod } from ".."
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import {
-  createLineItemDto,
+  CreateLineItemDto,
   GenerateConfig,
-  updateLineItemDto,
+  UpdateLineItemDto,
 } from "../types/line-item"
 import { FindConfig } from "../types/common"
 /**
@@ -91,9 +91,9 @@ class LineItemService extends BaseService {
 
   /**
    * Retrieves a line item by its id.
-   * @param {string} id - the id of the line item to retrieve
-   * @param {object} config - the config to be used at query building
-   * @return {LineItem} the line item
+   * @param id - the id of the line item to retrieve
+   * @param config - the config to be used at query building
+   * @return the line item
    */
   async retrieve(
     id: string,
@@ -119,12 +119,11 @@ class LineItemService extends BaseService {
   }
 
   /**
-   *
-   * @param {string} variantId the variant on the lineitem
-   * @param {string} regionId Region of the order
-   * @param {string} quantity quantity of the item on the lineitem
-   * @param {GenerateConfig} config configuration for generating the lineitem
-   * @return {Promise<LineItem>} the generated lineitem
+   * @param variantId the variant on the lineitem
+   * @param regionId Region of the order
+   * @param quantity quantity of the item on the lineitem
+   * @param config configuration for generating the lineitem
+   * @return the generated lineitem
    */
   async generate(
     variantId: string,
@@ -180,13 +179,14 @@ class LineItemService extends BaseService {
 
   /**
    * Create a line item
-   * @param {createLineItemDto} lineItem - the line item object to create
-   * @return {Promise<LineItem>} the created line item
+   * @param lineItem - the line item object to create
+   * @return the created line item
    */
-  async create(lineItem: createLineItemDto): Promise<LineItem> {
+  async create(lineItem: CreateLineItemDto): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemRepository: LineItemRepository =
-        manager.getCustomRepository(this.lineItemRepository_)
+      const lineItemRepository: LineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
 
       const created = await lineItemRepository.create(lineItem)
       const result = await lineItemRepository.save(created)
@@ -196,14 +196,15 @@ class LineItemService extends BaseService {
 
   /**
    * Updates a line item
-   * @param {string} id - the id of the line item to update
-   * @param {updateLineItemDto} update - the properties to update on line item
-   * @return {LineItem} the update line item
+   * @param id - the id of the line item to update
+   * @param update - the properties to update on line item
+   * @return the update line item
    */
-  async update(id: string, update: updateLineItemDto): Promise<LineItem> {
+  async update(id: string, update: UpdateLineItemDto): Promise<LineItem> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemRepository: LineItemRepository =
-        manager.getCustomRepository(this.lineItemRepository_)
+      const lineItemRepository: LineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
 
       const lineItem = await this.retrieve(id)
 
@@ -226,17 +227,18 @@ class LineItemService extends BaseService {
 
   /**
    * Updates a line item
-   * @param {LineItem[]} lineItems - the id of the line item to update
-   * @param {ShippingMethod[]} shippingMethods - the properties to update on line item
-   * @return {Promise<LineItem[]>} the update line item
+   * @param lineItems - the id of the line item to update
+   * @param shippingMethods - the properties to update on line item
+   * @return the update line item
    */
   async updateHasShipping(
     lineItems: LineItem[],
     shippingMethods: ShippingMethod[]
   ): Promise<LineItem[]> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemRepository: LineItemRepository =
-        manager.getCustomRepository(this.lineItemRepository_)
+      const lineItemRepository: LineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
 
       const shippingProfiles = shippingMethods.map(
         (sm) => sm.shipping_option.profile_id
@@ -256,13 +258,14 @@ class LineItemService extends BaseService {
 
   /**
    * Deletes a line item.
-   * @param {string} id - the id of the line item to delete
-   * @return {Promise} the result of the delete operation
+   * @param id - the id of the line item to delete
+   * @return the result of the delete operation
    */
   async delete(id: string): Promise<void> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemRepository: LineItemRepository =
-        manager.getCustomRepository(this.lineItemRepository_)
+      const lineItemRepository: LineItemRepository = manager.getCustomRepository(
+        this.lineItemRepository_
+      )
 
       const lineItem = await lineItemRepository.findOne({ where: { id } })
 

@@ -3,7 +3,7 @@ export type GenerateConfig = {
   metadata?: object
 }
 
-export type createLineItemDto = {
+export type CreateLineItemDto = {
   title: string
   description?: string
   thumbnail?: string
@@ -26,7 +26,7 @@ export type createLineItemDto = {
   metadata?: object
 }
 
-export type updateLineItemDto = {
+export type UpdateLineItemDto = {
   title?: string
   description?: string
   thumbnail?: string
