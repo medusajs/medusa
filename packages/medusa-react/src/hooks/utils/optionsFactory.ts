@@ -1,36 +1,37 @@
 import { useQueryClient } from "react-query"
 import { useGlobalConfig } from "../.."
-import { OptionsBuilder, UseOptionsFactory } from "../../types"
+import { Config, OptionsBuilder, UseOptionsFactory } from "../../types"
 
 export const useOptionsFactory: UseOptionsFactory = (
   options = {},
   { updateQueryKey, invalidationQueryKey },
-  config?: any
+  config
 ) => {
-  const {
-    automaticAdminInvalidation: globalAutomaticInvalidation,
-    automaticAdminUpdate: globalAutomaticUpdate,
-  } = useGlobalConfig()
-  config.invalidate =
-    config.invalidate === false ? false : globalAutomaticInvalidation
-  config.update = config.update === false ? false : globalAutomaticUpdate
-
   const queryClient = useQueryClient()
+  let { shouldInvalidate, shouldUpdate } = useConfig(config)
 
-  console.log(config)
   if (options?.onSuccess || options?.onSettled || options?.onMutate) {
     return options
   }
 
-  if (config?.invalidate) {
+  if (shouldInvalidate) {
     options = invalidateOnSuccess(queryClient, invalidationQueryKey, options)
   }
 
-  if (config?.update) {
+  if (shouldUpdate) {
     options = updateOnSuccess(queryClient, updateQueryKey, options)
   }
 
   return options
+}
+
+const useConfig = (config?: Config) => {
+  const { globalInvalidation, globalUpdate } = useGlobalConfig()
+
+  return {
+    shouldInvalidate: config?.invalidate === false ? false : globalInvalidation,
+    shouldUpdate: config?.update === false ? false : globalUpdate,
+  }
 }
 
 const updateOnSuccess: OptionsBuilder = (queryClient, queryKey, options) => {

@@ -4,8 +4,8 @@ import Medusa from "@medusajs/medusa-js"
 
 interface MedusaContextState {
   client: Medusa
-  automaticAdminInvalidation: boolean
-  automaticAdminUpdate: boolean
+  globalInvalidation: boolean
+  globalUpdate: boolean
 }
 
 const MedusaContext = React.createContext<MedusaContextState | null>(null)
@@ -19,9 +19,9 @@ export const useMedusa = () => {
 }
 
 export const useGlobalConfig = () => {
-  const { automaticAdminUpdate, automaticAdminInvalidation } = useMedusa()
+  const { globalInvalidation, globalUpdate } = useMedusa()
 
-  return { automaticAdminUpdate, automaticAdminInvalidation }
+  return { globalInvalidation, globalUpdate }
 }
 
 interface MedusaProviderProps {
@@ -29,8 +29,8 @@ interface MedusaProviderProps {
   queryClientProviderProps: QueryClientProviderProps
   children: React.ReactNode
   apiKey?: string
-  automaticAdminInvalidation?: boolean
-  automaticAdminUpdate?: boolean
+  globalInvalidation?: boolean
+  globalUpdate?: boolean
 }
 
 export const MedusaProvider = ({
@@ -38,8 +38,8 @@ export const MedusaProvider = ({
   baseUrl,
   apiKey,
   children,
-  automaticAdminInvalidation = true,
-  automaticAdminUpdate = true,
+  globalInvalidation = true,
+  globalUpdate = true,
 }: MedusaProviderProps) => {
   const medusaClient = new Medusa({ baseUrl, maxRetries: 0, apiKey })
   return (
@@ -47,8 +47,8 @@ export const MedusaProvider = ({
       <MedusaContext.Provider
         value={{
           client: medusaClient,
-          automaticAdminInvalidation,
-          automaticAdminUpdate,
+          globalInvalidation,
+          globalUpdate,
         }}
       >
         {children}

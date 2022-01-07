@@ -56,8 +56,13 @@ export type UseOptionsFactory = <
     updateQueryKey,
     invalidationQueryKey,
   }: QueryKeys<TInvalidationKey, TUpdateKey>,
-  config?: any
+  config?: Config
 ) => UseMutationOptions<TData, TError, TVariables, TContext>
+
+export type Config = {
+  invalidate: boolean
+  update: boolean
+}
 
 export type OptionsBuilder = <
   TData,
