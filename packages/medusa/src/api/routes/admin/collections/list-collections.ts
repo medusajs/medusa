@@ -17,6 +17,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (query) limit {string} The number of collections to return.
  *   - (query) offset {string} The offset of collections to return.
+ *   - (query) title {string} The title of collections to return.
+ *   - (query) handle {string} The handle of collections to return.
  *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
