@@ -78,7 +78,7 @@ export default async (req, res) => {
     req.query
   )
 
-  validated.customer_id = id
+  validated["customer_id"] = id
 
   let includeFields: string[] = []
   if (validated.fields) {
@@ -163,10 +163,6 @@ export class StoreGetCustomersCustomerOrdersParams extends StoreGetCustomersCust
   @IsString()
   @IsOptional()
   display_id?: string
-
-  @IsString()
-  @IsOptional()
-  customer_id?: string
 
   @IsString()
   @IsOptional()
