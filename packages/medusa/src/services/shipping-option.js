@@ -236,7 +236,7 @@ class ShippingOptionService extends BaseService {
       )
 
       let methodPrice
-      if ("price" in config) {
+      if (typeof config.price === "number") {
         methodPrice = config.price
       } else {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)

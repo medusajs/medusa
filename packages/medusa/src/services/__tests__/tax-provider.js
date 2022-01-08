@@ -5,7 +5,7 @@ describe("TaxProviderService", () => {
   describe("retrieveProvider", () => {
     const container = {
       manager: MockManager,
-      productTaxRateService: {},
+      taxRateService: {},
       systemTaxService: "system",
       tp_test: "good",
     }
@@ -110,14 +110,14 @@ describe("TaxProviderService", () => {
   describe("getRegionRatesForProduct", () => {
     const container = {
       manager: MockManager,
-      productTaxRateService: {
-        list: jest.fn(),
+      taxRateService: {
+        listByProduct: jest.fn(),
       },
     }
 
     test("success", async () => {
-      container.productTaxRateService = {
-        list: jest.fn([]),
+      container.taxRateService = {
+        listByProduct: jest.fn([]),
       }
 
       const providerService = new TaxProviderService(container)
@@ -154,8 +154,8 @@ describe("TaxProviderService", () => {
     })
 
     test("success - without product rates", async () => {
-      container.productTaxRateService = {
-        list: jest.fn(() => Promise.resolve([])),
+      container.taxRateService = {
+        listByProduct: jest.fn(() => Promise.resolve([])),
       }
 
       const providerService = new TaxProviderService(container)
@@ -175,11 +175,11 @@ describe("TaxProviderService", () => {
           code: "default",
         },
       ]
-      expect(container.productTaxRateService.list).toHaveBeenCalledTimes(1)
-      expect(container.productTaxRateService.list).toHaveBeenCalledWith({
-        product_id: "prod_id",
-        rate_id: ["reg_rate"],
-      })
+      expect(container.taxRateService.listByProduct).toHaveBeenCalledTimes(1)
+      expect(container.taxRateService.listByProduct).toHaveBeenCalledWith(
+        "prod_id",
+        { region_id: "reg_id" }
+      )
 
       expect(providerService.setCache).toHaveBeenCalledTimes(1)
       expect(providerService.setCache).toHaveBeenCalledWith(
@@ -192,11 +192,13 @@ describe("TaxProviderService", () => {
     })
 
     test("success - with product rates", async () => {
-      container.productTaxRateService = {
-        list: jest.fn(() =>
+      container.taxRateService = {
+        listByProduct: jest.fn(() =>
           Promise.resolve([
             {
-              rate_id: "reg_rate",
+              rate: 20,
+              name: "PTR",
+              code: "ptr",
             },
           ])
         ),
@@ -219,11 +221,11 @@ describe("TaxProviderService", () => {
           code: "ptr",
         },
       ]
-      expect(container.productTaxRateService.list).toHaveBeenCalledTimes(1)
-      expect(container.productTaxRateService.list).toHaveBeenCalledWith({
-        product_id: "prod_id",
-        rate_id: ["reg_rate"],
-      })
+      expect(container.taxRateService.listByProduct).toHaveBeenCalledTimes(1)
+      expect(container.taxRateService.listByProduct).toHaveBeenCalledWith(
+        "prod_id",
+        { region_id: "reg_id" }
+      )
 
       expect(providerService.setCache).toHaveBeenCalledTimes(1)
       expect(providerService.setCache).toHaveBeenCalledWith(
@@ -233,32 +235,6 @@ describe("TaxProviderService", () => {
       )
 
       expect(rates).toEqual(expected)
-    })
-
-    test("fail - unexpected", async () => {
-      container.productTaxRateService = {
-        list: jest.fn(() =>
-          Promise.resolve([
-            {
-              rate: 20,
-              name: "PTR",
-              code: "ptr",
-            },
-          ])
-        ),
-      }
-
-      const providerService = new TaxProviderService(container)
-      providerService.getCacheEntry = jest.fn(() => null)
-      providerService.setCache = jest.fn()
-
-      await expect(
-        providerService.getRegionRatesForProduct("prod_id", {
-          id: "reg_id",
-          tax_rates: [{ id: "reg_rate" }],
-          tax_rate: 12.5,
-        })
-      ).rejects.toThrow("An error occured while calculating tax rates")
     })
   })
 

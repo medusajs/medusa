@@ -173,7 +173,7 @@ describe("SwapService", () => {
       const customShippingOptionService = {
         create: jest.fn().mockReturnValue(Promise.resolve({ id: "cso-test" })),
         update: jest.fn().mockReturnValue(Promise.resolve()),
-        withTransaction: function() {
+        withTransaction: function () {
           return this
         },
       }
@@ -182,6 +182,7 @@ describe("SwapService", () => {
         create: jest.fn().mockImplementation((d) => Promise.resolve(d)),
         update: jest.fn().mockImplementation((d) => Promise.resolve(d)),
         retrieve: () => Promise.resolve({}),
+        createReturnLines: jest.fn(() => Promise.resolve()),
         withTransaction: function () {
           return this
         },
@@ -216,10 +217,17 @@ describe("SwapService", () => {
             "return_order",
             "return_order.items",
             "return_order.shipping_method",
+            "return_order.shipping_method.tax_lines",
           ],
           {
             where: { id: IdMap.getId("swap-1") },
           }
+        )
+
+        expect(lineItemService.createReturnLines).toHaveBeenCalledTimes(1)
+        expect(lineItemService.createReturnLines).toHaveBeenCalledWith(
+          expect.any(String),
+          "cart"
         )
 
         expect(cartService.create).toHaveBeenCalledTimes(1)

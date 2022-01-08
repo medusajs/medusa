@@ -1,7 +1,16 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import { Customer, Order } from "@medusajs/medusa"
+import {
+  Customer,
+  Order,
+  PaymentStatus,
+  FulfillmentStatus,
+} from "@medusajs/medusa"
 
+import {
+  DiscountFactoryData,
+  simpleDiscountFactory,
+} from "./simple-discount-factory"
 import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
 import {
   LineItemFactoryData,
@@ -18,11 +27,14 @@ import {
 
 export type OrderFactoryData = {
   id?: string
+  payment_status?: PaymentStatus
+  fulfillment_status?: FulfillmentStatus
   region?: RegionFactoryData | string
   email?: string | null
   currency_code?: string
   tax_rate?: number | null
   line_items?: LineItemFactoryData[]
+  discounts?: DiscountFactoryData[]
   shipping_address?: AddressFactoryData
   shipping_methods?: ShippingMethodFactoryData[]
 }
@@ -60,9 +72,20 @@ export const simpleOrderFactory = async (
   })
   const customer = await manager.save(customerToSave)
 
+  let discounts = []
+  if (typeof data.discounts !== "undefined") {
+    discounts = await Promise.all(
+      data.discounts.map((d) => simpleDiscountFactory(connection, d, seed))
+    )
+  }
+
   const id = data.id || `simple-order-${Math.random() * 1000}`
   const toSave = manager.create(Order, {
     id,
+    discounts,
+    payment_status: data.payment_status ?? PaymentStatus.AWAITING,
+    fulfillment_status:
+      data.fulfillment_status ?? FulfillmentStatus.NOT_FULFILLED,
     customer_id: customer.id,
     email: customer.email,
     region_id: regionId,

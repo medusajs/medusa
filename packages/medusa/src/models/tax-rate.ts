@@ -6,12 +6,17 @@ import {
   Column,
   PrimaryColumn,
   ManyToOne,
+  ManyToMany,
   JoinColumn,
+  JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Region } from "./region"
+import { Product } from "./product"
+import { ProductType } from "./product-type"
+import { ShippingOption } from "./shipping-option"
 
 @Entity()
 export class TaxRate {
@@ -42,6 +47,53 @@ export class TaxRate {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: any
+
+  @ManyToMany(() => Product)
+  @JoinTable({
+    name: "product_tax_rate",
+    joinColumn: {
+      name: "rate_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_id",
+      referencedColumnName: "id",
+    },
+  })
+  products: Product[]
+
+  @ManyToMany(() => ProductType)
+  @JoinTable({
+    name: "product_type_tax_rate",
+    joinColumn: {
+      name: "rate_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "product_type_id",
+      referencedColumnName: "id",
+    },
+  })
+  product_types: ProductType[]
+
+  @ManyToMany(() => ShippingOption)
+  @JoinTable({
+    name: "shipping_tax_rate",
+    joinColumn: {
+      name: "rate_id",
+      referencedColumnName: "id",
+    },
+    inverseJoinColumn: {
+      name: "shipping_option_id",
+      referencedColumnName: "id",
+    },
+  })
+  shipping_options: ShippingOption[]
+
+  // TODO: consider custom DTO instead
+  product_count?: number
+  product_type_count?: number
+  shipping_option_count?: number
 
   @BeforeInsert()
   private beforeInsert() {

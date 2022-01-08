@@ -9,6 +9,7 @@ class LineItemService extends BaseService {
   constructor({
     manager,
     lineItemRepository,
+    lineItemTaxLineRepository,
     productVariantService,
     productService,
     regionService,
@@ -21,6 +22,9 @@ class LineItemService extends BaseService {
 
     /** @private @const {LineItemRepository} */
     this.lineItemRepository_ = lineItemRepository
+
+    /** @private @const {typeof LineItemTaxLineRepository} */
+    this.itemTaxLineRepo_ = lineItemTaxLineRepository
 
     /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
@@ -43,6 +47,7 @@ class LineItemService extends BaseService {
     const cloned = new LineItemService({
       manager: transactionManager,
       lineItemRepository: this.lineItemRepository_,
+      lineItemTaxLineRepository: this.itemTaxLineRepo_,
       productVariantService: this.productVariantService_,
       productService: this.productService_,
       regionService: this.regionService_,
@@ -87,6 +92,49 @@ class LineItemService extends BaseService {
     }
 
     return lineItem
+  }
+
+  /**
+   * Creates return line items for a given cart based on the return items in a
+   * return.
+   * @param {string} returnId - the id to generate return items from.
+   * @param {string} cartId - the cart to assign the return line items to.
+   * @return {Promise<LineItem[]>} the created line items
+   */
+  async createReturnLines(returnId, cartId) {
+    const lineItemRepo = this.manager_.getCustomRepository(
+      this.lineItemRepository_
+    )
+
+    const itemTaxLineRepo = this.manager_.getCustomRepository(
+      this.itemTaxLineRepo_
+    )
+
+    const items = await lineItemRepo.findByReturn(returnId)
+
+    const toCreate = items.map((i) =>
+      lineItemRepo.create({
+        cart_id: cartId,
+        thumbnail: i.thumbnail,
+        is_return: true,
+        title: i.title,
+        variant_id: i.variant_id,
+        unit_price: -1 * i.unit_price,
+        quantity: i.return_item.quantity,
+        allow_discounts: i.allow_discounts,
+        tax_lines: i.tax_lines.map((tl) => {
+          return itemTaxLineRepo.create({
+            name: tl.name,
+            code: tl.code,
+            rate: tl.rate,
+            metadata: tl.metadata,
+          })
+        }),
+        metadata: i.metadata,
+      })
+    )
+
+    return await lineItemRepo.save(toCreate)
   }
 
   async generate(variantId, regionId, quantity, config = {}) {

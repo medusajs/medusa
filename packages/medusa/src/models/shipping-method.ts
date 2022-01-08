@@ -78,7 +78,9 @@ export class ShippingMethod {
   @JoinColumn({ name: "shipping_option_id" })
   shipping_option: ShippingOption
 
-  @OneToMany(() => ShippingMethodTaxLine, (tl) => tl.shipping_method)
+  @OneToMany(() => ShippingMethodTaxLine, (tl) => tl.shipping_method, {
+    cascade: ["insert"],
+  })
   tax_lines: ShippingMethodTaxLine[]
 
   @Column({ type: "int" })

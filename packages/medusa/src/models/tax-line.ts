@@ -10,7 +10,7 @@ export class TaxLine {
   @PrimaryColumn()
   id: string
 
-  @Column()
+  @Column({ type: "real" })
   rate: number
 
   @Column()

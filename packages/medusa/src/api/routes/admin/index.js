@@ -24,6 +24,7 @@ import draftOrderRoutes from "./draft-orders"
 import collectionRoutes from "./collections"
 import notificationRoutes from "./notifications"
 import noteRoutes from "./notes"
+import taxRateRoutes from "./tax-rates"
 
 const route = Router()
 
@@ -78,6 +79,7 @@ export default (app, container, config) => {
   returnReasonRoutes(route)
   noteRoutes(route)
   inviteRoutes(route)
+  taxRateRoutes(route)
 
   return app
 }
