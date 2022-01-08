@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { TaxRate } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -71,6 +71,8 @@ export const defaultAdminTaxRatesFields: (keyof TaxRate)[] = [
   "created_at",
   "updated_at",
 ]
+
+export type AdminTaxRatesDeleteRes = DeleteResponse
 
 export type AdminTaxRatesListRes = PaginatedResponse & {
   tax_rates: TaxRate[]
