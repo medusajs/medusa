@@ -29,7 +29,7 @@ class AdminDraftOrdersResource extends BaseResource {
     id: string,
     payload: AdminPostDraftOrdersDraftOrderLineItemsReq
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders/${id}`
+    const path = `/admin/draft-orders/${id}/line-items`
     return this.client.request("POST", path, payload)
   }
 
@@ -64,7 +64,7 @@ class AdminDraftOrdersResource extends BaseResource {
    * @description Lists draft orders
    */
   list(
-    query: AdminGetDraftOrdersParams
+    query?: AdminGetDraftOrdersParams
   ): ResponsePromise<AdminDraftOrdersListRes> {
     let path = `/admin/draft-orders`
 
