@@ -110,8 +110,12 @@ function registerMedusaApi(pluginDetails, container) {
 function registerStrategies(pluginDetails, container) {
   let module
   try {
-    module =
-      require(`${pluginDetails.resolve}/strategies/tax-calculation`).default
+    const path = `${pluginDetails.resolve}/strategies/tax-calculation`
+    if (existsSync(path)) {
+      module = require(path).default
+    } else {
+      return
+    }
   } catch (err) {
     return
   }
