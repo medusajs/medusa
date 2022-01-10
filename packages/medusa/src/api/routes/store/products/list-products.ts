@@ -67,10 +67,6 @@ export default async (req, res) => {
     "offset",
   ])
 
-  // if (validated.is_giftcard && validated.is_giftcard === true) {
-  //   filterableFields.is_giftcard = validated.is_giftcard
-  // }
-
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
 
