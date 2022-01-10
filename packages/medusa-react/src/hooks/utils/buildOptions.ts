@@ -10,10 +10,10 @@ export const buildOptions = <
   queryClient: QueryClient,
   queryKey: TKey[] | TKey,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>
-) => {
+): UseMutationOptions<TData, TError, TVariables, TContext> => {
   return {
     ...options,
-    onSuccess: (...args: [TData, TVariables, TContext | undefined]) => {
+    onSuccess: (...args) => {
       if (options?.onSuccess) {
         return options.onSuccess(...args)
       }
