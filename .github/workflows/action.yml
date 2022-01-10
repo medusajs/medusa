@@ -25,12 +25,10 @@ jobs:
         run: ./scripts/assert-changed-files-actions.sh "packages"
 
       - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
-        with:
-          extension: unit-tests
+        run: yarn install && yarn bootstrap
 
       - name: Run unit tests
-        run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
+        run: yarn test
 
   integration-tests:
     runs-on: ubuntu-latest
