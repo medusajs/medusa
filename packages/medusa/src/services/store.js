@@ -127,7 +127,9 @@ class StoreService extends BaseService {
 
       if (storeCurrencies) {
         const defaultCurr = default_currency_code ?? store.default_currency_code
-        const hasDefCurrency = storeCurrencies.find((c) => c === defaultCurr)
+        const hasDefCurrency = storeCurrencies.find(
+          (c) => c.toLowerCase() === defaultCurr.toLowerCase()
+        )
 
         // throw if we are trying to remove a currency from store currently used as default
         if (!hasDefCurrency) {
@@ -157,9 +159,12 @@ class StoreService extends BaseService {
 
       if (default_currency_code) {
         const storeCurrCodes = store.currencies.map((c) => c.code)
+        const hasDefCurrency = storeCurrCodes.find(
+          (c) => c === default_currency_code.toLowerCase()
+        )
 
         // throw if store currencies does not have default currency
-        if (!storeCurrCodes.includes(default_currency_code)) {
+        if (!hasDefCurrency) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Store does not have currency: ${default_currency_code}`
