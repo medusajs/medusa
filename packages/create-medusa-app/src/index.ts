@@ -35,7 +35,8 @@ const questions = {
     choices: [
       "Gatsby Starter",
       "Next.js Starter",
-      "medusa.express",
+      "medusa.express (Next.js)",
+      "medusa.express (Gatsby)",
       "Gatsby Starter (Simple)",
       "None",
     ],
@@ -63,9 +64,11 @@ const getStorefrontStarter = (starter: string): string => {
     case "gatsby starter":
       return "https://github.com/medusajs/gatsby-starter-medusa"
     case "next.js starter":
-      return "https://github.com/medusajs/gatsby-starter-medusa"
-    case "medusa.express":
+      return "https://github.com/medusajs/nextjs-starter-medusa"
+    case "medusa.express (next.js)":
       return "https://github.com/medusajs/medusa-express-nextjs"
+    case "medusa.express (gatsby)":
+      return "https://github.com/medusajs/medusa-express-gatsby"
     case "gatsby starter (simple)":
       return "https://github.com/medusajs/gatsby-starter-medusa-simple"
     default:
