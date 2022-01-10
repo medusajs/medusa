@@ -186,5 +186,36 @@ describe("/admin/store", () => {
         updated_at: expect.any(String),
       })
     })
+
+    it("successfully updates and store currencies", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/store",
+        {
+          currencies: ["jpy", "usd"],
+        },
+        {
+          headers: { Authorization: "Bearer test_token " },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.store).toMatchSnapshot({
+        id: expect.any(String),
+        name: "Medusa Store",
+        currencies: [
+          {
+            code: "jpy",
+          },
+          {
+            code: "usd",
+          },
+        ],
+        default_currency_code: "usd",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
   })
 })

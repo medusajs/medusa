@@ -129,7 +129,7 @@ class StoreService extends BaseService {
         const defaultCurr = default_currency_code ?? store.default_currency_code
         const hasDefCurrency = storeCurrencies.find((c) => c === defaultCurr)
 
-        // throw if we are trying to remove a curreny from store, that are currently used as default
+        // throw if we are trying to remove a currency from store currently used as default
         if (!hasDefCurrency) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,

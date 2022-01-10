@@ -7,6 +7,34 @@ Object {
 }
 `;
 
+exports[`/admin/store POST /admin/store successfully updates and store currencies 1`] = `
+Object {
+  "created_at": Any<String>,
+  "currencies": Array [
+    Object {
+      "code": "jpy",
+      "name": "Japanese Yen",
+      "symbol": "¥",
+      "symbol_native": "￥",
+    },
+    Object {
+      "code": "usd",
+      "name": "US Dollar",
+      "symbol": "$",
+      "symbol_native": "$",
+    },
+  ],
+  "default_currency_code": "usd",
+  "id": Any<String>,
+  "invite_link_template": null,
+  "metadata": null,
+  "name": "Medusa Store",
+  "payment_link_template": null,
+  "swap_link_template": null,
+  "updated_at": Any<String>,
+}
+`;
+
 exports[`/admin/store POST /admin/store successfully updates default currency and store currencies 1`] = `
 Object {
   "created_at": Any<String>,
