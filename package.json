@@ -1,9 +1,15 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages":  [
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/tsdx",
+      "**/tsdx/**"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.12.7",
     "@babel/eslint-parser": "^7.15.8",

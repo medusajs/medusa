@@ -13,7 +13,7 @@ describe("getVariantPrice", () => {
     const variant = fixtures.get("product_variant")
     const region = fixtures.get("region")
     const amount = getVariantPrice(
-      variant as unknown as ProductVariantInfo,
+      (variant as unknown) as ProductVariantInfo,
       region
     )
 
@@ -23,7 +23,7 @@ describe("getVariantPrice", () => {
   test("when no region is provided, then it should return 0", () => {
     const variant = fixtures.get("product_variant")
     const amount = getVariantPrice(
-      variant as unknown as ProductVariantInfo,
+      (variant as unknown) as ProductVariantInfo,
       {} as RegionInfo
     )
 
@@ -78,7 +78,7 @@ describe("computeVariantPrice", () => {
     const variant = fixtures.get("product_variant")
     const region = fixtures.get("region")
     const price = computeVariantPrice({
-      variant: variant as unknown as ProductVariantInfo,
+      variant: (variant as unknown) as ProductVariantInfo,
       region,
     })
 
@@ -89,7 +89,7 @@ describe("computeVariantPrice", () => {
     const variant = fixtures.get("product_variant")
     const region = fixtures.get("region")
     const price = computeVariantPrice({
-      variant: variant as unknown as ProductVariantInfo,
+      variant: (variant as unknown) as ProductVariantInfo,
       region: {
         ...region,
         tax_rate: 15,
@@ -106,7 +106,7 @@ describe("formatVariantPrice", () => {
     const region = fixtures.get("region")
     const variant = fixtures.get("product_variant")
     const price = formatVariantPrice({
-      variant: variant as unknown as ProductVariantInfo,
+      variant: (variant as unknown) as ProductVariantInfo,
       region: {
         ...region,
         tax_rate: 15,
@@ -120,7 +120,7 @@ describe("formatVariantPrice", () => {
     const region = fixtures.get("region")
     const variant = fixtures.get("product_variant")
     const price = formatVariantPrice({
-      variant: variant as unknown as ProductVariantInfo,
+      variant: (variant as unknown) as ProductVariantInfo,
       region: {
         ...region,
         tax_rate: 15,
@@ -135,7 +135,7 @@ describe("formatVariantPrice", () => {
     const region = fixtures.get("region")
     const variant = fixtures.get("product_variant")
     const price = formatVariantPrice({
-      variant: variant as unknown as ProductVariantInfo,
+      variant: (variant as unknown) as ProductVariantInfo,
       region: {
         ...region,
         tax_rate: 15,

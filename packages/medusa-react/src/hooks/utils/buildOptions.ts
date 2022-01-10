@@ -19,7 +19,7 @@ export const buildOptions = <
       }
 
       if (Array.isArray(queryKey)) {
-        queryKey.forEach((key) => queryClient.invalidateQueries(key))
+        queryKey.forEach(key => queryClient.invalidateQueries(key))
       } else {
         queryClient.invalidateQueries(queryKey)
       }
