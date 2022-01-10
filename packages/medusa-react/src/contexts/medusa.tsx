@@ -20,23 +20,17 @@ interface MedusaProviderProps {
   baseUrl: string
   queryClientProviderProps: QueryClientProviderProps
   children: React.ReactNode
-  apiKey?: string
 }
 
 export const MedusaProvider = ({
   queryClientProviderProps,
   baseUrl,
-  apiKey,
   children,
 }: MedusaProviderProps) => {
-  const medusaClient = new Medusa({ baseUrl, maxRetries: 0, apiKey })
+  const medusaClient = new Medusa({ baseUrl, maxRetries: 0 })
   return (
     <QueryClientProvider {...queryClientProviderProps}>
-      <MedusaContext.Provider
-        value={{
-          client: medusaClient,
-        }}
-      >
+      <MedusaContext.Provider value={{ client: medusaClient }}>
         {children}
       </MedusaContext.Provider>
     </QueryClientProvider>

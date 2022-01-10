@@ -6,8 +6,5 @@ module.exports = {
       isolatedModules: true,
     },
   },
-  transform: {
-    ".(ts|tsx)$": require.resolve("ts-jest/dist/"),
-  },
   setupFilesAfterEnv: ["./jest.setup.js"],
 }
