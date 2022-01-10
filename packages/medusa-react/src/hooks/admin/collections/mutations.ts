@@ -57,7 +57,7 @@ export const useAdminDeleteCollection = (
     () => client.admin.collections.delete(id),
     buildOptions(
       queryClient,
-      [adminCollectionKeys.lists(), adminCollectionKeys.lists()],
+      [adminCollectionKeys.lists(), adminCollectionKeys.detail(id)],
       options
     )
   )
