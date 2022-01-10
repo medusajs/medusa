@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
+  IsBooleanString,
   IsNumber,
   IsOptional,
   IsString,
@@ -66,9 +67,9 @@ export default async (req, res) => {
     "offset",
   ])
 
-  if (validated.is_giftcard && validated.is_giftcard === true) {
-    filterableFields.is_giftcard = validated.is_giftcard
-  }
+  // if (validated.is_giftcard && validated.is_giftcard === true) {
+  //   filterableFields.is_giftcard = validated.is_giftcard
+  // }
 
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
