@@ -133,9 +133,8 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @IsOptional()
   handle?: string
 
-  @IsBoolean()
+  @IsBooleanString()
   @IsOptional()
-  @Type(() => Boolean)
   is_giftcard?: boolean
 
   @IsString()
