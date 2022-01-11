@@ -130,8 +130,6 @@ describe("/store/products", () => {
           expect.objectContaining({ is_giftcard: true }),
         ])
       )
-
-      console.log(response.data.products)
     })
 
     it("returns product with tag", async () => {
