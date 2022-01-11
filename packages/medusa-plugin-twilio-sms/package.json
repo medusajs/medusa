@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-twilio-sms",
-  "version": "1.1.35",
+  "version": "1.1.36",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -36,7 +36,7 @@
     "@babel/plugin-transform-classes": "^7.9.5",
     "body-parser": "^1.19.0",
     "medusa-core-utils": "^1.1.31",
-    "medusa-test-utils": "^1.1.35",
+    "medusa-test-utils": "^1.1.36",
     "twilio": "^3.49.1"
   },
   "gitHead": "c46300d58fbfd0b2dc2c02745ae143e6247e885b"
