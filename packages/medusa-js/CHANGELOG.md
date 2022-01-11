@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.10](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.9...@medusajs/medusa-js@1.0.10) (2022-01-11)
+
+
+### Bug Fixes
+
+* client admin endpoints ([#956](https://github.com/medusajs/medusa-js/issues/956)) ([2efab08](https://github.com/medusajs/medusa-js/commit/2efab08040917a2971852d741b82f86134dda075))
+* medusa-js admin endpoint types ([#968](https://github.com/medusajs/medusa-js/issues/968)) ([7cc3640](https://github.com/medusajs/medusa-js/commit/7cc36407962f4cc2b3ddc33ace0e2ffb8cc61c1b))
+* Type in AdminProductListTagsRes to use tags instead of types ([#958](https://github.com/medusajs/medusa-js/issues/958)) ([0ac52b7](https://github.com/medusajs/medusa-js/commit/0ac52b70fa23d9aa3ba6b5e220943ed15db4e643))
+
+
+
+
+
 ## [1.0.9](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.8...@medusajs/medusa-js@1.0.9) (2021-12-29)
 
 **Note:** Version bump only for package @medusajs/medusa-js
