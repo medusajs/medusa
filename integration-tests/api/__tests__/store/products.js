@@ -24,7 +24,7 @@ describe("/store/products", () => {
     medusaProcess.kill()
   })
 
-  describe('GET /store/products', () => {
+  describe("GET /store/products", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -59,7 +59,7 @@ describe("/store/products", () => {
         expect.objectContaining({
           id: "test-product_filtering_2",
           collection_id: "test-collection2",
-        })
+        }),
       ])
 
       for (const notExpect of notExpected) {
@@ -72,9 +72,7 @@ describe("/store/products", () => {
     it("returns a list of products in with a given tag", async () => {
       const api = useApi()
 
-      const notExpected = [
-        expect.objectContaining({ id: "tag4" }),
-      ]
+      const notExpected = [expect.objectContaining({ id: "tag4" })]
 
       const response = await api
         .get("/store/products?tags[]=tag3")
@@ -87,7 +85,7 @@ describe("/store/products", () => {
         expect.objectContaining({
           id: "test-product_filtering_1",
           collection_id: "test-collection1",
-        })
+        }),
       ])
 
       for (const notExpect of notExpected) {
@@ -100,9 +98,46 @@ describe("/store/products", () => {
     it("returns gift card product", async () => {
       const api = useApi()
 
-      const notExpected = [
-        expect.objectContaining({ id: "tag4" }),
-      ]
+      const response = await api
+        .get("/store/products?is_giftcard=true")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products.length).toEqual(1)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "giftcard",
+          is_giftcard: true,
+        }),
+      ])
+    })
+
+    it("returns non gift card products", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/products?is_giftcard=false")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.products).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ is_giftcard: true }),
+        ])
+      )
+
+      console.log(response.data.products)
+    })
+
+    it("returns product with tag", async () => {
+      const api = useApi()
+
+      const notExpected = [expect.objectContaining({ id: "tag4" })]
 
       const response = await api
         .get("/store/products?tags[]=tag3")
@@ -115,7 +150,7 @@ describe("/store/products", () => {
         expect.objectContaining({
           id: "test-product_filtering_1",
           collection_id: "test-collection1",
-        })
+        }),
       ])
 
       for (const notExpect of notExpected) {
@@ -143,7 +178,7 @@ describe("/store/products", () => {
         expect.objectContaining({
           id: "test-product_filtering_2",
           handle: "test-product_filtering_2",
-        })
+        }),
       ])
 
       for (const notExpect of notExpected) {
@@ -153,43 +188,41 @@ describe("/store/products", () => {
       }
     })
 
-  it("returns only published products", async () => {
-    const api = useApi()
+    it("returns only published products", async () => {
+      const api = useApi()
 
-    const notExpected = [
-      expect.objectContaining({ status: "proposed" }),
-      expect.objectContaining({ status: "draft" }),
-      expect.objectContaining({ status: "rejected" }),
-    ]
+      const notExpected = [
+        expect.objectContaining({ status: "proposed" }),
+        expect.objectContaining({ status: "draft" }),
+        expect.objectContaining({ status: "rejected" }),
+      ]
 
-    const response = await api
-      .get("/store/products")
-      .catch((err) => {
+      const response = await api.get("/store/products").catch((err) => {
         console.log(err)
       })
 
-    expect(response.status).toEqual(200)
-    expect(response.data.products).toEqual([
-      expect.objectContaining({
-        id: "giftcard",
-      }),
-      expect.objectContaining({
-        id: "test-product_filtering_1",
-        collection_id: "test-collection1",
-      }),
-      expect.objectContaining({
-        id: "test-product_filtering_2",
-        collection_id: "test-collection2",
-      }),
-    ])
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "giftcard",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          collection_id: "test-collection2",
+        }),
+      ])
 
-    for (const notExpect of notExpected) {
-      expect(response.data.products).toEqual(
-        expect.not.arrayContaining([notExpect])
-      )
-    }
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
   })
-})
 
   describe("/store/products/:id", () => {
     beforeEach(async () => {
