@@ -13,6 +13,7 @@ import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /products
@@ -132,9 +133,7 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
 
   @IsBoolean()
   @IsOptional()
-  @Transform(({ value }) => {
-    return "true" === value.toLowerCase()
-  })
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
   is_giftcard?: boolean
 
   @IsString()
