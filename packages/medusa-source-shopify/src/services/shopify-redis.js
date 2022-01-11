@@ -1,3 +1,4 @@
+// shopify-redis
 import { BaseService } from "medusa-interfaces"
 import { IGNORE_THRESHOLD } from "../utils/const"
 
@@ -24,6 +25,14 @@ class shopifyRedisService extends BaseService {
   async shouldIgnore(id, action) {
     const key = `${id}_ignore_${action}`
     return await this.redis_.get(key)
+  }
+
+  async addUniqueValue(uniqueVal) {
+    return await this.redis_.set(uniqueVal, 1, "EX", 60 * 5)
+  }
+
+  async getUniqueValue(uniqueVal) {
+    return await this.redis_.get(uniqueVal)
   }
 }
 

@@ -1,9 +1,9 @@
-import { BaseService } from "medusa-interfaces"
-import { MedusaError } from "medusa-core-utils"
-import _ from "lodash"
-import { parsePrice } from "../utils/parse-price"
-import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
 import axios from "axios"
+import _ from "lodash"
+import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
+import { parsePrice } from "../utils/parse-price"
 
 class ShopifyProductService extends BaseService {
   constructor(
@@ -95,7 +95,8 @@ class ShopifyProductService extends BaseService {
           this.addVariantOptions_(v, product.options)
         )
 
-        for (const variant of variants) {
+        for (let variant of variants) {
+          variant = await this.ensureVariantUnique_(variant)
           await this.productVariantService_
             .withTransaction(manager)
             .create(product.id, variant)
@@ -547,6 +548,50 @@ class ShopifyProductService extends BaseService {
     return {
       value: tag,
     }
+  }
+
+  handleDuplicateConstraint_(uniqueVal) {
+    return `DUP-${_.random(100, 999)}-${uniqueVal}`
+  }
+
+  async testUnique_(uniqueVal) {
+    // Test if the unique value has already been added, if it was then pass the value onto the duplicate handler and return the new value
+    const exists = await this.redis_.getUniqueValue(uniqueVal)
+
+    if (exists) {
+      const dupValue = this.handleDuplicateConstraint_(uniqueVal)
+      await this.redis_.addUniqueValue(dupValue)
+
+      console.warn(
+        `Value with unique constraint: ${uniqueVal} already exists, using ${dupValue}`
+      )
+      return dupValue
+    }
+    // If it doesn't exist, we return the value
+    await this.redis_.addUniqueValue(uniqueVal)
+    return uniqueVal
+  }
+
+  async ensureVariantUnique_(variant) {
+    let { sku, ean, upc, barcode } = variant
+
+    if (sku) {
+      sku = await this.testUnique_(sku)
+    }
+
+    if (ean) {
+      ean = await this.testUnique_(ean)
+    }
+
+    if (upc) {
+      upc = await this.testUnique_(upc)
+    }
+
+    if (barcode) {
+      barcode = await this.testUnique_(barcode)
+    }
+
+    return { ...variant, sku, ean, upc, barcode }
   }
 }
 
