@@ -1,14 +1,14 @@
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
-  IsBooleanString,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
 import { omit, pickBy, identity } from "lodash"
+import { MedusaError } from "medusa-core-utils"
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
@@ -77,7 +77,7 @@ export default async (req, res) => {
   }
 
   const [products, count] = await productService.listAndCount(
-    pickBy(filterableFields, identity),
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 
@@ -130,8 +130,11 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @IsOptional()
   handle?: string
 
-  @IsBooleanString()
+  @IsBoolean()
   @IsOptional()
+  @Transform(({ value }) => {
+    return "true" === value.toLowerCase()
+  })
   is_giftcard?: boolean
 
   @IsString()
