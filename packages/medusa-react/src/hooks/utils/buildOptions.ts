@@ -5,7 +5,7 @@ export const buildOptions = <
   TError,
   TVariables,
   TContext,
-  TKey extends QueryKey
+  TKey extends Array<QueryKey>
 >(
   queryClient: QueryClient,
   queryKey: TKey[] | TKey,
@@ -18,7 +18,7 @@ export const buildOptions = <
         return options.onSuccess(...args)
       }
 
-      if (Array.isArray(queryKey)) {
+      if (queryKey.filter(Array.isArray).length > 0) {
         queryKey.forEach(key => queryClient.invalidateQueries(key))
       } else {
         queryClient.invalidateQueries(queryKey)
