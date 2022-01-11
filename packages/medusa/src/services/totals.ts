@@ -162,6 +162,16 @@ class TotalsService extends BaseService {
 
     let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
     if (isOrder(cartOrOrder)) {
+      const taxLinesJoined = cartOrOrder.items.every(
+        (i) => typeof i.tax_lines !== "undefined"
+      )
+      if (!taxLinesJoined) {
+        throw new MedusaError(
+          MedusaError.Types.UNEXPECTED_STATE,
+          "Order tax calculations must have tax lines joined on line items"
+        )
+      }
+
       if (cartOrOrder.tax_rate === null) {
         taxLines = cartOrOrder.items.flatMap((li) => li.tax_lines)
 
@@ -189,6 +199,12 @@ class TotalsService extends BaseService {
       if (cartOrOrder.type === "swap") {
         const returnTaxLines = cartOrOrder.items.flatMap((i) => {
           if (i.is_return) {
+            if (typeof i.tax_lines === "undefined") {
+              throw new MedusaError(
+                MedusaError.Types.UNEXPECTED_STATE,
+                "Return Line Items must join tax lines"
+              )
+            }
             return i.tax_lines
           }
 

@@ -1,0 +1,31 @@
+const path = require("path")
+const express = require("express")
+const getPort = require("get-port")
+const importFrom = require("import-from")
+
+module.exports = {
+  bootstrapApp: async () => {
+    const app = express()
+
+    const loaders = importFrom(
+      process.cwd(),
+      "@medusajs/medusa/dist/loaders"
+    ).default
+
+    const { container, dbConnection } = await loaders({
+      directory: path.resolve(process.cwd()),
+      expressApp: app,
+    })
+
+    console.log(container.registrations)
+
+    const PORT = await getPort()
+
+    return {
+      container,
+      db: dbConnection,
+      app,
+      port: PORT,
+    }
+  },
+}

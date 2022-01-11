@@ -475,16 +475,21 @@ class SendGridService extends NotificationService {
       relations: [
         "items",
         "items.item",
+        "items.item.tax_lines",
         "items.item.variant",
         "items.item.variant.product",
         "shipping_method",
+        "shipping_method.tax_lines",
         "shipping_method.shipping_option",
       ],
     })
 
-    const items = await this.lineItemService_.list({
-      id: returnRequest.items.map(({ item_id }) => item_id),
-    })
+    const items = await this.lineItemService_.list(
+      {
+        id: returnRequest.items.map(({ item_id }) => item_id),
+      },
+      { relations: ["tax_lines"] }
+    )
 
     returnRequest.items = returnRequest.items.map((item) => {
       const found = items.find((i) => i.id === item.item_id)
@@ -499,6 +504,7 @@ class SendGridService extends NotificationService {
       select: ["total"],
       relations: [
         "items",
+        "items.tax_lines",
         "discounts",
         "discounts.rule",
         "discounts.rule.valid_for",
@@ -506,6 +512,7 @@ class SendGridService extends NotificationService {
         "returns",
         "swaps",
         "swaps.additional_items",
+        "swaps.additional_items.tax_lines",
       ],
     })
 
@@ -531,7 +538,10 @@ class SendGridService extends NotificationService {
     const currencyCode = order.currency_code.toUpperCase()
 
     // Get total of the returned products
-    const item_subtotal = this.totalsService_.getRefundTotal(order, returnItems)
+    const item_subtotal = await this.totalsService_.getRefundTotal(
+      order,
+      returnItems
+    )
 
     // If the return has a shipping method get the price and any attachments
     let shippingTotal = 0
@@ -639,7 +649,10 @@ class SendGridService extends NotificationService {
       currencyCode
     )
 
-    const returnTotal = this.totalsService_.getRefundTotal(order, returnItems)
+    const returnTotal = await this.totalsService_.getRefundTotal(
+      order,
+      returnItems
+    )
 
     const constructedOrder = {
       ...order,
@@ -647,7 +660,7 @@ class SendGridService extends NotificationService {
       items: swap.additional_items,
     }
 
-    const additionalTotal = this.totalsService_.getTotal(constructedOrder)
+    const additionalTotal = await this.totalsService_.getTotal(constructedOrder)
 
     const refundAmount = swap.return_order.refund_amount
 
@@ -728,7 +741,10 @@ class SendGridService extends NotificationService {
       currencyCode
     )
 
-    const returnTotal = this.totalsService_.getRefundTotal(order, returnItems)
+    const returnTotal = await this.totalsService_.getRefundTotal(
+      order,
+      returnItems
+    )
 
     const constructedOrder = {
       ...order,
@@ -736,7 +752,7 @@ class SendGridService extends NotificationService {
       items: swap.additional_items,
     }
 
-    const additionalTotal = this.totalsService_.getTotal(constructedOrder)
+    const additionalTotal = await this.totalsService_.getTotal(constructedOrder)
 
     const refundAmount = swap.return_order.refund_amount
 
@@ -871,7 +887,7 @@ class SendGridService extends NotificationService {
     if (fromOrder.cart_id) {
       try {
         const cart = await this.cartService_.retrieve(fromOrder.cart_id, {
-          select: ["context"],
+          select: ["id", "context"],
         })
 
         if (cart.context && cart.context.locale) {
