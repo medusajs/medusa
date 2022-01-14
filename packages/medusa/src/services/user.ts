@@ -2,9 +2,8 @@ import jwt from "jsonwebtoken"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Scrypt from "scrypt-kdf"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager, ObjectType, Repository } from "typeorm"
 import { User } from "../models/user"
-import { UserRepository } from "../repositories/user"
 import { FindConfig } from "../types/common"
 import {
   CreateUserInput,
@@ -13,8 +12,8 @@ import {
 } from "../types/user"
 import EventBusService from "./event-bus"
 
-type UserServiceProps = {
-  userRepository: typeof UserRepository
+type UserServiceProps<TEntity extends User = User> = {
+  userRepository: ObjectType<Repository<TEntity>>
   eventBusService: EventBusService
   manager: EntityManager
 }
@@ -23,17 +22,21 @@ type UserServiceProps = {
  * Provides layer to manipulate users.
  * @extends BaseService
  */
-class UserService extends BaseService {
+class UserService<TEntity extends User = User> extends BaseService {
   static Events = {
     PASSWORD_RESET: "user.password_reset",
   }
 
-  private userRepository_: typeof UserRepository
+  private userRepository_: ObjectType<Repository<TEntity>>
   private eventBus_: EventBusService
   private manager_: EntityManager
   private transactionManager_: EntityManager
 
-  constructor({ userRepository, eventBusService, manager }: UserServiceProps) {
+  constructor({
+    userRepository,
+    eventBusService,
+    manager,
+  }: UserServiceProps<TEntity>) {
     super()
 
     /** @private @const {UserRepository} */
@@ -46,12 +49,12 @@ class UserService extends BaseService {
     this.manager_ = manager
   }
 
-  withTransaction(transactionManager: EntityManager): UserService {
+  withTransaction(transactionManager: EntityManager): UserService<TEntity> {
     if (!transactionManager) {
       return this
     }
 
-    const cloned = new UserService({
+    const cloned = new UserService<TEntity>({
       manager: transactionManager,
       userRepository: this.userRepository_,
       eventBusService: this.eventBus_,
@@ -85,7 +88,7 @@ class UserService extends BaseService {
    * @param {Object} config - the configuration object for the query
    * @return {Promise} the result of the find operation
    */
-  async list(selector: FilterableUserProps, config = {}): Promise<User[]> {
+  async list(selector: FilterableUserProps, config = {}): Promise<TEntity[]> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
     return userRepo.find(this.buildQuery_(selector, config))
   }
@@ -97,7 +100,7 @@ class UserService extends BaseService {
    * @param {FindConfig} config - query configs
    * @return {Promise<User>} the user document.
    */
-  async retrieve(userId: string, config: FindConfig<User> = {}): Promise<User> {
+  async retrieve(userId: string, config: FindConfig<TEntity> = {}): Promise<TEntity> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
     const validatedId = this.validateId_(userId)
     const query = this.buildQuery_({ id: validatedId }, config)
@@ -124,7 +127,7 @@ class UserService extends BaseService {
   async retrieveByApiToken(
     apiToken: string,
     relations: string[] = []
-  ): Promise<User> {
+  ): Promise<TEntity> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
     const user = await userRepo.findOne({
@@ -151,8 +154,8 @@ class UserService extends BaseService {
    */
   async retrieveByEmail(
     email: string,
-    config: FindConfig<User> = {}
-  ): Promise<User> {
+    config: FindConfig<TEntity> = {}
+  ): Promise<TEntity> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
 
     const query = this.buildQuery_({ email: email.toLowerCase() }, config)
@@ -185,7 +188,7 @@ class UserService extends BaseService {
    * @param {string} password - user's password to hash
    * @return {Promise} the result of create
    */
-  async create(user: CreateUserInput, password: string): Promise<User> {
+  async create(user: CreateUserInput, password: string): Promise<TEntity> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
 
@@ -193,7 +196,7 @@ class UserService extends BaseService {
         password_hash: string
       }
 
-      const validatedEmail = this.validateEmail_(user.email)
+      const validatedEmail = this.validateEmail_(user.email as string)
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         createData.password_hash = hashedPassword
@@ -201,9 +204,9 @@ class UserService extends BaseService {
 
       createData.email = validatedEmail
 
-      const created = userRepo.create(createData)
+      const created = userRepo.create(createData as DeepPartial<TEntity>)
 
-      return userRepo.save(created)
+      return userRepo.save(created as DeepPartial<TEntity>)
     })
   }
 
@@ -213,7 +216,7 @@ class UserService extends BaseService {
    * @param {object} update - the values to be updated on the user
    * @return {Promise} the result of create
    */
-  async update(userId: string, update: UpdateUserInput): Promise<User> {
+  async update(userId: string, update: UpdateUserInput): Promise<TEntity> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
       const validatedId = this.validateId_(userId)
@@ -244,7 +247,7 @@ class UserService extends BaseService {
         user[key as keyof User] = value
       }
 
-      return userRepo.save(user)
+      return userRepo.save(user as DeepPartial<TEntity>)
     })
   }
 
@@ -265,7 +268,7 @@ class UserService extends BaseService {
         return Promise.resolve()
       }
 
-      await userRepo.softRemove(user)
+      await userRepo.softRemove(user as DeepPartial<TEntity>)
 
       return Promise.resolve()
     })
@@ -279,7 +282,7 @@ class UserService extends BaseService {
    * @param {string} password - the old password to set
    * @return {Promise} the result of the update operation
    */
-  async setPassword_(userId: string, password: string): Promise<User> {
+  async setPassword_(userId: string, password: string): Promise<TEntity> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const userRepo = manager.getCustomRepository(this.userRepository_)
 
@@ -295,7 +298,7 @@ class UserService extends BaseService {
 
       user.password_hash = hashedPassword
 
-      return userRepo.save(user)
+      return userRepo.save(user as DeepPartial<TEntity>)
     })
   }
 
