@@ -100,7 +100,10 @@ class UserService<TEntity extends User = User> extends BaseService {
    * @param {FindConfig} config - query configs
    * @return {Promise<User>} the user document.
    */
-  async retrieve(userId: string, config: FindConfig<TEntity> = {}): Promise<TEntity> {
+  async retrieve(
+    userId: string,
+    config: FindConfig<TEntity> = {}
+  ): Promise<TEntity> {
     const userRepo = this.manager_.getCustomRepository(this.userRepository_)
     const validatedId = this.validateId_(userId)
     const query = this.buildQuery_({ id: validatedId }, config)
@@ -196,7 +199,7 @@ class UserService<TEntity extends User = User> extends BaseService {
         password_hash: string
       }
 
-      const validatedEmail = this.validateEmail_(user.email as string)
+      const validatedEmail = this.validateEmail_(user.email)
       if (password) {
         const hashedPassword = await this.hashPassword_(password)
         createData.password_hash = hashedPassword
