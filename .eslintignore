@@ -11,7 +11,7 @@
 /packages/medusa/src/loaders/express.js
 /packages/medusa/src/loaders/index.js
 /packages/medusa/src/loaders/logger.js
-/packages/medusa/src/loaders/models.js
+/packages/medusa/src/loaders/models.ts
 /packages/medusa/src/loaders/passport.js
 /packages/medusa/src/loaders/plugins.js
 /packages/medusa/src/loaders/redis.js

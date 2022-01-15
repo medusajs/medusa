@@ -58,7 +58,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container, activityId: modelsActivity })
+  modelsLoader({ container, activityId: modelsActivity }, configModule)
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
