@@ -91,7 +91,7 @@ export default ({ container }, config: Config, register: boolean = true) => {
 function applyCustomFields<TEntity = any>(entity: TEntity, config: Config): any {
   const { projectConfig: { database_type }, customFields } = config
 
-  const entityCustomFields = customFields[(entity as any).constructor.name]
+  const entityCustomFields = (customFields || {})[(entity as any).constructor.name] ?? [];
   if (!entityCustomFields?.length) {
     return entity
   }
