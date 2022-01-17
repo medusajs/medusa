@@ -12,6 +12,7 @@ type LoaderOptions = {
 
 /**
  * Registers all strategies in the strategies directory
+ * @returns void
  */
 export default ({ container, configModule, isTest }: LoaderOptions): void => {
   const useMock =
