@@ -22,8 +22,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
       this.calculateLineItemsTax(items, lineItemsTaxLines, calculationContext) +
         this.calculateShippingMethodsTax(
           calculationContext.shipping_methods,
-          shippingMethodsTaxLines,
-          calculationContext
+          shippingMethodsTaxLines
         )
     )
   }
@@ -57,8 +56,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
   private calculateShippingMethodsTax(
     shipping_methods: ShippingMethod[],
-    taxLines: ShippingMethodTaxLine[],
-    context: TaxCalculationContext // eslint-disable-line
+    taxLines: ShippingMethodTaxLine[]
   ): number {
     let taxTotal = 0
     for (const sm of shipping_methods) {

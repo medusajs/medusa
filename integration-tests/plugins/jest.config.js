@@ -11,6 +11,7 @@ module.exports = {
     `__testfixtures__`,
     `.cache`,
   ],
+  transformIgnorePatterns: [`/dist`],
   transform: { "^.+\\.[jt]s$": `../../jest-transformer.js` },
   setupFilesAfterEnv: ["../setup.js"],
   globalSetup: "../globalSetup.js",

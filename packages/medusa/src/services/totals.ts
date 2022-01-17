@@ -6,6 +6,7 @@ import { LineItemTaxLine } from "../models/line-item-tax-line"
 import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { Order } from "../models/order"
 import { Cart } from "../models/cart"
+import { ShippingMethod } from "../models/shipping-method"
 import { LineItem } from "../models/line-item"
 import { Discount } from "../models/discount"
 import { DiscountRuleType } from "../models/discount-rule"
@@ -23,6 +24,25 @@ import {
   LineDiscountAmount,
 } from "../types/totals"
 
+type LineItemTotals = {
+  unit_price: number
+  quantity: number
+  subtotal: number
+  tax_total: number
+  discount_total: number
+  gift_card_total: number
+}
+
+type LineItemTotalsOptions = {
+  include_tax?: boolean
+}
+
+type GetLineItemTotalOptions = {
+  include_tax?: boolean
+  exclude_gift_cards?: boolean
+  exclude_discounts?: boolean
+}
+
 type TotalsServiceProps = {
   taxProviderService: TaxProviderService
   taxCalculationStrategy: ITaxCalculationStrategy
@@ -30,6 +50,18 @@ type TotalsServiceProps = {
 
 type GetTotalsOptions = {
   force_taxes?: boolean
+}
+
+type AllocationMapOptions = {
+  exclude_gift_cards?: boolean
+  exclude_discounts?: boolean
+}
+
+type CalculationContextOptions = {
+  is_return?: boolean
+  exclude_shipping?: boolean
+  exclude_gift_cards?: boolean
+  exclude_discounts?: boolean
 }
 
 /**
@@ -229,66 +261,74 @@ class TotalsService extends BaseService {
    * order. The function calculates the amount of a discount or gift card that
    * applies to a specific line item.
    * @param orderOrCart - the order or cart to get an allocation map for
+   * @param options - controls what should be included in allocation map
    * @return the allocation map for the line items in the cart or order.
    */
-  getAllocationMap(orderOrCart: Cart | Order): LineAllocationsMap {
-    let lineDiscounts: LineDiscountAmount[] = []
-
-    const discount = orderOrCart.discounts.find(
-      ({ rule }) => rule.type !== "free_shipping"
-    )
-    if (discount) {
-      lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
-    }
-
-    let lineGiftCards: LineDiscountAmount[] = []
-    if (orderOrCart.gift_cards && orderOrCart.gift_cards.length) {
-      const subtotal = this.getSubtotal(orderOrCart)
-      const giftCardTotal = this.getGiftCardTotal(orderOrCart)
-
-      // If the fixed discount exceeds the subtotal we should
-      // calculate a 100% discount
-      const nominator = Math.min(giftCardTotal, subtotal)
-      const percentage = nominator / subtotal
-
-      lineGiftCards = orderOrCart.items.map((l) => {
-        return {
-          item: l,
-          amount: l.unit_price * l.quantity * percentage,
-        }
-      })
-    }
-
+  getAllocationMap(
+    orderOrCart: Cart | Order,
+    options: AllocationMapOptions = {}
+  ): LineAllocationsMap {
     const allocationMap: LineAllocationsMap = {}
 
-    for (const ld of lineDiscounts) {
-      if (allocationMap[ld.item.id]) {
-        allocationMap[ld.item.id].discount = {
-          amount: ld.amount,
-          unit_amount: ld.amount / ld.item.quantity,
-        }
-      } else {
-        allocationMap[ld.item.id] = {
-          discount: {
+    if (!options.exclude_discounts) {
+      let lineDiscounts: LineDiscountAmount[] = []
+
+      const discount = orderOrCart.discounts.find(
+        ({ rule }) => rule.type !== "free_shipping"
+      )
+      if (discount) {
+        lineDiscounts = this.getLineDiscounts(orderOrCart, discount)
+      }
+
+      for (const ld of lineDiscounts) {
+        if (allocationMap[ld.item.id]) {
+          allocationMap[ld.item.id].discount = {
             amount: ld.amount,
             unit_amount: ld.amount / ld.item.quantity,
-          },
+          }
+        } else {
+          allocationMap[ld.item.id] = {
+            discount: {
+              amount: ld.amount,
+              unit_amount: ld.amount / ld.item.quantity,
+            },
+          }
         }
       }
     }
 
-    for (const lgc of lineGiftCards) {
-      if (allocationMap[lgc.item.id]) {
-        allocationMap[lgc.item.id].gift_card = {
-          amount: lgc.amount,
-          unit_amount: lgc.amount / lgc.item.quantity,
-        }
-      } else {
-        allocationMap[lgc.item.id] = {
-          discount: {
+    if (!options.exclude_gift_cards) {
+      let lineGiftCards: LineDiscountAmount[] = []
+      if (orderOrCart.gift_cards && orderOrCart.gift_cards.length) {
+        const subtotal = this.getSubtotal(orderOrCart)
+        const giftCardTotal = this.getGiftCardTotal(orderOrCart)
+
+        // If the fixed discount exceeds the subtotal we should
+        // calculate a 100% discount
+        const nominator = Math.min(giftCardTotal, subtotal)
+        const percentage = nominator / subtotal
+
+        lineGiftCards = orderOrCart.items.map((l) => {
+          return {
+            item: l,
+            amount: l.unit_price * l.quantity * percentage,
+          }
+        })
+      }
+
+      for (const lgc of lineGiftCards) {
+        if (allocationMap[lgc.item.id]) {
+          allocationMap[lgc.item.id].gift_card = {
             amount: lgc.amount,
             unit_amount: lgc.amount / lgc.item.quantity,
-          },
+          }
+        } else {
+          allocationMap[lgc.item.id] = {
+            discount: {
+              amount: lgc.amount,
+              unit_amount: lgc.amount / lgc.item.quantity,
+            },
+          }
         }
       }
     }
@@ -537,6 +577,121 @@ class TotalsService extends BaseService {
   }
 
   /**
+   * Breaks down the totals related to a line item; these are the subtotal, the
+   * amount of discount applied to the line item, the amount of a gift card
+   * applied to a line item and the amount of tax applied to a line item.
+   * @param lineItem - the line item to calculate totals for
+   * @param cartOrOrder - the cart or order to use as context for the calculation
+   * @param options - the options to evaluate the line item totals for
+   * @returns the breakdown of the line item totals
+   */
+  async getLineItemTotals(
+    lineItem: LineItem,
+    cartOrOrder: Cart | Order,
+    options: LineItemTotalsOptions = {}
+  ): Promise<LineItemTotals> {
+    const calculationContext = this.getCalculationContext(cartOrOrder, {
+      exclude_shipping: true,
+    })
+
+    const lineItemAllocation =
+      calculationContext.allocation_map[lineItem.id] || {}
+
+    const lineItemTotals: LineItemTotals = {
+      unit_price: lineItem.unit_price,
+      quantity: lineItem.quantity,
+      subtotal: lineItem.unit_price * lineItem.quantity,
+      gift_card_total: lineItemAllocation.gift_card?.amount || 0,
+      discount_total: lineItemAllocation.discount?.amount || 0,
+      tax_total: 0,
+    }
+
+    // Tax Information
+    if (typeof options.include_tax !== "undefined" && options.include_tax) {
+      // When we have an order with a null'ed tax rate we know that it is an
+      // order from the old tax system. The following is a backward compat
+      // calculation.
+      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+        lineItemTotals.tax_total =
+          lineItemTotals.subtotal * (cartOrOrder.tax_rate / 100)
+      } else {
+        let taxLines: LineItemTaxLine[]
+
+        /*
+         * Line Items on orders will already have tax lines. But for cart line
+         * items we have to get the line items from the tax provider.
+         */
+        if (isOrder(cartOrOrder)) {
+          if (typeof lineItem.tax_lines === "undefined") {
+            throw new MedusaError(
+              MedusaError.Types.UNEXPECTED_STATE,
+              "Tax Lines must be joined on items to calculate taxes"
+            )
+          }
+
+          taxLines = lineItem.tax_lines
+        } else {
+          if (lineItem.is_return) {
+            if (typeof lineItem.tax_lines === "undefined") {
+              throw new MedusaError(
+                MedusaError.Types.UNEXPECTED_STATE,
+                "Return Line Items must join tax lines"
+              )
+            }
+            taxLines = lineItem.tax_lines
+          } else {
+            taxLines = (await this.taxProviderService_.getTaxLines(
+              cartOrOrder,
+              calculationContext
+            )) as LineItemTaxLine[]
+          }
+        }
+
+        lineItemTotals.tax_total = await this.taxCalculationStrategy_.calculate(
+          [lineItem],
+          taxLines,
+          calculationContext
+        )
+      }
+    }
+
+    return lineItemTotals
+  }
+
+  /**
+   * Gets a total for a line item. The total can take gift cards, discounts and
+   * taxes into account. This can be controlled through the options.
+   * @param lineItem - the line item to calculate a total for
+   * @param cartOrOrder - the cart or order to use as context for the calculation
+   * @param options - the options to use for the calculation
+   * @returns the line item total
+   */
+  async getLineItemTotal(
+    lineItem: LineItem,
+    cartOrOrder: Cart | Order,
+    options: GetLineItemTotalOptions = {}
+  ): Promise<number> {
+    const lineItemTotals = await this.getLineItemTotals(lineItem, cartOrOrder, {
+      include_tax: options.include_tax,
+    })
+
+    let toReturn = lineItemTotals.subtotal
+    if (!options.exclude_discounts) {
+      toReturn += lineItemTotals.discount_total
+    }
+
+    if (!options.exclude_gift_cards) {
+      toReturn += lineItemTotals.gift_card_total
+    }
+
+    if (options.include_tax) {
+      toReturn += lineItemTotals.tax_total
+    }
+
+    return toReturn
+  }
+
+  /**
    * Gets the gift card amount on a cart or order.
    * @param cartOrOrder - the cart or order to get gift card amount for
    * @return the gift card amount applied to the cart or order
@@ -619,20 +774,30 @@ class TotalsService extends BaseService {
   /**
    * Prepares the calculation context for a tax total calculation.
    * @param cartOrOrder - the cart or order to get the calculation context for
-   * @param isReturn - wether the calculation context is for a return
+   * @param options - options to gather context by
    * @return the tax calculation context
    */
   getCalculationContext(
     cartOrOrder: Cart | Order,
-    isReturn = false
+    options: CalculationContextOptions = {}
   ): TaxCalculationContext {
-    const allocationMap = this.getAllocationMap(cartOrOrder)
+    const allocationMap = this.getAllocationMap(cartOrOrder, {
+      exclude_gift_cards: options.exclude_gift_cards,
+      exclude_discounts: options.exclude_discounts,
+    })
+
+    let shippingMethods: ShippingMethod[] = []
+    // Default to include shipping methods
+    if (!options.exclude_shipping) {
+      shippingMethods = cartOrOrder.shipping_methods || []
+    }
+
     return {
       shipping_address: cartOrOrder.shipping_address,
-      shipping_methods: cartOrOrder.shipping_methods || [],
+      shipping_methods: shippingMethods,
       customer: cartOrOrder.customer,
       region: cartOrOrder.region,
-      is_return: isReturn,
+      is_return: options.is_return ?? false,
       allocation_map: allocationMap,
     }
   }

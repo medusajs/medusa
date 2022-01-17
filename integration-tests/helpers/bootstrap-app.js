@@ -15,9 +15,8 @@ module.exports = {
     const { container, dbConnection } = await loaders({
       directory: path.resolve(process.cwd()),
       expressApp: app,
+      isTest: false,
     })
-
-    console.log(container.registrations)
 
     const PORT = await getPort()
 

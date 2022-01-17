@@ -35,7 +35,7 @@ export default async ({ app, container }) => {
   passport.use(
     new JWTStrategy(
       {
-        jwtFromRequest: req => req.session.jwt,
+        jwtFromRequest: (req) => req.session.jwt,
         secretOrKey: config.jwtSecret,
       },
       async (jwtPayload, done) => {

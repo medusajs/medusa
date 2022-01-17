@@ -16,6 +16,7 @@ const pgGodCredentials = {
 }
 
 const keepTables = [
+  "store",
   "staged_job",
   "shipping_profile",
   "fulfillment_provider",

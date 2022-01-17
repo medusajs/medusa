@@ -349,6 +349,105 @@ class SendGridService extends NotificationService {
     }
   }
 
+  async orderCanceledData({ id }) {
+    const order = await this.orderService_.retrieve(id, {
+      select: [
+        "shipping_total",
+        "discount_total",
+        "tax_total",
+        "refunded_total",
+        "gift_card_total",
+        "subtotal",
+        "total",
+      ],
+      relations: [
+        "customer",
+        "billing_address",
+        "shipping_address",
+        "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
+        "shipping_methods",
+        "shipping_methods.shipping_option",
+        "payments",
+        "fulfillments",
+        "returns",
+        "gift_cards",
+        "gift_card_transactions",
+      ],
+    })
+
+    const {
+      subtotal,
+      tax_total,
+      discount_total,
+      shipping_total,
+      gift_card_total,
+      total,
+    } = order
+
+    const taxRate = order.tax_rate / 100
+    const currencyCode = order.currency_code.toUpperCase()
+
+    const items = this.processItems_(order.items, taxRate, currencyCode)
+
+    let discounts = []
+    if (order.discounts) {
+      discounts = order.discounts.map((discount) => {
+        return {
+          is_giftcard: false,
+          code: discount.code,
+          descriptor: `${discount.rule.value}${
+            discount.rule.type === "percentage" ? "%" : ` ${currencyCode}`
+          }`,
+        }
+      })
+    }
+
+    let giftCards = []
+    if (order.gift_cards) {
+      giftCards = order.gift_cards.map((gc) => {
+        return {
+          is_giftcard: true,
+          code: gc.code,
+          descriptor: `${gc.value} ${currencyCode}`,
+        }
+      })
+
+      discounts.concat(giftCards)
+    }
+
+    const locale = await this.extractLocale(order)
+
+    return {
+      ...order,
+      locale,
+      has_discounts: order.discounts.length,
+      has_gift_cards: order.gift_cards.length,
+      date: order.created_at.toDateString(),
+      items,
+      discounts,
+      subtotal: `${this.humanPrice_(
+        subtotal * (1 + taxRate),
+        currencyCode
+      )} ${currencyCode}`,
+      gift_card_total: `${this.humanPrice_(
+        gift_card_total * (1 + taxRate),
+        currencyCode
+      )} ${currencyCode}`,
+      tax_total: `${this.humanPrice_(tax_total, currencyCode)} ${currencyCode}`,
+      discount_total: `${this.humanPrice_(
+        discount_total * (1 + taxRate),
+        currencyCode
+      )} ${currencyCode}`,
+      shipping_total: `${this.humanPrice_(
+        shipping_total * (1 + taxRate),
+        currencyCode
+      )} ${currencyCode}`,
+      total: `${this.humanPrice_(total, currencyCode)} ${currencyCode}`,
+    }
+  }
+
   async orderPlacedData({ id }) {
     const order = await this.orderService_.retrieve(id, {
       select: [
@@ -580,11 +679,12 @@ class SendGridService extends NotificationService {
     }
   }
 
-  async swapCreatedData({ id }) {
+  async swapReceivedData({ id }) {
     const store = await this.storeService_.retrieve()
     const swap = await this.swapService_.retrieve(id, {
       relations: [
         "additional_items",
+        "additional_items.tax_lines",
         "return_order",
         "return_order.items",
         "return_order.items.item",
@@ -622,45 +722,51 @@ class SendGridService extends NotificationService {
         "shipping_address",
         "swaps",
         "swaps.additional_items",
+        "swaps.additional_items.tax_lines",
       ],
     })
 
-    const taxRate = order.tax_rate / 100
+    const cart = await this.cartService_.retrieve(swap.cart_id, {
+      select: [
+        "total",
+        "tax_total",
+        "discount_total",
+        "shipping_total",
+        "subtotal",
+      ],
+    })
     const currencyCode = order.currency_code.toUpperCase()
 
-    let merged = [...order.items]
+    const decoratedItems = await Promise.all(
+      cart.items.map(async (i) => {
+        const totals = await this.totalsService_.getLineItemTotals(i, cart, {
+          include_tax: true,
+        })
 
-    // merge items from order with items from order swaps
-    if (order.swaps && order.swaps.length) {
-      for (const s of order.swaps) {
-        merged = [...merged, ...s.additional_items]
-      }
-    }
-
-    const returnItems = this.processItems_(
-      swap.return_order.items.map((i) => {
-        const found = merged.find((oi) => oi.id === i.item_id)
         return {
-          ...found,
-          quantity: i.quantity,
+          ...i,
+          totals,
+          price: this.humanPrice_(
+            totals.subtotal + totals.tax_total,
+            currencyCode
+          ),
         }
-      }),
-      taxRate,
-      currencyCode
+      })
     )
 
-    const returnTotal = await this.totalsService_.getRefundTotal(
-      order,
-      returnItems
-    )
+    const returnTotal = decoratedItems.reduce((acc, next) => {
+      if (next.is_return) {
+        return acc + -1 * (next.totals.subtotal + next.totals.tax_total)
+      }
+      return acc
+    }, 0)
 
-    const constructedOrder = {
-      ...order,
-      shipping_methods: [],
-      items: swap.additional_items,
-    }
-
-    const additionalTotal = await this.totalsService_.getTotal(constructedOrder)
+    const additionalTotal = decoratedItems.reduce((acc, next) => {
+      if (!next.is_return) {
+        return acc + next.totals.subtotal + next.totals.tax_total
+      }
+      return acc
+    }, 0)
 
     const refundAmount = swap.return_order.refund_amount
 
@@ -674,8 +780,126 @@ class SendGridService extends NotificationService {
       date: swap.updated_at.toDateString(),
       swap_link: swapLink,
       email: order.email,
-      items: this.processItems_(swap.additional_items, taxRate, currencyCode),
-      return_items: returnItems,
+      items: decoratedItems.filter((di) => !di.is_return),
+      return_items: decoratedItems.filter((di) => di.is_return),
+      return_total: `${this.humanPrice_(
+        returnTotal,
+        currencyCode
+      )} ${currencyCode}`,
+      refund_amount: `${this.humanPrice_(
+        refundAmount,
+        currencyCode
+      )} ${currencyCode}`,
+      additional_total: `${this.humanPrice_(
+        additionalTotal,
+        currencyCode
+      )} ${currencyCode}`,
+    }
+  }
+
+  async swapCreatedData({ id }) {
+    const store = await this.storeService_.retrieve()
+    const swap = await this.swapService_.retrieve(id, {
+      relations: [
+        "additional_items",
+        "additional_items.tax_lines",
+        "return_order",
+        "return_order.items",
+        "return_order.items.item",
+        "return_order.shipping_method",
+        "return_order.shipping_method.shipping_option",
+      ],
+    })
+
+    const returnRequest = swap.return_order
+
+    const items = await this.lineItemService_.list({
+      id: returnRequest.items.map(({ item_id }) => item_id),
+    })
+
+    returnRequest.items = returnRequest.items.map((item) => {
+      const found = items.find((i) => i.id === item.item_id)
+      return {
+        ...item,
+        item: found,
+      }
+    })
+
+    const swapLink = store.swap_link_template.replace(
+      /\{cart_id\}/,
+      swap.cart_id
+    )
+
+    const order = await this.orderService_.retrieve(swap.order_id, {
+      select: ["total"],
+      relations: [
+        "items",
+        "discounts",
+        "discounts.rule",
+        "discounts.rule.valid_for",
+        "shipping_address",
+        "swaps",
+        "swaps.additional_items",
+        "swaps.additional_items.tax_lines",
+      ],
+    })
+
+    const cart = await this.cartService_.retrieve(swap.cart_id, {
+      select: [
+        "total",
+        "tax_total",
+        "discount_total",
+        "shipping_total",
+        "subtotal",
+      ],
+    })
+    const currencyCode = order.currency_code.toUpperCase()
+
+    const decoratedItems = await Promise.all(
+      cart.items.map(async (i) => {
+        const totals = await this.totalsService_.getLineItemTotals(i, cart, {
+          include_tax: true,
+        })
+
+        return {
+          ...i,
+          totals,
+          price: this.humanPrice_(
+            totals.subtotal + totals.tax_total,
+            currencyCode
+          ),
+        }
+      })
+    )
+
+    const returnTotal = decoratedItems.reduce((acc, next) => {
+      if (next.is_return) {
+        return acc + -1 * (next.totals.subtotal + next.totals.tax_total)
+      }
+      return acc
+    }, 0)
+
+    const additionalTotal = decoratedItems.reduce((acc, next) => {
+      if (!next.is_return) {
+        return acc + next.totals.subtotal + next.totals.tax_total
+      }
+      return acc
+    }, 0)
+
+    const refundAmount = swap.return_order.refund_amount
+
+    const locale = await this.extractLocale(order)
+
+    return {
+      locale,
+      swap,
+      order,
+      return_request: returnRequest,
+      date: swap.updated_at.toDateString(),
+      swap_link: swapLink,
+      email: order.email,
+      items: decoratedItems.filter((di) => !di.is_return),
+      return_items: decoratedItems.filter((di) => di.is_return),
       return_total: `${this.humanPrice_(
         returnTotal,
         currencyCode
@@ -700,7 +924,9 @@ class SendGridService extends NotificationService {
       relations: [
         "shipping_address",
         "shipping_methods",
+        "shipping_methods.tax_lines",
         "additional_items",
+        "additional_items.tax_lines",
         "return_order",
         "return_order.items",
       ],
@@ -708,12 +934,15 @@ class SendGridService extends NotificationService {
 
     const order = await this.orderService_.retrieve(swap.order_id, {
       relations: [
+        "region",
         "items",
+        "items.tax_lines",
         "discounts",
         "discounts.rule",
         "discounts.rule.valid_for",
         "swaps",
         "swaps.additional_items",
+        "swaps.additional_items.tax_lines",
       ],
     })
 
