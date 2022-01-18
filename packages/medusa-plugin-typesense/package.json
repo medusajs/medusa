@@ -21,6 +21,7 @@
     "typeorm": "0.x"
   },
   "dependencies": {
+    "typesense": "^1.1.2",
     "body-parser": "^1.19.0",
     "lodash": "^4.17.21",
     "medusa-core-utils": "^1.1.31",
