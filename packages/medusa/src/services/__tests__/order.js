@@ -662,10 +662,7 @@ describe("OrderService", () => {
 
     it("calls order model functions", async () => {
       try {
-        const order = await orderService.retrieve(
-          IdMap.getId("not-fulfilled-order")
-        )
-        console.warn(order)
+        await orderService.retrieve(IdMap.getId("not-fulfilled-order"))
         await orderService.cancel(IdMap.getId("not-fulfilled-order"))
       } catch (e) {
         console.warn(e)
@@ -690,6 +687,7 @@ describe("OrderService", () => {
       expect(orderRepo.save).toHaveBeenCalledWith({
         fulfillment_status: "canceled",
         payment_status: "canceled",
+        canceled_at: expect.any(Date),
         status: "canceled",
         fulfillments: [{ id: "fulfillment_test", canceled_at: now }],
         payments: [{ id: "payment_test" }],

@@ -537,7 +537,7 @@ describe("TotalsService", () => {
       expect(res).toEqual(20)
 
       expect(getAllocationMapMock).toHaveBeenCalledTimes(1)
-      expect(getAllocationMapMock).toHaveBeenCalledWith(order)
+      expect(getAllocationMapMock).toHaveBeenCalledWith(order, {})
 
       expect(getTaxLinesMock).toHaveBeenCalledTimes(0)
 
@@ -592,7 +592,7 @@ describe("TotalsService", () => {
       expect(res).toEqual(20)
 
       expect(getAllocationMapMock).toHaveBeenCalledTimes(1)
-      expect(getAllocationMapMock).toHaveBeenCalledWith(order)
+      expect(getAllocationMapMock).toHaveBeenCalledWith(order, {})
 
       expect(getTaxLinesMock).toHaveBeenCalledTimes(1)
       expect(getTaxLinesMock).toHaveBeenCalledWith(order, {

@@ -109,13 +109,6 @@ class SwapService extends BaseService {
   transformQueryForCart_(config) {
     let { select, relations } = config
 
-    // Check if cart is in relations
-    //  if yes remove cart from relation and select cart_id
-    //  else do nothing
-    // Select cart_id
-    //  if select.length === 0 do nothing
-    //  else push cart_id to set
-
     let cartSelects = null
     let cartRelations = null
 
@@ -142,25 +135,27 @@ class SwapService extends BaseService {
       cartRelations = cartRels
 
       let foundCartId = false
-      const [swapSelects, cartSels] = select.reduce(
-        (acc, next) => {
-          if (next.startsWith("cart.")) {
-            const [, ...rel] = next.split(".")
-            acc[1].push(rel.join("."))
-          } else {
-            if (next === "cart_id") {
-              foundCartId = true
+      if (typeof select !== "undefined") {
+        const [swapSelects, cartSels] = select.reduce(
+          (acc, next) => {
+            if (next.startsWith("cart.")) {
+              const [, ...rel] = next.split(".")
+              acc[1].push(rel.join("."))
+            } else {
+              if (next === "cart_id") {
+                foundCartId = true
+              }
+              acc[0].push(next)
             }
-            acc[0].push(next)
-          }
 
-          return acc
-        },
-        [[], []]
-      )
+            return acc
+          },
+          [[], []]
+        )
 
-      select = foundCartId ? swapSelects : [...swapSelects, "cart_id"]
-      cartSelects = cartSels
+        select = foundCartId ? swapSelects : [...swapSelects, "cart_id"]
+        cartSelects = cartSels
+      }
     }
 
     return {
@@ -652,7 +647,7 @@ class SwapService extends BaseService {
    *@param {string} swapId - The id of the swap
    */
   async registerCartCompletion(swapId) {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
         select: [
           "id",
@@ -772,49 +767,6 @@ class SwapService extends BaseService {
         .update(cart.id, { completed_at: new Date() })
 
       return result
-    })
-  }
-
-  /**
-   * Registers the return associated with a swap as received. If the return
-   * is received with mismatching return items the swap's status will be updated
-   * to requires_action.
-   * @param {string} swapId - the id of the swap to receive.
-   * @param {Array<ReturnItem>} returnItems - the return items that have been returned
-   * @return {Promise<Swap>} the resulting swap, with an updated return and
-   *   status.
-   */
-  async receiveReturn(swapId, returnItems) {
-    return this.atomicPhase_(async (manager) => {
-      const swap = await this.retrieve(swapId, { relations: ["return_order"] })
-
-      if (swap.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Canceled swap cannot be registered as received"
-        )
-      }
-
-      const returnId = swap.return_order && swap.return_order.id
-      if (!returnId) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Swap has no return request"
-        )
-      }
-
-      const updatedRet = await this.returnService_
-        .withTransaction(manager)
-        .receive(returnId, returnItems, undefined, false)
-
-      if (updatedRet.status === "requires_action") {
-        const swapRepo = manager.getCustomRepository(this.swapRepository_)
-        swap.fulfillment_status = "requires_action"
-        const result = await swapRepo.save(swap)
-        return result
-      }
-
-      return this.retrieve(swapId)
     })
   }
 
