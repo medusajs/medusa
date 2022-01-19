@@ -50,16 +50,21 @@ class BaseService {
                 case "gte":
                   subquery.push({ operator: ">=", value: val })
                   break
+                default: 
+                  acc[key] = value
+                  break
               }
             })
 
-            acc[key] = Raw(
-              (a) =>
+            if(subquery.length){
+              acc[key] = Raw(
+                (a) =>
                 subquery
-                  .map((s, index) => `${a} ${s.operator} :${index}`)
-                  .join(" AND "),
-              subquery.map((s) => s.value)
-            )
+                .map((s, index) => `${a} ${s.operator} :${index}`)
+                .join(" AND "),
+                subquery.map((s) => s.value)
+                )
+              }
             break
           default:
             acc[key] = value
