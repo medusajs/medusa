@@ -14,6 +14,7 @@ import {
   DiscountRuleType,
 } from "../../../../models/discount-rule"
 import DiscountService from "../../../../services/discount"
+import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts
@@ -44,14 +45,6 @@ export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  // const selector: ListSelector = {}
-
-  // if (validated.q) {
-  //   selector.q = validated.q
-  // }
-
-  // selector.is_disabled = validated.is_disabled
-  // selector.is_dynamic = validated.is_dynamic
 
   const listConfig = {
     select: defaultAdminDiscountsFields,
