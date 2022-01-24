@@ -16,78 +16,87 @@ class AdminUsersResource extends BaseResource {
   /**
    * @description resets password by re-sending password token.
    * @param payload payload for generating reset-password token.
+   * @param customHeaders
    * @returns
    */
   sendResetPasswordToken(
-    payload: AdminResetPasswordTokenRequest
+    payload: AdminResetPasswordTokenRequest,
+    customHeaders: object = {}
   ): ResponsePromise<void> {
     const path = `/admin/users/password-token`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * @description resets the users password given the correct token.
    * @param payload reset password information.
+   * @param customHeaders
    * @returns
    */
   resetPassword(
-    payload: AdminResetPasswordRequest
+    payload: AdminResetPasswordRequest,
+    customHeaders: object = {}
   ): ResponsePromise<AdminUserRes> {
     const path = `admin/users/reset-password`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * Retrieves a given user
    * @param id id of the user
+   * @param customHeaders
    * @returns the user
    */
-  retrieve(id: string): ResponsePromise<AdminUserRes> {
+  retrieve(id: string, customHeaders: object = {}): ResponsePromise<AdminUserRes> {
     const path = `/admin/users/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description creates a user with the provided information
    * @param payload user creation request body
+   * @param customHeaders
    * @returns created user
    */
-  create(payload: AdminCreateUserPayload): ResponsePromise<AdminUserRes> {
+  create(payload: AdminCreateUserPayload, customHeaders: object = {}): ResponsePromise<AdminUserRes> {
     const path = `/admin/users`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * @description updates a given user
    * @param id id of the user to update
    * @param payload user update request body
+   * @param customHeaders
    * @returns the updated user
    */
   update(
     id: string,
-    payload: AdminUpdateUserPayload
+    payload: AdminUpdateUserPayload,
+    customHeaders: object = {}
   ): ResponsePromise<AdminUserRes> {
     const path = `/admin/users/${id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * @description deletes a user
    * @param id id of the user to be deleted
+   * @param customHeaders
    * @returns delete response
    */
-  delete(id: string): ResponsePromise<AdminDeleteUserRes> {
+  delete(id: string, customHeaders: object = {}): ResponsePromise<AdminDeleteUserRes> {
     const path = `/admin/users/${id}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
    * @description lists all users
    * @returns a list of all users
    */
-  list(): ResponsePromise<AdminUsersListRes> {
+  list(customHeaders: object = {}): ResponsePromise<AdminUsersListRes> {
     const path = `/admin/users`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }
 
