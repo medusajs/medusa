@@ -430,8 +430,7 @@ class ShippingOptionService extends BaseService {
 
     if (priceType === "calculated") {
       const canCalculate = await this.providerService_.canCalculate(
-        option.provider_id,
-        option.data
+        option
       )
       if (!canCalculate) {
         throw new MedusaError(
