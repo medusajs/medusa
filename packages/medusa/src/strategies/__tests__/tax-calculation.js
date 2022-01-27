@@ -44,9 +44,11 @@ const toTest = [
         item_1: {
           discount: {
             amount: 10,
+            unit_amount: 5,
           },
           gift_card: {
             amount: 10,
+            unit_amount: 5,
           },
         },
       },
@@ -95,9 +97,11 @@ const toTest = [
         item_1: {
           discount: {
             amount: 10,
+            unit_amount: 5,
           },
           gift_card: {
             amount: 10,
+            unit_amount: 5,
           },
         },
       },

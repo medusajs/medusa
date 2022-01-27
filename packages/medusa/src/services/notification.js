@@ -174,7 +174,6 @@ class NotificationService extends BaseService {
 
     return Promise.all(
       subs.map(async (providerId) => {
-        console.log(providerId)
         return this.send(eventName, data, providerId).catch((err) => {
           console.log(err)
           this.logger_.warn(

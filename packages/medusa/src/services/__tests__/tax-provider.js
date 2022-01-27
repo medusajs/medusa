@@ -117,7 +117,7 @@ describe("TaxProviderService", () => {
 
     test("success", async () => {
       container.taxRateService = {
-        listByProduct: jest.fn([]),
+        listByProduct: jest.fn(() => Promise.resolve([])),
       }
 
       const providerService = new TaxProviderService(container)
