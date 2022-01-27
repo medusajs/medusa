@@ -46,7 +46,7 @@ class KlarnaProviderService extends PaymentService {
     this.totalsService_ = totalsService
   }
 
-  async lineItemsToOrderLines_(cart, taxRate) {
+  async lineItemsToOrderLines_(cart) {
     let order_lines = []
 
     for (const item of cart.items) {
@@ -116,9 +116,7 @@ class KlarnaProviderService extends PaymentService {
 
     const { region, gift_card_total, tax_total, total } = cart
 
-    const taxRate = region.tax_rate / 100
-
-    order.order_lines = await this.lineItemsToOrderLines_(cart, region.tax_rate)
+    order.order_lines = await this.lineItemsToOrderLines_(cart)
 
     if (gift_card_total && !region.gift_cards_taxable) {
       order.order_lines.push({
@@ -180,11 +178,20 @@ class KlarnaProviderService extends PaymentService {
       // shipping_options and set the selected shipping method
       if (cart.shipping_methods.length) {
         const shipping_method = cart.shipping_methods[0]
+        const totals = await this.totalsService_.getShippingMethodTotals(
+          shipping_method,
+          cart,
+          {
+            include_tax: true,
+          }
+        )
+
+        const taxRate = totals.tax_total / (totals.total - totals.tax_total)
         order.selected_shipping_option = {
           id: shipping_method.shipping_option.id,
           name: shipping_method.shipping_option.name,
-          price: shipping_method.price * (1 + taxRate),
-          tax_amount: shipping_method.price * taxRate,
+          price: totals.total,
+          tax_amount: total.tax_total,
           tax_rate: taxRate * 10000,
         }
       }
@@ -207,6 +214,8 @@ class KlarnaProviderService extends PaymentService {
 
       const methods = Object.keys(partitioned).map((k) => partitioned[k])
       const combinations = cartesian(...methods)
+
+      const taxRate = region.tax_rate / 100
 
       // Use the cartesian product of shipping methods to generate correct
       // format for the Klarna Widget
