@@ -302,6 +302,15 @@ describe("medusa-plugin-sendgrid", () => {
               updated_at: expect.any(Date),
             },
           },
+          totals: {
+            tax_lines: [
+              {
+                id: expect.any(String),
+                created_at: expect.any(Date),
+                updated_at: expect.any(Date),
+              },
+            ],
+          },
         },
       ],
       region: {
@@ -822,7 +831,20 @@ const getReturnSnap = (received = false) => {
         },
       ],
     },
-    items: [itemSnap],
+    items: [
+      {
+        ...itemSnap,
+        totals: {
+          tax_lines: [
+            {
+              id: expect.any(String),
+              created_at: expect.any(Date),
+              updated_at: expect.any(Date),
+            },
+          ],
+        },
+      },
+    ],
   }
 }
 

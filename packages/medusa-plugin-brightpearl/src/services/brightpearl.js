@@ -322,15 +322,8 @@ class BrightpearlService extends BaseService {
             name: `${fromRefund.reason}: ${fromRefund.note}`,
             quantity: 1,
             taxCode: region.tax_code,
-            net: this.bpnum_(
-              fromRefund.amount,
-              fromOrder.currency_code,
-              10000 / (100 + fromOrder.tax_rate)
-            ),
-            tax: this.bpnum_(
-              fromRefund.amount * (1 - 100 / (100 + fromOrder.tax_rate)),
-              fromOrder.currency_code
-            ),
+            net: this.bpnum_(fromRefund.amount, fromOrder.currency_code),
+            tax: 0,
             nominalCode: accountingCode,
           },
         ],
@@ -421,15 +414,8 @@ class BrightpearlService extends BaseService {
           name: "Difference",
           quantity: 1,
           taxCode: region.tax_code,
-          net: this.bpnum_(
-            difference,
-            fromOrder.currency_code,
-            10000 / (100 + fromOrder.tax_rate)
-          ),
-          tax: this.bpnum_(
-            difference * (1 - 100 / (100 + fromOrder.tax_rate)),
-            fromOrder.currency_code
-          ),
+          net: this.bpnum_(difference, fromOrder.currency_code),
+          tax: 0,
           nominalCode: this.options.sales_account_code || "4000",
         })
       }
@@ -953,14 +939,19 @@ class BrightpearlService extends BaseService {
     // purchased.
     const gcTotal = fromOrder.gift_card_total
     if (gcTotal) {
+      let tax = 0
+      if (fromOrder.region.gift_cards_taxable) {
+        tax = this.bpnum_(
+          -1 * gcTotal,
+          fromOrder.currency_code,
+          fromOrder.region.tax_rate
+        )
+      }
+
       lines.push({
         name: `Gift Card`,
         net: this.bpnum_(-1 * gcTotal, fromOrder.currency_code),
-        tax: this.bpnum_(
-          -1 * gcTotal,
-          fromOrder.currency_code,
-          fromOrder.tax_rate
-        ),
+        tax,
         quantity: 1,
         taxCode: region.tax_code,
         nominalCode: this.options.gift_card_account_code || "4000",

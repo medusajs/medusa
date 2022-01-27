@@ -529,14 +529,12 @@ class SendGridService extends NotificationService {
 
     // Includes taxes in discount amount
     const discountTotal = items.reduce((acc, i) => {
-      console.log(i.variant.sku, i.totals.original_total - i.totals.total)
       return acc + i.totals.original_total - i.totals.total
     }, 0)
 
     const discounted_subtotal = items.reduce((acc, i) => {
       return acc + i.totals.total
     }, 0)
-    console.log(discountTotal, discounted_subtotal)
     const subtotal = items.reduce((acc, i) => {
       return acc + i.totals.original_total
     }, 0)
@@ -544,35 +542,6 @@ class SendGridService extends NotificationService {
     const subtotal_ex_tax = items.reduce((total, i) => {
       return total + i.totals.subtotal
     }, 0)
-
-    console.log({
-      ...order,
-      locale,
-      has_discounts: order.discounts.length,
-      has_gift_cards: order.gift_cards.length,
-      date: order.created_at.toDateString(),
-      items,
-      discounts,
-      subtotal_ex_tax: `${this.humanPrice_(
-        subtotal_ex_tax,
-        currencyCode
-      )} ${currencyCode}`,
-      subtotal: `${this.humanPrice_(subtotal, currencyCode)} ${currencyCode}`,
-      gift_card_total: `${this.humanPrice_(
-        gift_card_total,
-        currencyCode
-      )} ${currencyCode}`,
-      tax_total: `${this.humanPrice_(tax_total, currencyCode)} ${currencyCode}`,
-      discount_total: `${this.humanPrice_(
-        discountTotal,
-        currencyCode
-      )} ${currencyCode}`,
-      shipping_total: `${this.humanPrice_(
-        shipping_total,
-        currencyCode
-      )} ${currencyCode}`,
-      total: `${this.humanPrice_(total, currencyCode)} ${currencyCode}`,
-    })
 
     return {
       ...order,
