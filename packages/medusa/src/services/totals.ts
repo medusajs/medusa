@@ -199,10 +199,19 @@ class TotalsService extends BaseService {
 
           taxLines = shippingMethod.tax_lines
         } else {
-          taxLines = (await this.taxProviderService_.getTaxLines(
+          const orderLines = await this.taxProviderService_.getTaxLines(
             cartOrOrder,
             calculationContext
-          )) as ShippingMethodTaxLine[]
+          )
+
+          console.log(orderLines)
+
+          taxLines = orderLines.filter((ol) => {
+            if ("shipping_method_id" in ol) {
+              return ol.shipping_method_id === shippingMethod.id
+            }
+            return false
+          }) as ShippingMethodTaxLine[]
         }
         totals.tax_lines = taxLines
       }
@@ -215,6 +224,9 @@ class TotalsService extends BaseService {
             calculationContext
           )
         totals.tax_total = totals.original_tax_total
+
+        totals.original_total += totals.original_tax_total
+        totals.total += totals.tax_total
       }
     }
 
@@ -749,10 +761,17 @@ class TotalsService extends BaseService {
             }
             taxLines = lineItem.tax_lines
           } else {
-            taxLines = (await this.taxProviderService_.getTaxLines(
+            const orderLines = await this.taxProviderService_.getTaxLines(
               cartOrOrder,
               calculationContext
-            )) as LineItemTaxLine[]
+            )
+
+            taxLines = orderLines.filter((ol) => {
+              if ("item_id" in ol) {
+                return ol.item_id === lineItem.id
+              }
+              return false
+            }) as LineItemTaxLine[]
           }
         }
 
