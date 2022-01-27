@@ -13,6 +13,7 @@
     "medusa-fulfillment-webshipper": "1.1.35-dev-1642337635041",
     "medusa-interfaces": "1.1.32-dev-1642337635041",
     "medusa-plugin-sendgrid": "1.1.36-dev-1642337635041",
+    "scrypt-kdf": "^2.0.1",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {

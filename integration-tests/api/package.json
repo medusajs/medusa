@@ -11,7 +11,6 @@
     "@medusajs/medusa": "1.1.60-dev-1641904740261",
     "faker": "^5.5.3",
     "medusa-interfaces": "^1.1.32",
-    "medusa-plugin-sendgrid": "1.1.36-dev-1641904740261",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
