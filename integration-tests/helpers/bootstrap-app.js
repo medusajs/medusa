@@ -4,16 +4,16 @@ const getPort = require("get-port")
 const importFrom = require("import-from")
 
 module.exports = {
-  bootstrapApp: async () => {
+  bootstrapApp: async ({ cwd }) => {
     const app = express()
 
     const loaders = importFrom(
-      process.cwd(),
+      cwd || process.cwd(),
       "@medusajs/medusa/dist/loaders"
     ).default
 
     const { container, dbConnection } = await loaders({
-      directory: path.resolve(process.cwd()),
+      directory: path.resolve(cwd || process.cwd()),
       expressApp: app,
       isTest: false,
     })

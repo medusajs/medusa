@@ -85,14 +85,6 @@ jobs:
         run: yarn build
         working-directory: integration-tests/api
 
-      - name: Force install
-        run: medusa-dev --force-install
-        working-directory: integration-tests/plugins
-
-      - name: Build integration tests
-        run: yarn build
-        working-directory: integration-tests/plugins
-
       - name: Run integration tests
         run: yarn test:integration --maxWorkers=50% --silent=false
         env:

@@ -27,7 +27,7 @@ describe("medusa-plugin-sendgrid", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      const { container, app, port } = await bootstrapApp()
+      const { container, app, port } = await bootstrapApp({ cwd })
       appContainer = container
 
       setPort(port)
