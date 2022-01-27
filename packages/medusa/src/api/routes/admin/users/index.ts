@@ -1,8 +1,10 @@
 import { Router } from "express"
+import { User } from "../../../.."
+import { DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-const route = Router()
 
 export const unauthenticatedUserRoutes = (app) => {
+  const route = Router()
   app.use("/users", route)
 
   route.post(
@@ -17,6 +19,7 @@ export const unauthenticatedUserRoutes = (app) => {
 }
 
 export default (app) => {
+  const route = Router()
   app.use("/users", route)
 
   route.get("/:user_id", middlewares.wrap(require("./get-user").default))
@@ -31,3 +34,21 @@ export default (app) => {
 
   return app
 }
+export type AdminUserRes = {
+  user: Omit<User, "password_hash">
+}
+
+export type AdminUsersListRes = {
+  users: Omit<User, "password_hash">[]
+}
+
+export type AdminDeleteUserRes = DeleteResponse
+
+export * from "./reset-password"
+export * from "./reset-password-token"
+
+export * from "./create-user"
+export * from "./delete-user"
+export * from "./get-user"
+export * from "./list-users"
+export * from "./update-user"

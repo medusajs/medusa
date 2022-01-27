@@ -3,6 +3,7 @@ import {
   AdminCustomersRes,
   AdminGetCustomersParams,
   AdminPostCustomersReq,
+  AdminPostCustomersCustomerReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../.."
 import BaseResource from "../base"
@@ -24,7 +25,7 @@ class AdminCustomersResource extends BaseResource {
    */
   update(
     id: string,
-    payload: AdminPostCustomersReq
+    payload: AdminPostCustomersCustomerReq
   ): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
     return this.client.request("POST", path, payload)

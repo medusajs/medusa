@@ -12,16 +12,13 @@ import {
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-  ProductStatus,
-} from "."
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   ProductService,
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
+import { ProductStatus } from "../../../../types/product"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
 
@@ -453,7 +450,7 @@ export class AdminPostProductsReq {
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()
-  tags?: ProductTagReq
+  tags?: ProductTagReq[]
 
   @IsOptional()
   @Type(() => ProductOptionReq)

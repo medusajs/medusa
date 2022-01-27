@@ -6,7 +6,7 @@ title: Fulfillment API
 
 This guide will give an overview of Medusa's Fulfillment API and how it can be implemented to work with different fulfillment providers. Before digging deeper into the API it should be clarified what is meant by a fulfillment provider; in Medusa a fulfillment provider is typically a 3rd party service that can handle order data for the purpose of shipping the items in the order to a customer. Examples of fulfillment providers are: a carrier like UPS, a logistics platform like ShipBob or a 3PL solution.
 
-Implementations of the Fulfillment API can be distributed as npm packages for easy installation through the plugin system, there are already a couple of examples of fulfillment plugins in the Medusa monorepo, you can identify these by looking for `medusa-fulfillment-*`. For further details on building and publishing plugins [please check this guide](https://docs.medusajs.com/how-to/plugins).
+Implementations of the Fulfillment API can be distributed as npm packages for easy installation through the plugin system, there are already a couple of examples of fulfillment plugins in the Medusa monorepo, you can identify these by looking for `medusa-fulfillment-*`. For further details on building and publishing plugins [please check this guide](https://docs.medusajs.com/guides/plugins).
 
 ## Fulfillment Service Interface
 

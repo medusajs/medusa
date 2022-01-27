@@ -160,7 +160,7 @@ The migrations included in this project will create the following content types:
 - **Hero**: a component that can take a Title, CTA and a background image.
 - **Tile**: a component that can be added to a Tile Section and renders a Title, CTA and an Image.
 - **Tile Section**: a component that can hold a number of Tiles or Products. When used with a Product, the Tile Section will display the product thumbnail and it's title and will link to the product page.
-- **Link**: a component that can link to an external or internal path; or, alternatively, hold a reference to a Page or Product entry. If used with Page or Product, the link path will be infered from the referenced entry.
+- **Link**: a component that can link to an external or internal path; or, alternatively, hold a reference to a Page or Product entry. If used with Page or Product, the link path will be inferred from the referenced entry.
 - **Navigation Item**: an item to include in a Navigation Menu. Each navigation item has a title that can be displayed in a menu and a link that defines where the user will be navigated to when the item is clicked.
 - **Product**: represents a product as syncronized from Medusa. A product's variants will be copied over as well.
 - **Product Variant**: The variants of a product.
