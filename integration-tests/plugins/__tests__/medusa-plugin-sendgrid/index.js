@@ -266,6 +266,7 @@ describe("medusa-plugin-sendgrid", () => {
     expect(data).toMatchSnapshot({
       date: expect.any(String),
       id: expect.any(String),
+      display_id: expect.any(Number),
       created_at: expect.any(Date),
       updated_at: expect.any(Date),
       customer_id: expect.any(String),
@@ -450,6 +451,7 @@ describe("medusa-plugin-sendgrid", () => {
 
     const orderSnap = {
       id: expect.any(String),
+      display_id: expect.any(Number),
       customer_id: expect.any(String),
       shipping_address_id: expect.any(String),
       shipping_address: {

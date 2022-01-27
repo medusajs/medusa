@@ -44,7 +44,8 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
       }
 
       taxableAmount -=
-        (allocations.discount && allocations.discount.amount) || 0
+        ((allocations.discount && allocations.discount.unit_amount) || 0) *
+        i.quantity
 
       const lineRates = taxLines.filter((tl) => tl.item_id === i.id)
       for (const lineRate of lineRates) {

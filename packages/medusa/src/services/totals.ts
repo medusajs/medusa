@@ -24,17 +24,36 @@ import {
   LineDiscountAmount,
 } from "../types/totals"
 
+type ShippingMethodTotals = {
+  price: number
+  tax_total: number
+  total: number
+  original_total: number
+  original_tax_total: number
+  tax_lines: ShippingMethodTaxLine[]
+}
+
+type GetShippingMethodTotalsOptions = {
+  include_tax?: boolean
+  use_tax_lines?: boolean
+}
+
 type LineItemTotals = {
   unit_price: number
   quantity: number
   subtotal: number
   tax_total: number
+  total: number
+  original_total: number
+  original_tax_total: number
+  tax_lines: LineItemTaxLine[]
   discount_total: number
   gift_card_total: number
 }
 
 type LineItemTotalsOptions = {
   include_tax?: boolean
+  use_tax_lines?: boolean
 }
 
 type GetLineItemTotalOptions = {
@@ -131,6 +150,82 @@ class TotalsService extends BaseService {
     }
 
     return swapTotal
+  }
+
+  /**
+   * Gets the totals breakdown for a shipping method. Fetches tax lines if not
+   * already provided.
+   * @param shippingMethod - the shipping method to get totals breakdown for.
+   * @param cartOrOrder - the cart or order to use as context for the breakdown
+   * @param opts - options for what should be included
+   * @returns An object that breaks down the totals for the shipping method
+   */
+  async getShippingMethodTotals(
+    shippingMethod: ShippingMethod,
+    cartOrOrder: Cart | Order,
+    opts: GetShippingMethodTotalsOptions = {}
+  ): Promise<ShippingMethodTotals> {
+    const calculationContext = this.getCalculationContext(cartOrOrder, {
+      exclude_shipping: true,
+    })
+    calculationContext.shipping_methods = [shippingMethod]
+
+    const totals = {
+      price: shippingMethod.price,
+      original_total: shippingMethod.price,
+      total: shippingMethod.price,
+      original_tax_total: 0,
+      tax_total: 0,
+      tax_lines: shippingMethod.tax_lines || [],
+    }
+
+    if (opts.include_tax) {
+      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+        totals.original_tax_total = Math.round(
+          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
+        )
+        totals.tax_total = Math.round(
+          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
+        )
+      } else {
+        let taxLines: ShippingMethodTaxLine[]
+        if (opts.use_tax_lines || isOrder(cartOrOrder)) {
+          if (typeof shippingMethod.tax_lines === "undefined") {
+            throw new MedusaError(
+              MedusaError.Types.UNEXPECTED_STATE,
+              "Tax Lines must be joined on shipping method to calculate taxes"
+            )
+          }
+
+          taxLines = shippingMethod.tax_lines
+        } else {
+          taxLines = (await this.taxProviderService_.getTaxLines(
+            cartOrOrder,
+            calculationContext
+          )) as ShippingMethodTaxLine[]
+        }
+        totals.tax_lines = taxLines
+      }
+
+      if (totals.tax_lines.length > 0) {
+        totals.original_tax_total =
+          await this.taxCalculationStrategy_.calculate(
+            [],
+            totals.tax_lines,
+            calculationContext
+          )
+        totals.tax_total = totals.original_tax_total
+      }
+    }
+
+    if (cartOrOrder.discounts) {
+      if (cartOrOrder.discounts.some((d) => d.rule.type === "free_shipping")) {
+        totals.total = 0
+        totals.tax_total = 0
+      }
+    }
+
+    return totals
   }
 
   /**
@@ -597,23 +692,37 @@ class TotalsService extends BaseService {
     const lineItemAllocation =
       calculationContext.allocation_map[lineItem.id] || {}
 
+    const subtotal = lineItem.unit_price * lineItem.quantity
+    const gift_card_total = lineItemAllocation.gift_card?.amount || 0
+    const discount_total =
+      (lineItemAllocation.discount?.unit_amount || 0) * lineItem.quantity
+
     const lineItemTotals: LineItemTotals = {
       unit_price: lineItem.unit_price,
       quantity: lineItem.quantity,
-      subtotal: lineItem.unit_price * lineItem.quantity,
-      gift_card_total: lineItemAllocation.gift_card?.amount || 0,
-      discount_total: lineItemAllocation.discount?.amount || 0,
+      subtotal,
+      gift_card_total,
+      discount_total,
+      total: subtotal - discount_total,
+      original_total: subtotal,
+      original_tax_total: 0,
       tax_total: 0,
+      tax_lines: lineItem.tax_lines || [],
     }
 
     // Tax Information
-    if (typeof options.include_tax !== "undefined" && options.include_tax) {
+    if (options.include_tax) {
       // When we have an order with a null'ed tax rate we know that it is an
       // order from the old tax system. The following is a backward compat
       // calculation.
       if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+        lineItemTotals.original_tax_total =
+          subtotal * (cartOrOrder.tax_rate / 100)
         lineItemTotals.tax_total =
-          lineItemTotals.subtotal * (cartOrOrder.tax_rate / 100)
+          (subtotal - discount_total) * (cartOrOrder.tax_rate / 100)
+
+        lineItemTotals.total += lineItemTotals.tax_total
+        lineItemTotals.original_total += lineItemTotals.original_tax_total
       } else {
         let taxLines: LineItemTaxLine[]
 
@@ -621,7 +730,7 @@ class TotalsService extends BaseService {
          * Line Items on orders will already have tax lines. But for cart line
          * items we have to get the line items from the tax provider.
          */
-        if (isOrder(cartOrOrder)) {
+        if (options.use_tax_lines || isOrder(cartOrOrder)) {
           if (typeof lineItem.tax_lines === "undefined") {
             throw new MedusaError(
               MedusaError.Types.UNEXPECTED_STATE,
@@ -647,12 +756,26 @@ class TotalsService extends BaseService {
           }
         }
 
-        lineItemTotals.tax_total = await this.taxCalculationStrategy_.calculate(
+        lineItemTotals.tax_lines = taxLines
+      }
+    }
+
+    if (lineItemTotals.tax_lines.length > 0) {
+      lineItemTotals.tax_total = await this.taxCalculationStrategy_.calculate(
+        [lineItem],
+        lineItemTotals.tax_lines,
+        calculationContext
+      )
+      lineItemTotals.total += lineItemTotals.tax_total
+
+      calculationContext.allocation_map = {} // Don't account for discounts
+      lineItemTotals.original_tax_total =
+        await this.taxCalculationStrategy_.calculate(
           [lineItem],
-          taxLines,
+          lineItemTotals.tax_lines,
           calculationContext
         )
-      }
+      lineItemTotals.original_total += lineItemTotals.original_tax_total
     }
 
     return lineItemTotals
