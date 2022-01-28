@@ -106,70 +106,65 @@ class SwapService extends BaseService {
     return cloned
   }
 
-  transformQueryForTotals_(config) {
+  transformQueryForCart_(config) {
     let { select, relations } = config
 
-    if (!select) {
-      return {
-        ...config,
-        totalsToSelect: [],
+    let cartSelects = null
+    let cartRelations = null
+
+    if (typeof relations !== "undefined" && relations.includes("cart")) {
+      const [swapRelations, cartRels] = relations.reduce(
+        (acc, next) => {
+          if (next === "cart") {
+            return acc
+          }
+
+          if (next.startsWith("cart.")) {
+            const [, ...rel] = next.split(".")
+            acc[1].push(rel.join("."))
+          } else {
+            acc[0].push(next)
+          }
+
+          return acc
+        },
+        [[], []]
+      )
+
+      relations = swapRelations
+      cartRelations = cartRels
+
+      let foundCartId = false
+      if (typeof select !== "undefined") {
+        const [swapSelects, cartSels] = select.reduce(
+          (acc, next) => {
+            if (next.startsWith("cart.")) {
+              const [, ...rel] = next.split(".")
+              acc[1].push(rel.join("."))
+            } else {
+              if (next === "cart_id") {
+                foundCartId = true
+              }
+              acc[0].push(next)
+            }
+
+            return acc
+          },
+          [[], []]
+        )
+
+        select = foundCartId ? swapSelects : [...swapSelects, "cart_id"]
+        cartSelects = cartSels
       }
-    }
-
-    const totalFields = [
-      "cart.subtotal",
-      "cart.tax_total",
-      "cart.shipping_total",
-      "cart.discount_total",
-      "cart.gift_card_total",
-      "cart.total",
-    ]
-
-    const totalsToSelect = select.filter((v) => totalFields.includes(v))
-    if (totalsToSelect.length > 0) {
-      const relationSet = new Set(relations)
-      relationSet.add("cart")
-      relationSet.add("cart.items")
-      relationSet.add("cart.gift_cards")
-      relationSet.add("cart.discounts")
-      relationSet.add("cart.discounts.rule")
-      relationSet.add("cart.discounts.rule.valid_for")
-      relationSet.add("cart.shipping_methods")
-      relationSet.add("cart.region")
-      relationSet.add("cart.region.tax_rates")
-      relations = [...relationSet]
-
-      select = select.filter((v) => !totalFields.includes(v))
     }
 
     return {
       ...config,
       relations,
       select,
-      totalsToSelect,
+      cartSelects,
+      cartRelations,
     }
-  }
-
-  async decorateTotals_(cart, totalsFields = []) {
-    if (totalsFields.includes("cart.shipping_total")) {
-      cart.shipping_total = await this.totalsService_.getShippingTotal(cart)
-    }
-    if (totalsFields.includes("cart.discount_total")) {
-      cart.discount_total = await this.totalsService_.getDiscountTotal(cart)
-    }
-    if (totalsFields.includes("cart.tax_total")) {
-      cart.tax_total = await this.totalsService_.getTaxTotal(cart)
-    }
-    if (totalsFields.includes("cart.gift_card_total")) {
-      cart.gift_card_total = await this.totalsService_.getGiftCardTotal(cart)
-    }
-    if (totalsFields.includes("cart.subtotal")) {
-      cart.subtotal = await this.totalsService_.getSubtotal(cart)
-    }
-    if (totalsFields.includes("cart.total")) {
-      cart.total = await this.totalsService_.getTotal(cart)
-    }
-    return cart
   }
 
   /**
@@ -183,8 +178,8 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const { totalsToSelect, ...newConfig } =
-      this.transformQueryForTotals_(config)
+    const { cartSelects, cartRelations, ...newConfig } =
+      this.transformQueryForCart_(config)
 
     const query = this.buildQuery_({ id: validatedId }, newConfig)
 
@@ -196,8 +191,11 @@ class SwapService extends BaseService {
       throw new MedusaError(MedusaError.Types.NOT_FOUND, "Swap was not found")
     }
 
-    if (rels && rels.includes("cart")) {
-      const cart = await this.decorateTotals_(swap.cart, totalsToSelect)
+    if (cartRelations || cartSelects) {
+      const cart = await this.cartService_.retrieve(swap.cart_id, {
+        select: cartSelects,
+        relations: cartRelations,
+      })
       swap.cart = cart
     }
 
@@ -649,18 +647,16 @@ class SwapService extends BaseService {
    *@param {string} swapId - The id of the swap
    */
   async registerCartCompletion(swapId) {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const swap = await this.retrieve(swapId, {
-        relations: [
-          "cart",
-          "cart.region",
-          "cart.shipping_methods",
-          "cart.shipping_address",
-          "cart.items",
-          "cart.discounts",
-          "cart.discounts.rule",
-          "cart.payment",
-          "cart.gift_cards",
+        select: [
+          "id",
+          "order_id",
+          "no_notification",
+          "allow_backorder",
+          "canceled_at",
+          "confirmed_at",
+          "cart_id",
         ],
       })
 
@@ -676,10 +672,14 @@ class SwapService extends BaseService {
         )
       }
 
-      const cart = swap.cart
+      const cart = await this.cartService_.retrieve(swap.cart_id, {
+        select: ["total"],
+        relations: ["payment", "shipping_methods", "items"],
+      })
+
       const { payment } = cart
 
-      const items = swap.cart.items
+      const items = cart.items
 
       if (!swap.allow_backorder) {
         for (const item of items) {
@@ -701,7 +701,7 @@ class SwapService extends BaseService {
         }
       }
 
-      const total = await this.totalsService_.getTotal(cart)
+      const total = cart.total
 
       if (total > 0) {
         if (!payment) {
@@ -767,49 +767,6 @@ class SwapService extends BaseService {
         .update(cart.id, { completed_at: new Date() })
 
       return result
-    })
-  }
-
-  /**
-   * Registers the return associated with a swap as received. If the return
-   * is received with mismatching return items the swap's status will be updated
-   * to requires_action.
-   * @param {string} swapId - the id of the swap to receive.
-   * @param {Array<ReturnItem>} returnItems - the return items that have been returned
-   * @return {Promise<Swap>} the resulting swap, with an updated return and
-   *   status.
-   */
-  async receiveReturn(swapId, returnItems) {
-    return this.atomicPhase_(async (manager) => {
-      const swap = await this.retrieve(swapId, { relations: ["return_order"] })
-
-      if (swap.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Canceled swap cannot be registered as received"
-        )
-      }
-
-      const returnId = swap.return_order && swap.return_order.id
-      if (!returnId) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "Swap has no return request"
-        )
-      }
-
-      const updatedRet = await this.returnService_
-        .withTransaction(manager)
-        .receiveReturn(returnId, returnItems, undefined, false)
-
-      if (updatedRet.status === "requires_action") {
-        const swapRepo = manager.getCustomRepository(this.swapRepository_)
-        swap.fulfillment_status = "requires_action"
-        const result = await swapRepo.save(swap)
-        return result
-      }
-
-      return this.retrieve(swapId)
     })
   }
 

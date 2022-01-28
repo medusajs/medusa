@@ -5,7 +5,6 @@ const {
   GiftCard,
   Cart,
   CustomShippingOption,
-  ShippingOption,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")

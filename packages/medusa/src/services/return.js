@@ -468,9 +468,12 @@ class ReturnService extends BaseService {
 
       const returnData = { ...returnOrder }
 
-      const items = await this.lineItemService_.list({
-        id: returnOrder.items.map(({ item_id }) => item_id),
-      })
+      const items = await this.lineItemService_.list(
+        {
+          id: returnOrder.items.map(({ item_id }) => item_id),
+        },
+        { relations: ["tax_lines"] }
+      )
 
       returnData.items = returnOrder.items.map((item) => {
         const found = items.find((i) => i.id === item.item_id)

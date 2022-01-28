@@ -198,7 +198,7 @@ class ClaimService extends BaseService {
 
       for (const item of claim_items) {
         const line = await this.lineItemService_.retrieve(item.item_id, {
-          relations: ["order", "swap", "claim_order"],
+          relations: ["order", "swap", "claim_order", "tax_lines"],
         })
 
         if (
@@ -261,25 +261,29 @@ class ClaimService extends BaseService {
         toRefund = await this.totalsService_.getRefundTotal(order, lines)
       }
 
-      for (const item of additional_items) {
-        await this.inventoryService_
-          .withTransaction(manager)
-          .confirmInventory(item.variant_id, item.quantity)
-      }
-
-      const newItems = await Promise.all(
-        additional_items.map((i) =>
-          this.lineItemService_
+      let newItems = []
+      if (typeof additional_items !== "undefined") {
+        for (const item of additional_items) {
+          await this.inventoryService_
             .withTransaction(manager)
-            .generate(i.variant_id, order.region_id, i.quantity)
-        )
-      )
+            .confirmInventory(item.variant_id, item.quantity)
+        }
 
-      for (const newItem of newItems) {
-        await this.inventoryService_
-          .withTransaction(manager)
-          .adjustInventory(newItem.variant_id, -newItem.quantity)
+        newItems = await Promise.all(
+          additional_items.map((i) =>
+            this.lineItemService_
+              .withTransaction(manager)
+              .generate(i.variant_id, order.region_id, i.quantity)
+          )
+        )
+
+        for (const newItem of newItems) {
+          await this.inventoryService_
+            .withTransaction(manager)
+            .adjustInventory(newItem.variant_id, -newItem.quantity)
+        }
       }
+
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 

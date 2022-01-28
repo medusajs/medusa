@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Swaps creates a refund claim 1`] = `
+Object {
+  "additional_items": Array [],
+  "canceled_at": null,
+  "claim_items": ArrayContaining [
+    ObjectContaining {
+      "item": Any<Object>,
+      "item_id": "test-item",
+      "quantity": 1,
+    },
+  ],
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "fulfillment_status": "not_fulfilled",
+  "fulfillments": Array [],
+  "id": StringMatching /\\^claim_\\*/,
+  "idempotency_key": Any<String>,
+  "metadata": null,
+  "no_notification": null,
+  "order_id": Any<String>,
+  "payment_status": "refunded",
+  "refund_amount": 1200,
+  "return_order": null,
+  "shipping_address": Any<Object>,
+  "shipping_address_id": Any<String>,
+  "shipping_methods": Array [],
+  "type": "refund",
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`Swaps creates a replace claim 1`] = `
+Object {
+  "additional_items": Any<Array>,
+  "canceled_at": null,
+  "claim_items": ArrayContaining [
+    ObjectContaining {
+      "item": Any<Object>,
+      "item_id": "test-item",
+      "quantity": 1,
+    },
+  ],
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "fulfillment_status": "not_fulfilled",
+  "fulfillments": Array [],
+  "id": StringMatching /\\^claim_\\*/,
+  "idempotency_key": Any<String>,
+  "metadata": null,
+  "no_notification": null,
+  "order_id": Any<String>,
+  "payment_status": "na",
+  "refund_amount": null,
+  "return_order": null,
+  "shipping_address": Any<Object>,
+  "shipping_address_id": Any<String>,
+  "shipping_methods": Array [],
+  "type": "replace",
+  "updated_at": Any<String>,
+}
+`;

@@ -7,15 +7,18 @@ import formatRegistrationName from "../utils/format-registration-name"
 type LoaderOptions = {
   container: AwilixContainer
   configModule: object
+  isTest: boolean
 }
 
 /**
  * Registers all strategies in the strategies directory
+ * @returns void
  */
-export default ({ container, configModule }: LoaderOptions): void => {
-  const isTest = process.env.NODE_ENV === "test"
+export default ({ container, configModule, isTest }: LoaderOptions): void => {
+  const useMock =
+    typeof isTest !== "undefined" ? isTest : process.env.NODE_ENV === "test"
 
-  const corePath = isTest
+  const corePath = useMock
     ? "../strategies/__mocks__/*.js"
     : "../strategies/*.js"
   const coreFull = path.join(__dirname, corePath)

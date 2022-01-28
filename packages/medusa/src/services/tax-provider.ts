@@ -276,22 +276,19 @@ class TaxProviderService extends BaseService {
     }
 
     let toReturn: TaxServiceRate[] = []
-    const regionRates = region.tax_rates
-    if (regionRates !== null && regionRates.length > 0) {
-      const optionRates = await this.taxRateService_.listByShippingOption(
-        optionId,
-        { region_id: region.id }
-      )
+    const optionRates = await this.taxRateService_.listByShippingOption(
+      optionId,
+      { region_id: region.id }
+    )
 
-      if (optionRates.length > 0) {
-        toReturn = optionRates.map((pr) => {
-          return {
-            rate: pr.rate,
-            name: pr.name,
-            code: pr.code,
-          }
-        })
-      }
+    if (optionRates.length > 0) {
+      toReturn = optionRates.map((pr) => {
+        return {
+          rate: pr.rate,
+          name: pr.name,
+          code: pr.code,
+        }
+      })
     }
 
     if (toReturn.length === 0) {
@@ -326,21 +323,18 @@ class TaxProviderService extends BaseService {
     }
 
     let toReturn: TaxServiceRate[] = []
-    const regionRates = region.tax_rates
-    if (regionRates !== null && regionRates.length > 0) {
-      const productRates = await this.taxRateService_.listByProduct(productId, {
-        region_id: region.id,
-      })
+    const productRates = await this.taxRateService_.listByProduct(productId, {
+      region_id: region.id,
+    })
 
-      if (productRates.length > 0) {
-        toReturn = productRates.map((pr) => {
-          return {
-            rate: pr.rate,
-            name: pr.name,
-            code: pr.code,
-          }
-        })
-      }
+    if (productRates.length > 0) {
+      toReturn = productRates.map((pr) => {
+        return {
+          rate: pr.rate,
+          name: pr.name,
+          code: pr.code,
+        }
+      })
     }
 
     if (toReturn.length === 0) {

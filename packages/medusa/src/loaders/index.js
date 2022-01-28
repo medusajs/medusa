@@ -19,7 +19,7 @@ import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
 
-export default async ({ directory: rootDirectory, expressApp }) => {
+export default async ({ directory: rootDirectory, expressApp, isTest }) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   const container = createContainer()
@@ -59,7 +59,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container, activityId: modelsActivity })
+  modelsLoader({ container, activityId: modelsActivity, isTest })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
@@ -75,7 +75,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
 
   const repoActivity = Logger.activity("Initializing repositories")
   track("REPOSITORIES_INIT_STARTED")
-  repositoriesLoader({ container, activityId: repoActivity }) || {}
+  repositoriesLoader({ container, activityId: repoActivity, isTest }) || {}
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
@@ -85,6 +85,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     container,
     configModule,
     activityId: dbActivity,
+    isTest,
   })
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
@@ -98,7 +99,8 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   strategiesLoader({
     container,
     configModule,
-    activityId: servicesActivity,
+    activityId: stratActivity,
+    isTest,
   })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
@@ -109,6 +111,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
     container,
     configModule,
     activityId: servicesActivity,
+    isTest,
   })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })

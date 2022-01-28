@@ -22,8 +22,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
       this.calculateLineItemsTax(items, lineItemsTaxLines, calculationContext) +
         this.calculateShippingMethodsTax(
           calculationContext.shipping_methods,
-          shippingMethodsTaxLines,
-          calculationContext
+          shippingMethodsTaxLines
         )
     )
   }
@@ -45,7 +44,8 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
       }
 
       taxableAmount -=
-        (allocations.discount && allocations.discount.amount) || 0
+        ((allocations.discount && allocations.discount.unit_amount) || 0) *
+        i.quantity
 
       const lineRates = taxLines.filter((tl) => tl.item_id === i.id)
       for (const lineRate of lineRates) {
@@ -57,8 +57,7 @@ class TaxCalculationStrategy implements ITaxCalculationStrategy {
 
   private calculateShippingMethodsTax(
     shipping_methods: ShippingMethod[],
-    taxLines: ShippingMethodTaxLine[],
-    context: TaxCalculationContext // eslint-disable-line
+    taxLines: ShippingMethodTaxLine[]
   ): number {
     let taxTotal = 0
     for (const sm of shipping_methods) {

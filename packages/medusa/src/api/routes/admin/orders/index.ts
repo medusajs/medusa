@@ -144,14 +144,6 @@ export default (app) => {
   )
 
   /**
-   * Receives the inventory to return from a swap
-   */
-  route.post(
-    "/:id/swaps/:swap_id/receive",
-    middlewares.wrap(require("./receive-swap").default)
-  )
-
-  /**
    * Fulfills a swap.
    */
   route.post(
@@ -392,7 +384,6 @@ export * from "./fulfill-swap"
 export * from "./get-order"
 export * from "./list-orders"
 export * from "./process-swap-payment"
-export * from "./receive-swap"
 export * from "./refund-payment"
 export * from "./request-return"
 export * from "./update-claim"

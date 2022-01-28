@@ -1033,6 +1033,7 @@ class OrderService extends BaseService {
       order.status = "canceled"
       order.fulfillment_status = "canceled"
       order.payment_status = "canceled"
+      order.canceled_at = new Date()
 
       const orderRepo = manager.getCustomRepository(this.orderRepository_)
       const result = await orderRepo.save(order)

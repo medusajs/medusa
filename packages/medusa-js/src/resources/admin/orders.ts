@@ -10,7 +10,6 @@ import {
   AdminPostOrdersOrderReturnsReq,
   AdminPostOrdersOrderShippingMethodsReq,
   AdminPostOrdersOrderSwapsReq,
-  AdminPostOrdersOrderSwapsSwapReceiveReq,
   AdminPostOrdersOrderSwapsSwapFulfillmentsReq,
   AdminPostOrdersOrderSwapsSwapShipmentsReq,
   AdminPostOrdersOrderClaimsReq,
@@ -150,15 +149,6 @@ class AdminOrdersResource extends BaseResource {
   cancelSwap(id: string, swapId: string): ResponsePromise<AdminOrdersRes> {
     const path = `/admin/orders/${id}/swaps/${swapId}/cancel`
     return this.client.request("POST", path)
-  }
-
-  receiveSwap(
-    id: string,
-    swapId: string,
-    payload: AdminPostOrdersOrderSwapsSwapReceiveReq
-  ): ResponsePromise<AdminOrdersRes> {
-    const path = `/admin/orders/${id}/swaps/${swapId}/receive`
-    return this.client.request("POST", path, payload)
   }
 
   fulfillSwap(
