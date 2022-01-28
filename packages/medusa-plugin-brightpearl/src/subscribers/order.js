@@ -150,11 +150,11 @@ class OrderSubscriber {
     const { id, return_id } = data
 
     const order = await this.orderService_.retrieve(id, {
-      relations: ["region", "swaps", "payments"],
+      relations: ["discounts", "region", "swaps", "payments"],
     })
 
     const fromReturn = await this.returnService_.retrieve(return_id, {
-      relations: ["items"],
+      relations: ["items", "shipping_method", "shipping_method.tax_lines"],
     })
 
     return this.brightpearlService_

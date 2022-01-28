@@ -370,7 +370,9 @@ class ClaimService extends BaseService {
       const claim = await this.retrieve(id, {
         relations: [
           "additional_items",
+          "additional_items.tax_lines",
           "shipping_methods",
+          "shipping_methods.tax_lines",
           "shipping_address",
           "order",
           "order.billing_address",

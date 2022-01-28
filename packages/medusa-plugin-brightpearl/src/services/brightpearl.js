@@ -403,6 +403,29 @@ class BrightpearlService extends BaseService {
         }),
       }
 
+      if (fromReturn.shipping_method) {
+        const totals = await this.totalsService_.getShippingMethodTotals(
+          fromReturn.shipping_method,
+          fromOrder,
+          {
+            include_tax: true,
+            use_tax_lines: true,
+          }
+        )
+
+        order.rows.push({
+          net: this.bpnum_(
+            -1 * (totals.total - totals.tax_total),
+            fromOrder.currency_code
+          ),
+          tax: this.bpnum_(-1 * totals.tax_total, fromOrder.currency_code),
+          name: "Return shipping",
+          taxCode: region.tax_code,
+          nominalCode: this.options.shipping_account_code || "4040",
+          quantity: 1,
+        })
+      }
+
       const total = order.rows.reduce((acc, next) => {
         return acc + next.net + next.tax
       }, 0)
@@ -414,7 +437,7 @@ class BrightpearlService extends BaseService {
           name: "Difference",
           quantity: 1,
           taxCode: region.tax_code,
-          net: this.bpnum_(difference, fromOrder.currency_code),
+          net: this.bpround_(difference),
           tax: 0,
           nominalCode: this.options.sales_account_code || "4000",
         })
