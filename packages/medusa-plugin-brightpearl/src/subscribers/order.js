@@ -116,7 +116,7 @@ class OrderSubscriber {
       ],
     })
 
-    const fromOrder = await this.orderService_.retrieve(fromSwap.order_id, {
+    const fromOrder = await this.orderService_.retrieve(fromClaim.order_id, {
       relations: [
         "payments",
         "region",
