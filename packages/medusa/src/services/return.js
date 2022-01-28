@@ -453,6 +453,7 @@ class ReturnService extends BaseService {
         relations: [
           "items",
           "shipping_method",
+          "shipping_method.tax_lines",
           "shipping_method.shipping_option",
           "swap",
           "claim_order",
