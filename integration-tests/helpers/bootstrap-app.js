@@ -4,7 +4,7 @@ const getPort = require("get-port")
 const importFrom = require("import-from")
 
 module.exports = {
-  bootstrapApp: async ({ cwd }) => {
+  bootstrapApp: async ({ cwd } = {}) => {
     const app = express()
 
     const loaders = importFrom(
