@@ -199,7 +199,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
                   tarif_number:
                     item.variant.hs_code || item.variant.product.hs_code,
                   unit_price: humanizeAmount(
-                    totals.price,
+                    totals.unit_price,
                     fromOrder.currency_code
                   ),
                   vat_percent: totals.tax_lines.reduce(
@@ -375,7 +375,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
                 tarif_number:
                   item.variant.hs_code || item.variant.product.hs_code,
                 unit_price: humanizeAmount(
-                  totals.price,
+                  totals.unit_price,
                   fromOrder.currency_code
                 ),
                 vat_percent: totals.tax_lines.reduce(
