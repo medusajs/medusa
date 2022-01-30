@@ -13,7 +13,7 @@ const {
   simpleProductFactory,
 } = require("../../factories")
 
-describe("Swaps", () => {
+describe("Claims", () => {
   let medusaProcess
   let dbConnection
 
@@ -123,7 +123,32 @@ describe("Swaps", () => {
       shipping_address_id: expect.any(String),
       refund_amount: null,
       shipping_address: expect.any(Object),
-      additional_items: expect.any(Array),
+      additional_items: [
+        {
+          id: expect.stringMatching(/^item_*/),
+          claim_order_id: expect.stringMatching(/^claim_*/),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          variant: {
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            product: {
+              profile_id: expect.stringMatching(/^sp_*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          },
+          tax_lines: [
+            {
+              id: expect.stringMatching(/^litl_*/),
+              item_id: expect.stringMatching(/^item_*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              rate: 12.5,
+            },
+          ],
+        },
+      ],
       claim_items: expect.arrayContaining([
         expect.objectContaining({
           item: expect.any(Object),
