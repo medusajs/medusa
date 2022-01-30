@@ -200,7 +200,7 @@ class TotalsService extends BaseService {
           taxLines = shippingMethod.tax_lines
         } else {
           const orderLines = await this.taxProviderService_.getTaxLines(
-            cartOrOrder,
+            cartOrOrder.items,
             calculationContext
           )
 
@@ -331,7 +331,7 @@ class TotalsService extends BaseService {
       }
     } else {
       taxLines = await this.taxProviderService_.getTaxLines(
-        cartOrOrder,
+        cartOrOrder.items,
         calculationContext
       )
 
@@ -762,7 +762,7 @@ class TotalsService extends BaseService {
             taxLines = lineItem.tax_lines
           } else {
             const orderLines = await this.taxProviderService_.getTaxLines(
-              cartOrOrder,
+              cartOrOrder.items,
               calculationContext
             )
 

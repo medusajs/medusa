@@ -13,63 +13,40 @@ class ClaimService extends BaseService {
 
   constructor({
     manager,
-    claimRepository,
     addressRepository,
+    claimItemService,
+    claimRepository,
+    eventBusService,
     fulfillmentProviderService,
     fulfillmentService,
+    inventoryService,
     lineItemService,
-    totalsService,
     paymentProviderService,
+    regionService,
     returnService,
     shippingOptionService,
-    claimItemService,
-    regionService,
-    inventoryService,
-    eventBusService,
+    taxProviderService,
+    totalsService,
   }) {
     super()
 
     /** @private @constant {EntityManager} */
     this.manager_ = manager
 
-    /** @private @constant {ClaimRepository} */
-    this.claimRepository_ = claimRepository
-
-    /** @private @constant {AddressRepository} */
     this.addressRepo_ = addressRepository
-
-    /** @private @constant {FulfillmentProviderService} */
-    this.fulfillmentProviderService_ = fulfillmentProviderService
-
-    /** @private @constant {PaymentProviderService} */
-    this.paymentProviderService_ = paymentProviderService
-
-    /** @private @constant {LineItemService} */
-    this.lineItemService_ = lineItemService
-
-    /** @private @constant {RegionService} */
-    this.regionService_ = regionService
-
-    /** @private @constant {ReturnService} */
-    this.returnService_ = returnService
-
-    /** @private @constant {FulfillmentService} */
-    this.fulfillmentService_ = fulfillmentService
-
-    /** @private @constant {ClaimItemService} */
     this.claimItemService_ = claimItemService
-
-    /** @private @constant {TotalsService} */
-    this.totalsService_ = totalsService
-
-    /** @private @constant {InventoryService} */
-    this.inventoryService_ = inventoryService
-
-    /** @private @constant {EventBus} */
+    this.claimRepository_ = claimRepository
     this.eventBus_ = eventBusService
-
-    /** @private @constant {ShippingOptionService} */
+    this.fulfillmentProviderService_ = fulfillmentProviderService
+    this.fulfillmentService_ = fulfillmentService
+    this.inventoryService_ = inventoryService
+    this.lineItemService_ = lineItemService
+    this.paymentProviderService_ = paymentProviderService
+    this.regionService_ = regionService
+    this.returnService_ = returnService
     this.shippingOptionService_ = shippingOptionService
+    this.taxProviderService_ = taxProviderService
+    this.totalsService_ = totalsService
   }
 
   withTransaction(manager) {
@@ -79,19 +56,20 @@ class ClaimService extends BaseService {
 
     const cloned = new ClaimService({
       manager,
-      claimRepository: this.claimRepository_,
       addressRepository: this.addressRepo_,
+      claimItemService: this.claimItemService_,
+      claimRepository: this.claimRepository_,
+      eventBusService: this.eventBus_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
       fulfillmentService: this.fulfillmentService_,
-      paymentProviderService: this.paymentProviderService_,
+      inventoryService: this.inventoryService_,
       lineItemService: this.lineItemService_,
+      paymentProviderService: this.paymentProviderService_,
       regionService: this.regionService_,
       returnService: this.returnService_,
-      claimItemService: this.claimItemService_,
-      eventBusService: this.eventBus_,
-      totalsService: this.totalsService_,
-      inventoryService: this.inventoryService_,
       shippingOptionService: this.shippingOptionService_,
+      totalsService: this.totalsService_,
+      taxProviderService: this.taxProviderService_,
     })
 
     cloned.transactionManager_ = manager
@@ -299,6 +277,18 @@ class ClaimService extends BaseService {
       })
 
       const result = await claimRepo.save(created)
+
+      if (result.additional_items && result.additional_items.length) {
+        const calcContext = this.totalsService_.getCalculationContext(order)
+        const lineItems = await this.lineItemService_
+          .withTransaction(manager)
+          .list({
+            id: result.additional_items.map((i) => i.id),
+          })
+        await this.taxProviderService_
+          .withTransaction(manager)
+          .createTaxLines(lineItems, calcContext)
+      }
 
       if (shipping_methods) {
         for (const method of shipping_methods) {

@@ -170,6 +170,9 @@ export default async (req, res) => {
               .withTransaction(manager)
               .retrieve(id, {
                 relations: [
+                  "customer",
+                  "shipping_address",
+                  "region",
                   "items",
                   "items.tax_lines",
                   "discounts",

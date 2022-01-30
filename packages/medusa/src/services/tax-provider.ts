@@ -7,11 +7,12 @@ import Redis from "ioredis"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
 import { LineItemTaxLine } from "../models/line-item-tax-line"
+import { LineItem } from "../models/line-item"
 import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { ShippingMethod } from "../models/shipping-method"
 import { Region } from "../models/region"
 import { Cart } from "../models/cart"
-import { Order } from "../models/order"
+import { isCart } from "../types/cart"
 import {
   ITaxService,
   ItemTaxCalculationLine,
@@ -86,15 +87,24 @@ class TaxProviderService extends BaseService {
 
   /**
    * Persists the tax lines relevant for an order to the database.
-   * @param cart - the cart to create tax lines for
+   * @param cartOrLineItems - the cart or line items to create tax lines for
    * @param calculationContext - the calculation context to get tax lines by
    * @return the newly created tax lines
    */
   async createTaxLines(
-    cart: Cart,
+    cartOrLineItems: Cart | LineItem[],
     calculationContext: TaxCalculationContext
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
-    const taxLines = await this.getTaxLines(cart, calculationContext)
+    let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[] = []
+    if (isCart(cartOrLineItems)) {
+      taxLines = await this.getTaxLines(
+        cartOrLineItems.items,
+        calculationContext
+      )
+    } else {
+      taxLines = await this.getTaxLines(cartOrLineItems, calculationContext)
+    }
+
     return this.manager_.save(taxLines)
   }
 
@@ -172,16 +182,16 @@ class TaxProviderService extends BaseService {
    * will be computed from the tax rules and potentially a 3rd party tax plugin.
    * Note: this method doesn't persist the tax lines. Use createTaxLines if you
    * wish to persist the tax lines to the DB layer.
-   * @param cartOrOrder - the cart or order to get tax lines for
+   * @param lineItems - the cart or order to get tax lines for
    * @param calculationContext - the calculation context to get tax lines by
    * @return the computed tax lines
    */
   async getTaxLines(
-    cartOrOrder: Cart | Order,
+    lineItems: LineItem[],
     calculationContext: TaxCalculationContext
   ): Promise<(ShippingMethodTaxLine | LineItemTaxLine)[]> {
     const calculationLines = await Promise.all(
-      cartOrOrder.items.map(async (l) => {
+      lineItems.map(async (l) => {
         if (l.is_return) {
           return null
         }
