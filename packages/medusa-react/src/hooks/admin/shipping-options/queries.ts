@@ -28,7 +28,7 @@ export const useAdminShippingOptions = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminShippingOptionKeys.list(query),
-    () => client.admin.shippingOptions.list(),
+    () => client.admin.shippingOptions.list(query),
     options
   )
   return { ...data, ...rest } as const

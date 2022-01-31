@@ -51,7 +51,7 @@ export const useAdminRegion = (
 }
 
 export const useAdminRegionFulfillmentOptions = (
-  id: string,
+  regionId: string,
   options?: UseQueryOptionsWrapper<
     Response<AdminGetRegionsRegionFulfillmentOptionsRes>,
     Error,
@@ -60,8 +60,8 @@ export const useAdminRegionFulfillmentOptions = (
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminRegionKeys.detail(`${id}_fullfillment-options`),
-    () => client.admin.regions.retrieveFulfillmentOptions(id),
+    adminRegionKeys.detail(`${regionId}_fullfillment-options`),
+    () => client.admin.regions.retrieveFulfillmentOptions(regionId),
     options
   )
   return { ...data, ...rest } as const
