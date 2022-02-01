@@ -21,7 +21,7 @@ class BaseService {
   buildQuery_(selector, config = {}) {
     const build = (obj) => {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
-        // Undefined values indicate that they have no significance to the query. 
+        // Undefined values indicate that they have no significance to the query.
         // If the query is looking for rows where a column is not set it should use null instead of undefined
         if (typeof value === "undefined") {
           return acc
@@ -50,16 +50,21 @@ class BaseService {
                 case "gte":
                   subquery.push({ operator: ">=", value: val })
                   break
+                default:
+                  acc[key] = value
+                  break
               }
             })
 
-            acc[key] = Raw(
-              (a) =>
-                subquery
-                  .map((s, index) => `${a} ${s.operator} :${index}`)
-                  .join(" AND "),
-              subquery.map((s) => s.value)
-            )
+            if (subquery.length) {
+              acc[key] = Raw(
+                (a) =>
+                  subquery
+                    .map((s, index) => `${a} ${s.operator} :${index}`)
+                    .join(" AND "),
+                subquery.map((s) => s.value)
+              )
+            }
             break
           default:
             acc[key] = value
@@ -68,14 +73,14 @@ class BaseService {
 
         return acc
       }, {})
-      
+
       return where
     }
 
     const query = {
       where: build(selector),
     }
-    
+
     if ("deleted_at" in selector) {
       query.withDeleted = true
     }

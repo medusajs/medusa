@@ -96,7 +96,7 @@ export default async (req, res) => {
   ])
 
   const [products, count] = await productService.listAndCount(
-    _.pickBy(filterableFields, identity),
+    _.pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 
