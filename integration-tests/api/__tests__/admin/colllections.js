@@ -216,5 +216,42 @@ describe("/admin/collections", () => {
         count: 3,
       })
     })
+
+    it("filters collections by title", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/collections?title=Test%20collection", {
+          headers: { Authorization: "Bearer test_token" },
+        })
+        .catch((err) => console.log(err))
+
+      expect(response.data).toMatchSnapshot({
+        collections: [
+          {
+            id: "test-collection",
+            handle: "test-collection",
+            title: "Test collection",
+            products: [
+              {
+                collection_id: "test-collection",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                profile_id: expect.stringMatching(/^sp_*/),
+              },
+              {
+                collection_id: "test-collection",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                profile_id: expect.stringMatching(/^sp_*/),
+              },
+            ],
+          },
+        ],
+        count: 1,
+        limit: 10,
+        offset: 0,
+      })
+    })
   })
 })
