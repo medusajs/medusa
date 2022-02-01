@@ -2,6 +2,7 @@ name: Medusa Pipeline
 on: [push, pull_request]
 
 jobs:
+
   get-workspace-packages:
     runs-on: ubuntu-latest
     steps:
