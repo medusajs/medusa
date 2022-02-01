@@ -1,12 +1,12 @@
 import { Type } from "class-transformer"
 import {
-  IsString,
-  IsOptional,
   IsArray,
   IsEnum,
-  ValidateNested,
-  IsNotEmpty,
   IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
 import { DateComparisonOperator } from "./common"
 

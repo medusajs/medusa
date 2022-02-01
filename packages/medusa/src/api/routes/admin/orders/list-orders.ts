@@ -80,7 +80,7 @@ export default async (req, res) => {
   ])
 
   const [orders, count] = await orderService.listAndCount(
-    pickBy(filterableFields, identity),
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 
