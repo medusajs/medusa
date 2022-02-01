@@ -1234,15 +1234,18 @@ describe("/admin/orders", () => {
       ])
     })
 
-    it("lists all orders with a fulfillment status = fulfilled", async () => {
+    it("lists all orders with a fulfillment status = fulfilled and payment status = captured", async () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/orders?fulfillment_status[]=fulfilled", {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        })
+        .get(
+          "/admin/orders?fulfillment_status[]=fulfilled&payment_status[]=captured",
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
         .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
