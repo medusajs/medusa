@@ -2,7 +2,6 @@ name: Medusa Pipeline
 on: [push, pull_request]
 
 jobs:
-
   get-workspace-packages:
     runs-on: ubuntu-latest
     steps:
@@ -15,7 +14,7 @@ jobs:
   print-pkgs:
     runs-on: ubuntu-latest
     steps:
-        - name: Print packages
+      - name: Print packages
         needs: get-workspace-packages
         run: echo ${{ needs.get-workspace-packages.outputs.package_names }}
 
