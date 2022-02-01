@@ -1,12 +1,10 @@
 {
   "name": "@medusajs/medusa-js",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "Client for Medusa Commerce Rest API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist/**/*"
-  ],
+  "files": ["dist/**/*"],
   "scripts": {
     "build": "tsc --build",
     "test": "jest --config jestconfig.json",
@@ -15,9 +13,10 @@
   "author": "Oliver Juhl",
   "license": "MIT",
   "dependencies": {
-    "@medusajs/medusa": "^1.1.60",
+    "@medusajs/medusa": "^1.1.62",
     "axios": "^0.24.0",
     "form-data": "^4.0.0",
+    "qs": "^6.10.3",
     "retry-axios": "^2.6.0"
   },
   "repository": {

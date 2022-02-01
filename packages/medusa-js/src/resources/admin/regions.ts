@@ -11,6 +11,7 @@ import {
   AdminPostRegionsRegionMetadata,
   AdminGetRegionsRegionFulfillmentOptionsRes,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -68,10 +69,8 @@ class AdminRegionsResource extends BaseResource {
     let path = `/admin/regions`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return typeof value !== "undefined" ? `${key}=${value}` : ""
-      })
-      path = `/admin/regions?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/regions?${queryString}`
     }
 
     return this.client.request("GET", path)

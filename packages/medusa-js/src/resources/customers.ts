@@ -6,6 +6,7 @@ import {
   StorePostCustomersCustomerReq,
   StorePostCustomersReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../typings"
 import AddressesResource from "./addresses"
 import BaseResource from "./base"
@@ -56,18 +57,9 @@ class CustomerResource extends BaseResource {
   ): ResponsePromise<StoreCustomersListOrdersRes> {
     let path = `/store/customers/me/orders`
     if (params) {
-      let query: string | undefined
-
-      for (const key of Object.keys(params)) {
-        if (query) {
-          query += `&${key}=${params[key]}`
-        } else {
-          query = `?${key}=${params[key]}`
-        }
-      }
-
+      const query = qs.stringify(params)
       if (query) {
-        path += query
+        path += `?${query}`
       }
     }
     return this.client.request("GET", path)

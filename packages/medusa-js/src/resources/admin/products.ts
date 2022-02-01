@@ -13,8 +13,9 @@ import {
   AdminProductsListRes,
   AdminProductsListTagsRes,
   AdminProductsListTypesRes,
-  AdminProductsRes
+  AdminProductsRes,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -46,10 +47,8 @@ class AdminProductsResource extends BaseResource {
     let path = `/admin/products`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return typeof value !== "undefined" ? `${key}=${value}` : ""
-      })
-      path = `/admin/products?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/products?${queryString}`
     }
 
     return this.client.request("GET", path)

@@ -8,6 +8,7 @@ import {
   AdminPostDraftOrdersDraftOrderRegisterPaymentRes,
   AdminPostDraftOrdersDraftOrderReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -69,11 +70,8 @@ class AdminDraftOrdersResource extends BaseResource {
     let path = `/admin/draft-orders`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/draft-orders?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/draft-orders?${queryString}`
     }
 
     return this.client.request("GET", path)

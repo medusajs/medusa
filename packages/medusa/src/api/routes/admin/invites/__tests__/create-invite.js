@@ -1,3 +1,4 @@
+import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { InviteServiceMock } from "../../../../../services/__mocks__/invite"
 import { UserRole } from "../../../../../types/user"
@@ -9,9 +10,9 @@ describe("POST /invites", () => {
     beforeAll(async () => {
       subject = await request("POST", `/admin/invites`, {
         payload: {
-          role: "",
+          role: "admin",
         },
-        session: {
+        adminSession: {
           jwt: {
             userId: "test_user",
           },
@@ -25,6 +26,10 @@ describe("POST /invites", () => {
 
     it("throws when role is empty", () => {
       expect(subject.error).toBeTruthy()
+      expect(subject.error.text).toEqual(
+        `{"type":"invalid_data","message":"user must be an email"}`
+      )
+      expect(subject.error.status).toEqual(400)
     })
   })
 
@@ -37,9 +42,9 @@ describe("POST /invites", () => {
           role: "admin",
           user: "lebron@james.com",
         },
-        session: {
+        adminSession: {
           jwt: {
-            userId: "test_user",
+            userId: IdMap.getId("admin_user"),
           },
         },
       })

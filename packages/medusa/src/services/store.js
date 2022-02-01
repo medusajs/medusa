@@ -1,6 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-
 import { currencies } from "../utils/currencies"
 
 /**
@@ -53,11 +52,23 @@ class StoreService extends BaseService {
   async create() {
     return this.atomicPhase_(async (manager) => {
       const storeRepository = manager.getCustomRepository(this.storeRepository_)
+      const currencyRepository = manager.getCustomRepository(
+        this.currencyRepository_
+      )
 
       let store = await this.retrieve()
 
       if (!store) {
         const s = await storeRepository.create()
+        // Add default currency (USD) to store currencies
+        const usd = await currencyRepository.findOne({
+          code: "usd",
+        })
+
+        if (usd) {
+          s.currencies = [usd]
+        }
+
         store = await storeRepository.save(s)
       }
 

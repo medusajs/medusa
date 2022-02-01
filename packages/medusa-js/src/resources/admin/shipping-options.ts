@@ -6,6 +6,7 @@ import {
   AdminShippingOptionsListRes,
   AdminGetShippingOptionsParams,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -67,10 +68,8 @@ class AdminShippingOptionsResource extends BaseResource {
     let path = `/admin/shipping-options`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return typeof value !== "undefined" ? `${key}=${value}` : ""
-      })
-      path = `/admin/shipping-options?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/shipping-options?${queryString}`
     }
 
     return this.client.request("GET", path)
