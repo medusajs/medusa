@@ -60,7 +60,7 @@ export class AdminListOrdersSelector {
   fulfillment_status?: string[]
 
   @IsArray()
-  @IsEnum(PaymentStatus)
+  @IsEnum(PaymentStatus, { each: true })
   @IsOptional()
   payment_status?: string[]
 

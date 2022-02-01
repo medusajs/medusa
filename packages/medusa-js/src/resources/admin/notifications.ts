@@ -4,6 +4,7 @@ import {
   AdminNotificationsRes,
   AdminPostNotificationsNotificationResendReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../.."
 import BaseResource from "../base"
 
@@ -14,11 +15,8 @@ class AdminNotificationsResource extends BaseResource {
     let path = `/admin/notifications`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/notifications?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/notifications?${queryString}`
     }
 
     return this.client.request("GET", path)

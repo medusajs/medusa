@@ -3,6 +3,7 @@ import {
   StoreVariantsListRes,
   StoreVariantsRes,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
@@ -23,20 +24,13 @@ class ProductVariantsResource extends BaseResource {
    * @return {ResponsePromise<StoreVariantsListRes>}
    */
   list(query?: StoreGetVariantsParams): ResponsePromise<StoreVariantsListRes> {
-    const path = `/store/variants`
+    let path = `/store/variants`
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
 
-    const search = Object.entries(query || {}).map(([key, value]) => {
-      if (Array.isArray(value)) {
-        return `${key}=${value.join(",")}`
-      }
-
-      return `${key}=${value}`
-    })
-
-    return this.client.request(
-      "GET",
-      `${path}${search.length > 0 && `?${search.join("&")}`}`
-    )
+    return this.client.request("GET", path)
   }
 }
 
