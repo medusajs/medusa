@@ -2,22 +2,6 @@ name: Medusa Pipeline
 on: [push, pull_request]
 
 jobs:
-  get-workspace-packages:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Get packages in workspace
-        uses: caffco/yarn-workspace-pacakges-github-action@v1.0.0
-        with:
-          repository_path: .
-
-  print-pkgs:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Print packages
-        needs: get-workspace-packages
-        run: echo ${{ needs.get-workspace-packages.outputs.package_names }}
-
   unit-tests:
     runs-on: ubuntu-latest
     steps:
