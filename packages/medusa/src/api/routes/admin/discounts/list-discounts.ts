@@ -1,8 +1,20 @@
 import { Type, Transform } from "class-transformer"
-import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
+import {
+  IsBoolean,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import _, { pickBy } from "lodash"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import {
+  AllocationType,
+  DiscountRuleType,
+} from "../../../../models/discount-rule"
 import DiscountService from "../../../../services/discount"
-import { ListSelector } from "../../../../types/discount"
+import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts
@@ -33,14 +45,6 @@ export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  const selector: ListSelector = {}
-
-  if (validated.q) {
-    selector.q = validated.q
-  }
-
-  selector.is_disabled = validated.is_disabled
-  selector.is_dynamic = validated.is_dynamic
 
   const listConfig = {
     select: defaultAdminDiscountsFields,
@@ -49,8 +53,11 @@ export default async (req, res) => {
     take: validated.limit,
     order: { created_at: "DESC" },
   }
+
+  const filterableFields = _.omit(validated, ["limit", "offset", "expand"])
+
   const [discounts, count] = await discountService.listAndCount(
-    selector,
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 
@@ -60,6 +67,16 @@ export default async (req, res) => {
     offset: validated.offset,
     limit: validated.limit,
   })
+}
+
+class AdminGetDiscountsDiscountRuleParams {
+  @IsOptional()
+  @IsEnum(DiscountRuleType)
+  type: DiscountRuleType
+
+  @IsOptional()
+  @IsEnum(AllocationType)
+  allocation: AllocationType
 }
 
 export class AdminGetDiscountsParams {
@@ -76,6 +93,11 @@ export class AdminGetDiscountsParams {
   @IsOptional()
   @Transform(({ value }) => value === "true")
   is_disabled?: boolean
+
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => AdminGetDiscountsDiscountRuleParams)
+  rule?: AdminGetDiscountsDiscountRuleParams
 
   @IsInt()
   @IsOptional()
