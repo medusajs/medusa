@@ -21,13 +21,8 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Assert changed
-        run: ./scripts/assert-changed-files-actions.sh "packages"
-
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
-        with:
-          extension: unit-tests
+      - name: Log dir structure
+        run: ls node_modules < echo
 
       - name: Run unit tests
         run: yarn test
