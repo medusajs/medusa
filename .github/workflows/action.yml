@@ -21,8 +21,8 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Log dir structure
-        run: ls node_modules < echo
+      - name: Bootstrap packages
+        run: lerna bootstrap
 
       - name: Run unit tests
         run: yarn test
