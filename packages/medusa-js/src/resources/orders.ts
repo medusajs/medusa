@@ -1,4 +1,5 @@
 import { StoreGetOrdersParams, StoreOrdersRes } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
 
@@ -31,15 +32,8 @@ class OrdersResource extends BaseResource {
   lookupOrder(payload: StoreGetOrdersParams): ResponsePromise<StoreOrdersRes> {
     let path = `/store/orders?`
 
-    const queryString = Object.entries(payload).map(([key, value]) => {
-      let val = value as string
-      if (Array.isArray(value)) {
-        val = value.join(",")
-      }
-
-      return `${key}=${encodeURIComponent(val)}`
-    })
-    path = `/store/orders?${queryString.join("&")}`
+    const queryString = qs.stringify(payload)
+    path = `/store/orders?${queryString}`
 
     return this.client.request("GET", path, payload)
   }

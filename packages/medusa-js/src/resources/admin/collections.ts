@@ -6,6 +6,7 @@ import {
   AdminCollectionsListRes,
   AdminGetCollectionsParams,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -67,11 +68,8 @@ class AdminCollectionsResource extends BaseResource {
     let path = `/admin/collections`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/collections?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/collections?${queryString}`
     }
 
     return this.client.request("GET", path)
