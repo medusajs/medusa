@@ -1,6 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager, ILike, IsNull, SelectQueryBuilder } from "typeorm"
+import {
+  Brackets,
+  EntityManager,
+  ILike,
+  IsNull,
+  SelectQueryBuilder,
+} from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
@@ -8,7 +14,10 @@ import { ProductVariant } from "../models/product-variant"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
-import { ProductVariantRepository } from "../repositories/product-variant"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
 import EventBusService from "../services/event-bus"
 import RegionService from "../services/region"
 import { FindConfig } from "../types/common"
@@ -543,7 +552,7 @@ class ProductVariantService extends BaseService {
   }
 
   /**
-   * @param {FilterableProductVariantProps} selector - the query object for find
+   * @param {} selector - the query object for find
    * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval
    * @return {Promise} the result of the find operation
    */
@@ -551,41 +560,25 @@ class ProductVariantService extends BaseService {
     selector: FilterableProductVariantProps,
     config: FindConfig<ProductVariant> = { relations: [], skip: 0, take: 20 }
   ): Promise<[ProductVariant[], number]> {
-    const productVariantRepo = this.manager_.getCustomRepository(
+    const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )
 
-    let q: string | undefined
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = this.buildQuery_(selector, config)
+    const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
-      const where = query.where
+      const qb = this.getFreeTextQueryBuilder_(variantRepo, query, q)
+      const [raw, count] = await qb.getManyAndCount()
 
-      delete where.sku
-      delete where.title
-
-      query.join = {
-        alias: "variant",
-        innerJoin: {
-          product: "variant.product",
-        },
-      }
-
-      query.where = (qb: SelectQueryBuilder<ProductVariant>): void => {
-        qb.where(where).andWhere([
-          { sku: ILike(`%${q}%`) },
-          { title: ILike(`%${q}%`) },
-          { product: { title: ILike(`%${q}%`) } },
-        ])
-      }
+      const products = await variantRepo.findWithRelations(
+        relations,
+        raw.map((i) => i.id),
+        query.withDeleted ?? false
+      )
+      return [products, count]
     }
 
-    return await productVariantRepo.findAndCount(query)
+    return await variantRepo.findWithRelationsAndCount(relations, query)
   }
 
   /**
@@ -693,6 +686,86 @@ class ProductVariantService extends BaseService {
     }
 
     return updated
+  }
+
+  /**
+   * Creates a query object to be used for list queries.
+   * @param selector - the selector to create the query from
+   * @param config - the config to use for the query
+   * @return an object containing the query, relations and free-text
+   *   search param.
+   */
+  prepareListQuery_(
+    selector: FilterableProductVariantProps,
+    config: FindConfig<ProductVariant>
+  ): { query: FindWithRelationsOptions; relations: string[]; q?: string } {
+    let q: string | undefined
+    if (typeof selector.q !== "undefined") {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+
+    return {
+      query,
+      relations: rels,
+      q,
+    }
+  }
+
+  /**
+   * Lists variants based on the provided parameters and includes the count of
+   * variants that match the query.
+   * @param selector - an object that defines rules to filter products by
+   * @param config - object that defines the scope for what should be returned
+   * @return an array containing the products as the first element and the total
+   *   count of products that matches the query as the second element.
+   */
+  getFreeTextQueryBuilder_(
+    productRepo: ProductVariantRepository,
+    query: FindWithRelationsOptions,
+    q?: string
+  ): SelectQueryBuilder<ProductVariant> {
+    const where = query.where
+
+    if (typeof where === "object") {
+      if ("title" in where) {
+        delete where.title
+      }
+    }
+
+    let qb = productRepo
+      .createQueryBuilder("pv")
+      .take(query.take)
+      .skip(Math.max(query.skip ?? 0, 0))
+      .leftJoinAndSelect("pv.product", "product")
+      .select(["pv.id"])
+      .where(where!)
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`product.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`pv.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`pv.sku ILIKE :q`, { q: `%${q}%` })
+        })
+      )
+
+    if (query.withDeleted) {
+      qb = qb.withDeleted()
+    }
+
+    return qb
   }
 }
 
