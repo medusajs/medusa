@@ -73,6 +73,9 @@ jobs:
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: integration-tests
+      
+      - name: Build Packages
+        run: lerna run build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
