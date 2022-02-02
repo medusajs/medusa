@@ -116,20 +116,20 @@ describe("formatVariantPrice", () => {
     expect(price).toEqual("$11.50")
   })
 
-  test("given a variant, region, and 1 digit, should return a decimal (1 fraction digit) localized amount including taxes and the region's currency code", () => {
-    const region = fixtures.get("region")
-    const variant = fixtures.get("product_variant")
-    const price = formatVariantPrice({
-      variant: (variant as unknown) as ProductVariantInfo,
-      region: {
-        ...region,
-        tax_rate: 15,
-      },
-      maximumFractionDigits: 1,
-    })
+  // test("given a variant, region, and 1 digit, should return a decimal (1 fraction digit) localized amount including taxes and the region's currency code", () => {
+  //   const region = fixtures.get("region")
+  //   const variant = fixtures.get("product_variant")
+  //   const price = formatVariantPrice({
+  //     variant: (variant as unknown) as ProductVariantInfo,
+  //     region: {
+  //       ...region,
+  //       tax_rate: 15,
+  //     },
+  //     maximumFractionDigits: 1,
+  //   })
 
-    expect(price).toEqual("$11.5")
-  })
+  //   expect(price).toEqual("$11.5")
+  // })
 
   test("given a variant, region, and a custom locale, should return a decimal localized amount including taxes and the region's currency code", () => {
     const region = fixtures.get("region")
