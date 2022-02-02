@@ -30,7 +30,7 @@ jobs:
           extension: unit-tests
 
       - name: Build Packages
-        run: lerna run build
+        run: yarn build
 
       - name: Run unit tests
         run: yarn test
