@@ -29,8 +29,11 @@ jobs:
         with:
           extension: unit-tests
 
+      - name: Build Packages
+        run: yarn build
+
       - name: Run unit tests
-        run: node --max-old-space-size=2048 ./node_modules/.bin/jest -w 1
+        run: yarn test
 
   integration-tests:
     runs-on: ubuntu-latest
@@ -70,6 +73,9 @@ jobs:
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: integration-tests
+      
+      - name: Build Packages
+        run: lerna run build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli

@@ -13,7 +13,7 @@ describe("useBag hook", () => {
       const { setCart } = result.current
 
       act(() => {
-        setCart(fixtures.get("cart") as unknown as Cart)
+        setCart((fixtures.get("cart") as unknown) as Cart)
       })
 
       const { cart, totalItems } = result.current
@@ -48,10 +48,10 @@ describe("useBag hook", () => {
       const { result, waitFor } = renderHook(() => useCart(), {
         wrapper: createCartWrapper(),
         initialProps: {
-          initialCartState: {
+          initialCartState: ({
             ...fixtures.get("cart"),
             id: "test-cart",
-          } as unknown as Cart,
+          } as unknown) as Cart,
         },
       })
       const { startCheckout } = result.current
@@ -77,10 +77,10 @@ describe("useBag hook", () => {
       const { result, waitFor } = renderHook(() => useCart(), {
         wrapper: createCartWrapper(),
         initialProps: {
-          initialCartState: {
+          initialCartState: ({
             ...fixtures.get("cart"),
             id: "test-cart",
-          } as unknown as Cart,
+          } as unknown) as Cart,
         },
       })
       const { updateCart } = result.current
@@ -109,10 +109,10 @@ describe("useBag hook", () => {
       const { result, waitFor } = renderHook(() => useCart(), {
         wrapper: createCartWrapper(),
         initialProps: {
-          initialCartState: {
+          initialCartState: ({
             ...fixtures.get("cart"),
             id: "test-cart",
-          } as unknown as Cart,
+          } as unknown) as Cart,
         },
       })
       const { addShippingMethod } = result.current
@@ -140,10 +140,10 @@ describe("useBag hook", () => {
       const { result, waitFor } = renderHook(() => useCart(), {
         wrapper: createCartWrapper(),
         initialProps: {
-          initialCartState: {
+          initialCartState: ({
             ...fixtures.get("cart"),
             id: "test-cart",
-          } as unknown as Cart,
+          } as unknown) as Cart,
         },
       })
       const { pay } = result.current
@@ -171,7 +171,7 @@ describe("useBag hook", () => {
       const { result, waitFor } = renderHook(() => useCart(), {
         wrapper: createCartWrapper(),
         initialProps: {
-          initialCartState: fixtures.get("cart") as unknown as Cart,
+          initialCartState: (fixtures.get("cart") as unknown) as Cart,
         },
       })
       const { completeCheckout } = result.current
