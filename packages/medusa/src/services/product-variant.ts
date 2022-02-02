@@ -547,6 +547,52 @@ class ProductVariantService extends BaseService {
    * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval
    * @return {Promise} the result of the find operation
    */
+  async listAndCount(
+    selector: FilterableProductVariantProps,
+    config: FindConfig<ProductVariant> = { relations: [], skip: 0, take: 20 }
+  ): Promise<[ProductVariant[], number]> {
+    const productVariantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
+
+    let q: string | undefined
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.sku
+      delete where.title
+
+      query.join = {
+        alias: "variant",
+        innerJoin: {
+          product: "variant.product",
+        },
+      }
+
+      query.where = (qb: SelectQueryBuilder<ProductVariant>): void => {
+        qb.where(where).andWhere([
+          { sku: ILike(`%${q}%`) },
+          { title: ILike(`%${q}%`) },
+          { product: { title: ILike(`%${q}%`) } },
+        ])
+      }
+    }
+
+    return await productVariantRepo.findAndCount(query)
+  }
+
+  /**
+   * @param {FilterableProductVariantProps} selector - the query object for find
+   * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval
+   * @return {Promise} the result of the find operation
+   */
   async list(
     selector: FilterableProductVariantProps,
     config: FindConfig<ProductVariant> = { relations: [], skip: 0, take: 20 }
