@@ -6,6 +6,7 @@ import {
   AdminPostNotesNoteReq,
   AdminPostNotesReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -37,11 +38,8 @@ class AdminNotesResource extends BaseResource {
     let path = `/admin/notes/`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/notes?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/notes?${queryString}`
     }
 
     return this.client.request("GET", path)
