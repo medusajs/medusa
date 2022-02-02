@@ -575,7 +575,7 @@ class ProductVariantService extends BaseService {
         raw.map((i) => i.id),
         query.withDeleted ?? false
       )
-      return [products, count]
+      return [variants, count]
     }
 
     return await variantRepo.findWithRelationsAndCount(relations, query)
