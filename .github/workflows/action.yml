@@ -18,14 +18,19 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "16.13.1"
+          node-version: "14"
           cache: "yarn"
-          
-      - name: Build packages
-        run: lerna run build
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files-actions.sh "packages"
 
       - name: Bootstrap packages
-        run: lerna bootstrap  
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: unit-tests
+
+      - name: Build Packages
+        run: lerna run build
 
       - name: Run unit tests
         run: yarn test
