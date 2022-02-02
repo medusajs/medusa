@@ -552,7 +552,7 @@ class ProductVariantService extends BaseService {
   }
 
   /**
-   * @param {} selector - the query object for find
+   * @param {object} selector - the query object for find
    * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval
    * @return {Promise} the result of the find operation
    */
@@ -690,9 +690,9 @@ class ProductVariantService extends BaseService {
 
   /**
    * Creates a query object to be used for list queries.
-   * @param selector - the selector to create the query from
-   * @param config - the config to use for the query
-   * @return an object containing the query, relations and free-text
+   * @param {object} selector - the selector to create the query from
+   * @param {object} config - the config to use for the query
+   * @return {object} an object containing the query, relations and free-text
    *   search param.
    */
   prepareListQuery_(
@@ -728,13 +728,14 @@ class ProductVariantService extends BaseService {
   /**
    * Lists variants based on the provided parameters and includes the count of
    * variants that match the query.
-   * @param selector - an object that defines rules to filter products by
-   * @param config - object that defines the scope for what should be returned
-   * @return an array containing the products as the first element and the total
+   * @param {object} variantRepo - the variant repository
+   * @param {object} query - object that defines the scope for what should be returned
+   * @param {object} q - free text query
+   * @return {Promise<[ProductVariant[], number]>} an array containing the products as the first element and the total
    *   count of products that matches the query as the second element.
    */
   getFreeTextQueryBuilder_(
-    productRepo: ProductVariantRepository,
+    variantRepo: ProductVariantRepository,
     query: FindWithRelationsOptions,
     q?: string
   ): SelectQueryBuilder<ProductVariant> {
@@ -746,7 +747,7 @@ class ProductVariantService extends BaseService {
       }
     }
 
-    let qb = productRepo
+    let qb = variantRepo
       .createQueryBuilder("pv")
       .take(query.take)
       .skip(Math.max(query.skip ?? 0, 0))
