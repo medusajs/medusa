@@ -570,7 +570,7 @@ class ProductVariantService extends BaseService {
       const qb = this.getFreeTextQueryBuilder_(variantRepo, query, q)
       const [raw, count] = await qb.getManyAndCount()
 
-      const products = await variantRepo.findWithRelations(
+      const variants = await variantRepo.findWithRelations(
         relations,
         raw.map((i) => i.id),
         query.withDeleted ?? false
