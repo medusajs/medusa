@@ -67,7 +67,7 @@ export const useAdminProductTypes = (
   return { ...data, ...rest } as const
 }
 
-export const useAdminProductTags = (
+export const useAdminProductTagUsage = (
   options?: UseQueryOptionsWrapper<
     Response<AdminProductsListTagsRes>,
     Error,
