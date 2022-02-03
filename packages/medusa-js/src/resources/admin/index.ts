@@ -20,6 +20,7 @@ import AdminShippingOptionsResource from "./shipping-options"
 import AdminRegionsResource from "./regions"
 import AdminNotificationsResource from "./notifications"
 import AdminUploadsResource from "./uploads"
+import AdminProductTagsResource from "./product-tags"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -31,6 +32,7 @@ class Admin extends BaseResource {
   public invites = new AdminInvitesResource(this.client)
   public notes = new AdminNotesResource(this.client)
   public products = new AdminProductsResource(this.client)
+  public productTags = new AdminProductTagsResource(this.client)
   public users = new AdminUsersResource(this.client)
   public returns = new AdminReturnsResource(this.client)
   public orders = new AdminOrdersResource(this.client)

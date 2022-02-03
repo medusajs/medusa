@@ -8,11 +8,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import * as _ from "lodash"
-import { identity } from "lodash"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { pickBy, omit } from "lodash"
+import { MedusaError } from "medusa-core-utils"
+import { Product } from "../../../../models/product"
+import {
+  allowedAdminProductFields,
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+} from "."
 import { ProductService } from "../../../../services"
-import { DateComparisonOperator } from "../../../../types/common"
+import { FindConfig, DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -78,8 +83,10 @@ export default async (req, res) => {
     expandFields = validatedParams.expand!.split(",")
   }
 
-  const listConfig = {
-    select: includeFields.length ? includeFields : defaultAdminProductFields,
+  const listConfig: FindConfig<Product> = {
+    select: (includeFields.length
+      ? includeFields
+      : defaultAdminProductFields) as (keyof Product)[],
     relations: expandFields.length
       ? expandFields
       : defaultAdminProductRelations,
@@ -87,7 +94,25 @@ export default async (req, res) => {
     take: validatedParams.limit,
   }
 
-  const filterableFields = _.omit(validatedParams, [
+  if (typeof validatedParams.order !== "undefined") {
+    let orderField = validatedParams.order
+    if (validatedParams.order.startsWith("-")) {
+      const [, field] = validatedParams.order.split("-")
+      orderField = field
+      listConfig.order = { [field]: "DESC" }
+    } else {
+      listConfig.order = { [validatedParams.order]: "ASC" }
+    }
+
+    if (!allowedAdminProductFields.includes(orderField)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Order field must be a valid product field"
+      )
+    }
+  }
+
+  const filterableFields = omit(validatedParams, [
     "limit",
     "offset",
     "expand",
@@ -96,7 +121,7 @@ export default async (req, res) => {
   ])
 
   const [products, count] = await productService.listAndCount(
-    _.pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 

@@ -37,6 +37,7 @@ export * from "./routes/admin/uploads"
 export * from "./routes/admin/returns"
 export * from "./routes/admin/shipping-options"
 export * from "./routes/admin/regions"
+export * from "./routes/admin/product-tags"
 
 // Store
 export * from "./routes/store/auth"
