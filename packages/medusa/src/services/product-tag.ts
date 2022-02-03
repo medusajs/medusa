@@ -53,16 +53,16 @@ class ProductTagService extends BaseService {
     const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
 
     const query = this.buildQuery_({ id: tagId }, config)
-    const collection = await tagRepo.findOne(query)
+    const tag = await tagRepo.findOne(query)
 
-    if (!collection) {
+    if (!tag) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Product tag with id: ${tagId} was not found`
       )
     }
 
-    return collection
+    return tag
   }
 
   /**
