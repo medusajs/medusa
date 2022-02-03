@@ -36,7 +36,7 @@ describe("/admin/store", () => {
 
     afterEach(async () => {
       const db = useDb()
-      await db.teardown()
+      db.teardown()
     })
 
     it("has created store with default currency", async () => {
