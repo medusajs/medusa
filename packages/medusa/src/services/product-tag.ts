@@ -12,7 +12,7 @@ type ProductTagConstructorProps = {
 }
 
 /**
- * Provides layer to manipulate product collections.
+ * Provides layer to manipulate product tags.
  * @extends BaseService
  */
 class ProductTagService extends BaseService {
