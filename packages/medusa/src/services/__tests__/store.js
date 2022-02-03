@@ -53,7 +53,11 @@ describe("StoreService", () => {
   describe("update", () => {
     const storeRepository = MockRepository({
       findOne: () =>
-        Promise.resolve({ id: IdMap.getId("store"), name: "Medusa" }),
+        Promise.resolve({
+          id: IdMap.getId("store"),
+          name: "Medusa",
+          default_currency_code: "usd",
+        }),
     })
 
     const currencyRepository = MockRepository({})
@@ -79,13 +83,14 @@ describe("StoreService", () => {
       expect(storeRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("store"),
         name: "Medusa Commerce",
+        default_currency_code: "usd",
       })
     })
 
     it("fails if currency not ok", async () => {
       await expect(
         storeService.update({
-          currencies: ["1cd"],
+          currencies: ["1cd", "usd"],
         })
       ).rejects.toThrow("Invalid currency 1cd")
 
