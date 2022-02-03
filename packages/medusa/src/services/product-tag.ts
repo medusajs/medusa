@@ -75,7 +75,7 @@ class ProductTagService extends BaseService {
       const tagRepo = manager.getCustomRepository(this.tagRepo_)
 
       const productTag = tagRepo.create(tag)
-      return await tagRepo.save(productCollection)
+      return await tagRepo.save(productTag)
     })
   }
 
