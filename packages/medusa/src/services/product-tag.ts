@@ -96,7 +96,7 @@ class ProductTagService extends BaseService {
   }
 
   /**
-   * Lists product collections and add count.
+   * Lists product tags and adds count.
    * @param {Object} selector - the query object for find
    * @param {Object} config - the config to be used for find
    * @return {Promise} the result of the find operation
