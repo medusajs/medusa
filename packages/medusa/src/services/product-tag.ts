@@ -74,7 +74,7 @@ class ProductTagService extends BaseService {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const tagRepo = manager.getCustomRepository(this.tagRepo_)
 
-      const productCollection = tagRepo.create(tag)
+      const productTag = tagRepo.create(tag)
       return await tagRepo.save(productCollection)
     })
   }
