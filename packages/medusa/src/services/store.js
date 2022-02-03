@@ -112,7 +112,7 @@ class StoreService extends BaseService {
         this.currencyRepository_
       )
 
-      const store = await this.retrieve()
+      const store = await this.retrieve(["currencies"])
 
       const {
         metadata,
@@ -125,23 +125,20 @@ class StoreService extends BaseService {
         store.metadata = this.setMetadata_(store.id, metadata)
       }
 
-      if (default_currency_code) {
-        const curr = await currencyRepository.findOne({
-          code: default_currency_code.toLowerCase(),
-        })
+      if (storeCurrencies) {
+        const defaultCurr = default_currency_code ?? store.default_currency_code
+        const hasDefCurrency = storeCurrencies.find(
+          (c) => c.toLowerCase() === defaultCurr.toLowerCase()
+        )
 
-        if (!curr) {
+        // throw if we are trying to remove a currency from store currently used as default
+        if (!hasDefCurrency) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Currency ${default_currency_code} not found`
+            `You are not allowed to remove default currency from store currencies without replacing it as well`
           )
         }
 
-        store.default_currency = curr
-        store.default_currency_code = curr.code
-      }
-
-      if (storeCurrencies) {
         store.currencies = await Promise.all(
           storeCurrencies.map(async (curr) => {
             const currency = await currencyRepository.findOne({
@@ -158,6 +155,35 @@ class StoreService extends BaseService {
             return currency
           })
         )
+      }
+
+      if (default_currency_code) {
+        const storeCurrCodes = store.currencies.map((c) => c.code)
+        const hasDefCurrency = storeCurrCodes.find(
+          (c) => c === default_currency_code.toLowerCase()
+        )
+
+        // throw if store currencies does not have default currency
+        if (!hasDefCurrency) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Store does not have currency: ${default_currency_code}`
+          )
+        }
+
+        const curr = await currencyRepository.findOne({
+          code: default_currency_code.toLowerCase(),
+        })
+
+        if (!curr) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Currency ${default_currency_code} not found`
+          )
+        }
+
+        store.default_currency = curr
+        store.default_currency_code = curr.code
       }
 
       for (const [key, value] of Object.entries(rest)) {
