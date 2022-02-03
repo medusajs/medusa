@@ -10,33 +10,30 @@ const adminSeeder = require("../../helpers/admin-seeder")
 jest.setTimeout(30000)
 
 describe("/admin/store", () => {
-  let medusaProcess
   let dbConnection
   const cwd = path.resolve(path.join(__dirname, "..", ".."))
 
   beforeAll(async () => {
-    try {
-      dbConnection = await initDb({ cwd })
-    } catch (error) {
-      console.log(error)
-    }
+    dbConnection = await initDb({ cwd })
   })
 
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
-    medusaProcess.kill()
   })
 
   describe("Store creation", () => {
+    let medusaProcess
+
     beforeEach(async () => {
-      medusaProcess = await setupServer({ cwd })
       await adminSeeder(dbConnection)
+      medusaProcess = await setupServer({ cwd })
     })
 
     afterEach(async () => {
       const db = useDb()
       db.teardown()
+      medusaProcess.kill()
     })
 
     it("has created store with default currency", async () => {
@@ -63,9 +60,11 @@ describe("/admin/store", () => {
   })
 
   describe("POST /admin/store", () => {
+    let medusaProcess
+
     beforeEach(async () => {
-      medusaProcess = await setupServer({ cwd })
       await adminSeeder(dbConnection)
+      medusaProcess = await setupServer({ cwd })
 
       const manager = dbConnection.manager
       const store = await manager.findOne(Store, { name: "Medusa Store" })
@@ -77,6 +76,7 @@ describe("/admin/store", () => {
     afterEach(async () => {
       const db = useDb()
       await db.teardown()
+      medusaProcess.kill()
     })
 
     it("fails to update default currency if not in store currencies", async () => {
