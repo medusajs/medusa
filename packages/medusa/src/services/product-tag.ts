@@ -41,7 +41,7 @@ class ProductTagService extends BaseService {
   }
 
   /**
-   * Retrieves a product collection by id.
+   * Retrieves a product tag by id.
    * @param {string} tagId - the id of the product tag to retrieve
    * @param {Object} config - the config to retrieve the tag by
    * @return {Promise<ProductTag>} the collection.
