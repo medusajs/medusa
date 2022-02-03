@@ -1,7 +1,7 @@
 import {
   useAdminProduct,
   useAdminProducts,
-  useAdminProductTags,
+  useAdminProductTagUsage,
   useAdminProductTypes,
 } from "../../../../src"
 import { renderHook } from "@testing-library/react-hooks"
@@ -36,10 +36,10 @@ describe("useAdminProductTypes hook", () => {
   })
 })
 
-describe("useAdminProductTags hook", () => {
+describe("useAdminProductTagUsage hook", () => {
   test("returns a list of product tags", async () => {
     const tags = fixtures.list("product_tag")
-    const { result, waitFor } = renderHook(() => useAdminProductTags(), {
+    const { result, waitFor } = renderHook(() => useAdminProductTagUsage(), {
       wrapper: createWrapper(),
     })
 
