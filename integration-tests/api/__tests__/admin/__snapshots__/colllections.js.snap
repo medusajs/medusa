@@ -18,7 +18,7 @@ exports[`/admin/collections /admin/collections filters collections by title 1`] 
 Object {
   "collections": Array [
     Object {
-      "created_at": "2022-02-04T09:24:27.490Z",
+      "created_at": Any<String>,
       "handle": "test-collection",
       "id": "test-collection",
       "products": Array [
@@ -78,7 +78,7 @@ Object {
         },
       ],
       "title": "Test collection",
-      "updated_at": "2022-02-04T09:24:27.490Z",
+      "updated_at": Any<String>,
     },
   ],
   "count": 1,
@@ -91,7 +91,7 @@ exports[`/admin/collections /admin/collections lists collections 1`] = `
 Object {
   "collections": Array [
     Object {
-      "created_at": "2022-02-04T09:24:27.200Z",
+      "created_at": Any<String>,
       "handle": "test-collection",
       "id": "test-collection",
       "products": Array [
@@ -151,10 +151,10 @@ Object {
         },
       ],
       "title": "Test collection",
-      "updated_at": "2022-02-04T09:24:27.200Z",
+      "updated_at": Any<String>,
     },
     Object {
-      "created_at": "2022-02-04T09:24:27.225Z",
+      "created_at": Any<String>,
       "handle": "test-collection1",
       "id": "test-collection1",
       "products": Array [
@@ -214,10 +214,10 @@ Object {
         },
       ],
       "title": "Test collection 1",
-      "updated_at": "2022-02-04T09:24:27.225Z",
+      "updated_at": Any<String>,
     },
     Object {
-      "created_at": "2022-02-04T09:24:27.228Z",
+      "created_at": Any<String>,
       "handle": "test-collection2",
       "id": "test-collection2",
       "products": Array [
@@ -250,7 +250,7 @@ Object {
         },
       ],
       "title": "Test collection 2",
-      "updated_at": "2022-02-04T09:24:27.228Z",
+      "updated_at": Any<String>,
     },
   ],
   "count": 3,
@@ -270,7 +270,7 @@ Object {
     "products": Array [
       Object {
         "collection_id": "test-collection",
-        "created_at": "2022-02-04T09:24:26.817Z",
+        "created_at": "2022-02-04T12:24:11.419Z",
         "deleted_at": null,
         "description": "test-product-description",
         "discountable": true,
@@ -285,19 +285,19 @@ Object {
         "metadata": null,
         "mid_code": null,
         "origin_country": null,
-        "profile_id": "sp_01FV20S5A1WYKKATXJ942RZPH7",
+        "profile_id": "sp_01FV2B29GK4HMK9VJJZ120N60N",
         "status": "draft",
         "subtitle": null,
         "thumbnail": null,
         "title": "Test product",
         "type_id": "test-type",
-        "updated_at": "2022-02-04T09:24:26.817Z",
+        "updated_at": "2022-02-04T12:24:11.419Z",
         "weight": null,
         "width": null,
       },
       Object {
         "collection_id": "test-collection",
-        "created_at": "2022-02-04T09:24:26.835Z",
+        "created_at": "2022-02-04T12:24:11.433Z",
         "deleted_at": null,
         "description": "test-product-description1",
         "discountable": true,
@@ -312,13 +312,13 @@ Object {
         "metadata": null,
         "mid_code": null,
         "origin_country": null,
-        "profile_id": "sp_01FV20S5A1WYKKATXJ942RZPH7",
+        "profile_id": "sp_01FV2B29GK4HMK9VJJZ120N60N",
         "status": "draft",
         "subtitle": null,
         "thumbnail": null,
         "title": "Test product1",
         "type_id": "test-type",
-        "updated_at": "2022-02-04T09:24:26.835Z",
+        "updated_at": "2022-02-04T12:24:11.433Z",
         "weight": null,
         "width": null,
       },
