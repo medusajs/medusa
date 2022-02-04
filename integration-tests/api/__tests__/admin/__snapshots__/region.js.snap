@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/discounts DELETE + POST /admin/regions successfully create a region with countries from a previously deleted region 1`] = `
+exports[`/admin/regions DELETE /admin/regions/:id successfully creates a region with countries from a previously deleted region 1`] = `
 Object {
   "deleted": true,
   "id": "test-region",
@@ -8,10 +8,39 @@ Object {
 }
 `;
 
-exports[`/admin/discounts DELETE /admin/regions/:id DELETE + POST /admin/regions successfully create a region with countries from a previously deleted region 1`] = `
+exports[`/admin/regions DELETE /admin/regions/:id successfully creates a region with countries from a previously deleted region 2`] = `
 Object {
-  "deleted": true,
-  "id": "test-region",
-  "object": "region",
+  "countries": Array [
+    Object {
+      "display_name": "United States",
+      "id": 236,
+      "iso_2": "us",
+      "iso_3": "usa",
+      "name": "UNITED STATES",
+      "num_code": 840,
+      "region_id": Any<String>,
+    },
+  ],
+  "created_at": Any<String>,
+  "currency_code": "usd",
+  "deleted_at": null,
+  "fulfillment_providers": Array [
+    Object {
+      "id": "test-ful",
+      "is_installed": false,
+    },
+  ],
+  "id": Any<String>,
+  "metadata": null,
+  "name": "World",
+  "payment_providers": Array [
+    Object {
+      "id": "test-pay",
+      "is_installed": true,
+    },
+  ],
+  "tax_code": null,
+  "tax_rate": 0,
+  "updated_at": Any<String>,
 }
 `;
