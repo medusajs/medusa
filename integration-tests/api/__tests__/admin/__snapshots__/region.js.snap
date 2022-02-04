@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/discounts DELETE + POST /admin/regions successfully create a region with countries from a previously deleted region 1`] = `
+Object {
+  "deleted": true,
+  "id": "test-region",
+  "object": "region",
+}
+`;
+
+exports[`/admin/discounts DELETE /admin/regions/:id DELETE + POST /admin/regions successfully create a region with countries from a previously deleted region 1`] = `
+Object {
+  "deleted": true,
+  "id": "test-region",
+  "object": "region",
+}
+`;
