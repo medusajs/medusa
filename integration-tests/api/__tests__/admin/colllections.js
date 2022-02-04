@@ -107,6 +107,20 @@ describe("/admin/collections", () => {
           id: "test-collection",
           created_at: expect.any(String),
           updated_at: expect.any(String),
+          products: [
+              {
+                collection_id: "test-collection",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                profile_id: expect.stringMatching(/^sp_*/),
+              },
+              {
+                collection_id: "test-collection",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                profile_id: expect.stringMatching(/^sp_*/),
+              },
+            ],
         },
       })
     })
@@ -165,6 +179,8 @@ describe("/admin/collections", () => {
             id: "test-collection",
             handle: "test-collection",
             title: "Test collection",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
             products: [
               {
                 collection_id: "test-collection",
@@ -184,6 +200,8 @@ describe("/admin/collections", () => {
             id: "test-collection1",
             handle: "test-collection1",
             title: "Test collection 1",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
             products: [
               {
                 collection_id: "test-collection1",
@@ -203,6 +221,8 @@ describe("/admin/collections", () => {
             id: "test-collection2",
             handle: "test-collection2",
             title: "Test collection 2",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
             products: [
               {
                 collection_id: "test-collection2",
@@ -232,6 +252,8 @@ describe("/admin/collections", () => {
             id: "test-collection",
             handle: "test-collection",
             title: "Test collection",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
             products: [
               {
                 collection_id: "test-collection",

@@ -1,3 +1,4 @@
+import { defaultAdminCollectionsRelations } from "."
 import ProductCollectionService from "../../../../services/product-collection"
 /**
  * @oas [get] /collections/{id}
@@ -22,10 +23,14 @@ import ProductCollectionService from "../../../../services/product-collection"
 export default async (req, res) => {
   const { id } = req.params
 
+  const retrieveConfig = {
+    relations: defaultAdminCollectionsRelations,
+  }
+
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
 
-  const collection = await productCollectionService.retrieve(id)
+  const collection = await productCollectionService.retrieve(id, retrieveConfig)
   res.status(200).json({ collection })
 }
