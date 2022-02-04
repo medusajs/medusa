@@ -1,5 +1,6 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import { Brackets, ILike } from "typeorm"
 
 /**
  * Provides layer to manipulate product collections.
@@ -187,7 +188,35 @@ class ProductCollectionService extends BaseService {
       this.productCollectionRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.title
+      delete where.handle
+      delete where.created_at
+      delete where.updated_at
+
+      query.where = (qb) => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets((qb) => {
+            qb.where({ title: ILike(`%${q}%`) }).orWhere({
+              handle: ILike(`%${q}%`),
+            })
+          })
+        )
+      }
+    }
+
     return await productCollectionRepo.findAndCount(query)
   }
 }
