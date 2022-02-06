@@ -3,32 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.40](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.39...medusa-payment-klarna@1.1.40) (2022-02-06)
+
+### Features
+
+- medusa-react admin hooks ([#978](https://github.com/medusajs/medusa/issues/978)) ([2e38484](https://github.com/medusajs/medusa/commit/2e384842d5b2e9742a86b96f28a8f00357795b86)), closes [#1019](https://github.com/medusajs/medusa/issues/1019)
+
 ## [1.1.39](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.38...medusa-payment-klarna@1.1.39) (2022-01-11)
 
 **Note:** Version bump only for package medusa-payment-klarna
-
-
-
-
 
 ## [1.1.38](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.37...medusa-payment-klarna@1.1.38) (2021-12-29)
 
 **Note:** Version bump only for package medusa-payment-klarna
 
-
-
-
-
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.36...medusa-payment-klarna@1.1.37) (2021-12-17)
-
 
 ### Bug Fixes
 
-* **medusa-payment-klarna:** Default shipping fee name in Klarna plugin ([#926](https://github.com/medusajs/medusa/issues/926)) ([8782016](https://github.com/medusajs/medusa/commit/8782016095e82a21ac3e623f7d6fa0413d86ae1e))
-
-
-
-
+- **medusa-payment-klarna:** Default shipping fee name in Klarna plugin ([#926](https://github.com/medusajs/medusa/issues/926)) ([8782016](https://github.com/medusajs/medusa/commit/8782016095e82a21ac3e623f7d6fa0413d86ae1e))
 
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.35...medusa-payment-klarna@1.1.36) (2021-12-08)
 
