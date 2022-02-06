@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.40](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.39...medusa-payment-paypal@1.0.40) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
 ## [1.0.39](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.38...medusa-payment-paypal@1.0.39) (2022-02-06)
 
 **Note:** Version bump only for package medusa-payment-paypal

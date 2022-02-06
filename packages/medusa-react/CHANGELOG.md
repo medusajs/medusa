@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.5](https://github.com/medusajs/medusa/compare/medusa-react@0.1.4...medusa-react@0.1.5) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
 ## [0.1.4](https://github.com/medusajs/medusa/compare/medusa-react@0.1.3...medusa-react@0.1.4) (2022-02-06)
 
 ### Bug Fixes
