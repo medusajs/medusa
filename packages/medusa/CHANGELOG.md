@@ -3,50 +3,49 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.62](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.61...@medusajs/medusa@1.1.62) (2022-01-11)
-
+## [1.1.63](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.62...@medusajs/medusa@1.1.63) (2022-02-06)
 
 ### Bug Fixes
 
-* Adds default currency to store currencies on create ([#982](https://github.com/medusajs/medusa/issues/982)) ([a0a21d1](https://github.com/medusajs/medusa/commit/a0a21d15efeda56d4245aa6937f4d67c673e5ab3))
-* api claim types + tests ([#967](https://github.com/medusajs/medusa/issues/967)) ([d365839](https://github.com/medusajs/medusa/commit/d365839a086ba116f320b49880d621452ee4b301))
-* Type in AdminProductListTagsRes to use tags instead of types ([#958](https://github.com/medusajs/medusa/issues/958)) ([0ac52b7](https://github.com/medusajs/medusa/commit/0ac52b70fa23d9aa3ba6b5e220943ed15db4e643))
-
+- adds order by functionality to products ([#1021](https://github.com/medusajs/medusa/issues/1021)) ([3bf32e5](https://github.com/medusajs/medusa/commit/3bf32e5dc9ad3150762b9bb744b0453d3640e204))
+- adds return reasons to swaps ([#1026](https://github.com/medusajs/medusa/issues/1026)) ([7d2b5b8](https://github.com/medusajs/medusa/commit/7d2b5b8babea1846503c5934c9d81ce4d3b2635d))
+- admin collections default relations ([#1023](https://github.com/medusajs/medusa/issues/1023)) ([d2a7534](https://github.com/medusajs/medusa/commit/d2a7534615b8870b235be136c8e6425c51dee19b))
+- Support array of payment status filters when listing orders ([#1013](https://github.com/medusajs/medusa/issues/1013)) ([fdc493d](https://github.com/medusajs/medusa/commit/fdc493df7fdcb6fda35894ec5a3cc7990dc8ea13))
+- Updating store currencies ([#984](https://github.com/medusajs/medusa/issues/984)) ([59bb413](https://github.com/medusajs/medusa/commit/59bb413245d8aa31cc3070a372d6f0d04ebc9415))
 
 ### Features
 
-* expand store product filtering ([#973](https://github.com/medusajs/medusa/issues/973)) ([f61eaee](https://github.com/medusajs/medusa/commit/f61eaeec12529919b74b64a35f26b6b42f24fa7b))
+- medusa-react admin hooks ([#978](https://github.com/medusajs/medusa/issues/978)) ([2e38484](https://github.com/medusajs/medusa/commit/2e384842d5b2e9742a86b96f28a8f00357795b86)), closes [#1019](https://github.com/medusajs/medusa/issues/1019)
 
+## [1.1.62](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.61...@medusajs/medusa@1.1.62) (2022-01-11)
 
+### Bug Fixes
 
+- Adds default currency to store currencies on create ([#982](https://github.com/medusajs/medusa/issues/982)) ([a0a21d1](https://github.com/medusajs/medusa/commit/a0a21d15efeda56d4245aa6937f4d67c673e5ab3))
+- api claim types + tests ([#967](https://github.com/medusajs/medusa/issues/967)) ([d365839](https://github.com/medusajs/medusa/commit/d365839a086ba116f320b49880d621452ee4b301))
+- Type in AdminProductListTagsRes to use tags instead of types ([#958](https://github.com/medusajs/medusa/issues/958)) ([0ac52b7](https://github.com/medusajs/medusa/commit/0ac52b70fa23d9aa3ba6b5e220943ed15db4e643))
 
+### Features
+
+- expand store product filtering ([#973](https://github.com/medusajs/medusa/issues/973)) ([f61eaee](https://github.com/medusajs/medusa/commit/f61eaeec12529919b74b64a35f26b6b42f24fa7b))
 
 ## [1.1.61](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.60...@medusajs/medusa@1.1.61) (2021-12-29)
 
 **Note:** Version bump only for package @medusajs/medusa
 
-
-
-
-
 ## [1.1.60](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.59...@medusajs/medusa@1.1.60) (2021-12-17)
-
 
 ### Features
 
-* Add Discount Admin endpoint to JS client ([#919](https://github.com/medusajs/medusa/issues/919)) ([2ca1a87](https://github.com/medusajs/medusa/commit/2ca1a8762da5bc30a246e2e77521071ed91e6c12))
-* add medusa-react ([#913](https://github.com/medusajs/medusa/issues/913)) ([d0d8dd7](https://github.com/medusajs/medusa/commit/d0d8dd7bf62eaac71df8714c2dfb4f204d192f51))
-* add returns admin endpoints to medusa-js ([#935](https://github.com/medusajs/medusa/issues/935)) ([b9d6f95](https://github.com/medusajs/medusa/commit/b9d6f95dbd32c096e59057797fd0cf479ff23c7b))
-* add store admin endpoints to medusa-js ([#938](https://github.com/medusajs/medusa/issues/938)) ([31fad74](https://github.com/medusajs/medusa/commit/31fad7439cc4b95e269e7b6bc5d813cb2479329c))
-* Adds Auth Admin API to `medusa-js` ([#917](https://github.com/medusajs/medusa/issues/917)) ([5c47184](https://github.com/medusajs/medusa/commit/5c47184b1035fc36440ff95750a4bb461904246d))
-* Adds Customer Admin routes to JS client ([#918](https://github.com/medusajs/medusa/issues/918)) ([25fe224](https://github.com/medusajs/medusa/commit/25fe224a10842a7ac93ed496a6724ef113b41916))
-* medusa js admin regions ([#939](https://github.com/medusajs/medusa/issues/939)) ([8532c96](https://github.com/medusajs/medusa/commit/8532c966b59082ac60d221bc3bb7f92d6f94e5e4))
-* medusa js admin shipping options ([#934](https://github.com/medusajs/medusa/issues/934)) ([8b1b551](https://github.com/medusajs/medusa/commit/8b1b551260c8f3764135ed65bd099b8e9a0f23da))
-* medusa-js admin return reasons ([#931](https://github.com/medusajs/medusa/issues/931)) ([0acc462](https://github.com/medusajs/medusa/commit/0acc462e1ebe51368ceedeea85d6f51c6fc3bfc4))
-
-
-
-
+- Add Discount Admin endpoint to JS client ([#919](https://github.com/medusajs/medusa/issues/919)) ([2ca1a87](https://github.com/medusajs/medusa/commit/2ca1a8762da5bc30a246e2e77521071ed91e6c12))
+- add medusa-react ([#913](https://github.com/medusajs/medusa/issues/913)) ([d0d8dd7](https://github.com/medusajs/medusa/commit/d0d8dd7bf62eaac71df8714c2dfb4f204d192f51))
+- add returns admin endpoints to medusa-js ([#935](https://github.com/medusajs/medusa/issues/935)) ([b9d6f95](https://github.com/medusajs/medusa/commit/b9d6f95dbd32c096e59057797fd0cf479ff23c7b))
+- add store admin endpoints to medusa-js ([#938](https://github.com/medusajs/medusa/issues/938)) ([31fad74](https://github.com/medusajs/medusa/commit/31fad7439cc4b95e269e7b6bc5d813cb2479329c))
+- Adds Auth Admin API to `medusa-js` ([#917](https://github.com/medusajs/medusa/issues/917)) ([5c47184](https://github.com/medusajs/medusa/commit/5c47184b1035fc36440ff95750a4bb461904246d))
+- Adds Customer Admin routes to JS client ([#918](https://github.com/medusajs/medusa/issues/918)) ([25fe224](https://github.com/medusajs/medusa/commit/25fe224a10842a7ac93ed496a6724ef113b41916))
+- medusa js admin regions ([#939](https://github.com/medusajs/medusa/issues/939)) ([8532c96](https://github.com/medusajs/medusa/commit/8532c966b59082ac60d221bc3bb7f92d6f94e5e4))
+- medusa js admin shipping options ([#934](https://github.com/medusajs/medusa/issues/934)) ([8b1b551](https://github.com/medusajs/medusa/commit/8b1b551260c8f3764135ed65bd099b8e9a0f23da))
+- medusa-js admin return reasons ([#931](https://github.com/medusajs/medusa/issues/931)) ([0acc462](https://github.com/medusajs/medusa/commit/0acc462e1ebe51368ceedeea85d6f51c6fc3bfc4))
 
 ## [1.1.59](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.58...@medusajs/medusa@1.1.59) (2021-12-08)
 

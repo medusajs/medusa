@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa",
-  "version": "1.1.62",
+  "version": "1.1.63",
   "description": "E-commerce for JAMstack",
   "main": "dist/index.js",
   "bin": {
@@ -26,7 +26,7 @@
     "cross-env": "^5.2.1",
     "eslint": "^7.32.0",
     "jest": "^25.5.2",
-    "medusa-interfaces": "^1.1.32",
+    "medusa-interfaces": "^1.1.33",
     "nodemon": "^2.0.1",
     "prettier": "^1.19.1",
     "sqlite3": "^5.0.2",
