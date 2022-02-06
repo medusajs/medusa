@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.42](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.41...medusa-plugin-segment@1.1.42) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
 ## [1.1.41](https://github.com/medusajs/medusa/compare/medusa-plugin-segment@1.1.40...medusa-plugin-segment@1.1.41) (2022-02-06)
 
 ### Features
