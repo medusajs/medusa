@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.5](https://github.com/medusajs/medusa/compare/medusa-source-shopify@1.0.4...medusa-source-shopify@1.0.5) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
 ## [1.0.4](https://github.com/medusajs/medusa/compare/medusa-source-shopify@1.0.3...medusa-source-shopify@1.0.4) (2022-02-06)
 
 **Note:** Version bump only for package medusa-source-shopify

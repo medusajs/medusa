@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.49](https://github.com/medusajs/medusa/compare/gatsby-source-medusa@0.0.48...gatsby-source-medusa@0.0.49) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
 ## [0.0.48](https://github.com/medusajs/medusa/compare/gatsby-source-medusa@0.0.47...gatsby-source-medusa@0.0.48) (2022-02-06)
 
 ### Features
