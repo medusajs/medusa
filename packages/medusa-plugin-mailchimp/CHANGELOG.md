@@ -3,29 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.38](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.37...medusa-plugin-mailchimp@1.1.38) (2022-02-06)
+
+### Features
+
+- medusa-react admin hooks ([#978](https://github.com/medusajs/medusa/issues/978)) ([2e38484](https://github.com/medusajs/medusa/commit/2e384842d5b2e9742a86b96f28a8f00357795b86)), closes [#1019](https://github.com/medusajs/medusa/issues/1019)
+
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.36...medusa-plugin-mailchimp@1.1.37) (2022-01-11)
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
-
-
-
-
 
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.35...medusa-plugin-mailchimp@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
 
-
-
-
-
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.34...medusa-plugin-mailchimp@1.1.35) (2021-12-17)
 
 **Note:** Version bump only for package medusa-plugin-mailchimp
-
-
-
-
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-plugin-mailchimp@1.1.33...medusa-plugin-mailchimp@1.1.34) (2021-12-08)
 
