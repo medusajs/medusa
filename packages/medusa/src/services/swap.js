@@ -815,7 +815,7 @@ class SwapService extends BaseService {
 
       const updatedRet = await this.returnService_
         .withTransaction(manager)
-        .receive(returnId, returnItems, undefined, false)
+        .receiveReturn(returnId, returnItems, undefined, false)
 
       if (updatedRet.status === "requires_action") {
         const swapRepo = manager.getCustomRepository(this.swapRepository_)
