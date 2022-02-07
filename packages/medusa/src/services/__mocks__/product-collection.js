@@ -16,6 +16,9 @@ export const ProductCollectionServiceMock = {
   update: jest.fn().mockImplementation((id, value) => {
     return Promise.resolve({ id, title: value })
   }),
+  updateProducts: jest.fn().mockImplementation((id, idsToAdd, _idsToRemove) => {
+    return Promise.resolve({ id, products: idsToAdd.map(i => ({ id: i})) })
+  }),
   list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([{ id: IdMap.getId("col"), title: "Suits" }])
   }),

@@ -162,6 +162,40 @@ class ProductCollectionService extends BaseService {
     })
   }
 
+  async updateProducts(
+    collectionId,
+    addProductIds = [],
+    removeProductIds = []
+  ) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const collection = await this.retrieve(collectionId)
+
+      if (!collection) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Product collection with id: ${collectionId} was not found`
+        )
+      }
+
+      if (addProductIds.length > 0) {
+        await productRepo.bulkAddToCollection(addProductIds, collectionId)
+      }
+
+      if (removeProductIds.length > 0) {
+        await productRepo.bulkRemoveFromCollection(
+          removeProductIds,
+          collectionId
+        )
+      }
+
+      return await this.retrieve(collectionId, {
+        relations: ["products"],
+      })
+    })
+  }
+
   /**
    * Lists product collections
    * @param {Object} selector - the query object for find

@@ -3,8 +3,9 @@ import {
   EntityRepository,
   FindManyOptions,
   FindOperator,
+  In,
   OrderByCondition,
-  Repository,
+  Repository
 } from "typeorm"
 import { ProductTag } from ".."
 import { Product } from "../models/product"
@@ -254,5 +255,30 @@ export class ProductRepository extends Repository<Product> {
       optionsWithoutRelations
     )
     return result[0]
+  }
+
+  public async bulkAddToCollection(
+    productIds: string[],
+    collectionId: string
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+    .update(Product)
+    .set({ collection_id: collectionId })
+      .where({ id: In(productIds) })
+      .execute()
+
+    return this.findByIds(productIds)
+  }
+
+  public async bulkRemoveFromCollection(
+    productIds: string[],
+  ): Promise<Product[]> {
+    await this.createQueryBuilder()
+    .update(Product)
+    .set({ collection_id: undefined })
+      .where({ id: In(productIds) })
+      .execute()
+
+    return this.findByIds(productIds)
   }
 }

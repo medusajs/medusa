@@ -17,6 +17,8 @@ export default (app) => {
   route.get("/:id", middlewares.wrap(require("./get-collection").default))
   route.get("/", middlewares.wrap(require("./list-collections").default))
 
+  route.post("/:id/products", middlewares.wrap(require("./update-products").default))
+
   return app
 }
 
