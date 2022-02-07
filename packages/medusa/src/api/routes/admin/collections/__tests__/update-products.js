@@ -2,7 +2,7 @@ import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
 import { ProductCollectionServiceMock } from "../../../../../services/__mocks__/product-collection"
 
-describe("POST /admin/collections/:id", () => {
+describe("POST /admin/collections/:id/products", () => {
   describe("successful update", () => {
     let subject
 
