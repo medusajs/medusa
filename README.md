@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://www.medusajs.com">
-    <img alt="Medusa" src="https://user-images.githubusercontent.com/7554214/129161578-19b83dc8-fac5-4520-bd48-53cba676edd2.png" width="100" />
+    <img alt="Medusa" src="https://user-images.githubusercontent.com/59018053/152755195-6b4b8813-f1b7-40ff-9bcf-2a4553dbca94.jpg" width="100" />
   </a>
 </p>
 <h1 align="center">
