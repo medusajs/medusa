@@ -19,7 +19,7 @@ module.exports = {
     {
       type: "doc",
       id: "quickstart/quick-start",
-      label: "Quick Start Guide",
+      label: "Quickstart Guide",
     },
     {
       type: "category",
@@ -39,17 +39,17 @@ module.exports = {
         {
           type: "category",
           collapsed: true,
-          label: "Storefront Quick Start",
+          label: "Storefront Quickstart",
           items: [
             {
               type: "doc",
               id: "starters/gatsby-medusa-starter",
-              label: "Quick Start: Gatsby",
+              label: "Quickstart: Gatsby",
             },
             {
               type: "doc",
               id: "starters/nextjs-medusa-starter",
-              label: "Quick Start: Next.js",
+              label: "Quickstart: Next.js",
             },
             {
               type: "doc",
