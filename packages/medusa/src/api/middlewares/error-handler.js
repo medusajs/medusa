@@ -1,5 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 
+const DETAIL_ERROR_CODES = ["23505"]
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
 const TRANSACTION_STARTED = "TransactionAlreadyStartedError"
 const TRANSACTION_NOT_STARTED = "TransactionNotStartedError"
@@ -18,7 +19,10 @@ export default () => {
     const errObj = {
       code: err.code,
       type: err.type,
-      message: err.message,
+      message:
+        DETAIL_ERROR_CODES.indexOf(err?.code) < 0
+          ? err.message
+          : err?.detail || err.message,
     }
 
     let statusCode = 500
