@@ -10,7 +10,7 @@ With the required software installed on your computer you are ready to start wor
 
 In this part of the tutorial we will setup the skeleton for a Medusa store and will be making the first requests to your Medusa server.
 
-Once you have completed this part of the tutorial you will have a powerful backend for digital commerce experiences. The server will be capable of handling orders, ensuring payments are going through, keeping basic product and customer data in sync, etc. You can use on of the frontend starters to quickly hook up your server to a presentation layer ([Gatsby](https://github.com/medusajs/gatsby-starter-medusa) or [Next](https://github.com/medusajs/nextjs-starter-medusa)).
+Once you have completed this part of the tutorial you will have a powerful backend for digital commerce experiences. The server will be capable of handling orders, ensuring payments are going through, keeping basic product and customer data in sync, etc. You can use one of the frontend starters to quickly hook up your server to a presentation layer ([Gatsby](https://github.com/medusajs/gatsby-starter-medusa) or [Next](https://github.com/medusajs/nextjs-starter-medusa)).
 
 ## Setup a Medusa project
 
