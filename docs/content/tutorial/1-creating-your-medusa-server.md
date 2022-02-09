@@ -1,5 +1,5 @@
 ---
-title: 1. Creating your Medusa server
+title: Creating your Medusa server
 ---
 
 # Creating your Medusa server
