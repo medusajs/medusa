@@ -68,4 +68,4 @@ If the shipping option is configured to dynamically calculate the price of the t
 
 ## What's next?
 
-Now that you have an overview of the Fulfillment API you can start developing your own fulfillment plugin. For a guide on how to create plugins [check this guide](https://docs.medusajs.com/guides/plugins). If you have questions or issues please feel free to [join our Discord server](https://discord.gg/H6naACAK) for direct access to the engineering team.
+Now that you have an overview of the Fulfillment API you can start developing your own fulfillment plugin. For a guide on how to create plugins [check this guide](https://docs.medusajs.com/how-to/plugins). If you have questions or issues please feel free to [join our Discord server](https://discord.gg/medusajs) for direct access to the engineering team.
