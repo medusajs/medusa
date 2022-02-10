@@ -58,6 +58,8 @@ class StoreService extends BaseService {
 
       let store = await this.retrieve()
 
+      console.error("has existing", store)
+
       if (!store) {
         const s = await storeRepository.create()
         // Add default currency (USD) to store currencies
