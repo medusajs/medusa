@@ -1,5 +1,6 @@
 import { Type } from "class-transformer"
 import {
+  Min,
   IsOptional,
   IsArray,
   IsString,
@@ -299,7 +300,16 @@ class ReturnItem {
 
   @IsNumber()
   @IsNotEmpty()
+  @Min(1)
   quantity: number
+
+  @IsOptional()
+  @IsString()
+  reason_id?: string
+
+  @IsOptional()
+  @IsString()
+  note?: string
 }
 
 class ReturnShipping {

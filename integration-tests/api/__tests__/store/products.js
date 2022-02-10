@@ -4,9 +4,10 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
-const productSeeder = require("../../helpers/product-seeder")
+const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
 jest.setTimeout(30000)
+
 describe("/store/products", () => {
   let medusaProcess
   let dbConnection
@@ -21,6 +22,204 @@ describe("/store/products", () => {
     const db = useDb()
     await db.shutdown()
     medusaProcess.kill()
+  })
+
+  describe("GET /store/products", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("returns a list of products in collection", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ collection_id: "test-collection" }),
+        expect.objectContaining({ collection_id: "test-collection1" }),
+      ]
+
+      const response = await api
+        .get("/store/products?collection_id[]=test-collection2")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          collection_id: "test-collection2",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
+    it("returns a list of products in with a given tag", async () => {
+      const api = useApi()
+
+      const notExpected = [expect.objectContaining({ id: "tag4" })]
+
+      const response = await api
+        .get("/store/products?tags[]=tag3")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
+    it("returns gift card product", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/products?is_giftcard=true")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products.length).toEqual(1)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "giftcard",
+          is_giftcard: true,
+        }),
+      ])
+    })
+
+    it("returns non gift card products", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/products?is_giftcard=false")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.products).toEqual(
+        expect.not.arrayContaining([
+          expect.objectContaining({ is_giftcard: true }),
+        ])
+      )
+    })
+
+    it("returns product with tag", async () => {
+      const api = useApi()
+
+      const notExpected = [expect.objectContaining({ id: "tag4" })]
+
+      const response = await api
+        .get("/store/products?tags[]=tag3")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
+    it("returns a list of products in with a given handle", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ handle: "test-product_filtering_1" }),
+      ]
+
+      const response = await api
+        .get("/store/products?handle=test-product_filtering_2")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          handle: "test-product_filtering_2",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
+
+    it("returns only published products", async () => {
+      const api = useApi()
+
+      const notExpected = [
+        expect.objectContaining({ status: "proposed" }),
+        expect.objectContaining({ status: "draft" }),
+        expect.objectContaining({ status: "rejected" }),
+      ]
+
+      const response = await api.get("/store/products").catch((err) => {
+        console.log(err)
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "giftcard",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          collection_id: "test-collection2",
+        }),
+      ])
+
+      for (const notExpect of notExpected) {
+        expect(response.data.products).toEqual(
+          expect.not.arrayContaining([notExpect])
+        )
+      }
+    })
   })
 
   describe("/store/products/:id", () => {

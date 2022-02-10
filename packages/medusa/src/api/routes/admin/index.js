@@ -22,6 +22,7 @@ import returnRoutes from "./returns"
 import variantRoutes from "./variants"
 import draftOrderRoutes from "./draft-orders"
 import collectionRoutes from "./collections"
+import productTagRoutes from "./product-tags"
 import notificationRoutes from "./notifications"
 import noteRoutes from "./notes"
 import taxRateRoutes from "./tax-rates"
@@ -77,6 +78,7 @@ export default (app, container, config) => {
   collectionRoutes(route)
   notificationRoutes(route)
   returnReasonRoutes(route)
+  productTagRoutes(route)
   noteRoutes(route)
   inviteRoutes(route)
   taxRateRoutes(route)
