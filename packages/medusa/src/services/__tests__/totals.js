@@ -595,14 +595,17 @@ describe("TotalsService", () => {
       expect(getAllocationMapMock).toHaveBeenCalledWith(order, {})
 
       expect(getTaxLinesMock).toHaveBeenCalledTimes(1)
-      expect(getTaxLinesMock).toHaveBeenCalledWith(order, {
-        shipping_address: order.shipping_address,
-        shipping_methods: order.shipping_methods,
-        is_return: false,
-        customer: order.customer,
-        region: order.region,
-        allocation_map: {},
-      })
+      expect(getTaxLinesMock).toHaveBeenCalledWith(
+        [{ quantity: 2, unit_price: 20 }],
+        {
+          shipping_address: order.shipping_address,
+          shipping_methods: order.shipping_methods,
+          is_return: false,
+          customer: order.customer,
+          region: order.region,
+          allocation_map: {},
+        }
+      )
 
       expect(calculateMock).toHaveBeenCalledTimes(1)
       expect(calculateMock).toHaveBeenCalledWith(

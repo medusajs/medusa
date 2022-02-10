@@ -76,7 +76,7 @@ describe("TaxProviderService", () => {
         },
       ]
 
-      const rates = await providerService.getTaxLines(cart, calcContext)
+      const rates = await providerService.getTaxLines(cart.items, calcContext)
 
       expect(rates).toEqual(expected)
 
