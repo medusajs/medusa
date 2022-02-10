@@ -39,23 +39,23 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
     
-  const validated = await validator(AdminPostProductsToCollectionParams, req.body)
+  const validated = await validator(AdminPostProductsToCollectionReq, req.body)
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
 
-  const collection = await productCollectionService.updateProducts(id, validated.addProductIds, validated.removeProductIds)
+  const collection = await productCollectionService.updateProducts(id, validated.add_product_ids, validated.remove_product_ids)
 
   res.status(200).json({ collection })
 }
 
-export class AdminPostProductsToCollectionParams {
+export class AdminPostProductsToCollectionReq {
   @IsOptional()
   @IsString({each: true})
-  addProductIds: string[]
+  add_product_ids: string[]
 
   @IsOptional()
   @IsString({each: true})
-  removeProductIds: string[]
+  remove_product_ids: string[]
 }

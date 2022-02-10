@@ -108,19 +108,19 @@ describe("/admin/collections", () => {
           created_at: expect.any(String),
           updated_at: expect.any(String),
           products: [
-              {
-                collection_id: "test-collection",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                profile_id: expect.stringMatching(/^sp_*/),
-              },
-              {
-                collection_id: "test-collection",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                profile_id: expect.stringMatching(/^sp_*/),
-              },
-            ],
+            {
+              collection_id: "test-collection",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+            {
+              collection_id: "test-collection",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+          ],
         },
       })
     })
@@ -241,13 +241,18 @@ describe("/admin/collections", () => {
       const api = useApi()
 
       // adds product test-product-filterid-1 and removes product test-product
-      const response = await api.post("/admin/collections/test-collection/products", {
-        addProductIds: ["test-product_filtering_1"],
-        removeProductIds: ["test-product"],
-      }, 
-      {
-        headers: { Authorization: "Bearer test_token" },
-      })
+      const response = await api
+        .post(
+          "/admin/collections/test-collection/products/batch",
+          {
+            add_product_ids: ["test-product_filtering_1"],
+            remove_product_ids: ["test-product"],
+          },
+          {
+            headers: { Authorization: "Bearer test_token" },
+          }
+        )
+        .catch((err) => console.warn(err))
 
       expect(response.data).toMatchSnapshot({
         collection: {
@@ -255,21 +260,21 @@ describe("/admin/collections", () => {
           created_at: expect.any(String),
           updated_at: expect.any(String),
           products: [
-              {
-                collection_id: "test-collection",
-                id: "test-product1",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                profile_id: expect.stringMatching(/^sp_*/),
-              },
-              {
-                collection_id: "test-collection",
-                id: "test-product_filtering_1",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                profile_id: expect.stringMatching(/^sp_*/),
-              },
-            ],
+            {
+              collection_id: "test-collection",
+              id: "test-product1",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+            {
+              collection_id: "test-collection",
+              id: "test-product_filtering_1",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+          ],
         },
       })
 

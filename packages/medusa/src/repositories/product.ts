@@ -272,11 +272,12 @@ export class ProductRepository extends Repository<Product> {
 
   public async bulkRemoveFromCollection(
     productIds: string[],
+    collectionId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
     .update(Product)
     .set({ collection_id: undefined })
-      .where({ id: In(productIds) })
+      .where({ id: In(productIds), collection_id: collectionId })
       .execute()
 
     return this.findByIds(productIds)
