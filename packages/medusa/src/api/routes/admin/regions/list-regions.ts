@@ -2,8 +2,10 @@ import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
-import { IsInt, IsOptional } from "class-validator"
+import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import { Type } from "class-transformer"
+import _, { identity } from "lodash"
+import { DateComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /regions
@@ -12,18 +14,36 @@ import { Type } from "class-transformer"
  * description: "Retrieves a list of Regions."
  * x-authenticated: true
  * parameters:
- *  - in: path
+ *  - in: query
  *    name: limit
  *    schema:
  *      type: integer
  *    required: false
  *    description: limit the number of regions in response
- *  - in: path
+ *  - in: query
  *    name: offset
  *    schema:
  *      type: integer
  *    required: false
  *    description: Offset of regions in response (used for pagination)
+ * - in: query
+ *    name: created_at
+ *    schema:
+ *      type: DateComparisonOperator
+ *    required: false
+ *    description: Date comparison for when resulting region was created, i.e. less than, greater than etc.
+ * - in: query
+ *    name: updated_at
+ *    schema:
+ *      type: DateComparisonOperator
+ *    required: false
+ *    description: Date comparison for when resulting region was updated, i.e. less than, greater than etc.
+ * - in: query
+ *    name: deleted_at
+ *    schema:
+ *      type: DateComparisonOperator
+ *    required: false
+ *    description: Date comparison for when resulting region was deleted, i.e. less than, greater than etc.
  * tags:
  *   - Region
  * responses:
@@ -43,7 +63,7 @@ export default async (req, res) => {
 
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const selector = {}
+  const filterableFields = _.omit(validated, ["limit", "offset"])
 
   const listConfig = {
     select: defaultAdminRegionFields,
@@ -52,7 +72,10 @@ export default async (req, res) => {
     take: validated.limit,
   }
 
-  const regions: Region[] = await regionService.list(selector, listConfig)
+  const regions: Region[] = await regionService.list(
+    _.pickBy(filterableFields, identity),
+    listConfig
+  )
 
   res.json({
     regions,
@@ -62,7 +85,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetRegionsParams {
+export class AdminGetRegionsPaginationParams {
   @IsInt()
   @IsOptional()
   @Type(() => Number)
@@ -72,4 +95,21 @@ export class AdminGetRegionsParams {
   @IsOptional()
   @Type(() => Number)
   offset?: number = 0
+}
+
+export class AdminGetRegionsParams extends AdminGetRegionsPaginationParams {
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  deleted_at?: DateComparisonOperator
 }
