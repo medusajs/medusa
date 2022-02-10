@@ -144,6 +144,13 @@ describe("/admin/gift-cards", () => {
           currency_code: "usd",
           tax_rate: 0,
         })
+        await manager.insert(GiftCard, {
+          id: "gift_test",
+          code: "GC_TEST",
+          value: 20000,
+          balance: 20000,
+          region_id: "region",
+        })
       } catch (err) {
         console.log(err)
         throw err
@@ -153,6 +160,29 @@ describe("/admin/gift-cards", () => {
     afterEach(async () => {
       const db = useDb()
       await db.teardown()
+    })
+
+    it("updates a balance", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/gift-cards/gift_test",
+          {
+            balance: 0,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.gift_card.balance).toEqual(0)
     })
 
     it("creates a gift card", async () => {
