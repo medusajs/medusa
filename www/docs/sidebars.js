@@ -14,57 +14,131 @@ module.exports = {
     {
       type: "doc",
       id: "homepage",
-      label: "Overview",
+      label: "Introduction",
     },
     {
       type: "doc",
       id: "quickstart/quick-start",
-      label: "Quickstart",
+      label: "Quickstart Guide",
     },
     {
       type: "category",
       collapsed: false,
-      label: "Storefront starters",
-      items: [
-        {
-          type: "doc",
-          id: "starters/gatsby-medusa-starter",
-          label: "Quickstart: Gatsby",
-        },
-        {
-          type: "doc",
-          id: "starters/nextjs-medusa-starter",
-          label: "Quickstart: Next.js",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Tutorial",
-      collapsed: false,
+      label: "Usage Guides",
       items: [
         {
           type: "doc",
           id: "tutorial/set-up-your-development-environment",
+          label: "Set Up your Development Environment"
         },
         {
           type: "doc",
           id: "tutorial/creating-your-medusa-server",
+          label: "Create your Medusa Server"
+        },
+        {
+          type: "category",
+          collapsed: true,
+          label: "Storefront Quickstart",
+          items: [
+            {
+              type: "doc",
+              id: "starters/gatsby-medusa-starter",
+              label: "Quickstart: Gatsby",
+            },
+            {
+              type: "doc",
+              id: "starters/nextjs-medusa-starter",
+              label: "Quickstart: Next.js",
+            },
+            {
+              type: "doc",
+              id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
+              label: "Set Up a Next.js Storefront for your Medusa Project"
+            },
+          ],
         },
         {
           type: "doc",
-          id: "tutorial/adding-custom-functionality",
+          id: "how-to/create-medusa-app",
         },
-      ],
+        {
+          type: "category",
+          label: "Deployment",
+          items: [
+            {
+              type: "doc",
+              id: "how-to/deploying-on-heroku",
+              label: "Deploy: Heroku",
+            },
+            {
+              type: "doc",
+              id: "how-to/deploying-on-qovery",
+              label: "Deploy: Qovery",
+            },
+            {
+              type: "doc",
+              id: "how-to/deploying-on-digital-ocean",
+              label: "Deploy: DigitalOcean",
+            },
+            {
+              type: "doc",
+              id: "how-to/deploying-admin-on-netlify",
+              label: "Deploy: Admin on Netlify",
+            },
+            {
+              type: "doc",
+              id: "how-to/deploying-gatsby-on-netlify",
+              label: "Deploy: Gatsby on Netlify",
+            },
+          ],
+        },
+      ]
     },
     {
       type: "category",
-      label: "How to",
+      label: "Advanced Guide",
+      collapsed: false,
       items: [
         {
-          type: "doc",
-          id: "how-to/notification-api",
-        },
+          type: "category",
+          label: "Medusa Server",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "tutorial/adding-custom-functionality",
+              label: "Add Custom Functionality"
+            },
+            {
+              type: "doc",
+              id: "how-to/notification-api",
+            },
+            {
+              type: "doc",
+              id: "guides/fulfillment-api",
+            },
+            {
+              type: "doc",
+              id: "guides/plugins",
+            },
+            {
+              type: "doc",
+              id: "guides/checkouts",
+            },
+            {
+              type: "doc",
+              id: "guides/carts-in-medusa",
+            },
+          ]
+        }
+      ]
+    },
+    {
+      type: "category",
+      label: "Integrations",
+      collapsed: false,
+      items: [
         {
           type: "category",
           label: "Gatsby + Contentful + Medusa",
@@ -79,54 +153,6 @@ module.exports = {
             },
           ],
         },
-        {
-          type: "doc",
-          id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
-        },
-        {
-          type: "doc",
-          id: "how-to/create-medusa-app",
-        },
-        {
-          type: "doc",
-          id: "how-to/uploading-images-to-spaces",
-        },
-        {
-          type: "doc",
-          id: "how-to/uploading-images-to-s3",
-        },
-        {
-          type: "doc",
-          id: "how-to/uploading-images-to-minio",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Guides",
-      items: [
-        {
-          type: "doc",
-          id: "guides/fulfillment-api",
-        },
-        {
-          type: "doc",
-          id: "guides/plugins",
-        },
-        {
-          type: "doc",
-          id: "guides/checkouts",
-        },
-        {
-          type: "doc",
-          id: "guides/carts-in-medusa",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Add a plugin",
-      items: [
         {
           type: "doc",
           id: "add-plugins/contentful",
@@ -191,37 +217,6 @@ module.exports = {
           type: "doc",
           id: "add-plugins/slack",
           label: "Bot: Slack",
-        },
-      ],
-    },
-    {
-      type: "category",
-      label: "Deployment",
-      items: [
-        {
-          type: "doc",
-          id: "how-to/deploying-on-heroku",
-          label: "Deploy: Heroku",
-        },
-        {
-          type: "doc",
-          id: "how-to/deploying-on-qovery",
-          label: "Deploy: Qovery",
-        },
-        {
-          type: "doc",
-          id: "how-to/deploying-on-digital-ocean",
-          label: "Deploy: DigitalOcean",
-        },
-        {
-          type: "doc",
-          id: "how-to/deploying-admin-on-netlify",
-          label: "Deploy: Admin on Netlify",
-        },
-        {
-          type: "doc",
-          id: "how-to/deploying-gatsby-on-netlify",
-          label: "Deploy: Gatsby on Netlify",
         },
       ],
     },
