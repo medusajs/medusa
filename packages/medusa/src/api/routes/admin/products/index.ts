@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { Product, ProductTag, ProductType } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { Product, ProductTag, ProductType } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -64,6 +64,7 @@ export const defaultAdminProductRelations = [
   "variants.options",
   "images",
   "options",
+  "options.values",
   "tags",
   "type",
   "collection",
@@ -180,3 +181,4 @@ export * from "./set-metadata"
 export * from "./update-option"
 export * from "./update-product"
 export * from "./update-variant"
+
