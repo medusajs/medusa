@@ -40,7 +40,7 @@ export default (app) => {
 
   route.post(
     "/:id/pay",
-    middlewares.wrap(require("./pay").default)
+    middlewares.wrap(require("./register-payment").default)
   )
 
   return app
