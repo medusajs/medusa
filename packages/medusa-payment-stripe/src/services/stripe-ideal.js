@@ -1,15 +1,11 @@
-import _ from "lodash"
 import Stripe from "stripe"
-import { PaymentService } from "medusa-interfaces"
+import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 
-class IdealProviderService extends PaymentService {
-  static identifier = "stripe-ideal"
+class StripeProviderService extends AbstractPaymentService {
+  static identifier = "stripe"
 
-  constructor(
-    { stripeProviderService, customerService, totalsService, regionService },
-    options
-  ) {
-    super()
+  constructor({ customerService, totalsService, regionService }, options) {
+    super({ customerService, totalsService, regionService }, options)
 
     /**
      * Required Stripe options:
@@ -26,9 +22,6 @@ class IdealProviderService extends PaymentService {
     this.stripe_ = Stripe(options.api_key)
 
     /** @private @const {CustomerService} */
-    this.stripeProviderService_ = stripeProviderService
-
-    /** @private @const {CustomerService} */
     this.customerService_ = customerService
 
     /** @private @const {RegionService} */
@@ -41,59 +34,118 @@ class IdealProviderService extends PaymentService {
   /**
    * Fetches Stripe payment intent. Check its status and returns the
    * corresponding Medusa status.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * @param {PaymentSessionData} paymentSessionData - payment method data from cart
+   * @return {Promise<PaymentSessionStatus>} the status of the payment intent
    */
-  async getStatus(paymentData) {
-    return await this.stripeProviderService_.getStatus(paymentData)
+  async getStatus(paymentSessionData) {
+    const { id } = paymentSessionData
+    const paymentIntent = await this.stripe_.paymentIntents.retrieve(id)
+
+    let status = PaymentSessionStatus.PENDING
+
+    if (paymentIntent.status === "requires_payment_method") {
+      return status
+    }
+
+    if (paymentIntent.status === "requires_confirmation") {
+      return status
+    }
+
+    if (paymentIntent.status === "processing") {
+      return status
+    }
+
+    if (paymentIntent.status === "requires_action") {
+      status = PaymentSessionStatus.REQUIRES_MORE
+    }
+
+    if (paymentIntent.status === "canceled") {
+      status = PaymentSessionStatus.CANCELED
+    }
+
+    if (paymentIntent.status === "requires_capture") {
+      status = PaymentSessionStatus.AUTHORIZED
+    }
+
+    if (paymentIntent.status === "succeeded") {
+      status = PaymentSessionStatus.AUTHORIZED
+    }
+
+    return status
   }
 
   /**
    * Fetches a customers saved payment methods if registered in Stripe.
-   * @param {object} customer - customer to fetch saved cards for
-   * @returns {Promise<Array<object>>} saved payments methods
+   * @param {Customer} customer - customer to fetch saved cards for
+   * @return {Promise<Data[]>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
+    if (customer.metadata && customer.metadata.stripe_id) {
+      const methods = await this.stripe_.paymentMethods.list({
+        customer: customer.metadata.stripe_id,
+        type: "card",
+      })
+
+      return methods.data
+    }
+
     return Promise.resolve([])
   }
 
   /**
    * Fetches a Stripe customer
    * @param {string} customerId - Stripe customer id
-   * @returns {Promise<object>} Stripe customer
+   * @return {Promise<object>} Stripe customer
    */
   async retrieveCustomer(customerId) {
-    return await this.stripeProviderService_.retrieveCustomer(customerId)
+    if (!customerId) {
+      return Promise.resolve()
+    }
+    return await this.stripe_.customers.retrieve(customerId)
   }
 
   /**
    * Creates a Stripe customer using a Medusa customer.
    * @param {object} customer - Customer data from Medusa
-   * @returns {Promise<object>} Stripe customer
+   * @return {Promise<object>} Stripe customer
    */
   async createCustomer(customer) {
-    return await this.stripeProviderService_.createCustomer(customer)
+    try {
+      const stripeCustomer = await this.stripe_.customers.create({
+        email: customer.email,
+      })
+
+      if (customer.id) {
+        await this.customerService_.update(customer.id, {
+          metadata: { stripe_id: stripeCustomer.id },
+        })
+      }
+
+      return stripeCustomer
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
    * Creates a Stripe payment intent.
    * If customer is not registered in Stripe, we do so.
-   * @param {object} cart - cart to create a payment for
-   * @returns {object} Stripe payment intent
+   * @param {Cart} cart - cart to create a payment for
+   * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
   async createPayment(cart) {
     const { customer_id, region_id, email } = cart
-    const region = await this.regionService_.retrieve(region_id)
-    const { currency_code } = region
+    const { currency_code } = await this.regionService_.retrieve(region_id)
 
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
+      description:
+        cart?.context?.payment_description ?? this.options?.payment_description,
       amount: Math.round(amount),
-      description: cart?.context?.payment_description ?? this.options_?.payment_description,
       currency: currency_code,
-      payment_method_types: ["ideal"],
-      capture_method: "automatic",
+      setup_future_usage: "on_session",
+      capture_method: this.options_.capture ? "automatic" : "manual",
       metadata: { cart_id: `${cart.id}` },
     }
 
@@ -118,70 +170,83 @@ class IdealProviderService extends PaymentService {
       intentRequest.customer = stripeCustomer.id
     }
 
-    const paymentIntent = await this.stripe_.paymentIntents.create(
-      intentRequest
-    )
-
-    return paymentIntent
+    return await this.stripe_.paymentIntents.create(intentRequest)
   }
 
   /**
    * Retrieves Stripe payment intent.
-   * @param {object} data - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * @param {PaymentData} paymentData - the data of the payment to retrieve
+   * @return {Promise<Data>} Stripe payment intent
    */
-  async retrievePayment(data) {
-    return await this.stripeProviderService_.retrievePayment(data)
+  async retrievePayment(paymentData) {
+    try {
+      return await this.stripe_.paymentIntents.retrieve(paymentData.id)
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
    * Gets a Stripe payment intent and returns it.
-   * @param {object} sessionData - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * @param {PaymentSession} paymentSession - the data of the payment to retrieve
+   * @return {Promise<PaymentData>} Stripe payment intent
    */
-  async getPaymentData(sessionData) {
-    return await this.stripeProviderService_.getPaymentData(sessionData)
+  async getPaymentData(paymentSession) {
+    try {
+      return await this.stripe_.paymentIntents.retrieve(paymentSession.data.id)
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
    * Authorizes Stripe payment intent by simply returning
    * the status for the payment intent in use.
-   * @param {object} sessionData - payment session data
-   * @param {object} context - properties relevant to current context
-   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   * @param {PaymentSession} paymentSession - payment session data
+   * @param {Data} context - properties relevant to current context
+   * @return {Promise<{ data: PaymentSessionData; status: PaymentSessionStatus }>} result with data and status
    */
-  async authorizePayment(sessionData, context = {}) {
-    return await this.stripeProviderService_.authorizePayment(
-      sessionData,
-      context
-    )
+  async authorizePayment(paymentSession, context = {}) {
+    const stat = await this.getStatus(paymentSession.data)
+
+    try {
+      return { data: paymentSession.data, status: stat }
+    } catch (error) {
+      throw error
+    }
   }
 
-  async updatePaymentData(sessionData, update) {
-    return await this.stripeProviderService_.updatePaymentData(
-      sessionData,
-      update
-    )
+  async updatePaymentData(paymentSessionData, data) {
+    try {
+      return this.stripe_.paymentIntents.update(paymentSessionData.id, {
+        ...data,
+      })
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
    * Updates Stripe payment intent.
-   * @param {object} sessionData - payment session data.
-   * @param {object} update - objec to update intent with
-   * @returns {object} Stripe payment intent
+   * @param {PaymentSessionData} paymentSessionData - payment session data.
+   * @param {Cart} cart
+   * @return {Promise<PaymentSessionData>} Stripe payment intent
    */
-  async updatePayment(sessionData, cart) {
+  async updatePayment(paymentSessionData, cart) {
     try {
       const stripeId = cart.customer?.metadata?.stripe_id || undefined
 
-      if (stripeId !== sessionData.customer) {
-        return this.createPayment(cart)
+      if (stripeId !== paymentSessionData.customer) {
+        return await this.createPayment(cart)
       } else {
-        if (cart.total && sessionData.amount === Math.round(cart.total)) {
-          return sessionData
+        if (
+          cart.total &&
+          paymentSessionData.amount === Math.round(cart.total)
+        ) {
+          return paymentSessionData
         }
 
-        return this.stripe_.paymentIntents.update(sessionData.id, {
+        return await this.stripe_.paymentIntents.update(paymentSessionData.id, {
           amount: Math.round(cart.total),
         })
       }
@@ -190,53 +255,107 @@ class IdealProviderService extends PaymentService {
     }
   }
 
-  async deletePayment(payment) {
-    return await this.stripeProviderService_.deletePayment(payment)
+  async deletePayment(paymentSession) {
+    try {
+      const { id } = paymentSession.data
+      return await this.stripe_.paymentIntents.cancel(id).catch((err) => {
+        if (err.statusCode === 400) {
+          return
+        }
+        throw err
+      })
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
    * Updates customer of Stripe payment intent.
    * @param {string} paymentIntentId - id of payment intent to update
    * @param {string} customerId - id of new Stripe customer
-   * @returns {object} Stripe payment intent
+   * @return {object} Stripe payment intent
    */
   async updatePaymentIntentCustomer(paymentIntentId, customerId) {
-    return await this.stripeProviderService_.updatePaymentIntentCustomer(
-      paymentIntentId,
-      customerId
-    )
+    try {
+      return this.stripe_.paymentIntents.update(paymentIntentId, {
+        customer: customerId,
+      })
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
    * Captures payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {object} Stripe payment intent
+   * @param {Payment} payment - payment method data from cart
+   * @return {Promise<PaymentData>} Stripe payment intent
    */
   async capturePayment(payment) {
-    return await this.stripeProviderService_.capturePayment(payment)
+    const { id } = payment.data
+    try {
+      return await this.stripe_.paymentIntents.capture(id)
+    } catch (error) {
+      if (error.code === "payment_intent_unexpected_state") {
+        if (error.payment_intent.status === "succeeded") {
+          return error.payment_intent
+        }
+      }
+      throw error
+    }
   }
 
   /**
    * Refunds payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
-   * @param {number} amountToRefund - amount to refund
-   * @returns {string} refunded payment intent
+   * @param {Payment} payment - payment method data from cart
+   * @param {number} refundAmount - amount to refund
+   * @return {Promise<PaymentData>} refunded payment intent
    */
-  async refundPayment(payment, amountToRefund) {
-    return await this.stripeProviderService_.refundPayment(
-      payment,
-      amountToRefund
-    )
+  async refundPayment(payment, refundAmount) {
+    const { id } = payment.data
+    try {
+      await this.stripe_.refunds.create({
+        amount: Math.round(refundAmount),
+        payment_intent: id,
+      })
+
+      return payment.data
+    } catch (error) {
+      throw error
+    }
   }
 
   /**
    * Cancels payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {object} canceled payment intent
+   * @param {Payment} payment - payment method data from cart
+   * @return {Promise<PaymentData>} canceled payment intent
    */
   async cancelPayment(payment) {
-    return await this.stripeProviderService_.cancelPayment(payment)
+    const { id } = payment.data
+    try {
+      return await this.stripe_.paymentIntents.cancel(id)
+    } catch (error) {
+      if (error.payment_intent.status === "canceled") {
+        return error.payment_intent
+      }
+
+      throw error
+    }
+  }
+
+  /**
+   * Constructs Stripe Webhook event
+   * @param {object} data - the data of the webhook request: req.body
+   * @param {object} signature - the Stripe signature on the event, that
+   *    ensures integrity of the webhook event
+   * @return {object} Stripe Webhook event
+   */
+  constructWebhookEvent(data, signature) {
+    return this.stripe_.webhooks.constructEvent(
+      data,
+      signature,
+      this.options_.webhook_secret
+    )
   }
 }
 
-export default IdealProviderService
+export default StripeProviderService
