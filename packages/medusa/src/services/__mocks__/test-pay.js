@@ -1,9 +1,6 @@
 export const testPayServiceMock = {
   identifier: "test-pay",
   getIdentifier: "test-pay",
-  withTransaction: function () {
-    return this
-  },
   getStatus: jest.fn().mockResolvedValue(Promise.resolve("authorised")),
   retrieveSavedMethods: jest.fn().mockResolvedValue(Promise.resolve([])),
   getPaymentData: jest.fn().mockResolvedValue(Promise.resolve({})),
