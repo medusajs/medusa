@@ -1,6 +1,6 @@
 import {
-  BaseNotificationService,
   BaseFulfillmentService,
+  BaseNotificationService,
   BasePaymentService,
 } from "medusa-interfaces"
 import { currencies } from "../utils/currencies"
@@ -82,7 +82,8 @@ export default async ({
     const hasCountries = await countryRepo.findOne()
     if (!hasCountries) {
       for (const c of countries) {
-        const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name") VALUES ($1, $2, $3, $4, $5)`
+        const query = `INSERT INTO "country" ("iso_2", "iso_3", "num_code", "name", "display_name")
+                       VALUES ($1, $2, $3, $4, $5)`
 
         const iso2 = c.alpha2.toLowerCase()
         const iso3 = c.alpha3.toLowerCase()
@@ -106,7 +107,8 @@ export default async ({
     const hasCurrencies = await currencyRepo.findOne()
     if (!hasCurrencies) {
       for (const [, c] of Object.entries(currencies)) {
-        const query = `INSERT INTO "currency" ("code", "symbol", "symbol_native", "name") VALUES ($1, $2, $3, $4)`
+        const query = `INSERT INTO "currency" ("code", "symbol", "symbol_native", "name")
+                       VALUES ($1, $2, $3, $4)`
 
         const code = c.code.toLowerCase()
         const sym = c.symbol
@@ -122,9 +124,11 @@ export default async ({
     await storeService.withTransaction(manager).create()
 
     const payProviders =
-      silentResolution<
-        (typeof BasePaymentService | AbstractPaymentService<never>)[]
-      >(container, "paymentProviders", logger) || []
+      silentResolution<(typeof BasePaymentService | AbstractPaymentService)[]>(
+        container,
+        "paymentProviders",
+        logger
+      ) || []
     const payIds = payProviders.map((p) => p.getIdentifier())
 
     const pProviderService = container.resolve<PaymentProviderService>(
