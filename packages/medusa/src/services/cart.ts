@@ -11,7 +11,6 @@ import {
   Discount,
   LineItem,
   ShippingMethod,
-  SalesChannel,
   DiscountRuleType,
   PaymentSession,
 } from "../models"
@@ -43,10 +42,6 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
-import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
-import { FlagRouter } from "../utils/flag-router"
-import StoreService from "./store"
-import { SalesChannelService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager

@@ -6,14 +6,12 @@ import {
   PaymentSession,
   PaymentSessionStatus,
 } from "../models"
-import { PaymentService } from "medusa-interfaces"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
 export type PaymentSessionData = Data
 
-export interface PaymentService<T extends TransactionBaseService<never>>
-  extends TransactionBaseService<T> {
+export interface PaymentService {
   getIdentifier(): string
 
   getPaymentData(paymentSession: PaymentSession): Promise<PaymentData>
@@ -52,11 +50,9 @@ export interface PaymentService<T extends TransactionBaseService<never>>
   ): Promise<PaymentSessionStatus>
 }
 
-export abstract class AbstractPaymentService<
-    T extends TransactionBaseService<never>
-  >
-  extends TransactionBaseService<T>
-  implements PaymentService<T>
+export abstract class AbstractPaymentService
+  extends TransactionBaseService<AbstractPaymentService>
+  implements PaymentService
 {
   protected constructor(container: unknown, config?: Record<string, unknown>) {
     super(container, config)
@@ -113,8 +109,4 @@ export abstract class AbstractPaymentService<
   public abstract getStatus(
     paymentSessionData: PaymentSessionData
   ): Promise<PaymentSessionStatus>
-}
-
-export function isPaymentService(obj: unknown): boolean {
-  return obj instanceof AbstractPaymentService || obj instanceof PaymentService
 }

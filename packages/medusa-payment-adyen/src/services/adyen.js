@@ -1,12 +1,12 @@
 import axios from "axios"
 import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
-import { BaseService } from "medusa-interfaces"
+import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
-class AdyenService extends BaseService {
+class AdyenService extends AbstractPaymentService {
   constructor({ cartService }, options) {
-    super()
+    super({ cartService }, options)
 
     /** @private @constant {CartService} */
     this.cartService_ = cartService
@@ -30,21 +30,6 @@ class AdyenService extends BaseService {
 
     /** @private @constant {AxiosClient} */
     this.adyenPaymentApi = this.initPaymentClient()
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new AdyenService({
-      cartService: this.cartService_,
-      totalsService: this.totalsService_,
-    })
-
-    this.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   getOptions() {
@@ -86,7 +71,7 @@ class AdyenService extends BaseService {
   /**
    * Validates an Adyen webhook notification
    * @param {object} notification - notification to validate
-   * @returns {string} the status of the payment
+   * @return {string} the status of the payment
    */
   validateNotification(notification) {
     const validator = new hmacValidator()
@@ -102,10 +87,10 @@ class AdyenService extends BaseService {
   /**
    * Retrieve stored payment methods from Adyen.
    * @param {Customer} customer - customer to retrieve methods for
-   * @returns {Promise} result containing the stored payment methods from Adyen
+   * @return {Promise} result containing the stored payment methods from Adyen
    */
   async retrieveSavedMethods(customer) {
-    let request = {
+    const request = {
       merchantAccount: this.options_.merchant_account,
       channel: "Web",
       shopperReference: customer.id,
@@ -126,10 +111,10 @@ class AdyenService extends BaseService {
    * @param {number} total - total amount to be paid with payment methods
    * @param {string} currency - currency code to use for the payment
    * @param {string} customerId - id of the customer paying
-   * @returns {Promise} result containing the payment methods from Adyen
+   * @return {Promise} result containing the payment methods from Adyen
    */
   async retrievePaymentMethods(allowedMethods, total, currency, customerId) {
-    let request = {
+    const request = {
       allowedPaymentMethods: allowedMethods,
       amount: {
         value: total,
@@ -150,12 +135,12 @@ class AdyenService extends BaseService {
 
   /**
    * Status for Adyen payment.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment
+   * @param {Record<string, unknown>} paymentData - payment method data from cart
+   * @return {Promise<PaymentSessionStatus>} the status of the payment
    */
-  getStatus(paymentData) {
+  async getStatus(paymentData) {
     const { resultCode } = paymentData
-    let status = "pending"
+    let status = PaymentSessionStatus.PENDING
 
     if (resultCode === "Pending") {
       return status
@@ -166,27 +151,27 @@ class AdyenService extends BaseService {
     }
 
     if (resultCode === "Error") {
-      status = "error"
+      status = PaymentSessionStatus.ERROR
     }
 
     if (resultCode === "Authorised") {
-      status = "authorized"
+      status = PaymentSessionStatus.AUTHORIZED
     }
 
     if (resultCode === "Canceled") {
-      status = "canceled"
+      status = PaymentSessionStatus.CANCELED
     }
 
     if (resultCode === "ChallengeShopper") {
-      status = "requires_more"
+      status = PaymentSessionStatus.REQUIRES_MORE
     }
 
     if (resultCode === "RedirectShopper") {
-      status = "requires_more"
+      status = PaymentSessionStatus.REQUIRES_MORE
     }
 
     if (resultCode === "IdentifyShopper") {
-      status = "requires_more"
+      status = PaymentSessionStatus.REQUIRES_MORE
     }
 
     return status
@@ -195,7 +180,7 @@ class AdyenService extends BaseService {
   /**
    * Creates Adyen payment object.
    * @param {Cart} cart - cart to initiate payment for
-   * @returns {object} empty payment data
+   * @return {Promise<PaymentSessionData>} empty payment data
    */
   async createPayment(cart) {
     return { cart_id: cart.id }
@@ -204,8 +189,8 @@ class AdyenService extends BaseService {
   /**
    * Retrieves Adyen payment. This is not supported by adyen, so we simply
    * return the current payment method data
-   * @param {object} data - payment session
-   * @returns {object} payment method data
+   * @param {PaymentSession} paymentSession - payment session
+   * @return {Promise<PaymentData>} payment method data
    */
   async getPaymentData(paymentSession) {
     return { ...paymentSession.data }
@@ -215,7 +200,7 @@ class AdyenService extends BaseService {
    * Retrieves Adyen payment. This is not supported by adyen, so we simply
    * return the current payment method data
    * @param {object} sessionData - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * @return {Promise<object>} Stripe payment intent
    */
   async retrieve(sessionData) {
     return sessionData
@@ -225,14 +210,14 @@ class AdyenService extends BaseService {
    * Creates and authorizes an Adyen payment.
    * Requires cart_id in context for authorization.
    * Return status of authorization result.
-   * @param {object} sessionData - payment session data
-   * @param {object} context - properties relevant to current context
-   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   * @param {PaymentSession} session - payment session data
+   * @param {Data} context - properties relevant to current context
+   * @return {Promise<{ status: string, data: object }>} result with data and status
    */
   async authorizePayment(session, context) {
     const sessionData = session.data
 
-    const status = this.getStatus(sessionData)
+    const status = await this.getStatus(sessionData)
 
     if (sessionData.resultCode === "RedirectShopper") {
       return { data: sessionData, status: "requires_more" }
@@ -246,7 +231,7 @@ class AdyenService extends BaseService {
         paymentData: sessionData.paymentData,
       })
 
-      return { data: updated, status: this.getStatus(updated) }
+      return { data: updated, status: await this.getStatus(updated) }
     }
 
     if (status === "authorized") {
@@ -272,7 +257,7 @@ class AdyenService extends BaseService {
       }
     }
 
-    let request = {
+    const request = {
       amount,
       merchantAccount: this.options_.merchant_account,
       shopperIP: context.ip_address || "",
@@ -294,7 +279,7 @@ class AdyenService extends BaseService {
 
       return {
         data: authorizedPayment,
-        status: this.getStatus(authorizedPayment),
+        status: await this.getStatus(authorizedPayment),
       }
     } catch (error) {
       throw error
@@ -307,26 +292,24 @@ class AdyenService extends BaseService {
     }
 
     const checkout = new CheckoutAPI(this.adyenClient_)
-    const updated = await checkout.paymentsDetails(update)
-
-    return updated
+    return await checkout.paymentsDetails(update)
   }
 
   /**
    * Updates an Adyen payment.
-   * @param {object} paymentData - payment data to update
-   * @param {details} details - details to update
-   * @returns {Promise} result of the update operation
+   * @param {PaymentSessionData} paymentSessionData - payment data to update
+   * @param {Cart} cart
+   * @return {Promise<PaymentSessionData>} result of the update operation
    */
-  async updatePayment(paymentData, details) {
-    return paymentData
+  async updatePayment(paymentSessionData, cart) {
+    return paymentSessionData
   }
 
   /**
    * Additional details
    * @param {object} paymentData - payment data
    * @param {object} details - payment details
-   * @returns {Promise} current payment result
+   * @return {Promise} current payment result
    */
   async additionalDetails(paymentData, details) {
     const request = {
@@ -340,8 +323,8 @@ class AdyenService extends BaseService {
 
   /**
    * Captures an Adyen payment
-   * @param {object} payment - payment to capture
-   * @returns {string} status = processing_captures
+   * @param {Payment} payment - payment to capture
+   * @return {Promise<PaymentData>} status = processing_captures
    */
   async capturePayment(payment) {
     if (payment.captured_at !== null) {
@@ -379,9 +362,9 @@ class AdyenService extends BaseService {
 
   /**
    * Refunds an Adyen payment
-   * @param {object} payment - payment to refund
+   * @param {Payment} payment - payment to refund
    * @param {number} amountToRefund - amount to refund
-   * @returns {object} payment data result of refund
+   * @param {Promise<PaymentData>} payment data result of refund
    */
   async refundPayment(payment, amountToRefund) {
     const { pspReference } = payment.data
@@ -413,8 +396,8 @@ class AdyenService extends BaseService {
 
   /**
    * Cancels an Adyen payment.
-   * @param {object} payment - payment to cancel
-   * @returns {object} payment data result of cancel
+   * @param {Payment} payment - payment to cancel
+   * @return {Promise<PaymentData>} payment data result of cancel
    */
   async cancelPayment(payment) {
     const { pspReference } = payment.data

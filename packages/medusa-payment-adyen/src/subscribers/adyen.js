@@ -23,7 +23,7 @@ class AdyenSubscriber {
   /**
    * Webhook handler for Adyen payment.
    * @param {object} notification - webhook notification object
-   * @returns {string} the status of the payment intent
+   * @return {string} the status of the payment intent
    */
   async handleAdyenNotification(notification) {
     switch (true) {
