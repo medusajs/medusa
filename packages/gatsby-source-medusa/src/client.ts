@@ -22,14 +22,14 @@ export const createClient = (
   options: MedusaPluginOptions,
   reporter: Reporter
 ): any => {
-  const { storeUrl, authToken } = options
+  const { storeUrl, authToken } = options as any
 
   /**
    *
-   * @param {string} date used fetch products updated since the specified date
+   * @param {string} _date used fetch products updated since the specified date
    * @return {Promise<any[]>}
    */
-  async function products(date?: string): Promise<any[]> {
+  async function products(_date?: string): Promise<any[]> {
     let products: any[] = []
     let offset = 0
     let count = 1
@@ -56,7 +56,7 @@ export const createClient = (
    * @param {string} date used fetch regions updated since the specified date
    * @return {Promise<any[]>}
    */
-  async function regions(date?: string): Promise<any[]> {
+  async function regions(_date?: string): Promise<any[]> {
     const regions = await medusaRequest(storeUrl, `/store/regions`)
       .then(({ data }) => {
         return data.regions
@@ -72,10 +72,10 @@ export const createClient = (
 
   /**
    *
-   * @param {string} date used fetch regions updated since the specified date
+   * @param {string} _date used fetch regions updated since the specified date
    * @return {Promise<any[]>}
    */
-  async function orders(date?: string): Promise<any[]> {
+  async function orders(_date?: string): Promise<any[]> {
     const orders = await medusaRequest(storeUrl, `/admin/orders`, {
       Authorization: `Bearer ${authToken}`,
     })
@@ -94,10 +94,10 @@ export const createClient = (
 
   /**
    *
-   * @param {string} date used fetch regions updated since the specified date
+   * @param {string} _date used fetch regions updated since the specified date
    * @return {Promise<any[]>}
    */
-  async function collections(date?: string): Promise<any[]> {
+  async function collections(_date?: string): Promise<any[]> {
     let collections: any[] = []
     let offset = 0
     let count = 1

@@ -1,12 +1,12 @@
 import { Type } from "class-transformer"
 import {
-  IsString,
-  IsOptional,
   IsArray,
   IsEnum,
-  ValidateNested,
-  IsNotEmpty,
   IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
 import { DateComparisonOperator } from "./common"
 
@@ -60,7 +60,7 @@ export class AdminListOrdersSelector {
   fulfillment_status?: string[]
 
   @IsArray()
-  @IsEnum(PaymentStatus)
+  @IsEnum(PaymentStatus, { each: true })
   @IsOptional()
   payment_status?: string[]
 

@@ -37,6 +37,13 @@ describe("/admin/discounts", () => {
         value: 10,
         allocation: "total",
       })
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
       await manager.insert(Discount, {
         id: "test-discount",
         code: "TESTING",
@@ -64,6 +71,13 @@ describe("/admin/discounts", () => {
         rule_id: "test-discount-rule",
         is_dynamic: false,
         is_disabled: true,
+      })
+      await manager.insert(Discount, {
+        id: "fixed-discount",
+        code: "fixed100",
+        rule_id: "test-discount-rule-fixed",
+        is_dynamic: false,
+        is_disabled: false,
       })
     })
 
@@ -93,6 +107,69 @@ describe("/admin/discounts", () => {
             code: "BARCA100",
           }),
         ])
+      )
+    })
+
+    it("lists fixed discounts", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/discounts?rule[type]=fixed", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.discounts).toEqual([
+        expect.objectContaining({
+          id: "fixed-discount",
+          code: "fixed100",
+        }),
+      ])
+    })
+
+    it("fails when listing invalid discount types", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      await api
+        .get("/admin/discounts?rule[type]=blah", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("invalid_data")
+          expect(err.response.data.message).toEqual(
+            "type must be a valid enum value"
+          )
+        })
+    })
+
+    it("lists percentage discounts ", async () => {
+      const api = useApi()
+
+      const notExpected = expect.objectContaining({
+        rule: expect.objectContaining({ type: "fixed" }),
+      })
+
+      const response = await api
+        .get("/admin/discounts?rule[type]=percentage", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      expect(response.status).toEqual(200)
+      expect(response.data.discounts).toEqual(
+        expect.not.arrayContaining([notExpected])
       )
     })
 

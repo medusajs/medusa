@@ -159,8 +159,8 @@ class Client {
         if (cfg) {
           return this.shouldRetryCondition(
             err,
-            cfg.currentRetryAttempt || 1,
-            cfg.retry || 3
+            cfg.currentRetryAttempt ?? 1,
+            cfg.retry ?? 3
           )
         } else {
           return false

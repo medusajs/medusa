@@ -28,7 +28,7 @@ export class ProductOption {
     () => ProductOptionValue,
     value => value.option
   )
-  values: ProductOptionValue
+  values: ProductOptionValue[]
 
   @Column()
   product_id: string
