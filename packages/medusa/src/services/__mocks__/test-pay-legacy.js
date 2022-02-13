@@ -1,5 +1,5 @@
 /*
-const testPayService = {
+const testPayLegacyService = {
   identifier: "test-pay",
   getIdentifier: "test-pay",
   getStatus: jest.fn().mockResolvedValue(Promise.resolve("authorised")),
@@ -34,19 +34,24 @@ const testPayService = {
   })
 }
 
-export default testPayService*/
+export default testPayLegacyService
+*/
 
-import { AbstractPaymentService } from "../../interfaces"
+import { PaymentService } from "medusa-interfaces"
 
-class TestPayService extends AbstractPaymentService {
+class TestPayLegacyService extends PaymentService {
   static identifier = "test-pay"
 
   getIdentifier() {
-    return TestPayService.identifier
+    return TestPayLegacyService.identifier
   }
 
   constructor(...args) {
     super(...args)
+  }
+
+  withTransaction() {
+      return this
   }
 
   async getStatus(paymentData) {
@@ -98,7 +103,8 @@ class TestPayService extends AbstractPaymentService {
   }
 }
 
-TestPayService.prototype.createPayment = jest.fn().mockImplementation((cart) => {
+
+TestPayLegacyService.prototype.createPayment = jest.fn().mockImplementation((cart) => {
   const fields = [
       "total",
       "subtotal",
@@ -116,36 +122,36 @@ TestPayService.prototype.createPayment = jest.fn().mockImplementation((cart) => 
     return data
 })
 
-TestPayService.prototype.updatePayment = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.updatePayment = jest.fn().mockImplementation(() => {
   return {}
 })
 
-TestPayService.prototype.deletePayment = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.deletePayment = jest.fn().mockImplementation(() => {
   return {}
 })
 
-TestPayService.prototype.deletePayment = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.deletePayment = jest.fn().mockImplementation(() => {
   return {}
 })
 
-TestPayService.prototype.authorizePayment = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.authorizePayment = jest.fn().mockImplementation(() => {
   return {}
 })
 
-TestPayService.prototype.updatePaymentData = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.updatePaymentData = jest.fn().mockImplementation(() => {
   return {}
 })
 
-TestPayService.prototype.cancelPayment = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.cancelPayment = jest.fn().mockImplementation(() => {
   return {}
 })
 
-TestPayService.prototype.capturePayment = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.capturePayment = jest.fn().mockImplementation(() => {
   return {}
 })
 
-TestPayService.prototype.refundPayment = jest.fn().mockImplementation(() => {
+TestPayLegacyService.prototype.refundPayment = jest.fn().mockImplementation(() => {
   return {}
 })
 
-export default TestPayService
+export default TestPayLegacyService
