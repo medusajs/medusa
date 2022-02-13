@@ -35,7 +35,7 @@ export default async (req, res) => {
           phone: shipping_address.phone,
         }
 
-        let billingAddress = {
+        const billingAddress = {
           first_name: shipping_address.given_name,
           last_name: shipping_address.family_name,
           address_1: shipping_address.street_address,

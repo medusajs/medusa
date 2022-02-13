@@ -3,6 +3,7 @@ node_modules
 .DS_store
 .env*
 /*.js
+!setupTests.js
 !index.js
 !jest.config.js
 
