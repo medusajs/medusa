@@ -2,7 +2,7 @@ import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 
 /**
- * Helps retrive payment providers
+ * Helps retrieve payment providers
  */
 class PaymentProviderService extends BaseService {
   constructor(container) {
@@ -381,27 +381,35 @@ class PaymentProviderService extends BaseService {
       const used = []
 
       const paymentRepo = manager.getCustomRepository(this.paymentRepository_)
-      let toRefund = payments.find((p) => p.amount - p.amount_refunded > 0)
-      while (toRefund) {
-        const currentRefundable = toRefund.amount - toRefund.amount_refunded
+      let paymentToRefund = payments.find(
+        (payment) => payment.amount - payment.amount_refunded > 0
+      )
+      while (paymentToRefund) {
+        const currentRefundable =
+          paymentToRefund.amount - paymentToRefund.amount_refunded
 
         const refundAmount = Math.min(currentRefundable, balance)
 
-        const provider = this.retrieveProvider(toRefund.provider_id)
-        toRefund.data = await provider.refundPayment(toRefund, refundAmount)
-        toRefund.amount_refunded += refundAmount
-        await paymentRepo.save(toRefund)
+        const provider = this.retrieveProvider(paymentToRefund.provider_id)
+        paymentToRefund.data = await provider.refundPayment(
+          paymentToRefund,
+          refundAmount
+        )
+        paymentToRefund.amount_refunded += refundAmount
+        await paymentRepo.save(paymentToRefund)
 
         balance -= refundAmount
 
-        used.push(toRefund.id)
+        used.push(paymentToRefund.id)
 
         if (balance > 0) {
-          toRefund = payments.find(
-            (p) => p.amount - p.amount_refunded > 0 && !used.includes(p.id)
+          paymentToRefund = payments.find(
+            (payment) =>
+              payment.amount - payment.amount_refunded > 0 &&
+              !used.includes(payment.id)
           )
         } else {
-          toRefund = null
+          paymentToRefund = null
         }
       }
 
