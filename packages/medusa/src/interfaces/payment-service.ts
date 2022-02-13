@@ -6,7 +6,6 @@ import {
   PaymentSession,
   PaymentSessionStatus,
 } from "../models"
-import { PaymentService } from "medusa-interfaces"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
@@ -110,8 +109,4 @@ export abstract class AbstractPaymentService
   public abstract getStatus(
     paymentSessionData: PaymentSessionData
   ): Promise<PaymentSessionStatus>
-}
-
-export function isPaymentService(obj: unknown): boolean {
-  return obj instanceof AbstractPaymentService || obj instanceof PaymentService
 }
