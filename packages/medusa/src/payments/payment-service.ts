@@ -8,12 +8,6 @@ export type Data = Record<string, unknown>
 export type PaymentData = Data
 export type PaymentSessionData = Data
 
-/*
-  TODO: Since Interfaces does not exists in JS,
-        it is not possible for now to only export interface for JS usage.
-        which is why this interface is implemented by the abstract class below.
-        Let see in a future if the class disappear in favor of an interface?
-*/
 export interface PaymentService {
   getIdentifier(): string
 
