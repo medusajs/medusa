@@ -19,7 +19,7 @@ class AdminCollectionsResource extends BaseResource {
    */
   create(
     payload: AdminPostCollectionsReq,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections`
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -35,7 +35,7 @@ class AdminCollectionsResource extends BaseResource {
   update(
     id: string,
     payload: AdminPostCollectionsCollectionReq,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -47,7 +47,7 @@ class AdminCollectionsResource extends BaseResource {
    * @param customHeaders
    * @returns Deleted response
    */
-  delete(id: string, customHeaders: object = {}): ResponsePromise<AdminCollectionsDeleteRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsDeleteRes> {
     const path = `/admin/collections/${id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -58,7 +58,7 @@ class AdminCollectionsResource extends BaseResource {
    * @param customHeaders
    * @returns the collection with the given id
    */
-  retrieve(id: string, customHeaders: object = {}): ResponsePromise<AdminCollectionsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -71,7 +71,7 @@ class AdminCollectionsResource extends BaseResource {
    */
   list(
     query?: AdminGetCollectionsParams,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsListRes> {
     let path = `/admin/collections`
 

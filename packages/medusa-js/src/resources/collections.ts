@@ -14,7 +14,7 @@ class CollectionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreCollectionsRes>}
    */
-  retrieve(id: string, customHeaders: object = {}): ResponsePromise<StoreCollectionsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCollectionsRes> {
     const path = `/store/collections/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -27,7 +27,7 @@ class CollectionsResource extends BaseResource {
    */
   list(
     query?: StoreGetCollectionsParams,
-    customHeaders: object = {}): ResponsePromise<StoreCollectionsListRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCollectionsListRes> {
     let path = `/store/collections`
 
     if (query) {

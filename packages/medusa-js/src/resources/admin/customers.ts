@@ -15,7 +15,7 @@ class AdminCustomersResource extends BaseResource {
    * @param payload information of customer
    * @param customHeaders
    */
-  create(payload: AdminPostCustomersReq, customHeaders: object = {}): ResponsePromise<AdminCustomersRes> {
+  create(payload: AdminPostCustomersReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -29,7 +29,7 @@ class AdminCustomersResource extends BaseResource {
   update(
     id: string,
     payload: AdminPostCustomersCustomerReq,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -40,7 +40,7 @@ class AdminCustomersResource extends BaseResource {
    * @param id customer id
    * @param customHeaders
    */
-  retrieve(id: string, customHeaders: object = {}): ResponsePromise<AdminCustomersRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -52,7 +52,7 @@ class AdminCustomersResource extends BaseResource {
    */
   list(
     query?: AdminGetCustomersParams,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomersListRes> {
     let path = `/admin/customers`
 

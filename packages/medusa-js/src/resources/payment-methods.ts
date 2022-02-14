@@ -9,7 +9,7 @@ class PaymentMethodsResource extends BaseResource {
    * @param customHeaders
    * @return {StoreCustomersListPaymentMethodsRes}
    */
-  list(id: string, customHeaders: object = {}): ResponsePromise<StoreCustomersListPaymentMethodsRes> {
+  list(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersListPaymentMethodsRes> {
     const path = `/store/carts/${id}/payment-methods`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }

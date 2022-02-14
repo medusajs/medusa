@@ -9,7 +9,7 @@ class ReturnsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreReturnsRes>}
    */
-  create(payload: StorePostReturnsReq, customHeaders: object = {}): ResponsePromise<StoreReturnsRes> {
+  create(payload: StorePostReturnsReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreReturnsRes> {
     const path = `/store/returns`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

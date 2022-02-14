@@ -13,7 +13,7 @@ class ShippingOptionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreShippingOptionsListRes>}
    */
-  listCartOptions(cart_id: string, customHeaders: object = {}): ResponsePromise<StoreShippingOptionsListRes> {
+  listCartOptions(cart_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreShippingOptionsListRes> {
     const path = `/store/shipping-options/${cart_id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -26,7 +26,7 @@ class ShippingOptionsResource extends BaseResource {
    */
   list(
     query?: StoreGetShippingOptionsParams,
-    customHeaders: object = {}): ResponsePromise<StoreShippingOptionsListRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreShippingOptionsListRes> {
     let path = `/store/shipping-options`
 
     if (query) {

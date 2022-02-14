@@ -4,7 +4,7 @@ import { ResponsePromise } from "../.."
 import BaseResource from "../base"
 
 class AdminVariantsResource extends BaseResource {
-  list(query?: AdminGetVariantsParams, customHeaders: object = {}): ResponsePromise<AdminVariantsListRes> {
+  list(query?: AdminGetVariantsParams, customHeaders: Record<string, any> = {}): ResponsePromise<AdminVariantsListRes> {
     let path = `/admin/variants`
 
     if (query) {

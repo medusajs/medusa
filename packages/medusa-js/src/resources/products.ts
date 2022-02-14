@@ -19,7 +19,7 @@ class ProductsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreProductsRes>}
    */
-  retrieve(id: string, customHeaders: object = {}): ResponsePromise<StoreProductsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreProductsRes> {
     const path = `/store/products/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -32,7 +32,7 @@ class ProductsResource extends BaseResource {
    */
   search(
     searchOptions: StorePostSearchReq,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StorePostSearchRes> {
     const path = `/store/products/search`
     return this.client.request("POST", path, searchOptions, {}, customHeaders)
@@ -44,7 +44,7 @@ class ProductsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreProductsListRes>}
    */
-  list(query?: StoreGetProductsParams, customHeaders: object = {}): ResponsePromise<StoreProductsListRes> {
+  list(query?: StoreGetProductsParams, customHeaders: Record<string, any> = {}): ResponsePromise<StoreProductsListRes> {
     let path = `/store/products`
 
     if (query) {

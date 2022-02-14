@@ -22,7 +22,7 @@ class CustomerResource extends BaseResource {
    * @param customHeaders
    * @return { ResponsePromise<StoreCustomersRes>}
    */
-  create(payload: StorePostCustomersReq, customHeaders: object = {}): ResponsePromise<StoreCustomersRes> {
+  create(payload: StorePostCustomersReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -32,7 +32,7 @@ class CustomerResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreCustomersRes>}
    */
-  retrieve(customHeaders: object = {}): ResponsePromise<StoreCustomersRes> {
+  retrieve(customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/me`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -45,7 +45,7 @@ class CustomerResource extends BaseResource {
    */
   update(
     payload: StorePostCustomersCustomerReq,
-    customHeaders: object = {}): ResponsePromise<StoreCustomersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/me`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -58,7 +58,7 @@ class CustomerResource extends BaseResource {
    */
   listOrders(
     params?: StoreGetCustomersCustomerOrdersParams,
-    customHeaders: object = {}): ResponsePromise<StoreCustomersListOrdersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersListOrdersRes> {
     let path = `/store/customers/me/orders`
     if (params) {
       const query = qs.stringify(params)
@@ -77,7 +77,7 @@ class CustomerResource extends BaseResource {
    */
   resetPassword(
     payload: StorePostCustomersCustomerPasswordTokenReq,
-    customHeaders: object = {}): ResponsePromise<StoreCustomersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/password-reset`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -91,7 +91,7 @@ class CustomerResource extends BaseResource {
    */
   generatePasswordToken(
     payload: StorePostCustomersCustomerPasswordTokenReq,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise {
     const path = `/store/customers/password-token`
     return this.client.request("POST", path, payload, {}, customHeaders)

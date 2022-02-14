@@ -21,7 +21,7 @@ class AdminUsersResource extends BaseResource {
    */
   sendResetPasswordToken(
     payload: AdminResetPasswordTokenRequest,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<void> {
     const path = `/admin/users/password-token`
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -35,7 +35,7 @@ class AdminUsersResource extends BaseResource {
    */
   resetPassword(
     payload: AdminResetPasswordRequest,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
     const path = `admin/users/reset-password`
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -47,7 +47,7 @@ class AdminUsersResource extends BaseResource {
    * @param customHeaders
    * @returns the user
    */
-  retrieve(id: string, customHeaders: object = {}): ResponsePromise<AdminUserRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminUserRes> {
     const path = `/admin/users/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -58,7 +58,7 @@ class AdminUsersResource extends BaseResource {
    * @param customHeaders
    * @returns created user
    */
-  create(payload: AdminCreateUserPayload, customHeaders: object = {}): ResponsePromise<AdminUserRes> {
+  create(payload: AdminCreateUserPayload, customHeaders: Record<string, any> = {}): ResponsePromise<AdminUserRes> {
     const path = `/admin/users`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -73,7 +73,7 @@ class AdminUsersResource extends BaseResource {
   update(
     id: string,
     payload: AdminUpdateUserPayload,
-    customHeaders: object = {}
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminUserRes> {
     const path = `/admin/users/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -85,7 +85,7 @@ class AdminUsersResource extends BaseResource {
    * @param customHeaders
    * @returns delete response
    */
-  delete(id: string, customHeaders: object = {}): ResponsePromise<AdminDeleteUserRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminDeleteUserRes> {
     const path = `/admin/users/${id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -94,7 +94,7 @@ class AdminUsersResource extends BaseResource {
    * @description lists all users
    * @returns a list of all users
    */
-  list(customHeaders: object = {}): ResponsePromise<AdminUsersListRes> {
+  list(customHeaders: Record<string, any> = {}): ResponsePromise<AdminUsersListRes> {
     const path = `/admin/users`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }

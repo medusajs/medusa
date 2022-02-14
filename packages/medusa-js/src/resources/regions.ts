@@ -8,7 +8,7 @@ class RegionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreRegionsListRes>}
    */
-  list(customHeaders: object = {}): ResponsePromise<StoreRegionsListRes> {
+  list(customHeaders: Record<string, any> = {}): ResponsePromise<StoreRegionsListRes> {
     const path = `/store/regions`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -19,7 +19,7 @@ class RegionsResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreRegionsRes>}
    */
-  retrieve(id: string, customHeaders: object = {}): ResponsePromise<StoreRegionsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreRegionsRes> {
     const path = `/store/regions/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }

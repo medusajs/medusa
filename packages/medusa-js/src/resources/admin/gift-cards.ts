@@ -14,7 +14,7 @@ class AdminGiftCardsResource extends BaseResource {
   /**
    * @description Creates a gift card
    */
-  create(payload: AdminPostGiftCardsReq, customHeaders: object = {}): ResponsePromise<AdminGiftCardsRes> {
+  create(payload: AdminPostGiftCardsReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminGiftCardsRes> {
     const path = `/admin/gift-cards`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -25,7 +25,7 @@ class AdminGiftCardsResource extends BaseResource {
   update(
     id: string,
     payload: AdminPostGiftCardsGiftCardReq,
-    customHeaders: object = {}): ResponsePromise<AdminGiftCardsRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminGiftCardsRes> {
     const path = `/admin/gift-cards/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -33,7 +33,7 @@ class AdminGiftCardsResource extends BaseResource {
   /**
    * @description Deletes a gift card
    */
-  delete(id: string, customHeaders: object = {}): ResponsePromise<AdminGiftCardsDeleteRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminGiftCardsDeleteRes> {
     const path = `/admin/gift-cards/${id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -41,7 +41,7 @@ class AdminGiftCardsResource extends BaseResource {
   /**
    * @description Deletes a gift card
    */
-  retrieve(id: string, customHeaders: object = {}): ResponsePromise<AdminGiftCardsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminGiftCardsRes> {
     const path = `/admin/gift-cards/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -51,7 +51,7 @@ class AdminGiftCardsResource extends BaseResource {
    */
   list(
     query?: AdminGetGiftCardsParams,
-    customHeaders: object = {}): ResponsePromise<AdminGiftCardsListRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminGiftCardsListRes> {
     let path = `/admin/gift-cards/`
 
     if (query) {
