@@ -1,0 +1,84 @@
+.colors {
+    --error-900: #DB5461;
+    --error-400: #d67b84;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    align-items: baseline;
+    flex-direction: column;
+    margin: 5px 0;
+}
+
+.fieldcontainer {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid lightgrey;
+    display: flex;
+    align-items: center;
+    margin-top: .1rem;
+    position: relative;
+    transition: all .1s ease-in;
+}
+
+.errorfield {
+    --error-900: #f0ada6;
+    --error-400: #fef1f2;
+    border-color: var(--error-900);
+    background: var(--error-400);
+}
+
+.errortext {
+    margin: 0;
+    align-self: flex-end;
+    font-size: var(--fz-s);
+    color: #e07367;
+}
+
+.erroricon {
+    color: #eb948b;
+    font-size: 18px;
+    margin-right: 10px;
+    position: absolute;
+    right: 0;
+}
+
+.fill {
+    color: transparent;
+    margin: 0;
+    font-size: var(--fz-s);
+}
+
+.styledfield {
+    height: 40px;
+    width: 100%;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    outline: none;
+}
+
+.styledselect {
+    height: 40px;
+    width: 100%;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.fetching {
+    height: 40px;
+    width: 100%;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    padding: 10px;
+    outline: none;
+    background: var(--logo-color-100);
+}

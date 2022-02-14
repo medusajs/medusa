@@ -1,0 +1,86 @@
+.spinner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 4rem;
+  height: 530px;
+}
+
+.container {
+  margin-top: 20px;
+  flex-grow: 1;
+}
+
+.shippingOption {
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shade);
+  justify-content: space-between;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.shippingOption div {
+  display: flex;
+  align-items: center;
+}
+
+.stepBack {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  font-size: var(--fz-m);
+}
+
+.stepBack svg {
+  margin-right: 0.5rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  
+}
+
+.nextBtn {
+  font-size: 1.125rem;
+  min-height: 3rem;
+  min-width: 3rem;
+  padding: 0.5rem 1.25rem;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  background: var(--logo-color-900);
+  color: white;
+  border-radius: 8px;
+  transition: background 0.2s ease-in;
+  font-weight: 500;
+  border: none;
+}
+
+.nextBtn:hover {
+  background: var(--logo-color-1000);
+}
+
+.error {
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  align-items: center;
+  transition: all 0.1s ease-in;
+  color: #db5461;
+}
+
+.error p {
+  margin-left: 0.5rem;
+}
+
+.error.active {
+  opacity: 1;
+  visibility: visible;
+}

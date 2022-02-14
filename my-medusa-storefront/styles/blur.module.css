@@ -1,0 +1,19 @@
+.blur {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    z-index: 10;
+  }
+  
+  .active {
+    opacity: 1;
+    visibility: visible;
+  }

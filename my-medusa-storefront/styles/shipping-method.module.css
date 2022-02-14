@@ -1,0 +1,19 @@
+.shippingOption {
+    display: flex;
+    align-items: center;
+    box-shadow: var(--shade);
+    justify-content: space-between;
+    background: white;
+    border-radius: 8px;
+    padding: 1rem 2rem;
+    cursor: pointer;
+}
+
+.shippingOption div {
+    display: flex;
+    align-items: center;
+}
+
+.chosen {
+    border: 1px solid var(--logo-color-400)
+}

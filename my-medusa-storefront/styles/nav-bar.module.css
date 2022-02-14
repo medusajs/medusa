@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 88px;
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+}
+
+.container h1 {
+  margin: 0;
+}
+
+.logo {
+  font-size: var(--fz-xl);
+  color: var(--logo-color-900);
+}
+
+.btn {
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  font-size: var(--fz-sm);
+  cursor: pointer;
+}
+
+.btn span {
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+}
+
+.btn svg {
+  font-size: var(--fz-ml);
+}
+
+@media (max-width: 876px) {
+  .container {
+    padding: 20px 22px;
+  }
+}

@@ -1,0 +1,190 @@
+.container {
+  --py: 35px;
+
+  position: fixed;
+  min-width: 460px;
+  height: 100vh;
+  max-height: 100vh;
+  -webkit-box-shadow: var(--shade);
+  box-shadow: var(--shade);
+  background: white;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  justify-content: space-between;
+  right: -460px;
+  top: 0;
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  -webkit-transform: translateX(110%);
+  -ms-transform: translateX(110%);
+  transform: translateX(110%);
+}
+
+.active {
+  -webkit-transform: translateX(-460px);
+  -ms-transform: translateX(-460px);
+  transform: translateX(-460px);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px var(--py);
+}
+
+.closebtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.subtotal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px var(--py);
+}
+
+.bottom {
+  padding: 15px var(--py);
+}
+
+.overview {
+  flex-grow: 1;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--logo-color-400) transparent;
+}
+
+.overview::-webkit-scrollbar {
+  width: 12px;
+  border-radius: 12px;
+}
+
+.overview::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 12px;
+}
+
+.overview::-webkit-scrollbar-thumb {
+  background-color: var(--logo-color-400);
+  border-radius: 20px;
+  border: 1px solid var(--bg);
+}
+
+.product {
+  padding: 24px var(--py) 0;
+  margin-top: 0;
+  position: relative;
+  min-height: 120px;
+  display: flex;
+}
+
+.mid {
+  display: flex;
+  flex-direction: column;
+}
+
+.price {
+    margin: 0;
+}
+
+.selector {
+  display: flex;
+  align-items: center;
+}
+
+.product figure {
+  background: var(--bg);
+  width: 126px;
+  height: 189px;
+  margin: 0;
+  margin-right: 1rem;
+}
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.placeholder > div {
+  width: 100%;
+  height: 100%;
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.remove {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+  color: lightgrey;
+  transition: color 0.1s ease-in;
+}
+
+.remove:hover {
+  color: var(--logo-color-900);
+}
+
+.size {
+  font-size: var(--fz-sm);
+  color: grey;
+}
+
+.ticker {
+  width: 15px;
+  text-align: center;
+  user-select: none;
+}
+
+.qtybtn {
+  background: transparent;
+  border: transparent;
+  color: grey;
+  transition: color 0.1s ease-in;
+  cursor: pointer;
+}
+
+.qtybtn:hover {
+  color: var(--logo-color-900);
+}
+
+.checkoutbtn {
+  width: 100%;
+  font-size: 1.125rem;
+  min-height: 3rem;
+  padding: 0.5rem 0;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--logo-color-900);
+  color: white;
+  border-radius: 8px;
+  transition: background 0.2s ease-in;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.checkoutbtn:hover {
+  background: var(--logo-color-1000);
+}
+
+@media (max-width: 876px) {
+
+    .container {
+      width: 100%;
+    }
+  }

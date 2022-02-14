@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.steps {
+  width: 60%;
+  height: 100vh;
+  padding: 110px 88px 28px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: var(--logo-color-400) transparent;
+}
+
+.summary {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.orderBtn {
+  width: 100%;
+  font-size: 1rem;
+  min-height: 3rem;
+  padding: 0.5rem 0;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background 0.2s ease-in;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  display: none;
+  justify-self: flex-end;
+  background: transparent;
+}
+
+.orderBtn:hover {
+  background: var(--logo-color-100);
+}
+
+.breadcrumbs {
+  display: flex;
+}
+
+.breadcrumbs p {
+  margin-right: 0.5rem;
+  color: grey;
+  transition: color 0.2s ease-in;
+}
+
+.breadcrumbs p:last-child {
+  margin-right: 0;
+}
+
+.breadcrumbs p.activeStep {
+  color: black;
+}
+
+@media (max-width: 876px) {
+  .container {
+    flex-direction: column;
+  }
+  .steps {
+    padding: 0px 22px;
+    width: 100%;
+    height: 100%;
+  }
+  .breadcrumbs {
+    margin-top: 6rem;
+  }
+  .orderBtn {
+    margin-bottom: 2rem;
+    display: block;
+  }
+}

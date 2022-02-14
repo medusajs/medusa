@@ -1,0 +1,75 @@
+.styledform {
+    width: 100%;
+}
+
+.sharedrow {
+    display: flex;
+}
+
+.sharedrow div:first-of-type {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+.sharedrow div {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.sharedrow div:last-of-type {
+    margin-right: 0;
+}
+
+.fieldcontainer {
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid lightgrey;
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+}
+
+.styledfield {
+    height: 40px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+}
+
+.formbtn {
+    font-size: 1.125rem;
+    min-height: 3rem;
+    min-width: 3rem;
+    padding: 0.5rem 1.25rem;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    background: var(--logo-color-900);
+    color: white;
+    border-radius: 8px;
+    transition: background .2s ease-in;
+    font-weight: 500;
+    border: none;
+}
+
+.formbtn:hover {
+    background: var(--logo-color-1000);
+  }
+
+.spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 4rem;
+}
+
+.btncontainer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}

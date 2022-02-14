@@ -1,0 +1,46 @@
+.cardForm {
+  background: white;
+  box-shadow: var(--shade);
+  padding: 2rem 2rem;
+  border-radius: 8px;
+}
+
+.stepBack {
+  background: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  font-size: var(--fz-m);
+}
+
+.stepBack svg {
+  margin-right: .5rem;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.payBtn {
+  font-size: 1.125rem;
+    min-height: 3rem;
+    min-width: 3rem;
+    padding: 0.5rem 1.25rem;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    background: var(--logo-color-900);
+    color: white;
+    border-radius: 8px;
+    transition: background .2s ease-in;
+    font-weight: 500;
+    border: none;
+}
+
+.payBtn:hover {
+  background: var(--logo-color-1000);
+}

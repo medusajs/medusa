@@ -1,0 +1,37 @@
+.step {
+  display: flex;
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--shade);
+  padding: 2rem 2rem;
+  align-items: center;
+  font-size: var(--fz-s);
+  margin-bottom: 0.5em;
+  color: grey;
+}
+
+.stepInfo {
+  margin-right: 0.75em;
+  min-width: 0px;
+  flex: 1 1 0%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.detail {
+  width: 80px;
+  font-weight: 600;
+}
+
+.edit {
+    background: transparent;
+    border: none;
+    transition: background .2s ease-in;
+    padding: .5rem 1rem;
+    border-radius: 4px;
+}
+
+.edit:hover {
+    background: var(--logo-color-100);
+}
