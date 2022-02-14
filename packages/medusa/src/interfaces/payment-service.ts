@@ -11,11 +11,11 @@ export type PaymentSessionData = Data
 export interface PaymentService {
   getIdentifier(): string
 
-  onCreatePaymentSession(car: Cart): Promise<PaymentSessionData>
+  onCreatePaymentSession(cart: Cart): Promise<PaymentSessionData>
 
   onCreatePayment(paymentSession: PaymentSession): Promise<PaymentData>
 
-  retrievePayment(car: Cart): Promise<Payment>
+  retrievePayment(cart: Cart): Promise<Payment>
 
   updatePayment(
     paymentSessionData: PaymentSessionData,
@@ -51,13 +51,15 @@ export abstract class AbstractPaymentService
     return (<typeof AbstractPaymentService>this.constructor).identifier
   }
 
-  public abstract onCreatePaymentSession(car: Cart): Promise<PaymentSessionData>
+  public abstract onCreatePaymentSession(
+    cart: Cart
+  ): Promise<PaymentSessionData>
 
   public abstract onCreatePayment(
     paymentSession: PaymentSession
   ): Promise<PaymentData>
 
-  public abstract retrievePayment(car: Cart): Promise<Payment>
+  public abstract retrievePayment(cart: Cart): Promise<Payment>
 
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
