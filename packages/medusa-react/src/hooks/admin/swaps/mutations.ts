@@ -1,9 +1,7 @@
-import { adminSwapKeys } from "./queries"
 import {
   AdminOrdersRes,
   AdminPostOrdersOrderSwapsReq,
   AdminPostOrdersOrderSwapsSwapFulfillmentsReq,
-  AdminPostOrdersOrderSwapsSwapReceiveReq,
   AdminPostOrdersOrderSwapsSwapShipmentsReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -11,6 +9,7 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { adminOrderKeys } from ".."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminSwapKeys } from "./queries"
 
 export const useAdminCreateSwap = (
   orderId: string,
@@ -42,31 +41,6 @@ export const useAdminCancelSwap = (
 
   return useMutation(
     (swapId: string) => client.admin.orders.cancelSwap(orderId, swapId),
-    buildOptions(
-      queryClient,
-      [adminOrderKeys.detail(orderId), adminSwapKeys.lists()],
-      options
-    )
-  )
-}
-
-export const useAdminReceiveSwap = (
-  orderId: string,
-  options?: UseMutationOptions<
-    Response<AdminOrdersRes>,
-    Error,
-    AdminPostOrdersOrderSwapsSwapReceiveReq & { swap_id: string }
-  >
-) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
-
-  return useMutation(
-    ({
-      swap_id,
-      ...payload
-    }: AdminPostOrdersOrderSwapsSwapReceiveReq & { swap_id: string }) =>
-      client.admin.orders.receiveSwap(orderId, swap_id, payload),
     buildOptions(
       queryClient,
       [adminOrderKeys.detail(orderId), adminSwapKeys.lists()],
