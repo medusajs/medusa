@@ -282,10 +282,11 @@ describe("/admin/customers", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.customer).toMatchSnapshot({
-        id: expect.any(String),
+        id: "test-customer-1",
         shipping_addresses: expect.arrayContaining([
           expect.objectContaining({
-            id: expect.any(String),
+            id: "test-address",
+            customer_id: "test-customer-1",
             created_at: expect.any(String),
             updated_at: expect.any(String),
           }),
