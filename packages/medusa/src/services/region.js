@@ -409,7 +409,6 @@ class RegionService extends BaseService {
   async delete(regionId) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
-      const countryRepo = manager.getCustomRepository(this.countryRepository_)
 
       const region = await this.retrieve(regionId, { relations: ["countries"] })
 
@@ -418,10 +417,6 @@ class RegionService extends BaseService {
       }
 
       await regionRepo.softRemove(region)
-
-      for (const c of region.countries) {
-        await countryRepo.save({ ...c, region_id: null })
-      }
 
       await this.eventBus_
         .withTransaction(manager)

@@ -85,65 +85,6 @@ describe("/admin/regions", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("successfully creates a region with countries from a previously deleted region", async () => {
-      const api = useApi()
-
-      const response = await api
-        .delete(`/admin/regions/test-region`, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-      expect(response.data).toMatchSnapshot({
-        id: "test-region",
-        object: "region",
-        deleted: true,
-      })
-
-      const newReg = await api.post(
-        `/admin/regions`,
-        {
-          name: "World",
-          currency_code: "usd",
-          tax_rate: 0,
-          payment_providers: ["test-pay"],
-          fulfillment_providers: ["test-ful"],
-          countries: ["us"],
-        },
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      )
-
-      expect(newReg.status).toEqual(200)
-      expect(newReg.data.region).toMatchSnapshot({
-        id: expect.any(String),
-        name: "World",
-        currency_code: "usd",
-        countries: [
-          {
-            region_id: expect.any(String),
-          },
-        ],
-        tax_rate: 0,
-        fulfillment_providers: [
-          {
-            id: "test-ful",
-            is_installed: false,
-          },
-        ],
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
-    })
-
     it("fails to create when countries exists in different region", async () => {
       const api = useApi()
 
