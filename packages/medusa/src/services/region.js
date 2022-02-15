@@ -419,9 +419,9 @@ class RegionService extends BaseService {
 
       await regionRepo.softRemove(region)
 
-      for (const c of region.countries) {
-        await countryRepo.save({ ...c, region_id: null })
-      }
+      // for (const c of region.countries) {
+      //   await countryRepo.save({ ...c, region_id: null })
+      // }
 
       await this.eventBus_
         .withTransaction(manager)

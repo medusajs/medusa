@@ -1,9 +1,9 @@
 import { createConnection } from "typeorm"
-
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 
 export default async ({ container, configModule }) => {
   const entities = container.resolve("db_entities")
+  const subscribers = container.resolve("db_subscribers")
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
 
@@ -13,6 +13,7 @@ export default async ({ container, configModule }) => {
     database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},
     entities,
+    subscribers,
     namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,
   })

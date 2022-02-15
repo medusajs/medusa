@@ -6,6 +6,7 @@ import requestIp from "request-ip"
 import { getManager } from "typeorm"
 import apiLoader from "./api"
 import databaseLoader from "./database"
+import databaseSubscribersLoader from "./db-subscribers"
 import defaultsLoader from "./defaults"
 import expressLoader from "./express"
 import Logger from "./logger"
@@ -22,7 +23,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   const container = createContainer()
-  container.registerAdd = function (name, registration) {
+  container.registerAdd = function(name, registration) {
     const storeKey = name + "_STORE"
 
     if (this.registrations[storeKey] === undefined) {
@@ -61,6 +62,16 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   modelsLoader({ container, activityId: modelsActivity })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
+
+  const dbSubscribersActivity = Logger.activity(
+    "Initializing database subscribers"
+  )
+  track("DB_SUBSCRIBERS_INIT_STARTED")
+  databaseSubscribersLoader({ container, activityId: dbSubscribersActivity })
+  const dbsAct =
+    Logger.success(dbSubscribersActivity, "Database subscribers initialized") ||
+    {}
+  track("DB_SUBSCRIBERS_INIT_COMPLETED", { duration: dbsAct.duration })
 
   const pmActivity = Logger.activity("Initializing plugin models")
   track("PLUGIN_MODELS_INIT_STARTED")

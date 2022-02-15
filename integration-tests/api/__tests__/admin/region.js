@@ -26,7 +26,7 @@ describe("/admin/regions", () => {
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
-        medusaProcess = await setupServer({ cwd })
+        medusaProcess = await setupServer({ cwd, verbose: true })
 
         const manager = dbConnection.manager
         await manager.insert(Region, {

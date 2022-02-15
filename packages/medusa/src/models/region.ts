@@ -1,24 +1,23 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
-  JoinTable,
-  JoinColumn,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-
-import { Currency } from "./currency"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Country } from "./country"
-import { PaymentProvider } from "./payment-provider"
+import { Currency } from "./currency"
 import { FulfillmentProvider } from "./fulfillment-provider"
+import { PaymentProvider } from "./payment-provider"
 
 @Entity()
 export class Region {
@@ -41,13 +40,13 @@ export class Region {
   @Column({ nullable: true })
   tax_code: string
 
-  @OneToMany(
-    () => Country,
-    c => c.region
-  )
+  @OneToMany(() => Country, (c) => c.region)
   countries: Country[]
 
-  @ManyToMany(() => PaymentProvider, { eager: true, cascade: ['insert', 'update'] })
+  @ManyToMany(() => PaymentProvider, {
+    eager: true,
+    cascade: ["insert", "update"],
+  })
   @JoinTable({
     name: "region_payment_providers",
     joinColumn: {
@@ -61,7 +60,10 @@ export class Region {
   })
   payment_providers: PaymentProvider[]
 
-  @ManyToMany(() => FulfillmentProvider, { eager: true, cascade: ['insert', 'update'] })
+  @ManyToMany(() => FulfillmentProvider, {
+    eager: true,
+    cascade: ["insert", "update"],
+  })
   @JoinTable({
     name: "region_fulfillment_providers",
     joinColumn: {
@@ -89,7 +91,9 @@ export class Region {
 
   @BeforeInsert()
   private beforeInsert() {
-    if (this.id) return
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `reg_${id}`
   }
