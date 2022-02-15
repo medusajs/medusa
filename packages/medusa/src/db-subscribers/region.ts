@@ -1,9 +1,11 @@
 import {
   EntitySubscriberInterface,
   EventSubscriber,
+  In,
   UpdateEvent,
 } from "typeorm"
 import { Region } from ".."
+import { Country } from "../models/country"
 
 @EventSubscriber()
 export class RegionSubscriber implements EntitySubscriberInterface<Region> {
@@ -15,9 +17,21 @@ export class RegionSubscriber implements EntitySubscriberInterface<Region> {
     const updatedRegion = await event.manager.findOne(
       Region,
       event.databaseEntity.id,
-      { withDeleted: true }
+      { withDeleted: true, relations: ["countries"] }
     )
 
-    console.log("Updated resource: ", updatedRegion)
+    if (updatedRegion?.countries.length) {
+      const countryIds = updatedRegion.countries.map((c) => c.id)
+
+      await event.manager.update(
+        Country,
+        {
+          id: In(countryIds),
+        },
+        {
+          region_id: null,
+        }
+      )
+    }
   }
 }
