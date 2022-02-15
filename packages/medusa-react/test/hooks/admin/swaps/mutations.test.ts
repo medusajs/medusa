@@ -1,14 +1,13 @@
-import {
-  useAdminCreateSwap,
-  useAdminReceiveSwap,
-  useAdminFulfillSwap,
-  useAdminCancelSwap,
-  useAdminCreateSwapShipment,
-  useAdminProcessSwapPayment,
-  useAdminCancelSwapFulfillment,
-} from "../../../../src/"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
+import {
+  useAdminCancelSwap,
+  useAdminCancelSwapFulfillment,
+  useAdminCreateSwap,
+  useAdminCreateSwapShipment,
+  useAdminFulfillSwap,
+  useAdminProcessSwapPayment,
+} from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateSwap hook", () => {
@@ -34,32 +33,6 @@ describe("useAdminCreateSwap hook", () => {
     })
 
     result.current.mutate(swap)
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.order).toEqual(fixtures.get("order"))
-  })
-})
-
-describe("useAdminReceiveSwap hook", () => {
-  test("receives a swap", async () => {
-    const orderId = fixtures.get("order").id
-    const swapId = "test-swap"
-    const payload = {
-      items: [
-        {
-          item_id: "test_id",
-          quantity: 1,
-        },
-      ],
-    }
-
-    const { result, waitFor } = renderHook(() => useAdminReceiveSwap(orderId), {
-      wrapper: createWrapper(),
-    })
-
-    result.current.mutate({ swap_id: swapId, ...payload })
 
     await waitFor(() => result.current.isSuccess)
 
