@@ -5001,9 +5001,9 @@ flatted@^3.1.0:
   integrity sha512-8/sOawo8tJ4QOBX8YlQBMxL8+RLZfxMQOif9o0KUKTNTjMYElWPE0r/m5VNFxTRd0NSw8qSy8dajrwX4RYI1Hw==
 
 follow-redirects@^1.0.0, follow-redirects@^1.14.0, follow-redirects@^1.14.4:
-  version "1.14.6"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.6.tgz#8cfb281bbc035b3c067d6cd975b0f6ade6e855cd"
-  integrity sha512-fhUl5EwSJbbl8AR+uYL2KQDxLkdSjZGR36xy46AO7cOMTrCMON6Sa28FmAnC2tRTDbd/Uuzz3aJBv7EBN7JH8A==
+  version "1.14.8"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.8.tgz#016996fb9a11a100566398b1c6839337d7bfa8fc"
+  integrity sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==
 
 for-in@^1.0.2:
   version "1.0.2"
