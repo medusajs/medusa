@@ -1,6 +1,6 @@
-import { useAdminCancelReturn, useAdminReceiveReturn } from "../../../../src/"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
+import { useAdminCancelReturn, useAdminReceiveReturn } from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCancel hook", () => {
@@ -23,6 +23,15 @@ describe("useAdminCancel hook", () => {
 
 describe("useAdminReceiveReturn hook", () => {
   test("marks a return as received", async () => {
+    const payload = {
+      items: [
+        {
+          item_id: "test_id",
+          quantity: 1,
+        },
+      ],
+    }
+
     const { result, waitFor } = renderHook(
       () => useAdminReceiveReturn("test-return"),
       {
@@ -30,7 +39,7 @@ describe("useAdminReceiveReturn hook", () => {
       }
     )
 
-    result.current.mutate()
+    result.current.mutate({ ...payload })
 
     await waitFor(() => result.current.isSuccess)
 
