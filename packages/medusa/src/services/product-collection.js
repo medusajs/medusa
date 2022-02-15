@@ -166,18 +166,11 @@ class ProductCollectionService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      const collection = await this.retrieve(collectionId)
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
-      if (!collection) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Product collection with id: ${collectionId} was not found`
-        )
-      }
+      await productRepo.bulkAddToCollection(productIds, id)
 
-      await productRepo.bulkAddToCollection(productIds, collectionId)
-
-      return await this.retrieve(collectionId, {
+      return await this.retrieve(id, {
         relations: ["products"],
       })
     })
@@ -187,16 +180,9 @@ class ProductCollectionService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      const collection = await this.retrieve(collectionId)
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
 
-      if (!collection) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Product collection with id: ${collectionId} was not found`
-        )
-      }
-
-      await productRepo.bulkRemoveFromCollection(productIds, collectionId)
+      await productRepo.bulkRemoveFromCollection(productIds, id)
 
       return Promise.resolve()
     })
