@@ -162,11 +162,7 @@ class ProductCollectionService extends BaseService {
     })
   }
 
-  async updateProducts(
-    collectionId,
-    addProductIds = [],
-    removeProductIds = []
-  ) {
+  async addProducts(collectionId, productIds) {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
@@ -179,20 +175,30 @@ class ProductCollectionService extends BaseService {
         )
       }
 
-      if (addProductIds.length > 0) {
-        await productRepo.bulkAddToCollection(addProductIds, collectionId)
-      }
-
-      if (removeProductIds.length > 0) {
-        await productRepo.bulkRemoveFromCollection(
-          removeProductIds,
-          collectionId
-        )
-      }
+      await productRepo.bulkAddToCollection(productIds, collectionId)
 
       return await this.retrieve(collectionId, {
         relations: ["products"],
       })
+    })
+  }
+
+  async removeProducts(collectionId, productIds) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const collection = await this.retrieve(collectionId)
+
+      if (!collection) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Product collection with id: ${collectionId} was not found`
+        )
+      }
+
+      await productRepo.bulkRemoveFromCollection(productIds, collectionId)
+
+      return Promise.resolve()
     })
   }
 

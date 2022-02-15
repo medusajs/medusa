@@ -1,8 +1,8 @@
-import { IsOptional, IsString } from "class-validator"
+import { ArrayNotEmpty, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
 /**
-  * @oas [post] /collections/{id}/products
+  * @oas [post] /collections/{id}/products/batch
  * operationId: "PostProductsToCollection"
  * summary: "Updates products associated with a Product Collection"
  * description: "Updates products associated with a Product Collection"
@@ -45,17 +45,13 @@ export default async (req, res) => {
     "productCollectionService"
   )
 
-  const collection = await productCollectionService.updateProducts(id, validated.add_product_ids, validated.remove_product_ids)
+  const collection = await productCollectionService.addProducts(id, validated.product_ids)
 
   res.status(200).json({ collection })
 }
 
 export class AdminPostProductsToCollectionReq {
-  @IsOptional()
+  @ArrayNotEmpty()
   @IsString({each: true})
-  add_product_ids: string[]
-
-  @IsOptional()
-  @IsString({each: true})
-  remove_product_ids: string[]
+  product_ids: string[]
 }
