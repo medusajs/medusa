@@ -229,4 +229,70 @@ describe("/admin/customers", () => {
       )
     })
   })
+
+  describe("GET /admin/customers/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("fetches a customer", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customers/test-customer-1", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).toMatchSnapshot({
+        id: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+
+    it("fetches a customer with expand query", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customers/test-customer-1?expand=shipping_addresses", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).toMatchSnapshot({
+        id: expect.any(String),
+        shipping_addresses: expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          }),
+        ]),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
 })
