@@ -175,7 +175,7 @@ function registerApi(
   try {
     const routes = require(`${pluginDetails.resolve}/api`).default
     if (routes) {
-      app.use("/", routes(rootDirectory))
+      app.use("/", routes(rootDirectory, pluginDetails.options))
     }
     return app
   } catch (err) {

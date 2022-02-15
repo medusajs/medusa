@@ -3,7 +3,9 @@ import {
   AdminCustomersRes,
   AdminGetCustomersParams,
   AdminPostCustomersReq,
+  AdminPostCustomersCustomerReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../.."
 import BaseResource from "../base"
 
@@ -24,7 +26,7 @@ class AdminCustomersResource extends BaseResource {
    */
   update(
     id: string,
-    payload: AdminPostCustomersReq
+    payload: AdminPostCustomersCustomerReq
   ): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
     return this.client.request("POST", path, payload)
@@ -49,11 +51,8 @@ class AdminCustomersResource extends BaseResource {
     let path = `/admin/customers`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/customers?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/customers?${queryString}`
     }
 
     return this.client.request("GET", path)

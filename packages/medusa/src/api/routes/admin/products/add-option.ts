@@ -52,7 +52,7 @@ export default async (req, res) => {
   res.json({ product })
 }
 
-class AdminPostProductsProductOptionsReq {
+export class AdminPostProductsProductOptionsReq {
   @IsString()
   title: string
 }

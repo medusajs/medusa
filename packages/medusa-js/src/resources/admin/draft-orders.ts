@@ -8,6 +8,7 @@ import {
   AdminPostDraftOrdersDraftOrderRegisterPaymentRes,
   AdminPostDraftOrdersDraftOrderReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -29,7 +30,7 @@ class AdminDraftOrdersResource extends BaseResource {
     id: string,
     payload: AdminPostDraftOrdersDraftOrderLineItemsReq
   ): ResponsePromise<AdminDraftOrdersRes> {
-    const path = `/admin/draft-orders/${id}`
+    const path = `/admin/draft-orders/${id}/line-items`
     return this.client.request("POST", path, payload)
   }
 
@@ -64,16 +65,13 @@ class AdminDraftOrdersResource extends BaseResource {
    * @description Lists draft orders
    */
   list(
-    query: AdminGetDraftOrdersParams
+    query?: AdminGetDraftOrdersParams
   ): ResponsePromise<AdminDraftOrdersListRes> {
     let path = `/admin/draft-orders`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/draft-orders?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/draft-orders?${queryString}`
     }
 
     return this.client.request("GET", path)

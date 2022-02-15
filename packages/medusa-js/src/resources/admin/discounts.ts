@@ -7,6 +7,7 @@ import {
   AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -98,15 +99,14 @@ class AdminDiscountsResource extends BaseResource {
   /**
    * @description Lists discounts
    */
-  list(query: AdminGetDiscountsParams): ResponsePromise<AdminDiscountsListRes> {
+  list(
+    query?: AdminGetDiscountsParams
+  ): ResponsePromise<AdminDiscountsListRes> {
     let path = `/admin/discounts`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/discounts?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/discounts?${queryString}`
     }
 
     return this.client.request("GET", path)

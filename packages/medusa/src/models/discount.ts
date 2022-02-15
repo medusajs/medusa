@@ -44,7 +44,7 @@ export class Discount {
 
   @Column({ nullable: true })
   parent_discount_id: string
-  
+
   @ManyToOne(() => Discount)
   @JoinColumn({ name: "parent_discount_id" })
   parent_discount: Discount
@@ -95,7 +95,9 @@ export class Discount {
 
   @BeforeInsert()
   private beforeInsert() {
-    if (this.id) return
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `disc_${id}`
     this.code = this.code.toUpperCase()

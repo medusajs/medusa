@@ -113,11 +113,15 @@ Similar to how you installed Medusa, you can install Strapi using your favorite 
 
 ```bash
 # using npx
-npx create-strapi-app strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
+npx create-strapi-app@3.6.8 strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
 
 # using yarn
-yarn create strapi-app strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
+yarn global add create-strapi-app@3.6.8
+
+create-strapi-app strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
 ```
+> Note: The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it will throw an error.
+
 
 After running the command, you have a full Strapi project configured to synchronize with Medusa. Upon the initial start of the Strapi server, all the required models will be created. They will correlate with models from Medusa to allow for two-way synchronization.
 
