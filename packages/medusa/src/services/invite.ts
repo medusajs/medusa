@@ -1,14 +1,14 @@
-import { BaseService } from "medusa-interfaces"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import config from "../config"
 import { MedusaError } from "medusa-core-utils"
-import { User } from ".."
+import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService, UserService } from "."
+import { User } from ".."
+import config from "../config"
+import { UserRoles } from "../models/user"
 import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
 import { ListInvite } from "../types/invites"
-import { UserRoles } from "../models/user"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
@@ -160,6 +160,7 @@ class InviteService extends BaseService {
         .emit(InviteService.Events.CREATED, {
           id: invite.id,
           token: invite.token,
+          user_email: invite.user_email,
         })
     })
   }
@@ -284,6 +285,7 @@ class InviteService extends BaseService {
       .emit(InviteService.Events.CREATED, {
         id: invite.id,
         token: invite.token,
+        user_email: invite.user_email,
       })
   }
 }
