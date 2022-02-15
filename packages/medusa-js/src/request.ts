@@ -183,7 +183,7 @@ class Client {
   async request(
     method: RequestMethod,
     path: string,
-    payload: object | null = null,
+    payload: Record<string, unknown> | null = null,
     options: RequestOptions = {},
     customHeaders: object = {}
   ): Promise<any> {
