@@ -29,6 +29,7 @@ class CustomerGroupService extends BaseService {
 
     const cloned = new CustomerGroupService({
       manager: transactionManager,
+      customerGroupRepository: this.customerGroupRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
