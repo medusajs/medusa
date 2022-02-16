@@ -108,19 +108,19 @@ describe("/admin/collections", () => {
           created_at: expect.any(String),
           updated_at: expect.any(String),
           products: [
-              {
-                collection_id: "test-collection",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                profile_id: expect.stringMatching(/^sp_*/),
-              },
-              {
-                collection_id: "test-collection",
-                created_at: expect.any(String),
-                updated_at: expect.any(String),
-                profile_id: expect.stringMatching(/^sp_*/),
-              },
-            ],
+            {
+              collection_id: "test-collection",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+            {
+              collection_id: "test-collection",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+          ],
         },
       })
     })
@@ -235,6 +235,75 @@ describe("/admin/collections", () => {
         ],
         count: 3,
       })
+    })
+
+    it("adds products to collection", async () => {
+      const api = useApi()
+
+      // adds product test-product-filterid-1
+      const response = await api
+        .post(
+          "/admin/collections/test-collection/products/batch",
+          {
+            product_ids: ["test-product_filtering_1"],
+          },
+          {
+            headers: { Authorization: "Bearer test_token" },
+          }
+        )
+        .catch((err) => console.warn(err))
+
+      expect(response.data).toMatchSnapshot({
+        collection: {
+          id: "test-collection",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          products: [
+            {
+              collection_id: "test-collection",
+              id: "test-product",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+            {
+              collection_id: "test-collection",
+              id: "test-product1",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+            {
+              collection_id: "test-collection",
+              id: "test-product_filtering_1",
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              profile_id: expect.stringMatching(/^sp_*/),
+            },
+          ],
+        },
+      })
+
+      expect(response.status).toEqual(200)
+    })
+
+    it("removes products from collection", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete("/admin/collections/test-collection/products/batch", {
+          headers: { Authorization: "Bearer test_token" },
+          data: { product_ids: ["test-product"] },
+        })
+        .catch((err) => console.warn(err))
+
+      expect(response.data).toMatchSnapshot({
+        id: "test-collection",
+        object: "product-collection",
+        removed_products: ["test-product"],
+      })
+
+      expect(response.status).toEqual(200)
     })
 
     it("filters collections by title", async () => {
