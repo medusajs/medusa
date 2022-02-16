@@ -27,24 +27,22 @@ export class customerGroups1644943746861 implements MigrationInterface {
     )
 
     await queryRunner.query(
-      `CREATE TYPE "public"."customer_type_enum" AS ENUM('consumer', 'business')`
+      `CREATE TYPE "customer_type_enum" AS ENUM('consumer', 'business')`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."customer" ADD "type" "public"."customer_type_enum" DEFAULT 'consumer'`
+      `ALTER TABLE "customer" ADD "type" "customer_type_enum" DEFAULT 'consumer'`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."customer" ADD "tax_registration_number" character varying`
+      `ALTER TABLE "customer" ADD "tax_registration_number" character varying`
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `ALTER TABLE "public"."customer" DROP COLUMN "tax_registration_number"`
+      `ALTER TABLE "customer" DROP COLUMN "tax_registration_number"`
     )
-    await queryRunner.query(
-      `ALTER TABLE "public"."customer" DROP COLUMN "type"`
-    )
-    await queryRunner.query(`DROP TYPE "public"."customer_type_enum"`)
+    await queryRunner.query(`ALTER TABLE "customer" DROP COLUMN "type"`)
+    await queryRunner.query(`DROP TYPE "customer_type_enum"`)
 
     await queryRunner.query(
       `ALTER TABLE "customer_group_customers" DROP CONSTRAINT "FK_3c6412d076292f439269abe1a23"`
