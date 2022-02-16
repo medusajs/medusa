@@ -1,5 +1,7 @@
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
+import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
 
 type CustomerGroupConstructorProps = {
@@ -35,6 +37,27 @@ class CustomerGroupService extends BaseService {
     cloned.transactionManager_ = transactionManager
 
     return cloned
+  }
+
+  create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
+    return this.atomicPhase_(async (manager) => {
+      try {
+        const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
+          this.customerGroupRepository_
+        )
+
+        const created = cgRepo.create(group)
+
+        const result = await cgRepo.save(created)
+
+        return result
+      } catch (err) {
+        if (err.code === "23505") {
+          throw new MedusaError(MedusaError.Types.DB_ERROR, err.detail)
+        }
+        throw err
+      }
+    })
   }
 }
 
