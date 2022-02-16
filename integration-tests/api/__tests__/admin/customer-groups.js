@@ -85,4 +85,41 @@ describe("/admin/customer-groups", () => {
         })
     })
   })
+
+  describe("GET /admin/customer-groups", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("gets customer group", async () => {
+      const api = useApi()
+
+      const id = "test-group-4"
+
+      const response = await api.get(`/admin/customer-groups/${id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customerGroup).toEqual(
+        expect.objectContaining({
+          id: "test-group-4",
+          name: "test-group",
+        })
+      )
+    })
+  })
 })

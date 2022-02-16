@@ -39,6 +39,25 @@ class CustomerGroupService extends BaseService {
     return cloned
   }
 
+  async retrieve(id: string, config = {}): Promise<CustomerGroup> {
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+
+    const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const customerGroup = await customerRepo.findOne(query)
+    if (!customerGroup) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `CustomerGroup with ${id} was not found`
+      )
+    }
+
+    return customerGroup
+  }
+
   /**
    * Creates a customer group with the provided data.
    * @param {DeepPartial<CustomerGroup>} group - the customer group to create
