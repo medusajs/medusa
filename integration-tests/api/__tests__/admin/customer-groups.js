@@ -121,5 +121,25 @@ describe("/admin/customer-groups", () => {
         })
       )
     })
+
+    it("throws error when a customer group doesn't exist", async () => {
+      expect.assertions(3)
+      
+      const api = useApi()
+
+      const id = 'test-group-000'
+
+       await api.get(`/admin/customer-groups/${id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      }).catch(err => {
+        expect(err.response.status).toEqual(404)
+        expect(err.response.data.type).toEqual("not_found")
+        expect(err.response.data.message).toEqual(`CustomerGroup with ${id} was not found`)
+      })
+
+    })
+
   })
 })
