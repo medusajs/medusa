@@ -1,5 +1,102 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/admin/collections /admin/collections adds products to collection 1`] = `
+Object {
+  "collection": Object {
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "handle": "test-collection",
+    "id": "test-collection",
+    "metadata": null,
+    "products": Array [
+      Object {
+        "collection_id": "test-collection",
+        "created_at": Any<String>,
+        "deleted_at": null,
+        "description": "test-product-description",
+        "discountable": true,
+        "external_id": null,
+        "handle": "test-product",
+        "height": null,
+        "hs_code": null,
+        "id": "test-product",
+        "is_giftcard": false,
+        "length": null,
+        "material": null,
+        "metadata": null,
+        "mid_code": null,
+        "origin_country": null,
+        "profile_id": StringMatching /\\^sp_\\*/,
+        "status": "draft",
+        "subtitle": null,
+        "thumbnail": null,
+        "title": "Test product",
+        "type_id": "test-type",
+        "updated_at": Any<String>,
+        "weight": null,
+        "width": null,
+      },
+      Object {
+        "collection_id": "test-collection",
+        "created_at": Any<String>,
+        "deleted_at": null,
+        "description": "test-product-description1",
+        "discountable": true,
+        "external_id": null,
+        "handle": "test-product1",
+        "height": null,
+        "hs_code": null,
+        "id": "test-product1",
+        "is_giftcard": false,
+        "length": null,
+        "material": null,
+        "metadata": null,
+        "mid_code": null,
+        "origin_country": null,
+        "profile_id": StringMatching /\\^sp_\\*/,
+        "status": "draft",
+        "subtitle": null,
+        "thumbnail": null,
+        "title": "Test product1",
+        "type_id": "test-type",
+        "updated_at": Any<String>,
+        "weight": null,
+        "width": null,
+      },
+      Object {
+        "collection_id": "test-collection",
+        "created_at": Any<String>,
+        "deleted_at": null,
+        "description": "test-product-description",
+        "discountable": true,
+        "external_id": null,
+        "handle": "test-product_filtering_1",
+        "height": null,
+        "hs_code": null,
+        "id": "test-product_filtering_1",
+        "is_giftcard": false,
+        "length": null,
+        "material": null,
+        "metadata": null,
+        "mid_code": null,
+        "origin_country": null,
+        "profile_id": StringMatching /\\^sp_\\*/,
+        "status": "proposed",
+        "subtitle": null,
+        "thumbnail": null,
+        "title": "Test product filtering 1",
+        "type_id": "test-type",
+        "updated_at": Any<String>,
+        "weight": null,
+        "width": null,
+      },
+    ],
+    "title": "Test collection",
+    "updated_at": Any<String>,
+  },
+}
+`;
+
 exports[`/admin/collections /admin/collections creates a collection 1`] = `
 Object {
   "collection": Object {
@@ -256,6 +353,16 @@ Object {
   "count": 3,
   "limit": 10,
   "offset": 0,
+}
+`;
+
+exports[`/admin/collections /admin/collections removes products from collection 1`] = `
+Object {
+  "id": "test-collection",
+  "object": "product-collection",
+  "removed_products": Array [
+    "test-product",
+  ],
 }
 `;
 
