@@ -39,7 +39,7 @@ class CustomerGroupService extends BaseService {
     return cloned
   }
 
-  create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
+  async create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
     return this.atomicPhase_(async (manager) => {
       try {
         const cgRepo: CustomerGroupRepository = manager.getCustomRepository(

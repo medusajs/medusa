@@ -19,7 +19,7 @@ export type AdminCustomersRes = {
 export type AdminCustomerGroupsDeleteRes = DeleteResponse
 
 export type AdminCustomerGroupsListRes = PaginatedResponse & {
-  customers: Customer[]
+  customerGroups: Customer[]
 }
 
 export * from "./create-customer-group"
