@@ -11,7 +11,6 @@ import {
   OneToMany,
   JoinColumn,
   ManyToMany,
-  JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
@@ -20,6 +19,10 @@ import { Address } from "./address"
 import { CustomerGroup } from "./customer-group"
 import { Order } from "./order"
 
+export enum CustomerType {
+  CONSUMER = "consumer",
+  BUSINESS = "business",
+}
 @Entity()
 export class Customer {
   @PrimaryColumn()
@@ -54,6 +57,17 @@ export class Customer {
 
   @Column({ default: false })
   has_account: boolean
+
+  @DbAwareColumn({
+    type: "enum",
+    enum: CustomerType,
+    nullable: true,
+    default: CustomerType.CONSUMER,
+  })
+  type: CustomerType
+
+  @Column({ nullable: true })
+  tax_registration_number: string
 
   @OneToMany(() => Order, (order) => order.customer)
   orders: Order[]
