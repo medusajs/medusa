@@ -11,14 +11,14 @@ class TypesenseSearchService extends SearchService {
 
     // options.config should be the same format used to initialize the Typesense Client
     //  as described here: https://typesense.org/docs/0.22.1/api/authentication.html
-    this.client_ = new Typesense(options.config)
+    this.client_ = new Typesense(options.clientConfiguration)
   }
 
   createIndex(indexName, options) {
-    // options.settings.{indexName} should be the schema of the collection
+    // options.collectionSchemas.{indexName} should be the schema of the collection
     //  as described here: https://typesense.org/docs/0.22.1/api/collections.html#create-a-collection
 
-    return this.client_.collections().create(options.settings[indexName])
+    return this.client_.collections().create(options.collectionSchemas[indexName])
   }
 
   getIndex(indexName) {

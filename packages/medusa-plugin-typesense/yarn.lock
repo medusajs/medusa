@@ -5164,10 +5164,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typesense@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/typesense/-/typesense-1.1.2.tgz#f3357889247a56b33e047115e15ccbd87c185cc5"
-  integrity sha512-H5SmXCWhesL71YLqKg3i6yRfklsvlV3RQOCvdvMlkD84Na0te8k6oESE/ct3YMfurTYYR3cU9qnMmmBalOKZig==
+typesense@^1.1.4-4:
+  version "1.1.4-4"
+  resolved "https://registry.yarnpkg.com/typesense/-/typesense-1.1.4-4.tgz#332a4abbe10fbafb30224e91b9a7691f8cbea76d"
+  integrity sha512-gxgApZ/RskisqHrQ+atJBQYkH5hnLNIgOcfNj/wzcd3j8J2uC0/eNtyxiuCa5cmmM3L1EXO1f25FIYfwX4LCtA==
   dependencies:
     axios "^0.21.1"
     loglevel "^1.7.1"
