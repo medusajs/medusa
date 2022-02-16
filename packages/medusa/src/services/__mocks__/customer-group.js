@@ -6,6 +6,10 @@ export const CustomerGroupServiceMock = {
   create: jest.fn().mockImplementation((f) => {
     return Promise.resolve(f)
   }),
+
+  retrieve: jest.fn().mockImplementation((f) => {
+    return Promise.resolve(f)
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
@@ -13,3 +17,4 @@ const mock = jest.fn().mockImplementation(() => {
 })
 
 export default mock
+
