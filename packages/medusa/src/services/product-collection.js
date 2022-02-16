@@ -162,6 +162,32 @@ class ProductCollectionService extends BaseService {
     })
   }
 
+  async addProducts(collectionId, productIds) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
+
+      await productRepo.bulkAddToCollection(productIds, id)
+
+      return await this.retrieve(id, {
+        relations: ["products"],
+      })
+    })
+  }
+
+  async removeProducts(collectionId, productIds) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
+
+      await productRepo.bulkRemoveFromCollection(productIds, id)
+
+      return Promise.resolve()
+    })
+  }
+
   /**
    * Lists product collections
    * @param {Object} selector - the query object for find
