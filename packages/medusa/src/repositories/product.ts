@@ -5,7 +5,7 @@ import {
   FindOperator,
   In,
   OrderByCondition,
-  Repository
+  Repository,
 } from "typeorm"
 import { ProductTag } from ".."
 import { Product } from "../models/product"
@@ -77,7 +77,9 @@ export class ProductRepository extends Repository<Product> {
     return [entities, count]
   }
 
-  private getGroupedRelations(relations: Array<keyof Product>): {
+  private getGroupedRelations(
+    relations: Array<keyof Product>
+  ): {
     [toplevel: string]: string[]
   } {
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -195,8 +197,9 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+    const entitiesToReturn = this.mergeEntitiesWithRelations(
+      entitiesAndRelations
+    )
 
     return [entitiesToReturn, count]
   }
@@ -237,8 +240,9 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+    const entitiesToReturn = this.mergeEntitiesWithRelations(
+      entitiesAndRelations
+    )
 
     return entitiesToReturn
   }
@@ -262,8 +266,8 @@ export class ProductRepository extends Repository<Product> {
     collectionId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
-    .update(Product)
-    .set({ collection_id: collectionId })
+      .update("product")
+      .set({ collection_id: collectionId })
       .where({ id: In(productIds) })
       .execute()
 
@@ -275,8 +279,8 @@ export class ProductRepository extends Repository<Product> {
     collectionId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
-    .update(Product)
-    .set({ collection_id: undefined })
+      .update("product")
+      .set({ collection_id: null })
       .where({ id: In(productIds), collection_id: collectionId })
       .execute()
 
