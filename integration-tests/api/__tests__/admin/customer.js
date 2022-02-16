@@ -262,6 +262,13 @@ describe("/admin/customers", () => {
       expect(response.status).toEqual(200)
       expect(response.data.customer).toMatchSnapshot({
         id: expect.any(String),
+        shipping_addresses: [
+          {
+            id: "test-address",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
@@ -271,7 +278,7 @@ describe("/admin/customers", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/customers/test-customer-1?expand=shipping_addresses", {
+        .get("/admin/customers/test-customer-1?expand=billing_address", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -283,14 +290,11 @@ describe("/admin/customers", () => {
       expect(response.status).toEqual(200)
       expect(response.data.customer).toMatchSnapshot({
         id: "test-customer-1",
-        shipping_addresses: expect.arrayContaining([
-          expect.objectContaining({
-            id: "test-address",
-            customer_id: "test-customer-1",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          }),
-        ]),
+        billing_address: {
+          id: "test-address",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
