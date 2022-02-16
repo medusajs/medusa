@@ -266,7 +266,7 @@ export class ProductRepository extends Repository<Product> {
     collectionId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
-      .update("product")
+      .update(Product)
       .set({ collection_id: collectionId })
       .where({ id: In(productIds) })
       .execute()
@@ -279,7 +279,7 @@ export class ProductRepository extends Repository<Product> {
     collectionId: string
   ): Promise<Product[]> {
     await this.createQueryBuilder()
-      .update("product")
+      .update(Product)
       .set({ collection_id: null })
       .where({ id: In(productIds), collection_id: collectionId })
       .execute()
