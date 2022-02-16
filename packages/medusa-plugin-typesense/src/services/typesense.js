@@ -46,16 +46,9 @@ class TypesenseSearchService extends SearchService {
   }
 
   search(indexName, query, options) {
-    // TODO: What is the format of `filter` below?
-    // Need to convert that into Typesense's filter_by format
-
-    const { paginationOptions, filter, additionalOptions } = options
-
     return this.client_.collections(indexName).documents().search({
-      per_page: paginationOptions.limit,
-      page: Math.floor(paginationOptions.offset / paginationOptions.limit),
-      filter_by: filter,
-      ...additionalOptions
+      q: query,
+      ...options
     })
   }
 
