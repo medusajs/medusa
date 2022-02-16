@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const { Customer, Address, CustomerGroup } = require("@medusajs/medusa")
+=======
+const { Customer, CustomerGroup, Address } = require("@medusajs/medusa")
+>>>>>>> 24cb89d2 (`updateCustomerGroups` method)
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -39,5 +43,23 @@ module.exports = async (connection, data = {}) => {
   await manager.insert(CustomerGroup, {
     id: "customer-group-1",
     name: "vip-customers",
+  })
+
+  await manager.insert(CustomerGroup, {
+    id: "test-group-4",
+    name: "test-group",
+  })
+
+  // await manager.insert(Customer, {
+  //   id: "test-customer-5",
+  //   email: "test5@email.com",
+  //   groups: [{ id: "gid1", name: "group-name-1" }],
+  // })
+
+  await manager.insert(Address, {
+    id: "test-address",
+    first_name: "Lebron",
+    last_name: "James",
+    customer_id: "test-customer-1",
   })
 }

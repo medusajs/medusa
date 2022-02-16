@@ -1,4 +1,10 @@
-import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsArray,
+  IsEmail,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
@@ -31,6 +37,9 @@ import { validator } from "../../../../utils/validator"
  *           password:
  *             type: string
  *             description: The Customer's password.
+ *           groups:
+ *             type: object[]
+ *             description: List of customer group ids.
  *           metadata:
  *             type: object
  *             description: Metadata for the customer.
@@ -65,7 +74,7 @@ export default async (req, res) => {
   await customerService.update(id, validated)
 
   customer = await customerService.retrieve(id, {
-    relations: ["orders"],
+    relations: ["orders", "groups"],
   })
   res.status(200).json({ customer })
 }
@@ -94,4 +103,8 @@ export class AdminPostCustomersCustomerReq {
   @IsObject()
   @IsOptional()
   metadata?: object
+
+  @IsArray()
+  @IsOptional()
+  groups?: object[]
 }
