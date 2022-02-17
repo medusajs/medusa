@@ -169,14 +169,15 @@ class ProductCollectionService extends BaseService {
 
       try {
         const { id } = await this.retrieve(collectionId, { select: ["id"] })
+
         await productRepo.bulkAddToCollection(productIds, id)
+
+        return await this.retrieve(id, {
+          relations: ["products"],
+        })
       } catch (error) {
-        console.log(error)
         throw formatException(error)
       }
-      return await this.retrieve(id, {
-        relations: ["products"],
-      })
     })
   }
 
