@@ -83,7 +83,7 @@ class AdminDraftOrdersResource extends BaseResource {
   markPaid(
     id: string
   ): ResponsePromise<AdminPostDraftOrdersDraftOrderRegisterPaymentRes> {
-    const path = `/admin/draft-orders/${id}/register-payment`
+    const path = `/admin/draft-orders/${id}/pay`
     return this.client.request("POST", path, {})
   }
 
