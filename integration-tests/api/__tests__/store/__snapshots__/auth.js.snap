@@ -13,6 +13,8 @@ Object {
   "metadata": null,
   "orders": Array [],
   "phone": null,
+  "tax_registration_number": null,
+  "type": "consumer",
   "updated_at": Any<String>,
 }
 `;
