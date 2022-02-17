@@ -61,29 +61,6 @@ describe("/admin/customer-groups", () => {
         })
       )
     })
-
-    // it("fails to create a duplicate customer group", async () => {
-    //   const api = useApi()
-
-    //   const payload = {
-    //     name: "vip-customer1s",
-    //   }
-
-    //   const response = await api
-    //     .post("/admin/customer-groups", payload, {
-    //       headers: {
-    //         Authorization: "Bearer test_token",
-    //       },
-    //     })
-    //     .catch((err) => console.log(err.response.data.message))
-
-    //   expect(response.status).toEqual(200)
-    //   expect(response.data.customerGroup).toEqual(
-    //     expect.objectContaining({
-    //       name: "test group",
-    //     })
-    //   )
-    // })
   })
 
   describe("POST /admin/customer-groups/{id}/batch", () => {
