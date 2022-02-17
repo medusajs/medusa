@@ -10,8 +10,8 @@ import BaseResource from "../base"
 
 class AdminNotificationsResource extends BaseResource {
   list(
-    query?: AdminGetNotificationsParams
-  ): ResponsePromise<AdminNotificationsListRes> {
+    query?: AdminGetNotificationsParams,
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotificationsListRes> {
     let path = `/admin/notifications`
 
     if (query) {
@@ -19,15 +19,15 @@ class AdminNotificationsResource extends BaseResource {
       path = `/admin/notifications?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   resend(
     id: string,
-    payload: AdminPostNotificationsNotificationResendReq
-  ): ResponsePromise<AdminNotificationsRes> {
+    payload: AdminPostNotificationsNotificationResendReq,
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotificationsRes> {
     const path = `/admin/notifications/${id}/resend`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 
