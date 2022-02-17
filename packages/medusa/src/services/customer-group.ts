@@ -3,6 +3,7 @@ import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
+import { CustomerGroupsBatchCustomer } from "../types/customer-groups"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -46,7 +47,7 @@ class CustomerGroupService extends BaseService {
           this.customerGroupRepository_
         )
 
-        const created = cgRepo.create(group)
+        const created = await cgRepo.create(group)
 
         const result = await cgRepo.save(created)
 
@@ -60,14 +61,15 @@ class CustomerGroupService extends BaseService {
     })
   }
 
-  async addCustomerBatch(id: string, customerIds: any): Promise<CustomerGroup> {
+  async addCustomerBatch(
+    id: string,
+    customerIds: CustomerGroupsBatchCustomer[]
+  ): Promise<CustomerGroup> {
     return this.atomicPhase_(async (manager) => {
       const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
         this.customerGroupRepository_
       )
-      const result = await cgRepo.addCustomerBatch(id, customerIds)
-
-      return result
+      return await cgRepo.addCustomerBatch(id, customerIds)
     })
   }
 }

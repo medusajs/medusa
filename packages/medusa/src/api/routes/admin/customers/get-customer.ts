@@ -24,7 +24,7 @@ export default async (req, res) => {
   const { id } = req.params
   const customerService: CustomerService = req.scope.resolve("customerService")
   const customer = await customerService.retrieve(id, {
-    relations: ["orders", "shipping_addresses"],
+    relations: ["orders", "shipping_addresses", "groups"],
   })
 
   res.json({ customer })

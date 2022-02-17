@@ -1,12 +1,14 @@
+import { omit } from "lodash"
 import { MedusaError } from "medusa-core-utils"
-import { EntityRepository, Repository } from "typeorm"
+import { EntityRepository, Repository, getManager } from "typeorm"
 import { CustomerGroup } from "../models/customer-group"
+import { CustomerGroupsBatchCustomer } from "../types/customer-groups"
 
 @EntityRepository(CustomerGroup)
 export class CustomerGroupRepository extends Repository<CustomerGroup> {
   async addCustomerBatch(
-    groupId,
-    customerIds
+    groupId: string,
+    customerIds: CustomerGroupsBatchCustomer[]
   ): Promise<CustomerGroup | undefined> {
     const customerGroup = await this.findOne(groupId)
     if (!customerGroup) {
@@ -21,10 +23,12 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
       customer_group_id: groupId,
     }))
 
-    await this.createQueryBuilder()
+    await getManager()
+      .createQueryBuilder()
       .insert()
       .into("customer_group_customers")
       .values(insertEntities)
+      .orIgnore()
       .execute()
 
     return customerGroup

@@ -58,6 +58,17 @@ export class Customer {
   @OneToMany(() => Order, (order) => order.customer)
   orders: Order[]
 
+  @JoinTable({
+    name: "customer_group_customers",
+    inverseJoinColumn: {
+      name: "customer_group_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "customer_id",
+      referencedColumnName: "id",
+    },
+  })
   @ManyToMany(() => CustomerGroup, { cascade: true })
   groups: CustomerGroup[]
 

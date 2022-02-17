@@ -1,10 +1,11 @@
 import { Type } from "class-transformer"
 import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
 import { CustomerGroupService } from "../../../../services"
+import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups/{id}/
+ * @oas [post] /customer-groups/{id}/batch
  * operationId: "PostCustomerGroupsBatch"
  * summary: "Add a list of customers to a customer group "
  * description: "Adds a list of customers, represented by id's, to a customer group."
@@ -35,18 +36,13 @@ export default async (req, res) => {
 
   const customerGroup = await customerGroupService.addCustomerBatch(
     id,
-    validated
+    validated.customerIds
   )
   res.status(200).json({ customerGroup })
 }
 
-class AdminPostCustomerGroupsBatchReqCustomer {
-  @IsString()
-  id: string
-}
-
 export class AdminPostCustomerGroupsBatchReq {
   @ValidateNested({ each: true })
-  @Type(() => AdminPostCustomerGroupsBatchReqCustomer)
-  customerIds: AdminPostCustomerGroupsBatchReqCustomer[]
+  @Type(() => CustomerGroupsBatchCustomer)
+  customerIds: CustomerGroupsBatchCustomer[]
 }
