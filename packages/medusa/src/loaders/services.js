@@ -1,7 +1,6 @@
-import { BaseService, PaymentService } from "medusa-interfaces"
 import glob from "glob"
 import path from "path"
-import { Lifetime, asFunction } from "awilix"
+import { asFunction } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
 
@@ -17,11 +16,13 @@ export default ({ container, configModule }) => {
   const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach(fn => {
     const loaded = require(fn).default
-    const name = formatRegistrationName(fn)
-    container.register({
-      [name]: asFunction(
-        cradle => new loaded(cradle, configModule)
-      ).singleton(),
-    })
+    if (loaded) {
+      const name = formatRegistrationName(fn)
+      container.register({
+        [name]: asFunction(
+          cradle => new loaded(cradle, configModule),
+        ).singleton(),
+      })
+    }
   })
 }
