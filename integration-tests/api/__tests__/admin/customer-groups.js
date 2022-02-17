@@ -62,28 +62,28 @@ describe("/admin/customer-groups", () => {
       )
     })
 
-    it("fails to create a duplicate customer group", async () => {
-      const api = useApi()
+    // it("fails to create a duplicate customer group", async () => {
+    //   const api = useApi()
 
-      const payload = {
-        name: "vip-customer1s",
-      }
+    //   const payload = {
+    //     name: "vip-customer1s",
+    //   }
 
-      const response = await api
-        .post("/admin/customer-groups", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => console.log(err.response.data.message))
+    //   const response = await api
+    //     .post("/admin/customer-groups", payload, {
+    //       headers: {
+    //         Authorization: "Bearer test_token",
+    //       },
+    //     })
+    //     .catch((err) => console.log(err.response.data.message))
 
-      expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
-        expect.objectContaining({
-          name: "test group",
-        })
-      )
-    })
+    //   expect(response.status).toEqual(200)
+    //   expect(response.data.customerGroup).toEqual(
+    //     expect.objectContaining({
+    //       name: "test group",
+    //     })
+    //   )
+    // })
   })
 
   describe("POST /admin/customer-groups/{id}/batch", () => {
@@ -170,7 +170,11 @@ describe("/admin/customer-groups", () => {
 
       // re-add customer-1 to the customer group along with new addintion: customer-2
       const payload_2 = {
-        customerIds: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
+        customerIds: [
+          { id: "test-customer-1" },
+          { id: "test-customer-27" },
+          { id: "test-customer-2" },
+        ],
       }
 
       await api.post("/admin/customer-groups/test-group-0/batch", payload_2, {
@@ -180,11 +184,12 @@ describe("/admin/customer-groups", () => {
       })
 
       // check that customer-1 is only added once and that customer-2 is added correctly
-      const getCustomerResponse = await api
-        .get("/admin/customers?expand=groups", {
+      const getCustomerResponse = await api.get(
+        "/admin/customers?expand=groups",
+        {
           headers: { Authorization: "Bearer test_token" },
-        })
-        .catch((err) => console.log(err))
+        }
+      )
 
       expect(getCustomerResponse.data.customers).toEqual(
         expect.arrayContaining([
