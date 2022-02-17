@@ -1,4 +1,4 @@
-const { Customer, Address } = require("@medusajs/medusa")
+const { Customer, Address, CustomerGroup } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -22,6 +22,11 @@ module.exports = async (connection, data = {}) => {
     id: "test-customer-has_account",
     email: "test4@email.com",
     has_account: true,
+  })
+
+  await manager.insert(CustomerGroup, {
+    name: "vip-customers",
+    id: "customer-group-1",
   })
 
   await manager.insert(Address, {

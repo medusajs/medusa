@@ -29,6 +29,7 @@ describe("/admin/customer-groups", () => {
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
       } catch (err) {
         console.log(err)
         throw err
@@ -44,7 +45,7 @@ describe("/admin/customer-groups", () => {
       const api = useApi()
 
       const payload = {
-        name: 'test group'
+        name: "test group",
       }
 
       const response = await api.post("/admin/customer-groups", payload, {
@@ -54,10 +55,34 @@ describe("/admin/customer-groups", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(expect.objectContaining({
-        name: 'test group'
-      }))
+      expect(response.data.customerGroup).toEqual(
+        expect.objectContaining({
+          name: "test group",
+        })
+      )
+    })
 
+    it("Fails to create duplciate customer group", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      const payload = {
+        name: "vip-customers",
+      }
+
+      await api
+        .post("/admin/customer-groups", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(402)
+          expect(err.response.data.type).toEqual("duplicate_error")
+          expect(err.response.data.message).toEqual(
+            "Key (name)=(vip-customers) already exists."
+          )
+        })
     })
   })
 })
