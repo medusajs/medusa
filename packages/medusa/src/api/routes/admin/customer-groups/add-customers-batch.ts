@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { IsObject, IsOptional, IsString, ValidateNested } from "class-validator"
+import { ValidateNested } from "class-validator"
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
 import { validator } from "../../../../utils/validator"

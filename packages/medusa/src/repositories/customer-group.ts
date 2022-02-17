@@ -1,8 +1,8 @@
-import { omit } from "lodash"
+import { EntityRepository, Repository } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
-import { EntityRepository, Repository, getManager } from "typeorm"
 import { CustomerGroup } from "../models/customer-group"
 import { CustomerGroupsBatchCustomer } from "../types/customer-groups"
+import { Customer } from ".."
 
 @EntityRepository(CustomerGroup)
 export class CustomerGroupRepository extends Repository<CustomerGroup> {
@@ -18,16 +18,25 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
       )
     }
 
-    const insertEntities = customerIds.map(({ id }) => ({
-      customer_id: id,
-      customer_group_id: groupId,
-    }))
+    // filter out non existing customers (required since 'orIgnore' only deals with duplicate keys)
+    const existingCustomers = await this.createQueryBuilder("c_group")
+      .select(["customer.id"])
+      .from(Customer, "customer")
+      .where("customer.id IN (:...customer_ids)", {
+        customer_ids: customerIds.map(({ id }) => id),
+      })
+      .getMany()
+      .then((value) =>
+        value.map(({ id }) => ({
+          customer_id: id,
+          customer_group_id: groupId,
+        }))
+      )
 
-    await getManager()
-      .createQueryBuilder()
+    await this.createQueryBuilder()
       .insert()
       .into("customer_group_customers")
-      .values(insertEntities)
+      .values(existingCustomers)
       .orIgnore()
       .execute()
 
