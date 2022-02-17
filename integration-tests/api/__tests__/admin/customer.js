@@ -254,34 +254,55 @@ describe("/admin/customers", () => {
         ])
       )
 
-      // response = await api
-      //   .post(
-      //     "/admin/customers/test-customer-3",
-      //     {
-      //       groups: [
-      //         { id: "tst-group-id-1", name: "group1" },
-      //         { id: "tst-group-id-2", name: "group2" },
-      //       ],
-      //     },
-      //     {
-      //       headers: {
-      //         Authorization: "Bearer test_token",
-      //       },
-      //     }
-      //   )
-      //   .catch((err) => {
-      //     console.log(err)
-      //   })
+      // Try adding a non existing group
 
-      // expect(response.status).toEqual(200)
-      // expect(response.data.customer).toEqual(
-      //   expect.objectContaining({
-      //     groups: [
-      //       { id: "tst-group-id-1", name: "group1" },
-      //       { id: "tst-group-id-2", name: "group2" },
-      //     ],
-      //   })
-      // )
+      response = await api
+        .post(
+          "/admin/customers/test-customer-3",
+          {
+            groups: [
+              { id: "test-group-4", name: "test-group" },
+              { id: "fake-group-0", name: "fake group" },
+            ],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(1)
+      expect(response.data.customer.groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-group-4", name: "test-group" }),
+        ])
+      )
+
+      // Delete all groups
+
+      response = await api
+        .post(
+          "/admin/customers/test-customer-3",
+          {
+            groups: [],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(0)
     })
   })
 
