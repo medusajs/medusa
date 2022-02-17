@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, ILike } from "typeorm"
+import { formatException } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate product collections.
@@ -166,10 +167,13 @@ class ProductCollectionService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      const { id } = await this.retrieve(collectionId, { select: ["id"] })
-
-      await productRepo.bulkAddToCollection(productIds, id)
-
+      try {
+        const { id } = await this.retrieve(collectionId, { select: ["id"] })
+        await productRepo.bulkAddToCollection(productIds, id)
+      } catch (error) {
+        console.log(error)
+        throw formatException(error)
+      }
       return await this.retrieve(id, {
         relations: ["products"],
       })
