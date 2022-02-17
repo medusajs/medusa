@@ -11,26 +11,28 @@ class ProductVariantsResource extends BaseResource {
   /**
    * @description Retrieves a single product variant
    * @param {string} id is required
+   * @param customHeaders
    * @return {ResponsePromise<StoreVariantsRes>}
    */
-  retrieve(id: string): ResponsePromise<StoreVariantsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreVariantsRes> {
     const path = `/store/variants/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Retrieves a list of of Product Variants
-   * @param {StoreVariantsListParamsObject} query
+   * @param {StoreGetVariantsParams} query
+   * @param customHeaders
    * @return {ResponsePromise<StoreVariantsListRes>}
    */
-  list(query?: StoreGetVariantsParams): ResponsePromise<StoreVariantsListRes> {
+  list(query?: StoreGetVariantsParams, customHeaders: Record<string, any> = {}): ResponsePromise<StoreVariantsListRes> {
     let path = `/store/variants`
     if (query) {
       const queryString = qs.stringify(query)
       path += `?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 }
 
