@@ -86,7 +86,7 @@ describe("CustomerService", () => {
 
   describe("create", () => {
     const customerRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.email === "tony@stark.com") {
           return Promise.resolve({
             id: IdMap.getId("exists"),
@@ -162,14 +162,14 @@ describe("CustomerService", () => {
 
   describe("update", () => {
     const customerRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
 
     const addressRepository = MockRepository({
-      create: data => data,
-      save: data => Promise.resolve(data),
+      create: (data) => data,
+      save: (data) => Promise.resolve(data),
     })
 
     const customerService = new CustomerService({
@@ -246,9 +246,47 @@ describe("CustomerService", () => {
     })
   })
 
+  describe("update customer groups", () => {
+    const customerRepository = MockRepository({
+      findOne: (query) => {
+        return Promise.resolve({ id: IdMap.getId("ironman") })
+      },
+    })
+
+    const addressRepository = MockRepository({
+      create: (data) => data,
+      save: (data) => Promise.resolve(data),
+    })
+
+    const customerGroupRepository = MockRepository({})
+
+    const customerService = new CustomerService({
+      manager: MockManager,
+      addressRepository,
+      customerRepository,
+      customerGroupRepository,
+      eventBusService,
+    })
+
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
+
+    it("calls updateGroups logic if `groups` prop is sent as a param", async () => {
+      await customerService.update(IdMap.getId("ironman"), {
+        groups: [{ id: "group-id", name: "group-name" }],
+      })
+
+      expect(customerGroupRepository.findOne).toBeCalledTimes(1)
+      expect(customerGroupRepository.findOne).toBeCalledWith("group-id")
+
+      expect(customerRepository.save).toBeCalledTimes(1)
+    })
+  })
+
   describe("updateAddress", () => {
     const addressRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         return Promise.resolve({
           id: IdMap.getId("hollywood-boulevard"),
           address_1: "Hollywood Boulevard 2",
@@ -312,7 +350,7 @@ describe("CustomerService", () => {
 
   describe("removeAddress", () => {
     const addressRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         return Promise.resolve({
           id: IdMap.getId("hollywood-boulevard"),
           address_1: "Hollywood Boulevard 2",
@@ -345,7 +383,7 @@ describe("CustomerService", () => {
 
   describe("delete", () => {
     const customerRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
