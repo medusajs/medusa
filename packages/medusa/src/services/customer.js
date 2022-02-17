@@ -440,16 +440,15 @@ class CustomerService extends BaseService {
   }
 
   /**
-   * Updates customer groups.
+   * Updates customer groups list.
    *
    * @param {Customer} customer - the Customer to update
-   * @param {string[]} groups - an array of customer group ids
-   * @param {CustomerGroupRepository} cgRepo - an array of customer group ids
-   * @return {Promise} the result of the update operation
+   * @param {string[]} groups - an array of customer groups
+   * @param {CustomerGroupRepository} customerGroupRepository - customer groups repo
    */
-  async updateCustomerGroups(customer, groups, cgRepo) {
+  async updateCustomerGroups(customer, groups, customerGroupRepository) {
     customer.groups = await Promise.all(
-      groups.map(async (g) => await cgRepo.findOne(g.id))
+      groups.map(async (g) => await customerGroupRepository.findOne(g.id))
     )
   }
 
