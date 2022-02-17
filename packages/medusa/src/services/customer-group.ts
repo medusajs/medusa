@@ -39,6 +39,11 @@ class CustomerGroupService extends BaseService {
     return cloned
   }
 
+  /**
+   * Creates a customer group with the provided data.
+   * @param {DeepPartial<CustomerGroup>} group - the customergroup to create
+   * @return {Promise} the result of the create operation
+   */
   async create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
     return this.atomicPhase_(async (manager) => {
       try {
