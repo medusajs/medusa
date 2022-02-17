@@ -59,6 +59,17 @@ class CustomerGroupService extends BaseService {
       }
     })
   }
+
+  async addCustomerBatch(id: string, customerIds: any): Promise<CustomerGroup> {
+    return this.atomicPhase_(async (manager) => {
+      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
+        this.customerGroupRepository_
+      )
+      const result = await cgRepo.addCustomerBatch(id, customerIds)
+
+      return result
+    })
+  }
 }
 
 export default CustomerGroupService
