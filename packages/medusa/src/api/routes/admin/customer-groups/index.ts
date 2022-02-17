@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { Customer, CustomerGroup } from "../../../.."
+import { CustomerGroup } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
@@ -13,13 +13,13 @@ export default (app) => {
 }
 
 export type AdminCustomersRes = {
-  customerGroup: CustomerGroup
+  customer_group: CustomerGroup
 }
 
 export type AdminCustomerGroupsDeleteRes = DeleteResponse
 
 export type AdminCustomerGroupsListRes = PaginatedResponse & {
-  customerGroups: Customer[]
+  customer_groups: CustomerGroup[]
 }
 
 export * from "./create-customer-group"
