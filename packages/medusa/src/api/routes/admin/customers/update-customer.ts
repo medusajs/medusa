@@ -38,7 +38,7 @@ import { validator } from "../../../../utils/validator"
  *             type: string
  *             description: The Customer's password.
  *           groups:
- *             type: array
+ *             type: Group[]
  *             description: A list of customer groups to which the customer belongs.
  *             items:
  *               required:
@@ -86,6 +86,11 @@ export default async (req, res) => {
   res.status(200).json({ customer })
 }
 
+class Group {
+  @IsString()
+  id: string
+}
+
 export class AdminPostCustomersCustomerReq {
   @IsEmail()
   @IsOptional()
@@ -113,5 +118,5 @@ export class AdminPostCustomersCustomerReq {
 
   @IsArray()
   @IsOptional()
-  groups?: object[]
+  groups?: Group[]
 }

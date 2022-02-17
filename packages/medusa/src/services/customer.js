@@ -21,7 +21,7 @@ class CustomerService extends BaseService {
     customerRepository,
     eventBusService,
     addressRepository,
-    customerGroupRepository,
+    customerGroupService,
   }) {
     super()
 
@@ -37,7 +37,7 @@ class CustomerService extends BaseService {
     /** @private @const {AddressRepository} */
     this.addressRepository_ = addressRepository
 
-    this.customerGroupRepository_ = customerGroupRepository
+    this.customerGroupService_ = customerGroupService
   }
 
   withTransaction(transactionManager) {
@@ -424,10 +424,8 @@ class CustomerService extends BaseService {
       }
 
       if (groups) {
-        const cgRepo = manager.getCustomRepository(
-          this.customerGroupRepository_
-        )
-        await this.updateCustomerGroups(customer, groups, cgRepo)
+        const groups = this.customerGroupService_.retrieveByIds(groups)
+        customer.groups = groups
       }
 
       const updated = await customerRepository.save(customer)
