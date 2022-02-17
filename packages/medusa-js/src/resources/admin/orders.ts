@@ -1,22 +1,21 @@
 import {
-  AdminPostOrdersOrderReq,
-  AdminOrdersRes,
   AdminGetOrdersParams,
   AdminOrdersListRes,
-  AdminPostOrdersReq,
-  AdminPostOrdersOrderRefundsReq,
+  AdminOrdersRes,
+  AdminPostOrdersOrderClaimsClaimFulfillmentsReq,
+  AdminPostOrdersOrderClaimsClaimReq,
+  AdminPostOrdersOrderClaimsClaimShipmentsReq,
+  AdminPostOrdersOrderClaimsReq,
   AdminPostOrdersOrderFulfillmentsReq,
-  AdminPostOrdersOrderShipmentReq,
+  AdminPostOrdersOrderRefundsReq,
+  AdminPostOrdersOrderReq,
   AdminPostOrdersOrderReturnsReq,
+  AdminPostOrdersOrderShipmentReq,
   AdminPostOrdersOrderShippingMethodsReq,
   AdminPostOrdersOrderSwapsReq,
-  AdminPostOrdersOrderSwapsSwapReceiveReq,
   AdminPostOrdersOrderSwapsSwapFulfillmentsReq,
   AdminPostOrdersOrderSwapsSwapShipmentsReq,
-  AdminPostOrdersOrderClaimsReq,
-  AdminPostOrdersOrderClaimsClaimFulfillmentsReq,
-  AdminPostOrdersOrderClaimsClaimShipmentsReq,
-  AdminPostOrdersOrderClaimsClaimReq,
+  AdminPostOrdersReq,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -156,16 +155,6 @@ class AdminOrdersResource extends BaseResource {
   cancelSwap(id: string, swapId: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminOrdersRes> {
     const path = `/admin/orders/${id}/swaps/${swapId}/cancel`
     return this.client.request("POST", path, {}, {}, customHeaders)
-  }
-
-  receiveSwap(
-    id: string,
-    swapId: string,
-    payload: AdminPostOrdersOrderSwapsSwapReceiveReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminOrdersRes> {
-    const path = `/admin/orders/${id}/swaps/${swapId}/receive`
-    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   fulfillSwap(

@@ -84,8 +84,8 @@ class AdminDraftOrdersResource extends BaseResource {
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPostDraftOrdersDraftOrderRegisterPaymentRes> {
-    const path = `/admin/draft-orders/${id}/register-payment`
-    return this.client.request("POST", path, {}, {}, customHeaders)
+    const path = `/admin/draft-orders/${id}/pay`
+    return this.client.request("POST", path, {})
   }
 
   /**
