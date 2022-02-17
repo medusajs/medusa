@@ -53,7 +53,7 @@ class CustomerGroupService extends BaseService {
         return result
       } catch (err) {
         if (err.code === "23505") {
-          throw new MedusaError(MedusaError.Types.DB_ERROR, err.detail)
+          throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
         }
         throw err
       }
