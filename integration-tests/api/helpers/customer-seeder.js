@@ -36,15 +36,8 @@ module.exports = async (connection, data = {}) => {
     has_account: true,
   })
 
-  // await manager.insert(CustomerGroup, {
-  //   id: "customer-group-1",
-  //   name: "vip-customers",
-  // })
-
-  await manager.insert(Address, {
-    id: "test-address",
-    first_name: "Lebron",
-    last_name: "James",
-    customer_id: "test-customer-1",
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-1",
+    name: "vip-customers",
   })
 }
