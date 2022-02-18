@@ -8,6 +8,13 @@ const eventBusService = {
   },
 }
 
+const customerGroupService = {
+  withTransaction: function() {
+    return this
+  },
+  list: jest.fn().mockImplementation(() => Promise.resolve()),
+}
+
 describe("CustomerService", () => {
   describe("retrieve", () => {
     const customerRepository = MockRepository({
@@ -258,13 +265,16 @@ describe("CustomerService", () => {
       save: (data) => Promise.resolve(data),
     })
 
-    const customerGroupRepository = MockRepository({})
+    const customerGroupRepository = MockRepository({
+      findByIds: jest.fn().mockImplementation(() => Promise.resolve()),
+    })
 
     const customerService = new CustomerService({
       manager: MockManager,
       addressRepository,
       customerRepository,
       customerGroupRepository,
+      customerGroupService,
       eventBusService,
     })
 
@@ -272,13 +282,15 @@ describe("CustomerService", () => {
       jest.clearAllMocks()
     })
 
-    it("calls updateGroups logic if `groups` prop is sent as a param", async () => {
+    it("calls `customerGroupService.list` if `groups` prop is received as a param", async () => {
       await customerService.update(IdMap.getId("ironman"), {
         groups: [{ id: "group-id", name: "group-name" }],
       })
 
-      expect(customerGroupRepository.findOne).toBeCalledTimes(1)
-      expect(customerGroupRepository.findOne).toBeCalledWith("group-id")
+      expect(customerGroupService.list).toBeCalledTimes(1)
+      expect(customerGroupService.list).toBeCalledWith([
+        { id: "group-id", name: "group-name" },
+      ])
 
       expect(customerRepository.save).toBeCalledTimes(1)
     })
