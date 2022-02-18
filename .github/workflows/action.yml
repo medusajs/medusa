@@ -1,5 +1,5 @@
 name: Medusa Pipeline
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   unit-tests:
@@ -73,9 +73,9 @@ jobs:
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: integration-tests
-      
+
       - name: Build Packages
-        run: lerna run build
+        run: yarn run build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
