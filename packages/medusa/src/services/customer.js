@@ -437,19 +437,6 @@ class CustomerService extends BaseService {
   }
 
   /**
-   * Updates customer groups list.
-   *
-   * @param {Customer} customer - the Customer to update
-   * @param {string[]} groups - an array of customer groups
-   * @param {CustomerGroupRepository} customerGroupRepository - customer groups repo
-   */
-  async updateCustomerGroups(customer, groups, customerGroupRepository) {
-    customer.groups = await Promise.all(
-      groups.map(async (g) => await customerGroupRepository.findOne(g.id))
-    )
-  }
-
-  /**
    * Updates the customers' billing address.
    * @param {Customer} customer - the Customer to update
    * @param {Object|string} addressOrId - the value to set the billing address to
