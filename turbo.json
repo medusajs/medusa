@@ -5,7 +5,10 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": [
-        "build/**"
+        "dist/**",
+        "api/**",
+        "services/**",
+        "subscribers/**"
       ]
     },
     "test": {
