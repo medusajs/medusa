@@ -80,8 +80,14 @@ export default async (req, res) => {
 
   await customerService.update(id, validated)
 
+  const relations = ["orders"]
+
+  if (validated.groups) {
+    relations.push("groups")
+  }
+
   customer = await customerService.retrieve(id, {
-    relations: ["orders", "groups"],
+    relations,
   })
   res.status(200).json({ customer })
 }

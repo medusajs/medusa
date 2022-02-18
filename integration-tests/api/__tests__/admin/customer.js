@@ -381,7 +381,7 @@ describe("/admin/customers", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/customers/test-customer-1?expand=billing_address", {
+        .get("/admin/customers/test-customer-1?expand=billing_address,groups", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -398,6 +398,7 @@ describe("/admin/customers", () => {
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
+        groups: [],
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
