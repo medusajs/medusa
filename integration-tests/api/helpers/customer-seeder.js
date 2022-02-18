@@ -3,10 +3,22 @@ const { Customer, Address, CustomerGroup } = require("@medusajs/medusa")
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
 
-  await manager.insert(Customer, {
+  const testAddr = await manager.create(Address, {
+    id: "test-address",
+    first_name: "Lebron",
+    last_name: "James",
+  })
+
+  await manager.save(testAddr)
+
+  const customer = await manager.create(Customer, {
     id: "test-customer-1",
     email: "test1@email.com",
   })
+
+  customer.billing_address = testAddr
+  customer.shipping_addresses = [testAddr]
+  await manager.save(customer)
 
   await manager.insert(Customer, {
     id: "test-customer-2",
