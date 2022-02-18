@@ -70,5 +70,5 @@ export class AdminPostOrdersOrderShippingMethodsReq {
 
   @IsObject()
   @IsOptional()
-  data?: object = {}
+  data?: Record<string, any> = {}
 }
