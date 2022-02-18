@@ -65,8 +65,12 @@ class CustomerGroupService extends BaseService {
     })
   }
 
-  retrieveByIds(groups: DeepPartial<CustomerGroup>[]) {
-    throw new Error("TODO: implement me!")
+  async list(groups: DeepPartial<CustomerGroup>[]): Promise<CustomerGroup[]> {
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+
+    return await cgRepo.findByIds(groups.map((g) => g.id))
   }
 }
 
