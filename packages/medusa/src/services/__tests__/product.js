@@ -9,7 +9,7 @@ const eventBusService = {
 }
 
 describe("ProductService", () => {
-  describe("retriev", () => {
+  describe("retrieve", () => {
     const productRepo = MockRepository({
       findOneWithRelations: (rels, query) => {
         if (query.where.id === "test id with variants") {
