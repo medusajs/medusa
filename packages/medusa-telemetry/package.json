@@ -30,9 +30,7 @@
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "babel src -d dist --ignore **/__tests__ --extensions \".ts,.js\"",
     "serve": "node dist/app.js",
-    "postinstall": "node dist/postinstall.js || true",
-    "test": "jest",
-    "test:unit": "jest"
+    "postinstall": "node dist/postinstall.js || true"
   },
   "dependencies": {
     "axios": "^0.21.1",
