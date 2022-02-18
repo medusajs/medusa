@@ -25,6 +25,7 @@ import collectionRoutes from "./collections"
 import productTagRoutes from "./product-tags"
 import notificationRoutes from "./notifications"
 import noteRoutes from "./notes"
+import customerGroupRoutes from "./customer-groups"
 
 const route = Router()
 
@@ -80,6 +81,7 @@ export default (app, container, config) => {
   productTagRoutes(route)
   noteRoutes(route)
   inviteRoutes(route)
+  customerGroupRoutes(route)
 
   return app
 }
