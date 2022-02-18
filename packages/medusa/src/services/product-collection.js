@@ -107,8 +107,12 @@ class ProductCollectionService extends BaseService {
         this.productCollectionRepository_
       )
 
-      const productCollection = collectionRepo.create(collection)
-      return collectionRepo.save(productCollection)
+      try {
+        const productCollection = await collectionRepo.create(collection)
+        return await collectionRepo.save(productCollection)
+      } catch (error) {
+        throw formatException(error)
+      }
     })
   }
 

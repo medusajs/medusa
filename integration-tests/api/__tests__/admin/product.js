@@ -1321,7 +1321,7 @@ describe("/admin/products", () => {
         })
       } catch (error) {
         expect(error.response.data.message).toMatch(
-          /duplicate key value violates unique constraint/i
+          "Key (handle)=(test-product) already exists."
         )
       }
     })
@@ -1392,8 +1392,9 @@ describe("/admin/products", () => {
           },
         })
       } catch (error) {
+        console.log(error.response.data)
         expect(error.response.data.message).toMatch(
-          /duplicate key value violates unique constraint/i
+          "Key (handle)=(test-collection) already exists."
         )
       }
     })

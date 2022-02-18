@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
+import { formatException } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate products.
@@ -378,38 +379,44 @@ class ProductService extends BaseService {
         rest.discountable = false
       }
 
-      let product = productRepo.create(rest)
+      try {
+        let product = productRepo.create(rest)
 
-      if (images) {
-        product.images = await this.upsertImages_(images)
-      }
+        if (images) {
+          product.images = await this.upsertImages_(images)
+        }
 
-      if (tags) {
-        product.tags = await this.upsertProductTags_(tags)
-      }
+        if (tags) {
+          product.tags = await this.upsertProductTags_(tags)
+        }
 
-      if (typeof type !== `undefined`) {
-        product.type_id = await this.upsertProductType_(type)
-      }
+        if (typeof type !== `undefined`) {
+          product.type_id = await this.upsertProductType_(type)
+        }
 
-      product = await productRepo.save(product)
+        product = await productRepo.save(product)
 
-      product.options = await Promise.all(
-        options.map(async (o) => {
-          const res = optionRepo.create({ ...o, product_id: product.id })
-          await optionRepo.save(res)
-          return res
+        product.options = await Promise.all(
+          options.map(async (o) => {
+            const res = optionRepo.create({ ...o, product_id: product.id })
+            await optionRepo.save(res)
+            return res
+          })
+        )
+
+        const result = await this.retrieve(product.id, {
+          relations: ["options"],
         })
-      )
 
-      const result = await this.retrieve(product.id, { relations: ["options"] })
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductService.Events.CREATED, {
-          id: result.id,
-        })
-      return result
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(ProductService.Events.CREATED, {
+            id: result.id,
+          })
+        return result
+      } catch (error) {
+        throw formatException(error)
+      }
     })
   }
 
