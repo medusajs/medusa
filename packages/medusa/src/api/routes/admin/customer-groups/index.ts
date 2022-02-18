@@ -12,7 +12,7 @@ export default (app) => {
   return app
 }
 
-export type AdminCustomersRes = {
+export type AdminCustomerGroupsRes = {
   customer_group: CustomerGroup
 }
 

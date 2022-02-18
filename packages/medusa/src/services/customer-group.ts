@@ -41,7 +41,7 @@ class CustomerGroupService extends BaseService {
 
   /**
    * Creates a customer group with the provided data.
-   * @param {DeepPartial<CustomerGroup>} group - the customergroup to create
+   * @param {DeepPartial<CustomerGroup>} group - the customer group to create
    * @return {Promise} the result of the create operation
    */
   async create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
