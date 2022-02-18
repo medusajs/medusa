@@ -251,8 +251,6 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      console.log(response.data.products.length)
-
       expect(response.status).toEqual(200)
       expect(response.data.products.length).toEqual(2)
     })
