@@ -238,6 +238,40 @@ describe("/admin/products", () => {
       ])
     })
 
+    it("returns a list of products with free text query and limit", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?q=t&limit=2", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products.length).toEqual(2)
+    })
+
+    it("returns a list of products with free text query and offset", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/products?q=t&offset=1", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products.length).toEqual(4)
+    })
+
     it("returns a list of deleted products", async () => {
       const api = useApi()
 
