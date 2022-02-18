@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 const { Customer, Address, CustomerGroup } = require("@medusajs/medusa")
-=======
-const { Customer, CustomerGroup, Address } = require("@medusajs/medusa")
->>>>>>> 24cb89d2 (`updateCustomerGroups` method)
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
