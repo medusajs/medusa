@@ -1,12 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import {
-  Brackets,
-  EntityManager,
-  ILike,
-  IsNull,
-  SelectQueryBuilder,
-} from "typeorm"
+import { Brackets, EntityManager, ILike, In, SelectQueryBuilder } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
@@ -285,17 +279,7 @@ class ProductVariantService extends BaseService {
       const { prices, options, metadata, inventory_quantity, ...rest } = update
 
       if (prices) {
-        for (const price of prices) {
-          if (price.region_id) {
-            await this.setRegionPrice(variant.id, {
-              region_id: price.region_id,
-              amount: price.amount,
-              sale_amount: price.sale_amount || undefined,
-            })
-          } else {
-            await this.setCurrencyPrice(variant.id, price)
-          }
-        }
+        await this.updateVariantPrices(variant.id, prices)
       }
 
       if (options) {
@@ -333,6 +317,47 @@ class ProductVariantService extends BaseService {
     })
   }
 
+  async updateVariantPrices(
+    variantId: string,
+    prices: ProductVariantPrice[]
+  ): Promise<void> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
+
+      const oldPrices = await moneyAmountRepo
+        .createQueryBuilder("money_amount")
+        .where("money_amount.variant_id = :variant_id", {
+          variant_id: variantId,
+        })
+        .andWhere(
+          new Brackets((qb) => {
+            qb.where("money_amount.currency_code NOT IN (:...currency_codes)", {
+              currency_codes: prices.map((p) => p.currency_code),
+            }).orWhere("money_amount.region_id NOT IN (:...region_ids)", {
+              region_ids: prices.map((p) => p.region_id),
+            })
+          })
+        )
+        .getMany()
+
+      for (const price of prices) {
+        if (price.region_id) {
+          await this.setRegionPrice(variantId, {
+            region_id: price.region_id,
+            amount: price.amount,
+            sale_amount: price.sale_amount || undefined,
+          })
+        } else {
+          await this.setCurrencyPrice(variantId, price)
+        }
+      }
+
+      await moneyAmountRepo.remove(oldPrices)
+    })
+  }
+
   /**
    * Sets the default price for the given currency.
    * @param {string} variantId - the id of the variant to set prices for
@@ -348,13 +373,16 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      let moneyAmount = await moneyAmountRepo.findOne({
-        where: {
-          currency_code: price.currency_code?.toLowerCase(),
+      let moneyAmount = await moneyAmountRepo
+        .createQueryBuilder("money_amount")
+        .where("money_amount.currency_code = :currency_code", {
+          currency_code: price.currency_code,
+        })
+        .andWhere("money_amount.variant_id = :variant_id", {
           variant_id: variantId,
-          region_id: IsNull(),
-        },
-      })
+        })
+        .andWhere("money_amount.region_id IS NULL")
+        .getOne()
 
       if (!moneyAmount) {
         moneyAmount = moneyAmountRepo.create({

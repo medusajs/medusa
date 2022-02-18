@@ -1155,6 +1155,192 @@ describe("/admin/products", () => {
     })
   })
 
+  describe("updates a variant's prices", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully updates a variant's prices by changing an existing price", async () => {
+      const api = useApi()
+      const data = {
+        title: "Test variant prices",
+        prices: [
+          {
+            currency_code: "usd",
+            amount: 1500,
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product/variants/test-variant", data, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data).toEqual({
+        product: expect.objectContaining({
+          id: "test-product",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-variant",
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  amount: 1500,
+                  currency_code: "usd",
+                }),
+              ]),
+            }),
+          ]),
+        }),
+      })
+    })
+
+    it("successfully updates a variant's prices by adding a new price", async () => {
+      const api = useApi()
+      const data = {
+        title: "Test variant prices",
+        prices: [
+          // usd price coming from the product seeder
+          {
+            currency_code: "usd",
+            amount: 100,
+          },
+          {
+            currency_code: "eur",
+            amount: 4500,
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product/variants/test-variant", data, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data).toEqual({
+        product: expect.objectContaining({
+          id: "test-product",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-variant",
+              prices: [
+                expect.objectContaining({
+                  amount: 100,
+                  currency_code: "usd",
+                }),
+                expect.objectContaining({
+                  amount: 4500,
+                  currency_code: "eur",
+                }),
+              ],
+            }),
+          ]),
+        }),
+      })
+    })
+
+    it("successfully updates a variant's prices by replacing a price", async () => {
+      const api = useApi()
+      const data = {
+        prices: [
+          {
+            currency_code: "eur",
+            amount: 4500,
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product/variants/test-variant", data, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.product.variants[0].prices.length).toEqual(
+        data.prices.length
+      )
+      expect(response.data.product.variants[0].prices).toEqual([
+        expect.objectContaining({
+          amount: 4500,
+          currency_code: "eur",
+        }),
+      ])
+    })
+
+    it("successfully updates a variant's prices by deleting a price and adding another price", async () => {
+      const api = useApi()
+      const data = {
+        prices: [
+          {
+            currency_code: "dkk",
+            amount: 8000,
+          },
+          {
+            currency_code: "eur",
+            amount: 900,
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product/variants/test-variant", data, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.product.variants[0].prices.length).toEqual(
+        data.prices.length
+      )
+      expect(response.data.product.variants[0].prices).toEqual([
+        expect.objectContaining({
+          amount: 8000,
+          currency_code: "dkk",
+        }),
+        expect.objectContaining({
+          amount: 900,
+          currency_code: "eur",
+        }),
+      ])
+    })
+  })
+
   describe("testing for soft-deletion + uniqueness on handles, collection and variant properties", () => {
     beforeEach(async () => {
       try {
