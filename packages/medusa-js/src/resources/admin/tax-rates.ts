@@ -76,14 +76,14 @@ class AdminSwapsResource extends BaseResource {
     payload: AdminPostTaxRatesTaxRateProductsReq,
     query?: AdminGetTaxRatesTaxRateParams
   ): ResponsePromise<AdminTaxRatesRes> {
-    let path = `/admin/tax-rates/${id}/products`
+    let path = `/admin/tax-rates/${id}/products/batch`
 
     if (query) {
       const queryString = Object.entries(query).map(([key, value]) => {
         return `${key}=${value}`
       })
 
-      path = `/admin/tax-rates/${id}/products?${queryString.join("&")}`
+      path = `/admin/tax-rates/${id}/products/batch?${queryString.join("&")}`
     }
 
     return this.client.request("POST", path, payload)

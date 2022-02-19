@@ -29,10 +29,34 @@ export default (app) => {
   route.post("/:id", middlewares.wrap(require("./update-tax-rate").default))
 
   /**
+   * Remove products from tax rate
+   */
+  route.delete(
+    "/:id/products/batch",
+    middlewares.wrap(require("./remove-from-products").default)
+  )
+
+  /**
+   * Remove product types from tax rate
+   */
+  route.delete(
+    "/:id/product-types/batch",
+    middlewares.wrap(require("./remove-from-product-types").default)
+  )
+
+  /**
+   * Remove shipping options from tax rate
+   */
+  route.delete(
+    "/:id/shipping-options/batch",
+    middlewares.wrap(require("./remove-from-shipping-options").default)
+  )
+
+  /**
    * Add products to tax rate
    */
   route.post(
-    "/:id/products",
+    "/:id/products/batch",
     middlewares.wrap(require("./add-to-products").default)
   )
 
@@ -40,7 +64,7 @@ export default (app) => {
    * Add product types to tax rate
    */
   route.post(
-    "/:id/product-types",
+    "/:id/product-types/batch",
     middlewares.wrap(require("./add-to-product-types").default)
   )
 
@@ -48,7 +72,7 @@ export default (app) => {
    * Add to shipping options
    */
   route.post(
-    "/:id/shipping-options",
+    "/:id/shipping-options/batch",
     middlewares.wrap(require("./add-to-shipping-options").default)
   )
 

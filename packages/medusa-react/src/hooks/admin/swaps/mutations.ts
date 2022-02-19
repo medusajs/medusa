@@ -1,4 +1,3 @@
-import { adminSwapKeys } from "./queries"
 import {
   AdminOrdersRes,
   AdminPostOrdersOrderSwapsReq,
@@ -10,6 +9,7 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { adminOrderKeys } from ".."
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
+import { adminSwapKeys } from "./queries"
 
 export const useAdminCreateSwap = (
   orderId: string,

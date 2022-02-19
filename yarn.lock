@@ -20077,10 +20077,10 @@ medusa-core-utils@^0.1.27:
     "@hapi/joi" "^16.1.8"
     joi-objectid "^3.0.1"
 
-meilisearch@^0.20.0:
-  version "0.20.2"
-  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.20.2.tgz#9461219064ec9bba8ea01ca160f82fa54ba99637"
-  integrity sha512-h40DJXx/yen3juPLB2uskH95jw4ETKSBM3fv87aYPSpWOfZci0aTR5YZ515KHGCfEExQeoeFoUxEfGyhaYWHUA==
+meilisearch@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/meilisearch/-/meilisearch-0.24.0.tgz#a71454baac058f502b931af17069ab676fbaced6"
+  integrity sha512-qME1dsHZePBQi8qFdhbilcFzaL+oZJgUuls+FZ23hHpdhJI+iMFSmjjcfsxq5hdg2qczbCXv7yAo3Sh8xgfkgA==
   dependencies:
     cross-fetch "^3.1.4"
 

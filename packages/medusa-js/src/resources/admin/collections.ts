@@ -14,56 +14,64 @@ class AdminCollectionsResource extends BaseResource {
   /**
    * @description Creates a collection.
    * @param payload
+   * @param customHeaders
    * @returns Created collection.
    */
   create(
-    payload: AdminPostCollectionsReq
+    payload: AdminPostCollectionsReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * @description Updates a collection
    * @param id id of the collection to update.
    * @param payload update to apply to collection.
+   * @param customHeaders
    * @returns the updated collection.
    */
   update(
     id: string,
-    payload: AdminPostCollectionsCollectionReq
+    payload: AdminPostCollectionsCollectionReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * @description deletes a collection
    * @param id id of collection to delete.
+   * @param customHeaders
    * @returns Deleted response
    */
-  delete(id: string): ResponsePromise<AdminCollectionsDeleteRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsDeleteRes> {
     const path = `/admin/collections/${id}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
    * @description get a collection
    * @param id id of the collection to retrieve.
+   * @param customHeaders
    * @returns the collection with the given id
    */
-  retrieve(id: string): ResponsePromise<AdminCollectionsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCollectionsRes> {
     const path = `/admin/collections/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Lists collections matching a query
    * @param query Query for searching collections
+   * @param customHeaders
    * @returns a list of collections matching the query.
    */
   list(
-    query?: AdminGetCollectionsParams
+    query?: AdminGetCollectionsParams,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCollectionsListRes> {
     let path = `/admin/collections`
 
@@ -72,7 +80,7 @@ class AdminCollectionsResource extends BaseResource {
       path = `/admin/collections?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }
 

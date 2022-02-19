@@ -126,6 +126,60 @@ class TaxRateService extends BaseService {
     })
   }
 
+  async removeFromProduct(
+    id: string,
+    productIds: string | string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+
+      let ids: string[]
+      if (typeof productIds === "string") {
+        ids = [productIds]
+      } else {
+        ids = productIds
+      }
+
+      await taxRateRepo.removeFromProduct(id, ids)
+    })
+  }
+
+  async removeFromProductType(
+    id: string,
+    typeIds: string | string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+
+      let ids: string[]
+      if (typeof typeIds === "string") {
+        ids = [typeIds]
+      } else {
+        ids = typeIds
+      }
+
+      await taxRateRepo.removeFromProductType(id, ids)
+    })
+  }
+
+  async removeFromShippingOption(
+    id: string,
+    optionIds: string | string[]
+  ): Promise<void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+
+      let ids: string[]
+      if (typeof optionIds === "string") {
+        ids = [optionIds]
+      } else {
+        ids = optionIds
+      }
+
+      await taxRateRepo.removeFromShippingOption(id, ids)
+    })
+  }
+
   async addToProduct(
     id: string,
     productIds: string | string[]

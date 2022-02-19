@@ -1,13 +1,15 @@
+import { renderHook } from "@testing-library/react-hooks"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminCreateSwap,
   useAdminFulfillSwap,
   useAdminCancelSwap,
-  useAdminCreateSwapShipment,
-  useAdminProcessSwapPayment,
   useAdminCancelSwapFulfillment,
+  useAdminCreateSwap,
+  useAdminCreateSwapShipment,
+  useAdminFulfillSwap,
+  useAdminProcessSwapPayment,
 } from "../../../../src/"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateSwap hook", () => {

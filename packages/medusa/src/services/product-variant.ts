@@ -666,7 +666,7 @@ class ProductVariantService extends BaseService {
    * @param {Object} metadata - the metadata to set
    * @return {Object} updated metadata object
    */
-  setMetadata_(variant: ProductVariant, metadata: object): object {
+  setMetadata_(variant: ProductVariant, metadata: object): Record<string, any> {
     const existing = variant.metadata || {}
     const newData = {}
     for (const [key, value] of Object.entries(metadata)) {

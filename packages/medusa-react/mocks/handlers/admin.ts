@@ -711,7 +711,7 @@ export const adminHandlers = [
     }
   ),
 
-  rest.post("/admin/draft-orders/:id/register-payment", (req, res, ctx) => {
+  rest.post("/admin/draft-orders/:id/pay", (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({

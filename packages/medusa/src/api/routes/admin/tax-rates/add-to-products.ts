@@ -6,7 +6,7 @@ import { ProductService, TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /tax-rates/:id/products
+ * @oas [post] /tax-rates/:id/products/batch
  * operationId: "PostTaxRatesTaxRateProducts"
  * summary: "Add Tax Rate to Products"
  * description: "Associates a Tax Rate with a list of Products"
@@ -40,7 +40,7 @@ export default async (req, res) => {
     await rateService.addToProduct(req.params.id, value.products)
   } catch (err) {
     if (err.code === "23503") {
-      // A foreign key constraint failed meaning some thing doesn't exist
+      // A foreign key constraint failed meaning something doesn't exist
       // either it is a product or the tax rate itself. Using Promise.all
       // will try to retrieve all of the resources and will fail when
       // something is not found.

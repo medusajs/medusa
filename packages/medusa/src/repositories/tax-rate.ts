@@ -1,5 +1,7 @@
 import { unionBy } from "lodash"
 import {
+  In,
+  DeleteResult,
   SelectQueryBuilder,
   EntityRepository,
   FindManyOptions,
@@ -98,6 +100,17 @@ export class TaxRateRepository extends Repository<TaxRate> {
     return qb
   }
 
+  async removeFromProduct(
+    id: string,
+    productIds: string[]
+  ): Promise<DeleteResult> {
+    return await this.createQueryBuilder()
+      .delete()
+      .from(ProductTaxRate)
+      .where({ rate_id: id, product_id: In(productIds) })
+      .execute()
+  }
+
   async addToProduct(
     id: string,
     productIds: string[]
@@ -114,6 +127,17 @@ export class TaxRateRepository extends Repository<TaxRate> {
       .select()
       .where(insertResult.identifiers)
       .getMany()
+  }
+
+  async removeFromProductType(
+    id: string,
+    productTypeIds: string[]
+  ): Promise<DeleteResult> {
+    return await this.createQueryBuilder()
+      .delete()
+      .from(ProductTypeTaxRate)
+      .where({ rate_id: id, product_type_id: In(productTypeIds) })
+      .execute()
   }
 
   async addToProductType(
@@ -135,6 +159,17 @@ export class TaxRateRepository extends Repository<TaxRate> {
       .select()
       .where(insertResult.identifiers)
       .getMany()
+  }
+
+  async removeFromShippingOption(
+    id: string,
+    optionIds: string[]
+  ): Promise<DeleteResult> {
+    return await this.createQueryBuilder()
+      .delete()
+      .from(ShippingTaxRate)
+      .where({ rate_id: id, shipping_option_id: In(optionIds) })
+      .execute()
   }
 
   async addToShippingOption(
