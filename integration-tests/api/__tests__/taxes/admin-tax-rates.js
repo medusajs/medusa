@@ -229,7 +229,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api
       .post(
-        `/admin/tax-rates/${rate.id}/products?fields[]=id&fields[]=product_count&expand[]=products`,
+        `/admin/tax-rates/${rate.id}/products/batch?fields[]=id&fields[]=product_count&expand[]=products`,
         {
           products: ["unknown_product_id"],
         },
@@ -258,7 +258,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api
       .post(
-        `/admin/tax-rates/unknown_rate/products?fields[]=id&fields[]=product_count&expand[]=products`,
+        `/admin/tax-rates/unknown_rate/products/batch?fields[]=id&fields[]=product_count&expand[]=products`,
         {
           products: products.map((product) => product.id),
         },
