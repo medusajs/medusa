@@ -20,7 +20,7 @@ import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
-class AdminSwapsResource extends BaseResource {
+class AdminTaxRatesResource extends BaseResource {
   retrieve(
     id: string,
     query?: AdminGetTaxRatesTaxRateParams,
@@ -186,4 +186,4 @@ class AdminSwapsResource extends BaseResource {
   }
 }
 
-export default AdminSwapsResource
+export default AdminTaxRatesResource
