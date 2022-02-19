@@ -108,6 +108,9 @@ export type AdminTaxRatesRes = {
 
 export * from "./list-tax-rates"
 export * from "./get-tax-rate"
+export * from "./remove-from-product-types"
+export * from "./remove-from-products"
+export * from "./remove-from-shipping-options"
 export * from "./add-to-product-types"
 export * from "./add-to-products"
 export * from "./add-to-shipping-options"
