@@ -157,7 +157,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/product-types?fields[]=id&fields[]=region_id&fields[]=product_type_count&expand[]=product_types`,
+      `/admin/tax-rates/${rate.id}/product-types/batch?fields[]=id&fields[]=region_id&fields[]=product_type_count&expand[]=product_types`,
       {
         product_types: [product.type_id],
       },
@@ -189,7 +189,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/product-types?fields[]=id&fields[]=region_id&fields[]=product_type_count&expand[]=product_types`,
+      `/admin/tax-rates/${rate.id}/product-types/batch?fields[]=id&fields[]=region_id&fields[]=product_type_count&expand[]=product_types`,
       {
         product_types: products.map((product) => product.type_id),
       },
@@ -292,7 +292,7 @@ describe("/admin/tax-rates", () => {
 
     const response = await api
       .post(
-        `/admin/tax-rates/${rate.id}/shipping-options?fields[]=id&fields[]=shipping_option_count&expand[]=shipping_options`,
+        `/admin/tax-rates/${rate.id}/shipping-options/batch?fields[]=id&fields[]=shipping_option_count&expand[]=shipping_options`,
         {
           shipping_options: [option.id],
         },
@@ -328,7 +328,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/shipping-options?fields[]=id&fields[]=shipping_option_count&expand[]=shipping_options`,
+      `/admin/tax-rates/${rate.id}/shipping-options/batch?fields[]=id&fields[]=shipping_option_count&expand[]=shipping_options`,
       {
         shipping_options: options.map((o) => o.id),
       },
@@ -359,7 +359,7 @@ describe("/admin/tax-rates", () => {
     const api = useApi()
 
     const response = await api.post(
-      `/admin/tax-rates/${rate.id}/products?fields[]=id&fields[]=product_count&expand[]=products`,
+      `/admin/tax-rates/${rate.id}/products/batch?fields[]=id&fields[]=product_count&expand[]=products`,
       {
         products: products.map((product) => product.id),
       },
