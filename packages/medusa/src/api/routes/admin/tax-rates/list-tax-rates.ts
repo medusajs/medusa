@@ -94,12 +94,12 @@ export class AdminGetTaxRatesParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset = 0
+  offset? = 0
 
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit = 50
+  limit? = 50
 
   @IsArray()
   @IsOptional()

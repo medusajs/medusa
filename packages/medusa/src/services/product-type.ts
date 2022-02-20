@@ -2,6 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { FindConfig } from "../types/common"
+import { FilterableProductTypeProps } from "../types/product"
 import { ProductType } from "../models/product-type"
 import { ProductTypeRepository } from "../repositories/product-type"
 
@@ -60,6 +61,38 @@ class ProductTypeService extends BaseService {
     }
 
     return type
+  }
+
+  /**
+   * Lists product types
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async list(
+    selector: FilterableProductTypeProps = {},
+    config: FindConfig<ProductType> = { skip: 0, take: 20 }
+  ): Promise<ProductType[]> {
+    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+
+    const query = this.buildQuery_(selector, config)
+    return await typeRepo.find(query)
+  }
+
+  /**
+   * Lists product tags and adds count.
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(
+    selector: FilterableProductTypeProps = {},
+    config: FindConfig<ProductType> = { skip: 0, take: 20 }
+  ): Promise<[ProductType[], number]> {
+    const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
+
+    const query = this.buildQuery_(selector, config)
+    return await typeRepo.findAndCount(query)
   }
 }
 

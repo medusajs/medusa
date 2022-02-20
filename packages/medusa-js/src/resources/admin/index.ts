@@ -8,6 +8,7 @@ import AdminGiftCardsResource from "./gift-cards"
 import AdminInvitesResource from "./invites"
 import AdminNotesResource from "./notes"
 import AdminProductsResource from "./products"
+import AdminProductTypesResource from "./product-types"
 import AdminUsersResource from "./users"
 import AdminReturnsResource from "./returns"
 import AdminOrdersResource from "./orders"
@@ -34,6 +35,7 @@ class Admin extends BaseResource {
   public notes = new AdminNotesResource(this.client)
   public products = new AdminProductsResource(this.client)
   public productTags = new AdminProductTagsResource(this.client)
+  public productTypes = new AdminProductTypesResource(this.client)
   public users = new AdminUsersResource(this.client)
   public returns = new AdminReturnsResource(this.client)
   public orders = new AdminOrdersResource(this.client)

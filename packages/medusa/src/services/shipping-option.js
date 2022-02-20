@@ -133,6 +133,18 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @param {object} config - config object
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(selector, config = { skip: 0, take: 50 }) {
+    const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
+
+    const query = this.buildQuery_(selector, config)
+    return await optRepo.findAndCount(query)
+  }
+
+  /**
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
    * @param {string} optionId - the id of the profile to get.
