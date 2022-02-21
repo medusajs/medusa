@@ -86,6 +86,15 @@ class CustomerGroupService extends BaseService {
     })
   }
 
+  async update(
+    customerGroupId: string
+    // update: CustomerGroupsUpdate
+  ): Promise<CustomerGroup[]> {
+    throw new Error("Implement me!")
+
+    // const customerGroup = this.retreive(customerGroupId)
+  }
+
   /**
    * Remove customer group
    *
