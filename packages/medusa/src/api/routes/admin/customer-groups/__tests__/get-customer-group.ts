@@ -7,13 +7,17 @@ describe("GET /customer-groups", () => {
   const id = "123"
 
   beforeAll(async () => {
-    subject = await request("GET", `/admin/customer-groups/${id}`, {
-      adminSession: {
-        jwt: {
-          userId: IdMap.getId("admin_user"),
+    subject = await request(
+      "GET",
+      `/admin/customer-groups/${id}?expand=customers`,
+      {
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
         },
-      },
-    })
+      }
+    )
   })
 
   it("returns 200", () => {
@@ -22,6 +26,8 @@ describe("GET /customer-groups", () => {
 
   it("calls CustomerGroupService get", () => {
     expect(CustomerGroupServiceMock.retrieve).toHaveBeenCalledTimes(1)
-    expect(CustomerGroupServiceMock.retrieve).toHaveBeenCalledWith(id)
+    expect(CustomerGroupServiceMock.retrieve).toHaveBeenCalledWith(id, {
+      relations: ["customers"],
+    })
   })
 })
