@@ -158,6 +158,8 @@ describe("/admin/customer-groups", () => {
     })
 
     it("adds customers to a group idempotently", async () => {
+      expect.assertions(3)
+
       const api = useApi()
 
       // add customer-1 to the customer group
@@ -174,9 +176,9 @@ describe("/admin/customer-groups", () => {
           },
         }
       )
-      // .catch((err) => console.log(err))
 
-      // re-add customer-1 to the customer group along with new addintion: customer-2
+      // re-adding customer-1 to the customer group along with new addintion:
+      // customer-2 and some non-existing customers should cause the request to fail
       const payload_2 = {
         customerIds: [
           { id: "test-customer-1" },
