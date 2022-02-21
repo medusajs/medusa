@@ -120,7 +120,7 @@ describe("/admin/customer-groups", () => {
           name: "vip-customers",
         })
       )
-      expect(response.data.customerGroup).not.toHaveProperty("customers:")
+      expect(response.data.customerGroup).not.toHaveProperty("customers")
     })
 
     it("gets customer group with `customers` prop", async () => {
