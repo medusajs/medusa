@@ -120,6 +120,31 @@ describe("/admin/customer-groups", () => {
           name: "vip-customers",
         })
       )
+      expect(response.data.customerGroup).not.toHaveProperty("customers:")
+    })
+
+    it("gets customer group with `customers` prop", async () => {
+      const api = useApi()
+
+      const id = "customer-group-1"
+
+      const response = await api.get(
+        `/admin/customer-groups/${id}?expand=customers`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customerGroup).toEqual(
+        expect.objectContaining({
+          id: "customer-group-1",
+          name: "vip-customers",
+        })
+      )
+      expect(response.data.customerGroup.customers).toEqual([])
     })
 
     it("throws error when a customer group doesn't exist", async () => {
