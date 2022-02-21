@@ -23,4 +23,6 @@ export type AdminCustomerGroupsListRes = PaginatedResponse & {
   customer_groups: CustomerGroup[]
 }
 
+export const defaultAdminCustomerGroupsRelations = []
+
 export * from "./create-customer-group"
