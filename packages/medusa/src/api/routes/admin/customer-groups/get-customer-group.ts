@@ -5,7 +5,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
  * @oas [get] /customer-group/{id}
- * operationId: "GetCustomerGroups"
+ * operationId: "GetCustomerGroupsGroup"
  * summary: "Retrieve a CustomerGroup"
  * description: "Retrieves a Customer Group."
  * x-authenticated: true
