@@ -3,6 +3,8 @@ import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
+import { FindConfig } from "../types/common"
+import { FilterableCustomerGroupProps } from "../types/customer-groups"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -65,12 +67,16 @@ class CustomerGroupService extends BaseService {
     })
   }
 
-  async list(groups: DeepPartial<CustomerGroup>[]): Promise<CustomerGroup[]> {
+  async list(
+    selector: FilterableCustomerGroupProps = {},
+    config: FindConfig<CustomerGroup>
+  ): Promise<CustomerGroup[]> {
     const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )
 
-    return await cgRepo.findByIds(groups.map((g) => g.id))
+    const query = this.buildQuery_(selector, config)
+    return await cgRepo.find(query)
   }
 }
 

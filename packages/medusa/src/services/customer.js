@@ -424,7 +424,8 @@ class CustomerService extends BaseService {
       }
 
       if (groups) {
-        customer.groups = await this.customerGroupService_.list(groups)
+        const id = groups.map((g) => g.id)
+        customer.groups = await this.customerGroupService_.list({ id })
       }
 
       const updated = await customerRepository.save(customer)

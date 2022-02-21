@@ -4,6 +4,7 @@ import {
   IsObject,
   IsOptional,
   IsString,
+  ValidateNested,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import CustomerService from "../../../../services/customer"
@@ -38,7 +39,7 @@ import { validator } from "../../../../utils/validator"
  *             type: string
  *             description: The Customer's password.
  *           groups:
- *             type: Group[]
+ *             type: array
  *             description: A list of customer groups to which the customer belongs.
  *             items:
  *               required:
@@ -122,6 +123,7 @@ export class AdminPostCustomersCustomerReq {
   @IsOptional()
   metadata?: object
 
+  // @ValidateNested()
   @IsArray()
   @IsOptional()
   groups?: Group[]
