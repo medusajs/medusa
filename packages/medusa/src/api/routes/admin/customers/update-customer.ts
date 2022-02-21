@@ -69,27 +69,25 @@ import { FindParams } from "../../../../types/common"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostCustomersCustomerReq, {
-    ...req.body,
-    ...req.query,
-  })
+  const validatedBody = await validator(AdminPostCustomersCustomerReq, req.body)
+  const validatedQuery = await validator(FindParams, req.query)
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
   let customer = await customerService.retrieve(id)
 
-  if (validated.email && customer.has_account) {
+  if (validatedBody.email && customer.has_account) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
       "Email cannot be changed when the user has registered their account"
     )
   }
 
-  await customerService.update(id, validated)
+  await customerService.update(id, validatedBody)
 
   let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
+  if (validatedQuery.expand) {
+    expandFields = validatedQuery.expand.split(",")
   }
 
   const findConfig = {
@@ -108,7 +106,7 @@ class Group {
   id: string
 }
 
-export class AdminPostCustomersCustomerReq extends FindParams {
+export class AdminPostCustomersCustomerReq {
   @IsEmail()
   @IsOptional()
   email?: string
