@@ -6,7 +6,9 @@ import { ShippingTaxRate } from "../models/shipping-tax-rate"
 import { ProductTaxRate } from "../models/product-tax-rate"
 import { ProductTypeTaxRate } from "../models/product-type-tax-rate"
 import { TaxRateRepository } from "../repositories/tax-rate"
-import { ShippingOptionRepository } from "../repositories/shipping-option"
+import ProductService from "../services/product"
+import ProductTypeService from "../services/product-type"
+import ShippingOptionService from "../services/shipping-option"
 import { FindConfig } from "../types/common"
 import {
   CreateTaxRateInput,
@@ -17,15 +19,25 @@ import {
 
 class TaxRateService extends BaseService {
   private manager_: EntityManager
+  private productService_: ProductService
+  private productTypeService_: ProductTypeService
+  private shippingOptionService_: ShippingOptionService
   private taxRateRepository_: typeof TaxRateRepository
-  private shippingOptionRepository_: typeof ShippingOptionRepository
 
-  constructor({ manager, taxRateRepository, shippingOptionRepository }) {
+  constructor({
+    manager,
+    productService,
+    productTypeService,
+    shippingOptionService,
+    taxRateRepository,
+  }) {
     super()
 
     this.manager_ = manager
     this.taxRateRepository_ = taxRateRepository
-    this.shippingOptionRepository_ = shippingOptionRepository
+    this.productService_ = productService
+    this.productTypeService_ = productTypeService
+    this.shippingOptionService_ = shippingOptionService
   }
 
   withTransaction(transactionManager: EntityManager): TaxRateService {
@@ -36,7 +48,9 @@ class TaxRateService extends BaseService {
     const cloned = new TaxRateService({
       manager: transactionManager,
       taxRateRepository: this.taxRateRepository_,
-      shippingOptionRepository: this.shippingOptionRepository_,
+      productService: this.productService_,
+      productTypeService: this.productTypeService_,
+      shippingOptionService: this.shippingOptionService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -182,7 +196,8 @@ class TaxRateService extends BaseService {
 
   async addToProduct(
     id: string,
-    productIds: string | string[]
+    productIds: string | string[],
+    replace = false
   ): Promise<ProductTaxRate | ProductTaxRate[]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
@@ -193,14 +208,32 @@ class TaxRateService extends BaseService {
       } else {
         ids = productIds
       }
+      try {
+        const res = await taxRateRepo.addToProduct(id, ids, replace)
+        return res
+      } catch (err) {
+        if (err.code === "23503") {
+          // A foreign key constraint failed meaning some thing doesn't exist
+          // either it is a product or the tax rate itself. Using Promise.all
+          // will try to retrieve all of the resources and will fail when
+          // something is not found.
+          await Promise.all([
+            this.retrieve(id, { select: ["id"] }),
+            ...ids.map((pId) =>
+              this.productService_.retrieve(pId, { select: ["id"] })
+            ),
+          ])
+        }
 
-      return await taxRateRepo.addToProduct(id, ids)
+        throw err
+      }
     })
   }
 
   async addToProductType(
     id: string,
-    productTypeIds: string | string[]
+    productTypeIds: string | string[],
+    replace = false
   ): Promise<ProductTypeTaxRate[]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
@@ -212,19 +245,40 @@ class TaxRateService extends BaseService {
         ids = productTypeIds
       }
 
-      return await taxRateRepo.addToProductType(id, ids)
+      try {
+        const res = await taxRateRepo.addToProductType(id, ids, replace)
+        return res
+      } catch (err) {
+        if (err.code === "23503") {
+          // A foreign key constraint failed meaning some thing doesn't exist
+          // either it is a product or the tax rate itself. Using Promise.all
+          // will try to retrieve all of the resources and will fail when
+          // something is not found.
+          await Promise.all([
+            this.retrieve(id, {
+              select: ["id"],
+            }) as Promise<unknown>,
+            ...ids.map(
+              (pId) =>
+                this.productTypeService_.retrieve(pId, {
+                  select: ["id"],
+                }) as Promise<unknown>
+            ),
+          ])
+        }
+
+        throw err
+      }
     })
   }
 
   async addToShippingOption(
     id: string,
-    optionIds: string | string[]
+    optionIds: string | string[],
+    replace = false
   ): Promise<ShippingTaxRate> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-      const shippingOptionRepo = manager.getCustomRepository(
-        this.shippingOptionRepository_
-      )
 
       let ids: string[]
       if (typeof optionIds === "string") {
@@ -234,11 +288,10 @@ class TaxRateService extends BaseService {
       }
 
       const taxRate = await this.retrieve(id, { select: ["id", "region_id"] })
-      const query = this.buildQuery_(
+      const options = await this.shippingOptionService_.list(
         { id: ids },
         { select: ["id", "region_id"] }
       )
-      const options = await shippingOptionRepo.find(query)
       for (const o of options) {
         if (o.region_id !== taxRate.region_id) {
           throw new MedusaError(
@@ -248,7 +301,25 @@ class TaxRateService extends BaseService {
         }
       }
 
-      return await taxRateRepo.addToShippingOption(id, ids)
+      try {
+        const res = await taxRateRepo.addToShippingOption(id, ids, replace)
+        return res
+      } catch (err) {
+        if (err.code === "23503") {
+          // A foreign key constraint failed meaning some thing doesn't exist
+          // either it is a product or the tax rate itself. Using Promise.all
+          // will try to retrieve all of the resources and will fail when
+          // something is not found.
+          await Promise.all([
+            this.retrieve(id, { select: ["id"] }),
+            ...ids.map((sId) =>
+              this.shippingOptionService_.retrieve(sId, { select: ["id"] })
+            ),
+          ])
+        }
+
+        throw err
+      }
     })
   }
 

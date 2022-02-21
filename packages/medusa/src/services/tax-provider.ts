@@ -6,7 +6,9 @@ import Redis from "ioredis"
 
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
+import { TaxProviderRepository } from "../repositories/tax-provider"
 import { LineItemTaxLine } from "../models/line-item-tax-line"
+import { TaxProvider } from "../models/tax-provider"
 import { LineItem } from "../models/line-item"
 import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { ShippingMethod } from "../models/shipping-method"
@@ -35,6 +37,7 @@ class TaxProviderService extends BaseService {
   private taxRateService_: TaxRateService
   private taxLineRepo_: typeof LineItemTaxLineRepository
   private smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
+  private taxProviderRepo_: typeof TaxProviderRepository
   private redis_: Redis
 
   constructor(container: AwilixContainer) {
@@ -45,6 +48,7 @@ class TaxProviderService extends BaseService {
     this.smTaxLineRepo_ = container["shippingMethodTaxLineRepository"]
     this.taxRateService_ = container["taxRateService"]
     this.eventBus_ = container["eventBusService"]
+    this.taxProviderRepo_ = container["taxProviderRepository"]
     this.manager_ = container["manager"]
     this.redis_ = container["redisClient"]
   }
@@ -60,6 +64,11 @@ class TaxProviderService extends BaseService {
     cloned.manager_ = transactionManager
 
     return cloned
+  }
+
+  async list(): Promise<TaxProvider[]> {
+    const tpRepo = this.manager_.getCustomRepository(this.taxProviderRepo_)
+    return tpRepo.find({})
   }
 
   /**

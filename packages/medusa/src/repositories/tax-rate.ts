@@ -1,6 +1,7 @@
 import { unionBy } from "lodash"
 import {
   In,
+  Not,
   DeleteResult,
   SelectQueryBuilder,
   EntityRepository,
@@ -113,14 +114,24 @@ export class TaxRateRepository extends Repository<TaxRate> {
 
   async addToProduct(
     id: string,
-    productIds: string[]
+    productIds: string[],
+    overrideExisting: boolean = false
   ): Promise<ProductTaxRate[]> {
     const toInsert = productIds.map((pId) => ({ rate_id: id, product_id: pId }))
     const insertResult = await this.createQueryBuilder()
       .insert()
+      .orIgnore(true)
       .into(ProductTaxRate)
       .values(toInsert)
       .execute()
+
+    if (overrideExisting) {
+      await this.createQueryBuilder()
+        .delete()
+        .from(ProductTaxRate)
+        .where({ rate_id: id, product_id: Not(In(productIds)) })
+        .execute()
+    }
 
     return await this.manager
       .createQueryBuilder(ProductTaxRate, "ptr")
@@ -142,7 +153,8 @@ export class TaxRateRepository extends Repository<TaxRate> {
 
   async addToProductType(
     id: string,
-    productTypeIds: string[]
+    productTypeIds: string[],
+    overrideExisting: boolean = false
   ): Promise<ProductTypeTaxRate[]> {
     const toInsert = productTypeIds.map((pId) => ({
       rate_id: id,
@@ -150,9 +162,18 @@ export class TaxRateRepository extends Repository<TaxRate> {
     }))
     const insertResult = await this.createQueryBuilder()
       .insert()
+      .orIgnore(true)
       .into(ProductTypeTaxRate)
       .values(toInsert)
       .execute()
+
+    if (overrideExisting) {
+      await this.createQueryBuilder()
+        .delete()
+        .from(ProductTypeTaxRate)
+        .where({ rate_id: id, product_type_id: Not(In(productTypeIds)) })
+        .execute()
+    }
 
     return await this.manager
       .createQueryBuilder(ProductTypeTaxRate, "ptr")
@@ -174,7 +195,8 @@ export class TaxRateRepository extends Repository<TaxRate> {
 
   async addToShippingOption(
     id: string,
-    optionIds: string[]
+    optionIds: string[],
+    overrideExisting: boolean = false
   ): Promise<ShippingTaxRate[]> {
     const toInsert = optionIds.map((pId) => ({
       rate_id: id,
@@ -182,9 +204,18 @@ export class TaxRateRepository extends Repository<TaxRate> {
     }))
     const insertResult = await this.createQueryBuilder()
       .insert()
+      .orIgnore(true)
       .into(ShippingTaxRate)
       .values(toInsert)
       .execute()
+
+    if (overrideExisting) {
+      await this.createQueryBuilder()
+        .delete()
+        .from(ShippingTaxRate)
+        .where({ rate_id: id, shipping_option_id: Not(In(optionIds)) })
+        .execute()
+    }
 
     return await this.manager
       .createQueryBuilder(ShippingTaxRate, "str")

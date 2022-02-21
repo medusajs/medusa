@@ -34,6 +34,7 @@ export const useAdminTaxRates = (
 
 export const useAdminTaxRate = (
   id: string,
+  query?: AdminGetTaxRatesParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminTaxRatesRes>,
     Error,
@@ -43,7 +44,7 @@ export const useAdminTaxRate = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminTaxRateKeys.detail(id),
-    () => client.admin.taxRates.retrieve(id),
+    () => client.admin.taxRates.retrieve(id, query),
     options
   )
   return { ...data, ...rest } as const

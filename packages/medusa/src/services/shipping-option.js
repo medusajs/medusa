@@ -13,7 +13,6 @@ class ShippingOptionService extends BaseService {
     shippingMethodRepository,
     fulfillmentProviderService,
     regionService,
-    totalsService,
   }) {
     super()
 
@@ -34,9 +33,6 @@ class ShippingOptionService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
   }
 
   withTransaction(transactionManager) {
@@ -51,7 +47,6 @@ class ShippingOptionService extends BaseService {
       shippingOptionRequirementRepository: this.requirementRepository_,
       fulfillmentProviderService: this.providerService_,
       regionService: this.regionService_,
-      totalsService: this.totalsService_,
     })
 
     cloned.transactionManager_ = transactionManager

@@ -1,6 +1,6 @@
 import {
-  AdminProductTypeListRes,
-  AdminGetProductTypeParams,
+  AdminProductTypesListRes,
+  AdminGetProductTypesParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"

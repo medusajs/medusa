@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { ProductTag } from "../../../.."
+import { ProductType } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
@@ -30,11 +30,11 @@ export const defaultAdminProductTypeFields = [
 export const defaultAdminProductTypeRelations = []
 
 export type AdminProductTypesListRes = PaginatedResponse & {
-  product_types: ProductTag[]
+  product_types: ProductType[]
 }
 
 export type AdminProductTypesRes = {
-  product_type: ProductTag
+  product_type: ProductType
 }
 
 export * from "./list-product-types"
