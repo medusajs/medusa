@@ -47,3 +47,5 @@ export default async (req, res) => {
 
   res.json({ customerGroup })
 }
+
+export class AdminGetCustomerGroupsGroupParams extends FindParams {}
