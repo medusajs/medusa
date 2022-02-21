@@ -109,26 +109,29 @@ describe("/admin/customer-groups", () => {
         customerIds: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
       }
 
-      const batchAddResponse = await api
-        .post("/admin/customer-groups/customer-group-1/batch", payload, {
+      const batchAddResponse = await api.post(
+        "/admin/customer-groups/customer-group-1/batch",
+        payload,
+        {
           headers: {
             Authorization: "Bearer test_token",
           },
-        })
-        .catch((err) => console.log(err))
+        }
+      )
 
       expect(batchAddResponse.status).toEqual(200)
-      expect(batchAddResponse.data.customerGroup).toEqual(
+      expect(batchAddResponse.data.customer_group).toEqual(
         expect.objectContaining({
           name: "vip-customers",
         })
       )
 
-      const getCustomerResponse = await api
-        .get("/admin/customers?expand=groups", {
+      const getCustomerResponse = await api.get(
+        "/admin/customers?expand=groups",
+        {
           headers: { Authorization: "Bearer test_token" },
-        })
-        .catch((err) => console.log(err))
+        }
+      )
 
       expect(getCustomerResponse.data.customers).toEqual(
         expect.arrayContaining([
@@ -171,25 +174,30 @@ describe("/admin/customer-groups", () => {
           },
         }
       )
+      // .catch((err) => console.log(err))
 
       // re-add customer-1 to the customer group along with new addintion: customer-2
       const payload_2 = {
         customerIds: [
           { id: "test-customer-1" },
           { id: "test-customer-27" },
+          { id: "test-customer-28" },
           { id: "test-customer-2" },
         ],
       }
 
-      await api.post(
-        "/admin/customer-groups/customer-group-1/batch",
-        payload_2,
-        {
+      await api
+        .post("/admin/customer-groups/customer-group-1/batch", payload_2, {
           headers: {
             Authorization: "Bearer test_token",
           },
-        }
-      )
+        })
+        .catch((err) => {
+          expect(err.response.data.type).toEqual("invalid_data")
+          expect(err.response.data.message).toEqual(
+            'The following customer ids do not exist: "test-customer-27, test-customer-28"'
+          )
+        })
 
       // check that customer-1 is only added once and that customer-2 is added correctly
       const getCustomerResponse = await api.get(
@@ -212,12 +220,7 @@ describe("/admin/customer-groups", () => {
           }),
           expect.objectContaining({
             id: "test-customer-2",
-            groups: [
-              expect.objectContaining({
-                name: "vip-customers",
-                id: "customer-group-1",
-              }),
-            ],
+            groups: [],
           }),
         ])
       )
