@@ -326,7 +326,8 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      const oldPrices = await moneyAmountRepo
+      // get prices to be deleted
+      const obsoletePrices = await moneyAmountRepo
         .createQueryBuilder("money_amount")
         .where("money_amount.variant_id = :variant_id", {
           variant_id: variantId,
@@ -354,7 +355,7 @@ class ProductVariantService extends BaseService {
         }
       }
 
-      await moneyAmountRepo.remove(oldPrices)
+      await moneyAmountRepo.remove(obsoletePrices)
     })
   }
 
