@@ -105,7 +105,7 @@ describe("/admin/customer-groups", () => {
     it("gets customer group", async () => {
       const api = useApi()
 
-      const id = "test-group-4"
+      const id = "customer-group-1"
 
       const response = await api.get(`/admin/customer-groups/${id}`, {
         headers: {
@@ -116,30 +116,32 @@ describe("/admin/customer-groups", () => {
       expect(response.status).toEqual(200)
       expect(response.data.customerGroup).toEqual(
         expect.objectContaining({
-          id: "test-group-4",
-          name: "test-group",
+          id: "customer-group-1",
+          name: "vip-customers",
         })
       )
     })
 
     it("throws error when a customer group doesn't exist", async () => {
       expect.assertions(3)
-      
+
       const api = useApi()
 
-      const id = 'test-group-000'
+      const id = "test-group-000"
 
-       await api.get(`/admin/customer-groups/${id}`, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      }).catch(err => {
-        expect(err.response.status).toEqual(404)
-        expect(err.response.data.type).toEqual("not_found")
-        expect(err.response.data.message).toEqual(`CustomerGroup with ${id} was not found`)
-      })
-
+      await api
+        .get(`/admin/customer-groups/${id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(404)
+          expect(err.response.data.type).toEqual("not_found")
+          expect(err.response.data.message).toEqual(
+            `CustomerGroup with ${id} was not found`
+          )
+        })
     })
-
   })
 })
