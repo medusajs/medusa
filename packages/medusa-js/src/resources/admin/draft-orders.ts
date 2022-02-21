@@ -18,8 +18,7 @@ class AdminDraftOrdersResource extends BaseResource {
    */
   create(
     payload: AdminPostDraftOrdersDraftOrderReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -30,8 +29,7 @@ class AdminDraftOrdersResource extends BaseResource {
   addLineItem(
     id: string,
     payload: AdminPostDraftOrdersDraftOrderLineItemsReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}/line-items`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -39,10 +37,7 @@ class AdminDraftOrdersResource extends BaseResource {
   /**
    * @description Delete draft order
    */
-  delete(
-    id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersDeleteRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersDeleteRes> {
     const path = `/admin/draft-orders/${id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -53,8 +48,7 @@ class AdminDraftOrdersResource extends BaseResource {
   removeLineItem(
     id: string,
     itemId: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}/line-items/${itemId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -62,10 +56,7 @@ class AdminDraftOrdersResource extends BaseResource {
   /**
    * @description Retrieves a draft order
    */
-  retrieve(
-    id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -75,8 +66,7 @@ class AdminDraftOrdersResource extends BaseResource {
    */
   list(
     query?: AdminGetDraftOrdersParams,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersListRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersListRes> {
     let path = `/admin/draft-orders`
 
     if (query) {
@@ -104,8 +94,7 @@ class AdminDraftOrdersResource extends BaseResource {
   update(
     id: string,
     payload: AdminPostDraftOrdersDraftOrderReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -117,8 +106,7 @@ class AdminDraftOrdersResource extends BaseResource {
     id: string,
     itemId: string,
     payload: AdminPostDraftOrdersDraftOrderLineItemsItemReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDraftOrdersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}/line-items/${itemId}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

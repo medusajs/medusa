@@ -15,8 +15,7 @@ class AddressesResource extends BaseResource {
    */
   addAddress(
     payload: StorePostCustomersCustomerAddressesReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StoreCustomersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/me/addresses`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -27,10 +26,7 @@ class AddressesResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreCustomersRes>}
    */
-  deleteAddress(
-    address_id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StoreCustomersRes> {
+  deleteAddress(address_id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/me/addresses/${address_id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -45,8 +41,7 @@ class AddressesResource extends BaseResource {
   updateAddress(
     address_id: string,
     payload: StorePostCustomersCustomerAddressesAddressReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<StoreCustomersRes> {
+    customHeaders: Record<string, any> = {}): ResponsePromise<StoreCustomersRes> {
     const path = `/store/customers/me/addresses/${address_id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

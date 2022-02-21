@@ -22,10 +22,7 @@ class AdminRegionsResource extends BaseResource {
    * @param customHeaders
    * @returns created region.
    */
-  create(
-    payload: AdminPostRegionsReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminRegionsRes> {
+  create(payload: AdminPostRegionsReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminRegionsRes> {
     const path = `/admin/regions`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -52,10 +49,7 @@ class AdminRegionsResource extends BaseResource {
    * @param customHeaders
    * @returns Deleted response
    */
-  delete(
-    id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminRegionsDeleteRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminRegionsDeleteRes> {
     const path = `/admin/regions/${id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -66,10 +60,7 @@ class AdminRegionsResource extends BaseResource {
    * @param customHeaders
    * @returns the region with the given id
    */
-  retrieve(
-    id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminRegionsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminRegionsRes> {
     const path = `/admin/regions/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -80,10 +71,7 @@ class AdminRegionsResource extends BaseResource {
    * @param customHeaders
    * @returns a list of regions matching the query.
    */
-  list(
-    query?: AdminGetRegionsParams,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminRegionsListRes> {
+  list(query?: AdminGetRegionsParams, customHeaders: Record<string, any> = {}): ResponsePromise<AdminRegionsListRes> {
     let path = `/admin/regions`
 
     if (query) {
@@ -117,11 +105,7 @@ class AdminRegionsResource extends BaseResource {
    * @param customHeaders
    * @returns updated region
    */
-  deleteMetadata(
-    id: string,
-    key: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminRegionsRes> {
+  deleteMetadata(id: string, key: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminRegionsRes> {
     const path = `/admin/regions/${id}/metadata/${key}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }

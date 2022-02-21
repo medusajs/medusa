@@ -45,10 +45,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * @param customHeaders
    * @returns Deleted response
    */
-  delete(
-    id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminReturnReasonsDeleteRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminReturnReasonsDeleteRes> {
     const path = `/admin/return-reasons/${id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
@@ -59,10 +56,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * @param customHeaders
    * @returns the return reason with the given id
    */
-  retrieve(
-    id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminReturnReasonsRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminReturnReasonsRes> {
     const path = `/admin/return-reasons/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -72,9 +66,7 @@ class AdminReturnReasonsResource extends BaseResource {
    * @returns a list of return reasons matching the query.
    * @param customHeaders
    */
-  list(
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminReturnReasonsListRes> {
+  list(customHeaders: Record<string, any> = {}): ResponsePromise<AdminReturnReasonsListRes> {
     const path = `/admin/return-reasons`
 
     return this.client.request("GET", path, {}, {}, customHeaders)
