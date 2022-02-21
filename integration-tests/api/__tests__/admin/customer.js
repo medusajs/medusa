@@ -233,9 +233,9 @@ describe("/admin/customers", () => {
       const api = useApi()
       let response = await api
         .post(
-          "/admin/customers/test-customer-3",
+          "/admin/customers/test-customer-3?expand=groups",
           {
-            groups: [{ id: "test-group-4", name: "test-group-4" }],
+            groups: [{ id: "test-group-4" }],
           },
           {
             headers: {
@@ -258,12 +258,9 @@ describe("/admin/customers", () => {
 
       response = await api
         .post(
-          "/admin/customers/test-customer-3",
+          "/admin/customers/test-customer-3?expand=groups",
           {
-            groups: [
-              { id: "test-group-4", name: "test-group-4" },
-              { id: "fake-group-0", name: "fake group" },
-            ],
+            groups: [{ id: "test-group-4" }, { id: "fake-group-0" }],
           },
           {
             headers: {
@@ -287,7 +284,7 @@ describe("/admin/customers", () => {
 
       response = await api
         .post(
-          "/admin/customers/test-customer-3",
+          "/admin/customers/test-customer-3?expand=groups",
           {
             groups: [],
           },
@@ -308,7 +305,7 @@ describe("/admin/customers", () => {
 
       response = await api
         .post(
-          "/admin/customers/test-customer-5",
+          "/admin/customers/test-customer-5?expand=groups",
           {
             groups: [{ id: "test-group-5" }, { id: "test-group-4" }],
           },

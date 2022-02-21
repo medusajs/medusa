@@ -67,6 +67,13 @@ class CustomerGroupService extends BaseService {
     })
   }
 
+  /**
+   * List customer groups.
+   *
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
   async list(
     selector: FilterableCustomerGroupProps = {},
     config: FindConfig<CustomerGroup>

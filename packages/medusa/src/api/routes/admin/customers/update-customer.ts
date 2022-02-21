@@ -9,6 +9,9 @@ import {
 import { MedusaError } from "medusa-core-utils"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { defaultAdminCustomersRelations } from "."
+import { Type } from "class-transformer"
+import { FindParams } from "../../../../types/common"
 
 /**
  * @oas [post] /customers/{id}
@@ -66,7 +69,10 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostCustomersCustomerReq, req.body)
+  const validated = await validator(AdminPostCustomersCustomerReq, {
+    ...req.body,
+    ...req.query,
+  })
 
   const customerService: CustomerService = req.scope.resolve("customerService")
 
@@ -81,15 +87,19 @@ export default async (req, res) => {
 
   await customerService.update(id, validated)
 
-  const relations = ["orders"]
-
-  if (validated.groups) {
-    relations.push("groups")
+  let expandFields: string[] = []
+  if (validated.expand) {
+    expandFields = validated.expand.split(",")
   }
 
-  customer = await customerService.retrieve(id, {
-    relations,
-  })
+  const findConfig = {
+    relations: expandFields.length
+      ? expandFields
+      : defaultAdminCustomersRelations,
+  }
+
+  customer = await customerService.retrieve(id, findConfig)
+
   res.status(200).json({ customer })
 }
 
@@ -98,7 +108,7 @@ class Group {
   id: string
 }
 
-export class AdminPostCustomersCustomerReq {
+export class AdminPostCustomersCustomerReq extends FindParams {
   @IsEmail()
   @IsOptional()
   email?: string
@@ -123,8 +133,9 @@ export class AdminPostCustomersCustomerReq {
   @IsOptional()
   metadata?: object
 
-  // @ValidateNested()
   @IsArray()
   @IsOptional()
+  @Type(() => Group)
+  @ValidateNested({ each: true })
   groups?: Group[]
 }
