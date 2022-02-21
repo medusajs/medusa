@@ -34,11 +34,11 @@ export default async (req, res) => {
     "customerGroupService"
   )
 
-  const customerGroup = await customerGroupService.addCustomerBatch(
+  const customer_group = await customerGroupService.addCustomerBatch(
     id,
     validated.customerIds
   )
-  res.status(200).json({ customerGroup })
+  res.status(200).json({ customer_group })
 }
 
 export class AdminPostCustomerGroupsBatchReq {

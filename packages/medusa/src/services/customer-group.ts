@@ -70,12 +70,10 @@ class CustomerGroupService extends BaseService {
     id: string,
     customerIds: CustomerGroupsBatchCustomer[]
   ): Promise<CustomerGroup> {
-    return this.atomicPhase_(async (manager) => {
-      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
-        this.customerGroupRepository_
-      )
-      return await cgRepo.addCustomerBatch(id, customerIds)
-    })
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+    return await cgRepo.addCustomerBatch(id, customerIds)
   }
 }
 
