@@ -43,7 +43,10 @@ export class Customer {
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
-  @OneToMany(() => Address, (address) => address.customer)
+  @OneToMany(
+    () => Address,
+    (address) => address.customer
+  )
   shipping_addresses: Address[]
 
   @Column({ nullable: true, select: false })
@@ -55,9 +58,23 @@ export class Customer {
   @Column({ default: false })
   has_account: boolean
 
-  @OneToMany(() => Order, (order) => order.customer)
+  @OneToMany(
+    () => Order,
+    (order) => order.customer
+  )
   orders: Order[]
 
+  @JoinTable({
+    name: "customer_group_customers",
+    inverseJoinColumn: {
+      name: "customer_group_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "customer_id",
+      referencedColumnName: "id",
+    },
+  })
   @ManyToMany(() => CustomerGroup, { cascade: true })
   groups: CustomerGroup[]
 
