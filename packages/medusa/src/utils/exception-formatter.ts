@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 
-const POSTGRES_DUPLICATE_ERROR = "23505"
-const POSTGRES_FOREIGN_KEY_ERROR = "23503"
+export const POSTGRES_DUPLICATE_ERROR = "23505"
+export const POSTGRES_FOREIGN_KEY_ERROR = "23503"
 
 export const formatException = (err): Error => {
   switch (err.code) {
