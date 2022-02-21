@@ -42,6 +42,21 @@ module.exports = async (connection, data = {}) => {
     groups: [{ id: "test-group-5", name: "test-group-5" }],
   })
 
+  await manager.insert(Customer, {
+    id: "test-customer-6",
+    email: "test6@email.com",
+    groups: [{ id: "test-group-5", name: "test-group-5" }],
+  })
+
+  await manager.insert(Customer, {
+    id: "test-customer-7",
+    email: "test7@email.com",
+    groups: [
+      { id: "test-group-5", name: "test-group-5" },
+      { id: "test-group-6", name: "test-group-6" },
+    ],
+  })
+
   await manager.insert(CustomerGroup, {
     id: "customer-group-1",
     name: "vip-customers",
