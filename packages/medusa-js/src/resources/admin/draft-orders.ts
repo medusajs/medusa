@@ -17,10 +17,11 @@ class AdminDraftOrdersResource extends BaseResource {
    * @description Creates a draft order
    */
   create(
-    payload: AdminPostDraftOrdersDraftOrderReq
+    payload: AdminPostDraftOrdersDraftOrderReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
@@ -28,18 +29,22 @@ class AdminDraftOrdersResource extends BaseResource {
    */
   addLineItem(
     id: string,
-    payload: AdminPostDraftOrdersDraftOrderLineItemsReq
+    payload: AdminPostDraftOrdersDraftOrderLineItemsReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}/line-items`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * @description Delete draft order
    */
-  delete(id: string): ResponsePromise<AdminDraftOrdersDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDraftOrdersDeleteRes> {
     const path = `/admin/draft-orders/${id}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
@@ -47,25 +52,30 @@ class AdminDraftOrdersResource extends BaseResource {
    */
   removeLineItem(
     id: string,
-    itemId: string
+    itemId: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}/line-items/${itemId}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Retrieves a draft order
    */
-  retrieve(id: string): ResponsePromise<AdminDraftOrdersRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Lists draft orders
    */
   list(
-    query?: AdminGetDraftOrdersParams
+    query?: AdminGetDraftOrdersParams,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersListRes> {
     let path = `/admin/draft-orders`
 
@@ -74,14 +84,15 @@ class AdminDraftOrdersResource extends BaseResource {
       path = `/admin/draft-orders?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Mark a draft order as paid
    */
   markPaid(
-    id: string
+    id: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPostDraftOrdersDraftOrderRegisterPaymentRes> {
     const path = `/admin/draft-orders/${id}/pay`
     return this.client.request("POST", path, {})
@@ -92,10 +103,11 @@ class AdminDraftOrdersResource extends BaseResource {
    */
   update(
     id: string,
-    payload: AdminPostDraftOrdersDraftOrderReq
+    payload: AdminPostDraftOrdersDraftOrderReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
@@ -104,10 +116,11 @@ class AdminDraftOrdersResource extends BaseResource {
   updateLineItem(
     id: string,
     itemId: string,
-    payload: AdminPostDraftOrdersDraftOrderLineItemsItemReq
+    payload: AdminPostDraftOrdersDraftOrderLineItemsItemReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDraftOrdersRes> {
     const path = `/admin/draft-orders/${id}/line-items/${itemId}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 

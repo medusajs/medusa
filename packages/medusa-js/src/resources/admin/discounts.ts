@@ -15,9 +15,13 @@ class AdminDiscountsResource extends BaseResource {
   /**
    * @description Adds region to discount
    */
-  addRegion(id: string, regionId: string): ResponsePromise<AdminDiscountsRes> {
+  addRegion(
+    id: string,
+    regionId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/regions/${regionId}`
-    return this.client.request("POST", path, {})
+    return this.client.request("POST", path, {}, {}, customHeaders)
   }
 
   /**
@@ -25,7 +29,8 @@ class AdminDiscountsResource extends BaseResource {
    */
   addValidProduct(
     id: string,
-    productId: string
+    productId: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/products/${productId}`
     return this.client.request("POST", path, {})
@@ -34,9 +39,12 @@ class AdminDiscountsResource extends BaseResource {
   /**
    * @description Creates discounts
    */
-  create(payload: AdminPostDiscountsReq): ResponsePromise<AdminDiscountsRes> {
+  create(
+    payload: AdminPostDiscountsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
@@ -44,10 +52,11 @@ class AdminDiscountsResource extends BaseResource {
    */
   update(
     id: string,
-    payload: AdminPostDiscountsDiscountReq
+    payload: AdminPostDiscountsDiscountReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
@@ -55,18 +64,22 @@ class AdminDiscountsResource extends BaseResource {
    */
   createDynamicCode(
     id: string,
-    payload: AdminPostDiscountsDiscountDynamicCodesReq
+    payload: AdminPostDiscountsDiscountDynamicCodesReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/dynamic-codes`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * @description Deletes a discount
    */
-  delete(id: string): ResponsePromise<AdminDiscountsDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsDeleteRes> {
     const path = `/admin/discounts/${id}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
@@ -74,33 +87,41 @@ class AdminDiscountsResource extends BaseResource {
    */
   deleteDynamicCode(
     id: string,
-    code: string
+    code: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/dynamic-codes/${code}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Retrieves a discount
    */
-  retrieve(id: string): ResponsePromise<AdminDiscountsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Retrieves a discount by code
    */
-  retrieveByCode(code: string): ResponsePromise<AdminDiscountsRes> {
+  retrieveByCode(
+    code: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/code/${code}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Lists discounts
    */
   list(
-    query?: AdminGetDiscountsParams
+    query?: AdminGetDiscountsParams,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsListRes> {
     let path = `/admin/discounts`
 
@@ -109,7 +130,7 @@ class AdminDiscountsResource extends BaseResource {
       path = `/admin/discounts?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
@@ -117,10 +138,11 @@ class AdminDiscountsResource extends BaseResource {
    */
   removeRegion(
     id: string,
-    regionId: string
+    regionId: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/regions/${regionId}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
@@ -128,10 +150,11 @@ class AdminDiscountsResource extends BaseResource {
    */
   removeValidProduct(
     id: string,
-    productId: string
+    productId: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/products/${productId}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 }
 

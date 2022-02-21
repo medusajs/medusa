@@ -61,6 +61,29 @@ describe("/admin/customer-groups", () => {
         })
       )
     })
+
+    it("Fails to create duplciate customer group", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      const payload = {
+        name: "vip-customers",
+      }
+
+      await api
+        .post("/admin/customer-groups", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(402)
+          expect(err.response.data.type).toEqual("duplicate_error")
+          expect(err.response.data.message).toEqual(
+            "Key (name)=(vip-customers) already exists."
+          )
+        })
+    })
   })
 
   describe("POST /admin/customer-groups/{id}/batch", () => {
@@ -87,7 +110,7 @@ describe("/admin/customer-groups", () => {
       }
 
       const batchAddResponse = await api
-        .post("/admin/customer-groups/test-group-0/batch", payload, {
+        .post("/admin/customer-groups/customer-group-1/batch", payload, {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -114,7 +137,7 @@ describe("/admin/customer-groups", () => {
             groups: [
               expect.objectContaining({
                 name: "vip-customers",
-                id: "test-group-0",
+                id: "customer-group-1",
               }),
             ],
           }),
@@ -123,7 +146,7 @@ describe("/admin/customer-groups", () => {
             groups: [
               expect.objectContaining({
                 name: "vip-customers",
-                id: "test-group-0",
+                id: "customer-group-1",
               }),
             ],
           }),
@@ -139,11 +162,15 @@ describe("/admin/customer-groups", () => {
         customerIds: [{ id: "test-customer-1" }],
       }
 
-      await api.post("/admin/customer-groups/test-group-0/batch", payload_1, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      await api.post(
+        "/admin/customer-groups/customer-group-1/batch",
+        payload_1,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
 
       // re-add customer-1 to the customer group along with new addintion: customer-2
       const payload_2 = {
@@ -154,11 +181,15 @@ describe("/admin/customer-groups", () => {
         ],
       }
 
-      await api.post("/admin/customer-groups/test-group-0/batch", payload_2, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
+      await api.post(
+        "/admin/customer-groups/customer-group-1/batch",
+        payload_2,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
 
       // check that customer-1 is only added once and that customer-2 is added correctly
       const getCustomerResponse = await api.get(
@@ -175,7 +206,7 @@ describe("/admin/customer-groups", () => {
             groups: [
               expect.objectContaining({
                 name: "vip-customers",
-                id: "test-group-0",
+                id: "customer-group-1",
               }),
             ],
           }),
@@ -184,7 +215,7 @@ describe("/admin/customer-groups", () => {
             groups: [
               expect.objectContaining({
                 name: "vip-customers",
-                id: "test-group-0",
+                id: "customer-group-1",
               }),
             ],
           }),

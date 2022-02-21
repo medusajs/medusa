@@ -40,6 +40,11 @@ class CustomerGroupService extends BaseService {
     return cloned
   }
 
+  /**
+   * Creates a customer group with the provided data.
+   * @param {DeepPartial<CustomerGroup>} group - the customer group to create
+   * @return {Promise} the result of the create operation
+   */
   async create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
     return this.atomicPhase_(async (manager) => {
       try {
@@ -54,7 +59,7 @@ class CustomerGroupService extends BaseService {
         return result
       } catch (err) {
         if (err.code === "23505") {
-          throw new MedusaError(MedusaError.Types.DB_ERROR, err.detail)
+          throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
         }
         throw err
       }
