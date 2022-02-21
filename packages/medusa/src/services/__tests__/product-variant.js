@@ -475,7 +475,7 @@ describe("ProductVariantService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully removes old prices and calls setCurrencyPrice on new/existing prices", async () => {
+    it("successfully removes obsolete prices and calls setCurrencyPrice on new/existing prices", async () => {
       await productVariantService.updateVariantPrices("ironman", [
         {
           currency_code: "usd",
@@ -499,7 +499,7 @@ describe("ProductVariantService", () => {
       expect(moneyAmountRepository.remove).toHaveBeenCalledWith(oldPrices)
     })
 
-    it("successfully removes old prices and calls setRegionPrice on new/existing prices", async () => {
+    it("successfully removes obsolete prices and calls setRegionPrice on new/existing prices", async () => {
       await productVariantService.updateVariantPrices("ironman", [
         {
           region_id: "test-region",
