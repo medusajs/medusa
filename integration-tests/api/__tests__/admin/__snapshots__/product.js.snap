@@ -364,7 +364,7 @@ Array [
             "currency_code": "usd",
             "deleted_at": null,
             "id": StringMatching /\\^test-price\\*/,
-            "region_id": null,
+            "region_id": "test-region",
             "sale_amount": null,
             "updated_at": Any<String>,
             "variant_id": StringMatching /\\^test-variant\\*/,

@@ -17,7 +17,7 @@ describe("/admin/products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -1380,7 +1380,7 @@ describe("/admin/products", () => {
       ])
     })
 
-    it("successfully updates a variant's prices by replacing an existing price (using region_id) and adding another price", async () => {
+    it("successfully updates a variant's prices by updating an existing price (using region_id) and adding another price", async () => {
       const api = useApi()
       const data = {
         prices: [
@@ -1410,17 +1410,20 @@ describe("/admin/products", () => {
       expect(response.data.product.variants[1].prices.length).toEqual(
         data.prices.length
       )
-      expect(response.data.product.variants[1].prices).toEqual([
-        expect.objectContaining({
-          amount: 8000,
-          currency_code: "usd",
-          region_id: "test-region",
-        }),
-        expect.objectContaining({
-          amount: 900,
-          currency_code: "eur",
-        }),
-      ])
+
+      expect(response.data.product.variants[1].prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 8000,
+            currency_code: "usd",
+            region_id: "test-region",
+          }),
+          expect.objectContaining({
+            amount: 900,
+            currency_code: "eur",
+          }),
+        ])
+      )
     })
   })
 
