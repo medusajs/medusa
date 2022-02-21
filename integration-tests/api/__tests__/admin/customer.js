@@ -56,7 +56,7 @@ describe("/admin/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(4)
+      expect(response.data.count).toEqual(5)
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -228,6 +228,106 @@ describe("/admin/customers", () => {
         })
       )
     })
+
+    it("Correctly updates customer groups", async () => {
+      const api = useApi()
+      let response = await api
+        .post(
+          "/admin/customers/test-customer-3?expand=groups",
+          {
+            groups: [{ id: "test-group-4" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
+        ])
+      )
+
+      // Try adding a non existing group
+
+      response = await api
+        .post(
+          "/admin/customers/test-customer-3?expand=groups",
+          {
+            groups: [{ id: "test-group-4" }, { id: "fake-group-0" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(1)
+      expect(response.data.customer.groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
+        ])
+      )
+
+      // Delete all groups
+
+      response = await api
+        .post(
+          "/admin/customers/test-customer-3?expand=groups",
+          {
+            groups: [],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(0)
+
+      // Adding a group to a customer with already existing groups.
+
+      response = await api
+        .post(
+          "/admin/customers/test-customer-5?expand=groups",
+          {
+            groups: [{ id: "test-group-5" }, { id: "test-group-4" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(2)
+      expect(response.data.customer.groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
+          expect.objectContaining({ id: "test-group-5", name: "test-group-5" }),
+        ])
+      )
+    })
   })
 
   describe("GET /admin/customers/:id", () => {
@@ -278,7 +378,7 @@ describe("/admin/customers", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/customers/test-customer-1?expand=billing_address", {
+        .get("/admin/customers/test-customer-1?expand=billing_address,groups", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -295,6 +395,7 @@ describe("/admin/customers", () => {
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
+        groups: [],
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
