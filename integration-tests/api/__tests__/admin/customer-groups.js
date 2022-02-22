@@ -273,6 +273,35 @@ describe("/admin/customer-groups", () => {
         })
       )
     })
+
+    it("reset `metadata`to `null`", async () => {
+      const api = useApi()
+
+      const id = "customer-group-2"
+      // already has some metadata initially
+
+      const body = {
+        name: "vip-customers-v2",
+        metadata: null,
+      }
+
+      const response = await api
+        .post(`/admin/customer-groups/${id}`, body, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch(console.log)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customerGroup).toEqual(
+        expect.objectContaining({
+          id: "customer-group-2",
+          name: "vip-customers-v2",
+          metadata: null,
+        })
+      )
+    })
   })
 
   describe("GET /admin/customer-groups", () => {

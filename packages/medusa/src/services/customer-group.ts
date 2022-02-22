@@ -111,6 +111,7 @@ class CustomerGroupService extends BaseService {
       if (name) {
         customerGroup.name = name
       }
+
       if (typeof metadata !== "undefined") {
         customerGroup.metadata = metadata
       }
