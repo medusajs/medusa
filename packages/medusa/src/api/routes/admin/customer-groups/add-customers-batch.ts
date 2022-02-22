@@ -41,7 +41,7 @@ export default async (req, res) => {
   res.status(200).json({ customer_group })
 }
 
-export class AdminPostCustomerGroupsBatchReq {
+export class AdminPostCustomerGroupsGroupCustomersBatchReq {
   @ValidateNested({ each: true })
   @Type(() => CustomerGroupsBatchCustomer)
   customerIds: CustomerGroupsBatchCustomer[]
