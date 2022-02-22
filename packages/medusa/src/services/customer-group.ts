@@ -89,6 +89,12 @@ class CustomerGroupService extends BaseService {
     })
   }
 
+  /**
+   * Update a customer group.
+   *
+   * @param {string} customerGroupId - id of the customer group
+   * @param {CustomerGroupUpdate} update - customer group partial data
+   */
   async update(
     customerGroupId: string,
     update: CustomerGroupUpdate
