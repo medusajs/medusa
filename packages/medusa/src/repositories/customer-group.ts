@@ -16,15 +16,9 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
     groupId: string,
     customerIds: CustomerBatchIds[]
   ): Promise<CustomerGroup> {
-    try {
-      const customerGroup = await this.findOne(groupId)
-      if (!customerGroup) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `CustomerGroup with id ${groupId} was not found`
-        )
-      }
+    const customerGroup = await this.findOne(groupId)
 
+    try {
       await this.createQueryBuilder()
         .insert()
         .into("customer_group_customers")
@@ -37,9 +31,16 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
         .orIgnore()
         .execute()
 
-      return customerGroup
+      return customerGroup as CustomerGroup
     } catch (error) {
       if (error.code === "23503") {
+        if (!customerGroup) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `CustomerGroup with id ${groupId} was not found`
+          )
+        }
+
         const existingCustomers = await getConnection()
           .getRepository(Customer)
           .createQueryBuilder("customer")
