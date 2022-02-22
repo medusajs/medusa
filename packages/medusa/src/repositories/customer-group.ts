@@ -7,14 +7,14 @@ import {
 } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { CustomerGroup } from "../models/customer-group"
-import { CustomerGroupsBatchCustomer } from "../types/customer-groups"
+import { CustomerBatchIds } from "../types/customer-groups"
 import { Customer } from ".."
 
 @EntityRepository(CustomerGroup)
 export class CustomerGroupRepository extends Repository<CustomerGroup> {
   async addCustomerBatch(
     groupId: string,
-    customerIds: CustomerGroupsBatchCustomer[]
+    customerIds: CustomerBatchIds[]
   ): Promise<CustomerGroup> {
     try {
       const customerGroup = await this.findOne(groupId)
