@@ -31,10 +31,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *               $ref: "#/components/schemas/customer_group"
  */
 export default async (req, res) => {
-  const validated = await validator(
-    AdminGetCustomerGroupsGroupParams,
-    req.query
-  )
+  const validated = await validator(AdminGetCustomerGroupsListParams, req.query)
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
@@ -69,7 +66,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetCustomerGroupsGroupParams {
+export class AdminGetCustomerGroupsListParams {
   @IsString()
   @IsOptional()
   q?: string

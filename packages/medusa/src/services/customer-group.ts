@@ -106,7 +106,7 @@ class CustomerGroupService extends BaseService {
   }
 
   /**
-   * Retrieve a list of customer groups and total count of records in the DB.
+   * Retrieve a list of customer groups and total count of records that match the query.
    *
    * @param {Object} selector - the query object for find
    * @param {Object} config - the config to be used for find
