@@ -180,7 +180,7 @@ describe("/admin/customer-groups", () => {
 
       expect(getCustomerResponse.data.customer).toEqual(
         expect.objectContaining({
-          id: "test-customer-5",
+          id: "test-customer-7",
           groups: [
             expect.objectContaining({
               id: "test-group-6",
@@ -192,8 +192,6 @@ describe("/admin/customer-groups", () => {
     })
 
     it("removes customers from a group idempotently", async () => {
-      expect.assertions(3)
-
       const api = useApi()
 
       // re-adding customer-1 to the customer group along with new addintion:
@@ -202,12 +200,12 @@ describe("/admin/customer-groups", () => {
         customerIds: [{ id: "test-customer-5" }, { id: "test-customer-28" }],
       }
 
-      // await api.delete("/admin/customer-groups/test-group-5/customers/batch", {
-      //   headers: {
-      //     Authorization: "Bearer test_token",
-      //   },
-      //   data: payload,
-      // })
+      await api.delete("/admin/customer-groups/test-group-5/customers/batch", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+        data: payload,
+      })
 
       // check that customer-1 is only added once and that customer-2 is added correctly
       const getCustomerResponse = await api
@@ -216,7 +214,6 @@ describe("/admin/customer-groups", () => {
         })
         .catch((err) => console.log(err))
 
-      console.log(getCustomerResponse.data.customers)
       expect(getCustomerResponse.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -233,6 +230,38 @@ describe("/admin/customer-groups", () => {
             ],
           }),
         ])
+      )
+    })
+
+    it("removes customers from a group idempotently", async () => {
+      const api = useApi()
+
+      // re-adding customer-1 to the customer group along with new addintion:
+      // customer-2 and some non-existing customers should cause the request to fail
+      const payload = {
+        customerIds: [{ id: "test-customer-5" }],
+      }
+
+      await api.delete("/admin/customer-groups/test-group-5/customers/batch", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+        data: payload,
+      })
+
+      const idempotentRes = await api.delete(
+        "/admin/customer-groups/test-group-5/customers/batch",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+          data: payload,
+        }
+      )
+
+      expect(idempotentRes.status).toEqual(200)
+      expect(idempotentRes.data.customer_group).toEqual(
+        expect.objectContaining({})
       )
     })
   })
