@@ -105,13 +105,11 @@ describe("/admin/customer-groups", () => {
     it("retreive a list of customer groups filtered by name using `q` param", async () => {
       const api = useApi()
 
-      const response = await api
-        .get(`/admin/customer-groups?q=vip-customers`, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch(console.log)
+      const response = await api.get(`/admin/customer-groups?q=vip-customers`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
@@ -122,8 +120,6 @@ describe("/admin/customer-groups", () => {
       )
       expect(response.data.customerGroups[0]).not.toHaveProperty("customers")
     })
-
-    it("throws error when a customer group doesn't exist", async () => {})
   })
 
   describe("GET /admin/customer-groups/:id", () => {

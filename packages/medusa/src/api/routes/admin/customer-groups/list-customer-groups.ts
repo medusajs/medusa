@@ -4,10 +4,9 @@ import omit from "lodash/omit"
 
 import { validator } from "../../../../utils/validator"
 import { CustomerGroupService } from "../../../../services"
-import { defaultAdminCustomerGroupsRelations } from "."
-import { FindConfig } from "../../../../types/common"
 import { CustomerGroup } from "../../../../models/customer-group"
-import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
+import { FindConfig } from "../../../../types/common"
+import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
  * @oas [get] /customer-groups
