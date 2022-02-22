@@ -10,7 +10,7 @@ export default (app) => {
 
   route.post("/", middlewares.wrap(require("./create-customer-group").default))
   route.post(
-    "/:id/batch",
+    "/:id/customers/batch",
     middlewares.wrap(require("./add-customers-batch").default)
   )
   return app

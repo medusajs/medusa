@@ -52,7 +52,7 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
         )
 
         throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
+          MedusaError.Types.NOT_FOUND,
           `The following customer ids do not exist: ${JSON.stringify(
             nonExistingCustomers.map(({ id }) => id).join(", ")
           )}`
