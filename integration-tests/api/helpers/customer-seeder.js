@@ -36,6 +36,11 @@ module.exports = async (connection, data = {}) => {
     has_account: true,
   })
 
+  await manager.insert(CustomerGroup, {
+    id: "test-group-5",
+    name: "test-group-5",
+  })
+
   await manager.insert(Customer, {
     id: "test-customer-5",
     email: "test5@email.com",
@@ -45,15 +50,15 @@ module.exports = async (connection, data = {}) => {
   await manager.insert(Customer, {
     id: "test-customer-6",
     email: "test6@email.com",
-    groups: [{ id: "test-group-5", name: "test-group-5" }],
+    // groups: [{ id: "test-group-5", name: "test-group-5" }],
   })
 
   await manager.insert(Customer, {
     id: "test-customer-7",
     email: "test7@email.com",
     groups: [
-      { id: "test-group-5", name: "test-group-5" },
-      { id: "test-group-6", name: "test-group-6" },
+      // { id: "test-group-5", name: "test-group-5" },
+      // { id: "test-group-6", name: "test-group-6" },
     ],
   })
 
@@ -68,7 +73,7 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.insert(CustomerGroup, {
-    id: "test-group-5",
-    name: "test-group-5",
+    id: "test-group-6",
+    name: "test-group-6",
   })
 }
