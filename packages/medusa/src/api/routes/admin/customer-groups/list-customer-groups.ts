@@ -10,7 +10,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
  * @oas [get] /customer-groups
- * operationId: "ListCustomerGroupsGroup"
+ * operationId: "ListCustomerGroups"
  * summary: "Retrieve a list of customer groups"
  * description: "Retrieve a list of customer groups."
  * x-authenticated: true
@@ -28,7 +28,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *         schema:
  *           properties:
  *             customerGroup:
- *               $ref: "#/components/schemas/customer-group"
+ *               $ref: "#/components/schemas/customer_group"
  */
 export default async (req, res) => {
   const validated = await validator(
@@ -82,7 +82,7 @@ export class AdminGetCustomerGroupsGroupParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit = 50
+  limit = 10
 
   @IsString()
   @IsOptional()
