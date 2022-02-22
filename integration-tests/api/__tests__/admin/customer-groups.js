@@ -86,7 +86,7 @@ describe("/admin/customer-groups", () => {
     })
   })
 
-  describe("POST /admin/customer-groups/{id}/batch", () => {
+  describe("POST /admin/customer-groups/{id}/customers/batch", () => {
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
@@ -110,7 +110,7 @@ describe("/admin/customer-groups", () => {
       }
 
       const batchAddResponse = await api.post(
-        "/admin/customer-groups/customer-group-1/batch",
+        "/admin/customer-groups/customer-group-1/customers/batch",
         payload,
         {
           headers: {
@@ -157,6 +157,33 @@ describe("/admin/customer-groups", () => {
       )
     })
 
+    it("presents a descriptive error when presented with a non-existing group", async () => {
+      expect.assertions(2)
+
+      const api = useApi()
+
+      const payload = {
+        customerIds: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
+      }
+
+      await api
+        .post(
+          "/admin/customer-groups/non-existing-customer-group-1/customers/batch",
+          payload,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.data.type).toEqual("not_found")
+          expect(err.response.data.message).toEqual(
+            "CustomerGroup with id non-existing-customer-group-1 was not found"
+          )
+        })
+    })
+
     it("adds customers to a group idempotently", async () => {
       expect.assertions(3)
 
@@ -168,7 +195,7 @@ describe("/admin/customer-groups", () => {
       }
 
       await api.post(
-        "/admin/customer-groups/customer-group-1/batch",
+        "/admin/customer-groups/customer-group-1/customers/batch",
         payload_1,
         {
           headers: {
@@ -189,13 +216,17 @@ describe("/admin/customer-groups", () => {
       }
 
       await api
-        .post("/admin/customer-groups/customer-group-1/batch", payload_2, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .post(
+          "/admin/customer-groups/customer-group-1/customers/batch",
+          payload_2,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
         .catch((err) => {
-          expect(err.response.data.type).toEqual("invalid_data")
+          expect(err.response.data.type).toEqual("not_found")
           expect(err.response.data.message).toEqual(
             'The following customer ids do not exist: "test-customer-27, test-customer-28"'
           )
