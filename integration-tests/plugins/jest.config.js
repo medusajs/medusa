@@ -1,7 +1,9 @@
 // API
 
 module.exports = {
+  name: "plugins",
   testEnvironment: `node`,
+  rootDir: "./",
   testPathIgnorePatterns: [
     `/examples/`,
     `/www/`,
