@@ -6,7 +6,7 @@ import { FindParams } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups
+ * @oas [post] /customer-groups/{id}
  * operationId: "UpdateCustomerGroupsGroup"
  * summary: "Update a CustomerGroup"
  * description: "Update a CustomerGroup."
