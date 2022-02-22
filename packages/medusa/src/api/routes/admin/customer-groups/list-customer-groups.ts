@@ -1,7 +1,13 @@
-import { CustomerGroupService } from "../../../../services"
-import { FindParams } from "../../../../types/common"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import { Type } from "class-transformer"
+import omit from "lodash/omit"
+
 import { validator } from "../../../../utils/validator"
+import { CustomerGroupService } from "../../../../services"
 import { defaultAdminCustomerGroupsRelations } from "."
+import { FindConfig } from "../../../../types/common"
+import { CustomerGroup } from "../../../../models/customer-group"
+import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
 
 /**
  * @oas [get] /customer-group
@@ -26,8 +32,6 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *               $ref: "#/components/schemas/customer-group"
  */
 export default async (req, res) => {
-  const { id } = req.params
-
   const validated = await validator(
     AdminGetCustomerGroupsGroupParams,
     req.query
@@ -42,18 +46,31 @@ export default async (req, res) => {
     expandFields = validated.expand.split(",")
   }
 
-  const findConfig = {
+  const listConfig: FindConfig<CustomerGroup> = {
     relations: expandFields.length
       ? expandFields
       : defaultAdminCustomerGroupsRelations,
+    skip: validated.offset,
+    take: validated.limit,
+    order: { created_at: "DESC" },
   }
 
-  const customerGroup = await customerGroupService.list(id, findConfig)
+  const filterableFields = omit(validated, ["limit", "offset"])
 
-  res.json({ customerGroup })
+  const [data, count] = await customerGroupService.listAndCount(
+    filterableFields,
+    listConfig
+  )
+
+  res.json({
+    count,
+    customerGroup: data,
+    offset: validated.offset,
+    limit: validated.limit,
+  })
 }
 
-export class AdminGetCustomerGroupsGroupParams extends AdminListOrdersSelector {
+export class AdminGetCustomerGroupsGroupParams extends FilterableCustomerGroupProps {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

@@ -102,6 +102,42 @@ describe("/admin/customer-groups", () => {
       await db.teardown()
     })
 
+    it("retreive a list of customer groups", async () => {
+      const api = useApi()
+
+      const id = "customer-group-1"
+
+      const response = await api
+        .get(`/admin/customer-groups`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch(console.log)
+
+      console.log(response)
+      expect(response.status).toEqual(200)
+    })
+
+    it("throws error when a customer group doesn't exist", async () => {})
+  })
+
+  describe("GET /admin/customer-groups/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
     it("gets customer group", async () => {
       const api = useApi()
 

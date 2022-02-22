@@ -104,6 +104,29 @@ class CustomerGroupService extends BaseService {
     const query = this.buildQuery_(selector, config)
     return await cgRepo.find(query)
   }
+
+  /**
+   * Retrieve a list of customer groups and total count of records in the DB.
+   *
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(
+    selector: FilterableCustomerGroupProps = {},
+    config: FindConfig<CustomerGroup> = {
+      skip: 0,
+      take: 20,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[CustomerGroup[], number]> {
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return await cgRepo.findAndCount(query)
+  }
 }
 
 export default CustomerGroupService
