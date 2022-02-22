@@ -66,6 +66,12 @@ class CustomerGroupService extends BaseService {
     })
   }
 
+  /**
+   * Add a batch of customers to a customer group at once
+   * @param {string} id id of the customer group to add customers to
+   * @param {CustomerBatchIds[]} customerIds customer id's to add to the group
+   * @return {Promise<CustomerGroup>} the customer group after insertion
+   */
   async addCustomerBatch(
     id: string,
     customerIds: CustomerBatchIds[]
