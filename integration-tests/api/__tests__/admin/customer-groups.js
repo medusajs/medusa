@@ -238,6 +238,7 @@ describe("/admin/customer-groups", () => {
           },
         })
       )
+<<<<<<< HEAD
       expect(response.data.customer_group).not.toHaveProperty("customers")
     })
 
@@ -272,6 +273,9 @@ describe("/admin/customer-groups", () => {
           customers: [],
         })
       )
+=======
+      expect(response.data.customerGroup).not.toHaveProperty("customers")
+>>>>>>> 2ed3d9e8 (add the `expand`params to the update endpoint)
     })
 
     it("reset `metadata`to `null`", async () => {
@@ -286,7 +290,7 @@ describe("/admin/customer-groups", () => {
       }
 
       const response = await api
-        .post(`/admin/customer-groups/${id}`, body, {
+        .post(`/admin/customer-groups/${id}?expand=customers`, body, {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -299,6 +303,7 @@ describe("/admin/customer-groups", () => {
           id: "customer-group-2",
           name: "vip-customers-v2",
           metadata: null,
+          customers: [],
         })
       )
     })

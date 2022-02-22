@@ -1,6 +1,8 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
+import { defaultAdminCustomerGroupsRelations } from "."
 
 import { CustomerGroupService } from "../../../../services"
+import { FindParams } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -28,15 +30,33 @@ import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
   const { id } = req.params
-  const validated = await validator(AdminPostCustomerGroupsGroupReq, req.body)
+
+  const validatedBody = await validator(
+    AdminPostCustomerGroupsGroupReq,
+    req.body
+  )
+  const validatedParams = await validator(FindParams, req.query)
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
-  const customerGroup = await customerGroupService.update(id, validated)
+  await customerGroupService.update(id, validatedBody)
 
-  res.status(200).json({ customerGroup })
+  let expandFields: string[] = []
+  if (validatedParams.expand) {
+    expandFields = validatedParams.expand.split(",")
+  }
+
+  const findConfig = {
+    relations: expandFields.length
+      ? expandFields
+      : defaultAdminCustomerGroupsRelations,
+  }
+
+  const customerGroup = await customerGroupService.retrieve(id, findConfig)
+
+  res.json({ customerGroup })
 }
 
 export class AdminPostCustomerGroupsGroupReq {
