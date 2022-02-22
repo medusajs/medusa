@@ -107,7 +107,7 @@ describe("/admin/customer-groups", () => {
       const api = useApi()
 
       const payload = {
-        customerIds: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
+        customer_ids: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
       }
 
       const batchAddResponse = await api.post(
@@ -164,7 +164,7 @@ describe("/admin/customer-groups", () => {
       const api = useApi()
 
       const payload = {
-        customerIds: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
+        customer_ids: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
       }
 
       await api
@@ -192,7 +192,7 @@ describe("/admin/customer-groups", () => {
 
       // add customer-1 to the customer group
       const payload_1 = {
-        customerIds: [{ id: "test-customer-1" }],
+        customer_ids: [{ id: "test-customer-1" }],
       }
 
       await api
@@ -210,7 +210,7 @@ describe("/admin/customer-groups", () => {
       // re-adding customer-1 to the customer group along with new addintion:
       // customer-2 and some non-existing customers should cause the request to fail
       const payload_2 = {
-        customerIds: [
+        customer_ids: [
           { id: "test-customer-1" },
           { id: "test-customer-27" },
           { id: "test-customer-28" },
