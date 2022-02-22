@@ -26,7 +26,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(FindParams, req.query)
+  const validated = await validator(AdminGetCustomerGroupsGroupParams, req.query)
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
