@@ -16,8 +16,8 @@ import { defaultAdminCustomerGroupsRelations } from "."
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching user group names.
- *   - (query) offset {string} How many orders to skip in the result.
- *   - (query) limit {string} Limit the number of orders returned.
+ *   - (query) offset {string} How many groups to skip in the result.
+ *   - (query) limit {string} Limit the number of groups returned.
  * tags:
  *   - CustomerGroup
  * responses:
