@@ -1,4 +1,4 @@
-import { ValidateNested } from "class-validator"
+import { IsString, ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
 
 import { StringComparisonOperator } from "./common"
@@ -7,4 +7,13 @@ export class FilterableCustomerGroupProps {
   @ValidateNested()
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator
+}
+
+export type CustomerBatchIds = {
+  id: string
+}
+
+export class CustomerGroupsBatchCustomer {
+  @IsString()
+  id: string
 }
