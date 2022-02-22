@@ -5,8 +5,8 @@ import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /customer-groups/{id}/batch
- * operationId: "PostCustomerGroupsBatch"
+ * @oas [post] /customer-groups/{id}/customers/batch
+ * operationId: "PostCustomerGroupsGroupCustomersBatch"
  * summary: "Add a list of customers to a customer group "
  * description: "Adds a list of customers, represented by id's, to a customer group."
  * x-authenticated: true
@@ -41,7 +41,7 @@ export default async (req, res) => {
   res.status(200).json({ customer_group })
 }
 
-export class AdminPostCustomerGroupsBatchReq {
+export class AdminPostCustomerGroupsGroupCustomersBatchReq {
   @ValidateNested({ each: true })
   @Type(() => CustomerGroupsBatchCustomer)
   customer_ids: CustomerGroupsBatchCustomer[]
