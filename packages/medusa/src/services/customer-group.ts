@@ -1,7 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { DeepPartial, EntityManager } from "typeorm"
-import { CustomerGroup } from ".."
+import {
+  Brackets,
+  DeepPartial,
+  EntityManager,
+  ILike,
+  SelectQueryBuilder,
+} from "typeorm"
+import { CustomerGroup, ProductVariant } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
 import { FindConfig } from "../types/common"
 import { FilterableCustomerGroupProps } from "../types/customer-groups"
@@ -124,7 +130,23 @@ class CustomerGroupService extends BaseService {
       this.customerGroupRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.name
+
+      query.where = (qb: SelectQueryBuilder<ProductVariant>): void => {
+        qb.where(where).andWhere([{ name: ILike(`%${q}%`) }])
+      }
+    }
     return await cgRepo.findAndCount(query)
   }
 }

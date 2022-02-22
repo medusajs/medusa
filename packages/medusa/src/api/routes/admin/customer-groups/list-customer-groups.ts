@@ -55,7 +55,7 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const filterableFields = omit(validated, ["limit", "offset"])
+  const filterableFields = omit(validated, ["limit", "offset", "expand"])
 
   const [data, count] = await customerGroupService.listAndCount(
     filterableFields,
@@ -64,13 +64,17 @@ export default async (req, res) => {
 
   res.json({
     count,
-    customerGroup: data,
+    customerGroups: data,
     offset: validated.offset,
     limit: validated.limit,
   })
 }
 
-export class AdminGetCustomerGroupsGroupParams extends FilterableCustomerGroupProps {
+export class AdminGetCustomerGroupsGroupParams {
+  @IsString()
+  @IsOptional()
+  q?: string
+
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
@@ -84,8 +88,4 @@ export class AdminGetCustomerGroupsGroupParams extends FilterableCustomerGroupPr
   @IsString()
   @IsOptional()
   expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
 }

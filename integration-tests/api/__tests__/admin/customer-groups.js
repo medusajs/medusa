@@ -102,21 +102,25 @@ describe("/admin/customer-groups", () => {
       await db.teardown()
     })
 
-    it("retreive a list of customer groups", async () => {
+    it("retreive a list of customer groups filtered by name using `q` param", async () => {
       const api = useApi()
 
-      const id = "customer-group-1"
-
       const response = await api
-        .get(`/admin/customer-groups`, {
+        .get(`/admin/customer-groups?q=vip-customers`, {
           headers: {
             Authorization: "Bearer test_token",
           },
         })
         .catch(console.log)
 
-      console.log(response)
       expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.customerGroups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "customer-group-1" }),
+        ])
+      )
+      expect(response.data.customerGroups[0]).not.toHaveProperty("customers")
     })
 
     it("throws error when a customer group doesn't exist", async () => {})

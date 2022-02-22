@@ -8,9 +8,6 @@ export class FilterableCustomerGroupProps {
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator
 
-  @IsType([String, [String], StringComparisonOperator])
-  name?: string | string[] | StringComparisonOperator
-
   @IsString()
   q?: string
 }
