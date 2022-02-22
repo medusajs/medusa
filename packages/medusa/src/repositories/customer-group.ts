@@ -42,9 +42,7 @@ export class CustomerGroupRepository extends Repository<CustomerGroup> {
         const existingCustomers = await getConnection()
           .getRepository(Customer)
           .createQueryBuilder("customer")
-          .where("customer.id IN (:...customer_ids)", {
-            customer_ids: customerIds.map(({ id }) => id),
-          })
+          .where({ id: In(customerIds.map(({ id }) => id)) })
           .getMany()
 
         const nonExistingCustomers = customerIds.filter(
