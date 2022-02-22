@@ -5,7 +5,7 @@ import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customer-groups
- * operationId: "UpdateCustomerGroups"
+ * operationId: "UpdateCustomerGroupsGroup"
  * summary: "Update a CustomerGroup"
  * description: "Update a CustomerGroup."
  * x-authenticated: true
@@ -28,19 +28,21 @@ import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
   const { id } = req.params
-  const validated = await validator(AdminPostCustomerGroupsReq, req.body)
+  const validated = await validator(AdminPostCustomerGroupsGroupReq, req.body)
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
   const customerGroup = await customerGroupService.update(id, validated)
+
   res.status(200).json({ customerGroup })
 }
 
-export class AdminPostCustomerGroupsReq {
+export class AdminPostCustomerGroupsGroupReq {
   @IsString()
-  name: string
+  @IsOptional()
+  name?: string
 
   @IsObject()
   @IsOptional()
