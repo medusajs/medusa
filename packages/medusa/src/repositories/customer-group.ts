@@ -3,6 +3,7 @@ import {
   Repository,
   getManager,
   getConnection,
+  In,
 } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { CustomerGroup } from "../models/customer-group"
