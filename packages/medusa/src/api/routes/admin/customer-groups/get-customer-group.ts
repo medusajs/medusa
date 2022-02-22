@@ -2,7 +2,6 @@ import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { defaultAdminCustomerGroupsRelations } from "."
-import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [get] /customer-group/{id}
