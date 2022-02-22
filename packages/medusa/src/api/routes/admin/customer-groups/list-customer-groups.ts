@@ -4,13 +4,15 @@ import { validator } from "../../../../utils/validator"
 import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
- * @oas [get] /customer-group/{id}
- * operationId: "GetCustomerGroupsGroup"
- * summary: "Retrieve a CustomerGroup"
- * description: "Retrieves a Customer Group."
+ * @oas [get] /customer-group
+ * operationId: "ListCustomerGroupsGroup"
+ * summary: "Retrieve a list of customer groups"
+ * description: "Retrieve a list of customer groups."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer Group.
+ *   - (query) q {string} Query used for searching user group names.
+ *   - (query) offset {string} How many orders to skip in the result.
+ *   - (query) limit {string} Limit the number of orders returned.
  * tags:
  *   - CustomerGroup
  * responses:
@@ -46,9 +48,27 @@ export default async (req, res) => {
       : defaultAdminCustomerGroupsRelations,
   }
 
-  const customerGroup = await customerGroupService.retrieve(id, findConfig)
+  const customerGroup = await customerGroupService.list(id, findConfig)
 
   res.json({ customerGroup })
 }
 
-export class AdminGetCustomerGroupsGroupParams extends FindParams {}
+export class AdminGetCustomerGroupsGroupParams extends AdminListOrdersSelector {
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  offset = 0
+
+  @IsNumber()
+  @IsOptional()
+  @Type(() => Number)
+  limit = 50
+
+  @IsString()
+  @IsOptional()
+  expand?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
+}
