@@ -1,10 +1,4 @@
-import {
-  EntityRepository,
-  Repository,
-  getManager,
-  getConnection,
-  In,
-} from "typeorm"
+import { EntityRepository, Repository, getConnection, In } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { CustomerGroup } from "../models/customer-group"
 import { CustomerBatchIds } from "../types/customer-groups"
