@@ -1,6 +1,5 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { FindConfig } from "../../../../types/common"
@@ -40,10 +39,6 @@ export default async (req, res) => {
     expandFields = validated.expand.split(",")
   }
 
-  // throw new MedusaError(
-  //   MedusaError.Types.INVALID_DATA,
-  //   JSON.stringify(expandFields)
-  // )
   const listConfig: FindConfig<Customer> = {
     relations: expandFields,
     skip: validated.offset,
