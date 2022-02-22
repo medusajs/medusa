@@ -1,16 +1,24 @@
-import { Brackets, EntityRepository, In, IsNull, Not, Repository } from "typeorm"
+import {
+  Brackets,
+  EntityRepository,
+  In,
+  IsNull,
+  Not,
+  Repository,
+} from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
 
-type Price = Partial<Pick<MoneyAmount, 'currency_code' | 'region_id' | 'sale_amount' | 'currency_code'>> & { amount: number }
+type Price = Partial<
+  Pick<
+    MoneyAmount,
+    "currency_code" | "region_id" | "sale_amount" | "currency_code"
+  >
+> & { amount: number }
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
-  public async findVariantPricesNotIn(
-    variantId: string,
-    prices: Price[]
-  ) {
-    const pricesNotInPricesPayload = await this.createQueryBuilder(
-    )
+  public async findVariantPricesNotIn(variantId: string, prices: Price[]) {
+    const pricesNotInPricesPayload = await this.createQueryBuilder()
       .where({
         variant_id: variantId,
       })
@@ -25,20 +33,15 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
-  public async upsertCurrencyPrice(
-    variantId: string,
-    price: Price
-  ) {
-    let moneyAmount = await this.findOne(
-      {
-        where: {
-          currency_code: price.currency_code,
-          variant_id: variantId,
-          region_id: IsNull()
-        }
-      }
-    )
-    
+  public async upsertCurrencyPrice(variantId: string, price: Price) {
+    let moneyAmount = await this.findOne({
+      where: {
+        currency_code: price.currency_code,
+        variant_id: variantId,
+        region_id: IsNull(),
+      },
+    })
+
     if (!moneyAmount) {
       moneyAmount = this.create({
         ...price,
