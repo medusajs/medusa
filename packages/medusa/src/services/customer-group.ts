@@ -4,6 +4,8 @@ import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
 import { CustomerBatchIds } from "../types/customer-groups"
+import { FindConfig } from "../types/common"
+import { FilterableCustomerGroupProps } from "../types/customer-groups"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -38,6 +40,25 @@ class CustomerGroupService extends BaseService {
     cloned.transactionManager_ = transactionManager
 
     return cloned
+  }
+
+  async retrieve(id: string, config = {}): Promise<CustomerGroup> {
+    const customerRepo = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+
+    const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const customerGroup = await customerRepo.findOne(query)
+    if (!customerGroup) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `CustomerGroup with ${id} was not found`
+      )
+    }
+
+    return customerGroup
   }
 
   /**
@@ -80,6 +101,25 @@ class CustomerGroupService extends BaseService {
       this.customerGroupRepository_
     )
     return await cgRepo.addCustomerBatch(id, customerIds)
+  }
+
+  /**
+   * List customer groups.
+   *
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async list(
+    selector: FilterableCustomerGroupProps = {},
+    config: FindConfig<CustomerGroup>
+  ): Promise<CustomerGroup[]> {
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return await cgRepo.find(query)
   }
 }
 

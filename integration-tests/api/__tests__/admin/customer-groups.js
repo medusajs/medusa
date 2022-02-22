@@ -6,6 +6,7 @@ const { useDb, initDb } = require("../../../helpers/use-db")
 
 const customerSeeder = require("../../helpers/customer-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+const { SimpleConsoleLogger } = require("typeorm")
 
 jest.setTimeout(30000)
 
@@ -194,15 +195,17 @@ describe("/admin/customer-groups", () => {
         customerIds: [{ id: "test-customer-1" }],
       }
 
-      await api.post(
-        "/admin/customer-groups/customer-group-1/customers/batch",
-        payload_1,
-        {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        }
-      )
+      await api
+        .post(
+          "/admin/customer-groups/customer-group-1/customers/batch",
+          payload_1,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => console.log(err))
 
       // re-adding customer-1 to the customer group along with new addintion:
       // customer-2 and some non-existing customers should cause the request to fail
@@ -257,6 +260,88 @@ describe("/admin/customer-groups", () => {
           }),
         ])
       )
+    })
+  })
+
+  describe("GET /admin/customer-groups", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("gets customer group", async () => {
+      const api = useApi()
+
+      const id = "customer-group-1"
+
+      const response = await api.get(`/admin/customer-groups/${id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customerGroup).toEqual(
+        expect.objectContaining({
+          id: "customer-group-1",
+          name: "vip-customers",
+        })
+      )
+      expect(response.data.customerGroup).not.toHaveProperty("customers")
+    })
+
+    it("gets customer group with `customers` prop", async () => {
+      const api = useApi()
+
+      const id = "customer-group-1"
+
+      const response = await api.get(
+        `/admin/customer-groups/${id}?expand=customers`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customerGroup).toEqual(
+        expect.objectContaining({
+          id: "customer-group-1",
+          name: "vip-customers",
+        })
+      )
+      expect(response.data.customerGroup.customers).toEqual([])
+    })
+
+    it("throws error when a customer group doesn't exist", async () => {
+      const api = useApi()
+
+      const id = "test-group-000"
+
+      await api
+        .get(`/admin/customer-groups/${id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          expect(err.response.status).toEqual(404)
+          expect(err.response.data.type).toEqual("not_found")
+          expect(err.response.data.message).toEqual(
+            `CustomerGroup with ${id} was not found`
+          )
+        })
     })
   })
 })
