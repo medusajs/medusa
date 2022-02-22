@@ -3,7 +3,6 @@ import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
-import { CustomerBatchIds } from "../types/customer-groups"
 import { FindConfig } from "../types/common"
 import { FilterableCustomerGroupProps } from "../types/customer-groups"
 
@@ -73,7 +72,7 @@ class CustomerGroupService extends BaseService {
           this.customerGroupRepository_
         )
 
-        const created = await cgRepo.create(group)
+        const created = cgRepo.create(group)
 
         const result = await cgRepo.save(created)
 
@@ -90,12 +89,12 @@ class CustomerGroupService extends BaseService {
   /**
    * Add a batch of customers to a customer group at once
    * @param {string} id id of the customer group to add customers to
-   * @param {CustomerBatchIds[]} customerIds customer id's to add to the group
+   * @param {string[]} customerIds customer id's to add to the group
    * @return {Promise<CustomerGroup>} the customer group after insertion
    */
   async addCustomerBatch(
     id: string,
-    customerIds: CustomerBatchIds[]
+    customerIds: string[]
   ): Promise<CustomerGroup> {
     const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
       this.customerGroupRepository_

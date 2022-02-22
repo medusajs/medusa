@@ -36,7 +36,7 @@ export default async (req, res) => {
 
   const customer_group = await customerGroupService.addCustomerBatch(
     id,
-    validated.customerIds
+    validated.customer_ids.map(({ id }) => id)
   )
   res.status(200).json({ customer_group })
 }
@@ -44,5 +44,5 @@ export default async (req, res) => {
 export class AdminPostCustomerGroupsBatchReq {
   @ValidateNested({ each: true })
   @Type(() => CustomerGroupsBatchCustomer)
-  customerIds: CustomerGroupsBatchCustomer[]
+  customer_ids: CustomerGroupsBatchCustomer[]
 }

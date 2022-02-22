@@ -4,9 +4,6 @@ import { IsType } from "../utils/validators/is-type"
 
 import { StringComparisonOperator } from "./common"
 
-export type CustomerBatchIds = {
-  id: string
-}
 export class CustomerGroupsBatchCustomer {
   @IsString()
   id: string
