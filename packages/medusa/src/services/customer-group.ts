@@ -1,12 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import {
-  Brackets,
-  DeepPartial,
-  EntityManager,
-  ILike,
-  SelectQueryBuilder,
-} from "typeorm"
+import { DeepPartial, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import { CustomerGroup, ProductVariant } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
 import { FindConfig } from "../types/common"
@@ -120,11 +114,7 @@ class CustomerGroupService extends BaseService {
    */
   async listAndCount(
     selector: FilterableCustomerGroupProps = {},
-    config: FindConfig<CustomerGroup> = {
-      skip: 0,
-      take: 20,
-      order: { created_at: "DESC" },
-    }
+    config: FindConfig<CustomerGroup>
   ): Promise<[CustomerGroup[], number]> {
     const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
       this.customerGroupRepository_

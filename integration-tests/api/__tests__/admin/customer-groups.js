@@ -102,6 +102,26 @@ describe("/admin/customer-groups", () => {
       await db.teardown()
     })
 
+    it("retreive a list of customer groups", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/admin/customer-groups?limit=5&offset=5&expand=customers`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch(console.log)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(20)
+      expect(response.data.customerGroups.length).toEqual(5)
+      expect(response.data.customerGroups[0]).toEqual(
+        expect.objectContaining({ id: "test-group-15" })
+      )
+      expect(response.data.customerGroups[0]).toHaveProperty("customers")
+    })
+
     it("retreive a list of customer groups filtered by name using `q` param", async () => {
       const api = useApi()
 

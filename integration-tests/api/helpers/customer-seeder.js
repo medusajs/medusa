@@ -47,13 +47,10 @@ module.exports = async (connection, data = {}) => {
     name: "vip-customers",
   })
 
-  await manager.insert(CustomerGroup, {
-    id: "test-group-4",
-    name: "test-group-4",
-  })
-
-  await manager.insert(CustomerGroup, {
-    id: "test-group-5",
-    name: "test-group-5",
-  })
+  for (let i = 2; i <= 20; i++) {
+    await manager.insert(CustomerGroup, {
+      id: `test-group-${i}`,
+      name: `Test group ${i}`,
+    })
+  }
 }
