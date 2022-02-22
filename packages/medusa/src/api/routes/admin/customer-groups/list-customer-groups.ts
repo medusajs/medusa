@@ -10,7 +10,7 @@ import { CustomerGroup } from "../../../../models/customer-group"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
 
 /**
- * @oas [get] /customer-group
+ * @oas [get] /customer-groups
  * operationId: "ListCustomerGroupsGroup"
  * summary: "Retrieve a list of customer groups"
  * description: "Retrieve a list of customer groups."
