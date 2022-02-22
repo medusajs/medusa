@@ -100,7 +100,7 @@ class CustomerGroupService extends BaseService {
     update: CustomerGroupUpdate
   ): Promise<CustomerGroup[]> {
     return this.atomicPhase_(async (manager) => {
-      const { name, metadata } = update
+      const { metadata, ...properties } = update
 
       const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
         this.customerGroupRepository_
@@ -108,8 +108,10 @@ class CustomerGroupService extends BaseService {
 
       const customerGroup = await this.retrieve(customerGroupId)
 
-      if (name) {
-        customerGroup.name = name
+      for (const key in properties) {
+        if (typeof properties[key] !== "undefined") {
+          customerGroup[key] = properties[key]
+        }
       }
 
       if (typeof metadata !== "undefined") {

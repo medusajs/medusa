@@ -21,7 +21,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *         schema:
  *           properties:
  *             customerGroup:
- *               $ref: "#/components/schemas/customer-group"
+ *               $ref: "#/components/schemas/customer_group"
  */
 export default async (req, res) => {
   const { id } = req.params

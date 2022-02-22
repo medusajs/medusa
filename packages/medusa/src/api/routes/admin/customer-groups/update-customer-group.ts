@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *         schema:
  *           properties:
  *             customerGroup:
- *               $ref: "#/components/schemas/customergroup"
+ *               $ref: "#/components/schemas/customer_group"
  */
 
 export default async (req, res) => {
