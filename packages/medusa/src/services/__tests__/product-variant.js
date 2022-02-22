@@ -422,7 +422,6 @@ describe("ProductVariantService", () => {
     const moneyAmountRepository = MockRepository({
       remove: () => Promise.resolve(),
     })
-
     const oldPrices = [
       {
         currency_code: "dkk",
@@ -432,15 +431,9 @@ describe("ProductVariantService", () => {
       },
     ]
 
-    const whereSpy = jest.fn().mockReturnThis()
-    const andWhereSpy = jest.fn().mockReturnThis()
-    const getManySpy = jest.fn().mockImplementation(() => oldPrices)
-
-    moneyAmountRepository.createQueryBuilder = jest.fn(() => ({
-      where: whereSpy,
-      andWhere: andWhereSpy,
-      getMany: getManySpy,
-    }))
+    moneyAmountRepository.findVariantPricesNotIn = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve(oldPrices))
 
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
@@ -483,8 +476,9 @@ describe("ProductVariantService", () => {
         },
       ])
 
-      expect(getManySpy).toHaveBeenCalledTimes(1)
-      expect(getManySpy).toHaveReturnedWith(oldPrices)
+      expect(
+        moneyAmountRepository.findVariantPricesNotIn
+      ).toHaveBeenCalledTimes(1)
 
       expect(productVariantService.setCurrencyPrice).toHaveBeenCalledTimes(1)
       expect(productVariantService.setCurrencyPrice).toHaveBeenCalledWith(
@@ -508,8 +502,9 @@ describe("ProductVariantService", () => {
         },
       ])
 
-      expect(getManySpy).toHaveBeenCalledTimes(1)
-      expect(getManySpy).toHaveReturnedWith(oldPrices)
+      expect(
+        moneyAmountRepository.findVariantPricesNotIn
+      ).toHaveBeenCalledTimes(1)
 
       expect(productVariantService.setRegionPrice).toHaveBeenCalledTimes(1)
       expect(productVariantService.setRegionPrice).toHaveBeenCalledWith(
@@ -531,18 +526,17 @@ describe("ProductVariantService", () => {
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
 
-    const moneyAmountRepository = MockRepository({
-      findOne: (query) => {
-        if (query.where.currency_code === "usd") {
-          return Promise.resolve(undefined)
-        }
+    const moneyAmountRepository = MockRepository()
+
+    moneyAmountRepository.upsertCurrencyPrice = jest
+      .fn()
+      .mockImplementation((variantId, price) => {
         return Promise.resolve({
-          id: IdMap.getId("dkk"),
-          variant_id: IdMap.getId("ironman"),
-          currency_code: "dkk",
+          id: IdMap.getId("test-amount"),
+          variant_id: IdMap.getId(variantId),
+          ...price,
         })
-      },
-    })
+      })
 
     const productVariantService = new ProductVariantService({
       manager: MockManager,
@@ -555,64 +549,20 @@ describe("ProductVariantService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully creates a price if none exist with given currency", async () => {
-      const whereSpy = jest.fn().mockReturnThis()
-      const andWhereSpy = jest.fn().mockReturnThis()
-      const getOne = jest.fn().mockImplementation(() => {})
-
-      moneyAmountRepository.createQueryBuilder = jest.fn(() => ({
-        where: whereSpy,
-        andWhere: andWhereSpy,
-        getOne: getOne,
-      }))
-
+    it("calls upsert price with given currency", async () => {
       await productVariantService.setCurrencyPrice(IdMap.getId("ironman"), {
         currency_code: "usd",
         amount: 100,
       })
 
-      expect(moneyAmountRepository.create).toHaveBeenCalledTimes(1)
-      expect(moneyAmountRepository.create).toHaveBeenCalledWith({
-        variant_id: IdMap.getId("ironman"),
-        currency_code: "usd",
-        amount: 100,
-      })
-
-      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
-    })
-
-    it("successfully updates a non-regional price if currency exists", async () => {
-      const whereSpy = jest.fn().mockReturnThis()
-      const andWhereSpy = jest.fn().mockReturnThis()
-      const getOne = jest.fn().mockImplementation(() => ({
-        variant_id: IdMap.getId("ironman"),
-        id: IdMap.getId("dkk"),
-        currency_code: "dkk",
-        amount: 200,
-        sale_amount: undefined,
-      }))
-
-      moneyAmountRepository.createQueryBuilder = jest.fn(() => ({
-        where: whereSpy,
-        andWhere: andWhereSpy,
-        getOne: getOne,
-      }))
-
-      await productVariantService.setCurrencyPrice(IdMap.getId("ironman"), {
-        currency_code: "dkk",
-        amount: 1000,
-      })
-
-      expect(moneyAmountRepository.create).toHaveBeenCalledTimes(0)
-
-      expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
-      expect(moneyAmountRepository.save).toHaveBeenCalledWith({
-        variant_id: IdMap.getId("ironman"),
-        id: IdMap.getId("dkk"),
-        currency_code: "dkk",
-        amount: 1000,
-        sale_amount: undefined,
-      })
+      expect(moneyAmountRepository.upsertCurrencyPrice).toHaveBeenCalledTimes(1)
+      expect(moneyAmountRepository.upsertCurrencyPrice).toHaveBeenCalledWith(
+        IdMap.getId("ironman"),
+        {
+          currency_code: "usd",
+          amount: 100,
+        }
+      )
     })
   })
 

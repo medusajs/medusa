@@ -327,21 +327,10 @@ class ProductVariantService extends BaseService {
       )
 
       // get prices to be deleted
-      const obsoletePrices = await moneyAmountRepo
-        .createQueryBuilder("money_amount")
-        .where("money_amount.variant_id = :variant_id", {
-          variant_id: variantId,
-        })
-        .andWhere(
-          new Brackets((qb) => {
-            qb.where("money_amount.currency_code NOT IN (:...currency_codes)", {
-              currency_codes: prices.map((p) => p.currency_code),
-            }).orWhere("money_amount.region_id NOT IN (:...region_ids)", {
-              region_ids: prices.map((p) => p.region_id),
-            })
-          })
-        )
-        .getMany()
+      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
+        variantId,
+        prices
+      )
 
       for (const price of prices) {
         if (price.region_id) {
@@ -374,29 +363,7 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      let moneyAmount = await moneyAmountRepo
-        .createQueryBuilder("money_amount")
-        .where("money_amount.currency_code = :currency_code", {
-          currency_code: price.currency_code,
-        })
-        .andWhere("money_amount.variant_id = :variant_id", {
-          variant_id: variantId,
-        })
-        .andWhere("money_amount.region_id IS NULL")
-        .getOne()
-
-      if (!moneyAmount) {
-        moneyAmount = moneyAmountRepo.create({
-          ...price,
-          currency_code: price.currency_code?.toLowerCase(),
-          variant_id: variantId,
-        })
-      } else {
-        moneyAmount.amount = price.amount
-        moneyAmount.sale_amount = price.sale_amount
-      }
-
-      return await moneyAmountRepo.save(moneyAmount)
+      return await moneyAmountRepo.upsertCurrencyPrice(variantId, price)
     })
   }
 
