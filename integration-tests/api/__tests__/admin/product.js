@@ -1355,7 +1355,7 @@ describe("/admin/products", () => {
         })
       } catch (error) {
         expect(error.response.data.message).toMatch(
-          /duplicate key value violates unique constraint/i
+          "Product with handle test-product already exists."
         )
       }
     })
@@ -1427,7 +1427,7 @@ describe("/admin/products", () => {
         })
       } catch (error) {
         expect(error.response.data.message).toMatch(
-          /duplicate key value violates unique constraint/i
+          "Product_collection with handle test-collection already exists."
         )
       }
     })
