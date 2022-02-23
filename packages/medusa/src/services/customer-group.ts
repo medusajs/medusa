@@ -114,8 +114,11 @@ class CustomerGroupService extends BaseService {
         }
       }
 
-      if (typeof metadata !== "undefined") {
-        customerGroup.metadata = metadata
+      if ("metadata" in update) {
+        customerGroup.metadata = this.setMetadata_(
+          customerGroup,
+          update.metadata
+        )
       }
       return await cgRepo.save(customerGroup)
     })

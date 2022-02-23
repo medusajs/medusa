@@ -32,7 +32,7 @@ export default async (req, res) => {
   )
 
   const customerGroup = await customerGroupService.create(validated)
-  res.status(200).json({ customerGroup })
+  res.status(200).json({ customer_group: customerGroup })
 }
 
 export class AdminPostCustomerGroupsReq {

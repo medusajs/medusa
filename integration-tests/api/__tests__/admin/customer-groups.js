@@ -55,7 +55,7 @@ describe("/admin/customer-groups", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
+      expect(response.data.customer_group).toEqual(
         expect.objectContaining({
           name: "test group",
         })
@@ -239,6 +239,7 @@ describe("/admin/customer-groups", () => {
         })
       )
 <<<<<<< HEAD
+<<<<<<< HEAD
       expect(response.data.customer_group).not.toHaveProperty("customers")
     })
 
@@ -276,9 +277,12 @@ describe("/admin/customer-groups", () => {
 =======
       expect(response.data.customerGroup).not.toHaveProperty("customers")
 >>>>>>> 2ed3d9e8 (add the `expand`params to the update endpoint)
+=======
+      expect(response.data.customer_group).not.toHaveProperty("customers")
+>>>>>>> 947cef71 (use metadata helper, fix tests, snake case response)
     })
 
-    it("reset `metadata`to `null`", async () => {
+    it("deletes `metadata` nested key", async () => {
       const api = useApi()
 
       const id = "customer-group-2"
@@ -286,7 +290,10 @@ describe("/admin/customer-groups", () => {
 
       const body = {
         name: "vip-customers-v2",
-        metadata: null,
+        metadata: {
+          data1: null, // delete
+          data2: "val2", // insert
+        },
       }
 
       const response = await api
@@ -298,11 +305,11 @@ describe("/admin/customer-groups", () => {
         .catch(console.log)
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
+      expect(response.data.customer_group).toEqual(
         expect.objectContaining({
           id: "customer-group-2",
           name: "vip-customers-v2",
-          metadata: null,
+          metadata: { data1: null, data2: "val2" },
           customers: [],
         })
       )
@@ -337,13 +344,13 @@ describe("/admin/customer-groups", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
+      expect(response.data.customer_group).toEqual(
         expect.objectContaining({
           id: "customer-group-1",
           name: "vip-customers",
         })
       )
-      expect(response.data.customerGroup).not.toHaveProperty("customers")
+      expect(response.data.customer_group).not.toHaveProperty("customers")
     })
 
     it("gets customer group with `customers` prop", async () => {
@@ -361,13 +368,13 @@ describe("/admin/customer-groups", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
+      expect(response.data.customer_group).toEqual(
         expect.objectContaining({
           id: "customer-group-1",
           name: "vip-customers",
         })
       )
-      expect(response.data.customerGroup.customers).toEqual([])
+      expect(response.data.customer_group.customers).toEqual([])
     })
 
     it("throws error when a customer group doesn't exist", async () => {
