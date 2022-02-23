@@ -6,7 +6,6 @@ const { useDb, initDb } = require("../../../helpers/use-db")
 
 const customerSeeder = require("../../helpers/customer-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
-const { SimpleConsoleLogger } = require("typeorm")
 
 jest.setTimeout(30000)
 
@@ -17,7 +16,7 @@ describe("/admin/customer-groups", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
