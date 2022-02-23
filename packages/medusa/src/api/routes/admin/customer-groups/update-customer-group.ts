@@ -35,7 +35,7 @@ export default async (req, res) => {
     AdminPostCustomerGroupsGroupReq,
     req.body
   )
-  const validatedQery = await validator(FindParams, req.query)
+  const validatedQuery = await validator(FindParams, req.query)
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
@@ -44,8 +44,8 @@ export default async (req, res) => {
   await customerGroupService.update(id, validatedBody)
 
   let expandFields: string[] = []
-  if (validatedQery.expand) {
-    expandFields = validatedQery.expand.split(",")
+  if (validatedQuery.expand) {
+    expandFields = validatedQuery.expand.split(",")
   }
 
   const findConfig = {
