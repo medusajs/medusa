@@ -10,9 +10,9 @@ export const formatException = (error): Error => {
       // example error.detail: Key (handle)=(test-collection) already exists
       return new MedusaError(
         MedusaError.Types.DUPLICATE_ERROR,
-        `${error.table.charAt(0).toUpperCase()}${error.table.slice(
-          1
-        )} with ${error.detail
+        `${error.table.charAt(0).toUpperCase()}${error.table
+          .slice(1)
+          .replace("_", " ")} with ${error.detail
           .slice(4)
           .replace(/[()=]/g, (s) => (s === "=" ? " " : ""))}`
       )
