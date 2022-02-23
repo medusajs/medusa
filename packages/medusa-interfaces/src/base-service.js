@@ -181,9 +181,8 @@ class BaseService {
             }
 
             await errorHandler(error)
-          } else {
-            throw error
           }
+          throw error
         }
       }
 
@@ -214,6 +213,9 @@ class BaseService {
           if (this.shouldRetryTransaction(error)) {
             return this.manager_.transaction(isolation, (m) => doWork(m))
           } else {
+            if (errorHandler) {
+              await errorHandler(error)
+            }
             throw error
           }
         }
