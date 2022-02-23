@@ -24,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
+ *             customer_group:
  *               $ref: "#/components/schemas/customer_group"
  */
 
