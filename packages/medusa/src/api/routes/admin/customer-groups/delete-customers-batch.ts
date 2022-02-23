@@ -37,11 +37,11 @@ export default async (req, res) => {
     "customerGroupService"
   )
 
-  await customerGroupService.deleteBatch(
+  const customer_group = await customerGroupService.removeCustomers(
     id,
     validated.customer_ids.map(({ id }) => id)
   )
-  res.status(200).json({ object: "customer-group-batch", deleted: true })
+  res.status(200).json({ customer_group })
 }
 
 export class AdminDeleteCustomerGroupsGroupCustomerBatchReq {
