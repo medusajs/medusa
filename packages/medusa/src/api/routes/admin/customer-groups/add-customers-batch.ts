@@ -37,7 +37,7 @@ export default async (req, res) => {
     "customerGroupService"
   )
 
-  const customer_group = await customerGroupService.addCustomerBatch(
+  const customer_group = await customerGroupService.addCustomers(
     id,
     validated.customer_ids.map(({ id }) => id)
   )

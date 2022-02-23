@@ -29,7 +29,7 @@ export const formatException = (err): Error => {
       }
 
       return new MedusaError(
-        MedusaError.Types.INVALID_DATA,
+        MedusaError.Types.NOT_FOUND,
         `${matches[3]?.charAt(0).toUpperCase()}${matches[3]?.slice(1)} with ${
           matches[1]
         } ${matches[2]} does not exist.`
