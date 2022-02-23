@@ -15,8 +15,23 @@ export const formatException = (err): Error => {
           .slice(4)
           .replace(/[()=]/g, (s) => (s === "=" ? " " : ""))}`
       )
-    case PostgresError.FOREIGN_KEY_ERROR:
-      return new MedusaError(MedusaError.Types.INVALID_DATA, err.detail)
+    case PostgresError.FOREIGN_KEY_ERROR: {
+      const matches =
+        /Key \(([\w-\d]+)\)=\(([\w-\d]+)\) is not present in table "(\w+)"/g.exec(
+          err.detail
+        )
+
+      if (matches?.length !== 4) {
+        return new MedusaError(MedusaError.Types.NOT_FOUND, err.detail)
+      }
+
+      return new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `${matches[3]?.charAt(0).toUpperCase()}${matches[3]?.slice(1)} with ${
+          matches[1]
+        } ${matches[2]} does not exist.`
+      )
+    }
     default:
       return err
   }
