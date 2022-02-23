@@ -120,8 +120,10 @@ describe("/admin/customer-groups", () => {
 
       expect(batchAddResponse.status).toEqual(200)
       expect(batchAddResponse.data).toEqual({
-        object: "customer-group-batch",
-        deleted: true,
+        customer_group: expect.objectContaining({
+          id: "test-group-5",
+          name: "test-group-5",
+        }),
       })
 
       const getCustomerResponse = await api.get(
@@ -163,8 +165,10 @@ describe("/admin/customer-groups", () => {
 
       expect(batchAddResponse.status).toEqual(200)
       expect(batchAddResponse.data).toEqual({
-        object: "customer-group-batch",
-        deleted: true,
+        customer_group: expect.objectContaining({
+          id: "test-group-5",
+          name: "test-group-5",
+        }),
       })
 
       const getCustomerResponse = await api.get(
@@ -257,8 +261,10 @@ describe("/admin/customer-groups", () => {
 
       expect(idempotentRes.status).toEqual(200)
       expect(idempotentRes.data).toEqual({
-        object: "customer-group-batch",
-        deleted: true,
+        customer_group: expect.objectContaining({
+          id: "test-group-5",
+          name: "test-group-5",
+        }),
       })
     })
   })
