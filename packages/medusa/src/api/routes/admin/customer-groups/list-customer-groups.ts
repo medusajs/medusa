@@ -74,7 +74,7 @@ export class AdminGetCustomerGroupsListParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  offset = 0
+  offset?: number = 0
 
   @IsNumber()
   @IsOptional()
