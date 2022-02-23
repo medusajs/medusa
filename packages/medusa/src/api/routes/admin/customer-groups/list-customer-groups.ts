@@ -79,7 +79,7 @@ export class AdminGetCustomerGroupsListParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
-  limit = 10
+  limit?: number = 10
 
   @IsString()
   @IsOptional()
