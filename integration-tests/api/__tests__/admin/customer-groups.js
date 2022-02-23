@@ -162,12 +162,10 @@ describe("/admin/customer-groups", () => {
         .catch((err) => console.log(err))
 
       expect(batchAddResponse.status).toEqual(200)
-      expect(batchAddResponse.data).toEqual(
-        {
-          object: "customer-group-batch",
-          deleted: true,
-        }
-      )
+      expect(batchAddResponse.data).toEqual({
+        object: "customer-group-batch",
+        deleted: true,
+      })
 
       const getCustomerResponse = await api.get(
         "/admin/customers/test-customer-7?expand=groups",
@@ -258,12 +256,10 @@ describe("/admin/customer-groups", () => {
       )
 
       expect(idempotentRes.status).toEqual(200)
-      expect(idempotentRes.data).toEqual(
-        {
-          object: "customer-group-batch",
-          deleted: true,
-        }
-      )
+      expect(idempotentRes.data).toEqual({
+        object: "customer-group-batch",
+        deleted: true,
+      })
     })
   })
 
