@@ -178,8 +178,11 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const { cartSelects, cartRelations, ...newConfig } =
-      this.transformQueryForCart_(config)
+    const {
+      cartSelects,
+      cartRelations,
+      ...newConfig
+    } = this.transformQueryForCart_(config)
 
     const query = this.buildQuery_({ id: validatedId }, newConfig)
 
@@ -854,6 +857,7 @@ class SwapService extends BaseService {
           "shipping_methods",
           "shipping_methods.tax_lines",
           "order",
+          "order.region",
           "order.billing_address",
           "order.discounts",
           "order.discounts.rule",
@@ -900,6 +904,7 @@ class SwapService extends BaseService {
             currency_code: order.currency_code,
             tax_rate: order.tax_rate,
             region_id: order.region_id,
+            region: order.region,
             display_id: order.display_id,
             billing_address: order.billing_address,
             items: swap.additional_items,
