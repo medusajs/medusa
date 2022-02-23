@@ -73,7 +73,7 @@ jobs:
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: integration-tests
-      
+
       - name: Build Packages
         run: lerna run build
 
@@ -83,13 +83,21 @@ jobs:
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
-      - name: Force install
+      - name: Force install API
         run: medusa-dev --force-install
         working-directory: integration-tests/api
 
-      - name: Build integration tests
+      - name: Force install plugins
+        run: medusa-dev --force-install
+        working-directory: integration-tests/plugins
+
+      - name: Build API integration tests
         run: yarn build
         working-directory: integration-tests/api
+
+      - name: Build plugins integration tests
+        run: yarn build
+        working-directory: integration-tests/plugins
 
       - name: Run integration tests
         run: yarn test:integration --maxWorkers=50% --silent=false
