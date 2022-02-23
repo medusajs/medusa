@@ -883,7 +883,7 @@ describe("/admin/discounts", () => {
         )
       } catch (error) {
         expect(error.response.data.message).toEqual(
-          "Key (code)=(TESTING) already exists."
+          "Discount with code TESTING already exists."
         )
       }
     })

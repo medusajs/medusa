@@ -1321,7 +1321,7 @@ describe("/admin/products", () => {
         })
       } catch (error) {
         expect(error.response.data.message).toMatch(
-          "Key (handle)=(test-product) already exists."
+          "Product with handle test-product already exists."
         )
       }
     })
@@ -1392,9 +1392,8 @@ describe("/admin/products", () => {
           },
         })
       } catch (error) {
-        console.log(error.response.data)
         expect(error.response.data.message).toMatch(
-          "Key (handle)=(test-collection) already exists."
+          "Product_collection with handle test-collection already exists."
         )
       }
     })
