@@ -119,11 +119,10 @@ describe("/admin/customer-groups", () => {
         .catch((err) => console.log(err))
 
       expect(batchAddResponse.status).toEqual(200)
-      expect(batchAddResponse.data.customer_group).toEqual(
-        expect.objectContaining({
-          name: "test-group-5",
-        })
-      )
+      expect(batchAddResponse.data).toEqual({
+        object: "customer-group-batch",
+        deleted: true,
+      })
 
       const getCustomerResponse = await api.get(
         "/admin/customers?expand=groups",
@@ -150,7 +149,7 @@ describe("/admin/customer-groups", () => {
       const api = useApi()
 
       const payload = {
-        customerIds: [{ id: "test-customer-7" }],
+        customer_ids: [{ id: "test-customer-7" }],
       }
 
       const batchAddResponse = await api
@@ -163,10 +162,11 @@ describe("/admin/customer-groups", () => {
         .catch((err) => console.log(err))
 
       expect(batchAddResponse.status).toEqual(200)
-      expect(batchAddResponse.data.customer_group).toEqual(
-        expect.objectContaining({
-          name: "test-group-5",
-        })
+      expect(batchAddResponse.data).toEqual(
+        {
+          object: "customer-group-batch",
+          deleted: true,
+        }
       )
 
       const getCustomerResponse = await api.get(
@@ -195,7 +195,7 @@ describe("/admin/customer-groups", () => {
       // re-adding customer-1 to the customer group along with new addintion:
       // customer-2 and some non-existing customers should cause the request to fail
       const payload = {
-        customerIds: [{ id: "test-customer-5" }],
+        customer_ids: [{ id: "test-customer-5" }],
       }
 
       await api.delete("/admin/customer-groups/test-group-5/customers/batch", {
@@ -237,7 +237,7 @@ describe("/admin/customer-groups", () => {
       // re-adding customer-1 to the customer group along with new addintion:
       // customer-2 and some non-existing customers should cause the request to fail
       const payload = {
-        customerIds: [{ id: "test-customer-5" }],
+        customer_ids: [{ id: "test-customer-5" }],
       }
 
       await api.delete("/admin/customer-groups/test-group-5/customers/batch", {
@@ -258,35 +258,12 @@ describe("/admin/customer-groups", () => {
       )
 
       expect(idempotentRes.status).toEqual(200)
-      expect(idempotentRes.data.customer_group).toEqual(
-        expect.objectContaining({})
+      expect(idempotentRes.data).toEqual(
+        {
+          object: "customer-group-batch",
+          deleted: true,
+        }
       )
-    })
-
-    it("fails given a non existing group", async () => {
-      expect.assertions(3)
-      const api = useApi()
-
-      // re-adding customer-1 to the customer group along with new addintion:
-      // customer-2 and some non-existing customers should cause the request to fail
-      const payload = {
-        customerIds: [{ id: "test-customer-5" }],
-      }
-
-      await api
-        .delete("/admin/customer-groups/non-existing-group/customers/batch", {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-          data: payload,
-        })
-        .catch((error) => {
-          expect(error.response.status).toEqual(404)
-          expect(error.response.data.type).toEqual("not_found")
-          expect(error.response.data.message).toEqual(
-            `CustomerGroup with id non-existing-group was not found`
-          )
-        })
     })
   })
 
