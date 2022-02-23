@@ -199,19 +199,20 @@ class TaxRateService extends BaseService {
     productIds: string | string[],
     replace = false
   ): Promise<ProductTaxRate | ProductTaxRate[]> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    let ids: string[]
+    if (typeof productIds === "string") {
+      ids = [productIds]
+    } else {
+      ids = productIds
+    }
 
-      let ids: string[]
-      if (typeof productIds === "string") {
-        ids = [productIds]
-      } else {
-        ids = productIds
-      }
-      try {
-        const res = await taxRateRepo.addToProduct(id, ids, replace)
-        return res
-      } catch (err) {
+    const result = await this.atomicPhase_(
+      async (manager: EntityManager) => {
+        const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+        return await taxRateRepo.addToProduct(id, ids, replace)
+      },
+      // eslint-disable-next-line
+      async (err: any) => {
         if (err.code === "23503") {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
@@ -227,7 +228,8 @@ class TaxRateService extends BaseService {
 
         throw err
       }
-    })
+    )
+    return result
   }
 
   async addToProductType(
@@ -235,20 +237,20 @@ class TaxRateService extends BaseService {
     productTypeIds: string | string[],
     replace = false
   ): Promise<ProductTypeTaxRate[]> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    let ids: string[]
+    if (typeof productTypeIds === "string") {
+      ids = [productTypeIds]
+    } else {
+      ids = productTypeIds
+    }
 
-      let ids: string[]
-      if (typeof productTypeIds === "string") {
-        ids = [productTypeIds]
-      } else {
-        ids = productTypeIds
-      }
-
-      try {
-        const res = await taxRateRepo.addToProductType(id, ids, replace)
-        return res
-      } catch (err) {
+    return await this.atomicPhase_(
+      async (manager: EntityManager) => {
+        const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+        return await taxRateRepo.addToProductType(id, ids, replace)
+      },
+      // eslint-disable-next-line
+      async (err: any) => {
         if (err.code === "23503") {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
@@ -266,10 +268,8 @@ class TaxRateService extends BaseService {
             ),
           ])
         }
-
-        throw err
       }
-    })
+    )
   }
 
   async addToShippingOption(
@@ -277,34 +277,33 @@ class TaxRateService extends BaseService {
     optionIds: string | string[],
     replace = false
   ): Promise<ShippingTaxRate> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+    let ids: string[]
+    if (typeof optionIds === "string") {
+      ids = [optionIds]
+    } else {
+      ids = optionIds
+    }
 
-      let ids: string[]
-      if (typeof optionIds === "string") {
-        ids = [optionIds]
-      } else {
-        ids = optionIds
-      }
-
-      const taxRate = await this.retrieve(id, { select: ["id", "region_id"] })
-      const options = await this.shippingOptionService_.list(
-        { id: ids },
-        { select: ["id", "region_id"] }
-      )
-      for (const o of options) {
-        if (o.region_id !== taxRate.region_id) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            `Shipping Option and Tax Rate must belong to the same Region to be associated. Shipping Option with id: ${o.id} belongs to Region with id: ${o.region_id} and Tax Rate with id: ${taxRate.id} belongs to Region with id: ${taxRate.region_id}`
-          )
+    return await this.atomicPhase_(
+      async (manager: EntityManager) => {
+        const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
+        const taxRate = await this.retrieve(id, { select: ["id", "region_id"] })
+        const options = await this.shippingOptionService_.list(
+          { id: ids },
+          { select: ["id", "region_id"] }
+        )
+        for (const o of options) {
+          if (o.region_id !== taxRate.region_id) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              `Shipping Option and Tax Rate must belong to the same Region to be associated. Shipping Option with id: ${o.id} belongs to Region with id: ${o.region_id} and Tax Rate with id: ${taxRate.id} belongs to Region with id: ${taxRate.region_id}`
+            )
+          }
         }
-      }
-
-      try {
-        const res = await taxRateRepo.addToShippingOption(id, ids, replace)
-        return res
-      } catch (err) {
+        return await taxRateRepo.addToShippingOption(id, ids, replace)
+      },
+      // eslint-disable-next-line
+      async (err: any) => {
         if (err.code === "23503") {
           // A foreign key constraint failed meaning some thing doesn't exist
           // either it is a product or the tax rate itself. Using Promise.all
@@ -317,10 +316,8 @@ class TaxRateService extends BaseService {
             ),
           ])
         }
-
-        throw err
       }
-    })
+    )
   }
 
   async listByProduct(

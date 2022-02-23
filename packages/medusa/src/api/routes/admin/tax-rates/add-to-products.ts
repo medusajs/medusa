@@ -2,7 +2,7 @@ import { pickByConfig, getRetrieveConfig } from "./utils/get-query-config"
 import { IsArray, IsOptional } from "class-validator"
 
 import { TaxRate } from "../../../.."
-import { ProductService, TaxRateService } from "../../../../services"
+import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -33,27 +33,9 @@ export default async (req, res) => {
     req.query
   )
 
-  const productService: ProductService = req.scope.resolve("productService")
   const rateService: TaxRateService = req.scope.resolve("taxRateService")
 
-  try {
-    await rateService.addToProduct(req.params.id, value.products)
-  } catch (err) {
-    if (err.code === "23503") {
-      // A foreign key constraint failed meaning something doesn't exist
-      // either it is a product or the tax rate itself. Using Promise.all
-      // will try to retrieve all of the resources and will fail when
-      // something is not found.
-      await Promise.all([
-        rateService.retrieve(req.params.id, { select: ["id"] }),
-        ...value.products.map((id) =>
-          productService.retrieve(id, { select: ["id"] })
-        ),
-      ])
-    }
-
-    throw err
-  }
+  await rateService.addToProduct(req.params.id, value.products)
 
   const config = getRetrieveConfig(
     query.fields as (keyof TaxRate)[],
