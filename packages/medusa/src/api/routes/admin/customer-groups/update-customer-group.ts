@@ -7,7 +7,7 @@ import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /customer-groups/{id}
- * operationId: "UpdateCustomerGroupsGroup"
+ * operationId: "PostCustomerGroupsGroup"
  * summary: "Update a CustomerGroup"
  * description: "Update a CustomerGroup."
  * x-authenticated: true
