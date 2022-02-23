@@ -17,8 +17,14 @@ import { CustomerGroupService } from "../../../../services"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
- *               $ref: "#/components/schemas/customergroup"
+ *             id:
+ *               type: string
+ *               description: The id of the deleted customer group.
+ *             object:
+ *               type: string
+ *               description: The type of the object that was deleted.
+ *             deleted:
+ *               type: boolean
  */
 
 export default async (req, res) => {
