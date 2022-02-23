@@ -282,18 +282,6 @@ describe("CustomerService", () => {
       jest.clearAllMocks()
     })
 
-    it("calls `customerGroupService.list` if `groups` prop is received as a param", async () => {
-      await customerService.update(IdMap.getId("ironman"), {
-        groups: [{ id: "group-id" }],
-      })
-
-      expect(customerGroupService.list).toBeCalledTimes(1)
-      expect(customerGroupService.list).toBeCalledWith({ id: ["group-id"] })
-
-      expect(customerRepository.save).toBeCalledTimes(1)
-    })
-  })
-
   describe("updateAddress", () => {
     const addressRepository = MockRepository({
       findOne: (query) => {
