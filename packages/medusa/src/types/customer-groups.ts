@@ -9,10 +9,6 @@ export class FilterableCustomerGroupProps {
   id?: string | string[] | StringComparisonOperator
 }
 
-export type CustomerBatchIds = {
-  id: string
-}
-
 export class CustomerGroupsBatchCustomer {
   @IsString()
   id: string

@@ -4,10 +4,7 @@ import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
 import { FindConfig } from "../types/common"
-import {
-  CustomerBatchIds,
-  FilterableCustomerGroupProps,
-} from "../types/customer-groups"
+import { FilterableCustomerGroupProps } from "../types/customer-groups"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -112,18 +109,17 @@ class CustomerGroupService extends BaseService {
    * Remove list of customers from a customergroup
    *
    * @param {string} id id of the customer group from which the customers are removed
-   * @param {CustomerBatchIds[]} customerIds id's of the customer to remove from group
+   * @param {string[]} customerIds id's of the customer to remove from group
    * @return {Promise<CustomerGroup>} the customergroup with the provided id
    */
-  async deleteBatch(
-    id: string,
-    customerIds: CustomerBatchIds[]
-  ): Promise<CustomerGroup | undefined> {
+  async deleteBatch(id: string, customerIds: string[]): Promise<any> {
     const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )
 
-    return await cgRepo.deleteCustomerBatch(id, customerIds)
+    await cgRepo.deleteCustomerBatch(id, customerIds)
+
+    return Promise.resolve()
   }
 }
 

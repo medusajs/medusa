@@ -1,6 +1,5 @@
 import { Type } from "class-transformer"
 import { ValidateNested } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
 import { validator } from "../../../../utils/validator"
@@ -29,17 +28,20 @@ import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
   const { id } = req.params
-  const validated = await validator(AdminPostCustomerGroupsBatchReq, req.body)
+  const validated = await validator(
+    AdminDeleteCustomerGroupsGroupCustomerBatchReq,
+    req.body
+  )
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
-  const customer_group = await customerGroupService.deleteBatch(
+  await customerGroupService.deleteBatch(
     id,
-    validated.customerIds
+    validated.customer_ids.map(({ id }) => id)
   )
-  res.status(200).json({ customer_group })
+  res.status(200).json({ object: "customer-group-batch", deleted: true })
 }
 
 export class AdminDeleteCustomerGroupsGroupCustomerBatchReq {
