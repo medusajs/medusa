@@ -1,0 +1,13 @@
+/lib
+node_modules
+.DS_store
+.env*
+/*.js
+!.babelrc*
+!index.js
+!jest.config.js
+
+/dist
+
+package-lock.json
+

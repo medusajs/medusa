@@ -6,6 +6,12 @@ import createStore from "connect-redis"
 
 import config from "../config"
 
+/**
+ *
+ * @param {AbstractHttpAdapter} app
+ * @param configModule
+ * @return {Promise<*>}
+ */
 export default async ({ app, configModule }) => {
   let sameSite = false
   let secure = false
@@ -36,13 +42,13 @@ export default async ({ app, configModule }) => {
     sessionOpts.store = new RedisStore({ client: redisClient })
   }
 
-  app.set("trust proxy", 1)
+  app.enableTrustProxy()
+  app.registerParserMiddleware()
   app.use(
     morgan("combined", {
       skip: () => process.env.NODE_ENV === "test",
     })
   )
-  app.use(cookieParser())
   app.use(session(sessionOpts))
 
   app.get("/health", (req, res) => {
