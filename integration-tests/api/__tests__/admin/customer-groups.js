@@ -340,7 +340,7 @@ describe("/admin/customer-groups", () => {
           expect(err.response.status).toEqual(404)
           expect(err.response.data.type).toEqual("not_found")
           expect(err.response.data.message).toEqual(
-            `CustomerGroup with ${id} was not found`
+            `CustomerGroup with id ${id} was not found`
           )
         })
     })
