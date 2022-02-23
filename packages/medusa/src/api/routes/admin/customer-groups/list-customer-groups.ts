@@ -10,7 +10,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
  * @oas [get] /customer-groups
- * operationId: "ListCustomerGroups"
+ * operationId: "GetCustomerGroups"
  * summary: "Retrieve a list of customer groups"
  * description: "Retrieve a list of customer groups."
  * x-authenticated: true
