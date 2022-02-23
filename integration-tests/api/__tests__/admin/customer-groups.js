@@ -228,7 +228,6 @@ describe("/admin/customer-groups", () => {
           }
         )
         .catch((err) => {
-          console.log(err)
           expect(err.response.data.type).toEqual("not_found")
           expect(err.response.data.message).toEqual(
             'The following customer ids do not exist: "test-customer-27, test-customer-28"'
