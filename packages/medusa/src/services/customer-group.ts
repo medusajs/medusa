@@ -133,7 +133,7 @@ class CustomerGroupService extends BaseService {
 
       delete where.name
 
-      query.where = (qb: SelectQueryBuilder<ProductVariant>): void => {
+      query.where = (qb: SelectQueryBuilder<CustomerGroup>): void => {
         qb.where(where).andWhere([{ name: ILike(`%${q}%`) }])
       }
     }
