@@ -56,7 +56,7 @@ export default async (req, res) => {
 
   const customerGroup = await customerGroupService.retrieve(id, findConfig)
 
-  res.json({ customerGroup })
+  res.json({ customer_group: customerGroup })
 }
 
 export class AdminPostCustomerGroupsGroupReq {
