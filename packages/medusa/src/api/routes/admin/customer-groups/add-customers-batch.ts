@@ -28,7 +28,10 @@ import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
   const { id } = req.params
-  const validated = await validator(AdminPostCustomerGroupsBatchReq, req.body)
+  const validated = await validator(
+    AdminPostCustomerGroupsGroupCustomersBatchReq,
+    req.body
+  )
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"

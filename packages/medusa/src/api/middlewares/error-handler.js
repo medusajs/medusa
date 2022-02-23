@@ -46,7 +46,13 @@ export default () => {
         statusCode = 500
         errObj.code = API_ERROR
         break
+      case MedusaError.Types.UNEXPECTED_STATE:
+      case MedusaError.Types.INVALID_ARGUMENT:
+        break
       default:
+        errObj.code = "unknown_error"
+        errObj.message = "An unknown error occurred."
+        errObj.type = "unknown_error"
         break
     }
 
