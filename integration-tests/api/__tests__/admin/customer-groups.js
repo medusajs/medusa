@@ -115,11 +115,11 @@ describe("/admin/customer-groups", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(20)
-      expect(response.data.customerGroups.length).toEqual(5)
-      expect(response.data.customerGroups[0]).toEqual(
+      expect(response.data.customer_groups.length).toEqual(5)
+      expect(response.data.customer_groups[0]).toEqual(
         expect.objectContaining({ id: "test-group-15" })
       )
-      expect(response.data.customerGroups[0]).toHaveProperty("customers")
+      expect(response.data.customer_groups[0]).toHaveProperty("customers")
     })
 
     it("retreive a list of customer groups filtered by name using `q` param", async () => {
@@ -133,12 +133,12 @@ describe("/admin/customer-groups", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(1)
-      expect(response.data.customerGroups).toEqual(
+      expect(response.data.customer_groups).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ id: "customer-group-1" }),
         ])
       )
-      expect(response.data.customerGroups[0]).not.toHaveProperty("customers")
+      expect(response.data.customer_groups[0]).not.toHaveProperty("customers")
     })
   })
 

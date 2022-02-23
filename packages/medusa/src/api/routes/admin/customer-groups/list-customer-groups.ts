@@ -1,11 +1,17 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import {
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
 import { Type } from "class-transformer"
 import omit from "lodash/omit"
 
 import { validator } from "../../../../utils/validator"
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroup } from "../../../../models/customer-group"
-import { FindConfig } from "../../../../types/common"
+import { DateComparisonOperator, FindConfig } from "../../../../types/common"
 import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
@@ -17,7 +23,14 @@ import { defaultAdminCustomerGroupsRelations } from "."
  * parameters:
  *   - (query) q {string} Query used for searching user group names.
  *   - (query) offset {string} How many groups to skip in the result.
- *   - (query) limit {string} Limit the number of groups returned.
+ *   - (query) id {string} Ids of the groups to search for.
+ *   - (query) order {string} to retrieve customer groups in.
+ *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting customer group was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.
+ *   - (query) offset {string} How many customer groups to skip in the result.
+ *   - (query) limit {string} Limit the number of customer groups returned.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
+
  * tags:
  *   - CustomerGroup
  * responses:
@@ -51,7 +64,21 @@ export default async (req, res) => {
     order: { created_at: "DESC" },
   }
 
-  const filterableFields = omit(validated, ["limit", "offset", "expand"])
+  if (typeof validated.order !== "undefined") {
+    if (validated.order.startsWith("-")) {
+      const [, field] = validated.order.split("-")
+      listConfig.order = { [field]: "DESC" }
+    } else {
+      listConfig.order = { [validated.order]: "ASC" }
+    }
+  }
+
+  const filterableFields = omit(validated, [
+    "limit",
+    "offset",
+    "expand",
+    "order",
+  ])
 
   const [data, count] = await customerGroupService.listAndCount(
     filterableFields,
@@ -70,6 +97,29 @@ export class AdminGetCustomerGroupsListParams {
   @IsString()
   @IsOptional()
   q?: string
+
+  @IsArray()
+  @IsString()
+  @IsOptional()
+  id?: string[]
+
+  @IsArray()
+  @IsOptional()
+  name?: string[]
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
+
+  @IsString()
+  @IsOptional()
+  order?: string
 
   @IsNumber()
   @IsOptional()
