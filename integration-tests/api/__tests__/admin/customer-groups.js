@@ -106,7 +106,7 @@ describe("/admin/customer-groups", () => {
       const api = useApi()
 
       const payload = {
-        customerIds: [{ id: "test-customer-5" }, { id: "test-customer-6" }],
+        customer_ids: [{ id: "test-customer-5" }, { id: "test-customer-6" }],
       }
 
       const batchAddResponse = await api

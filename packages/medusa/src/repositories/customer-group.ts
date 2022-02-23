@@ -7,7 +7,7 @@ import { CustomerBatchIds } from "../types/customer-groups"
 export class CustomerGroupRepository extends Repository<CustomerGroup> {
   async deleteCustomerBatch(
     groupId: string,
-    customerIds: CustomerBatchIds[]
+    customerIds: string[]
   ): Promise<CustomerGroup | undefined> {
     const customerGroup = await this.findOne(groupId)
     if (!customerGroup) {

@@ -6,8 +6,8 @@ import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /customer-groups/{id}/batch
- * operationId: "DeleteCustomerGroupsBatch"
+ * @oas [delete] /customer-groups/{id}/customers/batch
+ * operationId: "DeleteCustomerGroupsGroupCustomerBatch"
  * summary: "Remove a list of customers from a customer group "
  * description: "Removes a list of customers, represented by id's, from a customer group."
  * x-authenticated: true
@@ -42,8 +42,8 @@ export default async (req, res) => {
   res.status(200).json({ customer_group })
 }
 
-export class AdminPostCustomerGroupsBatchReq {
+export class AdminDeleteCustomerGroupsGroupCustomerBatchReq {
   @ValidateNested({ each: true })
   @Type(() => CustomerGroupsBatchCustomer)
-  customerIds: CustomerGroupsBatchCustomer[]
+  customer_ids: CustomerGroupsBatchCustomer[]
 }
