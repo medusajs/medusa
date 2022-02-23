@@ -28,7 +28,7 @@ describe("/admin/tax-rates", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     } catch (error) {
       console.log(error)
     }
@@ -216,7 +216,7 @@ describe("/admin/tax-rates", () => {
     )
   })
 
-  test("fails with 404 on unknown rate", async () => {
+  test.only("fails with 404 on unknown rate", async () => {
     await adminSeeder(dbConnection)
     const { tax_rates } = await createTaxRates(dbConnection, 1, 1, 200)
     const [rate] = tax_rates

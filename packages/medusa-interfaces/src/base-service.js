@@ -220,7 +220,16 @@ class BaseService {
           }
         }
       }
-      return this.manager_.transaction((m) => doWork(m))
+
+      try {
+        const result = await this.manager_.transaction((m) => doWork(m))
+        return result
+      } catch (error) {
+        if (errorHandler) {
+          await errorHandler(error)
+        }
+        throw error
+      }
     }
   }
 

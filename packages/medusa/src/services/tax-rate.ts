@@ -225,8 +225,6 @@ class TaxRateService extends BaseService {
             ),
           ])
         }
-
-        throw err
       }
     )
     return result
