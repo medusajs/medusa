@@ -18,7 +18,13 @@ import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import subscribersLoader from "./subscribers"
 
-export default async ({ directory: rootDirectory, expressApp }) => {
+/**
+ *
+ * @param {string} rootDirectory
+ * @param {AbstractHttpAdapter} httpAdapter
+ * @return {Promise<{container: *, app: *, dbConnection}>}
+ */
+export default async ({ directory: rootDirectory, httpAdapter }) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
   const container = createContainer()
@@ -39,7 +45,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   }.bind(container)
 
   // Add additional information to context of request
-  expressApp.use((req, res, next) => {
+  httpAdapter.use((req, res, next) => {
     const ipAddress = requestIp.getClientIp(req)
 
     const context = {
@@ -105,16 +111,16 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const expActivity = Logger.activity("Initializing express")
   track("EXPRESS_INIT_STARTED")
   await expressLoader({
-    app: expressApp,
+    app: httpAdapter,
     configModule,
     activityId: expActivity,
   })
-  await passportLoader({ app: expressApp, container, activityId: expActivity })
+  await passportLoader({ app: httpAdapter, container, activityId: expActivity })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
 
   // Add the registered services to the request scope
-  expressApp.use((req, res, next) => {
+  httpAdapter.use((req, res, next) => {
     container.register({
       manager: asValue(getManager()),
     })
@@ -127,7 +133,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await pluginsLoader({
     container,
     rootDirectory,
-    app: expressApp,
+    app: httpAdapter,
     activityId: pluginsActivity,
   })
   const pAct = Logger.success(pluginsActivity, "Plugins intialized") || {}
@@ -144,7 +150,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   await apiLoader({
     container,
     rootDirectory,
-    app: expressApp,
+    app: httpAdapter,
     activityId: apiActivity,
   })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
@@ -162,7 +168,7 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   const searchAct = Logger.success(searchActivity, "Indexing completed") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
-  return { container, dbConnection, app: expressApp }
+  return { container, dbConnection, app: httpAdapter }
 }
 
 function asArray(resolvers) {

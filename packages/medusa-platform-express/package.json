@@ -1,0 +1,43 @@
+{
+  "name": "medusa-platform-express",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-platform-express"
+  },
+  "author": "Adrien de Peretti <adrien.deperetti@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/core": "^7.7.5",
+    "@babel/plugin-transform-typescript": "^7.13.0",
+    "@babel/preset-typescript": "^7.12.7",
+    "babel-preset-medusa-package": "^1.1.19",
+    "cross-env": "^5.2.1",
+    "eslint": "^6.8.0",
+    "jest": "^25.5.2",
+    "medusa-test-utils": "^1.1.37",
+    "@medusajs/medusa": "file:medusajs-medusa-1.1.64.tgz",
+    "medusa-interfaces": "^1.x",
+    "medusa-core-utils": "^1.1.x"
+  },
+  "scripts": {
+    "build": "babel src -d . --ignore **/__tests__ --extensions \".ts,.js\"",
+    "prepare": "cross-env NODE_ENV=production npm run build",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
+    "test": "jest"
+  },
+  "peerDependencies": {
+    "@medusajs/medusa": "^1.x",
+    "medusa-interfaces": "^1.x",
+    "medusa-core-utils": "^1.1.x"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1"
+  }
+}
