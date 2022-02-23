@@ -60,7 +60,7 @@ export default async (req, res) => {
 
   res.json({
     count,
-    customerGroups: data,
+    customer_groups: data,
     offset: validated.offset,
     limit: validated.limit,
   })
