@@ -1,4 +1,4 @@
-// API
+process.chdir(__dirname)
 
 module.exports = {
   name: "plugins",

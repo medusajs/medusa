@@ -19,7 +19,6 @@ module.exports = {
     `/www/`,
     `/dist/`,
     `/node_modules/`,
-    `/plugins/`,
     `__tests__/fixtures`,
     `__testfixtures__`,
     `.cache`,
