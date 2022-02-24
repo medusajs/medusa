@@ -14,6 +14,12 @@ export default (app) => {
     "/:id",
     middlewares.wrap(require("./delete-customer-group").default)
   )
+
+  route.get(
+    "/:id/customers",
+    middlewares.wrap(require("./get-customer-group-customers").default)
+  )
+
   return app
 }
 
