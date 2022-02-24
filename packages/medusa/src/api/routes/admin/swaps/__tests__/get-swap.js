@@ -11,12 +11,6 @@ const defaultRelations = [
   "shipping_address",
   "shipping_methods",
   "cart",
-  "cart.items",
-  "cart.region",
-  "cart.shipping_methods",
-  "cart.gift_cards",
-  "cart.discounts",
-  "cart.payment",
 ]
 
 const defaultFields = [

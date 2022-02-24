@@ -1,0 +1,25 @@
+{
+  "name": "plugins",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest --maxWorkers=50% --silent=false",
+    "build": "babel src -d dist --extensions \".ts,.js\""
+  },
+  "dependencies": {
+    "@medusajs/medusa": "1.1.60-dev-1642337635041",
+    "faker": "^5.5.3",
+    "medusa-fulfillment-webshipper": "1.1.35-dev-1642337635041",
+    "medusa-interfaces": "1.1.32-dev-1642337635041",
+    "medusa-plugin-sendgrid": "1.1.36-dev-1642337635041",
+    "typeorm": "^0.2.31"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "babel-preset-medusa-package": "1.1.19-dev-1642337635041",
+    "jest": "^26.6.3"
+  }
+}
