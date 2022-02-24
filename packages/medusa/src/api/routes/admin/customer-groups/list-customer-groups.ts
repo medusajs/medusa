@@ -13,6 +13,7 @@ import { CustomerGroupService } from "../../../../services"
 import { CustomerGroup } from "../../../../models/customer-group"
 import { DateComparisonOperator, FindConfig } from "../../../../types/common"
 import { defaultAdminCustomerGroupsRelations } from "."
+import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
 
 /**
  * @oas [get] /customer-groups
@@ -93,30 +94,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetCustomerGroupsParams {
-  @IsString()
-  @IsOptional()
-  q?: string
-
-  @IsArray()
-  @IsString()
-  @IsOptional()
-  id?: string[]
-
-  @IsArray()
-  @IsOptional()
-  name?: string[]
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  created_at?: DateComparisonOperator
-
-  @IsOptional()
-  @ValidateNested()
-  @Type(() => DateComparisonOperator)
-  updated_at?: DateComparisonOperator
-
+export class AdminGetCustomerGroupsParams extends FilterableCustomerGroupProps {
   @IsString()
   @IsOptional()
   order?: string

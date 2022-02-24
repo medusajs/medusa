@@ -1,10 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
-import { CustomerGroup, ProductVariant } from ".."
+
 import { CustomerGroupRepository } from "../repositories/customer-group"
-import { FindConfig } from "../types/common"
 import { FilterableCustomerGroupProps } from "../types/customer-groups"
+import { FindConfig } from "../types/common"
+import { CustomerGroup } from ".."
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
