@@ -47,10 +47,34 @@ module.exports = async (connection, data = {}) => {
     name: "vip-customers",
   })
 
-  for (let i = 2; i <= 20; i++) {
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-2",
+    name: "test-group-2",
+    metadata: { data1: "value1" },
+  })
+
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-3",
+    name: "test-group-3",
+  })
+
+  for (let i = 4; i <= 20; i++) {
     await manager.insert(CustomerGroup, {
       id: `test-group-${i}`,
       name: `Test group ${i}`,
     })
   }
+
+  const deletionCustomer = await manager.create(Customer, {
+    id: "test-customer-delete-cg",
+    email: "test-deletetion-cg@email.com",
+  })
+
+  const c_group_delete = manager.create(CustomerGroup, {
+    id: "test-group-delete",
+    name: "test-group-delete",
+  })
+
+  deletionCustomer.groups = [c_group_delete]
+  await manager.save(deletionCustomer)
 }

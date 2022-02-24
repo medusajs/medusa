@@ -29,3 +29,8 @@ export class FilterableCustomerGroupProps {
   @Type(() => DateComparisonOperator)
   created_at?: DateComparisonOperator
 }
+
+export class CustomerGroupUpdate {
+  name?: string
+  metadata?: object
+}
