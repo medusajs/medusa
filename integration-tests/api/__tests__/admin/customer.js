@@ -16,7 +16,7 @@ describe("/admin/customers", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -56,7 +56,7 @@ describe("/admin/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(5)
+      expect(response.data.count).toEqual(7)
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -70,6 +70,36 @@ describe("/admin/customers", () => {
           }),
           expect.objectContaining({
             id: "test-customer-has_account",
+          }),
+        ])
+      )
+    })
+
+    it("lists customers in group and count", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customers?groups[]=test-group-5", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          // console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(3)
+      expect(response.data.customers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-customer-5",
+          }),
+          expect.objectContaining({
+            id: "test-customer-6",
+          }),
+          expect.objectContaining({
+            id: "test-customer-7",
           }),
         ])
       )
