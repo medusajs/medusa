@@ -85,7 +85,7 @@ describe("/admin/customers", () => {
           },
         })
         .catch((err) => {
-          // console.log(err)
+          console.log(err)
         })
 
       expect(response.status).toEqual(200)
