@@ -1,7 +1,7 @@
 process.chdir(__dirname)
 
 module.exports = {
-  name: "plugins",
+  name: "Plugins",
   testEnvironment: `node`,
   rootDir: "./",
   testPathIgnorePatterns: [
