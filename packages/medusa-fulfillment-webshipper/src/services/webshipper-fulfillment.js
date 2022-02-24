@@ -1,10 +1,15 @@
+import { TotalsService } from "@medusajs/medusa"
+import { humanizeAmount } from "medusa-core-utils"
 import { FulfillmentService } from "medusa-interfaces"
 import Webshipper from "../utils/webshipper"
 
 class WebshipperFulfillmentService extends FulfillmentService {
   static identifier = "webshipper"
 
-  constructor({ logger, claimService, swapService, orderService }, options) {
+  constructor(
+    { logger, totalsService, claimService, swapService, orderService },
+    options
+  ) {
     super()
 
     this.options_ = options
@@ -24,6 +29,9 @@ class WebshipperFulfillmentService extends FulfillmentService {
 
     /** @private @const {OrderService} */
     this.orderService_ = orderService
+
+    /** @private @const {TotalsService} */
+    this.totalsService_ = totalsService
 
     /** @private @const {SwapService} */
     this.swapService_ = swapService
@@ -170,22 +178,38 @@ class WebshipperFulfillmentService extends FulfillmentService {
               width: 15,
               length: 15,
             },
-            customs_lines: returnOrder.items.map(({ item, quantity }) => {
-              return {
-                ext_ref: item.id,
-                sku: item.variant.sku,
-                description: item.title,
-                quantity: quantity,
-                country_of_origin:
-                  item.variant.origin_country ||
-                  item.variant.product.origin_country,
-                tarif_number:
-                  item.variant.hs_code || item.variant.product.hs_code,
-                unit_price: item.unit_price / 100,
-                vat_percent: fromOrder.tax_rate,
-                currency: fromOrder.currency_code.toUpperCase(),
-              }
-            }),
+            customs_lines: await Promise.all(
+              returnOrder.items.map(async ({ item, quantity }) => {
+                const totals = await this.totalsService_.getLineItemTotals(
+                  item,
+                  fromOrder,
+                  {
+                    include_tax: true,
+                    use_tax_lines: true,
+                  }
+                )
+                return {
+                  ext_ref: item.id,
+                  sku: item.variant.sku,
+                  description: item.title,
+                  quantity: quantity,
+                  country_of_origin:
+                    item.variant.origin_country ||
+                    item.variant.product.origin_country,
+                  tarif_number:
+                    item.variant.hs_code || item.variant.product.hs_code,
+                  unit_price: humanizeAmount(
+                    totals.unit_price,
+                    fromOrder.currency_code
+                  ),
+                  vat_percent: totals.tax_lines.reduce(
+                    (acc, next) => acc + next.rate,
+                    0
+                  ),
+                  currency: fromOrder.currency_code.toUpperCase(),
+                }
+              })
+            ),
           },
         ],
         sender_address: {
@@ -329,21 +353,38 @@ class WebshipperFulfillmentService extends FulfillmentService {
           status: "pending",
           ext_ref,
           visible_ref,
-          order_lines: fulfillmentItems.map((item) => {
-            return {
-              ext_ref: item.id,
-              sku: item.variant.sku,
-              description: item.title,
-              quantity: item.quantity,
-              country_of_origin:
-                item.variant.origin_country ||
-                item.variant.product.origin_country,
-              tarif_number:
-                item.variant.hs_code || item.variant.product.hs_code,
-              unit_price: item.unit_price / 100,
-              vat_percent: fromOrder.tax_rate,
-            }
-          }),
+          order_lines: await Promise.all(
+            fulfillmentItems.map(async (item) => {
+              const totals = await this.totalsService_.getLineItemTotals(
+                item,
+                fromOrder,
+                {
+                  include_tax: true,
+                  use_tax_lines: true,
+                }
+              )
+
+              return {
+                ext_ref: item.id,
+                sku: item.variant.sku,
+                description: item.title,
+                quantity: item.quantity,
+                country_of_origin:
+                  item.variant.origin_country ||
+                  item.variant.product.origin_country,
+                tarif_number:
+                  item.variant.hs_code || item.variant.product.hs_code,
+                unit_price: humanizeAmount(
+                  totals.unit_price,
+                  fromOrder.currency_code
+                ),
+                vat_percent: totals.tax_lines.reduce(
+                  (acc, next) => acc + next.rate,
+                  0
+                ),
+              }
+            })
+          ),
           delivery_address: {
             att_contact: `${shipping_address.first_name} ${shipping_address.last_name}`,
             address_1: shipping_address.address_1,
