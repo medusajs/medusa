@@ -16,7 +16,7 @@ describe("/admin/customers", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -56,7 +56,7 @@ describe("/admin/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(7)
+      expect(response.data.count).toEqual(8)
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
