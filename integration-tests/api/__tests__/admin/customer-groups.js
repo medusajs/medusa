@@ -55,7 +55,7 @@ describe("/admin/customer-groups", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
+      expect(response.data.customer_group).toEqual(
         expect.objectContaining({
           name: "test group",
         })
@@ -193,6 +193,88 @@ describe("/admin/customer-groups", () => {
     })
   })
 
+  describe("POST /admin/customer-groups/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("updates group name & metadata", async () => {
+      const api = useApi()
+
+      const id = "customer-group-2"
+
+      const body = {
+        name: "vip-customers-v2",
+        metadata: {
+          metaKey1: `metaValue1`,
+        },
+      }
+
+      const response = await api.post(`/admin/customer-groups/${id}`, body, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer_group).toEqual(
+        expect.objectContaining({
+          id: "customer-group-2",
+          name: "vip-customers-v2",
+          metadata: {
+            data1: "value1",
+            metaKey1: `metaValue1`,
+          },
+        })
+      )
+      expect(response.data.customer_group).not.toHaveProperty("customers")
+    })
+
+    it("deletes `metadata` nested key", async () => {
+      const api = useApi()
+
+      const id = "customer-group-2"
+      // already has some metadata initially
+
+      const body = {
+        name: "vip-customers-v2",
+        metadata: {
+          data1: null, // delete
+          data2: "val2", // insert
+        },
+      }
+
+      const response = await api
+        .post(`/admin/customer-groups/${id}?expand=customers`, body, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch(console.log)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer_group).toEqual(
+        expect.objectContaining({
+          id: "customer-group-2",
+          name: "vip-customers-v2",
+          metadata: { data1: null, data2: "val2" },
+          customers: [],
+        })
+      )
+    })
+  })
+
   describe("GET /admin/customer-groups", () => {
     beforeEach(async () => {
       try {
@@ -221,13 +303,13 @@ describe("/admin/customer-groups", () => {
       })
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
+      expect(response.data.customer_group).toEqual(
         expect.objectContaining({
           id: "customer-group-1",
           name: "vip-customers",
         })
       )
-      expect(response.data.customerGroup).not.toHaveProperty("customers")
+      expect(response.data.customer_group).not.toHaveProperty("customers")
     })
 
     it("gets customer group with `customers` prop", async () => {
@@ -245,13 +327,13 @@ describe("/admin/customer-groups", () => {
       )
 
       expect(response.status).toEqual(200)
-      expect(response.data.customerGroup).toEqual(
+      expect(response.data.customer_group).toEqual(
         expect.objectContaining({
           id: "customer-group-1",
           name: "vip-customers",
         })
       )
-      expect(response.data.customerGroup.customers).toEqual([])
+      expect(response.data.customer_group.customers).toEqual([])
     })
 
     it("throws error when a customer group doesn't exist", async () => {
