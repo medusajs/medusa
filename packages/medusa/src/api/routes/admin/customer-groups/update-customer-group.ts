@@ -1,16 +1,20 @@
+import { IsObject, IsOptional, IsString } from "class-validator"
+import { defaultAdminCustomerGroupsRelations } from "."
+
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
-import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
- * @oas [get] /customer-group/{id}
- * operationId: "GetCustomerGroupsGroup"
- * summary: "Retrieve a CustomerGroup"
- * description: "Retrieves a Customer Group."
+ * @oas [post] /customer-groups/{id}
+ * operationId: "PostCustomerGroupsGroup"
+ * summary: "Update a CustomerGroup"
+ * description: "Update a CustomerGroup."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Customer Group.
+ *   - (path) id=* {string} The id of the customer group.
+ *   - (body) name=* {string} Name of the customer group
+ *   - (body) metadata {object} Metadata for the customer.
  * tags:
  *   - CustomerGroup
  * responses:
@@ -23,21 +27,25 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *             customer_group:
  *               $ref: "#/components/schemas/customer_group"
  */
+
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(
-    AdminGetCustomerGroupsGroupParams,
-    req.query
+  const validatedBody = await validator(
+    AdminPostCustomerGroupsGroupReq,
+    req.body
   )
+  const validatedQuery = await validator(FindParams, req.query)
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
+  await customerGroupService.update(id, validatedBody)
+
   let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
+  if (validatedQuery.expand) {
+    expandFields = validatedQuery.expand.split(",")
   }
 
   const findConfig = {
@@ -51,4 +59,12 @@ export default async (req, res) => {
   res.json({ customer_group: customerGroup })
 }
 
-export class AdminGetCustomerGroupsGroupParams extends FindParams {}
+export class AdminPostCustomerGroupsGroupReq {
+  @IsString()
+  @IsOptional()
+  name?: string
+
+  @IsObject()
+  @IsOptional()
+  metadata?: object
+}
