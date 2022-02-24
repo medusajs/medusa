@@ -29,7 +29,7 @@ export class RegionSubscriber implements EntitySubscriberInterface<Region> {
           id: In(countryIds),
         },
         {
-          region_id: null,
+          region_id: undefined,
         }
       )
     }

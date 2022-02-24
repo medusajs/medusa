@@ -27,7 +27,7 @@ Object {
   "fulfillment_providers": Array [
     Object {
       "id": "test-ful",
-      "is_installed": false,
+      "is_installed": Any<Boolean>,
     },
   ],
   "id": Any<String>,

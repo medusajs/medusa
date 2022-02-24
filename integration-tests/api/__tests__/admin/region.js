@@ -23,9 +23,11 @@ describe("/admin/regions", () => {
   })
 
   describe("GET /admin/regions", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       const manager = dbConnection.manager
       await adminSeeder(dbConnection)
+      medusaProcess = await setupServer({ cwd })
+
       await manager.insert(Region, {
         id: "test-region",
         name: "Test Region",
@@ -55,7 +57,7 @@ describe("/admin/regions", () => {
       })
     })
 
-    afterAll(async () => {
+    afterEach(async () => {
       const db = useDb()
       await db.teardown()
     })
@@ -116,7 +118,7 @@ describe("/admin/regions", () => {
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
-        medusaProcess = await setupServer({ cwd, verbose: true })
+        medusaProcess = await setupServer({ cwd })
 
         const manager = dbConnection.manager
         await manager.insert(Region, {
@@ -226,7 +228,7 @@ describe("/admin/regions", () => {
         fulfillment_providers: [
           {
             id: "test-ful",
-            is_installed: false,
+            is_installed: expect.any(Boolean),
           },
         ],
         created_at: expect.any(String),
