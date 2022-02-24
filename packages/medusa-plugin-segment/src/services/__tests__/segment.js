@@ -64,8 +64,11 @@ describe("SegmentService", () => {
   }
 
   const TotalsService = {
-    getLineItemRefund: (_, item) => {
-      return item.unit_price
+    getLineItemTotals: (item) => {
+      return {
+        total: item.unit_price,
+        tax_total: 0,
+      }
     },
   }
 
@@ -101,10 +104,10 @@ describe("SegmentService", () => {
           {
             category: "Collection",
             name: "Test",
-            price: 4.47,
+            price: 5.5,
             product_id: "prod_123",
             quantity: 2,
-            reporting_revenue: 8.94,
+            reporting_revenue: 11,
             sku: "",
             subtitle: "Subtitle",
             type: "Type",
@@ -160,10 +163,10 @@ describe("SegmentService", () => {
           {
             category: "Collection",
             name: "Test",
-            price: 4.47,
+            price: 5.5,
             product_id: "prod_123",
             quantity: 2,
-            reporting_revenue: 8.94,
+            reporting_revenue: 11,
             sku: "",
             subtitle: "Subtitle",
             type: "Type",
@@ -214,10 +217,10 @@ describe("SegmentService", () => {
           {
             category: "Collection",
             name: "Test",
-            price: 446.79,
+            price: 550,
             product_id: "prod_123",
             quantity: 2,
-            reporting_revenue: 893.58,
+            reporting_revenue: 1100,
             sku: "",
             subtitle: "Subtitle",
             type: "Type",

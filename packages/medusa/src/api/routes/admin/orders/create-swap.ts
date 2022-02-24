@@ -150,7 +150,13 @@ export default async (req, res) => {
               .withTransaction(manager)
               .retrieve(id, {
                 select: ["refunded_total", "total"],
-                relations: ["items", "swaps", "swaps.additional_items"],
+                relations: [
+                  "items",
+                  "items.tax_lines",
+                  "swaps",
+                  "swaps.additional_items",
+                  "swaps.additional_items.tax_lines",
+                ],
               })
 
             const swap = await swapService
@@ -170,6 +176,7 @@ export default async (req, res) => {
             await swapService
               .withTransaction(manager)
               .createCart(swap.id, validated.custom_shipping_options)
+
             const returnOrder = await returnService
               .withTransaction(manager)
               .retrieveBySwap(swap.id)

@@ -8,8 +8,9 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/medusa": "1.1.64-dev-1645441522984",
-    "medusa-interfaces": "1.1.34-dev-1645441522984",
+    "@medusajs/medusa": "1.1.64-dev-1645628651544",
+    "faker": "^5.5.3",
+    "medusa-interfaces": "1.1.34-dev-1645628651544",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
