@@ -17,6 +17,7 @@ import repositoriesLoader from "./repositories"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import subscribersLoader from "./subscribers"
+import controllersLoader from "./controllers"
 
 export default async ({ directory: rootDirectory, expressApp }) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
@@ -101,6 +102,17 @@ export default async ({ directory: rootDirectory, expressApp }) => {
   })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
+
+  const controllersActivity = Logger.activity("Initializing controllers")
+  track("CONTROLLERS_INIT_STARTED")
+  controllersLoader({
+    container,
+    configModule,
+    activityId: controllersActivity,
+  })
+  const controllerAct =
+    Logger.success(controllersActivity, "Controllers initialized") || {}
+  track("CONTROLLERS_INIT_COMPLETED", { duration: controllerAct.duration })
 
   const expActivity = Logger.activity("Initializing express")
   track("EXPRESS_INIT_STARTED")

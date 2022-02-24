@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Customer } from "../../../.."
-import CustomerService from "../../../../services/customer"
+import CustomerController from "../../../../controllers/customers"
 import { FindConfig } from "../../../../types/common"
 import { AdminListCustomerSelector } from "../../../../types/customers"
 import { validator } from "../../../../utils/validator"
@@ -26,29 +26,11 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetCustomersParams, req.query)
 
-  const customerService: CustomerService = req.scope.resolve("customerService")
-
-  const selector: AdminListCustomerSelector = {}
-
-  if (validated.q) {
-    selector.q = validated.q
-  }
-
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const listConfig: FindConfig<Customer> = {
-    relations: expandFields,
-    skip: validated.offset,
-    take: validated.limit,
-  }
-
-  const [customers, count] = await customerService.listAndCount(
-    selector,
-    listConfig
+  const customerController: CustomerController = req.scope.resolve(
+    "customersController"
   )
+
+  const [customers, count] = await customerController.listAndCount(validated)
 
   res.json({
     customers,
