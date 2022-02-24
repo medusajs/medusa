@@ -86,6 +86,113 @@ describe("/admin/customer-groups", () => {
     })
   })
 
+  describe("DELETE /admin/customer-groups", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("removes customer group from get endpoint", async () => {
+      expect.assertions(3)
+
+      const api = useApi()
+
+      const id = "customer-group-1"
+
+      const deleteResponse = await api.delete(`/admin/customer-groups/${id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(deleteResponse.data).toEqual({
+        id: id,
+        object: "customer_group",
+        deleted: true,
+      })
+
+      await api
+        .get(`/admin/customer-groups/${id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((error) => {
+          expect(error.response.data.type).toEqual("not_found")
+          expect(error.response.data.message).toEqual(
+            `CustomerGroup with ${id} was not found`
+          )
+        })
+    })
+
+    it("removes customer group from customer upon deletion", async () => {
+      expect.assertions(3)
+
+      const api = useApi()
+
+      const id = "test-group-delete"
+
+      const customerRes_preDeletion = await api.get(
+        `/admin/customers/test-customer-delete-cg?expand=groups`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(customerRes_preDeletion.data.customer).toEqual(
+        expect.objectContaining({
+          groups: [
+            expect.objectContaining({
+              id: "test-group-delete",
+              name: "test-group-delete",
+            }),
+          ],
+        })
+      )
+
+      const deleteResponse = await api
+        .delete(`/admin/customer-groups/${id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => console.log(err))
+
+      expect(deleteResponse.data).toEqual({
+        id: id,
+        object: "customer_group",
+        deleted: true,
+      })
+
+      const customerRes = await api.get(
+        `/admin/customers/test-customer-delete-cg?expand=groups`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(customerRes.data.customer).toEqual(
+        expect.objectContaining({
+          groups: [],
+        })
+      )
+    })
+  })
+
   describe("GET /admin/customer-groups", () => {
     beforeEach(async () => {
       try {
