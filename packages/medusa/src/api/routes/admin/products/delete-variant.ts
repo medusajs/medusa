@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
 

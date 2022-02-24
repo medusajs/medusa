@@ -7,6 +7,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import { Type } from "class-transformer"
 import { DraftOrderListSelector } from "../../../../types/draft-orders"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /draft-orders
  * operationId: "GetDraftOrders"

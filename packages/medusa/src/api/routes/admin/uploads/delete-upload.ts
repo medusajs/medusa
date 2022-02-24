@@ -1,3 +1,5 @@
+import { Request } from "@interfaces/http"
+
 /**
  * [delete] /uploads
  * operationId: "AdminDeleteUpload"

@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { IsBoolean, IsObject, IsOptional } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."

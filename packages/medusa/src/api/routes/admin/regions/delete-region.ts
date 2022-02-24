@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import RegionService from "../../../../services/region"
 
 /**

@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { IsEmail, IsEnum } from "class-validator"
 import { UserRoles } from "../../../../models/user"
 import InviteService from "../../../../services/invite"

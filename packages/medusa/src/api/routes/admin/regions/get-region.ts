@@ -1,5 +1,6 @@
 import RegionService from "../../../../services/region"
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /regions/{id}

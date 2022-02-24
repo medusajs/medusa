@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService } from "../../../../services"

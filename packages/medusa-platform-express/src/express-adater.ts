@@ -13,7 +13,7 @@ import {
 } from 'body-parser';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
-import express, { Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express';
 import * as http from 'http';
 import * as https from 'https';
 import { ServeStaticOptions } from './types';
@@ -22,7 +22,7 @@ function isObject(val: any): val is object {
   return typeof val !== undefined && val !== null && typeof val === 'object'
 }
 
-export class ExpressAdapter extends AbstractHttpAdapter {
+export class ExpressAdapter extends AbstractHttpAdapter<any, Request, Response> {
   private readonly routerMethodFactory = new RouterMethodFactory();
 
   constructor(instance?: any) {

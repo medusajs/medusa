@@ -2,6 +2,7 @@ import { IsString } from "class-validator"
 import { validator } from "../../../../utils/validator"
 import RegionService from "../../../../services/region"
 import { defaultAdminRegionFields, defaultAdminRegionRelations } from "."
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /regions/{id}/metadata

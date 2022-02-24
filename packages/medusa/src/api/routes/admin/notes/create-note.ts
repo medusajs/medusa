@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { IsNotEmpty, IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"

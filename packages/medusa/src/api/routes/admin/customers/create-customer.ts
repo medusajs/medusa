@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { IsEmail, IsObject, IsOptional, IsString } from "class-validator"
 import { CustomerService } from "../../../../services"
 import { validator } from "../../../../utils/validator"

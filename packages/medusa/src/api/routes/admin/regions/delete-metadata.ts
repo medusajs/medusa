@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"

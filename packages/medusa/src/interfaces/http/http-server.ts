@@ -77,12 +77,13 @@ export interface CorsOptionsDelegate<T> {
 }
 
 export type Request = {
-  body: Record<string, any> | undefined;
+  body: Record<string, any>;
   params: Record<string, any>;
   query: Record<string, any>;
   scope: AwilixContainer & { resolve: any };
   user?: any;
   session?: any;
+  files: any[];
   request_context: { ip: string; };
   method: string;
   path: string;

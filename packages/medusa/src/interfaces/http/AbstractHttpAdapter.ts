@@ -1,16 +1,16 @@
 import {
   CorsOptions,
   CorsOptionsDelegate,
-  HttpServer,
+  HttpServer, Request,
   RequestHandler,
-  RequestMethod
+  RequestMethod, Response,
 } from "./http-server"
 import { HttpServerOptions } from "./http-server-options"
 
 export abstract class AbstractHttpAdapter<
   TServer = any,
   TRequest = any,
-  TResponse = any,
+  TResponse = any
 > implements HttpServer<TRequest, TResponse> {
   protected httpServer: TServer;
 

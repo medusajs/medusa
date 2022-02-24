@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { Type } from "class-transformer"
 import {
   IsArray,

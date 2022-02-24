@@ -3,6 +3,7 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import { Region } from "../../../.."
 import RegionService from "../../../../services/region"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /regions
  * operationId: "PostRegions"

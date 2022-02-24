@@ -5,6 +5,7 @@ import { validator } from "../../../../utils/validator"
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 import AuthService from "../../../../services/auth"
 import { MedusaError } from "medusa-core-utils"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /auth

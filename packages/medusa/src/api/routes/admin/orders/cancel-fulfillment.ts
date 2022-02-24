@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { FulfillmentService, OrderService } from "../../../../services"

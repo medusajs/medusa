@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import NoteService from "../../../../services/note"
 
 /**

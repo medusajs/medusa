@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import InviteService from "../../../../services/invite"
 
 /**
