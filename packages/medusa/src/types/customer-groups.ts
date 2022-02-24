@@ -22,7 +22,7 @@ export class FilterableCustomerGroupProps {
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
-  canceled_at?: DateComparisonOperator
+  updated_at?: DateComparisonOperator
 
   @IsOptional()
   @ValidateNested()
