@@ -1,4 +1,5 @@
 import RegionService from "../../../../services/region"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /regions/{id}
  * operationId: GetRegionsRegion
@@ -18,7 +19,7 @@ import RegionService from "../../../../services/region"
  *             region:
  *               $ref: "#/components/schemas/region"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { region_id } = req.params
 
   const regionService: RegionService = req.scope.resolve("regionService")

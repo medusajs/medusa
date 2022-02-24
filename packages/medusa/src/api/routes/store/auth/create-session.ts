@@ -4,6 +4,7 @@ import config from "../../../../config"
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /auth
@@ -25,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *            customer:
  *              $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(StorePostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")

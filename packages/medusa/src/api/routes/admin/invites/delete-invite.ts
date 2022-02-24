@@ -14,7 +14,7 @@ import InviteService from "../../../../services/invite"
  *   200:
  *     description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { invite_id } = req.params
 
   const inviteService: InviteService = req.scope.resolve("inviteService")

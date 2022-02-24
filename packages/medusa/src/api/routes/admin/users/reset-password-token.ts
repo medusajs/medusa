@@ -1,6 +1,7 @@
 import { IsEmail } from "class-validator"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /users/password-token
@@ -24,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *   204:
  *     description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminResetPasswordTokenRequest, req.body)
 
   const userService: UserService = req.scope.resolve("userService")

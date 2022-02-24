@@ -3,6 +3,7 @@ import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultStoreVariantRelations } from "."
 import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /variants
@@ -28,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/product_variant"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { limit, offset, expand, ids } = await validator(
     StoreGetVariantsParams,
     req.query

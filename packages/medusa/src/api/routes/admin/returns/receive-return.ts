@@ -9,6 +9,7 @@ import {
 import { EntityManager } from "typeorm"
 import { OrderService, ReturnService, SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /returns/{id}/receive
@@ -50,7 +51,7 @@ import { validator } from "../../../../utils/validator"
  *             return:
  *               $ref: "#/components/schemas/return"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(AdminPostReturnsReturnReceiveReq, req.body)

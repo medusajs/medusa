@@ -3,6 +3,7 @@ import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { defaultFields, defaultRelations } from "."
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /shipping-options
@@ -43,7 +44,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *               items:
  *                 $ref: "#/components/schemas/shipping_option"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validatedParams = await validator(
     AdminGetShippingOptionsParams,
     req.query

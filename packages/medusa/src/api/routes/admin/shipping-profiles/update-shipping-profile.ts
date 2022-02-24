@@ -1,6 +1,7 @@
 import { IsOptional, IsString } from "class-validator"
 import { ShippingProfileService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /shipping-profiles/{id}
@@ -29,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *             shipping_profiles:
  *               $ref: "#/components/schemas/shipping_profile"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { profile_id } = req.params
 
   const validated = await validator(

@@ -3,6 +3,7 @@ import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /carts/{id}/line-items
@@ -27,7 +28,7 @@ import { validator } from "../../../../utils/validator"
  *             cart:
  *               $ref: "#/components/schemas/cart"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)

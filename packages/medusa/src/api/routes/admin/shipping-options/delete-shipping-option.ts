@@ -1,3 +1,5 @@
+import { Request } from "@interfaces/http"
+
 /**
  * @oas [delete] /shipping-options/{id}
  * operationId: "DeleteShippingOptionsOption"
@@ -24,7 +26,7 @@
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { option_id } = req.params
   const optionService = req.scope.resolve("shippingOptionService")
 

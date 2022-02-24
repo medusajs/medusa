@@ -14,6 +14,7 @@ import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -128,7 +129,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const value = await validator(AdminPostOrdersOrderClaimsReq, req.body)

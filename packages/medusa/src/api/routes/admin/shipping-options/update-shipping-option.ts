@@ -10,6 +10,7 @@ import {
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /shipping-options/{id}
@@ -62,7 +63,7 @@ import { validator } from "../../../../utils/validator"
  *             shipping_option:
  *               $ref: "#/components/schemas/shipping_option"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { option_id } = req.params
 
   const validated = await validator(AdminPostShippingOptionsOptionReq, req.body)

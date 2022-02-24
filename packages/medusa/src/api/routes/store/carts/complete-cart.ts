@@ -1,6 +1,7 @@
 import { ICartCompletionStrategy } from "../../../../interfaces"
 import { IdempotencyKeyService } from "../../../../services"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /carts/{id}/complete
@@ -39,7 +40,7 @@ import { IdempotencyKey } from "../../../../models/idempotency-key"
  *                cart:
  *                  $ref: "#/components/schemas/swap"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(

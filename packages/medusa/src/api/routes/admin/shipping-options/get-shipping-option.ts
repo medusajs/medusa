@@ -1,3 +1,5 @@
+import { Request } from "@interfaces/http"
+
 /**
  * @oas [get] /shipping-options/{id}
  * operationId: "GetShippingOptionsOption"
@@ -18,7 +20,7 @@
  *             shipping_option:
  *               $ref: "#/components/schemas/shipping_option"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { option_id } = req.params
   const optionService = req.scope.resolve("shippingOptionService")
   const data = await optionService.retrieve(option_id)

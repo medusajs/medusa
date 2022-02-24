@@ -21,7 +21,7 @@ import { OrderService } from "../../../../services"
  *             order:
  *               $ref: "#/components/schemas/order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, key } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")

@@ -15,6 +15,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { AddressPayload } from "../../../../types/common"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /carts
@@ -61,7 +62,7 @@ import { AddressPayload } from "../../../../types/common"
  *             cart:
  *               $ref: "#/components/schemas/cart"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(StorePostCartReq, req.body)
 
   const reqContext = {

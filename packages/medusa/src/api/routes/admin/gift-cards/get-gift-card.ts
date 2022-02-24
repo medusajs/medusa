@@ -1,4 +1,6 @@
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
+import { Request } from "@interfaces/http"
+import { GiftCardService } from "../../../../services"
 
 /**
  * @oas [get] /gift-cards/{id}
@@ -20,10 +22,10 @@ import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "./"
  *             gift_card:
  *               $ref: "#/components/schemas/gift_card"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
-  const giftCardService = req.scope.resolve("giftCardService")
+  const giftCardService = req.scope.resolve("giftCardService") as GiftCardService
   const giftCard = await giftCardService.retrieve(id, {
     select: defaultAdminGiftCardFields,
     relations: defaultAdminGiftCardRelations,

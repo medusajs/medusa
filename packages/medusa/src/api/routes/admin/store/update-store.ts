@@ -1,6 +1,7 @@
 import { IsArray, IsOptional, IsString } from "class-validator"
 import { StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /store
@@ -40,7 +41,7 @@ import { validator } from "../../../../utils/validator"
  *             store:
  *               $ref: "#/components/schemas/store"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validatedBody = await validator(AdminPostStoreReq, req.body)
 
   const storeService: StoreService = req.scope.resolve("storeService")

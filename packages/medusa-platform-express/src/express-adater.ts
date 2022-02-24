@@ -13,7 +13,7 @@ import {
 } from 'body-parser';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import * as http from 'http';
 import * as https from 'https';
 import { ServeStaticOptions } from './types';
@@ -29,7 +29,7 @@ export class ExpressAdapter extends AbstractHttpAdapter {
     super(instance || express());
   }
 
-  public send(response: any, body: any, statusCode?: number) {
+  public send(response: Response, body: any, statusCode?: number) {
     if (statusCode) {
       response.status(statusCode);
     }
@@ -49,15 +49,15 @@ export class ExpressAdapter extends AbstractHttpAdapter {
     return isObject(body) ? response.json(body) : response.send(String(body));
   }
 
-  public status(response: any, statusCode: number) {
+  public status(response: Response, statusCode: number) {
     return response.status(statusCode);
   }
 
-  public render(response: any, view: string, options: any) {
+  public render(response: Response, view: string, options: any) {
     return response.render(view, options);
   }
 
-  public redirect(response: any, statusCode: number, url: string) {
+  public redirect(response: Response, statusCode: number, url: string) {
     return response.redirect(statusCode, url);
   }
 
@@ -69,7 +69,7 @@ export class ExpressAdapter extends AbstractHttpAdapter {
     return this.use(handler);
   }
 
-  public setHeader(response: any, name: string, value: string) {
+  public setHeader(response: Response, name: string, value: string) {
     return response.set(name, value);
   }
 
@@ -117,15 +117,15 @@ export class ExpressAdapter extends AbstractHttpAdapter {
     return this.set('view engine', engine);
   }
 
-  public getRequestHostname(request: any): string {
+  public getRequestHostname(request: Request): string {
     return request.hostname;
   }
 
-  public getRequestMethod(request: any): string {
+  public getRequestMethod(request: Request): string {
     return request.method;
   }
 
-  public getRequestUrl(request: any): string {
+  public getRequestUrl(request: Request): string {
     return request.originalUrl;
   }
 

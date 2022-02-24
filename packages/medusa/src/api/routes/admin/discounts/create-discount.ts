@@ -16,6 +16,7 @@ import DiscountService from "../../../../services/discount"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { validator } from "../../../../utils/validator"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /discounts
  * operationId: "PostDiscounts"
@@ -74,7 +75,7 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostDiscountsReq, req.body)
 
   const discountService: DiscountService = req.scope.resolve("discountService")

@@ -1,5 +1,6 @@
 import CartService from "../../../../services/cart"
 import ShippingProfileService from "../../../../services/shipping-profile"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /shipping-options/{cart_id}
@@ -22,7 +23,7 @@ import ShippingProfileService from "../../../../services/shipping-profile"
  *               items:
  *                 $ref: "#/components/schemas/shipping_option"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { cart_id } = req.params
 
   const cartService: CartService = req.scope.resolve("cartService")

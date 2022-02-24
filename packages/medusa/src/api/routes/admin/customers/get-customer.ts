@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { defaultAdminCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { FindParams } from "../../../../types/common"
@@ -23,7 +24,7 @@ import { validator } from "../../../../utils/validator"
  *             customer:
  *               $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(FindParams, req.query)

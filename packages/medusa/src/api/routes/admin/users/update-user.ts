@@ -27,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *             user:
  *               $ref: "#/components/schemas/user"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { user_id } = req.params
 
   const validated = await validator(AdminUpdateUserRequest, req.body)

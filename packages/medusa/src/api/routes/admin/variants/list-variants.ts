@@ -7,6 +7,7 @@ import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
 import { Type } from "class-transformer"
 import { IsInt, IsOptional, IsString } from "class-validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /variants
  * operationId: "GetVariants"
@@ -31,7 +32,7 @@ import { IsInt, IsOptional, IsString } from "class-validator"
  *               items:
  *                 $ref: "#/components/schemas/product_variant"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )

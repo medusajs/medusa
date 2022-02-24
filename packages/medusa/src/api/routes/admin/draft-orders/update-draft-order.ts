@@ -15,6 +15,7 @@ import { CartService, DraftOrderService } from "../../../../services"
 import { Type } from "class-transformer"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /admin/draft-orders/{id}
  * operationId: PostDraftOrdersDraftOrder
@@ -69,7 +70,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/draft-order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(AdminPostDraftOrdersDraftOrderReq, req.body)

@@ -1,4 +1,5 @@
 import { DraftOrderService } from "../../../../services"
+import { Request } from "@interfaces/http"
 /**
  * @oas [delete] /draft-orders/{id}
  * operationId: DeleteDraftOrdersDraftOrder
@@ -25,7 +26,7 @@ import { DraftOrderService } from "../../../../services"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const draftOrderService: DraftOrderService =

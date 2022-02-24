@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import { IsNumber, IsOptional } from "class-validator"
 import { ReturnService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /returns
@@ -25,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/return"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const returnService: ReturnService = req.scope.resolve("returnService")
 
   const validated = await validator(AdminGetReturnsParams, req.query)

@@ -18,7 +18,7 @@ import { OauthService } from "../../../../services"
  *            collection:
  *              $ref: "#/components/schemas/OAuth"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const oauthService: OauthService = req.scope.resolve("oauthService")
   const data = await oauthService.list({})
 

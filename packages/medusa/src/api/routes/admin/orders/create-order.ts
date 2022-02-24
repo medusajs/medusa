@@ -1,4 +1,4 @@
-import { Type, Transform } from "class-transformer"
+import { Type } from "class-transformer"
 import {
   IsEmail,
   IsOptional,
@@ -13,6 +13,7 @@ import {
 import { OrderService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /orders
  * operationId: "PostOrders"
@@ -110,7 +111,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostOrdersReq, req.body)
 
   const orderService: OrderService = req.scope.resolve("orderService")

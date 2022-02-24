@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { Type } from "class-transformer"
 import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
@@ -45,7 +46,7 @@ import { validator } from "../../../../utils/validator"
  *             gift_card:
  *               $ref: "#/components/schemas/gift_card"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostGiftCardsReq, req.body)
 
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")

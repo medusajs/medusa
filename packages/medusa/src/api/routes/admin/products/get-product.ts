@@ -21,7 +21,7 @@ import { ProductService } from "../../../../services"
  *             product:
  *               $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const productService: ProductService = req.scope.resolve("productService")

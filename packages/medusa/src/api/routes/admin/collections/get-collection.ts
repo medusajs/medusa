@@ -1,5 +1,6 @@
 import { defaultAdminCollectionsRelations } from "."
 import ProductCollectionService from "../../../../services/product-collection"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /collections/{id}
  * operationId: "GetCollectionsCollection"
@@ -20,7 +21,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *            collection:
  *              $ref: "#/components/schemas/product_collection"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const retrieveConfig = {

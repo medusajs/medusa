@@ -9,6 +9,7 @@ import {
 } from "class-validator"
 import { defaultFields, defaultRelations } from "."
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /shipping-options
@@ -80,7 +81,7 @@ import { validator } from "../../../../utils/validator"
  *             shipping_option:
  *               $ref: "#/components/schemas/shipping_option"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostShippingOptionsReq, req.body)
 
   const optionService = req.scope.resolve("shippingOptionService")

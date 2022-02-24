@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { EntityManager } from "typeorm"
 import {
   CartService,
@@ -31,7 +32,7 @@ import {
  *               $ref: "#/components/schemas/draft-order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const draftOrderService: DraftOrderService =

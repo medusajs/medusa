@@ -26,7 +26,7 @@ import { ProductService } from "../../../../services"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const productService: ProductService = req.scope.resolve("productService")

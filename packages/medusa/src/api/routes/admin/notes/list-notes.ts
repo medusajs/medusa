@@ -2,6 +2,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
 import { selector } from "../../../../types/note"
+import { Request } from "@interfaces/http"
 import { Type } from "class-transformer"
 /**
  * @oas [get] /notes
@@ -27,7 +28,7 @@ import { Type } from "class-transformer"
  *               items:
  *                 $ref: "#/components/schemas/note"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminGetNotesParams, req.query)
 
   const selector: selector = {}

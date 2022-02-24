@@ -21,6 +21,7 @@ import {
 import { ProductService } from "../../../../services"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /products/{id}
@@ -205,7 +206,7 @@ import { validator } from "../../../../utils/validator"
  *             product:
  *               $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(AdminPostProductsProductReq, req.body)

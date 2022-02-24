@@ -1,6 +1,7 @@
 import RegionService from "../../../../services/region"
 import FulfillmentProviderService from "../../../../services/fulfillment-provider"
 import { FulfillmentOption } from "."
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /regions/{id}/fulfillment-options
@@ -24,7 +25,7 @@ import { FulfillmentOption } from "."
  *               items:
  *                 type: object
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { region_id } = req.params
 
   const fulfillmentProviderService: FulfillmentProviderService =

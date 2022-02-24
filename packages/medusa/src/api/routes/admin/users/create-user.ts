@@ -3,6 +3,7 @@ import _ from "lodash"
 import { UserRoles } from "../../../../models/user"
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /users
@@ -45,7 +46,7 @@ import { validator } from "../../../../utils/validator"
  *             user:
  *               $ref: "#/components/schemas/user"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminCreateUserRequest, req.body)
 
   const userService: UserService = req.scope.resolve("userService")

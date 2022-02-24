@@ -1,5 +1,6 @@
 import _ from "lodash"
 import UserService from "../../../../services/user"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /auth
@@ -19,7 +20,7 @@ import UserService from "../../../../services/user"
  *            user:
  *              $ref: "#/components/schemas/user"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   try {
     const userService: UserService = req.scope.resolve("userService")
     const user = await userService.retrieve(req.user.userId)

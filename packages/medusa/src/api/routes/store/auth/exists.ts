@@ -1,4 +1,5 @@
 import CustomerService from "../../../../services/customer"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /auth/{email}
  * operationId: "GetAuthEmail"
@@ -18,7 +19,7 @@ import CustomerService from "../../../../services/customer"
  *            exists:
  *              type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { email } = req.params
 
   try {

@@ -10,6 +10,7 @@ import { DraftOrder } from "../../../.."
 import { LineItemUpdate } from "../../../../types/cart"
 import { CartService, DraftOrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /draft-orders/{id}/line-items/{line_id}
  * operationId: "PostDraftOrdersDraftOrderLineItemsItem"
@@ -46,7 +47,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/draft-order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, line_id } = req.params
 
   const validated = await validator(

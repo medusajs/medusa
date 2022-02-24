@@ -20,7 +20,7 @@ import UserService from "../../../../services/user"
  *             user:
  *               $ref: "#/components/schemas/user"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { user_id } = req.params
 
   const userService: UserService = req.scope.resolve("userService")

@@ -10,7 +10,9 @@
  *  "200":
  *    description: OK
  */
-export default async (req, res) => {
+import { Request } from "@interfaces/http"
+
+export default async (req: Request, res) => {
   req.session.destroy()
   res.status(200).end()
 }

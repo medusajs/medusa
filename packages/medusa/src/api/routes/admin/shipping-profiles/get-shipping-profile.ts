@@ -3,6 +3,7 @@ import {
   defaultAdminShippingProfilesRelations,
 } from "."
 import { ShippingProfileService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /shipping-profiles/{id}
@@ -24,7 +25,7 @@ import { ShippingProfileService } from "../../../../services"
  *             shipping_profile:
  *               $ref: "#/components/schemas/shipping_profile"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { profile_id } = req.params
   const profileService: ShippingProfileService = req.scope.resolve(
     "shippingProfileService"

@@ -12,6 +12,7 @@ import { validator } from "../../../../utils/validator"
 import { defaultAdminCustomersRelations } from "."
 import { Type } from "class-transformer"
 import { FindParams } from "../../../../types/common"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /customers/{id}
@@ -66,7 +67,7 @@ import { FindParams } from "../../../../types/common"
  *             customer:
  *               $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validatedBody = await validator(AdminPostCustomersCustomerReq, req.body)

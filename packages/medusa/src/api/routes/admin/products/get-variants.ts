@@ -1,4 +1,5 @@
 import { ProductService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /products/{id}/variants
@@ -22,7 +23,7 @@ import { ProductService } from "../../../../services"
  *               items:
  *                 $ref: "#/components/schemas/product_variant"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const productService: ProductService = req.scope.resolve("productService")

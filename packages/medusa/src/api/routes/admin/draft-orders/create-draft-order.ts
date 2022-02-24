@@ -117,7 +117,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/draft-order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostDraftOrdersReq, req.body)
 
   const value = transformIdableFields(validated, [

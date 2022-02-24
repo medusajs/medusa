@@ -1,6 +1,7 @@
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [delete] /carts/{id}/line-items/{line_id}
@@ -22,7 +23,7 @@ import { CartService } from "../../../../services"
  *             cart:
  *               $ref: "#/components/schemas/cart"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, line_id } = req.params
 
   const manager: EntityManager = req.scope.resolve("manager")

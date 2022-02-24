@@ -1,4 +1,5 @@
 import { ReturnReasonService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [delete] /return-reasons/{id}
@@ -26,7 +27,7 @@ import { ReturnReasonService } from "../../../../services"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const returnReasonService: ReturnReasonService = req.scope.resolve(

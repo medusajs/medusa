@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import { IsOptional, IsInt } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
@@ -22,7 +23,7 @@ import { validator } from "../../../../utils/validator"
  *            collection:
  *              $ref: "#/components/schemas/product_collection"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   try {
     const { limit, offset } = await validator(
       StoreGetCollectionsParams,

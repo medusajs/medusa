@@ -9,6 +9,7 @@ import {
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "."
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /orders
@@ -30,7 +31,7 @@ import { validator } from "../../../../utils/validator"
  *             order:
  *               $ref: "#/components/schemas/order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(StoreGetOrdersParams, req.query)
 
   const orderService: OrderService = req.scope.resolve("orderService")

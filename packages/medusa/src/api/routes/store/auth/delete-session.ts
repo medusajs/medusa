@@ -1,3 +1,5 @@
+import { Request } from "@interfaces/http"
+
 /**
  * @oas [delete] /auth
  * operationId: "DeleteAuth"
@@ -9,7 +11,7 @@
  *  "200":
  *    description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   req.session.jwt = {}
   res.json({})
 }

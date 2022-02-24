@@ -1,4 +1,5 @@
 import { ProductService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /products/types
@@ -20,7 +21,7 @@ import { ProductService } from "../../../../services"
  *               items:
  *                 $ref: "#/components/schemas/product_type"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const productService: ProductService = req.scope.resolve("productService")
 
   const types = await productService.listTypes()

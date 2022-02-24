@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import { IsInt, IsOptional } from "class-validator"
 import { SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /swaps
  * operationId: "GetSwaps"
@@ -22,7 +23,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/swap"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const swapService: SwapService = req.scope.resolve("swapService")
 
   const { offset, limit } = await validator(AdminGetSwapsParams, req.query)

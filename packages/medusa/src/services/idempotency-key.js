@@ -22,7 +22,7 @@ class IdempotencyKeyService extends BaseService {
    * Execute the initial steps in a idempotent request.
    * @param {string} headerKey - potential idempotency key from header
    * @param {string} reqMethod - method of request
-   * @param {string} reqParams - params of request
+   * @param {Record} reqParams - params of request
    * @param {string} reqPath - path of request
    * @return {Promise<IdempotencyKeyModel>} the existing or created idempotency key
    */

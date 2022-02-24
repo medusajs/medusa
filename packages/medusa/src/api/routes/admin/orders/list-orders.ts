@@ -5,6 +5,7 @@ import { identity, omit, pick, pickBy } from "lodash"
 import { OrderService } from "../../../../services"
 import { AdminListOrdersSelector } from "../../../../types/orders"
 import { Type } from "class-transformer"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /orders
@@ -46,7 +47,7 @@ import { Type } from "class-transformer"
  *               items:
  *                 $ref: "#/components/schemas/order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const value = await validator(AdminGetOrdersParams, req.query)
 
   const orderService: OrderService = req.scope.resolve("orderService")

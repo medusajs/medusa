@@ -1,4 +1,5 @@
 import CustomerService from "../../../../services/customer"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /auth
  * operationId: "GetAuth"
@@ -17,7 +18,7 @@ import CustomerService from "../../../../services/customer"
  *            customer:
  *              $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   if (req.user && req.user.customer_id) {
     const customerService: CustomerService =
       req.scope.resolve("customerService")

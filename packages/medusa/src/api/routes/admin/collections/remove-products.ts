@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { ArrayNotEmpty, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
@@ -28,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *  "200":
  *    description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(

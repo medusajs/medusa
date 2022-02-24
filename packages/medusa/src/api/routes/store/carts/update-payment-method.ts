@@ -2,6 +2,7 @@ import { IsOptional, IsString } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -35,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *             cart:
  *               $ref: "#/components/schemas/cart"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(

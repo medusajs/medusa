@@ -20,7 +20,7 @@ import UserService from "../../../../services/user"
  *               items:
  *                 $ref: "#/components/schemas/user"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const userService: UserService = req.scope.resolve("userService")
   const users = await userService.list({})
 

@@ -1,3 +1,6 @@
+import { Request } from "@interfaces/http"
+import { GiftCardService } from "../../../../services"
+
 /**
  * @oas [delete] /gift-cards/{id}
  * operationId: "DeleteGiftCardsGiftCard"
@@ -24,10 +27,10 @@
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
-  const giftCardService = req.scope.resolve("giftCardService")
+  const giftCardService = req.scope.resolve("giftCardService") as GiftCardService
   await giftCardService.delete(id)
 
   res.json({

@@ -5,6 +5,7 @@ import {
 } from "."
 import { ReturnReasonService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /return-reasons
@@ -47,7 +48,7 @@ import { validator } from "../../../../utils/validator"
  *             return_reason:
  *               $ref: "#/components/schemas/return_reason"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostReturnReasonsReq, req.body)
 
   const returnReasonService: ReturnReasonService = req.scope.resolve(

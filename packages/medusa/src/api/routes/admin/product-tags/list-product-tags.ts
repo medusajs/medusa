@@ -16,6 +16,7 @@ import {
 } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /product-tags
@@ -42,7 +43,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *            tags:
  *              $ref: "#/components/schemas/product_tag"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminGetProductTagsParams, req.query)
 
   const tagService: ProductTagService = req.scope.resolve("productTagService")

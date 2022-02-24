@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
@@ -53,7 +54,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/draft-order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(

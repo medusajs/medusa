@@ -1,5 +1,6 @@
 import { defaultAdminSwapFields, defaultAdminSwapRelations } from "."
 import { SwapService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /swaps/{id}
@@ -21,7 +22,7 @@ import { SwapService } from "../../../../services"
  *             swap:
  *               $ref: "#/components/schemas/swap"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const swapService: SwapService = req.scope.resolve("swapService")

@@ -1,4 +1,5 @@
 import { ShippingProfileService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /shipping-profiles
@@ -20,7 +21,7 @@ import { ShippingProfileService } from "../../../../services"
  *               items:
  *                 $ref: "#/components/schemas/shipping_profile"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const profileService: ShippingProfileService = req.scope.resolve(
     "shippingProfileService"
   )

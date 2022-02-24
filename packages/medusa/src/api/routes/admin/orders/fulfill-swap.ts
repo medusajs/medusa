@@ -3,6 +3,7 @@ import { EntityManager } from "typeorm"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService, SwapService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /orders/{id}/swaps/{swap_id}/fulfillments
  * operationId: "PostOrdersOrderSwapsSwapFulfillments"
@@ -35,7 +36,7 @@ import { validator } from "../../../../utils/validator"
  *             order:
  *               $ref: "#/components/schemas/order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, swap_id } = req.params
 
   const validated = await validator(

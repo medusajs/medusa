@@ -2,6 +2,7 @@ import { IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /products/{id}/options/{option_id}
@@ -34,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  *             product:
  *               $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, option_id } = req.params
 
   const validated = await validator(

@@ -1,4 +1,5 @@
 import { ShippingProfileService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [delete] /shipping-profiles/{id}
@@ -26,7 +27,7 @@ import { ShippingProfileService } from "../../../../services"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { profile_id } = req.params
   const profileService: ShippingProfileService = req.scope.resolve(
     "shippingProfileService"

@@ -35,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  *            collection:
  *              $ref: "#/components/schemas/product_collection"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(AdminPostCollectionsCollectionReq, req.body)

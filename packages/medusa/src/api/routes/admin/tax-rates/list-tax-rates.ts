@@ -17,6 +17,7 @@ import {
 import { TaxRateService } from "../../../../services"
 import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /tax-rates
@@ -49,7 +50,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const value = await validator(AdminGetTaxRatesParams, req.query)
 
   const rateService: TaxRateService = req.scope.resolve("taxRateService")

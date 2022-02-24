@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { IsObject, IsOptional, IsString } from "class-validator"
 import { defaultAdminCustomerGroupsRelations } from "."
 
@@ -28,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/customer_group"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validatedBody = await validator(

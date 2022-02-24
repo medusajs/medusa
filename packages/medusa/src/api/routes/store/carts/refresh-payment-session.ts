@@ -1,4 +1,5 @@
 import { CartService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions/{provider_id}/refresh
@@ -20,7 +21,7 @@ import { CartService } from "../../../../services"
  *             cart:
  *               $ref: "#/components/schemas/cart"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, provider_id } = req.params
 
   const cartService: CartService = req.scope.resolve("cartService")

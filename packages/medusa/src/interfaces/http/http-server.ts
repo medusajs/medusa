@@ -1,3 +1,5 @@
+import { AwilixContainer } from "awilix";
+
 export enum RequestMethod {
   GET = 0,
   POST,
@@ -69,8 +71,26 @@ export interface CorsOptions {
 export interface CorsOptionsCallback {
   (error: Error, options: CorsOptions): void;
 }
+
 export interface CorsOptionsDelegate<T> {
   (req: T, cb: CorsOptionsCallback): void;
+}
+
+export type Request = {
+  body: Record<string, any> | undefined;
+  params: Record<string, any>;
+  query: Record<string, any>;
+  scope: AwilixContainer & { resolve: any };
+  user?: any;
+  session?: any;
+  request_context: { ip: string; };
+  method: string;
+  path: string;
+  get: (key: string) => any;
+};
+
+export type Response = {
+
 }
 
 export type ErrorHandler<TRequest = any, TResponse = any> = (
@@ -79,6 +99,7 @@ export type ErrorHandler<TRequest = any, TResponse = any> = (
   res: TResponse,
   next?: Function,
 ) => any;
+
 export type RequestHandler<TRequest = any, TResponse = any> = (
   req: TRequest,
   res: TResponse,
@@ -115,11 +136,11 @@ export interface HttpServer<TRequest = any, TResponse = any> {
   options(path: string, handler: RequestHandler<TRequest, TResponse>): any;
   listen(port: number | string, callback?: () => void): any;
   listen(port: number | string, hostname: string, callback?: () => void): any;
-  send(response: any, body: any, statusCode?: number): any;
-  status(response: any, statusCode: number): any;
-  render(response: any, view: string, options: any): any;
-  redirect(response: any, statusCode: number, url: string): any;
-  setHeader(response: any, name: string, value: string): any;
+  send(response: TResponse, body: any, statusCode?: number): any;
+  status(response: TResponse, statusCode: number): any;
+  render(response: TResponse, view: string, options: any): any;
+  redirect(response: TResponse, statusCode: number, url: string): any;
+  setHeader(response: TResponse, name: string, value: string): any;
   setErrorHandler?(handler: Function, prefix?: string): any;
   setNotFoundHandler?(handler: Function, prefix?: string): any;
   useStaticAssets?(...args: any[]): this;

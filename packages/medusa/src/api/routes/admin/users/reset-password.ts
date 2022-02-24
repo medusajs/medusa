@@ -5,6 +5,7 @@ import { MedusaError } from "medusa-core-utils"
 import { User } from "../../../.."
 import UserService from "../../../../services/user"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /users/password-token
@@ -42,7 +43,7 @@ import { validator } from "../../../../utils/validator"
  *             user:
  *               $ref: "#/components/schemas/user"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminResetPasswordRequest, req.body)
 
   try {

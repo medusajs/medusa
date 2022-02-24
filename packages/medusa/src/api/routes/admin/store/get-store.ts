@@ -3,6 +3,7 @@ import {
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /store
@@ -22,7 +23,7 @@ import {
  *             store:
  *               $ref: "#/components/schemas/store"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const storeService: StoreService = req.scope.resolve("storeService")
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"

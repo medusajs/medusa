@@ -35,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/note"
  *
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostNotesReq, req.body)
 
   const userId: string = req.user.id || req.user.userId

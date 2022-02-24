@@ -2,6 +2,7 @@ import { IsBooleanString, IsOptional, IsString } from "class-validator"
 import ProductService from "../../../../services/product"
 import ShippingOptionService from "../../../../services/shipping-option"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /shipping-options
@@ -26,7 +27,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/shipping_option"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(StoreGetShippingOptionsParams, req.query)
 
   const productIds =

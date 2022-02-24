@@ -28,7 +28,7 @@ import { ProductService, ProductVariantService } from "../../../../services"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, variant_id } = req.params
 
   const productVariantService: ProductVariantService = req.scope.resolve(

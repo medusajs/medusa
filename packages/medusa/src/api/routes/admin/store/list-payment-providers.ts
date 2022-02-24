@@ -1,4 +1,5 @@
 import { PaymentProviderService } from "../../../../services"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /store/payment-providers
  * operationId: "GetStorePaymentProviders"
@@ -19,7 +20,7 @@ import { PaymentProviderService } from "../../../../services"
  *               items:
  *                 $ref: "#/components/schemas/store"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
   )

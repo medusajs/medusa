@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsString } from "class-validator"
 import { OauthService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /apps
  * operationId: "PostApps"
@@ -37,7 +38,7 @@ import { validator } from "../../../../utils/validator"
  *            apps:
  *              $ref: "#/components/schemas/OAuth"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostAppsReq, req.body)
   const oauthService: OauthService = req.scope.resolve("oauthService")
   const data = await oauthService.generateToken(

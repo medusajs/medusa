@@ -1,5 +1,6 @@
 import { OrderService } from "../../../../services"
 import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /orders/{id}
@@ -20,7 +21,7 @@ import { defaultStoreOrdersFields, defaultStoreOrdersRelations } from "./index"
  *             customer:
  *               $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")

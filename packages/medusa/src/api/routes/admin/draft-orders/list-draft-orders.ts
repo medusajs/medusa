@@ -26,7 +26,7 @@ import { DraftOrderListSelector } from "../../../../types/draft-orders"
  *               $ref: "#/components/schemas/draft-order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
 

@@ -19,6 +19,7 @@ import {
 import { ProductService } from "../../../../services"
 import { FindConfig, DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /products
@@ -68,7 +69,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validatedParams = await validator(AdminGetProductsParams, req.query)
 
   const productService: ProductService = req.scope.resolve("productService")

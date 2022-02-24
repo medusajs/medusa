@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 /**
@@ -20,7 +21,7 @@ import DiscountService from "../../../../services/discount"
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { code } = req.params
 
   const discountService: DiscountService = req.scope.resolve("discountService")

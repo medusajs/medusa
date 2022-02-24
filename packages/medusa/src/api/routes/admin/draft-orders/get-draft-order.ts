@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import {
   defaultAdminDraftOrdersRelations,
   defaultAdminDraftOrdersFields,
@@ -28,7 +29,7 @@ import { CartService, DraftOrderService } from "../../../../services"
  *               $ref: "#/components/schemas/draft-order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const draftOrderService: DraftOrderService =

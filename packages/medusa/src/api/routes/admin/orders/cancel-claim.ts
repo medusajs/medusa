@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { ClaimService, OrderService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/cancel
@@ -23,7 +24,7 @@ import { ClaimService, OrderService } from "../../../../services"
  *             order:
  *               $ref: "#/components/schemas/claim_order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, claim_id } = req.params
 
   const claimService: ClaimService = req.scope.resolve("claimService")

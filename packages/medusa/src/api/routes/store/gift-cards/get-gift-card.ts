@@ -1,5 +1,6 @@
 import { defaultStoreGiftCardFields, defaultStoreGiftCardRelations } from "."
 import GiftCardService from "../../../../services/gift-card"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /gift-cards/{code}
@@ -28,7 +29,7 @@ import GiftCardService from "../../../../services/gift-card"
  *             region:
  *               $ref: "#/components/schemas/region"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { code } = req.params
 
   try {

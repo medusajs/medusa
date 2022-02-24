@@ -1,4 +1,5 @@
 import { TaxRateService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [delete] /tax-rates/{id}
@@ -26,7 +27,7 @@ import { TaxRateService } from "../../../../services"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
   const taxRateService: TaxRateService = req.scope.resolve("taxRateService")
 

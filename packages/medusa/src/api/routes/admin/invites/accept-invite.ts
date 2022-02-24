@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import { IsNotEmpty, IsString, ValidateNested } from "class-validator"
 import InviteService from "../../../../services/invite"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /invites/accept
@@ -42,7 +43,7 @@ import { validator } from "../../../../utils/validator"
  *   200:
  *     description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostInvitesInviteAcceptReq, req.body)
 
   const inviteService: InviteService = req.scope.resolve("inviteService")

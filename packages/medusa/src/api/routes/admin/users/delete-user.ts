@@ -1,4 +1,5 @@
 import UserService from "../../../../services/user"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [delete] /users/{user_id}
@@ -26,7 +27,7 @@ import UserService from "../../../../services/user"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { user_id } = req.params
 
   const userService: UserService = req.scope.resolve("userService")

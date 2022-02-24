@@ -3,6 +3,7 @@ import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 import { GiftCardService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /gift-cards
@@ -24,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/gift_card"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminGetGiftCardsParams, req.query)
 
   const selector = {}

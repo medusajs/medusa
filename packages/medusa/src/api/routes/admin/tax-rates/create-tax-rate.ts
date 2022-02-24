@@ -8,6 +8,7 @@ import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /tax-rates
@@ -29,7 +30,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *               items:
  *                 $ref: "#/components/schemas/tax_rate"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const value = await validator(AdminPostTaxRatesReq, req.body)
 
   const query = await validator(AdminPostTaxRatesParams, req.query)

@@ -95,7 +95,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/order"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const value = await validator(AdminPostOrdersOrderReq, req.body)

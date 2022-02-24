@@ -5,6 +5,7 @@ import { Customer } from "../../../.."
 import config from "../../../../config"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /customers
@@ -29,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *             customer:
  *               $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(StorePostCustomersReq, req.body)
 
   const customerService: CustomerService = req.scope.resolve("customerService")

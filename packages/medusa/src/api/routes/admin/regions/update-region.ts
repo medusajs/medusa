@@ -8,6 +8,7 @@ import {
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import RegionService from "../../../../services/region"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /regions/{id}
@@ -70,7 +71,7 @@ import RegionService from "../../../../services/region"
  *             region:
  *               $ref: "#/components/schemas/region"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { region_id } = req.params
   const validated = await validator(AdminPostRegionsRegionReq, req.body)
 

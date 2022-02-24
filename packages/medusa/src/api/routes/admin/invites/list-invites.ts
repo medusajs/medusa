@@ -1,4 +1,5 @@
 import InviteService from "../../../../services/invite"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /invites
@@ -20,7 +21,7 @@ import InviteService from "../../../../services/invite"
  *               items:
  *                 $ref: "#/components/schemas/invite"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const inviteService: InviteService = req.scope.resolve("inviteService")
   const invites = await inviteService.list({})
 

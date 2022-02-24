@@ -14,6 +14,7 @@ import IdempotencyKeyService from "../../../../services/idempotency-key"
 import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /returns
@@ -66,7 +67,7 @@ import { validator } from "../../../../utils/validator"
  *             return:
  *               $ref: "#/components/schemas/return"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const returnDto = await validator(StorePostReturnsReq, req.body)
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(

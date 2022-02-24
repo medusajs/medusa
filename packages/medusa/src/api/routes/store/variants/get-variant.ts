@@ -1,5 +1,6 @@
 import { defaultStoreVariantRelations } from "."
 import ProductVariantService from "../../../../services/product-variant"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /variants/{variant_id}
@@ -20,7 +21,7 @@ import ProductVariantService from "../../../../services/product-variant"
  *             variant:
  *               $ref: "#/components/schemas/product_variant"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const variantService: ProductVariantService = req.scope.resolve(

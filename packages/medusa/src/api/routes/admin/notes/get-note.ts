@@ -1,4 +1,5 @@
 import NoteService from "../../../../services/note"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /notes/{id}
@@ -20,7 +21,7 @@ import NoteService from "../../../../services/note"
  *             note:
  *               $ref: "#/components/schemas/note"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const noteService: NoteService = req.scope.resolve("noteService")

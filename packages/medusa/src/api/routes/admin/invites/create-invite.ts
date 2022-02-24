@@ -29,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *   200:
  *     description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminPostInvitesReq, req.body)
 
   const inviteService: InviteService = req.scope.resolve("inviteService")

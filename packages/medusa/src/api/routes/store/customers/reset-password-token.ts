@@ -1,6 +1,7 @@
 import { IsEmail } from "class-validator"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /customers/password-token
@@ -15,7 +16,7 @@ import { validator } from "../../../../utils/validator"
  *   204:
  *     description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(
     StorePostCustomersCustomerPasswordTokenReq,
     req.body

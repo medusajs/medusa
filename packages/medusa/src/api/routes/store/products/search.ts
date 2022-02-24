@@ -3,8 +3,9 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { SearchService } from "../../../../services"
 import ProductService from "../../../../services/product"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   // As we want to allow wildcards, we pass a config allowing this
   const validated = await validator(StorePostSearchReq, req.body, {
     whitelist: false,

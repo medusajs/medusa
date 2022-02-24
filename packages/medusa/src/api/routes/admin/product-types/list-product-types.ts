@@ -16,6 +16,7 @@ import {
 } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /product-types
@@ -42,7 +43,7 @@ import { IsType } from "../../../../utils/validators/is-type"
  *            types:
  *              $ref: "#/components/schemas/product_tag"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminGetProductTypesParams, req.query)
 
   const typeService: ProductTypeService =

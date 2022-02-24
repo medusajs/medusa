@@ -6,6 +6,7 @@ import {
 } from "."
 import { validator } from "../../../../utils/validator"
 import { NotificationService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /notifications/{id}/resend
@@ -35,7 +36,7 @@ import { NotificationService } from "../../../../services"
  *             notification:
  *               $ref: "#/components/schemas/notification"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validatedBody = await validator(

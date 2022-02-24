@@ -7,6 +7,7 @@ import {
   defaultAdminNotificationsFields,
   defaultAdminNotificationsRelations,
 } from "./"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /notifications
@@ -38,7 +39,7 @@ import {
  *               items:
  *                 $ref: "#/components/schemas/notification"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const notificationService: NotificationService = req.scope.resolve(
     "notificationService"
   )

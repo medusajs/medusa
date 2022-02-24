@@ -4,6 +4,7 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
 import { AddressCreatePayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /customers/me/addresses
@@ -34,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  *            customer:
  *              $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const id = req.user.customer_id
 
   const validated = await validator(

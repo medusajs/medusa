@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import {
   IsNotEmpty,
   IsNumber,
@@ -29,7 +30,7 @@ import { validator } from "../../../../utils/validator"
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { discount_id } = req.params
 
   const validated = await validator(

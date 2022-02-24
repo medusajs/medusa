@@ -26,7 +26,7 @@ import RegionService from "../../../../services/region"
  *             deleted:
  *               type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { region_id } = req.params
 
   const regionService: RegionService = req.scope.resolve("regionService")

@@ -1,6 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [post] /collections/{id}/products/batch
  * operationId: "PostProductsToCollection"
@@ -28,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *  "200":
  *    description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(AdminPostProductsToCollectionReq, req.body)

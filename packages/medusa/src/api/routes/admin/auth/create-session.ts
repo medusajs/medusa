@@ -27,7 +27,7 @@ import { MedusaError } from "medusa-core-utils"
  *            user:
  *              $ref: "#/components/schemas/user"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   if (!config.jwtSecret) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,

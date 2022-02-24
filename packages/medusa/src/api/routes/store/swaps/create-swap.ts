@@ -15,6 +15,7 @@ import OrderService from "../../../../services/order"
 import ReturnService from "../../../../services/return"
 import SwapService from "../../../../services/swap"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /swaps
@@ -86,7 +87,7 @@ import { validator } from "../../../../utils/validator"
  *             swap:
  *               $ref: "#/components/schemas/swap"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const swapDto = await validator(StorePostSwapsReq, req.body)
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(

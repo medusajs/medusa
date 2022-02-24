@@ -32,7 +32,7 @@ import { validator } from "../../../../utils/validator"
  *             order:
  *               $ref: "#/components/schemas/order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(

@@ -1,6 +1,7 @@
 import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { CartService, IdempotencyKeyService } from "../../../../services"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /carts/{id}/taxes
@@ -24,7 +25,7 @@ import { CartService, IdempotencyKeyService } from "../../../../services"
  *                cart:
  *                  $ref: "#/components/schemas/cart"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const idempotencyKeyService: IdempotencyKeyService = req.scope.resolve(

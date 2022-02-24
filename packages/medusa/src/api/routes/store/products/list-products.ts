@@ -14,6 +14,7 @@ import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /products
@@ -58,7 +59,7 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *               items:
  *                 $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const productService: ProductService = req.scope.resolve("productService")
 
   const validated = await validator(StoreGetProductsParams, req.query)

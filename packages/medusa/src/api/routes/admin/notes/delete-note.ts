@@ -24,7 +24,7 @@ import NoteService from "../../../../services/note"
  *               type: boolean
  *               description: Whether or not the Note was deleted.
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const noteService: NoteService = req.scope.resolve("noteService")

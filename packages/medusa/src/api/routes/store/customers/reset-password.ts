@@ -2,6 +2,7 @@ import { IsEmail, IsString } from "class-validator"
 import jwt, { JwtPayload } from "jsonwebtoken"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /customers/reset-password
@@ -24,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *             customer:
  *               $ref: "#/components/schemas/customer"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(
     StorePostCustomersResetPasswordReq,
     req.body

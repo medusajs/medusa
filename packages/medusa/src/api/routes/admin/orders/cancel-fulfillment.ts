@@ -23,7 +23,7 @@ import { FulfillmentService, OrderService } from "../../../../services"
  *             fulfillment:
  *               $ref: "#/components/schemas/fulfillment"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, fulfillment_id } = req.params
 
   const orderService: OrderService = req.scope.resolve("orderService")

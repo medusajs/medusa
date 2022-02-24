@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { CustomerGroupService } from "../../../../services"
 
 /**
@@ -27,7 +28,7 @@ import { CustomerGroupService } from "../../../../services"
  *               type: boolean
  */
 
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(

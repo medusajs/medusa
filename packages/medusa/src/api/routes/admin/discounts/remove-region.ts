@@ -1,5 +1,6 @@
 import DiscountService from "../../../../services/discount"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { Request } from "@interfaces/http"
 /**
  * @oas [delete] /discounts/{id}/regions/{region_id}
  * operationId: "DeleteDiscountsDiscountRegionsRegion"
@@ -21,7 +22,7 @@ import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { discount_id, region_id } = req.params
 
   const discountService: DiscountService = req.scope.resolve("discountService")

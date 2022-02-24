@@ -118,7 +118,7 @@ import { validator } from "../../../../utils/validator"
  *             product:
  *               $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, variant_id } = req.params
 
   const validated = await validator(

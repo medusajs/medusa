@@ -6,6 +6,7 @@ import { IsInt, IsOptional, ValidateNested } from "class-validator"
 import { Type } from "class-transformer"
 import _, { identity } from "lodash"
 import { DateComparisonOperator } from "../../../../types/common"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /regions
@@ -58,7 +59,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *               items:
  *                 $ref: "#/components/schemas/region"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminGetRegionsParams, req.query)
 
   const regionService: RegionService = req.scope.resolve("regionService")

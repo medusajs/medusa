@@ -1,3 +1,4 @@
+import { Request } from "@interfaces/http"
 import { Type, Transform } from "class-transformer"
 import {
   IsBoolean,
@@ -41,7 +42,7 @@ import { validator } from "../../../../utils/validator"
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)
 
   const discountService: DiscountService = req.scope.resolve("discountService")

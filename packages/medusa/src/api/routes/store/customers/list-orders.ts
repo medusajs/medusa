@@ -6,6 +6,7 @@ import {
   allowedStoreOrdersFields,
   allowedStoreOrdersRelations,
 } from "../orders"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /customers/me/orders
@@ -41,7 +42,7 @@ import {
  *               items:
  *                 $ref: "#/components/schemas/orders"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const id: string = req.user.customer_id
 
   const orderService: OrderService = req.scope.resolve("orderService")

@@ -8,6 +8,7 @@ import {
 import ProductCollectionService from "../../../../services/product-collection"
 import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
@@ -34,7 +35,7 @@ import { validator } from "../../../../utils/validator"
  *            collection:
  *              $ref: "#/components/schemas/product_collection"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const validated = await validator(AdminGetCollectionsParams, req.query)
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(

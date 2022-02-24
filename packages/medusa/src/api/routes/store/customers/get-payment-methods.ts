@@ -2,6 +2,7 @@ import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
 import StoreService from "../../../../services/store"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /customers/me/payment-methods
@@ -29,7 +30,7 @@ import StoreService from "../../../../services/store"
  *                     type: object
  *                     description: The data needed for the Payment Provider to use the saved payment method.
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const id = req.user.customer_id
 
   const storeService: StoreService = req.scope.resolve("storeService")

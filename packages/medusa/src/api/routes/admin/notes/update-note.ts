@@ -1,6 +1,7 @@
 import { IsString } from "class-validator"
 import NoteService from "../../../../services/note"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /notes/{id}
@@ -33,7 +34,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/note"
  *
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(AdminPostNotesNoteReq, req.body)

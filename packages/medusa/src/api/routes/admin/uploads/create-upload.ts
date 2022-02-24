@@ -17,7 +17,7 @@ import fs from "fs"
  *           properties:
  *             uploads
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   try {
     const fileService = req.scope.resolve("fileService")
 

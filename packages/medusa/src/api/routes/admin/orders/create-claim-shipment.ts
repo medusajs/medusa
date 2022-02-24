@@ -2,6 +2,7 @@ import { IsArray, IsNotEmpty, IsOptional, IsString } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { ClaimService, OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/shipments
@@ -39,7 +40,7 @@ import { validator } from "../../../../utils/validator"
  *             order:
  *               $ref: "#/components/schemas/order"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id, claim_id } = req.params
 
   const validated = await validator(

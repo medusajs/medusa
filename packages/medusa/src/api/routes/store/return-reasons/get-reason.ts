@@ -3,6 +3,7 @@ import {
   defaultStoreReturnReasonRelations,
 } from "."
 import ReturnReasonService from "../../../../services/return-reason"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /return-reasons/{id}
@@ -23,7 +24,7 @@ import ReturnReasonService from "../../../../services/return-reason"
  *             return_reason:
  *               $ref: "#/components/schemas/return_reason"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const returnReasonService: ReturnReasonService = req.scope.resolve(

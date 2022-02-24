@@ -4,6 +4,7 @@ import { IsArray, IsOptional } from "class-validator"
 import { TaxRate } from "../../../.."
 import { TaxRateService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [get] /tax-rates/:id
@@ -25,7 +26,7 @@ import { validator } from "../../../../utils/validator"
  *               items:
  *                 $ref: "#/components/schemas/tax_rate"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const value = await validator(AdminGetTaxRatesTaxRateParams, req.query)
 
   const rateService: TaxRateService = req.scope.resolve("taxRateService")

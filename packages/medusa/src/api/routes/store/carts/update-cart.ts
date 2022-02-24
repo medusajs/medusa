@@ -12,6 +12,7 @@ import { AddressPayload } from "../../../../types/common"
 import { CartUpdateProps } from "../../../../types/cart"
 import { IsType } from "../../../../utils/validators/is-type"
 import { validator } from "../../../../utils/validator"
+import { Request } from "@interfaces/http"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -80,7 +81,7 @@ import { validator } from "../../../../utils/validator"
  *             cart:
  *               $ref: "#/components/schemas/cart"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
 
   const validated = await validator(StorePostCartsCartReq, req.body)
