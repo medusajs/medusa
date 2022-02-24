@@ -56,7 +56,7 @@ describe("/admin/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(4)
+      expect(response.data.count).toEqual(6)
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -227,6 +227,178 @@ describe("/admin/customers", () => {
           metadata: { foo: "bar" },
         })
       )
+    })
+
+    it("Correctly updates customer groups", async () => {
+      const api = useApi()
+      let response = await api
+        .post(
+          "/admin/customers/test-customer-3?expand=groups",
+          {
+            groups: [{ id: "test-group-4" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
+        ])
+      )
+
+      // Try adding a non existing group
+
+      response = await api
+        .post(
+          "/admin/customers/test-customer-3?expand=groups",
+          {
+            groups: [{ id: "test-group-4" }, { id: "fake-group-0" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(1)
+      expect(response.data.customer.groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
+        ])
+      )
+
+      // Delete all groups
+
+      response = await api
+        .post(
+          "/admin/customers/test-customer-3?expand=groups",
+          {
+            groups: [],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(0)
+
+      // Adding a group to a customer with already existing groups.
+
+      response = await api
+        .post(
+          "/admin/customers/test-customer-5?expand=groups",
+          {
+            groups: [{ id: "test-group-5" }, { id: "test-group-4" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer.groups.length).toEqual(2)
+      expect(response.data.customer.groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
+          expect.objectContaining({ id: "test-group-5", name: "test-group-5" }),
+        ])
+      )
+    })
+  })
+
+  describe("GET /admin/customers/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("fetches a customer", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customers/test-customer-1", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).toMatchSnapshot({
+        id: expect.any(String),
+        shipping_addresses: [
+          {
+            id: "test-address",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+
+    it("fetches a customer with expand query", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customers/test-customer-1?expand=billing_address,groups", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.customer).toMatchSnapshot({
+        id: "test-customer-1",
+        billing_address: {
+          id: "test-address",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        groups: [],
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
     })
   })
 })

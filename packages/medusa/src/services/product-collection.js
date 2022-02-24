@@ -1,5 +1,6 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import { Brackets, ILike } from "typeorm"
 
 /**
  * Provides layer to manipulate product collections.
@@ -161,6 +162,32 @@ class ProductCollectionService extends BaseService {
     })
   }
 
+  async addProducts(collectionId, productIds) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
+
+      await productRepo.bulkAddToCollection(productIds, id)
+
+      return await this.retrieve(id, {
+        relations: ["products"],
+      })
+    })
+  }
+
+  async removeProducts(collectionId, productIds) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
+
+      await productRepo.bulkRemoveFromCollection(productIds, id)
+
+      return Promise.resolve()
+    })
+  }
+
   /**
    * Lists product collections
    * @param {Object} selector - the query object for find
@@ -187,7 +214,35 @@ class ProductCollectionService extends BaseService {
       this.productCollectionRepository_
     )
 
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.title
+      delete where.handle
+      delete where.created_at
+      delete where.updated_at
+
+      query.where = (qb) => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets((qb) => {
+            qb.where({ title: ILike(`%${q}%`) }).orWhere({
+              handle: ILike(`%${q}%`),
+            })
+          })
+        )
+      }
+    }
+
     return await productCollectionRepo.findAndCount(query)
   }
 }

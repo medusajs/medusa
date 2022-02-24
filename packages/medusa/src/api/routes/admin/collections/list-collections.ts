@@ -3,7 +3,7 @@ import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import _, { identity } from "lodash"
 import {
   defaultAdminCollectionsFields,
-  defaultAdminCollectionsRelations,
+  defaultAdminCollectionsRelations
 } from "."
 import ProductCollectionService from "../../../../services/product-collection"
 import { DateComparisonOperator } from "../../../../types/common"
@@ -98,4 +98,8 @@ export class AdminGetCollectionsParams extends AdminGetCollectionsPaginationPara
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
+
+  @IsString()
+  @IsOptional()
+  q?: string
 }

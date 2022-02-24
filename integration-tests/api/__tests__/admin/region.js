@@ -22,6 +22,96 @@ describe("/admin/regions", () => {
     await db.shutdown()
   })
 
+  describe("GET /admin/regions", () => {
+    beforeAll(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+      await manager.insert(Region, {
+        id: "test-region",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+      })
+      await manager.insert(Region, {
+        id: "test-region-deleted",
+        name: "Test Region",
+        currency_code: "usd",
+        tax_rate: 0,
+        deleted_at: new Date(),
+      })
+      await manager.insert(Region, {
+        id: "test-region-updated",
+        name: "Test Region updated",
+        currency_code: "usd",
+        tax_rate: 0,
+        updated_at: new Date(),
+      })
+      await manager.insert(Region, {
+        id: "test-region-updated-1",
+        name: "Test Region updated 1",
+        currency_code: "usd",
+        tax_rate: 0,
+        updated_at: new Date("10/10/2000"),
+      })
+    })
+
+    afterAll(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("only returns non-deleted regions", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/admin/regions`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.regions).toEqual([
+        expect.objectContaining({
+          id: "test-region-updated-1",
+        }),
+        expect.objectContaining({
+          id: "test-region",
+        }),
+        expect.objectContaining({
+          id: "test-region-updated",
+        }),
+      ])
+      expect(response.status).toEqual(200)
+    })
+
+    it("filters correctly on update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/admin/regions?updated_at[gt]=10-10-2005`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.regions).toEqual([
+        expect.objectContaining({
+          id: "test-region",
+        }),
+        expect.objectContaining({
+          id: "test-region-updated",
+        }),
+      ])
+      expect(response.status).toEqual(200)
+    })
+  })
+
   describe("DELETE /admin/regions/:id", () => {
     beforeEach(async () => {
       try {
