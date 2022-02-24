@@ -56,7 +56,7 @@ describe("/admin/customers", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(5)
+      expect(response.data.count).toEqual(6)
       expect(response.data.customers).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
