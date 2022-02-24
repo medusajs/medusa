@@ -14,6 +14,11 @@ export default (app) => {
     "/:id",
     middlewares.wrap(require("./delete-customer-group").default)
   )
+  route.post(
+    "/:id",
+    middlewares.wrap(require("./update-customer-group").default)
+  )
+
   return app
 }
 

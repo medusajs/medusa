@@ -4,7 +4,10 @@ import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
 import { FindConfig } from "../types/common"
-import { FilterableCustomerGroupProps } from "../types/customer-groups"
+import {
+  CustomerGroupUpdate,
+  FilterableCustomerGroupProps,
+} from "../types/customer-groups"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -42,14 +45,14 @@ class CustomerGroupService extends BaseService {
   }
 
   async retrieve(id: string, config = {}): Promise<CustomerGroup> {
-    const customerRepo = this.manager_.getCustomRepository(
+    const cgRepo = this.manager_.getCustomRepository(
       this.customerGroupRepository_
     )
 
     const validatedId = this.validateId_(id)
     const query = this.buildQuery_({ id: validatedId }, config)
 
-    const customerGroup = await customerRepo.findOne(query)
+    const customerGroup = await cgRepo.findOne(query)
     if (!customerGroup) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -83,6 +86,38 @@ class CustomerGroupService extends BaseService {
         }
         throw err
       }
+    })
+  }
+
+  /**
+   * Update a customer group.
+   *
+   * @param {string} customerGroupId - id of the customer group
+   * @param {CustomerGroupUpdate} update - customer group partial data
+   */
+  async update(
+    customerGroupId: string,
+    update: CustomerGroupUpdate
+  ): Promise<CustomerGroup[]> {
+    return this.atomicPhase_(async (manager) => {
+      const { metadata, ...properties } = update
+
+      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
+        this.customerGroupRepository_
+      )
+
+      const customerGroup = await this.retrieve(customerGroupId)
+
+      for (const key in properties) {
+        if (typeof properties[key] !== "undefined") {
+          customerGroup[key] = properties[key]
+        }
+      }
+
+      if (typeof metadata !== "undefined") {
+        customerGroup.metadata = this.setMetadata_(customerGroup, metadata)
+      }
+      return await cgRepo.save(customerGroup)
     })
   }
 
