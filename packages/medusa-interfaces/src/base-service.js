@@ -158,9 +158,35 @@ class BaseService {
    * @param {string} isolation - the isolation level to be used for the work.
    * @return {any} the result of the transactional work
    */
-  async atomicPhase_(work, isolation) {
+  async atomicPhase_(work, isolationOrErrorHandler, maybeErrorHandler) {
+    let errorHandler = maybeErrorHandler
+    let isolation = isolationOrErrorHandler
+    if (typeof isolationOrErrorHandler === "function") {
+      isolation = null
+      errorHandler = isolationOrErrorHandler
+    }
+
     if (this.transactionManager_) {
-      return work(this.transactionManager_)
+      const doWork = async (m) => {
+        this.manager_ = m
+        this.transactionManager_ = m
+        try {
+          const result = await work(m)
+          return result
+        } catch (error) {
+          if (errorHandler) {
+            const queryRunner = this.transactionManager_.queryRunner
+            if (queryRunner.isTransactionActive) {
+              await queryRunner.rollbackTransaction()
+            }
+
+            await errorHandler(error)
+          }
+          throw error
+        }
+      }
+
+      return doWork(this.transactionManager_)
     } else {
       const temp = this.manager_
       const doWork = async (m) => {
@@ -187,11 +213,23 @@ class BaseService {
           if (this.shouldRetryTransaction(error)) {
             return this.manager_.transaction(isolation, (m) => doWork(m))
           } else {
+            if (errorHandler) {
+              await errorHandler(error)
+            }
             throw error
           }
         }
       }
-      return this.manager_.transaction((m) => doWork(m))
+
+      try {
+        const result = await this.manager_.transaction((m) => doWork(m))
+        return result
+      } catch (error) {
+        if (errorHandler) {
+          await errorHandler(error)
+        }
+        throw error
+      }
     }
   }
 
