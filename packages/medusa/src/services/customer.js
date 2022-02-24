@@ -63,9 +63,7 @@ class CustomerService extends BaseService {
    * @return {string} the validated email
    */
   validateEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email)
     if (error) {
       throw new MedusaError(
@@ -192,7 +190,28 @@ class CustomerService extends BaseService {
       delete selector.q
     }
 
+    let groups
+    if ("groups" in selector) {
+      groups = selector.groups
+      delete selector.groups
+    }
+
+    console.log(selector)
+
     const query = this.buildQuery_(selector, config)
+
+    if (groups) {
+      query.where = (qb) => {
+        qb.where(query.where)
+
+        qb.innerJoinAndSelect(
+          "customer.groups",
+          "group",
+          "group.id IN (:...groups)",
+          { groups }
+        )
+      }
+    }
 
     if (q) {
       const where = query.where
@@ -203,7 +222,6 @@ class CustomerService extends BaseService {
 
       query.where = (qb) => {
         qb.where(where)
-
         qb.andWhere(
           new Brackets((qb) => {
             qb.where({ email: ILike(`%${q}%`) })
@@ -213,6 +231,8 @@ class CustomerService extends BaseService {
         )
       }
     }
+
+    console.log(query)
 
     const [customers, count] = await customerRepo.findAndCount(query)
     return [customers, count]

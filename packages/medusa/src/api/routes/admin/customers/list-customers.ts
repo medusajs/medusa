@@ -1,10 +1,13 @@
 import { Type } from "class-transformer"
-import { IsNumber, IsOptional, IsString } from "class-validator"
+import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Customer } from "../../../.."
-import CustomerController from "../../../../controllers/customers"
 import { FindConfig } from "../../../../types/common"
 import { AdminListCustomerSelector } from "../../../../types/customers"
 import { validator } from "../../../../utils/validator"
+
+import CustomerController from "../../../../controllers/customers"
+import { IsType } from "../../../../utils/validators/is-type"
+import { CustomerService } from "../../../../services"
 /**
  * @oas [get] /customers
  * operationId: "GetCustomers"
@@ -26,11 +29,12 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetCustomersParams, req.query)
 
-  const customerController: CustomerController = req.scope.resolve(
-    "customersController"
-  )
+  const customerService: CustomerService = req.scope.resolve("customerService")
 
-  const [customers, count] = await customerController.listAndCount(validated)
+  const [customers, count] = await CustomerController.listAndCount(
+    customerService,
+    validated
+  )
 
   res.json({
     customers,
@@ -46,6 +50,7 @@ export class AdminGetCustomersParams extends AdminListCustomerSelector {
   @Type(() => Number)
   limit = 50
 
+  @IsOptional()
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
