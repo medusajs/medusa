@@ -8,3 +8,8 @@ export class FilterableCustomerGroupProps {
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator
 }
+
+export class CustomerGroupUpdate {
+  name?: string
+  metadata?: object
+}

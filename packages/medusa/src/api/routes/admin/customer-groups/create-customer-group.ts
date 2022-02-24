@@ -20,8 +20,8 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
- *               $ref: "#/components/schemas/customergroup"
+ *             customer_group:
+ *               $ref: "#/components/schemas/customer_group"
  */
 
 export default async (req, res) => {
@@ -32,7 +32,7 @@ export default async (req, res) => {
   )
 
   const customerGroup = await customerGroupService.create(validated)
-  res.status(200).json({ customerGroup })
+  res.status(200).json({ customer_group: customerGroup })
 }
 
 export class AdminPostCustomerGroupsReq {
