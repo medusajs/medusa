@@ -238,48 +238,7 @@ describe("/admin/customer-groups", () => {
           },
         })
       )
-<<<<<<< HEAD
-<<<<<<< HEAD
       expect(response.data.customer_group).not.toHaveProperty("customers")
-    })
-
-    it("deletes `metadata` nested key", async () => {
-      const api = useApi()
-
-      const id = "customer-group-2"
-      // already has some metadata initially
-
-      const body = {
-        name: "vip-customers-v2",
-        metadata: {
-          data1: null, // delete
-          data2: "val2", // insert
-        },
-      }
-
-      const response = await api
-        .post(`/admin/customer-groups/${id}?expand=customers`, body, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch(console.log)
-
-      expect(response.status).toEqual(200)
-      expect(response.data.customer_group).toEqual(
-        expect.objectContaining({
-          id: "customer-group-2",
-          name: "vip-customers-v2",
-          metadata: { data1: null, data2: "val2" },
-          customers: [],
-        })
-      )
-=======
-      expect(response.data.customerGroup).not.toHaveProperty("customers")
->>>>>>> 2ed3d9e8 (add the `expand`params to the update endpoint)
-=======
-      expect(response.data.customer_group).not.toHaveProperty("customers")
->>>>>>> 947cef71 (use metadata helper, fix tests, snake case response)
     })
 
     it("deletes `metadata` nested key", async () => {
