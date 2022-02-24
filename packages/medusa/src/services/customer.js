@@ -190,28 +190,7 @@ class CustomerService extends BaseService {
       delete selector.q
     }
 
-    let groups
-    if ("groups" in selector) {
-      groups = selector.groups
-      delete selector.groups
-    }
-
-    console.log(selector)
-
     const query = this.buildQuery_(selector, config)
-
-    if (groups) {
-      query.where = (qb) => {
-        qb.where(query.where)
-
-        qb.innerJoinAndSelect(
-          "customer.groups",
-          "group",
-          "group.id IN (:...groups)",
-          { groups }
-        )
-      }
-    }
 
     if (q) {
       const where = query.where
@@ -232,9 +211,7 @@ class CustomerService extends BaseService {
       }
     }
 
-    console.log(query)
-
-    const [customers, count] = await customerRepo.findAndCount(query)
+    const [customers, count] = await customerRepo.listAndCount(query)
     return [customers, count]
   }
 
