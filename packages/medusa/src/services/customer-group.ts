@@ -3,6 +3,11 @@ import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
+import { FindConfig } from "../types/common"
+import {
+  CustomerGroupUpdate,
+  FilterableCustomerGroupProps,
+} from "../types/customer-groups"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -39,6 +44,25 @@ class CustomerGroupService extends BaseService {
     return cloned
   }
 
+  async retrieve(id: string, config = {}): Promise<CustomerGroup> {
+    const cgRepo = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+
+    const validatedId = this.validateId_(id)
+    const query = this.buildQuery_({ id: validatedId }, config)
+
+    const customerGroup = await cgRepo.findOne(query)
+    if (!customerGroup) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `CustomerGroup with ${id} was not found`
+      )
+    }
+
+    return customerGroup
+  }
+
   /**
    * Creates a customer group with the provided data.
    * @param {DeepPartial<CustomerGroup>} group - the customer group to create
@@ -63,6 +87,79 @@ class CustomerGroupService extends BaseService {
         throw err
       }
     })
+  }
+
+  /**
+   * Update a customer group.
+   *
+   * @param {string} customerGroupId - id of the customer group
+   * @param {CustomerGroupUpdate} update - customer group partial data
+   */
+  async update(
+    customerGroupId: string,
+    update: CustomerGroupUpdate
+  ): Promise<CustomerGroup[]> {
+    return this.atomicPhase_(async (manager) => {
+      const { metadata, ...properties } = update
+
+      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
+        this.customerGroupRepository_
+      )
+
+      const customerGroup = await this.retrieve(customerGroupId)
+
+      for (const key in properties) {
+        if (typeof properties[key] !== "undefined") {
+          customerGroup[key] = properties[key]
+        }
+      }
+
+      if (typeof metadata !== "undefined") {
+        customerGroup.metadata = this.setMetadata_(customerGroup, metadata)
+      }
+      return await cgRepo.save(customerGroup)
+    })
+  }
+
+  /**
+   * Remove customer group
+   *
+   * @param {string} groupId id of the customer group to delete
+   * @return {Promise} a promise
+   */
+  async delete(groupId: string): Promise<void> {
+    return this.atomicPhase_(async (manager) => {
+      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
+        this.customerGroupRepository_
+      )
+
+      const customerGroup = await cgRepo.findOne({ where: { id: groupId } })
+
+      if (customerGroup) {
+        await cgRepo.remove(customerGroup)
+      }
+
+      return Promise.resolve()
+    })
+  }
+
+  /**
+   * List customer groups.
+   *
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
+  async list(
+    selector: FilterableCustomerGroupProps = {},
+    config: FindConfig<CustomerGroup>
+  ): Promise<CustomerGroup[]> {
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+
+    const query = this.buildQuery_(selector, config)
+    return await cgRepo.find(query)
   }
 }
 

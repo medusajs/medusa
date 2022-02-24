@@ -197,7 +197,14 @@ module.exports = async (connection, data = {}) => {
     ean: "test-ean3",
     upc: "test-upc3",
     product_id: "test-product1",
-    prices: [{ id: "test-price3", currency_code: "usd", amount: 100 }],
+    prices: [
+      {
+        id: "test-price3",
+        region_id: "test-region",
+        currency_code: "usd",
+        amount: 100,
+      },
+    ],
     options: [
       {
         id: "test-variant-option-3",
