@@ -8,7 +8,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Order } from "../models/order"
 import { DateComparisonOperator } from "./common"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isOrder(object: any): object is Order {
+  return object.object === "order"
+}
 
 enum OrderStatus {
   pending = "pending",

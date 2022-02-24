@@ -63,35 +63,35 @@ export class Swap {
 
   @ManyToOne(
     () => Order,
-    o => o.swaps
+    (o) => o.swaps
   )
   @JoinColumn({ name: "order_id" })
   order: Order
 
   @OneToMany(
     () => LineItem,
-    item => item.swap,
+    (item) => item.swap,
     { cascade: ["insert"] }
   )
-  additional_items: LineItem
+  additional_items: LineItem[]
 
   @OneToOne(
     () => Return,
-    ret => ret.swap,
+    (ret) => ret.swap,
     { cascade: ["insert"] }
   )
   return_order: Return
 
   @OneToMany(
     () => Fulfillment,
-    fulfillment => fulfillment.swap,
+    (fulfillment) => fulfillment.swap,
     { cascade: ["insert"] }
   )
   fulfillments: Fulfillment[]
 
   @OneToOne(
     () => Payment,
-    p => p.swap,
+    (p) => p.swap,
     { cascade: ["insert"] }
   )
   payment: Payment
@@ -108,7 +108,7 @@ export class Swap {
 
   @OneToMany(
     () => ShippingMethod,
-    method => method.swap,
+    (method) => method.swap,
     { cascade: ["insert"] }
   )
   shipping_methods: ShippingMethod[]

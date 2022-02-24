@@ -1,7 +1,6 @@
 import glob from "glob"
 import { EntitySchema } from "typeorm"
 import {
-  BaseModel,
   BaseService,
   PaymentService,
   FulfillmentService,
@@ -17,6 +16,7 @@ import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 
+import { isTaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 import formatRegistrationName from "../utils/format-registration-name"
 
 /**
@@ -26,7 +26,7 @@ export default async ({ rootDirectory, container, app, activityId }) => {
   const resolved = getResolvedPlugins(rootDirectory)
 
   await Promise.all(
-    resolved.map(async pluginDetails => {
+    resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
       registerMedusaApi(pluginDetails, container)
@@ -37,7 +37,7 @@ export default async ({ rootDirectory, container, app, activityId }) => {
   )
 
   await Promise.all(
-    resolved.map(async pluginDetails => runLoaders(pluginDetails, container))
+    resolved.map(async (pluginDetails) => runLoaders(pluginDetails, container))
   )
 }
 
@@ -50,7 +50,7 @@ function getResolvedPlugins(rootDirectory) {
 
   const { plugins } = configModule
 
-  const resolved = plugins.map(plugin => {
+  const resolved = plugins.map((plugin) => {
     if (_.isString(plugin)) {
       return resolvePlugin(plugin)
     }
@@ -75,7 +75,7 @@ function getResolvedPlugins(rootDirectory) {
 export async function registerPluginModels({ rootDirectory, container }) {
   const resolved = getResolvedPlugins(rootDirectory)
   await Promise.all(
-    resolved.map(async pluginDetails => {
+    resolved.map(async (pluginDetails) => {
       registerModels(pluginDetails, container)
     })
   )
@@ -87,7 +87,7 @@ async function runLoaders(pluginDetails, container) {
     {}
   )
   await Promise.all(
-    loaderFiles.map(async loader => {
+    loaderFiles.map(async (loader) => {
       try {
         const module = require(loader).default
         if (typeof module === "function") {
@@ -104,6 +104,34 @@ async function runLoaders(pluginDetails, container) {
 
 function registerMedusaApi(pluginDetails, container) {
   registerMedusaMiddleware(pluginDetails, container)
+  registerStrategies(pluginDetails, container)
+}
+
+function registerStrategies(pluginDetails, container) {
+  let module
+  try {
+    const path = `${pluginDetails.resolve}/strategies/tax-calculation`
+    if (existsSync(path)) {
+      module = require(path).default
+    } else {
+      return
+    }
+  } catch (err) {
+    return
+  }
+
+  if (isTaxCalculationStrategy(module.prototype)) {
+    container.register({
+      taxCalculationStrategy: asFunction(
+        (cradle) => new module(cradle, pluginDetails.options)
+      ).singleton(),
+    })
+  } else {
+    const logger = container.resolve("logger")
+    logger.warn(
+      `${pluginDetails.resolve}/strategies/tax-calculation did not export a class that implements ITaxCalculationStrategy. Your Medusa server will still work, but if you have written custom tax calculation logic it will not be used. Make sure to implement the ITaxCalculationStrategy interface.`
+    )
+  }
 }
 
 function registerMedusaMiddleware(pluginDetails, container) {
@@ -140,7 +168,7 @@ function registerCoreRouters(pluginDetails, container) {
   const adminFiles = glob.sync(`${resolve}/api/admin/[!__]*.js`, {})
   const storeFiles = glob.sync(`${resolve}/api/store/[!__]*.js`, {})
 
-  adminFiles.forEach(fn => {
+  adminFiles.forEach((fn) => {
     const descriptor = fn.split(".")[0]
     const splat = descriptor.split("/")
     const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
@@ -148,7 +176,7 @@ function registerCoreRouters(pluginDetails, container) {
     middlewareService.addRouter(path, loaded())
   })
 
-  storeFiles.forEach(fn => {
+  storeFiles.forEach((fn) => {
     const descriptor = fn.split(".")[0]
     const splat = descriptor.split("/")
     const path = `${splat[splat.length - 2]}/${splat[splat.length - 1]}`
@@ -204,7 +232,7 @@ function registerApi(
 async function registerServices(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*`, {})
   await Promise.all(
-    files.map(async fn => {
+    files.map(async (fn) => {
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
@@ -219,14 +247,14 @@ async function registerServices(pluginDetails, container) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "paymentProviders",
-          asFunction(cradle => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
         )
 
         // Add the service directly to the container in order to make simple
         // resolution if we already know which payment provider we need to use
         container.register({
           [name]: asFunction(
-            cradle => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options)
           ),
           [`pp_${loaded.identifier}`]: aliasTo(name),
         })
@@ -239,35 +267,35 @@ async function registerServices(pluginDetails, container) {
         const name = appDetails.application_name
         container.register({
           [`${name}Oauth`]: asFunction(
-            cradle => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options)
           ),
         })
       } else if (loaded.prototype instanceof FulfillmentService) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "fulfillmentProviders",
-          asFunction(cradle => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
         )
 
         // Add the service directly to the container in order to make simple
         // resolution if we already know which fulfillment provider we need to use
         container.register({
           [name]: asFunction(
-            cradle => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options)
           ).singleton(),
           [`fp_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (loaded.prototype instanceof NotificationService) {
         container.registerAdd(
           "notificationProviders",
-          asFunction(cradle => new loaded(cradle, pluginDetails.options))
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
         )
 
         // Add the service directly to the container in order to make simple
         // resolution if we already know which notification provider we need to use
         container.register({
           [name]: asFunction(
-            cradle => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options)
           ).singleton(),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
@@ -276,7 +304,7 @@ async function registerServices(pluginDetails, container) {
         // resolution if we already know which file storage provider we need to use
         container.register({
           [name]: asFunction(
-            cradle => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options)
           ),
           [`fileService`]: aliasTo(name),
         })
@@ -285,14 +313,14 @@ async function registerServices(pluginDetails, container) {
         // resolution if we already know which search provider we need to use
         container.register({
           [name]: asFunction(
-            cradle => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options)
           ),
           [`searchService`]: aliasTo(name),
         })
       } else {
         container.register({
           [name]: asFunction(
-            cradle => new loaded(cradle, pluginDetails.options)
+            (cradle) => new loaded(cradle, pluginDetails.options)
           ),
         })
       }
@@ -311,13 +339,13 @@ async function registerServices(pluginDetails, container) {
  */
 function registerSubscribers(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
-  files.forEach(fn => {
+  files.forEach((fn) => {
     const loaded = require(fn).default
 
     const name = formatRegistrationName(fn)
     container.build(
       asFunction(
-        cradle => new loaded(cradle, pluginDetails.options)
+        (cradle) => new loaded(cradle, pluginDetails.options)
       ).singleton()
     )
   })
@@ -334,7 +362,7 @@ function registerSubscribers(pluginDetails, container) {
  */
 function registerRepositories(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/repositories/*.js`, {})
-  files.forEach(fn => {
+  files.forEach((fn) => {
     const loaded = require(fn)
 
     Object.entries(loaded).map(([key, val]) => {
@@ -361,7 +389,7 @@ function registerRepositories(pluginDetails, container) {
  */
 function registerModels(pluginDetails, container) {
   const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
-  files.forEach(fn => {
+  files.forEach((fn) => {
     const loaded = require(fn)
 
     Object.entries(loaded).map(([key, val]) => {

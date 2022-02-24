@@ -22,20 +22,6 @@ describe("useAdminProducts hook", () => {
   })
 })
 
-describe("useAdminProductTypes hook", () => {
-  test("returns a list of product types", async () => {
-    const types = fixtures.list("product_type")
-    const { result, waitFor } = renderHook(() => useAdminProductTypes(), {
-      wrapper: createWrapper(),
-    })
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.response.status).toEqual(200)
-    expect(result.current.types).toEqual(types)
-  })
-})
-
 describe("useAdminProductTagUsage hook", () => {
   test("returns a list of product tags", async () => {
     const tags = fixtures.list("product_tag")

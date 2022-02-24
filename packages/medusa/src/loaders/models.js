@@ -9,13 +9,13 @@ import formatRegistrationName from "../utils/format-registration-name"
  * Registers all models in the model directory
  */
 export default ({ container }, config = { register: true }) => {
-  let corePath = "../models/*.js"
+  const corePath = "../models/*.js"
   const coreFull = path.join(__dirname, corePath)
 
   const toReturn = []
 
   const core = glob.sync(coreFull, { cwd: __dirname })
-  core.forEach(fn => {
+  core.forEach((fn) => {
     const loaded = require(fn)
 
     Object.entries(loaded).map(([key, val]) => {

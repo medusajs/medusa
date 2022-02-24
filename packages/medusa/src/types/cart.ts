@@ -1,11 +1,16 @@
 import { ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
-import { CartType } from "../models/cart"
+import { Cart, CartType } from "../models/cart"
 import {
   AddressPayload,
   DateComparisonOperator,
   StringComparisonOperator,
 } from "./common"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isCart(object: any): object is Cart {
+  return object.object === "cart"
+}
 
 export class FilterableCartProps {
   @ValidateNested()
