@@ -1,4 +1,8 @@
-import { AdminPaymentProvidersList, AdminStoresRes } from "@medusajs/medusa"
+import {
+  AdminTaxProvidersList,
+  AdminPaymentProvidersList,
+  AdminStoresRes,
+} from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
@@ -22,6 +26,22 @@ export const useAdminStorePaymentProviders = (
   const { data, ...rest } = useQuery(
     adminStoreKeys.detail("payment_providers"),
     () => client.admin.store.listPaymentProviders(),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
+export const useAdminStoreTaxProviders = (
+  options?: UseQueryOptionsWrapper<
+    Response<AdminTaxProvidersList>,
+    Error,
+    ReturnType<StoreQueryKeys["detail"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminStoreKeys.detail("tax_providers"),
+    () => client.admin.store.listTaxProviders(),
     options
   )
   return { ...data, ...rest } as const
