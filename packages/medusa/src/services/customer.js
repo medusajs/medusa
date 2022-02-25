@@ -22,7 +22,6 @@ class CustomerService extends BaseService {
     customerRepository,
     eventBusService,
     addressRepository,
-    // customerGroupService,
   }) {
     super()
 
@@ -37,8 +36,6 @@ class CustomerService extends BaseService {
 
     /** @private @const {AddressRepository} */
     this.addressRepository_ = addressRepository
-
-    // this.customerGroupService_ = customerGroupService
   }
 
   withTransaction(transactionManager) {
