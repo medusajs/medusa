@@ -9895,22 +9895,6 @@ babel-preset-jest@^27.4.0:
     babel-plugin-jest-hoist "^27.4.0"
     babel-preset-current-node-syntax "^1.0.0"
 
-babel-preset-medusa-package@gatsby-dev:
-  version "1.1.19"
-  resolved "http://localhost:4873/babel-preset-medusa-package/-/babel-preset-medusa-package-1.1.19.tgz#6b761cdf16bae007aa779610951c64627bfefcb7"
-  integrity sha512-UZemPhNkoLhO4bVLi2QddqD28o4q7hFHHJcbgL68XENS66KchjBXeo5Fng63KALJv+RRe5rqoyY+J/JPdHLGbw==
-  dependencies:
-    "@babel/plugin-proposal-class-properties" "^7.12.1"
-    "@babel/plugin-proposal-decorators" "^7.12.1"
-    "@babel/plugin-proposal-optional-chaining" "^7.14.2"
-    "@babel/plugin-transform-classes" "^7.12.1"
-    "@babel/plugin-transform-instanceof" "^7.12.1"
-    "@babel/plugin-transform-runtime" "^7.12.1"
-    "@babel/preset-env" "^7.12.7"
-    "@babel/preset-typescript" "^7.16.0"
-    babel-plugin-transform-typescript-metadata "^0.3.1"
-    core-js "^3.7.0"
-
 backo2@^1.0.2, backo2@~1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
