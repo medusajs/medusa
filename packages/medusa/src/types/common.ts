@@ -22,7 +22,7 @@ export interface FindConfig<Entity> {
   skip?: number
   take?: number
   relations?: string[]
-  order?: { [k: symbol]: "ASC" | "DESC" }
+  order?: Record<string, "ASC" | "DESC">
 }
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }

@@ -56,7 +56,7 @@ export default async (req, res) => {
       : defaultAdminCustomerGroupsRelations,
     skip: validated.offset,
     take: validated.limit,
-    order: { created_at: "DESC" } as { [k: symbol]: "DESC" | "ASC" },
+    order: { created_at: "DESC" },
   }
 
   if (typeof validated.order !== "undefined") {

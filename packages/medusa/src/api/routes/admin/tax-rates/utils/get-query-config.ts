@@ -48,7 +48,7 @@ export function getListConfig(
   expand?: string[],
   limit = 50,
   offset = 0,
-  order?: { [k: symbol]: "DESC" | "ASC" }
+  order?: Record<string, "ASC" | "DESC">
 ): FindConfig<TaxRate> {
   let includeFields: (keyof TaxRate)[] = []
   if (typeof fields !== "undefined") {
