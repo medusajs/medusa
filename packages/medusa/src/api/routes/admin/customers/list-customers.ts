@@ -1,12 +1,9 @@
 import { Type } from "class-transformer"
-import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
-import { Customer } from "../../../.."
-import { FindConfig } from "../../../../types/common"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import { AdminListCustomerSelector } from "../../../../types/customers"
 import { validator } from "../../../../utils/validator"
 
 import CustomerController from "../../../../controllers/customers"
-import { IsType } from "../../../../utils/validators/is-type"
 import { CustomerService } from "../../../../services"
 /**
  * @oas [get] /customers
