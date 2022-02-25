@@ -123,7 +123,7 @@ class CustomerGroupService extends BaseService {
         const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
           this.customerGroupRepository_
         )
-        return await cgRepo.addCustomerBatch(id, ids)
+        return await cgRepo.addCustomers(id, ids)
       },
       async (error) => {
         if (error.code === "23503") {
