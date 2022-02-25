@@ -296,7 +296,7 @@ describe("/admin/customer-groups", () => {
 
       const response = await api
         .get(
-          `/admin/customer-groups?limit=5&offset=5&expand=customers&order=created_at`,
+          `/admin/customer-groups?limit=5&offset=2&expand=customers&order=created_at`,
           {
             headers: {
               Authorization: "Bearer test_token",
@@ -306,10 +306,10 @@ describe("/admin/customer-groups", () => {
         .catch(console.log)
 
       expect(response.status).toEqual(200)
-      expect(response.data.count).toEqual(21)
+      expect(response.data.count).toEqual(7)
       expect(response.data.customer_groups.length).toEqual(5)
       expect(response.data.customer_groups[0]).toEqual(
-        expect.objectContaining({ id: "test-group-6" })
+        expect.objectContaining({ id: "customer-group-3" })
       )
       expect(response.data.customer_groups[0]).toHaveProperty("customers")
     })
