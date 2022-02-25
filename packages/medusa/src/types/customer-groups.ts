@@ -30,6 +30,10 @@ export class FilterableCustomerGroupProps {
   created_at?: DateComparisonOperator
 }
 
+export class CustomerGroupsBatchCustomer {
+  @IsString()
+  id: string
+}
 export class CustomerGroupUpdate {
   name?: string
   metadata?: object

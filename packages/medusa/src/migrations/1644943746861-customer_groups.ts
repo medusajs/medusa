@@ -20,10 +20,10 @@ export class customerGroups1644943746861 implements MigrationInterface {
       `CREATE INDEX "IDX_3c6412d076292f439269abe1a2" ON "customer_group_customers" ("customer_id") `
     )
     await queryRunner.query(
-      `ALTER TABLE "customer_group_customers" ADD CONSTRAINT "FK_620330964db8d2999e67b0dbe3e" FOREIGN KEY ("customer_group_id") REFERENCES "customer_group"("id") ON DELETE CASCADE ON UPDATE CASCADE`
+      `ALTER TABLE "customer_group_customers" ADD CONSTRAINT "FK_620330964db8d2999e67b0dbe3e" FOREIGN KEY ("customer_group_id") REFERENCES "customer_group"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
     )
     await queryRunner.query(
-      `ALTER TABLE "customer_group_customers" ADD CONSTRAINT "FK_3c6412d076292f439269abe1a23" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE CASCADE ON UPDATE CASCADE`
+      `ALTER TABLE "customer_group_customers" ADD CONSTRAINT "FK_3c6412d076292f439269abe1a23" FOREIGN KEY ("customer_id") REFERENCES "customer"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
     )
   }
 

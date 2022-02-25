@@ -95,6 +95,7 @@ class CustomerGroupService extends BaseService {
    *
    * @param {string} customerGroupId - id of the customer group
    * @param {CustomerGroupUpdate} update - customer group partial data
+   * @return {Promise} - the result of the update operation
    */
   async update(
     customerGroupId: string,
@@ -196,6 +197,34 @@ class CustomerGroupService extends BaseService {
       }
     }
     return await cgRepo.findAndCount(query)
+  }
+
+  /**
+   * Remove list of customers from a customergroup
+   *
+   * @param {string} id id of the customer group from which the customers are removed
+   * @param {string[] | string} customerIds id's of the customer to remove from group
+   * @return {Promise<CustomerGroup>} the customergroup with the provided id
+   */
+  async removeCustomer(
+    id: string,
+    customerIds: string[] | string
+  ): Promise<CustomerGroup> {
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+    let ids: string[]
+    if (typeof customerIds === "string") {
+      ids = [customerIds]
+    } else {
+      ids = customerIds
+    }
+
+    const customerGroup = await this.retrieve(id)
+
+    await cgRepo.removeCustomers(id, ids)
+
+    return customerGroup
   }
 }
 

@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/tax-rates creates a tax rate 1`] = `
+Object {
+  "code": "tricks",
+  "created_at": Any<String>,
+  "id": StringMatching /\\^txr_\\*/,
+  "name": "special",
+  "rate": null,
+  "region_id": "test-region",
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`/admin/tax-rates deletes a tax rate 1`] = `
+Object {
+  "deleted": true,
+  "id": StringMatching /\\^txr_\\*/,
+  "object": "tax-rate",
+}
+`;
+
+exports[`/admin/tax-rates get tax rates 1`] = `
+Object {
+  "code": "Bedfordshire",
+  "created_at": Any<String>,
+  "id": StringMatching /\\^txr_\\*/,
+  "name": "Market Island",
+  "rate": 96,
+  "region_id": Any<String>,
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`/admin/tax-rates get tax rates w. fields 1`] = `
+Object {
+  "id": StringMatching /\\^txr_\\*/,
+  "region_id": Any<String>,
+}
+`;
+
+exports[`/admin/tax-rates updates a tax rate 1`] = `
+Object {
+  "code": "something new",
+  "created_at": Any<String>,
+  "id": StringMatching /\\^txr_\\*/,
+  "name": "special",
+  "rate": 10,
+  "region_id": "test-region",
+  "updated_at": Any<String>,
+}
+`;
