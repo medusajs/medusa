@@ -31,6 +31,20 @@ module.exports = {
       plugins: [`@typescript-eslint/eslint-plugin`],
       extends: [`plugin:@typescript-eslint/recommended`],
       rules: {
+        "valid-jsdoc": [
+          "error",
+          {
+            requireParamType: false,
+            requireReturnType: false,
+            prefer: {
+              arg: "param",
+              argument: "param",
+              class: "constructor",
+              return: "return",
+              virtual: "abstract",
+            },
+          },
+        ],
         "@typescript-eslint/explicit-function-return-type": ["error"],
         "@typescript-eslint/no-non-null-assertion": ["off"],
       },

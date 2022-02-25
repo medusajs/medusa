@@ -13,3 +13,7 @@ export class CustomerGroupsBatchCustomer {
   @IsString()
   id: string
 }
+export class CustomerGroupUpdate {
+  name?: string
+  metadata?: object
+}
