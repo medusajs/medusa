@@ -235,7 +235,7 @@ describe("/admin/customers", () => {
         .post(
           "/admin/customers/test-customer-3?expand=groups",
           {
-            groups: [{ id: "test-group-4" }],
+            groups: [{ id: "customer-group-4" }],
           },
           {
             headers: {
@@ -250,7 +250,10 @@ describe("/admin/customers", () => {
       expect(response.status).toEqual(200)
       expect(response.data.customer.groups).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ id: "test-group-4", name: "Test group 4" }),
+          expect.objectContaining({
+            id: "customer-group-4",
+            name: "test-group-4",
+          }),
         ])
       )
 
@@ -260,7 +263,7 @@ describe("/admin/customers", () => {
         .post(
           "/admin/customers/test-customer-3?expand=groups",
           {
-            groups: [{ id: "test-group-4" }, { id: "fake-group-0" }],
+            groups: [{ id: "customer-group-4" }, { id: "fake-group-0" }],
           },
           {
             headers: {
@@ -276,7 +279,10 @@ describe("/admin/customers", () => {
       expect(response.data.customer.groups.length).toEqual(1)
       expect(response.data.customer.groups).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ id: "test-group-4", name: "Test group 4" }),
+          expect.objectContaining({
+            id: "customer-group-4",
+            name: "test-group-4",
+          }),
         ])
       )
 
@@ -307,7 +313,7 @@ describe("/admin/customers", () => {
         .post(
           "/admin/customers/test-customer-5?expand=groups",
           {
-            groups: [{ id: "test-group-5" }, { id: "test-group-4" }],
+            groups: [{ id: "test-group-5" }, { id: "customer-group-4" }],
           },
           {
             headers: {
@@ -323,8 +329,11 @@ describe("/admin/customers", () => {
       expect(response.data.customer.groups.length).toEqual(2)
       expect(response.data.customer.groups).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ id: "test-group-4", name: "Test group 4" }),
-          expect.objectContaining({ id: "test-group-5", name: "Test group 5" }),
+          expect.objectContaining({ id: "test-group-5", name: "test-group-5" }),
+          expect.objectContaining({
+            id: "customer-group-4",
+            name: "test-group-4",
+          }),
         ])
       )
     })
