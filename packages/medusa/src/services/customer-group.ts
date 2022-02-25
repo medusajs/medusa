@@ -161,6 +161,34 @@ class CustomerGroupService extends BaseService {
     const query = this.buildQuery_(selector, config)
     return await cgRepo.find(query)
   }
+
+  /**
+   * Remove list of customers from a customergroup
+   *
+   * @param {string} id id of the customer group from which the customers are removed
+   * @param {string[] | string} customerIds id's of the customer to remove from group
+   * @return {Promise<CustomerGroup>} the customergroup with the provided id
+   */
+  async removeCustomer(
+    id: string,
+    customerIds: string[] | string
+  ): Promise<CustomerGroup> {
+    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
+      this.customerGroupRepository_
+    )
+    let ids: string[]
+    if (typeof customerIds === "string") {
+      ids = [customerIds]
+    } else {
+      ids = customerIds
+    }
+
+    const customerGroup = await this.retrieve(id)
+
+    await cgRepo.removeCustomers(id, ids)
+
+    return customerGroup
+  }
 }
 
 export default CustomerGroupService
