@@ -20,12 +20,18 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminProductsResource extends BaseResource {
-  create(payload: AdminPostProductsReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminProductsRes> {
+  create(
+    payload: AdminPostProductsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminProductsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -33,17 +39,24 @@ class AdminProductsResource extends BaseResource {
   update(
     id: string,
     payload: AdminPostProductsProductReq,
-    customHeaders: Record<string, any> = {}): ResponsePromise<AdminProductsRes> {
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminProductsDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsDeleteRes> {
     const path = `/admin/products/${id}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
-  list(query?: AdminGetProductsParams, customHeaders: Record<string, any> = {}): ResponsePromise<AdminProductsListRes> {
+  list(
+    query?: AdminGetProductsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsListRes> {
     let path = `/admin/products`
 
     if (query) {
@@ -54,12 +67,16 @@ class AdminProductsResource extends BaseResource {
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  listTypes(customHeaders: Record<string, any> = {}): ResponsePromise<AdminProductsListTypesRes> {
+  listTypes(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsListTypesRes> {
     const path = `/admin/products/types`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  listTags(customHeaders: Record<string, any> = {}): ResponsePromise<AdminProductsListTagsRes> {
+  listTags(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsListTagsRes> {
     const path = `/admin/products/tag-usage`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }

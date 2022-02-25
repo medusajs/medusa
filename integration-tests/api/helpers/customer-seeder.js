@@ -42,9 +42,25 @@ module.exports = async (connection, data = {}) => {
     groups: [{ id: "test-group-5", name: "test-group-5" }],
   })
 
+  const deletionCustomer = await manager.create(Customer, {
+    id: "test-customer-delete-cg",
+    email: "test-deletetion-cg@email.com",
+  })
+
   await manager.insert(CustomerGroup, {
     id: "customer-group-1",
     name: "vip-customers",
+  })
+
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-2",
+    name: "test-group-2",
+    metadata: { data1: "value1" },
+  })
+
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-3",
+    name: "vest-group-3",
   })
 
   await manager.insert(CustomerGroup, {
@@ -56,4 +72,12 @@ module.exports = async (connection, data = {}) => {
     id: "test-group-5",
     name: "test-group-5",
   })
+
+  const c_group_delete = manager.create(CustomerGroup, {
+    id: "test-group-delete",
+    name: "test-group-delete",
+  })
+
+  deletionCustomer.groups = [c_group_delete]
+  await manager.save(deletionCustomer)
 }
