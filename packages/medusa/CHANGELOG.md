@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.64...@medusajs/medusa@1.2.0) (2022-02-25)
+
+
+### Bug Fixes
+
+* allow offset and limit in products free text search ([#1082](https://github.com/medusajs/medusa/issues/1082)) ([c2241d1](https://github.com/medusajs/medusa/commit/c2241d110178d9ed992793d582ef652c4a23b729))
+* export params type ([4ee2af2](https://github.com/medusajs/medusa/commit/4ee2af2582d6c6420e7faf238447b77499e5d32d))
+* export request types from add and remove product endpoints ([#1078](https://github.com/medusajs/medusa/issues/1078)) ([449e666](https://github.com/medusajs/medusa/commit/449e6664283edc2bce42b97b9d52def1841a9a18))
+* unit test case for `CustomerGroupServiceMock.retrieve` ([def8763](https://github.com/medusajs/medusa/commit/def8763ee203c60728815ef3d36e57b5533b97c8))
+* variant price update ([#1093](https://github.com/medusajs/medusa/issues/1093)) ([cb7b211](https://github.com/medusajs/medusa/commit/cb7b211c9bb3188ecf072fa1734055a4ddfe7f86))
+
+
+### Features
+
+* add `extend` param for customer groups ([ecd6ed8](https://github.com/medusajs/medusa/commit/ecd6ed820e77904fe59ff6fcc9195533968dd9f3))
+* add and remove products to/from collection in bulk endpoints ([#1032](https://github.com/medusajs/medusa/issues/1032)) ([6629403](https://github.com/medusajs/medusa/commit/66294038f0ccf0b81bcf099b590379acffb647ba))
+* customer group update ([#1098](https://github.com/medusajs/medusa/issues/1098)) ([694e2df](https://github.com/medusajs/medusa/commit/694e2df20f8c1b125c51f7d24b1e3abdc4b3cff6))
+* GET customer group endpoint ([21d99a4](https://github.com/medusajs/medusa/commit/21d99a44a9fb2bd0f52c8bc8b5c75d200ef6d539))
+* new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([c56660f](https://github.com/medusajs/medusa/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
+* update customer groups ([#1075](https://github.com/medusajs/medusa/issues/1075)) ([75fb2ce](https://github.com/medusajs/medusa/commit/75fb2ce9c3a206a9d43cdbd80a356d9ba4d28f3f))
+
+
+
+
+
 ## [1.1.64](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.1.63...@medusajs/medusa@1.1.64) (2022-02-06)
 
 ### Bug Fixes
