@@ -3,7 +3,7 @@ import { CustomerGroup } from "../models/customer-group"
 
 @EntityRepository(CustomerGroup)
 export class CustomerGroupRepository extends Repository<CustomerGroup> {
-  async deleteCustomerBatch(
+  async removeCustomers(
     groupId: string,
     customerIds: string[]
   ): Promise<DeleteResult> {

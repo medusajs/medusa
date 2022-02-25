@@ -87,6 +87,28 @@ class CustomerGroupService extends BaseService {
   }
 
   /**
+   * Remove customer group
+   *
+   * @param {string} groupId id of the customer group to delete
+   * @return {Promise} a promise
+   */
+  async delete(groupId: string): Promise<void> {
+    return this.atomicPhase_(async (manager) => {
+      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
+        this.customerGroupRepository_
+      )
+
+      const customerGroup = await cgRepo.findOne({ where: { id: groupId } })
+
+      if (customerGroup) {
+        await cgRepo.remove(customerGroup)
+      }
+
+      return Promise.resolve()
+    })
+  }
+
+  /**
    * List customer groups.
    *
    * @param {Object} selector - the query object for find
@@ -112,7 +134,7 @@ class CustomerGroupService extends BaseService {
    * @param {string[] | string} customerIds id's of the customer to remove from group
    * @return {Promise<CustomerGroup>} the customergroup with the provided id
    */
-  async removeCustomers(
+  async removeCustomer(
     id: string,
     customerIds: string[] | string
   ): Promise<CustomerGroup> {
@@ -128,7 +150,7 @@ class CustomerGroupService extends BaseService {
 
     const customerGroup = await this.retrieve(id)
 
-    await cgRepo.deleteCustomerBatch(id, ids)
+    await cgRepo.removeCustomers(id, ids)
 
     return customerGroup
   }

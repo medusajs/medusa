@@ -37,7 +37,7 @@ export default async (req, res) => {
     "customerGroupService"
   )
 
-  const customer_group = await customerGroupService.removeCustomers(
+  const customer_group = await customerGroupService.removeCustomer(
     id,
     validated.customer_ids.map(({ id }) => id)
   )

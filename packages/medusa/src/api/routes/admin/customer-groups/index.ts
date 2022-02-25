@@ -15,6 +15,10 @@ export default (app) => {
     middlewares.wrap(require("./delete-customers-batch").default)
   )
 
+  route.delete(
+    "/:id",
+    middlewares.wrap(require("./delete-customer-group").default)
+  )
   return app
 }
 
