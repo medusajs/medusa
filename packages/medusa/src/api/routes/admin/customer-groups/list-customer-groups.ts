@@ -1,17 +1,11 @@
-import {
-  IsArray,
-  IsNumber,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
 import omit from "lodash/omit"
 
 import { validator } from "../../../../utils/validator"
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroup } from "../../../../models/customer-group"
-import { DateComparisonOperator, FindConfig } from "../../../../types/common"
+import { FindConfig } from "../../../../types/common"
 import { defaultAdminCustomerGroupsRelations } from "."
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
 
@@ -62,7 +56,7 @@ export default async (req, res) => {
       : defaultAdminCustomerGroupsRelations,
     skip: validated.offset,
     take: validated.limit,
-    order: { created_at: "DESC" },
+    order: { created_at: "DESC" } as { [k: symbol]: "DESC" | "ASC" },
   }
 
   if (typeof validated.order !== "undefined") {
