@@ -16,7 +16,7 @@ describe("/admin/customers", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -247,6 +247,7 @@ describe("/admin/customers", () => {
           }
         )
         .catch((error) => {
+          console.log(error)
           expect(error.response.status).toEqual(404)
           expect(error.response.data.type).toEqual("not_found")
           expect(error.response.data.message).toEqual(

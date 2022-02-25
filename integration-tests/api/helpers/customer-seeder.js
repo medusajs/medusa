@@ -78,6 +78,8 @@ module.exports = async (connection, data = {}) => {
     name: "test-group-delete",
   })
 
+  await manager.save(c_group_delete)
+
   deletionCustomer.groups = [c_group_delete]
   await manager.save(deletionCustomer)
 }
