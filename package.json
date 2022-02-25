@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": {
-    "packages":  [
+    "packages": [
       "packages/*"
     ],
     "nohoist": [
@@ -74,5 +74,6 @@
   },
   "resolutions": {
     "**/tsdx/typescript": "^4.5.0"
-  }
+  },
+  "version": "0.1.0"
 }
