@@ -1,7 +1,9 @@
-// API
+process.chdir(__dirname)
 
 module.exports = {
+  name: "Plugins",
   testEnvironment: `node`,
+  rootDir: "./",
   testPathIgnorePatterns: [
     `/examples/`,
     `/www/`,
