@@ -6,6 +6,8 @@ title: "Deploying on Heroku"
 
 This is a guide for deploying a Medusa project on Heroku. Heroku is at PaaS that allows you to easily deploy your applications in the cloud.
 
+https://user-images.githubusercontent.com/59018053/154798681-37060f13-5248-47c5-97c5-81c06da301d4.mp4
+
 > We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
 
 ### 1. Install the Heroku CLI

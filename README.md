@@ -40,7 +40,7 @@ Medusa is an open-source headless commerce engine that enables developers to cre
   </a>
 </p>
 
-## 🚀 Quickstart
+## Quickstart
 
 1. **Install Medusa CLI**
    ```bash
@@ -63,7 +63,25 @@ We have a prebuilt admin dashboard that you can use to configure and manage your
 
 After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusajs.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
 
-## 🛒 Setting up a storefront for your Medusa project
+## Roadmap 2022
+
+Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) prior to starting the implementation process.
+
+### Q1
+- [x] Admin revamp
+- [ ] Tax API
+- [ ] Strategy pattern
+- [ ] Promotions API
+- [ ] Bulk import / export
+
+### Q2
+- [ ] Extended Product API (custom fields, price lists, publishing control, and more)
+- [ ] Extended Order API (managing placed orders, improved inventory control, and more)
+- [ ] Sales Channel API
+- [ ] Multi-warehouse support
+- [ ] GraphQL API
+  
+## Setting up a storefront for your Medusa project
 
 Medusa is a headless commerce engine which means that it can be used for any type of digital commerce experience - you may use it as the backend for an app, a voice application, social commerce experiences or a traditional e-commerce website, you may even want to integrate Medusa into your own software to enable commerce functionality. All of these are use cases that Medusa supports - to learn more read the documentation or reach out.
 
@@ -81,7 +99,7 @@ To provide a quick way to get you started with a storefront install one of our t
 
 With your starter and your Medusa store running you can open http://localhost:8000 (for Gatsby) or http://localhost:3000 (for Nextjs) in your browser and view the products in your store, build a cart, add shipping details and pay and complete an order.
 
-## ⭐️ Features
+## Features
 
 Medusa comes with a set of building blocks that allow you to create amazing digital commerce experiences, below is a list of some of the features that Medusa come with out of the box:
 
@@ -112,7 +130,7 @@ To use Postgres and Redis you should provide a `database_url` and `redis_url` in
 
 ## Contribution
 
-Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market. Whether its fixing bugs, improving our documentation or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
+Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market. Whether it is fixing bugs, improving our documentation or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
 
 ## Repository structure
 
