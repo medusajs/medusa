@@ -23,7 +23,7 @@
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.3",
     "@types/jsonwebtoken": "^8.5.5",
-    "babel-preset-medusa-package": "^1.1.19",
+    "babel-preset-medusa-package": "gatsby-dev",
     "cross-env": "^5.2.1",
     "eslint": "^7.32.0",
     "jest": "^25.5.2",

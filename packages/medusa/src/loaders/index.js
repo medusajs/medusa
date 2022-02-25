@@ -29,6 +29,9 @@ import subscribersLoader from "./subscribers"
 export default async ({ directory: rootDirectory, httpAdapter, isTest }) => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
 
+  const serverConfig = configModule.projectConfig.platform?.httpOptions ?? {};
+  httpAdapter.initHttpServer(serverConfig)
+
   const container = createContainer()
   container.registerAdd = function (name, registration) {
     const storeKey = name + "_STORE"

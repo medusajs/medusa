@@ -13,7 +13,7 @@ import {
 } from 'body-parser';
 import cookieParser from "cookie-parser";
 import cors from 'cors';
-import express, { Express, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import * as http from 'http';
 import * as https from 'https';
 import { ServeStaticOptions } from './types';
@@ -145,7 +145,7 @@ export class ExpressAdapter extends AbstractHttpAdapter<any, Request, Response> 
       .bind(this.instance);
   }
 
-  public initHttpServer(options: HttpServerOptions) {
+  public initHttpServer(options: HttpServerOptions = {}) {
     const isHttpsEnabled = options && options.httpsOptions;
     if (isHttpsEnabled) {
       this.httpServer = https.createServer(

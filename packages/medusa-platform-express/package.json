@@ -14,14 +14,14 @@
     "@babel/core": "^7.7.5",
     "@babel/plugin-transform-typescript": "^7.13.0",
     "@babel/preset-typescript": "^7.12.7",
-    "babel-preset-medusa-package": "^1.1.19",
+    "babel-preset-medusa-package": "gatsby-dev",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
     "medusa-test-utils": "^1.1.37",
-    "@medusajs/medusa": "file:medusajs-medusa-1.1.64.tgz",
-    "medusa-interfaces": "^1.x",
-    "medusa-core-utils": "^1.1.x"
+    "@medusajs/medusa": "^1.1.64",
+    "medusa-interfaces": "^1.1.34",
+    "medusa-core-utils": "^1.1.31"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__ --extensions \".ts,.js\"",
@@ -30,9 +30,9 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "^1.x",
-    "medusa-interfaces": "^1.x",
-    "medusa-core-utils": "^1.1.x"
+    "@medusajs/medusa": "^1.1.64",
+    "medusa-interfaces": "^1.1.34",
+    "medusa-core-utils": "^1.1.31"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
