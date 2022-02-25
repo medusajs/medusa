@@ -10,12 +10,15 @@ module.exports = {
   globalTeardown: "<rootDir>/integration-tests/globalTeardown.js",
   rootDir: `../`,
   roots: pkgs,
+  projects: [
+    "<rootDir>/integration-tests/api/jest.config.js",
+    "<rootDir>/integration-tests/plugins/jest.config.js",
+  ],
   testPathIgnorePatterns: [
     `/examples/`,
     `/www/`,
     `/dist/`,
     `/node_modules/`,
-    `/plugins/`,
     `__tests__/fixtures`,
     `__testfixtures__`,
     `.cache`,
