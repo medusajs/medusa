@@ -36,12 +36,6 @@ module.exports = async (connection, data = {}) => {
     has_account: true,
   })
 
-  await manager.insert(Customer, {
-    id: "test-customer-5",
-    email: "test5@email.com",
-    groups: [{ id: "test-group-5", name: "test-group-5" }],
-  })
-
   const deletionCustomer = await manager.create(Customer, {
     id: "test-customer-delete-cg",
     email: "test-deletetion-cg@email.com",
@@ -68,10 +62,39 @@ module.exports = async (connection, data = {}) => {
     name: "test-group-4",
   })
 
-  await manager.insert(CustomerGroup, {
+  const customer5 = manager.create(Customer, {
+    id: "test-customer-5",
+    email: "test5@email.com",
+  })
+
+  const customer6 = manager.create(Customer, {
+    id: "test-customer-6",
+    email: "test6@email.com",
+  })
+
+  const customer7 = manager.create(Customer, {
+    id: "test-customer-7",
+    email: "test7@email.com",
+  })
+
+  const c_group_5 = manager.create(CustomerGroup, {
     id: "test-group-5",
     name: "test-group-5",
   })
+
+  const c_group_6 = manager.create(CustomerGroup, {
+    id: "test-group-6",
+    name: "test-group-6",
+  })
+
+  customer5.groups = [c_group_5]
+  await manager.save(customer5)
+
+  customer6.groups = [c_group_5]
+  await manager.save(customer6)
+
+  customer7.groups = [c_group_5, c_group_6]
+  await manager.save(customer7)
 
   const c_group_delete = manager.create(CustomerGroup, {
     id: "test-group-delete",

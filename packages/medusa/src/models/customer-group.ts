@@ -23,7 +23,9 @@ export class CustomerGroup {
   @Column()
   name: string
 
-  @ManyToMany(() => Customer, (c) => c.groups, { onDelete: "CASCADE" })
+  @ManyToMany(() => Customer, (customer) => customer.groups, {
+    onDelete: "CASCADE",
+  })
   @JoinTable({
     name: "customer_group_customers",
     joinColumn: {

@@ -1,5 +1,5 @@
 name: Medusa Pipeline
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   unit-tests:
@@ -35,7 +35,7 @@ jobs:
       - name: Run unit tests
         run: yarn test
 
-  integration-tests:
+  integration-tests-api:
     runs-on: ubuntu-latest
 
     services:
@@ -73,7 +73,68 @@ jobs:
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: integration-tests
-      
+
+      - name: Build Packages
+        run: lerna run build
+
+      - name: Install dev cli
+        run: sudo npm i -g medusa-dev-cli
+
+      - name: Set path to medusa repo
+        run: medusa-dev --set-path-to-repo `pwd`
+
+      - name: Force install API
+        run: medusa-dev --force-install
+        working-directory: integration-tests/api
+
+      - name: Build integration tests
+        run: yarn build
+        working-directory: integration-tests/api
+
+      - name: Run API integration tests
+        run: yarn test:integration:api --maxWorkers=50% --silent=false
+        env:
+          DB_PASSWORD: postgres
+
+  integration-tests-plugins:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: integration-tests
+
       - name: Build Packages
         run: lerna run build
 
@@ -85,13 +146,13 @@ jobs:
 
       - name: Force install
         run: medusa-dev --force-install
-        working-directory: integration-tests/api
+        working-directory: integration-tests/plugins
 
-      - name: Build integration tests
+      - name: Build plugin integration tests
         run: yarn build
-        working-directory: integration-tests/api
+        working-directory: integration-tests/plugins
 
-      - name: Run integration tests
-        run: yarn test:integration --maxWorkers=50% --silent=false
+      - name: Run plugin integration tests
+        run: yarn test:integration:plugins --maxWorkers=50% --silent=false
         env:
           DB_PASSWORD: postgres
