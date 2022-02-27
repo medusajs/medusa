@@ -2,6 +2,7 @@ import {
   StoreGetAuthEmailRes,
   StorePostAuthReq,
   StoreAuthRes,
+  StoreDeleteAuthRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../typings"
 import BaseResource from "./base"
@@ -16,6 +17,15 @@ class AuthResource extends BaseResource {
   authenticate(payload: StorePostAuthReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreAuthRes> {
     const path = `/store/auth`
     return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+  
+  /**
+   * @description Removes authentication session
+   * @return {ResponsePromise<StoreDeleteAuthRes>}
+   */
+   signOut(): ResponsePromise<StoreDeleteAuthRes> {
+    const path = `/store/auth`
+    return this.client.request("DELETE", path)
   }
 
   /**
