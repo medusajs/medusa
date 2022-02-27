@@ -27,6 +27,8 @@ export type StoreGetAuthEmailRes = {
   exists: boolean
 }
 
+export type StoreDeleteAuthRes = Record<string, never>
+
 export * from "./create-session"
 export * from "./delete-session"
 export * from "./exists"
