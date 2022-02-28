@@ -81,11 +81,13 @@ module.exports = async (connection, data = {}) => {
     id: "test-group-5",
     name: "test-group-5",
   })
+  manager.save(c_group_5)
 
   const c_group_6 = manager.create(CustomerGroup, {
     id: "test-group-6",
     name: "test-group-6",
   })
+  manager.save(c_group_6)
 
   customer5.groups = [c_group_5]
   await manager.save(customer5)
