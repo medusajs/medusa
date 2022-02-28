@@ -10,11 +10,14 @@ import {
   OneToOne,
   OneToMany,
   JoinColumn,
+  ManyToMany,
+  JoinTable,
 } from "typeorm"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Address } from "./address"
+import { CustomerGroup } from "./customer-group"
 import { Order } from "./order"
 
 @Entity()
@@ -40,10 +43,7 @@ export class Customer {
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
-  @OneToMany(
-    () => Address,
-    address => address.customer
-  )
+  @OneToMany(() => Address, (address) => address.customer)
   shipping_addresses: Address[]
 
   @Column({ nullable: true, select: false })
@@ -55,11 +55,22 @@ export class Customer {
   @Column({ default: false })
   has_account: boolean
 
-  @OneToMany(
-    () => Order,
-    order => order.customer
-  )
+  @OneToMany(() => Order, (order) => order.customer)
   orders: Order[]
+
+  @JoinTable({
+    name: "customer_group_customers",
+    inverseJoinColumn: {
+      name: "customer_group_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "customer_id",
+      referencedColumnName: "id",
+    },
+  })
+  @ManyToMany(() => CustomerGroup, (cg) => cg.customers, { cascade: true })
+  groups: CustomerGroup[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -75,7 +86,9 @@ export class Customer {
 
   @BeforeInsert()
   private beforeInsert() {
-    if (this.id) return
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `cus_${id}`
   }

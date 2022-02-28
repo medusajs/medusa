@@ -32,6 +32,7 @@ import LineItemService from "./line-item"
 import PaymentProviderService from "./payment-provider"
 import ShippingOptionService from "./shipping-option"
 import CustomerService from "./customer"
+import TaxProviderService from "./tax-provider"
 import DiscountService from "./discount"
 import GiftCardService from "./gift-card"
 import TotalsService from "./totals"
@@ -45,6 +46,7 @@ type CartConstructorProps = {
   addressRepository: typeof AddressRepository
   paymentSessionRepository: typeof PaymentSessionRepository
   eventBusService: EventBusService
+  taxProviderService: TaxProviderService
   paymentProviderService: PaymentProviderService
   productService: ProductService
   productVariantService: ProductVariantService
@@ -57,6 +59,10 @@ type CartConstructorProps = {
   totalsService: TotalsService
   inventoryService: InventoryService
   customShippingOptionService: CustomShippingOptionService
+}
+
+type TotalsConfig = {
+  force_taxes?: boolean
 }
 
 /* Provides layer to manipulate carts.
@@ -82,6 +88,7 @@ class CartService extends BaseService {
   private shippingOptionService_: ShippingOptionService
   private discountService_: DiscountService
   private giftCardService_: GiftCardService
+  private taxProviderService_: TaxProviderService
   private totalsService_: TotalsService
   private addressRepository_: typeof AddressRepository
   private paymentSessionRepository_: typeof PaymentSessionRepository
@@ -96,6 +103,7 @@ class CartService extends BaseService {
     paymentProviderService,
     productService,
     productVariantService,
+    taxProviderService,
     regionService,
     lineItemService,
     shippingOptionService,
@@ -110,59 +118,25 @@ class CartService extends BaseService {
   }: CartConstructorProps) {
     super()
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
-
-    /** @private @const {ShippingMethodRepository} */
     this.shippingMethodRepository_ = shippingMethodRepository
-
-    /** @private @const {CartRepository} */
     this.cartRepository_ = cartRepository
-
-    /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
-
-    /** @private @const {ProductVariantService} */
     this.productVariantService_ = productVariantService
-
-    /** @private @const {ProductService} */
     this.productService_ = productService
-
-    /** @private @const {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @const {LineItemService} */
     this.lineItemService_ = lineItemService
-
-    /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
-
-    /** @private @const {CustomerService} */
     this.customerService_ = customerService
-
-    /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
-
-    /** @private @const {DiscountService} */
     this.discountService_ = discountService
-
-    /** @private @const {GiftCardService} */
     this.giftCardService_ = giftCardService
-
-    /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
-
-    /** @private @const {AddressRepository} */
     this.addressRepository_ = addressRepository
-
-    /** @private @const {PaymentSessionRepository} */
     this.paymentSessionRepository_ = paymentSessionRepository
-
-    /** @private @const {InventoryService} */
     this.inventoryService_ = inventoryService
-
-    /** @private @const {CustomShippingOptionService} */
     this.customShippingOptionService_ = customShippingOptionService
+    this.taxProviderService_ = taxProviderService
   }
 
   withTransaction(transactionManager: EntityManager): CartService {
@@ -172,6 +146,7 @@ class CartService extends BaseService {
 
     const cloned = new CartService({
       manager: transactionManager,
+      taxProviderService: this.taxProviderService_,
       cartRepository: this.cartRepository_,
       eventBusService: this.eventBus_,
       paymentProviderService: this.paymentProviderService_,
@@ -195,25 +170,6 @@ class CartService extends BaseService {
 
     return cloned
   }
-
-  /**
-   * Used to validate cart ids. Throws an error if the cast fails
-   * @param {string} rawId - the raw cart id to validate.
-   * @return {string} the validated id
-   */
-  /**
-   * Contents of a line item
-   * @typedef {(object | array)} LineItemContent
-   * @property {number} unit_price - the price of the content
-   * @property {object} variant - the product variant of the content
-   * @property {object} product - the product of the content
-   * @property {number} quantity - the quantity of the content
-   */
-
-  /**
-   * A collection of contents grouped in the same line item
-   * @typedef {LineItemContent[]} LineItemContentArray
-   */
 
   transformQueryForTotals_(
     config: FindConfig<Cart>
@@ -243,6 +199,7 @@ class CartService extends BaseService {
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
+      relationSet.add("items.tax_lines")
       relationSet.add("gift_cards")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
@@ -252,6 +209,7 @@ class CartService extends BaseService {
       // relationSet.add("discounts.parent_discount.regions")
       relationSet.add("shipping_methods")
       relationSet.add("region")
+      relationSet.add("region.tax_rates")
       relations = Array.from(relationSet.values())
 
       select = select.filter((v) => !totalFields.includes(v))
@@ -266,14 +224,17 @@ class CartService extends BaseService {
 
   async decorateTotals_(
     cart: Cart,
-    totalsToSelect: TotalField[]
+    totalsToSelect: TotalField[],
+    options: TotalsConfig = { force_taxes: false }
   ): Promise<Cart> {
-    const totals: { [K in TotalField]?: number } = {}
+    const totals: { [K in TotalField]?: number | null } = {}
 
     for (const key of totalsToSelect) {
       switch (key) {
         case "total": {
-          totals.total = await this.totalsService_.getTotal(cart)
+          totals.total = await this.totalsService_.getTotal(cart, {
+            force_taxes: options.force_taxes,
+          })
           break
         }
         case "shipping_total": {
@@ -284,7 +245,10 @@ class CartService extends BaseService {
           totals.discount_total = this.totalsService_.getDiscountTotal(cart)
           break
         case "tax_total":
-          totals.tax_total = await this.totalsService_.getTaxTotal(cart)
+          totals.tax_total = await this.totalsService_.getTaxTotal(
+            cart,
+            options.force_taxes
+          )
           break
         case "gift_card_total":
           totals.gift_card_total = this.totalsService_.getGiftCardTotal(cart)
@@ -301,9 +265,9 @@ class CartService extends BaseService {
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - config object
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - config object
+   * @return the result of the find operation
    */
   async list(
     selector: FilterableCartProps,
@@ -317,13 +281,15 @@ class CartService extends BaseService {
 
   /**
    * Gets a cart by id.
-   * @param {string} cartId - the id of the cart to get.
-   * @param {Object} options - the options to get a cart
-   * @return {Promise<Cart>} the cart document.
+   * @param cartId - the id of the cart to get.
+   * @param options - the options to get a cart
+   * @param totalsConfig - configuration for retrieval of totals
+   * @return the cart document.
    */
   async retrieve(
     cartId: string,
-    options: FindConfig<Cart> = {}
+    options: FindConfig<Cart> = {},
+    totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
     const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
     const validatedId = this.validateId_(cartId)
@@ -358,13 +324,13 @@ class CartService extends BaseService {
       )
     }
 
-    return await this.decorateTotals_(raw, totalsToSelect)
+    return await this.decorateTotals_(raw, totalsToSelect, totalsConfig)
   }
 
   /**
    * Creates a cart.
-   * @param {Object} data - the data to create the cart with
-   * @return {Promise} the result of the create operation
+   * @param data - the data to create the cart with
+   * @return the result of the create operation
    */
   async create(data: CartCreateProps): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -435,7 +401,7 @@ class CartService extends BaseService {
       ]
 
       for (const k of remainingFields) {
-        if (typeof data[k] !== "undefined") {
+        if (typeof data[k] !== "undefined" && k !== "object") {
           toCreate[k] = data[k]
         }
       }
@@ -453,9 +419,9 @@ class CartService extends BaseService {
 
   /**
    * Removes a line item from the cart.
-   * @param {string} cartId - the id of the cart that we will remove from
-   * @param {LineItem} lineItemId - the line item to remove.
-   * @return {Promise} the result of the update operation
+   * @param cartId - the id of the cart that we will remove from
+   * @param lineItemId - the line item to remove.
+   * @return the result of the update operation
    */
   async removeLineItem(cartId: string, lineItemId: string): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -505,9 +471,9 @@ class CartService extends BaseService {
    * Checks if a given line item has a shipping method that can fulfill it.
    * Returns true if all products in the cart can be fulfilled with the current
    * shipping methods.
-   * @param {ShippingMethod[]} shippingMethods - the set of shipping methods to check from
-   * @param {LineItem} lineItem - the line item
-   * @return {boolean}
+   * @param shippingMethods - the set of shipping methods to check from
+   * @param lineItem - the line item
+   * @return boolean representing wheter shipping method is validated
    */
   validateLineItemShipping_(
     shippingMethods: ShippingMethod[],
@@ -535,9 +501,9 @@ class CartService extends BaseService {
 
   /**
    * Adds a line item to the cart.
-   * @param {string} cartId - the id of the cart that we will add to
-   * @param {LineItem} lineItem - the line item to add.
-   * @return {Promise} the result of the update operation
+   * @param cartId - the id of the cart that we will add to
+   * @param lineItem - the line item to add.
+   * @return the result of the update operation
    */
   async addLineItem(cartId: string, lineItem: LineItem): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -613,11 +579,10 @@ class CartService extends BaseService {
 
   /**
    * Updates a cart's existing line item.
-   * @param {string} cartId - the id of the cart to update
-   * @param {string} lineItemId - the id of the line item to update.
-   * @param {LineItemUpdate} lineItemUpdate - the line item to update. Must
-   * include an id field.
-   * @return {Promise} the result of the update operation
+   * @param cartId - the id of the cart to update
+   * @param lineItemId - the id of the line item to update.
+   * @param lineItemUpdate - the line item to update. Must include an id field.
+   * @return the result of the update operation
    */
   async updateLineItem(
     cartId: string,
@@ -669,8 +634,9 @@ class CartService extends BaseService {
    * shipping discount
    * If a free shipping is present, we set shipping methods price to 0
    * if a free shipping was present, we set shipping methods to original amount
-   * @param {Cart} cart - the the cart to adjust free shipping for
-   * @param {boolean} shouldAdd - flag to indicate, if we should add or remove
+   * @param cart - the the cart to adjust free shipping for
+   * @param shouldAdd - flag to indicate, if we should add or remove
+   * @return void
    */
   async adjustFreeShipping_(cart: Cart, shouldAdd: boolean): Promise<void> {
     if (cart.shipping_methods?.length) {
@@ -851,9 +817,9 @@ class CartService extends BaseService {
 
   /**
    * Sets the customer id of a cart
-   * @param {Cart} cart - the cart to add email to
-   * @param {string} customerId - the customer to add to cart
-   * @return {Promise} the result of the update operation
+   * @param cart - the cart to add email to
+   * @param customerId - the customer to add to cart
+   * @return the result of the update operation
    */
   async updateCustomerId_(cart: Cart, customerId: string): Promise<void> {
     const customer = await this.customerService_
@@ -867,8 +833,8 @@ class CartService extends BaseService {
 
   /**
    * Creates or fetches a user based on an email.
-   * @param {string} email - the email to use
-   * @return {Promise} the resultign customer object
+   * @param email - the email to use
+   * @return the resultign customer object
    */
   async createOrFetchUserFromEmail_(email: string): Promise<Customer> {
     const schema = Validator.string().email().required()
@@ -896,12 +862,10 @@ class CartService extends BaseService {
 
   /**
    * Updates the cart's billing address.
-   * @param {Cart} cart - the cart to update
-   * @param {Address | string} addressOrId - the value to set the billing
-   * address to
-   * @param {AddressRepository} addrRepo - the repository to use for address
-   * updates
-   * @return {Promise} the result of the update operation
+   * @param cart - the cart to update
+   * @param addressOrId - the value to set the billing address to
+   * @param addrRepo - the repository to use for address updates
+   * @return the result of the update operation
    */
   async updateBillingAddress_(
     cart: Cart,
@@ -941,12 +905,10 @@ class CartService extends BaseService {
 
   /**
    * Updates the cart's shipping address.
-   * @param {Cart} cart - the cart to update
-   * @param {Address | string} addressOrId - the value to set the shipping
-   * address to
-   * @param {AddressRepository} addrRepo - the repository to use for address
-   * updates
-   * @return {Promise} the result of the update operation
+   * @param cart - the cart to update
+   * @param addressOrId - the value to set the shipping address to
+   * @param addrRepo - the repository to use for address updates
+   * @return the result of the update operation
    */
   async updateShippingAddress_(
     cart: Cart,
@@ -1030,9 +992,9 @@ class CartService extends BaseService {
    * If discount besides free shipping is already applied, this
    * will be overwritten
    * Throws if discount regions does not include the cart region
-   * @param {Cart} cart - the cart to update
-   * @param {string} discountCode - the discount code
-   * @return {Promise} the result of the update operation
+   * @param cart - the cart to update
+   * @param discountCode - the discount code
+   * @return the result of the update operation
    */
   async applyDiscount(cart: Cart, discountCode: string): Promise<void> {
     const discount = await this.discountService_.retrieveByCode(discountCode, [
@@ -1129,9 +1091,9 @@ class CartService extends BaseService {
 
   /**
    * Removes a discount based on a discount code.
-   * @param {string} cartId - the id of the cart to remove from
-   * @param {string} discountCode - the discount code to remove
-   * @return {Promise<Cart>} the resulting cart
+   * @param cartId - the id of the cart to remove from
+   * @param discountCode - the discount code to remove
+   * @return the resulting cart
    */
   async removeDiscount(cartId: string, discountCode: string): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -1168,18 +1130,10 @@ class CartService extends BaseService {
   }
 
   /**
-   * A payment method represents a way for the customer to pay. The payment
-   * method will typically come from one of the payment sessions.
-   * @typedef {object} PaymentMethod
-   * @property {string} provider_id - the identifier of the payment method's
-   *     provider
-   * @property {object} data - the data associated with the payment method
-   */
-
-  /**
    * Updates the currently selected payment session.
-   * @param {string} cartId - the id of the cart to update the payment session for
-   * @param {object} update - the data to update the payment session with
+   * @param cartId - the id of the cart to update the payment session for
+   * @param update - the data to update the payment session with
+   * @return the resulting cart
    */
   async updatePaymentSession(cartId: string, update: object): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -1209,13 +1163,13 @@ class CartService extends BaseService {
    * a payment object, that we will use to update our cart payment with.
    * Additionally, if the payment does not require more or fails, we will
    * set the payment on the cart.
-   * @param {string} cartId - the id of the cart to authorize payment for
-   * @param {object} context - object containing whatever is relevant for
+   * @param cartId - the id of the cart to authorize payment for
+   * @param context - object containing whatever is relevant for
    *    authorizing the payment with the payment provider. As an example,
    *    this could be IP address or similar for fraud handling.
-   * @return {Promise<Cart>} the resulting cart
+   * @return the resulting cart
    */
-  async authorizePayment(cartId: string, context: object = {}): Promise<Cart> {
+  async authorizePayment(cartId: string, context: Record<string, any> = {}): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
@@ -1265,9 +1219,9 @@ class CartService extends BaseService {
 
   /**
    * Sets a payment method for a cart.
-   * @param {string} cartId - the id of the cart to add payment method to
-   * @param {string} providerId - the id of the provider to be set to the cart
-   * @return {Promise} result of update operation
+   * @param cartId - the id of the cart to add payment method to
+   * @param providerId - the id of the provider to be set to the cart
+   * @return result of update operation
    */
   async setPaymentSession(cartId: string, providerId: string): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -1334,9 +1288,8 @@ class CartService extends BaseService {
    * provider. Additional calls will ensure that payment sessions have correct
    * amounts, currencies, etc. as well as make sure to filter payment sessions
    * that are not available for the cart's region.
-   * @param {Cart | string} cartOrCartId - the id of the cart to set payment
-   * session for
-   * @return {Promise} the result of the update operation.
+   * @param cartOrCartId - the id of the cart to set payment session for
+   * @return the result of the update operation.
    */
   async setPaymentSessions(cartOrCartId: Cart | string): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
@@ -1345,36 +1298,42 @@ class CartService extends BaseService {
       const cartId =
         typeof cartOrCartId === `string` ? cartOrCartId : cartOrCartId.id
 
-      const cart = await this.retrieve(cartId, {
-        select: [
-          "gift_card_total",
-          "subtotal",
-          "tax_total",
-          "shipping_total",
-          "discount_total",
-          "total",
-        ],
-        relations: [
-          "items",
-          "discounts",
-          "discounts.rule",
-          "discounts.rule.valid_for",
-          "gift_cards",
-          "billing_address",
-          "shipping_address",
-          "region",
-          "region.payment_providers",
-          "payment_sessions",
-          "customer",
-        ],
-      })
+      const cart = await this.retrieve(
+        cartId,
+        {
+          select: [
+            "total",
+            "subtotal",
+            "tax_total",
+            "discount_total",
+            "shipping_total",
+            "gift_card_total",
+          ],
+          relations: [
+            "items",
+            "discounts",
+            "discounts.rule",
+            "discounts.rule.valid_for",
+            "gift_cards",
+            "shipping_methods",
+            "billing_address",
+            "shipping_address",
+            "region",
+            "region.tax_rates",
+            "region.payment_providers",
+            "payment_sessions",
+            "customer",
+          ],
+        },
+        { force_taxes: true }
+      )
 
-      const region = cart.region
+      const { total, region } = cart
 
-      if (typeof cart.total === "undefined") {
+      if (typeof total === "undefined") {
         throw new MedusaError(
           MedusaError.Types.UNEXPECTED_STATE,
-          "cart.total should be defined"
+          "cart.total must be defined"
         )
       }
 
@@ -1383,7 +1342,7 @@ class CartService extends BaseService {
       if (cart.payment_sessions && cart.payment_sessions.length) {
         for (const session of cart.payment_sessions) {
           if (
-            cart.total <= 0 ||
+            total <= 0 ||
             !region.payment_providers.find(
               ({ id }) => id === session.provider_id
             )
@@ -1400,7 +1359,7 @@ class CartService extends BaseService {
         }
       }
 
-      if (cart.total > 0) {
+      if (total > 0) {
         // If only one payment session exists, we preselect it
         if (region.payment_providers.length === 1 && !cart.payment_session) {
           const p = region.payment_providers[0]
@@ -1426,10 +1385,10 @@ class CartService extends BaseService {
 
   /**
    * Removes a payment session from the cart.
-   * @param {string} cartId - the id of the cart to remove from
-   * @param {string} providerId - the id of the provider whoose payment session
+   * @param cartId - the id of the cart to remove from
+   * @param providerId - the id of the provider whoose payment session
    *    should be removed.
-   * @return {Promise<Cart>} the resulting cart.
+   * @return the resulting cart.
    */
   async deletePaymentSession(
     cartId: string,
@@ -1470,8 +1429,8 @@ class CartService extends BaseService {
 
   /**
    * Refreshes a payment session on a cart
-   * @param {string} cartId - the id of the cart to remove from
-   * @param {string} providerId - the id of the provider whoose payment session
+   * @param cartId - the id of the cart to remove from
+   * @param providerId - the id of the provider whoose payment session
    *    should be removed.
    * @return {Promise<Cart>} the resulting cart.
    */
@@ -1512,15 +1471,15 @@ class CartService extends BaseService {
    * Shipping Option is a possible way to ship an order. Shipping Methods may
    * also have additional details in the data field such as an id for a package
    * shop.
-   * @param {string} cartId - the id of the cart to add shipping method to
-   * @param {string} optionId - id of shipping option to add as valid method
-   * @param {Object} data - the fulmillment data for the method
-   * @return {Promise} the result of the update operation
+   * @param cartId - the id of the cart to add shipping method to
+   * @param optionId - id of shipping option to add as valid method
+   * @param data - the fulmillment data for the method
+   * @return the result of the update operation
    */
   async addShippingMethod(
     cartId: string,
     optionId: string,
-    data: object = {}
+    data: Record<string, any> = {}
   ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cart = await this.retrieve(cartId, {
@@ -1610,9 +1569,9 @@ class CartService extends BaseService {
   /**
    * Finds the cart's custom shipping options based on the passed option id.
    * throws if custom options is not empty and no shipping option corresponds to optionId
-   * @param {Object} cartCustomShippingOptions - the cart's custom shipping options
-   * @param {string} optionId - id of the normal or custom shipping option to find in the cartCustomShippingOptions
-   * @return {CustomShippingOption | undefined}
+   * @param cartCustomShippingOptions - the cart's custom shipping options
+   * @param optionId - id of the normal or custom shipping option to find in the cartCustomShippingOptions
+   * @return custom shipping option
    */
   findCustomShippingOption(
     cartCustomShippingOptions: CustomShippingOption[],
@@ -1635,10 +1594,10 @@ class CartService extends BaseService {
 
   /**
    * Set's the region of a cart.
-   * @param {Cart} cart - the cart to set region on
-   * @param {string} regionId - the id of the region to set the region to
-   * @param {string} countryCode - the country code to set the country to
-   * @return {Promise} the result of the update operation
+   * @param cart - the cart to set region on
+   * @param regionId - the id of the region to set the region to
+   * @param countryCode - the country code to set the country to
+   * @return the result of the update operation
    */
   async setRegion_(
     cart: Cart,
@@ -1793,9 +1752,8 @@ class CartService extends BaseService {
 
   /**
    * Deletes a cart from the database. Completed carts cannot be deleted.
-   * @param {string} cartId - the id of the cart to delete
-   * @return {Promise<string>} the deleted cart or undefined if the cart was
-   *    not found.
+   * @param cartId - the id of the cart to delete
+   * @return the deleted cart or undefined if the cart was not found.
    */
   async delete(cartId: string): Promise<string> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
@@ -1832,10 +1790,10 @@ class CartService extends BaseService {
    * Dedicated method to set metadata for a cart.
    * To ensure that plugins does not overwrite each
    * others metadata fields, setMetadata is provided.
-   * @param {string} cartId - the cart to apply metadata to.
-   * @param {string} key - key for metadata field
-   * @param {string} value - value for metadata field.
-   * @return {Promise} resolves to the updated result.
+   * @param cartId - the cart to apply metadata to.
+   * @param key - key for metadata field
+   * @param value - value for metadata field.
+   * @return resolves to the updated result.
    */
   async setMetadata(
     cartId: string,
@@ -1869,11 +1827,35 @@ class CartService extends BaseService {
     })
   }
 
+  async createTaxLines(id: string): Promise<Cart> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const cart = await this.retrieve(id, {
+        relations: [
+          "items",
+          "gift_cards",
+          "discounts",
+          "discounts.rule",
+          "discounts.rule.valid_for",
+          "shipping_methods",
+          "region",
+          "region.tax_rates",
+        ],
+      })
+      const calculationContext = this.totalsService_.getCalculationContext(cart)
+
+      await this.taxProviderService_
+        .withTransaction(manager)
+        .createTaxLines(cart, calculationContext)
+
+      return cart
+    })
+  }
+
   /**
    * Dedicated method to delete metadata for a cart.
-   * @param {string} cartId - the cart to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
+   * @param cartId - the cart to delete metadata from.
+   * @param key - key for metadata field
+   * @return resolves to the updated result.
    */
   async deleteMetadata(cartId: string, key: string): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {

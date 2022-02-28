@@ -14,6 +14,7 @@ class ReturnService extends BaseService {
     returnItemRepository,
     shippingOptionService,
     returnReasonService,
+    taxProviderService,
     fulfillmentProviderService,
     inventoryService,
     orderService,
@@ -34,6 +35,8 @@ class ReturnService extends BaseService {
 
     /** @private @const {ReturnItemRepository} */
     this.lineItemService_ = lineItemService
+
+    this.taxProviderService_ = taxProviderService
 
     /** @private @const {ShippingOptionService} */
     this.shippingOptionService_ = shippingOptionService
@@ -59,6 +62,7 @@ class ReturnService extends BaseService {
       totalsService: this.totalsService_,
       lineItemService: this.lineItemService_,
       returnRepository: this.returnRepository_,
+      taxProviderService: this.taxProviderService_,
       returnItemRepository: this.returnItemRepository_,
       shippingOptionService: this.shippingOptionService_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
@@ -335,9 +339,14 @@ class ReturnService extends BaseService {
           relations: [
             "swaps",
             "swaps.additional_items",
+            "swaps.additional_items.tax_lines",
             "claims",
             "claims.additional_items",
+            "claims.additional_items.tax_lines",
             "items",
+            "items.tax_lines",
+            "region",
+            "region.tax_rates",
           ],
         })
 
@@ -347,18 +356,10 @@ class ReturnService extends BaseService {
         this.validateReturnLineItem_
       )
 
-      if (data.shipping_method) {
-        if (typeof data.shipping_method.price === "undefined") {
-          const opt = await this.shippingOptionService_.retrieve(
-            data.shipping_method.option_id
-          )
-          data.shipping_method.price = opt.amount
-        }
-      }
-
       let toRefund = data.refund_amount
       if (typeof toRefund !== "undefined") {
-        // refundable from order
+        // Merchant wants to do a custom refund amount; we check if amount is
+        // refundable
         const refundable = order.refundable_amount
 
         if (toRefund > refundable) {
@@ -368,14 +369,8 @@ class ReturnService extends BaseService {
           )
         }
       } else {
+        // Merchant hasn't specified refund amount so we calculate it
         toRefund = await this.totalsService_.getRefundTotal(order, returnLines)
-
-        if (data.shipping_method) {
-          toRefund = Math.max(
-            0,
-            toRefund - data.shipping_method.price * (1 + order.tax_rate / 100)
-          )
-        }
       }
 
       const method = data.shipping_method
@@ -416,7 +411,7 @@ class ReturnService extends BaseService {
       const result = await returnRepository.save(created)
 
       if (method) {
-        await this.shippingOptionService_
+        const shippingMethod = await this.shippingOptionService_
           .withTransaction(manager)
           .createShippingMethod(
             method.option_id,
@@ -426,6 +421,26 @@ class ReturnService extends BaseService {
               return_id: result.id,
             }
           )
+
+        const calculationContext =
+          this.totalsService_.getCalculationContext(order)
+
+        const taxLines = await this.taxProviderService_
+          .withTransaction(manager)
+          .createShippingTaxLines(shippingMethod, calculationContext)
+
+        const shippingTotal =
+          shippingMethod.price +
+          taxLines.reduce(
+            (acc, tl) =>
+              acc + Math.round(shippingMethod.price * (tl.rate / 100)),
+            0
+          )
+
+        if (typeof data.refund_amount === "undefined") {
+          result.refund_amount = toRefund - shippingTotal
+          return await returnRepository.save(result)
+        }
       }
 
       return result
@@ -438,6 +453,7 @@ class ReturnService extends BaseService {
         relations: [
           "items",
           "shipping_method",
+          "shipping_method.tax_lines",
           "shipping_method.shipping_option",
           "swap",
           "claim_order",
@@ -453,9 +469,12 @@ class ReturnService extends BaseService {
 
       const returnData = { ...returnOrder }
 
-      const items = await this.lineItemService_.list({
-        id: returnOrder.items.map(({ item_id }) => item_id),
-      })
+      const items = await this.lineItemService_.list(
+        {
+          id: returnOrder.items.map(({ item_id }) => item_id),
+        },
+        { relations: ["tax_lines"] }
+      )
 
       returnData.items = returnOrder.items.map((item) => {
         const found = items.find((i) => i.id === item.item_id)

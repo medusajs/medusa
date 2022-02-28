@@ -13,40 +13,46 @@ class AdminCustomersResource extends BaseResource {
   /**
    * Creates a customer
    * @param payload information of customer
+   * @param customHeaders
    */
-  create(payload: AdminPostCustomersReq): ResponsePromise<AdminCustomersRes> {
+  create(payload: AdminPostCustomersReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * Updates a customer
    * @param id customer id
    * @param payload data to update customer with
+   * @param customHeaders
    */
   update(
     id: string,
-    payload: AdminPostCustomersCustomerReq
+    payload: AdminPostCustomersCustomerReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * Retrieves a customer
    * @param id customer id
+   * @param customHeaders
    */
-  retrieve(id: string): ResponsePromise<AdminCustomersRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminCustomersRes> {
     const path = `/admin/customers/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * Lists customers
    * @param query optional
+   * @param customHeaders
    */
   list(
-    query?: AdminGetCustomersParams
+    query?: AdminGetCustomersParams,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomersListRes> {
     let path = `/admin/customers`
 
@@ -55,7 +61,7 @@ class AdminCustomersResource extends BaseResource {
       path = `/admin/customers?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }
 

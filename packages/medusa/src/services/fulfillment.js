@@ -299,7 +299,7 @@ class FulfillmentService extends BaseService {
       const now = new Date()
       fulfillment.shipped_at = now
 
-      fulfillment.tracking_links = trackingLinks.map((tl) =>
+      fulfillment.tracking_links = (trackingLinks || []).map((tl) =>
         trackingLinkRepo.create(tl)
       )
 

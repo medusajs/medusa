@@ -93,6 +93,12 @@ export default (app, container) => {
     middlewares.wrap(require("./add-shipping-method").default)
   )
 
+  // Taxes
+  route.post(
+    "/:id/taxes",
+    middlewares.wrap(require("./calculate-taxes").default)
+  )
+
   return app
 }
 

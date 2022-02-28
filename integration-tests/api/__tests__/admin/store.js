@@ -75,8 +75,8 @@ describe("/admin/store", () => {
 
     afterEach(async () => {
       const db = useDb()
-      await db.teardown()
-      medusaProcess.kill()
+      await db.teardown({ forceDelete: ["store"] })
+      await medusaProcess.kill()
     })
 
     it("fails to update default currency if not in store currencies", async () => {
