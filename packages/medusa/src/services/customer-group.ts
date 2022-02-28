@@ -1,9 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
+import { CustomerService } from "."
 import { CustomerGroup } from ".."
 import { CustomerGroupRepository } from "../repositories/customer-group"
 import { FindConfig } from "../types/common"
+import { formatException } from "../utils/exception-formatter"
 import {
   CustomerGroupUpdate,
   FilterableCustomerGroupProps,
@@ -12,21 +14,33 @@ import {
 type CustomerGroupConstructorProps = {
   manager: EntityManager
   customerGroupRepository: typeof CustomerGroupRepository
+  customerService: CustomerService
 }
+
+/**
+ * Provides layer to manipulate discounts.
+ * @implements {BaseService}
+ */
 class CustomerGroupService extends BaseService {
   private manager_: EntityManager
 
   private customerGroupRepository_: typeof CustomerGroupRepository
 
+  private customerService_: CustomerService
+
   constructor({
     manager,
     customerGroupRepository,
+    customerService,
   }: CustomerGroupConstructorProps) {
     super()
 
     this.manager_ = manager
 
     this.customerGroupRepository_ = customerGroupRepository
+
+    /** @private @const {CustomerGroupService} */
+    this.customerService_ = customerService
   }
 
   withTransaction(transactionManager: EntityManager): CustomerGroupService {
@@ -37,6 +51,7 @@ class CustomerGroupService extends BaseService {
     const cloned = new CustomerGroupService({
       manager: transactionManager,
       customerGroupRepository: this.customerGroupRepository_,
+      customerService: this.customerService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -56,7 +71,7 @@ class CustomerGroupService extends BaseService {
     if (!customerGroup) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `CustomerGroup with ${id} was not found`
+        `CustomerGroup with id ${id} was not found`
       )
     }
 
@@ -90,10 +105,59 @@ class CustomerGroupService extends BaseService {
   }
 
   /**
+   * Add a batch of customers to a customer group at once
+   * @param {string} id id of the customer group to add customers to
+   * @param {string[]} customerIds customer id's to add to the group
+   * @return {Promise<CustomerGroup>} the customer group after insertion
+   */
+  async addCustomers(
+    id: string,
+    customerIds: string | string[]
+  ): Promise<CustomerGroup> {
+    let ids: string[]
+    if (typeof customerIds === "string") {
+      ids = [customerIds]
+    } else {
+      ids = customerIds
+    }
+
+    return this.atomicPhase_(
+      async (manager) => {
+        const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
+          this.customerGroupRepository_
+        )
+        return await cgRepo.addCustomers(id, ids)
+      },
+      async (error) => {
+        if (error.code === "23503") {
+          await this.retrieve(id)
+
+          const existingCustomers = await this.customerService_.list({
+            id: ids,
+          })
+
+          const nonExistingCustomers = ids.filter(
+            (cId) => existingCustomers.findIndex((el) => el.id === cId) === -1
+          )
+
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `The following customer ids do not exist: ${JSON.stringify(
+              nonExistingCustomers.join(", ")
+            )}`
+          )
+        }
+        throw formatException(error)
+      }
+    )
+  }
+
+  /**
    * Update a customer group.
    *
    * @param {string} customerGroupId - id of the customer group
    * @param {CustomerGroupUpdate} update - customer group partial data
+   * @returns resulting customer group
    */
   async update(
     customerGroupId: string,
