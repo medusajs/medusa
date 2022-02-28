@@ -130,7 +130,7 @@ describe("/admin/customer-groups", () => {
         .catch((error) => {
           expect(error.response.data.type).toEqual("not_found")
           expect(error.response.data.message).toEqual(
-            `CustomerGroup with ${id} was not found`
+            `CustomerGroup with id ${id} was not found`
           )
         })
     })
@@ -189,6 +189,182 @@ describe("/admin/customer-groups", () => {
         expect.objectContaining({
           groups: [],
         })
+      )
+    })
+  })
+
+  describe("POST /admin/customer-groups/{id}/customers/batch", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("adds multiple customers to a group", async () => {
+      const api = useApi()
+
+      const payload = {
+        customer_ids: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
+      }
+
+      const batchAddResponse = await api.post(
+        "/admin/customer-groups/customer-group-1/customers/batch",
+        payload,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(batchAddResponse.status).toEqual(200)
+      expect(batchAddResponse.data.customer_group).toEqual(
+        expect.objectContaining({
+          name: "vip-customers",
+        })
+      )
+
+      const getCustomerResponse = await api.get(
+        "/admin/customers?expand=groups",
+        {
+          headers: { Authorization: "Bearer test_token" },
+        }
+      )
+
+      expect(getCustomerResponse.data.customers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-customer-1",
+            groups: [
+              expect.objectContaining({
+                name: "vip-customers",
+                id: "customer-group-1",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: "test-customer-2",
+            groups: [
+              expect.objectContaining({
+                name: "vip-customers",
+                id: "customer-group-1",
+              }),
+            ],
+          }),
+        ])
+      )
+    })
+
+    it("presents a descriptive error when presented with a non-existing group", async () => {
+      expect.assertions(2)
+
+      const api = useApi()
+
+      const payload = {
+        customer_ids: [{ id: "test-customer-1" }, { id: "test-customer-2" }],
+      }
+
+      await api
+        .post(
+          "/admin/customer-groups/non-existing-customer-group-1/customers/batch",
+          payload,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.data.type).toEqual("not_found")
+          expect(err.response.data.message).toEqual(
+            "CustomerGroup with id non-existing-customer-group-1 was not found"
+          )
+        })
+    })
+
+    it("adds customers to a group idempotently", async () => {
+      expect.assertions(3)
+
+      const api = useApi()
+
+      // add customer-1 to the customer group
+      const payload_1 = {
+        customer_ids: [{ id: "test-customer-1" }],
+      }
+
+      await api
+        .post(
+          "/admin/customer-groups/customer-group-1/customers/batch",
+          payload_1,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => console.log(err))
+
+      // re-adding customer-1 to the customer group along with new addintion:
+      // customer-2 and some non-existing customers should cause the request to fail
+      const payload_2 = {
+        customer_ids: [
+          { id: "test-customer-1" },
+          { id: "test-customer-27" },
+          { id: "test-customer-28" },
+          { id: "test-customer-2" },
+        ],
+      }
+
+      await api
+        .post(
+          "/admin/customer-groups/customer-group-1/customers/batch",
+          payload_2,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.data.type).toEqual("not_found")
+          expect(err.response.data.message).toEqual(
+            'The following customer ids do not exist: "test-customer-27, test-customer-28"'
+          )
+        })
+
+      // check that customer-1 is only added once and that customer-2 is added correctly
+      const getCustomerResponse = await api.get(
+        "/admin/customers?expand=groups",
+        {
+          headers: { Authorization: "Bearer test_token" },
+        }
+      )
+
+      expect(getCustomerResponse.data.customers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-customer-1",
+            groups: [
+              expect.objectContaining({
+                name: "vip-customers",
+                id: "customer-group-1",
+              }),
+            ],
+          }),
+          expect.objectContaining({
+            id: "test-customer-2",
+            groups: [],
+          }),
+        ])
       )
     })
   })
@@ -336,8 +512,6 @@ describe("/admin/customer-groups", () => {
     })
 
     it("throws error when a customer group doesn't exist", async () => {
-      expect.assertions(3)
-
       const api = useApi()
 
       const id = "test-group-000"
@@ -352,7 +526,7 @@ describe("/admin/customer-groups", () => {
           expect(err.response.status).toEqual(404)
           expect(err.response.data.type).toEqual("not_found")
           expect(err.response.data.message).toEqual(
-            `CustomerGroup with ${id} was not found`
+            `CustomerGroup with id ${id} was not found`
           )
         })
     })

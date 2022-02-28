@@ -882,8 +882,8 @@ describe("/admin/discounts", () => {
           }
         )
       } catch (error) {
-        expect(error.response.data.message).toMatch(
-          /duplicate key value violates unique constraint/i
+        expect(error.response.data.message).toEqual(
+          "Discount with code TESTING already exists."
         )
       }
     })
