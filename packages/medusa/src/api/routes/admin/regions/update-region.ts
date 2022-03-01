@@ -1,4 +1,10 @@
-import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
+import {
+  IsArray,
+  IsBoolean,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
 import { validator } from "../../../../utils/validator"
 import RegionService from "../../../../services/region"
@@ -21,6 +27,15 @@ import RegionService from "../../../../services/region"
  *             type: string
  *           currency_code:
  *             description: "The 3 character ISO currency code to use for the Region."
+ *             type: string
+ *           automatic_taxes:
+ *             description: "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/:id/taxes."
+ *             type: boolean
+ *           gift_cards_taxable:
+ *             description: "Whether gift cards in this region should be applied sales tax when purchasing a gift card"
+ *             type: boolean
+ *           tax_provider_id:
+ *             description: "The id of the tax provider to use; if null the system tax provider is used"
  *             type: string
  *           tax_code:
  *             description: "An optional tax code the Region."
@@ -85,6 +100,18 @@ export class AdminPostRegionsRegionReq {
   @IsNumber()
   @IsOptional()
   tax_rate?: number
+
+  @IsBoolean()
+  @IsOptional()
+  gift_cards_taxable?: boolean
+
+  @IsBoolean()
+  @IsOptional()
+  automatic_taxes?: boolean
+
+  @IsString()
+  @IsOptional()
+  tax_provider_id?: string | null
 
   @IsArray()
   @IsString({ each: true })

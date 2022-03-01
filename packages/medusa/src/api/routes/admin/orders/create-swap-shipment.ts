@@ -81,7 +81,7 @@ export class AdminPostOrdersOrderSwapsSwapShipmentsReq {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  tracking_numbers?: string[]
+  tracking_numbers?: string[] = []
 
   @IsBoolean()
   @IsOptional()

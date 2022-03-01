@@ -20,30 +20,43 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminProductsResource extends BaseResource {
-  create(payload: AdminPostProductsReq): ResponsePromise<AdminProductsRes> {
+  create(
+    payload: AdminPostProductsReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  retrieve(id: string): ResponsePromise<AdminProductsRes> {
+  retrieve(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   update(
     id: string,
-    payload: AdminPostProductsProductReq
+    payload: AdminPostProductsProductReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  delete(id: string): ResponsePromise<AdminProductsDeleteRes> {
+  delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsDeleteRes> {
     const path = `/admin/products/${id}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
-  list(query?: AdminGetProductsParams): ResponsePromise<AdminProductsListRes> {
+  list(
+    query?: AdminGetProductsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsListRes> {
     let path = `/admin/products`
 
     if (query) {
@@ -51,75 +64,86 @@ class AdminProductsResource extends BaseResource {
       path = `/admin/products?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  listTypes(): ResponsePromise<AdminProductsListTypesRes> {
+  listTypes(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsListTypesRes> {
     const path = `/admin/products/types`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  listTags(): ResponsePromise<AdminProductsListTagsRes> {
+  listTags(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminProductsListTagsRes> {
     const path = `/admin/products/tag-usage`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   setMetadata(
     id: string,
-    payload: AdminPostProductsProductMetadataReq
+    payload: AdminPostProductsProductMetadataReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}/metadata`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   createVariant(
     id: string,
-    payload: AdminPostProductsProductVariantsReq
+    payload: AdminPostProductsProductVariantsReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}/variants`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   updateVariant(
     id: string,
     variantId: string,
-    payload: AdminPostProductsProductVariantsVariantReq
+    payload: AdminPostProductsProductVariantsVariantReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}/variants/${variantId}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   deleteVariant(
     id: string,
-    variantId: string
+    variantId: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsDeleteVariantRes> {
     const path = `/admin/products/${id}/variants/${variantId}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   addOption(
     id: string,
-    payload: AdminPostProductsProductOptionsReq
+    payload: AdminPostProductsProductOptionsReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}/options`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   updateOption(
     id: string,
     optionId: string,
-    payload: AdminPostProductsProductOptionsOption
+    payload: AdminPostProductsProductOptionsOption,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}/options/${optionId}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   deleteOption(
     id: string,
-    optionId: string
+    optionId: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsDeleteOptionRes> {
     const path = `/admin/products/${id}/options/${optionId}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 }
 

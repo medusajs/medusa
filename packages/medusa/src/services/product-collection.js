@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, ILike } from "typeorm"
+import { formatException } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate product collections.
@@ -106,8 +107,12 @@ class ProductCollectionService extends BaseService {
         this.productCollectionRepository_
       )
 
-      const productCollection = collectionRepo.create(collection)
-      return collectionRepo.save(productCollection)
+      try {
+        const productCollection = await collectionRepo.create(collection)
+        return await collectionRepo.save(productCollection)
+      } catch (error) {
+        throw formatException(error)
+      }
     })
   }
 
@@ -157,6 +162,36 @@ class ProductCollectionService extends BaseService {
       }
 
       await productCollectionRepo.softRemove(collection)
+
+      return Promise.resolve()
+    })
+  }
+
+  async addProducts(collectionId, productIds) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      try {
+        const { id } = await this.retrieve(collectionId, { select: ["id"] })
+
+        await productRepo.bulkAddToCollection(productIds, id)
+
+        return await this.retrieve(id, {
+          relations: ["products"],
+        })
+      } catch (error) {
+        throw formatException(error)
+      }
+    })
+  }
+
+  async removeProducts(collectionId, productIds) {
+    return this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+
+      const { id } = await this.retrieve(collectionId, { select: ["id"] })
+
+      await productRepo.bulkRemoveFromCollection(productIds, id)
 
       return Promise.resolve()
     })

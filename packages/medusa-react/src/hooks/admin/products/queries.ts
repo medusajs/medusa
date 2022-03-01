@@ -2,7 +2,6 @@ import {
   AdminProductsListRes,
   AdminProductsRes,
   AdminGetProductsParams,
-  AdminProductsListTypesRes,
   AdminProductsListTagsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -46,22 +45,6 @@ export const useAdminProduct = (
   const { data, ...rest } = useQuery(
     adminProductKeys.detail(id),
     () => client.admin.products.retrieve(id),
-    options
-  )
-  return { ...data, ...rest } as const
-}
-
-export const useAdminProductTypes = (
-  options?: UseQueryOptionsWrapper<
-    Response<AdminProductsListTypesRes>,
-    Error,
-    ReturnType<ProductQueryKeys["detail"]>
-  >
-) => {
-  const { client } = useMedusa()
-  const { data, ...rest } = useQuery(
-    adminProductKeys.detail("types"),
-    () => client.admin.products.listTypes(),
     options
   )
   return { ...data, ...rest } as const

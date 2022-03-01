@@ -4,6 +4,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Scrypt from "scrypt-kdf"
 import { Brackets, ILike } from "typeorm"
+import { formatException } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate customers.
@@ -234,6 +235,7 @@ class CustomerService extends BaseService {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
+
     const validatedId = this.validateId_(customerId)
     const query = this.buildQuery_({ id: validatedId }, config)
 
@@ -376,53 +378,63 @@ class CustomerService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(customerId, update) {
-    return this.atomicPhase_(async (manager) => {
-      const customerRepository = manager.getCustomRepository(
-        this.customerRepository_
-      )
-      const addrRepo = manager.getCustomRepository(this.addressRepository_)
+    return this.atomicPhase_(
+      async (manager) => {
+        const customerRepository = manager.getCustomRepository(
+          this.customerRepository_
+        )
+        const addrRepo = manager.getCustomRepository(this.addressRepository_)
 
-      const customer = await this.retrieve(customerId)
+        const customer = await this.retrieve(customerId)
 
-      const {
-        email,
-        password,
-        metadata,
-        billing_address,
-        billing_address_id,
-        ...rest
-      } = update
+        const {
+          email,
+          password,
+          metadata,
+          billing_address,
+          billing_address_id,
+          groups,
+          ...rest
+        } = update
 
-      if (metadata) {
-        customer.metadata = this.setMetadata_(customer, metadata)
-      }
-
-      if (email) {
-        customer.email = this.validateEmail_(email)
-      }
-
-      if ("billing_address_id" in update || "billing_address" in update) {
-        const address = billing_address_id || billing_address
-        if (typeof address !== "undefined") {
-          await this.updateBillingAddress_(customer, address, addrRepo)
+        if (metadata) {
+          customer.metadata = this.setMetadata_(customer, metadata)
         }
+
+        if (email) {
+          customer.email = this.validateEmail_(email)
+        }
+
+        if ("billing_address_id" in update || "billing_address" in update) {
+          const address = billing_address_id || billing_address
+          if (typeof address !== "undefined") {
+            await this.updateBillingAddress_(customer, address, addrRepo)
+          }
+        }
+
+        for (const [key, value] of Object.entries(rest)) {
+          customer[key] = value
+        }
+
+        if (password) {
+          customer.password_hash = await this.hashPassword_(password)
+        }
+
+        if (groups) {
+          customer.groups = groups
+        }
+
+        const updated = await customerRepository.save(customer)
+
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(CustomerService.Events.UPDATED, updated)
+        return updated
+      },
+      async (error) => {
+        throw formatException(error)
       }
-
-      for (const [key, value] of Object.entries(rest)) {
-        customer[key] = value
-      }
-
-      if (password) {
-        customer.password_hash = await this.hashPassword_(password)
-      }
-
-      const updated = await customerRepository.save(customer)
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(CustomerService.Events.UPDATED, updated)
-      return updated
-    })
+    )
   }
 
   /**
