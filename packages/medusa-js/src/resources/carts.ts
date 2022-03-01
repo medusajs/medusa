@@ -56,11 +56,11 @@ class CartsResource extends BaseResource {
    * @return {ResponsePromise<StoreCartsRes>}
    */
   create(
-    payload?: StorePostCartReq = {},
+    payload?: StorePostCartReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts`
-    return this.client.request("POST", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload ?? {}, {}, customHeaders)
   }
 
   /**
