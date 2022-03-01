@@ -45,3 +45,4 @@ export type AdminCustomerGroupsListRes = PaginatedResponse & {
 export const defaultAdminCustomerGroupsRelations = []
 
 export * from "./create-customer-group"
+export * from "./update-customer-group"
