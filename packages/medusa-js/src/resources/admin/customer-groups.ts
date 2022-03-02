@@ -5,6 +5,8 @@ import {
   AdminCustomerGroupsListRes,
   AdminPostCustomerGroupsGroupReq,
   AdminCustomerGroupsDeleteRes,
+  AdminPostCustomerGroupsGroupCustomersBatchReq,
+  AdminDeleteCustomerGroupsGroupCustomerBatchReq,
 } from "@medusajs/medusa"
 import qs from "qs"
 
@@ -85,6 +87,38 @@ class AdminCustomerGroupsResource extends BaseResource {
     }
 
     return this.client.request("GET", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * Add multiple customers to a customer group.
+   *
+   * @param id - customer group id
+   * @param payload - an object which contains an array of customer ids which will be added to the group
+   * @param customHeaders
+   */
+  addBatch(
+    id: string,
+    payload: AdminPostCustomerGroupsGroupCustomersBatchReq,
+    customHeaders: Record<string, any> = {}
+  ): Promise<AdminCustomerGroupsRes> {
+    const path = `/admin/customer-groups/${id}/customers/batch`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * Remove multiple customers from a customer group.
+   *
+   * @param id - customer group id
+   * @param payload - an object which contains an array of customers ids which will be removed from the group
+   * @param customHeaders
+   */
+  deleteBatch(
+    id: string,
+    payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq,
+    customHeaders: Record<string, any> = {}
+  ): Promise<AdminCustomerGroupsRes> {
+    const path = `/admin/customer-groups/${id}/customers/batch`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
 
