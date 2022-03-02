@@ -47,7 +47,10 @@ export class DiscountRule {
   })
   allocation: AllocationType
 
-  @OneToMany(() => DiscountRuleCondition)
+  @OneToMany(
+    () => DiscountRuleCondition,
+    (con) => con.discount_rule
+  )
   conditions: DiscountRuleCondition[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })

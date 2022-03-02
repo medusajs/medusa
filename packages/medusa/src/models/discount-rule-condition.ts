@@ -44,14 +44,14 @@ export class DiscountRuleCondition {
 
   @Index()
   @Column()
-  rule_id: string
+  discount_rule_id: string
 
   @ManyToOne(
     () => DiscountRule,
     (dr) => dr.conditions
   )
   @JoinColumn({ name: "discount_rule_id" })
-  rule: DiscountRule
+  discount_rule: DiscountRule
 
   @ManyToMany(() => Product)
   @JoinTable({
