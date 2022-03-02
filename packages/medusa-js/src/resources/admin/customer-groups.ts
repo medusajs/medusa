@@ -43,6 +43,7 @@ class AdminCustomerGroupsResource extends BaseResource {
   }
   /**
    * Updates a customer group
+   *
    * @param id customer group id
    * @param payload data to update customer group with
    * @param customHeaders
@@ -72,6 +73,7 @@ class AdminCustomerGroupsResource extends BaseResource {
 
   /**
    * Lists customer groups.
+   *
    * @param query optional
    * @param customHeaders
    */
