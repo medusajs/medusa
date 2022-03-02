@@ -32,6 +32,10 @@ export default (app) => {
   return app
 }
 
+/* ************************************** */
+/* ******** EXPORT API CLIENT TYPES ***** */
+/* ************************************** */
+
 export type AdminCustomerGroupsRes = {
   customer_group: CustomerGroup
 }
@@ -44,6 +48,9 @@ export type AdminCustomerGroupsListRes = PaginatedResponse & {
 
 export const defaultAdminCustomerGroupsRelations = []
 
-export * from "./create-customer-group"
-export * from "./update-customer-group"
-export * from "./list-customer-groups"
+export { AdminPostCustomerGroupsGroupCustomersBatchReq } from "./add-customers-batch"
+export { AdminPostCustomerGroupsReq } from "./create-customer-group"
+export { AdminDeleteCustomerGroupsGroupCustomerBatchReq } from "./delete-customers-batch"
+export { AdminGetCustomerGroupsGroupParams } from "./get-customer-group"
+export { AdminGetCustomerGroupsParams } from "./list-customer-groups"
+export { AdminPostCustomerGroupsGroupReq } from "./update-customer-group"
