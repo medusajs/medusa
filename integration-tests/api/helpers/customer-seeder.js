@@ -36,6 +36,21 @@ module.exports = async (connection, data = {}) => {
     has_account: true,
   })
 
+  const customer5 = manager.create(Customer, {
+    id: "test-customer-5",
+    email: "test5@email.com",
+  })
+
+  const customer6 = manager.create(Customer, {
+    id: "test-customer-6",
+    email: "test6@email.com",
+  })
+
+  const customer7 = manager.create(Customer, {
+    id: "test-customer-7",
+    email: "test7@email.com",
+  })
+
   const deletionCustomer = await manager.create(Customer, {
     id: "test-customer-delete-cg",
     email: "test-deletetion-cg@email.com",
@@ -55,31 +70,13 @@ module.exports = async (connection, data = {}) => {
 
   await manager.insert(CustomerGroup, {
     id: "customer-group-3",
-    name: "vest-group-3",
+    name: "test-group-3",
   })
 
   await manager.insert(CustomerGroup, {
     id: "test-group-4",
     name: "test-group-4",
   })
-
-  const customer5 = manager.create(Customer, {
-    id: "test-customer-5",
-    email: "test5@email.com",
-  })
-  await manager.save(customer5)
-
-  const customer6 = manager.create(Customer, {
-    id: "test-customer-6",
-    email: "test6@email.com",
-  })
-  await manager.save(customer6)
-
-  const customer7 = manager.create(Customer, {
-    id: "test-customer-7",
-    email: "test7@email.com",
-  })
-  await manager.save(customer7)
 
   const c_group_5 = manager.create(CustomerGroup, {
     id: "test-group-5",
