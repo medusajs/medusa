@@ -98,7 +98,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * @param payload - an object which contains an array of customer ids which will be added to the group
    * @param customHeaders
    */
-  addBatch(
+  addCustomers(
     id: string,
     payload: AdminPostCustomerGroupsGroupCustomersBatchReq,
     customHeaders: Record<string, any> = {}
@@ -114,7 +114,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    * @param payload - an object which contains an array of customers ids which will be removed from the group
    * @param customHeaders
    */
-  deleteBatch(
+  removeCustomers(
     id: string,
     payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq,
     customHeaders: Record<string, any> = {}

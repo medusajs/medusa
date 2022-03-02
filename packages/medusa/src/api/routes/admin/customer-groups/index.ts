@@ -48,9 +48,9 @@ export type AdminCustomerGroupsListRes = PaginatedResponse & {
 
 export const defaultAdminCustomerGroupsRelations = []
 
-export { AdminPostCustomerGroupsGroupCustomersBatchReq } from "./add-customers-batch"
-export { AdminPostCustomerGroupsReq } from "./create-customer-group"
-export { AdminDeleteCustomerGroupsGroupCustomerBatchReq } from "./delete-customers-batch"
-export { AdminGetCustomerGroupsGroupParams } from "./get-customer-group"
-export { AdminGetCustomerGroupsParams } from "./list-customer-groups"
-export { AdminPostCustomerGroupsGroupReq } from "./update-customer-group"
+export * from "./add-customers-batch"
+export * from "./create-customer-group"
+export * from "./delete-customers-batch"
+export * from "./get-customer-group"
+export * from "./list-customer-groups"
+export * from "./update-customer-group"
