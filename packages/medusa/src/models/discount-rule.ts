@@ -4,7 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToOne,
+  OneToMany,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
@@ -47,7 +47,7 @@ export class DiscountRule {
   })
   allocation: AllocationType
 
-  @ManyToOne(() => DiscountRuleCondition)
+  @OneToMany(() => DiscountRuleCondition)
   conditions: DiscountRuleCondition[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })

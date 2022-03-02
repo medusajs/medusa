@@ -1,15 +1,25 @@
 import {
   BeforeInsert,
+  Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { CustomerGroup, ProductCollection, ProductTag, ProductType } from ".."
+import {
+  CustomerGroup,
+  DiscountRule,
+  ProductCollection,
+  ProductTag,
+  ProductType,
+} from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Product } from "./product"
 
@@ -31,6 +41,17 @@ export class DiscountRuleCondition {
     enum: DiscountRuleConditionType,
   })
   type: DiscountRuleConditionType
+
+  @Index()
+  @Column()
+  rule_id: string
+
+  @ManyToOne(
+    () => DiscountRule,
+    (dr) => dr.conditions
+  )
+  @JoinColumn({ name: "discount_rule_id" })
+  rule: DiscountRule
 
   @ManyToMany(() => Product)
   @JoinTable({
