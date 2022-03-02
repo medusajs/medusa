@@ -1,4 +1,5 @@
 import { IsBoolean, IsNumber, IsString, ValidateNested } from "class-validator"
+import { MoneyAmountType } from ".."
 import { IsType } from "../utils/validators/is-type"
 import {
   DateComparisonOperator,
@@ -10,7 +11,12 @@ export type ProductVariantPrice = {
   currency_code?: string
   region_id?: string
   amount: number
-  sale_amount?: number | undefined
+  type: MoneyAmountType
+  starts_at?: Date
+  ends_at?: Date
+  min_quantity?: number
+  max_quantity?: number
+  customer_group_ids?: string[]
 }
 
 export type ProductVariantOption = {
