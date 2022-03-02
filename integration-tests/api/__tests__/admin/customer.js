@@ -276,7 +276,10 @@ describe("/admin/customers", () => {
       expect(response.status).toEqual(200)
       expect(response.data.customer.groups).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
+          expect.objectContaining({
+            id: "test-group-4",
+            name: "test-group-4",
+          }),
         ])
       )
 
@@ -323,8 +326,11 @@ describe("/admin/customers", () => {
       expect(response.data.customer.groups.length).toEqual(2)
       expect(response.data.customer.groups).toEqual(
         expect.arrayContaining([
-          expect.objectContaining({ id: "test-group-4", name: "test-group-4" }),
           expect.objectContaining({ id: "test-group-5", name: "test-group-5" }),
+          expect.objectContaining({
+            id: "test-group-4",
+            name: "test-group-4",
+          }),
         ])
       )
     })

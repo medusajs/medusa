@@ -8,6 +8,7 @@ const route = Router()
 export default (app) => {
   app.use("/customer-groups", route)
 
+  route.get("/", middlewares.wrap(require("./list-customer-groups").default))
   route.get("/:id", middlewares.wrap(require("./get-customer-group").default))
   route.post("/", middlewares.wrap(require("./create-customer-group").default))
   route.post(
