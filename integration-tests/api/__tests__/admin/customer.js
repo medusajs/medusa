@@ -229,13 +229,39 @@ describe("/admin/customers", () => {
       )
     })
 
+    it("fails when adding a customer group which doesn't exist", async () => {
+      expect.assertions(3)
+      // Try adding a non existing group
+      const api = useApi()
+
+      await api
+        .post(
+          "/admin/customers/test-customer-3?expand=groups",
+          {
+            groups: [{ id: "fake-group-0" }],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((error) => {
+          expect(error.response.status).toEqual(404)
+          expect(error.response.data.type).toEqual("not_found")
+          expect(error.response.data.message).toEqual(
+            "Customer_group with customer_group_id fake-group-0 does not exist."
+          )
+        })
+    })
+
     it("Correctly updates customer groups", async () => {
       const api = useApi()
       let response = await api
         .post(
           "/admin/customers/test-customer-3?expand=groups",
           {
-            groups: [{ id: "customer-group-4" }],
+            groups: [{ id: "test-group-4" }],
           },
           {
             headers: {
@@ -251,36 +277,7 @@ describe("/admin/customers", () => {
       expect(response.data.customer.groups).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "customer-group-4",
-            name: "test-group-4",
-          }),
-        ])
-      )
-
-      // Try adding a non existing group
-
-      response = await api
-        .post(
-          "/admin/customers/test-customer-3?expand=groups",
-          {
-            groups: [{ id: "customer-group-4" }, { id: "fake-group-0" }],
-          },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-      expect(response.data.customer.groups.length).toEqual(1)
-      expect(response.data.customer.groups).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            id: "customer-group-4",
+            id: "test-group-4",
             name: "test-group-4",
           }),
         ])
@@ -313,7 +310,7 @@ describe("/admin/customers", () => {
         .post(
           "/admin/customers/test-customer-5?expand=groups",
           {
-            groups: [{ id: "test-group-5" }, { id: "customer-group-4" }],
+            groups: [{ id: "test-group-5" }, { id: "test-group-4" }],
           },
           {
             headers: {
@@ -331,7 +328,7 @@ describe("/admin/customers", () => {
         expect.arrayContaining([
           expect.objectContaining({ id: "test-group-5", name: "test-group-5" }),
           expect.objectContaining({
-            id: "customer-group-4",
+            id: "test-group-4",
             name: "test-group-4",
           }),
         ])

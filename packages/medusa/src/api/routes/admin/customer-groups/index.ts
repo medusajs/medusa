@@ -11,6 +11,10 @@ export default (app) => {
   route.get("/", middlewares.wrap(require("./list-customer-groups").default))
   route.get("/:id", middlewares.wrap(require("./get-customer-group").default))
   route.post("/", middlewares.wrap(require("./create-customer-group").default))
+  route.post(
+    "/:id/customers/batch",
+    middlewares.wrap(require("./add-customers-batch").default)
+  )
   route.delete(
     "/:id/customers/batch",
     middlewares.wrap(require("./delete-customers-batch").default)

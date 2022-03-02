@@ -2,6 +2,7 @@ import { BaseService } from "medusa-interfaces"
 import { Validator, MedusaError } from "medusa-core-utils"
 import { parse, toSeconds } from "iso8601-duration"
 import { Brackets, ILike } from "typeorm"
+import { formatException } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate discounts.
@@ -182,24 +183,27 @@ class DiscountService extends BaseService {
           "Fixed discounts can have one region"
         )
       }
-
-      if (discount.regions) {
-        discount.regions = await Promise.all(
-          discount.regions.map((regionId) =>
-            this.regionService_.withTransaction(manager).retrieve(regionId)
+      try {
+        if (discount.regions) {
+          discount.regions = await Promise.all(
+            discount.regions.map((regionId) =>
+              this.regionService_.withTransaction(manager).retrieve(regionId)
+            )
           )
-        )
+        }
+
+        const discountRule = await ruleRepo.create(validatedRule)
+        const createdDiscountRule = await ruleRepo.save(discountRule)
+
+        discount.code = discount.code.toUpperCase()
+        discount.rule = createdDiscountRule
+
+        const created = await discountRepo.create(discount)
+        const result = await discountRepo.save(created)
+        return result
+      } catch (error) {
+        throw formatException(error)
       }
-
-      const discountRule = await ruleRepo.create(validatedRule)
-      const createdDiscountRule = await ruleRepo.save(discountRule)
-
-      discount.code = discount.code.toUpperCase()
-      discount.rule = createdDiscountRule
-
-      const created = await discountRepo.create(discount)
-      const result = await discountRepo.save(created)
-      return result
     })
   }
 

@@ -55,6 +55,7 @@ module.exports = async (connection, data = {}) => {
     id: "test-customer-delete-cg",
     email: "test-deletetion-cg@email.com",
   })
+  await manager.save(deletionCustomer)
 
   await manager.insert(CustomerGroup, {
     id: "customer-group-1",
@@ -73,7 +74,7 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.insert(CustomerGroup, {
-    id: "customer-group-4",
+    id: "test-group-4",
     name: "test-group-4",
   })
 
@@ -81,11 +82,13 @@ module.exports = async (connection, data = {}) => {
     id: "test-group-5",
     name: "test-group-5",
   })
+  await manager.save(c_group_5)
 
   const c_group_6 = manager.create(CustomerGroup, {
     id: "test-group-6",
     name: "test-group-6",
   })
+  await manager.save(c_group_6)
 
   customer5.groups = [c_group_5]
   await manager.save(customer5)
@@ -100,6 +103,7 @@ module.exports = async (connection, data = {}) => {
     id: "test-group-delete",
     name: "test-group-delete",
   })
+  await manager.save(c_group_delete)
 
   deletionCustomer.groups = [c_group_delete]
   await manager.save(deletionCustomer)
