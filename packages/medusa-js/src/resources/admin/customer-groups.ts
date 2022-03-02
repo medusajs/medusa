@@ -6,10 +6,10 @@ import {
   AdminPostCustomerGroupsGroupReq,
   AdminCustomerGroupsDeleteRes,
 } from "@medusajs/medusa"
+import qs from "qs"
 
 import BaseResource from "../base"
 import { ResponsePromise } from "../.."
-import qs from "qs"
 
 class AdminCustomerGroupsResource extends BaseResource {
   /**
