@@ -46,3 +46,4 @@ export const defaultAdminCustomerGroupsRelations = []
 
 export * from "./create-customer-group"
 export * from "./update-customer-group"
+export * from "./list-customer-groups"

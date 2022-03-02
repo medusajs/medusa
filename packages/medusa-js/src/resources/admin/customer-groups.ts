@@ -1,6 +1,7 @@
 import {
   AdminPostCustomerGroupsReq,
   AdminCustomerGroupsRes,
+  AdminGetCustomerGroupsParams,
   AdminCustomerGroupsListRes,
   AdminPostCustomerGroupsGroupReq,
   AdminCustomerGroupsDeleteRes,
@@ -8,6 +9,7 @@ import {
 
 import BaseResource from "../base"
 import { ResponsePromise } from "../.."
+import qs from "qs"
 
 class AdminCustomerGroupsResource extends BaseResource {
   /**
@@ -66,11 +68,24 @@ class AdminCustomerGroupsResource extends BaseResource {
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
-  //   TODO
-  //   list(
-  //     query?: AdminCustomerGroupsListParams,
-  //     customHeaders: Record<string, any> = {}
-  //   ): ResponsePromise<AdminCustomerGroupsListRes> {}
+  /**
+   * Lists customer groups.
+   * @param query optional
+   * @param customHeaders
+   */
+  list(
+    query?: AdminGetCustomerGroupsParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCustomerGroupsListRes> {
+    let path = `/admin/customer-groups`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/customer-groups?${queryString}`
+    }
+
+    return this.client.request("GET", path, {}, {}, customHeaders)
+  }
 }
 
 export default AdminCustomerGroupsResource
