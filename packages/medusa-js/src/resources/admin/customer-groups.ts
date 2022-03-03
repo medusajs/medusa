@@ -102,7 +102,7 @@ class AdminCustomerGroupsResource extends BaseResource {
     id: string,
     payload: AdminPostCustomerGroupsGroupCustomersBatchReq,
     customHeaders: Record<string, any> = {}
-  ): Promise<AdminCustomerGroupsRes> {
+  ): ResponsePromise<AdminCustomerGroupsRes> {
     const path = `/admin/customer-groups/${id}/customers/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -118,7 +118,7 @@ class AdminCustomerGroupsResource extends BaseResource {
     id: string,
     payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq,
     customHeaders: Record<string, any> = {}
-  ): Promise<AdminCustomerGroupsRes> {
+  ): ResponsePromise<AdminCustomerGroupsRes> {
     const path = `/admin/customer-groups/${id}/customers/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }

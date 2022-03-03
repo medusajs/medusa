@@ -1,5 +1,7 @@
 import {
   AdminCustomerGroupsRes,
+  AdminDeleteCustomerGroupsGroupCustomerBatchReq,
+  AdminPostCustomerGroupsGroupCustomersBatchReq,
   AdminPostCustomerGroupsGroupReq,
   AdminPostCustomerGroupsReq,
 } from "@medusajs/medusa"
@@ -40,6 +42,48 @@ export const useAdminUpdateCustomerGroup = (
   return useMutation(
     (payload: AdminPostCustomerGroupsGroupReq) =>
       client.admin.customerGroups.update(id, payload),
+    buildOptions(
+      queryClient,
+      [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
+      options
+    )
+  )
+}
+
+export const useAdminAddCustomersToCustomerGroup = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminCustomerGroupsRes>,
+    Error,
+    AdminPostCustomerGroupsGroupCustomersBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostCustomerGroupsGroupCustomersBatchReq) =>
+      client.admin.customerGroups.addCustomers(id, payload),
+    buildOptions(
+      queryClient,
+      [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
+      options
+    )
+  )
+}
+
+export const useAdminRemoveCustomersFromCustomerGroup = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminCustomerGroupsRes>,
+    Error,
+    AdminDeleteCustomerGroupsGroupCustomerBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq) =>
+      client.admin.customerGroups.removeCustomers(id, payload),
     buildOptions(
       queryClient,
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
