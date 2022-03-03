@@ -21,7 +21,7 @@ type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
 /**
  * Hook retrieves a customer group by id.
  *
- * @param id customer group id
+ * @param id - customer group id
  * @param options
  */
 export const useAdminCustomerGroup = (
@@ -44,7 +44,7 @@ export const useAdminCustomerGroup = (
 /**
  * Hook retrieves a list of customer gorups.
  *
- * @param query pagination/filtering params
+ * @param query - pagination/filtering params
  * @param options
  */
 export const useAdminCustomerGroups = (

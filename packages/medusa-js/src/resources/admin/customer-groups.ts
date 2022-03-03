@@ -17,7 +17,7 @@ class AdminCustomerGroupsResource extends BaseResource {
   /**
    * Create a customer group.
    *
-   * @param payload - Customer group info.
+   * @param payload - customer group info
    * @param customHeaders
    */
   create(
@@ -44,8 +44,8 @@ class AdminCustomerGroupsResource extends BaseResource {
   /**
    * Updates a customer group
    *
-   * @param id customer group id
-   * @param payload data to update customer group with
+   * @param id - customer group id
+   * @param payload - data to update customer group with
    * @param customHeaders
    */
   update(
