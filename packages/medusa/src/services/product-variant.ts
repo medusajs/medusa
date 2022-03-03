@@ -1,6 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, EntityManager, ILike, In, SelectQueryBuilder } from "typeorm"
+import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import { CustomerGroupService } from "."
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
@@ -38,6 +39,7 @@ class ProductVariantService extends BaseService {
   private productRepository_: typeof ProductRepository
   private eventBus_: EventBusService
   private regionService_: RegionService
+  private customerGroupService_: CustomerGroupService
   private moneyAmountRepository_: typeof MoneyAmountRepository
   private productOptionValueRepository_: typeof ProductOptionValueRepository
 
@@ -47,6 +49,7 @@ class ProductVariantService extends BaseService {
     productRepository,
     eventBusService,
     regionService,
+    customerGroupService,
     moneyAmountRepository,
     productOptionValueRepository,
   }) {
@@ -67,6 +70,9 @@ class ProductVariantService extends BaseService {
     /** @private @const {RegionService} */
     this.regionService_ = regionService
 
+    /** @private @const {CustomerGroupService} */
+    this.customerGroupService_ = customerGroupService
+
     this.moneyAmountRepository_ = moneyAmountRepository
 
     this.productOptionValueRepository_ = productOptionValueRepository
@@ -83,6 +89,7 @@ class ProductVariantService extends BaseService {
       productRepository: this.productRepository_,
       eventBusService: this.eventBus_,
       regionService: this.regionService_,
+      customerGroupService: this.customerGroupService_,
       moneyAmountRepository: this.moneyAmountRepository_,
       productOptionValueRepository: this.productOptionValueRepository_,
     })
@@ -227,11 +234,7 @@ class ProductVariantService extends BaseService {
       if (prices) {
         for (const price of prices) {
           if (price.region_id) {
-            await this.setRegionPrice(result.id, {
-              amount: price.amount,
-              region_id: price.region_id,
-              sale_amount: price.sale_amount,
-            })
+            await this.setRegionPrice(result.id, price)
           } else {
             await this.setCurrencyPrice(result.id, price)
           }
@@ -319,7 +322,8 @@ class ProductVariantService extends BaseService {
 
   async updateVariantPrices(
     variantId: string,
-    prices: ProductVariantPrice[]
+    prices: ProductVariantPrice[],
+    pricesToDelete?: string[]
   ): Promise<void> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(
@@ -327,24 +331,31 @@ class ProductVariantService extends BaseService {
       )
 
       // get prices to be deleted
-      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
-        variantId,
-        prices
-      )
+      // const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
+      //   variantId,
+      //   prices
+      // )
 
-      for (const price of prices) {
-        if (price.region_id) {
-          await this.setRegionPrice(variantId, {
-            region_id: price.region_id,
-            amount: price.amount,
-            sale_amount: price.sale_amount || undefined,
-          })
-        } else {
-          await this.setCurrencyPrice(variantId, price)
-        }
+      // for (const price of prices) {
+      //   if (price.region_id) {
+      //     await this.setRegionPrice(variantId, {
+      //       region_id: price.region_id,
+      //       amount: price.amount,
+      //       type: price.type,
+      //     })
+      //   } else {
+      //     await this.setCurrencyPrice(variantId, price)
+      //   }
+      // }
+
+      const regionalPrices = prices.filter((p) => p.region_id)
+      const currencyPrices = prices.filter((p) => !p.region_id)
+
+      // await moneyAmountRepo.remove(obsoletePrices)
+
+      if (pricesToDelete) {
+        await moneyAmountRepo.bulkDelete(pricesToDelete, variantId)
       }
-
-      await moneyAmountRepo.remove(obsoletePrices)
     })
   }
 
@@ -406,11 +417,8 @@ class ProductVariantService extends BaseService {
         )
       }
 
-      // Always return sale price, if present
-      if (moneyAmount.sale_amount) {
-        return moneyAmount.sale_amount
-      }
-
+      // TODO: This will just return the first price for the region,
+      // we need to add the PriceStrategy to get the correct price here
       return moneyAmount.amount
     })
   }
@@ -424,7 +432,7 @@ class ProductVariantService extends BaseService {
   async setRegionPrice(
     variantId: string,
     price: ProductVariantPrice
-  ): Promise<MoneyAmount> {
+  ): Promise<MoneyAmount[]> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(
         this.moneyAmountRepository_
@@ -444,7 +452,10 @@ class ProductVariantService extends BaseService {
         })
       } else {
         moneyAmount.amount = price.amount
-        moneyAmount.sale_amount = price.sale_amount
+
+        if (price.customer_group_ids) {
+          console.log()
+        }
       }
 
       const result = await moneyAmountRepo.save(moneyAmount)

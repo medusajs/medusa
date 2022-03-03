@@ -9,11 +9,10 @@ import {
 import { MoneyAmount } from "../models/money-amount"
 
 type Price = Partial<
-  Pick<
-    MoneyAmount,
-    "currency_code" | "region_id" | "sale_amount" | "currency_code"
-  >
-> & { amount: number }
+  Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
+> & {
+  amount: number
+}
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
@@ -50,9 +49,27 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       })
     } else {
       moneyAmount.amount = price.amount
-      moneyAmount.sale_amount = price.sale_amount
     }
 
     return await this.save(moneyAmount)
+  }
+
+  public async bulkValidateIds(ids: string[]) {
+    const moneyAmounts = await this.find({
+      where: {
+        id: In(ids),
+      },
+      select: ["id"],
+    })
+
+    return moneyAmounts.map((moneyAmount) => moneyAmount.id)
+  }
+
+  public async bulkDelete(moneyAmountIds: string[], variantId: string) {
+    await this.createQueryBuilder()
+      .delete()
+      .from(MoneyAmount)
+      .where({ id: In(moneyAmountIds), variant_id: variantId })
+      .execute()
   }
 }

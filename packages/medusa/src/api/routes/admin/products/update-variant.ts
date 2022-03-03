@@ -1,7 +1,10 @@
 import { Type } from "class-transformer"
 import {
+  ArrayNotEmpty,
   IsArray,
   IsBoolean,
+  IsDate,
+  IsEnum,
   IsInt,
   IsNumber,
   IsObject,
@@ -12,6 +15,7 @@ import {
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
+import { MoneyAmountType } from "../../../../types/money-amount"
 import { XorConstraint } from "../../../../types/validators/xor"
 import { validator } from "../../../../utils/validator"
 
@@ -153,6 +157,10 @@ class ProductVariantOptionReq {
 }
 
 class ProductVariantPricesReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
   @Validate(XorConstraint, ["currency_code"])
   region_id?: string
 
@@ -163,8 +171,29 @@ class ProductVariantPricesReq {
   amount: number
 
   @IsOptional()
+  @IsEnum(MoneyAmountType)
+  type?: MoneyAmountType = MoneyAmountType.DEFAULT
+
+  @IsOptional()
+  @IsDate()
+  start_date?: Date
+
+  @IsOptional()
+  @IsDate()
+  end_date?: Date
+
+  @IsOptional()
   @IsInt()
-  sale_amount?: number
+  min_quantity?: number
+
+  @IsOptional()
+  @IsInt()
+  max_quantity?: number
+
+  @IsOptional()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  customer_group_ids: string[]
 }
 
 export class AdminPostProductsProductVariantsVariantReq {

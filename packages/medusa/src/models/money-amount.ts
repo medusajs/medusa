@@ -13,17 +13,12 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { MoneyAmountType } from "../types/money-amount"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Currency } from "./currency"
 import { CustomerGroup } from "./customer-group"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
-
-export enum MoneyAmountType {
-  DEFAULT = "default",
-  SALE = "sale",
-  COST = "cost",
-}
 
 @Entity()
 export class MoneyAmount {
