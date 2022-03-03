@@ -773,7 +773,26 @@ describe("/admin/products", () => {
           {
             title: "Test variant",
             inventory_quantity: 10,
-            prices: [{ currency_code: "usd", amount: 100 }],
+            prices: [
+              {
+                currency_code: "usd",
+                amount: 100,
+              },
+              {
+                currency_code: "usd",
+                amount: 45,
+                type: "cost",
+                min_quantity: 1,
+                max_quantity: 10,
+              },
+              {
+                currency_code: "usd",
+                amount: 30,
+                type: "cost",
+                min_quantity: 11,
+                max_quantity: 20,
+              },
+            ],
             options: [{ value: "large" }, { value: "green" }],
           },
         ],
@@ -836,6 +855,21 @@ describe("/admin/products", () => {
                 expect.objectContaining({
                   currency_code: "usd",
                   amount: 100,
+                  type: "default",
+                }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 45,
+                  type: "cost",
+                  min_quantity: 1,
+                  max_quantity: 10,
+                }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 30,
+                  type: "cost",
+                  min_quantity: 11,
+                  max_quantity: 20,
                 }),
               ],
               options: [
@@ -1007,7 +1041,11 @@ describe("/admin/products", () => {
               {
                 currency_code: "usd",
                 amount: 100,
-                sale_amount: 75,
+              },
+              {
+                currency_code: "usd",
+                amount: 75,
+                type: "sale",
               },
             ],
           },
@@ -1030,36 +1068,111 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          images: expect.arrayContaining([
-            expect.objectContaining({
-              url: "test-image-2.png",
-            }),
-          ]),
-          thumbnail: "test-image-2.png",
-          tags: [
-            expect.objectContaining({
-              value: "123",
-            }),
-          ],
-          variants: [
-            expect.objectContaining({
-              prices: [
-                expect.objectContaining({
-                  sale_amount: 75,
-                  amount: 100,
-                }),
-              ],
-            }),
-          ],
-          status: "published",
-          collection: null,
-          type: expect.objectContaining({
-            value: "test-type-2",
-          }),
-        })
-      )
+      expect(response.data.product).toMatchSnapshot({
+        id: "test-product",
+        created_at: expect.any(String),
+        description: "test-product-description",
+        discountable: true,
+        handle: "test-product",
+        images: [
+          {
+            created_at: expect.any(String),
+            deleted_at: null,
+            id: expect.stringMatching(/^img_*/),
+            metadata: null,
+            updated_at: expect.any(String),
+            url: "test-image-2.png",
+          },
+        ],
+        is_giftcard: false,
+        options: [
+          {
+            created_at: expect.any(String),
+            id: "test-option",
+            product_id: "test-product",
+            title: "test-option",
+            updated_at: expect.any(String),
+          },
+        ],
+        profile_id: expect.stringMatching(/^sp_*/),
+        status: "published",
+        tags: [
+          {
+            created_at: expect.any(String),
+            id: "tag1",
+            updated_at: expect.any(String),
+            value: "123",
+          },
+        ],
+        thumbnail: "test-image-2.png",
+        title: "Test product",
+        type: {
+          created_at: expect.any(String),
+          id: expect.stringMatching(/^ptyp_*/),
+          updated_at: expect.any(String),
+          value: "test-type-2",
+        },
+        type_id: expect.stringMatching(/^ptyp_*/),
+        updated_at: expect.any(String),
+        variants: [
+          {
+            allow_backorder: false,
+            barcode: "test-barcode",
+            created_at: expect.any(String),
+            ean: "test-ean",
+            id: "test-variant",
+            inventory_quantity: 10,
+            manage_inventory: true,
+            options: [
+              {
+                created_at: expect.any(String),
+                deleted_at: null,
+                id: "test-variant-option",
+                metadata: null,
+                option_id: "test-option",
+                updated_at: expect.any(String),
+                value: "Default variant",
+                variant_id: "test-variant",
+              },
+            ],
+            origin_country: null,
+            prices: [
+              {
+                amount: 100,
+                created_at: expect.any(String),
+                currency_code: "usd",
+                id: "test-price",
+                type: "default",
+                updated_at: expect.any(String),
+                variant_id: "test-variant",
+              },
+              {
+                amount: 100,
+                created_at: expect.any(String),
+                currency_code: "usd",
+                id: expect.stringMatching(/^ma_*/),
+                type: "default",
+                updated_at: expect.any(String),
+                variant_id: "test-variant",
+              },
+              {
+                amount: 75,
+                created_at: expect.any(String),
+                currency_code: "usd",
+                id: expect.stringMatching(/^ma*/),
+                type: "sale",
+                updated_at: expect.any(String),
+                variant_id: "test-variant",
+              },
+            ],
+            product_id: "test-product",
+            sku: "test-sku",
+            title: "Test variant",
+            upc: "test-upc",
+            updated_at: expect.any(String),
+          },
+        ],
+      })
     })
 
     it("updates product (removes images when empty array included)", async () => {
@@ -1205,13 +1318,18 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("successfully updates a variant's prices by changing an existing price (currency_code)", async () => {
+    it("successfully updates a variant's prices by adding two new region prices", async () => {
       const api = useApi()
       const data = {
         prices: [
           {
-            currency_code: "usd",
+            region_id: "test-region",
             amount: 1500,
+          },
+          {
+            region_id: "test-region",
+            amount: 1000,
+            type: "sale",
           },
         ],
       }
@@ -1244,47 +1362,6 @@ describe("/admin/products", () => {
           ]),
         }),
       })
-    })
-
-    it("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
-      const api = useApi()
-      const data = {
-        prices: [
-          {
-            region_id: "test-region",
-            amount: 1500,
-          },
-        ],
-      }
-
-      const response = await api
-        .post("/admin/products/test-product1/variants/test-variant_3", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-variant_3",
-              prices: expect.arrayContaining([
-                expect.objectContaining({
-                  amount: 1500,
-                  currency_code: "usd",
-                  region_id: "test-region",
-                }),
-              ]),
-            }),
-          ]),
-        })
-      )
     })
 
     it("successfully updates a variant's prices by adding a new price", async () => {
@@ -1295,7 +1372,8 @@ describe("/admin/products", () => {
           // usd price coming from the product seeder
           {
             currency_code: "usd",
-            amount: 100,
+            amount: 50,
+            type: "sale",
           },
           {
             currency_code: "eur",
@@ -1314,27 +1392,66 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
+      console.warn(response.data.product)
+
       expect(response.status).toEqual(200)
 
-      expect(response.data).toEqual({
-        product: expect.objectContaining({
-          id: "test-product",
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-variant",
-              prices: [
-                expect.objectContaining({
-                  amount: 100,
-                  currency_code: "usd",
-                }),
-                expect.objectContaining({
-                  amount: 4500,
-                  currency_code: "eur",
-                }),
-              ],
-            }),
-          ]),
-        }),
+      const updatedVariant = response.data.product.variants.find(
+        (v) => v.id === "test-variant"
+      )
+
+      expect(updatedVariant).toMatchSnapshot({
+        id: "test-variant",
+        allow_backorder: false,
+        barcode: "test-barcode",
+        ean: "test-ean",
+        inventory_quantity: 10,
+        manage_inventory: true,
+        prices: [
+          {
+            id: "test-price",
+            amount: 100,
+            currency_code: "usd",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            type: "default",
+            variant_id: "test-variant",
+          },
+          {
+            id: expect.stringMatching(/^ma_*/),
+            amount: 50,
+            currency_code: "usd",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            type: "sale",
+            variant_id: "test-variant",
+          },
+          {
+            id: expect.stringMatching(/^ma_*/),
+            amount: 4500,
+            currency_code: "eur",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            type: "default",
+            variant_id: "test-variant",
+          },
+        ],
+        options: [
+          {
+            created_at: expect.any(String),
+            id: "test-variant-option",
+            option_id: "test-option",
+            updated_at: expect.any(String),
+            value: "Default variant",
+            variant_id: "test-variant",
+          },
+        ],
+        product_id: "test-product",
+        sku: "test-sku",
+        title: "Test variant prices",
+        upc: "test-upc",
+        updated_at: expect.any(String),
+        created_at: expect.any(String),
       })
     })
 
@@ -1343,6 +1460,7 @@ describe("/admin/products", () => {
       const data = {
         prices: [
           {
+            id: "test-price",
             currency_code: "eur",
             amount: 4500,
           },
@@ -1366,65 +1484,49 @@ describe("/admin/products", () => {
       )
       expect(response.data.product.variants[0].prices).toEqual([
         expect.objectContaining({
+          id: "test-price",
           amount: 4500,
           currency_code: "eur",
         }),
       ])
     })
 
-    it("successfully updates a variant's prices by deleting a price and adding another price", async () => {
+    it("successfully deletes a variant's price", async () => {
       const api = useApi()
-      const data = {
-        prices: [
-          {
-            currency_code: "dkk",
-            amount: 8000,
-          },
-          {
-            currency_code: "eur",
-            amount: 900,
-          },
-        ],
-      }
+      const data = { price_ids: ["test-price"] }
 
       const response = await api
-        .post("/admin/products/test-product/variants/test-variant", data, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
+        .delete(
+          "/admin/products/test-product/variants/test-variant/prices/batch",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+            data: data,
+          }
+        )
         .catch((err) => {
-          console.log(err)
+          console.warn(err)
         })
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product.variants[0].prices.length).toEqual(
-        data.prices.length
-      )
-      expect(response.data.product.variants[0].prices).toEqual([
-        expect.objectContaining({
-          amount: 8000,
-          currency_code: "dkk",
-        }),
-        expect.objectContaining({
-          amount: 900,
-          currency_code: "eur",
-        }),
-      ])
+      expect(response.data.product.variants[0].prices.length).toEqual(0)
     })
 
-    it("successfully updates a variant's prices by updating an existing price (using region_id) and adding another price", async () => {
+    it("successfully updates a variant's prices by updating an existing price and adding another price", async () => {
       const api = useApi()
       const data = {
         prices: [
           {
-            region_id: "test-region",
+            id: "test-price3",
+            type: "sale",
             amount: 8000,
           },
           {
             currency_code: "eur",
             amount: 900,
+            type: "sale",
           },
         ],
       }
