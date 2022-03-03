@@ -37,7 +37,7 @@ export const useAdminCreateCustomerGroup = (
 /**
  * Hook return functions for updating a customer group.
  *
- * @param id id of a customer group that is beeing updated
+ * @param id - id of the customer group that is being updated
  * @param options
  */
 export const useAdminUpdateCustomerGroup = (
@@ -64,7 +64,7 @@ export const useAdminUpdateCustomerGroup = (
 /**
  * Hook returns functions for addition of multiple customers to a customer group.
  *
- * @param id id of a customer group in which customers are beeing added
+ * @param id - id of the customer group in which customers are being added
  * @param options
  */
 export const useAdminAddCustomersToCustomerGroup = (
@@ -91,7 +91,7 @@ export const useAdminAddCustomersToCustomerGroup = (
 /**
  * Hook returns function for removal of multiple customers from a customer group.
  *
- * @param id id of a group from which customers will be removed
+ * @param id - id of a group from which customers will be removed
  * @param options
  */
 export const useAdminRemoveCustomersFromCustomerGroup = (
