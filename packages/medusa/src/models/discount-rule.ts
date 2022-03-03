@@ -10,7 +10,7 @@ import {
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
-import { DiscountRuleCondition } from "./discount-rule-condition"
+import { DiscountCondition } from "./discount-condition"
 
 export enum DiscountRuleType {
   FIXED = "fixed",
@@ -48,10 +48,10 @@ export class DiscountRule {
   allocation: AllocationType
 
   @OneToMany(
-    () => DiscountRuleCondition,
+    () => DiscountCondition,
     (con) => con.discount_rule
   )
-  conditions: DiscountRuleCondition[]
+  conditions: DiscountCondition[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -104,7 +104,7 @@ export class DiscountRule {
  *     description: "A set of conditions that can be used to limit when  the discount can be used"
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/discount_rule_condition"
+ *       $ref: "#/components/schemas/discount_condition"
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

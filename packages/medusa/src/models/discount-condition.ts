@@ -23,7 +23,7 @@ import {
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Product } from "./product"
 
-export enum DiscountRuleConditionType {
+export enum DiscountConditionType {
   PRODUCTS = "products",
   PRODUCT_TYPES = "product_types",
   PRODUCT_COLLECTIONS = "product_collections",
@@ -32,15 +32,15 @@ export enum DiscountRuleConditionType {
 }
 
 @Entity()
-export class DiscountRuleCondition {
+export class DiscountCondition {
   @PrimaryColumn()
   id: string
 
   @DbAwareColumn({
     type: "enum",
-    enum: DiscountRuleConditionType,
+    enum: DiscountConditionType,
   })
-  type: DiscountRuleConditionType
+  type: DiscountConditionType
 
   @Index()
   @Column()
@@ -55,9 +55,9 @@ export class DiscountRuleCondition {
 
   @ManyToMany(() => Product)
   @JoinTable({
-    name: "discount_rule_condition_products",
+    name: "discount_condition_product",
     joinColumn: {
-      name: "discount_rule_condition_id",
+      name: "condition_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
@@ -69,9 +69,9 @@ export class DiscountRuleCondition {
 
   @ManyToMany(() => ProductType)
   @JoinTable({
-    name: "discount_rule_condition_product_types",
+    name: "discount_condition_product_type",
     joinColumn: {
-      name: "discount_rule_condition_id",
+      name: "condition_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
@@ -83,9 +83,9 @@ export class DiscountRuleCondition {
 
   @ManyToMany(() => ProductTag)
   @JoinTable({
-    name: "discount_rule_condition_product_tags",
+    name: "discount_condition_product_tag",
     joinColumn: {
-      name: "discount_rule_condition_id",
+      name: "condition_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
@@ -97,9 +97,9 @@ export class DiscountRuleCondition {
 
   @ManyToMany(() => ProductCollection)
   @JoinTable({
-    name: "discount_rule_condition_product_collections",
+    name: "discount_condition_product_collection",
     joinColumn: {
-      name: "discount_rule_condition_id",
+      name: "condition_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
@@ -111,9 +111,9 @@ export class DiscountRuleCondition {
 
   @ManyToMany(() => CustomerGroup)
   @JoinTable({
-    name: "discount_rule_condition_customer_group",
+    name: "discount_condition_customer_group",
     joinColumn: {
-      name: "discount_rule_condition_id",
+      name: "condition_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
@@ -138,18 +138,18 @@ export class DiscountRuleCondition {
   @BeforeInsert()
   private beforeInsert() {
     const id = ulid()
-    this.id = `drucon_${id}`
+    this.id = `discon_${id}`
   }
 }
 
 /**
- * @schema discount_rule_condition
- * title: "Discount Rule Condition"
+ * @schema discount_condition
+ * title: "Discount Condition"
  * description: "Holds rule conditions for when a discount is applicable"
- * x-resourceId: discount_rule_condition
+ * x-resourceId: discount_condition
  * properties:
  *   id:
- *     description: "The id of the Discount Rule Condition. Will be prefixed by `drucon_`."
+ *     description: "The id of the Discount Condition. Will be prefixed by `discon_`."
  *     type: string
  *   type:
  *     description: "The type of the Condition"
