@@ -1,6 +1,9 @@
 import { renderHook } from "@testing-library/react-hooks"
 
-import { useAdminCreateCustomerGroup } from "../../../../src/"
+import {
+  useAdminCreateCustomerGroup,
+  useAdminUpdateCustomerGroup,
+} from "../../../../src/"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
@@ -23,7 +26,34 @@ describe("useAdminCreateCustomerGroup hook", () => {
 
     expect(result.current.data.response.status).toEqual(200)
     expect(result.current.data.customer_group).toEqual(
-      expect.objectContaining({})
+      expect.objectContaining(group)
     )
+  })
+
+  describe("useAdminUpdateCustomerGroup hook", () => {
+    test("updates a customer group and returns it", async () => {
+      const group = {
+        name: "Changeed name",
+      }
+
+      const { result, waitFor } = renderHook(
+        () => useAdminUpdateCustomerGroup(fixtures.get("customer_group").id),
+        {
+          wrapper: createWrapper(),
+        }
+      )
+
+      result.current.mutate(group)
+
+      await waitFor(() => result.current.isSuccess)
+
+      expect(result.current.data.response.status).toEqual(200)
+      expect(result.current.data.customer_group).toEqual(
+        expect.objectContaining({
+          ...fixtures.get("customer_group"),
+          ...group,
+        })
+      )
+    })
   })
 })
