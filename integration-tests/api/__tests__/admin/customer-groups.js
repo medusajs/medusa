@@ -466,6 +466,66 @@ describe("/admin/customer-groups", () => {
       const db = useDb()
       await db.teardown()
     })
+
+    it("retreive a list of customer groups", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(
+          `/admin/customer-groups?limit=5&offset=2&expand=customers&order=created_at`,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch(console.log)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(7)
+      expect(response.data.customer_groups.length).toEqual(5)
+      expect(response.data.customer_groups[0]).toEqual(
+        expect.objectContaining({ id: "customer-group-3" })
+      )
+      expect(response.data.customer_groups[0]).toHaveProperty("customers")
+    })
+
+    it("retreive a list of customer groups filtered by name using `q` param", async () => {
+      const api = useApi()
+
+      const response = await api.get(`/admin/customer-groups?q=vip-customers`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.customer_groups).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "customer-group-1" }),
+        ])
+      )
+      expect(response.data.customer_groups[0]).not.toHaveProperty("customers")
+    })
+  })
+
+  describe("GET /admin/customer-groups/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
     it("gets customer group", async () => {
       const api = useApi()
 
