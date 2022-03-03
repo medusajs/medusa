@@ -12,6 +12,11 @@ import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminCustomerGroupKeys } from "./queries"
 
+/**
+ * Hook returns functions for creating user groups.
+ *
+ * @param options
+ */
 export const useAdminCreateCustomerGroup = (
   options?: UseMutationOptions<
     Response<AdminCustomerGroupsRes>,
@@ -29,6 +34,12 @@ export const useAdminCreateCustomerGroup = (
   )
 }
 
+/**
+ * Hook return functions for updating a customer group.
+ *
+ * @param id id of a customer group that is beeing updated
+ * @param options
+ */
 export const useAdminUpdateCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
@@ -50,6 +61,12 @@ export const useAdminUpdateCustomerGroup = (
   )
 }
 
+/**
+ * Hook returns functions for addition of multiple customers to a customer group.
+ *
+ * @param id id of a customer group in which customers are beeing added
+ * @param options
+ */
 export const useAdminAddCustomersToCustomerGroup = (
   id: string,
   options?: UseMutationOptions<
@@ -71,6 +88,12 @@ export const useAdminAddCustomersToCustomerGroup = (
   )
 }
 
+/**
+ * Hook returns function for removal of multiple customers from a customer group.
+ *
+ * @param id id of a group from which customers will be removed
+ * @param options
+ */
 export const useAdminRemoveCustomersFromCustomerGroup = (
   id: string,
   options?: UseMutationOptions<

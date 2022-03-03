@@ -18,6 +18,12 @@ export const adminCustomerGroupKeys = queryKeysFactory(
 
 type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
 
+/**
+ * Hook retrieves a customer group by id.
+ *
+ * @param id customer group id
+ * @param options
+ */
 export const useAdminCustomerGroup = (
   id: string,
   options?: UseQueryOptionsWrapper<
@@ -35,6 +41,12 @@ export const useAdminCustomerGroup = (
   return { ...data, ...rest } as const
 }
 
+/**
+ * Hook retrieves a list of customer gorups.
+ *
+ * @param query pagination/filtering params
+ * @param options
+ */
 export const useAdminCustomerGroups = (
   query?: AdminGetCustomerGroupsParams,
   options?: UseQueryOptionsWrapper<
