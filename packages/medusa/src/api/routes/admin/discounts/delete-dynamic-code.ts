@@ -28,7 +28,8 @@ export default async (req, res) => {
   await discountService.deleteDynamicCode(discount_id, code)
 
   const discount = await discountService.retrieve(discount_id, {
-    relations: ["rule", "rule.valid_for", "regions"],
+    // TODO: Add conditions relation
+    relations: ["rule", "regions"],
   })
 
   res.status(200).json({ discount })

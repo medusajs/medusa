@@ -1,4 +1,11 @@
-import { DeleteResult, EntityRepository, In, Not, Repository } from "typeorm"
+import {
+  DeleteResult,
+  EntityRepository,
+  EntityTarget,
+  In,
+  Not,
+  Repository,
+} from "typeorm"
 import {
   DiscountCondition,
   DiscountConditionType,
@@ -9,39 +16,55 @@ import { DiscountConditionProductCollection } from "../models/discount-condition
 import { DiscountConditionProductTag } from "../models/discount-condition-product-tag"
 import { DiscountConditionProductType } from "../models/discount-condition-product-type"
 
+enum DiscountConditionResourceTableId {
+  PRODUCT_ID = "product_id",
+  PRODUCT_TYPE_ID = "product_type_id",
+  PRODUCT_COLLECTION_ID = "product_collection_id",
+  PRODUCT_TAG_ID = "product_tag_id",
+  CUSTOMER_GROUP_ID = "customer_group_id",
+}
+
+type DiscountConditionResourceType = EntityTarget<
+  | DiscountConditionProduct
+  | DiscountConditionProductType
+  | DiscountConditionProductCollection
+  | DiscountConditionProductTag
+  | DiscountConditionCustomerGroup
+> | null
+
 @EntityRepository(DiscountCondition)
 export class DiscountConditionRepository extends Repository<DiscountCondition> {
   getResourceIdentifiers(type: string): {
-    fromTable: any
-    resourceId: string
+    fromTable: DiscountConditionResourceType
+    resourceId: string | undefined
   } {
-    let fromTable: any = null
-    let resourceId = ""
+    let fromTable: DiscountConditionResourceType = null
+    let resourceId: DiscountConditionResourceType | undefined = undefined
 
     switch (type) {
       case DiscountConditionType.PRODUCTS: {
         fromTable = DiscountConditionProduct
-        resourceId = "product_id"
+        resourceId = DiscountConditionResourceTableId.PRODUCT_ID
         break
       }
       case DiscountConditionType.PRODUCT_TYPES: {
         fromTable = DiscountConditionProductType
-        resourceId = "product_type_id"
+        resourceId = DiscountConditionResourceTableId.PRODUCT_TYPE_ID
         break
       }
       case DiscountConditionType.PRODUCT_COLLECTIONS: {
         fromTable = DiscountConditionProductCollection
-        resourceId = "product_collection_id"
+        resourceId = DiscountConditionResourceTableId.PRODUCT_COLLECTION_ID
         break
       }
       case DiscountConditionType.PRODUCT_TAGS: {
         fromTable = DiscountConditionProductTag
-        resourceId = "product_tag_id"
+        resourceId = DiscountConditionResourceTableId.PRODUCT_TAG_ID
         break
       }
       case DiscountConditionType.CUSTOMER_GROUPS: {
         fromTable = DiscountConditionCustomerGroup
-        resourceId = "customer_group_id"
+        resourceId = DiscountConditionResourceTableId.CUSTOMER_GROUP_ID
         break
       }
       default:
@@ -58,13 +81,15 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
   ): Promise<DeleteResult | void> {
     const { fromTable, resourceId } = this.getResourceIdentifiers(type)
 
-    if (fromTable) {
-      return await this.createQueryBuilder()
-        .delete()
-        .from(fromTable)
-        .where({ rate_id: id, [resourceId]: In(resourceIds) })
-        .execute()
+    if (!fromTable || !resourceId) {
+      return Promise.resolve()
     }
+
+    return await this.createQueryBuilder()
+      .delete()
+      .from(fromTable)
+      .where({ condition_id: id, [resourceId]: In(resourceIds) })
+      .execute()
   }
 
   async addConditionResources(
@@ -72,39 +97,47 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     resourceIds: string[],
     type: DiscountConditionType,
     overrideExisting = false
-  ): Promise<any[]> {
+  ): Promise<
+    (
+      | DiscountConditionProduct
+      | DiscountConditionProductType
+      | DiscountConditionProductCollection
+      | DiscountConditionProductTag
+      | DiscountConditionCustomerGroup
+    )[]
+  > {
     let toInsert: { condition_id: string; [x: string]: string }[] | [] = []
 
     const { fromTable, resourceId } = this.getResourceIdentifiers(type)
+
+    if (!fromTable || !resourceId) {
+      return Promise.resolve([])
+    }
 
     toInsert = resourceIds.map((pId) => ({
       condition_id: id,
       [resourceId]: pId,
     }))
 
-    if (fromTable) {
-      const insertResult = await this.createQueryBuilder()
-        .insert()
-        .orIgnore(true)
-        .into(fromTable)
-        .values(toInsert)
+    const insertResult = await this.createQueryBuilder()
+      .insert()
+      .orIgnore(true)
+      .into(fromTable)
+      .values(toInsert)
+      .execute()
+
+    if (overrideExisting) {
+      await this.createQueryBuilder()
+        .delete()
+        .from(fromTable)
+        .where({ condition_id: id, [resourceId]: Not(In(resourceIds)) })
         .execute()
-
-      if (overrideExisting) {
-        await this.createQueryBuilder()
-          .delete()
-          .from(fromTable)
-          .where({ rate_id: id, [resourceId]: Not(In(resourceIds)) })
-          .execute()
-      }
-
-      return (await this.manager
-        .createQueryBuilder(fromTable, "discon")
-        .select()
-        .where(insertResult.identifiers)
-        .getMany()) as any
     }
 
-    return []
+    return await this.manager
+      .createQueryBuilder(fromTable, "discon")
+      .select()
+      .where(insertResult.identifiers)
+      .getMany()
   }
 }

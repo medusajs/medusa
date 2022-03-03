@@ -1,5 +1,5 @@
-import TotalsService from "../totals"
 import { IdMap } from "medusa-test-utils"
+import TotalsService from "../totals"
 
 const discounts = {
   total10Percent: {
@@ -19,7 +19,7 @@ const discounts = {
       type: "fixed",
       allocation: "item",
       value: 2,
-      valid_for: [{ id: "testp2" }],
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -30,7 +30,7 @@ const discounts = {
       type: "percentage",
       allocation: "item",
       value: 10,
-      valid_for: [{ id: "testp2" }],
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -41,7 +41,7 @@ const discounts = {
       type: "fixed",
       allocation: "total",
       value: 10,
-      valid_for: [],
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -53,7 +53,7 @@ const discounts = {
       type: "fixed",
       allocation: "item",
       value: 10,
-      valid_for: [],
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -94,7 +94,7 @@ describe("TotalsService", () => {
         rule: {
           type: "percentage",
           value: 10,
-          valid_for: [{ id: "testp" }],
+          // TODO: Add conditions relation
         },
       }
 
@@ -138,7 +138,7 @@ describe("TotalsService", () => {
         rule: {
           type: "fixed",
           value: 9,
-          valid_for: [{ id: "testp" }],
+          // TODO: Add conditions relation
         },
       }
 
@@ -182,7 +182,7 @@ describe("TotalsService", () => {
         rule: {
           type: "fixed",
           value: 9,
-          valid_for: [],
+          // TODO: Add conditions relation
         },
       }
       res = totalsService.getAllocationItemDiscounts(discount, cart)

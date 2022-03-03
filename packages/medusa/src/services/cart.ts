@@ -1,43 +1,39 @@
 import _ from "lodash"
-import { EntityManager, DeepPartial } from "typeorm"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-
-import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { CartRepository } from "../repositories/cart"
-import { AddressRepository } from "../repositories/address"
-import { PaymentSessionRepository } from "../repositories/payment-session"
-
+import { DeepPartial, EntityManager } from "typeorm"
 import { Address } from "../models/address"
-import { Discount } from "../models/discount"
 import { Cart } from "../models/cart"
+import { CustomShippingOption } from "../models/custom-shipping-option"
 import { Customer } from "../models/customer"
+import { Discount } from "../models/discount"
 import { LineItem } from "../models/line-item"
 import { ShippingMethod } from "../models/shipping-method"
-import { CustomShippingOption } from "../models/custom-shipping-option"
-
-import { TotalField, FindConfig } from "../types/common"
+import { AddressRepository } from "../repositories/address"
+import { CartRepository } from "../repositories/cart"
+import { PaymentSessionRepository } from "../repositories/payment-session"
+import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
+  CartCreateProps,
+  CartUpdateProps,
   FilterableCartProps,
   LineItemUpdate,
-  CartUpdateProps,
-  CartCreateProps,
 } from "../types/cart"
-
+import { FindConfig, TotalField } from "../types/common"
+import CustomShippingOptionService from "./custom-shipping-option"
+import CustomerService from "./customer"
+import DiscountService from "./discount"
 import EventBusService from "./event-bus"
-import ProductVariantService from "./product-variant"
-import ProductService from "./product"
-import RegionService from "./region"
+import GiftCardService from "./gift-card"
+import InventoryService from "./inventory"
 import LineItemService from "./line-item"
 import PaymentProviderService from "./payment-provider"
+import ProductService from "./product"
+import ProductVariantService from "./product-variant"
+import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
-import CustomerService from "./customer"
 import TaxProviderService from "./tax-provider"
-import DiscountService from "./discount"
-import GiftCardService from "./gift-card"
 import TotalsService from "./totals"
-import InventoryService from "./inventory"
-import CustomShippingOptionService from "./custom-shipping-option"
 
 type CartConstructorProps = {
   manager: EntityManager
@@ -203,7 +199,7 @@ class CartService extends BaseService {
       relationSet.add("gift_cards")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
-      relationSet.add("discounts.rule.valid_for")
+      // TODO: Add conditions relation
       // relationSet.add("discounts.parent_discount")
       // relationSet.add("discounts.parent_discount.rule")
       // relationSet.add("discounts.parent_discount.regions")
@@ -696,7 +692,7 @@ class CartService extends BaseService {
           "region.countries",
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
+          // TODO: Add conditions relation
           "discounts.regions",
         ],
       })
@@ -999,7 +995,7 @@ class CartService extends BaseService {
   async applyDiscount(cart: Cart, discountCode: string): Promise<void> {
     const discount = await this.discountService_.retrieveByCode(discountCode, [
       "rule",
-      "rule.valid_for",
+      // TODO: Add conditions relation
       "regions",
     ])
 
@@ -1086,7 +1082,7 @@ class CartService extends BaseService {
       }
     })
 
-    cart.discounts = newDiscounts.filter(Boolean)
+    cart.discounts = newDiscounts.filter(Boolean) as Discount[]
   }
 
   /**
@@ -1101,7 +1097,7 @@ class CartService extends BaseService {
         relations: [
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
+          // TODO: Add conditions relation
           "payment_sessions",
           "shipping_methods",
         ],
@@ -1169,7 +1165,10 @@ class CartService extends BaseService {
    *    this could be IP address or similar for fraud handling.
    * @return the resulting cart
    */
-  async authorizePayment(cartId: string, context: Record<string, any> = {}): Promise<Cart> {
+  async authorizePayment(
+    cartId: string,
+    context: Record<string, any> = {}
+  ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
@@ -1313,7 +1312,7 @@ class CartService extends BaseService {
             "items",
             "discounts",
             "discounts.rule",
-            "discounts.rule.valid_for",
+            // TODO: Add conditions relation
             "gift_cards",
             "shipping_methods",
             "billing_address",
@@ -1488,7 +1487,7 @@ class CartService extends BaseService {
           "shipping_methods",
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
+          // TODO: Add conditions relation
           "shipping_methods.shipping_option",
           "items",
           "items.variant",
@@ -1549,7 +1548,7 @@ class CartService extends BaseService {
         relations: [
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
+          // TODO: Add conditions relation
           "shipping_methods",
         ],
       })
@@ -1762,7 +1761,7 @@ class CartService extends BaseService {
           "items",
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
+          // TODO: Add conditions relation
           "payment_sessions",
         ],
       })
@@ -1835,7 +1834,7 @@ class CartService extends BaseService {
           "gift_cards",
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
+          // TODO: Add conditions relation
           "shipping_methods",
           "region",
           "region.tax_rates",

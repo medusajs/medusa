@@ -24,9 +24,10 @@ export default async (req, res) => {
   const { code } = req.params
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  const discount = await discountService.retrieveByCode(code, {
-    relations: defaultAdminDiscountsRelations,
-  })
+  const discount = await discountService.retrieveByCode(
+    code,
+    defaultAdminDiscountsRelations
+  )
 
   res.status(200).json({ discount })
 }

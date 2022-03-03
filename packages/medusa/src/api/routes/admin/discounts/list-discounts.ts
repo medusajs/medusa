@@ -2,11 +2,13 @@ import { Type } from "class-transformer"
 import { IsEnum, IsInt, IsOptional, IsString } from "class-validator"
 import _, { pickBy } from "lodash"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { Discount } from "../../../.."
 import {
   AllocationType,
   DiscountRuleType,
 } from "../../../../models/discount-rule"
 import DiscountService from "../../../../services/discount"
+import { FindConfig } from "../../../../types/common"
 import { FilterableDiscountProps } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
 /**
@@ -39,7 +41,7 @@ export default async (req, res) => {
 
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  const listConfig = {
+  const listConfig: FindConfig<Discount> = {
     select: defaultAdminDiscountsFields,
     relations: defaultAdminDiscountsRelations,
     skip: validated.offset,

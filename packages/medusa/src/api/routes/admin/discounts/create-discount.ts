@@ -13,8 +13,8 @@ import {
 } from "class-validator"
 import { defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
-import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { validator } from "../../../../utils/validator"
+import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 /**
  * @oas [post] /discounts
@@ -78,11 +78,14 @@ export default async (req, res) => {
   const validated = await validator(AdminPostDiscountsReq, req.body)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
+
   const created = await discountService.create(validated)
-  const discount = await discountService.retrieve(
-    created.id,
-    defaultAdminDiscountsRelations
-  )
+
+  // TODO: Add the ability to create discount conditions upon creating a discount?
+
+  const discount = await discountService.retrieve(created.id, {
+    relations: defaultAdminDiscountsRelations,
+  })
 
   res.status(200).json({ discount })
 }
@@ -132,7 +135,7 @@ export class AdminPostDiscountsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 export class AdminPostDiscountsDiscountRule {
@@ -151,8 +154,9 @@ export class AdminPostDiscountsDiscountRule {
   @IsNotEmpty()
   allocation: string
 
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  valid_for?: string[]
+  // @IsOptional()
+  // @IsArray()
+  // @ValidateNested({ each: true })
+  // @Type(() => Condition)
+  // conditions?: Condition[]
 }

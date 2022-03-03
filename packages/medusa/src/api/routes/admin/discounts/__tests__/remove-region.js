@@ -24,7 +24,7 @@ const defaultRelations = [
   "rule",
   "parent_discount",
   "regions",
-  "rule.valid_for",
+  // TODO: Add conditions relation
 ]
 
 describe("DELETE /admin/discounts/:discount_id/regions/region_id", () => {

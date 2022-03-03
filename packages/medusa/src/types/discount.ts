@@ -1,11 +1,13 @@
 import { Transform, Type } from "class-transformer"
 import {
+  IsArray,
   IsBoolean,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
 import { AdminGetDiscountsDiscountRuleParams } from ".."
+import { DiscountConditionType } from "../models/discount-condition"
 
 export type QuerySelector = {
   q?: string
@@ -37,7 +39,7 @@ type CreateDiscountRuleInput = {
   type: string
   value: number
   allocation: string
-  valid_for?: string[]
+  conditions?: { resource: DiscountConditionType; resource_ids: string[] }[]
 }
 
 export type CreateDiscountInput = {
@@ -71,12 +73,21 @@ export type UpdateDiscountInput = {
   valid_duration?: string
   usage_limit?: number
   regions?: string[]
-  metadata: Record<string, unknown>
+  metadata?: Record<string, unknown>
 }
 
 export type CreateDynamicDiscountInput = {
   code: string
-  ends_at: Date
+  ends_at?: Date
   usage_limit: number
   metadata?: object
+}
+
+export class AdminPostDiscountsDiscountRuleConditionReq {
+  @IsString()
+  resource: DiscountConditionType
+
+  @IsArray()
+  @IsString({ each: true })
+  resource_ids: string[]
 }

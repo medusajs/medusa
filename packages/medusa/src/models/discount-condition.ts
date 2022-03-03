@@ -46,10 +46,7 @@ export class DiscountCondition {
   @Column()
   discount_rule_id: string
 
-  @ManyToOne(
-    () => DiscountRule,
-    (dr) => dr.conditions
-  )
+  @ManyToOne(() => DiscountRule, (dr) => dr.conditions)
   @JoinColumn({ name: "discount_rule_id" })
   discount_rule: DiscountRule
 

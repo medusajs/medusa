@@ -46,8 +46,9 @@ export default async (req, res) => {
     validated
   )
 
+  // TODO: Add conditions relation
   const discount = await discountService.retrieve(created.id, {
-    relations: ["rule", "rule.valid_for", "regions"],
+    relations: ["rule", "regions"],
   })
 
   res.status(200).json({ discount })
