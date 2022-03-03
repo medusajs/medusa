@@ -1,22 +1,16 @@
 import { Type } from "class-transformer"
 import {
-  ArrayNotEmpty,
   IsArray,
   IsBoolean,
-  IsDate,
-  IsEnum,
-  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
-  Validate,
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
-import { MoneyAmountType } from "../../../../types/money-amount"
-import { XorConstraint } from "../../../../types/validators/xor"
+import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -156,46 +150,6 @@ class ProductVariantOptionReq {
   option_id: string
 }
 
-class ProductVariantPricesReq {
-  @IsString()
-  @IsOptional()
-  id?: string
-
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @Validate(XorConstraint, ["region_id"])
-  currency_code?: string
-
-  @IsInt()
-  amount: number
-
-  @IsOptional()
-  @IsEnum(MoneyAmountType)
-  type?: MoneyAmountType = MoneyAmountType.DEFAULT
-
-  @IsOptional()
-  @IsDate()
-  start_date?: Date
-
-  @IsOptional()
-  @IsDate()
-  end_date?: Date
-
-  @IsOptional()
-  @IsInt()
-  min_quantity?: number
-
-  @IsOptional()
-  @IsInt()
-  max_quantity?: number
-
-  @IsOptional()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  customer_group_ids: string[]
-}
-
 export class AdminPostProductsProductVariantsVariantReq {
   @IsString()
   @IsOptional()
@@ -267,8 +221,8 @@ export class AdminPostProductsProductVariantsVariantReq {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  @Type(() => ProductVariantPricesUpdateReq)
+  prices: ProductVariantPricesUpdateReq[]
 
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })

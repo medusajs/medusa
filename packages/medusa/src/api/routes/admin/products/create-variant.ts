@@ -2,17 +2,15 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
-  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
-  Validate,
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
-import { XorConstraint } from "../../../../types/validators/xor"
+import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -152,21 +150,6 @@ class ProductVariantOptionReq {
   option_id: string
 }
 
-class ProductVariantPricesReq {
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @Validate(XorConstraint, ["region_id"])
-  currency_code?: string
-
-  @IsInt()
-  amount: number
-
-  @IsOptional()
-  @IsInt()
-  sale_amount?: number
-}
-
 export class AdminPostProductsProductVariantsReq {
   @IsString()
   title: string
@@ -237,8 +220,8 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  @Type(() => ProductVariantPricesCreateReq)
+  prices: ProductVariantPricesCreateReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)

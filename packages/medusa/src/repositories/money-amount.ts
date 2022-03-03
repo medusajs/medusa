@@ -1,10 +1,11 @@
+import partition from "lodash/partition"
 import {
   Brackets,
   EntityRepository,
   In,
   IsNull,
   Not,
-  Repository,
+  Repository
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
 
@@ -54,22 +55,30 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return await this.save(moneyAmount)
   }
 
-  public async bulkValidateIds(ids: string[]) {
-    const moneyAmounts = await this.find({
-      where: {
-        id: In(ids),
-      },
-      select: ["id"],
+  public async bulkAddOrUpdate(variantId: string, prices: Price[]) {
+    const [toUpdate, toCreate] = partition(prices, (p) => p.id)
+    const createdEntities = toCreate.map((tc) => {
+      return this.create({ ...tc, variant_id: variantId })
     })
 
-    return moneyAmounts.map((moneyAmount) => moneyAmount.id)
+    const existing = await this.findByIds(toUpdate.map((tu) => tu.id))
+
+    const updatedEntities: Partial<MoneyAmount>[] = existing.map((e) => {
+      const update = toUpdate.find((update) => update.id === e.id)
+      return {
+        ...e,
+        ...update,
+      }
+    })
+
+    await this.save([...updatedEntities, ...createdEntities])
   }
 
-  public async bulkDelete(moneyAmountIds: string[], variantId: string) {
+  public async bulkDelete(variantId: string, moneyAmountIds: string[]) {
     await this.createQueryBuilder()
       .delete()
       .from(MoneyAmount)
-      .where({ id: In(moneyAmountIds), variant_id: variantId })
+      .where({ variant_id: variantId, id: In(moneyAmountIds) })
       .execute()
   }
 }
