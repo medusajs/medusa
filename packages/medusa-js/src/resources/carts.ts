@@ -60,7 +60,7 @@ class CartsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts`
-    return this.client.request("POST", path, payload ?? {}, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
