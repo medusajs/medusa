@@ -1,12 +1,5 @@
-import { Type, Transform } from "class-transformer"
-import {
-  IsBoolean,
-  IsEnum,
-  IsInt,
-  IsOptional,
-  IsString,
-  ValidateNested,
-} from "class-validator"
+import { Type } from "class-transformer"
+import { IsEnum, IsInt, IsOptional, IsString } from "class-validator"
 import _, { pickBy } from "lodash"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import {
@@ -14,7 +7,7 @@ import {
   DiscountRuleType,
 } from "../../../../models/discount-rule"
 import DiscountService from "../../../../services/discount"
-import { DateComparisonOperator } from "../../../../types/common"
+import { FilterableDiscountProps } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts
@@ -69,7 +62,7 @@ export default async (req, res) => {
   })
 }
 
-class AdminGetDiscountsDiscountRuleParams {
+export class AdminGetDiscountsDiscountRuleParams {
   @IsOptional()
   @IsEnum(DiscountRuleType)
   type: DiscountRuleType
@@ -78,27 +71,7 @@ class AdminGetDiscountsDiscountRuleParams {
   @IsEnum(AllocationType)
   allocation: AllocationType
 }
-
-export class AdminGetDiscountsParams {
-  @IsString()
-  @IsOptional()
-  q?: string
-
-  @IsBoolean()
-  @IsOptional()
-  @Transform(({ value }) => value === "true")
-  is_dynamic?: boolean
-
-  @IsBoolean()
-  @IsOptional()
-  @Transform(({ value }) => value === "true")
-  is_disabled?: boolean
-
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => AdminGetDiscountsDiscountRuleParams)
-  rule?: AdminGetDiscountsDiscountRuleParams
-
+export class AdminGetDiscountsParams extends FilterableDiscountProps {
   @IsInt()
   @IsOptional()
   @Type(() => Number)

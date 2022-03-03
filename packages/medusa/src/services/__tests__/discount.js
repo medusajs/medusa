@@ -1,7 +1,5 @@
-import DiscountService from "../discount"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { MedusaError } from "medusa-core-utils"
-import { exportAllDeclaration } from "@babel/types"
+import DiscountService from "../discount"
 
 describe("DiscountService", () => {
   describe("create", () => {
@@ -15,7 +13,7 @@ describe("DiscountService", () => {
           id: IdMap.getId("france"),
         }
       },
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -309,121 +307,6 @@ describe("DiscountService", () => {
     })
   })
 
-  describe("addValidProduct", () => {
-    const discountRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("total10"),
-          rule: {
-            id: IdMap.getId("test-rule"),
-            valid_for: [{ id: IdMap.getId("test-product") }],
-          },
-        }),
-    })
-
-    const discountRuleRepository = MockRepository({})
-
-    const productService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-product-2"),
-        }
-      },
-    }
-
-    const discountService = new DiscountService({
-      manager: MockManager,
-      discountRepository,
-      discountRuleRepository,
-      productService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully adds a product", async () => {
-      await discountService.addValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product-2")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
-      expect(discountRuleRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("test-rule"),
-        valid_for: [
-          { id: IdMap.getId("test-product") },
-          { id: IdMap.getId("test-product-2") },
-        ],
-      })
-    })
-
-    it("successfully resolves if product already exists", async () => {
-      await discountService.addValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
-    })
-  })
-
-  describe("removeValidVariant", () => {
-    const discountRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("total10"),
-          rule: {
-            id: IdMap.getId("test-rule"),
-            valid_for: [{ id: IdMap.getId("test-product") }],
-          },
-        }),
-    })
-
-    const discountRuleRepository = MockRepository({})
-
-    const productService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-product"),
-        }
-      },
-    }
-
-    const discountService = new DiscountService({
-      manager: MockManager,
-      discountRepository,
-      discountRuleRepository,
-      productService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully removes a product", async () => {
-      await discountService.removeValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
-      expect(discountRuleRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("test-rule"),
-        valid_for: [],
-      })
-    })
-
-    it("successfully resolve if product does not exist", async () => {
-      await discountService.removeValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product-2")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
-    })
-  })
-
   describe("addRegion", () => {
     const discountRepository = MockRepository({
       findOne: (q) => {
@@ -638,7 +521,7 @@ describe("DiscountService", () => {
       expect(discountRepository.findAndCount).toHaveBeenCalledWith({
         where: expect.anything(),
         skip: 0,
-        take: 50,
+        take: 20,
         order: { created_at: "DESC" },
       })
     })
