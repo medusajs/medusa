@@ -12,6 +12,7 @@ import { MedusaError } from "medusa-core-utils"
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
+import { ProductCartIdParams } from "../../../../types/product"
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
@@ -90,7 +91,7 @@ export default async (req, res) => {
   })
 }
 
-export class StoreGetProductsPaginationParams {
+export class StoreGetProductsPaginationParams extends ProductCartIdParams {
   @IsNumber()
   @IsOptional()
   @Type(() => Number)

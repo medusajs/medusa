@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { SearchService } from "../../../../services"
 import ProductService from "../../../../services/product"
+import { ProductCartIdParams } from "../../../../types/product"
 import { validator } from "../../../../utils/validator"
 
 export default async (req, res) => {
@@ -26,7 +27,7 @@ export default async (req, res) => {
   res.status(200).send(results)
 }
 
-export class StorePostSearchReq {
+export class StorePostSearchReq extends ProductCartIdParams {
   @IsOptional()
   @IsString()
   q?: string
