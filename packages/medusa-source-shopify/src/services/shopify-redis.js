@@ -1,3 +1,4 @@
+// shopify-redis
 import { BaseService } from "medusa-interfaces"
 import { IGNORE_THRESHOLD } from "../utils/const"
 
@@ -26,11 +27,21 @@ class shopifyRedisService extends BaseService {
     return await this.redis_.get(key)
   }
 
+  async addUniqueValue(uniqueVal, type) {
+    const key = `sh_${uniqueVal}_${type}`
+    return await this.redis_.set(key, 1, "EX", 60 * 5)
+  }
+
+  async getUniqueValue(uniqueVal, type) {
+    const key = `sh_${uniqueVal}_${type}`
+    return await this.redis_.get(key)
+  }
+
   async clearIgnores() {
     let ignoredKeys = 0
 
     const stream = this.redis_.scanStream({
-      match: "sh_*_ignore_*",
+      match: "sh_*_*",
     })
 
     stream.on("data", async (keys) => {

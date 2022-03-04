@@ -1,5 +1,6 @@
 import axios from "axios"
 import isEmpty from "lodash/isEmpty"
+import omit from "lodash/omit"
 import random from "lodash/random"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
@@ -150,9 +151,6 @@ class ShopifyProductService extends BaseService {
       await this.updateVariants_(existing, normalized.variants)
       await this.deleteVariants_(existing, normalized.variants)
       delete normalized.variants
-
-      console.warn(JSON.stringify(normalized.options, null, 4))
-      console.warn(JSON.stringify(existing.options, null, 4))
       delete normalized.options
 
       const update = {}
@@ -410,29 +408,19 @@ class ShopifyProductService extends BaseService {
       for (const option of updateOptions) {
         const match = options.find((o) => o.title === option.title)
         if (match) {
-          for (const value of option.values) {
-            value.option_id = match.id
-          }
-
-          console.warn(JSON.stringify(option.values, null, 4))
-
           await this.productService_
             .withTransaction(manager)
-            .updateOption(product.id, match.id, option)
+            .updateOption(product.id, match.id, { title: option.title })
         } else if (!match) {
           await this.productService_
             .withTransaction(manager)
             .addOption(id, option.title)
         }
-
-        console.warn("Added options", JSON.stringify(option, null, 4))
       }
 
       const result = await this.productService_.retrieve(id, {
         relations: ["variants", "options"],
       })
-
-      console.log("RESULT OPTIONS", JSON.stringify(result.options, null, 4))
 
       return result
     })
@@ -618,9 +606,9 @@ class ShopifyProductService extends BaseService {
   }
 
   removeUniqueConstraint_(update) {
-    const { _sku, _ean, _upc, _barcode, ...rest } = update
+    const payload = omit(update, ["sku", "ean", "upc", "barcode"])
 
-    return rest
+    return payload
   }
 }
 

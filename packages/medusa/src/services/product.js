@@ -745,8 +745,6 @@ class ProductService extends BaseService {
       productOption.title = title
       productOption.values = values
 
-      console.warn("SAVING: ", JSON.stringify(productOption))
-
       await productOptionRepo.save(productOption)
 
       await this.eventBus_
