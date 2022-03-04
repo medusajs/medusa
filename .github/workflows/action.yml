@@ -39,7 +39,7 @@ jobs:
             turbo-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Run Pipeline
-        run: yarn turbo build test
+        run: yarn turbo run build test
 
   integration-tests-api:
     runs-on: ubuntu-latest
