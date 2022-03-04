@@ -80,6 +80,15 @@ jobs:
         with:
           extension: integration-tests
 
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules/.cache/.turbo
+          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ github.job }}-${{ github.ref_name }}-
+
       - name: Build Packages
         run: yarn run build
 
@@ -141,8 +150,17 @@ jobs:
         with:
           extension: integration-tests
 
+      - name: Turbo Cache
+        id: turbo-cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules/.cache/.turbo
+          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          restore-keys: |
+            turbo-${{ github.job }}-${{ github.ref_name }}-
+
       - name: Build Packages
-        run: lerna run build
+        run: yarn run build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
