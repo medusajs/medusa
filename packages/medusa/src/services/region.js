@@ -76,6 +76,7 @@ class RegionService extends BaseService {
       eventBusService: this.eventBus_,
       paymentProviderRepository: this.paymentProviderRepository_,
       paymentProviderService: this.paymentProviderService_,
+      taxProviderRepository: this.taxProviderRepository_,
       taxProviderService: this.taxProviderService_,
       fulfillmentProviderRepository: this.fulfillmentProviderRepository_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
