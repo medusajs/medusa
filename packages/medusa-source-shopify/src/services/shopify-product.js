@@ -141,6 +141,7 @@ class ShopifyProductService extends BaseService {
         })
 
       data.variants = variants || []
+
       const normalized = this.normalizeProduct_(data)
 
       existing = await this.addProductOptions_(existing, normalized.options)
@@ -148,6 +149,10 @@ class ShopifyProductService extends BaseService {
       await this.updateVariants_(existing, normalized.variants)
       await this.deleteVariants_(existing, normalized.variants)
       delete normalized.variants
+
+      console.warn(JSON.stringify(normalized.options, null, 4))
+      console.warn(JSON.stringify(existing.options, null, 4))
+      delete normalized.options
 
       const update = {}
 
@@ -345,8 +350,12 @@ class ShopifyProductService extends BaseService {
         }
 
         variant = this.addVariantOptions_(variant, options)
-        const match = variants.find((v) => v.sku === variant.sku)
+        const match = variants.find(
+          (v) => v.metadata.sh_id === variant.metadata.sh_id
+        )
         if (match) {
+          variant = this.removeUniqueConstraint_(variant)
+
           await this.productVariantService_
             .withTransaction(manager)
             .update(match.id, variant)
@@ -371,7 +380,9 @@ class ShopifyProductService extends BaseService {
           continue
         }
 
-        const match = updateVariants.find((v) => v.sku === variant.sku)
+        const match = updateVariants.find(
+          (v) => v.metadata.sh_id === variant.metadata.sh_id
+        )
         if (!match) {
           await this.productVariantService_
             .withTransaction(manager)
@@ -397,16 +408,31 @@ class ShopifyProductService extends BaseService {
 
       for (const option of updateOptions) {
         const match = options.find((o) => o.title === option.title)
-        if (!match) {
+        if (match) {
+          for (const value of option.values) {
+            value.option_id = match.id
+          }
+
+          console.warn(JSON.stringify(option.values, null, 4))
+
+          await this.productService_
+            .withTransaction(manager)
+            .updateOption(product.id, match.id, option)
+        } else if (!match) {
           await this.productService_
             .withTransaction(manager)
             .addOption(id, option.title)
         }
+
+        console.warn("Added options", JSON.stringify(option, null, 4))
       }
 
       const result = await this.productService_.retrieve(id, {
         relations: ["variants", "options"],
       })
+
+      console.log("RESULT OPTIONS", JSON.stringify(result.options, null, 4))
+
       return result
     })
   }
@@ -554,21 +580,17 @@ class ShopifyProductService extends BaseService {
     return `DUP-${_.random(100, 999)}-${uniqueVal}`
   }
 
-  async testUnique_(uniqueVal) {
+  async testUnique_(uniqueVal, type) {
     // Test if the unique value has already been added, if it was then pass the value onto the duplicate handler and return the new value
-    const exists = await this.redis_.getUniqueValue(uniqueVal)
+    const exists = await this.redis_.getUniqueValue(uniqueVal, type)
 
     if (exists) {
       const dupValue = this.handleDuplicateConstraint_(uniqueVal)
-      await this.redis_.addUniqueValue(dupValue)
-
-      console.warn(
-        `Value with unique constraint: ${uniqueVal} already exists, using ${dupValue}`
-      )
+      await this.redis_.addUniqueValue(dupValue, type)
       return dupValue
     }
     // If it doesn't exist, we return the value
-    await this.redis_.addUniqueValue(uniqueVal)
+    await this.redis_.addUniqueValue(uniqueVal, type)
     return uniqueVal
   }
 
@@ -576,22 +598,28 @@ class ShopifyProductService extends BaseService {
     let { sku, ean, upc, barcode } = variant
 
     if (sku) {
-      sku = await this.testUnique_(sku)
+      sku = await this.testUnique_(sku, "SKU")
     }
 
     if (ean) {
-      ean = await this.testUnique_(ean)
+      ean = await this.testUnique_(ean, "EAN")
     }
 
     if (upc) {
-      upc = await this.testUnique_(upc)
+      upc = await this.testUnique_(upc, "UPC")
     }
 
     if (barcode) {
-      barcode = await this.testUnique_(barcode)
+      barcode = await this.testUnique_(barcode, "BARCODE")
     }
 
     return { ...variant, sku, ean, upc, barcode }
+  }
+
+  removeUniqueConstraint_(update) {
+    const { sku, ean, upc, barcode, ...rest } = update
+
+    return rest
   }
 }
 

@@ -27,12 +27,14 @@ class shopifyRedisService extends BaseService {
     return await this.redis_.get(key)
   }
 
-  async addUniqueValue(uniqueVal) {
-    return await this.redis_.set(uniqueVal, 1, "EX", 60 * 5)
+  async addUniqueValue(uniqueVal, type) {
+    const key = `${uniqueVal}_${type}`
+    return await this.redis_.set(key, 1, "EX", 60 * 5)
   }
 
-  async getUniqueValue(uniqueVal) {
-    return await this.redis_.get(uniqueVal)
+  async getUniqueValue(uniqueVal, type) {
+    const key = `${uniqueVal}_${type}`
+    return await this.redis_.get(key)
   }
 }
 

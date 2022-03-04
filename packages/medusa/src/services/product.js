@@ -519,6 +519,8 @@ class ProductService extends BaseService {
         product.variants = newVariants
       }
 
+      console.warn(JSON.stringify(rest.options, null, 4))
+
       for (const [key, value] of Object.entries(rest)) {
         if (typeof value !== `undefined`) {
           product[key] = value
@@ -735,6 +737,8 @@ class ProductService extends BaseService {
 
       productOption.title = title
       productOption.values = values
+
+      console.warn("SAVING: ", JSON.stringify(productOption))
 
       await productOptionRepo.save(productOption)
 
