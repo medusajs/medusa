@@ -1,6 +1,8 @@
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
 import {
+  useAdminCreateSwap,
+  useAdminFulfillSwap,
   useAdminCancelSwap,
   useAdminCancelSwapFulfillment,
   useAdminCreateSwap,

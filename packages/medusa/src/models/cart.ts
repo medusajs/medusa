@@ -124,6 +124,8 @@ export class Cart {
   @PrimaryColumn()
   id: string
 
+  readonly object = "cart"
+
   @Column({ nullable: true })
   email: string
 
@@ -245,7 +247,7 @@ export class Cart {
 
   shipping_total?: number
   discount_total?: number
-  tax_total?: number
+  tax_total?: number | null
   refunded_total?: number
   total?: number
   subtotal?: number

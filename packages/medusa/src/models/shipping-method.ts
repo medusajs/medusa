@@ -6,6 +6,7 @@ import {
   PrimaryColumn,
   ManyToOne,
   OneToOne,
+  OneToMany,
   JoinColumn,
   Index,
 } from "typeorm"
@@ -18,6 +19,7 @@ import { Cart } from "./cart"
 import { Swap } from "./swap"
 import { Return } from "./return"
 import { ShippingOption } from "./shipping-option"
+import { ShippingMethodTaxLine } from "./shipping-method-tax-line"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
@@ -68,16 +70,18 @@ export class ShippingMethod {
   @Column({ nullable: true })
   return_id: string
 
-  @OneToOne(
-    () => Return,
-    ret => ret.shipping_method
-  )
+  @OneToOne(() => Return, (ret) => ret.shipping_method)
   @JoinColumn({ name: "return_id" })
   return_order: Return
 
   @ManyToOne(() => ShippingOption, { eager: true })
   @JoinColumn({ name: "shipping_option_id" })
   shipping_option: ShippingOption
+
+  @OneToMany(() => ShippingMethodTaxLine, (tl) => tl.shipping_method, {
+    cascade: ["insert"],
+  })
+  tax_lines: ShippingMethodTaxLine[]
 
   @Column({ type: "int" })
   price: number
