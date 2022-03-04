@@ -36,32 +36,6 @@ class shopifyRedisService extends BaseService {
     const key = `sh_${uniqueVal}_${type}`
     return await this.redis_.get(key)
   }
-
-  async clearIgnores() {
-    let ignoredKeys = 0
-
-    const stream = this.redis_.scanStream({
-      match: "sh_*_*",
-    })
-
-    stream.on("data", async (keys) => {
-      // `keys` is an array of strings representing key names
-      if (keys.length) {
-        ignoredKeys = keys.length
-        const pipeline = this.redis_.pipeline()
-        keys.forEach(function (key) {
-          pipeline.del(key)
-        })
-        pipeline.exec()
-      }
-    })
-
-    stream.on("end", function () {
-      console.log(
-        `medusa-source-sopify: Redis scan stream ended, and ${ignoredKeys} ignored keys was cleared`
-      )
-    })
-  }
 }
 
 export default shopifyRedisService

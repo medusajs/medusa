@@ -4,7 +4,6 @@ import omit from "lodash/omit"
 import random from "lodash/random"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
 import { parsePrice } from "../utils/parse-price"
 
 class ShopifyProductService extends BaseService {
@@ -73,11 +72,13 @@ class ShopifyProductService extends BaseService {
 
       const existingProduct = await this.productService_
         .withTransaction(manager)
-        .retrieveByExternalId(data.id)
+        .retrieveByExternalId(data.id, {
+          relations: ["variants", "options"],
+        })
         .catch((_) => undefined)
 
       if (existingProduct) {
-        return await this.update(data)
+        return await this.update(existingProduct, data)
       }
 
       const normalizedProduct = this.normalizeProduct_(data, collectionId)
@@ -111,40 +112,43 @@ class ShopifyProductService extends BaseService {
     })
   }
 
-  async update(data) {
+  async update(existing, shopifyUpdate) {
     return this.atomicPhase_(async (manager) => {
-      const ignore = await this.redis_.shouldIgnore(data.id, "product.updated")
+      const ignore = await this.redis_.shouldIgnore(
+        shopifyUpdate.id,
+        "product.updated"
+      )
       if (ignore) {
         return
       }
 
-      let existing = await this.productService_
-        .retrieveByExternalId(data.id, {
-          relations: ["variants", "options"],
-        })
-        .catch((_) => undefined)
+      // let existing = await this.productService_
+      //   .retrieveByExternalId(shopifyUpdate.id, {
+      //     relations: ["variants", "options"],
+      //   })
+      //   .catch((_) => undefined)
 
-      if (!existing) {
-        return await this.create(data)
-      }
+      // if (!existing) {
+      //   return await this.create(shopifyUpdate)
+      // }
 
-      /**
-       * Variants received from webhook do not include
-       * presentment prices. Therefore, we fetch them
-       * separately, and add to the data object.
-       */
-      const { variants } = await this.shopify_
-        .get({
-          path: `products/${data.id}`,
-          extraHeaders: INCLUDE_PRESENTMENT_PRICES,
-        })
-        .then((res) => {
-          return res.body.product
-        })
+      // /**
+      //  * Variants received from webhook do not include
+      //  * presentment prices. Therefore, we fetch them
+      //  * separately, and add to the data object.
+      //  */
+      // const { variants } = await this.shopify_
+      //   .get({
+      //     path: `products/${data.id}`,
+      //     extraHeaders: INCLUDE_PRESENTMENT_PRICES,
+      //   })
+      //   .then((res) => {
+      //     return res.body.product
+      //   })
 
-      data.variants = variants || []
+      // data.variants = variants || []
 
-      const normalized = this.normalizeProduct_(data)
+      const normalized = this.normalizeProduct_(shopifyUpdate)
 
       existing = await this.addProductOptions_(existing, normalized.options)
 
@@ -162,7 +166,7 @@ class ShopifyProductService extends BaseService {
       }
 
       if (!isEmpty(update)) {
-        await this.redis_.addIgnore(data.id, "product.updated")
+        await this.redis_.addIgnore(shopifyUpdate.id, "product.updated")
         return await this.productService_
           .withTransaction(manager)
           .update(existing.id, update)
