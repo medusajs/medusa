@@ -1,5 +1,6 @@
 import axios from "axios"
-import _ from "lodash"
+import isEmpty from "lodash/isEmpty"
+import random from "lodash/random"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { INCLUDE_PRESENTMENT_PRICES } from "../utils/const"
@@ -162,7 +163,7 @@ class ShopifyProductService extends BaseService {
         }
       }
 
-      if (!_.isEmpty(update)) {
+      if (!isEmpty(update)) {
         await this.redis_.addIgnore(data.id, "product.updated")
         return await this.productService_
           .withTransaction(manager)
@@ -577,7 +578,7 @@ class ShopifyProductService extends BaseService {
   }
 
   handleDuplicateConstraint_(uniqueVal) {
-    return `DUP-${_.random(100, 999)}-${uniqueVal}`
+    return `DUP-${random(100, 999)}-${uniqueVal}`
   }
 
   async testUnique_(uniqueVal, type) {
@@ -617,7 +618,7 @@ class ShopifyProductService extends BaseService {
   }
 
   removeUniqueConstraint_(update) {
-    const { sku, ean, upc, barcode, ...rest } = update
+    const { _sku, _ean, _upc, _barcode, ...rest } = update
 
     return rest
   }
