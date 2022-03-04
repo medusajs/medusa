@@ -1,14 +1,20 @@
 import { Type } from "class-transformer"
 import {
-  IsString,
-  IsOptional,
   IsArray,
   IsEnum,
-  ValidateNested,
-  IsNotEmpty,
   IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
+import { Order } from "../models/order"
 import { DateComparisonOperator } from "./common"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function isOrder(object: any): object is Order {
+  return object.object === "order"
+}
 
 enum OrderStatus {
   pending = "pending",
@@ -60,7 +66,7 @@ export class AdminListOrdersSelector {
   fulfillment_status?: string[]
 
   @IsArray()
-  @IsEnum(PaymentStatus)
+  @IsEnum(PaymentStatus, { each: true })
   @IsOptional()
   payment_status?: string[]
 

@@ -54,7 +54,7 @@ const medusaNodeTypes = [
   "MedusaCollections",
 ]
 
-async function sourceUpdatedNodes(
+export async function sourceUpdatedNodes(
   gatsbyApi: SourceNodesArgs,
   pluginOptions: MedusaPluginOptions
 ): Promise<void> {

@@ -5,7 +5,6 @@ const {
   GiftCard,
   Cart,
   CustomShippingOption,
-  ShippingOption,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -150,7 +149,7 @@ describe("/store/carts", () => {
       const cart = getRes.data.cart
       expect(cart.context).toEqual({
         ip: "::ffff:127.0.0.1",
-        user_agent: "axios/0.21.1",
+        user_agent: expect.stringContaining("axios/0.21."),
         test_id: "test",
       })
     })

@@ -22,8 +22,12 @@ import returnRoutes from "./returns"
 import variantRoutes from "./variants"
 import draftOrderRoutes from "./draft-orders"
 import collectionRoutes from "./collections"
+import productTagRoutes from "./product-tags"
 import notificationRoutes from "./notifications"
 import noteRoutes from "./notes"
+import taxRateRoutes from "./tax-rates"
+import productTypesRoutes from "./product-types"
+import customerGroupRoutes from "./customer-groups"
 
 const route = Router()
 
@@ -76,8 +80,12 @@ export default (app, container, config) => {
   collectionRoutes(route)
   notificationRoutes(route)
   returnReasonRoutes(route)
+  productTagRoutes(route)
+  productTypesRoutes(route)
   noteRoutes(route)
   inviteRoutes(route)
+  taxRateRoutes(route)
+  customerGroupRoutes(route)
 
   return app
 }

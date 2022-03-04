@@ -1,3 +1,4 @@
+import { MedusaError } from "medusa-core-utils"
 import { IdMap } from "medusa-test-utils"
 
 export const ProductCollectionServiceMock = {
@@ -16,6 +17,19 @@ export const ProductCollectionServiceMock = {
   update: jest.fn().mockImplementation((id, value) => {
     return Promise.resolve({ id, title: value })
   }),
+  addProducts: jest.fn().mockImplementation((id, product_ids) => {
+    if (id === IdMap.getId("col")) {
+      return Promise.resolve({
+        id,
+        products: product_ids.map((i) => ({ id: i })),
+      })
+    }
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Product collection with id: ${id} was not found`
+    )
+  }),
+  removeProducts: jest.fn().mockReturnValue(Promise.resolve()),
   list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([{ id: IdMap.getId("col"), title: "Suits" }])
   }),
