@@ -48,25 +48,25 @@ class LineItemAdjustmentService extends BaseService {
 
   /**
    * Retrieves a line item adjustment by id.
-   * @param lineItemAdjustmentId - the id of the line item adjustment to retrieve
+   * @param id - the id of the line item adjustment to retrieve
    * @param config - the config to retrieve the line item adjustment by
    * @return the line item adjustment.
    */
   async retrieve(
-    lineItemAdjustmentId: string,
+    id: string,
     config: FindConfig<ProductTag> = {}
   ): Promise<LineItemAdjustment> {
     const lineItemAdjustmentRepo = this.manager_.getCustomRepository(
       this.lineItemAdjustmentRepo_
     )
 
-    const query = this.buildQuery_({ id: lineItemAdjustmentId }, config)
+    const query = this.buildQuery_({ id }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
 
     if (!lineItemAdjustment) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Product tag with id: ${lineItemAdjustmentId} was not found`
+        `Line item adjustment with id: ${id} was not found`
       )
     }
 
@@ -75,19 +75,53 @@ class LineItemAdjustmentService extends BaseService {
 
   /**
    * Creates a line item adjustment
-   * @param lineItemAdjustment - the line item adjustment to create
+   * @param data - the line item adjustment to create
    * @return line item adjustment
    */
-  async create(
-    lineItemAdjustment: Partial<LineItemAdjustment>
+  async create(data: Partial<LineItemAdjustment>): Promise<LineItemAdjustment> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const lineItemAdjustmentRepo = manager.getCustomRepository(
+        this.lineItemAdjustmentRepo_
+      )
+
+      const lineItemAdjustment = await lineItemAdjustmentRepo.create(data)
+
+      return await lineItemAdjustmentRepo.save(lineItemAdjustment)
+    })
+  }
+
+  /**
+   * Creates a line item adjustment
+   * @param id - the line item adjustment id to update
+   * @param data - the line item adjustment to create
+   * @return line item adjustment
+   */
+  async update(
+    id: string,
+    data: Partial<LineItemAdjustment>
   ): Promise<LineItemAdjustment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const lineItemAdjustmentRepo = manager.getCustomRepository(
         this.lineItemAdjustmentRepo_
       )
 
-      const productTag = lineItemAdjustmentRepo.create(lineItemAdjustment)
-      return await lineItemAdjustmentRepo.save(productTag)
+      const lineItemAdjustment = await this.retrieve(id)
+
+      const { metadata, ...rest } = data
+
+      if (metadata) {
+        lineItemAdjustment.metadata = this.setMetadata_(
+          lineItemAdjustment,
+          metadata
+        )
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        lineItemAdjustment[key] = value
+      }
+
+      const result = await lineItemAdjustmentRepo.save(lineItemAdjustment)
+      return result
     })
   }
 
@@ -95,7 +129,7 @@ class LineItemAdjustmentService extends BaseService {
    * Lists line item adjustments
    * @param selector - the query object for find
    * @param config - the config to be used for find
-   * @return {Promise} the result of the find operation
+   * @return the result of the find operation
    */
   async list(
     selector: FilterableProductTagProps = {},
