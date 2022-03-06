@@ -2,8 +2,11 @@
 
 [View plugin here](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-stripe)
 
-
-https://user-images.githubusercontent.com/59018053/154807206-6fbda0a6-bf3e-4e39-9fc2-f11710afe0b9.mp4
+<div>
+  <video width="100%" height="100%" playsinline autoplay muted controls>
+    <source src="https://user-images.githubusercontent.com/59018053/154807206-6fbda0a6-bf3e-4e39-9fc2-f11710afe0b9.mp4" type="video/mp4" />
+  </video>
+</div>
 
 
 ### Introduction
