@@ -6,8 +6,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const discountSeeder = require("../../helpers/discount-seeder")
-
-const { simpleProductFactory } = require("../../factories")
+const { exportAllDeclaration } = require("@babel/types")
 
 jest.setTimeout(30000)
 
@@ -18,7 +17,7 @@ describe("/admin/discounts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -238,10 +237,6 @@ describe("/admin/discounts", () => {
     it("creates a discount with a rule", async () => {
       const api = useApi()
 
-      const product = await simpleProductFactory(dbConnection, {
-        type: "pants",
-      })
-
       const response = await api
         .post(
           "/admin/discounts",
@@ -252,9 +247,6 @@ describe("/admin/discounts", () => {
               type: "percentage",
               value: 10,
               allocation: "total",
-              conditions: [
-                { resource: "products", resource_ids: [product.id] },
-              ],
             },
             usage_limit: 10,
           },
@@ -276,24 +268,24 @@ describe("/admin/discounts", () => {
         })
       )
 
-      // const test = await api.get(
-      //   `/admin/discounts/${response.data.discount.id}`,
-      //   { headers: { Authorization: "Bearer test_token" } }
-      // )
+      const test = await api.get(
+        `/admin/discounts/${response.data.discount.id}`,
+        { headers: { Authorization: "Bearer test_token" } }
+      )
 
-      // expect(test.status).toEqual(200)
-      // expect(test.data.discount).toEqual(
-      //   expect.objectContaining({
-      //     code: "HELLOWORLD",
-      //     usage_limit: 10,
-      //     rule: expect.objectContaining({
-      //       value: 10,
-      //       type: "percentage",
-      //       description: "test",
-      //       allocation: "total",
-      //     }),
-      //   })
-      // )
+      expect(test.status).toEqual(200)
+      expect(test.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          rule: expect.objectContaining({
+            value: 10,
+            type: "percentage",
+            description: "test",
+            allocation: "total",
+          }),
+        })
+      )
     })
 
     it("creates a discount and updates it", async () => {

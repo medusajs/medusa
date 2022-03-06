@@ -9,9 +9,7 @@ import {
   TotalsService,
 } from "."
 import { Discount, DiscountRule } from ".."
-import { DiscountConditionType } from "../models/discount-condition"
 import { DiscountRepository } from "../repositories/discount"
-import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig } from "../types/common"
@@ -32,7 +30,6 @@ class DiscountService extends BaseService {
   private discountRepository_: typeof DiscountRepository
   private discountRuleRepository_: typeof DiscountRuleRepository
   private giftCardRepository_: typeof GiftCardRepository
-  private discountConditionRepository_: typeof DiscountConditionRepository
   private totalsService_: TotalsService
   private productService_: ProductService
   private regionService_: RegionService
@@ -43,7 +40,6 @@ class DiscountService extends BaseService {
     discountRepository,
     discountRuleRepository,
     giftCardRepository,
-    discountConditionRepository,
     totalsService,
     productService,
     regionService,
@@ -59,9 +55,6 @@ class DiscountService extends BaseService {
 
     /** @private @const {DiscountRuleRepository} */
     this.discountRuleRepository_ = discountRuleRepository
-
-    /** @private @const {DiscountConditionRepository} */
-    this.discountConditionRepository_ = discountConditionRepository
 
     /** @private @const {GiftCardRepository} */
     this.giftCardRepository_ = giftCardRepository
@@ -89,7 +82,6 @@ class DiscountService extends BaseService {
       discountRepository: this.discountRepository_,
       discountRuleRepository: this.discountRuleRepository_,
       giftCardRepository: this.giftCardRepository_,
-      discountConditionRepository: this.discountConditionRepository_,
       totalsService: this.totalsService_,
       productService: this.productService_,
       regionService: this.regionService_,
@@ -114,7 +106,7 @@ class DiscountService extends BaseService {
       type: Validator.string().required(),
       value: Validator.number().min(0).required(),
       allocation: Validator.string().required(),
-      conditions: Validator.array().optional(),
+      valid_for: Validator.array().optional(),
       created_at: Validator.date().optional(),
       updated_at: Validator.date().allow(null).optional(),
       deleted_at: Validator.date().allow(null).optional(),
@@ -213,9 +205,10 @@ class DiscountService extends BaseService {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
       const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
-      if (discount.rule.conditions) {
-        discount.rule.conditions.map((c) => ({ type: c.resource }))
-      }
+      // TODO: Replace with discount conditions
+      // if (discount.rule?.valid_for) {
+      //   discount.rule.valid_for = discount.rule.valid_for.map((id) => ({ id }))
+      // }
 
       const validatedRule = this.validateDiscountRule_(discount.rule)
 
@@ -289,7 +282,7 @@ class DiscountService extends BaseService {
    */
   async retrieveByCode(
     discountCode: string,
-    relations: string[] = []
+    relations = []
   ): Promise<Discount> {
     const discountRepo = this.manager_.getCustomRepository(
       this.discountRepository_
@@ -542,73 +535,6 @@ class DiscountService extends BaseService {
 
       return Promise.resolve()
     })
-  }
-
-  async removeConditionResources(
-    id: string,
-    type: DiscountConditionType,
-    resourceIds: string | string[]
-  ): Promise<void> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const discountConditionRepository = manager.getCustomRepository(
-        this.discountConditionRepository_
-      )
-
-      let ids: string[]
-      if (typeof resourceIds === "string") {
-        ids = [resourceIds]
-      } else {
-        ids = resourceIds
-      }
-
-      await discountConditionRepository.addConditionResources(id, ids, type)
-    })
-  }
-
-  async addConditionResources(
-    id: string,
-    type: DiscountConditionType,
-    resourceIds: string | string[],
-    replace = false
-  ): Promise<Discount | Discount[]> {
-    let ids: string[]
-    if (typeof resourceIds === "string") {
-      ids = [resourceIds]
-    } else {
-      ids = resourceIds
-    }
-
-    const result = await this.atomicPhase_(
-      async (manager: EntityManager) => {
-        const discountConditionRepository = manager.getCustomRepository(
-          this.discountConditionRepository_
-        )
-
-        return await discountConditionRepository.addConditionResources(
-          id,
-          ids,
-          type,
-          replace
-        )
-      },
-      // eslint-disable-next-line
-      async (err: any) => {
-        if (err.code === "23503") {
-          // A foreign key constraint failed meaning some thing doesn't exist
-          // either it is a product or the tax rate itself. Using Promise.all
-          // will try to retrieve all of the resources and will fail when
-          // something is not found.
-          console.log(err)
-          // await Promise.all([
-          //   this.retrieve(id, { select: ["id"] }),
-          //   ...ids.map((pId) =>
-          //     this.productService_.retrieve(pId, { select: ["id"] })
-          //   ),
-          // ])
-        }
-      }
-    )
-    return result
   }
 }
 
