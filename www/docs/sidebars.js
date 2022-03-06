@@ -14,6 +14,11 @@ module.exports = {
     {
       type: "doc",
       id: "homepage",
+      label: "Overview",
+    },
+    {
+      type: "doc",
+      id: "introduction",
       label: "Introduction",
     },
     {
