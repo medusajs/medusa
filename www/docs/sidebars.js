@@ -123,6 +123,18 @@ module.exports = {
               ]
             },
             {
+              type: "category",
+              label: 'Services',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/services/create-service",
+                  label: "Create a Service"
+                },
+              ]
+            },
+            {
               type: "doc",
               id: "tutorial/adding-custom-functionality",
               label: "Add Custom Functionality"
