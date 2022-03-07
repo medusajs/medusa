@@ -12,6 +12,10 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import {
+  DiscountConditionOperator,
+  DiscountConditionType,
+} from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
@@ -76,8 +80,6 @@ export default async (req, res) => {
   const discountService: DiscountService = req.scope.resolve("discountService")
 
   await discountService.update(discount_id, validated)
-
-  // TODO: Add the ability to update discount conditions upon updating a discount?
 
   const discount = await discountService.retrieve(discount_id, {
     select: defaultAdminDiscountsFields,
@@ -154,4 +156,26 @@ export class AdminUpdateDiscountRule {
   @IsString()
   @IsNotEmpty()
   allocation: string
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminUpsertCondition)
+  conditions?: AdminUpsertCondition[]
+}
+
+export class AdminUpsertCondition {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  operator: DiscountConditionOperator
+
+  @IsString()
+  resource_type: DiscountConditionType
+
+  @IsArray()
+  @IsString({ each: true })
+  resource_ids: string[]
 }

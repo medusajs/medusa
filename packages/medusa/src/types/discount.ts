@@ -36,7 +36,8 @@ export class FilterableDiscountProps {
   rule?: AdminGetDiscountsDiscountRuleParams
 }
 
-export type CreateDiscountConditionInput = {
+export type UpsertDiscountConditionInput = {
+  id?: string
   operator: DiscountConditionOperator
   resource_type: DiscountConditionType
   resource_ids: string[]
@@ -47,7 +48,7 @@ export type CreateDiscountRuleInput = {
   type: string
   value: number
   allocation: string
-  conditions?: CreateDiscountConditionInput[]
+  conditions?: UpsertDiscountConditionInput[]
 }
 
 export type CreateDiscountInput = {
@@ -69,6 +70,7 @@ export type UpdateDiscountRuleInput = {
   type: string
   value: string
   allocation: string
+  conditions?: UpsertDiscountConditionInput[]
 }
 
 export type UpdateDiscountInput = {

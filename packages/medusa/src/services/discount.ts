@@ -1,5 +1,5 @@
 import { parse, toSeconds } from "iso8601-duration"
-import { groupBy, isEmpty, omit } from "lodash"
+import { omit } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
@@ -16,11 +16,11 @@ import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig } from "../types/common"
 import {
-  CreateDiscountConditionInput,
   CreateDiscountInput,
   CreateDynamicDiscountInput,
   FilterableDiscountProps,
   UpdateDiscountInput,
+  UpsertDiscountConditionInput,
 } from "../types/discount"
 import { formatException } from "../utils/exception-formatter"
 
@@ -249,8 +249,10 @@ class DiscountService extends BaseService {
         const created = await discountRepo.create(discount)
         const result = await discountRepo.save(created)
 
-        if (conditions && !isEmpty(conditions)) {
-          await this.createConditions_(result.id, conditions)
+        if (conditions?.length) {
+          for (const cond of conditions) {
+            await this.upsertDiscountCondition_(result.id, cond)
+          }
         }
 
         return result
@@ -343,6 +345,9 @@ class DiscountService extends BaseService {
 
       const { rule, metadata, regions, ...rest } = update
 
+      const conditions = rule?.conditions
+      const ruleToUpdate = omit(rule, "conditions")
+
       if (rest.ends_at) {
         if (discount.starts_at >= new Date(rest.ends_at)) {
           throw new MedusaError(
@@ -359,6 +364,12 @@ class DiscountService extends BaseService {
         )
       }
 
+      if (conditions?.length) {
+        for (const cond of conditions) {
+          await this.upsertDiscountCondition_(discount.id, cond)
+        }
+      }
+
       if (regions) {
         discount.regions = await Promise.all(
           regions.map((regionId) => this.regionService_.retrieve(regionId))
@@ -370,13 +381,7 @@ class DiscountService extends BaseService {
       }
 
       if (rule) {
-        discount.rule = this.validateDiscountRule_(rule)
-        // TODO: Replace with discount conditions
-        // if (rule.valid_for) {
-        //   discount.rule.valid_for = discount.rule.valid_for.map((id) => ({
-        //     id,
-        //   }))
-        // }
+        discount.rule = this.validateDiscountRule_(ruleToUpdate)
       }
 
       for (const key of Object.keys(rest).filter(
@@ -551,31 +556,22 @@ class DiscountService extends BaseService {
     })
   }
 
-  async createConditions_(
+  async upsertDiscountCondition_(
     discountId: string,
-    conditions: CreateDiscountConditionInput[]
-  ): Promise<void> {
-    const grouped = groupBy(conditions, "resource_type")
-
-    for (const type of Object.keys(grouped)) {
-      const resourcesByType = grouped[type]
-      const groupedByOperator = groupBy(resourcesByType, "operator")
-
-      for (const operator of Object.keys(groupedByOperator)) {
-        const [resourcesByOperator] = groupedByOperator[operator]
-
-        await this.createDiscountCondition_(discountId, resourcesByOperator)
-      }
-    }
-  }
-
-  async createDiscountCondition_(
-    discountId: string,
-    data: CreateDiscountConditionInput
+    data: UpsertDiscountConditionInput
   ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const discountConditionRepo: DiscountConditionRepository =
         manager.getCustomRepository(this.discountConditionRepository_)
+
+      if (data.id) {
+        return await discountConditionRepo.addConditionResources(
+          data.id,
+          data.resource_ids,
+          data.resource_type,
+          true
+        )
+      }
 
       const discount = await this.retrieve(discountId)
 

@@ -160,11 +160,11 @@ export class AdminPostDiscountsDiscountRule {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => AdminPostDiscountsConditionReq)
-  conditions?: AdminPostDiscountsConditionReq[]
+  @Type(() => AdminCreateCondition)
+  conditions?: AdminCreateCondition[]
 }
 
-export class AdminPostDiscountsConditionReq {
+export class AdminCreateCondition {
   @IsString()
   operator: DiscountConditionOperator
 
