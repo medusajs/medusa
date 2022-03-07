@@ -516,6 +516,14 @@
       "deleted_at": null,
       "metadata": null
     },
+    "customer_group": {
+      "name": "test group",
+      "id": "cgrp_01FX8NJYPPDEH7YK9NYM6BXPHV",
+      "deleted_at": null,
+      "metadata": null,
+      "created_at": "2022-03-03T19:54:53.014Z",
+      "updated_at": "2022-03-03T19:54:53.014Z"
+    },
     "shipping_profile": {
       "id": "sp_01F0YESTZQFW15SFEZSS29EZ5R",
       "name": "Default Shipping Profile",
