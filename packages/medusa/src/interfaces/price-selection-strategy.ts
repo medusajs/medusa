@@ -26,7 +26,7 @@ export function isPriceSelectionStrategy(
 export type PriceSelectionContext = {
   cart?: Cart
   customer?: Customer
-  region?: Region
+  region: Region
   quantity?: number
 }
 

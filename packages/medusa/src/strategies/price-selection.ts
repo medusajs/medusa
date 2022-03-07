@@ -1,90 +1,70 @@
-import { LineItem } from "../models/line-item"
 import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
 } from "../interfaces/price-selection-strategy"
-import { Cart } from "../models/cart"
-import { Customer } from "../models/customer"
 import { ProductVariant } from "../models/product-variant"
 import { ProductVariantService } from "../services"
 import { MedusaError } from "medusa-core-utils"
+import { MoneyAmountRepository } from "../repositories/money-amount"
+import { MoneyAmountType } from "../types/money-amount"
+import { hasIn } from "lodash"
 
 class PriceSelectionStrategy implements IPriceSelectionStrategy {
-  private productVariantService_: ProductVariantService
+  private moneyAmountRepository_: MoneyAmountRepository
 
-  constructor({ ProductVariantService }) {
-    this.productVariantService_ = ProductVariantService
+  constructor({ moneyAmountRepository }) {
+    this.moneyAmountRepository_ = moneyAmountRepository
   }
 
   async calculateVariantPrice(
-    variant: string | ProductVariant,
+    variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    let variantEntity: ProductVariant
-    if (typeof variant === "string") {
-      variantEntity = await this.productVariantService_.retrieve(variant)
-    } else {
-      variantEntity = variant
-    }
+    const defaultMoneyAmount =
+      await this.moneyAmountRepository_.findDefaultForVariantInRegion(
+        variant_id,
+        context.region.id,
+        context.region?.currency_code
+      )
 
-    const prices = []
-
-    const result: PriceSelectionResult = {
-      originalPrice: NaN,
-      calculatedPrice: NaN,
-      prices: [],
-    }
-
-    const customerPrice = NaN
-
-    let groupMoneyAmount
-
-    // get customer specific prices
-    if (context.customer?.groups?.length) {
-      // for (const cGroup in context.customer.groups) {
-      //   for(const pGroup in variantEntity.prices)
-      // }
-    }
-
-    const regionMoneyAmount = variantEntity.prices.find(
-      (ma) => ma.region_id === context.region?.id
-    )
-
-    // If no price could be find based on region id, we try to fetch
-    // based on the region currency code
-    const currencyMoneyAmount = variantEntity.prices.find(
-      (ma) => ma.currency_code === context.region?.currency_code
-    )
-
-    // Still, if no price is found, we throw
-    if (!regionMoneyAmount && !currencyMoneyAmount && !groupMoneyAmount) {
+    if (!defaultMoneyAmount) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `A price for region: ${context.region?.name} could not be found`
+        `Money amount for variant with id ${variant_id} in region ${context.region.name} does not exist`
       )
     }
 
-    // format result
-    if (regionMoneyAmount) {
-      result.originalPrice = isNaN(result.originalPrice)
-        ? regionMoneyAmount.amount
-        : result.originalPrice
-      result.prices = [...result.prices, regionMoneyAmount]
+    const prices = await this.moneyAmountRepository_.findManyForVariantInRegion(
+      variant_id,
+      context.region.id,
+      context.region.currency_code,
+      context.customer?.groups?.map((g) => g.id)
+    )
+
+    const result: PriceSelectionResult = {
+      originalPrice: defaultMoneyAmount?.amount,
+      calculatedPrice: NaN,
+      prices: prices,
     }
 
-    if (currencyMoneyAmount) {
-      result.originalPrice = isNaN(result.originalPrice)
-        ? currencyMoneyAmount.amount
-        : result.originalPrice
-      result.prices = [...result.prices, currencyMoneyAmount]
-    }
+    const validPrices = prices.filter(
+      (p) =>
+        (typeof context.quantity !== "undefined" &&
+          (!p.min_quantity || p.min_quantity < context.quantity) &&
+          (!p.max_quantity || p.max_quantity > context.quantity)) ||
+        (typeof context.quantity === "undefined" &&
+          p.max_quantity === null &&
+          p.min_quantity === null)
+    )
 
-    if (regionMoneyAmount?.sale_amount) {
-      console.log("here")
-    }
+    result.calculatedPrice = validPrices.reduce(
+      (prev, curr) =>
+        curr.amount < prev && !isNaN(curr.amount) ? curr.amount : prev,
+      Infinity
+    )
 
-    if (isNaN(result.calculatedPrice)) {
+    if (result.calculatedPrice === Infinity) {
       result.calculatedPrice = result.originalPrice
     }
 

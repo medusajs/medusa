@@ -4,9 +4,12 @@ import {
   EntityRepository,
   In,
   IsNull,
+  LessThan,
+  MoreThan,
   Not,
-  Repository
+  Repository,
 } from "typeorm"
+import { Writable } from "typeorm/platform/PlatformTools"
 import { MoneyAmount } from "../models/money-amount"
 
 type Price = Partial<
@@ -80,5 +83,47 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .from(MoneyAmount)
       .where({ variant_id: variantId, id: In(moneyAmountIds) })
       .execute()
+  }
+
+  public async findDefaultForVariantInRegion(
+    variant_id: string,
+    region_id: string,
+    currency_code: string
+  ): Promise<MoneyAmount | undefined> {
+    return await this.createQueryBuilder("ma")
+      .where({ type: "default", variant_id })
+      .andWhere((qb) => qb.where({ region_id }).orWhere({ currency_code }))
+      .getOne()
+  }
+
+  public async findManyForVariantInRegion(
+    variant_id: string,
+    region_id: string,
+    currency_code: string,
+    customer_group_ids?: string[]
+  ): Promise<MoneyAmount[]> {
+    const date = new Date()
+
+    let qb = this.createQueryBuilder("ma")
+      .where({ variant_id })
+      .andWhere((qb) => qb.where({ region_id }).orWhere({ currency_code }))
+      .andWhere((qb) =>
+        qb
+          .where({ ends_at: MoreThan(date), starts_at: LessThan(date) })
+          .orWhere({ ends_at: null, starts_at: null })
+      )
+
+    if (customer_group_ids?.length) {
+      qb = qb
+        .leftJoinAndSelect("ma.customer_groups", "cGroup")
+        .andWhere("cGroup.customer_group_id IN (:...customer_group_ids)", {
+          customer_group_ids,
+        })
+    } else {
+      qb = qb
+        .loadRelationCountAndMap("repo_group_count", "customer_groups")
+        .andWhere({ repo_group_count: 0 }) // .andWhere("cGroup.customer_group_id IN (:...customer_group_ids)", {
+    }
+    return await qb.getMany()
   }
 }
