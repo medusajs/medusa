@@ -1,9 +1,10 @@
 import { omit, pickBy } from "lodash"
-import { AdminGetCustomersParams, Customer } from "../.."
+import { AdminGetCustomersParams } from "../../api/routes/admin/customers/list-customers"
 import { AdminCustomersListRes } from "../../api"
 import { CustomerService } from "../../services"
 import { FindConfig } from "../../types/common"
 import { validator } from "../../utils/validator"
+import { Customer } from "../../models/customer"
 
 const listAndCount = async (
   scope,
