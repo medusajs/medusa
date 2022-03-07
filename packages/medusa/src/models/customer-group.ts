@@ -23,23 +23,8 @@ export class CustomerGroup {
   @Column()
   name: string
 
-  @ManyToMany(
-    () => Customer,
-    (customer) => customer.groups,
-    {
-      onDelete: "CASCADE",
-    }
-  )
-  @JoinTable({
-    name: "customer_group_customers",
-    joinColumn: {
-      name: "customer_group_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "customer_id",
-      referencedColumnName: "id",
-    },
+  @ManyToMany(() => Customer, (customer) => customer.groups, {
+    onDelete: "CASCADE",
   })
   customers: Customer[]
 
