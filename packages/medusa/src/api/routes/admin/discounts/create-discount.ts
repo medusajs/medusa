@@ -11,6 +11,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { omit } from "lodash"
 import { defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
@@ -79,9 +80,24 @@ export default async (req, res) => {
 
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  const created = await discountService.create(validated)
+  let id: string | undefined
+  await manager.transaction(async (tx) => {
+    const discountServiceTx = discountService.withTransaction(tx)
 
-  // TODO: Add the ability to create discount conditions upon creating a discount?
+    const created = await discountServiceTx.create(
+      omit(validated, [
+        "product_conditions",
+        "product_collection_conditions",
+        "product_tag_conditions",
+        "product_type_conditions",
+        "customer_group_conditions",
+      ])
+    )
+
+    if (typeof validated.rule.product_conditions !== "undefined") {
+      // create product conditions
+    }
+  })
 
   const discount = await discountService.retrieve(created.id, {
     relations: defaultAdminDiscountsRelations,
@@ -154,9 +170,28 @@ export class AdminPostDiscountsDiscountRule {
   @IsNotEmpty()
   allocation: string
 
-  // @IsOptional()
-  // @IsArray()
-  // @ValidateNested({ each: true })
-  // @Type(() => Condition)
-  // conditions?: Condition[]
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  product_conditions?: string[]
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  product_collection_conditions?: string[]
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  product_type_conditions?: string[]
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  product_tag_conditions?: string[]
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  customer_group_conditions?: string[]
 }

@@ -31,6 +31,11 @@ export enum DiscountConditionType {
   CUSTOMER_GROUPS = "customer_groups",
 }
 
+export enum DiscountConditionOperation {
+  IN = "in",
+  NOT_IN = "not_in",
+}
+
 @Entity()
 export class DiscountCondition {
   @PrimaryColumn()
@@ -41,6 +46,12 @@ export class DiscountCondition {
     enum: DiscountConditionType,
   })
   type: DiscountConditionType
+
+  @DbAwareColumn({
+    type: "enum",
+    enum: DiscountConditionOperation,
+  })
+  operator: DiscountConditionOperation
 
   @Index()
   @Column()

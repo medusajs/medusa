@@ -9,7 +9,9 @@ import {
   TotalsService,
 } from "."
 import { Discount, DiscountRule } from ".."
+import { DiscountConditionType } from "../models/discount-condition"
 import { DiscountRepository } from "../repositories/discount"
+import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig } from "../types/common"
@@ -30,6 +32,7 @@ class DiscountService extends BaseService {
   private discountRepository_: typeof DiscountRepository
   private discountRuleRepository_: typeof DiscountRuleRepository
   private giftCardRepository_: typeof GiftCardRepository
+  private discountConditionRepository_: typeof DiscountConditionRepository
   private totalsService_: TotalsService
   private productService_: ProductService
   private regionService_: RegionService
@@ -40,6 +43,7 @@ class DiscountService extends BaseService {
     discountRepository,
     discountRuleRepository,
     giftCardRepository,
+    discountConditionRepository,
     totalsService,
     productService,
     regionService,
@@ -58,6 +62,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {GiftCardRepository} */
     this.giftCardRepository_ = giftCardRepository
+
+    /** @private @const {DiscountConditionRepository} */
+    this.discountConditionRepository_ = discountConditionRepository
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -534,6 +541,27 @@ class DiscountService extends BaseService {
       await discountRepo.softRemove(discount)
 
       return Promise.resolve()
+    })
+  }
+
+  async createDiscountCondition(
+    discountId: string,
+    resourceIds: string[],
+    resourceType: DiscountConditionType
+  ): Promise<Discount> {
+    return this.atomicPhase_(async (manager) => {
+      const discountConditionRepo: DiscountConditionRepository =
+        manager.getCustomRepository(this.discountConditionRepository_)
+
+      const discount = await this.retrieve(discountId, {
+        relations: ["rule"],
+      })
+
+      await discountConditionRepo.addConditionResources(
+        discount.rule.id,
+        resourceIds,
+        resourceType
+      )
     })
   }
 }
