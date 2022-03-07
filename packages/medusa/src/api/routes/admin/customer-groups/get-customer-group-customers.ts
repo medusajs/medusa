@@ -1,6 +1,3 @@
-import { CustomerService } from "../../../../services"
-import { validator } from "../../../../utils/validator"
-import { AdminGetCustomersParams } from "../customers"
 import CustomerController from "../../../../controllers/customers"
 
 /**
@@ -23,21 +20,14 @@ import CustomerController from "../../../../controllers/customers"
  */
 export default async (req, res) => {
   const { id } = req.params
-  const validated = await validator(AdminGetCustomersParams, req.query)
 
-  const customerService: CustomerService = req.scope.resolve("customerService")
+  req.query.groups = [id]
 
-  validated.groups = [id]
-
-  const [customers, count] = await CustomerController.listAndCount(
-    customerService,
-    validated
+  const result = await CustomerController.listAndCount(
+    req.scope,
+    req.query,
+    req.body
   )
 
-  res.json({
-    customers,
-    count,
-    offset: validated.offset,
-    limit: validated.limit,
-  })
+  res.json(result)
 }
