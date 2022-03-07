@@ -31,6 +31,11 @@ export enum DiscountConditionType {
   CUSTOMER_GROUPS = "customer_groups",
 }
 
+export enum DiscountConditionOperator {
+  IN = "in",
+  NOT_IN = "not_in",
+}
+
 @Entity()
 export class DiscountCondition {
   @PrimaryColumn()
@@ -42,14 +47,17 @@ export class DiscountCondition {
   })
   type: DiscountConditionType
 
+  @DbAwareColumn({
+    type: "enum",
+    enum: DiscountConditionOperator,
+  })
+  operator: DiscountConditionOperator
+
   @Index()
   @Column()
   discount_rule_id: string
 
-  @ManyToOne(
-    () => DiscountRule,
-    (dr) => dr.conditions
-  )
+  @ManyToOne(() => DiscountRule, (dr) => dr.conditions)
   @JoinColumn({ name: "discount_rule_id" })
   discount_rule: DiscountRule
 
