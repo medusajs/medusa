@@ -5,7 +5,7 @@ import CustomerController from "../../../../controllers/customers"
 
 /**
  * @oas [get] /customer-groups/{id}/customers
- * operationId: "GetCustomers"
+ * operationId: "GetCustomerGroupsGroupCustomers"
  * summary: "List Customers"
  * description: "Retrieves a list of Customers."
  * x-authenticated: true
