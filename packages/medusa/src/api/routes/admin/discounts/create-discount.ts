@@ -11,8 +11,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { omit } from "lodash"
 import { defaultAdminDiscountsRelations } from "."
+import {
+  DiscountConditionOperator,
+  DiscountConditionType,
+} from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
@@ -75,29 +78,13 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
+
 export default async (req, res) => {
   const validated = await validator(AdminPostDiscountsReq, req.body)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  let id: string | undefined
-  await manager.transaction(async (tx) => {
-    const discountServiceTx = discountService.withTransaction(tx)
-
-    const created = await discountServiceTx.create(
-      omit(validated, [
-        "product_conditions",
-        "product_collection_conditions",
-        "product_tag_conditions",
-        "product_type_conditions",
-        "customer_group_conditions",
-      ])
-    )
-
-    if (typeof validated.rule.product_conditions !== "undefined") {
-      // create product conditions
-    }
-  })
+  const created = await discountService.create(validated)
 
   const discount = await discountService.retrieve(created.id, {
     relations: defaultAdminDiscountsRelations,
@@ -172,26 +159,19 @@ export class AdminPostDiscountsDiscountRule {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  product_conditions?: string[]
+  @ValidateNested({ each: true })
+  @Type(() => AdminPostDiscountsConditionReq)
+  conditions?: AdminPostDiscountsConditionReq[]
+}
 
-  @IsOptional()
+export class AdminPostDiscountsConditionReq {
+  @IsString()
+  operator: DiscountConditionOperator
+
+  @IsString()
+  resource_type: DiscountConditionType
+
   @IsArray()
   @IsString({ each: true })
-  product_collection_conditions?: string[]
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  product_type_conditions?: string[]
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  product_tag_conditions?: string[]
-
-  @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  customer_group_conditions?: string[]
+  resource_ids: string[]
 }

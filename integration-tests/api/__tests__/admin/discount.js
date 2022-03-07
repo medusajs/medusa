@@ -7,6 +7,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const discountSeeder = require("../../helpers/discount-seeder")
 const { exportAllDeclaration } = require("@babel/types")
+const { simpleProductFactory } = require("../../factories")
 
 jest.setTimeout(30000)
 
@@ -267,25 +268,74 @@ describe("/admin/discounts", () => {
           usage_limit: 10,
         })
       )
+    })
 
-      const test = await api.get(
-        `/admin/discounts/${response.data.discount.id}`,
-        { headers: { Authorization: "Bearer test_token" } }
-      )
+    it("creates a discount with conditions", async () => {
+      const api = useApi()
 
-      expect(test.status).toEqual(200)
-      expect(test.data.discount).toEqual(
-        expect.objectContaining({
-          code: "HELLOWORLD",
-          usage_limit: 10,
-          rule: expect.objectContaining({
-            value: 10,
-            type: "percentage",
-            description: "test",
-            allocation: "total",
-          }),
+      const product = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const anotherProduct = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+              conditions: [
+                {
+                  resource_type: "products",
+                  resource_ids: [product.id],
+                  operator: "in",
+                },
+                {
+                  resource_type: "products",
+                  resource_ids: [anotherProduct.id],
+                  operator: "not_in",
+                },
+                {
+                  resource_type: "product_types",
+                  resource_ids: [anotherProduct.type_id],
+                  operator: "not_in",
+                },
+              ],
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
         })
-      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount.rule.conditions).toEqual([
+        expect.objectContaining({
+          type: "products",
+          operator: "in",
+        }),
+        expect.objectContaining({
+          type: "products",
+          operator: "not_in",
+        }),
+        expect.objectContaining({
+          type: "product_types",
+          operator: "not_in",
+        }),
+      ])
     })
 
     it("creates a discount and updates it", async () => {

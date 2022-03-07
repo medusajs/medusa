@@ -994,7 +994,7 @@ class CartService extends BaseService {
    */
   async applyDiscount(cart: Cart, discountCode: string): Promise<void> {
     const discount = await this.discountService_.retrieveByCode(discountCode, [
-      "rule",
+      // "rule",
       // TODO: Add conditions relation
       "regions",
     ])

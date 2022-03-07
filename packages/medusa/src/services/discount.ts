@@ -1,4 +1,5 @@
 import { parse, toSeconds } from "iso8601-duration"
+import { groupBy, isEmpty, omit } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
@@ -9,13 +10,13 @@ import {
   TotalsService,
 } from "."
 import { Discount, DiscountRule } from ".."
-import { DiscountConditionType } from "../models/discount-condition"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig } from "../types/common"
 import {
+  CreateDiscountConditionInput,
   CreateDiscountInput,
   CreateDynamicDiscountInput,
   FilterableDiscountProps,
@@ -89,6 +90,7 @@ class DiscountService extends BaseService {
       discountRepository: this.discountRepository_,
       discountRuleRepository: this.discountRuleRepository_,
       giftCardRepository: this.giftCardRepository_,
+      discountConditionRepository: this.discountConditionRepository_,
       totalsService: this.totalsService_,
       productService: this.productService_,
       regionService: this.regionService_,
@@ -212,10 +214,10 @@ class DiscountService extends BaseService {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
       const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
-      // TODO: Replace with discount conditions
-      // if (discount.rule?.valid_for) {
-      //   discount.rule.valid_for = discount.rule.valid_for.map((id) => ({ id }))
-      // }
+      const conditions = discount.rule?.conditions
+
+      const ruleToCreate = omit(discount.rule, ["conditions"])
+      discount.rule = ruleToCreate
 
       const validatedRule = this.validateDiscountRule_(discount.rule)
 
@@ -246,6 +248,11 @@ class DiscountService extends BaseService {
 
         const created = await discountRepo.create(discount)
         const result = await discountRepo.save(created)
+
+        if (conditions && !isEmpty(conditions)) {
+          await this.createConditions_(result.id, conditions)
+        }
+
         return result
       } catch (error) {
         throw formatException(error)
@@ -289,7 +296,7 @@ class DiscountService extends BaseService {
    */
   async retrieveByCode(
     discountCode: string,
-    relations = []
+    relations: string[] = []
   ): Promise<Discount> {
     const discountRepo = this.manager_.getCustomRepository(
       this.discountRepository_
@@ -544,23 +551,46 @@ class DiscountService extends BaseService {
     })
   }
 
-  async createDiscountCondition(
+  async createConditions_(
     discountId: string,
-    resourceIds: string[],
-    resourceType: DiscountConditionType
-  ): Promise<Discount> {
+    conditions: CreateDiscountConditionInput[]
+  ): Promise<void> {
+    const grouped = groupBy(conditions, "resource_type")
+
+    for (const type of Object.keys(grouped)) {
+      const resourcesByType = grouped[type]
+      const groupedByOperator = groupBy(resourcesByType, "operator")
+
+      for (const operator of Object.keys(groupedByOperator)) {
+        const [resourcesByOperator] = groupedByOperator[operator]
+
+        await this.createDiscountCondition_(discountId, resourcesByOperator)
+      }
+    }
+  }
+
+  async createDiscountCondition_(
+    discountId: string,
+    data: CreateDiscountConditionInput
+  ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const discountConditionRepo: DiscountConditionRepository =
         manager.getCustomRepository(this.discountConditionRepository_)
 
-      const discount = await this.retrieve(discountId, {
-        relations: ["rule"],
+      const discount = await this.retrieve(discountId)
+
+      const created = discountConditionRepo.create({
+        discount_rule_id: discount.rule_id,
+        operator: data.operator,
+        type: data.resource_type,
       })
 
+      const discountCondition = await discountConditionRepo.save(created)
+
       await discountConditionRepo.addConditionResources(
-        discount.rule.id,
-        resourceIds,
-        resourceType
+        discountCondition.id,
+        data.resource_ids,
+        data.resource_type
       )
     })
   }
