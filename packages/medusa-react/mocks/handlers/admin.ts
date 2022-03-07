@@ -509,6 +509,48 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/customer-groups/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        customer_groups: fixtures.list("customer_group"),
+      })
+    )
+  }),
+
+  rest.get("/admin/customer-groups/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        customer_group: fixtures.get("customer_group"),
+      })
+    )
+  }),
+
+  rest.post("/admin/customer-groups/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        customer_group: {
+          ...fixtures.get("customer_group"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/customer-groups/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        customer_group: {
+          ...fixtures.get("customer_group"),
+          ...(req.body as any),
+        },
+      })
+    )
+  }),
+
   rest.get("/admin/discounts/", (req, res, ctx) => {
     return res(
       ctx.status(200),
