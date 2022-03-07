@@ -39,13 +39,13 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       variant_id,
       context.region.id,
       context.region.currency_code,
-      context.customer?.groups?.map((g) => g.id)
+      context.customer_id
     )
 
     const result: PriceSelectionResult = {
       originalPrice: defaultMoneyAmount?.amount,
       calculatedPrice: NaN,
-      prices: prices,
+      prices: [defaultMoneyAmount, ...prices],
     }
 
     const validPrices = prices.filter(
@@ -54,8 +54,8 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
           (!p.min_quantity || p.min_quantity < context.quantity) &&
           (!p.max_quantity || p.max_quantity > context.quantity)) ||
         (typeof context.quantity === "undefined" &&
-          p.max_quantity === null &&
-          p.min_quantity === null)
+          !p.max_quantity &&
+          !p.min_quantity)
     )
 
     result.calculatedPrice = validPrices.reduce(

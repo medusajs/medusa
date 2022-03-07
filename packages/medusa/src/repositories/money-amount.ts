@@ -100,7 +100,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     variant_id: string,
     region_id: string,
     currency_code: string,
-    customer_group_ids?: string[]
+    customer_id?: string
   ): Promise<MoneyAmount[]> {
     const date = new Date()
 
@@ -113,12 +113,14 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
           .orWhere({ ends_at: null, starts_at: null })
       )
 
-    if (customer_group_ids?.length) {
-      qb = qb
-        .leftJoinAndSelect("ma.customer_groups", "cGroup")
-        .andWhere("cGroup.customer_group_id IN (:...customer_group_ids)", {
-          customer_group_ids,
-        })
+    if (customer_id) {
+      qb = qb.leftJoinAndSelect("ma.customer_groups", "cGroup").andWhere((qb) =>
+        qb
+          .where("cGroup.customer_id = :customer_id", {
+            customer_id,
+          })
+          .orWhere({ cGroup: null })
+      )
     } else {
       qb = qb
         .loadRelationCountAndMap("repo_group_count", "customer_groups")
