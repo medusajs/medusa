@@ -13,7 +13,7 @@ import { buildOptions } from "../../utils/buildOptions"
 import { adminCustomerGroupKeys } from "./queries"
 
 /**
- * Hook returns functions for creating user groups.
+ * Hook returns functions for creating customer groups.
  *
  * @param options
  */
