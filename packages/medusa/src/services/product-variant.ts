@@ -1,6 +1,8 @@
+import partition from "lodash/partition"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, EntityManager, ILike, In, SelectQueryBuilder } from "typeorm"
+import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import { CustomerGroupService } from "."
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
@@ -12,6 +14,7 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
+import { RegionRepository } from "../repositories/region"
 import EventBusService from "../services/event-bus"
 import RegionService from "../services/region"
 import { FindConfig } from "../types/common"
@@ -38,6 +41,8 @@ class ProductVariantService extends BaseService {
   private productRepository_: typeof ProductRepository
   private eventBus_: EventBusService
   private regionService_: RegionService
+  private customerGroupService_: CustomerGroupService
+  private regionRepository_: typeof RegionRepository
   private moneyAmountRepository_: typeof MoneyAmountRepository
   private productOptionValueRepository_: typeof ProductOptionValueRepository
 
@@ -47,6 +52,8 @@ class ProductVariantService extends BaseService {
     productRepository,
     eventBusService,
     regionService,
+    customerGroupService,
+    regionRepository,
     moneyAmountRepository,
     productOptionValueRepository,
   }) {
@@ -67,6 +74,11 @@ class ProductVariantService extends BaseService {
     /** @private @const {RegionService} */
     this.regionService_ = regionService
 
+    /** @private @const {CustomerGroupService} */
+    this.customerGroupService_ = customerGroupService
+
+    this.regionRepository_ = regionRepository
+
     this.moneyAmountRepository_ = moneyAmountRepository
 
     this.productOptionValueRepository_ = productOptionValueRepository
@@ -83,6 +95,8 @@ class ProductVariantService extends BaseService {
       productRepository: this.productRepository_,
       eventBusService: this.eventBus_,
       regionService: this.regionService_,
+      customerGroupService: this.customerGroupService_,
+      regionRepository: this.regionRepository_,
       moneyAmountRepository: this.moneyAmountRepository_,
       productOptionValueRepository: this.productOptionValueRepository_,
     })
@@ -225,17 +239,7 @@ class ProductVariantService extends BaseService {
       const result = await variantRepo.save(productVariant)
 
       if (prices) {
-        for (const price of prices) {
-          if (price.region_id) {
-            await this.setRegionPrice(result.id, {
-              amount: price.amount,
-              region_id: price.region_id,
-              sale_amount: price.sale_amount,
-            })
-          } else {
-            await this.setCurrencyPrice(result.id, price)
-          }
-        }
+        await this.addOrUpdateVariantPrices(result.id, prices)
       }
 
       await this.eventBus_
@@ -279,7 +283,7 @@ class ProductVariantService extends BaseService {
       const { prices, options, metadata, inventory_quantity, ...rest } = update
 
       if (prices) {
-        await this.updateVariantPrices(variant.id, prices)
+        await this.addOrUpdateVariantPrices(variant.id, prices)
       }
 
       if (options) {
@@ -317,34 +321,69 @@ class ProductVariantService extends BaseService {
     })
   }
 
-  async updateVariantPrices(
+  async addOrUpdateVariantPrices(
     variantId: string,
-    prices: ProductVariantPrice[]
+    prices: ProductVariantPrice[],
+    replace = false
+  ): Promise<void> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
+      const regionRepo = manager.getCustomRepository(this.regionRepository_)
+
+      const [regionPrices, currencyPrices] = partition(
+        prices,
+        (p) => p.region_id
+      )
+
+      const validatedRegionPrices = await regionRepo
+        .findByIds(
+          regionPrices.map((rp) => rp.region_id),
+          { select: ["id", "currency_code"] }
+        )
+        .then((regions) =>
+          regions.map((r) => {
+            const price = regionPrices.find((rp) => rp.region_id === r.id)
+            return {
+              ...price,
+              currency_code: r.currency_code,
+            } as ProductVariantPrice
+          })
+        )
+
+      await moneyAmountRepo.bulkAddOrUpdate(variantId, [
+        ...validatedRegionPrices,
+        ...currencyPrices,
+      ])
+
+      if (replace) {
+        const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
+          variantId,
+          prices
+        )
+        await moneyAmountRepo.remove(obsoletePrices)
+      }
+    })
+  }
+
+  async deleteVariantPrices(
+    variantId: string,
+    priceIds: string | string[]
   ): Promise<void> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(
         this.moneyAmountRepository_
       )
 
-      // get prices to be deleted
-      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
-        variantId,
-        prices
-      )
-
-      for (const price of prices) {
-        if (price.region_id) {
-          await this.setRegionPrice(variantId, {
-            region_id: price.region_id,
-            amount: price.amount,
-            sale_amount: price.sale_amount || undefined,
-          })
-        } else {
-          await this.setCurrencyPrice(variantId, price)
-        }
+      let ids: string[]
+      if (typeof priceIds === "string") {
+        ids = [priceIds]
+      } else {
+        ids = priceIds
       }
 
-      await moneyAmountRepo.remove(obsoletePrices)
+      await moneyAmountRepo.bulkDelete(variantId, ids)
     })
   }
 
@@ -406,11 +445,8 @@ class ProductVariantService extends BaseService {
         )
       }
 
-      // Always return sale price, if present
-      if (moneyAmount.sale_amount) {
-        return moneyAmount.sale_amount
-      }
-
+      // TODO: This will just return the first price for the region,
+      // we need to add the PriceStrategy to get the correct price here
       return moneyAmount.amount
     })
   }
@@ -424,7 +460,7 @@ class ProductVariantService extends BaseService {
   async setRegionPrice(
     variantId: string,
     price: ProductVariantPrice
-  ): Promise<MoneyAmount> {
+  ): Promise<MoneyAmount[]> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const moneyAmountRepo = manager.getCustomRepository(
         this.moneyAmountRepository_
@@ -444,7 +480,10 @@ class ProductVariantService extends BaseService {
         })
       } else {
         moneyAmount.amount = price.amount
-        moneyAmount.sale_amount = price.sale_amount
+
+        if (price.customer_group_ids) {
+          console.log()
+        }
       }
 
       const result = await moneyAmountRepo.save(moneyAmount)

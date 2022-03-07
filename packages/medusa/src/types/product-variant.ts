@@ -1,16 +1,35 @@
-import { IsBoolean, IsNumber, IsString, ValidateNested } from "class-validator"
+import {
+  ArrayNotEmpty,
+  IsBoolean,
+  IsDate,
+  IsEnum,
+  IsInt,
+  IsNumber,
+  IsOptional,
+  IsString,
+  Validate,
+  ValidateIf,
+  ValidateNested,
+} from "class-validator"
+import { MoneyAmountType } from "../types/money-amount"
 import { IsType } from "../utils/validators/is-type"
 import {
   DateComparisonOperator,
   NumericalComparisonOperator,
   StringComparisonOperator,
 } from "./common"
+import { XorConstraint } from "./validators/xor"
 
 export type ProductVariantPrice = {
   currency_code?: string
   region_id?: string
   amount: number
-  sale_amount?: number | undefined
+  type?: MoneyAmountType
+  starts_at?: Date
+  ends_at?: Date
+  min_quantity?: number
+  max_quantity?: number
+  customer_group_ids?: string[]
 }
 
 export type ProductVariantOption = {
@@ -129,4 +148,84 @@ export class FilterableProductVariantProps {
 
   @IsType([DateComparisonOperator])
   updated_at?: DateComparisonOperator
+}
+
+export class ProductVariantPricesUpdateReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @ValidateIf((o) => !o.id)
+  @Validate(XorConstraint, ["currency_code"])
+  region_id?: string
+
+  @ValidateIf((o) => !o.id)
+  @Validate(XorConstraint, ["region_id"])
+  currency_code?: string
+
+  @IsInt()
+  amount: number
+
+  @IsOptional()
+  @IsEnum(MoneyAmountType)
+  type?: MoneyAmountType = MoneyAmountType.DEFAULT
+
+  @IsOptional()
+  @IsDate()
+  start_date?: Date
+
+  @IsOptional()
+  @IsDate()
+  end_date?: Date
+
+  @IsOptional()
+  @IsInt()
+  min_quantity?: number
+
+  @IsOptional()
+  @IsInt()
+  max_quantity?: number
+
+  @IsOptional()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  customer_group_ids: string[]
+}
+
+export class ProductVariantPricesCreateReq {
+  @ValidateIf((o) => !o.id)
+  @Validate(XorConstraint, ["currency_code"])
+  region_id?: string
+
+  @ValidateIf((o) => !o.id)
+  @Validate(XorConstraint, ["region_id"])
+  currency_code?: string
+
+  @IsInt()
+  amount: number
+
+  @IsOptional()
+  @IsEnum(MoneyAmountType)
+  type?: MoneyAmountType = MoneyAmountType.DEFAULT
+
+  @IsOptional()
+  @IsDate()
+  start_date?: Date
+
+  @IsOptional()
+  @IsDate()
+  end_date?: Date
+
+  @IsOptional()
+  @IsInt()
+  min_quantity?: number
+
+  @IsOptional()
+  @IsInt()
+  max_quantity?: number
+
+  @IsOptional()
+  @ArrayNotEmpty()
+  @IsString({ each: true })
+  customer_group_ids: string[]
 }

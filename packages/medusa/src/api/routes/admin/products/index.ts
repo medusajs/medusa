@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { Product, ProductTag, ProductType } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { Product, ProductTag, ProductType } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -36,6 +36,10 @@ export default (app) => {
   route.delete(
     "/:id/variants/:variant_id",
     middlewares.wrap(require("./delete-variant").default)
+  )
+  route.delete(
+    "/:id/variants/:variant_id/prices/batch",
+    middlewares.wrap(require("./delete-variant-prices").default)
   )
   route.delete("/:id", middlewares.wrap(require("./delete-product").default))
   route.delete(

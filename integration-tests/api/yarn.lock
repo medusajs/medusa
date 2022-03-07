@@ -1256,6 +1256,7 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+
 "@medusajs/medusa-cli@1.2.0-dev-1646213107704":
   version "1.2.0-dev-1646213107704"
   resolved "http://localhost:4873/@medusajs%2fmedusa-cli/-/medusa-cli-1.2.0-dev-1646213107704.tgz#b84f9143450f3c03e732277b6c5bbeb0df761b2e"

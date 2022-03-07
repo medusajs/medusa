@@ -11,8 +11,8 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { Customer } from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { Customer } from "./customer"
 
 @Entity()
 export class CustomerGroup {
@@ -23,9 +23,13 @@ export class CustomerGroup {
   @Column()
   name: string
 
-  @ManyToMany(() => Customer, (customer) => customer.groups, {
-    onDelete: "CASCADE",
-  })
+  @ManyToMany(
+    () => Customer,
+    (customer) => customer.groups,
+    {
+      onDelete: "CASCADE",
+    }
+  )
   @JoinTable({
     name: "customer_group_customers",
     joinColumn: {
