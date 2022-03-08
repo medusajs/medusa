@@ -285,16 +285,20 @@ class ShopifyCollectionService extends BaseService {
 
     if (column === "variant_price") {
       if (product.variants?.length && defaultCurrency) {
-        const prices = product.variants
-          .map((variant) => {
-            return variant.prices.filter(
-              (p) => p.currency_code === defaultCurrency
-            )
-          })
-          .flat()
+        const prices = []
+
+        for (const variant of product.variants) {
+          if (variant.prices) {
+            for (const price of variant.prices) {
+              if (price.currency_code === defaultCurrency) {
+                prices.push(price.amount)
+              }
+            }
+          }
+        }
 
         const anyMatch = prices.some((price) => {
-          return this.testNumberRelation_(price.amount, relation, condition)
+          return this.testNumberRelation_(price, relation, condition)
         })
 
         return anyMatch
