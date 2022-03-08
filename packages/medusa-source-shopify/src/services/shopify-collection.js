@@ -60,10 +60,6 @@ class ShopifyCollectionService extends BaseService {
    * @return {Promise}
    */
   async createCustomCollections(collects, collections, products) {
-    if (!collections) {
-      return Promise.resolve()
-    }
-
     return this.atomicPhase_(async (manager) => {
       const normalizedCollections = collections.map((c) =>
         this.normalizeCustomCollection_(c)
@@ -82,15 +78,13 @@ class ShopifyCollectionService extends BaseService {
             .create(nc)
         }
 
-        const productIdsToAdd = this.getProductsForCustomCollection(
+        const productIds = this.getCustomCollectionProducts_(
           collection.metadata.sh_id,
           collects,
           products
         )
 
-        if (productIdsToAdd) {
-          await this.addProductsToCollection(collection.id, productIdsToAdd)
-        }
+        await this.addProductsToCollection(collection.id, productIds)
 
         result.push(collection)
       }
@@ -100,28 +94,28 @@ class ShopifyCollectionService extends BaseService {
   }
 
   async createSmartCollections(collections, products) {
-    if (!collections) {
-      return Promise.resolve()
-    }
-
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
-
-    const ids = products.map((p) => p.id)
-    const completeProducts = await productRepo.findWithRelations(
-      ["variants", "tags", "type"],
-      ids
-    )
-
-    const defaultCurrency = await this.storeService_
-      .retrieve()
-      .then((store) => {
-        return store.default_currency_code
-      })
-      .catch((_) => undefined)
-
     return this.atomicPhase_(async (manager) => {
+      if (!collections) {
+        return Promise.resolve()
+      }
+
+      const productRepo = this.manager_.getCustomRepository(
+        this.productRepository_
+      )
+
+      const ids = products.map((p) => p.id)
+      const completeProducts = await productRepo.findWithRelations(
+        ["variants", "tags", "type"],
+        ids
+      )
+
+      const defaultCurrency = await this.storeService_
+        .retrieve()
+        .then((store) => {
+          return store.default_currency_code
+        })
+        .catch((_) => undefined)
+
       const normalizedCollections = collections.map((c) =>
         this.normalizeSmartCollection_(c)
       )
@@ -142,7 +136,7 @@ class ShopifyCollectionService extends BaseService {
         const validProducts = this.getValidProducts_(
           nc.rules,
           completeProducts,
-          nc.disjunctive,
+          nc.disjunctive ?? false,
           defaultCurrency
         )
 
@@ -168,14 +162,10 @@ class ShopifyCollectionService extends BaseService {
     })
   }
 
-  getProductsForCustomCollection(shCollectionId, collects, products) {
-    if (!collects || !products) {
-      return null
-    }
-
+  getCustomCollectionProducts_(shCollectionId, collects, products) {
     const medusaProductIds = products.reduce((prev, curr) => {
-      if (curr.metadata?.sh_id) {
-        prev[curr.metadata.sh_id] = curr.id
+      if (curr.external_id) {
+        prev[curr.external_id] = curr.id
       }
 
       return prev
@@ -188,20 +178,20 @@ class ShopifyCollectionService extends BaseService {
       return productIds
     }, [])
 
-    const productIdsToAdd = Object.keys(medusaProductIds).filter(
-      (shopifyId) => {
-        if (productIds.includes(shopifyId)) {
-          const medusaId = medusaProductIds[shopifyId]
-          delete medusaProductIds[shopifyId]
-          return medusaId
-        }
+    const productIdsToAdd = Object.keys(medusaProductIds).map((shopifyId) => {
+      if (productIds.includes(shopifyId)) {
+        const medusaId = medusaProductIds[shopifyId]
+        delete medusaProductIds[shopifyId]
+        return medusaId
       }
-    )
+    })
 
     // remove added products from the array
     for (const id of productIdsToAdd) {
       const productToRemove = products.find((p) => p.id === id)
-      removeIndex(products, productToRemove)
+      if (productToRemove) {
+        removeIndex(products, productToRemove)
+      }
     }
 
     return productIdsToAdd
@@ -215,23 +205,16 @@ class ShopifyCollectionService extends BaseService {
         this.testRule_(r, product, defaultCurrency)
       )
 
-      if (disjunctive) {
-        if (results.includes(false)) {
-          continue
-        }
-
+      if (disjunctive && !results.includes(false)) {
         validProducts.push(product)
-        removeIndex(products, product)
-        continue
-      }
-
-      if (results.includes(true)) {
+      } else if (!disjunctive && results.includes(true)) {
         validProducts.push(product)
-        removeIndex(products, product)
-        continue
       }
+    }
 
-      continue
+    // remove valid products from the array
+    for (const validProduct of validProducts) {
+      removeIndex(products, validProduct)
     }
 
     return validProducts
@@ -273,11 +256,10 @@ class ShopifyCollectionService extends BaseService {
     }
 
     if (column === "tag") {
-      console.warn("IN TAG CHECK", product.tags, relation, condition)
       if (product.tags) {
-        const anyMatch = product.tags.some((tag) => {
-          return this.testTextRelation_(tag.value, relation, condition)
-        })
+        const anyMatch = product.tags.some((tag) =>
+          this.testTextRelation_(tag.value, relation, condition)
+        )
 
         return anyMatch
       }
@@ -287,13 +269,13 @@ class ShopifyCollectionService extends BaseService {
 
     if (column === "variant_inventory") {
       if (product.variants?.length) {
-        const anyMatch = product.variants.some((variant) => {
-          return this.testNumberRelation_(
+        const anyMatch = product.variants.some((variant) =>
+          this.testNumberRelation_(
             variant.inventory_quantity,
             relation,
             condition
           )
-        })
+        )
 
         return anyMatch
       }
@@ -323,9 +305,9 @@ class ShopifyCollectionService extends BaseService {
 
     if (column === "variant_weight") {
       if (product.variants?.length) {
-        const anyMatch = product.variants.some((variant) => {
-          return this.testNumberRelation_(variant.weight, relation, condition)
-        })
+        const anyMatch = product.variants.some((variant) =>
+          this.testNumberRelation_(variant.weight, relation, condition)
+        )
 
         return anyMatch
       }
@@ -334,7 +316,7 @@ class ShopifyCollectionService extends BaseService {
     }
 
     // If we get here, it means the column is variant_compare_at_price which we don't support until we extend MoneyAmount
-    return false
+    return true
   }
 
   testTextRelation_(text, relation, condition) {
