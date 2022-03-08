@@ -1,9 +1,8 @@
-import { isNonNullExpression } from "typescript"
 import PriceSelectionStrategy from "../price-selection"
 
 const toTest = [
   [
-    "With only default price",
+    "Variant with only default price",
     {
       variant_id: "test-basic-variant",
       context: {
@@ -103,8 +102,8 @@ const toTest = [
           calculatedPrice: 100,
           prices: [
             { amount: 100 },
-            { amount: 30, min_quantity: 10, max_quantity: 10 },
-            { amount: 20, min_quantity: 10, max_quantity: 10 },
+            { amount: 30, min_quantity: 10, max_quantity: 12 },
+            { amount: 20, min_quantity: 3, max_quantity: 5 },
             { amount: 50, min_quantity: 5, max_quantity: 10 },
           ],
         })
@@ -124,14 +123,13 @@ const toTest = [
         quantity: 7,
       },
       validate: (value, { mockMoneyAmountRepository }) => {
-        console.log(value)
         expect(value).toEqual({
           originalPrice: 100,
           calculatedPrice: 50,
           prices: [
             { amount: 100 },
-            { amount: 30, min_quantity: 10, max_quantity: 10 },
-            { amount: 20, min_quantity: 10, max_quantity: 10 },
+            { amount: 30, min_quantity: 10, max_quantity: 12 },
+            { amount: 20, min_quantity: 3, max_quantity: 5 },
             { amount: 50, min_quantity: 5, max_quantity: 10 },
           ],
         })
@@ -155,8 +153,8 @@ const toTest = [
           calculatedPrice: 100,
           prices: [
             { amount: 100 },
-            { amount: 30, min_quantity: 10, max_quantity: 10 },
-            { amount: 20, min_quantity: 10, max_quantity: 10 },
+            { amount: 30, min_quantity: 10, max_quantity: 12 },
+            { amount: 20, min_quantity: 3, max_quantity: 5 },
             { amount: 50, min_quantity: 5, max_quantity: 10 },
           ],
         })
@@ -190,8 +188,8 @@ describe("PriceSelectionStrategy", () => {
                 }
                 if (customer_id === "test-customer-2") {
                   return [
-                    { amount: 30, min_quantity: 10, max_quantity: 10 },
-                    { amount: 20, max_quantity: 10, min_quantity: 10 },
+                    { amount: 30, min_quantity: 10, max_quantity: 12 },
+                    { amount: 20, min_quantity: 3, max_quantity: 5 },
                     { amount: 50, min_quantity: 5, max_quantity: 10 },
                   ]
                 }
