@@ -85,21 +85,10 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .execute()
   }
 
-  public async findDefaultForVariantInRegion(
-    variant_id: string,
-    region_id: string,
-    currency_code: string
-  ): Promise<MoneyAmount | undefined> {
-    return await this.createQueryBuilder("ma")
-      .where({ type: "default", variant_id })
-      .andWhere((qb) => qb.where({ region_id }).orWhere({ currency_code }))
-      .getOne()
-  }
-
   public async findManyForVariantInRegion(
     variant_id: string,
-    region_id: string,
-    currency_code: string,
+    region_id?: string,
+    currency_code?: string,
     customer_id?: string
   ): Promise<MoneyAmount[]> {
     const date = new Date()
@@ -109,8 +98,8 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .andWhere((qb) => qb.where({ region_id }).orWhere({ currency_code }))
       .andWhere((qb) =>
         qb
-          .where({ ends_at: MoreThan(date), starts_at: LessThan(date) })
-          .orWhere({ ends_at: null, starts_at: null })
+          .where({ ends_at: [null, MoreThan(date)] })
+          .orWhere({ starts_at: [null, LessThan(date)] })
       )
 
     if (customer_id) {
