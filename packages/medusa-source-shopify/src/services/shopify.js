@@ -65,34 +65,39 @@ class ShopifyService extends BaseService {
         updatedSinceQuery
       )
 
-      console.warn(
-        "medusa-source-shopify: Number of products found",
-        products?.length ?? 0
-      )
-
       const customCollections = await this.client_.list(
         "custom_collections",
         null,
         updatedSinceQuery
       )
+
       const smartCollections = await this.client_.list(
         "smart_collections",
         null,
         updatedSinceQuery
       )
-      const collects = await this.client_.list("collects")
+
+      const collects = await this.client_.list(
+        "collects",
+        null,
+        updatedSinceQuery
+      )
+
+      const resolvedProducts = await Promise.all(
+        products.map(async (product) => {
+          return await this.productService_
+            .withTransaction(manager)
+            .create(product)
+        })
+      )
 
       await this.collectionService_
         .withTransaction(manager)
-        .createWithProducts(
-          collects,
-          [...customCollections, ...smartCollections],
-          products
-        )
+        .createCustomCollections(collects, customCollections, resolvedProducts)
 
-      for (const product of products) {
-        await this.productService_.withTransaction(manager).create(product)
-      }
+      await this.collectionService_
+        .withTransaction(manager)
+        .createSmartCollections(smartCollections, resolvedProducts)
     })
   }
 

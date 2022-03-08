@@ -63,7 +63,7 @@ class ShopifyProductService extends BaseService {
    * @param {string} collectionId optional
    * @return {Product} the created product
    */
-  async create(data, collectionId) {
+  async create(data) {
     return this.atomicPhase_(async (manager) => {
       const ignore = await this.redis_.shouldIgnore(data.id, "product.created")
       if (ignore) {
@@ -81,7 +81,7 @@ class ShopifyProductService extends BaseService {
         return await this.update(existingProduct, data)
       }
 
-      const normalizedProduct = this.normalizeProduct_(data, collectionId)
+      const normalizedProduct = this.normalizeProduct_(data)
       normalizedProduct.profile_id = await this.getShippingProfile_(
         normalizedProduct.is_giftcard
       )
@@ -121,32 +121,6 @@ class ShopifyProductService extends BaseService {
       if (ignore) {
         return
       }
-
-      // let existing = await this.productService_
-      //   .retrieveByExternalId(shopifyUpdate.id, {
-      //     relations: ["variants", "options"],
-      //   })
-      //   .catch((_) => undefined)
-
-      // if (!existing) {
-      //   return await this.create(shopifyUpdate)
-      // }
-
-      // /**
-      //  * Variants received from webhook do not include
-      //  * presentment prices. Therefore, we fetch them
-      //  * separately, and add to the data object.
-      //  */
-      // const { variants } = await this.shopify_
-      //   .get({
-      //     path: `products/${data.id}`,
-      //     extraHeaders: INCLUDE_PRESENTMENT_PRICES,
-      //   })
-      //   .then((res) => {
-      //     return res.body.product
-      //   })
-
-      // data.variants = variants || []
 
       const normalized = this.normalizeProduct_(shopifyUpdate)
 
@@ -448,7 +422,7 @@ class ShopifyProductService extends BaseService {
    * @param {string} collectionId optional
    * @return {object} normalized object
    */
-  normalizeProduct_(product, collectionId) {
+  normalizeProduct_(product) {
     return {
       title: product.title,
       handle: product.handle,
@@ -466,9 +440,11 @@ class ShopifyProductService extends BaseService {
       tags: product.tags.split(",").map((tag) => this.normalizeTag_(tag)) || [],
       images: product.images.map((img) => img.src) || [],
       thumbnail: product.image?.src || null,
-      collection_id: collectionId || null,
       external_id: product.id,
       status: "proposed",
+      metadata: {
+        vendor: product.vendor,
+      },
     }
   }
 
