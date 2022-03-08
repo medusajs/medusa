@@ -6,8 +6,8 @@ import {
   AdminPostCustomerGroupsGroupReq,
   AdminCustomerGroupsDeleteRes,
   AdminPostCustomerGroupsGroupCustomersBatchReq,
-  AdminDeleteCustomerGroupsGroupCustomerBatchReq,
-} from "@medusajs/medusa"
+  AdminDeleteCustomerGroupsGroupCustomerBatchReq, AdminGetCustomerGroupsGroupParams
+} from "@medusajs/medusa";
 import qs from "qs"
 
 import BaseResource from "../base"
@@ -32,13 +32,21 @@ class AdminCustomerGroupsResource extends BaseResource {
    * Retrieves a customer group.
    *
    * @param id - customer group id
+   * @param query - pass query options such as "expand", "fields" etc.
    * @param customHeaders
    */
   retrieve(
     id: string,
+    query: AdminGetCustomerGroupsGroupParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomerGroupsRes> {
-    const path = `/admin/customer-groups/${id}`
+    let path = `/admin/customer-groups/${id}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
   /**
@@ -58,9 +66,9 @@ class AdminCustomerGroupsResource extends BaseResource {
   }
 
   /**
-   * Deletes a cusotmer group.
+   * Deletes a customer group.
    *
-   * @param id - id of the customer gorup
+   * @param id - id of the customer group
    * @param customHeaders
    */
   delete(
