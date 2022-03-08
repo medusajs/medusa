@@ -1,6 +1,7 @@
 import {
   AdminCustomerGroupsListRes,
   AdminCustomerGroupsRes,
+  AdminGetCustomerGroupsGroupParams,
   AdminGetCustomerGroupsParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -8,7 +9,7 @@ import { useQuery } from "react-query"
 
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { queryKeysFactory } from "../../utils"
 
 const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
 
@@ -22,10 +23,12 @@ type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
  * Hook retrieves a customer group by id.
  *
  * @param id - customer group id
+ * @param query - query params
  * @param options
  */
 export const useAdminCustomerGroup = (
   id: string,
+  query?: AdminGetCustomerGroupsGroupParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminCustomerGroupsRes>,
     Error,
@@ -35,14 +38,14 @@ export const useAdminCustomerGroup = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminCustomerGroupKeys.detail(id),
-    () => client.admin.customerGroups.retrieve(id),
+    () => client.admin.customerGroups.retrieve(id, query),
     options
   )
   return { ...data, ...rest } as const
 }
 
 /**
- * Hook retrieves a list of customer gorups.
+ * Hook retrieves a list of customer groups.
  *
  * @param query - pagination/filtering params
  * @param options

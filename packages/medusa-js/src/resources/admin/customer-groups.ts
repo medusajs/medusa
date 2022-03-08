@@ -38,7 +38,7 @@ class AdminCustomerGroupsResource extends BaseResource {
    */
   retrieve(
     id: string,
-    query: AdminGetCustomerGroupsGroupParams,
+    query?: AdminGetCustomerGroupsGroupParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminCustomerGroupsRes> {
     let path = `/admin/customer-groups/${id}`
