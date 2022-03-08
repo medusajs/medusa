@@ -1392,8 +1392,6 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      console.warn(response.data.product)
-
       expect(response.status).toEqual(200)
 
       const updatedVariant = response.data.product.variants.find(
