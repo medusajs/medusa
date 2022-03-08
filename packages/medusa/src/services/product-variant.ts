@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager, ILike, IsNull, SelectQueryBuilder } from "typeorm"
+import { Brackets, EntityManager, ILike, In, SelectQueryBuilder } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
@@ -8,7 +8,10 @@ import { ProductVariant } from "../models/product-variant"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
-import { ProductVariantRepository } from "../repositories/product-variant"
+import {
+  FindWithRelationsOptions,
+  ProductVariantRepository,
+} from "../repositories/product-variant"
 import EventBusService from "../services/event-bus"
 import RegionService from "../services/region"
 import { FindConfig } from "../types/common"
@@ -276,17 +279,7 @@ class ProductVariantService extends BaseService {
       const { prices, options, metadata, inventory_quantity, ...rest } = update
 
       if (prices) {
-        for (const price of prices) {
-          if (price.region_id) {
-            await this.setRegionPrice(variant.id, {
-              region_id: price.region_id,
-              amount: price.amount,
-              sale_amount: price.sale_amount || undefined,
-            })
-          } else {
-            await this.setCurrencyPrice(variant.id, price)
-          }
-        }
+        await this.updateVariantPrices(variant.id, prices)
       }
 
       if (options) {
@@ -324,6 +317,37 @@ class ProductVariantService extends BaseService {
     })
   }
 
+  async updateVariantPrices(
+    variantId: string,
+    prices: ProductVariantPrice[]
+  ): Promise<void> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
+
+      // get prices to be deleted
+      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
+        variantId,
+        prices
+      )
+
+      for (const price of prices) {
+        if (price.region_id) {
+          await this.setRegionPrice(variantId, {
+            region_id: price.region_id,
+            amount: price.amount,
+            sale_amount: price.sale_amount || undefined,
+          })
+        } else {
+          await this.setCurrencyPrice(variantId, price)
+        }
+      }
+
+      await moneyAmountRepo.remove(obsoletePrices)
+    })
+  }
+
   /**
    * Sets the default price for the given currency.
    * @param {string} variantId - the id of the variant to set prices for
@@ -339,26 +363,7 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      let moneyAmount = await moneyAmountRepo.findOne({
-        where: {
-          currency_code: price.currency_code?.toLowerCase(),
-          variant_id: variantId,
-          region_id: IsNull(),
-        },
-      })
-
-      if (!moneyAmount) {
-        moneyAmount = moneyAmountRepo.create({
-          ...price,
-          currency_code: price.currency_code?.toLowerCase(),
-          variant_id: variantId,
-        })
-      } else {
-        moneyAmount.amount = price.amount
-        moneyAmount.sale_amount = price.sale_amount
-      }
-
-      return await moneyAmountRepo.save(moneyAmount)
+      return await moneyAmountRepo.upsertCurrencyPrice(variantId, price)
     })
   }
 
@@ -543,6 +548,36 @@ class ProductVariantService extends BaseService {
   }
 
   /**
+   * @param {object} selector - the query object for find
+   * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(
+    selector: FilterableProductVariantProps,
+    config: FindConfig<ProductVariant> = { relations: [], skip: 0, take: 20 }
+  ): Promise<[ProductVariant[], number]> {
+    const variantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepository_
+    )
+
+    const { q, query, relations } = this.prepareListQuery_(selector, config)
+
+    if (q) {
+      const qb = this.getFreeTextQueryBuilder_(variantRepo, query, q)
+      const [raw, count] = await qb.getManyAndCount()
+
+      const variants = await variantRepo.findWithRelations(
+        relations,
+        raw.map((i) => i.id),
+        query.withDeleted ?? false
+      )
+      return [variants, count]
+    }
+
+    return await variantRepo.findWithRelationsAndCount(relations, query)
+  }
+
+  /**
    * @param {FilterableProductVariantProps} selector - the query object for find
    * @param {FindConfig<ProductVariant>} config - query config object for variant retrieval
    * @return {Promise} the result of the find operation
@@ -627,7 +662,7 @@ class ProductVariantService extends BaseService {
    * @param {Object} metadata - the metadata to set
    * @return {Object} updated metadata object
    */
-  setMetadata_(variant: ProductVariant, metadata: object): object {
+  setMetadata_(variant: ProductVariant, metadata: object): Record<string, any> {
     const existing = variant.metadata || {}
     const newData = {}
     for (const [key, value] of Object.entries(metadata)) {
@@ -647,6 +682,87 @@ class ProductVariantService extends BaseService {
     }
 
     return updated
+  }
+
+  /**
+   * Creates a query object to be used for list queries.
+   * @param {object} selector - the selector to create the query from
+   * @param {object} config - the config to use for the query
+   * @return {object} an object containing the query, relations and free-text
+   *   search param.
+   */
+  prepareListQuery_(
+    selector: FilterableProductVariantProps,
+    config: FindConfig<ProductVariant>
+  ): { query: FindWithRelationsOptions; relations: string[]; q?: string } {
+    let q: string | undefined
+    if (typeof selector.q !== "undefined") {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = this.buildQuery_(selector, config)
+
+    if (config.relations && config.relations.length > 0) {
+      query.relations = config.relations
+    }
+
+    if (config.select && config.select.length > 0) {
+      query.select = config.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+
+    return {
+      query,
+      relations: rels,
+      q,
+    }
+  }
+
+  /**
+   * Lists variants based on the provided parameters and includes the count of
+   * variants that match the query.
+   * @param {object} variantRepo - the variant repository
+   * @param {object} query - object that defines the scope for what should be returned
+   * @param {object} q - free text query
+   * @return {Promise<[ProductVariant[], number]>} an array containing the products as the first element and the total
+   *   count of products that matches the query as the second element.
+   */
+  getFreeTextQueryBuilder_(
+    variantRepo: ProductVariantRepository,
+    query: FindWithRelationsOptions,
+    q?: string
+  ): SelectQueryBuilder<ProductVariant> {
+    const where = query.where
+
+    if (typeof where === "object") {
+      if ("title" in where) {
+        delete where.title
+      }
+    }
+
+    let qb = variantRepo
+      .createQueryBuilder("pv")
+      .take(query.take)
+      .skip(Math.max(query.skip ?? 0, 0))
+      .leftJoinAndSelect("pv.product", "product")
+      .select(["pv.id"])
+      .where(where!)
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`product.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`pv.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`pv.sku ILIKE :q`, { q: `%${q}%` })
+        })
+      )
+
+    if (query.withDeleted) {
+      qb = qb.withDeleted()
+    }
+
+    return qb
   }
 }
 

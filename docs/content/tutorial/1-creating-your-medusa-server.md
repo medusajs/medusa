@@ -1,5 +1,5 @@
 ---
-title: 1. Creating your Medusa server
+title: Creating your Medusa server
 ---
 
 # Creating your Medusa server
@@ -10,7 +10,7 @@ With the required software installed on your computer you are ready to start wor
 
 In this part of the tutorial we will setup the skeleton for a Medusa store and will be making the first requests to your Medusa server.
 
-Once you have completed this part of the tutorial you will have a powerful backend for digital commerce experiences. The server will be capable of handling orders, ensuring payments are going through, keeping basic product and customer data in sync, etc. You can use on of the frontend starters to quickly hook up your server to a presentation layer ([Gatsby](https://github.com/medusajs/gatsby-starter-medusa) or [Next](https://github.com/medusajs/nextjs-starter-medusa)).
+Once you have completed this part of the tutorial you will have a powerful backend for digital commerce experiences. The server will be capable of handling orders, ensuring payments are going through, keeping basic product and customer data in sync, etc. You can use one of the frontend starters to quickly hook up your server to a presentation layer ([Gatsby](https://github.com/medusajs/gatsby-starter-medusa) or [Next](https://github.com/medusajs/nextjs-starter-medusa)).
 
 ## Setup a Medusa project
 
@@ -85,7 +85,7 @@ In the API reference docs you can find all the available requests that are expos
 
 ### Setup Stripe as a payment provider (Guide coming soon)
 
-One of the first things you may want to do when building out your store would be to add a payment provider. Your starter project comes with a dummy payment provider that simply fakes payments being processed. In the real world you want a payment provider that can handle credit card information securely and make sure that funds are being transfered to your account. Stripe is one of the most popular payment providers and Medusa has an official plugin that you can easily install in your project.
+One of the first things you may want to do when building out your store would be to add a payment provider. Your starter project comes with a dummy payment provider that simply fakes payments being processed. In the real world you want a payment provider that can handle credit card information securely and make sure that funds are being transferred to your account. Stripe is one of the most popular payment providers and Medusa has an official plugin that you can easily install in your project.
 
 ## Summary
 

@@ -22,6 +22,7 @@ class RegionService extends BaseService {
     currencyRepository,
     paymentProviderRepository,
     fulfillmentProviderRepository,
+    taxProviderRepository,
     paymentProviderService,
     fulfillmentProviderService,
   }) {
@@ -54,6 +55,9 @@ class RegionService extends BaseService {
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
 
+    /** @private @const {typeof TaxProviderService} */
+    this.taxProviderRepository_ = taxProviderRepository
+
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
   }
@@ -72,6 +76,8 @@ class RegionService extends BaseService {
       eventBusService: this.eventBus_,
       paymentProviderRepository: this.paymentProviderRepository_,
       paymentProviderService: this.paymentProviderService_,
+      taxProviderRepository: this.taxProviderRepository_,
+      taxProviderService: this.taxProviderService_,
       fulfillmentProviderRepository: this.fulfillmentProviderRepository_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
     })
@@ -211,6 +217,9 @@ class RegionService extends BaseService {
     const fpRepository = this.manager_.getCustomRepository(
       this.fulfillmentProviderRepository_
     )
+    const tpRepository = this.manager_.getCustomRepository(
+      this.taxProviderRepository_
+    )
 
     if (region.tax_rate) {
       this.validateTaxRate_(region.tax_rate)
@@ -224,6 +233,18 @@ class RegionService extends BaseService {
       ).catch((err) => {
         throw err
       })
+    }
+
+    if (region.tax_provider_id) {
+      const tp = await tpRepository.findOne({
+        where: { id: region.tax_provider_id },
+      })
+      if (!tp) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Tax provider not found"
+        )
+      }
     }
 
     if (region.payment_providers) {

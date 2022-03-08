@@ -1,4 +1,7 @@
+import { defaultAdminCustomersRelations } from "."
 import CustomerService from "../../../../services/customer"
+import { FindParams } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /customers/{id}
@@ -22,10 +25,23 @@ import CustomerService from "../../../../services/customer"
  */
 export default async (req, res) => {
   const { id } = req.params
+
+  const validated = await validator(FindParams, req.query)
+
   const customerService: CustomerService = req.scope.resolve("customerService")
-  const customer = await customerService.retrieve(id, {
-    relations: ["orders", "shipping_addresses"],
-  })
+
+  let expandFields: string[] = []
+  if (validated.expand) {
+    expandFields = validated.expand.split(",")
+  }
+
+  const findConfig = {
+    relations: expandFields.length
+      ? expandFields
+      : defaultAdminCustomersRelations,
+  }
+
+  const customer = await customerService.retrieve(id, findConfig)
 
   res.json({ customer })
 }

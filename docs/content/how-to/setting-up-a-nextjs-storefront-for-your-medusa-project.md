@@ -4,7 +4,7 @@ title: Setting up a Next.js storefront for your Medusa project
 
 # Setting up a Next.js storefront for your Medusa project
 
-> Medusa is a headless open source commerce platform giving engineers the foundation for building unique and scaleable digital commerce projects through our API-first engine.
+> Medusa is a headless open source commerce platform giving engineers the foundation for building unique and scalable digital commerce projects through our API-first engine.
 > Being headless, our starters serve as a good foundation for you to get coupled with a frontend in a matter of minutes.
 
 This article assumes you already have the Medusa project created and ready to be linked to your Next.js starter.

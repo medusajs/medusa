@@ -44,7 +44,7 @@ export default async (req, res) => {
   const selector: FilterableProductVariantProps = {}
 
   if ("q" in req.query) {
-    selector.q = req.query.q
+    selector.q = q
   }
 
   const listConfig: FindConfig<ProductVariant> = {
@@ -54,9 +54,12 @@ export default async (req, res) => {
     take: limit,
   }
 
-  const variants = await variantService.list(selector, listConfig)
+  const [variants, count] = await variantService.listAndCount(
+    selector,
+    listConfig
+  )
 
-  res.json({ variants, count: variants.length, offset, limit })
+  res.json({ variants, count, offset, limit })
 }
 
 export class AdminGetVariantsParams {

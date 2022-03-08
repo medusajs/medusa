@@ -20,11 +20,13 @@ const ignoreDirs = [].concat(
 
 const coverageDirs = pkgs.map((p) => path.join(p, `src/**/*.js`))
 const useCoverage = !!process.env.GENERATE_JEST_REPORT
+const projects = pkgs.map((pkg) => pkg.concat("/jest.config.js"))
 
 module.exports = {
   notify: true,
   verbose: true,
-  roots: pkgs,
+  roots: ["<rootDir>"],
+  projects: ["<rootDir>/packages/*/jest.config.js"],
   modulePathIgnorePatterns: ignoreDirs,
   coveragePathIgnorePatterns: ignoreDirs,
   testPathIgnorePatterns: [
@@ -33,9 +35,6 @@ module.exports = {
     `<rootDir>/node_modules/`,
     `__tests__/fixtures`,
   ],
-  transform: {
-    "^.+\\.[jt]s?$": `<rootDir>/jest-transformer.js`,
-  },
   //moduleNameMapper: {
   //  "^highlight.js$": `<rootDir>/node_modules/highlight.js/lib/index.js`,
   //},
@@ -46,7 +45,5 @@ module.exports = {
   //      useCoverage ? `jest-junit` : []
   //    )
   //  : [`default`].concat(useCoverage ? `jest-junit` : []),
-  testEnvironment: `node`,
-  moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
   // setupFiles: [`<rootDir>/.jestSetup.js`],
 }

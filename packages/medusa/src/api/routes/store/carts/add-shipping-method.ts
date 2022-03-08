@@ -67,5 +67,5 @@ export class StorePostCartsCartShippingMethodReq {
   option_id: string
 
   @IsOptional()
-  data?: object = {}
+  data?: Record<string, any> = {}
 }
