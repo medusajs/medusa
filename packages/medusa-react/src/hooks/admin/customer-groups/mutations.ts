@@ -9,7 +9,7 @@ import {
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { Response } from "@medusajs/medusa-js"
 
-import { useMedusa } from "../../../contexts/medusa"
+import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminCustomerGroupKeys } from "./queries"
 

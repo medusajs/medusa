@@ -6,8 +6,9 @@ import {
   AdminPostCustomerGroupsGroupReq,
   AdminCustomerGroupsDeleteRes,
   AdminPostCustomerGroupsGroupCustomersBatchReq,
-  AdminDeleteCustomerGroupsGroupCustomerBatchReq, AdminGetCustomerGroupsGroupParams
-} from "@medusajs/medusa";
+  AdminDeleteCustomerGroupsGroupCustomerBatchReq,
+  AdminGetCustomerGroupsGroupParams,
+} from "@medusajs/medusa"
 import qs from "qs"
 
 import BaseResource from "../base"
