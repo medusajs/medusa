@@ -27,14 +27,15 @@
     "@babel/runtime": "^7.7.6",
     "cross-env": "^5.2.1",
     "jest": "^25.5.2",
-    "medusa-interfaces": "^1.1.32"
+    "medusa-interfaces": "^1.1.32",
+    "medusa-core-utils": "^1.1.31",
+    "medusa-test-utils": "^1.1.37"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "^1.1.32",
+    "medusa-core-utils": "^1.1.31"
   },
   "dependencies": {
-    "medusa-core-utils": "^1.1.31",
-    "medusa-test-utils": "^1.1.37",
     "mongoose": "^5.8.0"
   },
   "gitHead": "c46300d58fbfd0b2dc2c02745ae143e6247e885b"

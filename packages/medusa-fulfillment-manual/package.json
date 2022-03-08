@@ -21,7 +21,8 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-interfaces": "^1.1.32"
+    "medusa-interfaces": "^1.1.32",
+    "medusa-core-utils": "^1.1.31"
   },
   "scripts": {
     "test": "jest",
@@ -30,14 +31,14 @@
     "watch": "babel -w src --out-dir . --ignore **/__tests__"
   },
   "peerDependencies": {
-    "medusa-interfaces": "1.x"
+    "medusa-interfaces": "^1.1.32",
+    "medusa-core-utils": "^1.1.31"
   },
   "dependencies": {
     "@babel/plugin-transform-classes": "^7.9.5",
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/runtime": "^7.7.6",
-    "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.31"
+    "express": "^4.17.1"
   },
   "gitHead": "7770046479c361f375842a8605b15e5d7bc24624"
 }
