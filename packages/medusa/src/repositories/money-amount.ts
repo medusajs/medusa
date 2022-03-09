@@ -92,7 +92,6 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
   ): Promise<MoneyAmount[]> {
     const date = new Date()
 
-    console.log(variant_id)
     let qb = this.createQueryBuilder("ma")
       .where("ma.variant_id = :variant_id", { variant_id: variant_id })
       .andWhere(
