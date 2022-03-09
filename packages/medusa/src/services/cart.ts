@@ -1163,12 +1163,6 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
 
-      // delete line item adjustments associated with discount_id
-
-      await this.lineItemAdjustmentService
-        .withTransaction(manager)
-        .deleteAdjustments(discountCode)
-
       return result
     })
   }
