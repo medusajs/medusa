@@ -57,9 +57,8 @@ class LineItemAdjustmentService extends BaseService {
     id: string,
     config: FindConfig<LineItemAdjustment> = {}
   ): Promise<LineItemAdjustment> {
-    const lineItemAdjustmentRepo = this.manager_.getCustomRepository(
-      this.lineItemAdjustmentRepo_
-    )
+    const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+      this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
 
     const query = this.buildQuery_({ id }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
@@ -81,9 +80,8 @@ class LineItemAdjustmentService extends BaseService {
    */
   async create(data: Partial<LineItemAdjustment>): Promise<LineItemAdjustment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const lineItemAdjustmentRepo = manager.getCustomRepository(
-        this.lineItemAdjustmentRepo_
-      )
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
       const lineItemAdjustment = await lineItemAdjustmentRepo.create(data)
 
@@ -102,9 +100,8 @@ class LineItemAdjustmentService extends BaseService {
     data: Partial<LineItemAdjustment>
   ): Promise<LineItemAdjustment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const lineItemAdjustmentRepo = manager.getCustomRepository(
-        this.lineItemAdjustmentRepo_
-      )
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
       const lineItemAdjustment = await this.retrieve(id)
 
@@ -151,17 +148,12 @@ class LineItemAdjustmentService extends BaseService {
    */
   async delete(selector: FilterableLineItemAdjustmentProps): Promise<void> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemAdjustmentRepo = manager.getCustomRepository(
-        this.lineItemAdjustmentRepo_
-      )
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
       const query = this.buildQuery_(selector)
 
       const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
-
-      if (!lineItemAdjustments) {
-        return Promise.resolve()
-      }
 
       await lineItemAdjustmentRepo.remove(lineItemAdjustments)
 
