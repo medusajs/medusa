@@ -172,7 +172,7 @@ class LineItemAdjustmentService extends BaseService {
   /**
    * Creates adjustment for a line item
    * @param cart - the cart object holding discounts
-   * @param lineItem - the line item for which line item adjustment might be created
+   * @param lineItem - the line item for which a line item adjustment might be created
    * @return a line item adjustment or undefined if no adjustment was created
    */
   async createAdjustmentForLineItem(
@@ -200,6 +200,13 @@ class LineItemAdjustmentService extends BaseService {
     return lineItemAdjustment
   }
 
+  /**
+   * Creates adjustment for a line item
+   * @param cart - the cart object holding discounts
+   * @param lineItem - the line item for which a line item adjustment might be created
+   * @return if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created
+   * otherwise returns an array of line item adjustments for each line item in the cart
+   */
   async createAdjustments(
     cart: Cart,
     lineItem?: LineItem
