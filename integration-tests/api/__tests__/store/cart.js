@@ -23,12 +23,12 @@ describe("/store/carts", () => {
   let medusaProcess
   let dbConnection
 
-  const doAfterEach = async() => {
+  const doAfterEach = async () => {
     const db = useDb()
     return await db.teardown()
   }
 
-  beforeAll(async() => {
+  beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
@@ -38,14 +38,14 @@ describe("/store/carts", () => {
     }
   })
 
-  afterAll(async() => {
+  afterAll(async () => {
     const db = useDb()
     await db.shutdown()
     medusaProcess.kill()
   })
 
   describe("POST /store/carts", () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       const manager = dbConnection.manager
       await manager.insert(Region, {
         id: "region",
@@ -54,17 +54,15 @@ describe("/store/carts", () => {
         tax_rate: 0,
       })
       await manager.query(
-          `UPDATE "country"
-           SET region_id='region'
-           WHERE iso_2 = 'us'`,
+        `UPDATE "country" SET region_id='region' WHERE iso_2 = 'us'`
       )
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       await doAfterEach()
     })
 
-    it("creates a cart", async() => {
+    it("creates a cart", async () => {
       const api = useApi()
 
       const response = await api.post("/store/carts")
@@ -74,23 +72,20 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
-    it("fails to create a cart when no region exist", async() => {
+    it("fails to create a cart when no region exist", async () => {
       const api = useApi()
 
       await dbConnection.manager.query(
-          `UPDATE "country"
-           SET region_id=null
-           WHERE iso_2 = 'us'`,
+        `UPDATE "country" SET region_id=null WHERE iso_2 = 'us'`
       )
-      await dbConnection.manager.query(`DELETE
-                                        from region`)
+      await dbConnection.manager.query(`DELETE from region`)
 
       try {
         await api.post("/store/carts")
       } catch (error) {
         expect(error.response.status).toEqual(400)
         expect(error.response.data.message).toEqual(
-          "A region is required to create a cart",
+          "A region is required to create a cart"
         )
       }
     })
@@ -173,7 +168,7 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
-    it("creates a cart with context", async() => {
+    it("creates a cart with context", async () => {
       const api = useApi()
       const response = await api.post("/store/carts", {
         context: {
@@ -311,7 +306,7 @@ describe("/store/carts", () => {
   })
 
   describe("POST /store/carts/:id", () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
         await swapSeeder(dbConnection)
@@ -321,7 +316,7 @@ describe("/store/carts", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       await doAfterEach()
     })
 
@@ -329,7 +324,7 @@ describe("/store/carts", () => {
     // containing multiple countries. At this point, the cart does not have a shipping
     // address. Therefore, on subsequent requests to update the cart, the server
     // would throw a 500 due to missing shipping address id on insertion.
-    it("updates a cart, that does not have a shipping address", async() => {
+    it("updates a cart, that does not have a shipping address", async () => {
       const api = useApi()
 
       const response = await api.post("/store/carts", {
@@ -343,7 +338,7 @@ describe("/store/carts", () => {
       expect(getRes.status).toEqual(200)
     })
 
-    it("fails on apply discount if limit has been reached", async() => {
+    it("fails on apply discount if limit has been reached", async () => {
       expect.assertions(2)
       const api = useApi()
 
@@ -354,12 +349,12 @@ describe("/store/carts", () => {
         .catch((error) => {
           expect(error.response.status).toEqual(400)
           expect(error.response.data.message).toEqual(
-            "Discount has been used maximum allowed times",
+            "Discount has been used maximum allowed times"
           )
         })
     })
 
-    it("fails to apply expired discount", async() => {
+    it("fails to apply expired discount", async () => {
       expect.assertions(2)
       const api = useApi()
 
@@ -373,7 +368,7 @@ describe("/store/carts", () => {
       }
     })
 
-    it("fails on discount before start day", async() => {
+    it("fails on discount before start day", async () => {
       expect.assertions(2)
       const api = useApi()
 
@@ -387,7 +382,7 @@ describe("/store/carts", () => {
       }
     })
 
-    it("fails on apply invalid dynamic discount", async() => {
+    it("fails on apply invalid dynamic discount", async () => {
       const api = useApi()
 
       try {
@@ -400,7 +395,7 @@ describe("/store/carts", () => {
       }
     })
 
-    it("Applies dynamic discount to cart correctly", async() => {
+    it("Applies dynamic discount to cart correctly", async () => {
       const api = useApi()
 
       const cart = await api.post(
@@ -408,14 +403,14 @@ describe("/store/carts", () => {
         {
           discounts: [{ code: "DYN_DISC" }],
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       expect(cart.data.cart.shipping_total).toBe(1000)
       expect(cart.status).toEqual(200)
     })
 
-    it("updates cart customer id", async() => {
+    it("updates cart customer id", async () => {
       const api = useApi()
 
       const response = await api.post("/store/carts/test-cart", {
@@ -474,15 +469,15 @@ describe("/store/carts", () => {
       })
 
       expect(response.data.cart.shipping_address_id).toEqual(
-        "test-general-address",
+        "test-general-address"
       )
       expect(response.data.cart.billing_address_id).toEqual(
-        "test-general-address",
+        "test-general-address"
       )
       expect(response.status).toEqual(200)
     })
 
-    it("updates address", async() => {
+    it("updates address", async () => {
       const api = useApi()
 
       const response = await api.post("/store/carts/test-cart", {
@@ -500,7 +495,7 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("adds free shipping to cart then removes it again", async() => {
+    it("adds free shipping to cart then removes it again", async () => {
       const api = useApi()
 
       let cart = await api.post(
@@ -508,7 +503,7 @@ describe("/store/carts", () => {
         {
           discounts: [{ code: "FREE_SHIPPING" }, { code: "CREATED" }],
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       expect(cart.data.cart.shipping_total).toBe(0)
@@ -519,14 +514,14 @@ describe("/store/carts", () => {
         {
           discounts: [{ code: "CREATED" }],
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       expect(cart.data.cart.shipping_total).toBe(1000)
       expect(cart.status).toEqual(200)
     })
 
-    it("complete cart with giftcard total 0", async() => {
+    it("complete cart with giftcard total 0", async () => {
       const manager = dbConnection.manager
       await manager.insert(GiftCard, {
         id: "gift_test",
@@ -552,7 +547,7 @@ describe("/store/carts", () => {
       expect(getRes.data.type).toEqual("order")
     })
 
-    it("complete cart with items inventory covered", async() => {
+    it("complete cart with items inventory covered", async () => {
       const api = useApi()
       const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`)
 
@@ -562,13 +557,11 @@ describe("/store/carts", () => {
       expect(variantRes.data.variant.inventory_quantity).toEqual(0)
     })
 
-    it("returns early, if cart is already completed", async() => {
+    it("returns early, if cart is already completed", async () => {
       const manager = dbConnection.manager
       const api = useApi()
       await manager.query(
-          `UPDATE "cart"
-           SET completed_at=current_timestamp
-           WHERE id = 'test-cart-2'`,
+        `UPDATE "cart" SET completed_at=current_timestamp WHERE id = 'test-cart-2'`
       )
       try {
         await api.post(`/store/carts/test-cart-2/complete-cart`)
@@ -582,7 +575,7 @@ describe("/store/carts", () => {
       }
     })
 
-    it("fails to complete cart with items inventory not/partially covered", async() => {
+    it("fails to complete cart with items inventory not/partially covered", async () => {
       const manager = dbConnection.manager
 
       const li = manager.create(LineItem, {
@@ -614,7 +607,7 @@ describe("/store/carts", () => {
       expect(res.data.cart.completed_at).toBe(null)
     })
 
-    it("fails to complete swap cart with items inventory not/partially covered", async() => {
+    it("fails to complete swap cart with items inventory not/partially covered", async () => {
       const manager = dbConnection.manager
 
       const li = manager.create(LineItem, {
@@ -630,7 +623,7 @@ describe("/store/carts", () => {
       await manager.save(li)
 
       await manager.query(
-        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'",
+        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'"
       )
 
       const api = useApi()
@@ -650,7 +643,7 @@ describe("/store/carts", () => {
       expect(res.data.cart.payment.canceled_at).not.toBe(null)
     })
 
-    it("successfully completes swap cart with items inventory not/partially covered due to backorder flag", async() => {
+    it("successfully completes swap cart with items inventory not/partially covered due to backorder flag", async () => {
       const manager = dbConnection.manager
 
       const li = manager.create(LineItem, {
@@ -665,10 +658,10 @@ describe("/store/carts", () => {
       })
       await manager.save(li)
       await manager.query(
-        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'",
+        "UPDATE swap SET cart_id='swap-cart' where id='test-swap'"
       )
       await manager.query(
-        "UPDATE swap SET allow_backorder=true where id='test-swap'",
+        "UPDATE swap SET allow_backorder=true where id='test-swap'"
       )
       await manager.query("DELETE FROM payment where swap_id='test-swap'")
 
@@ -688,7 +681,7 @@ describe("/store/carts", () => {
   })
 
   describe("POST /store/carts/:id/shipping-methods", () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
         const manager = dbConnection.manager
@@ -720,11 +713,11 @@ describe("/store/carts", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       await doAfterEach()
     })
 
-    it("adds a normal shipping method to cart", async() => {
+    it("adds a normal shipping method to cart", async () => {
       const api = useApi()
 
       const cartWithShippingMethod = await api.post(
@@ -732,16 +725,16 @@ describe("/store/carts", () => {
         {
           option_id: "test-option",
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       expect(cartWithShippingMethod.data.cart.shipping_methods).toContainEqual(
-        expect.objectContaining({ shipping_option_id: "test-option" }),
+        expect.objectContaining({ shipping_option_id: "test-option" })
       )
       expect(cartWithShippingMethod.status).toEqual(200)
     })
 
-    it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async() => {
+    it("given a cart with custom options and a shipping option already belonging to said cart, then it should add a shipping method based on the given custom shipping option", async () => {
       const shippingOptionId = "test-option"
 
       const api = useApi()
@@ -752,22 +745,22 @@ describe("/store/carts", () => {
           {
             option_id: shippingOptionId,
           },
-          { withCredentials: true },
+          { withCredentials: true }
         )
         .catch((err) => err.response)
 
       expect(
-        cartWithCustomShippingMethod.data.cart.shipping_methods,
+        cartWithCustomShippingMethod.data.cart.shipping_methods
       ).toContainEqual(
         expect.objectContaining({
           shipping_option_id: shippingOptionId,
           price: 5,
-        }),
+        })
       )
       expect(cartWithCustomShippingMethod.status).toEqual(200)
     })
 
-    it("given a cart with custom options and an option id not corresponding to any custom shipping option, then it should throw an invalid error", async() => {
+    it("given a cart with custom options and an option id not corresponding to any custom shipping option, then it should throw an invalid error", async () => {
       const api = useApi()
 
       try {
@@ -776,7 +769,7 @@ describe("/store/carts", () => {
           {
             option_id: "orphan-so",
           },
-          { withCredentials: true },
+          { withCredentials: true }
         )
       } catch (err) {
         expect(err.response.status).toEqual(400)
@@ -784,7 +777,7 @@ describe("/store/carts", () => {
       }
     })
 
-    it("adds a giftcard to cart, but ensures discount only applied to discountable items", async() => {
+    it("adds a giftcard to cart, but ensures discount only applied to discountable items", async () => {
       const api = useApi()
 
       // Add standard line item to cart
@@ -794,7 +787,7 @@ describe("/store/carts", () => {
           variant_id: "test-variant",
           quantity: 1,
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       // Add gift card to cart
@@ -804,7 +797,7 @@ describe("/store/carts", () => {
           variant_id: "giftcard-denom",
           quantity: 1,
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       // Add a 10% discount to the cart
@@ -814,7 +807,7 @@ describe("/store/carts", () => {
           {
             discounts: [{ code: "10PERCENT" }],
           },
-          { withCredentials: true },
+          { withCredentials: true }
         )
         .catch((err) => console.log(err))
 
@@ -824,45 +817,44 @@ describe("/store/carts", () => {
       expect(cartWithGiftcard.status).toEqual(200)
     })
 
-    it("adds no more than 1 shipping method per shipping profile", async() => {
+    it("adds no more than 1 shipping method per shipping profile", async () => {
       const api = useApi()
-      const addShippingMethod = async(option_id) => {
+      const addShippingMethod = async (option_id) => {
         return await api.post(
           "/store/carts/test-cart/shipping-methods",
           {
             option_id,
           },
-          { withCredentials: true },
+          { withCredentials: true }
         )
       }
 
       await addShippingMethod("test-option")
       const cartWithAnotherShippingMethod = await addShippingMethod(
-        "test-option-2",
+        "test-option-2"
       )
 
       expect(
-        cartWithAnotherShippingMethod.data.cart.shipping_methods.length,
+        cartWithAnotherShippingMethod.data.cart.shipping_methods.length
       ).toEqual(1)
       expect(
-        cartWithAnotherShippingMethod.data.cart.shipping_methods,
+        cartWithAnotherShippingMethod.data.cart.shipping_methods
       ).toContainEqual(
         expect.objectContaining({
           shipping_option_id: "test-option-2",
           price: 500,
-        }),
+        })
       )
       expect(cartWithAnotherShippingMethod.status).toEqual(200)
     })
   })
 
   describe("DELETE /store/carts/:id/discounts/:code", () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
         await dbConnection.manager.query(
-            `INSERT INTO "cart_discounts" (cart_id, discount_id)
-             VALUES ('test-cart', 'free-shipping')`,
+          `INSERT INTO "cart_discounts" (cart_id, discount_id) VALUES ('test-cart', 'free-shipping')`
         )
       } catch (err) {
         console.log(err)
@@ -870,11 +862,11 @@ describe("/store/carts", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       await doAfterEach()
     })
 
-    it("removes free shipping and updates shipping total", async() => {
+    it("removes free shipping and updates shipping total", async () => {
       const api = useApi()
 
       const cartWithFreeShipping = await api.post(
@@ -882,14 +874,14 @@ describe("/store/carts", () => {
         {
           discounts: [{ code: "FREE_SHIPPING" }],
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       expect(cartWithFreeShipping.data.cart.shipping_total).toBe(0)
       expect(cartWithFreeShipping.status).toEqual(200)
 
       const response = await api.delete(
-        "/store/carts/test-cart/discounts/FREE_SHIPPING",
+        "/store/carts/test-cart/discounts/FREE_SHIPPING"
       )
 
       expect(response.data.cart.shipping_total).toBe(1000)
@@ -898,7 +890,7 @@ describe("/store/carts", () => {
   })
 
   describe("get-cart with session customer", () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
       } catch (err) {
@@ -907,11 +899,11 @@ describe("/store/carts", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       await doAfterEach()
     })
 
-    it("updates empty cart.customer_id on cart retrieval", async() => {
+    it("updates empty cart.customer_id on cart retrieval", async () => {
       const api = useApi()
 
       const customer = await api.post(
@@ -922,7 +914,7 @@ describe("/store/carts", () => {
           first_name: "oli",
           last_name: "oli",
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       const cookie = customer.headers["set-cookie"][0]
@@ -940,7 +932,7 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
-    it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async() => {
+    it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {
       const api = useApi()
 
       const customer = await api.post(
@@ -951,7 +943,7 @@ describe("/store/carts", () => {
           first_name: "oli",
           last_name: "oli",
         },
-        { withCredentials: true },
+        { withCredentials: true }
       )
 
       const cookie = customer.headers["set-cookie"][0]
@@ -968,7 +960,7 @@ describe("/store/carts", () => {
           headers: {
             cookie,
           },
-        },
+        }
       )
 
       expect(response.data.cart.customer_id).toEqual(customer.data.customer.id)
@@ -977,7 +969,7 @@ describe("/store/carts", () => {
   })
 
   describe("shipping address + region updates", () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await cartSeeder(dbConnection)
       } catch (err) {
@@ -986,11 +978,11 @@ describe("/store/carts", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       await doAfterEach()
     })
 
-    it("updates region only - single to multipe countries", async() => {
+    it("updates region only - single to multipe countries", async () => {
       const api = useApi()
 
       const { data, status } = await api
@@ -1012,7 +1004,7 @@ describe("/store/carts", () => {
       })
     })
 
-    it("updates region only - single to multipe countries", async() => {
+    it("updates region only - single to multipe countries", async () => {
       const api = useApi()
 
       const { data, status } = await api
