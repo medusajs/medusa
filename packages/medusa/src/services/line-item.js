@@ -11,6 +11,8 @@ class LineItemService extends BaseService {
     lineItemRepository,
     lineItemTaxLineRepository,
     productVariantService,
+    lineItemAdjustmentService,
+    discountService,
     productService,
     regionService,
     cartRepository,
@@ -37,6 +39,12 @@ class LineItemService extends BaseService {
 
     /** @private @const {CartRepository} */
     this.cartRepository_ = cartRepository
+
+    /** @private @const {LineItemAdjustmentService} */
+    this.lineItemAdjustmentService = lineItemAdjustmentService
+
+    /** @private @const {DiscountService} */
+    this.discountService = discountService
   }
 
   withTransaction(transactionManager) {
@@ -180,6 +188,19 @@ class LineItemService extends BaseService {
         should_merge: shouldMerge,
       }
 
+      const discounts = await this.discountService.resolveDiscounts(
+        toCreate,
+        regionId,
+        config
+      )
+
+      if (discounts.length > 0) {
+        await this.lineItemAdjustmentService.createAdjustments(
+          toCreate,
+          discounts
+        )
+      }
+
       return toCreate
     })
   }
@@ -226,6 +247,13 @@ class LineItemService extends BaseService {
       }
 
       const result = await lineItemRepository.save(lineItem)
+
+      const discounts = await this.discountService.resolveDiscounts(result)
+
+      if (discounts.length) {
+        await this.lineItemAdjustmentService.createAdjustments(discounts)
+      }
+
       return result
     })
   }

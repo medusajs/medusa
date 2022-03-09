@@ -860,6 +860,18 @@ class TotalsService extends BaseService {
     return Math.min(giftCardable, toReturn)
   }
 
+  getNewDiscountTotal(cartOrOrder: Cart | Order): number {
+    return cartOrOrder.items.reduce(
+      (total, item) =>
+        total +
+        item.adjustments.reduce(
+          (total, adjustment) => total + adjustment.amount,
+          0
+        ),
+      0
+    )
+  }
+
   /**
    * Calculates the total discount amount for each of the different supported
    * discount types. If discounts aren't present or invalid returns 0.
