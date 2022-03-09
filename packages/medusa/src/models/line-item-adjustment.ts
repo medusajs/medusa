@@ -5,14 +5,17 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  PrimaryColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-
-import { TaxLine } from "./tax-line"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { LineItem } from "./line-item"
 
 @Entity()
-export class LineItemAdjustment extends TaxLine {
+export class LineItemAdjustment {
+  @PrimaryColumn()
+  id: string
+
   @Index()
   @Column()
   item_id: string
@@ -29,6 +32,9 @@ export class LineItemAdjustment extends TaxLine {
 
   @Column({ type: "int" })
   amount: number
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: any
 
   @BeforeInsert()
   private beforeInsert() {
