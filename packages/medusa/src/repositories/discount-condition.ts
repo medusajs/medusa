@@ -191,7 +191,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       return []
     }
 
-    // We would like to break the loop as early as possible,
+    // We would like to break the loop as early as possible
     // to minimize the # of DB accesses, which is why we
     // check for conditions after each of queries.
     for (const condition of discountConditions) {

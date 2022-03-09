@@ -565,6 +565,7 @@ class DiscountService extends BaseService {
       const discountConditionRepo: DiscountConditionRepository =
         manager.getCustomRepository(this.discountConditionRepository_)
 
+      // if the condition exists already, we overwrite it
       if (data.id) {
         return await discountConditionRepo.addConditionResources(
           data.id,
