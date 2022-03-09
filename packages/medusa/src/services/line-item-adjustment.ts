@@ -2,10 +2,11 @@ import { EntityManager } from "typeorm"
 import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
-import { ProductTag } from "../models/product-tag"
 import { FindConfig } from "../types/common"
-import { FilterableProductTagProps } from "../types/product"
 import { LineItemAdjustment } from "../models/line-item-adjustment"
+import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
+import { LineItem } from "../models/line-item"
+import { Cart } from "../models/cart"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -13,7 +14,7 @@ type LineItemAdjustmentServiceProps = {
 }
 
 /**
- * Provides layer to manipulate product tags.
+ * Provides layer to manipulate line item adjustments.
  * @extends BaseService
  */
 class LineItemAdjustmentService extends BaseService {
@@ -54,7 +55,7 @@ class LineItemAdjustmentService extends BaseService {
    */
   async retrieve(
     id: string,
-    config: FindConfig<ProductTag> = {}
+    config: FindConfig<LineItemAdjustment> = {}
   ): Promise<LineItemAdjustment> {
     const lineItemAdjustmentRepo = this.manager_.getCustomRepository(
       this.lineItemAdjustmentRepo_
@@ -132,7 +133,7 @@ class LineItemAdjustmentService extends BaseService {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductTagProps = {},
+    selector: FilterableLineItemAdjustmentProps = {},
     config: FindConfig<LineItemAdjustment> = { skip: 0, take: 20 }
   ): Promise<LineItemAdjustment[]> {
     const lineItemAdjustmentRepo = this.manager_.getCustomRepository(
@@ -144,28 +145,69 @@ class LineItemAdjustmentService extends BaseService {
   }
 
   /**
-   * Deletes a line item adjustment
-   * @param id - the id of the line item adjustment to delete
+   * Deletes line item adjustments matching a selector
+   * @param selector - the query object for find
    * @return the result of the delete operation
    */
-  async delete(id: string): Promise<void> {
+  async delete(selector: FilterableLineItemAdjustmentProps): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const lineItemAdjustmentRepo = manager.getCustomRepository(
         this.lineItemAdjustmentRepo_
       )
 
-      const lineItemAdjustment = await lineItemAdjustmentRepo.findOne({
-        where: { id },
-      })
+      const query = this.buildQuery_(selector)
 
-      if (!lineItemAdjustment) {
+      const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
+
+      if (!lineItemAdjustments) {
         return Promise.resolve()
       }
 
-      await lineItemAdjustmentRepo.remove(lineItemAdjustment)
+      await lineItemAdjustmentRepo.remove(lineItemAdjustments)
 
       return Promise.resolve()
     })
+  }
+
+  async createAdjustmentsForLineItem(
+    cart: Cart,
+    lineItem: LineItem
+  ): Promise<LineItemAdjustment | undefined> {
+    // do something
+    const discount = await this.discountService.validateDiscountsForLineItem(
+      cart.discounts,
+      lineItem
+    )
+
+    if (!discount) {
+      return
+    }
+
+    const amount = await this.discountService.calculateDiscountApplied(discount)
+
+    const lineItemAdjustment = await this.create({
+      item_id: lineItem.id,
+      amount,
+      resource_id: discount.id,
+      description: "discount",
+    })
+
+    return lineItemAdjustment
+  }
+
+  async createAdjustments(
+    cart: Cart,
+    lineItem?: LineItem
+  ): Promise<
+    LineItemAdjustment | undefined | (LineItemAdjustment | undefined)[]
+  > {
+    if (lineItem) {
+      return await this.createAdjustmentsForLineItem(cart, lineItem)
+    }
+
+    return await Promise.all(
+      cart.items.map((li) => this.createAdjustmentsForLineItem(cart, li))
+    )
   }
 }
 
