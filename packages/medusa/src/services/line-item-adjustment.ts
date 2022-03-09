@@ -169,11 +169,16 @@ class LineItemAdjustmentService extends BaseService {
     })
   }
 
-  async createAdjustmentsForLineItem(
+  /**
+   * Creates adjustment for a line item
+   * @param cart - the cart object holding discounts
+   * @param lineItem - the line item for which line item adjustment might be created
+   * @return a line item adjustment or undefined if no adjustment was created
+   */
+  async createAdjustmentForLineItem(
     cart: Cart,
     lineItem: LineItem
   ): Promise<LineItemAdjustment | undefined> {
-    // do something
     const discount = await this.discountService.validateDiscountsForLineItem(
       cart.discounts,
       lineItem
@@ -202,11 +207,11 @@ class LineItemAdjustmentService extends BaseService {
     LineItemAdjustment | undefined | (LineItemAdjustment | undefined)[]
   > {
     if (lineItem) {
-      return await this.createAdjustmentsForLineItem(cart, lineItem)
+      return await this.createAdjustmentForLineItem(cart, lineItem)
     }
 
     return await Promise.all(
-      cart.items.map((li) => this.createAdjustmentsForLineItem(cart, li))
+      cart.items.map((li) => this.createAdjustmentForLineItem(cart, li))
     )
   }
 }

@@ -1,6 +1,8 @@
 import LineItemAdjustmentService from "../line-item-adjustment"
 import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { DiscountServiceMock } from "../__mocks__/discount"
+import { In } from "typeorm"
 
 describe("LineItemAdjustmentService", () => {
   describe("list", () => {
@@ -171,30 +173,142 @@ describe("LineItemAdjustmentService", () => {
   })
 
   describe("delete", () => {
-    const lineItemAdjustment = { id: "lia-1" }
+    beforeAll(async () => {
+      jest.clearAllMocks()
+    })
+
+    describe("delete by line item adjustment id", () => {
+      const lineItemAdjustment = { id: "lia-1", item_id: "li-1" }
+      const lineItemAdjustmentRepo = MockRepository({
+        find: (f) => Promise.resolve(lineItemAdjustment),
+      })
+
+      const lineItemAdjustmentService = new LineItemAdjustmentService({
+        manager: MockManager,
+        lineItemAdjustmentRepository: lineItemAdjustmentRepo,
+        eventBusService: EventBusServiceMock,
+      })
+
+      it("calls lineItemAdjustment delete method with the right query", async () => {
+        const query = { id: "lia-1" }
+        await lineItemAdjustmentService.delete(query)
+
+        expect(lineItemAdjustmentRepo.find).toHaveBeenCalledTimes(1)
+        expect(lineItemAdjustmentRepo.find).toHaveBeenCalledWith({
+          where: {
+            id: "lia-1",
+          },
+        })
+
+        expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledTimes(1)
+        expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledWith(
+          lineItemAdjustment
+        )
+      })
+    })
+
+    describe("delete by item ids", () => {
+      const lineItemAdjustment = [
+        { id: "lia-1", item: "li-1" },
+        { id: "lia-2", item_id: "li-2" },
+      ]
+      const lineItemAdjustmentRepo = MockRepository({
+        find: (f) => Promise.resolve(lineItemAdjustment),
+      })
+
+      const lineItemAdjustmentService = new LineItemAdjustmentService({
+        manager: MockManager,
+        lineItemAdjustmentRepository: lineItemAdjustmentRepo,
+        eventBusService: EventBusServiceMock,
+      })
+
+      it("calls lineItemAdjustment delete method with the right query", async () => {
+        const query = { item_id: ["li-1", "li-2", "li-3"] }
+        await lineItemAdjustmentService.delete(query)
+
+        expect(lineItemAdjustmentRepo.find).toHaveBeenCalledTimes(1)
+        expect(lineItemAdjustmentRepo.find).toHaveBeenCalledWith({
+          where: {
+            item_id: In(query.item_id),
+          },
+        })
+
+        expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledTimes(1)
+        expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledWith(
+          lineItemAdjustment
+        )
+      })
+    })
+  })
+
+  describe("createAdjustments", () => {
+    beforeEach(async () => {
+      jest.clearAllMocks()
+    })
 
     const lineItemAdjustmentRepo = MockRepository({
-      softRemove: (f) => Promise.resolve(),
-      findOne: (f) => Promise.resolve(lineItemAdjustment),
+      find: (f) => Promise.resolve(lineItemAdjustment),
     })
 
     const lineItemAdjustmentService = new LineItemAdjustmentService({
       manager: MockManager,
       lineItemAdjustmentRepository: lineItemAdjustmentRepo,
+      discountService: DiscountServiceMock,
       eventBusService: EventBusServiceMock,
     })
 
-    beforeAll(async () => {
-      jest.clearAllMocks()
+    lineItemAdjustmentService.createAdjustmentForLineItem = jest
+      .fn()
+      .mockImplementation(() => {
+        return Promise.resolve({
+          item_id: "li-1",
+          amount: 1000,
+          resource_id: "disc-1",
+          id: "lia-1",
+          description: "discount",
+        })
+      })
+
+    it("calls createAdjustmentForLineItem once when given a line item", () => {
+      const cart = {
+          id: "cart1",
+          discounts: ["disc-1"],
+        },
+        lineItem = { id: "li-1" }
+
+      lineItemAdjustmentService.createAdjustments(cart, lineItem)
+      expect(
+        lineItemAdjustmentService.createAdjustmentForLineItem
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        lineItemAdjustmentService.createAdjustmentForLineItem
+      ).toHaveBeenCalledWith(cart, lineItem)
     })
 
-    it("calls lineItemAdjustment delete method", async () => {
-      await lineItemAdjustmentService.delete("lia-1")
+    it("calls createAdjustmentForLineItem 3 times when given a cart containing 3 line items", () => {
+      const cart = {
+        id: "cart1",
+        discounts: ["disc-1"],
+        items: [
+          {
+            id: "li-2",
+          },
+          {
+            id: "li-3",
+          },
+          {
+            id: "li-4",
+          },
+        ],
+      }
 
-      expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledTimes(1)
-      expect(lineItemAdjustmentRepo.remove).toHaveBeenCalledWith(
-        lineItemAdjustment
-      )
+      lineItemAdjustmentService.createAdjustments(cart)
+      expect(
+        lineItemAdjustmentService.createAdjustmentForLineItem
+      ).toHaveBeenCalledTimes(3)
+      expect(
+        lineItemAdjustmentService.createAdjustmentForLineItem
+      ).toHaveBeenNthCalledWith(1, cart, { id: "li-2" })
     })
   })
 })
