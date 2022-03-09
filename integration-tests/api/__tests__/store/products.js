@@ -284,7 +284,6 @@ describe("/store/products", () => {
                   deleted_at: null,
                   id: "test-price",
                   region_id: null,
-                  sale_amount: null,
                   updated_at: expect.any(String),
                   variant_id: "test-variant",
                 },
@@ -327,7 +326,6 @@ describe("/store/products", () => {
                   deleted_at: null,
                   id: "test-price2",
                   region_id: null,
-                  sale_amount: null,
                   variant_id: "test-variant_2",
                 },
               ],
@@ -369,7 +367,6 @@ describe("/store/products", () => {
                   deleted_at: null,
                   id: "test-price1",
                   region_id: null,
-                  sale_amount: null,
                   updated_at: expect.any(String),
                   variant_id: "test-variant_1",
                 },
@@ -473,7 +470,7 @@ describe("/store/products", () => {
     it("lists all published products", async () => {
       const api = useApi()
 
-      //update test-product status to published
+      // update test-product status to published
       await api
         .post(
           "/admin/products/test-product",
