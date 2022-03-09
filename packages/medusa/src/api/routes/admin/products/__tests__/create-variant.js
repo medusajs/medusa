@@ -45,6 +45,7 @@ describe("POST /admin/products/:id/variants", () => {
             {
               currency_code: "DKK",
               amount: 1234,
+              type: "default",
             },
           ],
         }

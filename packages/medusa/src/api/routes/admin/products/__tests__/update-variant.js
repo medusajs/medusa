@@ -50,10 +50,12 @@ describe("POST /admin/products/:id/variants/:variantId", () => {
             {
               region_id: IdMap.getId("region-fr"),
               amount: 100,
+              type: "default",
             },
             {
               currency_code: "DKK",
               amount: 100,
+              type: "default",
             },
           ],
         })
