@@ -38,6 +38,7 @@ import GiftCardService from "./gift-card"
 import TotalsService from "./totals"
 import InventoryService from "./inventory"
 import CustomShippingOptionService from "./custom-shipping-option"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type CartConstructorProps = {
   manager: EntityManager
@@ -59,6 +60,7 @@ type CartConstructorProps = {
   totalsService: TotalsService
   inventoryService: InventoryService
   customShippingOptionService: CustomShippingOptionService
+  lineItemAdjustmentService: LineItemAdjustmentService
 }
 
 type TotalsConfig = {
@@ -94,6 +96,7 @@ class CartService extends BaseService {
   private paymentSessionRepository_: typeof PaymentSessionRepository
   private inventoryService_: InventoryService
   private customShippingOptionService_: CustomShippingOptionService
+  private lineItemAdjustmentService: LineItemAdjustmentService
 
   constructor({
     manager,
@@ -115,6 +118,7 @@ class CartService extends BaseService {
     paymentSessionRepository,
     inventoryService,
     customShippingOptionService,
+    lineItemAdjustmentService,
   }: CartConstructorProps) {
     super()
 
@@ -137,6 +141,7 @@ class CartService extends BaseService {
     this.inventoryService_ = inventoryService
     this.customShippingOptionService_ = customShippingOptionService
     this.taxProviderService_ = taxProviderService
+    this.lineItemAdjustmentService = lineItemAdjustmentService
   }
 
   withTransaction(transactionManager: EntityManager): CartService {
@@ -164,6 +169,7 @@ class CartService extends BaseService {
       giftCardService: this.giftCardService_,
       inventoryService: this.inventoryService_,
       customShippingOptionService: this.customShippingOptionService_,
+      lineItemAdjustmentService: this.lineItemAdjustmentService,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -541,6 +547,11 @@ class CartService extends BaseService {
           .update(currentItem.id, {
             quantity: newQuantity,
           })
+
+        // delete old line item adjustments if line item already exists
+        await this.lineItemAdjustmentService
+          .withTransaction(manager)
+          .delete({ item_id: lineItem.id })
       } else {
         // Confirm inventory or throw error
         await this.inventoryService_
@@ -573,6 +584,12 @@ class CartService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
+
+      // potentially create/update/delete line item adjustments
+      await this.lineItemAdjustmentService
+        .withTransaction(manager)
+        .createAdjustments(cart)
+
       return result
     })
   }
@@ -616,9 +633,17 @@ class CartService extends BaseService {
         }
       }
 
-      await this.lineItemService_
+      const updatedLineItem = await this.lineItemService_
         .withTransaction(manager)
         .update(lineItemId, lineItemUpdate)
+
+      await this.lineItemAdjustmentService
+        .withTransaction(manager)
+        .delete({ item_id: lineItemId })
+
+      await this.lineItemAdjustmentService
+        .withTransaction(manager)
+        .createAdjustments(cart, updatedLineItem)
 
       // Update the line item
       const result = await this.retrieve(cartId)
@@ -997,96 +1022,109 @@ class CartService extends BaseService {
    * @return the result of the update operation
    */
   async applyDiscount(cart: Cart, discountCode: string): Promise<void> {
-    const discount = await this.discountService_.retrieveByCode(discountCode, [
-      "rule",
-      "rule.valid_for",
-      "regions",
-    ])
+    return this.atomicPhase_(async (manager) => {
+      const discount = await this.discountService_.retrieveByCode(
+        discountCode,
+        ["rule", "rule.valid_for", "regions"]
+      )
 
-    const rule = discount.rule
+      const rule = discount.rule
 
-    // if limit is set and reached, we make an early exit
-    if (discount.usage_limit) {
-      discount.usage_count = discount.usage_count || 0
+      // if limit is set and reached, we make an early exit
+      if (discount.usage_limit) {
+        discount.usage_count = discount.usage_count || 0
 
-      if (discount.usage_count >= discount.usage_limit) {
+        if (discount.usage_count >= discount.usage_limit) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Discount has been used maximum allowed times"
+          )
+        }
+      }
+
+      const today = new Date()
+      if (discount.starts_at > today) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Discount has been used maximum allowed times"
+          "Discount is not valid yet"
         )
       }
-    }
 
-    const today = new Date()
-    if (discount.starts_at > today) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Discount is not valid yet"
-      )
-    }
+      if (discount.ends_at && discount.ends_at < today) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Discount is expired"
+        )
+      }
 
-    if (discount.ends_at && discount.ends_at < today) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Discount is expired"
-      )
-    }
-
-    let regions = discount.regions
-    if (discount.parent_discount_id) {
-      const parent = await this.discountService_.retrieve(
-        discount.parent_discount_id,
-        {
-          relations: ["rule", "regions"],
-        }
-      )
-
-      regions = parent.regions
-    }
-
-    if (discount.is_disabled) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "The discount code is disabled"
-      )
-    }
-
-    if (!regions.find(({ id }) => id === cart.region_id)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The discount is not available in current region"
-      )
-    }
-
-    // if discount is already there, we simply resolve
-    if (cart.discounts.find(({ id }) => id === discount.id)) {
-      return Promise.resolve()
-    }
-
-    const toParse = [...cart.discounts, discount]
-
-    let sawNotShipping = false
-    const newDiscounts = toParse.map((d) => {
-      const drule = d.rule
-      switch (drule.type) {
-        case "free_shipping":
-          if (d.rule.type === rule.type) {
-            return discount
+      let regions = discount.regions
+      if (discount.parent_discount_id) {
+        const parent = await this.discountService_.retrieve(
+          discount.parent_discount_id,
+          {
+            relations: ["rule", "regions"],
           }
-          return d
-        default:
-          if (!sawNotShipping) {
-            sawNotShipping = true
-            if (rule.type !== "free_shipping") {
+        )
+
+        regions = parent.regions
+      }
+
+      if (discount.is_disabled) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "The discount code is disabled"
+        )
+      }
+
+      if (!regions.find(({ id }) => id === cart.region_id)) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "The discount is not available in current region"
+        )
+      }
+
+      // if discount is already there, we simply resolve
+      if (cart.discounts.find(({ id }) => id === discount.id)) {
+        return Promise.resolve()
+      }
+
+      const toParse = [...cart.discounts, discount]
+
+      let sawNotShipping = false
+      const newDiscounts = toParse.map((d) => {
+        const drule = d.rule
+        switch (drule.type) {
+          case "free_shipping":
+            if (d.rule.type === rule.type) {
               return discount
             }
             return d
-          }
-          return null
+          default:
+            if (!sawNotShipping) {
+              sawNotShipping = true
+              if (rule.type !== "free_shipping") {
+                return discount
+              }
+              return d
+            }
+            return null
+        }
+      })
+
+      cart.discounts = newDiscounts.filter(Boolean)
+
+      // delete old line item adjustments associated with old discount(s)
+      await this.lineItemAdjustmentService.withTransaction(manager).delete({
+        item_id: cart.items.map((li) => li.id),
+      })
+
+      // potentially create line item adjustments from discounts
+      if (cart.discounts.length) {
+        await this.lineItemAdjustmentService
+          .withTransaction(manager)
+          .createAdjustments(cart)
       }
     })
-
-    cart.discounts = newDiscounts.filter(Boolean)
   }
 
   /**
@@ -1124,6 +1162,12 @@ class CartService extends BaseService {
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
+
+      // delete line item adjustments associated with discount_id
+
+      await this.lineItemAdjustmentService
+        .withTransaction(manager)
+        .deleteAdjustments(discountCode)
 
       return result
     })
@@ -1169,7 +1213,10 @@ class CartService extends BaseService {
    *    this could be IP address or similar for fraud handling.
    * @return the resulting cart
    */
-  async authorizePayment(cartId: string, context: Record<string, any> = {}): Promise<Cart> {
+  async authorizePayment(
+    cartId: string,
+    context: Record<string, any> = {}
+  ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
