@@ -27,6 +27,8 @@ class ProductService extends BaseService {
     productTagRepository,
     imageRepository,
     searchService,
+    cartRepository,
+    priceSelectionStrategy,
   }) {
     super()
 
@@ -62,6 +64,12 @@ class ProductService extends BaseService {
 
     /** @private @const {SearchService} */
     this.searchService_ = searchService
+
+    /** @private @const {CartRepository} */
+    this.cartRepository_ = cartRepository
+
+    /** @private @const {IPriceSelectionStrategy} */
+    this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
   withTransaction(transactionManager) {
@@ -80,6 +88,8 @@ class ProductService extends BaseService {
       productTagRepository: this.productTagRepository_,
       productTypeRepository: this.productTypeRepository_,
       imageRepository: this.imageRepository_,
+      cartRepository: this.cartRepository_,
+      priceSelectionStrategy: this.priceSelectionStrategy_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -196,6 +206,35 @@ class ProductService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Product with id: ${productId} was not found`
+      )
+    }
+
+    if (config.cart_id) {
+      const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
+
+      const cart = await cartRepo.findOne({
+        where: { id: config.cart_id },
+        relations: ["region"],
+      })
+
+      if (!cart) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `cart with id ${config.cart_id} does not exist`
+        )
+      }
+
+      product.variants = await Promise.all(
+        product.variants.map(async (v) => ({
+          ...v,
+          additional_prices:
+            await this.priceSelectionStrategy_.calculateVariantPrice(v.id, {
+              region_id: cart.region_id,
+              currency_code: cart.region.currency_code,
+              cart_id: config.cart_id,
+              customer_id: config?.customer_id,
+            }),
+        }))
       )
     }
 

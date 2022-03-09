@@ -27,9 +27,13 @@ export default async (req, res) => {
 
   const validated = await validator(ProductCartIdParams, req.query)
 
+  const customer_id = req.user.customer_id
+
   const productService: ProductService = req.scope.resolve("productService")
   const product = await productService.retrieve(id, {
     relations: defaultStoreProductsRelations,
+    cart_id: validated.cart_id,
+    customer_id: customer_id,
   })
 
   res.json({ product })
