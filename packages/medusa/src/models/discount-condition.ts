@@ -10,6 +10,7 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryColumn,
+  Unique,
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
@@ -37,6 +38,7 @@ export enum DiscountConditionOperator {
 }
 
 @Entity()
+@Unique(["type", "operator", "discount_rule_id"])
 export class DiscountCondition {
   @PrimaryColumn()
   id: string
