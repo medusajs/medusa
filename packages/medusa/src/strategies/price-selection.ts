@@ -6,11 +6,14 @@ import {
 import { MedusaError } from "medusa-core-utils"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { MoneyAmountType } from "../types/money-amount"
+import { EntityManager } from "typeorm"
 
 class PriceSelectionStrategy implements IPriceSelectionStrategy {
-  private moneyAmountRepository_: MoneyAmountRepository
+  private moneyAmountRepository_: typeof MoneyAmountRepository
+  private manager_: EntityManager
 
-  constructor({ moneyAmountRepository }) {
+  constructor({ manager, moneyAmountRepository }) {
+    this.manager_ = manager
     this.moneyAmountRepository_ = moneyAmountRepository
   }
 
@@ -25,7 +28,11 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       )
     }
 
-    const prices = await this.moneyAmountRepository_.findManyForVariantInRegion(
+    const moneyRepo = this.manager_.getCustomRepository(
+      this.moneyAmountRepository_
+    )
+
+    const prices = await moneyRepo.findManyForVariantInRegion(
       variant_id,
       context.region_id,
       context.currency_code,
