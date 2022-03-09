@@ -6,6 +6,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { AdminGetDiscountsDiscountRuleParams } from ".."
+import { DiscountConditionType } from "../models/discount-condition"
 
 export type QuerySelector = {
   q?: string
@@ -32,12 +33,12 @@ export class FilterableDiscountProps {
   rule?: AdminGetDiscountsDiscountRuleParams
 }
 
-type CreateDiscountRuleInput = {
+export type CreateDiscountRuleInput = {
   description?: string
   type: string
   value: number
   allocation: string
-  valid_for?: string[]
+  conditions?: { resource: DiscountConditionType; resource_ids: string[] }[]
 }
 
 export type CreateDiscountInput = {
@@ -76,7 +77,7 @@ export type UpdateDiscountInput = {
 
 export type CreateDynamicDiscountInput = {
   code: string
-  ends_at: Date
+  ends_at?: Date
   usage_limit: number
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

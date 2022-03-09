@@ -56,7 +56,7 @@ export default async (req, res) => {
         relations: [
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
+          // TODO: Add conditions relation
           "shipping_methods",
           "region",
           "items",
