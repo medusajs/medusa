@@ -9,7 +9,6 @@ import {
   Not,
   Repository,
 } from "typeorm"
-import { Writable } from "typeorm/platform/PlatformTools"
 import { MoneyAmount } from "../models/money-amount"
 
 type Price = Partial<
@@ -93,27 +92,38 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
   ): Promise<MoneyAmount[]> {
     const date = new Date()
 
+    console.log(variant_id)
     let qb = this.createQueryBuilder("ma")
-      .where({ variant_id })
-      .andWhere((qb) => qb.where({ region_id }).orWhere({ currency_code }))
-      .andWhere((qb) =>
-        qb
-          .where({ ends_at: [null, MoreThan(date)] })
-          .orWhere({ starts_at: [null, LessThan(date)] })
+      .where("ma.variant_id = :variant_id", { variant_id: variant_id })
+      .andWhere(
+        "(ma.region_id = :region_id OR ma.currency_code = :currency_code)",
+        {
+          region_id: region_id,
+          currency_code: currency_code,
+        }
       )
+      .andWhere("(ma.ends_at is null OR ma.ends_at > :date) ", {
+        date: date.toUTCString(),
+      })
+      .andWhere("(ma.starts_at is null OR ma.starts_at < :date)", {
+        date: date.toUTCString(),
+      })
 
     if (customer_id) {
-      qb = qb.leftJoinAndSelect("ma.customer_groups", "cGroup").andWhere((qb) =>
-        qb
-          .where("cGroup.customer_id = :customer_id", {
-            customer_id,
-          })
-          .orWhere({ cGroup: null })
-      )
+      qb = qb
+        .leftJoinAndSelect("ma.customer_groups", "cgroup")
+        .leftJoinAndSelect(
+          "customer_group_customers",
+          "cgc",
+          "cgc.customer_group_id = cgroup.id"
+        )
+        .andWhere("(cgc is null OR cgc.customer_id = :customer_id)", {
+          customer_id,
+        })
     } else {
       qb = qb
-        .loadRelationCountAndMap("repo_group_count", "customer_groups")
-        .andWhere({ repo_group_count: 0 }) // .andWhere("cGroup.customer_group_id IN (:...customer_group_ids)", {
+        .leftJoinAndSelect("ma.customer_groups", "cgroup")
+        .andWhere("cgroup is null")
     }
     return await qb.getMany()
   }
