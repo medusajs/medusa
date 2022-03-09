@@ -18,7 +18,7 @@ describe("Promotions", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -213,7 +213,7 @@ describe("Promotions", () => {
       })
     })
 
-    it("gets moneyamounts with valid date intervals and finds lowest price", async () => {
+    it("gets moneyamounts with valid date intervals and finds lowest price with overlapping intervals", async () => {
       const api = useApi()
       const res = await api
         .get("/store/products/test-product-sale-overlap?cart_id=test-cart")
@@ -267,20 +267,6 @@ describe("Promotions", () => {
             type: "default",
           }),
         ])
-      )
-    })
-
-    it("sets default price as original price", async () => {
-      const api = useApi()
-      const res = await api
-        .get("/store/products/test-product?cart_id=test-cart")
-        .catch((error) => console.log(error))
-
-      const variant = res.data.product.variants[0]
-
-      expect(variant.additional_prices.originalPrice).toEqual(
-        variant.additional_prices.prices.find((p) => p.type === "default")
-          .amount
       )
     })
 
@@ -629,39 +615,39 @@ describe("Promotions", () => {
 /*
 integration tests check list
 default
-  (check) - fetches only non-customer group prices
+  - fetches only non-customer group prices
   
-  (check) - resulting price is correct
+  - resulting price is correct
   
-  (check) - lowest price is set as calculated
+  - lowest price is set as calculated
   
-  (check) - default price is set as original
+  - default price is set as original
 
-  (check) - fetches only prices for specific region if they exist 
+  - fetches only prices for specific region if they exist 
     
-  (check) - date interval delimitations work correctly
+  - date interval delimitations work correctly
     
   price quantities are applied correctly
   
-  (check) - all prices with varying quantities are returned
+  - all prices with varying quantities are returned
 
-  (check) - discount price with no min_quantity is applied when lower than default
+  - discount price with no min_quantity is applied when lower than default
 
-  (check) - fetches prices for currency if region price is not found 
+  - fetches prices for currency if region price is not found 
 
-  (check) - quantities and date limits
+  - quantities and date limits
 
-  (check) - multiple overlapping date limits
+  - multiple overlapping date limits
 
 with login
-  (check) - fetches only prices for valid customer groups
+  - fetches only prices for valid customer groups
   
-  (check) - fetches both customer group and non-customer group prices
+  - fetches both customer group and non-customer group prices
 
-  (check) - customer groups with quantities
+  - customer groups with quantities
 
-  (check) - customer groups with date limits
+  - customer groups with date limits
 
-  (check) - customer groups with quantities and date limits
+  - customer groups with quantities and date limits
 
 */
