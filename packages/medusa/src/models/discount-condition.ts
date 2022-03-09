@@ -10,6 +10,7 @@ import {
   ManyToMany,
   ManyToOne,
   PrimaryColumn,
+  Unique,
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
@@ -31,7 +32,13 @@ export enum DiscountConditionType {
   CUSTOMER_GROUPS = "customer_groups",
 }
 
+export enum DiscountConditionOperator {
+  IN = "in",
+  NOT_IN = "not_in",
+}
+
 @Entity()
+@Unique("dctypeuniq", ["type", "operator", "discount_rule_id"])
 export class DiscountCondition {
   @PrimaryColumn()
   id: string
@@ -41,6 +48,12 @@ export class DiscountCondition {
     enum: DiscountConditionType,
   })
   type: DiscountConditionType
+
+  @DbAwareColumn({
+    type: "enum",
+    enum: DiscountConditionOperator,
+  })
+  operator: DiscountConditionOperator
 
   @Index()
   @Column()

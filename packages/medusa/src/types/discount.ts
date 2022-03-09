@@ -1,6 +1,5 @@
 import { Transform, Type } from "class-transformer"
 import {
-  IsArray,
   IsBoolean,
   IsOptional,
   IsString,
@@ -34,7 +33,7 @@ export class FilterableDiscountProps {
   rule?: AdminGetDiscountsDiscountRuleParams
 }
 
-type CreateDiscountRuleInput = {
+export type CreateDiscountRuleInput = {
   description?: string
   type: string
   value: number
@@ -73,21 +72,12 @@ export type UpdateDiscountInput = {
   valid_duration?: string
   usage_limit?: number
   regions?: string[]
-  metadata?: Record<string, unknown>
+  metadata: Record<string, unknown>
 }
 
 export type CreateDynamicDiscountInput = {
   code: string
   ends_at?: Date
   usage_limit: number
-  metadata?: object
-}
-
-export class AdminPostDiscountsDiscountRuleConditionReq {
-  @IsString()
-  resource: DiscountConditionType
-
-  @IsArray()
-  @IsString({ each: true })
-  resource_ids: string[]
+  metadata?: Record<string, unknown>
 }
