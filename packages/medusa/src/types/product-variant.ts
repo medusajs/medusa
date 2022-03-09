@@ -1,8 +1,5 @@
 import {
-  ArrayNotEmpty,
   IsBoolean,
-  IsDate,
-  IsEnum,
   IsInt,
   IsNumber,
   IsOptional,
@@ -11,7 +8,6 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { MoneyAmountType } from "../types/money-amount"
 import { IsType } from "../utils/validators/is-type"
 import {
   DateComparisonOperator,
@@ -21,15 +17,12 @@ import {
 import { XorConstraint } from "./validators/xor"
 
 export type ProductVariantPrice = {
+  id?: string
   currency_code?: string
   region_id?: string
   amount: number
-  type?: MoneyAmountType
-  starts_at?: Date
-  ends_at?: Date
   min_quantity?: number
   max_quantity?: number
-  customer_group_ids?: string[]
 }
 
 export type ProductVariantOption = {
@@ -167,37 +160,18 @@ export class ProductVariantPricesUpdateReq {
   amount: number
 
   @IsOptional()
-  @IsEnum(MoneyAmountType)
-  type?: MoneyAmountType = MoneyAmountType.DEFAULT
-
-  @IsOptional()
-  @IsDate()
-  start_date?: Date
-
-  @IsOptional()
-  @IsDate()
-  end_date?: Date
-
-  @IsOptional()
   @IsInt()
   min_quantity?: number
 
   @IsOptional()
   @IsInt()
   max_quantity?: number
-
-  @IsOptional()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  customer_group_ids: string[]
 }
 
 export class ProductVariantPricesCreateReq {
-  @ValidateIf((o) => !o.id)
   @Validate(XorConstraint, ["currency_code"])
   region_id?: string
 
-  @ValidateIf((o) => !o.id)
   @Validate(XorConstraint, ["region_id"])
   currency_code?: string
 
@@ -205,27 +179,10 @@ export class ProductVariantPricesCreateReq {
   amount: number
 
   @IsOptional()
-  @IsEnum(MoneyAmountType)
-  type?: MoneyAmountType = MoneyAmountType.DEFAULT
-
-  @IsOptional()
-  @IsDate()
-  start_date?: Date
-
-  @IsOptional()
-  @IsDate()
-  end_date?: Date
-
-  @IsOptional()
   @IsInt()
   min_quantity?: number
 
   @IsOptional()
   @IsInt()
   max_quantity?: number
-
-  @IsOptional()
-  @ArrayNotEmpty()
-  @IsString({ each: true })
-  customer_group_ids: string[]
 }

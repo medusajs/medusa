@@ -1,4 +1,3 @@
-import partition from "lodash/partition"
 import {
   Brackets,
   EntityRepository,
@@ -8,6 +7,10 @@ import {
   Repository
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
+import {
+  PriceListPriceCreateInput,
+  PriceListPriceUpdateInput
+} from "../types/price-list"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -55,30 +58,68 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return await this.save(moneyAmount)
   }
 
-  public async bulkAddOrUpdate(variantId: string, prices: Price[]) {
-    const [toUpdate, toCreate] = partition(prices, (p) => p.id)
-    const createdEntities = toCreate.map((tc) => {
-      return this.create({ ...tc, variant_id: variantId })
-    })
-
-    const existing = await this.findByIds(toUpdate.map((tu) => tu.id))
-
-    const updatedEntities: Partial<MoneyAmount>[] = existing.map((e) => {
-      const update = toUpdate.find((update) => update.id === e.id)
-      return {
-        ...e,
-        ...update,
-      }
-    })
-
-    await this.save([...updatedEntities, ...createdEntities])
-  }
-
-  public async bulkDelete(variantId: string, moneyAmountIds: string[]) {
+  public async deleteVariantPrices(variantId: string, price_ids: string[]): Promise<void> {
     await this.createQueryBuilder()
       .delete()
       .from(MoneyAmount)
-      .where({ variant_id: variantId, id: In(moneyAmountIds) })
+      .where({ variant_id: variantId, id: In(price_ids) })
       .execute()
+  }
+
+  public async addToPriceList(
+    priceListId: string,
+    prices: PriceListPriceCreateInput[],
+    overrideExisting: boolean = false
+  ): Promise<MoneyAmount[]> {
+    const toInsert = prices.map((price) => ({
+      ...price,
+      price_list_id: priceListId,
+    }))
+    const insertResult = await this.createQueryBuilder()
+      .insert()
+      .orIgnore(true)
+      .into(MoneyAmount)
+      .values(toInsert)
+      .execute()
+
+    if (overrideExisting) {
+      await this.createQueryBuilder()
+        .delete()
+        .from(MoneyAmount)
+        .where({
+          price_list_id: priceListId,
+          id: Not(In(insertResult.identifiers.map((ma) => ma.id))),
+        })
+        .execute()
+    }
+
+    return await this.manager
+      .createQueryBuilder(MoneyAmount, "ma")
+      .select()
+      .where(insertResult.identifiers)
+      .getMany()
+  }
+
+  public async deletePriceListPrices(
+    priceListId: string,
+    moneyAmountIds: string[]
+  ): Promise<void> {
+    await this.createQueryBuilder()
+      .delete()
+      .from(MoneyAmount)
+      .where({ price_list_id: priceListId, id: In(moneyAmountIds) })
+      .execute()
+  }
+
+  public async updatePriceListPrices(
+    priceListId: string,
+    updates: PriceListPriceUpdateInput[]
+  ): Promise<MoneyAmount[]> {
+    const toUpdate = updates.map((update) => ({
+      ...update,
+      price_list_id: priceListId,
+    }))
+
+    return await this.save(toUpdate)
   }
 }

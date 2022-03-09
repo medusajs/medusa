@@ -252,7 +252,7 @@ describe("ProductVariantService", () => {
       .fn()
       .mockReturnValue(() => Promise.resolve())
 
-    productVariantService.addOrUpdateVariantPrices = jest
+    productVariantService.updateVariantPrices = jest
       .fn()
       .mockReturnValue(() => Promise.resolve())
 
@@ -375,21 +375,19 @@ describe("ProductVariantService", () => {
           {
             currency_code: "dkk",
             amount: 1000,
-            sale_amount: 750,
           },
         ],
       })
 
       expect(
-        productVariantService.addOrUpdateVariantPrices
+        productVariantService.updateVariantPrices
       ).toHaveBeenCalledTimes(1)
       expect(
-        productVariantService.addOrUpdateVariantPrices
+        productVariantService.updateVariantPrices
       ).toHaveBeenCalledWith(IdMap.getId("ironman"), [
         {
           currency_code: "dkk",
           amount: 1000,
-          sale_amount: 750,
         },
       ])
 
@@ -418,7 +416,7 @@ describe("ProductVariantService", () => {
     })
   })
 
-  describe("addOrUpdateVariantPrices", () => {
+  describe("updateVariantPrices", () => {
     const moneyAmountRepository = MockRepository({
       remove: () => Promise.resolve(),
     })
@@ -435,9 +433,9 @@ describe("ProductVariantService", () => {
       .fn()
       .mockImplementation(() => Promise.resolve(oldPrices))
 
-    moneyAmountRepository.bulkDelete = jest
+    moneyAmountRepository.deleteVariantPrices = jest
       .fn()
-      .mockImplementation((ids) => Promise.resolve({}))
+      .mockImplementation((variant_id, price_ids) => Promise.resolve({}))
 
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
@@ -460,98 +458,18 @@ describe("ProductVariantService", () => {
       .fn()
       .mockReturnValue(() => Promise.resolve())
 
-    productVariantService.setCurrencyPrice = jest
-      .fn()
-      .mockReturnValue(() => Promise.resolve())
-
-    productVariantService.setRegionPrice = jest
-      .fn()
-      .mockReturnValue(() => Promise.resolve())
-
     beforeEach(async () => {
       jest.clearAllMocks()
     })
 
-    it("successfully deletes prices from variant", async () => {
+    it("successfully batch deletes prices from variant", async () => {
       await productVariantService.deleteVariantPrices("ironman", [
         "ma_old_price_1",
         "ma_old_price_2",
         "ma_old_price_3",
       ])
 
-      expect(moneyAmountRepository.bulkDelete).toHaveBeenCalledTimes(1)
-    })
-
-    //   it("successfully removes obsolete prices and calls setRegionPrice on new/existing prices", async () => {
-    //     await productVariantService.updateVariantPrices("ironman", [
-    //       {
-    //         region_id: "test-region",
-    //         amount: 4000,
-    //         sale_amount: 2000,
-    //       },
-    //     ])
-
-    //     expect(
-    //       moneyAmountRepository.findVariantPricesNotIn
-    //     ).toHaveBeenCalledTimes(1)
-
-    //     expect(productVariantService.setRegionPrice).toHaveBeenCalledTimes(1)
-    //     expect(productVariantService.setRegionPrice).toHaveBeenCalledWith(
-    //       "ironman",
-    //       {
-    //         region_id: "test-region",
-    //         amount: 4000,
-    //         sale_amount: 2000,
-    //       }
-    //     )
-
-    //     expect(moneyAmountRepository.remove).toHaveBeenCalledTimes(1)
-    //     expect(moneyAmountRepository.remove).toHaveBeenCalledWith(oldPrices)
-    //   })
-  })
-
-  describe("setCurrencyPrice", () => {
-    const productVariantRepository = MockRepository({
-      findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
-    })
-
-    const moneyAmountRepository = MockRepository()
-
-    moneyAmountRepository.upsertCurrencyPrice = jest
-      .fn()
-      .mockImplementation((variantId, price) => {
-        return Promise.resolve({
-          id: IdMap.getId("test-amount"),
-          variant_id: IdMap.getId(variantId),
-          ...price,
-        })
-      })
-
-    const productVariantService = new ProductVariantService({
-      manager: MockManager,
-      eventBusService,
-      moneyAmountRepository,
-      productVariantRepository,
-    })
-
-    beforeEach(async () => {
-      jest.clearAllMocks()
-    })
-
-    it("calls upsert price with given currency", async () => {
-      await productVariantService.setCurrencyPrice(IdMap.getId("ironman"), {
-        currency_code: "usd",
-        amount: 100,
-      })
-
-      expect(moneyAmountRepository.upsertCurrencyPrice).toHaveBeenCalledTimes(1)
-      expect(moneyAmountRepository.upsertCurrencyPrice).toHaveBeenCalledWith(
-        IdMap.getId("ironman"),
-        {
-          currency_code: "usd",
-          amount: 100,
-        }
-      )
+      expect(moneyAmountRepository.deleteVariantPrices).toHaveBeenCalledTimes(1)
     })
   })
 
@@ -635,7 +553,7 @@ describe("ProductVariantService", () => {
     })
   })
 
-  describe("setRegionPrice", () => {
+  describe("updateVariantPrices", () => {
     const moneyAmountRepository = MockRepository({
       findOne: (query) => {
         if (query.where.region_id === IdMap.getId("cali")) {
@@ -646,7 +564,6 @@ describe("ProductVariantService", () => {
           variant_id: IdMap.getId("ironman"),
           currency_code: "dkk",
           amount: 750,
-          sale_amount: 500,
         })
       },
     })
@@ -661,12 +578,12 @@ describe("ProductVariantService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully creates a price if none exist with given region id", async () => {
-      await productVariantService.setRegionPrice(IdMap.getId("ironman"), {
+    it("successfully creates new a region price", async () => {
+      await productVariantService.updateVariantPrices(IdMap.getId("ironman"), [{
         currency_code: "usd",
         amount: 100,
         region_id: IdMap.getId("cali"),
-      })
+      }])
 
       expect(moneyAmountRepository.create).toHaveBeenCalledTimes(1)
       expect(moneyAmountRepository.create).toHaveBeenCalledWith({
@@ -679,23 +596,26 @@ describe("ProductVariantService", () => {
       expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it("successfully updates a price", async () => {
-      await productVariantService.setRegionPrice(IdMap.getId("ironman"), {
+    it("successfully creates a currency price", async () => {
+      await productVariantService.updateVariantPrices(IdMap.getId("ironman"), [{
+        id: IdMap.getId("dkk"),
         currency_code: "dkk",
         amount: 750,
-        sale_amount: 500,
-      })
+        min_amount: 1,
+        max_amount: 10,
+      }])
 
       expect(moneyAmountRepository.create).toHaveBeenCalledTimes(0)
 
       expect(moneyAmountRepository.save).toHaveBeenCalledTimes(1)
-      expect(moneyAmountRepository.save).toHaveBeenCalledWith({
+      expect(moneyAmountRepository.save).toHaveBeenCalledWith([{
         variant_id: IdMap.getId("ironman"),
         id: IdMap.getId("dkk"),
         currency_code: "dkk",
         amount: 750,
-        sale_amount: 500,
-      })
+        min_amount: 1,
+        max_amount: 10,
+      }])
     })
   })
 
