@@ -8,6 +8,7 @@ import {
 } from "typeorm"
 import {
   DiscountCondition,
+  DiscountConditionOperator,
   DiscountConditionType,
 } from "../models/discount-condition"
 import { DiscountConditionCustomerGroup } from "../models/discount-condition-customer-group"
@@ -142,5 +143,119 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       .select()
       .where(insertResult.identifiers)
       .getMany()
+  }
+
+  async isValidForProduct(
+    discountRuleId: string,
+    productId: string
+  ): Promise<boolean> {
+    const discountConditions = await this.createQueryBuilder("discon")
+      .select(["discon.id", "discon.type", "discon.operator"])
+      .where("discon.discount_rule_id = :discountRuleId", {
+        discountRuleId,
+      })
+      .getMany()
+
+    // in case of no discount conditions, we assume that the discount
+    // is valid for all
+    if (!discountConditions.length) {
+      return true
+    }
+
+    const queryConditionTable = async ({
+      type,
+      condId,
+      productId,
+    }): Promise<
+      (
+        | DiscountConditionProduct
+        | DiscountConditionProductType
+        | DiscountConditionProductCollection
+        | DiscountConditionProductTag
+        | DiscountConditionCustomerGroup
+      )[]
+    > => {
+      const { fromTable, resourceId } = this.getResourceIdentifiers(type)
+
+      if (fromTable) {
+        return await this.manager
+          .createQueryBuilder(fromTable, "conds")
+          .select()
+          .where(`${"conds"}.${resourceId} = :productId`, { productId })
+          .andWhere(`${"conds"}.condition_id = :condId`, {
+            condId,
+          })
+          .getMany()
+      }
+
+      return []
+    }
+
+    // We would like to break the loop as early as possible,
+    // to minimize the # of DB accesses, which is why we
+    // check for conditions after each of queries.
+    for (const condition of discountConditions) {
+      const prodConds = await queryConditionTable({
+        type: "products",
+        condId: condition.id,
+        productId,
+      })
+
+      if (
+        condition.operator === DiscountConditionOperator.IN &&
+        !prodConds.length
+      ) {
+        return false
+      }
+
+      if (
+        condition.operator === DiscountConditionOperator.NOT_IN &&
+        prodConds.length
+      ) {
+        return false
+      }
+
+      const collConds = await queryConditionTable({
+        type: "product_collections",
+        condId: condition.id,
+        productId,
+      })
+
+      if (
+        condition.operator === DiscountConditionOperator.IN &&
+        !collConds.length
+      ) {
+        return false
+      }
+
+      if (
+        condition.operator === DiscountConditionOperator.NOT_IN &&
+        collConds.length
+      ) {
+        return false
+      }
+
+      const typeConds = await queryConditionTable({
+        type: "product_types",
+        condId: condition.id,
+        productId,
+      })
+
+      if (
+        condition.operator === DiscountConditionOperator.IN &&
+        !typeConds.length
+      ) {
+        return false
+      }
+
+      if (
+        condition.operator === DiscountConditionOperator.NOT_IN &&
+        typeConds.length
+      ) {
+        return false
+      }
+    }
+
+    return true
   }
 }

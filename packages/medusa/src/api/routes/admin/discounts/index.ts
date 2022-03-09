@@ -85,6 +85,7 @@ export const defaultAdminDiscountsRelations = [
   "parent_discount",
   "regions",
   "rule.conditions",
+  "rule.conditions.products",
 ]
 
 export type AdminDiscountsRes = {
