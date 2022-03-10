@@ -11,8 +11,8 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { Customer } from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { Customer } from "./customer"
 
 @Entity()
 export class CustomerGroup {
