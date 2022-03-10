@@ -523,78 +523,6 @@ describe("/admin/products", () => {
 
       expect(response.data.products).toMatchSnapshot([
         {
-          id: "test-product1",
-          created_at: expect.any(String),
-          options: [],
-          variants: [
-            {
-              id: "test-variant_4", // expect.stringMatching(/^test-variant*/),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              product_id: expect.stringMatching(/^test-*/),
-              prices: [
-                {
-                  id: expect.stringMatching(/^test-price*/),
-                  variant_id: expect.stringMatching(/^test-variant*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-              options: [
-                {
-                  id: expect.stringMatching(/^test-variant-option*/),
-                  variant_id: expect.stringMatching(/^test-variant*/),
-                  option_id: expect.stringMatching(/^test-opt*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-            },
-            {
-              id: "test-variant_3", // expect.stringMatching(/^test-variant*/),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-              product_id: expect.stringMatching(/^test-*/),
-              prices: [
-                {
-                  id: expect.stringMatching(/^test-price*/),
-                  variant_id: expect.stringMatching(/^test-variant*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-              options: [
-                {
-                  id: expect.stringMatching(/^test-variant-option*/),
-                  variant_id: expect.stringMatching(/^test-variant*/),
-                  option_id: expect.stringMatching(/^test-opt*/),
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                },
-              ],
-            },
-          ],
-          tags: [
-            {
-              id: expect.stringMatching(/^tag*/),
-              created_at: expect.any(String),
-              updated_at: expect.any(String),
-            },
-          ],
-          type: {
-            id: expect.stringMatching(/^test-*/),
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          collection: {
-            id: expect.stringMatching(/^test-*/),
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-          },
-          profile_id: expect.stringMatching(/^sp_*/),
-          updated_at: expect.any(String),
-        },
-        {
           id: "test-product",
           options: [
             {
@@ -732,6 +660,78 @@ describe("/admin/products", () => {
           },
           profile_id: expect.stringMatching(/^sp_*/),
           created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        {
+          id: "test-product1",
+          created_at: expect.any(String),
+          options: [],
+          variants: [
+            {
+              id: "test-variant_4", // expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+            {
+              id: "test-variant_3", // expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
+          ],
+          tags: [
+            {
+              id: expect.stringMatching(/^tag*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          type: {
+            id: expect.stringMatching(/^test-*/),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          collection: {
+            id: expect.stringMatching(/^test-*/),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          profile_id: expect.stringMatching(/^sp_*/),
           updated_at: expect.any(String),
         },
         {
