@@ -1438,6 +1438,15 @@ describe("/admin/products", () => {
         manage_inventory: true,
         prices: [
           {
+            id: expect.stringMatching(/^ma_*/),
+            amount: 4500,
+            currency_code: "eur",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            type: "default",
+            variant_id: "test-variant",
+          },
+          {
             id: "test-price",
             amount: 100,
             currency_code: "usd",
@@ -1453,15 +1462,6 @@ describe("/admin/products", () => {
             created_at: expect.any(String),
             updated_at: expect.any(String),
             type: "sale",
-            variant_id: "test-variant",
-          },
-          {
-            id: expect.stringMatching(/^ma_*/),
-            amount: 4500,
-            currency_code: "eur",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            type: "default",
             variant_id: "test-variant",
           },
         ],
