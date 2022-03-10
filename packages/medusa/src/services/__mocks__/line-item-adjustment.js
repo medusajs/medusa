@@ -17,6 +17,9 @@ export const LineItemAdjustmentServiceMock = {
     }
     return data
   }),
+  delete: jest.fn().mockImplementation((data) => {
+    return Promise.resolve({})
+  }),
   createAdjustmentForLineItem: jest
     .fn()
     .mockImplementation((cart, lineItem) => {

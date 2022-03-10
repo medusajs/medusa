@@ -96,7 +96,7 @@ class CartService extends BaseService {
   private paymentSessionRepository_: typeof PaymentSessionRepository
   private inventoryService_: InventoryService
   private customShippingOptionService_: CustomShippingOptionService
-  private lineItemAdjustmentService: LineItemAdjustmentService
+  private lineItemAdjustmentService_: LineItemAdjustmentService
 
   constructor({
     manager,
@@ -141,7 +141,7 @@ class CartService extends BaseService {
     this.inventoryService_ = inventoryService
     this.customShippingOptionService_ = customShippingOptionService
     this.taxProviderService_ = taxProviderService
-    this.lineItemAdjustmentService = lineItemAdjustmentService
+    this.lineItemAdjustmentService_ = lineItemAdjustmentService
   }
 
   withTransaction(transactionManager: EntityManager): CartService {
@@ -169,7 +169,7 @@ class CartService extends BaseService {
       giftCardService: this.giftCardService_,
       inventoryService: this.inventoryService_,
       customShippingOptionService: this.customShippingOptionService_,
-      lineItemAdjustmentService: this.lineItemAdjustmentService,
+      lineItemAdjustmentService: this.lineItemAdjustmentService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -549,9 +549,9 @@ class CartService extends BaseService {
           })
 
         // delete old line item adjustments if line item already exists
-        await this.lineItemAdjustmentService
+        await this.lineItemAdjustmentService_
           .withTransaction(manager)
-          .delete({ item_id: lineItem.id })
+          .delete({ item_id: currentItem.id })
       } else {
         // Confirm inventory or throw error
         await this.inventoryService_
@@ -586,7 +586,7 @@ class CartService extends BaseService {
         .emit(CartService.Events.UPDATED, result)
 
       // potentially create/update/delete line item adjustments
-      await this.lineItemAdjustmentService
+      await this.lineItemAdjustmentService_
         .withTransaction(manager)
         .createAdjustments(cart)
 
@@ -637,11 +637,11 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .update(lineItemId, lineItemUpdate)
 
-      await this.lineItemAdjustmentService
+      await this.lineItemAdjustmentService_
         .withTransaction(manager)
         .delete({ item_id: lineItemId })
 
-      await this.lineItemAdjustmentService
+      await this.lineItemAdjustmentService_
         .withTransaction(manager)
         .createAdjustments(cart, updatedLineItem)
 
@@ -1114,13 +1114,13 @@ class CartService extends BaseService {
       cart.discounts = newDiscounts.filter(Boolean)
 
       // delete old line item adjustments associated with old discount(s)
-      await this.lineItemAdjustmentService.withTransaction(manager).delete({
+      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
         item_id: cart.items.map((li) => li.id),
       })
 
       // potentially create line item adjustments from discounts
       if (cart.discounts.length) {
-        await this.lineItemAdjustmentService
+        await this.lineItemAdjustmentService_
           .withTransaction(manager)
           .createAdjustments(cart)
       }
