@@ -1429,6 +1429,8 @@ describe("/admin/products", () => {
         (v) => v.id === "test-variant"
       )
 
+      updatedVariant.prices.sort((p1, p2) => p1.amount - p2.amount)
+
       expect(updatedVariant).toMatchSnapshot({
         id: "test-variant",
         allow_backorder: false,
@@ -1439,11 +1441,11 @@ describe("/admin/products", () => {
         prices: [
           {
             id: expect.stringMatching(/^ma_*/),
-            amount: 4500,
-            currency_code: "eur",
+            amount: 50,
+            currency_code: "usd",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            type: "default",
+            type: "sale",
             variant_id: "test-variant",
           },
           {
@@ -1457,11 +1459,11 @@ describe("/admin/products", () => {
           },
           {
             id: expect.stringMatching(/^ma_*/),
-            amount: 50,
-            currency_code: "usd",
+            amount: 4500,
+            currency_code: "eur",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            type: "sale",
+            type: "default",
             variant_id: "test-variant",
           },
         ],
