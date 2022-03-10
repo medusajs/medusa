@@ -14,7 +14,7 @@ describe("LineItemAdjustmentService", () => {
             description: "discount",
             amount: 1000,
             item: "li-1",
-            resource_id: "disc_1",
+            discount_id: "disc_1",
           },
         ])
       },
@@ -97,7 +97,7 @@ describe("LineItemAdjustmentService", () => {
       amount: 2000,
       description: "discount",
       item_id: "li-3",
-      resource_id: "disc_999",
+      discount_id: "disc_999",
     }
 
     const lineItemAdjustmentRepo = MockRepository({
@@ -120,7 +120,7 @@ describe("LineItemAdjustmentService", () => {
         amount: 2000,
         description: "discount",
         item_id: "li-3",
-        resource_id: "disc_999",
+        discount_id: "disc_999",
       })
 
       expect(lineItemAdjustmentRepo.create).toHaveBeenCalledTimes(1)
@@ -128,7 +128,7 @@ describe("LineItemAdjustmentService", () => {
         amount: 2000,
         description: "discount",
         item_id: "li-3",
-        resource_id: "disc_999",
+        discount_id: "disc_999",
       })
 
       expect(lineItemAdjustmentRepo.save).toHaveBeenCalledTimes(1)
@@ -137,7 +137,7 @@ describe("LineItemAdjustmentService", () => {
         amount: 2000,
         description: "discount",
         item_id: "li-3",
-        resource_id: "disc_999",
+        discount_id: "disc_999",
       })
     })
   })
@@ -189,9 +189,8 @@ describe("LineItemAdjustmentService", () => {
         eventBusService: EventBusServiceMock,
       })
 
-      it("calls lineItemAdjustment delete method with the right query", async () => {
-        const query = { id: "lia-1" }
-        await lineItemAdjustmentService.delete(query)
+      it("calls lineItemAdjustment delete method with the right params", async () => {
+        await lineItemAdjustmentService.delete("lia-1")
 
         expect(lineItemAdjustmentRepo.find).toHaveBeenCalledTimes(1)
         expect(lineItemAdjustmentRepo.find).toHaveBeenCalledWith({
@@ -263,7 +262,7 @@ describe("LineItemAdjustmentService", () => {
         return Promise.resolve({
           item_id: "li-1",
           amount: 1000,
-          resource_id: "disc-1",
+          discount_id: "disc-1",
           id: "lia-1",
           description: "discount",
         })

@@ -57,9 +57,8 @@ class LineItemAdjustmentService extends BaseService {
     id: string,
     config: FindConfig<LineItemAdjustment> = {}
   ): Promise<LineItemAdjustment> {
-    const lineItemAdjustmentRepo = this.manager_.getCustomRepository(
-      this.lineItemAdjustmentRepo_
-    )
+    const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+      this.manager_.getCustomRepository(this.lineItemAdjustmentRepo_)
 
     const query = this.buildQuery_({ id }, config)
     const lineItemAdjustment = await lineItemAdjustmentRepo.findOne(query)
@@ -81,9 +80,8 @@ class LineItemAdjustmentService extends BaseService {
    */
   async create(data: Partial<LineItemAdjustment>): Promise<LineItemAdjustment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const lineItemAdjustmentRepo = manager.getCustomRepository(
-        this.lineItemAdjustmentRepo_
-      )
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
       const lineItemAdjustment = await lineItemAdjustmentRepo.create(data)
 
@@ -102,9 +100,8 @@ class LineItemAdjustmentService extends BaseService {
     data: Partial<LineItemAdjustment>
   ): Promise<LineItemAdjustment> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const lineItemAdjustmentRepo = manager.getCustomRepository(
-        this.lineItemAdjustmentRepo_
-      )
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
       const lineItemAdjustment = await this.retrieve(id)
 
@@ -146,22 +143,23 @@ class LineItemAdjustmentService extends BaseService {
 
   /**
    * Deletes line item adjustments matching a selector
-   * @param selector - the query object for find
+   * @param selectorOrId - the query object for find or the line item adjustment id
    * @return the result of the delete operation
    */
-  async delete(selector: FilterableLineItemAdjustmentProps): Promise<void> {
+  async delete(
+    selectorOrId: string | FilterableLineItemAdjustmentProps
+  ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
-      const lineItemAdjustmentRepo = manager.getCustomRepository(
-        this.lineItemAdjustmentRepo_
-      )
+      const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
+        manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-      const query = this.buildQuery_(selector)
+      if (typeof selectorOrId === "string") {
+        return await this.delete({ id: selectorOrId })
+      }
+
+      const query = this.buildQuery_(selectorOrId)
 
       const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
-
-      if (!lineItemAdjustments) {
-        return Promise.resolve()
-      }
 
       await lineItemAdjustmentRepo.remove(lineItemAdjustments)
 
@@ -172,7 +170,7 @@ class LineItemAdjustmentService extends BaseService {
   /**
    * Creates adjustment for a line item
    * @param cart - the cart object holding discounts
-   * @param lineItem - the line item for which line item adjustment might be created
+   * @param lineItem - the line item for which a line item adjustment might be created
    * @return a line item adjustment or undefined if no adjustment was created
    */
   async createAdjustmentForLineItem(
@@ -193,13 +191,20 @@ class LineItemAdjustmentService extends BaseService {
     const lineItemAdjustment = await this.create({
       item_id: lineItem.id,
       amount,
-      resource_id: discount.id,
+      discount_id: discount.id,
       description: "discount",
     })
 
     return lineItemAdjustment
   }
 
+  /**
+   * Creates adjustment for a line item
+   * @param cart - the cart object holding discounts
+   * @param lineItem - the line item for which a line item adjustment might be created
+   * @return if a lineItem was given, returns a line item adjustment or undefined if no adjustment was created
+   * otherwise returns an array of line item adjustments for each line item in the cart
+   */
   async createAdjustments(
     cart: Cart,
     lineItem?: LineItem
