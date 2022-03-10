@@ -521,6 +521,8 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
+      console.log(response.data.products)
+
       expect(response.data.products).toMatchSnapshot([
         {
           id: "test-product",
