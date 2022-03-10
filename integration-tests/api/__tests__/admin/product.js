@@ -781,14 +781,12 @@ describe("/admin/products", () => {
               {
                 currency_code: "usd",
                 amount: 45,
-                type: "cost",
                 min_quantity: 1,
                 max_quantity: 10,
               },
               {
                 currency_code: "usd",
                 amount: 30,
-                type: "cost",
                 min_quantity: 11,
                 max_quantity: 20,
               },
@@ -809,81 +807,130 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          title: "Test",
-          discountable: true,
-          is_giftcard: false,
-          handle: "test",
-          status: "draft",
-          images: expect.arrayContaining([
-            expect.objectContaining({
-              url: "test-image.png",
-            }),
-            expect.objectContaining({
-              url: "test-image-2.png",
-            }),
-          ]),
-          thumbnail: "test-image.png",
-          tags: [
-            expect.objectContaining({
-              value: "123",
-            }),
-            expect.objectContaining({
-              value: "456",
-            }),
-          ],
-          type: expect.objectContaining({
-            value: "test-type",
-          }),
-          collection: expect.objectContaining({
-            id: "test-collection",
-            title: "Test collection",
-          }),
-          options: [
-            expect.objectContaining({
-              title: "size",
-            }),
-            expect.objectContaining({
-              title: "color",
-            }),
-          ],
-          variants: [
-            expect.objectContaining({
-              title: "Test variant",
-              prices: [
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 100,
-                  type: "default",
-                }),
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 45,
-                  type: "cost",
-                  min_quantity: 1,
-                  max_quantity: 10,
-                }),
-                expect.objectContaining({
-                  currency_code: "usd",
-                  amount: 30,
-                  type: "cost",
-                  min_quantity: 11,
-                  max_quantity: 20,
-                }),
-              ],
-              options: [
-                expect.objectContaining({
-                  value: "large",
-                }),
-                expect.objectContaining({
-                  value: "green",
-                }),
-              ],
-            }),
-          ],
-        })
-      )
+      expect(response.data.product).toMatchSnapshot({
+        id: expect.stringMatching(/^prod_*/),
+        title: "Test",
+        discountable: true,
+        is_giftcard: false,
+        handle: "test",
+        status: "draft",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        profile_id: expect.stringMatching(/^sp_*/),
+        images: [
+          {
+            id: expect.any(String),
+            url: "test-image.png",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          {
+            id: expect.any(String),
+            url: "test-image-2.png",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+        thumbnail: "test-image.png",
+        tags: [
+          {
+            id: expect.any(String),
+            value: "123",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          {
+            id: expect.any(String),
+            value: "456",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+        type: {
+          value: "test-type",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        collection: {
+          id: "test-collection",
+          title: "Test collection",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+        },
+        options: [
+          {
+            id: expect.stringMatching(/^opt_*/),
+            product_id: expect.stringMatching(/^prod_*/),
+            title: "size",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          {
+            id: expect.stringMatching(/^opt_*/),
+            product_id: expect.stringMatching(/^prod_*/),
+            title: "color",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+        variants: [
+          {
+            id: expect.stringMatching(/^variant_*/),
+            product_id: expect.stringMatching(/^prod_*/),
+            updated_at: expect.any(String),
+            created_at: expect.any(String),
+            title: "Test variant",
+            prices: [
+              {
+                id: expect.stringMatching(/^ma_*/),
+                currency_code: "usd",
+                amount: 100,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                variant_id: expect.stringMatching(/^variant_*/),
+              },
+              {
+                id: expect.stringMatching(/^ma_*/),
+                currency_code: "usd",
+                amount: 45,
+                min_quantity: 1,
+                max_quantity: 10,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                variant_id: expect.stringMatching(/^variant_*/),
+              },
+              {
+                id: expect.stringMatching(/^ma_*/),
+                currency_code: "usd",
+                amount: 30,
+                min_quantity: 11,
+                max_quantity: 20,
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                variant_id: expect.stringMatching(/^variant_*/),
+              },
+            ],
+            options: [
+              {
+                value: "large",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                variant_id: expect.stringMatching(/^variant_*/),
+                option_id: expect.stringMatching(/^opt_*/),
+                id: expect.stringMatching(/^optval_*/),
+              },
+              {
+                value: "green",
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                variant_id: expect.stringMatching(/^variant_*/),
+                option_id: expect.stringMatching(/^opt_*/),
+                id: expect.stringMatching(/^optval_*/),
+              },
+            ],
+          },
+        ],
+      })
     })
 
     it("creates a product that is not discountable", async () => {
@@ -1045,7 +1092,6 @@ describe("/admin/products", () => {
               {
                 currency_code: "usd",
                 amount: 75,
-                type: "sale",
               },
             ],
           },
@@ -1142,7 +1188,7 @@ describe("/admin/products", () => {
                 created_at: expect.any(String),
                 currency_code: "usd",
                 id: "test-price",
-                type: "default",
+                price_list_id: null,
                 updated_at: expect.any(String),
                 variant_id: "test-variant",
               },
@@ -1151,7 +1197,7 @@ describe("/admin/products", () => {
                 created_at: expect.any(String),
                 currency_code: "usd",
                 id: expect.stringMatching(/^ma_*/),
-                type: "default",
+                price_list_id: null,
                 updated_at: expect.any(String),
                 variant_id: "test-variant",
               },
@@ -1160,7 +1206,7 @@ describe("/admin/products", () => {
                 created_at: expect.any(String),
                 currency_code: "usd",
                 id: expect.stringMatching(/^ma*/),
-                type: "sale",
+                price_list_id: null,
                 updated_at: expect.any(String),
                 variant_id: "test-variant",
               },
@@ -1329,7 +1375,6 @@ describe("/admin/products", () => {
           {
             region_id: "test-region",
             amount: 1000,
-            type: "sale",
           },
         ],
       }
@@ -1373,7 +1418,6 @@ describe("/admin/products", () => {
           {
             currency_code: "usd",
             amount: 50,
-            type: "sale",
           },
           {
             currency_code: "eur",
@@ -1391,8 +1435,6 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-
-      console.warn(response.data.product)
 
       expect(response.status).toEqual(200)
 
@@ -1414,7 +1456,6 @@ describe("/admin/products", () => {
             currency_code: "usd",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            type: "default",
             variant_id: "test-variant",
           },
           {
@@ -1423,7 +1464,6 @@ describe("/admin/products", () => {
             currency_code: "usd",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            type: "sale",
             variant_id: "test-variant",
           },
           {
@@ -1432,7 +1472,6 @@ describe("/admin/products", () => {
             currency_code: "eur",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            type: "default",
             variant_id: "test-variant",
           },
         ],
@@ -1520,13 +1559,11 @@ describe("/admin/products", () => {
         prices: [
           {
             id: "test-price3",
-            type: "sale",
             amount: 8000,
           },
           {
             currency_code: "eur",
             amount: 900,
-            type: "sale",
           },
         ],
       }
