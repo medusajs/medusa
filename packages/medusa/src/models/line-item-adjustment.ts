@@ -6,9 +6,11 @@ import {
   ManyToOne,
   JoinColumn,
   PrimaryColumn,
+  OneToOne,
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { Discount } from "./discount"
 import { LineItem } from "./line-item"
 
 @Entity()
@@ -27,8 +29,13 @@ export class LineItemAdjustment {
   @Column()
   description: string
 
+  @OneToOne(() => Discount)
+  @JoinColumn({ name: 'discount_id'})
+  discount: Discount
+
+  @Index()
   @Column({ nullable: true })
-  resource_id: string
+  discount_id: string
 
   @Column({ type: "int" })
   amount: number

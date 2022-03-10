@@ -191,7 +191,7 @@ class LineItemAdjustmentService extends BaseService {
     const lineItemAdjustment = await this.create({
       item_id: lineItem.id,
       amount,
-      resource_id: discount.id,
+      discount_id: discount.id,
       description: "discount",
     })
 
