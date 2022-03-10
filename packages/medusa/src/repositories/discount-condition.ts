@@ -16,6 +16,7 @@ import { DiscountConditionProduct } from "../models/discount-condition-product"
 import { DiscountConditionProductCollection } from "../models/discount-condition-product-collection"
 import { DiscountConditionProductTag } from "../models/discount-condition-product-tag"
 import { DiscountConditionProductType } from "../models/discount-condition-product-type"
+import { Product } from "../models/product"
 
 enum DiscountConditionResourceTableId {
   PRODUCT_ID = "product_id",
@@ -145,9 +146,40 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       .getMany()
   }
 
+  async queryConditionTable({
+    type,
+    condId,
+    conditionTypeId,
+  }): Promise<
+    (
+      | DiscountConditionProduct
+      | DiscountConditionProductType
+      | DiscountConditionProductCollection
+      | DiscountConditionProductTag
+      | DiscountConditionCustomerGroup
+    )[]
+  > {
+    const { fromTable, resourceId } = this.getResourceIdentifiers(type)
+
+    if (fromTable) {
+      return await this.manager
+        .createQueryBuilder(fromTable, "conds")
+        .select()
+        .where(`${"conds"}.${resourceId} = :conditionTypeId`, {
+          conditionTypeId,
+        })
+        .andWhere(`${"conds"}.condition_id = :condId`, {
+          condId,
+        })
+        .getMany()
+    }
+
+    return []
+  }
+
   async isValidForProduct(
     discountRuleId: string,
-    productId: string
+    product: Product
   ): Promise<boolean> {
     const discountConditions = await this.createQueryBuilder("discon")
       .select(["discon.id", "discon.type", "discon.operator"])
@@ -162,43 +194,20 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       return true
     }
 
-    const queryConditionTable = async ({
-      type,
-      condId,
-      productId,
-    }): Promise<
-      (
-        | DiscountConditionProduct
-        | DiscountConditionProductType
-        | DiscountConditionProductCollection
-        | DiscountConditionProductTag
-        | DiscountConditionCustomerGroup
-      )[]
-    > => {
-      const { fromTable, resourceId } = this.getResourceIdentifiers(type)
-
-      if (fromTable) {
-        return await this.manager
-          .createQueryBuilder(fromTable, "conds")
-          .select()
-          .where(`${"conds"}.${resourceId} = :productId`, { productId })
-          .andWhere(`${"conds"}.condition_id = :condId`, {
-            condId,
-          })
-          .getMany()
-      }
-
-      return []
-    }
-
     // We would like to break the loop as early as possible
     // to minimize the # of DB accesses, which is why we
-    // check for conditions after each of queries.
+    // check for conditions after each query.
+    //
+    // retrieve all conditions for each type where condition type id is in jointable (products, product_types, product_collections, product_tags)
+    // "E.g. for a given condition, give me all products affected by it"
+    // for each of these types, we check:
+    //    if condition operation is `in` and the query for conditions defined for the given type is empty, the discount is invalid
+    //    if condition operation is `not_in` and the query for conditions defined for the given type is not empty, the discount is invalid
     for (const condition of discountConditions) {
-      const prodConds = await queryConditionTable({
+      const prodConds = await this.queryConditionTable({
         type: "products",
         condId: condition.id,
-        productId,
+        conditionTypeId: product.id,
       })
 
       if (
@@ -215,10 +224,10 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         return false
       }
 
-      const collConds = await queryConditionTable({
+      const collConds = await this.queryConditionTable({
         type: "product_collections",
         condId: condition.id,
-        productId,
+        conditionTypeId: product.collection_id,
       })
 
       if (
@@ -235,10 +244,10 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         return false
       }
 
-      const typeConds = await queryConditionTable({
+      const typeConds = await this.queryConditionTable({
         type: "product_types",
         condId: condition.id,
-        productId,
+        conditionTypeId: product.type_id,
       })
 
       if (
@@ -253,6 +262,28 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         typeConds.length
       ) {
         return false
+      }
+
+      for (const tag of product.tags) {
+        const tagConds = await this.queryConditionTable({
+          type: "product_tags",
+          condId: condition.id,
+          conditionTypeId: tag.id,
+        })
+
+        if (
+          condition.operator === DiscountConditionOperator.IN &&
+          !tagConds.length
+        ) {
+          return false
+        }
+
+        if (
+          condition.operator === DiscountConditionOperator.NOT_IN &&
+          tagConds.length
+        ) {
+          return false
+        }
       }
     }
 
