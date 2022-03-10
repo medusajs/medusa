@@ -129,6 +129,50 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(variant1)
 
+  const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
+    new Date()
+  )
+  const tomorrow = ((today) => new Date(today.setDate(today.getDate() + 1)))(
+    new Date()
+  )
+
+  const sale = await manager.create(ProductVariant, {
+    id: "test-variant-sale",
+    inventory_quantity: 10,
+    title: "Test variant",
+    variant_rank: 3,
+    sku: "test-sku-sale",
+    ean: "test-ean-sale",
+    upc: "test-upc-sale",
+    barcode: "test-barcode-sale",
+    product_id: "test-product",
+    prices: [
+      {
+        id: "test-price-sale",
+        currency_code: "usd",
+        amount: 1000,
+        type: "default",
+      },
+      {
+        id: "test-price-sale-1",
+        currency_code: "usd",
+        amount: 800,
+        type: "sale",
+        starts_at: yesterday,
+        ends_at: tomorrow,
+      },
+    ],
+    options: [
+      {
+        id: "test-variant-option-sale",
+        value: "Default variant",
+        option_id: "test-option",
+      },
+    ],
+  })
+
+  await manager.save(sale)
+
   const variant2 = await manager.create(ProductVariant, {
     id: "test-variant_1",
     inventory_quantity: 10,

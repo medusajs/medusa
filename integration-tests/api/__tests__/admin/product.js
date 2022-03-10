@@ -610,6 +610,37 @@ describe("/admin/products", () => {
                 },
               ],
             },
+            {
+              id: "test-variant-sale", // expect.stringMatching(/^test-variant*/),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              product_id: expect.stringMatching(/^test-*/),
+              prices: [
+                {
+                  id: expect.stringMatching(/^test-price-sale*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  starts_at: expect.any(String),
+                  ends_at: expect.any(String),
+                },
+                {
+                  id: expect.stringMatching(/^test-price-sale*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+              options: [
+                {
+                  id: expect.stringMatching(/^test-variant-option*/),
+                  variant_id: expect.stringMatching(/^test-variant*/),
+                  option_id: expect.stringMatching(/^test-opt*/),
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                },
+              ],
+            },
           ],
           tags: [
             {
@@ -1509,7 +1540,10 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product.variants[0].prices.length).toEqual(0)
+      expect(
+        response.data.product.variants.find((v) => v.id === "test-variant")
+          .prices.length
+      ).toEqual(0)
     })
 
     it("successfully updates a variant's prices by updating an existing price and adding another price", async () => {
