@@ -99,15 +99,6 @@ module.exports = async (connection, data = {}) => {
   customer7.groups = [c_group_5, c_group_6]
   await manager.save(customer7)
 
-  customer5.groups = [c_group_5]
-  await manager.save(customer5)
-
-  customer6.groups = [c_group_5]
-  await manager.save(customer6)
-
-  customer7.groups = [c_group_5, c_group_6]
-  await manager.save(customer7)
-
   const c_group_delete = manager.create(CustomerGroup, {
     id: "test-group-delete",
     name: "test-group-delete",
