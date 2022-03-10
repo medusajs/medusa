@@ -3,6 +3,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import { CustomerGroupService } from "."
+import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
@@ -43,6 +44,7 @@ class ProductVariantService extends BaseService {
   private eventBus_: EventBusService
   private regionService_: RegionService
   private customerGroupService_: CustomerGroupService
+  private priceSelectionStrategy_: IPriceSelectionStrategy
   private regionRepository_: typeof RegionRepository
   private moneyAmountRepository_: typeof MoneyAmountRepository
   private productOptionValueRepository_: typeof ProductOptionValueRepository
@@ -59,6 +61,7 @@ class ProductVariantService extends BaseService {
     moneyAmountRepository,
     productOptionValueRepository,
     cartRepository,
+    priceSelectionStrategy,
   }) {
     super()
 
@@ -87,6 +90,8 @@ class ProductVariantService extends BaseService {
     this.productOptionValueRepository_ = productOptionValueRepository
 
     this.cartRepository_ = cartRepository
+
+    this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
   withTransaction(transactionManager: EntityManager): ProductVariantService {
@@ -105,6 +110,7 @@ class ProductVariantService extends BaseService {
       moneyAmountRepository: this.moneyAmountRepository_,
       productOptionValueRepository: this.productOptionValueRepository_,
       cartRepository: this.cartRepository_,
+      priceSelectionStrategy: this.priceSelectionStrategy_,
     })
 
     cloned.transactionManager_ = transactionManager
