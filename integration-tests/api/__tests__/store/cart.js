@@ -155,6 +155,40 @@ describe("/store/carts", () => {
     })
   })
 
+  describe("POST /store/carts/:id/line-items", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection)
+        await swapSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("adds line item with quantity to cart", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant",
+            quantity: 1,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+    })
+
+    it("adds line item with quantity to cart with price selection", async () => {})
+  })
+
   describe("POST /store/carts/:id", () => {
     beforeEach(async () => {
       try {
