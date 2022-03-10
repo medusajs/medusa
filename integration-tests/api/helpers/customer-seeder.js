@@ -36,16 +36,6 @@ module.exports = async (connection, data = {}) => {
     has_account: true,
   })
 
-  await manager.insert(CustomerGroup, {
-    id: "customer-group-1",
-    name: "vip-customers",
-  })
-
-  await manager.insert(CustomerGroup, {
-    id: "test-group-4",
-    name: "test-group-4",
-  })
-
   const customer5 = manager.create(Customer, {
     id: "test-customer-5",
     email: "test5@email.com",
@@ -56,25 +46,58 @@ module.exports = async (connection, data = {}) => {
     email: "test6@email.com",
   })
 
+  const customer7 = manager.create(Customer, {
+    id: "test-customer-7",
+    email: "test7@email.com",
+  })
+
   const deletionCustomer = await manager.create(Customer, {
     id: "test-customer-delete-cg",
     email: "test-deletetion-cg@email.com",
   })
+  await manager.save(deletionCustomer)
 
-  const customer7 = manager.create(Customer, {
-    id: "test-customer-7",
-    email: "test7@email.com",
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-1",
+    name: "vip-customers",
+  })
+
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-2",
+    name: "test-group-2",
+    metadata: { data1: "value1" },
+  })
+
+  await manager.insert(CustomerGroup, {
+    id: "customer-group-3",
+    name: "test-group-3",
+  })
+
+  await manager.insert(CustomerGroup, {
+    id: "test-group-4",
+    name: "test-group-4",
   })
 
   const c_group_5 = manager.create(CustomerGroup, {
     id: "test-group-5",
     name: "test-group-5",
   })
+  await manager.save(c_group_5)
 
   const c_group_6 = manager.create(CustomerGroup, {
     id: "test-group-6",
     name: "test-group-6",
   })
+  await manager.save(c_group_6)
+
+  customer5.groups = [c_group_5]
+  await manager.save(customer5)
+
+  customer6.groups = [c_group_5]
+  await manager.save(customer6)
+
+  customer7.groups = [c_group_5, c_group_6]
+  await manager.save(customer7)
 
   customer5.groups = [c_group_5]
   await manager.save(customer5)
@@ -89,6 +112,7 @@ module.exports = async (connection, data = {}) => {
     id: "test-group-delete",
     name: "test-group-delete",
   })
+  await manager.save(c_group_delete)
 
   deletionCustomer.groups = [c_group_delete]
   await manager.save(deletionCustomer)

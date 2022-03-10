@@ -4,7 +4,7 @@ import { validator } from "../../../../utils/validator"
 import { defaultAdminCustomerGroupsRelations } from "."
 
 /**
- * @oas [get] /customer-group/{id}
+ * @oas [get] /customer-groups/{id}
  * operationId: "GetCustomerGroupsGroup"
  * summary: "Retrieve a CustomerGroup"
  * description: "Retrieves a Customer Group."
@@ -20,8 +20,8 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
- *               $ref: "#/components/schemas/customer-group"
+ *             customer_group:
+ *               $ref: "#/components/schemas/customer_group"
  */
 export default async (req, res) => {
   const { id } = req.params
@@ -48,7 +48,7 @@ export default async (req, res) => {
 
   const customerGroup = await customerGroupService.retrieve(id, findConfig)
 
-  res.json({ customerGroup })
+  res.json({ customer_group: customerGroup })
 }
 
 export class AdminGetCustomerGroupsGroupParams extends FindParams {}

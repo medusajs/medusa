@@ -1,6 +1,6 @@
 {
   "name": "@medusajs/medusa-js",
-  "version": "1.0.12",
+  "version": "1.1.1",
   "description": "Client for Medusa Commerce Rest API",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -15,7 +15,7 @@
   "author": "Oliver Juhl",
   "license": "MIT",
   "dependencies": {
-    "@medusajs/medusa": "^1.1.64",
+    "@medusajs/medusa": "^1.2.1",
     "axios": "^0.24.0",
     "form-data": "^4.0.0",
     "qs": "^6.10.3",

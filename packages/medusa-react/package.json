@@ -1,5 +1,5 @@
 {
-  "version": "0.1.5",
+  "version": "0.2.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -80,8 +80,8 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.1.64",
-    "@medusajs/medusa-js": "^1.0.12",
+    "@medusajs/medusa": "^1.2.1",
+    "@medusajs/medusa-js": "^1.1.1",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "react-query": "^3.31.0"

@@ -2,6 +2,10 @@
 
 [View plugin here](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-stripe)
 
+
+https://user-images.githubusercontent.com/59018053/154807206-6fbda0a6-bf3e-4e39-9fc2-f11710afe0b9.mp4
+
+
 ### Introduction
 
 Handling payments is at the core of every commerce system; it allows us to run our businesses. Consequently, a vast landscape of payment providers has developed, each with varying cost models, implementational specifications, and analytical capabilities.

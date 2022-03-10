@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.12...@medusajs/medusa-js@1.1.1) (2022-02-28)
+
+
+### Bug Fixes
+
+* use /admin/returns/:id/receive for swap returns ([#1041](https://github.com/medusajs/medusa-js/issues/1041)) ([7a3a183](https://github.com/medusajs/medusa-js/commit/7a3a1837a1db067c3629f1dfd7c6a95a56d649ca))
+
+
+### Features
+
+* new tax api ([#979](https://github.com/medusajs/medusa-js/issues/979)) ([47588e7](https://github.com/medusajs/medusa-js/commit/47588e7a8d3b2ae2fed0c1e87fdf1ee2db6bcdc2)), closes [#885](https://github.com/medusajs/medusa-js/issues/885) [#896](https://github.com/medusajs/medusa-js/issues/896) [#911](https://github.com/medusajs/medusa-js/issues/911) [#945](https://github.com/medusajs/medusa-js/issues/945) [#950](https://github.com/medusajs/medusa-js/issues/950) [#951](https://github.com/medusajs/medusa-js/issues/951) [#954](https://github.com/medusajs/medusa-js/issues/954) [#969](https://github.com/medusajs/medusa-js/issues/969) [#998](https://github.com/medusajs/medusa-js/issues/998) [#1017](https://github.com/medusajs/medusa-js/issues/1017) [#1110](https://github.com/medusajs/medusa-js/issues/1110)
+
+
+
+
+
+# [1.1.0](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.12...@medusajs/medusa-js@1.1.0) (2022-02-25)
+
+
+### Bug Fixes
+
+* use /admin/returns/:id/receive for swap returns ([#1041](https://github.com/medusajs/medusa-js/issues/1041)) ([7ae754b](https://github.com/medusajs/medusa-js/commit/7ae754bb6187db17c45b2cfadc625df8f997f5ab))
+
+
+### Features
+
+* new tax api ([#979](https://github.com/medusajs/medusa-js/issues/979)) ([c56660f](https://github.com/medusajs/medusa-js/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa-js/issues/885) [#896](https://github.com/medusajs/medusa-js/issues/896) [#911](https://github.com/medusajs/medusa-js/issues/911) [#945](https://github.com/medusajs/medusa-js/issues/945) [#950](https://github.com/medusajs/medusa-js/issues/950) [#951](https://github.com/medusajs/medusa-js/issues/951) [#954](https://github.com/medusajs/medusa-js/issues/954) [#969](https://github.com/medusajs/medusa-js/issues/969) [#998](https://github.com/medusajs/medusa-js/issues/998) [#1017](https://github.com/medusajs/medusa-js/issues/1017) [#1110](https://github.com/medusajs/medusa-js/issues/1110)
+
+
+
+
+
 ## [1.0.12](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.11...@medusajs/medusa-js@1.0.12) (2022-02-06)
 
 ### Bug Fixes

@@ -33,9 +33,10 @@ describe("POST /admin/collections/:id/products/batch", () => {
 
     it("product collection service update", () => {
       expect(ProductCollectionServiceMock.addProducts).toHaveBeenCalledTimes(1)
-      expect(
-        ProductCollectionServiceMock.addProducts
-      ).toHaveBeenCalledWith(IdMap.getId("col"), ["prod_1", "prod_2"])
+      expect(ProductCollectionServiceMock.addProducts).toHaveBeenCalledWith(
+        IdMap.getId("col"),
+        ["prod_1", "prod_2"]
+      )
     })
   })
 
@@ -60,7 +61,9 @@ describe("POST /admin/collections/:id/products/batch", () => {
     })
 
     it("throws error", () => {
-      expect(subject.body.message).toBe("Product collection not found")
+      expect(subject.body.message).toBe(
+        "Product collection with id: null was not found"
+      )
     })
   })
 

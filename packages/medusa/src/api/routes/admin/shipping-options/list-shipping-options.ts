@@ -50,12 +50,12 @@ export default async (req, res) => {
   )
 
   const optionService = req.scope.resolve("shippingOptionService")
-  const data = await optionService.list(validatedParams, {
+  const [data, count] = await optionService.listAndCount(validatedParams, {
     select: defaultFields,
     relations: defaultRelations,
   })
 
-  res.status(200).json({ shipping_options: data })
+  res.status(200).json({ shipping_options: data, count })
 }
 
 export class AdminGetShippingOptionsParams {

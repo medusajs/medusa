@@ -24,9 +24,6 @@ export class CustomerRepository extends Repository<Customer> {
       })
     }
 
-    const result = await qb.getManyAndCount()
-    const entities = result[0]
-    const count = result[1]
-    return [entities, count]
+    return await qb.getManyAndCount()
   }
 }
