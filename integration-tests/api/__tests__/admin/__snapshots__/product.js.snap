@@ -21,7 +21,7 @@ Array [
     "handle": "test-product",
     "height": null,
     "hs_code": null,
-    "id": StringMatching /\\^test-\\*/,
+    "id": "test-product",
     "images": Array [
       Object {
         "created_at": Any<String>,
@@ -325,7 +325,7 @@ Array [
     "handle": "test-product1",
     "height": null,
     "hs_code": null,
-    "id": StringMatching /\\^test-\\*/,
+    "id": "test-product1",
     "images": Array [],
     "is_giftcard": false,
     "length": null,
