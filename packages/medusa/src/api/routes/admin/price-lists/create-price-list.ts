@@ -91,9 +91,9 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const product = await priceListService.create(validated)
+  const priceList = await priceListService.create(validated)
 
-  res.json({ product })
+  res.json({ price_list: priceList })
 }
 
 class CustomerGroup {
@@ -121,7 +121,9 @@ export class AdminPostPriceListsPriceListReq {
   @IsEnum(PriceListType)
   type: PriceListType
 
-  @ValidateNested()
+  @IsArray()
+  @Type(() => PriceListPricesCreateReq)
+  @ValidateNested({ each: true })
   prices: PriceListPricesCreateReq[]
 
   @IsOptional()

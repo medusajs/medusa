@@ -11,10 +11,10 @@ import {
   UpdateDateColumn
 } from "typeorm"
 import { ulid } from "ulid"
-import { MoneyAmount } from ".."
 import { PriceListStatus, PriceListType } from "../types/price-list"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { CustomerGroup } from "./customer-group"
+import { MoneyAmount } from "./money-amount"
 
 @Entity()
 export class PriceList {
@@ -24,8 +24,8 @@ export class PriceList {
   @Column()
   name: string
 
-  @Column({ nullable: true })
-  description: string | null
+  @Column()
+  description: string
 
   @DbAwareColumn({ type: "enum", enum: PriceListType, default: "sale" })
   type: PriceListType
@@ -37,12 +37,11 @@ export class PriceList {
     type: resolveDbType("timestamptz"),
     nullable: true,
   })
-  starts_at: Date | null
+  starts_at: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  ends_at: Date | null
+  ends_at: Date
 
-  @ManyToMany(() => CustomerGroup, { cascade: true })
   @JoinTable({
     name: "price_list_customer_groups",
     joinColumn: {
@@ -54,6 +53,11 @@ export class PriceList {
       referencedColumnName: "id",
     },
   })
+  @ManyToMany(
+    () => CustomerGroup,
+    (cg) => cg.price_lists,
+    { onDelete: "CASCADE" }
+  )
   customer_groups: CustomerGroup[]
 
   @OneToMany(

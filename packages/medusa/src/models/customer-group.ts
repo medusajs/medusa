@@ -5,12 +5,12 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
-  JoinTable,
   ManyToMany,
   PrimaryColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from "typeorm"
 import { ulid } from "ulid"
+import { PriceList } from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Customer } from "./customer"
 
@@ -30,18 +30,14 @@ export class CustomerGroup {
       onDelete: "CASCADE",
     }
   )
-  @JoinTable({
-    name: "customer_group_customers",
-    joinColumn: {
-      name: "customer_group_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "customer_id",
-      referencedColumnName: "id",
-    },
-  })
   customers: Customer[]
+
+  @ManyToMany(
+    () => PriceList,
+    (priceList) => priceList.customer_groups,
+    { onDelete: "CASCADE" }
+  )
+  price_lists: PriceList[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date

@@ -76,6 +76,9 @@ export class PriceListPricesUpdateReq {
   @Validate(XorConstraint, ["region_id"])
   currency_code?: string
 
+  @IsString()
+  variant_id: string
+
   @IsInt()
   amount: number
 
@@ -97,6 +100,9 @@ export class PriceListPricesCreateReq {
 
   @IsInt()
   amount: number
+
+  @IsString()
+  variant_id: string
 
   @IsOptional()
   @IsInt()
@@ -127,7 +133,7 @@ export type UpdatePriceListInput = Partial<
 }
 
 export type PriceListPriceUpdateInput = {
-  id: string
+  id?: string
   variant_id?: string
   region_id?: string
   currency_code?: string

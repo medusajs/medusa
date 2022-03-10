@@ -76,7 +76,7 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  await priceListService.updatePrices(id, validated.prices, validated.override)
+  await priceListService.addPrices(id, validated.prices, validated.override)
 
   const priceList = await priceListService.retrieve(id, {
     select: defaultAdminPriceListFields as (keyof PriceList)[],

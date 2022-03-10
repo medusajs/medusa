@@ -1,3 +1,4 @@
+import partition from "lodash/partition"
 import {
   Brackets,
   EntityRepository,
@@ -71,10 +72,10 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     prices: PriceListPriceCreateInput[],
     overrideExisting: boolean = false
   ): Promise<MoneyAmount[]> {
-    const toInsert = prices.map((price) => ({
+    const toInsert = prices.map((price) => (this.create({
       ...price,
       price_list_id: priceListId,
-    }))
+    })))
     const insertResult = await this.createQueryBuilder()
       .insert()
       .orIgnore(true)
@@ -115,11 +116,10 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     priceListId: string,
     updates: PriceListPriceUpdateInput[]
   ): Promise<MoneyAmount[]> {
-    const toUpdate = updates.map((update) => ({
-      ...update,
-      price_list_id: priceListId,
-    }))
+    const [existingPrices, newPrices] = partition(updates, (update) => update.id)
 
-    return await this.save(toUpdate)
+    const newPriceEntities = newPrices.map((price) => (this.create({ ...price, price_list_id: priceListId })))
+
+    return await this.save([...existingPrices, ...newPriceEntities])
   }
 }

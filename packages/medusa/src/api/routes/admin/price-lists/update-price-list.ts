@@ -142,7 +142,9 @@ export class AdminPostPriceListsPriceListPriceListReq {
   type?: PriceListType
 
   @IsOptional()
-  @ValidateNested()
+  @IsArray()
+  @Type(() => PriceListPricesUpdateReq)
+  @ValidateNested({ each: true })
   prices: PriceListPricesUpdateReq[]
 
   @IsOptional()

@@ -21,7 +21,7 @@ export default (app) => {
 
   route.post(
     "/:id/prices/batch",
-    middlewares.wrap(require("./update-prices-batch").default)
+    middlewares.wrap(require("./add-prices-batch").default)
   )
 
   return app
@@ -54,9 +54,9 @@ export type AdminPriceListsListRes = PaginatedResponse & {
   price_lists: PriceList[]
 }
 
+export * from "./add-prices-batch"
 export * from "./create-price-list"
 export * from "./delete-price-list"
 export * from "./get-price-list"
 export * from "./list-price-lists"
 export * from "./update-price-list"
-export * from "./update-prices-batch"
