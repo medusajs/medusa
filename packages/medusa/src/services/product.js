@@ -1,3 +1,4 @@
+import { ArrayMaxSize } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
@@ -158,7 +159,22 @@ class ProductService extends BaseService {
       return [products, count]
     }
 
-    return await productRepo.findWithRelationsAndCount(relations, query)
+    const [products, count] = await productRepo.findWithRelationsAndCount(
+      relations,
+      query
+    )
+
+    if (config.cart_id) {
+      const productsWithAdditionalPrices = await this.setAdditionalPrices(
+        products,
+        config.cart_id,
+        config.customer_id
+      )
+
+      return [productsWithAdditionalPrices, count]
+    }
+
+    return [products, count]
   }
 
   /**
@@ -210,32 +226,13 @@ class ProductService extends BaseService {
     }
 
     if (config.cart_id) {
-      const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
-
-      const cart = await cartRepo.findOne({
-        where: { id: config.cart_id },
-        relations: ["region"],
-      })
-
-      if (!cart) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `cart with id ${config.cart_id} does not exist`
-        )
-      }
-
-      product.variants = await Promise.all(
-        product.variants.map(async (v) => ({
-          ...v,
-          additional_prices:
-            await this.priceSelectionStrategy_.calculateVariantPrice(v.id, {
-              region_id: cart.region_id,
-              currency_code: cart.region.currency_code,
-              cart_id: config.cart_id,
-              customer_id: config?.customer_id,
-            }),
-        }))
+      const p = await this.setAdditionalPrices(
+        [product],
+        config.cart_id,
+        config.customer_id
       )
+
+      return p[0]
     }
 
     return product
@@ -944,6 +941,47 @@ class ProductService extends BaseService {
     }
 
     return qb
+  }
+
+  /**
+   * Set additional prices on a list of products.
+   * @param {Product[] } products list of products on which to set additional prices
+   * @param {string} cart_id string of cart to use as a basis for getting currency and region
+   * @param {string} customer_id id of potentially logged in customer, used to get prices valid for their customer groups
+   * @return {Promise<Product[]>} A list of products with variants decorated with "additional_prices"
+   */
+  async setAdditionalPrices(products, cart_id, customer_id) {
+    const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
+
+    const cart = await cartRepo.findOne({
+      where: { id: cart_id },
+      relations: ["region"],
+    })
+
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `cart with id ${cart_id} does not exist`
+      )
+    }
+
+    return await Promise.all(
+      products.map(async (p) => {
+        p.variants = await Promise.all(
+          p.variants.map(async (v) => ({
+            ...v,
+            additional_prices:
+              await this.priceSelectionStrategy_.calculateVariantPrice(v.id, {
+                region_id: cart.region_id,
+                currency_code: cart.region.currency_code,
+                cart_id: cart_id,
+                customer_id: customer_id,
+              }),
+          }))
+        )
+        return p
+      })
+    )
   }
 }
 

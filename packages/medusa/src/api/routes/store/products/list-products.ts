@@ -7,8 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { omit, pickBy, identity } from "lodash"
-import { MedusaError } from "medusa-core-utils"
+import { omit, pickBy } from "lodash"
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
@@ -67,6 +66,7 @@ export default async (req, res) => {
   const filterableFields: StoreGetProductsParams = omit(validated, [
     "limit",
     "offset",
+    "cart_id",
   ])
 
   // get only published products for store endpoint
@@ -76,6 +76,8 @@ export default async (req, res) => {
     relations: defaultStoreProductsRelations,
     skip: validated.offset,
     take: validated.limit,
+    cart_id: validated.cart_id,
+    customer_id: req.user.customer_id,
   }
 
   const [products, count] = await productService.listAndCount(
