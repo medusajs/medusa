@@ -1,5 +1,7 @@
 import { defaultStoreVariantRelations } from "."
 import ProductVariantService from "../../../../services/product-variant"
+import { ProductCartIdParams } from "../../../../types/product"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /variants/{variant_id}
@@ -23,12 +25,18 @@ import ProductVariantService from "../../../../services/product-variant"
 export default async (req, res) => {
   const { id } = req.params
 
+  const validated = await validator(ProductCartIdParams, req.query)
+
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
 
+  const customer_id = req.user.customer_id
+
   const variant = await variantService.retrieve(id, {
     relations: defaultStoreVariantRelations,
+    cart_id: validated.cart_id,
+    customer_id: customer_id,
   })
 
   res.json({ variant })

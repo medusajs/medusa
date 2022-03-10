@@ -7,6 +7,7 @@ import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
 import { ProductVariant } from "../models/product-variant"
+import { CartRepository } from "../repositories/cart"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { ProductRepository } from "../repositories/product"
 import { ProductOptionValueRepository } from "../repositories/product-option-value"
@@ -45,6 +46,7 @@ class ProductVariantService extends BaseService {
   private regionRepository_: typeof RegionRepository
   private moneyAmountRepository_: typeof MoneyAmountRepository
   private productOptionValueRepository_: typeof ProductOptionValueRepository
+  private cartRepository_: typeof CartRepository
 
   constructor({
     manager,
@@ -56,6 +58,7 @@ class ProductVariantService extends BaseService {
     regionRepository,
     moneyAmountRepository,
     productOptionValueRepository,
+    cartRepository,
   }) {
     super()
 
@@ -82,6 +85,8 @@ class ProductVariantService extends BaseService {
     this.moneyAmountRepository_ = moneyAmountRepository
 
     this.productOptionValueRepository_ = productOptionValueRepository
+
+    this.cartRepository_ = cartRepository
   }
 
   withTransaction(transactionManager: EntityManager): ProductVariantService {
@@ -99,6 +104,7 @@ class ProductVariantService extends BaseService {
       regionRepository: this.regionRepository_,
       moneyAmountRepository: this.moneyAmountRepository_,
       productOptionValueRepository: this.productOptionValueRepository_,
+      cartRepository: this.cartRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -114,7 +120,10 @@ class ProductVariantService extends BaseService {
    */
   async retrieve(
     variantId: string,
-    config: FindConfig<ProductVariant> = {}
+    config: FindConfig<ProductVariant> & {
+      cart_id?: string
+      customer_id?: string
+    } = {}
   ): Promise<ProductVariant> {
     const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
@@ -127,6 +136,14 @@ class ProductVariantService extends BaseService {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Variant with id: ${variantId} was not found`
+      )
+    }
+
+    if (config.cart_id) {
+      return this.setAdditionalPrices(
+        variant,
+        config.cart_id,
+        config.customer_id
       )
     }
 
@@ -412,42 +429,53 @@ class ProductVariantService extends BaseService {
    * currency price exists the function will throw an error.
    * @param {string} variantId - the id of the variant to get price from
    * @param {string} regionId - the id of the region to get price for
+   * @param {number | undefined} quantity - the quantity for price calculation
    * @return {number} the price specific to the region
    */
-  async getRegionPrice(variantId: string, regionId: string): Promise<number> {
+  async getRegionPrice(
+    variantId: string,
+    regionId: string,
+    quantity?: number
+  ): Promise<number> {
     return this.atomicPhase_(async (manager: EntityManager) => {
-      const moneyAmountRepo = manager.getCustomRepository(
-        this.moneyAmountRepository_
+      const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
+        variantId,
+        {
+          region_id: regionId,
+          quantity: quantity,
+        }
       )
 
-      const region = await this.regionService_
-        .withTransaction(manager)
-        .retrieve(regionId)
+      return prices.calculatedPrice
 
-      // Find region price based on region id
-      let moneyAmount = await moneyAmountRepo.findOne({
-        where: { region_id: regionId, variant_id: variantId },
-      })
+      // const region = await this.regionService_
+      //   .withTransaction(manager)
+      //   .retrieve(regionId)
 
-      // If no price could be find based on region id, we try to fetch
-      // based on the region currency code
-      if (!moneyAmount) {
-        moneyAmount = await moneyAmountRepo.findOne({
-          where: { variant_id: variantId, currency_code: region.currency_code },
-        })
-      }
+      // // Find region price based on region id
+      // let moneyAmount = await moneyAmountRepo.findOne({
+      //   where: { region_id: regionId, variant_id: variantId },
+      // })
 
-      // Still, if no price is found, we throw
-      if (!moneyAmount) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `A price for region: ${region.name} could not be found`
-        )
-      }
+      // // If no price could be find based on region id, we try to fetch
+      // // based on the region currency code
+      // if (!moneyAmount) {
+      //   moneyAmount = await moneyAmountRepo.findOne({
+      //     where: { variant_id: variantId, currency_code: region.currency_code },
+      //   })
+      // }
 
-      // TODO: This will just return the first price for the region,
-      // we need to add the PriceStrategy to get the correct price here
-      return moneyAmount.amount
+      // // Still, if no price is found, we throw
+      // if (!moneyAmount) {
+      //   throw new MedusaError(
+      //     MedusaError.Types.NOT_FOUND,
+      //     `A price for region: ${region.name} could not be found`
+      //   )
+      // }
+
+      // // TODO: This will just return the first price for the region,
+      // // we need to add the PriceStrategy to get the correct price here
+      // return moneyAmount.amount
     })
   }
 
@@ -802,6 +830,43 @@ class ProductVariantService extends BaseService {
     }
 
     return qb
+  }
+
+  /**
+   * Set additional prices on a list of variants.
+   * @param {ProductVariant } variant list of variants on which to set additional prices
+   * @param {string} cart_id string of cart to use as a basis for getting currency and region
+   * @param {string} customer_id id of potentially logged in customer, used to get prices valid for their customer groups
+   * @return {Promise<Product[]>} A list of variants with variants decorated with "additional_prices"
+   */
+  async setAdditionalPrices(
+    variant,
+    cart_id,
+    customer_id
+  ): Promise<ProductVariant> {
+    const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
+
+    const cart = await cartRepo.findOne({
+      where: { id: cart_id },
+      relations: ["region"],
+    })
+
+    if (!cart) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `cart with id ${cart_id} does not exist`
+      )
+    }
+
+    variant.additional_prices =
+      await this.priceSelectionStrategy_.calculateVariantPrice(variant.id, {
+        region_id: cart.region_id,
+        currency_code: cart.region.currency_code,
+        cart_id: cart_id,
+        customer_id: customer_id,
+      })
+
+    return variant
   }
 }
 

@@ -1169,7 +1169,10 @@ class CartService extends BaseService {
    *    this could be IP address or similar for fraud handling.
    * @return the resulting cart
    */
-  async authorizePayment(cartId: string, context: Record<string, any> = {}): Promise<Cart> {
+  async authorizePayment(
+    cartId: string,
+    context: Record<string, any> = {}
+  ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
 
@@ -1626,7 +1629,7 @@ class CartService extends BaseService {
         cart.items
           .map(async (item) => {
             const availablePrice = await this.productVariantService_
-              .getRegionPrice(item.variant_id, regionId)
+              .getRegionPrice(item.variant_id, regionId, item.quantity)
               .catch(() => undefined)
 
             if (availablePrice !== undefined) {

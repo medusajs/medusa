@@ -309,7 +309,12 @@ describe("PriceSelectionStrategy", () => {
             ),
         }
 
+        const mockEntityManager = {
+          getCustomRepository: (repotype) => mockMoneyAmountRepository,
+        }
+
         const selectionStrategy = new PriceSelectionStrategy({
+          manager: mockEntityManager,
           moneyAmountRepository: mockMoneyAmountRepository,
         })
 

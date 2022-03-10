@@ -164,7 +164,7 @@ class LineItemService extends BaseService {
       } else {
         price = await this.productVariantService_
           .withTransaction(manager)
-          .getRegionPrice(variant.id, region.id)
+          .getRegionPrice(variant.id, region.id, quantity)
       }
 
       const toCreate = {
