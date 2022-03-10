@@ -1706,20 +1706,20 @@ class CartService extends BaseService {
      * that that country is in fact in the country and perform the update.
      */
     if (countryCode !== null) {
-      // if (
-      //   !region.countries.find(
-      //     ({ iso_2 }) => iso_2 === countryCode.toLowerCase()
-      //   )
-      // ) {
-      //   throw new MedusaError(
-      //     MedusaError.Types.NOT_ALLOWED,
-      //     `Country not available in region`
-      //   )
-      // }
+      if (
+        !region.countries.find(
+          ({ iso_2 }) => iso_2 === countryCode.toLowerCase()
+        )
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          `Country not available in region`
+        )
+      }
 
       const updated = {
         ...shippingAddress,
-        // country_code: countryCode.toLowerCase(),
+        country_code: countryCode.toLowerCase(),
       }
 
       await addrRepo.save(updated)

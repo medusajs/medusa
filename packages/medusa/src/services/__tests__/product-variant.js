@@ -3,7 +3,7 @@ import ProductVariantService from "../product-variant"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -557,13 +557,13 @@ describe("ProductVariantService", () => {
 
   describe("getRegionPrice", () => {
     const regionService = {
-      retrieve: function() {
+      retrieve: function () {
         return Promise.resolve({
           id: IdMap.getId("california"),
           name: "California",
         })
       },
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -591,11 +591,18 @@ describe("ProductVariantService", () => {
       },
     })
 
+    const priceSelectionStrat = {
+      calculateVariantPrice: async (variantId, context) => {
+        return { calculatedPrice: 1000 }
+      },
+    }
+
     const productVariantService = new ProductVariantService({
       manager: MockManager,
       eventBusService,
       regionService,
       moneyAmountRepository,
+      priceSelectionStrategy: priceSelectionStrat,
     })
 
     beforeEach(async () => {
