@@ -1,7 +1,9 @@
 import partition from "lodash/partition"
+import uniq from "lodash/uniq"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import { Region } from ".."
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
 import { ProductVariant } from "../models/product-variant"
@@ -316,7 +318,35 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      const [existingPrices, newPrices] = partition(prices, (p) => p.id)
+      const [regionPrices, currencyPrices] = partition(
+        prices,
+        (p) => p.region_id
+      )
+
+      if (regionPrices.length) {
+        const regionIds = uniq(regionPrices.map((p) => p.region_id))
+        const regionCurrencyCodeRecord = await this.regionService_
+          .list({ id: regionIds })
+          .then((regions: Region[]) => {
+            return regions.reduce(
+              (acc: Record<string, string>, region: Region) => {
+                acc[region.id] = region.currency_code
+                return acc
+              },
+              {}
+            )
+          })
+
+        for (const [i, price] of regionPrices.entries()) {
+          const regionCurrencyCode = regionCurrencyCodeRecord[price.region_id!]
+          regionPrices[i].currency_code = regionCurrencyCode
+        }
+      }
+
+      const [existingPrices, newPrices] = partition(
+        [...regionPrices, ...currencyPrices],
+        (p) => p.id
+      )
 
       const newPriceEntities = newPrices.map((p) =>
         moneyAmountRepo.create({ ...p, variant_id: variantId })
