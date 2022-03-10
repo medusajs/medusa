@@ -1,4 +1,5 @@
 import {
+  AdminCustomerGroupsDeleteRes,
   AdminCustomerGroupsRes,
   AdminDeleteCustomerGroupsGroupCustomerBatchReq,
   AdminPostCustomerGroupsGroupCustomersBatchReq,
@@ -8,7 +9,7 @@ import {
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { Response } from "@medusajs/medusa-js"
 
-import { useMedusa } from "../../../contexts/medusa"
+import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminCustomerGroupKeys } from "./queries"
 
@@ -50,9 +51,37 @@ export const useAdminUpdateCustomerGroup = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
+
   return useMutation(
     (payload: AdminPostCustomerGroupsGroupReq) =>
       client.admin.customerGroups.update(id, payload),
+    buildOptions(
+      queryClient,
+      [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
+      options
+    )
+  )
+}
+
+/**
+ * Hook return functions for deleting a customer group.
+ *
+ * @param id - id of the customer group that is being deleted
+ * @param options
+ */
+export const useAdminDeleteCustomerGroup = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminCustomerGroupsDeleteRes>,
+    Error,
+    void
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.admin.customerGroups.delete(id),
     buildOptions(
       queryClient,
       [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
@@ -77,6 +106,7 @@ export const useAdminAddCustomersToCustomerGroup = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
+
   return useMutation(
     (payload: AdminPostCustomerGroupsGroupCustomersBatchReq) =>
       client.admin.customerGroups.addCustomers(id, payload),
@@ -104,6 +134,7 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
+
   return useMutation(
     (payload: AdminDeleteCustomerGroupsGroupCustomerBatchReq) =>
       client.admin.customerGroups.removeCustomers(id, payload),
