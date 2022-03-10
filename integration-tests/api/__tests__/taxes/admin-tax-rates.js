@@ -216,7 +216,7 @@ describe("/admin/tax-rates", () => {
     )
   })
 
-  test.only("fails with 404 on unknown rate", async () => {
+  test("fails with 404 on unknown rate", async () => {
     await adminSeeder(dbConnection)
     const { tax_rates } = await createTaxRates(dbConnection, 1, 1, 200)
     const [rate] = tax_rates
