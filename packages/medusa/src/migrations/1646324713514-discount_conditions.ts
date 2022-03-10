@@ -11,7 +11,7 @@ export class discountConditions1646324713514 implements MigrationInterface {
       `CREATE TYPE "public"."discount_condition_operator_enum" AS ENUM('in', 'not_in')`
     )
     await queryRunner.query(
-      `CREATE TABLE "discount_condition" ("id" character varying NOT NULL, "type" "public"."discount_condition_type_enum" NOT NULL, "operator" "public"."discount_condition_operator_enum" NOT NULL, "discount_rule_id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_e6b81d83133ddc21a2baf2e2204" PRIMARY KEY ("id"))`
+      `CREATE TABLE "discount_condition" ("id" character varying NOT NULL, "type" "public"."discount_condition_type_enum" NOT NULL, "operator" "public"."discount_condition_operator_enum" NOT NULL, "discount_rule_id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_e6b81d83133ddc21a2baf2e2204" PRIMARY KEY ("id"), CONSTRAINT "dctypeuniq" UNIQUE ("type", "operator", "discount_rule_id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_efff700651718e452ca9580a62" ON "discount_condition" ("discount_rule_id") `

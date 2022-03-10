@@ -564,35 +564,51 @@ class DiscountService extends BaseService {
     discountId: string,
     data: UpsertDiscountConditionInput
   ): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+    const res = this.atomicPhase_(
+      async (manager) => {
+        const discountConditionRepo: DiscountConditionRepository =
+          manager.getCustomRepository(this.discountConditionRepository_)
 
-      if (data.id) {
+        if (data.id) {
+          return await discountConditionRepo.addConditionResources(
+            data.id,
+            data.resource_ids,
+            data.resource_type,
+            true
+          )
+        }
+
+        const discount = await this.retrieve(discountId, {
+          relations: ["rule", "rule.conditions"],
+        })
+
+        const created = discountConditionRepo.create({
+          discount_rule_id: discount.rule_id,
+          operator: data.operator,
+          type: data.resource_type,
+        })
+
+        const discountCondition = await discountConditionRepo.save(created)
+
         return await discountConditionRepo.addConditionResources(
-          data.id,
+          discountCondition.id,
           data.resource_ids,
-          data.resource_type,
-          true
+          data.resource_type
         )
+      },
+      async (err: any) => {
+        if (err.code === "23505") {
+          // A unique key constraint failed meaning the combination of
+          // discount rule id, type, and operator already exists in the db.
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            `Discount Condition with operator '${data.operator}' and type '${data.resource_type}' already exist on a Discount Rule`
+          )
+        }
       }
+    )
 
-      const discount = await this.retrieve(discountId)
-
-      const created = discountConditionRepo.create({
-        discount_rule_id: discount.rule_id,
-        operator: data.operator,
-        type: data.resource_type,
-      })
-
-      const discountCondition = await discountConditionRepo.save(created)
-
-      return await discountConditionRepo.addConditionResources(
-        discountCondition.id,
-        data.resource_ids,
-        data.resource_type
-      )
-    })
+    return res
   }
 }
 

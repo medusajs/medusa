@@ -477,6 +477,84 @@ describe("/admin/discounts", () => {
       ])
     })
 
+    it("fails to add condition on rule with existing comb. of type and operator", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const anotherProduct = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+              conditions: [
+                {
+                  resource_type: "products",
+                  resource_ids: [product.id],
+                  operator: "in",
+                },
+              ],
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      const createdRule = response.data.discount.rule
+
+      try {
+        await api.post(
+          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+          {
+            rule: {
+              id: createdRule.id,
+              type: createdRule.type,
+              value: createdRule.value,
+              allocation: createdRule.allocation,
+              conditions: [
+                {
+                  resource_type: "products",
+                  resource_ids: [anotherProduct.id],
+                  operator: "in",
+                },
+              ],
+            },
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        console.log(error)
+        expect(error.response.data.type).toEqual("duplicate_error")
+        expect(error.response.data.message).toEqual(
+          `Discount Condition with operator 'in' and type 'products' already exist on a Discount Rule`
+        )
+      }
+    })
+
     it("creates a discount and updates it", async () => {
       const api = useApi()
 
