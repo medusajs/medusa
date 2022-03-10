@@ -454,6 +454,10 @@ class ProductVariantService extends BaseService {
 
       return prices.calculatedPrice
 
+      // const moneyAmountRepo = manager.getCustomRepository(
+      //   this.moneyAmountRepository_
+      // )
+
       // const region = await this.regionService_
       //   .withTransaction(manager)
       //   .retrieve(regionId)
