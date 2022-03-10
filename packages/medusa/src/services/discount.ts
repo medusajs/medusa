@@ -1,5 +1,5 @@
 import { parse, toSeconds } from "iso8601-duration"
-import { omit } from "lodash"
+import { isEmpty, omit } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
@@ -343,13 +343,17 @@ class DiscountService extends BaseService {
         relations: ["rule"],
       })
 
+      const conditions = update?.rule?.conditions
+      const ruleToUpdate = omit(update.rule, "conditions")
+
+      if (!isEmpty(ruleToUpdate)) {
+        update.rule = ruleToUpdate
+      }
+
       const { rule, metadata, regions, ...rest } = update
 
-      const conditions = rule?.conditions
-      const ruleToUpdate = omit(rule, "conditions")
-
       if (rest.ends_at) {
-        if (discount.starts_at >= new Date(rest.ends_at)) {
+        if (discount.starts_at >= new Date(rest.ends_at!)) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `"ends_at" must be greater than "starts_at"`
@@ -583,7 +587,7 @@ class DiscountService extends BaseService {
 
       const discountCondition = await discountConditionRepo.save(created)
 
-      await discountConditionRepo.addConditionResources(
+      return await discountConditionRepo.addConditionResources(
         discountCondition.id,
         data.resource_ids,
         data.resource_type

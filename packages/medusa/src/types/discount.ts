@@ -38,7 +38,7 @@ export class FilterableDiscountProps {
 
 export type UpsertDiscountConditionInput = {
   id?: string
-  operator: DiscountConditionOperator
+  operator?: DiscountConditionOperator
   resource_type: DiscountConditionType
   resource_ids: string[]
 }

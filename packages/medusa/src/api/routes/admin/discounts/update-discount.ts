@@ -12,11 +12,13 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { Discount } from "../../../../models/discount"
 import {
   DiscountConditionOperator,
   DiscountConditionType,
 } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
+import { FindConfig } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
@@ -77,14 +79,36 @@ export default async (req, res) => {
   const { discount_id } = req.params
 
   const validated = await validator(AdminPostDiscountsDiscountReq, req.body)
+
+  const validatedParams = await validator(
+    AdminPostDiscountsDiscountParams,
+    req.query
+  )
+
   const discountService: DiscountService = req.scope.resolve("discountService")
 
   await discountService.update(discount_id, validated)
 
-  const discount = await discountService.retrieve(discount_id, {
-    select: defaultAdminDiscountsFields,
-    relations: defaultAdminDiscountsRelations,
-  })
+  let includeFields: string[] = []
+  if (validatedParams.fields) {
+    includeFields = validatedParams.fields!.split(",")
+  }
+
+  let expandFields: string[] = []
+  if (validatedParams.expand) {
+    expandFields = validatedParams.expand!.split(",")
+  }
+
+  const retrieveConfig: FindConfig<Discount> = {
+    select: (includeFields.length
+      ? includeFields
+      : defaultAdminDiscountsFields) as (keyof Discount)[],
+    relations: expandFields.length
+      ? expandFields
+      : defaultAdminDiscountsRelations,
+  }
+
+  const discount = await discountService.retrieve(discount_id, retrieveConfig)
 
   res.status(200).json({ discount })
 }
@@ -170,7 +194,8 @@ export class AdminUpsertCondition {
   id?: string
 
   @IsString()
-  operator: DiscountConditionOperator
+  @IsOptional()
+  operator?: DiscountConditionOperator
 
   @IsString()
   resource_type: DiscountConditionType
@@ -178,4 +203,14 @@ export class AdminUpsertCondition {
   @IsArray()
   @IsString({ each: true })
   resource_ids: string[]
+}
+
+export class AdminPostDiscountsDiscountParams {
+  @IsString()
+  @IsOptional()
+  expand?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
 }

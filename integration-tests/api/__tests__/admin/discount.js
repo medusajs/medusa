@@ -275,10 +275,12 @@ describe("/admin/discounts", () => {
 
       const product = await simpleProductFactory(dbConnection, {
         type: "pants",
+        tags: ["ss22"],
       })
 
       const anotherProduct = await simpleProductFactory(dbConnection, {
-        type: "pants",
+        type: "blouses",
+        tags: ["ss23"],
       })
 
       const response = await api
@@ -304,8 +306,23 @@ describe("/admin/discounts", () => {
                 },
                 {
                   resource_type: "product_types",
-                  resource_ids: [anotherProduct.type_id],
+                  resource_ids: [product.type_id],
                   operator: "not_in",
+                },
+                {
+                  resource_type: "product_types",
+                  resource_ids: [anotherProduct.type_id],
+                  operator: "in",
+                },
+                {
+                  resource_type: "product_tags",
+                  resource_ids: [product.tags[0].id],
+                  operator: "not_in",
+                },
+                {
+                  resource_type: "product_tags",
+                  resource_ids: [anotherProduct.tags[0].id],
+                  operator: "in",
                 },
               ],
             },
@@ -330,6 +347,128 @@ describe("/admin/discounts", () => {
         expect.objectContaining({
           type: "products",
           operator: "not_in",
+        }),
+        expect.objectContaining({
+          type: "product_types",
+          operator: "not_in",
+        }),
+        expect.objectContaining({
+          type: "product_types",
+          operator: "in",
+        }),
+        expect.objectContaining({
+          type: "product_tags",
+          operator: "not_in",
+        }),
+        expect.objectContaining({
+          type: "product_tags",
+          operator: "in",
+        }),
+      ])
+    })
+
+    it("creates a discount with conditions and updates said conditions", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const anotherProduct = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+              conditions: [
+                {
+                  resource_type: "products",
+                  resource_ids: [product.id],
+                  operator: "in",
+                },
+                {
+                  resource_type: "product_types",
+                  resource_ids: [product.type_id],
+                  operator: "not_in",
+                },
+              ],
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount.rule.conditions).toEqual([
+        expect.objectContaining({
+          type: "products",
+          operator: "in",
+        }),
+        expect.objectContaining({
+          type: "product_types",
+          operator: "not_in",
+        }),
+      ])
+
+      const createdRule = response.data.discount.rule
+      const condsToUpdate = createdRule.conditions[0]
+
+      const updated = await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+          {
+            rule: {
+              id: createdRule.id,
+              type: createdRule.type,
+              value: createdRule.value,
+              allocation: createdRule.allocation,
+              conditions: [
+                {
+                  id: condsToUpdate.id,
+                  resource_type: "products",
+                  resource_ids: [product.id, anotherProduct.id],
+                },
+              ],
+            },
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(updated.status).toEqual(200)
+      expect(updated.data.discount.rule.conditions).toEqual([
+        expect.objectContaining({
+          type: "products",
+          operator: "in",
+          products: expect.arrayContaining([
+            expect.objectContaining({
+              id: product.id,
+            }),
+            expect.objectContaining({
+              id: anotherProduct.id,
+            }),
+          ]),
         }),
         expect.objectContaining({
           type: "product_types",

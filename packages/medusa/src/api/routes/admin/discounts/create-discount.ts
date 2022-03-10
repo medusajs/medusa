@@ -175,3 +175,13 @@ export class AdminCreateCondition {
   @IsString({ each: true })
   resource_ids: string[]
 }
+
+export class AdminPostDiscountsParams {
+  @IsArray()
+  @IsOptional()
+  expand?: string[]
+
+  @IsArray()
+  @IsOptional()
+  fields?: string[]
+}
