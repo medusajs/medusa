@@ -189,9 +189,8 @@ describe("LineItemAdjustmentService", () => {
         eventBusService: EventBusServiceMock,
       })
 
-      it("calls lineItemAdjustment delete method with the right query", async () => {
-        const query = { id: "lia-1" }
-        await lineItemAdjustmentService.delete(query)
+      it("calls lineItemAdjustment delete method with the right params", async () => {
+        await lineItemAdjustmentService.delete("lia-1")
 
         expect(lineItemAdjustmentRepo.find).toHaveBeenCalledTimes(1)
         expect(lineItemAdjustmentRepo.find).toHaveBeenCalledWith({

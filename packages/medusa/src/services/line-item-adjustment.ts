@@ -143,15 +143,21 @@ class LineItemAdjustmentService extends BaseService {
 
   /**
    * Deletes line item adjustments matching a selector
-   * @param selector - the query object for find
+   * @param selectorOrId - the query object for find or the line item adjustment id
    * @return the result of the delete operation
    */
-  async delete(selector: FilterableLineItemAdjustmentProps): Promise<void> {
+  async delete(
+    selectorOrId: string | FilterableLineItemAdjustmentProps
+  ): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
         manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-      const query = this.buildQuery_(selector)
+      if (typeof selectorOrId === "string") {
+        return await this.delete({ id: selectorOrId })
+      }
+
+      const query = this.buildQuery_(selectorOrId)
 
       const lineItemAdjustments = await lineItemAdjustmentRepo.find(query)
 
