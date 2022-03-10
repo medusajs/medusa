@@ -547,7 +547,7 @@ describe("/admin/products", () => {
               product_id: expect.stringMatching(/^test-*/),
               prices: [
                 {
-                  id: expect.stringMatching(/^test-price*/),
+                  id: "test-price",
                   variant_id: expect.stringMatching(/^test-variant*/),
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
@@ -571,7 +571,7 @@ describe("/admin/products", () => {
               prices: [
                 {
                   id: expect.stringMatching(/^test-price*/),
-                  variant_id: expect.stringMatching(/^test-variant*/),
+                  variant_id: "test-variant_2",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                 },
@@ -616,7 +616,7 @@ describe("/admin/products", () => {
               product_id: expect.stringMatching(/^test-*/),
               prices: [
                 {
-                  id: expect.stringMatching(/^test-price-sale*/),
+                  id: "test-price-sale-1",
                   variant_id: expect.stringMatching(/^test-variant*/),
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
@@ -624,7 +624,7 @@ describe("/admin/products", () => {
                   ends_at: expect.any(String),
                 },
                 {
-                  id: expect.stringMatching(/^test-price-sale*/),
+                  id: "test-price-sale",
                   variant_id: expect.stringMatching(/^test-variant*/),
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
