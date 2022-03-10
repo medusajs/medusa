@@ -23,7 +23,7 @@ export const LineItemAdjustmentServiceMock = {
       return Promise.resolve({
         item_id: lineItem.id,
         amount: 1000,
-        resource_id: "disc_2",
+        discount_id: "disc_2",
         id: "lia-1",
         description: "discount",
       })
@@ -33,7 +33,7 @@ export const LineItemAdjustmentServiceMock = {
       return Promise.resolve({
         item_id: lineItem.id,
         amount: 1000,
-        resource_id: "disc_2",
+        discount_id: "disc_2",
         id: "lia-1",
         description: "discount",
       })
@@ -43,14 +43,14 @@ export const LineItemAdjustmentServiceMock = {
       {
         item_id: "li-1",
         amount: 200,
-        resource_id: "disc_2",
+        discount_id: "disc_2",
         id: "lia-1",
         description: "discount",
       },
       {
         item_id: "li-3",
         amount: 100,
-        resource_id: "disc_3",
+        discount_id: "disc_3",
         id: "lia-2",
         description: "discount",
       },
