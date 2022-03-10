@@ -524,7 +524,6 @@ describe("/admin/products", () => {
       expect(response.data.products).toMatchSnapshot([
         {
           id: expect.stringMatching(/^test-*/),
-          created_at: expect.any(String),
           options: [
             {
               id: expect.stringMatching(/^test-*/),
@@ -733,7 +732,6 @@ describe("/admin/products", () => {
             updated_at: expect.any(String),
           },
           profile_id: expect.stringMatching(/^sp_*/),
-          created_at: expect.any(String),
           updated_at: expect.any(String),
         },
         {
