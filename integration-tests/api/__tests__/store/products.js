@@ -200,17 +200,26 @@ describe("/store/products", () => {
       })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products.length).toEqual(5)
       expect(response.data.products).toEqual([
         expect.objectContaining({
-          id: "giftcard",
+          id: "test-product1",
+          collection_id: "test-collection",
+        }),
+        expect.objectContaining({
+          id: "test-product",
+          collection_id: "test-collection",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          collection_id: "test-collection2",
         }),
         expect.objectContaining({
           id: "test-product_filtering_1",
           collection_id: "test-collection1",
         }),
         expect.objectContaining({
-          id: "test-product_filtering_2",
-          collection_id: "test-collection2",
+          id: "giftcard",
         }),
       ])
 
@@ -219,6 +228,111 @@ describe("/store/products", () => {
           expect.not.arrayContaining([notExpect])
         )
       }
+    })
+  })
+
+  describe("GET /store/products advanced pricing", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Includes Additional prices when queried with a cart id", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/products?cart_id=test-cart")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product1",
+          collection_id: "test-collection",
+        }),
+        expect.objectContaining({
+          id: "test-product",
+          collection_id: "test-collection",
+          variants: [
+            expect.objectContaining({
+              additional_prices: {
+                originalPrice: 100,
+                calculatedPrice: 80,
+                prices: [
+                  expect.objectContaining({
+                    id: "test-price",
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    id: "test-price-discount",
+                    currency_code: "usd",
+                    amount: 80,
+                  }),
+                ],
+              },
+            }),
+            expect.objectContaining({
+              additional_prices: {
+                originalPrice: 100,
+                calculatedPrice: 80,
+                prices: [
+                  expect.objectContaining({
+                    id: "test-price2",
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    id: "test-price2-discount",
+                    currency_code: "usd",
+                    amount: 80,
+                  }),
+                ],
+              },
+            }),
+            expect.objectContaining({
+              additional_prices: {
+                originalPrice: 100,
+                calculatedPrice: 80,
+                prices: [
+                  expect.objectContaining({
+                    id: "test-price1",
+                    currency_code: "usd",
+                    amount: 100,
+                  }),
+                  expect.objectContaining({
+                    id: "test-price1-discount",
+                    currency_code: "usd",
+                    amount: 80,
+                  }),
+                ],
+              },
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          collection_id: "test-collection2",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        }),
+        expect.objectContaining({
+          id: "giftcard",
+        }),
+      ])
     })
   })
 
