@@ -1,5 +1,5 @@
 import { parse, toSeconds } from "iso8601-duration"
-import { omit } from "lodash"
+import { isEmpty, omit } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
@@ -344,10 +344,14 @@ class DiscountService extends BaseService {
         relations: ["rule"],
       })
 
-      const { rule, metadata, regions, ...rest } = update
+      const conditions = update?.rule?.conditions
+      const ruleToUpdate = omit(update.rule, "conditions")
 
-      const conditions = rule?.conditions
-      const ruleToUpdate = omit(rule, "conditions")
+      if (!isEmpty(ruleToUpdate)) {
+        update.rule = ruleToUpdate
+      }
+
+      const { rule, metadata, regions, ...rest } = update
 
       if (rest.ends_at) {
         if (discount.starts_at >= new Date(rest.ends_at)) {
@@ -561,36 +565,51 @@ class DiscountService extends BaseService {
     discountId: string,
     data: UpsertDiscountConditionInput
   ): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
+    const res = this.atomicPhase_(
+      async (manager) => {
+        const discountConditionRepo: DiscountConditionRepository =
+          manager.getCustomRepository(this.discountConditionRepository_)
 
-      // if the condition exists already, we overwrite it
-      if (data.id) {
+        if (data.id) {
+          return await discountConditionRepo.addConditionResources(
+            data.id,
+            data.resource_ids,
+            data.resource_type,
+            true
+          )
+        }
+
+        const discount = await this.retrieve(discountId, {
+          relations: ["rule", "rule.conditions"],
+        })
+
+        const created = discountConditionRepo.create({
+          discount_rule_id: discount.rule_id,
+          operator: data.operator,
+          type: data.resource_type,
+        })
+
+        const discountCondition = await discountConditionRepo.save(created)
+
         return await discountConditionRepo.addConditionResources(
-          data.id,
+          discountCondition.id,
           data.resource_ids,
-          data.resource_type,
-          true
+          data.resource_type
         )
+      },
+      async (err: any) => {
+        if (err.code === "23505") {
+          // A unique key constraint failed meaning the combination of
+          // discount rule id, type, and operator already exists in the db.
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            `Discount Condition with operator '${data.operator}' and type '${data.resource_type}' already exist on a Discount Rule`
+          )
+        }
       }
+    )
 
-      const discount = await this.retrieve(discountId)
-
-      const created = discountConditionRepo.create({
-        discount_rule_id: discount.rule_id,
-        operator: data.operator,
-        type: data.resource_type,
-      })
-
-      const discountCondition = await discountConditionRepo.save(created)
-
-      return await discountConditionRepo.addConditionResources(
-        discountCondition.id,
-        data.resource_ids,
-        data.resource_type
-      )
-    })
+    return res
   }
 
   async validateDiscountsForLineItem(

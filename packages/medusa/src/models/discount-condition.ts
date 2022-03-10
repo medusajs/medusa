@@ -14,15 +14,13 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import {
-  CustomerGroup,
-  DiscountRule,
-  ProductCollection,
-  ProductTag,
-  ProductType,
-} from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { CustomerGroup } from "./customer-group"
+import { DiscountRule } from "./discount-rule"
 import { Product } from "./product"
+import { ProductCollection } from "./product-collection"
+import { ProductTag } from "./product-tag"
+import { ProductType } from "./product-type"
 
 export enum DiscountConditionType {
   PRODUCTS = "products",
@@ -38,7 +36,7 @@ export enum DiscountConditionOperator {
 }
 
 @Entity()
-@Unique(["type", "operator", "discount_rule_id"])
+@Unique("dctypeuniq", ["type", "operator", "discount_rule_id"])
 export class DiscountCondition {
   @PrimaryColumn()
   id: string
