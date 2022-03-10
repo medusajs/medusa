@@ -585,7 +585,7 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
 
-      // potentially create/update/delete line item adjustments
+      // potentially create/update line item adjustments
       await this.lineItemAdjustmentService_
         .withTransaction(manager)
         .createAdjustments(cart)

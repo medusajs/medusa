@@ -348,6 +348,7 @@ describe("CartService", () => {
       findOneWithRelations: (rels, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
+            id: IdMap.getId("cartWithLine"),
             items: [
               {
                 id: IdMap.getId("merger"),
@@ -360,6 +361,7 @@ describe("CartService", () => {
           })
         }
         return Promise.resolve({
+          id: IdMap.getId("emptyCart"),
           shipping_methods: [
             {
               shipping_option: {
@@ -386,7 +388,7 @@ describe("CartService", () => {
       jest.clearAllMocks()
     })
 
-    it("successfully creates new line item", async () => {
+    it("creates a new line item and emits a created event", async () => {
       const lineItem = {
         title: "New Line",
         description: "This is a new line",
@@ -395,7 +397,6 @@ describe("CartService", () => {
         unit_price: 123,
         quantity: 10,
       }
-
       await cartService.addLineItem(IdMap.getId("emptyCart"), _.clone(lineItem))
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
@@ -410,6 +411,15 @@ describe("CartService", () => {
         has_shipping: false,
         cart_id: IdMap.getId("emptyCart"),
       })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("emptyCart") })
+      )
     })
 
     it("successfully creates new line item with shipping", async () => {
@@ -442,6 +452,15 @@ describe("CartService", () => {
         has_shipping: false,
         cart_id: IdMap.getId("emptyCart"),
       })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("emptyCart") })
+      )
     })
 
     it("successfully merges existing line item", async () => {
@@ -463,6 +482,20 @@ describe("CartService", () => {
         {
           quantity: 2,
         }
+      )
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith(
+        expect.objectContaining({ item_id: IdMap.getId("merger") })
+      )
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cartWithLine") })
       )
     })
 
@@ -669,7 +702,13 @@ describe("CartService", () => {
 
   describe("updateLineItem", () => {
     const lineItemService = {
-      update: jest.fn(),
+      update: jest.fn().mockImplementation(() =>
+        Promise.resolve({
+          id: IdMap.getId("existing"),
+          variant_id: IdMap.getId("good"),
+          quantity: 1,
+        })
+      ),
       withTransaction: function() {
         return this
       },
@@ -695,6 +734,7 @@ describe("CartService", () => {
           })
         }
         return Promise.resolve({
+          id: IdMap.getId("cartWithLine"),
           items: [
             {
               id: IdMap.getId("existing"),
@@ -736,6 +776,24 @@ describe("CartService", () => {
       expect(lineItemService.update).toHaveBeenCalledWith(
         IdMap.getId("existing"),
         { quantity: 2 }
+      )
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: IdMap.getId("existing"),
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cartWithLine") }),
+        expect.objectContaining({
+          id: IdMap.getId("existing"),
+          quantity: 1,
+        })
       )
     })
 
