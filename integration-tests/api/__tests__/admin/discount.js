@@ -380,7 +380,7 @@ describe("/admin/discounts", () => {
 
       const response = await api
         .post(
-          "/admin/discounts",
+          "/admin/discounts?expand=rule,rule.conditions",
           {
             code: "HELLOWORLD",
             rule: {

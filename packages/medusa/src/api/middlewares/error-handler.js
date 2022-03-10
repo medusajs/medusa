@@ -8,6 +8,8 @@ const API_ERROR = "api_error"
 const INVALID_REQUEST_ERROR = "invalid_request_error"
 const INVALID_STATE_ERROR = "invalid_state_error"
 
+const isLocal = process.env.NODE_ENV === `development`
+
 export default () => {
   return (err, req, res, next) => {
     const logger = req.scope.resolve("logger")
@@ -50,9 +52,12 @@ export default () => {
       case MedusaError.Types.INVALID_ARGUMENT:
         break
       default:
-        errObj.code = "unknown_error"
-        errObj.message = "An unknown error occurred."
-        errObj.type = "unknown_error"
+        // In local environment, we would like the raw error object
+        if (!isLocal) {
+          errObj.code = "unknown_error"
+          errObj.message = "An unknown error occurred."
+          errObj.type = "unknown_error"
+        }
         break
     }
 

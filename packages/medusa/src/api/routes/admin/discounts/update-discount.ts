@@ -18,7 +18,7 @@ import {
   DiscountConditionType,
 } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
-import { FindConfig } from "../../../../types/common"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
@@ -89,26 +89,14 @@ export default async (req, res) => {
 
   await discountService.update(discount_id, validated)
 
-  let includeFields: string[] = []
-  if (validatedParams.fields) {
-    includeFields = validatedParams.fields!.split(",")
-  }
+  const config = getRetrieveConfig<Discount>(
+    defaultAdminDiscountsFields,
+    defaultAdminDiscountsRelations,
+    validatedParams?.fields?.split(",") as (keyof Discount)[],
+    validatedParams?.expand?.split(",")
+  )
 
-  let expandFields: string[] = []
-  if (validatedParams.expand) {
-    expandFields = validatedParams.expand!.split(",")
-  }
-
-  const retrieveConfig: FindConfig<Discount> = {
-    select: (includeFields.length
-      ? includeFields
-      : defaultAdminDiscountsFields) as (keyof Discount)[],
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminDiscountsRelations,
-  }
-
-  const discount = await discountService.retrieve(discount_id, retrieveConfig)
+  const discount = await discountService.retrieve(discount_id, config)
 
   res.status(200).json({ discount })
 }
