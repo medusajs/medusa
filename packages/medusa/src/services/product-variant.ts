@@ -436,19 +436,27 @@ class ProductVariantService extends BaseService {
    * @param {string} variantId - the id of the variant to get price from
    * @param {string} regionId - the id of the region to get price for
    * @param {number | undefined} quantity - the quantity for price calculation
+   * @param {string | undefined} customer_id - include the id of a customer for customer specific pricing
    * @return {number} the price specific to the region
    */
   async getRegionPrice(
     variantId: string,
     regionId: string,
-    quantity?: number
+    quantity?: number,
+    customer_id?: string
   ): Promise<number> {
     return this.atomicPhase_(async (manager: EntityManager) => {
+      const region = await this.regionService_
+        .withTransaction(manager)
+        .retrieve(regionId)
+
       const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
         variantId,
         {
           region_id: regionId,
+          currency_code: region.currency_code,
           quantity: quantity,
+          customer_id: customer_id,
         }
       )
 
@@ -457,10 +465,6 @@ class ProductVariantService extends BaseService {
       // const moneyAmountRepo = manager.getCustomRepository(
       //   this.moneyAmountRepository_
       // )
-
-      // const region = await this.regionService_
-      //   .withTransaction(manager)
-      //   .retrieve(regionId)
 
       // // Find region price based on region id
       // let moneyAmount = await moneyAmountRepo.findOne({

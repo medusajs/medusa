@@ -92,18 +92,20 @@ describe("/store/carts", () => {
       await productSeeder(dbConnection)
       const api = useApi()
 
-      const response = await api.post("/store/carts", {
-        items: [
-          {
-            variant_id: "test-variant_1",
-            quantity: 1,
-          },
-          {
-            variant_id: "test-variant_2",
-            quantity: 2,
-          },
-        ],
-      })
+      const response = await api
+        .post("/store/carts", {
+          items: [
+            {
+              variant_id: "test-variant_1",
+              quantity: 1,
+            },
+            {
+              variant_id: "test-variant-sale",
+              quantity: 2,
+            },
+          ],
+        })
+        .catch((err) => console.log(err))
 
       expect(response.status).toEqual(200)
       expect(response.data.cart.items).toEqual([
@@ -112,8 +114,9 @@ describe("/store/carts", () => {
           quantity: 1,
         }),
         expect.objectContaining({
-          variant_id: "test-variant_2",
+          variant_id: "test-variant-sale",
           quantity: 2,
+          unit_price: 800,
         }),
       ])
 
@@ -170,23 +173,105 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
-    it("adds line item with quantity to cart", async () => {
+    it("adds line item to cart", async () => {
       const api = useApi()
 
       // Add standard line item to cart
-      await api
+      const response = await api
         .post(
           "/store/carts/test-cart/line-items",
           {
-            variant_id: "test-variant",
+            variant_id: "test-variant-quantity",
             quantity: 1,
           },
           { withCredentials: true }
         )
         .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 1,
+        }),
+      ])
     })
 
-    it("adds line item with quantity to cart with price selection", async () => {})
+    it("adds line item to cart time limited sale", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-sale",
+            quantity: 1,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 800,
+          variant_id: "test-variant-sale",
+          quantity: 1,
+        }),
+      ])
+    })
+
+    it("adds line item with quantity to cart with quantity discount", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 90,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 800,
+          variant_id: "test-variant-quantity",
+          quantity: 90,
+        }),
+      ])
+    })
+
+    it("adds line item with quantity to cart with quantity discount no ceiling", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 900,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 700,
+          variant_id: "test-variant-quantity",
+          quantity: 900,
+        }),
+      ])
+    })
   })
 
   describe("POST /store/carts/:id", () => {
@@ -302,6 +387,46 @@ describe("/store/carts", () => {
       })
 
       expect(response.status).toEqual(200)
+    })
+
+    it("updates prices when cart customer id is updated", async () => {
+      const api = useApi()
+
+      const beforeUpdate = await api
+        .get(`/store/carts/test-cart-3`)
+        .catch((error) => console.log(error))
+
+      expect(beforeUpdate.data.cart.items[0].unit_price).toEqual(8000)
+
+      const response = await api
+        .post("/store/carts/test-cart-3", {
+          customer_id: "test-customer-2",
+        })
+        .catch((error) => console.log(error))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.items[0].unit_price).toEqual(500)
+    })
+
+    it("updates prices when cart region id is updated", async () => {
+      const api = useApi()
+
+      const beforeUpdate = await api
+        .get(`/store/carts/test-cart-3`)
+        .catch((error) => console.log(error))
+
+      expect(beforeUpdate.data.cart.items[0].unit_price).toEqual(8000)
+      expect(beforeUpdate.data.cart.region_id).toEqual("test-region")
+
+      const response = await api
+        .post("/store/carts/test-cart-3", {
+          region_id: "test-region-multiple",
+        })
+        .catch((error) => console.log(error))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.region_id).toEqual("test-region-multiple")
+      expect(response.data.cart.items[0].unit_price).toEqual(700)
     })
 
     it("updates address using string id", async () => {
