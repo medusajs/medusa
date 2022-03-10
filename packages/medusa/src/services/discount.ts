@@ -353,7 +353,7 @@ class DiscountService extends BaseService {
       const { rule, metadata, regions, ...rest } = update
 
       if (rest.ends_at) {
-        if (discount.starts_at >= new Date(rest.ends_at!)) {
+        if (discount.starts_at >= new Date(rest.ends_at)) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `"ends_at" must be greater than "starts_at"`

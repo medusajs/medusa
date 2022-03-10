@@ -36,7 +36,7 @@ export enum DiscountConditionOperator {
 }
 
 @Entity()
-@Unique(["type", "operator", "discount_rule_id"])
+@Unique("dctypeuniq", ["type", "operator", "discount_rule_id"])
 export class DiscountCondition {
   @PrimaryColumn()
   id: string
