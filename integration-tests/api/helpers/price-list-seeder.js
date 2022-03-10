@@ -28,6 +28,7 @@ module.exports = async (connection, data = {}) => {
   await manager.save(moneyAmount1)
 
   const moneyAmount2 = await manager.create(MoneyAmount, {
+    id: "ma_test_2",
     amount: 80,
     currency_code: "usd",
     min_quantity: 101,
@@ -39,6 +40,7 @@ module.exports = async (connection, data = {}) => {
   await manager.save(moneyAmount2)
 
   const moneyAmount3 = await manager.create(MoneyAmount, {
+    id: "ma_test_3",
     amount: 50,
     currency_code: "usd",
     min_quantity: 501,

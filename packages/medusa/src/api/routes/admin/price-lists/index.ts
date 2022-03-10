@@ -19,6 +19,11 @@ export default (app) => {
 
   route.delete("/:id", middlewares.wrap(require("./delete-price-list").default))
 
+  route.delete(
+    "/:id/prices/batch",
+    middlewares.wrap(require("./delete-prices-batch").default)
+  )
+
   route.post(
     "/:id/prices/batch",
     middlewares.wrap(require("./add-prices-batch").default)

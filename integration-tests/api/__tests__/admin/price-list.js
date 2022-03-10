@@ -653,4 +653,60 @@ describe("/admin/price-lists", () => {
       })
     })
   })
+
+  describe("DELETE /admin/price-lists/:id/prices/batch", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await productSeeder(dbConnection)
+        await priceListSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Deletes several prices associated with a price list", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete("/admin/price-lists/pl_no_customer_groups/prices/batch", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+          data: {
+            price_ids: ["ma_test_1", "ma_test_2"],
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      const getPriceListResponse = await api
+        .get("/admin/price-lists/pl_no_customer_groups", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual({
+        ids: ["ma_test_1", "ma_test_2"],
+        object: "money-amount",
+        deleted: true,
+      })
+      expect(getPriceListResponse.data.price_list.prices.length).toEqual(1)
+      expect(getPriceListResponse.data.price_list.prices[0].id).toEqual(
+        "ma_test_3"
+      )
+    })
+  })
 })
