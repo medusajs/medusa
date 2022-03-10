@@ -36,6 +36,7 @@ export class AdminGetCustomersParams extends AdminListCustomerSelector {
   @Type(() => Number)
   limit = 50
 
+  @IsOptional()
   @IsNumber()
   @IsOptional()
   @Type(() => Number)
