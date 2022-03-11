@@ -34,9 +34,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules/.cache/.turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          key: turbo-v1-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+            turbo-v1-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Run Pipeline
         run: yarn turbo run build test
@@ -85,9 +85,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules/.cache/.turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          key: turbo-v1-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+            turbo-v1-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Build Packages
         run: yarn run build
@@ -155,9 +155,9 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules/.cache/.turbo
-          key: turbo-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
+          key: turbo-v1-${{ github.job }}-${{ github.ref_name }}-${{ github.sha }}
           restore-keys: |
-            turbo-${{ github.job }}-${{ github.ref_name }}-
+            turbo-v1-${{ github.job }}-${{ github.ref_name }}-
 
       - name: Build Packages
         run: yarn run build
