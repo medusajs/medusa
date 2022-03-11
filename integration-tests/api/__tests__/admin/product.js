@@ -521,7 +521,9 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      console.log(response.data.products)
+      response.data.products.sort((a, b) =>
+        a.created_at > b.created_at ? 1 : -1
+      )
 
       expect(response.data.products).toMatchSnapshot([
         {
@@ -737,7 +739,7 @@ describe("/admin/products", () => {
           updated_at: expect.any(String),
         },
         {
-          id: expect.stringMatching(/^test-*/),
+          id: "test-product_filtering_1",
           profile_id: expect.stringMatching(/^sp_*/),
           created_at: expect.any(String),
           type: expect.any(Object),
@@ -748,7 +750,7 @@ describe("/admin/products", () => {
           updated_at: expect.any(String),
         },
         {
-          id: expect.stringMatching(/^test-*/),
+          id: "test-product_filtering_2",
           profile_id: expect.stringMatching(/^sp_*/),
           created_at: expect.any(String),
           type: expect.any(Object),
@@ -759,7 +761,7 @@ describe("/admin/products", () => {
           updated_at: expect.any(String),
         },
         {
-          id: expect.stringMatching(/^test-*/),
+          id: "test-product_filtering_3",
           profile_id: expect.stringMatching(/^sp_*/),
           created_at: expect.any(String),
           type: expect.any(Object),
