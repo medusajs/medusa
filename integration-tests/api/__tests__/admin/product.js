@@ -779,16 +779,12 @@ describe("/admin/products", () => {
                 amount: 100,
               },
               {
-                currency_code: "usd",
+                currency_code: "eur",
                 amount: 45,
-                min_quantity: 1,
-                max_quantity: 10,
               },
               {
-                currency_code: "usd",
+                currency_code: "dkk",
                 amount: 30,
-                min_quantity: 11,
-                max_quantity: 20,
               },
             ],
             options: [{ value: "large" }, { value: "green" }],
@@ -891,20 +887,16 @@ describe("/admin/products", () => {
               },
               {
                 id: expect.stringMatching(/^ma_*/),
-                currency_code: "usd",
+                currency_code: "eur",
                 amount: 45,
-                min_quantity: 1,
-                max_quantity: 10,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 variant_id: expect.stringMatching(/^variant_*/),
               },
               {
                 id: expect.stringMatching(/^ma_*/),
-                currency_code: "usd",
+                currency_code: "dkk",
                 amount: 30,
-                min_quantity: 11,
-                max_quantity: 20,
                 created_at: expect.any(String),
                 updated_at: expect.any(String),
                 variant_id: expect.stringMatching(/^variant_*/),
@@ -1087,10 +1079,6 @@ describe("/admin/products", () => {
             prices: [
               {
                 currency_code: "usd",
-                amount: 100,
-              },
-              {
-                currency_code: "usd",
                 amount: 75,
               },
             ],
@@ -1184,29 +1172,10 @@ describe("/admin/products", () => {
             origin_country: null,
             prices: [
               {
-                amount: 100,
-                created_at: expect.any(String),
-                currency_code: "usd",
-                id: "test-price",
-                price_list_id: null,
-                updated_at: expect.any(String),
-                variant_id: "test-variant",
-              },
-              {
-                amount: 100,
-                created_at: expect.any(String),
-                currency_code: "usd",
-                id: expect.stringMatching(/^ma_*/),
-                price_list_id: null,
-                updated_at: expect.any(String),
-                variant_id: "test-variant",
-              },
-              {
                 amount: 75,
                 created_at: expect.any(String),
                 currency_code: "usd",
-                id: expect.stringMatching(/^ma*/),
-                price_list_id: null,
+                id: "test-price",
                 updated_at: expect.any(String),
                 variant_id: "test-variant",
               },
@@ -1364,17 +1333,13 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("successfully updates a variant's prices by adding two new region prices", async () => {
+    it("successfully updates a variant's prices by changing an existing price (currency_code)", async () => {
       const api = useApi()
       const data = {
         prices: [
           {
-            region_id: "test-region",
+            currency_code: "usd",
             amount: 1500,
-          },
-          {
-            region_id: "test-region",
-            amount: 1000,
           },
         ],
       }
@@ -1409,6 +1374,47 @@ describe("/admin/products", () => {
       })
     })
 
+    it("successfully updates a variant's price by changing an existing price (given a region_id)", async () => {
+      const api = useApi()
+      const data = {
+        prices: [
+          {
+            region_id: "test-region",
+            amount: 1500,
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product1/variants/test-variant_3", data, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-variant_3",
+              prices: expect.arrayContaining([
+                expect.objectContaining({
+                  amount: 1500,
+                  currency_code: "usd",
+                  region_id: "test-region",
+                }),
+              ]),
+            }),
+          ]),
+        })
+      )
+    })
+
     it("successfully updates a variant's prices by adding a new price", async () => {
       const api = useApi()
       const data = {
@@ -1417,7 +1423,7 @@ describe("/admin/products", () => {
           // usd price coming from the product seeder
           {
             currency_code: "usd",
-            amount: 50,
+            amount: 100,
           },
           {
             currency_code: "eur",
@@ -1438,59 +1444,25 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      const updatedVariant = response.data.product.variants.find(
-        (v) => v.id === "test-variant"
-      )
-
-      expect(updatedVariant).toMatchSnapshot({
-        id: "test-variant",
-        allow_backorder: false,
-        barcode: "test-barcode",
-        ean: "test-ean",
-        inventory_quantity: 10,
-        manage_inventory: true,
-        prices: [
-          {
-            id: "test-price",
-            amount: 100,
-            currency_code: "usd",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            variant_id: "test-variant",
-          },
-          {
-            id: expect.stringMatching(/^ma_*/),
-            amount: 50,
-            currency_code: "usd",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            variant_id: "test-variant",
-          },
-          {
-            id: expect.stringMatching(/^ma_*/),
-            amount: 4500,
-            currency_code: "eur",
-            created_at: expect.any(String),
-            updated_at: expect.any(String),
-            variant_id: "test-variant",
-          },
-        ],
-        options: [
-          {
-            created_at: expect.any(String),
-            id: "test-variant-option",
-            option_id: "test-option",
-            updated_at: expect.any(String),
-            value: "Default variant",
-            variant_id: "test-variant",
-          },
-        ],
-        product_id: "test-product",
-        sku: "test-sku",
-        title: "Test variant prices",
-        upc: "test-upc",
-        updated_at: expect.any(String),
-        created_at: expect.any(String),
+      expect(response.data).toEqual({
+        product: expect.objectContaining({
+          id: "test-product",
+          variants: expect.arrayContaining([
+            expect.objectContaining({
+              id: "test-variant",
+              prices: [
+                expect.objectContaining({
+                  amount: 100,
+                  currency_code: "usd",
+                }),
+                expect.objectContaining({
+                  amount: 4500,
+                  currency_code: "eur",
+                }),
+              ],
+            }),
+          ]),
+        }),
       })
     })
 
@@ -1499,8 +1471,7 @@ describe("/admin/products", () => {
       const data = {
         prices: [
           {
-            id: "test-price",
-            currency_code: "eur",
+            currency_code: "usd",
             amount: 4500,
           },
         ],
@@ -1523,42 +1494,60 @@ describe("/admin/products", () => {
       )
       expect(response.data.product.variants[0].prices).toEqual([
         expect.objectContaining({
-          id: "test-price",
           amount: 4500,
+          currency_code: "usd",
+        }),
+      ])
+    })
+
+    it("successfully updates a variant's prices by deleting a price and adding another price", async () => {
+      const api = useApi()
+      const data = {
+        prices: [
+          {
+            currency_code: "dkk",
+            amount: 8000,
+          },
+          {
+            currency_code: "eur",
+            amount: 900,
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/products/test-product/variants/test-variant", data, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.product.variants[0].prices.length).toEqual(
+        data.prices.length
+      )
+      expect(response.data.product.variants[0].prices).toEqual([
+        expect.objectContaining({
+          amount: 8000,
+          currency_code: "dkk",
+        }),
+        expect.objectContaining({
+          amount: 900,
           currency_code: "eur",
         }),
       ])
     })
 
-    it("successfully deletes a variant's price", async () => {
-      const api = useApi()
-      const data = { price_ids: ["test-price"] }
-
-      const response = await api
-        .delete(
-          "/admin/products/test-product/variants/test-variant/prices/batch",
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-            data: data,
-          }
-        )
-        .catch((err) => {
-          console.warn(err)
-        })
-
-      expect(response.status).toEqual(200)
-
-      expect(response.data.product.variants[0].prices.length).toEqual(0)
-    })
-
-    it("successfully updates a variant's prices by updating an existing price and adding another price", async () => {
+    it("successfully updates a variant's prices by updating an existing price (using region_id) and adding another price", async () => {
       const api = useApi()
       const data = {
         prices: [
           {
-            id: "test-price3",
+            region_id: "test-region",
             amount: 8000,
           },
           {

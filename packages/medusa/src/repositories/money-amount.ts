@@ -8,10 +8,7 @@ import {
   Repository
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
-import {
-  PriceListPriceCreateInput,
-  PriceListPriceUpdateInput
-} from "../types/price-list"
+import { PriceListPriceCreateInput, PriceListPriceUpdateInput } from "../types/price-list"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -25,6 +22,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     const pricesNotInPricesPayload = await this.createQueryBuilder()
       .where({
         variant_id: variantId,
+        price_list_id: IsNull(),
       })
       .andWhere(
         new Brackets((qb) => {
@@ -37,12 +35,13 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
-  public async upsertCurrencyPrice(variantId: string, price: Price) {
+  public async upsertVariantCurrencyPrice(variantId: string, price: Price) {
     let moneyAmount = await this.findOne({
       where: {
         currency_code: price.currency_code,
         variant_id: variantId,
         region_id: IsNull(),
+        price_list_id: IsNull(),
       },
     })
 
@@ -59,15 +58,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return await this.save(moneyAmount)
   }
 
-  public async deleteVariantPrices(variantId: string, price_ids: string[]): Promise<void> {
-    await this.createQueryBuilder()
-      .delete()
-      .from(MoneyAmount)
-      .where({ variant_id: variantId, id: In(price_ids) })
-      .execute()
-  }
-
-  public async addToPriceList(
+  public async addPriceListPrices(
     priceListId: string,
     prices: PriceListPriceCreateInput[],
     overrideExisting: boolean = false

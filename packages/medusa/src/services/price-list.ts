@@ -95,6 +95,7 @@ class PriceListService extends BaseService {
   async create(priceListObject: CreatePriceListInput): Promise<PriceList> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
       const { prices, customer_groups, ...rest } = priceListObject
 
@@ -117,7 +118,7 @@ class PriceListService extends BaseService {
         const priceList = await priceListRepo.save(entity)
 
         if (prices) {
-          await this.addPrices(priceList.id, priceListObject.prices)
+          await moneyAmountRepo.addPriceListPrices(priceList.id, prices)
         }
 
         const result = await priceListRepo.findOne(priceList.id, {
@@ -205,7 +206,7 @@ class PriceListService extends BaseService {
         )
       }
 
-      await moneyAmountRepo.addToPriceList(id, prices, replace)
+      await moneyAmountRepo.addPriceListPrices(id, prices, replace)
 
       const result = await priceListRepo.findOne(id, { relations: ["prices"] })
 

@@ -1,9 +1,7 @@
-import partition from "lodash/partition"
-import uniq from "lodash/uniq"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
-import { Region } from ".."
+import { MoneyAmount } from ".."
 import { Product } from "../models/product"
 import { ProductOptionValue } from "../models/product-option-value"
 import { ProductVariant } from "../models/product-variant"
@@ -227,7 +225,16 @@ class ProductVariantService extends BaseService {
       const result = await variantRepo.save(productVariant)
 
       if (prices) {
-        await this.updateVariantPrices(result.id, prices)
+        for (const price of prices) {
+          if (price.region_id) {
+            await this.setRegionPrice(result.id, {
+              amount: price.amount,
+              region_id: price.region_id,
+            })
+          } else {
+            await this.setCurrencyPrice(result.id, price)
+          }
+        }
       }
 
       await this.eventBus_
@@ -309,6 +316,13 @@ class ProductVariantService extends BaseService {
     })
   }
 
+  /**
+   * Updates a variant's prices.
+   * Deletes any prices that are not in the update object, and is not associated with a price list.
+   * @param variantId - the id of variant variant
+   * @param prices - the update prices
+   * @returns {Promise<void>} empty promise
+   */
   async updateVariantPrices(
     variantId: string,
     prices: ProductVariantPrice[]
@@ -318,63 +332,24 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      const [regionPrices, currencyPrices] = partition(
-        prices,
-        (p) => p.region_id
+      // get prices to be deleted
+      const obsoletePrices = await moneyAmountRepo.findVariantPricesNotIn(
+        variantId,
+        prices
       )
 
-      if (regionPrices.length) {
-        const regionIds = uniq(regionPrices.map((p) => p.region_id))
-        const regionCurrencyCodeRecord = await this.regionService_
-          .list({ id: regionIds })
-          .then((regions: Region[]) => {
-            return regions.reduce(
-              (acc: Record<string, string>, region: Region) => {
-                acc[region.id] = region.currency_code
-                return acc
-              },
-              {}
-            )
+      for (const price of prices) {
+        if (price.region_id) {
+          await this.setRegionPrice(variantId, {
+            region_id: price.region_id,
+            amount: price.amount,
           })
-
-        for (const [i, price] of regionPrices.entries()) {
-          const regionCurrencyCode = regionCurrencyCodeRecord[price.region_id!]
-          regionPrices[i].currency_code = regionCurrencyCode
+        } else {
+          await this.setCurrencyPrice(variantId, price)
         }
       }
 
-      const [existingPrices, newPrices] = partition(
-        [...regionPrices, ...currencyPrices],
-        (p) => p.id
-      )
-
-      const newPriceEntities = newPrices.map((p) =>
-        moneyAmountRepo.create({ ...p, variant_id: variantId })
-      )
-      const existingPriceEntities = existingPrices.map((p) => ({
-        ...p,
-        variant_id: variantId,
-      }))
-
-      await moneyAmountRepo.save([
-        ...existingPriceEntities,
-        ...newPriceEntities,
-      ])
-    })
-  }
-
-  async deleteVariantPrices(
-    variantId: string,
-    priceIds: string | string[]
-  ): Promise<void> {
-    return this.atomicPhase_(async (manager: EntityManager) => {
-      const moneyAmountRepo = manager.getCustomRepository(
-        this.moneyAmountRepository_
-      )
-
-      const priceIdsToDelete = Array.isArray(priceIds) ? priceIds : [priceIds]
-
-      await moneyAmountRepo.deleteVariantPrices(variantId, priceIdsToDelete)
+      await moneyAmountRepo.remove(obsoletePrices)
     })
   }
 
@@ -418,6 +393,62 @@ class ProductVariantService extends BaseService {
       }
 
       return moneyAmount.amount
+    })
+  }
+
+  /**
+   * Sets the default price of a specific region
+   * @param {string} variantId - the id of the variant to update
+   * @param {string} price - the price for the variant.
+   * @return {Promise} the result of the update operation
+   */
+  async setRegionPrice(
+    variantId: string,
+    price: ProductVariantPrice
+  ): Promise<MoneyAmount> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
+
+      let moneyAmount = await moneyAmountRepo.findOne({
+        where: {
+          variant_id: variantId,
+          region_id: price.region_id,
+          price_list_id: null,
+        },
+      })
+
+      if (!moneyAmount) {
+        moneyAmount = moneyAmountRepo.create({
+          ...price,
+          variant_id: variantId,
+        })
+      } else {
+        moneyAmount.amount = price.amount
+      }
+
+      const result = await moneyAmountRepo.save(moneyAmount)
+      return result
+    })
+  }
+
+  /**
+   * Sets the default price for the given currency.
+   * @param {string} variantId - the id of the variant to set prices for
+   * @param {ProductVariantPrice} price - the price for the variant
+   * @return {Promise} the result of the update operation
+   */
+  async setCurrencyPrice(
+    variantId: string,
+    price: ProductVariantPrice
+  ): Promise<MoneyAmount> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const moneyAmountRepo = manager.getCustomRepository(
+        this.moneyAmountRepository_
+      )
+
+      return await moneyAmountRepo.upsertVariantCurrencyPrice(variantId, price)
     })
   }
 

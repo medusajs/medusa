@@ -10,9 +10,9 @@ import {
   UpdateDateColumn
 } from "typeorm"
 import { ulid } from "ulid"
-import { PriceList } from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Customer } from "./customer"
+import { PriceList } from "./price-list"
 
 @Entity()
 export class CustomerGroup {
