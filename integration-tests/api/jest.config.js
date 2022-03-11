@@ -1,4 +1,6 @@
 // API
+process.chdir(__dirname)
+
 module.exports = {
   name: "api",
   testEnvironment: `node`,
