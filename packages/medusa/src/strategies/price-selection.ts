@@ -22,6 +22,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
     if (!context.region_id && !context.currency_code) {
+      // TODO make both optional and query all money amounts for a region to set the resulting prices
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
         `Money amount could not be found`
