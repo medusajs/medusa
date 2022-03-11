@@ -627,11 +627,11 @@ default
     
   - date interval delimitations work correctly
     
-  price quantities are applied correctly
+  - price quantities are applied correctly (in cart tests)
   
   - all prices with varying quantities are returned
 
-  - discount price with no min_quantity is applied when lower than default
+  - discount price with no min_quantity is applied when lower than default 
 
   - fetches prices for currency if region price is not found 
 
