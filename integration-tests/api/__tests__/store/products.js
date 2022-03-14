@@ -266,58 +266,52 @@ describe("/store/products", () => {
           collection_id: "test-collection",
           variants: [
             expect.objectContaining({
-              additional_prices: {
-                originalPrice: 100,
-                calculatedPrice: 80,
-                prices: [
-                  expect.objectContaining({
-                    id: "test-price",
-                    currency_code: "usd",
-                    amount: 100,
-                  }),
-                  expect.objectContaining({
-                    id: "test-price-discount",
-                    currency_code: "usd",
-                    amount: 80,
-                  }),
-                ],
-              },
+              originalPrice: 100,
+              calculatedPrice: 80,
+              prices: [
+                expect.objectContaining({
+                  id: "test-price",
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  id: "test-price-discount",
+                  currency_code: "usd",
+                  amount: 80,
+                }),
+              ],
             }),
             expect.objectContaining({
-              additional_prices: {
-                originalPrice: 100,
-                calculatedPrice: 80,
-                prices: [
-                  expect.objectContaining({
-                    id: "test-price2",
-                    currency_code: "usd",
-                    amount: 100,
-                  }),
-                  expect.objectContaining({
-                    id: "test-price2-discount",
-                    currency_code: "usd",
-                    amount: 80,
-                  }),
-                ],
-              },
+              originalPrice: 100,
+              calculatedPrice: 80,
+              prices: [
+                expect.objectContaining({
+                  id: "test-price2",
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  id: "test-price2-discount",
+                  currency_code: "usd",
+                  amount: 80,
+                }),
+              ],
             }),
             expect.objectContaining({
-              additional_prices: {
-                originalPrice: 100,
-                calculatedPrice: 80,
-                prices: [
-                  expect.objectContaining({
-                    id: "test-price1",
-                    currency_code: "usd",
-                    amount: 100,
-                  }),
-                  expect.objectContaining({
-                    id: "test-price1-discount",
-                    currency_code: "usd",
-                    amount: 80,
-                  }),
-                ],
-              },
+              originalPrice: 100,
+              calculatedPrice: 80,
+              prices: [
+                expect.objectContaining({
+                  id: "test-price1",
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  id: "test-price1-discount",
+                  currency_code: "usd",
+                  amount: 80,
+                }),
+              ],
             }),
           ],
         }),

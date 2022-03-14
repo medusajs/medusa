@@ -92,22 +92,24 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
   ): Promise<MoneyAmount[]> {
     const date = new Date()
 
-    console.log(variant_id)
     let qb = this.createQueryBuilder("ma")
       .where("ma.variant_id = :variant_id", { variant_id: variant_id })
-      .andWhere(
-        "(ma.region_id = :region_id OR ma.currency_code = :currency_code)",
-        {
-          region_id: region_id,
-          currency_code: currency_code,
-        }
-      )
       .andWhere("(ma.ends_at is null OR ma.ends_at > :date) ", {
         date: date.toUTCString(),
       })
       .andWhere("(ma.starts_at is null OR ma.starts_at < :date)", {
         date: date.toUTCString(),
       })
+
+    if (region_id || currency_code) {
+      qb = qb.andWhere(
+        "(ma.region_id = :region_id OR ma.currency_code = :currency_code)",
+        {
+          region_id: region_id,
+          currency_code: currency_code,
+        }
+      )
+    }
 
     if (customer_id) {
       qb = qb

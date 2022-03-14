@@ -968,16 +968,22 @@ class ProductService extends BaseService {
     return await Promise.all(
       products.map(async (p) => {
         p.variants = await Promise.all(
-          p.variants.map(async (v) => ({
-            ...v,
-            additional_prices:
+          p.variants.map(async (v) => {
+            const prices =
               await this.priceSelectionStrategy_.calculateVariantPrice(v.id, {
                 region_id: cart.region_id,
                 currency_code: cart.region.currency_code,
                 cart_id: cart_id,
                 customer_id: customer_id,
-              }),
-          }))
+              })
+
+            return {
+              ...v,
+              prices: prices.prices,
+              originalPrice: prices.originalPrice,
+              calculatedPrice: prices.calculatedPrice,
+            }
+          })
         )
         return p
       })

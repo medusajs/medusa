@@ -52,14 +52,14 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      const lowestPrice = variant.additional_prices.prices.reduce(
+      const lowestPrice = variant.prices.reduce(
         (prev, curr) => (curr.amount < prev ? curr.amount : prev),
         Infinity
       )
 
-      expect(variant.additional_prices.calculatedPrice).toEqual(lowestPrice)
+      expect(variant.calculatedPrice).toEqual(lowestPrice)
 
-      expect(variant.additional_prices).toEqual(
+      expect(variant).toEqual(
         expect.objectContaining({ originalPrice: 120, calculatedPrice: 110 })
       )
     })
@@ -72,11 +72,11 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.additional_prices.prices.length).toEqual(2)
-      variant.additional_prices.prices.forEach((price) => {
+      expect(variant.prices.length).toEqual(2)
+      variant.prices.forEach((price) => {
         expect(price.customer_groups).toEqual([])
       })
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price1",
@@ -104,9 +104,8 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.additional_prices.originalPrice).toEqual(
-        variant.additional_prices.prices.find((p) => p.type === "default")
-          .amount
+      expect(variant.originalPrice).toEqual(
+        variant.prices.find((p) => p.type === "default").amount
       )
     })
 
@@ -118,19 +117,18 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.additional_prices.originalPrice).toEqual(
-        variant.additional_prices.prices.find((p) => p.type === "default")
-          .amount
+      expect(variant.originalPrice).toEqual(
+        variant.prices.find((p) => p.type === "default").amount
       )
-      expect(variant.additional_prices.prices.length).toEqual(2)
-      variant.additional_prices.prices.forEach((price) => {
+      expect(variant.prices.length).toEqual(2)
+      variant.prices.forEach((price) => {
         expect(price.customer_groups).toEqual([])
       })
-      variant.additional_prices.prices.forEach((price) => {
+      variant.prices.forEach((price) => {
         expect(price.region_id).toEqual("test-region")
         expect(price.currency_code).toEqual("usd")
       })
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price1",
@@ -158,17 +156,16 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.additional_prices).toEqual(
+      expect(variant).toEqual(
         expect.objectContaining({ originalPrice: 130, calculatedPrice: 110 })
       )
-      expect(variant.additional_prices.originalPrice).toEqual(
-        variant.additional_prices.prices.find((p) => p.type === "default")
-          .amount
+      expect(variant.originalPrice).toEqual(
+        variant.prices.find((p) => p.type === "default").amount
       )
 
-      expect(variant.additional_prices.prices.length).toEqual(2)
+      expect(variant.prices.length).toEqual(2)
 
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price1-region-2",
@@ -198,8 +195,8 @@ describe("Promotions", () => {
 
       const date = new Date()
 
-      expect(variant.additional_prices.prices.length).toEqual(2)
-      variant.additional_prices.prices.forEach((price) => {
+      expect(variant.prices.length).toEqual(2)
+      variant.prices.forEach((price) => {
         if (price.starts_at) {
           expect(new Date(price.starts_at).getTime()).toBeLessThan(
             date.getTime()
@@ -223,14 +220,14 @@ describe("Promotions", () => {
 
       const date = new Date()
 
-      expect(variant.additional_prices).toEqual(
+      expect(variant).toEqual(
         expect.objectContaining({
           originalPrice: 150,
           calculatedPrice: 120,
         })
       )
-      expect(variant.additional_prices.prices.length).toEqual(3)
-      variant.additional_prices.prices.forEach((price) => {
+      expect(variant.prices.length).toEqual(3)
+      variant.prices.forEach((price) => {
         if (price.starts_at) {
           expect(new Date(price.starts_at).getTime()).toBeLessThan(
             date.getTime()
@@ -243,7 +240,7 @@ describe("Promotions", () => {
         }
       })
 
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price-sale-overlap-1",
@@ -278,8 +275,8 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.additional_prices.prices.length).toEqual(5)
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices.length).toEqual(5)
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price-quantity",
@@ -326,11 +323,10 @@ describe("Promotions", () => {
         ])
       )
 
-      expect(variant.additional_prices.calculatedPrice).toEqual(130)
-      expect(variant.additional_prices.originalPrice).toEqual(150)
-      expect(variant.additional_prices.originalPrice).toEqual(
-        variant.additional_prices.prices.find((p) => p.type === "default")
-          .amount
+      expect(variant.calculatedPrice).toEqual(130)
+      expect(variant.originalPrice).toEqual(150)
+      expect(variant.originalPrice).toEqual(
+        variant.prices.find((p) => p.type === "default").amount
       )
     })
 
@@ -355,8 +351,8 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.additional_prices.prices.length).toEqual(3)
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices.length).toEqual(3)
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price1",
@@ -413,8 +409,8 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.additional_prices.prices.length).toEqual(6)
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices.length).toEqual(6)
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price-quantity-customer",
@@ -475,11 +471,10 @@ describe("Promotions", () => {
         ])
       )
 
-      expect(variant.additional_prices.calculatedPrice).toEqual(100)
-      expect(variant.additional_prices.originalPrice).toEqual(150)
-      expect(variant.additional_prices.originalPrice).toEqual(
-        variant.additional_prices.prices.find((p) => p.type === "default")
-          .amount
+      expect(variant.calculatedPrice).toEqual(100)
+      expect(variant.originalPrice).toEqual(150)
+      expect(variant.originalPrice).toEqual(
+        variant.prices.find((p) => p.type === "default").amount
       )
     })
 
@@ -506,15 +501,15 @@ describe("Promotions", () => {
 
       const date = new Date()
 
-      expect(variant.additional_prices).toEqual(
+      expect(variant).toEqual(
         expect.objectContaining({
           originalPrice: 150,
           calculatedPrice: 100,
         })
       )
 
-      expect(variant.additional_prices.prices.length).toEqual(2)
-      variant.additional_prices.prices.forEach((price) => {
+      expect(variant.prices.length).toEqual(2)
+      variant.prices.forEach((price) => {
         if (price.starts_at) {
           expect(new Date(price.starts_at).getTime()).toBeLessThan(
             date.getTime()
@@ -554,15 +549,15 @@ describe("Promotions", () => {
 
       const date = new Date()
 
-      expect(variant.additional_prices).toEqual(
+      expect(variant).toEqual(
         expect.objectContaining({
           originalPrice: 150,
           calculatedPrice: 100,
         })
       )
 
-      expect(variant.additional_prices.prices.length).toEqual(3)
-      variant.additional_prices.prices.forEach((price) => {
+      expect(variant.prices.length).toEqual(3)
+      variant.prices.forEach((price) => {
         if (price.starts_at) {
           expect(new Date(price.starts_at).getTime()).toBeLessThan(
             date.getTime()
@@ -575,7 +570,7 @@ describe("Promotions", () => {
         }
       })
 
-      expect(variant.additional_prices.prices).toEqual(
+      expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price1-sale-customer-quantity-groups",

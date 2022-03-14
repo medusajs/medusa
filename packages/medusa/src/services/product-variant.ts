@@ -872,13 +872,19 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    variant.additional_prices =
-      await this.priceSelectionStrategy_.calculateVariantPrice(variant.id, {
+    const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
+      variant.id,
+      {
         region_id: cart.region_id,
         currency_code: cart.region.currency_code,
         cart_id: cart_id,
         customer_id: customer_id,
-      })
+      }
+    )
+
+    variant.prices = prices.prices
+    variant.originalPrice = prices.originalPrice
+    variant.calculatedPrice = prices.calculatedPrice
 
     return variant
   }
