@@ -23,7 +23,7 @@ import {
   UpdateDiscountInput,
   UpsertDiscountConditionInput,
 } from "../types/discount"
-import { formatException } from "../utils/exception-formatter"
+import { formatException, PostgresError } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate discounts.
@@ -644,7 +644,7 @@ class DiscountService extends BaseService {
         )
       },
       async (err: any) => {
-        if (err.code === "23505") {
+        if (err.code === PostgresError.DUPLICATE_ERROR) {
           // A unique key constraint failed meaning the combination of
           // discount rule id, type, and operator already exists in the db.
           throw new MedusaError(
