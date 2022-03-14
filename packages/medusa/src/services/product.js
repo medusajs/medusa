@@ -105,7 +105,10 @@ class ProductService extends BaseService {
    *   returned
    * @return {Promise<Product[]>} the result of the find operation
    */
-  async list(selector = {}, config = { relations: [], skip: 0, take: 20 }) {
+  async list(
+    selector = {},
+    config = { relations: [], skip: 0, take: 20, includeDiscountPrices: false }
+  ) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
@@ -122,7 +125,18 @@ class ProductService extends BaseService {
       )
     }
 
-    return productRepo.findWithRelations(relations, query)
+    const products = productRepo.findWithRelations(relations, query)
+
+    return relations?.indexOf("variants.prices") > -1
+      ? await this.setAdditionalPrices(
+          products,
+          config.currency_code,
+          config.region_id,
+          config.cart_id,
+          config.customer_id,
+          config.includeDiscountPrices
+        )
+      : products
   }
 
   /**
@@ -138,7 +152,7 @@ class ProductService extends BaseService {
    */
   async listAndCount(
     selector = {},
-    config = { relations: [], skip: 0, take: 20 }
+    config = { relations: [], skip: 0, take: 20, includeDiscountPrices: false }
   ) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
@@ -163,17 +177,20 @@ class ProductService extends BaseService {
       query
     )
 
-    if (config.cart_id) {
+    if (relations?.indexOf("variants.prices") > -1) {
       const productsWithAdditionalPrices = await this.setAdditionalPrices(
         products,
+        config.currency_code,
+        config.region_id,
         config.cart_id,
-        config.customer_id
+        config.customer_id,
+        config.includeDiscountPrices
       )
 
       return [productsWithAdditionalPrices, count]
+    } else {
+      return [products, count]
     }
-
-    return [products, count]
   }
 
   /**
@@ -197,7 +214,7 @@ class ProductService extends BaseService {
    *   query response
    * @return {Promise<Product>} the result of the find one operation.
    */
-  async retrieve(productId, config = {}) {
+  async retrieve(productId, config = { includeDiscountPrices: false }) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
@@ -224,17 +241,17 @@ class ProductService extends BaseService {
       )
     }
 
-    if (config.cart_id) {
-      const p = await this.setAdditionalPrices(
-        [product],
-        config.cart_id,
-        config.customer_id
-      )
-
-      return p[0]
-    }
-
-    return product
+    return rels?.indexOf("variants") > -1 ||
+      rels?.indexOf("variants.prices") > -1
+      ? await this.setAdditionalPrices(
+          product,
+          config.currency_code,
+          config.region_id,
+          config.cart_id,
+          config.customer_id,
+          config.includeDiscountPrices
+        )
+      : product
   }
 
   /**
@@ -270,7 +287,16 @@ class ProductService extends BaseService {
       )
     }
 
-    return product
+    return rels?.indexOf("variants.prices") > -1
+      ? await this.setAdditionalPrices(
+          product,
+          config.currency_code,
+          config.region_id,
+          config.cart_id,
+          config.customer_id,
+          config.includeDiscountPrices
+        )
+      : product
   }
 
   /**
@@ -306,7 +332,16 @@ class ProductService extends BaseService {
       )
     }
 
-    return product
+    return rels?.indexOf("variants.prices") > -1
+      ? await this.setAdditionalPrices(
+          product,
+          config.currency_code,
+          config.region_id,
+          config.cart_id,
+          config.customer_id,
+          config.includeDiscountPrices
+        )
+      : product
   }
 
   /**
@@ -854,9 +889,10 @@ class ProductService extends BaseService {
    * @param {string} productId - the productId to decorate.
    * @param {string[]} fields - the fields to include.
    * @param {string[]} expandFields - fields to expand.
+   * @param {object} config - retrieve config for price calculation.
    * @return {Product} return the decorated product.
    */
-  async decorate(productId, fields = [], expandFields = []) {
+  async decorate(productId, fields = [], expandFields = [], config = {}) {
     const requiredFields = ["id", "metadata"]
 
     fields = fields.concat(requiredFields)
@@ -866,8 +902,17 @@ class ProductService extends BaseService {
       relations: expandFields,
     })
 
+    return expandFields?.indexOf("variants.prices") > -1
+      ? await this.setAdditionalPrices(
+          product,
+          config.currency_code,
+          config.region_id,
+          config.cart_id,
+          config.customer_id,
+          config.includeDiscountPrices
+        )
+      : product
     // const final = await this.runDecorators_(decorated)
-    return product
   }
 
   /**
@@ -944,12 +989,22 @@ class ProductService extends BaseService {
 
   /**
    * Set additional prices on a list of products.
-   * @param {Product[] } products list of products on which to set additional prices
+   * @param {Product[] | Product} products list of products on which to set additional prices
+   * @param {string} currency_code currency code to fetch prices for
+   * @param {string} region_id region to fetch prices for
    * @param {string} cart_id string of cart to use as a basis for getting currency and region
    * @param {string} customer_id id of potentially logged in customer, used to get prices valid for their customer groups
+   * @param {boolean} includeDiscountPrices indication wether or not to include sales prices in result
    * @return {Promise<Product[]>} A list of products with variants decorated with "additional_prices"
    */
-  async setAdditionalPrices(products, cart_id, customer_id) {
+  async setAdditionalPrices(
+    products,
+    currency_code,
+    region_id,
+    cart_id,
+    customer_id,
+    includeDiscountPrices = false
+  ) {
     const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
 
     const cart = await cartRepo.findOne({
@@ -957,36 +1012,37 @@ class ProductService extends BaseService {
       relations: ["region"],
     })
 
-    if (!cart) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `cart with id ${cart_id} does not exist`
-      )
-    }
+    const productArray = Array.isArray(products) ? products : [products]
 
-    return await Promise.all(
-      products.map(async (p) => {
-        p.variants = await Promise.all(
-          p.variants.map(async (v) => {
-            const prices =
-              await this.priceSelectionStrategy_.calculateVariantPrice(v.id, {
-                region_id: cart.region_id,
-                currency_code: cart.region.currency_code,
-                cart_id: cart_id,
-                customer_id: customer_id,
-              })
+    const productsWithPrices = await Promise.all(
+      productArray.map(async (p) => {
+        if (p.variants?.length) {
+          p.variants = await Promise.all(
+            p.variants.map(async (v) => {
+              const prices =
+                await this.priceSelectionStrategy_.calculateVariantPrice(v.id, {
+                  region_id: cart?.region_id || region_id,
+                  currency_code: cart?.region?.currency_code || currency_code,
+                  cart_id: cart_id,
+                  customer_id: customer_id,
+                  includeDiscountPrices,
+                })
 
-            return {
-              ...v,
-              prices: prices.prices,
-              originalPrice: prices.originalPrice,
-              calculatedPrice: prices.calculatedPrice,
-            }
-          })
-        )
+              return {
+                ...v,
+                prices: prices.prices,
+                original_price: prices.originalPrice,
+                calculated_price: prices.calculatedPrice,
+              }
+            })
+          )
+        }
+
         return p
       })
     )
+
+    return Array.isArray(products) ? productsWithPrices : productsWithPrices[0]
   }
 }
 

@@ -21,13 +21,13 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    if (!context.region_id && !context.currency_code) {
-      // TODO make both optional and query all money amounts for a region to set the resulting prices
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Money amount could not be found`
-      )
-    }
+    // if (!context.region_id && !context.currency_code) {
+    //   // TODO make both optional and query all money amounts for a region to set the resulting prices
+    //   throw new MedusaError(
+    //     MedusaError.Types.NOT_FOUND,
+    //     `Money amount could not be found`
+    //   )
+    // }
 
     const moneyRepo = this.manager_.getCustomRepository(
       this.moneyAmountRepository_
@@ -37,29 +37,48 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       variant_id,
       context.region_id,
       context.currency_code,
-      context.customer_id
+      context.customer_id,
+      context.includeDiscountPrices
     )
 
-    let defaultMoneyAmount = prices.find(
-      (p) =>
-        p.type === MoneyAmountType.DEFAULT &&
-        context.region_id &&
-        p.region_id === context.region_id
-    )
+    if (!prices.length) {
+      return {
+        originalPrice: null,
+        calculatedPrice: null,
+        prices: [],
+      }
+    }
 
-    if (!defaultMoneyAmount) {
+    let defaultMoneyAmount
+
+    if (context.region_id || context.currency_code) {
       defaultMoneyAmount = prices.find(
         (p) =>
           p.type === MoneyAmountType.DEFAULT &&
-          context.currency_code &&
-          p.currency_code === context.currency_code
+          context.region_id &&
+          p.region_id === context.region_id
+      )
+
+      if (!defaultMoneyAmount) {
+        defaultMoneyAmount = prices.find(
+          (p) =>
+            p.type === MoneyAmountType.DEFAULT &&
+            context.currency_code &&
+            p.currency_code === context.currency_code
+        )
+      }
+    }
+
+    if (!defaultMoneyAmount) {
+      defaultMoneyAmount = prices.find(
+        (p) => p.type === MoneyAmountType.DEFAULT
       )
     }
 
     if (!defaultMoneyAmount) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Money amount for variant with id ${variant_id} in region ${context.region_id} does not exist`
+        `Default money amount for variant with id ${variant_id} in region ${context.region_id} does not exist`
       )
     }
 
@@ -80,7 +99,9 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
 
     result.calculatedPrice = validPrices.reduce(
       (prev, curr) =>
-        curr.amount < prev && !isNaN(curr.amount) ? curr.amount : prev,
+        prev === null || (curr.amount < prev && !isNaN(curr.amount))
+          ? curr.amount
+          : prev,
       validPrices[0]?.amount || result.originalPrice // if array is empty calculated price will be original price
     )
 

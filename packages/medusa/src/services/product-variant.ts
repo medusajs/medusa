@@ -129,7 +129,10 @@ class ProductVariantService extends BaseService {
     config: FindConfig<ProductVariant> & {
       cart_id?: string
       customer_id?: string
-    } = {}
+      currency_code?: string
+      region_id?: string
+      includeDiscountPrices?: boolean
+    } = { includeDiscountPrices: false }
   ): Promise<ProductVariant> {
     const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
@@ -145,15 +148,14 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    if (config.cart_id) {
-      return this.setAdditionalPrices(
-        variant,
-        config.cart_id,
-        config.customer_id
-      )
-    }
-
-    return variant
+    return this.setAdditionalPrices(
+      variant,
+      config.currency_code,
+      config.region_id,
+      config.cart_id,
+      config.customer_id,
+      config.includeDiscountPrices
+    )
   }
 
   /**
@@ -179,6 +181,7 @@ class ProductVariantService extends BaseService {
       )
     }
 
+    // TODO: insert additional prices if rels contain prices
     return variant
   }
 
@@ -282,11 +285,19 @@ class ProductVariantService extends BaseService {
    * The function will throw, if price updates are attempted.
    * @param {string | ProductVariant} variantOrVariantId - variant or id of a variant.
    * @param {object} update - an object with the update values.
+   * @param {object} config - an object with the config values for returning the variant.
    * @return {Promise} resolves to the update result.
    */
   async update(
     variantOrVariantId: string | Partial<ProductVariant>,
-    update: UpdateProductVariantInput
+    update: UpdateProductVariantInput,
+    config: {
+      cart_id?: string
+      region_id?: string
+      currency_code?: string
+      customer_id?: string
+      includeDiscountPrices?: boolean
+    } = {}
   ): Promise<ProductVariant> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const variantRepo = manager.getCustomRepository(
@@ -319,12 +330,12 @@ class ProductVariantService extends BaseService {
         }
       }
 
-      if (metadata) {
-        variant.metadata = this.setMetadata_(variant, metadata)
+      if (typeof metadata === "object") {
+        variant.metadata = this.setMetadata_(variant, metadata as object)
       }
 
       if (typeof inventory_quantity === "number") {
-        variant.inventory_quantity = inventory_quantity
+        variant.inventory_quantity = inventory_quantity as number
       }
 
       for (const [key, value] of Object.entries(rest)) {
@@ -340,7 +351,17 @@ class ProductVariantService extends BaseService {
           product_id: result.product_id,
           fields: Object.keys(update),
         })
-      return result
+
+      const res = await this.setAdditionalPrices(
+        result,
+        config?.currency_code,
+        config?.region_id,
+        config?.cart_id,
+        config?.customer_id,
+        config?.includeDiscountPrices
+      )
+
+      return res
     })
   }
 
@@ -655,6 +676,8 @@ class ProductVariantService extends BaseService {
       return [variants, count]
     }
 
+    // TODO: insert additional prices if rels contain prices
+
     return await variantRepo.findWithRelationsAndCount(relations, query)
   }
 
@@ -701,6 +724,7 @@ class ProductVariantService extends BaseService {
       }
     }
 
+    // TODO: insert additional prices if rels contain prices
     return await productVariantRepo.find(query)
   }
 
@@ -849,14 +873,20 @@ class ProductVariantService extends BaseService {
   /**
    * Set additional prices on a list of variants.
    * @param {ProductVariant } variant list of variants on which to set additional prices
+   * @param {string} currency_code currency code to fetch prices for
+   * @param {string} region_id region to fetch prices for
    * @param {string} cart_id string of cart to use as a basis for getting currency and region
    * @param {string} customer_id id of potentially logged in customer, used to get prices valid for their customer groups
-   * @return {Promise<Product[]>} A list of variants with variants decorated with "additional_prices"
+   * @param {boolean} includeDiscountPrices should result include discount pricing
+   * @return {Promise<ProductVariant>} A list of variants with variants decorated with "additional_prices"
    */
   async setAdditionalPrices(
     variant,
+    currency_code,
+    region_id,
     cart_id,
-    customer_id
+    customer_id,
+    includeDiscountPrices = false
   ): Promise<ProductVariant> {
     const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
 
@@ -865,20 +895,14 @@ class ProductVariantService extends BaseService {
       relations: ["region"],
     })
 
-    if (!cart) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `cart with id ${cart_id} does not exist`
-      )
-    }
-
     const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
       variant.id,
       {
-        region_id: cart.region_id,
-        currency_code: cart.region.currency_code,
+        region_id: cart?.region_id || region_id,
+        currency_code: cart?.region?.currency_code || currency_code,
         cart_id: cart_id,
         customer_id: customer_id,
+        includeDiscountPrices,
       }
     )
 

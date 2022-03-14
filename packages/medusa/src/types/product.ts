@@ -41,8 +41,16 @@ export class FilterableProductTypeProps {
   updated_at?: DateComparisonOperator
 }
 
-export class ProductCartIdParams {
+export class AdminProductPriceParams {
   @IsOptional()
   @IsString()
   cart_id?: string
+
+  @IsOptional()
+  @IsString()
+  region_id?: string
+
+  @IsOptional()
+  @IsString()
+  currency_code?: string
 }

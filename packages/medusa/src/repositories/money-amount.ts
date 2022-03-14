@@ -1,4 +1,5 @@
 import partition from "lodash/partition"
+import { MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityRepository,
@@ -88,7 +89,8 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     variant_id: string,
     region_id?: string,
     currency_code?: string,
-    customer_id?: string
+    customer_id?: string,
+    includeDiscountPrices?: boolean
   ): Promise<MoneyAmount[]> {
     const date = new Date()
 
@@ -109,6 +111,8 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
           currency_code: currency_code,
         }
       )
+    } else if (!customer_id && !includeDiscountPrices) {
+      qb = qb.andWhere("ma.type = 'default'")
     }
 
     if (customer_id) {

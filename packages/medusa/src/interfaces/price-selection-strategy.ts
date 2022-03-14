@@ -29,10 +29,11 @@ export type PriceSelectionContext = {
   quantity?: number
   region_id?: string
   currency_code?: string
+  includeDiscountPrices?: boolean
 }
 
 export type PriceSelectionResult = {
-  originalPrice: number
-  calculatedPrice: number
+  originalPrice: number | null
+  calculatedPrice: number | null
   prices: MoneyAmount[] // prices is an array of all possible price for the input customer and region prices
 }

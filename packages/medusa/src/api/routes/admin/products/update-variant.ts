@@ -10,6 +10,7 @@ import {
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
+import { AdminProductPriceParams } from "../../../../types/product"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
@@ -124,6 +125,11 @@ export default async (req, res) => {
     req.body
   )
 
+  const validatedQueryParams = await validator(
+    AdminProductPriceParams,
+    req.query
+  )
+
   const productService: ProductService = req.scope.resolve("productService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
@@ -137,6 +143,7 @@ export default async (req, res) => {
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
+    ...validatedQueryParams,
   })
 
   res.json({ product })
