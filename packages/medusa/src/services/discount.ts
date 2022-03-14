@@ -10,6 +10,7 @@ import {
   TotalsService,
 } from "."
 import { Discount, DiscountRule } from ".."
+import { DiscountConditionType } from "../models/discount-condition"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
@@ -560,20 +561,66 @@ class DiscountService extends BaseService {
     })
   }
 
+  resolveConditionType_(data: UpsertDiscountConditionInput):
+    | {
+        type: DiscountConditionType
+        resource_ids: string[]
+      }
+    | undefined {
+    switch (true) {
+      case !!data.products?.length:
+        return {
+          type: DiscountConditionType.PRODUCTS,
+          resource_ids: data.products!,
+        }
+      case !!data.product_collections?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_COLLECTIONS,
+          resource_ids: data.product_collections!,
+        }
+      case !!data.product_types?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_TYPES,
+          resource_ids: data.product_types!,
+        }
+      case !!data.product_tags?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_TAGS,
+          resource_ids: data.product_tags!,
+        }
+      case !!data.customer_groups?.length:
+        return {
+          type: DiscountConditionType.CUSTOMER_GROUPS,
+          resource_ids: data.customer_groups!,
+        }
+      default:
+        return undefined
+    }
+  }
+
   async upsertDiscountCondition_(
     discountId: string,
     data: UpsertDiscountConditionInput
   ): Promise<void> {
+    const resolvedConditionType = this.resolveConditionType_(data)
+
     const res = this.atomicPhase_(
       async (manager) => {
         const discountConditionRepo: DiscountConditionRepository =
           manager.getCustomRepository(this.discountConditionRepository_)
 
+        if (!resolvedConditionType) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Missing one of products, collections, tags, types or customer groups in data`
+          )
+        }
+
         if (data.id) {
           return await discountConditionRepo.addConditionResources(
             data.id,
-            data.resource_ids,
-            data.resource_type,
+            resolvedConditionType.resource_ids,
+            resolvedConditionType.type,
             true
           )
         }
@@ -585,15 +632,15 @@ class DiscountService extends BaseService {
         const created = discountConditionRepo.create({
           discount_rule_id: discount.rule_id,
           operator: data.operator,
-          type: data.resource_type,
+          type: resolvedConditionType.type,
         })
 
         const discountCondition = await discountConditionRepo.save(created)
 
         return await discountConditionRepo.addConditionResources(
           discountCondition.id,
-          data.resource_ids,
-          data.resource_type
+          resolvedConditionType.resource_ids,
+          resolvedConditionType.type
         )
       },
       async (err: any) => {
@@ -602,7 +649,7 @@ class DiscountService extends BaseService {
           // discount rule id, type, and operator already exists in the db.
           throw new MedusaError(
             MedusaError.Types.DUPLICATE_ERROR,
-            `Discount Condition with operator '${data.operator}' and type '${data.resource_type}' already exist on a Discount Rule`
+            `Discount Condition with operator '${data.operator}' and type '${resolvedConditionType?.type}' already exist on a Discount Rule`
           )
         }
       }

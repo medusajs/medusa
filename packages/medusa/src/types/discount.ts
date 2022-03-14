@@ -1,15 +1,16 @@
 import { Transform, Type } from "class-transformer"
 import {
+  IsArray,
   IsBoolean,
+  IsEnum,
   IsOptional,
   IsString,
+  Validate,
   ValidateNested,
 } from "class-validator"
-import { AdminGetDiscountsDiscountRuleParams } from ".."
-import {
-  DiscountConditionOperator,
-  DiscountConditionType,
-} from "../models/discount-condition"
+import { DiscountConditionOperator } from "../models/discount-condition"
+import { AllocationType, DiscountRuleType } from "../models/discount-rule"
+import { ExactlyOne } from "./validators/exactly-one"
 
 export type QuerySelector = {
   q?: string
@@ -36,11 +37,81 @@ export class FilterableDiscountProps {
   rule?: AdminGetDiscountsDiscountRuleParams
 }
 
+export class AdminGetDiscountsDiscountRuleParams {
+  @IsOptional()
+  @IsEnum(DiscountRuleType)
+  type?: DiscountRuleType
+
+  @IsOptional()
+  @IsEnum(AllocationType)
+  allocation?: AllocationType
+}
+
+export class AdminUpsertConditionsReq {
+  @Validate(ExactlyOne, [
+    "product_collections",
+    "product_types",
+    "product_tags",
+    "customer_groups",
+  ])
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  products?: string[]
+
+  @Validate(ExactlyOne, [
+    "products",
+    "product_types",
+    "product_tags",
+    "customer_groups",
+  ])
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  product_collections?: string[]
+
+  @Validate(ExactlyOne, [
+    "product_collections",
+    "products",
+    "product_tags",
+    "customer_groups",
+  ])
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  product_types?: string[]
+
+  @Validate(ExactlyOne, [
+    "product_collections",
+    "product_types",
+    "products",
+    "customer_groups",
+  ])
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  product_tags?: string[]
+
+  @Validate(ExactlyOne, [
+    "product_collections",
+    "product_types",
+    "products",
+    "product_tags",
+  ])
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  customer_groups?: string[]
+}
+
 export type UpsertDiscountConditionInput = {
   id?: string
   operator?: DiscountConditionOperator
-  resource_type: DiscountConditionType
-  resource_ids: string[]
+  products?: string[]
+  product_collections?: string[]
+  product_types?: string[]
+  product_tags?: string[]
+  customer_groups?: string[]
 }
 
 export type CreateDiscountRuleInput = {

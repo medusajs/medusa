@@ -13,11 +13,9 @@ import {
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../../models/discount"
-import {
-  DiscountConditionOperator,
-  DiscountConditionType,
-} from "../../../../models/discount-condition"
+import { DiscountConditionOperator } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
@@ -84,6 +82,8 @@ import { AdminPostDiscountsDiscountParams } from "./update-discount"
 
 export default async (req, res) => {
   const validated = await validator(AdminPostDiscountsReq, req.body)
+
+  console.log(validated.rule.conditions)
 
   const validatedParams = await validator(
     AdminPostDiscountsDiscountParams,
@@ -177,16 +177,9 @@ export class AdminPostDiscountsDiscountRule {
   conditions?: AdminCreateCondition[]
 }
 
-export class AdminCreateCondition {
+export class AdminCreateCondition extends AdminUpsertConditionsReq {
   @IsString()
   operator: DiscountConditionOperator
-
-  @IsString()
-  resource_type: DiscountConditionType
-
-  @IsArray()
-  @IsString({ each: true })
-  resource_ids: string[]
 }
 
 export class AdminPostDiscountsParams {

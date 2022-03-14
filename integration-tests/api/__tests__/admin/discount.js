@@ -295,33 +295,27 @@ describe("/admin/discounts", () => {
               allocation: "total",
               conditions: [
                 {
-                  resource_type: "products",
-                  resource_ids: [product.id],
+                  products: [product.id],
                   operator: "in",
                 },
                 {
-                  resource_type: "products",
-                  resource_ids: [anotherProduct.id],
+                  products: [anotherProduct.id],
                   operator: "not_in",
                 },
                 {
-                  resource_type: "product_types",
-                  resource_ids: [product.type_id],
+                  product_types: [product.type_id],
                   operator: "not_in",
                 },
                 {
-                  resource_type: "product_types",
-                  resource_ids: [anotherProduct.type_id],
+                  product_types: [anotherProduct.type_id],
                   operator: "in",
                 },
                 {
-                  resource_type: "product_tags",
-                  resource_ids: [product.tags[0].id],
+                  product_tags: [product.tags[0].id],
                   operator: "not_in",
                 },
                 {
-                  resource_type: "product_tags",
-                  resource_ids: [anotherProduct.tags[0].id],
+                  product_tags: [anotherProduct.tags[0].id],
                   operator: "in",
                 },
               ],
@@ -390,13 +384,11 @@ describe("/admin/discounts", () => {
               allocation: "total",
               conditions: [
                 {
-                  resource_type: "products",
-                  resource_ids: [product.id],
+                  products: [product.id],
                   operator: "in",
                 },
                 {
-                  resource_type: "product_types",
-                  resource_ids: [product.type_id],
+                  product_types: [product.type_id],
                   operator: "not_in",
                 },
               ],
@@ -440,8 +432,7 @@ describe("/admin/discounts", () => {
               conditions: [
                 {
                   id: condsToUpdate.id,
-                  resource_type: "products",
-                  resource_ids: [product.id, anotherProduct.id],
+                  products: [product.id, anotherProduct.id],
                 },
               ],
             },
@@ -500,8 +491,7 @@ describe("/admin/discounts", () => {
               allocation: "total",
               conditions: [
                 {
-                  resource_type: "products",
-                  resource_ids: [product.id],
+                  products: [product.id],
                   operator: "in",
                 },
               ],
@@ -533,8 +523,7 @@ describe("/admin/discounts", () => {
               allocation: createdRule.allocation,
               conditions: [
                 {
-                  resource_type: "products",
-                  resource_ids: [anotherProduct.id],
+                  products: [anotherProduct.id],
                   operator: "in",
                 },
               ],
@@ -551,6 +540,124 @@ describe("/admin/discounts", () => {
         expect(error.response.data.type).toEqual("duplicate_error")
         expect(error.response.data.message).toEqual(
           `Discount Condition with operator 'in' and type 'products' already exist on a Discount Rule`
+        )
+      }
+    })
+
+    it("fails if multiple types of resources are provided on create", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      try {
+        await api.post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+              conditions: [
+                {
+                  products: [product.id],
+                  product_types: [product.type_id],
+                  operator: "in",
+                },
+              ],
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.response.data.type).toEqual("invalid_data")
+        expect(error.response.data.message).toEqual(
+          "Only one of products, product_types is allowed, Only one of product_types, products is allowed"
+        )
+      }
+    })
+
+    it("fails if multiple types of resources are provided on update", async () => {
+      const api = useApi()
+
+      const product = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const anotherProduct = await simpleProductFactory(dbConnection, {
+        type: "pants",
+      })
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+              conditions: [
+                {
+                  products: [product.id],
+                  operator: "in",
+                },
+              ],
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+
+      const createdRule = response.data.discount.rule
+
+      try {
+        await api.post(
+          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+          {
+            rule: {
+              id: createdRule.id,
+              type: createdRule.type,
+              value: createdRule.value,
+              allocation: createdRule.allocation,
+              conditions: [
+                {
+                  products: [anotherProduct.id],
+                  product_types: [product.type_id],
+                  operator: "in",
+                },
+              ],
+            },
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        console.log(error)
+        expect(error.response.data.type).toEqual("invalid_data")
+        expect(error.response.data.message).toEqual(
+          `Only one of products, product_types is allowed, Only one of product_types, products is allowed`
         )
       }
     })

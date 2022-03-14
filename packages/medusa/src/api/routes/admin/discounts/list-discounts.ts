@@ -1,7 +1,6 @@
 import { Transform, Type } from "class-transformer"
 import {
   IsBoolean,
-  IsEnum,
   IsInt,
   IsOptional,
   IsString,
@@ -10,12 +9,9 @@ import {
 import _, { pickBy } from "lodash"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../.."
-import {
-  AllocationType,
-  DiscountRuleType,
-} from "../../../../models/discount-rule"
 import DiscountService from "../../../../services/discount"
 import { FindConfig } from "../../../../types/common"
+import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts
@@ -70,15 +66,15 @@ export default async (req, res) => {
   })
 }
 
-export class AdminGetDiscountsDiscountRuleParams {
-  @IsOptional()
-  @IsEnum(DiscountRuleType)
-  type?: DiscountRuleType
+// export class AdminGetDiscountsDiscountRuleParams {
+//   @IsOptional()
+//   @IsEnum(DiscountRuleType)
+//   type?: DiscountRuleType
 
-  @IsOptional()
-  @IsEnum(AllocationType)
-  allocation?: AllocationType
-}
+//   @IsOptional()
+//   @IsEnum(AllocationType)
+//   allocation?: AllocationType
+// }
 
 export class AdminGetDiscountsParams {
   @ValidateNested()
