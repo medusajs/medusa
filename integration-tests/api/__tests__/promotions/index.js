@@ -44,10 +44,10 @@ describe("Promotions", () => {
       await db.teardown()
     })
 
-    it("calculatedPrice contains lowest price", async () => {
+    it("calculated_price contains lowest price", async () => {
       const api = useApi()
       const res = await api
-        .get("/store/products/test-product?cart_id=test-cart")
+        .get("/store/products/test-product")
         .catch((error) => console.log(error))
 
       const variant = res.data.product.variants[0]
@@ -57,10 +57,10 @@ describe("Promotions", () => {
         Infinity
       )
 
-      expect(variant.calculatedPrice).toEqual(lowestPrice)
+      expect(variant.calculated_price).toEqual(lowestPrice)
 
       expect(variant).toEqual(
-        expect.objectContaining({ originalPrice: 120, calculatedPrice: 110 })
+        expect.objectContaining({ original_price: 120, calculated_price: 110 })
       )
     })
 
@@ -104,7 +104,7 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.originalPrice).toEqual(
+      expect(variant.original_price).toEqual(
         variant.prices.find((p) => p.type === "default").amount
       )
     })
@@ -117,7 +117,7 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
-      expect(variant.originalPrice).toEqual(
+      expect(variant.original_price).toEqual(
         variant.prices.find((p) => p.type === "default").amount
       )
       expect(variant.prices.length).toEqual(2)
@@ -157,9 +157,85 @@ describe("Promotions", () => {
       const variant = res.data.product.variants[0]
 
       expect(variant).toEqual(
-        expect.objectContaining({ originalPrice: 130, calculatedPrice: 110 })
+        expect.objectContaining({ original_price: 130, calculated_price: 110 })
       )
-      expect(variant.originalPrice).toEqual(
+      expect(variant.original_price).toEqual(
+        variant.prices.find((p) => p.type === "default").amount
+      )
+
+      expect(variant.prices.length).toEqual(2)
+
+      expect(variant.prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-price1-region-2",
+            region_id: "test-region-2",
+            currency_code: "dkk",
+            type: "default",
+            amount: 130,
+          }),
+          expect.objectContaining({
+            id: "test-price3-region-2",
+            region_id: "test-region-2",
+            currency_code: "dkk",
+            type: "sale",
+            amount: 110,
+          }),
+        ])
+      )
+    })
+
+    it("gets prices for multi region product", async () => {
+      const api = useApi()
+      const res = await api
+        .get(
+          "/store/products/test-product-multi-region?region_id=test-region-2"
+        )
+        .catch((error) => console.log(error))
+
+      const variant = res.data.product.variants[0]
+
+      expect(variant).toEqual(
+        expect.objectContaining({ original_price: 130, calculated_price: 110 })
+      )
+      expect(variant.original_price).toEqual(
+        variant.prices.find((p) => p.type === "default").amount
+      )
+
+      expect(variant.prices.length).toEqual(2)
+
+      expect(variant.prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-price1-region-2",
+            region_id: "test-region-2",
+            currency_code: "dkk",
+            type: "default",
+            amount: 130,
+          }),
+          expect.objectContaining({
+            id: "test-price3-region-2",
+            region_id: "test-region-2",
+            currency_code: "dkk",
+            type: "sale",
+            amount: 110,
+          }),
+        ])
+      )
+    })
+
+    it("gets prices for multi currency product", async () => {
+      const api = useApi()
+      const res = await api
+        .get("/store/products/test-product-multi-region?currency_code=dkk")
+        .catch((error) => console.log(error))
+
+      const variant = res.data.product.variants[0]
+
+      expect(variant).toEqual(
+        expect.objectContaining({ original_price: 130, calculated_price: 110 })
+      )
+      expect(variant.original_price).toEqual(
         variant.prices.find((p) => p.type === "default").amount
       )
 
@@ -222,8 +298,8 @@ describe("Promotions", () => {
 
       expect(variant).toEqual(
         expect.objectContaining({
-          originalPrice: 150,
-          calculatedPrice: 120,
+          original_price: 150,
+          calculated_price: 120,
         })
       )
       expect(variant.prices.length).toEqual(3)
@@ -323,9 +399,9 @@ describe("Promotions", () => {
         ])
       )
 
-      expect(variant.calculatedPrice).toEqual(130)
-      expect(variant.originalPrice).toEqual(150)
-      expect(variant.originalPrice).toEqual(
+      expect(variant.calculated_price).toEqual(130)
+      expect(variant.original_price).toEqual(150)
+      expect(variant.original_price).toEqual(
         variant.prices.find((p) => p.type === "default").amount
       )
     })
@@ -471,9 +547,9 @@ describe("Promotions", () => {
         ])
       )
 
-      expect(variant.calculatedPrice).toEqual(100)
-      expect(variant.originalPrice).toEqual(150)
-      expect(variant.originalPrice).toEqual(
+      expect(variant.calculated_price).toEqual(100)
+      expect(variant.original_price).toEqual(150)
+      expect(variant.original_price).toEqual(
         variant.prices.find((p) => p.type === "default").amount
       )
     })
@@ -503,8 +579,8 @@ describe("Promotions", () => {
 
       expect(variant).toEqual(
         expect.objectContaining({
-          originalPrice: 150,
-          calculatedPrice: 100,
+          original_price: 150,
+          calculated_price: 100,
         })
       )
 
@@ -551,8 +627,8 @@ describe("Promotions", () => {
 
       expect(variant).toEqual(
         expect.objectContaining({
-          originalPrice: 150,
-          calculatedPrice: 100,
+          original_price: 150,
+          calculated_price: 100,
         })
       )
 

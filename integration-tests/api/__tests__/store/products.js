@@ -6,6 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
+const { isNonNullExpression } = require("typescript")
 jest.setTimeout(30000)
 
 describe("/store/products", () => {
@@ -388,6 +389,9 @@ describe("/store/products", () => {
                   amount: 100,
                   currency_code: "usd",
                   deleted_at: null,
+                  starts_at: null,
+                  ends_at: null,
+                  customer_groups: [],
                   id: "test-price",
                   region_id: null,
                   variant_id: "test-variant",
@@ -399,20 +403,11 @@ describe("/store/products", () => {
                   starts_at: expect.any(String),
                   ends_at: expect.any(String),
                   amount: 80,
+                  customer_groups: [],
+                  max_quantity: null,
+                  min_quantity: null,
                   currency_code: "usd",
                   deleted_at: null,
-                  region_id: null,
-                  variant_id: "test-variant",
-                },
-                {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  starts_at: expect.any(String),
-                  ends_at: expect.any(String),
-                  amount: 80,
-                  currency_code: "usd",
-                  deleted_at: null,
-                  id: "test-price-discount-expired",
                   region_id: null,
                   variant_id: "test-variant",
                 },
@@ -445,18 +440,6 @@ describe("/store/products", () => {
                 },
               ],
               prices: [
-                {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  starts_at: expect.any(String),
-                  ends_at: expect.any(String),
-                  amount: 80,
-                  currency_code: "usd",
-                  deleted_at: null,
-                  id: "test-price2-discount-expired",
-                  region_id: null,
-                  variant_id: "test-variant_2",
-                },
                 {
                   id: "test-price2",
                   created_at: expect.any(String),
@@ -527,18 +510,6 @@ describe("/store/products", () => {
                   amount: 80,
                   currency_code: "usd",
                   deleted_at: null,
-                  region_id: null,
-                  variant_id: "test-variant_1",
-                },
-                {
-                  created_at: expect.any(String),
-                  updated_at: expect.any(String),
-                  starts_at: expect.any(String),
-                  ends_at: expect.any(String),
-                  amount: 80,
-                  currency_code: "usd",
-                  deleted_at: null,
-                  id: "test-price1-discount-expired",
                   region_id: null,
                   variant_id: "test-variant_1",
                 },

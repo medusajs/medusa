@@ -78,6 +78,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode",
+        "calculated_price": 100,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean",
@@ -103,11 +104,13 @@ Array [
           },
         ],
         "origin_country": null,
+        "original_price": 100,
         "prices": Array [
           Object {
             "amount": 100,
             "created_at": Any<String>,
             "currency_code": "usd",
+            "customer_groups": Array [],
             "deleted_at": null,
             "ends_at": null,
             "id": "test-price",
@@ -131,6 +134,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
+        "calculated_price": 100,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean2",
@@ -156,11 +160,13 @@ Array [
           },
         ],
         "origin_country": null,
+        "original_price": 100,
         "prices": Array [
           Object {
             "amount": 100,
             "created_at": Any<String>,
             "currency_code": "usd",
+            "customer_groups": Array [],
             "deleted_at": null,
             "ends_at": null,
             "id": StringMatching /\\^test-price\\*/,
@@ -184,6 +190,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode 1",
+        "calculated_price": 100,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean1",
@@ -209,11 +216,13 @@ Array [
           },
         ],
         "origin_country": null,
+        "original_price": 100,
         "prices": Array [
           Object {
             "amount": 100,
             "created_at": Any<String>,
             "currency_code": "usd",
+            "customer_groups": Array [],
             "deleted_at": null,
             "ends_at": null,
             "id": StringMatching /\\^test-price\\*/,
@@ -237,6 +246,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode-sale",
+        "calculated_price": 1000,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean-sale",
@@ -262,26 +272,13 @@ Array [
           },
         ],
         "origin_country": null,
+        "original_price": 1000,
         "prices": Array [
-          Object {
-            "amount": 800,
-            "created_at": Any<String>,
-            "currency_code": "usd",
-            "deleted_at": null,
-            "ends_at": Any<String>,
-            "id": "test-price-sale-1",
-            "max_quantity": null,
-            "min_quantity": null,
-            "region_id": null,
-            "starts_at": Any<String>,
-            "type": "sale",
-            "updated_at": Any<String>,
-            "variant_id": StringMatching /\\^test-variant\\*/,
-          },
           Object {
             "amount": 1000,
             "created_at": Any<String>,
             "currency_code": "usd",
+            "customer_groups": Array [],
             "deleted_at": null,
             "ends_at": null,
             "id": "test-price-sale",
@@ -363,6 +360,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
+        "calculated_price": 100,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean4",
@@ -388,11 +386,13 @@ Array [
           },
         ],
         "origin_country": null,
+        "original_price": 100,
         "prices": Array [
           Object {
             "amount": 100,
             "created_at": Any<String>,
             "currency_code": "usd",
+            "customer_groups": Array [],
             "deleted_at": null,
             "ends_at": null,
             "id": StringMatching /\\^test-price\\*/,
@@ -416,6 +416,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
+        "calculated_price": 100,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean3",
@@ -441,11 +442,13 @@ Array [
           },
         ],
         "origin_country": null,
+        "original_price": 100,
         "prices": Array [
           Object {
             "amount": 100,
             "created_at": Any<String>,
             "currency_code": "usd",
+            "customer_groups": Array [],
             "deleted_at": null,
             "ends_at": null,
             "id": StringMatching /\\^test-price\\*/,
@@ -617,6 +620,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
+        "calculated_price": 100,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": null,
@@ -642,11 +646,13 @@ Array [
           },
         ],
         "origin_country": null,
+        "original_price": 100,
         "prices": Array [
           Object {
             "amount": 100,
             "created_at": Any<String>,
             "currency_code": "usd",
+            "customer_groups": Array [],
             "deleted_at": null,
             "ends_at": null,
             "id": Any<String>,
@@ -833,6 +839,7 @@ exports[`/admin/products updates a variant's prices successfully updates a varia
 Object {
   "allow_backorder": false,
   "barcode": "test-barcode",
+  "calculated_price": 100,
   "created_at": Any<String>,
   "deleted_at": null,
   "ean": "test-ean",
@@ -858,26 +865,13 @@ Object {
     },
   ],
   "origin_country": null,
+  "original_price": 100,
   "prices": Array [
-    Object {
-      "amount": 50,
-      "created_at": Any<String>,
-      "currency_code": "usd",
-      "deleted_at": null,
-      "ends_at": null,
-      "id": StringMatching /\\^ma_\\*/,
-      "max_quantity": null,
-      "min_quantity": null,
-      "region_id": null,
-      "starts_at": null,
-      "type": "sale",
-      "updated_at": Any<String>,
-      "variant_id": "test-variant",
-    },
     Object {
       "amount": 100,
       "created_at": Any<String>,
       "currency_code": "usd",
+      "customer_groups": Array [],
       "deleted_at": null,
       "ends_at": null,
       "id": "test-price",
@@ -893,6 +887,7 @@ Object {
       "amount": 4500,
       "created_at": Any<String>,
       "currency_code": "eur",
+      "customer_groups": Array [],
       "deleted_at": null,
       "ends_at": null,
       "id": StringMatching /\\^ma_\\*/,

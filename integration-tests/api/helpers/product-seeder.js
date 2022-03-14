@@ -247,6 +247,7 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
+        type: "default",
       },
     ],
     options: [
@@ -269,7 +270,9 @@ module.exports = async (connection, data = {}) => {
     ean: "test-ean4",
     upc: "test-upc4",
     product_id: "test-product1",
-    prices: [{ id: "test-price4", currency_code: "usd", amount: 100 }],
+    prices: [
+      { id: "test-price4", currency_code: "usd", amount: 100, type: "default" },
+    ],
     options: [
       {
         id: "test-variant-option-4",
