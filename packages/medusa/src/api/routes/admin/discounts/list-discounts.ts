@@ -66,16 +66,6 @@ export default async (req, res) => {
   })
 }
 
-// export class AdminGetDiscountsDiscountRuleParams {
-//   @IsOptional()
-//   @IsEnum(DiscountRuleType)
-//   type?: DiscountRuleType
-
-//   @IsOptional()
-//   @IsEnum(AllocationType)
-//   allocation?: AllocationType
-// }
-
 export class AdminGetDiscountsParams {
   @ValidateNested()
   @IsOptional()
