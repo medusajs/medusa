@@ -103,14 +103,6 @@ export default async (req, res) => {
 
   const discount = await discountService.retrieve(created.id, config)
 
-  const prod = discount.rule.conditions.find((el) => el.type === "products")
-
-  const prodId = prod?.products[0].id
-
-  if (prodId) {
-    await discountService.listConditionsByProduct(discount.rule_id, prodId)
-  }
-
   res.status(200).json({ discount })
 }
 
