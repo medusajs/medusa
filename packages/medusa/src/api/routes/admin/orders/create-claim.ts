@@ -1,17 +1,17 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
-  IsOptional,
-  ValidateNested,
   IsBoolean,
-  IsObject,
-  IsString,
+  IsEnum,
   IsInt,
   IsNotEmpty,
-  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 
@@ -177,6 +177,12 @@ export default async (req, res) => {
                   "items.tax_lines",
                   "discounts",
                   "discounts.rule",
+                  "claims",
+                  "claims.additional_items",
+                  "claims.additional_items.tax_lines",
+                  "swaps",
+                  "swaps.additional_items",
+                  "swaps.additional_items.tax_lines",
                 ],
               })
 
