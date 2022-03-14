@@ -41,7 +41,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     resourceId: string | undefined
   } {
     let fromTable: DiscountConditionResourceType = null
-    let resourceId: DiscountConditionResourceType | undefined = undefined
+    let resourceId: DiscountConditionResourceTableId | undefined = undefined
 
     switch (type) {
       case DiscountConditionType.PRODUCTS: {
@@ -204,83 +204,48 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     //    if condition operation is `in` and the query for conditions defined for the given type is empty, the discount is invalid
     //    if condition operation is `not_in` and the query for conditions defined for the given type is not empty, the discount is invalid
     for (const condition of discountConditions) {
-      const prodConds = await this.queryConditionTable({
-        type: "products",
-        condId: condition.id,
-        conditionTypeId: product.id,
-      })
+      const { resourceId } = this.getResourceIdentifiers(condition.type)
 
-      if (
-        condition.operator === DiscountConditionOperator.IN &&
-        !prodConds.length
-      ) {
-        return false
-      }
+      // Tags is a ManyToMany relation, so we need to check all tags that might exist on a product
+      if (resourceId === `product_tag_id`) {
+        for (const tag of product.tags) {
+          const tagConds = await this.queryConditionTable({
+            type: "product_tags",
+            condId: condition.id,
+            conditionTypeId: tag.id,
+          })
 
-      if (
-        condition.operator === DiscountConditionOperator.NOT_IN &&
-        prodConds.length
-      ) {
-        return false
-      }
+          if (
+            condition.operator === DiscountConditionOperator.IN &&
+            !tagConds.length
+          ) {
+            return false
+          }
 
-      const collConds = await this.queryConditionTable({
-        type: "product_collections",
-        condId: condition.id,
-        conditionTypeId: product.collection_id,
-      })
-
-      if (
-        condition.operator === DiscountConditionOperator.IN &&
-        !collConds.length
-      ) {
-        return false
-      }
-
-      if (
-        condition.operator === DiscountConditionOperator.NOT_IN &&
-        collConds.length
-      ) {
-        return false
-      }
-
-      const typeConds = await this.queryConditionTable({
-        type: "product_types",
-        condId: condition.id,
-        conditionTypeId: product.type_id,
-      })
-
-      if (
-        condition.operator === DiscountConditionOperator.IN &&
-        !typeConds.length
-      ) {
-        return false
-      }
-
-      if (
-        condition.operator === DiscountConditionOperator.NOT_IN &&
-        typeConds.length
-      ) {
-        return false
-      }
-
-      for (const tag of product.tags) {
-        const tagConds = await this.queryConditionTable({
-          type: "product_tags",
+          if (
+            condition.operator === DiscountConditionOperator.NOT_IN &&
+            tagConds.length
+          ) {
+            return false
+          }
+        }
+      } else {
+        const resourceSpecificConditions = await this.queryConditionTable({
+          type: condition.type,
           condId: condition.id,
-          conditionTypeId: tag.id,
+          conditionTypeId: resourceId,
         })
 
         if (
           condition.operator === DiscountConditionOperator.IN &&
-          !tagConds.length
+          !resourceSpecificConditions.length
         ) {
           return false
         }
 
         if (
           condition.operator === DiscountConditionOperator.NOT_IN &&
-          tagConds.length
+          resourceSpecificConditions.length
         ) {
           return false
         }
