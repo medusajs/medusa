@@ -18,7 +18,7 @@ import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /price_lists/{id}
- * operationId: "PostPriceListsPriceList"
+ * operationId: "PostPriceListsPriceListPriceList"
  * summary: "Update a Price List"
  * description: "Updates a Price List"
  * x-authenticated: true

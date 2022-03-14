@@ -7,6 +7,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const { ProductVariant } = require("@medusajs/medusa")
+const priceListSeeder = require("../../helpers/price-list-seeder")
 
 jest.setTimeout(50000)
 
@@ -1317,11 +1318,12 @@ describe("/admin/products", () => {
     })
   })
 
-  describe("updates a variant's prices", () => {
+  describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
         await adminSeeder(dbConnection)
+        await priceListSeeder(dbConnection)
       } catch (err) {
         console.log(err)
         throw err
@@ -1333,7 +1335,7 @@ describe("/admin/products", () => {
       await db.teardown()
     })
 
-    it("successfully updates a variant's prices by changing an existing price (currency_code)", async () => {
+    it("successfully updates a variant's default prices by changing an existing price (currency_code)", async () => {
       const api = useApi()
       const data = {
         prices: [
@@ -1366,6 +1368,33 @@ describe("/admin/products", () => {
                 expect.objectContaining({
                   amount: 1500,
                   currency_code: "usd",
+                }),
+                expect.objectContaining({
+                  id: "ma_test_1",
+                  amount: 100,
+                  currency_code: "usd",
+                  min_quantity: 1,
+                  max_quantity: 100,
+                  variant_id: "test-variant",
+                  price_list_id: "pl_no_customer_groups",
+                }),
+                expect.objectContaining({
+                  id: "ma_test_2",
+                  amount: 80,
+                  currency_code: "usd",
+                  min_quantity: 101,
+                  max_quantity: 500,
+                  variant_id: "test-variant",
+                  price_list_id: "pl_no_customer_groups",
+                }),
+                expect.objectContaining({
+                  id: "ma_test_3",
+                  amount: 50,
+                  currency_code: "usd",
+                  min_quantity: 501,
+                  max_quantity: 1000,
+                  variant_id: "test-variant",
+                  price_list_id: "pl_no_customer_groups",
                 }),
               ]),
             }),
@@ -1444,26 +1473,55 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data).toEqual({
-        product: expect.objectContaining({
-          id: "test-product",
-          variants: expect.arrayContaining([
-            expect.objectContaining({
-              id: "test-variant",
-              prices: [
-                expect.objectContaining({
-                  amount: 100,
-                  currency_code: "usd",
-                }),
-                expect.objectContaining({
-                  amount: 4500,
-                  currency_code: "eur",
-                }),
-              ],
-            }),
-          ]),
-        }),
-      })
+      expect(response.data).toEqual(
+        expect.objectContaining({
+          product: expect.objectContaining({
+            id: "test-product",
+            variants: expect.arrayContaining([
+              expect.objectContaining({
+                id: "test-variant",
+                prices: expect.arrayContaining([
+                  expect.objectContaining({
+                    amount: 100,
+                    currency_code: "usd",
+                  }),
+                  expect.objectContaining({
+                    amount: 4500,
+                    currency_code: "eur",
+                  }),
+                  expect.objectContaining({
+                    id: "ma_test_1",
+                    amount: 100,
+                    currency_code: "usd",
+                    min_quantity: 1,
+                    max_quantity: 100,
+                    variant_id: "test-variant",
+                    price_list_id: "pl_no_customer_groups",
+                  }),
+                  expect.objectContaining({
+                    id: "ma_test_2",
+                    amount: 80,
+                    currency_code: "usd",
+                    min_quantity: 101,
+                    max_quantity: 500,
+                    variant_id: "test-variant",
+                    price_list_id: "pl_no_customer_groups",
+                  }),
+                  expect.objectContaining({
+                    id: "ma_test_3",
+                    amount: 50,
+                    currency_code: "usd",
+                    min_quantity: 501,
+                    max_quantity: 1000,
+                    variant_id: "test-variant",
+                    price_list_id: "pl_no_customer_groups",
+                  }),
+                ]),
+              }),
+            ]),
+          }),
+        })
+      )
     })
 
     it("successfully updates a variant's prices by replacing a price", async () => {
@@ -1490,12 +1548,39 @@ describe("/admin/products", () => {
       expect(response.status).toEqual(200)
 
       expect(response.data.product.variants[0].prices.length).toEqual(
-        data.prices.length
+        4 // 3 prices from Price List + 1 default price
       )
       expect(response.data.product.variants[0].prices).toEqual([
         expect.objectContaining({
           amount: 4500,
           currency_code: "usd",
+        }),
+        expect.objectContaining({
+          id: "ma_test_1",
+          amount: 100,
+          currency_code: "usd",
+          min_quantity: 1,
+          max_quantity: 100,
+          variant_id: "test-variant",
+          price_list_id: "pl_no_customer_groups",
+        }),
+        expect.objectContaining({
+          id: "ma_test_2",
+          amount: 80,
+          currency_code: "usd",
+          min_quantity: 101,
+          max_quantity: 500,
+          variant_id: "test-variant",
+          price_list_id: "pl_no_customer_groups",
+        }),
+        expect.objectContaining({
+          id: "ma_test_3",
+          amount: 50,
+          currency_code: "usd",
+          min_quantity: 501,
+          max_quantity: 1000,
+          variant_id: "test-variant",
+          price_list_id: "pl_no_customer_groups",
         }),
       ])
     })
@@ -1528,18 +1613,47 @@ describe("/admin/products", () => {
       expect(response.status).toEqual(200)
 
       expect(response.data.product.variants[0].prices.length).toEqual(
-        data.prices.length
+        5 // 2 default prices + 3 prices from Price List
       )
-      expect(response.data.product.variants[0].prices).toEqual([
-        expect.objectContaining({
-          amount: 8000,
-          currency_code: "dkk",
-        }),
-        expect.objectContaining({
-          amount: 900,
-          currency_code: "eur",
-        }),
-      ])
+      expect(response.data.product.variants[0].prices).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 8000,
+            currency_code: "dkk",
+          }),
+          expect.objectContaining({
+            amount: 900,
+            currency_code: "eur",
+          }),
+          expect.objectContaining({
+            id: "ma_test_1",
+            amount: 100,
+            currency_code: "usd",
+            min_quantity: 1,
+            max_quantity: 100,
+            variant_id: "test-variant",
+            price_list_id: "pl_no_customer_groups",
+          }),
+          expect.objectContaining({
+            id: "ma_test_2",
+            amount: 80,
+            currency_code: "usd",
+            min_quantity: 101,
+            max_quantity: 500,
+            variant_id: "test-variant",
+            price_list_id: "pl_no_customer_groups",
+          }),
+          expect.objectContaining({
+            id: "ma_test_3",
+            amount: 50,
+            currency_code: "usd",
+            min_quantity: 501,
+            max_quantity: 1000,
+            variant_id: "test-variant",
+            price_list_id: "pl_no_customer_groups",
+          }),
+        ])
+      )
     })
 
     it("successfully updates a variant's prices by updating an existing price (using region_id) and adding another price", async () => {

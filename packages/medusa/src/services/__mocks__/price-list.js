@@ -18,6 +18,18 @@ export const PriceListServiceMock = {
   delete: jest.fn().mockImplementation((id) => {
     return Promise.resolve(id)
   }),
+
+  addPrices: jest.fn().mockImplementation((id, prices) => {
+    return Promise.resolve({ id, prices })
+  }),
+
+  deletePrices: jest.fn().mockImplementation((id, prices) => {
+    return Promise.resolve({ id, prices })
+  }),
+
+  listAndCount: jest.fn().mockImplementation((fields, config) => {
+    return Promise.resolve([[{ id: "pl_1" }, { id: "pl_2" }], 2])
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {

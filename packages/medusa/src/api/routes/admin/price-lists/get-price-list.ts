@@ -4,14 +4,14 @@ import PriceListService from "../../../../services/price-list"
 
 /**
  * @oas [get] /price-lists/{id}
- * operationId: "GetGiftCardsGiftCard"
- * summary: "Retrieve a Gift Card"
- * description: "Retrieves a Gift Card."
+ * operationId: "GetPriceListsPriceList"
+ * summary: "Retrieve a Price List"
+ * description: "Retrieves a Price List."
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Gift Card.
+ *   - (path) id=* {string} The id of the Price List.
  * tags:
- *   - Gift Card
+ *   - Price List
  * responses:
  *   200:
  *     description: OK
@@ -19,8 +19,8 @@ import PriceListService from "../../../../services/price-list"
  *       application/json:
  *         schema:
  *           properties:
- *             gift_card:
- *               $ref: "#/components/schemas/gift_card"
+ *             price_list:
+ *               $ref: "#/components/schemas/price_list"
  */
 export default async (req, res) => {
   const { id } = req.params

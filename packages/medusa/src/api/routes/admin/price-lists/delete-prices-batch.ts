@@ -43,7 +43,10 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminPostPriceListPricesPricesReq, req.body)
+  const validated = await validator(
+    AdminDeletePriceListPricesPricesReq,
+    req.body
+  )
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
@@ -53,7 +56,7 @@ export default async (req, res) => {
   res.json({ ids: validated.price_ids, object: "money-amount", deleted: true })
 }
 
-export class AdminPostPriceListPricesPricesReq {
+export class AdminDeletePriceListPricesPricesReq {
   @ArrayNotEmpty()
   @IsString({ each: true })
   price_ids: string[]

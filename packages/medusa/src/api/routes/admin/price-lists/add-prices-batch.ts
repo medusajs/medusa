@@ -1,4 +1,5 @@
-import { IsArray, IsBoolean, IsOptional } from "class-validator"
+import { Type } from "class-transformer"
+import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
@@ -88,6 +89,8 @@ export default async (req, res) => {
 
 export class AdminPostPriceListPricesPricesReq {
   @IsArray()
+  @Type(() => PriceListPricesUpdateReq)
+  @ValidateNested({ each: true })
   prices: PriceListPricesUpdateReq[]
 
   @IsOptional()
