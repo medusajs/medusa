@@ -470,8 +470,8 @@ class ContentfulService extends BaseService {
 
     const typeEntryFields = {
       ...typeEntry.fields,
-      [this.getCustomField("title", "type")]: {
-        "en-US": collection.title,
+      [this.getCustomField("name", "type")]: {
+        "en-US": type.value,
       },
     }
 
