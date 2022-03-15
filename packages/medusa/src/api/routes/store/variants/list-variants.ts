@@ -1,8 +1,11 @@
 import { Type } from "class-transformer"
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultStoreVariantRelations } from "."
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
+import { NumericalComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /variants
@@ -29,17 +32,15 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/product_variant"
  */
 export default async (req, res) => {
-  const { limit, offset, expand, ids } = await validator(
-    StoreGetVariantsParams,
-    req.query
-  )
+  const { limit, offset, expand, ids, inventory_quantity, title } =
+    await validator(StoreGetVariantsParams, req.query)
 
   let expandFields: string[] = []
   if (expand) {
     expandFields = expand.split(",")
   }
 
-  let selector = {}
+  let selector: FilterableProductVariantProps = {}
   const listConfig = {
     relations: expandFields.length
       ? expandFields
@@ -50,6 +51,14 @@ export default async (req, res) => {
 
   if (ids) {
     selector = { id: ids.split(",") }
+  }
+
+  if (inventory_quantity) {
+    selector.inventory_quantity = inventory_quantity
+  }
+
+  if (title) {
+    selector.title = title
   }
 
   const variantService: ProductVariantService = req.scope.resolve(
@@ -78,4 +87,12 @@ export class StoreGetVariantsParams {
   @IsOptional()
   @IsString()
   ids?: string
+
+  @IsOptional()
+  @IsType([String, [String]])
+  title?: string | string[]
+
+  @IsOptional()
+  @IsType([Number, NumericalComparisonOperator])
+  inventory_quantity?: number | NumericalComparisonOperator
 }
