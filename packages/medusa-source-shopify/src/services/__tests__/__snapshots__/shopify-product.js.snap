@@ -2,7 +2,6 @@
 
 exports[`ShopifyProductService normalizeProduct_ succesfully normalizes a product from Shopify 1`] = `
 Object {
-  "collection_id": null,
   "description": "<p>It's the small iPod with one very big idea: Video. Now the world's most popular music player, available in 4GB and 8GB models, lets you enjoy TV shows, movies, video podcasts, and more. The larger, brighter display means amazing picture quality. In six eye-catching colors, iPod nano is stunning all around. And with models starting at just $149, little speaks volumes.</p>",
   "external_id": "shopify_ipod",
   "handle": "ipod-nano",
@@ -12,6 +11,9 @@ Object {
     "https://cdn.shopify.com/s/files/1/0006/9093/3842/products/ipod-nano.png?v=1633120966",
   ],
   "is_giftcard": false,
+  "metadata": Object {
+    "vendor": "Apple",
+  },
   "options": Array [
     Object {
       "title": "Color",
