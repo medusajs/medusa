@@ -10,7 +10,7 @@ import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
 import {
-  PriceListPricesUpdateReq,
+  AdminPriceListPricesUpdateReq,
   PriceListStatus,
   PriceListType,
 } from "../../../../types/price-list"
@@ -143,9 +143,9 @@ export class AdminPostPriceListsPriceListPriceListReq {
 
   @IsOptional()
   @IsArray()
-  @Type(() => PriceListPricesUpdateReq)
+  @Type(() => AdminPriceListPricesUpdateReq)
   @ValidateNested({ each: true })
-  prices: PriceListPricesUpdateReq[]
+  prices: AdminPriceListPricesUpdateReq[]
 
   @IsOptional()
   @IsArray()

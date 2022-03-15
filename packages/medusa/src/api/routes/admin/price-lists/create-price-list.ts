@@ -8,7 +8,7 @@ import {
 } from "class-validator"
 import PriceListService from "../../../../services/price-list"
 import {
-  PriceListPricesCreateReq,
+  AdminPriceListPricesCreateReq,
   PriceListStatus,
   PriceListType,
 } from "../../../../types/price-list"
@@ -122,9 +122,9 @@ export class AdminPostPriceListsPriceListReq {
   type: PriceListType
 
   @IsArray()
-  @Type(() => PriceListPricesCreateReq)
+  @Type(() => AdminPriceListPricesCreateReq)
   @ValidateNested({ each: true })
-  prices: PriceListPricesCreateReq[]
+  prices: AdminPriceListPricesCreateReq[]
 
   @IsOptional()
   @IsArray()

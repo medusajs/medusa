@@ -8,7 +8,7 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import { PriceList } from ".."
+import { PriceList } from "../models/price-list"
 import { DateComparisonOperator } from "./common"
 import { XorConstraint } from "./validators/xor"
 
@@ -63,7 +63,7 @@ export class FilterablePriceListProps {
   deleted_at?: DateComparisonOperator
 }
 
-export class PriceListPricesUpdateReq {
+export class AdminPriceListPricesUpdateReq {
   @IsString()
   @IsOptional()
   id?: string
@@ -91,7 +91,7 @@ export class PriceListPricesUpdateReq {
   max_quantity?: number
 }
 
-export class PriceListPricesCreateReq {
+export class AdminPriceListPricesCreateReq {
   @Validate(XorConstraint, ["currency_code"])
   region_id?: string
 
@@ -118,7 +118,7 @@ export type CreatePriceListInput = {
   description: string
   type: PriceListType
   status?: PriceListStatus
-  prices: PriceListPricesCreateReq[]
+  prices: AdminPriceListPricesCreateReq[]
   customer_groups?: { id: string }[]
 }
 
@@ -128,7 +128,7 @@ export type UpdatePriceListInput = Partial<
     "name" | "description" | "starts_at" | "ends_at" | "status" | "type"
   >
 > & {
-  prices?: PriceListPricesUpdateReq[]
+  prices?: AdminPriceListPricesUpdateReq[]
   customer_groups?: { id: string }[]
 }
 

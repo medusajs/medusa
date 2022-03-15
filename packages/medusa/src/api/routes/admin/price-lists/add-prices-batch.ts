@@ -3,7 +3,7 @@ import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { PriceListPricesUpdateReq } from "../../../../types/price-list"
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -89,9 +89,9 @@ export default async (req, res) => {
 
 export class AdminPostPriceListPricesPricesReq {
   @IsArray()
-  @Type(() => PriceListPricesUpdateReq)
+  @Type(() => AdminPriceListPricesUpdateReq)
   @ValidateNested({ each: true })
-  prices: PriceListPricesUpdateReq[]
+  prices: AdminPriceListPricesUpdateReq[]
 
   @IsOptional()
   @IsBoolean()
