@@ -660,12 +660,14 @@ class DiscountService extends BaseService {
 
   async validateDiscountForProduct(
     discountRuleId: string,
-    productId: string
+    productId: string | undefined
   ): Promise<boolean> {
     return this.atomicPhase_(async (manager) => {
       const discountConditionRepo: DiscountConditionRepository =
         manager.getCustomRepository(this.discountConditionRepository_)
 
+      // In case of custom line items, we don't have a product id.
+      // Instead of throwing, we simply invalidate the discount.
       if (!productId) {
         return false
       }
