@@ -674,7 +674,9 @@ class DiscountService extends BaseService {
         return false
       }
 
-      const product = await this.productService_.retrieve(productId)
+      const product = await this.productService_.retrieve(productId, {
+        relations: ["tags"],
+      })
 
       return await discountConditionRepo.isValidForProduct(
         discountRuleId,
