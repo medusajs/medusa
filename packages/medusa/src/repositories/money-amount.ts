@@ -11,6 +11,7 @@ import {
   Repository,
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
+import PriceSelectionStrategy from "../strategies/price-selection"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
@@ -58,7 +59,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     })
 
     if (!moneyAmount) {
-      moneyAmount = this.create({
+      moneyAmount = await this.create({
         ...price,
         currency_code: price.currency_code?.toLowerCase(),
         variant_id: variantId,

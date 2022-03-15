@@ -241,6 +241,7 @@ class ProductService extends BaseService {
       )
     }
 
+    console.warn("relations: ", rels)
     return rels?.indexOf("variants") > -1 ||
       rels?.indexOf("variants.prices") > -1
       ? await this.setAdditionalPrices(

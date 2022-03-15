@@ -1,6 +1,12 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import {
+  Brackets,
+  EntityManager,
+  ILike,
+  SelectQueryBuilder,
+  UsingJoinColumnOnlyOnOneSideAllowedError,
+} from "typeorm"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import { MoneyAmount } from "../models/money-amount"
 import { Product } from "../models/product"
@@ -301,7 +307,17 @@ class ProductVariantService extends BaseService {
 
       let variant = variantOrVariantId as ProductVariant
       if (typeof variant === `string`) {
-        variant = await this.retrieve(variantOrVariantId as string)
+        const variantRes = await variantRepo.findOne(
+          variantOrVariantId as string
+        )
+        if (typeof variant === "undefined") {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Variant with id ${variantOrVariantId} was not found`
+          )
+        } else {
+          variant = variantRes as ProductVariant
+        }
       } else if (!variant.id) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -485,7 +501,7 @@ class ProductVariantService extends BaseService {
       })
 
       if (!moneyAmount) {
-        moneyAmount = moneyAmountRepo.create({
+        moneyAmount = await moneyAmountRepo.create({
           ...price,
           variant_id: variantId,
         })

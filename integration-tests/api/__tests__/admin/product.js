@@ -6,7 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
-const { ProductVariant, Product, MoneyAmount } = require("@medusajs/medusa")
+const { ProductVariant } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 
 jest.setTimeout(50000)
@@ -18,7 +18,7 @@ describe("/admin/products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -1106,10 +1106,6 @@ describe("/admin/products", () => {
             id: "test-variant",
             prices: [
               {
-                currency_code: "eur",
-                amount: 150,
-              },
-              {
                 currency_code: "usd",
                 amount: 75,
               },
@@ -1133,14 +1129,9 @@ describe("/admin/products", () => {
         })
 
       const response_1 = await dbConnection.manager.find(ProductVariant, {
+        where: { id: "test-variant" },
         relations: ["prices"],
       })
-      // , {
-      //   where: {
-      //     id: "test-variant",
-      //   },
-      //   relations: ["prices"],
-      // })
 
       console.log(response_1)
 
@@ -1217,12 +1208,13 @@ describe("/admin/products", () => {
             origin_country: null,
             prices: [
               {
-                amount: 100,
+                amount: 75,
                 created_at: expect.any(String),
                 currency_code: "usd",
                 id: "test-price",
                 max_quantity: null,
                 min_quantity: null,
+                price_list_id: null,
                 updated_at: expect.any(String),
                 variant_id: "test-variant",
               },
@@ -1233,7 +1225,7 @@ describe("/admin/products", () => {
                 id: expect.stringMatching(/^ma_*/),
                 max_quantity: null,
                 min_quantity: null,
-                currency_code: "usd",
+                price_list_id: null,
                 updated_at: expect.any(String),
                 variant_id: "test-variant",
               },
@@ -1568,33 +1560,6 @@ describe("/admin/products", () => {
                     amount: 4500,
                     currency_code: "eur",
                   }),
-                  expect.objectContaining({
-                    id: "ma_test_1",
-                    amount: 100,
-                    currency_code: "usd",
-                    min_quantity: 1,
-                    max_quantity: 100,
-                    variant_id: "test-variant",
-                    price_list_id: "pl_no_customer_groups",
-                  }),
-                  expect.objectContaining({
-                    id: "ma_test_2",
-                    amount: 80,
-                    currency_code: "usd",
-                    min_quantity: 101,
-                    max_quantity: 500,
-                    variant_id: "test-variant",
-                    price_list_id: "pl_no_customer_groups",
-                  }),
-                  expect.objectContaining({
-                    id: "ma_test_3",
-                    amount: 50,
-                    currency_code: "usd",
-                    min_quantity: 501,
-                    max_quantity: 1000,
-                    variant_id: "test-variant",
-                    price_list_id: "pl_no_customer_groups",
-                  }),
                 ]),
               }),
             ]),
@@ -1626,41 +1591,12 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product.variants[0].prices.length).toEqual(
-        4 // 3 prices from Price List + 1 default price
-      )
+      expect(response.data.product.variants[0].prices.length).toEqual(1)
       expect(response.data.product.variants[0].prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             amount: 4500,
             currency_code: "usd",
-          }),
-          expect.objectContaining({
-            id: "ma_test_1",
-            amount: 100,
-            currency_code: "usd",
-            min_quantity: 1,
-            max_quantity: 100,
-            variant_id: "test-variant",
-            price_list_id: "pl_no_customer_groups",
-          }),
-          expect.objectContaining({
-            id: "ma_test_2",
-            amount: 80,
-            currency_code: "usd",
-            min_quantity: 101,
-            max_quantity: 500,
-            variant_id: "test-variant",
-            price_list_id: "pl_no_customer_groups",
-          }),
-          expect.objectContaining({
-            id: "ma_test_3",
-            amount: 50,
-            currency_code: "usd",
-            min_quantity: 501,
-            max_quantity: 1000,
-            variant_id: "test-variant",
-            price_list_id: "pl_no_customer_groups",
           }),
         ])
       )
@@ -1693,9 +1629,8 @@ describe("/admin/products", () => {
 
       expect(response.status).toEqual(200)
 
-      expect(response.data.product.variants[0].prices.length).toEqual(
-        5 // 2 default prices + 3 prices from Price List
-      )
+      expect(response.data.product.variants[0].prices.length).toEqual(2)
+
       expect(response.data.product.variants[0].prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
@@ -1746,27 +1681,25 @@ describe("/admin/products", () => {
             amount: 8000,
           },
           {
-            region_id: "test-region",
+            currency_code: "eur",
             amount: 900,
           },
         ],
       }
 
       const response = await api
-        .post(
-          "/admin/products/test-product1/variants/test-variant_3?region_id=test-region",
-          data,
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
+        .post("/admin/products/test-product1/variants/test-variant_3", data, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
         .catch((err) => {
           console.log(err)
         })
 
       expect(response.status).toEqual(200)
+
+      console.log(response.data.product.variants[1].prices)
 
       expect(response.data.product.variants[1].prices.length).toEqual(
         data.prices.length
@@ -1781,8 +1714,7 @@ describe("/admin/products", () => {
           }),
           expect.objectContaining({
             amount: 900,
-            region_id: "test-region",
-            type: "sale",
+            currency_code: "eur",
           }),
         ])
       )

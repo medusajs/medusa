@@ -147,12 +147,7 @@ export default async (req, res) => {
     ...validated,
   })
 
-  const v = await productVariantService.retrieve(variant_id)
-
-  throw new MedusaError(
-    MedusaError.Types.INVALID_DATA,
-    JSON.stringify(v.prices.map((p) => p.amount))
-  )
+  await productVariantService.retrieve(variant_id)
 
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
