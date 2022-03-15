@@ -11,7 +11,6 @@ import {
 } from "."
 import { Discount, DiscountRule } from ".."
 import { DiscountConditionType } from "../models/discount-condition"
-import { LineItem } from "../models/line-item"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
@@ -659,17 +658,14 @@ class DiscountService extends BaseService {
     return res
   }
 
-  async validateDiscountsForLineItem(
+  async validateDiscountForProduct(
     discountRuleId: string,
-    lineItem: LineItem
+    productId: string
   ): Promise<boolean> {
     return this.atomicPhase_(async (manager) => {
       const discountConditionRepo: DiscountConditionRepository =
         manager.getCustomRepository(this.discountConditionRepository_)
 
-      const productId = lineItem?.variant?.product_id
-
-      // custom line items, are not applicable to discounts
       if (!productId) {
         return false
       }
