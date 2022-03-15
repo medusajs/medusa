@@ -75,8 +75,9 @@ export default async (req, res) => {
 
   let includeFields: string[] = []
   if (validated.fields) {
-    includeFields = validated.fields.split(",")
-    includeFields.push("id")
+    const set = new Set(validated.fields.split(","))
+    set.add("id")
+    includeFields = [...set]
   }
 
   let expandFields: string[] = []
