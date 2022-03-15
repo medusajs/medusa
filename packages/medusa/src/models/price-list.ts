@@ -63,7 +63,7 @@ export class PriceList {
   @OneToMany(
     () => MoneyAmount,
     (moneyAmount) => moneyAmount.price_list,
-    { cascade: true, onDelete: "CASCADE" }
+    { onDelete: "CASCADE" }
   )
   prices: MoneyAmount[]
 

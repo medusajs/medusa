@@ -654,6 +654,54 @@ describe("/admin/price-lists", () => {
     })
   })
 
+  describe("tests cascade on delete", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await productSeeder(dbConnection)
+        await priceListSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Deletes a variant and ensures that prices associated with the variant are deleted from PriceList", async () => {
+      const api = useApi()
+
+      const deleteResponse = await api
+        .delete("/admin/products/test-product/variants/test-variant", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      console.warn(deleteResponse.data.product.variants)
+
+      const response = await api.get(
+        "/admin/price-lists/pl_no_customer_groups",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      console.warn(response.data.price_list)
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_list.prices.length).toEqual(0)
+    })
+  })
+
   describe("DELETE /admin/price-lists/:id/prices/batch", () => {
     beforeEach(async () => {
       try {
