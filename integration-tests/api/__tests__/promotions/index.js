@@ -18,7 +18,7 @@ describe("Promotions", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -52,6 +52,8 @@ describe("Promotions", () => {
 
       const variant = res.data.product.variants[0]
 
+      console.log(variant)
+
       const lowestPrice = variant.prices.reduce(
         (prev, curr) => (curr.amount < prev ? curr.amount : prev),
         Infinity
@@ -74,7 +76,11 @@ describe("Promotions", () => {
 
       expect(variant.prices.length).toEqual(2)
       variant.prices.forEach((price) => {
-        expect(price.customer_groups).toEqual([])
+        if (price.price_list) {
+          expect(price.price_list.customer_groups).toEqual([])
+        } else {
+          expect(price.price_list).toEqual(null)
+        }
       })
       expect(variant.prices).toEqual(
         expect.arrayContaining([
@@ -82,14 +88,13 @@ describe("Promotions", () => {
             id: "test-price1",
             region_id: "test-region",
             currency_code: "usd",
-            type: "default",
             amount: 120,
           }),
           expect.objectContaining({
             id: "test-price3",
             region_id: "test-region",
             currency_code: "usd",
-            type: "sale",
+            price_list_id: "pl",
             amount: 110,
           }),
         ])
@@ -105,7 +110,7 @@ describe("Promotions", () => {
       const variant = res.data.product.variants[0]
 
       expect(variant.original_price).toEqual(
-        variant.prices.find((p) => p.type === "default").amount
+        variant.prices.find((p) => p.price_list_id === null).amount
       )
     })
 
@@ -118,11 +123,15 @@ describe("Promotions", () => {
       const variant = res.data.product.variants[0]
 
       expect(variant.original_price).toEqual(
-        variant.prices.find((p) => p.type === "default").amount
+        variant.prices.find((p) => p.price_list_id === null).amount
       )
       expect(variant.prices.length).toEqual(2)
       variant.prices.forEach((price) => {
-        expect(price.customer_groups).toEqual([])
+        if (price.price_list) {
+          expect(price.price_list.customer_groups).toEqual([])
+        } else {
+          expect(price.price_list).toEqual(null)
+        }
       })
       variant.prices.forEach((price) => {
         expect(price.region_id).toEqual("test-region")
@@ -134,14 +143,13 @@ describe("Promotions", () => {
             id: "test-price1",
             region_id: "test-region",
             currency_code: "usd",
-            type: "default",
             amount: 120,
           }),
           expect.objectContaining({
             id: "test-price3",
             region_id: "test-region",
             currency_code: "usd",
-            type: "sale",
+            price_list_id: "pl",
             amount: 110,
           }),
         ])
@@ -160,7 +168,7 @@ describe("Promotions", () => {
         expect.objectContaining({ original_price: 130, calculated_price: 110 })
       )
       expect(variant.original_price).toEqual(
-        variant.prices.find((p) => p.type === "default").amount
+        variant.prices.find((p) => p.price_list_id === null).amount
       )
 
       expect(variant.prices.length).toEqual(2)
@@ -171,14 +179,13 @@ describe("Promotions", () => {
             id: "test-price1-region-2",
             region_id: "test-region-2",
             currency_code: "dkk",
-            type: "default",
             amount: 130,
           }),
           expect.objectContaining({
             id: "test-price3-region-2",
             region_id: "test-region-2",
             currency_code: "dkk",
-            type: "sale",
+            price_list_id: "pl",
             amount: 110,
           }),
         ])
@@ -199,7 +206,7 @@ describe("Promotions", () => {
         expect.objectContaining({ original_price: 130, calculated_price: 110 })
       )
       expect(variant.original_price).toEqual(
-        variant.prices.find((p) => p.type === "default").amount
+        variant.prices.find((p) => p.price_list_id === null).amount
       )
 
       expect(variant.prices.length).toEqual(2)
@@ -210,14 +217,13 @@ describe("Promotions", () => {
             id: "test-price1-region-2",
             region_id: "test-region-2",
             currency_code: "dkk",
-            type: "default",
             amount: 130,
           }),
           expect.objectContaining({
             id: "test-price3-region-2",
             region_id: "test-region-2",
             currency_code: "dkk",
-            type: "sale",
+            price_list_id: "pl",
             amount: 110,
           }),
         ])
@@ -236,7 +242,7 @@ describe("Promotions", () => {
         expect.objectContaining({ original_price: 130, calculated_price: 110 })
       )
       expect(variant.original_price).toEqual(
-        variant.prices.find((p) => p.type === "default").amount
+        variant.prices.find((p) => p.price_list_id === null).amount
       )
 
       expect(variant.prices.length).toEqual(2)
@@ -247,14 +253,13 @@ describe("Promotions", () => {
             id: "test-price1-region-2",
             region_id: "test-region-2",
             currency_code: "dkk",
-            type: "default",
             amount: 130,
           }),
           expect.objectContaining({
             id: "test-price3-region-2",
             region_id: "test-region-2",
             currency_code: "dkk",
-            type: "sale",
+            price_list_id: "pl",
             amount: 110,
           }),
         ])
@@ -323,21 +328,20 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 140,
-            type: "sale",
+            price_list_id: "pl_current_1",
           }),
           expect.objectContaining({
             id: "test-price1-sale-overlap",
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
-            type: "sale",
+            price_list_id: "pl_current",
           }),
           expect.objectContaining({
             id: "test-price2-sale-overlap-default",
             region_id: "test-region",
             currency_code: "usd",
             amount: 150,
-            type: "default",
           }),
         ])
       )
@@ -359,7 +363,7 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 100,
-            type: "sale",
+            price_list_id: "pl",
             min_quantity: 10,
             max_quantity: 100,
           }),
@@ -368,7 +372,7 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
-            type: "sale",
+            price_list_id: "pl",
             min_quantity: 101,
             max_quantity: 1000,
           }),
@@ -377,7 +381,7 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 130,
-            type: "sale",
+            price_list_id: "pl",
             max_quantity: 9,
           }),
           expect.objectContaining({
@@ -385,7 +389,7 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 140,
-            type: "sale",
+            price_list_id: "pl_current",
             min_quantity: 101,
             max_quantity: 1000,
           }),
@@ -394,7 +398,6 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 150,
-            type: "default",
           }),
         ])
       )
@@ -402,7 +405,7 @@ describe("Promotions", () => {
       expect(variant.calculated_price).toEqual(130)
       expect(variant.original_price).toEqual(150)
       expect(variant.original_price).toEqual(
-        variant.prices.find((p) => p.type === "default").amount
+        variant.prices.find((p) => p.price_list_id === null).amount
       )
     })
 
@@ -428,20 +431,20 @@ describe("Promotions", () => {
       const variant = res.data.product.variants[0]
 
       expect(variant.prices.length).toEqual(3)
+      console.log(variant.prices)
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             id: "test-price1",
             region_id: "test-region",
             currency_code: "usd",
-            type: "default",
             amount: 120,
           }),
           expect.objectContaining({
             id: "test-price3",
             region_id: "test-region",
             currency_code: "usd",
-            type: "sale",
+            price_list_id: "pl",
             amount: 110,
           }),
           expect.objectContaining({
@@ -449,13 +452,14 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 100,
-            type: "cost",
-            customer_groups: [
-              expect.objectContaining({
-                id: "test-group-5",
-                name: "test-group-5",
-              }),
-            ],
+            price_list: expect.objectContaining({
+              customer_groups: [
+                expect.objectContaining({
+                  id: "test-group-5",
+                  name: "test-group-5",
+                }),
+              ],
+            }),
           }),
         ])
       )
@@ -493,7 +497,6 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 100,
-            type: "sale",
             min_quantity: 10,
             max_quantity: 100,
           }),
@@ -502,7 +505,6 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 120,
-            type: "sale",
             min_quantity: 101,
             max_quantity: 1000,
           }),
@@ -511,7 +513,6 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 130,
-            type: "sale",
             max_quantity: 9,
           }),
           expect.objectContaining({
@@ -519,21 +520,21 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 100,
-            type: "sale",
             max_quantity: 9,
-            customer_groups: [
-              expect.objectContaining({
-                id: "test-group-5",
-                name: "test-group-5",
-              }),
-            ],
+            price_list: expect.objectContaining({
+              customer_groups: [
+                expect.objectContaining({
+                  id: "test-group-5",
+                  name: "test-group-5",
+                }),
+              ],
+            }),
           }),
           expect.objectContaining({
             id: "test-price3-quantity-customer-now",
             region_id: "test-region",
             currency_code: "usd",
             amount: 140,
-            type: "sale",
             min_quantity: 101,
             max_quantity: 1000,
           }),
@@ -542,7 +543,7 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 150,
-            type: "default",
+            price_list_id: null,
           }),
         ])
       )
@@ -550,7 +551,7 @@ describe("Promotions", () => {
       expect(variant.calculated_price).toEqual(100)
       expect(variant.original_price).toEqual(150)
       expect(variant.original_price).toEqual(
-        variant.prices.find((p) => p.type === "default").amount
+        variant.prices.find((p) => p.price_list_id === null).amount
       )
     })
 
@@ -653,28 +654,27 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 100,
-            type: "sale",
             max_quantity: 99,
-            customer_groups: [
-              expect.objectContaining({
-                id: "test-group-5",
-                name: "test-group-5",
-              }),
-            ],
+            price_list: expect.objectContaining({
+              customer_groups: [
+                expect.objectContaining({
+                  id: "test-group-5",
+                  name: "test-group-5",
+                }),
+              ],
+            }),
           }),
           expect.objectContaining({
             id: "test-price2-sale-customer-quantity-default",
             region_id: "test-region",
             currency_code: "usd",
             amount: 150,
-            type: "default",
           }),
           expect.objectContaining({
             id: "test-price1-sale-customer-quantity",
             region_id: "test-region",
             currency_code: "usd",
-            amount: 100,
-            type: "sale",
+            amount: 110,
             max_quantity: 99,
           }),
         ])

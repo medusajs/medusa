@@ -8,6 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
 import { AdminProductPriceParams } from "../../../../types/product"
@@ -83,6 +84,9 @@ import { validator } from "../../../../utils/validator"
  *             type: array
  *             items:
  *               properties:
+ *                 id:
+ *                   description: The id of the price.
+ *                   type: string
  *                 region_id:
  *                   description: The id of the Region for which the price is used.
  *                   type: string
@@ -92,8 +96,11 @@ import { validator } from "../../../../utils/validator"
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
  *                   type: integer
- *                 sale_amount:
- *                   description: The sale amount to charge for the Product Variant.
+ *                 min_quantity:
+ *                  description: The minimum quantity for which the price will be used.
+ *                  type: integer
+ *                 max_quantity:
+ *                   description: The maximum quantity for which the price will be used.
  *                   type: integer
  *           options:
  *             type: array
@@ -139,6 +146,13 @@ export default async (req, res) => {
     product_id: id,
     ...validated,
   })
+
+  const v = await productVariantService.retrieve(variant_id)
+
+  throw new MedusaError(
+    MedusaError.Types.INVALID_DATA,
+    JSON.stringify(v.prices.map((p) => p.amount))
+  )
 
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,

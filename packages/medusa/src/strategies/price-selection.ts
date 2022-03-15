@@ -5,7 +5,6 @@ import {
 } from "../interfaces/price-selection-strategy"
 import { MedusaError } from "medusa-core-utils"
 import { MoneyAmountRepository } from "../repositories/money-amount"
-import { MoneyAmountType } from "../types/money-amount"
 import { EntityManager } from "typeorm"
 
 class PriceSelectionStrategy implements IPriceSelectionStrategy {
@@ -54,7 +53,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
     if (context.region_id || context.currency_code) {
       defaultMoneyAmount = prices.find(
         (p) =>
-          p.type === MoneyAmountType.DEFAULT &&
+          p.price_list_id === null &&
           context.region_id &&
           p.region_id === context.region_id
       )
@@ -62,7 +61,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       if (!defaultMoneyAmount) {
         defaultMoneyAmount = prices.find(
           (p) =>
-            p.type === MoneyAmountType.DEFAULT &&
+            p.price_list_id === null &&
             context.currency_code &&
             p.currency_code === context.currency_code
         )
@@ -70,9 +69,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
     }
 
     if (!defaultMoneyAmount) {
-      defaultMoneyAmount = prices.find(
-        (p) => p.type === MoneyAmountType.DEFAULT
-      )
+      defaultMoneyAmount = prices.find((p) => p.price_list_id === null)
     }
 
     if (!defaultMoneyAmount) {
@@ -89,12 +86,8 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
     }
 
     const validPrices = prices.filter(
-      (p) =>
-        (typeof context.quantity !== "undefined" &&
-          (!p.min_quantity || p.min_quantity <= context.quantity) &&
-          (!p.max_quantity || p.max_quantity >= context.quantity)) ||
-        (typeof context.quantity === "undefined" &&
-          isValidPriceWithoutQuantity(p))
+      (price) =>
+        price.price_list_id !== null && isValidQuantity(price, context.quantity)
     )
 
     result.calculatedPrice = validPrices.reduce(
@@ -109,8 +102,17 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
   }
 }
 
+const isValidQuantity = (price, quantity): boolean =>
+  (typeof quantity !== "undefined" &&
+    isValidPriceWithQuantity(price, quantity)) ||
+  (typeof quantity === "undefined" && isValidPriceWithoutQuantity(price))
+
 const isValidPriceWithoutQuantity = (price): boolean =>
   (!price.max_quantity && !price.min_quantity) ||
   ((!price.min_quantity || price.min_quantity === 0) && price.max_quantity)
+
+const isValidPriceWithQuantity = (price, quantity): boolean =>
+  (!price.min_quantity || price.min_quantity <= quantity) &&
+  (!price.max_quantity || price.max_quantity >= quantity)
 
 export default PriceSelectionStrategy

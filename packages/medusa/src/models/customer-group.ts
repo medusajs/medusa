@@ -5,7 +5,6 @@ import {
   DeleteDateColumn,
   Entity,
   Index,
-  JoinTable,
   ManyToMany,
   PrimaryColumn,
   UpdateDateColumn,
@@ -13,6 +12,7 @@ import {
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Customer } from "./customer"
+import { PriceList } from "./price-list"
 
 @Entity()
 export class CustomerGroup {
@@ -27,6 +27,11 @@ export class CustomerGroup {
     onDelete: "CASCADE",
   })
   customers: Customer[]
+
+  @ManyToMany(() => PriceList, (priceList) => priceList.customer_groups, {
+    onDelete: "CASCADE",
+  })
+  price_lists: PriceList[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date

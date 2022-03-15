@@ -8,6 +8,7 @@ const {
   ProductOption,
   Region,
   Cart,
+  PriceList,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -107,6 +108,132 @@ module.exports = async (connection, data = {}) => {
   customer7.groups = [c_group_5, c_group_6]
   await manager.save(customer7)
 
+  // TODO seed price lists
+
+  const priceList = await manager.create(PriceList, {
+    id: "pl",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  await manager.save(priceList)
+
+  const priceList1 = await manager.create(PriceList, {
+    id: "pl_1",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  priceList1.customer_groups = [c_group_5]
+
+  await manager.save(priceList1)
+
+  const priceList2 = await manager.create(PriceList, {
+    id: "pl_2",
+    name: "VVIP winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+  })
+
+  priceList2.customer_groups = [c_group_6]
+
+  await manager.save(priceList2)
+
+  const priceList3 = await manager.create(PriceList, {
+    id: "pl_expired",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: yesterday,
+  })
+
+  await manager.save(priceList3)
+
+  const priceList4 = await manager.create(PriceList, {
+    id: "pl_upcoming",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tomorrow,
+    ends_at: tenDaysFromToday,
+  })
+
+  await manager.save(priceList4)
+
+  const priceList5 = await manager.create(PriceList, {
+    id: "pl_current",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+  })
+
+  await manager.save(priceList5)
+
+  const priceList6 = await manager.create(PriceList, {
+    id: "pl_current_1",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: tomorrow,
+  })
+
+  await manager.save(priceList6)
+
+  const priceList7 = await manager.create(PriceList, {
+    id: "pl_upcoming-customer",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tomorrow,
+    ends_at: tenDaysFromToday,
+  })
+
+  priceList7.customer_groups = [c_group_5]
+
+  await manager.save(priceList7)
+
+  const priceList8 = await manager.create(PriceList, {
+    id: "pl_current-customer",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+  })
+
+  priceList8.customer_groups = [c_group_5]
+
+  await manager.save(priceList8)
+
+  const priceList9 = await manager.create(PriceList, {
+    id: "pl_expired-customer",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: yesterday,
+  })
+
+  priceList9.customer_groups = [c_group_5]
+
+  await manager.save(priceList9)
+
   const p1 = await manager.create(Product, {
     id: "test-product",
     handle: "test-product",
@@ -140,14 +267,12 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "cost",
-        customer_groups: [c_group_5],
+        price_list_id: "pl_1",
       },
       {
         id: "test-price1",
         region_id: "test-region",
         currency_code: "usd",
-        type: "default",
         amount: 120,
       },
       {
@@ -155,15 +280,14 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 130,
-        type: "cost",
-        customer_groups: [c_group_6],
+        price_list_id: "pl_2",
       },
       {
         id: "test-price3",
         region_id: "test-region",
         currency_code: "usd",
-        type: "sale",
         amount: 110,
+        price_list_id: "pl",
       },
     ],
     options: [
@@ -210,7 +334,7 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "sale",
+        price_list_id: "pl",
         min_quantity: 10,
         max_quantity: 100,
       },
@@ -219,7 +343,7 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
+        price_list_id: "pl",
         min_quantity: 101,
         max_quantity: 1000,
       },
@@ -228,17 +352,16 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
         min_quantity: 101,
         max_quantity: 1000,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_1",
       },
       {
         id: "test-price2-quantity",
         region_id: "test-region",
         currency_code: "usd",
         amount: 130,
-        type: "sale",
+        price_list_id: "pl",
         max_quantity: 9,
       },
       {
@@ -246,40 +369,33 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
         min_quantity: 101,
         max_quantity: 1000,
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
+        price_list_id: "pl_expired",
       },
       {
         id: "test-price3-quantity-future",
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
         min_quantity: 101,
         max_quantity: 1000,
-        starts_at: tomorrow,
-        ends_at: tenDaysFromToday,
+        price_list_id: "pl_upcoming",
       },
       {
         id: "test-price3-quantity-now",
         region_id: "test-region",
         currency_code: "usd",
         amount: 140,
-        type: "sale",
         min_quantity: 101,
         max_quantity: 1000,
-        starts_at: tenDaysAgo,
-        ends_at: tenDaysFromToday,
+        price_list_id: "pl_current",
       },
       {
         id: "test-price3-quantity-default",
         region_id: "test-region",
         currency_code: "usd",
         amount: 150,
-        type: "default",
       },
     ],
     options: [
@@ -326,34 +442,27 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
+        price_list_id: "pl_expired",
       },
       {
         id: "test-price1-sale",
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: tenDaysFromToday,
+        price_list_id: "pl_current",
       },
       {
         id: "test-price2-sale",
         region_id: "test-region",
         currency_code: "usd",
         amount: 130,
-        type: "sale",
-        starts_at: tomorrow,
-        ends_at: tenDaysFromToday,
+        price_list_id: "pl_upcoming",
       },
       {
         id: "test-price2-sale-default",
         region_id: "test-region",
         currency_code: "usd",
         amount: 150,
-        type: "default",
       },
     ],
     options: [
@@ -400,25 +509,20 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 140,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: tomorrow,
+        price_list_id: "pl_current_1",
       },
       {
         id: "test-price1-sale-overlap",
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: tenDaysFromToday,
+        price_list_id: "pl_current",
       },
       {
         id: "test-price2-sale-overlap-default",
         region_id: "test-region",
         currency_code: "usd",
         amount: 150,
-        type: "default",
       },
     ],
     options: [
@@ -465,27 +569,25 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "sale",
+        price_list_id: "pl",
       },
       {
         id: "test-price1-region-1",
         region_id: "test-region",
         currency_code: "usd",
-        type: "default",
         amount: 120,
       },
       {
         id: "test-price1-region-2",
         region_id: "test-region-2",
         currency_code: "dkk",
-        type: "default",
         amount: 130,
       },
       {
         id: "test-price3-region-2",
         region_id: "test-region-2",
         currency_code: "dkk",
-        type: "sale",
+        price_list_id: "pl",
         amount: 110,
       },
     ],
@@ -533,7 +635,7 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "sale",
+        price_list_id: "pl",
         min_quantity: 10,
         max_quantity: 100,
       },
@@ -542,7 +644,7 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
+        price_list_id: "pl",
         min_quantity: 101,
         max_quantity: 1000,
       },
@@ -551,7 +653,7 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 130,
-        type: "sale",
+        price_list_id: "pl",
         max_quantity: 9,
       },
       {
@@ -559,49 +661,41 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "sale",
         max_quantity: 9,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_1",
       },
       {
         id: "test-price3-quantity-customer-expired",
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
         min_quantity: 101,
         max_quantity: 1000,
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
+        price_list_id: "pl_expired",
       },
       {
         id: "test-price3-quantity-customer-future",
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
         min_quantity: 101,
         max_quantity: 1000,
-        starts_at: tomorrow,
-        ends_at: tenDaysFromToday,
+        price_list_id: "pl_upcoming",
       },
       {
         id: "test-price3-quantity-customer-now",
         region_id: "test-region",
         currency_code: "usd",
         amount: 140,
-        type: "sale",
         min_quantity: 101,
         max_quantity: 1000,
-        starts_at: tenDaysAgo,
-        ends_at: tenDaysFromToday,
+        price_list_id: "pl_current",
       },
       {
         id: "test-price3-quantity-customer-default",
         region_id: "test-region",
         currency_code: "usd",
         amount: 150,
-        type: "default",
       },
     ],
     options: [
@@ -648,30 +742,21 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_expired-customer",
       },
       {
         id: "test-price1-sale-customer",
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: tenDaysFromToday,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_current-customer",
       },
       {
         id: "test-price2-sale-customer",
         region_id: "test-region",
         currency_code: "usd",
         amount: 130,
-        type: "sale",
-        starts_at: tomorrow,
-        ends_at: tenDaysFromToday,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_upcoming-customer",
       },
       {
         id: "test-price2-sale-customer-default",
@@ -725,23 +810,17 @@ module.exports = async (connection, data = {}) => {
         region_id: "test-region",
         currency_code: "usd",
         amount: 120,
-        type: "sale",
         min_quantity: 100,
         max_quantity: 1000,
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_expired-customer",
       },
       {
         id: "test-price1-sale-customer-quantity-groups",
         region_id: "test-region",
         currency_code: "usd",
         amount: 100,
-        type: "sale",
         max_quantity: 99,
-        starts_at: tenDaysAgo,
-        ends_at: tenDaysFromToday,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_current-customer",
       },
       {
         id: "test-price2-sale-customer-quantity",
@@ -750,24 +829,19 @@ module.exports = async (connection, data = {}) => {
         amount: 130,
         min_quantity: 500,
         max_quantity: 900,
-        type: "sale",
-        starts_at: tomorrow,
-        ends_at: tenDaysFromToday,
-        customer_groups: [c_group_5],
+        price_list_id: "pl_upcoming-customer",
       },
       {
         id: "test-price2-sale-customer-quantity-default",
         region_id: "test-region",
         currency_code: "usd",
         amount: 150,
-        type: "default",
       },
       {
         id: "test-price1-sale-customer-quantity",
         region_id: "test-region",
         currency_code: "usd",
-        amount: 100,
-        type: "sale",
+        amount: 110,
         max_quantity: 99,
       },
     ],

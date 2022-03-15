@@ -11,6 +11,10 @@ import {
   Repository,
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
+import {
+  PriceListPriceCreateInput,
+  PriceListPriceUpdateInput,
+} from "../types/price-list"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -20,10 +24,14 @@ type Price = Partial<
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
-  public async findVariantPricesNotIn(variantId: string, prices: Price[]) {
+  public async findVariantPricesNotIn(
+    variantId: string,
+    prices: Price[]
+  ): Promise<MoneyAmount[]> {
     const pricesNotInPricesPayload = await this.createQueryBuilder()
       .where({
         variant_id: variantId,
+        price_list_id: IsNull(),
       })
       .andWhere(
         new Brackets((qb) => {
@@ -36,12 +44,16 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
-  public async upsertCurrencyPrice(variantId: string, price: Price) {
+  public async upsertVariantCurrencyPrice(
+    variantId: string,
+    price: Price
+  ): Promise<MoneyAmount> {
     let moneyAmount = await this.findOne({
       where: {
         currency_code: price.currency_code,
         variant_id: variantId,
         region_id: IsNull(),
+        price_list_id: IsNull(),
       },
     })
 
@@ -58,30 +70,50 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return await this.save(moneyAmount)
   }
 
-  public async bulkAddOrUpdate(variantId: string, prices: Price[]) {
-    const [toUpdate, toCreate] = partition(prices, (p) => p.id)
-    const createdEntities = toCreate.map((tc) => {
-      return this.create({ ...tc, variant_id: variantId })
-    })
+  public async addPriceListPrices(
+    priceListId: string,
+    prices: PriceListPriceCreateInput[],
+    overrideExisting = false
+  ): Promise<MoneyAmount[]> {
+    const toInsert = prices.map((price) =>
+      this.create({
+        ...price,
+        price_list_id: priceListId,
+      })
+    )
+    const insertResult = await this.createQueryBuilder()
+      .insert()
+      .orIgnore(true)
+      .into(MoneyAmount)
+      .values(toInsert)
+      .execute()
 
-    const existing = await this.findByIds(toUpdate.map((tu) => tu.id))
+    if (overrideExisting) {
+      await this.createQueryBuilder()
+        .delete()
+        .from(MoneyAmount)
+        .where({
+          price_list_id: priceListId,
+          id: Not(In(insertResult.identifiers.map((ma) => ma.id))),
+        })
+        .execute()
+    }
 
-    const updatedEntities: Partial<MoneyAmount>[] = existing.map((e) => {
-      const update = toUpdate.find((update) => update.id === e.id)
-      return {
-        ...e,
-        ...update,
-      }
-    })
-
-    await this.save([...updatedEntities, ...createdEntities])
+    return await this.manager
+      .createQueryBuilder(MoneyAmount, "ma")
+      .select()
+      .where(insertResult.identifiers)
+      .getMany()
   }
 
-  public async bulkDelete(variantId: string, moneyAmountIds: string[]) {
+  public async deletePriceListPrices(
+    priceListId: string,
+    moneyAmountIds: string[]
+  ): Promise<void> {
     await this.createQueryBuilder()
       .delete()
       .from(MoneyAmount)
-      .where({ variant_id: variantId, id: In(moneyAmountIds) })
+      .where({ price_list_id: priceListId, id: In(moneyAmountIds) })
       .execute()
   }
 
@@ -95,13 +127,25 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     const date = new Date()
 
     let qb = this.createQueryBuilder("ma")
+      .leftJoinAndSelect(
+        "ma.price_list",
+        "price_list",
+        "ma.price_list_id = price_list.id "
+      )
       .where("ma.variant_id = :variant_id", { variant_id: variant_id })
-      .andWhere("(ma.ends_at is null OR ma.ends_at > :date) ", {
-        date: date.toUTCString(),
-      })
-      .andWhere("(ma.starts_at is null OR ma.starts_at < :date)", {
-        date: date.toUTCString(),
-      })
+      .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
+      .andWhere(
+        "(price_list is null or price_list.ends_at is null OR price_list.ends_at > :date) ",
+        {
+          date: date.toUTCString(),
+        }
+      )
+      .andWhere(
+        "(price_list is null or price_list.starts_at is null OR price_list.starts_at < :date)",
+        {
+          date: date.toUTCString(),
+        }
+      )
 
     if (region_id || currency_code) {
       qb = qb.andWhere(
@@ -112,12 +156,12 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         }
       )
     } else if (!customer_id && !includeDiscountPrices) {
-      qb = qb.andWhere("ma.type = 'default'")
+      qb = qb.andWhere("price_list is null")
     }
 
     if (customer_id) {
       qb = qb
-        .leftJoinAndSelect("ma.customer_groups", "cgroup")
+        .leftJoinAndSelect("price_list.customer_groups", "cgroup")
         .leftJoinAndSelect(
           "customer_group_customers",
           "cgc",
@@ -128,9 +172,25 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         })
     } else {
       qb = qb
-        .leftJoinAndSelect("ma.customer_groups", "cgroup")
+        .leftJoinAndSelect("price_list.customer_groups", "cgroup")
         .andWhere("cgroup is null")
     }
     return await qb.getMany()
+  }
+
+  public async updatePriceListPrices(
+    priceListId: string,
+    updates: PriceListPriceUpdateInput[]
+  ): Promise<MoneyAmount[]> {
+    const [existingPrices, newPrices] = partition(
+      updates,
+      (update) => update.id
+    )
+
+    const newPriceEntities = newPrices.map((price) =>
+      this.create({ ...price, price_list_id: priceListId })
+    )
+
+    return await this.save([...existingPrices, ...newPriceEntities])
   }
 }
