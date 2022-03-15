@@ -251,26 +251,6 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(product1)
 
-  const variantp1 = await manager.create(ProductVariant, {
-    id: "test-variant_pf1",
-    inventory_quantity: 12,
-    title: "testing12",
-    variant_rank: 0,
-    sku: "test-skupf1",
-    ean: "test-eanpf1",
-    upc: "test-upcpf1",
-    product_id: "test-product_filtering_1",
-    prices: [{ id: "test-pricepe", currency_code: "usd", amount: 100 }],
-    options: [
-      {
-        id: "test-variant-option-4",
-        value: "Default variant 4",
-        option_id: "test-option",
-      },
-    ],
-  })
-  await manager.save(variantp1)
-
   const product2 = manager.create(Product, {
     id: "test-product_filtering_2",
     handle: "test-product_filtering_2",
