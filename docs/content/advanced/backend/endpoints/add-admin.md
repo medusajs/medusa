@@ -1,16 +1,16 @@
 ---
-title: Add Endpoint for Storefront
+title: Add Endpoint for Admin
 ---
 
-# Add Endpoint for Storefront
+# Add Endpoint for Admin
 
-In this document, you’ll learn how to add a custom endpoint in the Backend that you can use from the Storefront.
+In this document, you’ll learn how to add a custom endpoint in the Backend that you can use from the Admin.
 
 ## Overview
 
 Custom endpoints reside under the `src/api` directory in your Medusa Backend. To define a new endpoint, you can add the file `index.js` under the `src/api` directory. This file should export a function that returns an Express router.
 
-Your endpoint can be under any path you wish. By Medusa’s conventions, all Storefront REST APIs are prefixed by `/store`. For example, the `/store/products` lets you retrieve the products to display them on your storefront.
+Your endpoint can be under any path you wish. By Medusa’s conventions, all Admin REST APIs are prefixed by `/admin`. For example, the `/admin/products` lets you retrieve the products to display them on your Admin.
 
 ## Implementation
 
@@ -22,9 +22,9 @@ import { Router } from "express"
 export default () => {
   const router = Router()
 
-  router.get("/store/hello", (req, res) => {
+  router.get("/admin/hello", (req, res) => {
     res.json({
-      message: "Welcome to My Store!"
+      message: "Welcome to Your Store!"
     })
   })
 
@@ -32,11 +32,40 @@ export default () => {
 }
 ```
 
-This exports a function that returns an Express router. In that function, you can create one or more endpoints. In the example above, you create the endpoint `/store/hello`.
+This exports a function that returns an Express router. In that function, you can create one or more endpoints. In the example above, you create the endpoint `/admin/hello`.
 
-Now, if you run your server and send a request to `/store/hello`, you will receive a JSON response message.
+Now, if you run your server and send a request to `/admin/hello`, you will receive a JSON response message.
 
 > Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run `npm run build`.
+
+## Accessing Endpoints from Admin
+
+If you’re customizing the admin dashboard or creating your own, you need to use the `cors` library. A `OPTIONS` request should be added for each route and handle the requests with the `cors` library.
+
+First, you need to import your Medusa’s configurations along with the `cors` library:
+
+```js
+import cors from "cors"
+import { projectConfig } from "../../medusa-config"
+```
+
+Then, create an object that will hold the CORS configurations:
+
+```js
+const corsOptions = {
+    origin: projectConfig.admin_cors.split(","),
+    credentials: true,
+}
+```
+
+Finally, for each route you add, create an `OPTIONS` request:
+
+```js
+router.options("/admin/hello", cors(corsOptions))
+router.get("/admin/hello", (req, res) => {
+  //...
+});
+```
 
 ## Multiple Endpoints
 
@@ -45,13 +74,13 @@ Now, if you run your server and send a request to `/store/hello`, you will recei
 You can add more than one endpoints in `src/api/index.js`:
 
 ```js
-router.get("/store/hello", (req, res) => {
+router.get("/admin/hello", (req, res) => {
   res.json({
-    message: "Welcome to My Store!"
+    message: "Welcome to Your Store!"
   })
 })
 
-router.get("/store/bye", (req, res) => {
+router.get("/admin/bye", (req, res) => {
   res.json({
     message: "Come back again!"
   })
@@ -66,21 +95,21 @@ To do that with the previous example, first, create the file `src/api/hello.js` 
 
 ```js
 export default (router) => {
-  router.get("/store/hello", (req, res) => {
+  router.get("/admin/hello", (req, res) => {
     res.json({
-      message: "Welcome to My Store!"
+      message: "Welcome to Your Store!"
     })
   })
 }
 ```
 
-You export a function that receives an Express router as a parameter and adds the endpoint `store/hello` to it.
+You export a function that receives an Express router as a parameter and adds the endpoint `admin/hello` to it.
 
 Next, create the file `src/api/bye.js` with the following content:
 
 ```js
 export default (router) => {
-  router.get("/store/bye", (req, res) => {
+  router.get("/admin/bye", (req, res) => {
     res.json({
       message: "Come back again!"
     })
@@ -88,7 +117,7 @@ export default (router) => {
 }
 ```
 
-Again, you export a function that receives an Express router as a parameter and adds the endpoint `store/bye` to it.
+Again, you export a function that receives an Express router as a parameter and adds the endpoint `admin/bye` to it.
 
 Finally, in `src/api/index.js` import the two functions at the beginning of the file:
 
@@ -119,7 +148,7 @@ You can retrieve any registered service in your endpoint using `req.scope.resolv
 Here’s an example of an endpoint that retrieves the count of products in your store:
 
 ```js
-router.get('/store/products/count', (req, res) => {
+router.get('/admin/products/count', (req, res) => {
     const productService = req.scope.resolve('productService')
 
     productService
@@ -136,7 +165,7 @@ The `productService` has a `count` method that returns a Promise. This Promise r
 
 ## Protected Routes
 
-Protected routes are routes that should be accessible by logged-in customers only.
+Protected routes are routes that should be accessible by logged-in users only.
 
 To make a route protected, first, import the `authenticate` middleware:
 
@@ -146,7 +175,7 @@ import authenticate from '@medusajs/medusa/dist/api/middlewares/authenticate'
 
 Then, add the middleware to your route:
 
-```jsx
+```js
 router.get('/store/products/count', authenticate(), (req, res) => {
   //...
 })
@@ -154,24 +183,24 @@ router.get('/store/products/count', authenticate(), (req, res) => {
 
 Now, only authenticated users can access this endpoint.
 
-### Accessing Current Customer
+### Accessing Current User
 
-You can get the logged-in customer’s ID using `req.user`:
+You can get the logged-in user ID using `req.user`:
 
-```jsx
-const id = req.user.customer_id
+```js
+const id = req.user.userId
 ```
 
-To get the customer’s details, you can use the `customerService`:
+To get the user’s details, you can use the `userService`:
 
-```jsx
-const id = req.user.customer_id
-const customerService = req.scope.resolve("customerService")
+```js
+const id = req.user.userId
+const userService = req.scope.resolve("userService")
 
-const customer = await customerService.retrieve(id)
+const user = await userService.retrieve(id)
 ```
 
-## What’s Next :rocket:
+## What’s Next 🚀
 
-- [Learn how to add an endpoint for the Admin.](/advanced/backend/endpoints/add-admin)
-- [Check out the API reference for all available endpoints.](https://docs.medusajs.com/api/store)
+- [Learn how to add an endpoint for the Storefront.](/advanced/backend/endpoints/add-storefront)
+- [Check out the API reference for all available endpoints.](https://docs.medusajs.com/api/admin)
