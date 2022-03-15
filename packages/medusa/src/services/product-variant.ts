@@ -307,9 +307,9 @@ class ProductVariantService extends BaseService {
 
       let variant = variantOrVariantId as ProductVariant
       if (typeof variant === `string`) {
-        const variantRes = await variantRepo.findOne(
-          variantOrVariantId as string
-        )
+        const variantRes = await variantRepo.findOne({
+          where: { id: variantOrVariantId as string },
+        })
         if (typeof variant === "undefined") {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
