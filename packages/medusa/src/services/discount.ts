@@ -1,4 +1,5 @@
 import { parse, toSeconds } from "iso8601-duration"
+import { isEmpty, omit } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
@@ -9,7 +10,9 @@ import {
   TotalsService,
 } from "."
 import { Discount, DiscountRule } from ".."
+import { DiscountConditionType } from "../models/discount-condition"
 import { DiscountRepository } from "../repositories/discount"
+import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig } from "../types/common"
@@ -18,8 +21,9 @@ import {
   CreateDynamicDiscountInput,
   FilterableDiscountProps,
   UpdateDiscountInput,
+  UpsertDiscountConditionInput,
 } from "../types/discount"
-import { formatException } from "../utils/exception-formatter"
+import { formatException, PostgresError } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate discounts.
@@ -30,6 +34,7 @@ class DiscountService extends BaseService {
   private discountRepository_: typeof DiscountRepository
   private discountRuleRepository_: typeof DiscountRuleRepository
   private giftCardRepository_: typeof GiftCardRepository
+  private discountConditionRepository_: typeof DiscountConditionRepository
   private totalsService_: TotalsService
   private productService_: ProductService
   private regionService_: RegionService
@@ -40,6 +45,7 @@ class DiscountService extends BaseService {
     discountRepository,
     discountRuleRepository,
     giftCardRepository,
+    discountConditionRepository,
     totalsService,
     productService,
     regionService,
@@ -58,6 +64,9 @@ class DiscountService extends BaseService {
 
     /** @private @const {GiftCardRepository} */
     this.giftCardRepository_ = giftCardRepository
+
+    /** @private @const {DiscountConditionRepository} */
+    this.discountConditionRepository_ = discountConditionRepository
 
     /** @private @const {TotalsService} */
     this.totalsService_ = totalsService
@@ -82,6 +91,7 @@ class DiscountService extends BaseService {
       discountRepository: this.discountRepository_,
       discountRuleRepository: this.discountRuleRepository_,
       giftCardRepository: this.giftCardRepository_,
+      discountConditionRepository: this.discountConditionRepository_,
       totalsService: this.totalsService_,
       productService: this.productService_,
       regionService: this.regionService_,
@@ -205,10 +215,10 @@ class DiscountService extends BaseService {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
       const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
-      // TODO: Replace with discount conditions
-      // if (discount.rule?.valid_for) {
-      //   discount.rule.valid_for = discount.rule.valid_for.map((id) => ({ id }))
-      // }
+      const conditions = discount.rule?.conditions
+
+      const ruleToCreate = omit(discount.rule, ["conditions"])
+      discount.rule = ruleToCreate
 
       const validatedRule = this.validateDiscountRule_(discount.rule)
 
@@ -239,6 +249,13 @@ class DiscountService extends BaseService {
 
         const created = await discountRepo.create(discount)
         const result = await discountRepo.save(created)
+
+        if (conditions?.length) {
+          for (const cond of conditions) {
+            await this.upsertDiscountCondition_(result.id, cond)
+          }
+        }
+
         return result
       } catch (error) {
         throw formatException(error)
@@ -282,7 +299,7 @@ class DiscountService extends BaseService {
    */
   async retrieveByCode(
     discountCode: string,
-    relations = []
+    relations: string[] = []
   ): Promise<Discount> {
     const discountRepo = this.manager_.getCustomRepository(
       this.discountRepository_
@@ -327,6 +344,13 @@ class DiscountService extends BaseService {
         relations: ["rule"],
       })
 
+      const conditions = update?.rule?.conditions
+      const ruleToUpdate = omit(update.rule, "conditions")
+
+      if (!isEmpty(ruleToUpdate)) {
+        update.rule = ruleToUpdate
+      }
+
       const { rule, metadata, regions, ...rest } = update
 
       if (rest.ends_at) {
@@ -345,6 +369,12 @@ class DiscountService extends BaseService {
         )
       }
 
+      if (conditions?.length) {
+        for (const cond of conditions) {
+          await this.upsertDiscountCondition_(discount.id, cond)
+        }
+      }
+
       if (regions) {
         discount.regions = await Promise.all(
           regions.map((regionId) => this.regionService_.retrieve(regionId))
@@ -356,13 +386,7 @@ class DiscountService extends BaseService {
       }
 
       if (rule) {
-        discount.rule = this.validateDiscountRule_(rule)
-        // TODO: Replace with discount conditions
-        // if (rule.valid_for) {
-        //   discount.rule.valid_for = discount.rule.valid_for.map((id) => ({
-        //     id,
-        //   }))
-        // }
+        discount.rule = this.validateDiscountRule_(ruleToUpdate)
       }
 
       for (const key of Object.keys(rest).filter(
@@ -535,6 +559,103 @@ class DiscountService extends BaseService {
 
       return Promise.resolve()
     })
+  }
+
+  resolveConditionType_(data: UpsertDiscountConditionInput):
+    | {
+        type: DiscountConditionType
+        resource_ids: string[]
+      }
+    | undefined {
+    switch (true) {
+      case !!data.products?.length:
+        return {
+          type: DiscountConditionType.PRODUCTS,
+          resource_ids: data.products!,
+        }
+      case !!data.product_collections?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_COLLECTIONS,
+          resource_ids: data.product_collections!,
+        }
+      case !!data.product_types?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_TYPES,
+          resource_ids: data.product_types!,
+        }
+      case !!data.product_tags?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_TAGS,
+          resource_ids: data.product_tags!,
+        }
+      case !!data.customer_groups?.length:
+        return {
+          type: DiscountConditionType.CUSTOMER_GROUPS,
+          resource_ids: data.customer_groups!,
+        }
+      default:
+        return undefined
+    }
+  }
+
+  async upsertDiscountCondition_(
+    discountId: string,
+    data: UpsertDiscountConditionInput
+  ): Promise<void> {
+    const resolvedConditionType = this.resolveConditionType_(data)
+
+    const res = this.atomicPhase_(
+      async (manager) => {
+        const discountConditionRepo: DiscountConditionRepository =
+          manager.getCustomRepository(this.discountConditionRepository_)
+
+        if (!resolvedConditionType) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Missing one of products, collections, tags, types or customer groups in data`
+          )
+        }
+
+        if (data.id) {
+          return await discountConditionRepo.addConditionResources(
+            data.id,
+            resolvedConditionType.resource_ids,
+            resolvedConditionType.type,
+            true
+          )
+        }
+
+        const discount = await this.retrieve(discountId, {
+          relations: ["rule", "rule.conditions"],
+        })
+
+        const created = discountConditionRepo.create({
+          discount_rule_id: discount.rule_id,
+          operator: data.operator,
+          type: resolvedConditionType.type,
+        })
+
+        const discountCondition = await discountConditionRepo.save(created)
+
+        return await discountConditionRepo.addConditionResources(
+          discountCondition.id,
+          resolvedConditionType.resource_ids,
+          resolvedConditionType.type
+        )
+      },
+      async (err: any) => {
+        if (err.code === PostgresError.DUPLICATE_ERROR) {
+          // A unique key constraint failed meaning the combination of
+          // discount rule id, type, and operator already exists in the db.
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            `Discount Condition with operator '${data.operator}' and type '${resolvedConditionType?.type}' already exist on a Discount Rule`
+          )
+        }
+      }
+    )
+
+    return res
   }
 }
 

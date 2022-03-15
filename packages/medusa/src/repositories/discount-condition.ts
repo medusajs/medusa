@@ -93,7 +93,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
   }
 
   async addConditionResources(
-    id: string,
+    conditionId: string,
     resourceIds: string[],
     type: DiscountConditionType,
     overrideExisting = false
@@ -115,7 +115,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     }
 
     toInsert = resourceIds.map((pId) => ({
-      condition_id: id,
+      condition_id: conditionId,
       [resourceId]: pId,
     }))
 
@@ -130,7 +130,10 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       await this.createQueryBuilder()
         .delete()
         .from(fromTable)
-        .where({ condition_id: id, [resourceId]: Not(In(resourceIds)) })
+        .where({
+          condition_id: conditionId,
+          [resourceId]: Not(In(resourceIds)),
+        })
         .execute()
     }
 

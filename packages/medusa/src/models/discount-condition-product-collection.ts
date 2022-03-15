@@ -6,9 +6,9 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
-import { ProductCollection } from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { DiscountCondition } from "./discount-condition"
+import { ProductCollection } from "./product-collection"
 
 @Entity()
 export class DiscountConditionProductCollection {

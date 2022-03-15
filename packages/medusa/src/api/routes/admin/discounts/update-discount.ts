@@ -12,7 +12,11 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { Discount } from "../../../../models/discount"
+import { DiscountConditionOperator } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
@@ -73,16 +77,24 @@ export default async (req, res) => {
   const { discount_id } = req.params
 
   const validated = await validator(AdminPostDiscountsDiscountReq, req.body)
+
+  const validatedParams = await validator(
+    AdminPostDiscountsDiscountParams,
+    req.query
+  )
+
   const discountService: DiscountService = req.scope.resolve("discountService")
 
   await discountService.update(discount_id, validated)
 
-  // TODO: Add the ability to update discount conditions upon updating a discount?
+  const config = getRetrieveConfig<Discount>(
+    defaultAdminDiscountsFields,
+    defaultAdminDiscountsRelations,
+    validatedParams?.fields?.split(",") as (keyof Discount)[],
+    validatedParams?.expand?.split(",")
+  )
 
-  const discount = await discountService.retrieve(discount_id, {
-    select: defaultAdminDiscountsFields,
-    relations: defaultAdminDiscountsRelations,
-  })
+  const discount = await discountService.retrieve(discount_id, config)
 
   res.status(200).json({ discount })
 }
@@ -154,4 +166,30 @@ export class AdminUpdateDiscountRule {
   @IsString()
   @IsNotEmpty()
   allocation: string
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminUpsertCondition)
+  conditions?: AdminUpsertCondition[]
+}
+
+export class AdminUpsertCondition extends AdminUpsertConditionsReq {
+  @IsString()
+  @IsOptional()
+  id?: string
+
+  @IsString()
+  @IsOptional()
+  operator: DiscountConditionOperator
+}
+
+export class AdminPostDiscountsDiscountParams {
+  @IsString()
+  @IsOptional()
+  expand?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
 }

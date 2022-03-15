@@ -6,8 +6,8 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
-import { CustomerGroup } from ".."
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { CustomerGroup } from "./customer-group"
 import { DiscountCondition } from "./discount-condition"
 
 @Entity()
