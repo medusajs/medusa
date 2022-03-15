@@ -194,23 +194,20 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       return true
     }
 
-    // We would like to break the loop as early as possible
-    // to minimize the # of DB accesses, which is why we
-    // check for conditions after each query.
-    //
     // retrieve all conditions for each type where condition type id is in jointable (products, product_types, product_collections, product_tags)
-    // "E.g. for a given condition, give me all products affected by it"
+    // "E.g. for a given product condition, give me all products affected by it"
     // for each of these types, we check:
     //    if condition operation is `in` and the query for conditions defined for the given type is empty, the discount is invalid
     //    if condition operation is `not_in` and the query for conditions defined for the given type is not empty, the discount is invalid
     for (const condition of discountConditions) {
       const { resourceId } = this.getResourceIdentifiers(condition.type)
 
-      // Tags is a ManyToMany relation, so we need to check all tags that might exist on a product
-      if (resourceId === `product_tag_id`) {
+      // Tags is a ManyToMany relation, so we need to check all tags that exist
+      // For each tag, we perform the operation outlined in above comment
+      if (resourceId === DiscountConditionResourceTableId.PRODUCT_TAG_ID) {
         for (const tag of product.tags) {
           const tagConds = await this.queryConditionTable({
-            type: "product_tags",
+            type: condition.type,
             condId: condition.id,
             conditionTypeId: tag.id,
           })
