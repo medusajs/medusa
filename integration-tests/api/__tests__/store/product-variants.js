@@ -93,6 +93,38 @@ describe("/store/variants", () => {
     })
   })
 
+  it("lists by title", async () => {
+    const api = useApi()
+
+    const response = await api.get(
+      "/store/variants?title[]=Test variant rank (1)&title[]=testing12&inventory_quantity[gt]=10"
+    )
+    expect(response.data).toMatchSnapshot({
+      variants: [
+        {
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          options: [
+            {
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          prices: [
+            {
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          product: expect.any(Object),
+          options: [
+            { created_at: expect.any(String), updated_at: expect.any(String) },
+          ],
+        },
+      ],
+    })
+  })
+
   it("/test-variant", async () => {
     const api = useApi()
 

@@ -253,7 +253,7 @@ module.exports = async (connection, data = {}) => {
 
   const variantp1 = await manager.create(ProductVariant, {
     id: "test-variant_pf1",
-    inventory_quantity: 10,
+    inventory_quantity: 12,
     title: "testing12",
     variant_rank: 0,
     sku: "test-skupf1",
