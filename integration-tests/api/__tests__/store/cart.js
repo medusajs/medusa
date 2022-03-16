@@ -5,6 +5,9 @@ const {
   GiftCard,
   Cart,
   CustomShippingOption,
+  ProductVariant,
+  PriceList,
+  MoneyAmount,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -90,6 +93,33 @@ describe("/store/carts", () => {
 
     it("creates a cart with items", async () => {
       await productSeeder(dbConnection)
+
+      const yesterday = ((today) =>
+        new Date(today.setDate(today.getDate() - 1)))(new Date())
+      const tomorrow = ((today) =>
+        new Date(today.setDate(today.getDate() + 1)))(new Date())
+
+      const priceList1 = await dbConnection.manager.create(PriceList, {
+        id: "pl_current",
+        name: "Past winter sale",
+        description: "Winter sale for key accounts.",
+        type: "sale",
+        status: "active",
+        starts_at: yesterday,
+        ends_at: tomorrow,
+      })
+
+      await dbConnection.manager.save(priceList1)
+
+      const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
+        variant_id: "test-variant-sale",
+        currency_code: "usd",
+        amount: 800,
+        price_list_id: "pl_current",
+      })
+
+      await dbConnection.manager.save(ma_sale_1)
+
       const api = useApi()
 
       const response = await api

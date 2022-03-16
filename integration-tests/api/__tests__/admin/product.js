@@ -18,7 +18,7 @@ describe("/admin/products", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -828,8 +828,6 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      console.log(response.data.product.variants[0].prices)
-
       expect(response.status).toEqual(200)
       expect(response.data.product).toMatchSnapshot({
         id: expect.stringMatching(/^prod_*/),
@@ -1128,16 +1126,8 @@ describe("/admin/products", () => {
           console.log(err)
         })
 
-      const response_1 = await dbConnection.manager.find(ProductVariant, {
-        where: { id: "test-variant" },
-        relations: ["prices"],
-      })
-
-      console.log(response_1)
-
       expect(response.status).toEqual(200)
 
-      console.log(response.data.product.variants[0].prices)
       expect(response.data.product).toMatchSnapshot({
         id: "test-product",
         created_at: expect.any(String),
@@ -1212,20 +1202,6 @@ describe("/admin/products", () => {
                 created_at: expect.any(String),
                 currency_code: "usd",
                 id: "test-price",
-                max_quantity: null,
-                min_quantity: null,
-                price_list_id: null,
-                updated_at: expect.any(String),
-                variant_id: "test-variant",
-              },
-              {
-                amount: 150,
-                created_at: expect.any(String),
-                currency_code: "eur",
-                id: expect.stringMatching(/^ma_*/),
-                max_quantity: null,
-                min_quantity: null,
-                price_list_id: null,
                 updated_at: expect.any(String),
                 variant_id: "test-variant",
               },
@@ -1395,13 +1371,6 @@ describe("/admin/products", () => {
         ],
       }
 
-      const v = await dbConnection.manager.find(ProductVariant, {
-        where: { id: "test-variant" },
-        relations: ["prices"],
-      })
-
-      console.log(v)
-
       const response = await api
         .post("/admin/products/test-product/variants/test-variant", data, {
           headers: {
@@ -1411,13 +1380,6 @@ describe("/admin/products", () => {
         .catch((err) => {
           console.log(err)
         })
-
-      const v_1 = await dbConnection.manager.find(ProductVariant, {
-        where: { id: "test-variant" },
-        relations: ["prices"],
-      })
-
-      console.log(v_1)
 
       expect(response.status).toEqual(200)
       expect(response.data).toEqual({
@@ -1698,8 +1660,6 @@ describe("/admin/products", () => {
         })
 
       expect(response.status).toEqual(200)
-
-      console.log(response.data.product.variants[1].prices)
 
       expect(response.data.product.variants[1].prices.length).toEqual(
         data.prices.length

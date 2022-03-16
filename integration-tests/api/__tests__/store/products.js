@@ -1,4 +1,3 @@
-const { Product } = require("@medusajs/medusa")
 const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -6,7 +5,6 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
-const { isNonNullExpression } = require("typescript")
 jest.setTimeout(30000)
 
 describe("/store/products", () => {
@@ -267,8 +265,8 @@ describe("/store/products", () => {
           collection_id: "test-collection",
           variants: [
             expect.objectContaining({
-              originalPrice: 100,
-              calculatedPrice: 80,
+              original_price: 100,
+              calculated_price: 80,
               prices: [
                 expect.objectContaining({
                   id: "test-price",
@@ -283,8 +281,8 @@ describe("/store/products", () => {
               ],
             }),
             expect.objectContaining({
-              originalPrice: 100,
-              calculatedPrice: 80,
+              original_price: 100,
+              calculated_price: 80,
               prices: [
                 expect.objectContaining({
                   id: "test-price2",
@@ -299,8 +297,8 @@ describe("/store/products", () => {
               ],
             }),
             expect.objectContaining({
-              originalPrice: 100,
-              calculatedPrice: 80,
+              original_price: 100,
+              calculated_price: 80,
               prices: [
                 expect.objectContaining({
                   id: "test-price1",
@@ -372,6 +370,8 @@ describe("/store/products", () => {
               height: null,
               hs_code: null,
               origin_country: null,
+              calculated_price: 80,
+              original_price: 100,
               barcode: "test-barcode",
               product_id: "test-product",
               created_at: expect.any(String),
@@ -401,13 +401,18 @@ describe("/store/products", () => {
                   created_at: expect.any(String),
                   min_quantity: null,
                   max_quantity: null,
-                  price_list_id: null,
+                  price_list_id: "pl",
                   updated_at: expect.any(String),
                   amount: 80,
                   currency_code: "usd",
                   deleted_at: null,
                   region_id: null,
                   variant_id: "test-variant",
+                  price_list: {
+                    id: "pl",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  },
                 },
               ],
             },
@@ -428,6 +433,8 @@ describe("/store/products", () => {
               hs_code: null,
               origin_country: null,
               barcode: null,
+              calculated_price: 80,
+              original_price: 100,
               product_id: "test-product",
               created_at: expect.any(String),
               updated_at: expect.any(String),
@@ -444,6 +451,7 @@ describe("/store/products", () => {
                   updated_at: expect.any(String),
                   amount: 100,
                   currency_code: "usd",
+                  price_list_id: null,
                   deleted_at: null,
                   region_id: null,
                   variant_id: "test-variant_2",
@@ -458,8 +466,13 @@ describe("/store/products", () => {
                   region_id: null,
                   min_quantity: null,
                   max_quantity: null,
-                  price_list_id: null,
+                  price_list_id: "pl",
                   variant_id: "test-variant_2",
+                  price_list: {
+                    id: "pl",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  },
                 },
               ],
             },
@@ -479,6 +492,8 @@ describe("/store/products", () => {
               height: null,
               hs_code: null,
               origin_country: null,
+              calculated_price: 80,
+              original_price: 100,
               barcode: "test-barcode 1",
               product_id: "test-product",
               created_at: expect.any(String),
@@ -508,13 +523,18 @@ describe("/store/products", () => {
                   created_at: expect.any(String),
                   min_quantity: null,
                   max_quantity: null,
-                  price_list_id: null,
+                  price_list_id: "pl",
                   updated_at: expect.any(String),
                   amount: 80,
                   currency_code: "usd",
                   deleted_at: null,
                   region_id: null,
                   variant_id: "test-variant_1",
+                  price_list: {
+                    id: "pl",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  },
                 },
               ],
             },

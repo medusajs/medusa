@@ -18,7 +18,7 @@ describe("Promotions", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -51,8 +51,6 @@ describe("Promotions", () => {
         .catch((error) => console.log(error))
 
       const variant = res.data.product.variants[0]
-
-      console.log(variant)
 
       const lowestPrice = variant.prices.reduce(
         (prev, curr) => (curr.amount < prev ? curr.amount : prev),
@@ -431,7 +429,7 @@ describe("Promotions", () => {
       const variant = res.data.product.variants[0]
 
       expect(variant.prices.length).toEqual(3)
-      console.log(variant.prices)
+
       expect(variant.prices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
