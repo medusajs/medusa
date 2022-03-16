@@ -32,8 +32,8 @@ describe("/admin/store", () => {
 
     afterEach(async () => {
       const db = useDb()
-      db.teardown()
-      medusaProcess.kill()
+      await db.teardown()
+      await medusaProcess.kill()
     })
 
     it("has created store with default currency", async () => {
@@ -64,7 +64,7 @@ describe("/admin/store", () => {
 
     beforeEach(async () => {
       await adminSeeder(dbConnection)
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
 
       const manager = dbConnection.manager
       const store = await manager.findOne(Store, { name: "Medusa Store" })
@@ -75,6 +75,7 @@ describe("/admin/store", () => {
 
     afterEach(async () => {
       const db = useDb()
+      // await db.shutdown()
       await db.teardown({ forceDelete: ["store"] })
       await medusaProcess.kill()
     })
