@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import { MoneyAmount, ProductVariant } from ".."
+import { MoneyAmount } from ".."
 
 export interface IPriceSelectionStrategy {
   /**
@@ -14,7 +14,7 @@ export interface IPriceSelectionStrategy {
   withTransaction(manager: EntityManager): IPriceSelectionStrategy
 
   calculateVariantPrice(
-    variant: string | ProductVariant,
+    variant: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult>
 }

@@ -241,8 +241,7 @@ class ProductService extends BaseService {
       )
     }
 
-    return rels?.indexOf("variants") > -1 ||
-      rels?.indexOf("variants.prices") > -1
+    return rels?.indexOf("variants.prices") > -1
       ? await this.setAdditionalPrices(
           product,
           config.currency_code,
@@ -579,7 +578,7 @@ class ProductService extends BaseService {
 
             const saved = await this.productVariantService_
               .withTransaction(manager)
-              .update(variant.id, newVariant)
+              .update(variant, newVariant)
 
             newVariants.push(saved)
           } else {
@@ -603,6 +602,7 @@ class ProductService extends BaseService {
       }
 
       const result = await productRepo.save(product)
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductService.Events.UPDATED, {

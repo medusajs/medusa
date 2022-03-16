@@ -18,9 +18,33 @@ describe("ProductVariantService", () => {
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
+
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
+    const priceSelectionStrat = {
+      calculateVariantPrice: (variantId, context) => {
+        return {
+          originalPrice: null,
+          calculatedPrice: null,
+          prices: [],
+        }
+      },
+    }
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return priceSelectionStrat
+      },
+    }
+
     const productVariantService = new ProductVariantService({
       manager: MockManager,
       productVariantRepository,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
     beforeEach(async () => {
@@ -227,6 +251,28 @@ describe("ProductVariantService", () => {
   })
 
   describe("update", () => {
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
+    const priceSelectionStrat = {
+      calculateVariantPrice: (variantId, context) => {
+        return {
+          originalPrice: null,
+          calculatedPrice: null,
+          prices: [],
+        }
+      },
+    }
+
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return priceSelectionStrat
+      },
+    }
+
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
@@ -246,6 +292,8 @@ describe("ProductVariantService", () => {
       moneyAmountRepository,
       productVariantRepository,
       productOptionValueRepository,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
     productVariantService.updateOptionValue = jest
@@ -278,6 +326,9 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("ironman"),
         title: "new title",
+        calculated_price: null,
+        original_price: null,
+        prices: [],
       })
     })
 
@@ -302,6 +353,9 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("ironman"),
         title: "new title",
+        calculated_price: null,
+        original_price: null,
+        prices: [],
       })
     })
 
@@ -342,6 +396,9 @@ describe("ProductVariantService", () => {
         metadata: {
           testing: "this",
         },
+        calculated_price: null,
+        original_price: null,
+        prices: [],
       })
     })
 
@@ -365,6 +422,9 @@ describe("ProductVariantService", () => {
         id: IdMap.getId("ironman"),
         inventory_quantity: 98,
         title: "new title",
+        calculated_price: null,
+        original_price: null,
+        prices: [],
       })
     })
 
@@ -498,9 +558,25 @@ describe("ProductVariantService", () => {
       },
     })
 
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
     const priceSelectionStrat = {
-      calculateVariantPrice: async (variantId, context) => {
-        return { calculatedPrice: 1000 }
+      calculateVariantPrice: (variantId, context) => {
+        return Promise.resolve({
+          originalPrice: null,
+          calculatedPrice: 1000,
+          prices: [],
+        })
+      },
+    }
+
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return priceSelectionStrat
       },
     }
 
@@ -509,7 +585,8 @@ describe("ProductVariantService", () => {
       eventBusService,
       regionService,
       moneyAmountRepository,
-      priceSelectionStrategy: priceSelectionStrat,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
     beforeEach(async () => {
