@@ -187,6 +187,10 @@ class Client {
     options: RequestOptions = {},
     customHeaders: Record<string, any> = {}
   ): Promise<any> {
+    if (method === "POST" && !payload) {
+      payload = {}
+    }
+
     const reqOpts = {
       method,
       withCredentials: true,
