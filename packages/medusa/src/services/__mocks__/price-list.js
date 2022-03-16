@@ -30,6 +30,10 @@ export const PriceListServiceMock = {
   listAndCount: jest.fn().mockImplementation((fields, config) => {
     return Promise.resolve([[{ id: "pl_1" }, { id: "pl_2" }], 2])
   }),
+
+  upsertCustomerGroups_: jest.fn().mockImplementation((id, groups) => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
