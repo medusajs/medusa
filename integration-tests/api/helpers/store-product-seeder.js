@@ -9,6 +9,7 @@ const {
   ProductVariant,
   Image,
   Cart,
+  PriceList,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -23,8 +24,28 @@ module.exports = async (connection, data = {}) => {
   const tenDaysAgo = ((today) => new Date(today.setDate(today.getDate() - 10)))(
     new Date()
   )
-  const tenDaysFromToday = ((today) =>
-    new Date(today.setDate(today.getDate() + 10)))(new Date())
+
+  const priceList = await manager.create(PriceList, {
+    id: "pl",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  await manager.save(priceList)
+
+  const priceList1 = await manager.create(PriceList, {
+    id: "pl_expired",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: yesterday,
+  })
+
+  await manager.save(priceList1)
 
   const defaultProfile = await manager.findOne(ShippingProfile, {
     type: "default",
@@ -144,17 +165,13 @@ module.exports = async (connection, data = {}) => {
         id: "test-price-discount",
         currency_code: "usd",
         amount: 80,
-        type: "sale",
-        starts_at: yesterday,
-        ends_at: tomorrow,
+        price_list_id: "pl",
       },
       {
         id: "test-price-discount-expired",
         currency_code: "usd",
-        amount: 80,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
+        amount: 70,
+        price_list_id: "pl_expired",
       },
     ],
     options: [
@@ -184,17 +201,13 @@ module.exports = async (connection, data = {}) => {
         id: "test-price1-discount",
         currency_code: "usd",
         amount: 80,
-        type: "sale",
-        starts_at: yesterday,
-        ends_at: tomorrow,
+        price_list_id: "pl",
       },
       {
         id: "test-price1-discount-expired",
         currency_code: "usd",
-        amount: 80,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
+        amount: 70,
+        price_list_id: "pl_expired",
       },
     ],
     options: [
@@ -223,6 +236,7 @@ module.exports = async (connection, data = {}) => {
         id: "test-price2-discount",
         currency_code: "usd",
         amount: 80,
+        price_list_id: "pl",
         type: "sale",
         starts_at: yesterday,
         ends_at: tomorrow,
@@ -230,10 +244,8 @@ module.exports = async (connection, data = {}) => {
       {
         id: "test-price2-discount-expired",
         currency_code: "usd",
-        amount: 80,
-        type: "sale",
-        starts_at: tenDaysAgo,
-        ends_at: yesterday,
+        amount: 70,
+        price_list_id: "pl_expired",
       },
     ],
     options: [

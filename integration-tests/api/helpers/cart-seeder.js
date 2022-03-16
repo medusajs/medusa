@@ -15,6 +15,7 @@ const {
   Payment,
   PaymentSession,
   CustomerGroup,
+  PriceList,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -312,6 +313,28 @@ module.exports = async (connection, data = {}) => {
     data: {},
   })
 
+  const priceList = await manager.create(PriceList, {
+    id: "pl",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  await manager.save(priceList)
+
+  const priceList1 = await manager.create(PriceList, {
+    id: "pl_current",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+  })
+
+  await manager.save(priceList1)
+
   await manager.insert(Product, {
     id: "giftcard-product",
     title: "Giftcard",
@@ -404,7 +427,6 @@ module.exports = async (connection, data = {}) => {
   const ma_sale = manager.create(MoneyAmount, {
     variant_id: "test-variant-sale",
     currency_code: "usd",
-    type: "default",
     amount: 1000,
   })
   await manager.save(ma_sale)
@@ -412,10 +434,8 @@ module.exports = async (connection, data = {}) => {
   const ma_sale_1 = manager.create(MoneyAmount, {
     variant_id: "test-variant-sale",
     currency_code: "usd",
-    type: "sale",
-    starts_at: yesterday,
-    ends_at: tomorrow,
     amount: 800,
+    price_list_id: "pl_current",
   })
 
   await manager.save(ma_sale_1)
@@ -654,7 +674,6 @@ module.exports = async (connection, data = {}) => {
   const ma_cg = manager.create(MoneyAmount, {
     variant_id: "test-variant-sale-cg",
     currency_code: "usd",
-    type: "default",
     amount: 1000,
   })
   await manager.save(ma_cg)
@@ -662,7 +681,7 @@ module.exports = async (connection, data = {}) => {
   const ma_sale_cg = manager.create(MoneyAmount, {
     variant_id: "test-variant-sale-cg",
     currency_code: "usd",
-    type: "sale",
+    price_list_id: "pl",
     amount: 500,
   })
   await manager.save(ma_sale_cg)
@@ -671,7 +690,6 @@ module.exports = async (connection, data = {}) => {
     variant_id: "test-variant-sale-cg",
     region_id: "test-region-multiple",
     currency_code: "eur",
-    type: "default",
     amount: 700,
   })
   await manager.save(ma_sale_cg_new_region)

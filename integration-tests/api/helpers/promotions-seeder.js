@@ -108,8 +108,6 @@ module.exports = async (connection, data = {}) => {
   customer7.groups = [c_group_5, c_group_6]
   await manager.save(customer7)
 
-  // TODO seed price lists
-
   const priceList = await manager.create(PriceList, {
     id: "pl",
     name: "VIP winter sale",
