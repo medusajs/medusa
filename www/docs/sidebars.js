@@ -140,9 +140,16 @@ module.exports = {
               ]
             },
             {
-              type: "doc",
-              id: "tutorial/adding-custom-functionality",
-              label: "Add Custom Functionality"
+              type: "category",
+              label: 'Subscribers',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/subscribers/create-subscriber",
+                  label: "Create a Subscriber"
+                },
+              ]
             },
             {
               type: "doc",
