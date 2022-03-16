@@ -16,6 +16,7 @@ const toTest = [
           "test-basic-variant",
           "test-region",
           "dkk",
+          undefined,
           undefined
         )
         expect(value).toEqual({
@@ -26,7 +27,9 @@ const toTest = [
               amount: 100,
               region_id: "test-region",
               currency_code: "dkk",
-              type: "default",
+              max_quantity: null,
+              min_quantity: null,
+              price_list_id: null,
             },
           ],
         })
@@ -66,7 +69,8 @@ const toTest = [
           "test-variant",
           "test-region",
           "dkk",
-          "test-customer-1"
+          "test-customer-1",
+          undefined
         )
       },
     },
@@ -89,9 +93,17 @@ const toTest = [
               amount: 100,
               region_id: "test-region",
               currency_code: "dkk",
-              type: "default",
+              max_quantity: null,
+              min_quantity: null,
+              price_list_id: null,
             },
-            { amount: 50, region_id: "test-region", currency_code: "dkk" },
+            {
+              amount: 50,
+              region_id: "test-region",
+              currency_code: "dkk",
+              max_quantity: null,
+              min_quantity: null,
+            },
           ],
         })
       },
@@ -115,7 +127,9 @@ const toTest = [
               amount: 100,
               region_id: "test-region",
               currency_code: "dkk",
-              type: "default",
+              max_quantity: null,
+              min_quantity: null,
+              price_list_id: null,
             },
             {
               amount: 30,
@@ -162,7 +176,9 @@ const toTest = [
               amount: 100,
               region_id: "test-region",
               currency_code: "dkk",
-              type: "default",
+              max_quantity: null,
+              min_quantity: null,
+              price_list_id: null,
             },
             {
               amount: 30,
@@ -208,7 +224,9 @@ const toTest = [
               amount: 100,
               region_id: "test-region",
               currency_code: "dkk",
-              type: "default",
+              max_quantity: null,
+              min_quantity: null,
+              price_list_id: null,
             },
             {
               amount: 30,
@@ -247,14 +265,22 @@ describe("PriceSelectionStrategy", () => {
           findManyForVariantInRegion: jest
             .fn()
             .mockImplementation(
-              async (variant_id, region_id, currency_code, customer_id) => {
+              async (
+                variant_id,
+                region_id,
+                currency_code,
+                customer_id,
+                useDiscountPrices
+              ) => {
                 if (variant_id === "test-basic-variant") {
                   return [
                     {
                       amount: 100,
                       region_id,
                       currency_code,
-                      type: "default",
+                      price_list_id: null,
+                      max_quantity: null,
+                      min_quantity: null,
                     },
                   ]
                 }
@@ -264,12 +290,16 @@ describe("PriceSelectionStrategy", () => {
                       amount: 100,
                       region_id,
                       currency_code,
-                      type: "default",
+                      price_list_id: null,
+                      max_quantity: null,
+                      min_quantity: null,
                     },
                     {
                       amount: 50,
                       region_id: region_id,
                       currency_code: currency_code,
+                      max_quantity: null,
+                      min_quantity: null,
                     },
                   ]
                 }
@@ -279,7 +309,9 @@ describe("PriceSelectionStrategy", () => {
                       amount: 100,
                       region_id,
                       currency_code,
-                      type: "default",
+                      price_list_id: null,
+                      max_quantity: null,
+                      min_quantity: null,
                     },
                     {
                       amount: 30,

@@ -5,7 +5,6 @@ import {
 } from "../interfaces/price-selection-strategy"
 import { MedusaError } from "medusa-core-utils"
 import { MoneyAmountRepository } from "../repositories/money-amount"
-import { MoneyAmountType } from "../types/money-amount"
 import { EntityManager } from "typeorm"
 
 class PriceSelectionStrategy implements IPriceSelectionStrategy {
@@ -17,17 +16,21 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
     this.moneyAmountRepository_ = moneyAmountRepository
   }
 
+  withTransaction(manager: EntityManager): IPriceSelectionStrategy {
+    if (!manager) {
+      return this
+    }
+
+    return new PriceSelectionStrategy({
+      manager: manager,
+      moneyAmountRepository: this.moneyAmountRepository_,
+    })
+  }
+
   async calculateVariantPrice(
     variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    if (!context.region_id && !context.currency_code) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Money amount could not be found`
-      )
-    }
-
     const moneyRepo = this.manager_.getCustomRepository(
       this.moneyAmountRepository_
     )
@@ -36,29 +39,55 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       variant_id,
       context.region_id,
       context.currency_code,
-      context.customer_id
+      context.customer_id,
+      context.includeDiscountPrices
     )
 
-    let defaultMoneyAmount = prices.find(
-      (p) =>
-        p.type === MoneyAmountType.DEFAULT &&
-        context.region_id &&
-        p.region_id === context.region_id
-    )
+    if (!prices.length) {
+      return {
+        originalPrice: null,
+        calculatedPrice: null,
+        prices: [],
+      }
+    }
+
+    let defaultMoneyAmount
+
+    if (context.region_id || context.currency_code) {
+      defaultMoneyAmount = prices.find(
+        (p) =>
+          p.price_list_id === null &&
+          context.region_id &&
+          p.max_quantity === null &&
+          p.max_quantity === null &&
+          p.region_id === context.region_id
+      )
+
+      if (!defaultMoneyAmount) {
+        defaultMoneyAmount = prices.find(
+          (p) =>
+            p.price_list_id === null &&
+            context.currency_code &&
+            p.max_quantity === null &&
+            p.max_quantity === null &&
+            p.currency_code === context.currency_code
+        )
+      }
+    }
 
     if (!defaultMoneyAmount) {
       defaultMoneyAmount = prices.find(
         (p) =>
-          p.type === MoneyAmountType.DEFAULT &&
-          context.currency_code &&
-          p.currency_code === context.currency_code
+          p.price_list_id === null &&
+          p.max_quantity === null &&
+          p.max_quantity === null
       )
     }
 
     if (!defaultMoneyAmount) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `Money amount for variant with id ${variant_id} in region ${context.region_id} does not exist`
+        `Default money amount for variant with id ${variant_id} in region ${context.region_id} does not exist`
       )
     }
 
@@ -68,18 +97,15 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       prices: prices,
     }
 
-    const validPrices = prices.filter(
-      (p) =>
-        (typeof context.quantity !== "undefined" &&
-          (!p.min_quantity || p.min_quantity <= context.quantity) &&
-          (!p.max_quantity || p.max_quantity >= context.quantity)) ||
-        (typeof context.quantity === "undefined" &&
-          isValidPriceWithoutQuantity(p))
+    const validPrices = prices.filter((price) =>
+      isValidQuantity(price, context.quantity)
     )
 
     result.calculatedPrice = validPrices.reduce(
       (prev, curr) =>
-        curr.amount < prev && !isNaN(curr.amount) ? curr.amount : prev,
+        prev === null || (curr.amount < prev && !isNaN(curr.amount))
+          ? curr.amount
+          : prev,
       validPrices[0]?.amount || result.originalPrice // if array is empty calculated price will be original price
     )
 
@@ -87,8 +113,17 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
   }
 }
 
+const isValidQuantity = (price, quantity): boolean =>
+  (typeof quantity !== "undefined" &&
+    isValidPriceWithQuantity(price, quantity)) ||
+  (typeof quantity === "undefined" && isValidPriceWithoutQuantity(price))
+
 const isValidPriceWithoutQuantity = (price): boolean =>
   (!price.max_quantity && !price.min_quantity) ||
   ((!price.min_quantity || price.min_quantity === 0) && price.max_quantity)
+
+const isValidPriceWithQuantity = (price, quantity): boolean =>
+  (!price.min_quantity || price.min_quantity <= quantity) &&
+  (!price.max_quantity || price.max_quantity >= quantity)
 
 export default PriceSelectionStrategy
