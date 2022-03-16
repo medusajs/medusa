@@ -29,7 +29,6 @@ class ProductService extends BaseService {
     searchService,
     cartRepository,
     priceSelectionStrategy,
-    moneyAmountRepository,
   }) {
     super()
 
