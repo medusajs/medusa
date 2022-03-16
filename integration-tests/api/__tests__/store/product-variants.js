@@ -217,6 +217,77 @@ describe("/store/variants", () => {
       await db.teardown()
     })
 
+    it("/test-variant", async () => {
+      const api = useApi()
+
+      const response = await api.get("/store/variants/test-variant")
+
+      expect(response.data).toMatchSnapshot({
+        variant: {
+          allow_backorder: false,
+          barcode: "test-barcode",
+          created_at: expect.any(String),
+          deleted_at: null,
+          ean: "test-ean",
+          height: null,
+          hs_code: null,
+          id: "test-variant",
+          inventory_quantity: 10,
+          length: null,
+          manage_inventory: true,
+          material: null,
+          metadata: null,
+          mid_code: null,
+          origin_country: null,
+          product_id: "test-product",
+          sku: "test-sku",
+          title: "Test variant",
+          upc: "test-upc",
+          updated_at: expect.any(String),
+          weight: null,
+          width: null,
+          options: [
+            {
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          prices: [
+            {
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              amount: 100,
+              currency_code: "usd",
+              deleted_at: null,
+              id: "test-price",
+              region_id: null,
+              min_quantity: null,
+              max_quantity: null,
+              price_list_id: null,
+              variant_id: "test-variant",
+            },
+            {
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              amount: 80,
+              currency_code: "usd",
+              deleted_at: null,
+              price_list_id: "pl",
+              id: "test-price-discount",
+              region_id: null,
+              variant_id: "test-variant",
+              price_list: {
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                id: "pl",
+              },
+            },
+          ],
+          product: expect.any(Object),
+        },
+      })
+    })
+
     it("sets additional prices correctly when querying a variant", async () => {
       const api = useApi()
 
