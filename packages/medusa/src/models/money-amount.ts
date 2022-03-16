@@ -42,6 +42,7 @@ export class MoneyAmount {
   price_list_id: string | null
 
   @ManyToOne(() => PriceList, (priceList) => priceList.prices, {
+    cascade: true,
     onDelete: "CASCADE",
   })
   @JoinColumn({ name: "price_list_id" })

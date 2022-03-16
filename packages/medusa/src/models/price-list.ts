@@ -59,7 +59,6 @@ export class PriceList {
   customer_groups: CustomerGroup[]
 
   @OneToMany(() => MoneyAmount, (moneyAmount) => moneyAmount.price_list, {
-    cascade: true,
     onDelete: "CASCADE",
   })
   prices: MoneyAmount[]

@@ -102,26 +102,17 @@ class PriceListService extends BaseService {
       try {
         const entity = priceListRepo.create(rest)
 
-        if (customer_groups) {
-          const customerGroups: CustomerGroup[] = []
-
-          for (const cg of customer_groups) {
-            const customerGroup = await this.customerGroupService_.retrieve(
-              cg.id
-            )
-            customerGroups.push(customerGroup)
-          }
-
-          entity.customer_groups = customerGroups
-        }
-
         const priceList = await priceListRepo.save(entity)
 
         if (prices) {
           await moneyAmountRepo.addPriceListPrices(priceList.id, prices)
         }
 
-        const result = await priceListRepo.findOne(priceList.id, {
+        if (customer_groups) {
+          await this.upsertCustomerGroups_(priceList.id, customer_groups)
+        }
+
+        const result = await this.retrieve(priceList.id, {
           relations: ["prices", "customer_groups"],
         })
 
@@ -143,26 +134,9 @@ class PriceListService extends BaseService {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
-      const priceList = await priceListRepo.findOne(id)
-      if (!priceList) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Price list with id: ${id} was not found`
-        )
-      }
+      const priceList = await this.retrieve(id, { select: ["id"] })
 
       const { prices, customer_groups, ...rest } = update
-
-      if (customer_groups) {
-        const customerGroups: CustomerGroup[] = []
-
-        for (const cg of customer_groups) {
-          const customerGroup = await this.customerGroupService_.retrieve(cg.id)
-          customerGroups.push(customerGroup)
-        }
-
-        priceList.customer_groups = customerGroups
-      }
 
       for (const [key, value] of Object.entries(rest)) {
         priceList[key] = value
@@ -174,7 +148,11 @@ class PriceListService extends BaseService {
         await moneyAmountRepo.updatePriceListPrices(id, prices)
       }
 
-      const result = await priceListRepo.findOne(id, {
+      if (customer_groups) {
+        await this.upsertCustomerGroups_(id, customer_groups)
+      }
+
+      const result = await this.retrieve(id, {
         relations: ["prices", "customer_groups"],
       })
 
@@ -195,20 +173,15 @@ class PriceListService extends BaseService {
     replace = false
   ): Promise<PriceList> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
-      const priceList = await priceListRepo.findOne(id, { select: ["id"] })
-      if (!priceList) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Price list with id: ${id} was not found`
-        )
-      }
+      const priceList = await this.retrieve(id, { select: ["id"] })
 
-      await moneyAmountRepo.addPriceListPrices(id, prices, replace)
+      await moneyAmountRepo.addPriceListPrices(priceList.id, prices, replace)
 
-      const result = await priceListRepo.findOne(id, { relations: ["prices"] })
+      const result = await this.retrieve(priceList.id, {
+        relations: ["prices"],
+      })
 
       return result
     })
@@ -222,18 +195,11 @@ class PriceListService extends BaseService {
    */
   async deletePrices(id: string, priceIds: string[]): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
-      const priceList = await priceListRepo.findOne(id, { select: ["id"] })
-      if (!priceList) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Price list with id: ${id} was not found`
-        )
-      }
+      const priceList = await this.retrieve(id, { select: ["id"] })
 
-      await moneyAmountRepo.deletePriceListPrices(id, priceIds)
+      await moneyAmountRepo.deletePriceListPrices(priceList.id, priceIds)
 
       return Promise.resolve()
     })
@@ -290,6 +256,25 @@ class PriceListService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
     return await priceListRepo.findAndCount(query)
+  }
+
+  async upsertCustomerGroups_(
+    priceListId: string,
+    customerGroups: { id: string }[]
+  ): Promise<void> {
+    const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    const priceList = await this.retrieve(priceListId, { select: ["id"] })
+
+    const groups: CustomerGroup[] = []
+
+    for (const cg of customerGroups) {
+      const customerGroup = await this.customerGroupService_.retrieve(cg.id)
+      groups.push(customerGroup)
+    }
+
+    priceList.customer_groups = groups
+
+    await priceListRepo.save(priceList)
   }
 }
 
