@@ -1,17 +1,13 @@
 import partition from "lodash/partition"
-import { MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityRepository,
   In,
   IsNull,
-  LessThan,
-  MoreThan,
   Not,
   Repository,
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
-import PriceSelectionStrategy from "../strategies/price-selection"
 import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
@@ -174,7 +170,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     } else {
       qb = qb
         .leftJoinAndSelect("price_list.customer_groups", "cgroup")
-        .andWhere("cgroup is null")
+        .andWhere("cgroup.id is null")
     }
     return await qb.getMany()
   }

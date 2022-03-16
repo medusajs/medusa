@@ -18,19 +18,11 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
 
   async calculateVariantPrice(
     variant_id: string,
-    context: PriceSelectionContext
+    context: PriceSelectionContext,
+    mRepo?: MoneyAmountRepository
   ): Promise<PriceSelectionResult> {
-    // if (!context.region_id && !context.currency_code) {
-    //   // TODO make both optional and query all money amounts for a region to set the resulting prices
-    //   throw new MedusaError(
-    //     MedusaError.Types.NOT_FOUND,
-    //     `Money amount could not be found`
-    //   )
-    // }
-
-    const moneyRepo = this.manager_.getCustomRepository(
-      this.moneyAmountRepository_
-    )
+    const moneyRepo =
+      mRepo || this.manager_.getCustomRepository(this.moneyAmountRepository_)
 
     const prices = await moneyRepo.findManyForVariantInRegion(
       variant_id,
@@ -55,6 +47,8 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
         (p) =>
           p.price_list_id === null &&
           context.region_id &&
+          p.max_quantity === null &&
+          p.max_quantity === null &&
           p.region_id === context.region_id
       )
 
@@ -63,13 +57,20 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
           (p) =>
             p.price_list_id === null &&
             context.currency_code &&
+            p.max_quantity === null &&
+            p.max_quantity === null &&
             p.currency_code === context.currency_code
         )
       }
     }
 
     if (!defaultMoneyAmount) {
-      defaultMoneyAmount = prices.find((p) => p.price_list_id === null)
+      defaultMoneyAmount = prices.find(
+        (p) =>
+          p.price_list_id === null &&
+          p.max_quantity === null &&
+          p.max_quantity === null
+      )
     }
 
     if (!defaultMoneyAmount) {
@@ -85,9 +86,8 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       prices: prices,
     }
 
-    const validPrices = prices.filter(
-      (price) =>
-        price.price_list_id !== null && isValidQuantity(price, context.quantity)
+    const validPrices = prices.filter((price) =>
+      isValidQuantity(price, context.quantity)
     )
 
     result.calculatedPrice = validPrices.reduce(

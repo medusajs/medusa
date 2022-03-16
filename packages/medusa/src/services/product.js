@@ -29,6 +29,7 @@ class ProductService extends BaseService {
     searchService,
     cartRepository,
     priceSelectionStrategy,
+    moneyAmountRepository,
   }) {
     super()
 
@@ -70,6 +71,9 @@ class ProductService extends BaseService {
 
     /** @private @const {IPriceSelectionStrategy} */
     this.priceSelectionStrategy_ = priceSelectionStrategy
+
+    /** @private @const {ProductVariant} */
+    this.moneyAmountRepository_ = moneyAmountRepository
   }
 
   withTransaction(transactionManager) {
@@ -90,6 +94,7 @@ class ProductService extends BaseService {
       imageRepository: this.imageRepository_,
       cartRepository: this.cartRepository_,
       priceSelectionStrategy: this.priceSelectionStrategy_,
+      moneyAmountRepository: this.moneyAmountRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -580,7 +585,7 @@ class ProductService extends BaseService {
 
             const saved = await this.productVariantService_
               .withTransaction(manager)
-              .update(variant, newVariant)
+              .update(variant.id, newVariant)
 
             newVariants.push(saved)
           } else {
@@ -1006,44 +1011,55 @@ class ProductService extends BaseService {
     customer_id,
     includeDiscountPrices = false
   ) {
-    const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
+    return this.atomicPhase_(async (manager) => {
+      const moneyRepo = manager.getCustomRepository(this.moneyAmountRepository_)
 
-    const cart = await cartRepo.findOne({
-      where: { id: cart_id },
-      relations: ["region"],
-    })
+      const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
 
-    const productArray = Array.isArray(products) ? products : [products]
-
-    const productsWithPrices = await Promise.all(
-      productArray.map(async (p) => {
-        if (p.variants?.length) {
-          p.variants = await Promise.all(
-            p.variants.map(async (v) => {
-              const prices =
-                await this.priceSelectionStrategy_.calculateVariantPrice(v.id, {
-                  region_id: cart?.region_id || region_id,
-                  currency_code: cart?.region?.currency_code || currency_code,
-                  cart_id: cart_id,
-                  customer_id: customer_id,
-                  includeDiscountPrices,
-                })
-
-              return {
-                ...v,
-                prices: prices.prices,
-                original_price: prices.originalPrice,
-                calculated_price: prices.calculatedPrice,
-              }
-            })
-          )
-        }
-
-        return p
+      const cart = await cartRepo.findOne({
+        where: { id: cart_id },
+        relations: ["region"],
       })
-    )
 
-    return Array.isArray(products) ? productsWithPrices : productsWithPrices[0]
+      const productArray = Array.isArray(products) ? products : [products]
+
+      const productsWithPrices = await Promise.all(
+        productArray.map(async (p) => {
+          if (p.variants?.length) {
+            p.variants = await Promise.all(
+              p.variants.map(async (v) => {
+                const prices =
+                  await this.priceSelectionStrategy_.calculateVariantPrice(
+                    v.id,
+                    {
+                      region_id: cart?.region_id || region_id,
+                      currency_code:
+                        cart?.region?.currency_code || currency_code,
+                      cart_id: cart_id,
+                      customer_id: customer_id,
+                      includeDiscountPrices,
+                    },
+                    moneyRepo
+                  )
+
+                return {
+                  ...v,
+                  prices: prices.prices,
+                  original_price: prices.originalPrice,
+                  calculated_price: prices.calculatedPrice,
+                }
+              })
+            )
+          }
+
+          return p
+        })
+      )
+
+      return Array.isArray(products)
+        ? productsWithPrices
+        : productsWithPrices[0]
+    })
   }
 }
 

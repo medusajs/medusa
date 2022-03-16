@@ -355,14 +355,6 @@ class ProductVariantService extends BaseService {
 
       const result = await variantRepo.save(variant)
 
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductVariantService.Events.UPDATED, {
-          id: result.id,
-          product_id: result.product_id,
-          fields: Object.keys(update),
-        })
-
       const res = await this.setAdditionalPrices(
         result,
         config?.currency_code,
@@ -371,6 +363,14 @@ class ProductVariantService extends BaseService {
         config?.customer_id,
         config?.includeDiscountPrices
       )
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductVariantService.Events.UPDATED, {
+          id: result.id,
+          product_id: result.product_id,
+          fields: Object.keys(update),
+        })
 
       return res
     })
@@ -421,18 +421,22 @@ class ProductVariantService extends BaseService {
    * @param {string} regionId - the id of the region to get price for
    * @param {number | undefined} quantity - the quantity for price calculation
    * @param {string | undefined} customer_id - include the id of a customer for customer specific pricing
+   * @param {boolean | undefined} includeDiscountPrices - include sales prices in result
    * @return {number} the price specific to the region
    */
   async getRegionPrice(
     variantId: string,
     regionId: string,
     quantity?: number,
-    customer_id?: string
+    customer_id?: string,
+    includeDiscountPrices?: boolean
   ): Promise<number> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const region = await this.regionService_
         .withTransaction(manager)
         .retrieve(regionId)
+
+      const mRepo = manager.getCustomRepository(this.moneyAmountRepository_)
 
       const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
         variantId,
@@ -441,7 +445,9 @@ class ProductVariantService extends BaseService {
           currency_code: region.currency_code,
           quantity: quantity,
           customer_id: customer_id,
-        }
+          includeDiscountPrices: !!includeDiscountPrices,
+        },
+        mRepo
       )
 
       return prices.calculatedPrice
@@ -529,7 +535,7 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      return await moneyAmountRepo.upsertVariantCurrencyPrice(variantId, price)
+      await moneyAmountRepo.upsertVariantCurrencyPrice(variantId, price)
     })
   }
 
@@ -854,7 +860,7 @@ class ProductVariantService extends BaseService {
 
   /**
    * Set additional prices on a list of variants.
-   * @param {ProductVariant } variant list of variants on which to set additional prices
+   * @param {ProductVariant } variant variant on which to set additional prices
    * @param {string} currency_code currency code to fetch prices for
    * @param {string} region_id region to fetch prices for
    * @param {string} cart_id string of cart to use as a basis for getting currency and region
@@ -870,29 +876,33 @@ class ProductVariantService extends BaseService {
     customer_id,
     includeDiscountPrices = false
   ): Promise<ProductVariant> {
-    const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
+    return this.atomicPhase_(async (manager) => {
+      const cartRepo = manager.getCustomRepository(this.cartRepository_)
+      const moneyRepo = manager.getCustomRepository(this.moneyAmountRepository_)
 
-    const cart = await cartRepo.findOne({
-      where: { id: cart_id },
-      relations: ["region"],
+      const cart = await cartRepo.findOne({
+        where: { id: cart_id },
+        relations: ["region"],
+      })
+
+      const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
+        variant.id,
+        {
+          region_id: cart?.region_id || region_id,
+          currency_code: cart?.region?.currency_code || currency_code,
+          cart_id: cart_id,
+          customer_id: customer_id,
+          includeDiscountPrices,
+        },
+        moneyRepo
+      )
+
+      variant.prices = prices.prices
+      variant.original_price = prices.originalPrice
+      variant.calculated_price = prices.calculatedPrice
+
+      return variant
     })
-
-    const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
-      variant.id,
-      {
-        region_id: cart?.region_id || region_id,
-        currency_code: cart?.region?.currency_code || currency_code,
-        cart_id: cart_id,
-        customer_id: customer_id,
-        includeDiscountPrices,
-      }
-    )
-
-    variant.prices = prices.prices
-    variant.originalPrice = prices.originalPrice
-    variant.calculatedPrice = prices.calculatedPrice
-
-    return variant
   }
 }
 

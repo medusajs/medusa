@@ -1,4 +1,6 @@
-import { Cart, Customer, MoneyAmount, ProductVariant, Region } from ".."
+import { EntityManager } from "typeorm"
+import { MoneyAmount, ProductVariant } from ".."
+import { MoneyAmountRepository } from "../repositories/money-amount"
 
 export interface IPriceSelectionStrategy {
   /**
@@ -12,7 +14,8 @@ export interface IPriceSelectionStrategy {
 
   calculateVariantPrice(
     variant: string | ProductVariant,
-    context: PriceSelectionContext
+    context: PriceSelectionContext,
+    manager?: MoneyAmountRepository
   ): Promise<PriceSelectionResult>
 }
 
