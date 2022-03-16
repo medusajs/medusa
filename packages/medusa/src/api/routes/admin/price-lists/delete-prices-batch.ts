@@ -15,11 +15,11 @@ import { validator } from "../../../../utils/validator"
  *   application/json:
  *   schema:
  *    properties:
- *    price_ids:
- *      description: The price id's of the Money Amounts to delete.
- *      type: array
- *      items:
- *        type: string
+ *      price_ids:
+ *        description: The price id's of the Money Amounts to delete.
+ *        type: array
+ *        items:
+ *          type: string
  * tags:
  *   - Price List
  * responses:
