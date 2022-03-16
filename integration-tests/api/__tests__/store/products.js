@@ -275,13 +275,12 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
                   currency_code: "usd",
                   deleted_at: null,
-                  // id: "test-price",
+                  id: "test-price",
                   region_id: null,
                   min_quantity: null,
                   max_quantity: null,
@@ -318,7 +317,6 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
@@ -361,7 +359,6 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
