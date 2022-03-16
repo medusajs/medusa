@@ -177,25 +177,28 @@ class LineItemAdjustmentService extends BaseService {
     cart: Cart,
     lineItem: LineItem
   ): Promise<LineItemAdjustment | undefined> {
-    const discount = await this.discountService.validateDiscountsForLineItem(
-      cart.discounts,
-      lineItem
-    )
+    return this.atomicPhase_(async (manager) => {
+      const discount = await this.discountService
+        .withTransaction(manager)
+        .validateDiscountsForLineItem(cart.discounts, lineItem)
 
-    if (!discount) {
-      return
-    }
+      if (!discount) {
+        return
+      }
 
-    const amount = await this.discountService.calculateDiscountApplied(discount)
+      const amount = await this.discountService.calculateDiscountApplied(
+        discount
+      )
 
-    const lineItemAdjustment = await this.create({
-      item_id: lineItem.id,
-      amount,
-      discount_id: discount.id,
-      description: "discount",
+      const lineItemAdjustment = await this.create({
+        item_id: lineItem.id,
+        amount,
+        discount_id: discount.id,
+        description: "discount",
+      })
+
+      return lineItemAdjustment
     })
-
-    return lineItemAdjustment
   }
 
   /**
