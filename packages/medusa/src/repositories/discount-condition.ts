@@ -18,7 +18,7 @@ import { DiscountConditionProductTag } from "../models/discount-condition-produc
 import { DiscountConditionProductType } from "../models/discount-condition-product-type"
 import { Product } from "../models/product"
 
-enum DiscountConditionResourceTableId {
+enum DiscountConditionJoinTableForeignKey {
   PRODUCT_ID = "product_id",
   PRODUCT_TYPE_ID = "product_type_id",
   PRODUCT_COLLECTION_ID = "product_collection_id",
@@ -36,44 +36,49 @@ type DiscountConditionResourceType = EntityTarget<
 
 @EntityRepository(DiscountCondition)
 export class DiscountConditionRepository extends Repository<DiscountCondition> {
-  getResourceIdentifiers(type: string): {
-    fromTable: DiscountConditionResourceType
-    resourceId: string | undefined
+  getJoinTableResourceIdentifiers(type: string): {
+    joinTableName: DiscountConditionResourceType
+    joinTableForeignKey: DiscountConditionJoinTableForeignKey | undefined
   } {
-    let fromTable: DiscountConditionResourceType = null
-    let resourceId: DiscountConditionResourceTableId | undefined = undefined
+    let joinTableName: DiscountConditionResourceType = null
+    let joinTableForeignKey: DiscountConditionJoinTableForeignKey | undefined =
+      undefined
 
     switch (type) {
       case DiscountConditionType.PRODUCTS: {
-        fromTable = DiscountConditionProduct
-        resourceId = DiscountConditionResourceTableId.PRODUCT_ID
+        joinTableName = DiscountConditionProduct
+        joinTableForeignKey = DiscountConditionJoinTableForeignKey.PRODUCT_ID
         break
       }
       case DiscountConditionType.PRODUCT_TYPES: {
-        fromTable = DiscountConditionProductType
-        resourceId = DiscountConditionResourceTableId.PRODUCT_TYPE_ID
+        joinTableName = DiscountConditionProductType
+        joinTableForeignKey =
+          DiscountConditionJoinTableForeignKey.PRODUCT_TYPE_ID
         break
       }
       case DiscountConditionType.PRODUCT_COLLECTIONS: {
-        fromTable = DiscountConditionProductCollection
-        resourceId = DiscountConditionResourceTableId.PRODUCT_COLLECTION_ID
+        joinTableName = DiscountConditionProductCollection
+        joinTableForeignKey =
+          DiscountConditionJoinTableForeignKey.PRODUCT_COLLECTION_ID
         break
       }
       case DiscountConditionType.PRODUCT_TAGS: {
-        fromTable = DiscountConditionProductTag
-        resourceId = DiscountConditionResourceTableId.PRODUCT_TAG_ID
+        joinTableName = DiscountConditionProductTag
+        joinTableForeignKey =
+          DiscountConditionJoinTableForeignKey.PRODUCT_TAG_ID
         break
       }
       case DiscountConditionType.CUSTOMER_GROUPS: {
-        fromTable = DiscountConditionCustomerGroup
-        resourceId = DiscountConditionResourceTableId.CUSTOMER_GROUP_ID
+        joinTableName = DiscountConditionCustomerGroup
+        joinTableForeignKey =
+          DiscountConditionJoinTableForeignKey.CUSTOMER_GROUP_ID
         break
       }
       default:
         break
     }
 
-    return { fromTable, resourceId }
+    return { joinTableName, joinTableForeignKey }
   }
 
   async removeConditionResources(
@@ -81,16 +86,17 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     type: DiscountConditionType,
     resourceIds: string[]
   ): Promise<DeleteResult | void> {
-    const { fromTable, resourceId } = this.getResourceIdentifiers(type)
+    const { joinTableName, joinTableForeignKey } =
+      this.getJoinTableResourceIdentifiers(type)
 
-    if (!fromTable || !resourceId) {
+    if (!joinTableName || !joinTableForeignKey) {
       return Promise.resolve()
     }
 
     return await this.createQueryBuilder()
       .delete()
-      .from(fromTable)
-      .where({ condition_id: id, [resourceId]: In(resourceIds) })
+      .from(joinTableName)
+      .where({ condition_id: id, [joinTableForeignKey]: In(resourceIds) })
       .execute()
   }
 
@@ -110,37 +116,38 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
   > {
     let toInsert: { condition_id: string; [x: string]: string }[] | [] = []
 
-    const { fromTable, resourceId } = this.getResourceIdentifiers(type)
+    const { joinTableName, joinTableForeignKey } =
+      this.getJoinTableResourceIdentifiers(type)
 
-    if (!fromTable || !resourceId) {
+    if (!joinTableName || !joinTableForeignKey) {
       return Promise.resolve([])
     }
 
     toInsert = resourceIds.map((pId) => ({
       condition_id: conditionId,
-      [resourceId]: pId,
+      [joinTableForeignKey]: pId,
     }))
 
     const insertResult = await this.createQueryBuilder()
       .insert()
       .orIgnore(true)
-      .into(fromTable)
+      .into(joinTableName)
       .values(toInsert)
       .execute()
 
     if (overrideExisting) {
       await this.createQueryBuilder()
         .delete()
-        .from(fromTable)
+        .from(joinTableName)
         .where({
           condition_id: conditionId,
-          [resourceId]: Not(In(resourceIds)),
+          [joinTableForeignKey]: Not(In(resourceIds)),
         })
         .execute()
     }
 
     return await this.manager
-      .createQueryBuilder(fromTable, "discon")
+      .createQueryBuilder(joinTableName, "discon")
       .select()
       .where(insertResult.identifiers)
       .getMany()
@@ -149,7 +156,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
   async queryConditionTable({
     type,
     condId,
-    conditionTypeId,
+    resourceId,
   }): Promise<
     (
       | DiscountConditionProduct
@@ -159,14 +166,15 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       | DiscountConditionCustomerGroup
     )[]
   > {
-    const { fromTable, resourceId } = this.getResourceIdentifiers(type)
+    const { joinTableName, joinTableForeignKey } =
+      this.getJoinTableResourceIdentifiers(type)
 
-    if (fromTable) {
+    if (joinTableName) {
       return await this.manager
-        .createQueryBuilder(fromTable, "conds")
+        .createQueryBuilder(joinTableName, "conds")
         .select()
-        .where(`${"conds"}.${resourceId} = :conditionTypeId`, {
-          conditionTypeId,
+        .where(`${"conds"}.${joinTableForeignKey} = :resourceId`, {
+          resourceId,
         })
         .andWhere(`${"conds"}.condition_id = :condId`, {
           condId,
@@ -200,16 +208,21 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     //    if condition operation is `in` and the query for conditions defined for the given type is empty, the discount is invalid
     //    if condition operation is `not_in` and the query for conditions defined for the given type is not empty, the discount is invalid
     for (const condition of discountConditions) {
-      const { resourceId } = this.getResourceIdentifiers(condition.type)
+      const { joinTableForeignKey } = this.getJoinTableResourceIdentifiers(
+        condition.type
+      )
 
       // Tags is a ManyToMany relation, so we need to check all tags that exist
       // For each tag, we perform the operation outlined in above comment
-      if (resourceId === DiscountConditionResourceTableId.PRODUCT_TAG_ID) {
+      if (
+        joinTableForeignKey ===
+        DiscountConditionJoinTableForeignKey.PRODUCT_TAG_ID
+      ) {
         for (const tag of product.tags) {
           const tagConds = await this.queryConditionTable({
             type: condition.type,
             condId: condition.id,
-            conditionTypeId: tag.id,
+            resourceId: tag.id,
           })
 
           if (
@@ -227,10 +240,24 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
           }
         }
       } else {
+        let resourceId: string | null = product.id
+
+        if (condition.type === DiscountConditionType.PRODUCT_TYPES) {
+          resourceId = product.type_id
+        }
+
+        if (condition.type === DiscountConditionType.PRODUCT_COLLECTIONS) {
+          resourceId = product.collection_id
+        }
+
+        if (!resourceId) {
+          return false
+        }
+
         const resourceSpecificConditions = await this.queryConditionTable({
           type: condition.type,
           condId: condition.id,
-          conditionTypeId: resourceId,
+          resourceId: resourceId,
         })
 
         if (
