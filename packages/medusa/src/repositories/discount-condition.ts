@@ -240,7 +240,11 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
           }
         }
       } else {
-        let resourceId: string | null = product.id
+        let resourceId: string | null = null
+
+        if (condition.type === DiscountConditionType.PRODUCTS) {
+          resourceId = product.id
+        }
 
         if (condition.type === DiscountConditionType.PRODUCT_TYPES) {
           resourceId = product.type_id
@@ -257,7 +261,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         const resourceSpecificConditions = await this.queryConditionTable({
           type: condition.type,
           condId: condition.id,
-          resourceId: resourceId,
+          resourceId,
         })
 
         if (
