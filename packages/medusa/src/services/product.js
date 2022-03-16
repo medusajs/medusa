@@ -71,9 +71,6 @@ class ProductService extends BaseService {
 
     /** @private @const {IPriceSelectionStrategy} */
     this.priceSelectionStrategy_ = priceSelectionStrategy
-
-    /** @private @const {ProductVariant} */
-    this.moneyAmountRepository_ = moneyAmountRepository
   }
 
   withTransaction(transactionManager) {
@@ -94,7 +91,6 @@ class ProductService extends BaseService {
       imageRepository: this.imageRepository_,
       cartRepository: this.cartRepository_,
       priceSelectionStrategy: this.priceSelectionStrategy_,
-      moneyAmountRepository: this.moneyAmountRepository_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -246,7 +242,6 @@ class ProductService extends BaseService {
       )
     }
 
-    console.warn("relations: ", rels)
     return rels?.indexOf("variants") > -1 ||
       rels?.indexOf("variants.prices") > -1
       ? await this.setAdditionalPrices(
