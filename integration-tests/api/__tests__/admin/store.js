@@ -75,7 +75,6 @@ describe("/admin/store", () => {
 
     afterEach(async () => {
       const db = useDb()
-      // await db.shutdown()
       await db.teardown({ forceDelete: ["store"] })
       await medusaProcess.kill()
     })
