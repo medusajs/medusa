@@ -1012,8 +1012,6 @@ class ProductService extends BaseService {
     includeDiscountPrices = false
   ) {
     return this.atomicPhase_(async (manager) => {
-      const moneyRepo = manager.getCustomRepository(this.moneyAmountRepository_)
-
       const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
 
       const cart = await cartRepo.findOne({
@@ -1023,24 +1021,22 @@ class ProductService extends BaseService {
 
       const productArray = Array.isArray(products) ? products : [products]
 
+      const priceSelectionStrategy =
+        this.priceSelectionStrategy_.withTransaction(manager)
+
       const productsWithPrices = await Promise.all(
         productArray.map(async (p) => {
           if (p.variants?.length) {
             p.variants = await Promise.all(
               p.variants.map(async (v) => {
                 const prices =
-                  await this.priceSelectionStrategy_.calculateVariantPrice(
-                    v.id,
-                    {
-                      region_id: cart?.region_id || region_id,
-                      currency_code:
-                        cart?.region?.currency_code || currency_code,
-                      cart_id: cart_id,
-                      customer_id: customer_id,
-                      includeDiscountPrices,
-                    },
-                    moneyRepo
-                  )
+                  await priceSelectionStrategy.calculateVariantPrice(v.id, {
+                    region_id: cart?.region_id || region_id,
+                    currency_code: cart?.region?.currency_code || currency_code,
+                    cart_id: cart_id,
+                    customer_id: customer_id,
+                    includeDiscountPrices,
+                  })
 
                 return {
                   ...v,

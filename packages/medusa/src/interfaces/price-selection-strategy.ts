@@ -1,6 +1,5 @@
 import { EntityManager } from "typeorm"
 import { MoneyAmount, ProductVariant } from ".."
-import { MoneyAmountRepository } from "../repositories/money-amount"
 
 export interface IPriceSelectionStrategy {
   /**
@@ -12,10 +11,11 @@ export interface IPriceSelectionStrategy {
    * @return the tax total
    */
 
+  withTransaction(manager: EntityManager): IPriceSelectionStrategy
+
   calculateVariantPrice(
     variant: string | ProductVariant,
-    context: PriceSelectionContext,
-    manager?: MoneyAmountRepository
+    context: PriceSelectionContext
   ): Promise<PriceSelectionResult>
 }
 

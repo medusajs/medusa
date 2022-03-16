@@ -16,13 +16,24 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
     this.moneyAmountRepository_ = moneyAmountRepository
   }
 
+  withTransaction(manager: EntityManager): IPriceSelectionStrategy {
+    if (!manager) {
+      return this
+    }
+
+    return new PriceSelectionStrategy({
+      manager: manager,
+      moneyAmountRepository: this.moneyAmountRepository_,
+    })
+  }
+
   async calculateVariantPrice(
     variant_id: string,
-    context: PriceSelectionContext,
-    mRepo?: MoneyAmountRepository
+    context: PriceSelectionContext
   ): Promise<PriceSelectionResult> {
-    const moneyRepo =
-      mRepo || this.manager_.getCustomRepository(this.moneyAmountRepository_)
+    const moneyRepo = this.manager_.getCustomRepository(
+      this.moneyAmountRepository_
+    )
 
     const prices = await moneyRepo.findManyForVariantInRegion(
       variant_id,

@@ -436,19 +436,15 @@ class ProductVariantService extends BaseService {
         .withTransaction(manager)
         .retrieve(regionId)
 
-      const mRepo = manager.getCustomRepository(this.moneyAmountRepository_)
-
-      const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
-        variantId,
-        {
+      const prices = await this.priceSelectionStrategy_
+        .withTransaction(manager)
+        .calculateVariantPrice(variantId, {
           region_id: regionId,
           currency_code: region.currency_code,
           quantity: quantity,
           customer_id: customer_id,
           includeDiscountPrices: !!includeDiscountPrices,
-        },
-        mRepo
-      )
+        })
 
       return prices.calculatedPrice
 
@@ -878,24 +874,21 @@ class ProductVariantService extends BaseService {
   ): Promise<ProductVariant> {
     return this.atomicPhase_(async (manager) => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
-      const moneyRepo = manager.getCustomRepository(this.moneyAmountRepository_)
 
       const cart = await cartRepo.findOne({
         where: { id: cart_id },
         relations: ["region"],
       })
 
-      const prices = await this.priceSelectionStrategy_.calculateVariantPrice(
-        variant.id,
-        {
+      const prices = await this.priceSelectionStrategy_
+        .withTransaction(manager)
+        .calculateVariantPrice(variant.id, {
           region_id: cart?.region_id || region_id,
           currency_code: cart?.region?.currency_code || currency_code,
           cart_id: cart_id,
           customer_id: customer_id,
           includeDiscountPrices,
-        },
-        moneyRepo
-      )
+        })
 
       variant.prices = prices.prices
       variant.original_price = prices.originalPrice
