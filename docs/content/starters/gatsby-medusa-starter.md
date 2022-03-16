@@ -35,9 +35,9 @@ Edit `src/pages/index.js` to see your site update in real-time!
 
 **Learn more about Medusa**
 
-- [Website](https://www.medusa-commerce.com/)
+- [Website](https://www.medusajs.com/)
 - [GitHub](https://github.com/medusajs)
-- [Documentation](https://docs.medusa-commerce.com/)
+- [Documentation](https://docs.medusajs.com/)
 
 **Learn more about Gatsby**
 
