@@ -82,6 +82,9 @@ import { validator } from "../../../../utils/validator"
  *             type: array
  *             items:
  *               properties:
+ *                 id:
+ *                   description: The id of the price.
+ *                   type: string
  *                 region_id:
  *                   description: The id of the Region for which the price is used.
  *                   type: string
@@ -91,8 +94,11 @@ import { validator } from "../../../../utils/validator"
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
  *                   type: integer
- *                 sale_amount:
- *                   description: The sale amount to charge for the Product Variant.
+ *                 min_quantity:
+ *                  description: The minimum quantity for which the price will be used.
+ *                  type: integer
+ *                 max_quantity:
+ *                   description: The maximum quantity for which the price will be used.
  *                   type: integer
  *           options:
  *             type: array

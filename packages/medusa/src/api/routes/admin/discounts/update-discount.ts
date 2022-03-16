@@ -13,8 +13,8 @@ import {
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
-import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { validator } from "../../../../utils/validator"
+import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 
 /**
@@ -145,7 +145,7 @@ export class AdminUpdateDiscountRule {
   type: string
 
   @IsNumber()
-  value: string
+  value: number
 
   @IsString()
   @IsNotEmpty()
@@ -154,5 +154,5 @@ export class AdminUpdateDiscountRule {
   @IsArray()
   @IsOptional()
   @IsString({ each: true })
-  valid_for?: string
+  valid_for?: string[]
 }

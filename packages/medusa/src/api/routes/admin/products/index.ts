@@ -37,10 +37,6 @@ export default (app) => {
     "/:id/variants/:variant_id",
     middlewares.wrap(require("./delete-variant").default)
   )
-  route.delete(
-    "/:id/variants/:variant_id/prices/batch",
-    middlewares.wrap(require("./delete-variant-prices").default)
-  )
   route.delete("/:id", middlewares.wrap(require("./delete-product").default))
   route.delete(
     "/:id/options/:option_id",

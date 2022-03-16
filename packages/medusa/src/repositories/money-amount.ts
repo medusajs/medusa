@@ -41,10 +41,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
-  public async upsertVariantCurrencyPrice(
-    variantId: string,
-    price: Price
-  ): Promise<MoneyAmount> {
+  public async upsertVariantCurrencyPrice(variantId: string, price: Price) {
     let moneyAmount = await this.findOne({
       where: {
         currency_code: price.currency_code,

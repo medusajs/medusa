@@ -80,6 +80,9 @@ describe("/store/variants", () => {
               deleted_at: null,
               id: "test-price",
               region_id: null,
+              min_quantity: null,
+              max_quantity: null,
+              price_list_id: null,
               variant_id: "test-variant",
             },
           ],
@@ -136,13 +139,13 @@ describe("/store/variants", () => {
             deleted_at: null,
             id: "test-price",
             region_id: null,
+            min_quantity: null,
+            max_quantity: null,
+            price_list_id: null,
             variant_id: "test-variant",
           },
         ],
         product: expect.any(Object),
-        options: [
-          { created_at: expect.any(String), updated_at: expect.any(String) },
-        ],
       },
     })
   })

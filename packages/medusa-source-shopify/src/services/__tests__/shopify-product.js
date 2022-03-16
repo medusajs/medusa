@@ -95,22 +95,22 @@ describe("ShopifyProductService", () => {
           ],
         }))
 
-      await shopifyProductService.update(data)
+      await shopifyProductService.update(medusaProducts.ipod, data)
 
       expect(ProductVariantServiceMock.update).toHaveBeenCalledTimes(8)
       expect(ProductServiceMock.update).toHaveBeenCalledTimes(1)
-      expect(ShopifyClientServiceMock.get).toHaveBeenCalledTimes(1)
     })
 
     it("updates a product and deletes 2 existing variants", async () => {
       const data = { ...shopifyProducts.ipod, id: "shopify_deleted" }
       data.variants = data.variants.slice(1, -1)
-
-      await shopifyProductService.update(data)
+      await shopifyProductService.update(
+        { ...medusaProducts.ipod, id: "shopify_deleted" },
+        data
+      )
 
       expect(ProductVariantServiceMock.delete).toHaveBeenCalledTimes(2)
       expect(ProductServiceMock.update).toHaveBeenCalledTimes(1)
-      expect(ShopifyClientServiceMock.get).toHaveBeenCalledTimes(1)
     })
   })
 })
