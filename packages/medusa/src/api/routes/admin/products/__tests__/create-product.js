@@ -60,7 +60,6 @@ describe("POST /admin/products", () => {
             {
               currency_code: "USD",
               amount: 100,
-              type: "default",
             },
           ],
           options: [
