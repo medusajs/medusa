@@ -4,6 +4,7 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
+const { simpleProductFactory } = require("../../factories")
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
 jest.setTimeout(30000)
@@ -219,6 +220,74 @@ describe("/store/products", () => {
           expect.not.arrayContaining([notExpect])
         )
       }
+    })
+  })
+
+  describe("list params", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        const p1 = await simpleProductFactory(
+          dbConnection,
+          {
+            title: "testprod",
+            status: "published",
+            variants: [{ title: "test-variant" }],
+          },
+          11
+        )
+
+        const p2 = await simpleProductFactory(
+          dbConnection,
+          {
+            title: "testprod3",
+            status: "published",
+            variants: [{ title: "test-variant1" }],
+          },
+          12
+        )
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("works with expand and fields", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/products?expand=variants,variants.prices&fields=id,title&limit=1"
+      )
+
+      expect(response.data).toMatchSnapshot({
+        products: [
+          {
+            id: expect.any(String),
+            variants: [
+              {
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                id: expect.any(String),
+                product_id: expect.any(String),
+                prices: [
+                  {
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                    id: expect.any(String),
+                    variant_id: expect.any(String),
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
     })
   })
 
