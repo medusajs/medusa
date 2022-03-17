@@ -16,6 +16,7 @@ import {
 export type ProductFactoryData = {
   id?: string
   is_giftcard?: boolean
+  status?: string
   title?: string
   type?: string
   options?: { id: string; title: string }[]
@@ -54,6 +55,7 @@ export const simpleProductFactory = async (
   const toSave = manager.create(Product, {
     id: prodId,
     type_id: typeId,
+    status: data.status,
     title: data.title || faker.commerce.productName(),
     is_giftcard: data.is_giftcard || false,
     discountable: !data.is_giftcard,
