@@ -33,7 +33,7 @@ function resolvePlugin(pluginName) {
           fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
         )
         const name = packageJSON.name || pluginName
-        //warnOnIncompatiblePeerDependency(name, packageJSON)
+        // warnOnIncompatiblePeerDependency(name, packageJSON)
 
         return {
           resolve: resolvedPath,
@@ -86,11 +86,11 @@ function resolvePlugin(pluginName) {
   }
 }
 
-export default directory => {
+export default (directory) => {
   const { configModule } = getConfigFile(directory, `medusa-config`)
   const { plugins } = configModule
 
-  const resolved = plugins.map(plugin => {
+  const resolved = plugins.map((plugin) => {
     if (isString(plugin)) {
       return resolvePlugin(plugin)
     }

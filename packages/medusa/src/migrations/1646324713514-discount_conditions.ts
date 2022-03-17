@@ -96,6 +96,10 @@ export class discountConditions1646324713514 implements MigrationInterface {
     )
   }
 
+  private async migrateValidForToDiscountConditions(
+    queryRunner: QueryRunner
+  ): Promise<void> {}
+
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
       `ALTER TABLE "discount_condition_product" DROP CONSTRAINT "FK_f05132301e95bdab4ba1cf29a24"`

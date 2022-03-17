@@ -5,7 +5,7 @@ import Logger from "../loaders/logger"
 
 import getMigrations from "./utils/get-migrations"
 
-const t = async function({ directory }) {
+const t = async function ({ directory }) {
   const args = process.argv
   args.shift()
   args.shift()
