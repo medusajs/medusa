@@ -258,7 +258,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     return true
   }
 
-  async isValidForCustomer(
+  async canApplyForCustomer(
     discountRuleId: string,
     customer: Customer
   ): Promise<boolean> {
@@ -276,14 +276,15 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     }
 
     // retrieve conditions for customer groups
-    // if condition operation is `in` and the query for conditions defined for the given type is empty, the discount is invalid
-    // if condition operation is `not_in` and the query for conditions defined for the given type is not empty, the discount is invalid
+    // for each customer group
+    //   if condition operation is `in` and the query for customer group conditions is empty, the discount is invalid
+    //   if condition operation is `not_in` and the query for customer group conditions is not empty, the discount is invalid
     for (const condition of discountConditions) {
       for (const group of customer.groups) {
         const customerGroupConditions = await this.queryConditionTable({
           type: "customer_groups",
           condId: condition.id,
-          conditionTypeId: group.id,
+          resourceId: group.id,
         })
 
         if (
