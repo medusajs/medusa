@@ -32,6 +32,8 @@ class ContentfulService extends BaseService {
     })
 
     this.redis_ = redisClient
+
+    this.capab_ = {}
   }
 
   async addIgnore_(id, side) {
@@ -78,14 +80,18 @@ class ContentfulService extends BaseService {
     }
   }
 
-  getVariantLinks_(variantEntries) {
-    return variantEntries.map((v) => ({
+  getLink_(fromEntry) {
+    return {
       sys: {
         type: "Link",
         linkType: "Entry",
-        id: v.sys.id,
+        id: fromEntry.sys.id,
       },
-    }))
+    }
+  }
+
+  getVariantLinks_(variantEntries) {
+    return variantEntries.map((v) => this.getLink_(v))
   }
 
   async createImageAssets(product) {
@@ -224,37 +230,7 @@ class ContentfulService extends BaseService {
         }
       }
 
-      if (p.type) {
-        const type = {
-          "en-US": p.type.value,
-        }
-
-        fields[this.getCustomField("type", "product")] = type
-      }
-
-      if (p.collection) {
-        const collection = {
-          "en-US": p.collection.title,
-        }
-
-        fields[this.getCustomField("collection", "product")] = collection
-      }
-
-      if (p.tags) {
-        const tags = {
-          "en-US": p.tags,
-        }
-
-        fields[this.getCustomField("tags", "product")] = tags
-      }
-
-      if (p.handle) {
-        const handle = {
-          "en-US": p.handle,
-        }
-
-        fields[this.getCustomField("handle", "product")] = handle
-      }
+      await this.createSpecialProductFields(fields, p)
 
       const result = await environment.createEntryWithId("product", p.id, {
         fields,
@@ -415,6 +391,125 @@ class ContentfulService extends BaseService {
     }
   }
 
+  async createCollectionInContentful(collection) {
+    const hasType = await this.getType("collection")
+      .then(() => true)
+      .catch(() => false)
+
+    if (!hasType) {
+      return Promise.resolve()
+    }
+
+    const environment = await this.getContentfulEnvironment_()
+
+    const fields = {
+      [this.getCustomField("medusaId", "collection")]: {
+        "en-US": collection.id,
+      },
+      [this.getCustomField("title", "collection")]: {
+        "en-US": collection.title,
+      },
+    }
+
+    const result = await environment.createEntryWithId(
+      "collection",
+      collection.id,
+      {
+        fields,
+      }
+    )
+
+    return result
+  }
+
+  async createTypeInContentful(type) {
+    const hasType = await this.getType("productType")
+      .then(() => true)
+      .catch(() => false)
+
+    if (!hasType) {
+      return Promise.resolve()
+    }
+
+    const environment = await this.getContentfulEnvironment_()
+
+    const fields = {
+      [this.getCustomField("medusaId", "type")]: {
+        "en-US": type.id,
+      },
+      [this.getCustomField("name", "type")]: {
+        "en-US": type.value,
+      },
+    }
+
+    const result = await environment.createEntryWithId("productType", type.id, {
+      fields,
+    })
+
+    return result
+  }
+
+  async upsertTypeEntry(type) {
+    const hasType = await this.getType("productType")
+      .then(() => true)
+      .catch(() => false)
+
+    if (!hasType) {
+      return Promise.resolve()
+    }
+
+    const environment = await this.getContentfulEnvironment_()
+
+    // check if type exists
+    let typeEntry = undefined
+    try {
+      typeEntry = await environment.getEntry(type.id)
+    } catch (error) {
+      return this.createTypeInContentful(type)
+    }
+
+    const typeEntryFields = {
+      ...typeEntry.fields,
+      [this.getCustomField("name", "type")]: {
+        "en-US": type.value,
+      },
+    }
+
+    typeEntry.fields = typeEntryFields
+
+    return await typeEntry.update()
+  }
+
+  async upsertCollectionEntry(collection) {
+    const hasType = await this.getType("collection")
+      .then(() => true)
+      .catch(() => false)
+
+    if (!hasType) {
+      return Promise.resolve()
+    }
+
+    const environment = await this.getContentfulEnvironment_()
+
+    // check if collection exists
+    let collectionEntry = undefined
+    try {
+      collectionEntry = await environment.getEntry(collection.id)
+    } catch (error) {
+      return this.createCollectionInContentful(collection)
+    }
+
+    const collectionEntryFields = {
+      ...collectionEntry.fields,
+      [this.getCustomField("title", "collection")]: {
+        "en-US": collection.title,
+      },
+    }
+
+    collectionEntry.fields = collectionEntryFields
+    return await collectionEntry.update()
+  }
+
   async updateProductInContentful(data) {
     const updateFields = [
       "variants",
@@ -453,6 +548,7 @@ class ContentfulService extends BaseService {
       })
 
       const environment = await this.getContentfulEnvironment_()
+
       // check if product exists
       let productEntry = undefined
       try {
@@ -525,38 +621,7 @@ class ContentfulService extends BaseService {
         }
       }
 
-      if (p.type) {
-        const type = {
-          "en-US": p.type.value,
-        }
-
-        productEntryFields[this.getCustomField("type", "product")] = type
-      }
-
-      if (p.collection) {
-        const collection = {
-          "en-US": p.collection.title,
-        }
-
-        productEntryFields[this.getCustomField("collection", "product")] =
-          collection
-      }
-
-      if (p.tags) {
-        const tags = {
-          "en-US": p.tags,
-        }
-
-        productEntryFields[this.getCustomField("tags", "product")] = tags
-      }
-
-      if (p.handle) {
-        const handle = {
-          "en-US": p.handle,
-        }
-
-        productEntryFields[this.getCustomField("handle", "product")] = handle
-      }
+      await this.createSpecialProductFields(productEntryFields, p)
 
       productEntry.fields = productEntryFields
 
@@ -568,6 +633,59 @@ class ContentfulService extends BaseService {
       return publishedEntry
     } catch (error) {
       throw error
+    }
+  }
+
+  async createSpecialProductFields(fields, p) {
+    const capabilities = await this.checkCapabilities("product")
+
+    if (p.type) {
+      if (capabilities.type) {
+        const val = {
+          "en-US": this.getLink_(await this.upsertTypeEntry(p.type)),
+        }
+
+        fields[this.getCustomField("type", "product")] = val
+      } else {
+        const type = {
+          "en-US": p.type.value,
+        }
+
+        fields[this.getCustomField("type", "product")] = type
+      }
+    }
+
+    if (p.collection) {
+      if (capabilities.collection) {
+        const val = {
+          "en-US": this.getLink_(
+            await this.upsertCollectionEntry(p.collection)
+          ),
+        }
+        fields[this.getCustomField("collection", "product")] = val
+      } else {
+        const collection = {
+          "en-US": p.collection.title,
+        }
+
+        fields[this.getCustomField("collection", "product")] = collection
+      }
+    }
+
+    if (p.tags) {
+      const tags = {
+        "en-US": p.tags,
+      }
+
+      fields[this.getCustomField("tags", "product")] = tags
+    }
+
+    if (p.handle) {
+      const handle = {
+        "en-US": p.handle,
+      }
+
+      fields[this.getCustomField("handle", "product")] = handle
     }
   }
 
@@ -862,6 +980,43 @@ class ContentfulService extends BaseService {
   async getType(type) {
     const environment = await this.getContentfulEnvironment_()
     return environment.getContentType(type)
+  }
+
+  async checkCapabilities(type) {
+    switch (type) {
+      case "product":
+        return this.checkProductCapabilities()
+      default:
+        return {}
+    }
+  }
+
+  async checkProductCapabilities() {
+    if (this.capab_["product"]) {
+      return this.capab_["product"]
+    }
+
+    const product = await this.getType("product")
+    const capabilities = {
+      collection: false,
+      type: false,
+    }
+
+    if (product.fields) {
+      const typeField = product.fields.find((f) => f.id === "type")
+      if (typeField) {
+        capabilities.type = typeField.linkType === "Entry"
+      }
+
+      const collectionField = product.fields.find((f) => f.id === "collection")
+      if (collectionField) {
+        capabilities.collection = collectionField.linkType === "Entry"
+      }
+    }
+
+    this.capab_["product"] = capabilities
+
+    return capabilities
   }
 }
 
