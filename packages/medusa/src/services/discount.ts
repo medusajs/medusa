@@ -49,6 +49,7 @@ class DiscountService extends BaseService {
     totalsService,
     productService,
     regionService,
+    customerService,
     eventBusService,
   }) {
     super()
@@ -77,6 +78,9 @@ class DiscountService extends BaseService {
     /** @private @const {RegionService} */
     this.regionService_ = regionService
 
+    /** @private @const {CustomerService} */
+    this.customerService_ = customerService
+
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
@@ -95,6 +99,7 @@ class DiscountService extends BaseService {
       totalsService: this.totalsService_,
       productService: this.productService_,
       regionService: this.regionService_,
+      customerService: this.customerService_,
       eventBusService: this.eventBus_,
     })
 
@@ -679,6 +684,35 @@ class DiscountService extends BaseService {
       return await discountConditionRepo.isValidForProduct(
         discountRuleId,
         product.id
+      )
+    })
+  }
+
+  async canApplyForCustomer(
+    discountRuleId: string,
+    customerId: string | undefined
+  ): Promise<boolean> {
+    return this.atomicPhase_(async (manager) => {
+      const discountConditionRepo: DiscountConditionRepository =
+        manager.getCustomRepository(this.discountConditionRepository_)
+
+      // Instead of throwing on missing customer id, we simply invalidate the discount
+      if (!customerId) {
+        return false
+      }
+
+      const customer = await this.customerService_.retrieve(customerId, {
+        relations: ["groups"],
+      })
+
+      // if customer has no groups, invalidate the discount
+      if (!customer.groups?.length) {
+        return false
+      }
+
+      return await discountConditionRepo.canApplyForCustomer(
+        discountRuleId,
+        customer
       )
     })
   }

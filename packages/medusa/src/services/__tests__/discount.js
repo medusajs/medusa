@@ -541,4 +541,82 @@ describe("DiscountService", () => {
       })
     })
   })
+
+  describe("canApplyForCustomer", () => {
+    const discountConditionRepository = {
+      canApplyForCustomer: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(true)),
+    }
+
+    const customerService = {
+      retrieve: jest.fn().mockImplementation((id) => {
+        console.log(id)
+        if (id === "customer-no-groups") {
+          return Promise.resolve({ id: "customer-no-groups" })
+        }
+        if (id === "customer-with-groups") {
+          return Promise.resolve({
+            id: "customer-with-groups",
+            groups: [{ id: "group-1" }],
+          })
+        }
+      }),
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountConditionRepository,
+      customerService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("returns false on undefined customer id", async () => {
+      const res = await discountService.canApplyForCustomer("rule-1")
+
+      expect(res).toBe(false)
+
+      expect(customerService.retrieve).toHaveBeenCalledTimes(0)
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledTimes(0)
+    })
+
+    it("returns false on customer with no groups", async () => {
+      const res = await discountService.canApplyForCustomer(
+        "rule-1",
+        "customer-no-groups"
+      )
+
+      expect(res).toBe(false)
+
+      expect(customerService.retrieve).toHaveBeenCalledTimes(1)
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledTimes(0)
+    })
+
+    it("returns true on customer with groups", async () => {
+      const res = await discountService.canApplyForCustomer(
+        "rule-1",
+        "customer-with-groups"
+      )
+
+      expect(res).toBe(true)
+
+      expect(customerService.retrieve).toHaveBeenCalledTimes(1)
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledWith("rule-1", {
+        id: "customer-with-groups",
+        groups: [{ id: "group-1" }],
+      })
+    })
+  })
 })
