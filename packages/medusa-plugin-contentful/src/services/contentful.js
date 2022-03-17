@@ -491,7 +491,7 @@ class ContentfulService extends BaseService {
 
     const environment = await this.getContentfulEnvironment_()
 
-    // check if region exists
+    // check if collection exists
     let collectionEntry = undefined
     try {
       collectionEntry = await environment.getEntry(collection.id)
