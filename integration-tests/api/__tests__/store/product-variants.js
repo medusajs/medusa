@@ -2,6 +2,7 @@ const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
+const { simpleProductFactory } = require("../../factories")
 
 const productSeeder = require("../../helpers/product-seeder")
 jest.setTimeout(30000)
@@ -24,6 +25,24 @@ describe("/store/variants", () => {
   beforeEach(async () => {
     try {
       await productSeeder(dbConnection)
+
+      await simpleProductFactory(
+        dbConnection,
+        {
+          title: "prod",
+          variants: [
+            {
+              title: "test1",
+              inventory_quantity: 10,
+            },
+            {
+              title: "test2",
+              inventory_quantity: 12,
+            },
+          ],
+        },
+        100
+      )
     } catch (err) {
       console.log(err)
       throw err
@@ -88,6 +107,43 @@ describe("/store/variants", () => {
           options: [
             { created_at: expect.any(String), updated_at: expect.any(String) },
           ],
+        },
+      ],
+    })
+  })
+
+  it("lists by title", async () => {
+    const api = useApi()
+
+    const response = await api.get(
+      "/store/variants?title[]=test1&title[]=test2&inventory_quantity[gt]=10"
+    )
+    expect(response.data).toMatchSnapshot({
+      variants: [
+        {
+          id: expect.any(String),
+          title: "test2",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          options: [
+            {
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              id: expect.any(String),
+              option_id: expect.any(String),
+              variant_id: expect.any(String),
+            },
+          ],
+          prices: [
+            {
+              id: expect.any(String),
+              variant_id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+          product: expect.any(Object),
+          product_id: expect.any(String),
         },
       ],
     })
