@@ -6,7 +6,7 @@ import { MedusaError } from "medusa-core-utils"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function () {
+  withTransaction: function() {
     return this
   },
 }
@@ -209,7 +209,7 @@ describe("CartService", () => {
           email: "email@test.com",
         })
       ),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -317,14 +317,14 @@ describe("CartService", () => {
     const lineItemService = {
       update: jest.fn(),
       create: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
 
     const shippingOptionService = {
       deleteShippingMethod: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -354,6 +354,7 @@ describe("CartService", () => {
                 variant_id: IdMap.getId("existing"),
                 should_merge: true,
                 quantity: 1,
+                has_shipping: true,
               },
             ],
           })
@@ -505,7 +506,7 @@ describe("CartService", () => {
     const lineItemService = {
       delete: jest.fn(),
       update: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -547,7 +548,7 @@ describe("CartService", () => {
 
     const shippingOptionService = {
       deleteShippingMethod: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -668,7 +669,7 @@ describe("CartService", () => {
   describe("updateLineItem", () => {
     const lineItemService = {
       update: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -764,7 +765,7 @@ describe("CartService", () => {
           email: data.email,
         })
       ),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -986,7 +987,7 @@ describe("CartService", () => {
     const lineItemService = {
       update: jest.fn((r) => r),
       delete: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1036,7 +1037,7 @@ describe("CartService", () => {
       deleteSession: jest.fn(),
       updateSession: jest.fn(),
       createSession: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1240,7 +1241,7 @@ describe("CartService", () => {
       deleteSession: jest.fn(),
       updateSession: jest.fn(),
       createSession: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1398,7 +1399,7 @@ describe("CartService", () => {
 
     const lineItemService = {
       update: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1411,7 +1412,7 @@ describe("CartService", () => {
         })
       }),
       deleteShippingMethod: jest.fn(),
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -1455,11 +1456,9 @@ describe("CartService", () => {
         IdMap.getId("option"),
         data
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("option"),
-        data,
-        { cart: cart1 }
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("option"), data, { cart: cart1 })
     })
 
     it("successfully overrides existing profile shipping method", async () => {
@@ -1471,11 +1470,9 @@ describe("CartService", () => {
         IdMap.getId("profile1"),
         data
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("profile1"),
-        data,
-        { cart: cart2 }
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart2 })
       expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
         id: IdMap.getId("ship1"),
         shipping_option: {
@@ -1501,11 +1498,9 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
         1
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("additional"),
-        data,
-        { cart: cart2 }
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("additional"), data, { cart: cart2 })
     })
 
     it("updates item shipping", async () => {
@@ -1525,11 +1520,9 @@ describe("CartService", () => {
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
         1
       )
-      expect(shippingOptionService.createShippingMethod).toHaveBeenCalledWith(
-        IdMap.getId("profile1"),
-        data,
-        { cart: cart3 }
-      )
+      expect(
+        shippingOptionService.createShippingMethod
+      ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart3 })
 
       expect(lineItemService.update).toHaveBeenCalledTimes(1)
       expect(lineItemService.update).toHaveBeenCalledWith(IdMap.getId("line"), {
