@@ -3,12 +3,10 @@ import {
   IsArray,
   IsBoolean,
   IsEnum,
-  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
-  Validate,
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
@@ -19,7 +17,7 @@ import {
   ShippingProfileService,
 } from "../../../../services"
 import { ProductStatus } from "../../../../types/product"
-import { XorConstraint } from "../../../../types/validators/xor"
+import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -308,21 +306,6 @@ class ProductOptionReq {
   title: string
 }
 
-class ProductVariantPricesReq {
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @Validate(XorConstraint, ["region_id"])
-  currency_code?: string
-
-  @IsInt()
-  amount: number
-
-  @IsOptional()
-  @IsInt()
-  sale_amount?: number
-}
-
 class ProductVariantReq {
   @IsString()
   title: string
@@ -393,8 +376,8 @@ class ProductVariantReq {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  @Type(() => ProductVariantPricesCreateReq)
+  prices: ProductVariantPricesCreateReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)

@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { Product, ProductTag, ProductType } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { Product, ProductTag, ProductType } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
