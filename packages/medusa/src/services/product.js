@@ -327,7 +327,9 @@ class ProductService extends BaseService {
       return existing.id
     }
 
-    const created = productTypeRepository.create(type)
+    const created = productTypeRepository.create({
+      value: type.value,
+    })
     const result = await productTypeRepository.save(created)
 
     return result.id
