@@ -684,7 +684,6 @@ describe("/admin/price-lists", () => {
           console.warn(err.response.data)
         })
 
-      console.warn(deleteResponse.data.product.variants)
 
       const response = await api.get(
         "/admin/price-lists/pl_no_customer_groups",
