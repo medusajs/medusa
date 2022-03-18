@@ -2,17 +2,15 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
-  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
-  Validate,
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
-import { XorConstraint } from "../../../../types/validators/xor"
+import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -96,8 +94,11 @@ import { validator } from "../../../../utils/validator"
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
  *                   type: integer
- *                 sale_amount:
- *                   description: The sale amount to charge for the Product Variant.
+ *                 min_quantity:
+ *                   description: The minimum quantity for which the price will be used.
+ *                   type: integer
+ *                 max_quantity:
+ *                   description: The maximum quantity for which the price will be used.
  *                   type: integer
  *           options:
  *             type: array
@@ -150,21 +151,6 @@ class ProductVariantOptionReq {
 
   @IsString()
   option_id: string
-}
-
-class ProductVariantPricesReq {
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @Validate(XorConstraint, ["region_id"])
-  currency_code?: string
-
-  @IsInt()
-  amount: number
-
-  @IsOptional()
-  @IsInt()
-  sale_amount?: number
 }
 
 export class AdminPostProductsProductVariantsReq {
@@ -237,8 +223,8 @@ export class AdminPostProductsProductVariantsReq {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  @Type(() => ProductVariantPricesCreateReq)
+  prices: ProductVariantPricesCreateReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)
