@@ -694,7 +694,6 @@ describe("/admin/price-lists", () => {
         }
       )
 
-      console.warn(response.data.price_list)
 
       expect(response.status).toEqual(200)
       expect(response.data.price_list.prices.length).toEqual(0)
