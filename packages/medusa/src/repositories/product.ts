@@ -13,6 +13,7 @@ import { Product } from "../models/product"
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
 type CustomOptions = {
+  select?: DefaultWithoutRelations["select"]
   where?: DefaultWithoutRelations["where"] & {
     tags?: FindOperator<ProductTag>
   }
@@ -77,9 +78,7 @@ export class ProductRepository extends Repository<Product> {
     return [entities, count]
   }
 
-  private getGroupedRelations(
-    relations: Array<keyof Product>
-  ): {
+  private getGroupedRelations(relations: Array<keyof Product>): {
     [toplevel: string]: string[]
   } {
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -98,11 +97,16 @@ export class ProductRepository extends Repository<Product> {
   private async queryProductsWithIds(
     entityIds: string[],
     groupedRelations: { [toplevel: string]: string[] },
-    withDeleted = false
+    withDeleted = false,
+    select: (keyof Product)[] = []
   ): Promise<Product[]> {
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(([toplevel, rels]) => {
         let querybuilder = this.createQueryBuilder("products")
+
+        if (select && select.length) {
+          querybuilder.select(select.map((f) => `products.${f}`))
+        }
 
         if (toplevel === "variants") {
           querybuilder = querybuilder
@@ -193,13 +197,13 @@ export class ProductRepository extends Repository<Product> {
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
       groupedRelations,
-      idsOrOptionsWithoutRelations.withDeleted
+      idsOrOptionsWithoutRelations.withDeleted,
+      idsOrOptionsWithoutRelations.select
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn = this.mergeEntitiesWithRelations(
-      entitiesAndRelations
-    )
+    const entitiesToReturn =
+      this.mergeEntitiesWithRelations(entitiesAndRelations)
 
     return [entitiesToReturn, count]
   }
@@ -240,9 +244,8 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn = this.mergeEntitiesWithRelations(
-      entitiesAndRelations
-    )
+    const entitiesToReturn =
+      this.mergeEntitiesWithRelations(entitiesAndRelations)
 
     return entitiesToReturn
   }
