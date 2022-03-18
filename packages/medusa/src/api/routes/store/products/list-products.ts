@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { omit, pickBy, identity } from "lodash"
+import { omit, pickBy } from "lodash"
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
@@ -174,9 +174,4 @@ export class StoreGetProductsParams extends StoreGetProductsPaginationParams {
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
-
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => DateComparisonOperator)
-  deleted_at?: DateComparisonOperator
 }
