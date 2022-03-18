@@ -40,7 +40,6 @@
     "lerna": "^3.22.1",
     "lint-staged": "^11.2.3",
     "microbundle": "^0.13.3",
-    "mongoose": "^5.10.15",
     "pg-god": "^1.0.11",
     "prettier": "^2.1.1",
     "resolve-cwd": "^3.0.0",
