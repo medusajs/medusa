@@ -555,9 +555,11 @@ class CartService extends BaseService {
       }
 
       for (const itm of cart.items) {
-        await this.lineItemService_.withTransaction(manager).update(itm.id, {
-          has_shipping: false,
-        })
+        if (itm.has_shipping) {
+          await this.lineItemService_.withTransaction(manager).update(itm.id, {
+            has_shipping: false,
+          })
+        }
       }
 
       // Remove shipping methods
