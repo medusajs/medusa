@@ -678,7 +678,7 @@ class DiscountService extends BaseService {
 
       return await discountConditionRepo.isValidForProduct(
         discountRuleId,
-        product
+        product.id
       )
     })
   }
