@@ -12,11 +12,10 @@ import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils"
+import { adminCustomerKeys } from "../customers"
 
-const ADMIN_CUSTOMERS_QUERY_KEY = `admin_customers` as const
 const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
 
-export const adminCustomerKeys = queryKeysFactory(ADMIN_CUSTOMERS_QUERY_KEY)
 export const adminCustomerGroupKeys = queryKeysFactory(
   ADMIN_CUSTOMER_GROUPS_QUERY_KEY
 )
