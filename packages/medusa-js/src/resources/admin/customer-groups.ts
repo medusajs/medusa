@@ -135,7 +135,7 @@ class AdminCustomerGroupsResource extends BaseResource {
   }
 
   /**
-   * List and count customers that belong to a customer group.
+   * List and count customers that belong to provided customer groups.
    *
    * @param id - customer group id
    * @param query - params for filtering customers
