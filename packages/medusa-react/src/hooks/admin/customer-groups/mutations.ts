@@ -112,7 +112,11 @@ export const useAdminAddCustomersToCustomerGroup = (
       client.admin.customerGroups.addCustomers(id, payload),
     buildOptions(
       queryClient,
-      [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
+      [
+        adminCustomerGroupKeys.lists(),
+        adminCustomerGroupKeys.detail(id),
+        adminCustomerGroupKeys.detail(`${id}:customers`),
+      ],
       options
     )
   )
@@ -140,7 +144,11 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
       client.admin.customerGroups.removeCustomers(id, payload),
     buildOptions(
       queryClient,
-      [adminCustomerGroupKeys.lists(), adminCustomerGroupKeys.detail(id)],
+      [
+        adminCustomerGroupKeys.lists(),
+        adminCustomerGroupKeys.detail(id),
+        adminCustomerGroupKeys.detail(`${id}:customers`),
+      ],
       options
     )
   )

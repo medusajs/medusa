@@ -12,7 +12,6 @@ import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
 import { queryKeysFactory } from "../../utils"
-import { adminCustomerKeys } from "../customers"
 
 const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
 
@@ -21,7 +20,6 @@ export const adminCustomerGroupKeys = queryKeysFactory(
 )
 
 type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
-type CustomerQueryKeys = typeof adminCustomerKeys
 
 /**
  * Hook retrieves a customer group by id.
@@ -84,12 +82,12 @@ export const useAdminCustomerGroupCustomers = (
   options?: UseQueryOptionsWrapper<
     Response<AdminCustomersListRes>,
     Error,
-    ReturnType<CustomerQueryKeys["list"]>
+    ReturnType<CustomerGroupQueryKeys["detail"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminCustomerKeys.list(query),
+    adminCustomerGroupKeys.detail(`${id}:customers`),
     () => client.admin.customerGroups.listCustomers(id, query),
     options
   )
