@@ -30,7 +30,13 @@ type ConvertDateToString<T extends {}> = {
 
 export type Cart = StoreCartsRes["cart"]
 
-export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
+export type TQueryKey<
+  TKey,
+  TListQuery = any,
+  TDetailQuery = string,
+  TCollectionType = string,
+  TCollectionQueryType = string
+> = {
   all: [TKey]
   lists: () => [...TQueryKey<TKey>["all"], "list"]
   list: (
@@ -43,4 +49,14 @@ export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   detail: (
     id: TDetailQuery
   ) => [...ReturnType<TQueryKey<TKey>["details"]>, TDetailQuery]
+  sublist: (
+    id: TDetailQuery,
+    collection: TCollectionType,
+    query?: TCollectionQueryType
+  ) => [
+    ...ReturnType<TQueryKey<TKey>["details"]>,
+    TDetailQuery,
+    TCollectionType,
+    TCollectionQueryType
+  ]
 }
