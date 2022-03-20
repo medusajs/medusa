@@ -49,7 +49,6 @@ describe("useAdminCustomerGroup hook", () => {
 
     await waitFor(() => result.current.isSuccess)
 
-    console.log({ current: result.current })
     expect(result.current.response.status).toEqual(200)
     expect(result.current.customers).toEqual(customers)
   })
