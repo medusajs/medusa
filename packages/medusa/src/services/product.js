@@ -1039,6 +1039,7 @@ class ProductService extends BaseService {
                   prices: prices.prices,
                   original_price: prices.originalPrice,
                   calculated_price: prices.calculatedPrice,
+                  calculated_price_type: prices.calculatedPriceType,
                 }
               })
             )

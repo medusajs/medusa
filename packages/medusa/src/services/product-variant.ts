@@ -447,35 +447,6 @@ class ProductVariantService extends BaseService {
         })
 
       return prices.calculatedPrice
-
-      // const moneyAmountRepo = manager.getCustomRepository(
-      //   this.moneyAmountRepository_
-      // )
-
-      // // Find region price based on region id
-      // let moneyAmount = await moneyAmountRepo.findOne({
-      //   where: { region_id: regionId, variant_id: variantId },
-      // })
-
-      // // If no price could be find based on region id, we try to fetch
-      // // based on the region currency code
-      // if (!moneyAmount) {
-      //   moneyAmount = await moneyAmountRepo.findOne({
-      //     where: { variant_id: variantId, currency_code: region.currency_code },
-      //   })
-      // }
-
-      // // Still, if no price is found, we throw
-      // if (!moneyAmount) {
-      //   throw new MedusaError(
-      //     MedusaError.Types.NOT_FOUND,
-      //     `A price for region: ${region.name} could not be found`
-      //   )
-      // }
-
-      // // TODO: This will just return the first price for the region,
-      // // we need to add the PriceStrategy to get the correct price here
-      // return moneyAmount.amount
     })
   }
 
@@ -896,6 +867,7 @@ class ProductVariantService extends BaseService {
       variant.prices = prices.prices
       variant.original_price = prices.originalPrice
       variant.calculated_price = prices.calculatedPrice
+      variant.calculated_price_type = prices.calculatedPriceType
 
       return variant
     })
