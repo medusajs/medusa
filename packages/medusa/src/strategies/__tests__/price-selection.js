@@ -21,8 +21,8 @@ const toTest = [
         )
         expect(value).toEqual({
           originalPrice: 100,
-          calculatedPriceType: "default",
           calculatedPrice: 100,
+          calculatedPriceType: "default",
           prices: [
             {
               amount: 100,
@@ -89,7 +89,7 @@ const toTest = [
         expect(value).toEqual({
           originalPrice: 100,
           calculatedPrice: 50,
-          calculatedPriceType: "default",
+          calculatedPriceType: "sale",
           prices: [
             {
               amount: 100,
@@ -103,6 +103,7 @@ const toTest = [
               amount: 50,
               region_id: "test-region",
               currency_code: "dkk",
+              price_list: { type: "sale" },
               max_quantity: null,
               min_quantity: null,
             },
@@ -139,12 +140,14 @@ const toTest = [
               min_quantity: 10,
               max_quantity: 12,
               region_id: "test-region",
+              price_list: { type: "sale" },
               currency_code: "dkk",
             },
             {
               amount: 20,
               min_quantity: 3,
               max_quantity: 5,
+              price_list: { type: "sale" },
               region_id: "test-region",
               currency_code: "dkk",
             },
@@ -152,6 +155,7 @@ const toTest = [
               amount: 50,
               min_quantity: 5,
               max_quantity: 10,
+              price_list: { type: "sale" },
               region_id: "test-region",
               currency_code: "dkk",
             },
@@ -173,8 +177,8 @@ const toTest = [
       validate: (value, { mockMoneyAmountRepository }) => {
         expect(value).toEqual({
           originalPrice: 100,
-          calculatedPriceType: "default",
           calculatedPrice: 50,
+          calculatedPriceType: "sale",
           prices: [
             {
               amount: 100,
@@ -189,12 +193,14 @@ const toTest = [
               min_quantity: 10,
               max_quantity: 12,
               region_id: "test-region",
+              price_list: { type: "sale" },
               currency_code: "dkk",
             },
             {
               amount: 20,
               min_quantity: 3,
               max_quantity: 5,
+              price_list: { type: "sale" },
               region_id: "test-region",
               currency_code: "dkk",
             },
@@ -202,6 +208,7 @@ const toTest = [
               amount: 50,
               min_quantity: 5,
               max_quantity: 10,
+              price_list: { type: "sale" },
               region_id: "test-region",
               currency_code: "dkk",
             },
@@ -222,8 +229,8 @@ const toTest = [
       validate: (value, { mockMoneyAmountRepository }) => {
         expect(value).toEqual({
           originalPrice: 100,
-          calculatedPriceType: "default",
           calculatedPrice: 100,
+          calculatedPriceType: "default",
           prices: [
             {
               amount: 100,
@@ -238,6 +245,7 @@ const toTest = [
               min_quantity: 10,
               max_quantity: 12,
               region_id: "test-region",
+              price_list: { type: "sale" },
               currency_code: "dkk",
             },
             {
@@ -245,6 +253,7 @@ const toTest = [
               min_quantity: 3,
               max_quantity: 5,
               region_id: "test-region",
+              price_list: { type: "sale" },
               currency_code: "dkk",
             },
             {
@@ -252,6 +261,7 @@ const toTest = [
               min_quantity: 5,
               max_quantity: 10,
               region_id: "test-region",
+              price_list: { type: "sale" },
               currency_code: "dkk",
             },
           ],
@@ -279,66 +289,79 @@ describe("PriceSelectionStrategy", () => {
               ) => {
                 if (variant_id === "test-basic-variant") {
                   return [
-                    {
-                      amount: 100,
-                      region_id,
-                      currency_code,
-                      price_list_id: null,
-                      max_quantity: null,
-                      min_quantity: null,
-                    },
+                    [
+                      {
+                        amount: 100,
+                        region_id,
+                        currency_code,
+                        price_list_id: null,
+                        max_quantity: null,
+                        min_quantity: null,
+                      },
+                    ],
+                    1,
                   ]
                 }
                 if (customer_id === "test-customer-1") {
                   return [
-                    {
-                      amount: 100,
-                      region_id,
-                      currency_code,
-                      price_list_id: null,
-                      max_quantity: null,
-                      min_quantity: null,
-                    },
-                    {
-                      amount: 50,
-                      region_id: region_id,
-                      currency_code: currency_code,
-                      max_quantity: null,
-                      min_quantity: null,
-                    },
+                    [
+                      {
+                        amount: 100,
+                        region_id,
+                        currency_code,
+                        price_list_id: null,
+                        max_quantity: null,
+                        min_quantity: null,
+                      },
+                      {
+                        amount: 50,
+                        region_id: region_id,
+                        currency_code: currency_code,
+                        price_list: { type: "sale" },
+                        max_quantity: null,
+                        min_quantity: null,
+                      },
+                    ],
+                    2,
                   ]
                 }
                 if (customer_id === "test-customer-2") {
                   return [
-                    {
-                      amount: 100,
-                      region_id,
-                      currency_code,
-                      price_list_id: null,
-                      max_quantity: null,
-                      min_quantity: null,
-                    },
-                    {
-                      amount: 30,
-                      min_quantity: 10,
-                      max_quantity: 12,
-                      region_id: region_id,
-                      currency_code: currency_code,
-                    },
-                    {
-                      amount: 20,
-                      min_quantity: 3,
-                      max_quantity: 5,
-                      region_id: region_id,
-                      currency_code: currency_code,
-                    },
-                    {
-                      amount: 50,
-                      min_quantity: 5,
-                      max_quantity: 10,
-                      region_id: region_id,
-                      currency_code: currency_code,
-                    },
+                    [
+                      {
+                        amount: 100,
+                        region_id,
+                        currency_code,
+                        price_list_id: null,
+                        max_quantity: null,
+                        min_quantity: null,
+                      },
+                      {
+                        amount: 30,
+                        min_quantity: 10,
+                        max_quantity: 12,
+                        price_list: { type: "sale" },
+                        region_id: region_id,
+                        currency_code: currency_code,
+                      },
+                      {
+                        amount: 20,
+                        min_quantity: 3,
+                        max_quantity: 5,
+                        price_list: { type: "sale" },
+                        region_id: region_id,
+                        currency_code: currency_code,
+                      },
+                      {
+                        amount: 50,
+                        min_quantity: 5,
+                        max_quantity: 10,
+                        price_list: { type: "sale" },
+                        region_id: region_id,
+                        currency_code: currency_code,
+                      },
+                    ],
+                    4,
                   ]
                 }
                 return []
