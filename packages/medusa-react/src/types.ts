@@ -41,11 +41,6 @@ export type TQueryKey<TKey, TListQuery = any, TDetailQuery = string> = {
   ]
   details: () => [...TQueryKey<TKey>["all"], "detail"]
   detail: (
-    id: TDetailQuery,
-    query?: TListQuery
-  ) => [
-    ...ReturnType<TQueryKey<TKey>["details"]>,
-    TDetailQuery,
-    { query: TListQuery | undefined }
-  ]
+    id: TDetailQuery
+  ) => [...ReturnType<TQueryKey<TKey>["details"]>, TDetailQuery]
 }

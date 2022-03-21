@@ -79,15 +79,11 @@ export const useAdminCustomerGroups = (
 export const useAdminCustomerGroupCustomers = (
   id: string,
   query?: AdminGetCustomersParams,
-  options?: UseQueryOptionsWrapper<
-    Response<AdminCustomersListRes>,
-    Error,
-    ReturnType<CustomerGroupQueryKeys["detail"]>
-  >
+  options?: UseQueryOptionsWrapper<Response<AdminCustomersListRes>, Error, any>
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminCustomerGroupKeys.detail(`${id}:customers`, query),
+    [...adminCustomerGroupKeys.detail(id), "customers", query],
     () => client.admin.customerGroups.listCustomers(id, query),
     options
   )
