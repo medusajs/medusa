@@ -19,7 +19,7 @@ export interface IPriceSelectionStrategy {
    * the default price an all valid prices for the given variant
    */
   calculateVariantPrice(
-    variant: string,
+    variant_id: string,
     context: PriceSelectionContext
   ): Promise<PriceSelectionResult>
 }
