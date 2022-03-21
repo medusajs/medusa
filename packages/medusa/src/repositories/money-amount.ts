@@ -41,7 +41,10 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
-  public async upsertVariantCurrencyPrice(variantId: string, price: Price) {
+  public async upsertVariantCurrencyPrice(
+    variantId: string,
+    price: Price
+  ): Promise<MoneyAmount> {
     let moneyAmount = await this.findOne({
       where: {
         currency_code: price.currency_code,
@@ -52,7 +55,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     })
 
     if (!moneyAmount) {
-      moneyAmount = await this.create({
+      moneyAmount = this.create({
         ...price,
         currency_code: price.currency_code?.toLowerCase(),
         variant_id: variantId,
@@ -118,16 +121,16 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     currency_code?: string,
     customer_id?: string,
     includeDiscountPrices?: boolean
-  ): Promise<MoneyAmount[]> {
+  ): Promise<[MoneyAmount[], number]> {
     const date = new Date()
 
-    let qb = this.createQueryBuilder("ma")
+    const qb = this.createQueryBuilder("ma")
       .leftJoinAndSelect(
         "ma.price_list",
         "price_list",
         "ma.price_list_id = price_list.id "
       )
-      .where("ma.variant_id = :variant_id", { variant_id: variant_id })
+      .where({ variant_id: variant_id }) // "ma.variant_id = :variant_id",
       .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
       .andWhere(
         "(price_list is null or price_list.ends_at is null OR price_list.ends_at > :date) ",
@@ -143,21 +146,20 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       )
 
     if (region_id || currency_code) {
-      qb = qb.andWhere(
-        "(ma.region_id = :region_id OR ma.currency_code = :currency_code)",
-        {
-          region_id: region_id,
-          currency_code: currency_code,
-        }
+      qb.andWhere(
+        new Brackets((qb) =>
+          qb
+            .where({ region_id: region_id })
+            .orWhere({ currency_code: currency_code })
+        )
       )
     } else if (!customer_id && !includeDiscountPrices) {
-      qb = qb.andWhere("price_list is null")
+      qb.andWhere("price_list IS null")
     }
 
     if (customer_id) {
-      qb = qb
-        .leftJoinAndSelect("price_list.customer_groups", "cgroup")
-        .leftJoinAndSelect(
+      qb.leftJoin("price_list.customer_groups", "cgroup")
+        .leftJoin(
           "customer_group_customers",
           "cgc",
           "cgc.customer_group_id = cgroup.id"
@@ -166,11 +168,11 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
           customer_id,
         })
     } else {
-      qb = qb
-        .leftJoinAndSelect("price_list.customer_groups", "cgroup")
-        .andWhere("cgroup.id is null")
+      qb.leftJoin("price_list.customer_groups", "cgroup").andWhere(
+        "cgroup.id is null"
+      )
     }
-    return await qb.getMany()
+    return await qb.getManyAndCount()
   }
 
   public async updatePriceListPrices(
