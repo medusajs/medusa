@@ -1393,33 +1393,6 @@ describe("/admin/products", () => {
                   amount: 1500,
                   currency_code: "usd",
                 }),
-                // expect.objectContaining({
-                //   id: "ma_test_1",
-                //   amount: 100,
-                //   currency_code: "usd",
-                //   min_quantity: 1,
-                //   max_quantity: 100,
-                //   variant_id: "test-variant",
-                //   price_list_id: "pl_no_customer_groups",
-                // }),
-                // expect.objectContaining({
-                //   id: "ma_test_2",
-                //   amount: 80,
-                //   currency_code: "usd",
-                //   min_quantity: 101,
-                //   max_quantity: 500,
-                //   variant_id: "test-variant",
-                //   price_list_id: "pl_no_customer_groups",
-                // }),
-                // expect.objectContaining({
-                //   id: "ma_test_3",
-                //   amount: 50,
-                //   currency_code: "usd",
-                //   min_quantity: 501,
-                //   max_quantity: 1000,
-                //   variant_id: "test-variant",
-                //   price_list_id: "pl_no_customer_groups",
-                // }),
               ]),
             }),
           ]),
@@ -1467,15 +1440,7 @@ describe("/admin/products", () => {
         })
       )
     })
-    // updatedVariant.prices.sort((p1, p2) => p1.amount - p2.amount)
 
-    // expect(updatedVariant).toMatchSnapshot({
-    //   id: "test-variant",
-    //   allow_backorder: false,
-    //   barcode: "test-barcode",
-    //   ean: "test-ean",
-    //   inventory_quantity: 10,
-    //   manage_inventory: true,
     it("successfully updates a variant's prices by adding a new price", async () => {
       const api = useApi()
       const data = {
@@ -1603,33 +1568,6 @@ describe("/admin/products", () => {
             amount: 900,
             currency_code: "eur",
           }),
-          // expect.objectContaining({
-          //   id: "ma_test_1",
-          //   amount: 100,
-          //   currency_code: "usd",
-          //   min_quantity: 1,
-          //   max_quantity: 100,
-          //   variant_id: "test-variant",
-          //   price_list_id: "pl_no_customer_groups",
-          // }),
-          // expect.objectContaining({
-          //   id: "ma_test_2",
-          //   amount: 80,
-          //   currency_code: "usd",
-          //   min_quantity: 101,
-          //   max_quantity: 500,
-          //   variant_id: "test-variant",
-          //   price_list_id: "pl_no_customer_groups",
-          // }),
-          // expect.objectContaining({
-          //   id: "ma_test_3",
-          //   amount: 50,
-          //   currency_code: "usd",
-          //   min_quantity: 501,
-          //   max_quantity: 1000,
-          //   variant_id: "test-variant",
-          //   price_list_id: "pl_no_customer_groups",
-          // }),
         ])
       )
     })

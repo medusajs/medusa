@@ -4,9 +4,7 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
-// const customerSeeder = require("../../helpers/customer-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
-// const productSeeder = require("../../helpers/product-seeder")
 const promotionsSeeder = require("../../helpers/promotions-seeder")
 
 jest.setTimeout(30000)
@@ -680,43 +678,3 @@ describe("Promotions", () => {
     })
   })
 })
-
-/*
-integration tests check list
-default
-  - fetches only non-customer group prices
-  
-  - resulting price is correct
-  
-  - lowest price is set as calculated
-  
-  - default price is set as original
-
-  - fetches only prices for specific region if they exist 
-    
-  - date interval delimitations work correctly
-    
-  - price quantities are applied correctly (in cart tests)
-  
-  - all prices with varying quantities are returned
-
-  - discount price with no min_quantity is applied when lower than default 
-
-  - fetches prices for currency if region price is not found 
-
-  - quantities and date limits
-
-  - multiple overlapping date limits
-
-with login
-  - fetches only prices for valid customer groups
-  
-  - fetches both customer group and non-customer group prices
-
-  - customer groups with quantities
-
-  - customer groups with date limits
-
-  - customer groups with quantities and date limits
-
-*/
