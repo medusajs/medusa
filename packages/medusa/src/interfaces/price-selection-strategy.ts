@@ -3,16 +3,21 @@ import { MoneyAmount } from ".."
 
 export interface IPriceSelectionStrategy {
   /**
-   * Calculates the tax amount for a given set of line items under applicable
-   * tax conditions and calculation contexts.
-   * @param items - the line items to calculate the tax total for
-   * @param taxLines - the tax lines that applies to the calculation
-   * @param calculationContext - other details relevant for the calculation
-   * @return the tax total
+   * Instantiate a new price selection strategy with the active transaction in
+   * order to ensure reads are accurate.
+   * @param manager EntityManager with the queryrunner of the active transaction
+   * @returns a new price selection strategy
    */
-
   withTransaction(manager: EntityManager): IPriceSelectionStrategy
 
+  /**
+   * Calculate the original and discount price for a given variant in a set of
+   * circumstances described in the context.
+   * @param variant The variant id of the variant for which to retrieve prices
+   * @param context Details relevant to determine the correct pricing of the variant
+   * @return pricing details in an object containing the calculated lowest price,
+   * the default price an all valid prices for the given variant
+   */
   calculateVariantPrice(
     variant: string,
     context: PriceSelectionContext
@@ -23,7 +28,10 @@ export function isPriceSelectionStrategy(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any
 ): object is IPriceSelectionStrategy {
-  return typeof object.calculateVariantPrice === "function"
+  return (
+    typeof object.calculateVariantPrice === "function" &&
+    typeof object.withTransaction === "function"
+  )
 }
 
 export type PriceSelectionContext = {
