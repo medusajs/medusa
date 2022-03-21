@@ -40,16 +40,19 @@ module.exports = async (connection, data = {}) => {
     id: "test-customer-5",
     email: "test5@email.com",
   })
+  await manager.save(customer5)
 
   const customer6 = await manager.create(Customer, {
     id: "test-customer-6",
     email: "test6@email.com",
   })
+  await manager.save(customer6)
 
   const customer7 = await manager.create(Customer, {
     id: "test-customer-7",
     email: "test7@email.com",
   })
+  await manager.save(customer7)
 
   const deletionCustomer = await manager.create(Customer, {
     id: "test-customer-delete-cg",
