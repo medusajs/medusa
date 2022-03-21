@@ -40,12 +40,14 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     resourceKey: string
     joinTableForeignKey: DiscountConditionJoinTableForeignKey
     conditionTable: DiscountConditionResourceType
+    joinTableKey: string
   } {
     let conditionTable: DiscountConditionResourceType = DiscountConditionProduct
 
     let joinTable = "product"
     let joinTableForeignKey: DiscountConditionJoinTableForeignKey =
       DiscountConditionJoinTableForeignKey.PRODUCT_ID
+    let joinTableKey = "id"
 
     // On the joined table (e.g. `product`), what key should be match on
     // (e.g `type_id` for product types and `id` for products)
@@ -79,6 +81,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         break
       }
       case DiscountConditionType.PRODUCT_TAGS: {
+        joinTableKey = "product_id"
         resourceKey = "product_tag_id"
         joinTableForeignKey =
           DiscountConditionJoinTableForeignKey.PRODUCT_TAG_ID
@@ -88,6 +91,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         break
       }
       case DiscountConditionType.CUSTOMER_GROUPS: {
+        joinTableKey = "customer_id"
         resourceKey = "customer_id"
         joinTable = "customer_group_customers"
         joinTableForeignKey =
@@ -102,6 +106,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
 
     return {
       joinTable,
+      joinTableKey,
       resourceKey,
       joinTableForeignKey,
       conditionTable,
@@ -180,28 +185,23 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       .getMany()
   }
 
-  async queryProductConditionTable({
-    type,
-    condId,
-    productId,
-  }): Promise<number> {
-    const { conditionTable, joinTable, joinTableForeignKey, resourceKey } =
-      this.getJoinTableResourceIdentifiers(type)
-
-    let productKey = "id"
-
-    if (type === DiscountConditionType.PRODUCT_TAGS) {
-      productKey = "product_id"
-    }
+  async queryConditionTable({ type, condId, resourceId }): Promise<number> {
+    const {
+      conditionTable,
+      joinTable,
+      joinTableForeignKey,
+      resourceKey,
+      joinTableKey,
+    } = this.getJoinTableResourceIdentifiers(type)
 
     return await this.manager
       .createQueryBuilder(conditionTable, "dc")
       .innerJoin(
         joinTable,
         "resource",
-        `dc.${joinTableForeignKey} = resource.${resourceKey} and resource.${productKey} = :productId `,
+        `dc.${joinTableForeignKey} = resource.${resourceKey} and resource.${joinTableKey} = :resourceId `,
         {
-          productId,
+          resourceId,
         }
       )
       .where(`dc.condition_id = :conditionId`, {
@@ -233,10 +233,10 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     //    if condition operation is `in` and the query for conditions defined for the given type is empty, the discount is invalid
     //    if condition operation is `not_in` and the query for conditions defined for the given type is not empty, the discount is invalid
     for (const condition of discountConditions) {
-      const numConditions = await this.queryProductConditionTable({
+      const numConditions = await this.queryConditionTable({
         type: condition.type,
         condId: condition.id,
-        productId,
+        resourceId: productId,
       })
 
       if (
