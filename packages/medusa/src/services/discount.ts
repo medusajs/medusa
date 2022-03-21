@@ -712,7 +712,7 @@ class DiscountService extends BaseService {
 
       return await discountConditionRepo.canApplyForCustomer(
         discountRuleId,
-        customer
+        customer.id
       )
     })
   }
