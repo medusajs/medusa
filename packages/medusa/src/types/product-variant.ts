@@ -82,8 +82,8 @@ export class FilterableProductVariantProps {
   @IsType([String, [String], StringComparisonOperator])
   id?: string | string[] | StringComparisonOperator
 
-  @IsString()
-  title?: string
+  @IsType([String, [String]])
+  title?: string | string[]
 
   @IsType([String, [String]])
   product_id?: string | string[]
@@ -100,8 +100,8 @@ export class FilterableProductVariantProps {
   @IsType([String])
   upc?: string
 
-  @IsNumber()
-  inventory_quantity?: number
+  @IsType([Number, NumericalComparisonOperator])
+  inventory_quantity?: number | NumericalComparisonOperator
 
   @IsBoolean()
   allow_backorder?: boolean

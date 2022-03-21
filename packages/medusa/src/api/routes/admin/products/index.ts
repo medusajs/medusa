@@ -73,6 +73,8 @@ export const defaultAdminProductFields = [
   "id",
   "title",
   "subtitle",
+  "status",
+  "external_id",
   "description",
   "handle",
   "is_giftcard",
@@ -91,6 +93,7 @@ export const defaultAdminProductFields = [
   "material",
   "created_at",
   "updated_at",
+  "deleted_at",
   "metadata",
 ]
 
@@ -98,6 +101,8 @@ export const allowedAdminProductFields = [
   "id",
   "title",
   "subtitle",
+  "status",
+  "external_id",
   "description",
   "handle",
   "is_giftcard",
@@ -116,6 +121,7 @@ export const allowedAdminProductFields = [
   "material",
   "created_at",
   "updated_at",
+  "deleted_at",
   "metadata",
 ]
 
