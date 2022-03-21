@@ -5,10 +5,13 @@ import {
   In,
   IsNull,
   Not,
-  Repository
+  Repository,
 } from "typeorm"
 import { MoneyAmount } from "../models/money-amount"
-import { PriceListPriceCreateInput, PriceListPriceUpdateInput } from "../types/price-list"
+import {
+  PriceListPriceCreateInput,
+  PriceListPriceUpdateInput,
+} from "../types/price-list"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -18,7 +21,10 @@ type Price = Partial<
 
 @EntityRepository(MoneyAmount)
 export class MoneyAmountRepository extends Repository<MoneyAmount> {
-  public async findVariantPricesNotIn(variantId: string, prices: Price[]) {
+  public async findVariantPricesNotIn(
+    variantId: string,
+    prices: Price[]
+  ): Promise<MoneyAmount[]> {
     const pricesNotInPricesPayload = await this.createQueryBuilder()
       .where({
         variant_id: variantId,
@@ -35,7 +41,10 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     return pricesNotInPricesPayload
   }
 
-  public async upsertVariantCurrencyPrice(variantId: string, price: Price) {
+  public async upsertVariantCurrencyPrice(
+    variantId: string,
+    price: Price
+  ): Promise<MoneyAmount> {
     let moneyAmount = await this.findOne({
       where: {
         currency_code: price.currency_code,
@@ -61,12 +70,15 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
   public async addPriceListPrices(
     priceListId: string,
     prices: PriceListPriceCreateInput[],
-    overrideExisting: boolean = false
+    overrideExisting = false
   ): Promise<MoneyAmount[]> {
-    const toInsert = prices.map((price) => (this.create({
-      ...price,
-      price_list_id: priceListId,
-    })))
+    const toInsert = prices.map((price) =>
+      this.create({
+        ...price,
+        price_list_id: priceListId,
+      })
+    )
+
     const insertResult = await this.createQueryBuilder()
       .insert()
       .orIgnore(true)
@@ -103,13 +115,78 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .execute()
   }
 
+  public async findManyForVariantInRegion(
+    variant_id: string,
+    region_id?: string,
+    currency_code?: string,
+    customer_id?: string,
+    include_discount_prices?: boolean
+  ): Promise<[MoneyAmount[], number]> {
+    const date = new Date()
+
+    const qb = this.createQueryBuilder("ma")
+      .leftJoinAndSelect(
+        "ma.price_list",
+        "price_list",
+        "ma.price_list_id = price_list.id "
+      )
+      .where({ variant_id: variant_id }) // "ma.variant_id = :variant_id",
+      .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
+      .andWhere(
+        "(price_list is null or price_list.ends_at is null OR price_list.ends_at > :date) ",
+        {
+          date: date.toUTCString(),
+        }
+      )
+      .andWhere(
+        "(price_list is null or price_list.starts_at is null OR price_list.starts_at < :date)",
+        {
+          date: date.toUTCString(),
+        }
+      )
+
+    if (region_id || currency_code) {
+      qb.andWhere(
+        new Brackets((qb) =>
+          qb
+            .where({ region_id: region_id })
+            .orWhere({ currency_code: currency_code })
+        )
+      )
+    } else if (!customer_id && !include_discount_prices) {
+      qb.andWhere("price_list IS null")
+    }
+
+    if (customer_id) {
+      qb.leftJoin("price_list.customer_groups", "cgroup")
+        .leftJoin(
+          "customer_group_customers",
+          "cgc",
+          "cgc.customer_group_id = cgroup.id"
+        )
+        .andWhere("(cgc is null OR cgc.customer_id = :customer_id)", {
+          customer_id,
+        })
+    } else {
+      qb.leftJoin("price_list.customer_groups", "cgroup").andWhere(
+        "cgroup.id is null"
+      )
+    }
+    return await qb.getManyAndCount()
+  }
+
   public async updatePriceListPrices(
     priceListId: string,
     updates: PriceListPriceUpdateInput[]
   ): Promise<MoneyAmount[]> {
-    const [existingPrices, newPrices] = partition(updates, (update) => update.id)
+    const [existingPrices, newPrices] = partition(
+      updates,
+      (update) => update.id
+    )
 
-    const newPriceEntities = newPrices.map((price) => (this.create({ ...price, price_list_id: priceListId })))
+    const newPriceEntities = newPrices.map((price) =>
+      this.create({ ...price, price_list_id: priceListId })
+    )
 
     return await this.save([...existingPrices, ...newPriceEntities])
   }
