@@ -16,6 +16,7 @@ import {
 export type ProductFactoryData = {
   id?: string
   is_giftcard?: boolean
+  status?: string
   title?: string
   type?: string
   tags?: string[]
