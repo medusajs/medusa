@@ -61,9 +61,7 @@ class CustomerService extends BaseService {
    * @return {string} the validated email
    */
   validateEmail_(email) {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email)
     if (error) {
       throw new MedusaError(
@@ -192,7 +190,7 @@ class CustomerService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
 
-    const groups = query?.where?.groups
+    const groups = query.where.groups
     delete query.where.groups
 
     if (q) {
