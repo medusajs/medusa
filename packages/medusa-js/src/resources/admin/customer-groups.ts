@@ -150,7 +150,7 @@ class AdminCustomerGroupsResource extends BaseResource {
 
     if (query) {
       const queryString = qs.stringify(query)
-      path = `/admin/customers?${queryString}`
+      path += `?${queryString}`
     }
 
     return this.client.request("GET", path, {}, {}, customHeaders)
