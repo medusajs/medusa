@@ -115,7 +115,7 @@ export const useAdminAddCustomersToCustomerGroup = (
       [
         adminCustomerGroupKeys.lists(),
         adminCustomerGroupKeys.detail(id),
-        adminCustomerGroupKeys.sublist(id, "customers"),
+        adminCustomerGroupKeys.detail(`${id}customers`),
       ],
       options
     )
@@ -147,7 +147,7 @@ export const useAdminRemoveCustomersFromCustomerGroup = (
       [
         adminCustomerGroupKeys.lists(),
         adminCustomerGroupKeys.detail(id),
-        adminCustomerGroupKeys.sublist(id, "customers"),
+        adminCustomerGroupKeys.detail(`${id}customers`),
       ],
       options
     )
