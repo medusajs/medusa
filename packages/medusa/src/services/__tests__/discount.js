@@ -714,7 +714,6 @@ describe("DiscountService", () => {
 
       expect(res).toBe(false)
 
-      expect(customerService.retrieve).toHaveBeenCalledTimes(0)
       expect(
         discountConditionRepository.canApplyForCustomer
       ).toHaveBeenCalledTimes(0)
@@ -728,7 +727,6 @@ describe("DiscountService", () => {
 
       expect(res).toBe(false)
 
-      expect(customerService.retrieve).toHaveBeenCalledTimes(1)
       expect(
         discountConditionRepository.canApplyForCustomer
       ).toHaveBeenCalledTimes(0)
@@ -742,7 +740,6 @@ describe("DiscountService", () => {
 
       expect(res).toBe(true)
 
-      expect(customerService.retrieve).toHaveBeenCalledTimes(1)
       expect(
         discountConditionRepository.canApplyForCustomer
       ).toHaveBeenCalledTimes(1)

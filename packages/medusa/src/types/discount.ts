@@ -139,7 +139,7 @@ export type UpdateDiscountRuleInput = {
   id: string
   description?: string
   type: string
-  value: string
+  value: number
   allocation: string
   conditions?: UpsertDiscountConditionInput[]
 }
