@@ -256,4 +256,50 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
 
     return true
   }
+
+  async canApplyForCustomer(
+    discountRuleId: string,
+    customerId: string
+  ): Promise<boolean> {
+    const discountConditions = await this.createQueryBuilder("discon")
+      .select(["discon.id", "discon.type", "discon.operator"])
+      .where("discon.discount_rule_id = :discountRuleId", {
+        discountRuleId,
+      })
+      .getMany()
+
+    // in case of no discount conditions, we assume that the discount
+    // is valid for all
+    if (!discountConditions.length) {
+      return true
+    }
+
+    // retrieve conditions for customer groups
+    // for each customer group
+    //   if condition operation is `in` and the query for customer group conditions is empty, the discount is invalid
+    //   if condition operation is `not_in` and the query for customer group conditions is not empty, the discount is invalid
+    for (const condition of discountConditions) {
+      const numConditions = await this.queryConditionTable({
+        type: "customer_groups",
+        condId: condition.id,
+        resourceId: customerId,
+      })
+
+      if (
+        condition.operator === DiscountConditionOperator.IN &&
+        numConditions === 0
+      ) {
+        return false
+      }
+
+      if (
+        condition.operator === DiscountConditionOperator.NOT_IN &&
+        numConditions > 0
+      ) {
+        return false
+      }
+    }
+
+    return true
+  }
 }
