@@ -45,7 +45,7 @@ describe("Promotions", () => {
     it("calculated_price contains lowest price", async () => {
       const api = useApi()
       const res = await api
-        .get("/store/products/test-product")
+        .get("/store/products/test-product?region_id=test-region")
         .catch((error) => console.log(error))
 
       const variant = res.data.product.variants[0]
@@ -73,7 +73,7 @@ describe("Promotions", () => {
       expect(variant.prices.length).toEqual(2)
       variant.prices.forEach((price) => {
         if (price.price_list) {
-          expect(price.price_list.customer_groups).toEqual([])
+          expect(price.price_list.customer_groups).toEqual(undefined)
         } else {
           expect(price.price_list).toEqual(null)
         }
@@ -124,7 +124,7 @@ describe("Promotions", () => {
       expect(variant.prices.length).toEqual(2)
       variant.prices.forEach((price) => {
         if (price.price_list) {
-          expect(price.price_list.customer_groups).toEqual([])
+          expect(price.price_list.customer_groups).toEqual(undefined)
         } else {
           expect(price.price_list).toEqual(null)
         }
@@ -448,14 +448,7 @@ describe("Promotions", () => {
             region_id: "test-region",
             currency_code: "usd",
             amount: 100,
-            price_list: expect.objectContaining({
-              customer_groups: [
-                expect.objectContaining({
-                  id: "test-group-5",
-                  name: "test-group-5",
-                }),
-              ],
-            }),
+            price_list: expect.objectContaining({}),
           }),
         ])
       )
@@ -517,14 +510,7 @@ describe("Promotions", () => {
             currency_code: "usd",
             amount: 100,
             max_quantity: 9,
-            price_list: expect.objectContaining({
-              customer_groups: [
-                expect.objectContaining({
-                  id: "test-group-5",
-                  name: "test-group-5",
-                }),
-              ],
-            }),
+            price_list: expect.objectContaining({}),
           }),
           expect.objectContaining({
             id: "test-price3-quantity-customer-now",
@@ -651,14 +637,7 @@ describe("Promotions", () => {
             currency_code: "usd",
             amount: 100,
             max_quantity: 99,
-            price_list: expect.objectContaining({
-              customer_groups: [
-                expect.objectContaining({
-                  id: "test-group-5",
-                  name: "test-group-5",
-                }),
-              ],
-            }),
+            price_list: expect.objectContaining({}),
           }),
           expect.objectContaining({
             id: "test-price2-sale-customer-quantity-default",

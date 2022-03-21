@@ -130,7 +130,7 @@ Object {
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode",
-        "calculated_price": 80,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean",
@@ -156,7 +156,7 @@ Object {
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -182,7 +182,6 @@ Object {
             "min_quantity": null,
             "price_list": Object {
               "created_at": Any<String>,
-              "customer_groups": Array [],
               "deleted_at": null,
               "description": "Winter sale for VIP customers.",
               "ends_at": null,
@@ -210,7 +209,7 @@ Object {
       Object {
         "allow_backorder": false,
         "barcode": null,
-        "calculated_price": 80,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean2",
@@ -236,7 +235,7 @@ Object {
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -262,7 +261,6 @@ Object {
             "min_quantity": null,
             "price_list": Object {
               "created_at": Any<String>,
-              "customer_groups": Array [],
               "deleted_at": null,
               "description": "Winter sale for VIP customers.",
               "ends_at": null,
@@ -290,7 +288,7 @@ Object {
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode 1",
-        "calculated_price": 80,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean1",
@@ -316,7 +314,7 @@ Object {
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -342,7 +340,6 @@ Object {
             "min_quantity": null,
             "price_list": Object {
               "created_at": Any<String>,
-              "customer_groups": Array [],
               "deleted_at": null,
               "description": "Winter sale for VIP customers.",
               "ends_at": null,
@@ -387,7 +384,7 @@ Object {
         Object {
           "allow_backorder": false,
           "barcode": null,
-          "calculated_price": 100,
+          "calculated_price": null,
           "created_at": Any<String>,
           "deleted_at": null,
           "ean": null,
@@ -401,7 +398,7 @@ Object {
           "metadata": null,
           "mid_code": null,
           "origin_country": null,
-          "original_price": 100,
+          "original_price": null,
           "prices": Array [
             Object {
               "amount": 100,

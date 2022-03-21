@@ -78,7 +78,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode",
-        "calculated_price": 100,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean",
@@ -104,7 +104,7 @@ Array [
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -132,7 +132,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
-        "calculated_price": 100,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean2",
@@ -158,7 +158,7 @@ Array [
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -186,7 +186,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode 1",
-        "calculated_price": 100,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean1",
@@ -212,7 +212,7 @@ Array [
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -240,7 +240,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": "test-barcode-sale",
-        "calculated_price": 1000,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean-sale",
@@ -266,7 +266,7 @@ Array [
           },
         ],
         "origin_country": null,
-        "original_price": 1000,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 1000,
@@ -352,7 +352,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
-        "calculated_price": 100,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean4",
@@ -378,7 +378,7 @@ Array [
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -406,7 +406,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
-        "calculated_price": 100,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean3",
@@ -432,7 +432,7 @@ Array [
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -608,7 +608,7 @@ Array [
       Object {
         "allow_backorder": false,
         "barcode": null,
-        "calculated_price": 100,
+        "calculated_price": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": null,
@@ -634,7 +634,7 @@ Array [
           },
         ],
         "origin_country": null,
-        "original_price": 100,
+        "original_price": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -768,7 +768,7 @@ Object {
     Object {
       "allow_backorder": false,
       "barcode": null,
-      "calculated_price": 30,
+      "calculated_price": null,
       "created_at": Any<String>,
       "deleted_at": null,
       "ean": null,
@@ -804,7 +804,7 @@ Object {
         },
       ],
       "origin_country": null,
-      "original_price": 100,
+      "original_price": null,
       "prices": Array [
         Object {
           "amount": 100,
@@ -932,7 +932,7 @@ Object {
     Object {
       "allow_backorder": false,
       "barcode": "test-barcode",
-      "calculated_price": 75,
+      "calculated_price": null,
       "created_at": Any<String>,
       "deleted_at": null,
       "ean": "test-ean",
@@ -958,7 +958,7 @@ Object {
         },
       ],
       "origin_country": null,
-      "original_price": 75,
+      "original_price": null,
       "prices": Array [
         Object {
           "amount": 75,

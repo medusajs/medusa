@@ -231,48 +231,7 @@ describe("/store/products", () => {
     })
   })
 
-  // describe("GET /store/products advanced pricing", () => {
-  //   beforeEach(async () => {
-  //     try {
-  //       await productSeeder(dbConnection)
-  //       await adminSeeder(dbConnection)
-  //     } catch (err) {
-  //       console.log(err)
-  //       throw err
-  //     }
-  //   })
-
-  // })
   describe("list params", () => {
-    // beforeEach(async () => {
-    //   try {
-    //     await adminSeeder(dbConnection)
-
-    //     const p1 = await simpleProductFactory(
-    //       dbConnection,
-    //       {
-    //         title: "testprod",
-    //         status: "published",
-    //         variants: [{ title: "test-variant" }],
-    //       },
-    //       11
-    //     )
-
-    //     const p2 = await simpleProductFactory(
-    //       dbConnection,
-    //       {
-    //         title: "testprod3",
-    //         status: "published",
-    //         variants: [{ title: "test-variant1" }],
-    //       },
-    //       12
-    //     )
-    //   } catch (err) {
-    //     console.log(err)
-    //     throw err
-    //   }
-    // })
-
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -376,7 +335,7 @@ describe("/store/products", () => {
       try {
         await adminSeeder(dbConnection)
 
-        const p1 = await simpleProductFactory(
+        await simpleProductFactory(
           dbConnection,
           {
             title: "testprod",
@@ -386,7 +345,7 @@ describe("/store/products", () => {
           11
         )
 
-        const p2 = await simpleProductFactory(
+        await simpleProductFactory(
           dbConnection,
           {
             title: "testprod3",
@@ -480,8 +439,8 @@ describe("/store/products", () => {
               height: null,
               hs_code: null,
               origin_country: null,
-              calculated_price: 80,
-              original_price: 100,
+              calculated_price: null,
+              original_price: null,
               barcode: "test-barcode",
               product_id: "test-product",
               created_at: expect.any(String),
@@ -543,8 +502,8 @@ describe("/store/products", () => {
               hs_code: null,
               origin_country: null,
               barcode: null,
-              calculated_price: 80,
-              original_price: 100,
+              calculated_price: null,
+              original_price: null,
               product_id: "test-product",
               created_at: expect.any(String),
               updated_at: expect.any(String),
@@ -602,8 +561,8 @@ describe("/store/products", () => {
               height: null,
               hs_code: null,
               origin_country: null,
-              calculated_price: 80,
-              original_price: 100,
+              calculated_price: null,
+              original_price: null,
               barcode: "test-barcode 1",
               product_id: "test-product",
               created_at: expect.any(String),

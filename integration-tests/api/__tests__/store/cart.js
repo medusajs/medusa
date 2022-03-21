@@ -137,6 +137,8 @@ describe("/store/carts", () => {
         })
         .catch((err) => console.log(err))
 
+      response.data.cart.items.sort((a, b) => a.quantity - b.quantity)
+
       expect(response.status).toEqual(200)
       expect(response.data.cart.items).toEqual([
         expect.objectContaining({
