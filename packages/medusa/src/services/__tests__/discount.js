@@ -551,7 +551,6 @@ describe("DiscountService", () => {
 
     const customerService = {
       retrieve: jest.fn().mockImplementation((id) => {
-        console.log(id)
         if (id === "customer-no-groups") {
           return Promise.resolve({ id: "customer-no-groups" })
         }
@@ -613,10 +612,7 @@ describe("DiscountService", () => {
       ).toHaveBeenCalledTimes(1)
       expect(
         discountConditionRepository.canApplyForCustomer
-      ).toHaveBeenCalledWith("rule-1", {
-        id: "customer-with-groups",
-        groups: [{ id: "group-1" }],
-      })
+      ).toHaveBeenCalledWith("rule-1", "customer-with-groups")
     })
   })
 })
