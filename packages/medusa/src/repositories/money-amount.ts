@@ -55,7 +55,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     })
 
     if (!moneyAmount) {
-      moneyAmount = await this.create({
+      moneyAmount = this.create({
         ...price,
         currency_code: price.currency_code?.toLowerCase(),
         variant_id: variantId,

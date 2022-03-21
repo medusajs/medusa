@@ -1,5 +1,6 @@
 import { EntityManager } from "typeorm"
 import { MoneyAmount } from ".."
+import { PriceListType } from "../types/price-list"
 
 export interface IPriceSelectionStrategy {
   /**
@@ -24,6 +25,19 @@ export interface IPriceSelectionStrategy {
   ): Promise<PriceSelectionResult>
 }
 
+export abstract class AbstractPriceSelectionStrategy
+  implements IPriceSelectionStrategy
+{
+  public abstract withTransaction(
+    manager: EntityManager
+  ): IPriceSelectionStrategy
+
+  public abstract calculateVariantPrice(
+    variant_id: string,
+    context: PriceSelectionContext
+  ): Promise<PriceSelectionResult>
+}
+
 export function isPriceSelectionStrategy(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any
@@ -43,8 +57,16 @@ export type PriceSelectionContext = {
   includeDiscountPrices?: boolean
 }
 
+enum DefaultPriceType {
+  DEFAULT = "default",
+}
+
+export type PriceType = DefaultPriceType | PriceListType
+export const PriceType = { ...DefaultPriceType, ...PriceListType }
+
 export type PriceSelectionResult = {
   originalPrice: number | null
   calculatedPrice: number | null
+  calculatedPriceType?: PriceType
   prices: MoneyAmount[] // prices is an array of all possible price for the input customer and region prices
 }

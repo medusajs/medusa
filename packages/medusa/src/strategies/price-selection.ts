@@ -2,6 +2,7 @@ import {
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
+  PriceType,
 } from "../interfaces/price-selection-strategy"
 import { MedusaError } from "medusa-core-utils"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -51,6 +52,14 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       }
     }
 
+    if (!context) {
+      return {
+        originalPrice: null,
+        calculatedPrice: null,
+        prices,
+      }
+    }
+
     let defaultMoneyAmount
 
     if (context.region_id || context.currency_code) {
@@ -58,7 +67,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
         (p) =>
           p.price_list_id === null &&
           context.region_id &&
-          p.max_quantity === null &&
+          p.min_quantity === null &&
           p.max_quantity === null &&
           p.region_id === context.region_id
       )
@@ -68,7 +77,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
           (p) =>
             p.price_list_id === null &&
             context.currency_code &&
-            p.max_quantity === null &&
+            p.min_quantity === null &&
             p.max_quantity === null &&
             p.currency_code === context.currency_code
         )
@@ -79,7 +88,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       defaultMoneyAmount = prices.find(
         (p) =>
           p.price_list_id === null &&
-          p.max_quantity === null &&
+          p.min_quantity === null &&
           p.max_quantity === null
       )
     }
@@ -95,6 +104,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       originalPrice: defaultMoneyAmount.amount,
       calculatedPrice: NaN,
       prices: prices,
+      calculatedPriceType: PriceType.DEFAULT,
     }
 
     const validPrices = prices.filter((price) =>

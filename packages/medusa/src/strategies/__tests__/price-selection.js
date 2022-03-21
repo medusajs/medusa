@@ -21,6 +21,7 @@ const toTest = [
         )
         expect(value).toEqual({
           originalPrice: 100,
+          calculatedPriceType: "default",
           calculatedPrice: 100,
           prices: [
             {
@@ -88,6 +89,7 @@ const toTest = [
         expect(value).toEqual({
           originalPrice: 100,
           calculatedPrice: 50,
+          calculatedPriceType: "default",
           prices: [
             {
               amount: 100,
@@ -122,6 +124,7 @@ const toTest = [
         expect(value).toEqual({
           originalPrice: 100,
           calculatedPrice: 100,
+          calculatedPriceType: "default",
           prices: [
             {
               amount: 100,
@@ -170,6 +173,7 @@ const toTest = [
       validate: (value, { mockMoneyAmountRepository }) => {
         expect(value).toEqual({
           originalPrice: 100,
+          calculatedPriceType: "default",
           calculatedPrice: 50,
           prices: [
             {
@@ -218,6 +222,7 @@ const toTest = [
       validate: (value, { mockMoneyAmountRepository }) => {
         expect(value).toEqual({
           originalPrice: 100,
+          calculatedPriceType: "default",
           calculatedPrice: 100,
           prices: [
             {
