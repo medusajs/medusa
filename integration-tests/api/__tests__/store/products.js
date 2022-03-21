@@ -344,11 +344,9 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
-                  created_at: expect.any(String),
                   currency_code: "usd",
                   deleted_at: null,
                   id: "test-price",
@@ -356,7 +354,6 @@ describe("/store/products", () => {
                   min_quantity: null,
                   max_quantity: null,
                   price_list_id: null,
-                  updated_at: expect.any(String),
                   variant_id: "test-variant",
                 },
               ],
@@ -389,11 +386,9 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
-                  created_at: expect.any(String),
                   currency_code: "usd",
                   deleted_at: null,
                   id: "test-price2",
@@ -433,11 +428,9 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
-                  created_at: expect.any(String),
                   currency_code: "usd",
                   deleted_at: null,
                   id: "test-price1",
@@ -445,7 +438,6 @@ describe("/store/products", () => {
                   min_quantity: null,
                   max_quantity: null,
                   price_list_id: null,
-                  updated_at: expect.any(String),
                   variant_id: "test-variant_1",
                 },
               ],
@@ -548,7 +540,7 @@ describe("/store/products", () => {
     it("lists all published products", async () => {
       const api = useApi()
 
-      //update test-product status to published
+      // update test-product status to published
       await api
         .post(
           "/admin/products/test-product",

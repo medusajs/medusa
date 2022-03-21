@@ -467,7 +467,6 @@ describe("/admin/price-lists", () => {
           min_quantity: 1,
           max_quantity: 100,
           variant_id: "test-variant",
-          price_list_id: "pl_no_customer_groups",
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
@@ -479,7 +478,6 @@ describe("/admin/price-lists", () => {
           min_quantity: 101,
           max_quantity: 500,
           variant_id: "test-variant",
-          price_list_id: "pl_no_customer_groups",
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
@@ -491,7 +489,6 @@ describe("/admin/price-lists", () => {
           min_quantity: 501,
           max_quantity: 1000,
           variant_id: "test-variant",
-          price_list_id: "pl_no_customer_groups",
           created_at: expect.any(String),
           updated_at: expect.any(String),
         },
@@ -674,7 +671,7 @@ describe("/admin/price-lists", () => {
     it("Deletes a variant and ensures that prices associated with the variant are deleted from PriceList", async () => {
       const api = useApi()
 
-      const deleteResponse = await api
+      await api
         .delete("/admin/products/test-product/variants/test-variant", {
           headers: {
             Authorization: "Bearer test_token",
@@ -684,7 +681,6 @@ describe("/admin/price-lists", () => {
           console.warn(err.response.data)
         })
 
-
       const response = await api.get(
         "/admin/price-lists/pl_no_customer_groups",
         {
@@ -693,7 +689,6 @@ describe("/admin/price-lists", () => {
           },
         }
       )
-
 
       expect(response.status).toEqual(200)
       expect(response.data.price_list.prices.length).toEqual(0)

@@ -7,7 +7,7 @@ import {
   Index,
   ManyToMany,
   PrimaryColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
@@ -23,20 +23,14 @@ export class CustomerGroup {
   @Column()
   name: string
 
-  @ManyToMany(
-    () => Customer,
-    (customer) => customer.groups,
-    {
-      onDelete: "CASCADE",
-    }
-  )
+  @ManyToMany(() => Customer, (customer) => customer.groups, {
+    onDelete: "CASCADE",
+  })
   customers: Customer[]
 
-  @ManyToMany(
-    () => PriceList,
-    (priceList) => priceList.customer_groups,
-    { onDelete: "CASCADE" }
-  )
+  @ManyToMany(() => PriceList, (priceList) => priceList.customer_groups, {
+    onDelete: "CASCADE",
+  })
   price_lists: PriceList[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
