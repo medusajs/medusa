@@ -6,7 +6,6 @@ import {
   Not,
   Repository,
 } from "typeorm"
-import { Customer } from "../models/customer"
 import {
   DiscountCondition,
   DiscountConditionOperator,
@@ -260,7 +259,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
 
   async canApplyForCustomer(
     discountRuleId: string,
-    customer: Customer
+    customerId: string
   ): Promise<boolean> {
     const discountConditions = await this.createQueryBuilder("discon")
       .select(["discon.id", "discon.type", "discon.operator"])
@@ -280,26 +279,24 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
     //   if condition operation is `in` and the query for customer group conditions is empty, the discount is invalid
     //   if condition operation is `not_in` and the query for customer group conditions is not empty, the discount is invalid
     for (const condition of discountConditions) {
-      for (const group of customer.groups) {
-        const customerGroupConditions = await this.queryConditionTable({
-          type: "customer_groups",
-          condId: condition.id,
-          resourceId: group.id,
-        })
+      const numConditions = await this.queryConditionTable({
+        type: "customer_groups",
+        condId: condition.id,
+        resourceId: customerId,
+      })
 
-        if (
-          condition.operator === DiscountConditionOperator.IN &&
-          !customerGroupConditions.length
-        ) {
-          return false
-        }
+      if (
+        condition.operator === DiscountConditionOperator.IN &&
+        numConditions === 0
+      ) {
+        return false
+      }
 
-        if (
-          condition.operator === DiscountConditionOperator.NOT_IN &&
-          customerGroupConditions.length
-        ) {
-          return false
-        }
+      if (
+        condition.operator === DiscountConditionOperator.NOT_IN &&
+        numConditions > 0
+      ) {
+        return false
       }
     }
 
