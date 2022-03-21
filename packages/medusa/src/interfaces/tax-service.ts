@@ -66,10 +66,6 @@ export abstract class AbstractTaxService
 {
   protected static identifier: string
 
-  constructor() {
-    super()
-  }
-
   public getIdentifier(): string {
     if (!(<typeof AbstractTaxService>this.constructor).identifier) {
       throw new Error('Missing static property "identifier".')
