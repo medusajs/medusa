@@ -78,6 +78,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         price_list_id: priceListId,
       })
     )
+
     const insertResult = await this.createQueryBuilder()
       .insert()
       .orIgnore(true)

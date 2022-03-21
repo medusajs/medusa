@@ -1,7 +1,9 @@
 import { Type } from "class-transformer"
-import { IsOptional, IsInt } from "class-validator"
+import { ValidateNested, IsOptional, IsInt } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { validator } from "../../../../utils/validator"
+import { DateComparisonOperator } from "../../../../types/common"
+
 /**
  * @oas [get] /collections
  * operationId: "GetCollections"
@@ -23,30 +25,24 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/product_collection"
  */
 export default async (req, res) => {
-  try {
-    const { limit, offset } = await validator(
-      StoreGetCollectionsParams,
-      req.query
-    )
-    const selector = {}
+  const validated = await validator(StoreGetCollectionsParams, req.query)
+  const { limit, offset, ...filterableFields } = validated
 
-    const productCollectionService: ProductCollectionService =
-      req.scope.resolve("productCollectionService")
+  const productCollectionService: ProductCollectionService = req.scope.resolve(
+    "productCollectionService"
+  )
 
-    const listConfig = {
-      skip: offset,
-      take: limit,
-    }
-
-    const [collections, count] = await productCollectionService.listAndCount(
-      selector,
-      listConfig
-    )
-
-    res.status(200).json({ collections, count, limit, offset })
-  } catch (err) {
-    console.log(err)
+  const listConfig = {
+    skip: offset,
+    take: limit,
   }
+
+  const [collections, count] = await productCollectionService.listAndCount(
+    filterableFields,
+    listConfig
+  )
+
+  res.status(200).json({ collections, count, limit, offset })
 }
 
 export class StoreGetCollectionsParams {
@@ -59,4 +55,14 @@ export class StoreGetCollectionsParams {
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }
