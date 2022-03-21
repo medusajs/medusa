@@ -568,7 +568,7 @@ describe("/store/carts", () => {
         await api.post(`/store/carts/test-cart-2/complete-cart`)
       } catch (error) {
         expect(error.response.data).toMatchSnapshot({
-          code: "not_allowed",
+          type: "not_allowed",
           message: "Cart has already been completed",
           code: "cart_incompatible_state",
         })

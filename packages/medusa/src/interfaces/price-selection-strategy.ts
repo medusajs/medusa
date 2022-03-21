@@ -54,13 +54,14 @@ export type PriceSelectionContext = {
   quantity?: number
   region_id?: string
   currency_code?: string
-  includeDiscountPrices?: boolean
+  include_discount_prices?: boolean
 }
 
 enum DefaultPriceType {
   DEFAULT = "default",
 }
 
+// both exports are needed in order to get proper typing of the calculatedPriceType field.
 export type PriceType = DefaultPriceType | PriceListType
 export const PriceType = { ...DefaultPriceType, ...PriceListType }
 

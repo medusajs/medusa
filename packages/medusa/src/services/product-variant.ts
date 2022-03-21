@@ -443,7 +443,7 @@ class ProductVariantService extends BaseService {
           currency_code: region.currency_code,
           quantity: quantity,
           customer_id: customer_id,
-          includeDiscountPrices: !!includeDiscountPrices,
+          include_discount_prices: !!includeDiscountPrices,
         })
 
       return prices.calculatedPrice
@@ -861,7 +861,7 @@ class ProductVariantService extends BaseService {
           currency_code: cart?.region?.currency_code || currency_code,
           cart_id: cart_id,
           customer_id: customer_id,
-          includeDiscountPrices,
+          include_discount_prices: includeDiscountPrices,
         })
 
       variant.prices = prices.prices

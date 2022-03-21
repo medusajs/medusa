@@ -120,7 +120,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     region_id?: string,
     currency_code?: string,
     customer_id?: string,
-    includeDiscountPrices?: boolean
+    include_discount_prices?: boolean
   ): Promise<[MoneyAmount[], number]> {
     const date = new Date()
 
@@ -153,7 +153,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
             .orWhere({ currency_code: currency_code })
         )
       )
-    } else if (!customer_id && !includeDiscountPrices) {
+    } else if (!customer_id && !include_discount_prices) {
       qb.andWhere("price_list IS null")
     }
 
