@@ -87,7 +87,7 @@ export const useAdminCustomerGroupCustomers = (
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminCustomerGroupKeys.detail(`${id}customers`),
+    adminCustomerGroupKeys.detail(`${id}:customers`, query),
     () => client.admin.customerGroups.listCustomers(id, query),
     options
   )
