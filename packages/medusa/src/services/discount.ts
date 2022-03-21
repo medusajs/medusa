@@ -128,7 +128,6 @@ class DiscountService extends BaseService {
       type: Validator.string().required(),
       value: Validator.number().min(0).required(),
       allocation: Validator.string().required(),
-      valid_for: Validator.array().optional(),
       created_at: Validator.date().optional(),
       updated_at: Validator.date().allow(null).optional(),
       deleted_at: Validator.date().allow(null).optional(),
