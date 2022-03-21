@@ -1,18 +1,19 @@
 import {
+  AbstractPriceSelectionStrategy,
   IPriceSelectionStrategy,
   PriceSelectionContext,
   PriceSelectionResult,
   PriceType,
 } from "../interfaces/price-selection-strategy"
-import { MedusaError } from "medusa-core-utils"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { EntityManager } from "typeorm"
 
-class PriceSelectionStrategy implements IPriceSelectionStrategy {
+class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private moneyAmountRepository_: typeof MoneyAmountRepository
   private manager_: EntityManager
 
   constructor({ manager, moneyAmountRepository }) {
+    super()
     this.manager_ = manager
     this.moneyAmountRepository_ = moneyAmountRepository
   }
@@ -41,7 +42,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       context.region_id,
       context.currency_code,
       context.customer_id,
-      context.includeDiscountPrices
+      context.include_discount_prices
     )
 
     if (!count) {
