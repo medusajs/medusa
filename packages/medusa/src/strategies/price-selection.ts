@@ -36,7 +36,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       this.moneyAmountRepository_
     )
 
-    const prices = await moneyRepo.findManyForVariantInRegion(
+    const [prices, count] = await moneyRepo.findManyForVariantInRegion(
       variant_id,
       context.region_id,
       context.currency_code,
@@ -44,7 +44,7 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       context.includeDiscountPrices
     )
 
-    if (!prices.length) {
+    if (!count) {
       return {
         originalPrice: null,
         calculatedPrice: null,
@@ -52,72 +52,50 @@ class PriceSelectionStrategy implements IPriceSelectionStrategy {
       }
     }
 
-    if (!context) {
-      return {
-        originalPrice: null,
-        calculatedPrice: null,
-        prices,
-      }
-    }
-
-    let defaultMoneyAmount
-
-    if (context.region_id || context.currency_code) {
-      defaultMoneyAmount = prices.find(
-        (p) =>
-          p.price_list_id === null &&
-          context.region_id &&
-          p.min_quantity === null &&
-          p.max_quantity === null &&
-          p.region_id === context.region_id
-      )
-
-      if (!defaultMoneyAmount) {
-        defaultMoneyAmount = prices.find(
-          (p) =>
-            p.price_list_id === null &&
-            context.currency_code &&
-            p.min_quantity === null &&
-            p.max_quantity === null &&
-            p.currency_code === context.currency_code
-        )
-      }
-    }
-
-    if (!defaultMoneyAmount) {
-      defaultMoneyAmount = prices.find(
-        (p) =>
-          p.price_list_id === null &&
-          p.min_quantity === null &&
-          p.max_quantity === null
-      )
-    }
-
-    if (!defaultMoneyAmount) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Default money amount for variant with id ${variant_id} in region ${context.region_id} does not exist`
-      )
-    }
-
     const result: PriceSelectionResult = {
-      originalPrice: defaultMoneyAmount.amount,
-      calculatedPrice: NaN,
-      prices: prices,
-      calculatedPriceType: PriceType.DEFAULT,
+      originalPrice: null,
+      calculatedPrice: null,
+      prices,
     }
 
-    const validPrices = prices.filter((price) =>
-      isValidQuantity(price, context.quantity)
-    )
+    if (!context) {
+      return result
+    }
 
-    result.calculatedPrice = validPrices.reduce(
-      (prev, curr) =>
-        prev === null || (curr.amount < prev && !isNaN(curr.amount))
-          ? curr.amount
-          : prev,
-      validPrices[0]?.amount || result.originalPrice // if array is empty calculated price will be original price
-    )
+    for (const ma of prices) {
+      if (
+        context.region_id &&
+        ma.region_id === context.region_id &&
+        ma.price_list_id === null &&
+        ma.min_quantity === null &&
+        ma.max_quantity === null
+      ) {
+        result.originalPrice = ma.amount
+      }
+
+      if (
+        context.currency_code &&
+        ma.currency_code === context.currency_code &&
+        ma.price_list_id === null &&
+        ma.min_quantity === null &&
+        ma.max_quantity === null &&
+        result.originalPrice === null // region prices take precedence
+      ) {
+        result.originalPrice = ma.amount
+      }
+
+      if (
+        isValidQuantity(ma, context.quantity) &&
+        (result.calculatedPrice === null ||
+          ma.amount < result.calculatedPrice) &&
+        ((context.currency_code &&
+          ma.currency_code === context.currency_code) ||
+          (context.region_id && ma.region_id === context.region_id))
+      ) {
+        result.calculatedPrice = ma.amount
+        result.calculatedPriceType = ma.price_list?.type || PriceType.DEFAULT
+      }
+    }
 
     return result
   }
