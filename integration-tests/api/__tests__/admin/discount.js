@@ -8,6 +8,9 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const discountSeeder = require("../../helpers/discount-seeder")
 const { exportAllDeclaration } = require("@babel/types")
 const { simpleProductFactory } = require("../../factories")
+const {
+  simpleDiscountFactory,
+} = require("../../factories/simple-discount-factory")
 
 jest.setTimeout(30000)
 
@@ -25,6 +28,90 @@ describe("/admin/discounts", () => {
     const db = useDb()
     await db.shutdown()
     medusaProcess.kill()
+  })
+
+  describe("GET /admin/discounts/:id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "products",
+              operator: "in",
+              products: [prod.id],
+            },
+            {
+              type: "product_types",
+              operator: "not_in",
+              product_types: [prod.type_id],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should retrieve discount with conditions created with factory", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(
+          "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.products,rule.conditions.product_types",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+        })
+      )
+      expect(disc.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "in",
+            discount_rule_id: disc.rule.id,
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+            discount_rule_id: disc.rule.id,
+          }),
+        ])
+      )
+    })
   })
 
   describe("GET /admin/discounts", () => {
