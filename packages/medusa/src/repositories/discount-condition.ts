@@ -17,7 +17,7 @@ import { DiscountConditionProductCollection } from "../models/discount-condition
 import { DiscountConditionProductTag } from "../models/discount-condition-product-tag"
 import { DiscountConditionProductType } from "../models/discount-condition-product-type"
 
-enum DiscountConditionJoinTableForeignKey {
+export enum DiscountConditionJoinTableForeignKey {
   PRODUCT_ID = "product_id",
   PRODUCT_TYPE_ID = "product_type_id",
   PRODUCT_COLLECTION_ID = "product_collection_id",
