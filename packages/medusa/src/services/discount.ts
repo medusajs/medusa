@@ -712,7 +712,7 @@ class DiscountService extends BaseService {
     const fullItemPrice = lineItem.unit_price * lineItem.quantity
 
     if (type === DiscountRuleType.PERCENTAGE) {
-      adjustment = (fullItemPrice / 100) * value
+      adjustment = Math.round((fullItemPrice / 100) * value)
     } else if (
       type === DiscountRuleType.FIXED &&
       allocation === DiscountAllocation.TOTAL
