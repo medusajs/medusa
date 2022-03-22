@@ -68,7 +68,7 @@ In many cases you will want to track other events that are specific to your stor
 
 ## Tracking custom events
 
-Building from the custom functionality that can be guided by [the tutorial](https://docs.medusa-commerce.com/tutorial/adding-custom-functionality) in Medusa docs, imagine that you want to track all welcome opt-ins.
+Building from the custom functionality that can be guided by [the tutorial](https://docs.medusajs.com/tutorial/adding-custom-functionality) in Medusa docs, imagine that you want to track all welcome opt-ins.
 
 The `segmentService` exposes a `track` method that wraps [Segment's Track Spec](https://segment.com/docs/connections/spec/track/), allowing you to send events to the Segment from anywhere in your Medusa project.
 
