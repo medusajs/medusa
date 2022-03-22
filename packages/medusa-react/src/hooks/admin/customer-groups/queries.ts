@@ -18,7 +18,7 @@ const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
 export const adminCustomerGroupKeys = {
   ...queryKeysFactory(ADMIN_CUSTOMER_GROUPS_QUERY_KEY),
   detailCustomer(id: string, query?: AdminGetCustomersParams) {
-    return [...this.detail(id), "customers", query]
+    return [...this.detail(id), "customers", { ...(query || {}) }]
   },
 }
 
