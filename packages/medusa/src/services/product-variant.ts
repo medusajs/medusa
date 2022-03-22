@@ -355,15 +355,6 @@ class ProductVariantService extends BaseService {
 
       const result = await variantRepo.save(variant)
 
-      const res = await this.setAdditionalPrices(
-        result,
-        config?.currency_code,
-        config?.region_id,
-        config?.cart_id,
-        config?.customer_id,
-        config?.include_discount_prices
-      )
-
       await this.eventBus_
         .withTransaction(manager)
         .emit(ProductVariantService.Events.UPDATED, {
