@@ -15,9 +15,12 @@ import { queryKeysFactory } from "../../utils"
 
 const ADMIN_CUSTOMER_GROUPS_QUERY_KEY = `admin_customer_groups` as const
 
-export const adminCustomerGroupKeys = queryKeysFactory(
-  ADMIN_CUSTOMER_GROUPS_QUERY_KEY
-)
+export const adminCustomerGroupKeys = {
+  ...queryKeysFactory(ADMIN_CUSTOMER_GROUPS_QUERY_KEY),
+  detailCustomer(id: string, query?: AdminGetCustomersParams) {
+    return [...this.detail(id), "customers", query]
+  },
+}
 
 type CustomerGroupQueryKeys = typeof adminCustomerGroupKeys
 
@@ -79,11 +82,15 @@ export const useAdminCustomerGroups = (
 export const useAdminCustomerGroupCustomers = (
   id: string,
   query?: AdminGetCustomersParams,
-  options?: UseQueryOptionsWrapper<Response<AdminCustomersListRes>, Error, any>
+  options?: UseQueryOptionsWrapper<
+    Response<AdminCustomersListRes>,
+    Error,
+    ReturnType<CustomerGroupQueryKeys["detailCustomer"]>
+  >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    [...adminCustomerGroupKeys.detail(id), "customers", query],
+    adminCustomerGroupKeys.detailCustomer(id, query),
     () => client.admin.customerGroups.listCustomers(id, query),
     options
   )
