@@ -363,7 +363,7 @@ class ProductVariantService extends BaseService {
           fields: Object.keys(update),
         })
 
-      return res
+      return result
     })
   }
 
