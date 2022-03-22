@@ -546,7 +546,7 @@ describe("/admin/products", () => {
           ],
           variants: [
             {
-              id: "test-variant", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -569,7 +569,7 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: "test-variant_2", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_2",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -592,7 +592,7 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: "test-variant_1", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_1",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -615,7 +615,7 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: "test-variant-sale", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant-sale",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -665,7 +665,7 @@ describe("/admin/products", () => {
           options: [],
           variants: [
             {
-              id: "test-variant_4", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_4",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -688,7 +688,7 @@ describe("/admin/products", () => {
               ],
             },
             {
-              id: "test-variant_3", // expect.stringMatching(/^test-variant*/),
+              id: "test-variant_3",
               created_at: expect.any(String),
               updated_at: expect.any(String),
               product_id: expect.stringMatching(/^test-*/),
@@ -1865,7 +1865,7 @@ describe("/admin/products", () => {
     it("successfully creates soft-deleted product variant", async () => {
       const api = useApi()
 
-      const product = await api
+      await api
         .get("/admin/products/test-product", {
           headers: {
             Authorization: "bearer test_token",

@@ -237,9 +237,6 @@ module.exports = async (connection, data = {}) => {
         currency_code: "usd",
         amount: 80,
         price_list_id: "pl",
-        type: "sale",
-        starts_at: yesterday,
-        ends_at: tomorrow,
       },
       {
         id: "test-price2-discount-expired",

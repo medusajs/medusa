@@ -1,3 +1,4 @@
+const { ProductVariant } = require("@medusajs/medusa")
 const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -350,9 +351,11 @@ describe("/store/variants", () => {
     it("lists by title", async () => {
       const api = useApi()
 
-      const response = await api.get(
-        "/store/variants?title[]=test1&title[]=test2&inventory_quantity[gt]=10"
-      )
+      const response = await api
+        .get(
+          "/store/variants?title[]=test1&title[]=test2&inventory_quantity[gt]=10"
+        )
+        .catch((err) => console.log(err))
 
       expect(response.data).toMatchSnapshot({
         variants: [
@@ -383,8 +386,6 @@ describe("/store/variants", () => {
           },
         ],
       })
-      //   product: expect.any(Object),
-      // },
     })
   })
 })

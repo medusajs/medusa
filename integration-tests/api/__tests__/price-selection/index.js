@@ -5,7 +5,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
-const promotionsSeeder = require("../../helpers/promotions-seeder")
+const promotionsSeeder = require("../../helpers/price-selection-seeder")
 
 jest.setTimeout(30000)
 
