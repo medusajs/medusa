@@ -9,8 +9,15 @@ import {
   RegionService,
   TotalsService,
 } from "."
-import { Discount, DiscountRule } from ".."
+import { Cart } from "../models/cart"
+import { Discount } from "../models/discount"
 import { DiscountConditionType } from "../models/discount-condition"
+import {
+  AllocationType as DiscountAllocation,
+  DiscountRule,
+  DiscountRuleType,
+} from "../models/discount-rule"
+import { LineItem } from "../models/line-item"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
@@ -121,7 +128,6 @@ class DiscountService extends BaseService {
       type: Validator.string().required(),
       value: Validator.number().min(0).required(),
       allocation: Validator.string().required(),
-      valid_for: Validator.array().optional(),
       created_at: Validator.date().optional(),
       updated_at: Validator.date().allow(null).optional(),
       deleted_at: Validator.date().allow(null).optional(),
@@ -686,6 +692,47 @@ class DiscountService extends BaseService {
         product.id
       )
     })
+  }
+
+  async calculateDiscountForLineItem(
+    discountId: string,
+    lineItem: LineItem,
+    cart: Cart
+  ): Promise<number> {
+    let adjustment = 0
+
+    if (!lineItem.allow_discounts) {
+      return adjustment
+    }
+
+    const discount = await this.retrieve(discountId, { relations: ["rule"] })
+
+    const { type, value, allocation } = discount.rule
+
+    const fullItemPrice = lineItem.unit_price * lineItem.quantity
+
+    if (type === DiscountRuleType.PERCENTAGE) {
+      adjustment = Math.round((fullItemPrice / 100) * value)
+    } else if (
+      type === DiscountRuleType.FIXED &&
+      allocation === DiscountAllocation.TOTAL
+    ) {
+      // when a fixed discount should be applied to the total,
+      // we create line adjustments for each item with an amount
+      // relative to the subtotal
+      const subtotal = this.totalsService_.getSubtotal(cart, {
+        excludeNonDiscounts: true,
+      })
+      const nominator = Math.min(value, subtotal)
+      const itemRelativeToSubtotal = lineItem.unit_price / subtotal
+      const totalItemPercentage = itemRelativeToSubtotal * lineItem.quantity
+      adjustment = Math.round(nominator * totalItemPercentage)
+    } else {
+      adjustment = value * lineItem.quantity
+    }
+    // if the amount of the discount exceeds the total price of the item,
+    // we return the total item price, else the fixed amount
+    return adjustment >= fullItemPrice ? fullItemPrice : adjustment
   }
 
   async canApplyForCustomer(

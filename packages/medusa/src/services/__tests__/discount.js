@@ -542,6 +542,146 @@ describe("DiscountService", () => {
     })
   })
 
+  describe("calculateDiscountForLineItem", () => {
+    const discountRepository = MockRepository({
+      findOne: ({ where }) => {
+        if (where.id === "disc_percentage") {
+          return Promise.resolve({
+            code: "MEDUSA",
+            rule: {
+              type: "percentage",
+              allocation: "total",
+              value: 15,
+            },
+          })
+        }
+        if (where.id === "disc_fixed_total") {
+          return Promise.resolve({
+            code: "MEDUSA",
+            rule: {
+              type: "fixed",
+              allocation: "total",
+              value: 400,
+            },
+          })
+        }
+        return Promise.resolve({
+          id: "disc_fixed",
+          code: "MEDUSA",
+          rule: {
+            type: "fixed",
+            allocation: "item",
+            value: 200,
+          },
+        })
+      },
+    })
+
+    const totalsService = {
+      getSubtotal: () => {
+        return 1100
+      },
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      totalsService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("correctly calculates fixed + item discount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 300,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(400)
+    })
+
+    it("correctly calculates fixed + total discount", async () => {
+      const adjustment1 = await discountService.calculateDiscountForLineItem(
+        "disc_fixed_total",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      const adjustment2 = await discountService.calculateDiscountForLineItem(
+        "disc_fixed_total",
+        {
+          unit_price: 300,
+          quantity: 1,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment1).toBe(291)
+      expect(adjustment2).toBe(109)
+    })
+
+    it("returns line item amount if discount exceeds lime item price", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 100,
+          quantity: 1,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(100)
+    })
+
+    it("correctly calculates percentage discount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_percentage",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(120)
+    })
+
+    it("returns full amount if exceeds total line item amount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 50,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(100)
+    })
+
+    it("returns early if discounts are not allowed", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_percentage",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: false,
+        }
+      )
+
+      expect(adjustment).toBe(0)
+    })
+  })
+
   describe("canApplyForCustomer", () => {
     const discountConditionRepository = {
       canApplyForCustomer: jest
@@ -569,16 +709,11 @@ describe("DiscountService", () => {
       customerService,
     })
 
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
     it("returns false on undefined customer id", async () => {
       const res = await discountService.canApplyForCustomer("rule-1")
 
       expect(res).toBe(false)
 
-      expect(customerService.retrieve).toHaveBeenCalledTimes(0)
       expect(
         discountConditionRepository.canApplyForCustomer
       ).toHaveBeenCalledTimes(0)
@@ -592,7 +727,6 @@ describe("DiscountService", () => {
 
       expect(res).toBe(false)
 
-      expect(customerService.retrieve).toHaveBeenCalledTimes(1)
       expect(
         discountConditionRepository.canApplyForCustomer
       ).toHaveBeenCalledTimes(0)
@@ -606,7 +740,6 @@ describe("DiscountService", () => {
 
       expect(res).toBe(true)
 
-      expect(customerService.retrieve).toHaveBeenCalledTimes(1)
       expect(
         discountConditionRepository.canApplyForCustomer
       ).toHaveBeenCalledTimes(1)
