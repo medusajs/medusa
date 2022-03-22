@@ -19,7 +19,7 @@ describe("Get variant by id", () => {
         cart_id: undefined,
         currency_code: undefined,
         region_id: undefined,
-        includeDiscountPrices: true,
+        include_discount_prices: true,
       })
     })
 

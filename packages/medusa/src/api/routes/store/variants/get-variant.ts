@@ -1,6 +1,6 @@
 import { defaultStoreVariantRelations } from "."
 import ProductVariantService from "../../../../services/product-variant"
-import { AdminProductPriceParams } from "../../../../types/product"
+import { ProductPriceParams } from "../../../../types/product"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(AdminProductPriceParams, req.query)
+  const validated = await validator(ProductPriceParams, req.query)
 
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
@@ -39,7 +39,7 @@ export default async (req, res) => {
     customer_id: customer_id,
     region_id: validated.region_id,
     currency_code: validated.currency_code,
-    includeDiscountPrices: true,
+    include_discount_prices: true,
   })
 
   res.json({ variant })

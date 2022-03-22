@@ -1637,6 +1637,7 @@ class CartService extends BaseService {
                 currency_code: region.currency_code,
                 quantity: item.quantity,
                 customer_id: customer_id || cart.customer_id,
+                include_discount_prices: true,
               })
               .catch(() => undefined)
 

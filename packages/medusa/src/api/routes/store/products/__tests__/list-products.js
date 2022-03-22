@@ -26,7 +26,7 @@ describe("GET /store/products", () => {
           cart_id: undefined,
           currency_code: undefined,
           region_id: undefined,
-          includeDiscountPrices: true,
+          include_discount_prices: true,
         }
       )
     })
@@ -57,7 +57,7 @@ describe("GET /store/products", () => {
           cart_id: undefined,
           currency_code: undefined,
           region_id: undefined,
-          includeDiscountPrices: true,
+          include_discount_prices: true,
         }
       )
     })

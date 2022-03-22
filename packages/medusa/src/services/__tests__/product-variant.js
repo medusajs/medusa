@@ -262,6 +262,7 @@ describe("ProductVariantService", () => {
         return {
           originalPrice: null,
           calculatedPrice: null,
+          calculatedPriceType: undefined,
           prices: [],
         }
       },
@@ -326,9 +327,6 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("ironman"),
         title: "new title",
-        calculated_price: null,
-        original_price: null,
-        prices: [],
       })
     })
 
@@ -353,9 +351,6 @@ describe("ProductVariantService", () => {
       expect(productVariantRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("ironman"),
         title: "new title",
-        calculated_price: null,
-        original_price: null,
-        prices: [],
       })
     })
 
@@ -396,9 +391,6 @@ describe("ProductVariantService", () => {
         metadata: {
           testing: "this",
         },
-        calculated_price: null,
-        original_price: null,
-        prices: [],
       })
     })
 
@@ -422,9 +414,6 @@ describe("ProductVariantService", () => {
         id: IdMap.getId("ironman"),
         inventory_quantity: 98,
         title: "new title",
-        calculated_price: null,
-        original_price: null,
-        prices: [],
       })
     })
 

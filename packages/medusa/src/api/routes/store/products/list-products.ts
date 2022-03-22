@@ -11,7 +11,7 @@ import { omit, pickBy } from "lodash"
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
-import { AdminProductPriceParams } from "../../../../types/product"
+import { ProductPriceParams } from "../../../../types/product"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
@@ -98,7 +98,7 @@ export default async (req, res) => {
     region_id: validated.region_id,
     currency_code: validated.currency_code,
     customer_id: req.user.customer_id,
-    includeDiscountPrices: true,
+    include_discount_prices: true,
   }
 
   const [products, count] = await productService.listAndCount(
@@ -114,7 +114,7 @@ export default async (req, res) => {
   })
 }
 
-export class StoreGetProductsPaginationParams extends AdminProductPriceParams {
+export class StoreGetProductsPaginationParams extends ProductPriceParams {
   @IsString()
   @IsOptional()
   fields?: string

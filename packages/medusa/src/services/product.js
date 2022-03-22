@@ -107,7 +107,12 @@ class ProductService extends BaseService {
    */
   async list(
     selector = {},
-    config = { relations: [], skip: 0, take: 20, includeDiscountPrices: false }
+    config = {
+      relations: [],
+      skip: 0,
+      take: 20,
+      include_discount_prices: false,
+    }
   ) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
@@ -134,7 +139,7 @@ class ProductService extends BaseService {
           config.region_id,
           config.cart_id,
           config.customer_id,
-          config.includeDiscountPrices
+          config.include_discount_prices
         )
       : products
   }
@@ -152,7 +157,12 @@ class ProductService extends BaseService {
    */
   async listAndCount(
     selector = {},
-    config = { relations: [], skip: 0, take: 20, includeDiscountPrices: false }
+    config = {
+      relations: [],
+      skip: 0,
+      take: 20,
+      include_discount_prices: false,
+    }
   ) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
@@ -184,7 +194,7 @@ class ProductService extends BaseService {
         config.region_id,
         config.cart_id,
         config.customer_id,
-        config.includeDiscountPrices
+        config.include_discount_prices
       )
 
       return [productsWithAdditionalPrices, count]
@@ -214,7 +224,7 @@ class ProductService extends BaseService {
    *   query response
    * @return {Promise<Product>} the result of the find one operation.
    */
-  async retrieve(productId, config = { includeDiscountPrices: false }) {
+  async retrieve(productId, config = { include_discount_prices: false }) {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
@@ -248,7 +258,7 @@ class ProductService extends BaseService {
           config.region_id,
           config.cart_id,
           config.customer_id,
-          config.includeDiscountPrices
+          config.include_discount_prices
         )
       : product
   }
@@ -293,7 +303,7 @@ class ProductService extends BaseService {
           config.region_id,
           config.cart_id,
           config.customer_id,
-          config.includeDiscountPrices
+          config.include_discount_prices
         )
       : product
   }
@@ -338,7 +348,7 @@ class ProductService extends BaseService {
           config.region_id,
           config.cart_id,
           config.customer_id,
-          config.includeDiscountPrices
+          config.include_discount_prices
         )
       : product
   }
@@ -911,7 +921,7 @@ class ProductService extends BaseService {
           config.region_id,
           config.cart_id,
           config.customer_id,
-          config.includeDiscountPrices
+          config.include_discount_prices
         )
       : product
     // const final = await this.runDecorators_(decorated)
@@ -996,7 +1006,7 @@ class ProductService extends BaseService {
    * @param {string} region_id region to fetch prices for
    * @param {string} cart_id string of cart to use as a basis for getting currency and region
    * @param {string} customer_id id of potentially logged in customer, used to get prices valid for their customer groups
-   * @param {boolean} includeDiscountPrices indication wether or not to include sales prices in result
+   * @param {boolean} include_discount_prices indication wether or not to include sales prices in result
    * @return {Promise<Product[]>} A list of products with variants decorated with "additional_prices"
    */
   async setAdditionalPrices(
@@ -1005,7 +1015,7 @@ class ProductService extends BaseService {
     region_id,
     cart_id,
     customer_id,
-    includeDiscountPrices = false
+    include_discount_prices = false
   ) {
     return this.atomicPhase_(async (manager) => {
       const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
@@ -1031,7 +1041,7 @@ class ProductService extends BaseService {
                     currency_code: cart?.region?.currency_code || currency_code,
                     cart_id: cart_id,
                     customer_id: customer_id,
-                    includeDiscountPrices,
+                    include_discount_prices,
                   })
 
                 return {

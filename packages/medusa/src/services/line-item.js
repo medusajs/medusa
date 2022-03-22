@@ -143,7 +143,7 @@ class LineItemService extends BaseService {
         .withTransaction(manager)
         .retrieve(variantId, {
           relations: ["product"],
-          includeDiscountPrices: true,
+          include_discount_prices: true,
         })
 
       const region = await this.regionService_
