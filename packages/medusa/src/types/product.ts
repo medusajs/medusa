@@ -1,4 +1,4 @@
-import { IsOptional, IsString, ValidateNested } from "class-validator"
+import { ValidateNested } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator, StringComparisonOperator } from "./common"
 
@@ -39,18 +39,4 @@ export class FilterableProductTypeProps {
 
   @IsType([DateComparisonOperator])
   updated_at?: DateComparisonOperator
-}
-
-export class ProductPriceParams {
-  @IsOptional()
-  @IsString()
-  cart_id?: string
-
-  @IsOptional()
-  @IsString()
-  region_id?: string
-
-  @IsOptional()
-  @IsString()
-  currency_code?: string
 }

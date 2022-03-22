@@ -11,7 +11,7 @@ import { omit, pickBy } from "lodash"
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
 import { DateComparisonOperator } from "../../../../types/common"
-import { ProductPriceParams } from "../../../../types/product"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
@@ -114,7 +114,7 @@ export default async (req, res) => {
   })
 }
 
-export class StoreGetProductsPaginationParams extends ProductPriceParams {
+export class StoreGetProductsPaginationParams extends PriceSelectionParams {
   @IsString()
   @IsOptional()
   fields?: string

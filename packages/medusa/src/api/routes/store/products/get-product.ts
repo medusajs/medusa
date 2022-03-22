@@ -1,6 +1,6 @@
 import { defaultStoreProductsRelations } from "."
 import { ProductService } from "../../../../services"
-import { ProductPriceParams } from "../../../../types/product"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -25,7 +25,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validated = await validator(ProductPriceParams, req.query)
+  const validated = await validator(PriceSelectionParams, req.query)
 
   const customer_id = req.user.customer_id
 

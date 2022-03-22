@@ -7,7 +7,7 @@ import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
-import { ProductPriceParams } from "../../../../types/product"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 
 /**
  * @oas [get] /variants
@@ -79,7 +79,7 @@ export default async (req, res) => {
   res.json({ variants })
 }
 
-export class StoreGetVariantsParams extends ProductPriceParams {
+export class StoreGetVariantsParams extends PriceSelectionParams {
   @IsOptional()
   @IsInt()
   @Type(() => Number)

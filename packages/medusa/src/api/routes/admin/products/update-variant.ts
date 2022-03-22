@@ -11,7 +11,7 @@ import {
 import { MedusaError } from "medusa-core-utils"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
-import { ProductPriceParams } from "../../../../types/product"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
@@ -132,7 +132,7 @@ export default async (req, res) => {
     req.body
   )
 
-  const validatedQueryParams = await validator(ProductPriceParams, req.query)
+  const validatedQueryParams = await validator(PriceSelectionParams, req.query)
 
   const productService: ProductService = req.scope.resolve("productService")
   const productVariantService: ProductVariantService = req.scope.resolve(
