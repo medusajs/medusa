@@ -18,7 +18,7 @@ Both projects are open-source, headless, and built with Node.js. They use a very
 
 ## Installation
 
-The following guide for setting up the plugin assumes, that you are familiar with both Strapi and Medusa. If this is not the case, visit the official [Medusa](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) and [Strapi](https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html) documentation.
+The following guide for setting up the plugin assumes, that you are familiar with both Strapi and Medusa. If this is not the case, visit the official [Medusa](https://docs.medusajs.com/tutorial/set-up-your-development-environment) and [Strapi](https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html) documentation.
 
 ### Setting up Medusa
 
