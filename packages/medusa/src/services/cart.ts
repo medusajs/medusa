@@ -199,7 +199,6 @@ class CartService extends BaseService {
       relationSet.add("gift_cards")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
-      // TODO: Add conditions relation
       // relationSet.add("discounts.parent_discount")
       // relationSet.add("discounts.parent_discount.rule")
       // relationSet.add("discounts.parent_discount.regions")
@@ -692,7 +691,6 @@ class CartService extends BaseService {
           "region.countries",
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "discounts.regions",
         ],
       })
@@ -1096,7 +1094,6 @@ class CartService extends BaseService {
         relations: [
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "payment_sessions",
           "shipping_methods",
         ],
@@ -1311,7 +1308,6 @@ class CartService extends BaseService {
             "items",
             "discounts",
             "discounts.rule",
-            // TODO: Add conditions relation
             "gift_cards",
             "shipping_methods",
             "billing_address",
@@ -1486,7 +1482,6 @@ class CartService extends BaseService {
           "shipping_methods",
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "shipping_methods.shipping_option",
           "items",
           "items.variant",
@@ -1544,12 +1539,7 @@ class CartService extends BaseService {
       }
 
       const result = await this.retrieve(cartId, {
-        relations: [
-          "discounts",
-          "discounts.rule",
-          // TODO: Add conditions relation
-          "shipping_methods",
-        ],
+        relations: ["discounts", "discounts.rule", "shipping_methods"],
       })
 
       // if cart has freeshipping, adjust price
@@ -1756,13 +1746,7 @@ class CartService extends BaseService {
   async delete(cartId: string): Promise<string> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const cart = await this.retrieve(cartId, {
-        relations: [
-          "items",
-          "discounts",
-          "discounts.rule",
-          // TODO: Add conditions relation
-          "payment_sessions",
-        ],
+        relations: ["items", "discounts", "discounts.rule", "payment_sessions"],
       })
 
       if (cart.completed_at) {
@@ -1833,7 +1817,6 @@ class CartService extends BaseService {
           "gift_cards",
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "shipping_methods",
           "region",
           "region.tax_rates",

@@ -653,7 +653,6 @@ describe("CartService", () => {
           "region.countries",
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "discounts.regions",
           "items.tax_lines",
           "region.tax_rates",

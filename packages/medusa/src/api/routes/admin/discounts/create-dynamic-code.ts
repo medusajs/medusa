@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
 /**
@@ -46,9 +47,9 @@ export default async (req, res) => {
     validated
   )
 
-  // TODO: Add conditions relation
   const discount = await discountService.retrieve(created.id, {
-    relations: ["rule", "regions"],
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount })

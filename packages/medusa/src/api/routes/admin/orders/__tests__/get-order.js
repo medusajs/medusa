@@ -8,7 +8,6 @@ const defaultRelations = [
   "shipping_address",
   "discounts",
   "discounts.rule",
-  // TODO: Add conditions relation
   "shipping_methods",
   "payments",
   "fulfillments",

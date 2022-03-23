@@ -19,7 +19,6 @@ const discounts = {
       type: "fixed",
       allocation: "item",
       value: 2,
-      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -30,7 +29,6 @@ const discounts = {
       type: "percentage",
       allocation: "item",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -41,7 +39,6 @@ const discounts = {
       type: "fixed",
       allocation: "total",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -53,7 +50,6 @@ const discounts = {
       type: "fixed",
       allocation: "item",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -96,7 +92,6 @@ describe("TotalsService", () => {
   //       rule: {
   //         type: "percentage",
   //         value: 10,
-  //         // TODO: Add conditions relation
   //       },
   //     }
 
@@ -140,7 +135,6 @@ describe("TotalsService", () => {
   //       rule: {
   //         type: "fixed",
   //         value: 9,
-  //         // TODO: Add conditions relation
   //       },
   //     }
 
@@ -184,7 +178,6 @@ describe("TotalsService", () => {
   //       rule: {
   //         type: "fixed",
   //         value: 9,
-  //         // TODO: Add conditions relation
   //       },
   //     }
   //     res = totalsService.getAllocationItemDiscounts(discount, cart)

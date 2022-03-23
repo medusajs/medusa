@@ -230,7 +230,6 @@ describe("OrderService", () => {
           "items",
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "gift_cards",
           "shipping_methods",
         ],
