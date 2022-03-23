@@ -3,7 +3,7 @@ import ProductVariantService from "../product-variant"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     return this
   },
 }
@@ -18,9 +18,33 @@ describe("ProductVariantService", () => {
         return Promise.resolve({ id: IdMap.getId("ironman") })
       },
     })
+
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
+    const priceSelectionStrat = {
+      calculateVariantPrice: (variantId, context) => {
+        return {
+          originalPrice: null,
+          calculatedPrice: null,
+          prices: [],
+        }
+      },
+    }
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return priceSelectionStrat
+      },
+    }
+
     const productVariantService = new ProductVariantService({
       manager: MockManager,
       productVariantRepository,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
     beforeEach(async () => {
@@ -227,6 +251,29 @@ describe("ProductVariantService", () => {
   })
 
   describe("update", () => {
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
+    const priceSelectionStrat = {
+      calculateVariantPrice: (variantId, context) => {
+        return {
+          originalPrice: null,
+          calculatedPrice: null,
+          calculatedPriceType: undefined,
+          prices: [],
+        }
+      },
+    }
+
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return priceSelectionStrat
+      },
+    }
+
     const productVariantRepository = MockRepository({
       findOne: (query) => Promise.resolve({ id: IdMap.getId("ironman") }),
     })
@@ -246,6 +293,8 @@ describe("ProductVariantService", () => {
       moneyAmountRepository,
       productVariantRepository,
       productOptionValueRepository,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
     productVariantService.updateOptionValue = jest
@@ -464,13 +513,13 @@ describe("ProductVariantService", () => {
 
   describe("getRegionPrice", () => {
     const regionService = {
-      retrieve: function() {
+      retrieve: function () {
         return Promise.resolve({
           id: IdMap.getId("california"),
           name: "California",
         })
       },
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -498,11 +547,35 @@ describe("ProductVariantService", () => {
       },
     })
 
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
+    const priceSelectionStrat = {
+      calculateVariantPrice: (variantId, context) => {
+        return Promise.resolve({
+          originalPrice: null,
+          calculatedPrice: 1000,
+          prices: [],
+        })
+      },
+    }
+
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return priceSelectionStrat
+      },
+    }
+
     const productVariantService = new ProductVariantService({
       manager: MockManager,
       eventBusService,
       regionService,
       moneyAmountRepository,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
     beforeEach(async () => {

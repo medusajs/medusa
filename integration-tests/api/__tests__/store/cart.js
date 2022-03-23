@@ -5,6 +5,8 @@ const {
   GiftCard,
   Cart,
   CustomShippingOption,
+  PriceList,
+  MoneyAmount,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -90,20 +92,51 @@ describe("/store/carts", () => {
 
     it("creates a cart with items", async () => {
       await productSeeder(dbConnection)
+
+      const yesterday = ((today) =>
+        new Date(today.setDate(today.getDate() - 1)))(new Date())
+      const tomorrow = ((today) =>
+        new Date(today.setDate(today.getDate() + 1)))(new Date())
+
+      const priceList1 = await dbConnection.manager.create(PriceList, {
+        id: "pl_current",
+        name: "Past winter sale",
+        description: "Winter sale for key accounts.",
+        type: "sale",
+        status: "active",
+        starts_at: yesterday,
+        ends_at: tomorrow,
+      })
+
+      await dbConnection.manager.save(priceList1)
+
+      const ma_sale_1 = dbConnection.manager.create(MoneyAmount, {
+        variant_id: "test-variant-sale",
+        currency_code: "usd",
+        amount: 800,
+        price_list_id: "pl_current",
+      })
+
+      await dbConnection.manager.save(ma_sale_1)
+
       const api = useApi()
 
-      const response = await api.post("/store/carts", {
-        items: [
-          {
-            variant_id: "test-variant_1",
-            quantity: 1,
-          },
-          {
-            variant_id: "test-variant_2",
-            quantity: 2,
-          },
-        ],
-      })
+      const response = await api
+        .post("/store/carts", {
+          items: [
+            {
+              variant_id: "test-variant_1",
+              quantity: 1,
+            },
+            {
+              variant_id: "test-variant-sale",
+              quantity: 2,
+            },
+          ],
+        })
+        .catch((err) => console.log(err))
+
+      response.data.cart.items.sort((a, b) => a.quantity - b.quantity)
 
       expect(response.status).toEqual(200)
       expect(response.data.cart.items).toEqual([
@@ -112,8 +145,9 @@ describe("/store/carts", () => {
           quantity: 1,
         }),
         expect.objectContaining({
-          variant_id: "test-variant_2",
+          variant_id: "test-variant-sale",
           quantity: 2,
+          unit_price: 800,
         }),
       ])
 
@@ -152,6 +186,122 @@ describe("/store/carts", () => {
         user_agent: expect.stringContaining("axios/0.21."),
         test_id: "test",
       })
+    })
+  })
+
+  describe("POST /store/carts/:id/line-items", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection)
+        await swapSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("adds line item to cart", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 1,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 1,
+        }),
+      ])
+    })
+
+    it("adds line item to cart time limited sale", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-sale",
+            quantity: 1,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 800,
+          variant_id: "test-variant-sale",
+          quantity: 1,
+        }),
+      ])
+    })
+
+    it("adds line item with quantity to cart with quantity discount", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 90,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 800,
+          variant_id: "test-variant-quantity",
+          quantity: 90,
+        }),
+      ])
+    })
+
+    it("adds line item with quantity to cart with quantity discount no ceiling", async () => {
+      const api = useApi()
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 900,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 700,
+          variant_id: "test-variant-quantity",
+          quantity: 900,
+        }),
+      ])
     })
   })
 
@@ -270,6 +420,46 @@ describe("/store/carts", () => {
       expect(response.status).toEqual(200)
     })
 
+    it("updates prices when cart customer id is updated", async () => {
+      const api = useApi()
+
+      const beforeUpdate = await api
+        .get(`/store/carts/test-cart-3`)
+        .catch((error) => console.log(error))
+
+      expect(beforeUpdate.data.cart.items[0].unit_price).toEqual(8000)
+
+      const response = await api
+        .post("/store/carts/test-cart-3", {
+          customer_id: "test-customer-2",
+        })
+        .catch((error) => console.log(error))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.items[0].unit_price).toEqual(500)
+    })
+
+    it("updates prices when cart region id is updated", async () => {
+      const api = useApi()
+
+      const beforeUpdate = await api
+        .get(`/store/carts/test-cart-3`)
+        .catch((error) => console.log(error))
+
+      expect(beforeUpdate.data.cart.items[0].unit_price).toEqual(8000)
+      expect(beforeUpdate.data.cart.region_id).toEqual("test-region")
+
+      const response = await api
+        .post("/store/carts/test-cart-3", {
+          region_id: "test-region-multiple",
+        })
+        .catch((error) => console.log(error))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.cart.region_id).toEqual("test-region-multiple")
+      expect(response.data.cart.items[0].unit_price).toEqual(700)
+    })
+
     it("updates address using string id", async () => {
       const api = useApi()
 
@@ -377,7 +567,7 @@ describe("/store/carts", () => {
         await api.post(`/store/carts/test-cart-2/complete-cart`)
       } catch (error) {
         expect(error.response.data).toMatchSnapshot({
-          code: "not_allowed",
+          type: "not_allowed",
           message: "Cart has already been completed",
           code: "cart_incompatible_state",
         })
