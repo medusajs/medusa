@@ -27,7 +27,7 @@ export default async (req, res) => {
 
   const validated = await validator(PriceSelectionParams, req.query)
 
-  const customer_id = req.user.customer_id
+  const customer_id = req.user?.customer_id
 
   const productService: ProductService = req.scope.resolve("productService")
   const product = await productService.retrieve(id, {

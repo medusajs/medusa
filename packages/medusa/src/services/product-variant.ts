@@ -124,6 +124,13 @@ class ProductVariantService extends BaseService {
       this.productVariantRepository_
     )
     const validatedId = this.validateId_(variantId)
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const query = this.buildQuery_({ id: validatedId }, config)
     const variant = await variantRepo.findOne(query)
 
@@ -134,7 +141,7 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    return config.relations?.length && config.relations?.indexOf("prices") > -1
+    return priceIndex >= 0
       ? ((await this.setAdditionalPrices(
           variant,
           config.currency_code,
@@ -161,6 +168,13 @@ class ProductVariantService extends BaseService {
     const variantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const query = this.buildQuery_({ sku }, config)
     const variant = await variantRepo.findOne(query)
 
@@ -171,7 +185,7 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    return config.relations?.length && config.relations?.indexOf("prices") > -1
+    return priceIndex >= 0
       ? ((await this.setAdditionalPrices(
           variant,
           config.currency_code,
@@ -297,8 +311,7 @@ class ProductVariantService extends BaseService {
    */
   async update(
     variantOrVariantId: string | Partial<ProductVariant>,
-    update: UpdateProductVariantInput,
-    config: PriceSelectionContext = {}
+    update: UpdateProductVariantInput
   ): Promise<ProductVariant> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const variantRepo = manager.getCustomRepository(
@@ -465,7 +478,7 @@ class ProductVariantService extends BaseService {
       })
 
       if (!moneyAmount) {
-        moneyAmount = await moneyAmountRepo.create({
+        moneyAmount = moneyAmountRepo.create({
           ...price,
           variant_id: variantId,
         })
@@ -493,7 +506,7 @@ class ProductVariantService extends BaseService {
         this.moneyAmountRepository_
       )
 
-      await moneyAmountRepo.upsertVariantCurrencyPrice(variantId, price)
+      return await moneyAmountRepo.upsertVariantCurrencyPrice(variantId, price)
     })
   }
 
@@ -610,6 +623,12 @@ class ProductVariantService extends BaseService {
       this.productVariantRepository_
     )
 
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
@@ -621,7 +640,7 @@ class ProductVariantService extends BaseService {
         raw.map((i) => i.id),
         query.withDeleted ?? false
       )
-      if (relations?.length && relations?.indexOf("prices") > -1) {
+      if (priceIndex >= 0) {
         const res = await this.setAdditionalPrices(
           variants,
           config.currency_code,
@@ -641,7 +660,7 @@ class ProductVariantService extends BaseService {
       query
     )
 
-    if (relations?.length && relations?.indexOf("prices") > -1) {
+    if (priceIndex >= 0) {
       const res = await this.setAdditionalPrices(
         variants,
         config.currency_code,
@@ -672,6 +691,12 @@ class ProductVariantService extends BaseService {
     const productVariantRepo = this.manager_.getCustomRepository(
       this.productVariantRepository_
     )
+
+    const priceIndex = config.relations?.indexOf("prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
 
     let q: string | undefined
     if ("q" in selector) {
@@ -705,7 +730,7 @@ class ProductVariantService extends BaseService {
 
     const variants = await productVariantRepo.find(query)
 
-    return config.relations?.length && config.relations?.indexOf("prices") > -1
+    return priceIndex >= 0
       ? ((await this.setAdditionalPrices(
           variants,
           config.currency_code,
@@ -886,10 +911,18 @@ class ProductVariantService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const cartRepo = manager.getCustomRepository(this.cartRepository_)
 
-      const cart = await cartRepo.findOne({
-        where: { id: cart_id },
-        relations: ["region"],
-      })
+      let regionId = region_id
+      let currencyCode = currency_code
+
+      if (cart_id) {
+        const cart = await cartRepo.findOne({
+          where: { id: cart_id },
+          relations: ["region"],
+        })
+
+        regionId = cart.region.id
+        currencyCode = cart.region.currency_code
+      }
 
       const variantArray = Array.isArray(variant) ? variant : [variant]
 
@@ -901,8 +934,8 @@ class ProductVariantService extends BaseService {
           const prices = await priceSelectionStrategy.calculateVariantPrice(
             v.id,
             {
-              region_id: cart?.region_id || region_id,
-              currency_code: cart?.region?.currency_code || currency_code,
+              region_id: regionId,
+              currency_code: currencyCode,
               cart_id: cart_id,
               customer_id: customer_id,
               include_discount_prices: include_discount_prices,

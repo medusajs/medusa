@@ -117,6 +117,11 @@ class ProductService extends BaseService {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
 
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
@@ -132,7 +137,7 @@ class ProductService extends BaseService {
 
     const products = productRepo.findWithRelations(relations, query)
 
-    return relations?.indexOf("variants.prices") > -1
+    return priceIndex > -1
       ? await this.setAdditionalPrices(
           products,
           config.currency_code,
@@ -168,6 +173,12 @@ class ProductService extends BaseService {
       this.productRepository_
     )
 
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
@@ -187,7 +198,7 @@ class ProductService extends BaseService {
       query
     )
 
-    if (relations?.indexOf("variants.prices") > -1) {
+    if (priceIndex > -1) {
       const productsWithAdditionalPrices = await this.setAdditionalPrices(
         products,
         config.currency_code,
@@ -230,6 +241,12 @@ class ProductService extends BaseService {
     )
     const validatedId = this.validateId_(productId)
 
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const query = { where: { id: validatedId } }
 
     if (config.relations && config.relations.length > 0) {
@@ -251,7 +268,7 @@ class ProductService extends BaseService {
       )
     }
 
-    return rels?.indexOf("variants.prices") > -1
+    return priceIndex > -1
       ? await this.setAdditionalPrices(
           product,
           config.currency_code,
@@ -275,6 +292,12 @@ class ProductService extends BaseService {
       this.productRepository_
     )
 
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const query = { where: { handle: productHandle } }
 
     if (config.relations && config.relations.length > 0) {
@@ -296,7 +319,7 @@ class ProductService extends BaseService {
       )
     }
 
-    return rels?.indexOf("variants.prices") > -1
+    return priceIndex > -1
       ? await this.setAdditionalPrices(
           product,
           config.currency_code,
@@ -320,6 +343,12 @@ class ProductService extends BaseService {
       this.productRepository_
     )
 
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
+
     const query = { where: { external_id: externalId } }
 
     if (config.relations && config.relations.length > 0) {
@@ -341,7 +370,7 @@ class ProductService extends BaseService {
       )
     }
 
-    return rels?.indexOf("variants.prices") > -1
+    return priceIndex > -1
       ? await this.setAdditionalPrices(
           product,
           config.currency_code,
@@ -907,6 +936,12 @@ class ProductService extends BaseService {
   async decorate(productId, fields = [], expandFields = [], config = {}) {
     const requiredFields = ["id", "metadata"]
 
+    const priceIndex = expandFields.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && expandFields.length) {
+      expandFields = [...expandFields]
+      expandFields.splice(priceIndex, 1)
+    }
+
     fields = fields.concat(requiredFields)
 
     const product = await this.retrieve(productId, {
@@ -914,7 +949,7 @@ class ProductService extends BaseService {
       relations: expandFields,
     })
 
-    return expandFields?.indexOf("variants.prices") > -1
+    return priceIndex > -1
       ? await this.setAdditionalPrices(
           product,
           config.currency_code,
@@ -924,7 +959,6 @@ class ProductService extends BaseService {
           config.include_discount_prices
         )
       : product
-    // const final = await this.runDecorators_(decorated)
   }
 
   /**
@@ -1020,10 +1054,18 @@ class ProductService extends BaseService {
     return this.atomicPhase_(async (manager) => {
       const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
 
-      const cart = await cartRepo.findOne({
-        where: { id: cart_id },
-        relations: ["region"],
-      })
+      let regionId = region_id
+      let currencyCode = currency_code
+
+      if (cart_id) {
+        const cart = await cartRepo.findOne({
+          where: { id: cart_id },
+          relations: ["region"],
+        })
+
+        regionId = cart.region.id
+        currencyCode = cart.region.currency_code
+      }
 
       const productArray = Array.isArray(products) ? products : [products]
 
@@ -1037,8 +1079,8 @@ class ProductService extends BaseService {
               p.variants.map(async (v) => {
                 const prices =
                   await priceSelectionStrategy.calculateVariantPrice(v.id, {
-                    region_id: cart?.region_id || region_id,
-                    currency_code: cart?.region?.currency_code || currency_code,
+                    region_id: regionId,
+                    currency_code: currencyCode,
                     cart_id: cart_id,
                     customer_id: customer_id,
                     include_discount_prices,

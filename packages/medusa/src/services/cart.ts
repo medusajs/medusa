@@ -1641,7 +1641,10 @@ class CartService extends BaseService {
               })
               .catch(() => undefined)
 
-            if (availablePrice !== undefined) {
+            if (
+              availablePrice !== undefined &&
+              availablePrice.calculatedPrice !== null
+            ) {
               return this.lineItemService_
                 .withTransaction(this.transactionManager_)
                 .update(item.id, {

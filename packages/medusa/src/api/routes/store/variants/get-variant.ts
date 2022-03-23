@@ -31,7 +31,7 @@ export default async (req, res) => {
     "productVariantService"
   )
 
-  const customer_id = req.user.customer_id
+  const customer_id = req.user?.customer_id
 
   const variant = await variantService.retrieve(id, {
     relations: defaultStoreVariantRelations,

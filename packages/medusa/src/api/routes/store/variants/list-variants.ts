@@ -42,7 +42,7 @@ export default async (req, res) => {
     expandFields = expand.split(",")
   }
 
-  const customer_id = req.user.customer_id
+  const customer_id = req.user?.customer_id
 
   const listConfig = {
     relations: expandFields.length

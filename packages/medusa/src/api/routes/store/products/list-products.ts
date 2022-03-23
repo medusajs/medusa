@@ -70,6 +70,8 @@ export default async (req, res) => {
     "limit",
     "offset",
     "cart_id",
+    "region_id",
+    "currency_code",
   ])
 
   // get only published products for store endpoint
@@ -97,7 +99,7 @@ export default async (req, res) => {
     cart_id: validated.cart_id,
     region_id: validated.region_id,
     currency_code: validated.currency_code,
-    customer_id: req.user.customer_id,
+    customer_id: req.user?.customer_id,
     include_discount_prices: true,
   }
 
