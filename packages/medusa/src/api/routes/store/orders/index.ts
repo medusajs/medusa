@@ -39,7 +39,7 @@ export const defaultStoreOrdersRelations = [
   "shipping_methods",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
+  // TODO: Add conditions relation
   "customer",
   "payments",
   "region",
@@ -79,7 +79,7 @@ export const allowedStoreOrdersRelations = [
   "shipping_methods",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
+  // TODO: Add conditions relation
   "customer",
   "payments",
   "region",

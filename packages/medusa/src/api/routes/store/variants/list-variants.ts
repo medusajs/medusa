@@ -1,8 +1,12 @@
 import { Type } from "class-transformer"
+import { omit } from "lodash"
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultStoreVariantRelations } from "."
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
+import { NumericalComparisonOperator } from "../../../../types/common"
 
 /**
  * @oas [get] /variants
@@ -29,17 +33,14 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/product_variant"
  */
 export default async (req, res) => {
-  const { limit, offset, expand, ids } = await validator(
-    StoreGetVariantsParams,
-    req.query
-  )
+  const validated = await validator(StoreGetVariantsParams, req.query)
+  const { expand, offset, limit } = validated
 
   let expandFields: string[] = []
   if (expand) {
     expandFields = expand.split(",")
   }
 
-  let selector = {}
   const listConfig = {
     relations: expandFields.length
       ? expandFields
@@ -48,14 +49,21 @@ export default async (req, res) => {
     take: limit,
   }
 
-  if (ids) {
-    selector = { id: ids.split(",") }
+  const filterableFields: FilterableProductVariantProps = omit(validated, [
+    "ids",
+    "limit",
+    "offset",
+    "expand",
+  ])
+
+  if (validated.ids) {
+    filterableFields.id = validated.ids.split(",")
   }
 
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-  const variants = await variantService.list(selector, listConfig)
+  const variants = await variantService.list(filterableFields, listConfig)
 
   res.json({ variants })
 }
@@ -78,4 +86,16 @@ export class StoreGetVariantsParams {
   @IsOptional()
   @IsString()
   ids?: string
+
+  @IsOptional()
+  @IsType([String, [String]])
+  id?: string | string[]
+
+  @IsOptional()
+  @IsType([String, [String]])
+  title?: string | string[]
+
+  @IsOptional()
+  @IsType([Number, NumericalComparisonOperator])
+  inventory_quantity?: number | NumericalComparisonOperator
 }

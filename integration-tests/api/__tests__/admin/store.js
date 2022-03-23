@@ -32,8 +32,8 @@ describe("/admin/store", () => {
 
     afterEach(async () => {
       const db = useDb()
-      db.teardown()
-      medusaProcess.kill()
+      await db.teardown()
+      await medusaProcess.kill()
     })
 
     it("has created store with default currency", async () => {
