@@ -21,7 +21,7 @@ import CustomerController from "../../../../controllers/customers"
 export default async (req, res) => {
   const { id } = req.params
 
-  req.query.groups = [id]
+  req.query.groups = [id, ...(req.query.groups || [])]
 
   const result = await CustomerController.listAndCount(
     req.scope,

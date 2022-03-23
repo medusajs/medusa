@@ -27,6 +27,7 @@ export default (app) => {
 
   route.get(
     "/:id/customers",
+    middlewares.normalizeQuery(),
     middlewares.wrap(require("./get-customer-group-customers").default)
   )
 
