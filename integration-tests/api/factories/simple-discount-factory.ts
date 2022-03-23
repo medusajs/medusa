@@ -46,7 +46,7 @@ export const simpleDiscountFactory = async (
 
   const dRule = await manager.save(ruleToSave)
 
-  if (data.rule.conditions) {
+  if (data?.rule?.conditions) {
     for (const condition of data.rule.conditions) {
       await simpleDiscountConditionFactory(
         connection,
