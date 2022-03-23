@@ -591,23 +591,7 @@ class TotalsService extends BaseService {
     cart: Cart | Order
   ): LineDiscount[] {
     const discounts: LineDiscount[] = []
-    for (const item of cart.items) {
-      // if (discount.rule.valid_for?.length > 0) {
-      //   discount.rule.valid_for.map(({ id }) => {
-      //     if (item.variant.product_id === id) {
-      //       discounts.push(
-      //         this.calculateDiscount_(
-      //           item,
-      //           item.variant.id,
-      //           item.unit_price,
-      //           discount.rule.value,
-      //           discount.rule.type
-      //         )
-      //       )
-      //     }
-      //   })
-      // }
-    }
+    // TODO: Add line item adjustments
     return discounts
   }
 
