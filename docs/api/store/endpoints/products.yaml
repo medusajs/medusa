@@ -7,7 +7,7 @@ routes:
     path: /products/:id
 route: /products
 description: >
-  A product represents the object, that are to be sold on the website. A product can have variants, that differ by e.g. size and color.
+  A product represents the object, that is to be sold on the website. A product can have variants, that differ by e.g. size and color.
 endpoints:
   - path: /:id
     method: GET
