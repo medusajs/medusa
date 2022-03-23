@@ -27,7 +27,7 @@ export default async (req, res) => {
   res.status(200).send(results)
 }
 
-export class StorePostSearchReq extends PriceSelectionParams {
+export class StorePostSearchReq {
   @IsOptional()
   @IsString()
   q?: string
