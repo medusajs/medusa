@@ -24,6 +24,7 @@ import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
   FilterableProductVariantProps,
+  GetRegionPriceContext,
   ProductVariantPrice,
   UpdateProductVariantInput,
 } from "../types/product-variant"
@@ -422,32 +423,26 @@ class ProductVariantService extends BaseService {
    * exists the function will try to use a currency price. If no default
    * currency price exists the function will throw an error.
    * @param {string} variantId - the id of the variant to get price from
-   * @param {string} regionId - the id of the region to get price for
-   * @param {number | undefined} quantity - the quantity for price calculation
-   * @param {string | undefined} customer_id - include the id of a customer for customer specific pricing
-   * @param {boolean | undefined} include_discount_prices - include sales prices in result
+   * @param {GetRegionPriceContext} context - context for getting region price
    * @return {number} the price specific to the region
    */
   async getRegionPrice(
     variantId: string,
-    regionId: string,
-    quantity?: number,
-    customer_id?: string,
-    include_discount_prices?: boolean
+    context: GetRegionPriceContext
   ): Promise<number> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const region = await this.regionService_
         .withTransaction(manager)
-        .retrieve(regionId)
+        .retrieve(context.regionId)
 
       const prices = await this.priceSelectionStrategy_
         .withTransaction(manager)
         .calculateVariantPrice(variantId, {
-          region_id: regionId,
+          region_id: context.regionId,
           currency_code: region.currency_code,
-          quantity: quantity,
-          customer_id: customer_id,
-          include_discount_prices: !!include_discount_prices,
+          quantity: context.quantity,
+          customer_id: context.customer_id,
+          include_discount_prices: !!context.include_discount_prices,
         })
 
       return prices.calculatedPrice
