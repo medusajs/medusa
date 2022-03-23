@@ -59,6 +59,37 @@ const discounts = {
   },
 }
 
+const applyDiscount = (cart, discount) => {
+  if (cart.items) {
+    cart.items = cart.items.map((item) => {
+      const isValid = discount.rule.valid_for.some(
+        ({ id }) => id === item.variant.product_id
+      )
+
+      if (isValid) {
+        return {
+          ...item,
+          adjustments: [
+            {
+              item_id: item.id,
+              amount:
+                discount.rule.type === "fixed"
+                  ? discount.rule.value * item.quantity
+                  : (item.unit_price * item.quantity * discount.rule.value) /
+                    100,
+              description: "discount",
+              resource_id: discount.id,
+            },
+          ],
+        }
+      }
+      return item
+    })
+  }
+
+  return cart
+}
+
 describe("TotalsService", () => {
   const container = {
     taxProviderService: {},
@@ -67,131 +98,131 @@ describe("TotalsService", () => {
 
   // TODO: Redo tests to include new line item adjustments
 
-  // describe("getAllocationItemDiscounts", () => {
-  //   let res
+  describe("getAllocationItemDiscounts", () => {
+    let res
 
-  //   const totalsService = new TotalsService(container)
+    const totalsService = new TotalsService(container)
 
-  //   beforeEach(() => {
-  //     jest.clearAllMocks()
-  //   })
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
 
-  //   it("calculates item with percentage discount", async () => {
-  //     const cart = {
-  //       items: [
-  //         {
-  //           id: "test",
-  //           allow_discounts: true,
-  //           unit_price: 10,
-  //           quantity: 10,
-  //           variant: {
-  //             id: "testv",
-  //             product_id: "testp",
-  //           },
-  //         },
-  //       ],
-  //     }
+    it("calculates item with percentage discount", async () => {
+      const cart = {
+        items: [
+          {
+            id: "test",
+            allow_discounts: true,
+            unit_price: 10,
+            quantity: 10,
+            variant: {
+              id: "testv",
+              product_id: "testp",
+            },
+          },
+        ],
+      }
 
-  //     const discount = {
-  //       rule: {
-  //         type: "percentage",
-  //         value: 10,
-  //         // TODO: Add conditions relation
-  //       },
-  //     }
+      const discount = {
+        rule: {
+          type: "percentage",
+          value: 10,
+          // TODO: Add conditions relation
+        },
+      }
 
-  //     res = totalsService.getAllocationItemDiscounts(discount, cart)
+      res = totalsService.getAllocationItemDiscounts(discount, cart)
 
-  //     expect(res).toEqual([
-  //       {
-  //         lineItem: {
-  //           id: "test",
-  //           allow_discounts: true,
-  //           unit_price: 10,
-  //           quantity: 10,
-  //           variant: {
-  //             id: "testv",
-  //             product_id: "testp",
-  //           },
-  //         },
-  //         variant: "testv",
-  //         amount: 10,
-  //       },
-  //     ])
-  //   })
+      expect(res).toEqual([
+        {
+          lineItem: {
+            id: "test",
+            allow_discounts: true,
+            unit_price: 10,
+            quantity: 10,
+            variant: {
+              id: "testv",
+              product_id: "testp",
+            },
+          },
+          variant: "testv",
+          amount: 10,
+        },
+      ])
+    })
 
-  //   it("calculates item with fixed discount", async () => {
-  //     const cart = {
-  //       items: [
-  //         {
-  //           id: "exists",
-  //           allow_discounts: true,
-  //           unit_price: 10,
-  //           variant: {
-  //             id: "testv",
-  //             product_id: "testp",
-  //           },
-  //           quantity: 10,
-  //         },
-  //       ],
-  //     }
+    it("calculates item with fixed discount", async () => {
+      const cart = {
+        items: [
+          {
+            id: "exists",
+            allow_discounts: true,
+            unit_price: 10,
+            variant: {
+              id: "testv",
+              product_id: "testp",
+            },
+            quantity: 10,
+          },
+        ],
+      }
 
-  //     const discount = {
-  //       rule: {
-  //         type: "fixed",
-  //         value: 9,
-  //         // TODO: Add conditions relation
-  //       },
-  //     }
+      const discount = {
+        rule: {
+          type: "fixed",
+          value: 9,
+          // TODO: Add conditions relation
+        },
+      }
 
-  //     res = totalsService.getAllocationItemDiscounts(discount, cart)
+      res = totalsService.getAllocationItemDiscounts(discount, cart)
 
-  //     expect(res).toEqual([
-  //       {
-  //         lineItem: {
-  //           id: "exists",
-  //           allow_discounts: true,
-  //           unit_price: 10,
-  //           variant: {
-  //             id: "testv",
-  //             product_id: "testp",
-  //           },
-  //           quantity: 10,
-  //         },
-  //         variant: "testv",
-  //         amount: 90,
-  //       },
-  //     ])
-  //   })
+      expect(res).toEqual([
+        {
+          lineItem: {
+            id: "exists",
+            allow_discounts: true,
+            unit_price: 10,
+            variant: {
+              id: "testv",
+              product_id: "testp",
+            },
+            quantity: 10,
+          },
+          variant: "testv",
+          amount: 90,
+        },
+      ])
+    })
 
-  //   it("does not apply discount if no valid variants are provided", async () => {
-  //     const cart = {
-  //       items: [
-  //         {
-  //           id: "exists",
-  //           allow_discounts: true,
-  //           unit_price: 10,
-  //           variant: {
-  //             id: "testv",
-  //             product_id: "testp",
-  //           },
-  //           quantity: 10,
-  //         },
-  //       ],
-  //     }
+    it("does not apply discount if no valid variants are provided", async () => {
+      const cart = {
+        items: [
+          {
+            id: "exists",
+            allow_discounts: true,
+            unit_price: 10,
+            variant: {
+              id: "testv",
+              product_id: "testp",
+            },
+            quantity: 10,
+          },
+        ],
+      }
 
-  //     const discount = {
-  //       rule: {
-  //         type: "fixed",
-  //         value: 9,
-  //         // TODO: Add conditions relation
-  //       },
-  //     }
-  //     res = totalsService.getAllocationItemDiscounts(discount, cart)
+      const discount = {
+        rule: {
+          type: "fixed",
+          value: 9,
+          // TODO: Add conditions relation
+        },
+      }
+      res = totalsService.getAllocationItemDiscounts(discount, cart)
 
-  //     expect(res).toEqual([])
-  //   })
-  // })
+      expect(res).toEqual([])
+    })
+  })
 
   describe("getDiscountTotal", () => {
     let res
@@ -239,19 +270,21 @@ describe("TotalsService", () => {
 
     // TODO: Redo tests to include new line item adjustments
 
-    // it("calculate item fixed discount", async () => {
-    //   discountCart.discounts.push(discounts.item2Fixed)
-    //   res = totalsService.getDiscountTotal(discountCart)
+    it("calculate item fixed discount", async () => {
+      discountCart.discounts.push(discounts.item2Fixed)
+      discountCart = applyDiscount(discountCart, discounts.item2Fixed)
+      res = totalsService.getDiscountTotal(discountCart)
 
-    //   expect(res).toEqual(20)
-    // })
+      expect(res).toEqual(20)
+    })
 
-    // it("calculate item percentage discount", async () => {
-    //   discountCart.discounts.push(discounts.item10Percent)
-    //   res = totalsService.getDiscountTotal(discountCart)
+    it("calculate item percentage discount", async () => {
+      discountCart.discounts.push(discounts.item10Percent)
+      discountCart = applyDiscount(discountCart, discounts.item10Percent)
+      res = totalsService.getDiscountTotal(discountCart)
 
-    //   expect(res).toEqual(10)
-    // })
+      expect(res).toEqual(10)
+    })
 
     it("calculate total fixed discount", async () => {
       discountCart.discounts.push(discounts.total10Fixed)
@@ -395,43 +428,45 @@ describe("TotalsService", () => {
     //   expect(res).toEqual(1244)
     // })
 
-    // it("calculates refund with item fixed discount", async () => {
-    //   orderToRefund.discounts.push(discounts.item2Fixed)
-    //   res = totalsService.getRefundTotal(orderToRefund, [
-    //     {
-    //       id: "line2",
-    //       unit_price: 100,
-    //       allow_discounts: true,
-    //       variant: {
-    //         id: "variant",
-    //         product_id: "testp2",
-    //       },
-    //       quantity: 10,
-    //       returned_quantity: 0,
-    //     },
-    //   ])
+    it("calculates refund with item fixed discount", async () => {
+      orderToRefund.discounts.push(discounts.item2Fixed)
+      orderToRefund = applyDiscount(orderToRefund, discounts.item2Fixed)
+      res = totalsService.getRefundTotal(orderToRefund, [
+        {
+          id: "line2",
+          unit_price: 100,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ])
 
-    //   expect(res).toEqual(1225)
-    // })
+      expect(res).toEqual(1225)
+    })
 
-    // it("calculates refund with item percentage discount", async () => {
-    //   orderToRefund.discounts.push(discounts.item10Percent)
-    //   res = totalsService.getRefundTotal(orderToRefund, [
-    //     {
-    //       id: "line2",
-    //       unit_price: 100,
-    //       allow_discounts: true,
-    //       variant: {
-    //         id: "variant",
-    //         product_id: "testp2",
-    //       },
-    //       quantity: 10,
-    //       returned_quantity: 0,
-    //     },
-    //   ])
+    it("calculates refund with item percentage discount", async () => {
+      orderToRefund.discounts.push(discounts.item10Percent)
+      orderToRefund = applyDiscount(orderToRefund, discounts.item10Percent)
+      res = totalsService.getRefundTotal(orderToRefund, [
+        {
+          id: "line2",
+          unit_price: 100,
+          allow_discounts: true,
+          variant: {
+            id: "variant",
+            product_id: "testp2",
+          },
+          quantity: 10,
+          returned_quantity: 0,
+        },
+      ])
 
-    //   expect(res).toEqual(1125)
-    // })
+      expect(res).toEqual(1125)
+    })
 
     it("throws if line items to return is not in order", async () => {
       const work = () =>
@@ -451,6 +486,7 @@ describe("TotalsService", () => {
       expect(work).toThrow("Line item does not exist on order")
     })
   })
+
   describe("getShippingTotal", () => {
     let res
     const totalsService = new TotalsService(container)
