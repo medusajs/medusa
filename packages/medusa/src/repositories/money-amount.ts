@@ -1,4 +1,5 @@
 import partition from "lodash/partition"
+import { MedusaError } from "medusa-core-utils"
 import {
   Brackets,
   EntityRepository,
@@ -130,7 +131,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         "price_list",
         "ma.price_list_id = price_list.id "
       )
-      .where({ variant_id: variant_id }) // "ma.variant_id = :variant_id",
+      .where({ variant_id: variant_id })
       .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
       .andWhere(
         "(price_list is null or price_list.ends_at is null OR price_list.ends_at > :date) ",
