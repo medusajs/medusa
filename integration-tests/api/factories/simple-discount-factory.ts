@@ -1,16 +1,21 @@
-import { Connection } from "typeorm"
-import faker from "faker"
 import {
+  AllocationType,
   Discount,
   DiscountRule,
   DiscountRuleType,
-  AllocationType,
 } from "@medusajs/medusa"
+import faker from "faker"
+import { Connection } from "typeorm"
+import {
+  DiscuntConditionFactoryData,
+  simpleDiscountConditionFactory,
+} from "./simple-discount-condition-factory"
 
 export type DiscountRuleFactoryData = {
   type?: DiscountRuleType
   value?: number
   allocation?: AllocationType
+  conditions: DiscuntConditionFactoryData[]
 }
 
 export type DiscountFactoryData = {
@@ -40,6 +45,16 @@ export const simpleDiscountFactory = async (
   })
 
   const dRule = await manager.save(ruleToSave)
+
+  if (data?.rule?.conditions) {
+    for (const condition of data.rule.conditions) {
+      await simpleDiscountConditionFactory(
+        connection,
+        { ...condition, rule_id: dRule.id },
+        1
+      )
+    }
+  }
 
   const toSave = manager.create(Discount, {
     id: data.id,

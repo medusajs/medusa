@@ -1,8 +1,8 @@
 import { Router } from "express"
-import { Order } from "../../../.."
-import middlewares from "../../../middlewares"
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import "reflect-metadata"
+import { Order } from "../../../.."
+import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -231,7 +231,7 @@ export const defaultAdminOrdersRelations = [
   "shipping_address",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
+  // TODO: Add conditions relation
   "shipping_methods",
   "payments",
   "fulfillments",
@@ -332,7 +332,7 @@ export const allowedAdminOrdersRelations = [
   "shipping_address",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
+  // TODO: Add conditions relation
   "shipping_methods",
   "payments",
   "fulfillments",

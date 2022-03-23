@@ -1,4 +1,6 @@
+import { Type } from "class-transformer"
 import {
+  IsDate,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -16,6 +18,7 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The id of the Discount to create the dynamic code from."
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
+ *   - (body) ends_at=* {date-time} The time at which the Discount should no longer be available.
  *   - (body) metadata {object} An optional set of key-value paris to hold additional information.
  * tags:
  *   - Discount
@@ -43,8 +46,9 @@ export default async (req, res) => {
     validated
   )
 
+  // TODO: Add conditions relation
   const discount = await discountService.retrieve(created.id, {
-    relations: ["rule", "rule.valid_for", "regions"],
+    relations: ["rule", "regions"],
   })
 
   res.status(200).json({ discount })
@@ -54,6 +58,11 @@ export class AdminPostDiscountsDiscountDynamicCodesReq {
   @IsString()
   @IsNotEmpty()
   code: string
+
+  @IsDate()
+  @IsOptional()
+  @Type(() => Date)
+  ends_at?: Date
 
   @IsNumber()
   @IsOptional()
