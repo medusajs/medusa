@@ -7,7 +7,7 @@ import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
 import { UseQueryOptionsWrapper } from "../../../types"
-import { queryKeysFactory } from "../../utils/index"
+import { queryKeysFactory } from "../../utils"
 
 const ADMIN_CUSTOMERS_QUERY_KEY = `admin_customers` as const
 

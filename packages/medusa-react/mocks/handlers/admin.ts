@@ -551,6 +551,15 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/customer-groups/:id/customers", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        customers: fixtures.list("customer"),
+      })
+    )
+  }),
+
   rest.get("/admin/discounts/", (req, res, ctx) => {
     return res(
       ctx.status(200),
