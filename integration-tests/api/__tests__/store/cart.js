@@ -5,7 +5,6 @@ const {
   GiftCard,
   Cart,
   CustomShippingOption,
-  ProductVariant,
   PriceList,
   MoneyAmount,
 } = require("@medusajs/medusa")
