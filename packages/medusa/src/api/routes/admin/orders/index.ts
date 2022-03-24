@@ -231,7 +231,6 @@ export const defaultAdminOrdersRelations = [
   "shipping_address",
   "discounts",
   "discounts.rule",
-  // TODO: Add conditions relation
   "shipping_methods",
   "payments",
   "fulfillments",
@@ -332,7 +331,6 @@ export const allowedAdminOrdersRelations = [
   "shipping_address",
   "discounts",
   "discounts.rule",
-  // TODO: Add conditions relation
   "shipping_methods",
   "payments",
   "fulfillments",

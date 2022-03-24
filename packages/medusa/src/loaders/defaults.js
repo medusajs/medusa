@@ -39,7 +39,7 @@ export default async ({ container }) => {
 
   const entityManager = container.resolve("manager")
 
-  await entityManager.transaction(async manager => {
+  await entityManager.transaction(async (manager) => {
     const countryRepo = manager.getCustomRepository(countryRepository)
     const hasCountries = await countryRepo.findOne()
     if (!hasCountries) {
@@ -63,7 +63,7 @@ export default async ({ container }) => {
     }
   })
 
-  await entityManager.transaction(async manager => {
+  await entityManager.transaction(async (manager) => {
     const currencyRepo = manager.getCustomRepository(currencyRepository)
     const hasCurrencies = await currencyRepo.findOne()
     if (!hasCurrencies) {
@@ -80,7 +80,7 @@ export default async ({ container }) => {
     }
   })
 
-  await entityManager.transaction(async manager => {
+  await entityManager.transaction(async (manager) => {
     await storeService.withTransaction(manager).create()
 
     let payIds
@@ -89,7 +89,7 @@ export default async ({ container }) => {
     const payProviders =
       silentResolution(container, "paymentProviders", logger) || []
 
-    payIds = payProviders.map(p => p.getIdentifier())
+    payIds = payProviders.map((p) => p.getIdentifier())
     await pProviderService.registerInstalledProviders(payIds)
 
     let notiIds
@@ -98,7 +98,7 @@ export default async ({ container }) => {
     const notiProviders =
       silentResolution(container, "notificationProviders", logger) || []
 
-    notiIds = notiProviders.map(p => p.getIdentifier())
+    notiIds = notiProviders.map((p) => p.getIdentifier())
     await nProviderService.registerInstalledProviders(notiIds)
 
     let fulfilIds
@@ -107,8 +107,17 @@ export default async ({ container }) => {
     const fulfilProviders =
       silentResolution(container, "fulfillmentProviders", logger) || []
 
-    fulfilIds = fulfilProviders.map(p => p.getIdentifier())
+    fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
     await fProviderService.registerInstalledProviders(fulfilIds)
+
+    let taxIds
+    const tProviderService = container.resolve("taxProviderService")
+
+    const taxProviders =
+      silentResolution(container, "taxProviders", logger) || []
+
+    taxIds = taxProviders.map((p) => p.getIdentifier())
+    await tProviderService.registerInstalledProviders(taxIds)
 
     await profileService.withTransaction(manager).createDefault()
     await profileService.withTransaction(manager).createGiftCardDefault()

@@ -309,7 +309,6 @@ class OrderService extends BaseService {
       relationSet.add("claims.additional_items.adjustments")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
-      // TODO: Add conditions relation
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
       relationSet.add("refunds")
@@ -511,7 +510,6 @@ class OrderService extends BaseService {
             "items",
             "discounts",
             "discounts.rule",
-            // TODO: Add conditions relation
             "gift_cards",
             "shipping_methods",
           ],
@@ -1183,7 +1181,6 @@ class OrderService extends BaseService {
         relations: [
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "region",
           "fulfillments",
           "shipping_address",

@@ -8,7 +8,7 @@ import {
   JoinColumn,
   ManyToOne,
   PrimaryColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import { resolveDbType } from "../utils/db-aware-column"
@@ -41,11 +41,10 @@ export class MoneyAmount {
   @Column({ nullable: true })
   price_list_id: string | null
 
-  @ManyToOne(
-    () => PriceList,
-    (priceList) => priceList.prices,
-    { cascade: true, onDelete: "CASCADE" }
-  )
+  @ManyToOne(() => PriceList, (priceList) => priceList.prices, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "price_list_id" })
   price_list: PriceList | null
 

@@ -8,7 +8,7 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import { PriceListStatus, PriceListType } from "../types/price-list"
@@ -53,18 +53,14 @@ export class PriceList {
       referencedColumnName: "id",
     },
   })
-  @ManyToMany(
-    () => CustomerGroup,
-    (cg) => cg.price_lists,
-    { onDelete: "CASCADE" }
-  )
+  @ManyToMany(() => CustomerGroup, (cg) => cg.price_lists, {
+    onDelete: "CASCADE",
+  })
   customer_groups: CustomerGroup[]
 
-  @OneToMany(
-    () => MoneyAmount,
-    (moneyAmount) => moneyAmount.price_list,
-    { onDelete: "CASCADE" }
-  )
+  @OneToMany(() => MoneyAmount, (moneyAmount) => moneyAmount.price_list, {
+    onDelete: "CASCADE",
+  })
   prices: MoneyAmount[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })

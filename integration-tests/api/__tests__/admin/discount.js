@@ -1,5 +1,11 @@
 const path = require("path")
-const { Region, DiscountRule, Discount } = require("@medusajs/medusa")
+const {
+  Region,
+  DiscountRule,
+  Discount,
+  Customer,
+  CustomerGroup,
+} = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -73,7 +79,70 @@ describe("/admin/discounts", () => {
       await db.teardown()
     })
 
-    it("should retrieve discount with conditions created with factory", async () => {
+    it("should retrieve discount with customer conditions created with factory", async () => {
+      const api = useApi()
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      const response = await api
+        .get(
+          "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.customer_groups",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+        })
+      )
+      expect(disc.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "customer_groups",
+            operator: "in",
+            discount_rule_id: disc.rule.id,
+          }),
+        ])
+      )
+    })
+
+    it("should retrieve discount with product conditions created with factory", async () => {
       const api = useApi()
 
       const response = await api

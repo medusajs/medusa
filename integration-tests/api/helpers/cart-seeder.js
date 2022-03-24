@@ -14,6 +14,8 @@ const {
   LineItem,
   Payment,
   PaymentSession,
+  CustomerGroup,
+  PriceList,
 } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
@@ -51,6 +53,8 @@ module.exports = async (connection, data = {}) => {
     currency_code: "usd",
     tax_rate: 0,
   })
+
+  await manager.save(r)
 
   // Region with multiple countries
   const regionWithMultipleCoutries = manager.create(Region, {
@@ -240,7 +244,7 @@ module.exports = async (connection, data = {}) => {
     is_disabled: false,
     starts_at: tenDaysAgo,
     ends_at: tenDaysFromToday,
-    valid_duration: "P1M", //one month
+    valid_duration: "P1M", // one month
   })
 
   DynamicDiscount.regions = [r]
@@ -256,10 +260,20 @@ module.exports = async (connection, data = {}) => {
     email: "test@email.com",
   })
 
-  await manager.insert(Customer, {
+  const c2 = await manager.create(Customer, {
     id: "test-customer-2",
     email: "test-2@email.com",
   })
+
+  const cg = await manager.create(CustomerGroup, {
+    id: "cgroup",
+    name: "customer group",
+  })
+
+  await manager.save(cg)
+
+  c2.groups = [cg]
+  await manager.save(c2)
 
   await manager.insert(Customer, {
     id: "some-customer",
@@ -299,6 +313,28 @@ module.exports = async (connection, data = {}) => {
     data: {},
   })
 
+  const priceList = await manager.create(PriceList, {
+    id: "pl",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  await manager.save(priceList)
+
+  const priceList1 = await manager.create(PriceList, {
+    id: "pl_current",
+    name: "Past winter sale",
+    description: "Winter sale for key accounts.",
+    type: "sale",
+    status: "active",
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+  })
+
+  await manager.save(priceList1)
+
   await manager.insert(Product, {
     id: "giftcard-product",
     title: "Giftcard",
@@ -326,6 +362,32 @@ module.exports = async (connection, data = {}) => {
     title: "test product",
     profile_id: defaultProfile.id,
     options: [{ id: "test-option", title: "Size" }],
+  })
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant-quantity",
+    title: "test variant",
+    product_id: "test-product",
+    inventory_quantity: 1000,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Size",
+      },
+    ],
+  })
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant-sale",
+    title: "test variant",
+    product_id: "test-product",
+    inventory_quantity: 1000,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Size",
+      },
+    ],
   })
 
   await manager.insert(ProductVariant, {
@@ -357,14 +419,60 @@ module.exports = async (connection, data = {}) => {
   const ma = manager.create(MoneyAmount, {
     variant_id: "test-variant",
     currency_code: "usd",
+    type: "default",
     amount: 1000,
   })
-
   await manager.save(ma)
+
+  const ma_sale = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale",
+    currency_code: "usd",
+    amount: 1000,
+  })
+  await manager.save(ma_sale)
+
+  const ma_sale_1 = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale",
+    currency_code: "usd",
+    amount: 800,
+    price_list_id: "pl_current",
+  })
+
+  await manager.save(ma_sale_1)
+
+  const ma_quantity = manager.create(MoneyAmount, {
+    variant_id: "test-variant-quantity",
+    currency_code: "usd",
+    type: "default",
+    amount: 1000,
+  })
+  await manager.save(ma_quantity)
+
+  const ma_quantity_1 = manager.create(MoneyAmount, {
+    variant_id: "test-variant-quantity",
+    currency_code: "usd",
+    type: "sale",
+    min_quantity: 10,
+    max_quantity: 100,
+    amount: 800,
+  })
+
+  await manager.save(ma_quantity_1)
+
+  const ma_quantity_2 = manager.create(MoneyAmount, {
+    variant_id: "test-variant-quantity",
+    currency_code: "usd",
+    type: "sale",
+    min_quantity: 100,
+    amount: 700,
+  })
+
+  await manager.save(ma_quantity_2)
 
   const ma2 = manager.create(MoneyAmount, {
     variant_id: "test-variant-2",
     currency_code: "usd",
+    type: "default",
     amount: 8000,
   })
 
@@ -373,6 +481,7 @@ module.exports = async (connection, data = {}) => {
   const ma3 = manager.create(MoneyAmount, {
     variant_id: "giftcard-denom",
     currency_code: "usd",
+    type: "default",
     amount: 1000,
   })
 
@@ -533,4 +642,67 @@ module.exports = async (connection, data = {}) => {
     cart_id: "test-cart-3",
   })
   await manager.save(li2)
+
+  const cart4 = manager.create(Cart, {
+    id: "test-cart-3",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    completed_at: null,
+    items: [],
+  })
+  await manager.save(cart4)
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant-sale-cg",
+    title: "test variant",
+    product_id: "test-product",
+    inventory_quantity: 1000,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Size",
+      },
+    ],
+  })
+
+  const ma_cg = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale-cg",
+    currency_code: "usd",
+    amount: 1000,
+  })
+  await manager.save(ma_cg)
+
+  const ma_sale_cg = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale-cg",
+    currency_code: "usd",
+    price_list_id: "pl",
+    amount: 500,
+  })
+  await manager.save(ma_sale_cg)
+
+  const ma_sale_cg_new_region = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale-cg",
+    region_id: "test-region-multiple",
+    currency_code: "eur",
+    amount: 700,
+  })
+  await manager.save(ma_sale_cg_new_region)
+
+  const li3 = await manager.create(LineItem, {
+    id: "test-item3",
+    title: "Line Item",
+    description: "Line Item Desc",
+    thumbnail: "https://test.js/1234",
+    unit_price: 8000,
+    quantity: 1,
+    variant_id: "test-variant-sale-cg",
+    cart_id: "test-cart-3",
+  })
+  await manager.save(li3)
 }

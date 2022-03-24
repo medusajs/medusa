@@ -315,6 +315,15 @@ class OrderSubscriber {
         integrations,
       }
 
+      segmentService.identify({
+        userId: order.customer_id,
+        traits: {
+          email: order.email,
+          firstName: order.shipping_address.first_name,
+          lastName: order.shipping_address.last_name,
+        },
+      })
+
       segmentService.track(orderEvent)
     })
   }
