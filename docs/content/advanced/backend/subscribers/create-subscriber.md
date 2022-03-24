@@ -43,7 +43,7 @@ module.exports = {
 }
 ```
 
-After that, you should be able to listen to events on your server.
+After that, you are able to listen to events on your server.
 
 ## Implementation
 
