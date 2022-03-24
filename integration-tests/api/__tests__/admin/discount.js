@@ -489,32 +489,34 @@ describe("/admin/discounts", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.discount.rule.conditions).toEqual([
-        expect.objectContaining({
-          type: "products",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "products",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "product_tags",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_tags",
-          operator: "in",
-        }),
-      ])
+      expect(response.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "products",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "product_tags",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_tags",
+            operator: "in",
+          }),
+        ])
+      )
     })
 
     it("creates a discount with conditions and updates said conditions", async () => {
