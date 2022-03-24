@@ -66,7 +66,7 @@ export class LineItem {
   @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
   tax_lines: LineItemTaxLine[]
 
-  @OneToMany(() => LineItemAdjustment, (lia) => lia.item_id, { cascade: ["insert"] })
+  @OneToMany(() => LineItemAdjustment, (lia) => lia.item, { cascade: ["insert"] })
   adjustments: LineItemAdjustment[]
 
   @Column()
