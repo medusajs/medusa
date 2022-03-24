@@ -125,23 +125,25 @@ export const defaultStoreCartRelations = [
   "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
 ]
 
 export type StoreCartsRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
 }
 
-export type StoreCompleteCartRes = {
-  type: "cart"
-  data: Cart
-} | {
-  type: "order"
-  data: Order
-} | {
-  type: "swap"
-  data: Swap
-}
+export type StoreCompleteCartRes =
+  | {
+      type: "cart"
+      data: Cart
+    }
+  | {
+      type: "order"
+      data: Order
+    }
+  | {
+      type: "swap"
+      data: Swap
+    }
 
 export type StoreCartsDeleteRes = DeleteResponse
 

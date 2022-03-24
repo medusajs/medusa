@@ -1,10 +1,10 @@
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
-import { TaxRate } from "../models/tax-rate"
-import { ShippingTaxRate } from "../models/shipping-tax-rate"
 import { ProductTaxRate } from "../models/product-tax-rate"
 import { ProductTypeTaxRate } from "../models/product-type-tax-rate"
+import { ShippingTaxRate } from "../models/shipping-tax-rate"
+import { TaxRate } from "../models/tax-rate"
 import { TaxRateRepository } from "../repositories/tax-rate"
 import ProductService from "../services/product"
 import ProductTypeService from "../services/product-type"
@@ -12,9 +12,9 @@ import ShippingOptionService from "../services/shipping-option"
 import { FindConfig } from "../types/common"
 import {
   CreateTaxRateInput,
-  UpdateTaxRateInput,
-  TaxRateListByConfig,
   FilterableTaxRateProps,
+  TaxRateListByConfig,
+  UpdateTaxRateInput,
 } from "../types/tax-rate"
 
 class TaxRateService extends BaseService {

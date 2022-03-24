@@ -16,6 +16,16 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
+const { simpleCartFactory } = require("../../factories")
+const {
+  simpleDiscountFactory,
+} = require("../../factories/simple-discount-factory")
+const {
+  simpleCustomerFactory,
+} = require("../../factories/simple-customer-factory")
+const {
+  simpleCustomerGroupFactory,
+} = require("../../factories/simple-customer-group-factory")
 
 jest.setTimeout(30000)
 
@@ -352,6 +362,348 @@ describe("/store/carts", () => {
             "Discount has been used maximum allowed times"
           )
         })
+    })
+
+    it("successfully passes customer conditions with `in` operator and applies discount", async () => {
+      const api = useApi()
+
+      await simpleCustomerFactory(dbConnection, {
+        id: "cus_1234",
+        email: "oli@medusajs.com",
+        groups: [
+          {
+            id: "customer-group-1",
+            name: "VIP Customer",
+          },
+        ],
+      })
+
+      await simpleCustomerGroupFactory(dbConnection, {
+        id: "customer-group-2",
+        name: "Loyal",
+      })
+
+      await simpleCartFactory(
+        dbConnection,
+        {
+          id: "test-customer-discount",
+          region: {
+            id: "test-region",
+            name: "Test region",
+            tax_rate: 12,
+          },
+          customer: "cus_1234",
+          line_items: [
+            {
+              variant_id: "test-variant",
+              unit_price: 100,
+            },
+          ],
+        },
+        100
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1", "customer-group-2"],
+            },
+          ],
+        },
+      })
+
+      const response = await api.post("/store/carts/test-customer-discount", {
+        discounts: [{ code: "TEST" }],
+      })
+
+      const cartRes = response.data.cart
+      expect(cartRes.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            code: "TEST",
+          }),
+        ])
+      )
+      expect(response.status).toEqual(200)
+    })
+
+    it("successfully passes customer conditions with `not_in` operator and applies discount", async () => {
+      const api = useApi()
+
+      await simpleCustomerFactory(dbConnection, {
+        id: "cus_1234",
+        email: "oli@medusajs.com",
+        groups: [
+          {
+            id: "customer-group-2",
+            name: "VIP Customer",
+          },
+        ],
+      })
+
+      await simpleCustomerGroupFactory(dbConnection, {
+        id: "customer-group-1",
+        name: "Customer group 1",
+      })
+
+      await simpleCustomerGroupFactory(dbConnection, {
+        id: "customer-group-3",
+        name: "Customer group 3",
+      })
+
+      await simpleCartFactory(
+        dbConnection,
+        {
+          id: "test-customer-discount",
+          region: {
+            id: "test-region",
+            name: "Test region",
+            tax_rate: 12,
+          },
+          customer: "cus_1234",
+          line_items: [
+            {
+              variant_id: "test-variant",
+              unit_price: 100,
+            },
+          ],
+        },
+        100
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "not_in",
+              customer_groups: ["customer-group-1", "customer-group-3"],
+            },
+          ],
+        },
+      })
+
+      const response = await api.post("/store/carts/test-customer-discount", {
+        discounts: [{ code: "TEST" }],
+      })
+
+      const cartRes = response.data.cart
+      expect(cartRes.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            code: "TEST",
+          }),
+        ])
+      )
+      expect(response.status).toEqual(200)
+    })
+
+    it("successfully applies discount in case no conditions is defined for group", async () => {
+      const api = useApi()
+
+      await simpleCustomerFactory(dbConnection, {
+        id: "cus_1234",
+        email: "oli@medusajs.com",
+        groups: [
+          {
+            id: "customer-group-1",
+            name: "VIP Customer",
+          },
+        ],
+      })
+
+      await simpleCartFactory(
+        dbConnection,
+        {
+          id: "test-customer-discount",
+          region: {
+            id: "test-region",
+            name: "Test region",
+            tax_rate: 12,
+          },
+          customer: "cus_1234",
+          line_items: [
+            {
+              variant_id: "test-variant",
+              unit_price: 100,
+            },
+          ],
+        },
+        100
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+        },
+      })
+
+      const response = await api.post("/store/carts/test-customer-discount", {
+        discounts: [{ code: "TEST" }],
+      })
+
+      const cartRes = response.data.cart
+      expect(cartRes.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            code: "TEST",
+          }),
+        ])
+      )
+      expect(response.status).toEqual(200)
+    })
+
+    it("fails to apply discount if customer group is part of `not_in` conditions", async () => {
+      const api = useApi()
+
+      await simpleCustomerFactory(dbConnection, {
+        id: "cus_1234",
+        email: "oli@medusajs.com",
+        groups: [
+          {
+            id: "customer-group-1",
+            name: "VIP Customer",
+          },
+        ],
+      })
+
+      await simpleCartFactory(
+        dbConnection,
+        {
+          id: "test-customer-discount",
+          region: {
+            id: "test-region",
+            name: "Test region",
+            tax_rate: 12,
+          },
+          customer: "cus_1234",
+          line_items: [
+            {
+              variant_id: "test-variant",
+              unit_price: 100,
+            },
+          ],
+        },
+        100
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "not_in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      try {
+        await api.post("/store/carts/test-customer-discount", {
+          discounts: [{ code: "TEST" }],
+        })
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "Discount is not valid for customer"
+        )
+      }
+    })
+
+    it("fails to apply discount if customer group is not part of `in` conditions", async () => {
+      const api = useApi()
+
+      await simpleCustomerFactory(dbConnection, {
+        id: "cus_1234",
+        email: "oli@medusajs.com",
+        groups: [
+          {
+            id: "customer-group-2",
+            name: "VIP Customer",
+          },
+        ],
+      })
+
+      await simpleCustomerGroupFactory(dbConnection, {
+        id: "customer-group-1",
+        name: "Customer group 1",
+      })
+
+      await simpleCartFactory(
+        dbConnection,
+        {
+          id: "test-customer-discount",
+          region: {
+            id: "test-region",
+            name: "Test region",
+            tax_rate: 12,
+          },
+          customer: "cus_1234",
+          line_items: [
+            {
+              variant_id: "test-variant",
+              unit_price: 100,
+            },
+          ],
+        },
+        100
+      )
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        regions: ["test-region"],
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      try {
+        await api.post("/store/carts/test-customer-discount", {
+          discounts: [{ code: "TEST" }],
+        })
+      } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.message).toEqual(
+          "Discount is not valid for customer"
+        )
+      }
     })
 
     it("fails to apply expired discount", async () => {

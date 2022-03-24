@@ -8,16 +8,16 @@
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/medusa": "1.2.0-dev-1647336201011",
+    "@medusajs/medusa": "1.2.1-dev-1648026403166",
     "faker": "^5.5.3",
-    "medusa-interfaces": "1.2.0-dev-1647336201011",
+    "medusa-interfaces": "1.2.1-dev-1648026403166",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
-    "babel-preset-medusa-package": "1.1.19-dev-1647336201011",
+    "babel-preset-medusa-package": "1.1.19-dev-1648026403166",
     "jest": "^26.6.3"
   }
 }
