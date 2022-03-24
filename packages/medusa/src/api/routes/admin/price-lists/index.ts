@@ -60,6 +60,7 @@ export type AdminPriceListsListRes = PaginatedResponse & {
 }
 
 export * from "./add-prices-batch"
+export * from "./delete-prices-batch"
 export * from "./create-price-list"
 export * from "./delete-price-list"
 export * from "./get-price-list"
