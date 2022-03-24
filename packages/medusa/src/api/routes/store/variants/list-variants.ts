@@ -7,6 +7,7 @@ import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { NumericalComparisonOperator } from "../../../../types/common"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 
 /**
  * @oas [get] /variants
@@ -41,12 +42,19 @@ export default async (req, res) => {
     expandFields = expand.split(",")
   }
 
+  const customer_id = req.user?.customer_id
+
   const listConfig = {
     relations: expandFields.length
       ? expandFields
       : defaultStoreVariantRelations,
     skip: offset,
     take: limit,
+    cart_id: validated.cart_id,
+    region_id: validated.region_id,
+    currency_code: validated.currency_code,
+    customer_id: customer_id,
+    include_discount_prices: true,
   }
 
   const filterableFields: FilterableProductVariantProps = omit(validated, [
@@ -54,6 +62,9 @@ export default async (req, res) => {
     "limit",
     "offset",
     "expand",
+    "cart_id",
+    "region_id",
+    "currency_code",
   ])
 
   if (validated.ids) {
@@ -68,7 +79,7 @@ export default async (req, res) => {
   res.json({ variants })
 }
 
-export class StoreGetVariantsParams {
+export class StoreGetVariantsParams extends PriceSelectionParams {
   @IsOptional()
   @IsInt()
   @Type(() => Number)
