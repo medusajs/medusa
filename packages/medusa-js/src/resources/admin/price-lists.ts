@@ -13,11 +13,6 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminPriceListResource extends BaseResource {
-  // list
-
-  // batch delete
-
-  // batch add
   create(
     payload: AdminPostPriceListsPriceListReq,
     customHeaders: Record<string, any> = {}
