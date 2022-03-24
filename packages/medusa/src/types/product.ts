@@ -63,10 +63,6 @@ export class FilterableProductProps {
   @IsOptional()
   type?: string
 
-  @IsString()
-  @IsOptional()
-  order?: string
-
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

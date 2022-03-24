@@ -1,31 +1,29 @@
 import { Type } from "class-transformer"
+import { omit } from "lodash"
 import {
   IsArray,
   IsBoolean,
   IsEnum,
-  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { pickBy, omit } from "lodash"
-import { MedusaError } from "medusa-core-utils"
-import { Product } from "../../../../models/product"
+import { DateComparisonOperator } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
+import { FilterableProductProps } from "../../../../types/product"
 import {
+  AdminGetProductsPaginationParams,
   allowedAdminProductFields,
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
-import { ProductService } from "../../../../services"
-import { FindConfig, DateComparisonOperator } from "../../../../types/common"
-import { FilterableProductProps } from "../../../../types/product"
-import { validator } from "../../../../utils/validator"
+import listAndCount from "../../../../controllers/products/admin-list-products"
 
 /**
- * @oas [get] /products
- * operationId: "GetProducts"
- * summary: "List Product"
- * description: "Retrieves a list of Product"
+ * @oas [get] /price-lists/:id/products
+ * operationId: "GetPriceListsPriceListProducts"
+ * summary: "List Product in a Price List"
+ * description: "Retrieves a list of Product that are part of a Price List"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching products.
@@ -72,50 +70,14 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
-  const validatedParams = await validator(AdminGetProductsParams, req.query)
+  const validatedParams = await validator(
+    AdminGetPriceListsPriceListProductsParams,
+    req.query
+  )
 
-  const productService: ProductService = req.scope.resolve("productService")
+  req.query.price_list_id = [id]
 
-  let includeFields: string[] = []
-  if (validatedParams.fields) {
-    includeFields = validatedParams.fields!.split(",")
-  }
-
-  let expandFields: string[] = []
-  if (validatedParams.expand) {
-    expandFields = validatedParams.expand!.split(",")
-  }
-
-  const listConfig: FindConfig<Product> = {
-    select: (includeFields.length
-      ? includeFields
-      : defaultAdminProductFields) as (keyof Product)[],
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminProductRelations,
-    skip: validatedParams.offset,
-    take: validatedParams.limit,
-  }
-
-  if (typeof validatedParams.order !== "undefined") {
-    let orderField = validatedParams.order
-    if (validatedParams.order.startsWith("-")) {
-      const [, field] = validatedParams.order.split("-")
-      orderField = field
-      listConfig.order = { [field]: "DESC" }
-    } else {
-      listConfig.order = { [validatedParams.order]: "ASC" }
-    }
-
-    if (!allowedAdminProductFields.includes(orderField)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Order field must be a valid product field"
-      )
-    }
-  }
-
-  const filterableFields: FilterableProductProps = omit(validatedParams, [
+  const filterableFields: FilterableProductProps = omit(req.query, [
     "limit",
     "offset",
     "expand",
@@ -123,49 +85,32 @@ export default async (req, res) => {
     "order",
   ])
 
-  filterableFields.price_list_id = [id]
-
-  const [products, count] = await productService.listAndCount(
-    pickBy(filterableFields, (val) => typeof val !== "undefined"),
-    listConfig
+  const result = await listAndCount(
+    req.scope,
+    filterableFields,
+    {},
+    {
+      limit: validatedParams.limit ?? 50,
+      offset: validatedParams.offset ?? 0,
+      expand: validatedParams.expand,
+      fields: validatedParams.fields,
+      allowedFields: allowedAdminProductFields,
+      defaultFields: defaultAdminProductFields,
+      defaultRelations: defaultAdminProductRelations,
+    }
   )
 
-  res.json({
-    products,
-    count,
-    offset: validatedParams.offset,
-    limit: validatedParams.limit,
-  })
+  res.json(result)
 }
 
-export enum ProductStatus {
+enum ProductStatus {
   DRAFT = "draft",
   PROPOSED = "proposed",
   PUBLISHED = "published",
   REJECTED = "rejected",
 }
 
-export class AdminGetProductsPaginationParams {
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  limit?: number = 50
-
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}
-
-export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
+export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsPaginationParams {
   @IsString()
   @IsOptional()
   id?: string
