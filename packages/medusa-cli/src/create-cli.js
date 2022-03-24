@@ -165,13 +165,16 @@ function buildLocalCommands(cli, isLocalProject) {
       ),
     })
     .command({
-      command: `migrations [action]`,
+      command: `migrations [action] [action2]`,
       desc: `Migrate the database to the most recent version.`,
       builder: {
         action: {
           demand: true,
-          choices: ["run", "show"],
+          choices: ["run", "show", "datamodel"],
         },
+        action2: {
+          choices: ["run"]
+        }
       },
       handler: handlerP(
         getCommandHandler(`migrate`, (args, cmd) => {
