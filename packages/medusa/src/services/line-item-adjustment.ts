@@ -189,9 +189,16 @@ class LineItemAdjustmentService extends BaseService {
         return
       }
 
-      const [discount] = cart.discounts.filter(
+      // console.log("cart", cart)
+      // console.log("discounts", cart.discounts)
+      const [discount] = cart.discounts?.filter(
         (d) => d.rule.type !== "free_shipping"
       )
+
+      // if no discount is applied to the cart then return
+      if (!discount) {
+        return
+      }
 
       const lineItemProduct = lineItem.variant.product_id
 
@@ -215,12 +222,15 @@ class LineItemAdjustmentService extends BaseService {
         return
       }
 
+      console.log("did i get here?")
       const lineItemAdjustment = await this.create({
         item_id: lineItem.id,
         amount,
         discount_id: discount.id,
         description: "discount",
       })
+
+      console.log("lineItemAdj", lineItemAdjustment)
 
       return lineItemAdjustment
     })

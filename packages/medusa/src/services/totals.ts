@@ -877,6 +877,7 @@ class TotalsService extends BaseService {
 
     const discountTotal = this.getLineItemAdjustmentsTotal(cartOrOrder)
 
+    console.log({ discountTotal })
     if (subtotal < 0) {
       return this.rounded(Math.max(subtotal, discountTotal))
     }

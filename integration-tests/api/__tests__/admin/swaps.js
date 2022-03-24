@@ -17,7 +17,7 @@ describe("/admin/swaps", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -91,6 +91,8 @@ describe("/admin/swaps", () => {
           id: "disc-swap",
         })
       )
+
+      console.log(response.data.swap.cart.items[0].adjustments)
 
       expect(response.data.swap.cart).toEqual(
         expect.objectContaining({

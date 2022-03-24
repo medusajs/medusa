@@ -113,6 +113,7 @@ export default async (req, res) => {
     relations: ["payment_sessions", "shipping_methods"],
   })
 
+
   if (updated.payment_sessions?.length && !validated.region_id) {
     await cartService.setPaymentSessions(id)
   }

@@ -30,7 +30,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     } catch (error) {
       console.log(error)
     }
@@ -622,6 +622,22 @@ describe("/store/carts", () => {
         .catch((err) => console.log(err))
 
       // Ensure that the discount is only applied to the standard item
+      const itemId = cartWithGiftcard.data.cart.items[0].id
+      expect(cartWithGiftcard.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant",
+            quantity: 1,
+            adjustments: [
+              expect.objectContaining({
+                discount_id: "10Percent",
+                amount: 100,
+                item_id: itemId,
+              }),
+            ],
+          }),
+        ])
+      )
       expect(cartWithGiftcard.data.cart.total).toBe(1900) // 1000 (giftcard) + 900 (standard item with 10% discount)
       expect(cartWithGiftcard.data.cart.discount_total).toBe(100)
       expect(cartWithGiftcard.status).toEqual(200)

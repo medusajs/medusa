@@ -513,9 +513,12 @@ class CartService extends BaseService {
         relations: [
           "shipping_methods",
           "items",
+          "items.adjustments",
           "payment_sessions",
           "items.variant",
           "items.variant.product",
+          "discounts",
+          "discounts.rule",
         ],
       })
 
@@ -604,7 +607,7 @@ class CartService extends BaseService {
   ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cart = await this.retrieve(cartId, {
-        relations: ["items", "payment_sessions"],
+        relations: ["items", "items.adjustments", "payment_sessions"],
       })
 
       // Ensure that the line item exists in the cart
@@ -639,7 +642,7 @@ class CartService extends BaseService {
 
       await this.lineItemAdjustmentService_
         .withTransaction(manager)
-        .createAdjustments(cart, updatedLineItem)
+        .createAdjustmentForLineItem(cart, updatedLineItem)
 
       // Update the line item
       const result = await this.retrieve(cartId)
@@ -1107,7 +1110,7 @@ class CartService extends BaseService {
         }
       })
 
-      cart.discounts = newDiscounts.filter(Boolean)
+      cart.discounts = newDiscounts.filter(Boolean) as Discount[]
 
       // ignore if free shipping
       if (rule.type !== "free_shipping") {
