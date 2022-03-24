@@ -7,10 +7,12 @@ import { LineItemAdjustment } from "../models/line-item-adjustment"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
 import { LineItem } from "../models/line-item"
 import { Cart } from "../models/cart"
+import DiscountService from "./discount"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
   lineItemAdjustmentRepository: typeof LineItemAdjustmentRepository
+  discountService: DiscountService
 }
 
 /**
@@ -20,14 +22,17 @@ type LineItemAdjustmentServiceProps = {
 class LineItemAdjustmentService extends BaseService {
   private manager_: EntityManager
   private lineItemAdjustmentRepo_: typeof LineItemAdjustmentRepository
+  private discountService: DiscountService
 
   constructor({
     manager,
     lineItemAdjustmentRepository,
+    discountService,
   }: LineItemAdjustmentServiceProps) {
     super()
     this.manager_ = manager
     this.lineItemAdjustmentRepo_ = lineItemAdjustmentRepository
+    this.discountService = discountService
   }
 
   withTransaction(
@@ -40,6 +45,7 @@ class LineItemAdjustmentService extends BaseService {
     const cloned = new LineItemAdjustmentService({
       manager: transactionManager,
       lineItemAdjustmentRepository: this.lineItemAdjustmentRepo_,
+      discountService: this.discountService,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -178,17 +184,36 @@ class LineItemAdjustmentService extends BaseService {
     lineItem: LineItem
   ): Promise<LineItemAdjustment | undefined> {
     return this.atomicPhase_(async (manager) => {
-      const discount = await this.discountService
-        .withTransaction(manager)
-        .validateDiscountsForLineItem(cart.discounts, lineItem)
-
-      if (!discount) {
+      // if lineItem should not be discounted then do nothing
+      if (!lineItem.allow_discounts) {
         return
       }
 
-      const amount = await this.discountService.calculateDiscountApplied(
-        discount
+      const [discount] = cart.discounts.filter(
+        (d) => d.rule.type !== "free_shipping"
       )
+
+      const lineItemProduct = lineItem.variant.product_id
+
+      const isValid = await this.discountService
+        .withTransaction(manager)
+        .validateDiscountForProduct(discount.rule_id, lineItemProduct)
+
+      // if discount is not valid for line item, then do nothing
+      if (!isValid) {
+        return
+      }
+
+      const amount = await this.discountService.calculateDiscountForLineItem(
+        discount.id,
+        lineItem,
+        cart
+      )
+
+      // if discounted amount is 0, then do nothing
+      if (amount === 0) {
+        return
+      }
 
       const lineItemAdjustment = await this.create({
         item_id: lineItem.id,
