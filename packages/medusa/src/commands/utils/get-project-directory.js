@@ -86,7 +86,7 @@ function resolvePlugin(pluginName) {
   }
 }
 
-export default (directory) => {
+export default (directory, folder) => {
   const { configModule } = getConfigFile(directory, `medusa-config`)
   const { plugins } = configModule
 
@@ -111,15 +111,15 @@ export default (directory) => {
 
   const migrationDirs = []
   const coreMigrations = path.resolve(
-    path.join(__dirname, "..", "..", "migrations")
+    path.join(__dirname, "..", "..", `${folder}`)
   )
 
   migrationDirs.push(path.join(coreMigrations, "*.js"))
 
   for (const p of resolved) {
-    const exists = existsSync(`${p.resolve}/migrations`)
+    const exists = existsSync(`${p.resolve}/${folder}`)
     if (exists) {
-      migrationDirs.push(`${p.resolve}/migrations/*.js`)
+      migrationDirs.push(`${p.resolve}/${folder}/*.js`)
     }
   }
 
