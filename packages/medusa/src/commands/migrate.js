@@ -65,7 +65,11 @@ const t = async function ({ directory }) {
           .createQueryBuilder()
           .from(DiscountRule, "dr")
           .select("dr.id", "dr_id")
-          // .orderBy("dr_id")
+          .innerJoin(
+            "discount_rule_product",
+            "drp",
+            "dr_id = drp.discount_rule_id"
+          )
           .distinct(true)
           .limit(BATCH_SIZE)
           .offset(offset)
@@ -90,7 +94,7 @@ const t = async function ({ directory }) {
       }
 
       const discountRuleProductCount = await manager.query(
-        "SELECT COUNT(*) FROM discount_rule_products"
+        "SELECT COUNT(*) FROM discount_rule_products" // count old "valid_for"
       )
 
       // INSERT INTO discount_condition_product(condition_id, product_id)
@@ -109,7 +113,6 @@ const t = async function ({ directory }) {
           )
           .innerJoin("discount_condition", "dc", "dr.id = dc.discount_rule_id")
           .select("dc.id as cond_id, drp.product_id")
-          // .orderBy("drp.product_id")
           .limit(BATCH_SIZE)
           .offset(offset)
           .getRawMany()
