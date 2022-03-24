@@ -1,28 +1,25 @@
 import _ from "lodash"
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
-
-import { LineItemTaxLine } from "../models/line-item-tax-line"
-import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
-import { Order } from "../models/order"
-import { Cart } from "../models/cart"
-import { ShippingMethod } from "../models/shipping-method"
-import { LineItem } from "../models/line-item"
-import { Discount } from "../models/discount"
-import { DiscountRuleType } from "../models/discount-rule"
-
-import TaxProviderService from "./tax-provider"
+import { BaseService } from "medusa-interfaces"
 import { ITaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 import { TaxCalculationContext } from "../interfaces/tax-service"
+import { Cart } from "../models/cart"
+import { Discount } from "../models/discount"
+import { DiscountRuleType } from "../models/discount-rule"
+import { LineItem } from "../models/line-item"
+import { LineItemTaxLine } from "../models/line-item-tax-line"
+import { Order } from "../models/order"
+import { ShippingMethod } from "../models/shipping-method"
+import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 import { isCart } from "../types/cart"
 import { isOrder } from "../types/orders"
-
 import {
-  SubtotalOptions,
-  LineDiscount,
   LineAllocationsMap,
+  LineDiscount,
   LineDiscountAmount,
+  SubtotalOptions,
 } from "../types/totals"
+import TaxProviderService from "./tax-provider"
 
 type ShippingMethodTotals = {
   price: number
@@ -594,23 +591,7 @@ class TotalsService extends BaseService {
     cart: Cart | Order
   ): LineDiscount[] {
     const discounts: LineDiscount[] = []
-    for (const item of cart.items) {
-      if (discount.rule.valid_for?.length > 0) {
-        discount.rule.valid_for.map(({ id }) => {
-          if (item.variant.product_id === id) {
-            discounts.push(
-              this.calculateDiscount_(
-                item,
-                item.variant.id,
-                item.unit_price,
-                discount.rule.value,
-                discount.rule.type
-              )
-            )
-          }
-        })
-      }
-    }
+    // TODO: Add line item adjustments
     return discounts
   }
 

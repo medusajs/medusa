@@ -1,7 +1,5 @@
-import DiscountService from "../discount"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { MedusaError } from "medusa-core-utils"
-import { exportAllDeclaration } from "@babel/types"
+import DiscountService from "../discount"
 
 describe("DiscountService", () => {
   describe("create", () => {
@@ -15,7 +13,7 @@ describe("DiscountService", () => {
           id: IdMap.getId("france"),
         }
       },
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -309,121 +307,6 @@ describe("DiscountService", () => {
     })
   })
 
-  describe("addValidProduct", () => {
-    const discountRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("total10"),
-          rule: {
-            id: IdMap.getId("test-rule"),
-            valid_for: [{ id: IdMap.getId("test-product") }],
-          },
-        }),
-    })
-
-    const discountRuleRepository = MockRepository({})
-
-    const productService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-product-2"),
-        }
-      },
-    }
-
-    const discountService = new DiscountService({
-      manager: MockManager,
-      discountRepository,
-      discountRuleRepository,
-      productService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully adds a product", async () => {
-      await discountService.addValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product-2")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
-      expect(discountRuleRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("test-rule"),
-        valid_for: [
-          { id: IdMap.getId("test-product") },
-          { id: IdMap.getId("test-product-2") },
-        ],
-      })
-    })
-
-    it("successfully resolves if product already exists", async () => {
-      await discountService.addValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
-    })
-  })
-
-  describe("removeValidVariant", () => {
-    const discountRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("total10"),
-          rule: {
-            id: IdMap.getId("test-rule"),
-            valid_for: [{ id: IdMap.getId("test-product") }],
-          },
-        }),
-    })
-
-    const discountRuleRepository = MockRepository({})
-
-    const productService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-product"),
-        }
-      },
-    }
-
-    const discountService = new DiscountService({
-      manager: MockManager,
-      discountRepository,
-      discountRuleRepository,
-      productService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully removes a product", async () => {
-      await discountService.removeValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
-      expect(discountRuleRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("test-rule"),
-        valid_for: [],
-      })
-    })
-
-    it("successfully resolve if product does not exist", async () => {
-      await discountService.removeValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product-2")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
-    })
-  })
-
   describe("addRegion", () => {
     const discountRepository = MockRepository({
       findOne: (q) => {
@@ -638,7 +521,7 @@ describe("DiscountService", () => {
       expect(discountRepository.findAndCount).toHaveBeenCalledWith({
         where: expect.anything(),
         skip: 0,
-        take: 50,
+        take: 20,
         order: { created_at: "DESC" },
       })
     })
@@ -656,6 +539,200 @@ describe("DiscountService", () => {
         take: 50,
         order: { created_at: "ASC" },
       })
+    })
+  })
+
+  describe("calculateDiscountForLineItem", () => {
+    const discountRepository = MockRepository({
+      findOne: ({ where }) => {
+        if (where.id === "disc_percentage") {
+          return Promise.resolve({
+            code: "MEDUSA",
+            rule: {
+              type: "percentage",
+              allocation: "total",
+              value: 15,
+            },
+          })
+        }
+        if (where.id === "disc_fixed_total") {
+          return Promise.resolve({
+            code: "MEDUSA",
+            rule: {
+              type: "fixed",
+              allocation: "total",
+              value: 400,
+            },
+          })
+        }
+        return Promise.resolve({
+          id: "disc_fixed",
+          code: "MEDUSA",
+          rule: {
+            type: "fixed",
+            allocation: "item",
+            value: 200,
+          },
+        })
+      },
+    })
+
+    const totalsService = {
+      getSubtotal: () => {
+        return 1100
+      },
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      totalsService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("correctly calculates fixed + item discount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 300,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(400)
+    })
+
+    it("correctly calculates fixed + total discount", async () => {
+      const adjustment1 = await discountService.calculateDiscountForLineItem(
+        "disc_fixed_total",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      const adjustment2 = await discountService.calculateDiscountForLineItem(
+        "disc_fixed_total",
+        {
+          unit_price: 300,
+          quantity: 1,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment1).toBe(291)
+      expect(adjustment2).toBe(109)
+    })
+
+    it("returns line item amount if discount exceeds lime item price", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 100,
+          quantity: 1,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(100)
+    })
+
+    it("correctly calculates percentage discount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_percentage",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(120)
+    })
+
+    it("returns full amount if exceeds total line item amount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 50,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(100)
+    })
+
+    it("returns early if discounts are not allowed", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_percentage",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: false,
+        }
+      )
+
+      expect(adjustment).toBe(0)
+    })
+  })
+
+  describe("canApplyForCustomer", () => {
+    const discountConditionRepository = {
+      canApplyForCustomer: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(true)),
+    }
+
+    const customerService = {
+      retrieve: jest.fn().mockImplementation((id) => {
+        if (id === "customer-no-groups") {
+          return Promise.resolve({ id: "customer-no-groups" })
+        }
+        if (id === "customer-with-groups") {
+          return Promise.resolve({
+            id: "customer-with-groups",
+            groups: [{ id: "group-1" }],
+          })
+        }
+      }),
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountConditionRepository,
+      customerService,
+    })
+
+    it("returns false on undefined customer id", async () => {
+      const res = await discountService.canApplyForCustomer("rule-1")
+
+      expect(res).toBe(false)
+
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledTimes(0)
+    })
+
+    it("returns true on customer with groups", async () => {
+      const res = await discountService.canApplyForCustomer(
+        "rule-1",
+        "customer-with-groups"
+      )
+
+      expect(res).toBe(true)
+
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledWith("rule-1", "customer-with-groups")
     })
   })
 })
