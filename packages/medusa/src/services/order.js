@@ -188,8 +188,9 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const query = this.buildQuery_(selector, config)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     if (select && select.length) {
       query.select = select
@@ -248,8 +249,9 @@ class OrderService extends BaseService {
       }
     }
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     if (select && select.length) {
       query.select = select
@@ -306,7 +308,6 @@ class OrderService extends BaseService {
       relationSet.add("claims.additional_items.tax_lines")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
-      relationSet.add("discounts.rule.valid_for")
       relationSet.add("gift_cards")
       relationSet.add("gift_card_transactions")
       relationSet.add("refunds")
@@ -340,8 +341,9 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { id: validatedId },
@@ -377,8 +379,9 @@ class OrderService extends BaseService {
   async retrieveByCartId(cartId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { cart_id: cartId },
@@ -414,8 +417,9 @@ class OrderService extends BaseService {
   async retrieveByExternalId(externalId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { external_id: externalId },
@@ -508,7 +512,6 @@ class OrderService extends BaseService {
             "items",
             "discounts",
             "discounts.rule",
-            "discounts.rule.valid_for",
             "gift_cards",
             "shipping_methods",
           ],
@@ -1180,7 +1183,6 @@ class OrderService extends BaseService {
         relations: [
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
           "region",
           "fulfillments",
           "shipping_address",
