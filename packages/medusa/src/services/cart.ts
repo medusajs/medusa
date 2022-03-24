@@ -2,6 +2,7 @@ import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
+import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import { Address } from "../models/address"
 import { Cart } from "../models/cart"
 import { CustomShippingOption } from "../models/custom-shipping-option"
@@ -55,6 +56,7 @@ type CartConstructorProps = {
   totalsService: TotalsService
   inventoryService: InventoryService
   customShippingOptionService: CustomShippingOptionService
+  priceSelectionStrategy: IPriceSelectionStrategy
 }
 
 type TotalsConfig = {
@@ -90,6 +92,7 @@ class CartService extends BaseService {
   private paymentSessionRepository_: typeof PaymentSessionRepository
   private inventoryService_: InventoryService
   private customShippingOptionService_: CustomShippingOptionService
+  private priceSelectionStrategy_: IPriceSelectionStrategy
 
   constructor({
     manager,
@@ -111,6 +114,7 @@ class CartService extends BaseService {
     paymentSessionRepository,
     inventoryService,
     customShippingOptionService,
+    priceSelectionStrategy,
   }: CartConstructorProps) {
     super()
 
@@ -133,6 +137,7 @@ class CartService extends BaseService {
     this.inventoryService_ = inventoryService
     this.customShippingOptionService_ = customShippingOptionService
     this.taxProviderService_ = taxProviderService
+    this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
   withTransaction(transactionManager: EntityManager): CartService {
@@ -160,6 +165,7 @@ class CartService extends BaseService {
       giftCardService: this.giftCardService_,
       inventoryService: this.inventoryService_,
       customShippingOptionService: this.customShippingOptionService_,
+      priceSelectionStrategy: this.priceSelectionStrategy_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -695,12 +701,6 @@ class CartService extends BaseService {
         ],
       })
 
-      if (typeof update.region_id !== "undefined") {
-        const countryCode =
-          (update.country_code || update.shipping_address?.country_code) ?? null
-        await this.setRegion_(cart, update.region_id, countryCode)
-      }
-
       if (typeof update.customer_id !== "undefined") {
         await this.updateCustomerId_(cart, update.customer_id)
       } else {
@@ -710,6 +710,19 @@ class CartService extends BaseService {
           cart.customer_id = customer.id
           cart.email = customer.email
         }
+      }
+
+      if (typeof update.region_id !== "undefined") {
+        const countryCode =
+          (update.country_code || update.shipping_address?.country_code) ?? null
+        await this.setRegion_(cart, update.region_id, countryCode)
+      }
+
+      if (
+        typeof update.customer_id !== "undefined" ||
+        typeof update.region_id !== "undefined"
+      ) {
+        await this.updateUnitPrices(cart, update.region_id, update.customer_id)
       }
 
       const addrRepo = manager.getCustomRepository(this.addressRepository_)
@@ -1594,6 +1607,57 @@ class CartService extends BaseService {
     return customOption
   }
 
+  async updateUnitPrices(
+    cart: Cart,
+    regionId?: string,
+    customer_id?: string
+  ): Promise<void> {
+    // If the cart contains items, we update the price of the items
+    // to match the updated region or customer id (keeping the old
+    // value if it exists)
+    if (cart.items.length) {
+      const region = await this.regionService_.retrieve(
+        regionId || cart.region_id,
+        {
+          relations: ["countries"],
+        }
+      )
+
+      cart.items = await Promise.all(
+        cart.items
+          .map(async (item) => {
+            const availablePrice = await this.priceSelectionStrategy_
+              .calculateVariantPrice(item.variant_id, {
+                region_id: region.id,
+                currency_code: region.currency_code,
+                quantity: item.quantity,
+                customer_id: customer_id || cart.customer_id,
+                include_discount_prices: true,
+              })
+              .catch(() => undefined)
+
+            if (
+              availablePrice !== undefined &&
+              availablePrice.calculatedPrice !== null
+            ) {
+              return this.lineItemService_
+                .withTransaction(this.transactionManager_)
+                .update(item.id, {
+                  has_shipping: false,
+                  unit_price: availablePrice.calculatedPrice,
+                })
+            } else {
+              await this.lineItemService_
+                .withTransaction(this.transactionManager_)
+                .delete(item.id)
+              return null
+            }
+          })
+          .filter(Boolean)
+      )
+    }
+  }
+
   /**
    * Set's the region of a cart.
    * @param cart - the cart to set region on
@@ -1620,34 +1684,6 @@ class CartService extends BaseService {
     const addrRepo = this.manager_.getCustomRepository(this.addressRepository_)
     cart.region = region
     cart.region_id = region.id
-
-    // If the cart contains items we want to change the unit_price field of each
-    // item to correspond to the price given in the region
-    if (cart.items.length) {
-      cart.items = await Promise.all(
-        cart.items
-          .map(async (item) => {
-            const availablePrice = await this.productVariantService_
-              .getRegionPrice(item.variant_id, regionId)
-              .catch(() => undefined)
-
-            if (availablePrice !== undefined) {
-              return this.lineItemService_
-                .withTransaction(this.transactionManager_)
-                .update(item.id, {
-                  has_shipping: false,
-                  unit_price: availablePrice,
-                })
-            } else {
-              await this.lineItemService_
-                .withTransaction(this.transactionManager_)
-                .delete(item.id)
-              return null
-            }
-          })
-          .filter(Boolean)
-      )
-    }
 
     /*
      * When changing the region you are changing the set of countries that your

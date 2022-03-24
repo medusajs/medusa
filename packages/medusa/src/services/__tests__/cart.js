@@ -1039,6 +1039,19 @@ describe("CartService", () => {
         return this
       },
     }
+
+    const priceSelectionStrat = {
+      calculateVariantPrice: async (variantId, context) => {
+        if (variantId === IdMap.getId("fail")) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Money amount for variant with id ${variantId} in region ${context.region_id} does not exist`
+          )
+        } else {
+          return { calculatedPrice: 100 }
+        }
+      },
+    }
     const cartService = new CartService({
       manager: MockManager,
       paymentProviderService,
@@ -1049,6 +1062,7 @@ describe("CartService", () => {
       lineItemService,
       productVariantService,
       eventBusService,
+      priceSelectionStrategy: priceSelectionStrat,
     })
 
     beforeEach(() => {

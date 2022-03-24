@@ -719,19 +719,6 @@ describe("DiscountService", () => {
       ).toHaveBeenCalledTimes(0)
     })
 
-    it("returns false on customer with no groups", async () => {
-      const res = await discountService.canApplyForCustomer(
-        "rule-1",
-        "customer-no-groups"
-      )
-
-      expect(res).toBe(false)
-
-      expect(
-        discountConditionRepository.canApplyForCustomer
-      ).toHaveBeenCalledTimes(0)
-    })
-
     it("returns true on customer with groups", async () => {
       const res = await discountService.canApplyForCustomer(
         "rule-1",

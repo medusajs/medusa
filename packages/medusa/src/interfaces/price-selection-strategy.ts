@@ -1,6 +1,5 @@
 import { EntityManager } from "typeorm"
 import { MoneyAmount } from ".."
-import { MoneyAmountRepository } from "../repositories/money-amount"
 import { PriceListType } from "../types/price-list"
 
 export interface IPriceSelectionStrategy {
