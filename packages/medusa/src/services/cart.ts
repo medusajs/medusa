@@ -996,6 +996,20 @@ class CartService extends BaseService {
       "regions",
     ])
 
+    if (cart.customer_id) {
+      const canApply = await this.discountService_.canApplyForCustomer(
+        discount.rule.id,
+        cart.customer_id
+      )
+
+      if (!canApply) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Discount is not valid for customer"
+        )
+      }
+    }
+
     const rule = discount.rule
 
     // if limit is set and reached, we make an early exit

@@ -89,6 +89,9 @@ export const simpleDiscountConditionFactory = async (
   if (data.product_tags) {
     resources = data.product_tags
   }
+  if (data.customer_groups) {
+    resources = data.customer_groups
+  }
 
   const condToSave = manager.create(DiscountCondition, {
     type: data.type,
