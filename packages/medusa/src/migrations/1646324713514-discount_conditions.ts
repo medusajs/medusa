@@ -94,70 +94,9 @@ export class discountConditions1646324713514 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "discount_condition_product" ADD CONSTRAINT "FK_f05132301e95bdab4ba1cf29a24" FOREIGN KEY ("condition_id") REFERENCES "discount_condition"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
     )
-
-    /**
-     *
-     * MIGRATE discount_rule.valid_for
-     *
-     */
-
-    // create conditions for each discount rule
-    await queryRunner.query(`
-    INSERT INTO discount_condition(id, operator, type, discount_rule_id)
-    (SELECT ROW_NUMBER() OVER(ORDER BY sq.d_id), sq.op, sq.tp, sq.d_id FROM 
-      (SELECT DISTINCT 
-          'in'::discount_condition_operator_enum op, 
-          'products'::discount_condition_type_enum tp,  
-          discount_rule_products.discount_rule_id d_id 
-      FROM discount_rule_products) sq)`)
-
-    // create discount_condition_product for each discount rule created above
-    await queryRunner.query(`
-      INSERT INTO discount_condition_product(condition_id, product_id)
-      (SELECT cond.id, drp.product_id FROM discount_rule_products as drp
-        LEFT JOIN discount_condition as cond ON cond.discount_rule_id = drp.discount_rule_id)`)
-
-    // remove discount_rule_products table
-    await queryRunner.query(
-      `ALTER TABLE "discount_rule_products" DROP CONSTRAINT "FK_be66106a673b88a81c603abe7eb"`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "discount_rule_products" DROP CONSTRAINT "FK_4e0739e5f0244c08d41174ca08a"`
-    )
-    await queryRunner.query(`DROP TABLE "discount_rule_products"`)
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    /**
-     *
-     * MIGRATE discount_rule.valid_for
-     *
-     */
-
-    // Create table discount_rule_products
-    await queryRunner.query(
-      `CREATE TABLE "discount_rule_products" ("discount_rule_id" character varying NOT NULL, "product_id" character varying NOT NULL, CONSTRAINT "PK_351c8c92f5d27283c445cd022ee" PRIMARY KEY ("discount_rule_id", "product_id"))`
-    )
-    await queryRunner.query(
-      `CREATE INDEX "IDX_4e0739e5f0244c08d41174ca08" ON "discount_rule_products" ("discount_rule_id") `
-    )
-    await queryRunner.query(
-      `CREATE INDEX "IDX_be66106a673b88a81c603abe7e" ON "discount_rule_products" ("product_id") `
-    )
-    await queryRunner.query(
-      `ALTER TABLE "discount_rule_products" ADD CONSTRAINT "FK_4e0739e5f0244c08d41174ca08a" FOREIGN KEY ("discount_rule_id") REFERENCES "discount_rule"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "discount_rule_products" ADD CONSTRAINT "FK_be66106a673b88a81c603abe7eb" FOREIGN KEY ("product_id") REFERENCES "product"("id") ON DELETE CASCADE ON UPDATE NO ACTION`
-    )
-
-    // migrate existing discount_condition_products to discount_rule_products
-    await queryRunner.query(`
-    INSERT INTO discount_rule_products(discount_rule_id, product_id)
-      (SELECT dc.discount_rule_id, dcp.product_id FROM discount_condition dc 
-        LEFT JOIN discount_condition_product dcp on dc.id = dcp.condition_id
-    )`)
-
     await queryRunner.query(
       `ALTER TABLE "discount_condition_product" DROP CONSTRAINT "FK_f05132301e95bdab4ba1cf29a24"`
     )
