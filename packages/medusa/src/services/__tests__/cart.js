@@ -3,6 +3,7 @@ import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
+import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -347,6 +348,7 @@ describe("CartService", () => {
       findOneWithRelations: (rels, q) => {
         if (q.where.id === IdMap.getId("cartWithLine")) {
           return Promise.resolve({
+            id: IdMap.getId("cartWithLine"),
             items: [
               {
                 id: IdMap.getId("merger"),
@@ -359,6 +361,7 @@ describe("CartService", () => {
           })
         }
         return Promise.resolve({
+          id: IdMap.getId("emptyCart"),
           shipping_methods: [
             {
               shipping_option: {
@@ -378,13 +381,14 @@ describe("CartService", () => {
       eventBusService,
       shippingOptionService,
       inventoryService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("successfully creates new line item", async () => {
+    it("creates a new line item and emits a created event", async () => {
       const lineItem = {
         title: "New Line",
         description: "This is a new line",
@@ -393,7 +397,6 @@ describe("CartService", () => {
         unit_price: 123,
         quantity: 10,
       }
-
       await cartService.addLineItem(IdMap.getId("emptyCart"), _.clone(lineItem))
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
@@ -408,6 +411,15 @@ describe("CartService", () => {
         has_shipping: false,
         cart_id: IdMap.getId("emptyCart"),
       })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("emptyCart") })
+      )
     })
 
     it("successfully creates new line item with shipping", async () => {
@@ -440,6 +452,15 @@ describe("CartService", () => {
         has_shipping: false,
         cart_id: IdMap.getId("emptyCart"),
       })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("emptyCart") })
+      )
     })
 
     it("successfully merges existing line item", async () => {
@@ -461,6 +482,20 @@ describe("CartService", () => {
         {
           quantity: 2,
         }
+      )
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith(
+        expect.objectContaining({ item_id: IdMap.getId("merger") })
+      )
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cartWithLine") })
       )
     })
 
@@ -667,7 +702,13 @@ describe("CartService", () => {
 
   describe("updateLineItem", () => {
     const lineItemService = {
-      update: jest.fn(),
+      update: jest.fn().mockImplementation(() =>
+        Promise.resolve({
+          id: IdMap.getId("existing"),
+          variant_id: IdMap.getId("good"),
+          quantity: 1,
+        })
+      ),
       withTransaction: function() {
         return this
       },
@@ -693,6 +734,7 @@ describe("CartService", () => {
           })
         }
         return Promise.resolve({
+          id: IdMap.getId("cartWithLine"),
           items: [
             {
               id: IdMap.getId("existing"),
@@ -710,6 +752,7 @@ describe("CartService", () => {
       lineItemService,
       eventBusService,
       inventoryService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
     })
 
     beforeEach(() => {
@@ -733,6 +776,24 @@ describe("CartService", () => {
       expect(lineItemService.update).toHaveBeenCalledWith(
         IdMap.getId("existing"),
         { quantity: 2 }
+      )
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: IdMap.getId("existing"),
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cartWithLine") }),
+        expect.objectContaining({
+          id: IdMap.getId("existing"),
+          quantity: 1,
+        })
       )
     })
 
@@ -1586,12 +1647,36 @@ describe("CartService", () => {
               },
             ],
             region_id: IdMap.getId("good"),
+            items: [
+              {
+                id: "li1",
+                quantity: 2,
+                unit_price: 1000,
+              },
+              {
+                id: "li2",
+                quantity: 1,
+                unit_price: 500,
+              },
+            ],
           })
         }
         return Promise.resolve({
           id: IdMap.getId("cart"),
           discounts: [],
           region_id: IdMap.getId("good"),
+          items: [
+            {
+              id: "li1",
+              quantity: 2,
+              unit_price: 1000,
+            },
+            {
+              id: "li2",
+              quantity: 1,
+              unit_price: 500,
+            },
+          ],
         })
       },
     })
@@ -1713,6 +1798,7 @@ describe("CartService", () => {
       cartRepository,
       discountService,
       eventBusService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
     })
 
     beforeEach(async () => {
@@ -1742,6 +1828,18 @@ describe("CartService", () => {
         subtotal: 0,
         tax_total: 0,
         total: 0,
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
         discounts: [
           {
             id: IdMap.getId("10off"),
@@ -1753,6 +1851,20 @@ describe("CartService", () => {
           },
         ],
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: ["li1", "li2"],
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cart") })
+      )
     })
 
     it("successfully applies discount to cart and removes old one", async () => {
@@ -1769,6 +1881,18 @@ describe("CartService", () => {
         subtotal: 0,
         tax_total: 0,
         total: 0,
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
         discounts: [
           {
             id: IdMap.getId("10off"),
@@ -1780,6 +1904,20 @@ describe("CartService", () => {
           },
         ],
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: ["li1", "li2"],
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cart") })
+      )
     })
 
     it("successfully applies free shipping", async () => {
@@ -1809,6 +1947,18 @@ describe("CartService", () => {
             },
           },
         ],
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
         discount_total: 0,
         shipping_total: 0,
         subtotal: 0,
@@ -1816,6 +1966,20 @@ describe("CartService", () => {
         total: 0,
         region_id: IdMap.getId("good"),
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: ["li1", "li2"],
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cart") })
+      )
     })
 
     it("successfully applies discount with usage count null", async () => {
@@ -1827,6 +1991,18 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
       expect(cartRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("cart"),
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
         discounts: [
           {
             id: IdMap.getId("null-count"),
@@ -1844,6 +2020,20 @@ describe("CartService", () => {
         total: 0,
         region_id: IdMap.getId("good"),
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: ["li1", "li2"],
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cart") })
+      )
     })
 
     it("successfully applies valid discount with expiration date to cart", async () => {
@@ -1864,6 +2054,18 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledWith({
         id: IdMap.getId("cart"),
         region_id: IdMap.getId("good"),
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
         discount_total: 0,
         shipping_total: 0,
         subtotal: 0,
@@ -1882,6 +2084,20 @@ describe("CartService", () => {
           },
         ],
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: ["li1", "li2"],
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({ id: IdMap.getId("cart") })
+      )
     })
 
     it("throws if discount is applied too before it's valid", async () => {
