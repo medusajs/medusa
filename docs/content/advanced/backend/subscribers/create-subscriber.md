@@ -24,7 +24,7 @@ Whenever an event is emitted, the subscriber’s registered handler method is ex
 
 ## Prerequisites
 
-Before you can use subscribers, whether your custom subscribers or Medusa’s subscribers, you need to have [Redis](https://redis.io) installed and setup on your machine.
+Medusa's event system works by pushing data to a Queue that each handler then gets notified of. The queuing system is based on Redis and you will therefore need to make sure that [Redis](https://redis.io) is installed and configured for your Medusa project.
 
 Then, you need to set your Redis URL in your Medusa server. By default, the Redis URL is `redis://localhost:6379`. If you use a different one, set the following environment variable in `.env`:
 
@@ -47,9 +47,7 @@ After that, you are able to listen to events on your server.
 
 ## Implementation
 
-To create a subscriber, you’ll need to create a file in `src/subscribers` with the camel-case version of your subscriber’s name without the word `Subscriber`.
-
-Then, in the constructor of your subscriber, you should listen to events using `eventBusService.subscribe` , where `eventBusService` is a service injected into your subscriber’s constructor. 
+After creating the file under `src/subscribers`, in the constructor of your subscriber, you should listen to events using `eventBusService.subscribe` , where `eventBusService` is a service injected into your subscriber’s constructor. 
 
 The `eventBusService.subscribe` method receives the name of the event as a first parameter and as a second parameter a method in your subscriber that will handle this event.
 
@@ -70,6 +68,8 @@ export default OrderNotifierSubscriber;
 ```
 
 This subscriber will register the method `handleOrder` as one of the handlers of the `order.placed` event. The method `handleOrder` will be executed every time an order is placed, and it will receive the order ID in the `data` parameter. You can then use the order’s details to perform any kind of task you need.
+
+> The `data` object will not contain other order data. Only the ID of the order. You can retrieve the order information using the `orderService`.
 
 ## Using Services in Subscribers
 
