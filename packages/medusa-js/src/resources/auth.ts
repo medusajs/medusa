@@ -22,9 +22,9 @@ class AuthResource extends BaseResource {
    * @description Removes authentication session
    * @return {ResponsePromise<void>}
    */
-   deleteSession(): ResponsePromise<void> {
+   deleteSession(customHeaders: Record<string, any> = {}): ResponsePromise<void> {
     const path = `/store/auth`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
