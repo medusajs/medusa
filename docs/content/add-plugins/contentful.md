@@ -27,7 +27,11 @@ If you want to jump straight to the code for this series you can checkout:
 
 ## Prerequisites
 
-> For a full guide to how to set up your development environment for Medusa please see [the tutorial](https://docs.medusajs.com/tutorials/set-up-your-development-environment)
+:::note
+
+For a full guide to how to set up your development environment for Medusa please see [the tutorial](../tutorial/set-up-your-development-environment/)
+
+:::
 
 In order to get you started with your Gatsby, Contentful, Medusa store you must complete a couple of installations:
 
