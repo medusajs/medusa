@@ -47,7 +47,7 @@ export default async (req, res) => {
         validated.variant_id,
         cart.region_id,
         validated.quantity,
-        customerId,
+        customerId || cart.customer_id,
         {
           metadata: validated.metadata,
         }
