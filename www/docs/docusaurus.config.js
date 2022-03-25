@@ -1,8 +1,6 @@
 const path = require("path")
 const docsPath = path.join(__dirname, "../../docs/content")
 
-console.log(docsPath);
-
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
