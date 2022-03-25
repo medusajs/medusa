@@ -178,18 +178,13 @@ class SwapService extends BaseService {
 
     const validatedId = this.validateId_(id)
 
-    const {
-      cartSelects,
-      cartRelations,
-      ...newConfig
-    } = this.transformQueryForCart_(config)
+    const { cartSelects, cartRelations, ...newConfig } =
+      this.transformQueryForCart_(config)
 
     const query = this.buildQuery_({ id: validatedId }, newConfig)
 
     const rels = query.relations
     delete query.relations
-    console.log("relations", rels, cartRelations, cartSelects)
-    cartRelations.push("items.adjustments")
     const swap = await swapRepo.findOneWithRelations(rels, query)
 
     if (!swap) {
