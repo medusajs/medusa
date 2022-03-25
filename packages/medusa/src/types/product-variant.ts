@@ -25,6 +25,13 @@ export type ProductVariantPrice = {
   max_quantity?: number
 }
 
+export type GetRegionPriceContext = {
+  regionId: string
+  quantity?: number
+  customer_id?: string
+  include_discount_prices?: boolean
+}
+
 export type ProductVariantOption = {
   option_id: string
   value: string

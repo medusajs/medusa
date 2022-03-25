@@ -7,6 +7,7 @@ import {
 } from "../interfaces/price-selection-strategy"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 
 class PriceSelectionStrategy extends AbstractPriceSelectionStrategy {
   private moneyAmountRepository_: typeof MoneyAmountRepository

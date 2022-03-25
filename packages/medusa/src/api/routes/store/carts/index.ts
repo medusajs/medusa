@@ -125,7 +125,6 @@ export const defaultStoreCartRelations = [
   "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
-  // TODO: Add conditions relation
 ]
 
 export type StoreCartsRes = {

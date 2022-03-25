@@ -752,11 +752,6 @@ class DiscountService extends BaseService {
         relations: ["groups"],
       })
 
-      // if customer has no groups, invalidate the discount
-      if (!customer.groups?.length) {
-        return false
-      }
-
       return await discountConditionRepo.canApplyForCustomer(
         discountRuleId,
         customer.id

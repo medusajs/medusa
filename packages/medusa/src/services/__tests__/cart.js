@@ -653,7 +653,6 @@ describe("CartService", () => {
           "region.countries",
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "discounts.regions",
           "items.tax_lines",
           "region.tax_rates",
@@ -1040,6 +1039,19 @@ describe("CartService", () => {
         return this
       },
     }
+
+    const priceSelectionStrat = {
+      calculateVariantPrice: async (variantId, context) => {
+        if (variantId === IdMap.getId("fail")) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Money amount for variant with id ${variantId} in region ${context.region_id} does not exist`
+          )
+        } else {
+          return { calculatedPrice: 100 }
+        }
+      },
+    }
     const cartService = new CartService({
       manager: MockManager,
       paymentProviderService,
@@ -1050,6 +1062,7 @@ describe("CartService", () => {
       lineItemService,
       productVariantService,
       eventBusService,
+      priceSelectionStrategy: priceSelectionStrat,
     })
 
     beforeEach(() => {
@@ -1588,6 +1601,20 @@ describe("CartService", () => {
             region_id: IdMap.getId("good"),
           })
         }
+        if (q.where.id === "with-d-and-customer") {
+          return Promise.resolve({
+            id: "with-d-and-customer",
+            discounts: [
+              {
+                code: "ApplicableForCustomer",
+                rule: {
+                  type: "fixed",
+                },
+              },
+            ],
+            region_id: IdMap.getId("good"),
+          })
+        }
         return Promise.resolve({
           id: IdMap.getId("cart"),
           discounts: [],
@@ -1696,6 +1723,19 @@ describe("CartService", () => {
             ends_at: getOffsetDate(10),
           })
         }
+        if (code === "ApplicableForCustomer") {
+          return Promise.resolve({
+            id: "ApplicableForCustomer",
+            code: "ApplicableForCustomer",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              id: "test-rule",
+              type: "percentage",
+            },
+            starts_at: getOffsetDate(-10),
+            ends_at: getOffsetDate(10),
+          })
+        }
         return Promise.resolve({
           id: IdMap.getId("10off"),
           code: "10%OFF",
@@ -1705,6 +1745,17 @@ describe("CartService", () => {
           },
         })
       }),
+      canApplyForCustomer: jest
+        .fn()
+        .mockImplementation((ruleId, customerId) => {
+          if (ruleId === "test-rule") {
+            return Promise.resolve(true)
+          }
+          if (!customerId) {
+            return Promise.resolve(false)
+          }
+          return Promise.resolve(false)
+        }),
     }
 
     const cartService = new CartService({
@@ -1930,6 +1981,45 @@ describe("CartService", () => {
           discounts: [{ code: "US10" }],
         })
       ).rejects.toThrow("The discount is not available in current region")
+    })
+
+    it("successfully applies discount with a check for customer applicableness", async () => {
+      await cartService.update("with-d-and-customer", {
+        discounts: [
+          {
+            code: "ApplicableForCustomer",
+          },
+        ],
+      })
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        id: "with-d-and-customer",
+        region_id: IdMap.getId("good"),
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
+        discounts: [
+          {
+            id: "ApplicableForCustomer",
+            code: "ApplicableForCustomer",
+            regions: [{ id: IdMap.getId("good") }],
+            rule: {
+              id: "test-rule",
+              type: "percentage",
+            },
+            starts_at: expect.any(Date),
+            ends_at: expect.any(Date),
+          },
+        ],
+      })
     })
   })
 

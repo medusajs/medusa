@@ -190,6 +190,9 @@ class CustomerService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
 
+    const groups = query.where.groups
+    delete query.where.groups
+
     if (q) {
       const where = query.where
 
@@ -209,7 +212,7 @@ class CustomerService extends BaseService {
       }
     }
 
-    return await customerRepo.listAndCount(query)
+    return await customerRepo.listAndCount(query, groups)
   }
 
   /**

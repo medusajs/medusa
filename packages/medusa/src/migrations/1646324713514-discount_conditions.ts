@@ -5,13 +5,13 @@ export class discountConditions1646324713514 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TYPE "public"."discount_condition_type_enum" AS ENUM('products', 'product_types', 'product_collections', 'product_tags', 'customer_groups')`
+      `CREATE TYPE "discount_condition_type_enum" AS ENUM('products', 'product_types', 'product_collections', 'product_tags', 'customer_groups')`
     )
     await queryRunner.query(
-      `CREATE TYPE "public"."discount_condition_operator_enum" AS ENUM('in', 'not_in')`
+      `CREATE TYPE "discount_condition_operator_enum" AS ENUM('in', 'not_in')`
     )
     await queryRunner.query(
-      `CREATE TABLE "discount_condition" ("id" character varying NOT NULL, "type" "public"."discount_condition_type_enum" NOT NULL, "operator" "public"."discount_condition_operator_enum" NOT NULL, "discount_rule_id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_e6b81d83133ddc21a2baf2e2204" PRIMARY KEY ("id"), CONSTRAINT "dctypeuniq" UNIQUE ("type", "operator", "discount_rule_id"))`
+      `CREATE TABLE "discount_condition" ("id" character varying NOT NULL, "type" "discount_condition_type_enum" NOT NULL, "operator" "discount_condition_operator_enum" NOT NULL, "discount_rule_id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "metadata" jsonb, CONSTRAINT "PK_e6b81d83133ddc21a2baf2e2204" PRIMARY KEY ("id"), CONSTRAINT "dctypeuniq" UNIQUE ("type", "operator", "discount_rule_id"))`
     )
     await queryRunner.query(
       `CREATE INDEX "IDX_efff700651718e452ca9580a62" ON "discount_condition" ("discount_rule_id") `
@@ -130,36 +130,16 @@ export class discountConditions1646324713514 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "discount_condition" DROP CONSTRAINT "FK_efff700651718e452ca9580a624"`
     )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_4d5f98645a67545d8dea42e2eb"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_8486ee16e69013c645d0b8716b"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_a0b05dc4257abe639cb75f8eae"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_a1c4f9cfb599ad1f0db39cadd5"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_01486cc9dc6b36bf658685535f"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_fbb2499551ed074526f3ee3624"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_e706deb68f52ab2756119b9e70"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_6ef23ce0b1d9cf9b5b833e52b9"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_c759f53b2e48e8cfb50638fe4e"`
-    )
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_f05132301e95bdab4ba1cf29a2"`
-    )
+    await queryRunner.query(`DROP INDEX "IDX_4d5f98645a67545d8dea42e2eb"`)
+    await queryRunner.query(`DROP INDEX "IDX_8486ee16e69013c645d0b8716b"`)
+    await queryRunner.query(`DROP INDEX "IDX_a0b05dc4257abe639cb75f8eae"`)
+    await queryRunner.query(`DROP INDEX "IDX_a1c4f9cfb599ad1f0db39cadd5"`)
+    await queryRunner.query(`DROP INDEX "IDX_01486cc9dc6b36bf658685535f"`)
+    await queryRunner.query(`DROP INDEX "IDX_fbb2499551ed074526f3ee3624"`)
+    await queryRunner.query(`DROP INDEX "IDX_e706deb68f52ab2756119b9e70"`)
+    await queryRunner.query(`DROP INDEX "IDX_6ef23ce0b1d9cf9b5b833e52b9"`)
+    await queryRunner.query(`DROP INDEX "IDX_c759f53b2e48e8cfb50638fe4e"`)
+    await queryRunner.query(`DROP INDEX "IDX_f05132301e95bdab4ba1cf29a2"`)
     await queryRunner.query(
       `ALTER TABLE "discount_condition_product" DROP COLUMN "metadata"`
     )
@@ -257,13 +237,9 @@ export class discountConditions1646324713514 implements MigrationInterface {
       `DROP TABLE "discount_condition_product_collection"`
     )
     await queryRunner.query(`DROP TABLE "discount_condition_customer_group"`)
-    await queryRunner.query(
-      `DROP INDEX "public"."IDX_efff700651718e452ca9580a62"`
-    )
+    await queryRunner.query(`DROP INDEX "IDX_efff700651718e452ca9580a62"`)
     await queryRunner.query(`DROP TABLE "discount_condition"`)
-    await queryRunner.query(
-      `DROP TYPE "public"."discount_condition_operator_enum"`
-    )
-    await queryRunner.query(`DROP TYPE "public"."discount_condition_type_enum"`)
+    await queryRunner.query(`DROP TYPE "discount_condition_operator_enum"`)
+    await queryRunner.query(`DROP TYPE "discount_condition_type_enum"`)
   }
 }

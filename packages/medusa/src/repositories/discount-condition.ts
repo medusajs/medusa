@@ -92,7 +92,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       }
       case DiscountConditionType.CUSTOMER_GROUPS: {
         joinTableKey = "customer_id"
-        resourceKey = "customer_id"
+        resourceKey = "customer_group_id"
         joinTable = "customer_group_customers"
         joinTableForeignKey =
           DiscountConditionJoinTableForeignKey.CUSTOMER_GROUP_ID
@@ -155,9 +155,9 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       return Promise.resolve([])
     }
 
-    toInsert = resourceIds.map((pId) => ({
+    toInsert = resourceIds.map((rId) => ({
       condition_id: conditionId,
-      [joinTableForeignKey]: pId,
+      [joinTableForeignKey]: rId,
     }))
 
     const insertResult = await this.createQueryBuilder()
