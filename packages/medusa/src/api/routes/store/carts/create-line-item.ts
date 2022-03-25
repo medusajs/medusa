@@ -43,15 +43,10 @@ export default async (req, res) => {
 
     const line = await lineItemService
       .withTransaction(m)
-      .generate(
-        validated.variant_id,
-        cart.region_id,
-        validated.quantity,
-        customerId || cart.customer_id,
-        {
-          metadata: validated.metadata,
-        }
-      )
+      .generate(validated.variant_id, cart.region_id, validated.quantity, {
+        customer_id: customerId || cart.customer_id,
+        metadata: validated.metadata,
+      })
     await txCartService.addLineItem(id, line)
 
     const updated = await txCartService.retrieve(id, {

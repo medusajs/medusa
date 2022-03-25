@@ -137,7 +137,7 @@ class LineItemService extends BaseService {
     return await lineItemRepo.save(toCreate)
   }
 
-  async generate(variantId, regionId, quantity, customerId, config = {}) {
+  async generate(variantId, regionId, quantity, config = {}) {
     return this.atomicPhase_(async (manager) => {
       const variant = await this.productVariantService_
         .withTransaction(manager)
@@ -168,7 +168,7 @@ class LineItemService extends BaseService {
           .getRegionPrice(variant.id, {
             regionId: region.id,
             quantity: quantity,
-            customer_id: customerId,
+            customer_id: config.customer_id,
             include_discount_prices: true,
           })
       }
