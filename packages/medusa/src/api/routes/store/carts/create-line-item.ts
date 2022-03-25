@@ -30,6 +30,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { id } = req.params
 
+  const customerId = req.user?.customer_id
   const validated = await validator(StorePostCartsCartLineItemsReq, req.body)
 
   const manager: EntityManager = req.scope.resolve("manager")
@@ -42,9 +43,15 @@ export default async (req, res) => {
 
     const line = await lineItemService
       .withTransaction(m)
-      .generate(validated.variant_id, cart.region_id, validated.quantity, {
-        metadata: validated.metadata,
-      })
+      .generate(
+        validated.variant_id,
+        cart.region_id,
+        validated.quantity,
+        customerId,
+        {
+          metadata: validated.metadata,
+        }
+      )
     await txCartService.addLineItem(id, line)
 
     const updated = await txCartService.retrieve(id, {
