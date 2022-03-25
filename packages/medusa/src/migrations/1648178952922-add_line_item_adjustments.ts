@@ -7,7 +7,7 @@ export class addLineItemAdjustments1648178952922 implements MigrationInterface {
         await queryRunner.query(`CREATE TABLE "line_item_adjustment" ("id" character varying NOT NULL, "item_id" character varying NOT NULL, "description" character varying NOT NULL, "discount_id" character varying, "amount" integer NOT NULL, "metadata" jsonb, CONSTRAINT "REL_2f41b20a71f30e60471d7e3769" UNIQUE ("discount_id"), CONSTRAINT "PK_2b1360103753df2dc8257c2c8c3" PRIMARY KEY ("id"))`);
         await queryRunner.query(`CREATE INDEX "IDX_be9aea2ccf3567007b6227da4d" ON "line_item_adjustment" ("item_id") `);
         await queryRunner.query(`CREATE INDEX "IDX_2f41b20a71f30e60471d7e3769" ON "line_item_adjustment" ("discount_id") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "IDX_e737b077ce87216e6d2d0c0051" ON "line_item_adjustment" ("discount_id", "item_id") WHERE "discount_id" IS NULL`);
+        await queryRunner.query(`CREATE UNIQUE INDEX "IDX_e737b077ce87216e6d2d0c0051" ON "line_item_adjustment" ("discount_id", "item_id") WHERE "discount_id" IS NOT NULL`);
         await queryRunner.query(`ALTER TABLE "line_item_adjustment" ADD CONSTRAINT "FK_be9aea2ccf3567007b6227da4d2" FOREIGN KEY ("item_id") REFERENCES "line_item"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
         await queryRunner.query(`ALTER TABLE "line_item_adjustment" ADD CONSTRAINT "FK_2f41b20a71f30e60471d7e3769c" FOREIGN KEY ("discount_id") REFERENCES "discount"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
     }

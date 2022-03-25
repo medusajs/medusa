@@ -15,7 +15,7 @@ import { Discount } from "./discount"
 import { LineItem } from "./line-item"
 
 @Entity()
-@Index(["discount_id", "item_id"], { unique: true, where: `"discount_id" IS NULL` })
+@Index(["discount_id", "item_id"], { unique: true, where: `"discount_id" IS NOT NULL` })
 export class LineItemAdjustment {
   @PrimaryColumn()
   id: string
