@@ -326,12 +326,12 @@ class RazorpayProviderService extends PaymentService {
 
   /**
    * Gets a Razorpay payment intent and returns it.
-   * @param {object} sessionData - the data of the payment to retrieve
+   * @param {object} data - the data of the payment to retrieve
    * @returns {Promise<object>} Razorpay payment intent
    */
-  async getPaymentData(sessionData) {
+  async getPaymentData(data) {
     try {
-      return this.razorpay_.payments.fetch(sessionData.data.id)
+      return this.razorpay_.payments.fetch(data.payment_id)
     } catch (error) {
       throw error
     }
@@ -356,7 +356,7 @@ class RazorpayProviderService extends PaymentService {
 
   async updatePaymentData(sessionData, update) {
     try {
-      return this.razorpay_.payments.edit(sessionData.id, {
+      return this.razorpay_.payments.edit(sessionData.data.payment_id, {
         ...update.data,
       })
     } catch (error) {
@@ -367,14 +367,14 @@ class RazorpayProviderService extends PaymentService {
   /**
    * Updates Razorpay payment intent.
    * @param {object} sessionData - payment session data.
-   * @param {object} update - objec to update intent with
+   * @param {object} update - object to update intent with
    * @returns {object} Razorpay payment intent
    */
   async updatePayment(sessionData, cart) {
     try {
       const razorpayId = cart.customer?.metadata?.razorpay_id || undefined
 
-      if (razorpayId !== sessionData.customer) {
+      if (razorpayId !== sessionData.data.customer_id) {
         return this.createPayment(cart)
       } else {
         if (cart.total && sessionData.amount === Math.round(cart.total)) {
@@ -392,7 +392,7 @@ class RazorpayProviderService extends PaymentService {
 
   async deletePayment(payment) {
     try {
-      const { id } = payment.data
+      const { id } = payment.data.payment_id
       return this.razorpay_.payments.cancel(id).catch((err) => {
         if (err.statusCode === 400) {
           return
@@ -406,7 +406,7 @@ class RazorpayProviderService extends PaymentService {
 
   /**
    * Updates customer of Razorpay payment intent.
-   * @param {string} paymentIntentId - id of payment intent to update
+   * @param {string} payment_id - id of payment intent to update
    * @param {string} customerId - id of new Razorpay customer
    * @returns {object} Razorpay payment intent
    */
@@ -426,11 +426,11 @@ class RazorpayProviderService extends PaymentService {
    * @returns {object} Razorpay payment intent
    */
   async capturePayment(payment) {
-    const { id } = paymentData.id
+    const { id } = paymentData.data.id
     try {
       const intent = await this.razorpay_.payments.capture(id)
       this.razorpay_.payments.capture(paymentData.paymentId, paymentData.amount, paymentData.currency)
-    generated_signature = hmac_sha256(paymentData.order_id + "|" + paymentIntent.id, razorpay_.key_secret);
+      generated_signature = hmac_sha256(paymentData.order_id + "|" + paymentIntent.id, razorpay_.key_secret);
 
   if (generated_signature == paymentIntent.signature) {
     return paymentIntent
@@ -453,7 +453,7 @@ class RazorpayProviderService extends PaymentService {
    * @returns {string} refunded payment intent
    */
   async refundPayment(paymentData, amountToRefund,speed="normal") {
-    const { id } = paymentData.id
+    const { id } = paymentData.data.payment_id
     try {
       await this.razorpay_.refunds.create({
         amount: Math.round(amountToRefund),
