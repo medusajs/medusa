@@ -47,6 +47,7 @@ export const simpleProductFactory = async (
   const productToCreate = {
     id: prodId,
     title: data.title || faker.commerce.productName(),
+    status: data.status,
     is_giftcard: data.is_giftcard || false,
     discountable: !data.is_giftcard,
     tags: [],

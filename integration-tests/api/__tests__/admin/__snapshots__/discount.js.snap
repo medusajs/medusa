@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/discounts POST /admin/discounts fails if multiple types of resources are provided on update 1`] = `
+Object {
+  "message": "Only one of products, product_types is allowed, Only one of product_types, products is allowed",
+  "type": "invalid_data",
+}
+`;
+
+exports[`/admin/discounts POST /admin/discounts fails to add condition on rule with existing comb. of type and operator 1`] = `
+Object {
+  "code": "invalid_request_error",
+  "message": "Discount Condition with operator 'in' and type 'products' already exist on a Discount Rule",
+  "type": "duplicate_error",
+}
+`;
