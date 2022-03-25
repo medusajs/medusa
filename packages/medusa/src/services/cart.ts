@@ -551,11 +551,6 @@ class CartService extends BaseService {
           .update(currentItem.id, {
             quantity: newQuantity,
           })
-
-        // delete old line item adjustments if line item already exists
-        await this.lineItemAdjustmentService_
-          .withTransaction(manager)
-          .delete({ item_id: currentItem.id })
       } else {
         // Confirm inventory or throw error
         await this.inventoryService_
@@ -584,15 +579,23 @@ class CartService extends BaseService {
         }
       }
 
-      const result = await this.retrieve(cartId)
-      await this.eventBus_
+      const result = await this.retrieve(cartId, {
+        relations: ["items", "discounts", "discounts.rule"],
+      })
+
+      // delete all old line item adjustments
+      await this.lineItemAdjustmentService_
         .withTransaction(manager)
-        .emit(CartService.Events.UPDATED, result)
+        .delete({ item_id: result.items.map((item) => item.id) })
 
       // potentially create/update line item adjustments
       await this.lineItemAdjustmentService_
         .withTransaction(manager)
-        .createAdjustments(cart)
+        .createAdjustments(result)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(CartService.Events.UPDATED, result)
 
       return result
     })
@@ -637,20 +640,23 @@ class CartService extends BaseService {
         }
       }
 
-      const updatedLineItem = await this.lineItemService_
+      await this.lineItemService_
         .withTransaction(manager)
         .update(lineItemId, lineItemUpdate)
 
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .delete({ item_id: lineItemId })
+      const result = await this.retrieve(cartId, {
+        relations: ["items", "discounts", "discounts.rule"],
+      })
 
       await this.lineItemAdjustmentService_
         .withTransaction(manager)
-        .createAdjustmentForLineItem(cart, updatedLineItem)
+        .delete({ item_id: result.items.map((item) => item.id) })
+
+      await this.lineItemAdjustmentService_
+        .withTransaction(manager)
+        .createAdjustments(result)
 
       // Update the line item
-      const result = await this.retrieve(cartId)
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)

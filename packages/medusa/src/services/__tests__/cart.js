@@ -485,9 +485,9 @@ describe("CartService", () => {
       )
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
-      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith(
-        expect.objectContaining({ item_id: IdMap.getId("merger") })
-      )
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: [IdMap.getId("merger")],
+      })
 
       expect(
         LineItemAdjustmentServiceMock.createAdjustments
@@ -779,7 +779,7 @@ describe("CartService", () => {
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
-        item_id: IdMap.getId("existing"),
+        item_id: [IdMap.getId("existing")],
       })
 
       expect(
@@ -788,11 +788,7 @@ describe("CartService", () => {
       expect(
         LineItemAdjustmentServiceMock.createAdjustments
       ).toHaveBeenCalledWith(
-        expect.objectContaining({ id: IdMap.getId("cartWithLine") }),
-        expect.objectContaining({
-          id: IdMap.getId("existing"),
-          quantity: 1,
-        })
+        expect.objectContaining({ id: IdMap.getId("cartWithLine") })
       )
     })
 

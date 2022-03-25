@@ -16,7 +16,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
-const { simpleCartFactory } = require("../../factories")
+const { simpleCartFactory, simpleLineItemFactory } = require("../../factories")
 const {
   simpleDiscountFactory,
 } = require("../../factories/simple-discount-factory")
@@ -42,7 +42,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: true })
+      medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
     }
@@ -235,6 +235,131 @@ describe("/store/carts", () => {
           unit_price: 1000,
           variant_id: "test-variant-quantity",
           quantity: 1,
+          adjustments: [],
+        }),
+      ])
+    })
+
+    it("adds line item to cart containing a total fixed discount", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-w-total-fixed-discount/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-total-fixed-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 2,
+          adjustments: [
+            expect.objectContaining({
+              amount: 100,
+              discount_id: "total-fixed-100",
+              description: "discount",
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("adds line item to cart containing a total percentage discount", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-w-total-percentage-discount/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-total-percentage-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 2,
+          adjustments: [
+            expect.objectContaining({
+              amount: 200,
+              discount_id: "10Percent",
+              description: "discount",
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("adds line item to cart containing an item fixed discount", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-w-item-fixed-discount/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-item-fixed-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 2,
+          adjustments: [
+            expect.objectContaining({
+              amount: 400,
+              discount_id: "item-fixed-200",
+              description: "discount",
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("adds line item to cart containing an item percentage discount", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-w-item-percentage-discount/line-items",
+          {
+            variant_id: "test-variant-quantity",
+            quantity: 2,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-item-percentage-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 2,
+          adjustments: [
+            expect.objectContaining({
+              amount: 300,
+              discount_id: "item-percentage-15",
+              description: "discount",
+            }),
+          ],
         }),
       ])
     })
@@ -242,7 +367,6 @@ describe("/store/carts", () => {
     it("adds line item to cart time limited sale", async () => {
       const api = useApi()
 
-      // Add standard line item to cart
       const response = await api
         .post(
           "/store/carts/test-cart/line-items",
@@ -267,7 +391,6 @@ describe("/store/carts", () => {
     it("adds line item with quantity to cart with quantity discount", async () => {
       const api = useApi()
 
-      // Add standard line item to cart
       const response = await api
         .post(
           "/store/carts/test-cart/line-items",
@@ -292,7 +415,6 @@ describe("/store/carts", () => {
     it("adds line item with quantity to cart with quantity discount no ceiling", async () => {
       const api = useApi()
 
-      // Add standard line item to cart
       const response = await api
         .post(
           "/store/carts/test-cart/line-items",
@@ -310,6 +432,206 @@ describe("/store/carts", () => {
           unit_price: 700,
           variant_id: "test-variant-quantity",
           quantity: 900,
+        }),
+      ])
+    })
+  })
+
+  describe("POST /store/carts/:id/line-items/:line_id", () => {
+    beforeEach(async () => {
+      try {
+        await cartSeeder(dbConnection)
+        await swapSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("updates line item of cart", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-3/line-items/test-item3/",
+          {
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-3",
+          unit_price: 8000,
+          variant_id: "test-variant-sale-cg",
+          quantity: 3,
+          adjustments: [],
+        }),
+      ])
+    })
+
+    it("updates line item of a cart containing a total fixed discount", async () => {
+      const api = useApi()
+      await simpleLineItemFactory(dbConnection, {
+        id: "test-li-disc",
+        allow_discounts: true,
+        title: "Line Item Disc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 1000,
+        quantity: 1,
+        variant_id: "test-variant-quantity",
+        cart_id: "test-cart-w-total-fixed-discount",
+      })
+
+      const response = await api
+        .post(
+          `store/carts/test-cart-w-total-fixed-discount/line-items/test-li-disc`,
+          {
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-total-fixed-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 3,
+          adjustments: [
+            expect.objectContaining({
+              amount: 100,
+              discount_id: "total-fixed-100",
+              description: "discount",
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("updates line item of a cart containing a total percentage discount", async () => {
+      const api = useApi()
+      await simpleLineItemFactory(dbConnection, {
+        id: "test-li-disc",
+        allow_discounts: true,
+        title: "Line Item Disc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 1000,
+        quantity: 1,
+        variant_id: "test-variant-quantity",
+        cart_id: "test-cart-w-total-percentage-discount",
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-w-total-percentage-discount/line-items/test-li-disc",
+          {
+            quantity: 10,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-total-percentage-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 10,
+          adjustments: [
+            expect.objectContaining({
+              amount: 1000,
+              discount_id: "10Percent",
+              description: "discount",
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("updates line item of a cart containing an item fixed discount", async () => {
+      const api = useApi()
+      await simpleLineItemFactory(dbConnection, {
+        id: "test-li-disc",
+        allow_discounts: true,
+        title: "Line Item Disc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 1000,
+        quantity: 1,
+        variant_id: "test-variant-quantity",
+        cart_id: "test-cart-w-item-fixed-discount",
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-w-item-fixed-discount/line-items/test-li-disc",
+          {
+            quantity: 4,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-item-fixed-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 4,
+          adjustments: [
+            expect.objectContaining({
+              amount: 800,
+              discount_id: "item-fixed-200",
+              description: "discount",
+            }),
+          ],
+        }),
+      ])
+    })
+
+    it("updates line item of a cart containing an item percentage discount", async () => {
+      const api = useApi()
+      await simpleLineItemFactory(dbConnection, {
+        id: "test-li-disc",
+        allow_discounts: true,
+        title: "Line Item Disc",
+        thumbnail: "https://test.js/1234",
+        unit_price: 1000,
+        quantity: 1,
+        variant_id: "test-variant-quantity",
+        cart_id: "test-cart-w-item-percentage-discount",
+      })
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-w-item-percentage-discount/line-items/test-li-disc",
+          {
+            quantity: 3,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart-w-item-percentage-discount",
+          unit_price: 1000,
+          variant_id: "test-variant-quantity",
+          quantity: 3,
+          adjustments: [
+            expect.objectContaining({
+              amount: 450,
+              discount_id: "item-percentage-15",
+              description: "discount",
+            }),
+          ],
         }),
       ])
     })

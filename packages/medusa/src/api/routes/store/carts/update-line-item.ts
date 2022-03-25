@@ -12,7 +12,6 @@ import { validator } from "../../../../utils/validator"
  * description: "Updates a Line Item if the desired quantity can be fulfilled."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
- *   - (path) line_id=* {string} The id of the Line Item.
  *   - (body) quantity=* {integer} The quantity to set the Line Item to.
  * tags:
  *   - Cart
