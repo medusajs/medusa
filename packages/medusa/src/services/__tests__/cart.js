@@ -1684,6 +1684,20 @@ describe("CartService", () => {
             region_id: IdMap.getId("good"),
           })
         }
+        if (q.where.id === "with-d-and-customer") {
+          return Promise.resolve({
+            id: "with-d-and-customer",
+            discounts: [
+              {
+                code: "ApplicableForCustomer",
+                rule: {
+                  type: "fixed",
+                },
+              },
+            ],
+            region_id: IdMap.getId("good"),
+          })
+        }
         return Promise.resolve({
           id: IdMap.getId("cart"),
           discounts: [],

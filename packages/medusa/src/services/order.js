@@ -188,8 +188,9 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const query = this.buildQuery_(selector, config)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     if (select && select.length) {
       query.select = select
@@ -248,8 +249,9 @@ class OrderService extends BaseService {
       }
     }
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     if (select && select.length) {
       query.select = select
@@ -342,8 +344,9 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { id: validatedId },
@@ -379,8 +382,9 @@ class OrderService extends BaseService {
   async retrieveByCartId(cartId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { cart_id: cartId },
@@ -416,8 +420,9 @@ class OrderService extends BaseService {
   async retrieveByExternalId(externalId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { external_id: externalId },
