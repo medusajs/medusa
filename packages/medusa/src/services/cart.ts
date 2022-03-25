@@ -1138,7 +1138,7 @@ class CartService extends BaseService {
       cart.discounts = newDiscounts.filter(Boolean) as Discount[]
 
       // ignore if free shipping
-      if (rule.type !== "free_shipping") {
+      if (rule.type !== "free_shipping" && cart?.items) {
         // delete old line item adjustments associated with old discount(s)
         await this.lineItemAdjustmentService_.withTransaction(manager).delete({
           item_id: cart.items.map((li) => li.id),
