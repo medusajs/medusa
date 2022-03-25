@@ -198,7 +198,7 @@ class LineItemAdjustmentService extends BaseService {
         return []
       }
 
-      const [discount] = cart.discounts?.filter(
+      const [discount] = cart.discounts.filter(
         (d) => d.rule.type !== "free_shipping"
       )
 
