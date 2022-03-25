@@ -349,7 +349,7 @@ const createSwap = async (options, manager) => {
     is_disabled: false,
     rule: dRule,
   })
-  await manager.save(discount)
+  let discountDb = await manager.save(discount)
 
   const cart = manager.create(Cart, {
     id: `${swapId}-cart`,
@@ -396,6 +396,14 @@ const createSwap = async (options, manager) => {
     thumbnail: "https://test.js/1234",
     unit_price: 8000,
     quantity: 1,
+    adjustments: [
+      {
+        amount: 800,
+        description: "discount",
+        discount_id: discountDb.id,
+        item_id: `${swapId}-return-item-1`,
+      },
+    ],
     variant_id: "test-variant",
     order_id: "order-with-swap",
     cart_id: cart.id,
