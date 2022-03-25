@@ -7,6 +7,7 @@ import {
   JoinColumn,
   PrimaryColumn,
   OneToOne,
+  Unique
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
@@ -14,6 +15,7 @@ import { Discount } from "./discount"
 import { LineItem } from "./line-item"
 
 @Entity()
+@Index(["discount_id", "item_id"], { unique: true, where: `"discount_id" IS NULL` })
 export class LineItemAdjustment {
   @PrimaryColumn()
   id: string
