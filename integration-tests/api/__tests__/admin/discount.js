@@ -670,8 +670,8 @@ describe("/admin/discounts", () => {
 
       const createdRule = response.data.discount.rule
 
-      try {
-        await api.post(
+      await expect(
+        api.post(
           `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
           {
             rule: {
@@ -693,13 +693,7 @@ describe("/admin/discounts", () => {
             },
           }
         )
-      } catch (error) {
-        console.log(error)
-        expect(error.response.data.type).toEqual("duplicate_error")
-        expect(error.response.data.message).toEqual(
-          `Discount Condition with operator 'in' and type 'products' already exist on a Discount Rule`
-        )
-      }
+      ).rejects.toThrowErrorMatchingSnapshot()
     })
 
     it("fails if multiple types of resources are provided on create", async () => {
@@ -787,8 +781,8 @@ describe("/admin/discounts", () => {
 
       const createdRule = response.data.discount.rule
 
-      try {
-        await api.post(
+      await expect(
+        api.post(
           `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
           {
             rule: {
@@ -811,13 +805,7 @@ describe("/admin/discounts", () => {
             },
           }
         )
-      } catch (error) {
-        console.log(error)
-        expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual(
-          `Only one of products, product_types is allowed, Only one of product_types, products is allowed`
-        )
-      }
+      ).rejects.toThrowErrorMatchingSnapshot()
     })
 
     it("creates a discount and updates it", async () => {

@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/discounts POST /admin/discounts fails if multiple types of resources are provided on update 1`] = `"Request failed with status code 400"`;
+
+exports[`/admin/discounts POST /admin/discounts fails to add condition on rule with existing comb. of type and operator 1`] = `"Request failed with status code 402"`;
