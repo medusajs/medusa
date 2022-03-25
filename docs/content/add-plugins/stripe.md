@@ -2,15 +2,18 @@
 
 [View plugin here](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-stripe)
 
-
-https://user-images.githubusercontent.com/59018053/154807206-6fbda0a6-bf3e-4e39-9fc2-f11710afe0b9.mp4
+<div>
+  <video width="100%" height="100%" playsinline autoplay muted controls>
+    <source src="https://user-images.githubusercontent.com/59018053/154807206-6fbda0a6-bf3e-4e39-9fc2-f11710afe0b9.mp4" type="video/mp4" />
+  </video>
+</div>
 
 
 ### Introduction
 
 Handling payments is at the core of every commerce system; it allows us to run our businesses. Consequently, a vast landscape of payment providers has developed, each with varying cost models, implementational specifications, and analytical capabilities.
 
-As a consequence, one might ask, which one(s) should I choose? Medusa makes exchanging enabled payment providers easy through its unified payment API. Here, one may select payment provider plugins already existing ([PayPal](https://docs.medusa-commerce.com/add-plugins/paypal), [Klarna](https://docs.medusa-commerce.com/add-plugins/klarna), and Stripe), or develop new ones.
+As a consequence, one might ask, which one(s) should I choose? Medusa makes exchanging enabled payment providers easy through its unified payment API. Here, one may select payment provider plugins already existing ([PayPal](https://docs.medusajs.com/add-plugins/paypal), [Klarna](https://docs.medusajs.com/add-plugins/klarna), and Stripe), or develop new ones.
 
 Using the `medusa-payment-stripe` plugin, this guide will show you how to set up your Medusa project with Stripe as a payment provider.
 
@@ -18,7 +21,7 @@ Using the `medusa-payment-stripe` plugin, this guide will show you how to set up
 
 ### Prerequisites
 
-This guide assumes that you have set up a medusa project (See [this guide](https://docs.medusa-commerce.com/tutorial/creating-your-medusa-server)). Furthermore, this guide will be using the Gatsby starter as our storefront (See [this guide](https://docs.medusa-commerce.com/starters/gatsby-medusa-starter)) and the Admin panel to manage our store (See the github installation guide [here](https://github.com/medusajs/admin)).
+This guide assumes that you have set up a medusa project (See [this guide](https://docs.medusajs.com/tutorial/creating-your-medusa-server)). Furthermore, this guide will be using the Gatsby starter as our storefront (See [this guide](https://docs.medusajs.com/starters/gatsby-medusa-starter)) and the Admin panel to manage our store (See the github installation guide [here](https://github.com/medusajs/admin)).
 
 ### Installation
 
