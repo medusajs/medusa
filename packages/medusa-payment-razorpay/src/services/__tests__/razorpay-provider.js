@@ -16,7 +16,7 @@ describe("RazorpayProviderService", () => {
       id: IdMap.getId("vvd"),
       first_name: "Virgil",
       last_name: "Van Dijk",
-      email: "virg12@vvd12345687.com",
+      email: "virg@vvd.com",
       password_hash: "1234",
       contact:"9876543210",
       notes: {},
@@ -117,12 +117,27 @@ describe("RazorpayProviderService", () => {
 
   it("returns created razorpay payment intent for cart with no customer", async () => {
       carts.frCart.customer_id = ""
-      result = await razorpayProviderService.createPayment(carts.frCart)
-      expect(result).toEqual({
-        id: "pi_lebron",
-        customer: "cus_lebron",
-        amount: 100,
-      })
+      result = await razorpayProviderService.createOrder(carts.frCart)
+      expect(result).toHaveProperty('created_at')
+      expect(result).toHaveProperty('id')
+      var attempts = result.attempts
+      expect(attempts).toBeGreaterThanOrEqual(0)
+      expect(result.offer_id===null||result.offer_id?.length>0).toBe(true)
+      expect(result).toMatchObject( { 
+        id: expect.any(String),
+        entity: "order",
+        amount: TotalsServiceMock.getTotal(carts.frCart),
+        amount_paid: 0,
+        amount_due:TotalsServiceMock.getTotal(carts.frCart),
+        currency: "INR",
+        receipt: carts.frCart.order_number,
+        //offer_id: expect.toBe(null),
+        status: "created",
+        //attempts: expect.toBeGreaterThanOrEqual(0),
+        notes: {cart_id:expect.any(String)},
+        created_at: expect.any(Number)})
+      
+    
     })
   })
 
