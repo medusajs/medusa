@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
-import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
+
 import NavigationContext from "../../context/navigation-context"
+import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
 import { navigate } from "gatsby"
 
 const HitComponent = ({ hit, children }) => {
