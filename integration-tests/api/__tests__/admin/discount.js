@@ -671,29 +671,31 @@ describe("/admin/discounts", () => {
       const createdRule = response.data.discount.rule
 
       await expect(
-        api.post(
-          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            rule: {
-              id: createdRule.id,
-              type: createdRule.type,
-              value: createdRule.value,
-              allocation: createdRule.allocation,
-              conditions: [
-                {
-                  products: [anotherProduct.id],
-                  operator: "in",
-                },
-              ],
+        api
+          .post(
+            `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+            {
+              rule: {
+                id: createdRule.id,
+                type: createdRule.type,
+                value: createdRule.value,
+                allocation: createdRule.allocation,
+                conditions: [
+                  {
+                    products: [anotherProduct.id],
+                    operator: "in",
+                  },
+                ],
+              },
             },
-          },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
-      ).rejects.toThrowErrorMatchingSnapshot()
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => err.response.data)
+      ).resolves.toMatchSnapshot()
     })
 
     it("fails if multiple types of resources are provided on create", async () => {
@@ -782,30 +784,32 @@ describe("/admin/discounts", () => {
       const createdRule = response.data.discount.rule
 
       await expect(
-        api.post(
-          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            rule: {
-              id: createdRule.id,
-              type: createdRule.type,
-              value: createdRule.value,
-              allocation: createdRule.allocation,
-              conditions: [
-                {
-                  products: [anotherProduct.id],
-                  product_types: [product.type_id],
-                  operator: "in",
-                },
-              ],
+        api
+          .post(
+            `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+            {
+              rule: {
+                id: createdRule.id,
+                type: createdRule.type,
+                value: createdRule.value,
+                allocation: createdRule.allocation,
+                conditions: [
+                  {
+                    products: [anotherProduct.id],
+                    product_types: [product.type_id],
+                    operator: "in",
+                  },
+                ],
+              },
             },
-          },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
-      ).rejects.toThrowErrorMatchingSnapshot()
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => err.response.data)
+      ).resolves.toMatchSnapshot()
     })
 
     it("creates a discount and updates it", async () => {
