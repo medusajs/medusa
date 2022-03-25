@@ -32,7 +32,7 @@ export default () => {
           "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
         break
       case MedusaError.Types.DUPLICATE_ERROR:
-        statusCode = 402
+        statusCode = 422
         errObj.code = INVALID_REQUEST_ERROR
         break
       case MedusaError.Types.NOT_ALLOWED:
