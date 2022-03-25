@@ -431,7 +431,8 @@ class TaxProviderService extends BaseService {
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
     const model = this.manager_.getCustomRepository(this.taxProviderRepo_)
-    model.update({}, { is_installed: false })
+    await model.update({}, { is_installed: false })
+
     for (const p of providers) {
       const n = model.create({ id: p, is_installed: true })
       await model.save(n)
