@@ -16,6 +16,7 @@ import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 
+import { AbstractTaxService } from "../interfaces/tax-service"
 import { isTaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
 import formatRegistrationName from "../utils/format-registration-name"
 
@@ -317,6 +318,18 @@ async function registerServices(pluginDetails, container) {
           ),
           [`searchService`]: aliasTo(name),
         })
+      } else if (loaded.prototype instanceof AbstractTaxService) {
+        container.registerAdd(
+          "taxProviders",
+          asFunction((cradle) => new loaded(cradle, pluginDetails.options))
+        )
+
+        container.register({
+          [name]: asFunction(
+            (cradle) => new loaded(cradle, pluginDetails.options)
+          ).singleton(),
+          [`tp_${loaded.identifier}`]: aliasTo(name),
+        })
       } else {
         container.register({
           [name]: asFunction(
@@ -430,7 +443,7 @@ function resolvePlugin(pluginName) {
           fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
         )
         const name = packageJSON.name || pluginName
-        //warnOnIncompatiblePeerDependency(name, packageJSON)
+        // warnOnIncompatiblePeerDependency(name, packageJSON)
 
         return {
           resolve: resolvedPath,
