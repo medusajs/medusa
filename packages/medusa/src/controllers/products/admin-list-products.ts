@@ -66,16 +66,8 @@ const listAndCount = async (
     }
   }
 
-  const filterableFields: FilterableProductProps = omit(query, [
-    "limit",
-    "offset",
-    "expand",
-    "fields",
-    "order",
-  ])
-
   const [products, count] = await productService.listAndCount(
-    pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    pickBy(query, (val) => typeof val !== "undefined"),
     listConfig
   )
 

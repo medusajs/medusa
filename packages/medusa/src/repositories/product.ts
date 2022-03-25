@@ -58,23 +58,32 @@ export class ProductRepository extends Repository<Product> {
     }
 
     if (optionsWithoutRelations.order) {
-      qb.orderBy(optionsWithoutRelations.order)
+      const toSelect: string[] = []
+      const parsed = Object.entries(optionsWithoutRelations.order).reduce(
+        (acc, [k, v]) => {
+          const key = `product.${k}`
+          toSelect.push(key)
+          acc[key] = v
+          return acc
+        },
+        {}
+      )
+      qb.addSelect(toSelect)
+      qb.orderBy(parsed)
     }
 
     if (tags) {
-      qb.leftJoinAndSelect("product.tags", "tags").andWhere(
-        `tags.id IN (:...ids)`,
-        { ids: tags.value }
-      )
+      qb.leftJoin("product.tags", "tags").andWhere(`tags.id IN (:...tag_ids)`, {
+        tag_ids: tags.value,
+      })
     }
 
     if (price_lists) {
-      qb.innerJoin("product.variants", "variants").innerJoin(
-        "variants.prices",
-        "ma",
-        "ma.price_list_id IN (:...ids)",
-        { ids: price_lists.value }
-      )
+      qb.leftJoin("product.variants", "variants")
+        .leftJoin("variants.prices", "ma")
+        .andWhere("ma.price_list_id IN (:...price_list_ids)", {
+          price_list_ids: price_lists.value,
+        })
     }
 
     if (optionsWithoutRelations.withDeleted) {

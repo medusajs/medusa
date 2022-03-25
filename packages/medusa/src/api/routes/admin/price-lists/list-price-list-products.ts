@@ -94,6 +94,7 @@ export default async (req, res) => {
       offset: validatedParams.offset ?? 0,
       expand: validatedParams.expand,
       fields: validatedParams.fields,
+      order: validatedParams.order,
       allowedFields: allowedAdminProductFields,
       defaultFields: defaultAdminProductFields,
       defaultRelations: defaultAdminProductRelations,
