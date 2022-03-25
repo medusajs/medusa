@@ -398,7 +398,7 @@ const createSwap = async (options, manager) => {
     quantity: 1,
     adjustments: [
       {
-        amount: 800,
+        amount: -800,
         description: "discount",
         discount_id: discountDb.id,
         item_id: `${swapId}-return-item-1`,
