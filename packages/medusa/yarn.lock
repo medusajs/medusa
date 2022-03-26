@@ -1507,10 +1507,10 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
-"@medusajs/medusa-cli@^1.1.25":
-  version "1.1.26"
-  resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.1.26.tgz#d6fa65aef548187e02fd71db2688276bf62d2084"
-  integrity sha512-V+kZr3ldqLumiwEr2slO7FrWHnpy1OjIhnL/ruCDZZTw/FDyru6302xWszEXCSt9N8MCM/OufXugfQ0Iwr7JuA==
+"@medusajs/medusa-cli@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@medusajs/medusa-cli/-/medusa-cli-1.2.1.tgz#5b32791e663cc96d593c3eb0f121f985f86f36f7"
+  integrity sha512-aMy8ObeCxiEhIBe/lcT5ArM0hnHI6qM2JxosMhYTo8lg8lcJhuKWvxbGr4MuPS0f/+Ysu7vkDh+tYKiuyyGGyw==
   dependencies:
     "@babel/polyfill" "^7.8.7"
     "@babel/runtime" "^7.9.6"
@@ -5742,10 +5742,10 @@ medusa-core-utils@^1.1.31:
     joi "^17.3.0"
     joi-objectid "^3.0.1"
 
-medusa-interfaces@^1.1.32:
-  version "1.1.32"
-  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.1.32.tgz#cc7c460072aea5fd0c2da23cd780c15b2aa96029"
-  integrity sha512-7E9pEswnehWWSO22StHINJ/IOxBSsRarGS9ApHRujPMb/zf1xPnS0l39Rvz2Vb/gpsbzz9iC3btD3falcugQMQ==
+medusa-interfaces@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/medusa-interfaces/-/medusa-interfaces-1.2.1.tgz#b122303f1986a197e7b08ea02a4dcd46bc054cde"
+  integrity sha512-yGYZbf1vaoCI6p8CNS9bxEmuUG2cLXDq+qs0GofSwC6PczzSITVbjP7EmofgwPHzLR6iy/JeGsC8XQozV7XsXQ==
   dependencies:
     medusa-core-utils "^1.1.31"
 
@@ -5764,10 +5764,10 @@ medusa-telemetry@^0.0.11:
     remove-trailing-slash "^0.1.1"
     uuid "^8.3.2"
 
-medusa-test-utils@^1.1.35:
-  version "1.1.36"
-  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.36.tgz#267f03c3dafc34fd1334c5eccc8d1572f0159bfa"
-  integrity sha512-LNnsOa7dnEoiQF5uILTA9g7NAWKnQKCMxrs6XxEJsJUqioDiR9MxTfkfRtvyVfQE2AEMF79QH8jQpDY5ZGJFUA==
+medusa-test-utils@^1.1.37:
+  version "1.1.37"
+  resolved "https://registry.yarnpkg.com/medusa-test-utils/-/medusa-test-utils-1.1.37.tgz#8f9cc117f93e876a2183ac3b478db23e1cab0364"
+  integrity sha512-0NxvlZPtGGUOrIXmAREk7WXlcOhj3j/Y9w6rArxTZkMT3vQfuE5qR/mrm3Amm/h4sQiLldT1DopC8F1yLkBNJw==
   dependencies:
     "@babel/plugin-transform-classes" "^7.9.5"
     medusa-core-utils "^1.1.31"
@@ -5862,9 +5862,9 @@ minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
+  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
 
 minipass@^2.6.0, minipass@^2.9.0:
   version "2.9.0"
