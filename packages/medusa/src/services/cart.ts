@@ -1714,14 +1714,13 @@ class CartService extends BaseService {
                   unit_price: availablePrice.calculatedPrice,
                 })
             } else {
-              await this.lineItemService_
+              return this.lineItemService_
                 .withTransaction(this.transactionManager_)
                 .delete(item.id)
-              return null
             }
           })
         )
-      ).filter((item): item is LineItem => item)
+      ).filter((item): item is LineItem => !!item)
     }
   }
 
