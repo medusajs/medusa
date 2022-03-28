@@ -168,7 +168,7 @@ class LineItemService extends BaseService {
           .getRegionPrice(variant.id, {
             regionId: region.id,
             quantity: quantity,
-            customer_id: undefined,
+            customer_id: config.customer_id,
             include_discount_prices: true,
           })
       }
