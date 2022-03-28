@@ -2528,7 +2528,7 @@ paths:
                 properties:
                   order:
                     $ref: "#/components/schemas/order"
-  "/orders/{id}/fulfillments":
+  "/orders/{id}/fulfillment":
     post:
       operationId: PostOrdersOrderFulfillments
       summary: Create a Fulfillment
