@@ -489,32 +489,34 @@ describe("/admin/discounts", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.discount.rule.conditions).toEqual([
-        expect.objectContaining({
-          type: "products",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "products",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "product_tags",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_tags",
-          operator: "in",
-        }),
-      ])
+      expect(response.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "products",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "product_tags",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_tags",
+            operator: "in",
+          }),
+        ])
+      )
     })
 
     it("creates a discount with conditions and updates said conditions", async () => {
@@ -668,36 +670,32 @@ describe("/admin/discounts", () => {
 
       const createdRule = response.data.discount.rule
 
-      try {
-        await api.post(
-          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            rule: {
-              id: createdRule.id,
-              type: createdRule.type,
-              value: createdRule.value,
-              allocation: createdRule.allocation,
-              conditions: [
-                {
-                  products: [anotherProduct.id],
-                  operator: "in",
-                },
-              ],
+      await expect(
+        api
+          .post(
+            `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+            {
+              rule: {
+                id: createdRule.id,
+                type: createdRule.type,
+                value: createdRule.value,
+                allocation: createdRule.allocation,
+                conditions: [
+                  {
+                    products: [anotherProduct.id],
+                    operator: "in",
+                  },
+                ],
+              },
             },
-          },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
-      } catch (error) {
-        console.log(error)
-        expect(error.response.data.type).toEqual("duplicate_error")
-        expect(error.response.data.message).toEqual(
-          `Discount Condition with operator 'in' and type 'products' already exist on a Discount Rule`
-        )
-      }
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => err.response.data)
+      ).resolves.toMatchSnapshot()
     })
 
     it("fails if multiple types of resources are provided on create", async () => {
@@ -785,37 +783,33 @@ describe("/admin/discounts", () => {
 
       const createdRule = response.data.discount.rule
 
-      try {
-        await api.post(
-          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            rule: {
-              id: createdRule.id,
-              type: createdRule.type,
-              value: createdRule.value,
-              allocation: createdRule.allocation,
-              conditions: [
-                {
-                  products: [anotherProduct.id],
-                  product_types: [product.type_id],
-                  operator: "in",
-                },
-              ],
+      await expect(
+        api
+          .post(
+            `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+            {
+              rule: {
+                id: createdRule.id,
+                type: createdRule.type,
+                value: createdRule.value,
+                allocation: createdRule.allocation,
+                conditions: [
+                  {
+                    products: [anotherProduct.id],
+                    product_types: [product.type_id],
+                    operator: "in",
+                  },
+                ],
+              },
             },
-          },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
-      } catch (error) {
-        console.log(error)
-        expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual(
-          `Only one of products, product_types is allowed, Only one of product_types, products is allowed`
-        )
-      }
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => err.response.data)
+      ).resolves.toMatchSnapshot()
     })
 
     it("creates a discount and updates it", async () => {

@@ -67,7 +67,7 @@ export default async ({ container }) => {
     const currencyRepo = manager.getCustomRepository(currencyRepository)
     const hasCurrencies = await currencyRepo.findOne()
     if (!hasCurrencies) {
-      for (const [_, c] of Object.entries(currencies)) {
+      for (const [, c] of Object.entries(currencies)) {
         const query = `INSERT INTO "currency" ("code", "symbol", "symbol_native", "name") VALUES ($1, $2, $3, $4)`
 
         const code = c.code.toLowerCase()
@@ -83,40 +83,37 @@ export default async ({ container }) => {
   await entityManager.transaction(async (manager) => {
     await storeService.withTransaction(manager).create()
 
-    let payIds
     const pProviderService = container.resolve("paymentProviderService")
 
     const payProviders =
       silentResolution(container, "paymentProviders", logger) || []
 
-    payIds = payProviders.map((p) => p.getIdentifier())
+    const payIds = payProviders.map((p) => p.getIdentifier())
+
     await pProviderService.registerInstalledProviders(payIds)
 
-    let notiIds
     const nProviderService = container.resolve("notificationService")
 
     const notiProviders =
       silentResolution(container, "notificationProviders", logger) || []
 
-    notiIds = notiProviders.map((p) => p.getIdentifier())
+    const notiIds = notiProviders.map((p) => p.getIdentifier())
     await nProviderService.registerInstalledProviders(notiIds)
 
-    let fulfilIds
     const fProviderService = container.resolve("fulfillmentProviderService")
 
     const fulfilProviders =
       silentResolution(container, "fulfillmentProviders", logger) || []
 
-    fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
+    const fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
     await fProviderService.registerInstalledProviders(fulfilIds)
 
-    let taxIds
     const tProviderService = container.resolve("taxProviderService")
 
     const taxProviders =
       silentResolution(container, "taxProviders", logger) || []
 
-    taxIds = taxProviders.map((p) => p.getIdentifier())
+    const taxIds = taxProviders.map((p) => p.getIdentifier())
     await tProviderService.registerInstalledProviders(taxIds)
 
     await profileService.withTransaction(manager).createDefault()

@@ -72,6 +72,38 @@ module.exports = async (connection, data = {}) => {
     `UPDATE "country" SET region_id='test-region-multiple' WHERE iso_2 = 'dk'`
   )
 
+  const customer5 = await manager.create(Customer, {
+    id: "test-customer-5",
+    email: "test5@email.com",
+    first_name: "John",
+    last_name: "Deere",
+    password_hash:
+      "c2NyeXB0AAEAAAABAAAAAVMdaddoGjwU1TafDLLlBKnOTQga7P2dbrfgf3fB+rCD/cJOMuGzAvRdKutbYkVpuJWTU39P7OpuWNkUVoEETOVLMJafbI8qs8Qx/7jMQXkN", // password matching "test"
+    has_account: true,
+  })
+  await manager.save(customer5)
+
+  const c_group_5 = await manager.create(CustomerGroup, {
+    id: "test-group-5",
+    name: "test-group-5",
+  })
+  await manager.save(c_group_5)
+
+  customer5.groups = [c_group_5]
+  await manager.save(customer5)
+
+  const priceList_customer = await manager.create(PriceList, {
+    id: "pl_customer",
+    name: "VIP winter sale",
+    description: "Winter sale for VIP customers.",
+    type: "sale",
+    status: "active",
+  })
+
+  priceList_customer.customer_groups = [c_group_5]
+
+  await manager.save(priceList_customer)
+
   const freeRule = manager.create(DiscountRule, {
     id: "free-shipping-rule",
     description: "Free shipping rule",
@@ -391,6 +423,19 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.insert(ProductVariant, {
+    id: "test-variant-sale-customer",
+    title: "test variant",
+    product_id: "test-product",
+    inventory_quantity: 1000,
+    options: [
+      {
+        option_id: "test-option",
+        value: "Size",
+      },
+    ],
+  })
+
+  await manager.insert(ProductVariant, {
     id: "test-variant",
     title: "test variant",
     product_id: "test-product",
@@ -437,8 +482,30 @@ module.exports = async (connection, data = {}) => {
     amount: 800,
     price_list_id: "pl_current",
   })
-
   await manager.save(ma_sale_1)
+
+  const ma_sale_customer = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale-customer",
+    currency_code: "usd",
+    amount: 1000,
+  })
+  await manager.save(ma_sale_customer)
+
+  const ma_sale_customer_1 = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale-customer",
+    currency_code: "usd",
+    amount: 700,
+    price_list_id: "pl_customer",
+  })
+  await manager.save(ma_sale_customer_1)
+
+  const ma_sale_customer_2 = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sale-customer",
+    currency_code: "usd",
+    amount: 800,
+    price_list_id: "pl_current",
+  })
+  await manager.save(ma_sale_customer_2)
 
   const ma_quantity = manager.create(MoneyAmount, {
     variant_id: "test-variant-quantity",
