@@ -94,6 +94,18 @@ class TaxProviderService extends BaseService {
     return provider
   }
 
+  async clearTaxLines(cartId: string): Promise<void> {
+    const taxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
+    const shippingTaxRepo = this.manager_.getCustomRepository(
+      this.smTaxLineRepo_
+    )
+
+    await Promise.all([
+      taxLineRepo.deleteForCart(cartId),
+      shippingTaxRepo.deleteForCart(cartId),
+    ])
+  }
+
   /**
    * Persists the tax lines relevant for an order to the database.
    * @param cartOrLineItems - the cart or line items to create tax lines for
