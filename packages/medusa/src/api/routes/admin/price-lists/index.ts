@@ -53,6 +53,12 @@ export type AdminPriceListRes = {
   price_list: PriceList
 }
 
+export type AdminPriceListDeleteBatchRes = {
+  ids: string[]
+  deleted: boolean
+  object: string
+}
+
 export type AdminPriceListDeleteRes = DeleteResponse
 
 export type AdminPriceListsListRes = PaginatedResponse & {

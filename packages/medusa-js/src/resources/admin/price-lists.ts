@@ -7,6 +7,7 @@ import {
   AdminGetPriceListPaginationParams,
   AdminPriceListsListRes,
   AdminDeletePriceListPricesPricesReq,
+  AdminPriceListDeleteBatchRes,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -73,7 +74,7 @@ class AdminPriceListResource extends BaseResource {
     id: string,
     payload: AdminDeletePriceListPricesPricesReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminPriceListRes> {
+  ): ResponsePromise<AdminPriceListDeleteBatchRes> {
     const path = `/admin/price-lists/${id}/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
