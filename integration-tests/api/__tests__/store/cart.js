@@ -264,6 +264,44 @@ describe("/store/carts", () => {
       ])
     })
 
+    it("adds line item to cart time customer pricing", async () => {
+      const api = useApi()
+
+      // customer with customer-group 5
+      const authResponse = await api.post("/store/auth", {
+        email: "test5@email.com",
+        password: "test",
+      })
+
+      const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
+
+      // Add standard line item to cart
+      const response = await api
+        .post(
+          "/store/carts/test-cart/line-items",
+          {
+            variant_id: "test-variant-sale-customer",
+            quantity: 1,
+          },
+          {
+            // withCredentials: true,
+            headers: {
+              Cookie: authCookie,
+            },
+          }
+        )
+        .catch((err) => console.log(err))
+
+      expect(response.data.cart.items).toEqual([
+        expect.objectContaining({
+          cart_id: "test-cart",
+          unit_price: 700,
+          variant_id: "test-variant-sale-customer",
+          quantity: 1,
+        }),
+      ])
+    })
+
     it("adds line item with quantity to cart with quantity discount", async () => {
       const api = useApi()
 
