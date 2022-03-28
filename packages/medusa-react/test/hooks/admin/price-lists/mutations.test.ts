@@ -3,8 +3,6 @@ import {
   useAdminCreatePriceList,
   useAdminDeleteBatchPriceList,
   useAdminDeletePriceList,
-  useAdminPriceList,
-  useAdminPriceLists,
   useAdminUpdatePriceList,
 } from "../../../../src"
 import { renderHook } from "@testing-library/react-hooks"
@@ -94,7 +92,7 @@ describe("useAdminDeletePriceList hook", () => {
 })
 
 describe("useAdminDeletePriceListBatch hook", () => {
-  test("deletes a price list", async () => {
+  test("deletes a money amounts from price list", async () => {
     const { result, waitFor } = renderHook(
       () => useAdminDeleteBatchPriceList(fixtures.get("price_list").id),
       {

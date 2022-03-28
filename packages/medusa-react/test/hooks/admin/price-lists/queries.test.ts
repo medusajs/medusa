@@ -4,7 +4,7 @@ import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminPriceLists hook", () => {
-  test("returns a list of notes", async () => {
+  test("returns a list of price lists", async () => {
     const priceLists = fixtures.list("price_list")
     const { result, waitFor } = renderHook(() => useAdminPriceLists(), {
       wrapper: createWrapper(),
@@ -18,7 +18,7 @@ describe("useAdminPriceLists hook", () => {
 })
 
 describe("useAdminPriceList hook", () => {
-  test("returns a note", async () => {
+  test("returns a price list", async () => {
     const priceList = fixtures.get("price_list")
     const { result, waitFor } = renderHook(
       () => useAdminPriceList(priceList.id),
