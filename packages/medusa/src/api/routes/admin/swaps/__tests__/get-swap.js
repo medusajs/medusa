@@ -12,6 +12,7 @@ const defaultRelations = [
   "shipping_address",
   "shipping_methods",
   "cart",
+  "cart.items",
   "cart.items.adjustments",
 ]
 
