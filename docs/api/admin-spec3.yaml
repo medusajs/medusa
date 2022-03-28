@@ -2564,7 +2564,7 @@ paths:
                 no_notification:
                   description: >-
                     If set to true no notification will be send related to this
-                    Swap.
+                    Fulfillment.
                   type: boolean
                 metadata:
                   description: >-
