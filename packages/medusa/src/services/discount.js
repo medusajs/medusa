@@ -76,13 +76,21 @@ class DiscountService extends BaseService {
       id: Validator.string().optional(),
       description: Validator.string().optional(),
       type: Validator.string().required(),
-      value: Validator.number().min(0).required(),
+      value: Validator.number()
+        .min(0)
+        .required(),
       allocation: Validator.string().required(),
       valid_for: Validator.array().optional(),
       created_at: Validator.date().optional(),
-      updated_at: Validator.date().allow(null).optional(),
-      deleted_at: Validator.date().allow(null).optional(),
-      metadata: Validator.object().allow(null).optional(),
+      updated_at: Validator.date()
+        .allow(null)
+        .optional(),
+      deleted_at: Validator.date()
+        .allow(null)
+        .optional(),
+      metadata: Validator.object()
+        .allow(null)
+        .optional(),
     })
 
     const { value, error } = schema.validate(discountRule)
@@ -518,6 +526,23 @@ class DiscountService extends BaseService {
       }
 
       discount.regions = discount.regions.filter((r) => r.id !== regionId)
+
+      const updated = await discountRepo.save(discount)
+      return updated
+    })
+  }
+
+  /**
+   * Increments the usage of a discount code
+   * @param {string} discountId - id of discount
+   * @return {Promise} the result of the update operation
+   */
+  async incrementUsageCount(discountId) {
+    return this.atomicPhase_(async (manager) => {
+      const discountRepo = manager.getCustomRepository(this.discountRepository_)
+
+      const discount = await this.retrieve(discountId)
+      discount.usage_count = (discount.usage_count || 0) + 1
 
       const updated = await discountRepo.save(discount)
       return updated
