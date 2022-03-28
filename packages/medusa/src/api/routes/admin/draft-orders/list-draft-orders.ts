@@ -41,8 +41,8 @@ export default async (req, res) => {
   const listConfig = {
     select: defaultAdminDraftOrdersFields,
     relations: defaultAdminDraftOrdersRelations,
-    skip: validated.offset,
-    take: validated.limit,
+    skip: validated.offset ?? 0,
+    take: validated.limit ?? 50,
     order: { created_at: "DESC" },
   }
 
