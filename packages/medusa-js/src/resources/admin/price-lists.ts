@@ -66,7 +66,7 @@ class AdminPriceListResource extends BaseResource {
     payload: AdminPostPriceListPricesPricesReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPriceListRes> {
-    const path = `/admin/price-lists/${id}/batch`
+    const path = `/admin/price-lists/${id}/prices/batch`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
@@ -75,7 +75,7 @@ class AdminPriceListResource extends BaseResource {
     payload: AdminDeletePriceListPricesPricesReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminPriceListDeleteBatchRes> {
-    const path = `/admin/price-lists/${id}/batch`
+    const path = `/admin/price-lists/${id}/prices/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
