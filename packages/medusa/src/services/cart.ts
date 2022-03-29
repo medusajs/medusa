@@ -1044,74 +1044,16 @@ class CartService extends BaseService {
         ["rule", "regions"]
       )
 
-      if (cart.customer_id) {
-        const canApply = await this.discountService_.canApplyForCustomer(
-          discount.rule.id,
-          cart.customer_id
-        )
+      const validation = await this.discountService_.validateDiscountForCart(
+        cart,
+        discount
+      )
 
-        if (!canApply) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Discount is not valid for customer"
-          )
-        }
+      if (validation.hasErrors()) {
+        throw validation.createError()
       }
 
       const rule = discount.rule
-
-      // if limit is set and reached, we make an early exit
-      if (discount.usage_limit) {
-        discount.usage_count = discount.usage_count || 0
-
-        if (discount.usage_count >= discount.usage_limit) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Discount has been used maximum allowed times"
-          )
-        }
-      }
-
-      const today = new Date()
-      if (discount.starts_at > today) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount is not valid yet"
-        )
-      }
-
-      if (discount.ends_at && discount.ends_at < today) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount is expired"
-        )
-      }
-
-      let regions = discount.regions
-      if (discount.parent_discount_id) {
-        const parent = await this.discountService_.retrieve(
-          discount.parent_discount_id,
-          {
-            relations: ["rule", "regions"],
-          }
-        )
-
-        regions = parent.regions
-      }
-
-      if (discount.is_disabled) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "The discount code is disabled"
-        )
-      }
-
-      if (!regions.find(({ id }) => id === cart.region_id)) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "The discount is not available in current region"
-        )
-      }
 
       // if discount is already there, we simply resolve
       if (cart.discounts.find(({ id }) => id === discount.id)) {

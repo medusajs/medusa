@@ -1837,6 +1837,11 @@ describe("CartService", () => {
           }
           return Promise.resolve(false)
         }),
+      validateDiscountForCart: jest
+        .fn()
+        .mockImplementation((cart, discount) => {
+          return Promise.resolve({ hasErrors: () => false })
+        }),
     }
 
     const cartService = new CartService({
@@ -2027,172 +2032,6 @@ describe("CartService", () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({ id: IdMap.getId("cart") })
       )
-    })
-
-    it("successfully applies discount with usage count null", async () => {
-      await cartService.update(IdMap.getId("cart"), {
-        discounts: [{ code: "null-count" }],
-      })
-
-      expect(discountService.retrieveByCode).toHaveBeenCalledTimes(1)
-      expect(cartRepository.save).toHaveBeenCalledTimes(1)
-      expect(cartRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("cart"),
-        items: [
-          {
-            id: "li1",
-            quantity: 2,
-            unit_price: 1000,
-          },
-          {
-            id: "li2",
-            quantity: 1,
-            unit_price: 500,
-          },
-        ],
-        discounts: [
-          {
-            id: IdMap.getId("null-count"),
-            code: "null-count",
-            regions: [{ id: IdMap.getId("good") }],
-            usage_count: 0,
-            usage_limit: 2,
-            rule: {},
-          },
-        ],
-        discount_total: 0,
-        shipping_total: 0,
-        subtotal: 0,
-        tax_total: 0,
-        total: 0,
-        region_id: IdMap.getId("good"),
-      })
-
-      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
-      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
-        item_id: ["li1", "li2"],
-      })
-
-      expect(
-        LineItemAdjustmentServiceMock.createAdjustments
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        LineItemAdjustmentServiceMock.createAdjustments
-      ).toHaveBeenCalledWith(
-        expect.objectContaining({ id: IdMap.getId("cart") })
-      )
-    })
-
-    it("successfully applies valid discount with expiration date to cart", async () => {
-      await cartService.update(IdMap.getId("fr-cart"), {
-        discounts: [
-          {
-            code: "ValidDiscount",
-          },
-        ],
-      })
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "cart.updated",
-        expect.any(Object)
-      )
-
-      expect(cartRepository.save).toHaveBeenCalledTimes(1)
-      expect(cartRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("cart"),
-        region_id: IdMap.getId("good"),
-        items: [
-          {
-            id: "li1",
-            quantity: 2,
-            unit_price: 1000,
-          },
-          {
-            id: "li2",
-            quantity: 1,
-            unit_price: 500,
-          },
-        ],
-        discount_total: 0,
-        shipping_total: 0,
-        subtotal: 0,
-        tax_total: 0,
-        total: 0,
-        discounts: [
-          {
-            id: IdMap.getId("10off"),
-            code: "10%OFF",
-            regions: [{ id: IdMap.getId("good") }],
-            rule: {
-              type: "percentage",
-            },
-            starts_at: expect.any(Date),
-            ends_at: expect.any(Date),
-          },
-        ],
-      })
-
-      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
-      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
-        item_id: ["li1", "li2"],
-      })
-
-      expect(
-        LineItemAdjustmentServiceMock.createAdjustments
-      ).toHaveBeenCalledTimes(1)
-      expect(
-        LineItemAdjustmentServiceMock.createAdjustments
-      ).toHaveBeenCalledWith(
-        expect.objectContaining({ id: IdMap.getId("cart") })
-      )
-    })
-
-    it("throws if discount is applied too before it's valid", async () => {
-      await expect(
-        cartService.update(IdMap.getId("cart"), {
-          discounts: [{ code: "EarlyDiscount" }],
-        })
-      ).rejects.toThrow("Discount is not valid yet")
-    })
-
-    it("throws if expired discount is applied", async () => {
-      await expect(
-        cartService.update(IdMap.getId("cart"), {
-          discounts: [{ code: "ExpiredDiscount" }],
-        })
-      ).rejects.toThrow("Discount is expired")
-    })
-
-    it("throws if expired dynamic discount is applied", async () => {
-      await expect(
-        cartService.update(IdMap.getId("cart"), {
-          discounts: [{ code: "ExpiredDynamicDiscount" }],
-        })
-      ).rejects.toThrow("Discount is expired")
-    })
-
-    it("throws if expired dynamic discount is applied after ends_at", async () => {
-      await expect(
-        cartService.update(IdMap.getId("cart"), {
-          discounts: [{ code: "ExpiredDynamicDiscountEndDate" }],
-        })
-      ).rejects.toThrow("Discount is expired")
-    })
-
-    it("throws if discount limit is reached", async () => {
-      await expect(
-        cartService.update(IdMap.getId("cart"), {
-          discounts: [{ code: "limit-reached" }],
-        })
-      ).rejects.toThrow("Discount has been used maximum allowed times")
-    })
-
-    it("throws if discount is not available in region", async () => {
-      await expect(
-        cartService.update(IdMap.getId("cart"), {
-          discounts: [{ code: "US10" }],
-        })
-      ).rejects.toThrow("The discount is not available in current region")
     })
 
     it("successfully applies discount with a check for customer applicableness", async () => {
