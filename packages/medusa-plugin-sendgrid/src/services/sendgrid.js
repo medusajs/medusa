@@ -1,7 +1,6 @@
 import SendGrid from "@sendgrid/mail"
-
-import { NotificationService } from "medusa-interfaces"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
+import { NotificationService } from "medusa-interfaces"
 
 class SendGridService extends NotificationService {
   static identifier = "sendgrid"
@@ -293,7 +292,7 @@ class SendGridService extends NotificationService {
    * @param {string} from - sender of email
    * @param {string} to - receiver of email
    * @param {Object} data - data to send in mail (match with template)
-   * @returns {Promise} result of the send operation
+   * @return {Promise} result of the send operation
    */
   async sendEmail(options) {
     try {
@@ -321,7 +320,6 @@ class SendGridService extends NotificationService {
         "shipping_address",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_methods",
         "shipping_methods.shipping_option",
         "payments",
@@ -366,7 +364,6 @@ class SendGridService extends NotificationService {
         "shipping_address",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_methods",
         "shipping_methods.shipping_option",
         "payments",
@@ -465,7 +462,6 @@ class SendGridService extends NotificationService {
         "shipping_address",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_methods",
         "shipping_methods.shipping_option",
         "payments",
@@ -624,7 +620,6 @@ class SendGridService extends NotificationService {
         "items.tax_lines",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_address",
         "returns",
       ],
@@ -747,7 +742,6 @@ class SendGridService extends NotificationService {
         "items",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_address",
         "swaps",
         "swaps.additional_items",
@@ -875,7 +869,6 @@ class SendGridService extends NotificationService {
         "items.tax_lines",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_address",
         "swaps",
         "swaps.additional_items",
@@ -985,7 +978,6 @@ class SendGridService extends NotificationService {
         "items.tax_lines",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "swaps",
         "swaps.additional_items",
         "swaps.additional_items.tax_lines",
