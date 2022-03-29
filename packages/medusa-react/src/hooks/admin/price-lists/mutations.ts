@@ -68,7 +68,7 @@ export const useAdminDeletePriceList = (
   )
 }
 
-export const useAdminCreateBatchPriceList = (
+export const useAdminCreatePriceListPrices = (
   id: string,
   options?: UseMutationOptions<
     Response<AdminPriceListRes>,
@@ -85,7 +85,7 @@ export const useAdminCreateBatchPriceList = (
   )
 }
 
-export const useAdminDeleteBatchPriceList = (
+export const useAdminDeletePriceListPrices = (
   id: string,
   options?: UseMutationOptions<
     Response<AdminPriceListDeleteBatchRes>,

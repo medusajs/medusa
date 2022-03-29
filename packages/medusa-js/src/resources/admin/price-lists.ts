@@ -61,6 +61,21 @@ class AdminPriceListResource extends BaseResource {
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
+  listProducts(
+    id: string,
+    query?: Record<string, any>,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<any> {
+    let path = `/admin/price-lists/${id}/products`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/price-lists/${id}/products?${queryString}`
+    }
+
+    return this.client.request("GET", path, {}, {}, customHeaders)
+  }
+
   addPrices(
     id: string,
     payload: AdminPostPriceListPricesPricesReq,
