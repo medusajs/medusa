@@ -61,7 +61,7 @@ class AdminPriceListResource extends BaseResource {
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  batchAddPrices(
+  addPrices(
     id: string,
     payload: AdminPostPriceListPricesPricesReq,
     customHeaders: Record<string, any> = {}
@@ -70,7 +70,7 @@ class AdminPriceListResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  batchDeletePrices(
+  deletePrices(
     id: string,
     payload: AdminDeletePriceListPricesPricesReq,
     customHeaders: Record<string, any> = {}
