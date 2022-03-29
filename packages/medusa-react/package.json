@@ -80,7 +80,7 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.2.1",
+    "@medusajs/medusa": "gatsby-dev",
     "@medusajs/medusa-js": "^1.1.1",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",

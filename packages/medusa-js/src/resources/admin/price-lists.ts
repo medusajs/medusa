@@ -8,6 +8,7 @@ import {
   AdminPriceListsListRes,
   AdminDeletePriceListPricesPricesReq,
   AdminPriceListDeleteBatchRes,
+  AdminGetPriceListsPriceListProductsParams,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -63,7 +64,7 @@ class AdminPriceListResource extends BaseResource {
 
   listProducts(
     id: string,
-    query?: Record<string, any>,
+    query?: AdminGetPriceListsPriceListProductsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<any> {
     let path = `/admin/price-lists/${id}/products`

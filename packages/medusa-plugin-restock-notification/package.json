@@ -29,7 +29,7 @@
     "test": "jest"
   },
   "peerDependencies": {
-    "@medusajs/medusa": "1.x",
+    "@medusajs/medusa": "gatsby-dev",
     "medusa-interfaces": "1.x"
   },
   "dependencies": {
