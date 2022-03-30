@@ -594,6 +594,7 @@ describe("CartService", () => {
       lineItemService,
       shippingOptionService,
       eventBusService,
+      lineItemAdjustmentService: LineItemAdjustmentServiceMock,
     })
 
     beforeEach(() => {
@@ -609,6 +610,22 @@ describe("CartService", () => {
       expect(lineItemService.delete).toHaveBeenCalledTimes(1)
       expect(lineItemService.delete).toHaveBeenCalledWith(
         IdMap.getId("itemToRemove")
+      )
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: [IdMap.getId("itemToRemove")],
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          items: [{ id: IdMap.getId("itemToRemove") }],
+        })
       )
 
       expect(eventBusService.emit).toHaveBeenCalledTimes(1)
@@ -633,6 +650,22 @@ describe("CartService", () => {
           profile_id: IdMap.getId("prevPro"),
         },
       })
+
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
+      expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
+        item_id: [IdMap.getId("itemToRemove")],
+      })
+
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        LineItemAdjustmentServiceMock.createAdjustments
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          items: [expect.objectContaining({ id: IdMap.getId("itemToRemove") })],
+        })
+      )
     })
 
     it("resolves if line item is not in cart", async () => {
