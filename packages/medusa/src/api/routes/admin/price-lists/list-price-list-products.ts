@@ -1,30 +1,30 @@
 import { Type } from "class-transformer"
+import { omit } from "lodash"
 import {
   IsArray,
   IsBoolean,
   IsEnum,
-  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { omit } from "lodash"
-
 import { Product } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
+import { validator } from "../../../../utils/validator"
+import { FilterableProductProps } from "../../../../types/product"
 import {
+  AdminGetProductsPaginationParams,
   allowedAdminProductFields,
   defaultAdminProductFields,
   defaultAdminProductRelations,
-} from "."
+} from "../products"
 import listAndCount from "../../../../controllers/products/admin-list-products"
-import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [get] /products
- * operationId: "GetProducts"
- * summary: "List Product"
- * description: "Retrieves a list of Product"
+ * @oas [get] /price-lists/:id/products
+ * operationId: "GetPriceListsPriceListProducts"
+ * summary: "List Product in a Price List"
+ * description: "Retrieves a list of Product that are part of a Price List"
  * x-authenticated: true
  * parameters:
  *   - (query) q {string} Query used for searching products.
@@ -69,9 +69,16 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const validatedParams = await validator(AdminGetProductsParams, req.query)
+  const { id } = req.params
 
-  const filterableFields = omit(validatedParams, [
+  const validatedParams = await validator(
+    AdminGetPriceListsPriceListProductsParams,
+    req.query
+  )
+
+  req.query.price_list_id = [id]
+
+  const filterableFields: FilterableProductProps = omit(req.query, [
     "limit",
     "offset",
     "expand",
@@ -88,6 +95,7 @@ export default async (req, res) => {
       offset: validatedParams.offset ?? 0,
       expand: validatedParams.expand,
       fields: validatedParams.fields,
+      order: validatedParams.order,
       allowedFields: allowedAdminProductFields,
       defaultFields: defaultAdminProductFields as (keyof Product)[],
       defaultRelations: defaultAdminProductRelations,
@@ -97,34 +105,14 @@ export default async (req, res) => {
   res.json(result)
 }
 
-export enum ProductStatus {
+enum ProductStatus {
   DRAFT = "draft",
   PROPOSED = "proposed",
   PUBLISHED = "published",
   REJECTED = "rejected",
 }
 
-export class AdminGetProductsPaginationParams {
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  limit?: number = 50
-
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}
-
-export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
+export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsPaginationParams {
   @IsString()
   @IsOptional()
   id?: string
@@ -144,10 +132,6 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   @IsArray()
   @IsOptional()
   tags?: string[]
-
-  @IsArray()
-  @IsOptional()
-  price_list_id?: string[]
 
   @IsString()
   @IsOptional()

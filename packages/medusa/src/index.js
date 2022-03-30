@@ -4,6 +4,9 @@ export * from "./api"
 // Interfaces
 export * from "./interfaces"
 
+// Types
+export * from "./types/price-list"
+
 // Models
 export * from "./models/shipping-tax-rate"
 export * from "./models/product-tax-rate"
