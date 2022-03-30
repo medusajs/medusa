@@ -561,27 +561,88 @@ describe("/store/carts", () => {
           )
           .catch((err) => console.log(err))
 
-        console.log(response.data.cart.items)
+        expect(response.data.cart.items.length).toEqual(2)
+        expect(response.data.cart.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  item_id: "test-li",
+                  amount: 17,
+                  discount_id: "medusa-185",
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  amount: 168,
+                  discount_id: "medusa-185",
+                }),
+              ],
+            }),
+          ])
+        )
+      })
 
-        expect(response.data.cart.items).toEqual([
-          expect.objectContaining({
+      it("updates an existing item adjustment when a line item is updated", async () => {
+        const api = useApi()
+
+        await simpleLineItemFactory(
+          dbConnection,
+          {
+            id: "line-item-2",
+            cart_id: discountCart.id,
+            variant_id: "test-variant-quantity",
+            unit_price: 950,
+            quantity: 1,
             adjustments: [
-              expect.objectContaining({
-                item_id: "test-li",
-                amount: 17,
+              {
+                id: "lia-2",
+                amount: 92,
+                description: "discount",
                 discount_id: "medusa-185",
-              }),
+              },
             ],
-          }),
-          expect.objectContaining({
-            adjustments: [
-              expect.objectContaining({
-                amount: 168,
-                discount_id: "medusa-185",
-              }),
-            ],
-          }),
-        ])
+          },
+          100
+        )
+
+        const response = await api
+          .post(
+            "/store/carts/discount-cart/line-items/line-item-2",
+            {
+              quantity: 2,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .catch((err) => console.log(err))
+
+        expect(response.data.cart.items.length).toEqual(2)
+        expect(response.data.cart.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  item_id: "test-li",
+                  discount_id: "medusa-185",
+                  amount: 9,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  item_id: "line-item-2",
+                  amount: 176,
+                  discount_id: "medusa-185",
+                }),
+              ],
+            }),
+          ])
+        )
       })
 
       it("updates an existing item adjustment when a line item is deleted from a discount cart", async () => {
@@ -597,7 +658,8 @@ describe("/store/carts", () => {
             quantity: 1,
             adjustments: [
               {
-                amount: 92.5,
+                id: "lia-2",
+                amount: 93,
                 description: "discount",
                 discount_id: "medusa-185",
               },
@@ -612,13 +674,12 @@ describe("/store/carts", () => {
           })
           .catch((err) => console.log(err))
 
-        console.log(response.data.cart)
         expect(response.data.cart.items.length).toEqual(1)
         expect(response.data.cart.items).toEqual([
           expect.objectContaining({
             adjustments: [
               expect.objectContaining({
-                // item_id: expect.not.toEqual("test-li"),
+                item_id: "line-item-2",
                 amount: 185,
                 discount_id: "medusa-185",
               }),

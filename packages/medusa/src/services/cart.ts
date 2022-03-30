@@ -463,7 +463,20 @@ class CartService extends BaseService {
 
       await this.lineItemService_.withTransaction(manager).delete(lineItem.id)
 
-      const result = await this.retrieve(cartId)
+      const result = await this.retrieve(cartId, {
+        relations: ["items", "discounts", "discounts.rule"],
+      })
+
+      // delete all old line item adjustments
+      await this.lineItemAdjustmentService_
+        .withTransaction(manager)
+        .delete({ item_id: result.items.map((item) => item.id) })
+
+      // adjust existing line item adjustments
+      await this.lineItemAdjustmentService_
+        .withTransaction(manager)
+        .createAdjustments(result)
+
       // Notify subscribers
       await this.eventBus_
         .withTransaction(manager)
