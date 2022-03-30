@@ -1837,7 +1837,7 @@ describe("CartService", () => {
           }
           return Promise.resolve(false)
         }),
-      validateDiscountForCart: jest
+      validateDiscountForCartOrThrow: jest
         .fn()
         .mockImplementation((cart, discount) => {
           return Promise.resolve({ hasErrors: () => false })

@@ -736,42 +736,35 @@ class DiscountService extends BaseService {
     return adjustment >= fullItemPrice ? fullItemPrice : adjustment
   }
 
-  async validateDiscountForCart(
+  async validateDiscountForCartOrThrow(
     cart: Cart,
     discount: Discount
-  ): Promise<Errors> {
-    const errors = new Errors()
-
+  ): Promise<void> {
     if (this.hasReachedLimit(discount)) {
-      errors.add(
-        new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount has been used maximum allowed times"
-        )
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount has been used maximum allowed times"
       )
     }
 
     if (this.hasNotStarted(discount)) {
-      errors.add(
-        new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount is not valid yet"
-        )
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is not valid yet"
       )
     }
 
     if (this.hasExpired(discount)) {
-      errors.add(
-        new MedusaError(MedusaError.Types.NOT_ALLOWED, "Discount is expired")
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is expired"
       )
     }
 
     if (this.isDisabled(discount)) {
-      errors.add(
-        new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "The discount code is disabled"
-        )
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The discount code is disabled"
       )
     }
 
@@ -780,11 +773,9 @@ class DiscountService extends BaseService {
       cart.region_id
     )
     if (!isValidForRegion) {
-      errors.add(
-        new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          "The discount is not available in current region"
-        )
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The discount is not available in current region"
       )
     }
 
@@ -795,16 +786,12 @@ class DiscountService extends BaseService {
       )
 
       if (!canApplyForCustomer) {
-        errors.add(
-          new MedusaError(
-            MedusaError.Types.NOT_ALLOWED,
-            "Discount is not valid for customer"
-          )
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Discount is not valid for customer"
         )
       }
     }
-
-    return errors
   }
 
   hasReachedLimit(discount: Discount): boolean {
@@ -864,32 +851,6 @@ class DiscountService extends BaseService {
         customer.id
       )
     })
-  }
-}
-
-class Errors {
-  private errors: Error[]
-  constructor() {
-    this.errors = []
-  }
-
-  add(error: Error): void {
-    this.errors.push(error)
-  }
-
-  hasErrors(): boolean {
-    return this.errors.length > 0
-  }
-
-  createError(): Error {
-    if (this.errors.length === 1) {
-      return this.errors[0]
-    } else {
-      const errorMessage = this.errors.map((err) => err.message).join(", ")
-      const firstError = this.errors[0]
-      firstError.message = errorMessage
-      return firstError
-    }
   }
 }
 

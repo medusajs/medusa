@@ -1044,14 +1044,7 @@ class CartService extends BaseService {
         ["rule", "regions"]
       )
 
-      const validation = await this.discountService_.validateDiscountForCart(
-        cart,
-        discount
-      )
-
-      if (validation.hasErrors()) {
-        throw validation.createError()
-      }
+      await this.discountService_.validateDiscountForCartOrThrow(cart, discount)
 
       const rule = discount.rule
 

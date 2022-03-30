@@ -682,7 +682,7 @@ describe("DiscountService", () => {
     })
   })
 
-  describe("applyDiscount", () => {
+  describe("validateDiscountForCartOrThrow", () => {
     const getCart = (id) => {
       if (id === "with-d") {
         return {
@@ -741,7 +741,7 @@ describe("DiscountService", () => {
             },
           },
         ],
-        region_id: IdMap.getId("good"),
+        region_id: "good",
         items: [
           {
             id: "li1",
@@ -757,78 +757,25 @@ describe("DiscountService", () => {
       }
     }
 
-    const getDiscount = (code) => {
-      if (code === "null-count") {
-        return {
-          id: "null-count",
-          code: "null-count",
-          regions: [{ id: "good" }],
-          rule: {},
-          usage_count: null,
-          usage_limit: 2,
-        }
-      }
-
-      if (code === "ApplicableForCustomer") {
-        return {
-          id: "ApplicableForCustomer",
-          code: "ApplicableForCustomer",
-          regions: [{ id: "good" }],
-          rule: {
-            id: "test-rule",
-            type: "percentage",
-          },
-          starts_at: getOffsetDate(-10),
-          ends_at: getOffsetDate(10),
-        }
-      }
-      return {
-        id: "10off",
-        code: "10%OFF",
-        regions: [{ id: "good" }],
-        rule: {
-          id: "10off-rule",
-          type: "percentage",
-        },
-      }
-    }
-
-    const discountRepository = MockRepository({})
-
-    const discountRuleRepository = MockRepository({})
-
-    const regionService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("france"),
-        }
-      },
-      withTransaction: function() {
-        return this
-      },
-    }
-
-    const hasReachedLimitMock = jest.fn().mockImplementation(() => false)
-    const isDisabledMock = jest.fn().mockImplementation(() => false)
-    const isValidForRegionMock = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(true))
-    const canApplyForCustomerMock = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(true))
-
-    let discountService = new DiscountService({})
-
-    discountService.hasReachedLimit = hasReachedLimitMock
-    discountService.isDisabled = isDisabledMock
-    discountService.isValidForRegion = isValidForRegionMock
-    discountService.canApplyForCustomer = canApplyForCustomerMock
+    let discountService
 
     beforeEach(async () => {
-      jest.clearAllMocks()
+      discountService = new DiscountService({})
+      const hasReachedLimitMock = jest.fn().mockImplementation(() => false)
+      const isDisabledMock = jest.fn().mockImplementation(() => false)
+      const isValidForRegionMock = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(true))
+      const canApplyForCustomerMock = jest.fn().mockImplementation(() => {
+        return Promise.resolve(true)
+      })
+      discountService.hasReachedLimit = hasReachedLimitMock
+      discountService.isDisabled = isDisabledMock
+      discountService.canApplyForCustomer = canApplyForCustomerMock
+      discountService.isValidForRegion = isValidForRegionMock
     })
 
-    it("calls all validation methods when cart includes a customer_id, then returns an empty errors array", async () => {
+    it("calls all validation methods when cart includes a customer_id and doesn't throw", async () => {
       const discount = {
         id: "10off",
         code: "10%OFF",
@@ -839,10 +786,11 @@ describe("DiscountService", () => {
         },
       }
       const cart = getCart("with-d-and-customer")
-      const validation = await discountService.validateDiscountForCart(
+      const result = await discountService.validateDiscountForCartOrThrow(
         cart,
         discount
       )
+      expect(result).toBeUndefined()
 
       expect(discountService.hasReachedLimit).toHaveBeenCalledTimes(1)
       expect(discountService.hasReachedLimit).toHaveBeenCalledWith(discount)
@@ -855,12 +803,88 @@ describe("DiscountService", () => {
         discount,
         cart.region_id
       )
+
       expect(discountService.canApplyForCustomer).toHaveBeenCalledTimes(1)
       expect(discountService.canApplyForCustomer).toHaveBeenCalledWith(
         discount.rule.id,
         cart.customer_id
       )
-      expect(validation.errors).toEqual([])
+    })
+
+    it("throws when hasReachedLimit returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.hasReachedLimit = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount has been used maximum allowed times",
+      })
+    })
+
+    it("throws when hasNotStarted returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.hasNotStarted = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount is not valid yet",
+      })
+    })
+
+    it("throws when hasExpired returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.hasExpired = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount is expired",
+      })
+    })
+
+    it("throws when isDisabled returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.isDisabled = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "The discount code is disabled",
+      })
+    })
+
+    it("throws when isValidForRegion returns false", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.isValidForRegion = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(false))
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "The discount is not available in current region",
+      })
+    })
+
+    it("throws when canApplyForCustomer returns false", async () => {
+      const discount = { rule: { id: "" } }
+      const cart = getCart("with-d-and-customer")
+      discountService.canApplyForCustomer = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(false))
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount is not valid for customer",
+      })
     })
   })
 
