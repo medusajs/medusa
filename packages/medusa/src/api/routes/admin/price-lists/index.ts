@@ -13,6 +13,11 @@ export default (app) => {
 
   route.get("/", middlewares.wrap(require("./list-price-lists").default))
 
+  route.get(
+    "/:id/products",
+    middlewares.wrap(require("./list-price-list-products").default)
+  )
+
   route.post("/", middlewares.wrap(require("./create-price-list").default))
 
   route.post("/:id", middlewares.wrap(require("./update-price-list").default))
@@ -65,3 +70,4 @@ export * from "./delete-price-list"
 export * from "./get-price-list"
 export * from "./list-price-lists"
 export * from "./update-price-list"
+export * from "./list-price-list-products"
