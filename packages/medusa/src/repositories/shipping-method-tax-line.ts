@@ -3,6 +3,21 @@ import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
 
 @EntityRepository(ShippingMethodTaxLine)
 export class ShippingMethodTaxLineRepository extends Repository<ShippingMethodTaxLine> {
+  async upsertLines(
+    lines: ShippingMethodTaxLine[]
+  ): Promise<ShippingMethodTaxLine[]> {
+    const insertResult = await this.createQueryBuilder()
+      .insert()
+      .values(lines)
+      .orUpdate({
+        conflict_target: ["shipping_method_id", "code"],
+        overwrite: ["rate", "name", "updated_at"],
+      })
+      .execute()
+
+    return insertResult.identifiers as ShippingMethodTaxLine[]
+  }
+
   async deleteForCart(cartId: string): Promise<void> {
     const qb = this.createQueryBuilder("line")
       .select(["line.id"])

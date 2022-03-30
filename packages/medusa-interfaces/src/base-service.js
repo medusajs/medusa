@@ -158,12 +158,18 @@ class BaseService {
    * @param {string} isolation - the isolation level to be used for the work.
    * @return {any} the result of the transactional work
    */
-  async atomicPhase_(work, isolationOrErrorHandler, maybeErrorHandler) {
-    let errorHandler = maybeErrorHandler
+  async atomicPhase_(
+    work,
+    isolationOrErrorHandler,
+    maybeErrorHandlerOrDontFail
+  ) {
+    let errorHandler = maybeErrorHandlerOrDontFail
     let isolation = isolationOrErrorHandler
+    let dontFail = false
     if (typeof isolationOrErrorHandler === "function") {
       isolation = null
       errorHandler = isolationOrErrorHandler
+      dontFail = !!maybeErrorHandlerOrDontFail
     }
 
     if (this.transactionManager_) {
@@ -226,8 +232,12 @@ class BaseService {
         return result
       } catch (error) {
         if (errorHandler) {
-          await errorHandler(error)
+          const result = await errorHandler(error)
+          if (dontFail) {
+            return result
+          }
         }
+
         throw error
       }
     }

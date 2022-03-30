@@ -1882,8 +1882,6 @@ class CartService extends BaseService {
       const calculationContext = this.totalsService_.getCalculationContext(cart)
 
       const txTaxProvider = this.taxProviderService_.withTransaction(manager)
-
-      await txTaxProvider.clearTaxLines(id)
       await txTaxProvider.createTaxLines(cart, calculationContext)
 
       return cart

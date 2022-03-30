@@ -27,7 +27,7 @@ describe("Order Taxes", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: true })
+      medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
     }
@@ -197,7 +197,7 @@ describe("Order Taxes", () => {
     expect(response.data.order.total).toEqual(2300)
   })
 
-  test.only("completing cart with failure doesn't duplicate", async () => {
+  test("completing cart with failure doesn't duplicate", async () => {
     const product1 = await simpleProductFactory(
       dbConnection,
       {

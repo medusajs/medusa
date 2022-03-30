@@ -3,6 +3,19 @@ import { LineItemTaxLine } from "../models/line-item-tax-line"
 
 @EntityRepository(LineItemTaxLine)
 export class LineItemTaxLineRepository extends Repository<LineItemTaxLine> {
+  async upsertLines(lines: LineItemTaxLine[]): Promise<LineItemTaxLine[]> {
+    const insertResult = await this.createQueryBuilder()
+      .insert()
+      .values(lines)
+      .orUpdate({
+        conflict_target: ["item_id", "code"],
+        overwrite: ["rate", "name", "updated_at"],
+      })
+      .execute()
+
+    return insertResult.identifiers as LineItemTaxLine[]
+  }
+
   async deleteForCart(cartId: string): Promise<void> {
     const qb = this.createQueryBuilder("line")
       .select(["line.id"])
