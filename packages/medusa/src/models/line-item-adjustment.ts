@@ -42,7 +42,7 @@ export class LineItemAdjustment {
   @JoinColumn({ name: "discount_id" })
   discount: Discount
 
-  @Index({ unique: false })
+  @Index()
   @Column({ nullable: true })
   discount_id: string
 
