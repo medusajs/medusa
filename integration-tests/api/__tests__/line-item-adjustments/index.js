@@ -11,7 +11,7 @@ const {
 
 jest.setTimeout(30000)
 
-describe("line item adjustments", () => {
+describe("Line Item Adjustments", () => {
   let dbConnection
   let medusaProcess
 
@@ -36,7 +36,7 @@ describe("line item adjustments", () => {
     medusaProcess.kill()
   })
 
-  describe("tests db constraints", () => {
+  describe("Tests database constraints", () => {
     let cart,
       discount,
       lineItemId = "line-test"
@@ -105,102 +105,118 @@ describe("line item adjustments", () => {
       await doAfterEach()
     })
 
-    it("successfully creates a line item adjustment with a different item_id", async () => {
-      const createLineItemWithAdjustment = async () => {
-        return await simpleLineItemFactory(dbConnection, {
-          id: "line-test-2",
-          variant_id: "test-variant-quantity",
-          cart_id: "test-cart",
-          unit_price: 1000,
-          quantity: 1,
-          adjustments: [
-            {
+    describe("Given an existing line item, a discount, and a line item adjustment for both", () => {
+      describe("When creating an adjustment for another line item w. same discount", () => {
+        test("Then should create an adjustment", async () => {
+          const createLineItemWithAdjustment = async () => {
+            return await simpleLineItemFactory(dbConnection, {
+              id: "line-test-2",
+              variant_id: "test-variant-quantity",
+              cart_id: "test-cart",
+              unit_price: 1000,
+              quantity: 1,
+              adjustments: [
+                {
+                  amount: 10,
+                  discount_id: discount.id,
+                  description: "discount",
+                  item_id: "line-test-2",
+                },
+              ],
+            })
+          }
+
+          expect(createLineItemWithAdjustment()).resolves.toEqual(
+            expect.anything()
+          )
+        })
+      })
+
+      describe("When creating an adjustment for another line item w. null discount", () => {
+        test("Then should create an adjustment", async () => {
+          const createAdjustmentNullDiscount = async () => {
+            return await dbConnection.manager.insert(LineItemAdjustment, {
+              id: "lia-1",
+              item_id: lineItemId,
+              amount: 35,
+              description: "custom discount",
+              discount_id: null,
+            })
+          }
+
+          expect(createAdjustmentNullDiscount()).resolves.toEqual(
+            expect.anything()
+          )
+        })
+      })
+
+      describe("When creating multiple adjustments w. a null discount_id", () => {
+        test("Then should create multiple adjustments", async () => {
+          const createAdjustmentsNullDiscount = async () => {
+            await dbConnection.manager.insert(LineItemAdjustment, {
+              id: "lia-1",
+              item_id: lineItemId,
+              amount: 35,
+              description: "custom discount",
+              discount_id: null,
+            })
+            return await dbConnection.manager.insert(LineItemAdjustment, {
+              id: "lia-2",
+              item_id: lineItemId,
+              amount: 100,
+              description: "custom discount",
+              discount_id: null,
+            })
+          }
+          expect(createAdjustmentsNullDiscount()).resolves.toEqual(
+            expect.anything()
+          )
+        })
+      })
+
+      describe("When creating an adjustment w. for same line item and different discount", () => {
+        test("Then should create an adjustment", async () => {
+          const createAdjustment = async () => {
+            await simpleDiscountFactory(dbConnection, {
+              code: "ANOTHER",
+              id: "discount-2",
+              rule: {
+                value: 10,
+                type: "percentage",
+                allocation: "item",
+              },
+              regions: ["test-region"],
+            })
+
+            return await dbConnection.manager.insert(LineItemAdjustment, {
+              id: "lia-1",
+              item_id: lineItemId,
               amount: 10,
-              discount_id: discount.id,
               description: "discount",
-              item_id: "line-test-2",
-            },
-          ],
+              discount_id: "discount-2",
+            })
+          }
+
+          expect(createAdjustment()).resolves.toEqual(expect.anything())
         })
-      }
+      })
 
-      expect(createLineItemWithAdjustment()).resolves.toEqual(expect.anything())
-    })
+      describe("When creating an adjustment w. existing line item and discount pair", () => {
+        test("Then should throw a duplicate error", async () => {
+          const createDuplicateAdjustment = async () =>
+            await dbConnection.manager.insert(LineItemAdjustment, {
+              id: "lia-1",
+              item_id: lineItemId,
+              amount: 20,
+              description: "discount",
+              discount_id: discount.id,
+            })
 
-    it("successfully creates a line item adjustment with a null discount_id", async () => {
-      const createAdjustmentNullDiscount = async () => {
-        return await dbConnection.manager.insert(LineItemAdjustment, {
-          id: "lia-1",
-          item_id: lineItemId,
-          amount: 35,
-          description: "custom discount",
-          discount_id: null,
+          expect(createDuplicateAdjustment()).rejects.toEqual(
+            expect.objectContaining({ code: "23505" })
+          )
         })
-      }
-
-      expect(createAdjustmentNullDiscount()).resolves.toEqual(expect.anything())
-    })
-
-    it("successfully creates multiple line item adjustments with a null discount_id", async () => {
-      const createAdjustmentsNullDiscount = async () => {
-        await dbConnection.manager.insert(LineItemAdjustment, {
-          id: "lia-1",
-          item_id: lineItemId,
-          amount: 35,
-          description: "custom discount",
-          discount_id: null,
-        })
-        return await dbConnection.manager.insert(LineItemAdjustment, {
-          id: "lia-2",
-          item_id: lineItemId,
-          amount: 100,
-          description: "custom discount",
-          discount_id: null,
-        })
-      }
-      expect(createAdjustmentsNullDiscount()).resolves.toEqual(
-        expect.anything()
-      )
-    })
-
-    it("successfully creates a line item adjustment with same item_id and different discount", async () => {
-      const createAdjustment = async () => {
-        await simpleDiscountFactory(dbConnection, {
-          code: "ANOTHER",
-          id: "discount-2",
-          rule: {
-            value: 10,
-            type: "percentage",
-            allocation: "item",
-          },
-          regions: ["test-region"],
-        })
-
-        return await dbConnection.manager.insert(LineItemAdjustment, {
-          id: "lia-1",
-          item_id: lineItemId,
-          amount: 10,
-          description: "discount",
-          discount_id: "discount-2",
-        })
-      }
-
-      expect(createAdjustment()).resolves.toEqual(expect.anything())
-    })
-
-    it("fails to create a line item adjustment with existing discount_id and item_id pair", async () => {
-      const createDuplicateAdjustment = async () =>
-        await dbConnection.manager.insert(LineItemAdjustment, {
-          id: "lia-1",
-          item_id: lineItemId,
-          amount: 20,
-          description: "discount",
-          discount_id: discount.id,
-        })
-
-      expect(createDuplicateAdjustment()).rejects.toEqual(
-        expect.objectContaining({ code: "23505" })
-      )
+      })
     })
   })
 })
