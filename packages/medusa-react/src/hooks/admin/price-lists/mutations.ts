@@ -80,7 +80,7 @@ export const useAdminCreatePriceListPrices = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostPriceListPricesPricesReq) =>
-      client.admin.priceLists.batchAddPrices(id, payload),
+      client.admin.priceLists.addPrices(id, payload),
     buildOptions(queryClient, adminPriceListKeys.lists(), options)
   )
 }
@@ -98,7 +98,7 @@ export const useAdminDeletePriceListPrices = (
 
   return useMutation(
     (payload: AdminDeletePriceListPricesPricesReq) =>
-      client.admin.priceLists.batchDeletePrices(id, payload),
+      client.admin.priceLists.deletePrices(id, payload),
     buildOptions(
       queryClient,
       [adminPriceListKeys.detail(id), adminPriceListKeys.lists()],

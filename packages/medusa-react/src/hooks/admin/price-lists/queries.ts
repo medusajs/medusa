@@ -1,7 +1,9 @@
 import {
+  AdminGetPriceListsPriceListProductsParams,
   AdminGetPriceListPaginationParams,
   AdminPriceListsListRes,
   AdminPriceListRes,
+  AdminProductsListRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
@@ -27,6 +29,24 @@ export const useAdminPriceLists = (
   const { data, ...rest } = useQuery(
     adminPriceListKeys.list(query),
     () => client.admin.priceLists.list(query),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
+export const useAdminPriceListProducts = (
+  id: string,
+  query?: AdminGetPriceListsPriceListProductsParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminProductsListRes>,
+    Error,
+    ReturnType<PriceListQueryKeys["detail"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminPriceListKeys.detail(id),
+    () => client.admin.priceLists.listProducts(id, query),
     options
   )
   return { ...data, ...rest } as const
