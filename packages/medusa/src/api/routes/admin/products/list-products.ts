@@ -9,6 +9,8 @@ import {
   ValidateNested,
 } from "class-validator"
 import { omit } from "lodash"
+
+import { Product } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
 import {
   allowedAdminProductFields,
@@ -87,7 +89,7 @@ export default async (req, res) => {
       expand: validatedParams.expand,
       fields: validatedParams.fields,
       allowedFields: allowedAdminProductFields,
-      defaultFields: defaultAdminProductFields,
+      defaultFields: defaultAdminProductFields as (keyof Product)[],
       defaultRelations: defaultAdminProductRelations,
     }
   )

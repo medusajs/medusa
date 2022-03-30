@@ -1,9 +1,10 @@
 import { AwilixContainer } from "awilix"
 import { AdminProductsListRes } from "../../api"
-import { pickBy, omit } from "lodash"
+import { pickBy } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { Product } from "../../models/product"
 import { ProductService } from "../../services"
+import { getListConfig } from "../../utils/get-query-config"
 import { FindConfig } from "../../types/common"
 import { FilterableProductProps } from "../../types/product"
 
@@ -14,7 +15,7 @@ type ListContext = {
   fields?: string
   expand?: string
   allowedFields?: string[]
-  defaultFields?: string[]
+  defaultFields?: (keyof Product)[]
   defaultRelations?: string[]
 }
 
@@ -28,34 +29,25 @@ const listAndCount = async (
     context
 
   const productService: ProductService = scope.resolve("productService")
-
-  let includeFields: string[] = []
+  let includeFields: (keyof Product)[] | undefined
   if (context.fields) {
-    includeFields = context.fields.split(",")
+    includeFields = context.fields.split(",") as (keyof Product)[]
   }
 
-  let expandFields: string[] = []
+  let expandFields: string[] | undefined
   if (context.expand) {
     expandFields = context.expand.split(",")
   }
 
-  const listConfig: FindConfig<Product> = {
-    select: (includeFields.length
-      ? includeFields
-      : defaultFields) as (keyof Product)[],
-    relations: expandFields.length ? expandFields : defaultRelations,
-    skip: offset,
-    take: limit,
-  }
-
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
   if (typeof context.order !== "undefined") {
     let orderField = context.order
     if (context.order.startsWith("-")) {
       const [, field] = context.order.split("-")
       orderField = field
-      listConfig.order = { [field]: "DESC" }
+      orderBy = { [field]: "DESC" }
     } else {
-      listConfig.order = { [context.order]: "ASC" }
+      orderBy = { [context.order]: "ASC" }
     }
 
     if (!(allowedFields || []).includes(orderField)) {
@@ -65,6 +57,16 @@ const listAndCount = async (
       )
     }
   }
+
+  const listConfig = getListConfig<Product>(
+    defaultFields ?? [],
+    defaultRelations ?? [],
+    includeFields,
+    expandFields,
+    limit,
+    offset,
+    orderBy
+  )
 
   const [products, count] = await productService.listAndCount(
     pickBy(query, (val) => typeof val !== "undefined"),
