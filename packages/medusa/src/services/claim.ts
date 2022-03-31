@@ -24,14 +24,12 @@ import {
 import { ClaimItem } from "../models/claim-item"
 import { ClaimRepository } from "../repositories/claim"
 import { EntityManager, In } from "typeorm"
-import { Fulfillment } from "../models/fulfillment"
 import { FulfillmentItem } from "../models/fulfillment-item"
 import { LineItem } from "../models/line-item"
 import { LineItemRepository } from "../repositories/line-item"
 import { MedusaError } from "medusa-core-utils"
 import { Order } from "../models/order"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { IdempotencyKey } from "../models/idempotency-key"
 
 type InjectedDependencies = {
   manager: EntityManager
