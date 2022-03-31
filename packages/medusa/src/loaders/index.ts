@@ -1,3 +1,4 @@
+import './config'
 import "reflect-metadata"
 import Logger from "./logger"
 import apiLoader from "./api"
@@ -73,7 +74,7 @@ export default async (
   })
 
   container.register({
-    logger: asValue(Logger),
+    logger: asValue(Logger)
   })
 
   await redisLoader({ container, configModule, logger: Logger })

@@ -12,3 +12,24 @@ export type MedusaContainer = AwilixContainer & {
 export type Logger = _Logger & {
   progress: (activityId: string, msg: string) => void
 }
+
+export type ConfigModule = {
+  projectConfig: {
+    redis_url?: string
+
+    jwtSecret: string
+    cookieSecret: string
+
+    database_url?: string
+    database_type: string
+    database_extra?: Record<string, unknown> & {
+      ssl: { rejectUnauthorized: false }
+    }
+    store_cors: string
+    admin_cors: string
+  }
+  plugins: {
+    resolve: string
+    options: Record<string, unknown>
+  }[]
+}

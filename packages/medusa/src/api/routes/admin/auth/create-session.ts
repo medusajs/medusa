@@ -1,10 +1,10 @@
 import _ from "lodash"
 import jwt from "jsonwebtoken"
-import config from "../../../../config"
 import { validator } from "../../../../utils/validator"
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 import AuthService from "../../../../services/auth"
 import { MedusaError } from "medusa-core-utils"
+import config from "../../../../config"
 
 /**
  * @oas [post] /auth
@@ -28,7 +28,8 @@ import { MedusaError } from "medusa-core-utils"
  *              $ref: "#/components/schemas/user"
  */
 export default async (req, res) => {
-  if (!config.jwtSecret) {
+  const { jwtSecret } = config
+  if (!jwtSecret) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
       "Please configure jwtSecret in your environment"
@@ -44,7 +45,7 @@ export default async (req, res) => {
 
   if (result.success && result.user) {
     // Add JWT to cookie
-    req.session.jwt = jwt.sign({ userId: result.user.id }, config.jwtSecret, {
+    req.session.jwt = jwt.sign({ userId: result.user.id }, jwtSecret, {
       expiresIn: "24h",
     })
 

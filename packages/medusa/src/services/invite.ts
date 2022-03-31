@@ -4,11 +4,11 @@ import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService, UserService } from "."
 import { User } from ".."
-import config from "../config"
 import { UserRoles } from "../models/user"
 import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
 import { ListInvite } from "../types/invites"
+import config from "../config"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
@@ -76,8 +76,9 @@ class InviteService extends BaseService {
   }
 
   generateToken(data): string {
-    if (config.jwtSecret) {
-      return jwt.sign(data, config.jwtSecret)
+    const { jwtSecret } = config
+    if (jwtSecret) {
+      return jwt.sign(data, jwtSecret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
@@ -248,8 +249,9 @@ class InviteService extends BaseService {
   }
 
   verifyToken(token): JwtPayload | string {
-    if (config.jwtSecret) {
-      return jwt.verify(token, config.jwtSecret)
+    const { jwtSecret } = config
+    if (jwtSecret) {
+      return jwt.verify(token, jwtSecret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
