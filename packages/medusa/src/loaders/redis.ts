@@ -1,8 +1,20 @@
 import { asValue } from "awilix"
 import RealRedis from "ioredis"
 import FakeRedis from "ioredis-mock"
+import { MedusaContainer } from "../types/global"
+import { Logger } from "../types/global"
 
-const redisLoader = async ({ container, configModule, logger }) => {
+export type RedisConfig = {
+  redis_url?: string;
+}
+
+type Options = {
+  container: MedusaContainer;
+  configModule: { projectConfig: RedisConfig };
+  logger: Logger;
+}
+
+async function redisLoader({ container, configModule, logger }: Options): Promise<void> {
   if (configModule.projectConfig.redis_url) {
     // Economical way of dealing with redis clients
     const client = new RealRedis(configModule.projectConfig.redis_url)

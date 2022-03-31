@@ -1,11 +1,12 @@
 import glob from "glob"
 import path from "path"
 import { asFunction } from "awilix"
+import { MedusaContainer } from "../types/global"
 
 /**
  * Registers all subscribers in the subscribers directory
  */
-export default ({ container }) => {
+export default ({ container }: { container: MedusaContainer }) => {
   const isTest = process.env.NODE_ENV === "test"
 
   const corePath = isTest

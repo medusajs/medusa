@@ -1,9 +1,12 @@
 import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
+import { MedusaContainer } from "../types/global"
+import DefaultSearchService from "../services/search"
+import { Logger } from "../types/global"
 
-async function loadProductsIntoSearchEngine(container) {
-  const searchService = container.resolve("searchService")
-  const productService = container.resolve("productService")
+async function loadProductsIntoSearchEngine(container: MedusaContainer): Promise<void> {
+  const searchService = container.resolve<DefaultSearchService>("searchService")
+  const productService = container.resolve<ProductService>("productService")
 
   const TAKE = 20
   let hasMore = true
@@ -58,9 +61,9 @@ async function loadProductsIntoSearchEngine(container) {
   }
 }
 
-export default async ({ container }) => {
-  const searchService = container.resolve("searchService")
-  const logger = container.resolve("logger")
+export default async ({ container }: { container: MedusaContainer }): Promise<void> => {
+  const searchService = container.resolve<DefaultSearchService>("searchService")
+  const logger = container.resolve<Logger>("logger")
   if (searchService.isDefault) {
     logger.warn(
       "No search engine provider was found: make sure to include a search plugin to enable searching"

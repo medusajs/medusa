@@ -1,35 +1,58 @@
-import { asValue, createContainer } from "awilix"
-import { getConfigFile } from "medusa-core-utils"
-import { track } from "medusa-telemetry"
 import "reflect-metadata"
-import requestIp from "request-ip"
-import { getManager } from "typeorm"
-import apiLoader from "./api"
-import databaseLoader from "./database"
-import defaultsLoader from "./defaults"
-import expressLoader from "./express"
 import Logger from "./logger"
+import apiLoader from "./api"
+import databaseLoader, { DatabaseConfig } from "./database"
+import defaultsLoader from "./defaults"
+import expressLoader  from "./express"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
-import redisLoader from "./redis"
+import redisLoader, { RedisConfig } from "./redis"
 import repositoriesLoader from "./repositories"
+import requestIp from "request-ip"
 import searchIndexLoader from "./search-index"
 import servicesLoader from "./services"
 import strategiesLoader from "./strategies"
 import subscribersLoader from "./subscribers"
+import { ClassOrFunctionReturning } from "awilix/lib/container"
+import { Connection, getManager } from "typeorm"
+import { Express, NextFunction, Request, Response } from "express"
+import { asFunction, asValue, AwilixContainer, createContainer, Resolver } from "awilix"
+import { getConfigFile } from "medusa-core-utils"
+import { track } from "medusa-telemetry"
+import { MedusaContainer } from "../types/global"
 
-export default async ({ directory: rootDirectory, expressApp, isTest }) => {
-  const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
+type Options = {
+  directory: string;
+  expressApp: Express;
+  isTest: boolean
+}
 
-  const container = createContainer()
-  container.registerAdd = function (name, registration) {
+export type ConfigModule = {
+  projectConfig: DatabaseConfig & RedisConfig;
+  plugins: {
+    resolve: string;
+    options: Record<string, unknown>
+  }[];
+}
+
+export default async (
+  {
+    directory: rootDirectory,
+    expressApp,
+    isTest
+  }: Options
+): Promise<{ container: MedusaContainer; dbConnection: Connection; app: Express }> => {
+  const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as { configModule: ConfigModule }
+
+  const container = createContainer() as MedusaContainer
+  container.registerAdd = function (this: MedusaContainer, name: string, registration: typeof asFunction | typeof asValue) {
     const storeKey = name + "_STORE"
 
     if (this.registrations[storeKey] === undefined) {
-      this.register(storeKey, asValue([]))
+      this.register(storeKey, asValue([] as Resolver<unknown>[]))
     }
-    const store = this.resolve(storeKey)
+    const store = this.resolve(storeKey) as (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
 
     if (this.registrations[name] === undefined) {
       this.register(name, asArray(store))
@@ -40,14 +63,12 @@ export default async ({ directory: rootDirectory, expressApp, isTest }) => {
   }.bind(container)
 
   // Add additional information to context of request
-  expressApp.use((req, res, next) => {
-    const ipAddress = requestIp.getClientIp(req)
+  expressApp.use((req: Request, res: Response, next: NextFunction) => {
+    const ipAddress = requestIp.getClientIp(req) as string
 
-    const context = {
+    (req as any).request_context = {
       ip_address: ipAddress,
     }
-
-    req.request_context = context
     next()
   })
 
@@ -59,7 +80,7 @@ export default async ({ directory: rootDirectory, expressApp, isTest }) => {
 
   const modelsActivity = Logger.activity("Initializing models")
   track("MODELS_INIT_STARTED")
-  modelsLoader({ container, activityId: modelsActivity, isTest })
+  modelsLoader({ container })
   const mAct = Logger.success(modelsActivity, "Models initialized") || {}
   track("MODELS_INIT_COMPLETED", { duration: mAct.duration })
 
@@ -68,71 +89,47 @@ export default async ({ directory: rootDirectory, expressApp, isTest }) => {
   await registerPluginModels({
     rootDirectory,
     container,
-    activityId: pmActivity,
   })
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
 
   const repoActivity = Logger.activity("Initializing repositories")
   track("REPOSITORIES_INIT_STARTED")
-  repositoriesLoader({ container, activityId: repoActivity, isTest }) || {}
+  repositoriesLoader({ container })
   const rAct = Logger.success(repoActivity, "Repositories initialized") || {}
   track("REPOSITORIES_INIT_COMPLETED", { duration: rAct.duration })
 
   const dbActivity = Logger.activity("Initializing database")
   track("DATABASE_INIT_STARTED")
-  const dbConnection = await databaseLoader({
-    container,
-    configModule,
-    activityId: dbActivity,
-    isTest,
-  })
+  const dbConnection = await databaseLoader({ container, configModule })
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
 
-  container.register({
-    manager: asValue(dbConnection.manager),
-  })
+  container.register({ manager: asValue(dbConnection.manager), })
 
   const stratActivity = Logger.activity("Initializing strategies")
   track("STRATEGIES_INIT_STARTED")
-  strategiesLoader({
-    container,
-    configModule,
-    activityId: stratActivity,
-    isTest,
-  })
+  strategiesLoader({ container, configModule, isTest })
   const stratAct = Logger.success(stratActivity, "Strategies initialized") || {}
   track("STRATEGIES_INIT_COMPLETED", { duration: stratAct.duration })
 
   const servicesActivity = Logger.activity("Initializing services")
   track("SERVICES_INIT_STARTED")
-  servicesLoader({
-    container,
-    configModule,
-    activityId: servicesActivity,
-    isTest,
-  })
+  servicesLoader({ container, configModule, isTest })
   const servAct = Logger.success(servicesActivity, "Services initialized") || {}
   track("SERVICES_INIT_COMPLETED", { duration: servAct.duration })
 
   const expActivity = Logger.activity("Initializing express")
   track("EXPRESS_INIT_STARTED")
-  await expressLoader({
-    app: expressApp,
-    configModule,
-    activityId: expActivity,
-  })
-  await passportLoader({ app: expressApp, container, activityId: expActivity })
+  await expressLoader({ app: expressApp, configModule })
+  await passportLoader({ app: expressApp, container })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
 
   // Add the registered services to the request scope
-  expressApp.use((req, res, next) => {
-    container.register({
-      manager: asValue(getManager()),
-    })
-    req.scope = container.createScope()
+  expressApp.use((req: Request, res: Response, next: NextFunction) => {
+    container.register({ manager: asValue(getManager()) });
+    (req as any).scope = container.createScope()
     next()
   })
 
@@ -149,39 +146,36 @@ export default async ({ directory: rootDirectory, expressApp, isTest }) => {
 
   const subActivity = Logger.activity("Initializing subscribers")
   track("SUBSCRIBERS_INIT_STARTED")
-  subscribersLoader({ container, activityId: subActivity })
+  subscribersLoader({ container })
   const subAct = Logger.success(subActivity, "Subscribers initialized") || {}
   track("SUBSCRIBERS_INIT_COMPLETED", { duration: subAct.duration })
 
   const apiActivity = Logger.activity("Initializing API")
   track("API_INIT_STARTED")
-  await apiLoader({
-    container,
-    rootDirectory,
-    app: expressApp,
-    activityId: apiActivity,
-  })
+  await apiLoader({ container, rootDirectory, app: expressApp })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 
   const defaultsActivity = Logger.activity("Initializing defaults")
   track("DEFAULTS_INIT_STARTED")
-  await defaultsLoader({ container, activityId: defaultsActivity })
+  await defaultsLoader({ container })
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
   track("DEFAULTS_INIT_COMPLETED", { duration: dAct.duration })
 
   const searchActivity = Logger.activity("Initializing search engine indexing")
   track("SEARCH_ENGINE_INDEXING_STARTED")
-  searchIndexLoader({ container, activityId: searchActivity })
+  await searchIndexLoader({ container })
   const searchAct = Logger.success(searchActivity, "Indexing completed") || {}
   track("SEARCH_ENGINE_INDEXING_COMPLETED", { duration: searchAct.duration })
 
   return { container, dbConnection, app: expressApp }
 }
 
-function asArray(resolvers) {
+function asArray(
+  resolvers: (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
+): { resolve: (container: AwilixContainer) => unknown[] } {
   return {
-    resolve: (container, opts) =>
-      resolvers.map((r) => container.build(r, opts)),
+    resolve: (container: AwilixContainer) =>
+      resolvers.map((resolver) => container.build(resolver)),
   }
 }
