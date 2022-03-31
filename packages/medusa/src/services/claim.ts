@@ -31,6 +31,7 @@ import { LineItemRepository } from "../repositories/line-item"
 import { MedusaError } from "medusa-core-utils"
 import { Order } from "../models/order"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
+import { IdempotencyKey } from "../models/idempotency-key"
 
 type InjectedDependencies = {
   manager: EntityManager
