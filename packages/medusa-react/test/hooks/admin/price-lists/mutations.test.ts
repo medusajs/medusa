@@ -1,8 +1,8 @@
 import {
-  useAdminCreateBatchPriceList,
   useAdminCreatePriceList,
-  useAdminDeleteBatchPriceList,
+  useAdminCreatePriceListPrices,
   useAdminDeletePriceList,
+  useAdminDeletePriceListPrices,
   useAdminUpdatePriceList,
 } from "../../../../src"
 import { renderHook } from "@testing-library/react-hooks"
@@ -94,7 +94,7 @@ describe("useAdminDeletePriceList hook", () => {
 describe("useAdminDeletePriceListBatch hook", () => {
   test("deletes a money amounts from price list", async () => {
     const { result, waitFor } = renderHook(
-      () => useAdminDeleteBatchPriceList(fixtures.get("price_list").id),
+      () => useAdminDeletePriceListPrices(fixtures.get("price_list").id),
       {
         wrapper: createWrapper(),
       }
@@ -117,7 +117,7 @@ describe("useAdminDeletePriceListBatch hook", () => {
 describe("useAdminDeletePriceList hook", () => {
   test("Adds prices to price list", async () => {
     const { result, waitFor } = renderHook(
-      () => useAdminCreateBatchPriceList(fixtures.get("price_list").id),
+      () => useAdminCreatePriceListPrices(fixtures.get("price_list").id),
       {
         wrapper: createWrapper(),
       }
