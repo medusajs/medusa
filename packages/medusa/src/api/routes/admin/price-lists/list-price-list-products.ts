@@ -8,6 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Product } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { FilterableProductProps } from "../../../../types/product"
@@ -96,7 +97,7 @@ export default async (req, res) => {
       fields: validatedParams.fields,
       order: validatedParams.order,
       allowedFields: allowedAdminProductFields,
-      defaultFields: defaultAdminProductFields,
+      defaultFields: defaultAdminProductFields as (keyof Product)[],
       defaultRelations: defaultAdminProductRelations,
     }
   )

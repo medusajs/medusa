@@ -75,6 +75,89 @@
     }
   ],
   "paths": {
+    "/collections/{id}": {
+      "get": {
+        "operationId": "GetCollectionsCollection",
+        "summary": "Retrieve a Product Collection",
+        "description": "Retrieves a Product Collection.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections": {
+      "get": {
+        "operationId": "GetCollections",
+        "summary": "List Product Collections",
+        "description": "Retrieve a list of Product Collection.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of collections to skip before starting to collect the collections set",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth": {
       "post": {
         "operationId": "PostAuth",
@@ -141,6 +224,7 @@
         "operationId": "GetAuth",
         "summary": "Get Session",
         "description": "Gets the currently logged in Customer.",
+        "x-authenticated": true,
         "tags": [
           "Auth"
         ],
@@ -191,6 +275,508 @@
                     "exists": {
                       "type": "boolean"
                     }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/me/addresses": {
+      "post": {
+        "operationId": "PostCustomersCustomerAddresses",
+        "summary": "Add a Shipping Address",
+        "description": "Adds a Shipping Address to a Customer's saved addresses.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "address"
+                ],
+                "properties": {
+                  "address": {
+                    "description": "The Address to add to the Customer.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "A successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers": {
+      "post": {
+        "operationId": "PostCustomers",
+        "summary": "Create a Customer",
+        "description": "Creates a Customer account.",
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "first_name",
+                  "last_name",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email address."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password for login."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/me/addresses/{address_id}": {
+      "delete": {
+        "operationId": "DeleteCustomersCustomerAddressesAddress",
+        "summary": "Delete an Address",
+        "description": "Removes an Address from the Customer's saved addresse.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "address_id",
+            "required": true,
+            "description": "The id of the Address to remove.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomersCustomerAddressesAddress",
+        "summary": "Update a Shipping Address",
+        "description": "Updates a Customer's saved Shipping Address.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "address_id",
+            "required": true,
+            "description": "The id of the Address to update.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "address": {
+                    "description": "The updated Address.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/me": {
+      "get": {
+        "operationId": "GetCustomersCustomer",
+        "summary": "Retrieves a Customer",
+        "description": "Retrieves a Customer - the Customer must be logged in to retrieve their details.",
+        "x-authenticated": true,
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomersCustomer",
+        "summary": "Update Customer details",
+        "description": "Updates a Customer's saved details.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "first_name": {
+                    "description": "The Customer's first name.",
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "description": "The Customer's last name.",
+                    "type": "string"
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "password": {
+                    "description": "The Customer's password.",
+                    "type": "string"
+                  },
+                  "phone": {
+                    "description": "The Customer's phone number.",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "The email of the customer.",
+                    "type": "string"
+                  },
+                  "metadata": {
+                    "description": "Metadata about the customer.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/me/payment-methods": {
+      "get": {
+        "operationId": "GetCustomersCustomerPaymentMethods",
+        "summary": "Retrieve saved payment methods",
+        "description": "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods.",
+        "x-authenticated": true,
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "payment_methods": {
+                      "type": "array",
+                      "items": {
+                        "properties": {
+                          "provider_id": {
+                            "type": "string",
+                            "description": "The id of the Payment Provider where the payment method is saved."
+                          },
+                          "data": {
+                            "type": "object",
+                            "description": "The data needed for the Payment Provider to use the saved payment method."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/me/orders": {
+      "get": {
+        "operationId": "GetCustomersCustomerOrders",
+        "summary": "Retrieve Customer Orders",
+        "description": "Retrieves a list of a Customer's Orders.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "How many addresses to return.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset in the resulting addresses.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated string) Which fields should be included in the resulting addresses.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated string) Which relations should be expanded in the resulting addresses.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of Orders.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of Orders to return,",
+                      "type": "integer"
+                    },
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/order"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/password-token": {
+      "post": {
+        "operationId": "PostCustomersCustomerPasswordToken",
+        "summary": "Creates a reset password token",
+        "description": "Creates a reset password token to be used in a subsequent /reset-password request. The password token should be sent out of band e.g. via email and will not be returned.",
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "204": {
+            "description": "OK"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "Email of the user whose password should be reset."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/reset-password": {
+      "post": {
+        "operationId": "PostCustomersResetPassword",
+        "summary": "Resets Customer password",
+        "description": "Resets a Customer's password using a password token created by a previous /password-token request.",
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "token",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email."
+                  },
+                  "token": {
+                    "type": "string",
+                    "description": "The password token created by a /password-token request."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The new password to set for the Customer."
                   }
                 }
               }
@@ -258,6 +844,48 @@
         }
       }
     },
+    "/carts/{id}/taxes": {
+      "post": {
+        "summary": "Calculate Cart Taxes",
+        "operationId": "PostCartsCartTaxes",
+        "description": "Calculates taxes for a cart. Depending on the cart's region this may involve making 3rd party API calls to a Tax Provider service.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The Cart id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "A cart object with the tax_total field populated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "cart": {
+                          "$ref": "#/components/schemas/cart"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/carts/{id}/complete": {
       "post": {
         "summary": "Complete a Cart",
@@ -297,6 +925,14 @@
                       "properties": {
                         "cart": {
                           "$ref": "#/components/schemas/cart"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "cart": {
+                          "$ref": "#/components/schemas/swap"
                         }
                       }
                     }
@@ -721,14 +1357,9 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "provider_id",
                   "data"
                 ],
                 "properties": {
-                  "provider_id": {
-                    "type": "string",
-                    "description": "The id of the Payment Provider responsible for the Payment Session to update."
-                  },
                   "data": {
                     "type": "object",
                     "description": "The data to update the payment session with."
@@ -751,6 +1382,52 @@
             "name": "id",
             "required": true,
             "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Cart"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cart": {
+                      "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/carts/{id}/payment-sessions/{provider_id}/refresh": {
+      "post": {
+        "operationId": "PostCartsCartPaymentSessionsSession",
+        "summary": "Refresh a Payment Session",
+        "description": "Refreshes a Payment Session to ensure that it is in sync with the Cart - this is usually not necessary.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Cart.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "provider_id",
+            "required": true,
+            "description": "The id of the Payment Provider that created the Payment Session to be refreshed.",
             "schema": {
               "type": "string"
             }
@@ -834,7 +1511,7 @@
     },
     "/store/carts/{id}": {
       "post": {
-        "operationId": "PostCartsCart",
+        "operationId": "PostCartsCartPaymentMethodUpdate",
         "summary": "Update a Cart\"",
         "description": "Updates a Cart.",
         "parameters": [
@@ -852,66 +1529,17 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "provider_id"
+                ],
                 "properties": {
-                  "region_id": {
+                  "provider_id": {
                     "type": "string",
-                    "description": "The id of the Region to create the Cart in."
+                    "description": "The id of the Payment Provider."
                   },
-                  "country_code": {
-                    "type": "string",
-                    "description": "The 2 character ISO country code to create the Cart in."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "An email to be used on the Cart."
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "gift_cards": {
-                    "description": "An array of Gift Card codes to add to the Cart.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Gift Card is identified by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "discounts": {
-                    "description": "An array of Discount codes to add to the Cart.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Discount is identifed by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "customer_id": {
-                    "description": "The id of the Customer to associate the Cart with.",
-                    "type": "string"
-                  },
-                  "context": {
-                    "description": "An optional object to provide context to the Cart.",
-                    "type": "object"
+                  "data": {
+                    "type": "object",
+                    "description": ""
                   }
                 }
               }
@@ -930,518 +1558,6 @@
                   "properties": {
                     "cart": {
                       "$ref": "#/components/schemas/cart"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections/{id}": {
-      "get": {
-        "operationId": "GetCollectionsCollection",
-        "summary": "Retrieve a Product Collection",
-        "description": "Retrieves a Product Collection.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product Collection",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections": {
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/{id}/addresses": {
-      "post": {
-        "operationId": "PostCustomersCustomerAddresses",
-        "summary": "Add a Shipping Address",
-        "description": "Adds a Shipping Address to a Customer's saved addresses.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The Customer id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "address": {
-                    "description": "The Address to add to the Customer.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "A successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers": {
-      "post": {
-        "operationId": "PostCustomers",
-        "summary": "Create a Customer",
-        "description": "Creates a Customer account.",
-        "parameters": [],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "first_name",
-                  "last_name",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email address."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The Customer's password for login."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/{id}/addresses/{address_id}": {
-      "delete": {
-        "operationId": "DeleteCustomersCustomerAddressesAddress",
-        "summary": "Delete an Address",
-        "description": "Removes an Address from the Customer's saved addresse.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "address_id",
-            "required": true,
-            "description": "The id of the Address to remove.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/me": {
-      "get": {
-        "operationId": "GetCustomersCustomer",
-        "summary": "Retrieves a Customer",
-        "description": "Retrieves a Customer - the Customer must be logged in to retrieve their details.",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomersCustomer",
-        "summary": "Update Customer details",
-        "description": "Updates a Customer's saved details.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "first_name": {
-                    "description": "The Customer's first name.",
-                    "type": "string"
-                  },
-                  "last_name": {
-                    "description": "The Customer's last name.",
-                    "type": "string"
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "password": {
-                    "description": "The Customer's password.",
-                    "type": "string"
-                  },
-                  "phone": {
-                    "description": "The Customer's phone number.",
-                    "type": "string"
-                  },
-                  "email": {
-                    "description": "The email of the customer.",
-                    "type": "string"
-                  },
-                  "metadata": {
-                    "description": "Metadata about the customer.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/me/payment-methods": {
-      "get": {
-        "operationId": "GetCustomersCustomerPaymentMethods",
-        "summary": "Retrieve saved payment methods",
-        "description": "Retrieves a list of a Customer's saved payment methods. Payment methods are saved with Payment Providers and it is their responsibility to fetch saved methods.",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "payment_methods": {
-                      "type": "array",
-                      "items": {
-                        "properties": {
-                          "provider_id": {
-                            "type": "string",
-                            "description": "The id of the Payment Provider where the payment method is saved."
-                          },
-                          "data": {
-                            "type": "object",
-                            "description": "The data needed for the Payment Provider to use the saved payment method."
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/me/orders": {
-      "get": {
-        "operationId": "GetCustomersCustomerOrders",
-        "summary": "Retrieve Customer Orders",
-        "description": "Retrieves a list of a Customer's Orders.",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "payment_methods": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/order"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/password-token": {
-      "post": {
-        "operationId": "PostCustomersCustomerPasswordToken",
-        "summary": "Creates a reset password token",
-        "description": "Creates a reset password token to be used in a subsequent /reset-password request. The password token should be sent out of band e.g. via email and will not be returned.",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "204": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/customers/reset-password": {
-      "post": {
-        "operationId": "PostCustomersResetPassword",
-        "summary": "Resets Customer password",
-        "description": "Resets a Customer's password using a password token created by a previous /password-token request.",
-        "parameters": [],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "token",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email."
-                  },
-                  "token": {
-                    "type": "string",
-                    "description": "The password token created by a /password-token request."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The new password to set for the Customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/me/addresses/{address_id}": {
-      "post": {
-        "operationId": "PostCustomersCustomerAddressesAddress",
-        "summary": "Update a Shipping Address",
-        "description": "Updates a Customer's saved Shipping Address.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "address_id",
-            "required": true,
-            "description": "The id of the Address to update.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "address": {
-                    "description": "The updated Address.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -1491,6 +1607,198 @@
                     },
                     "region": {
                       "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "operationId": "GetProductsProduct",
+        "summary": "Retrieves a Product",
+        "description": "Retrieves a Product.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "operationId": "GetProducts",
+        "summary": "List Products",
+        "description": "Retrieves a list of Products.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching products.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Id of the product to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "description": "Collection ids to search for.",
+            "schema": {
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tags",
+            "description": "Tags to search for.",
+            "schema": {
+              "type": "array"
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "handle",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_giftcard",
+            "description": "Search for giftcards using is_giftcard=true.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting products was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting products was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "description": "Date comparison for when resulting products was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many products to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of products returned.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The total number of Products.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset for pagination.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The maxmimum number of Products to return,",
+                      "type": "integer"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product"
+                      }
                     }
                   }
                 }
@@ -1611,84 +1919,6 @@
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products/{id}": {
-      "get": {
-        "operationId": "GetProductsProduct",
-        "summary": "Retrieves a Product",
-        "description": "Retrieves a Product.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/product"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/products": {
-      "get": {
-        "operationId": "GetProducts",
-        "summary": "List Products",
-        "description": "Retrieves a list of Products.",
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The total number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset for pagination.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The maxmimum number of Products to return,",
-                      "type": "integer"
-                    },
-                    "products": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product"
-                      }
                     }
                   }
                 }
@@ -1869,7 +2099,11 @@
                           "description": "The quantity to return.",
                           "type": "integer"
                         }
-                      }
+                      },
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ]
                     }
                   },
                   "return_shipping": {
@@ -1880,9 +2114,16 @@
                         "type": "string",
                         "description": "The id of the Shipping Option to create the Shipping Method from."
                       }
-                    }
+                    },
+                    "required": [
+                      "option_id"
+                    ]
                   }
-                }
+                },
+                "required": [
+                  "order_id",
+                  "items"
+                ]
               }
             }
           }
@@ -2012,6 +2253,11 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "order_id",
+                  "return_items",
+                  "additional_items"
+                ],
                 "properties": {
                   "order_id": {
                     "type": "string",
@@ -2021,6 +2267,10 @@
                     "description": "The items to include in the Return.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item from the Order.",
@@ -2029,6 +2279,14 @@
                         "quantity": {
                           "description": "The quantity to return.",
                           "type": "integer"
+                        },
+                        "reason_id": {
+                          "description": "The id of the reason of this return",
+                          "type": "string"
+                        },
+                        "note_id": {
+                          "description": "The id of the note",
+                          "type": "string"
                         }
                       }
                     }
@@ -2041,6 +2299,10 @@
                     "description": "The items to exchange the returned items to.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "variant_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "variant_id": {
                           "description": "The id of the Product Variant to send.",
@@ -2165,6 +2427,29 @@
             "description": "A comma separated list of Product Variant ids to filter by.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "A comma separated list of Product Variant relations to load.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Maximum number of Product Variants to return.",
+            "schema": {
+              "type": "number"
             }
           }
         ],
@@ -2703,6 +2988,40 @@
           }
         }
       },
+      "customer_group": {
+        "title": "Customer Group",
+        "description": "Represents a customer group",
+        "x-resourceId": "customer_group",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "type": "object"
+          }
+        }
+      },
       "customer": {
         "title": "Customer",
         "description": "Represents a customer",
@@ -3226,6 +3545,52 @@
           }
         }
       },
+      "invite": {
+        "title": "Invite",
+        "description": "Represents an invite",
+        "x-resourceId": "invite",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user_email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "member",
+              "developer"
+            ]
+          },
+          "accepted": {
+            "type": "boolean"
+          },
+          "token": {
+            "type": "string"
+          },
+          "expores_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "type": "object"
+          }
+        }
+      },
       "line_item": {
         "title": "Line Item",
         "description": "Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims.",
@@ -3563,6 +3928,31 @@
           }
         }
       },
+      "OAuth": {
+        "title": "OAuth",
+        "description": "Represent an OAuth app",
+        "x-resourceId": "OAuth",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "application_name": {
+            "type": "string"
+          },
+          "install_url": {
+            "type": "string"
+          },
+          "uninstall_url": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
       "order": {
         "title": "Order",
         "description": "Represents an order",
@@ -3617,7 +4007,7 @@
             "type": "string"
           },
           "tax_rate": {
-            "type": "integer"
+            "type": "number"
           },
           "discounts": {
             "type": "array",
@@ -4060,6 +4450,74 @@
           },
           "value": {
             "description": "The value that the Product Tag represents (e.g. \"Pants\").",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "product_tax_rate": {
+        "title": "Product Tax Rate",
+        "description": "Associates a tax rate with a product to indicate that the product is taxed in a certain way",
+        "x-resourceId": "product_tax_rate",
+        "properties": {
+          "product_id": {
+            "description": "The id of the Product",
+            "type": "string"
+          },
+          "rate_id": {
+            "description": "The id of the Tax Rate",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "product_type_tax_rate": {
+        "title": "Product Type Tax Rate",
+        "description": "Associates a tax rate with a product type to indicate that the product type is taxed in a certain way",
+        "x-resourceId": "product_type_tax_rate",
+        "properties": {
+          "product_type_id": {
+            "description": "The id of the Product type",
+            "type": "string"
+          },
+          "rate_id": {
+            "description": "The id of the Tax Rate",
             "type": "string"
           },
           "created_at": {
@@ -4873,6 +5331,40 @@
           }
         }
       },
+      "shipping_tax_rate": {
+        "title": "Shipping Tax Rate",
+        "description": "Associates a tax rate with a shipping option to indicate that the shipping option is taxed in a certain way",
+        "x-resourceId": "shipping_tax_rate",
+        "properties": {
+          "shipping_option_id": {
+            "description": "The id of the Shipping Option",
+            "type": "string"
+          },
+          "rate_id": {
+            "description": "The id of the Tax Rate",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
       "store": {
         "title": "Store",
         "description": "Holds settings for the Store, such as name, currencies, etc.",
@@ -5041,6 +5533,103 @@
           "metadata": {
             "description": "An optional key-value map with additional information.",
             "type": "object"
+          }
+        }
+      },
+      "tax_line": {
+        "title": "Tax Line",
+        "description": "Line item that specifies an amount of tax to add to a line item.",
+        "x-resourceId": "tax_line",
+        "properties": {
+          "id": {
+            "description": "The id of the Tax Line. This value will be prefixed by `tl_`.",
+            "type": "string"
+          },
+          "code": {
+            "description": "A code to identify the tax type by",
+            "type": "string"
+          },
+          "name": {
+            "description": "A human friendly name for the tax",
+            "type": "string"
+          },
+          "rate": {
+            "description": "The numeric rate to charge tax by",
+            "type": "number"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "tax_provider": {
+        "title": "Tax Provider",
+        "description": "The tax service used to calculate taxes",
+        "x-resourceId": "tax_provider",
+        "properties": {
+          "id": {
+            "description": "The id of the tax provider as given by the plugin.",
+            "type": "string"
+          },
+          "is_installed": {
+            "description": "Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.",
+            "type": "boolean"
+          }
+        }
+      },
+      "tax_rate": {
+        "title": "Tax Rate",
+        "description": "A Tax Rate can be used to associate a certain rate to charge on products within a given Region",
+        "x-resourceId": "line_item",
+        "properties": {
+          "id": {
+            "description": "The id of the Tax Rate. This value will be prefixed by `txr_`.",
+            "type": "string"
+          },
+          "rate": {
+            "description": "The numeric rate to charge",
+            "type": "number"
+          },
+          "code": {
+            "description": "A code to identify the tax type by",
+            "type": "string"
+          },
+          "name": {
+            "description": "A human friendly name for the tax",
+            "type": "string"
+          },
+          "region_id": {
+            "description": "The id of the Region that the rate belongs to",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          },
+          "refundable": {
+            "description": "The amount that can be refunded from the given Line Item. Takes taxes and discounts into consideration.",
+            "type": "integer"
           }
         }
       },
