@@ -229,7 +229,7 @@ export const adminHandlers = [
     )
   }),
 
-  rest.delete("/admin/price-lists/:id/batch", (req, res, ctx) => {
+  rest.delete("/admin/price-lists/:id/prices/batch", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
       ctx.status(200),
@@ -241,7 +241,7 @@ export const adminHandlers = [
     )
   }),
 
-  rest.post("/admin/price-lists/:id/batch", (req, res, ctx) => {
+  rest.post("/admin/price-lists/:id/prices/batch", (req, res, ctx) => {
     return res(
       ctx.status(200),
       ctx.json({
