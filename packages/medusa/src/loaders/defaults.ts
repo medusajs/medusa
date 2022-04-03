@@ -1,10 +1,23 @@
+import { BasePaymentService, BaseNotificationService, BaseFulfillmentService } from 'medusa-interfaces'
 import { currencies } from "../utils/currencies"
 import { countries } from "../utils/countries"
+import { AwilixContainer } from "awilix"
+import { Logger } from "../types/global"
+import { EntityManager } from "typeorm"
+import { CountryRepository } from "../repositories/country"
+import {
+  FulfillmentProviderService,
+  NotificationService,
+  PaymentProviderService,
+  ShippingProfileService,
+  StoreService, TaxProviderService,
+} from "../services"
+import { CurrencyRepository } from "../repositories/currency"
+import { AbstractTaxService } from "../interfaces"
 
-const silentResolution = (container, name, logger) => {
+const silentResolution = <T>(container: AwilixContainer, name: string, logger: Logger): T | never | undefined => {
   try {
-    const resolved = container.resolve(name)
-    return resolved
+    return container.resolve<T>(name)
   } catch (err) {
     if (err.name !== "AwilixResolutionError") {
       throw err
@@ -27,19 +40,20 @@ const silentResolution = (container, name, logger) => {
         `You don't have any ${identifier} provider plugins installed. You may want to add one to your project.`
       )
     }
+    return;
   }
 }
 
-export default async ({ container }) => {
-  const storeService = container.resolve("storeService")
-  const currencyRepository = container.resolve("currencyRepository")
-  const countryRepository = container.resolve("countryRepository")
-  const profileService = container.resolve("shippingProfileService")
-  const logger = container.resolve("logger")
+export default async ({ container }: { container: AwilixContainer }): Promise<void> => {
+  const storeService = container.resolve<StoreService>("storeService")
+  const currencyRepository = container.resolve<typeof CurrencyRepository>("currencyRepository")
+  const countryRepository = container.resolve<typeof CountryRepository>("countryRepository")
+  const profileService = container.resolve<ShippingProfileService>("shippingProfileService")
+  const logger = container.resolve<Logger>("logger")
 
-  const entityManager = container.resolve("manager")
+  const entityManager = container.resolve<EntityManager>("manager")
 
-  await entityManager.transaction(async (manager) => {
+  await entityManager.transaction(async (manager: EntityManager) => {
     const countryRepo = manager.getCustomRepository(countryRepository)
     const hasCountries = await countryRepo.findOne()
     if (!hasCountries) {
@@ -52,7 +66,7 @@ export default async ({ container }) => {
         const name = c.name.toUpperCase()
         const display = c.name
 
-        await manager.queryRunner.query(query, [
+        await manager.queryRunner?.query(query, [
           iso2,
           iso3,
           numeric,
@@ -63,7 +77,7 @@ export default async ({ container }) => {
     }
   })
 
-  await entityManager.transaction(async (manager) => {
+  await entityManager.transaction(async (manager: EntityManager) => {
     const currencyRepo = manager.getCustomRepository(currencyRepository)
     const hasCurrencies = await currencyRepo.findOne()
     if (!hasCurrencies) {
@@ -75,45 +89,42 @@ export default async ({ container }) => {
         const nat = c.symbol_native
         const name = c.name
 
-        await manager.queryRunner.query(query, [code, sym, nat, name])
+        await manager.queryRunner?.query(query, [code, sym, nat, name])
       }
     }
   })
 
-  await entityManager.transaction(async (manager) => {
+  await entityManager.transaction(async (manager: EntityManager) => {
     await storeService.withTransaction(manager).create()
 
-    const pProviderService = container.resolve("paymentProviderService")
 
     const payProviders =
-      silentResolution(container, "paymentProviders", logger) || []
-
+      silentResolution<typeof BasePaymentService[]>(container, "paymentProviders", logger) || []
     const payIds = payProviders.map((p) => p.getIdentifier())
 
+    const pProviderService = container.resolve<PaymentProviderService>("paymentProviderService")
     await pProviderService.registerInstalledProviders(payIds)
 
-    const nProviderService = container.resolve("notificationService")
-
     const notiProviders =
-      silentResolution(container, "notificationProviders", logger) || []
-
+      silentResolution<typeof BaseNotificationService[]>(container, "notificationProviders", logger) || []
     const notiIds = notiProviders.map((p) => p.getIdentifier())
+
+    const nProviderService = container.resolve<NotificationService>("notificationService")
     await nProviderService.registerInstalledProviders(notiIds)
 
-    const fProviderService = container.resolve("fulfillmentProviderService")
 
     const fulfilProviders =
-      silentResolution(container, "fulfillmentProviders", logger) || []
-
+      silentResolution<typeof BaseFulfillmentService[]>(container, "fulfillmentProviders", logger) || []
     const fulfilIds = fulfilProviders.map((p) => p.getIdentifier())
+
+    const fProviderService = container.resolve<FulfillmentProviderService>("fulfillmentProviderService")
     await fProviderService.registerInstalledProviders(fulfilIds)
 
-    const tProviderService = container.resolve("taxProviderService")
-
     const taxProviders =
-      silentResolution(container, "taxProviders", logger) || []
-
+      silentResolution<AbstractTaxService[]>(container, "taxProviders", logger) || []
     const taxIds = taxProviders.map((p) => p.getIdentifier())
+
+    const tProviderService = container.resolve<TaxProviderService>("taxProviderService")
     await tProviderService.registerInstalledProviders(taxIds)
 
     await profileService.withTransaction(manager).createDefault()

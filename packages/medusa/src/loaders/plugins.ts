@@ -1,4 +1,5 @@
 import glob from "glob"
+import { Express } from 'express'
 import { EntitySchema } from "typeorm"
 import {
   BaseService,
@@ -15,16 +16,32 @@ import path from "path"
 import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
-
-import { AbstractTaxService } from "../interfaces/tax-service"
-import { isTaxCalculationStrategy } from "../interfaces/tax-calculation-strategy"
+import { AbstractTaxService, isTaxCalculationStrategy } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
+import { ClassConstructor, Logger, MedusaContainer } from "../types/global"
+import { ConfigModule } from "./index"
+import { MiddlewareService } from "../services"
+
+type Options = {
+  rootDirectory: string;
+  container: MedusaContainer;
+  app: Express;
+  activityId: string
+}
+
+type PluginDetails = {
+  resolve: string;
+  name: string;
+  id: string;
+  options: Record<string, unknown>;
+  version: string;
+}
 
 /**
  * Registers all services in the services directory
  */
-export default async ({ rootDirectory, container, app, activityId }) => {
-  const resolved = getResolvedPlugins(rootDirectory)
+export default async ({ rootDirectory, container, app, activityId }: Options): Promise<void> => {
+  const resolved = getResolvedPlugins(rootDirectory) || []
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
@@ -42,8 +59,8 @@ export default async ({ rootDirectory, container, app, activityId }) => {
   )
 }
 
-function getResolvedPlugins(rootDirectory) {
-  const { configModule } = getConfigFile(rootDirectory, `medusa-config`)
+function getResolvedPlugins(rootDirectory: string): undefined | PluginDetails[] {
+  const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as { configModule: ConfigModule }
 
   if (!configModule) {
     return
@@ -73,8 +90,8 @@ function getResolvedPlugins(rootDirectory) {
   return resolved
 }
 
-export async function registerPluginModels({ rootDirectory, container }) {
-  const resolved = getResolvedPlugins(rootDirectory)
+export async function registerPluginModels({ rootDirectory, container }: { rootDirectory: string; container: MedusaContainer }): Promise<void> {
+  const resolved = getResolvedPlugins(rootDirectory) || []
   await Promise.all(
     resolved.map(async (pluginDetails) => {
       registerModels(pluginDetails, container)
@@ -82,7 +99,7 @@ export async function registerPluginModels({ rootDirectory, container }) {
   )
 }
 
-async function runLoaders(pluginDetails, container) {
+async function runLoaders(pluginDetails: PluginDetails, container: MedusaContainer): Promise<void> {
   const loaderFiles = glob.sync(
     `${pluginDetails.resolve}/loaders/[!__]*.js`,
     {}
@@ -95,7 +112,7 @@ async function runLoaders(pluginDetails, container) {
           await module(container, pluginDetails.options)
         }
       } catch (err) {
-        const logger = container.resolve("logger")
+        const logger = container.resolve<Logger>("logger")
         logger.warn(`Running loader failed: ${err.message}`)
         return Promise.resolve()
       }
@@ -103,12 +120,12 @@ async function runLoaders(pluginDetails, container) {
   )
 }
 
-function registerMedusaApi(pluginDetails, container) {
+function registerMedusaApi(pluginDetails: PluginDetails, container: MedusaContainer): void {
   registerMedusaMiddleware(pluginDetails, container)
   registerStrategies(pluginDetails, container)
 }
 
-function registerStrategies(pluginDetails, container) {
+function registerStrategies(pluginDetails: PluginDetails, container: MedusaContainer): void {
   let module
   try {
     const path = `${pluginDetails.resolve}/strategies/tax-calculation`
@@ -128,14 +145,14 @@ function registerStrategies(pluginDetails, container) {
       ).singleton(),
     })
   } else {
-    const logger = container.resolve("logger")
+    const logger = container.resolve<Logger>("logger")
     logger.warn(
       `${pluginDetails.resolve}/strategies/tax-calculation did not export a class that implements ITaxCalculationStrategy. Your Medusa server will still work, but if you have written custom tax calculation logic it will not be used. Make sure to implement the ITaxCalculationStrategy interface.`
     )
   }
 }
 
-function registerMedusaMiddleware(pluginDetails, container) {
+function registerMedusaMiddleware(pluginDetails: PluginDetails, container: MedusaContainer): void {
   let module
   try {
     module = require(`${pluginDetails.resolve}/api/medusa-middleware`).default
@@ -143,7 +160,7 @@ function registerMedusaMiddleware(pluginDetails, container) {
     return
   }
 
-  const middlewareService = container.resolve("middlewareService")
+  const middlewareService = container.resolve<MiddlewareService>("middlewareService")
   if (module.postAuthentication) {
     middlewareService.addPostAuthentication(
       module.postAuthentication,
@@ -163,8 +180,8 @@ function registerMedusaMiddleware(pluginDetails, container) {
   }
 }
 
-function registerCoreRouters(pluginDetails, container) {
-  const middlewareService = container.resolve("middlewareService")
+function registerCoreRouters(pluginDetails: PluginDetails, container: MedusaContainer): void {
+  const middlewareService = container.resolve<MiddlewareService>("middlewareService")
   const { resolve } = pluginDetails
   const adminFiles = glob.sync(`${resolve}/api/admin/[!__]*.js`, {})
   const storeFiles = glob.sync(`${resolve}/api/store/[!__]*.js`, {})
@@ -190,13 +207,13 @@ function registerCoreRouters(pluginDetails, container) {
  * Registers the plugin's api routes.
  */
 function registerApi(
-  pluginDetails,
-  app,
+  pluginDetails: PluginDetails,
+  app: Express,
   rootDirectory = "",
-  container,
-  activityId
-) {
-  const logger = container.resolve("logger")
+  container: MedusaContainer,
+  activityId: string
+): Express {
+  const logger = container.resolve<Logger>("logger")
   logger.progress(
     activityId,
     `Registering custom endpoints for ${pluginDetails.name}`
@@ -230,7 +247,7 @@ function registerApi(
  *    registered
  * @return {void}
  */
-async function registerServices(pluginDetails, container) {
+async function registerServices(pluginDetails: PluginDetails, container: MedusaContainer): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*`, {})
   await Promise.all(
     files.map(async (fn) => {
@@ -238,7 +255,7 @@ async function registerServices(pluginDetails, container) {
       const name = formatRegistrationName(fn)
 
       if (!(loaded.prototype instanceof BaseService)) {
-        const logger = container.resolve("logger")
+        const logger = container.resolve<Logger>("logger")
         const message = `Services must inherit from BaseService, please check ${fn}`
         logger.error(message)
         throw new Error(message)
@@ -260,9 +277,9 @@ async function registerServices(pluginDetails, container) {
           [`pp_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (loaded.prototype instanceof OauthService) {
-        const oauthService = container.resolve("oauthService")
-
         const appDetails = loaded.getAppDetails(pluginDetails.options)
+
+        const oauthService = container.resolve<typeof OauthService>("oauthService")
         await oauthService.registerOauthApp(appDetails)
 
         const name = appDetails.application_name
@@ -350,12 +367,11 @@ async function registerServices(pluginDetails, container) {
  *    registered
  * @return {void}
  */
-function registerSubscribers(pluginDetails, container) {
+function registerSubscribers(pluginDetails: PluginDetails, container: MedusaContainer): void {
   const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
   files.forEach((fn) => {
     const loaded = require(fn).default
 
-    const name = formatRegistrationName(fn)
     container.build(
       asFunction(
         (cradle) => new loaded(cradle, pluginDetails.options)
@@ -373,12 +389,12 @@ function registerSubscribers(pluginDetails, container) {
  *    registered
  * @return {void}
  */
-function registerRepositories(pluginDetails, container) {
+function registerRepositories(pluginDetails: PluginDetails, container: MedusaContainer): void {
   const files = glob.sync(`${pluginDetails.resolve}/repositories/*.js`, {})
   files.forEach((fn) => {
-    const loaded = require(fn)
+    const loaded = require(fn) as ClassConstructor<unknown>
 
-    Object.entries(loaded).map(([key, val]) => {
+    Object.entries(loaded).map(([, val]: [string, ClassConstructor<unknown>]) => {
       if (typeof val === "function") {
         const name = formatRegistrationName(fn)
         container.register({
@@ -400,12 +416,12 @@ function registerRepositories(pluginDetails, container) {
  *    registered
  * @return {void}
  */
-function registerModels(pluginDetails, container) {
+function registerModels(pluginDetails: PluginDetails, container: MedusaContainer): void {
   const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
   files.forEach((fn) => {
-    const loaded = require(fn)
+    const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
 
-    Object.entries(loaded).map(([key, val]) => {
+    Object.entries(loaded).map(([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
       if (typeof val === "function" || val instanceof EntitySchema) {
         const name = formatRegistrationName(fn)
         container.register({
@@ -419,7 +435,7 @@ function registerModels(pluginDetails, container) {
 }
 
 // TODO: Create unique id for each plugin
-function createPluginId(name) {
+function createPluginId(name: string): string {
   return name
 }
 
@@ -431,7 +447,13 @@ function createPluginId(name) {
  *    the name of the folder where the plugin is contained.
  * @return {object} the plugin details
  */
-function resolvePlugin(pluginName) {
+function resolvePlugin(pluginName: string): {
+  resolve: string;
+  id: string;
+  name: string;
+  options: Record<string, unknown>
+  version: string;
+} {
   // Only find plugins when we're not given an absolute path
   if (!existsSync(pluginName)) {
     // Find the plugin in the local plugins folder
@@ -487,6 +509,7 @@ function resolvePlugin(pluginName) {
       resolve: resolvedPath,
       id: createPluginId(packageJSON.name),
       name: packageJSON.name,
+      options: {},
       version: packageJSON.version,
     }
   } catch (err) {
@@ -496,6 +519,6 @@ function resolvePlugin(pluginName) {
   }
 }
 
-function createFileContentHash(path, files) {
+function createFileContentHash(path, files): string {
   return path + files
 }
