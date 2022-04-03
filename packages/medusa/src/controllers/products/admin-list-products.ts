@@ -5,7 +5,6 @@ import { MedusaError } from "medusa-core-utils"
 import { Product } from "../../models/product"
 import { ProductService } from "../../services"
 import { getListConfig } from "../../utils/get-query-config"
-import { FindConfig } from "../../types/common"
 import { FilterableProductProps } from "../../types/product"
 
 type ListContext = {
