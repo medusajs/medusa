@@ -485,6 +485,7 @@ export default class ClaimService extends BaseService {
       return claimOrder
     })
   }
+
   /**
    * @param id - the object containing all data required to create a claim
    * @param config - config object
@@ -618,7 +619,7 @@ export default class ClaimService extends BaseService {
       const claimRepo = transactionManager.getCustomRepository(
         this.claimRepository_
       )
-      const result = await claimRepo.save(claim)
+      const claimOrder = await claimRepo.save(claim)
 
       for (const fulfillment of fulfillments) {
         await this.eventBus_
@@ -630,7 +631,7 @@ export default class ClaimService extends BaseService {
           })
       }
 
-      return result
+      return claimOrder
     })
   }
 
