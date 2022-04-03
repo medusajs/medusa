@@ -654,7 +654,7 @@ class DiscountService extends BaseService {
           resolvedConditionType.type
         )
       },
-      async (err: any) => {
+      async (err: { code: string }) => {
         if (err.code === PostgresError.DUPLICATE_ERROR) {
           // A unique key constraint failed meaning the combination of
           // discount rule id, type, and operator already exists in the db.
