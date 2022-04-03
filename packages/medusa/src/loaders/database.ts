@@ -1,8 +1,22 @@
-import { createConnection } from "typeorm"
-
+import { Connection, createConnection, LoggerOptions } from "typeorm"
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
+import { AwilixContainer } from "awilix"
+import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"
 
-export default async ({ container, configModule }) => {
+export type DatabaseConfig = {
+  database_type: string;
+  database_url?: string;
+  database_database?: string;
+  database_extra?: Record<string, unknown>;
+  database_logging: LoggerOptions
+}
+
+type Options = {
+  configModule: { projectConfig: DatabaseConfig };
+  container: AwilixContainer
+}
+
+export default async ({ container, configModule }: Options): Promise<Connection> => {
   const entities = container.resolve("db_entities")
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
@@ -15,7 +29,7 @@ export default async ({ container, configModule }) => {
     entities,
     namingStrategy: new ShortenedNamingStrategy(),
     logging: configModule.projectConfig.database_logging || false,
-  })
+  } as ConnectionOptions)
 
   if (isSqlite) {
     await connection.query(`PRAGMA foreign_keys = OFF`)

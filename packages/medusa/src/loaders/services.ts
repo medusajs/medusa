@@ -1,13 +1,20 @@
 import glob from "glob"
 import path from "path"
 import { asFunction } from "awilix"
-
 import formatRegistrationName from "../utils/format-registration-name"
+import { MedusaContainer } from "../types/global"
+import { ConfigModule } from "./index"
+
+type Options = {
+  container: MedusaContainer;
+  configModule: ConfigModule
+  isTest: boolean;
+}
 
 /**
  * Registers all services in the services directory
  */
-export default ({ container, configModule, isTest }) => {
+export default ({ container, configModule, isTest }: Options): void => {
   const useMock =
     typeof isTest !== "undefined" ? isTest : process.env.NODE_ENV === "test"
 
