@@ -422,9 +422,8 @@ class ReturnService extends BaseService {
             }
           )
 
-        const calculationContext = this.totalsService_.getCalculationContext(
-          order
-        )
+        const calculationContext =
+          this.totalsService_.getCalculationContext(order)
 
         const taxLines = await this.taxProviderService_
           .withTransaction(manager)
@@ -496,9 +495,8 @@ class ReturnService extends BaseService {
         return returnOrder
       }
 
-      const fulfillmentData = await this.fulfillmentProviderService_.createReturn(
-        returnData
-      )
+      const fulfillmentData =
+        await this.fulfillmentProviderService_.createReturn(returnData)
 
       returnOrder.shipping_data = fulfillmentData
 

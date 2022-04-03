@@ -1190,7 +1190,7 @@ class CartService extends BaseService {
    */
   async authorizePayment(
     cartId: string,
-    context: Record<string, any> = {}
+    context: Record<string, unknown> = {}
   ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
@@ -1500,7 +1500,7 @@ class CartService extends BaseService {
   async addShippingMethod(
     cartId: string,
     optionId: string,
-    data: Record<string, any> = {}
+    data: Record<string, unknown> = {}
   ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cart = await this.retrieve(cartId, {
