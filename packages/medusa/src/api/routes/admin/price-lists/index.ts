@@ -58,6 +58,12 @@ export type AdminPriceListRes = {
   price_list: PriceList
 }
 
+export type AdminPriceListDeleteBatchRes = {
+  ids: string[]
+  deleted: boolean
+  object: string
+}
+
 export type AdminPriceListDeleteRes = DeleteResponse
 
 export type AdminPriceListsListRes = PaginatedResponse & {
@@ -70,4 +76,5 @@ export * from "./delete-price-list"
 export * from "./get-price-list"
 export * from "./list-price-lists"
 export * from "./update-price-list"
+export * from "./delete-prices-batch"
 export * from "./list-price-list-products"
