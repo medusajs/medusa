@@ -23,7 +23,7 @@ export default (app) => {
 }
 
 export type AdminUploadRes = {
-  uploads: any[]
+  uploads: unknown[]
 }
 
 export type AdminDeleteUploadRes = DeleteResponse
