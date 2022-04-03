@@ -1,7 +1,5 @@
 ---
-
 title: Create a Service
-
 ---
 
 # Create a Service
@@ -31,7 +29,7 @@ To create a service, you should create a JavaScript file in `src/services` to ho
 For example, if you want to create a service `helloService`, create the file `hello.js` in `src/services` with the following content:
 
 ```js
-import { BaseService } from "medusa-interfaces";
+import { BaseService } from "medusa-interfaces"
 
 class HelloService extends BaseService {
   getMessage() {
@@ -39,7 +37,7 @@ class HelloService extends BaseService {
   }
 }
 
-export default HelloService;
+export default HelloService
 ```
 
 ## Service Constructor
@@ -85,10 +83,10 @@ constructor({ helloService }) {
 To use your custom service in an endpoint, you can use `req.scope.resolve` passing it the service’s registration name:
 
 ```js
-const helloService = req.scope.resolve('helloService');
+const helloService = req.scope.resolve("helloService")
 
 res.json({
-  message: helloService.getMessage()
+  message: helloService.getMessage(),
 })
 ```
 

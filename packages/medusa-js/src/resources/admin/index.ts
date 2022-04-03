@@ -24,6 +24,7 @@ import AdminRegionsResource from "./regions"
 import AdminNotificationsResource from "./notifications"
 import AdminUploadsResource from "./uploads"
 import AdminProductTagsResource from "./product-tags"
+import AdminPriceListResource from "./price-lists"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
@@ -35,6 +36,7 @@ class Admin extends BaseResource {
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
   public notes = new AdminNotesResource(this.client)
+  public priceLists = new AdminPriceListResource(this.client)
   public products = new AdminProductsResource(this.client)
   public productTags = new AdminProductTagsResource(this.client)
   public productTypes = new AdminProductTypesResource(this.client)

@@ -8,7 +8,6 @@
   </video>
 </div>
 
-
 ### Introduction
 
 Handling payments is at the core of every commerce system; it allows us to run our businesses. Consequently, a vast landscape of payment providers has developed, each with varying cost models, implementational specifications, and analytical capabilities.

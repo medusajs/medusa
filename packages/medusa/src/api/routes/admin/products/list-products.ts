@@ -9,7 +9,6 @@ import {
   ValidateNested,
 } from "class-validator"
 import { omit } from "lodash"
-
 import { Product } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
 import {
