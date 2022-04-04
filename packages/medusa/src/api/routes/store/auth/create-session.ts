@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken"
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
-import config from "../../../../config"
 
 /**
  * @oas [post] /auth
@@ -39,7 +38,9 @@ export default async (req, res) => {
   }
 
   // Add JWT to cookie
-  const { jwtSecret } = config
+  const {
+    projectConfig: { jwtSecret },
+  } = req.scope.resolve("configModule")
   req.session.jwt = jwt.sign({ customer_id: result.customer?.id }, jwtSecret!, {
     expiresIn: "30d",
   })

@@ -1,5 +1,6 @@
 import { AwilixContainer } from "awilix"
 import { Logger as _Logger } from "winston"
+import { LoggerOptions } from "typeorm"
 
 export type ClassConstructor<T> = {
   new (...args: unknown[]): T
@@ -17,16 +18,19 @@ export type ConfigModule = {
   projectConfig: {
     redis_url?: string
 
-    jwtSecret: string
-    cookieSecret: string
+    jwtSecret?: string
+    cookieSecret?: string
 
     database_url?: string
     database_type: string
+    database_database?: string
+    database_logging: LoggerOptions
+
     database_extra?: Record<string, unknown> & {
       ssl: { rejectUnauthorized: false }
     }
-    store_cors: string
-    admin_cors: string
+    store_cors?: string
+    admin_cors?: string
   }
   plugins: {
     resolve: string

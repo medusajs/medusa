@@ -4,7 +4,6 @@ import { validator } from "../../../../utils/validator"
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 import AuthService from "../../../../services/auth"
 import { MedusaError } from "medusa-core-utils"
-import config from "../../../../config"
 
 /**
  * @oas [post] /auth
@@ -28,7 +27,7 @@ import config from "../../../../config"
  *              $ref: "#/components/schemas/user"
  */
 export default async (req, res) => {
-  const { jwtSecret } = config
+  const { projectConfig: { jwtSecret } } = req.scope.resolve('configModule')
   if (!jwtSecret) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,

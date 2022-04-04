@@ -1,4 +1,3 @@
-import config from "../config"
 import { asValue, createContainer } from "awilix"
 import express from "express"
 import jwt from "jsonwebtoken"
@@ -22,9 +21,19 @@ const clientSessionOpts = {
   secret: "test",
 }
 
+const config = {
+  projectConfig: {
+    jwtSecret: 'supersecret',
+    cookieSecret: 'superSecret',
+    admin_cors: '',
+    store_cors: ''
+  }
+}
+
 const testApp = express()
 
 const container = createContainer()
+container.register('configModule', asValue(config))
 container.register({
   logger: asValue({
     error: () => {},
@@ -45,16 +54,16 @@ testApp.use((req, res, next) => {
   next()
 })
 
-servicesLoader({ container })
-strategiesLoader({ container })
-passportLoader({ app: testApp, container })
+servicesLoader({ container, configModule: config })
+strategiesLoader({ container, configModule: config })
+passportLoader({ app: testApp, container, configModule: config })
 
 testApp.use((req, res, next) => {
   req.scope = container.createScope()
   next()
 })
 
-apiLoader({ container, rootDirectory: ".", app: testApp })
+apiLoader({ container, app: testApp, configModule: config })
 
 const supertestRequest = supertest(testApp)
 
@@ -68,7 +77,7 @@ export async function request(method, url, opts = {}) {
     if (opts.adminSession.jwt) {
       opts.adminSession.jwt = jwt.sign(
         opts.adminSession.jwt,
-        config.jwtSecret,
+        config.projectConfig.jwtSecret,
         {
           expiresIn: "30m",
         }
@@ -80,7 +89,7 @@ export async function request(method, url, opts = {}) {
     if (opts.clientSession.jwt) {
       opts.clientSession.jwt = jwt.sign(
         opts.clientSession.jwt,
-        config.jwtSecret,
+        config.projectConfig.jwtSecret,
         {
           expiresIn: "30d",
         }

@@ -1,14 +1,14 @@
-import './config'
+import loadConfig from './config'
 import "reflect-metadata"
 import Logger from "./logger"
 import apiLoader from "./api"
-import databaseLoader, { DatabaseConfig } from "./database"
+import databaseLoader from "./database"
 import defaultsLoader from "./defaults"
 import expressLoader  from "./express"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
-import redisLoader, { RedisConfig } from "./redis"
+import redisLoader from "./redis"
 import repositoriesLoader from "./repositories"
 import requestIp from "request-ip"
 import searchIndexLoader from "./search-index"
@@ -19,7 +19,6 @@ import { ClassOrFunctionReturning } from "awilix/lib/container"
 import { Connection, getManager } from "typeorm"
 import { Express, NextFunction, Request, Response } from "express"
 import { asFunction, asValue, AwilixContainer, createContainer, Resolver } from "awilix"
-import { getConfigFile } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 import { MedusaContainer } from "../types/global"
 
@@ -29,14 +28,6 @@ type Options = {
   isTest: boolean
 }
 
-export type ConfigModule = {
-  projectConfig: DatabaseConfig & RedisConfig;
-  plugins: {
-    resolve: string;
-    options: Record<string, unknown>
-  }[];
-}
-
 export default async (
   {
     directory: rootDirectory,
@@ -44,9 +35,11 @@ export default async (
     isTest
   }: Options
 ): Promise<{ container: MedusaContainer; dbConnection: Connection; app: Express }> => {
-  const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as { configModule: ConfigModule }
+  const configModule = loadConfig(rootDirectory)
 
   const container = createContainer() as MedusaContainer
+  container.register('configModule', asValue(configModule))
+
   container.registerAdd = function (this: MedusaContainer, name: string, registration: typeof asFunction | typeof asValue) {
     const storeKey = name + "_STORE"
 
@@ -90,6 +83,7 @@ export default async (
   await registerPluginModels({
     rootDirectory,
     container,
+    configModule
   })
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
@@ -123,7 +117,7 @@ export default async (
   const expActivity = Logger.activity("Initializing express")
   track("EXPRESS_INIT_STARTED")
   await expressLoader({ app: expressApp, configModule })
-  await passportLoader({ app: expressApp, container })
+  await passportLoader({ app: expressApp, container, configModule })
   const exAct = Logger.success(expActivity, "Express intialized") || {}
   track("EXPRESS_INIT_COMPLETED", { duration: exAct.duration })
 
@@ -139,6 +133,7 @@ export default async (
   await pluginsLoader({
     container,
     rootDirectory,
+    configModule,
     app: expressApp,
     activityId: pluginsActivity,
   })
@@ -153,7 +148,7 @@ export default async (
 
   const apiActivity = Logger.activity("Initializing API")
   track("API_INIT_STARTED")
-  await apiLoader({ container, rootDirectory, app: expressApp })
+  await apiLoader({ container, app: expressApp, configModule })
   const apiAct = Logger.success(apiActivity, "API initialized") || {}
   track("API_INIT_COMPLETED", { duration: apiAct.duration })
 

@@ -4,7 +4,6 @@ import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "."
 import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
-import config from "../../../../config"
 
 /**
  * @oas [post] /customers
@@ -36,7 +35,9 @@ export default async (req, res) => {
   let customer: Customer = await customerService.create(validated)
 
   // Add JWT to cookie
-  const { jwtSecret } = config
+  const {
+    projectConfig: { jwtSecret },
+  } = req.scope.resolve("configModule")
   req.session.jwt = jwt.sign({ customer_id: customer.id }, jwtSecret!, {
     expiresIn: "30d",
   })

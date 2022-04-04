@@ -8,7 +8,7 @@ import { UserRoles } from "../models/user"
 import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
 import { ListInvite } from "../types/invites"
-import config from "../config"
+import { ConfigModule } from "../types/global"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
@@ -32,14 +32,21 @@ class InviteService extends BaseService {
   private inviteRepository_: InviteRepository
   private eventBus_: EventBusService
 
-  constructor({
-    manager,
-    userService,
-    userRepository,
-    inviteRepository,
-    eventBusService,
-  }: InviteServiceProps) {
+  protected readonly configModule_: ConfigModule
+
+  constructor(
+    {
+      manager,
+      userService,
+      userRepository,
+      inviteRepository,
+      eventBusService,
+    }: InviteServiceProps,
+    configModule: ConfigModule
+  ) {
     super()
+
+    this.configModule_ = configModule
 
     /** @private @constant {EntityManager} */
     this.manager_ = manager
@@ -62,13 +69,17 @@ class InviteService extends BaseService {
       return this
     }
 
-    const cloned = new InviteService({
-      manager,
-      inviteRepository: this.inviteRepository_,
-      userService: this.userService_,
-      userRepository: this.userRepo_,
-      eventBusService: this.eventBus_,
-    })
+    console.log("-------", JSON.stringify(this.configModule_, null, 4))
+    const cloned = new InviteService(
+      {
+        manager,
+        inviteRepository: this.inviteRepository_,
+        userService: this.userService_,
+        userRepository: this.userRepo_,
+        eventBusService: this.eventBus_,
+      },
+      this.configModule_
+    )
 
     cloned.transactionManager_ = manager
 
@@ -76,7 +87,7 @@ class InviteService extends BaseService {
   }
 
   generateToken(data): string {
-    const { jwtSecret } = config
+    const { jwtSecret } = this.configModule_.projectConfig
     if (jwtSecret) {
       return jwt.sign(data, jwtSecret)
     }
@@ -249,7 +260,8 @@ class InviteService extends BaseService {
   }
 
   verifyToken(token): JwtPayload | string {
-    const { jwtSecret } = config
+    console.log("----", this.configModule_)
+    const { jwtSecret } = this.configModule_.projectConfig
     if (jwtSecret) {
       return jwt.verify(token, jwtSecret)
     }

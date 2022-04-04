@@ -19,6 +19,8 @@ describe("InviteService", () => {
       userRepository: {},
       inviteRepository: inviteRepo,
       eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwtSecret: 'superSecret' }
     })
 
     it("calls invite repository find", async () => {
@@ -40,6 +42,8 @@ describe("InviteService", () => {
       userRepository: {},
       inviteRepository: {},
       eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwtSecret: 'superSecret' }
     })
 
     it("validating a signed token succeeds", () => {
@@ -108,6 +112,8 @@ describe("InviteService", () => {
       userRepository: userRepo,
       inviteRepository: inviteRepo,
       eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwtSecret: 'superSecret' }
     })
 
     beforeEach(() => jest.clearAllMocks())
@@ -200,6 +206,8 @@ describe("InviteService", () => {
       userRepository: {},
       inviteRepository: inviteRepo,
       eventBusService: EventBusServiceMock,
+    }, {
+      projectConfig: { jwtSecret: 'superSecret' }
     })
 
     inviteService.generateToken = jest.fn()
