@@ -55,10 +55,10 @@ export const RazorpayMock = {
           status: "created",
           attempts: 0,
           offer_id:null,
-          notes: {cart_id:"TestCart"},
+          notes: {cart_id:"TestCart",customer_id:"abcd"},
           created_at:1234566})
       }
-      if (data.customer === "cus_lebron") {
+      else {
         return Promise.resolve({ 
           id: "order_ABCD",
           attempts:0,
@@ -70,17 +70,27 @@ export const RazorpayMock = {
           currency: "INR",
           receipt: "12345",
           status: "created",
-          notes: {cart_id:"TestCart"},
-          created_at:1234566})
+          notes: {cart_id:"TestCart",customer_id:"abcd"},
+          created_at:1234566,})
       }
     }),
-    retrieve: jest.fn().mockImplementation((data) => {
+    fetch: jest.fn().mockImplementation((data) => {
       return Promise.resolve({
-        id: "pi_lebron",
-        customer: "cus_lebron",
-      })
+        id: "order_ABCD",
+        attempts:0,
+        entity: "order",
+        amount: 100*100,
+        amount_paid: 0,
+        amount_due:100*100,
+        offer_id:null,
+        currency: "INR",
+        receipt: "12345",
+        status: "created",
+        notes: {cart_id:"TestCart"},
+        created_at:1234566})
+
     }),
-    update: jest.fn().mockImplementation((pi, data) => {
+    edit: jest.fn().mockImplementation((pi, data) => {
       if (data.customer === "cus_lebron_2") {
         return Promise.resolve({
           id: "pi_lebron",

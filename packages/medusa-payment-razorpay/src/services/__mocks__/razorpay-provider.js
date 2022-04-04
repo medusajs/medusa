@@ -39,10 +39,36 @@ export const RazorpayProviderServiceMock = {
   }),
   createPayment: jest.fn().mockImplementation((cart) => {
     return Promise.resolve({
-      id: "pi_new",
-      customer: "cus_123456789_new",
+        id: "order_3424242",
+        entity: "order",
+        amount: 10000,
+        amount_paid: 0,
+        amount_due:10000,
+        currency: "INR",
+        receipt: 123,
+        offer_id: null,
+        status: "created",
+        attempts: 0,
+        notes: {cart_id:"1234",customer_id:"1234"},
+        created_at: 12345678
     })
   }),
+  createOrder: jest.fn().mockImplementation((cart) => {
+    return Promise.resolve({
+        id: "order_2453245235",
+        entity: "order",
+        amount: 10000,
+        amount_paid: 0,
+        amount_due:10000,
+        currency: "INR",
+        receipt: 123,
+        offer_id: null,
+        status: "created",
+        attempts: 0,
+        notes: {cart_id:"1234",customer_id:"1234"},
+        created_at: 12345678
+    })
+  })
 }
 
 const mock = jest.fn().mockImplementation(() => {
