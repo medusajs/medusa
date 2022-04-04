@@ -6,7 +6,7 @@ import { TotalsServiceMock } from "../../__mocks__/totals"
 import _ from "lodash"
 
 const RegionServiceMock = {
-  retrieve: jest.fn().mockReturnValue(Promise.resolve({})),
+  retrieve: jest.fn().mockReturnValue(Promise.resolve({currency_code:"INR"})),
 }
 const api_key = "rzp_test_7Hu0soLWS2QJo7"
 const api_key_secret="WODzfTDhSkEbagTzKnwH0W85"
@@ -134,14 +134,14 @@ describe("RazorpayProviderService", () => {
         //offer_id: expect.toBe(null),
         status: "created",
         //attempts: expect.toBeGreaterThanOrEqual(0),
-        notes: {cart_id:expect.any(String)},
+        notes: {cart_id:expect.any(String),customer_id:expect.any(String)},
         created_at: expect.any(Number)})
       
     
     })
   })
 
- /* describe("retrievePayment", () => {
+  describe("retrievePayment", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
@@ -174,7 +174,7 @@ describe("RazorpayProviderService", () => {
       })
     })
   })
-
+/*
   describe("updatePayment", () => {
     let result
     beforeAll(async () => {

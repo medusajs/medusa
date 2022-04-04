@@ -1,14 +1,18 @@
 import _ from "lodash"
 import Razorpay from "razorpay"
 import { PaymentService } from "medusa-interfaces"
+const crypto = require('crypto');
 
 class RazorpayProviderService extends PaymentService {
   static identifier = "razorpay"
   static RAZORPAY_NAME_LENGTH_LIMIT = 50
+  static seq_number = 0
   constructor({   customerService, totalsService, regionService }, options) {
     super()
 
     /**
+     * Razorpay payment provider modelled around the stripe payment provider. 
+     * 
      * Required Razorpay options:
      *  {
      *    api_key: "razorpay_secret_key", REQUIRED
@@ -33,56 +37,85 @@ class RazorpayProviderService extends PaymentService {
     this.totalsService_ = totalsService
   }
 
+  _validateSignature(razorpay_payment_id,razorpay_order_id,razorpay_signature)
+  {
+    
+      let crypto = require("crypto");
+      let body = razorpay_order_id + "|" + razorpay_payment_id
+      let expectedSignature = crypto.createHmac('sha256', this.razorpay_.key_secret)
+                                  .update(body.toString())
+                                  .digest('hex');
+                                  console.log("sig received " ,razorpay_signature);
+                                  console.log("sig generated " ,expectedSignature);
+     return expectedSignature === razorpay_signature
+  }
+
+
+
   /**
-   * Fetches Razorpay payment intent. Check its status and returns the
+   * Fetches Razorpay order. Check its status and returns the
    * corresponding Medusa status.
    * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * @returns {string} the status of the order
    */
-  async getStatus(paymentData) {
-    const { id } = paymentData.id
-    const paymentIntent = await this.razorpay_.payments.fetch(id)
+  async getStatus(orderData) {
+    const { id } = orderData
+    const orderResponse = await this.razorpay_.orders.fetch(id)
 
     let status = "pending"
 
-    if (paymentIntent.status === "requires_payment_method") {
+   /* if (orderResponse.status === "requires_payment_method") {
+      return status
+    }*/
+
+    if (orderResponse.status === "created") {
       return status
     }
 
-    if (paymentIntent.status === "created") {
-      return status
+    if (orderResponse.status === "attempted") {
+      return "processing"
     }
 
-    if (paymentIntent.status === "processing") {
-      return status
-    }
-
-    if (paymentIntent.status === "created") {
+   /*  if (paymentResponse.status === "created") {
       status = "requires_more"
     }
 
-    if (paymentIntent.status === "failed") {
+    if (paymentResponse.status === "failed") {
       status = "canceled"
     }
-
-    if (paymentIntent.status === "authorized") {
+*/
+  /*  if (paymentResponse.status === "authorized") {
       status = "authorized"
     }
-
-    if (paymentIntent.status === "captured") {
-      status = "captured"
-    }
-
+*/
+if (orderResponse.status === "paid") {
+  status = "authorized"
+  /*if(orderResponse?.data?.notes)
+    {
+      const { razorpay_payment_id,razorpay_order_id,razorpay_signature } = orderResponse.data.notes
+      if(this._validateSignature(razorpay_payment_id,razorpay_order_id,razorpay_signature))
+            status = "authorized"
+          else
+            if (orderResponse.attempts > 0)
+            {
+              status = "pending"
+            }
+            else
+              status = "created"
+      }
+  } */
+      
     return status
   }
-
+  }
   /**
+   * This function is irrelavent in razorpay standard checkout, as the payment types are stored and activiated in the client
    * Fetches a customers saved payment methods if registered in Razorpay.
    * @param {object} customer - customer to fetch saved cards for
    * @returns {Promise<Array<object>>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
-    if (customer.metadata && customer.metadata.razorpay_id) {
+/*    if (customer.metadata && customer.metadata.razorpay_id) {
       const methods = await this.razorpay_.paymentMethods.list({
         customer: customer.metadata.razorpay_id,
         type: "card",
@@ -90,7 +123,7 @@ class RazorpayProviderService extends PaymentService {
 
       return methods.data
     }
-
+*/
     return Promise.resolve([])
   }
 
@@ -194,40 +227,39 @@ class RazorpayProviderService extends PaymentService {
    * @returns {object} Razorpay order intent
    */
    async createOrder (cart) {
+    
     const { customer_id, region_id, email ,order_number} = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
-      amount: Math.round(amount), /*expressing all units in base currecny*/
-      currency: currency_code,
-      receipt:order_number,
-      partial_payment:true,
-      setup_future_usage: "on_session",
-      capture_method: this.options_.capture ? "automatic" : "manual",
+      amount: amount, 
+      currency: currency_code.toString().toUpperCase(),
+      receipt:(order_number??"0000")+"_seq_"+RazorpayProviderService.seq_number,
+     // partial_payment:true,
       notes: { cart_id: `${cart.id}` },
     }
-    
+    RazorpayProviderService.seq_number = RazorpayProviderService.seq_number+1
     if (customer_id) {
       const customer = await this.customerService_.retrieve(customer_id)
 
       if (customer.metadata?.razorpay_id) {
-        intentRequest.customer = customer.metadata.razorpay_id
+        intentRequest.notes["customer"] = customer.metadata.razorpay_id
       } else {
         const razorpayCustomer = await this.createCustomer({
           email,
           id: customer_id,
         })
 
-        intentRequest.customer = razorpayCustomer.id
+        intentRequest.notes["customer"] = razorpayCustomer.id
       }
     } else {
       const razorpayCustomer = await this.createCustomer({
         email,
       })
 
-      intentRequest.customer = razorpayCustomer.id
+      intentRequest.notes["customer"] = razorpayCustomer.id
     }
 
     const orderIntent = await this.razorpay_.orders.create(
@@ -239,10 +271,10 @@ class RazorpayProviderService extends PaymentService {
 
 
   /**
-   * Creates a Razorpay payment intent.
+   * Creates a Razorpay order.
    * If customer is not registered in Razorpay, we do so.
    * @param {object} cart - cart to create a payment for
-   * @returns {object} Razorpay payment intent
+   * @returns {object} Razorpay order
    */
   async createPayment(cart) {
     const { customer_id, region_id, email,contact,method} = cart
@@ -250,96 +282,39 @@ class RazorpayProviderService extends PaymentService {
 
     
     const orderIntent = await this.createOrder(cart)
-    /*
-    let intentRequest = {
-      amount: orderIntent.amount,
-      currency: orderIntent.currency,
-      email: email,
-      contact: contact,
-      order_id: orderIntent.order_id,
-      method: method.type, 
-    }
-    switch(method.type)
-    {
-      case 'card':
-         intentRequest.card={
-            number:cart.card.number,
-            cvv:cart.card.cvv,
-            expiry_month:cart.card.expiry_month,
-            expiry_year:cart.card.expiry_year,
-            name:cart.cart.name
-        }
-        break;
-    }
-    /*  
-    const intentRequest = {
-      amount: Math.round(amount),
-      currency: currency_code,
-      setup_future_usage: "on_session",
-      capture_method: this.options_.capture ? "automatic" : "manual",
-      metadata: { cart_id: `${cart.id}` },
-    }*/
-
-    
-
-    /*if (customer_id) {
-      const customer = await this.customerService_.retrieve(customer_id)
-
-      if (customer.metadata?.razorpay_id) {
-        intentRequest.customer = customer.metadata.razorpay_id
-      } else {
-        const razorpayCustomer = await this.createCustomer({
-          email,
-          id: customer_id,
-        })
-
-        intentRequest.customer = razorpayCustomer.id
-      }
-    } else {
-      const razorpayCustomer = await this.createCustomer({
-        email,
-      })
-
-      intentRequest.customer = razorpayCustomer.id
-    }
-
-    const paymentIntent = await this.razorpay_.payments.createPaymentJson(
-      intentRequest
-    )*/
-    
 
     return orderIntent
   }
 
   /**
-   * Retrieves Razorpay payment intent.
-   * @param {object} data - the data of the payment to retrieve
-   * @returns {Promise<object>} Razorpay payment intent
+   * Retrieves Razorpay order.
+   * @param {object} sessionData - the data of the payment to retrieve
+   * @returns {Promise<object>} Razorpay order
    */
-  async retrievePayment(data) {
+  async retrievePayment(sessionData) {
     try {
-      return this.razorpay_.payments.fetch(data.sessionData.id)
+      return this.razorpay_.orders  .fetch(sessionData.id)
     } catch (error) {
       throw error
     }
   }
 
   /**
-   * Gets a Razorpay payment intent and returns it.
+   * Gets a Razorpay order intent and returns it.
    * @param {object} data - the data of the payment to retrieve
-   * @returns {Promise<object>} Razorpay payment intent
+   * @returns {Promise<object>} Razorpay order
    */
-  async getPaymentData(data) {
+  async getPaymentData(sessionData) {
     try {
-      return this.razorpay_.payments.fetch(data.payment_id)
+      return this.razorpay_.orders.fetch(sessionData.data.id)
     } catch (error) {
       throw error
     }
   }
 
   /**
-   * Authorizes Razorpay payment intent by simply returning
-   * the status for the payment intent in use.
+   * Authorizes Razorpay order by simply returning
+   * the status for the order in use.
    * @param {object} sessionData - payment session data
    * @param {object} context - properties relevant to current context
    * @returns {Promise<{ status: string, data: object }>} result with data and status
@@ -354,27 +329,42 @@ class RazorpayProviderService extends PaymentService {
     }
   }
 
+  
+
   async updatePaymentData(sessionData, update) {
     try {
-      return this.razorpay_.payments.edit(sessionData.data.payment_id, {
-        ...update.data,
-      })
+      let result ={}
+      
+      //razorpay_payment_id: 'pay_JE243QWSepvqeH', razorpay_order_id: 'order_JE217mxaUTILbJ', razorpay_signature: '28021fc7955db5841a386c95c5186e98fb6d529b8196cb195af17af22da0e4fa'
+      if(update.razorpay_payment_id)
+      {      
+        result= this.razorpay_.orders.edit(sessionData.id,{"notes":{"razorpay_payment_id":update.razorpay_payment_id,
+        "razorpay_order_id":update.razorpay_order_id,"razorpay_signature":update.razorpay_signature}})
+      }
+      else
+      {
+        result= this.razorpay_.orders.edit(sessionData.id,{"notes":update})
+      }
+
+      return result;
     } catch (error) {
       throw error
     }
   }
 
   /**
-   * Updates Razorpay payment intent.
+   * Updates Razorpay order.
    * @param {object} sessionData - payment session data.
    * @param {object} update - object to update intent with
-   * @returns {object} Razorpay payment intent
+   * @returns {object} Razorpay order
    */
   async updatePayment(sessionData, cart) {
-    try {
-      const razorpayId = cart.customer?.metadata?.razorpay_id || undefined
+   try {
 
-      if (razorpayId !== sessionData.data.customer_id) {
+    return this.createPayment(cart)
+    /*  const razorpayId = cart.customer?.metadata?.razorpay_id || undefined
+
+      if (razorpayId !== sessionData?.data?.customer_id??"") {
         return this.createPayment(cart)
       } else {
         if (cart.total && sessionData.amount === Math.round(cart.total)) {
@@ -385,7 +375,7 @@ class RazorpayProviderService extends PaymentService {
           amount: Math.round(cart.total),
         })
       }
-    } catch (error) {
+    */} catch (error) {
       throw error
     }
   }
@@ -404,38 +394,43 @@ class RazorpayProviderService extends PaymentService {
     }
   }
 
+  /*razory pay doesn't support updating customer details of orders  thus we return an existing order as is*/
   /**
-   * Updates customer of Razorpay payment intent.
-   * @param {string} payment_id - id of payment intent to update
+   * Updates customer of Razorpay order.
+   * @param {string} order_id - id of order to update
    * @param {string} customerId - id of new Razorpay customer
-   * @returns {object} Razorpay payment intent
+   * @returns {object} Razorpay order
    */
-  async updatePaymentIntentCustomer(paymentIntentId, customerId) {
+  async updatePaymentIntentCustomer(order_id, customerId) {
     try {
-      return this.razorpay_.payments.edit(paymentIntentId, {
-        customer: customerId,
-      })
+       order_of_interest = this.razorpay_.orders.fetch(order_id)
+       return order_of_interest
     } catch (error) {
       throw error
     }
   }
 
   /**
-   * Captures payment for Razorpay payment intent.
+   * Captures payment for Razorpay order.
    * @param {object} paymentData - payment method data from cart
-   * @returns {object} Razorpay payment intent
+   * @returns {object} Razorpay payment result
    */
-  async capturePayment(payment) {
-    const { id } = paymentData.data.id
+  async capturePayment(paymentData) {
+   
     try {
-      const intent = await this.razorpay_.payments.capture(id)
-      this.razorpay_.payments.capture(paymentData.paymentId, paymentData.amount, paymentData.currency)
-      generated_signature = hmac_sha256(paymentData.order_id + "|" + paymentIntent.id, razorpay_.key_secret);
-
-  if (generated_signature == paymentIntent.signature) {
-    return paymentIntent
-  }
-      return intent
+      const { razorpay_payment_id,razorpay_order_id,razorpay_signature } = paymentData.data.notes
+      if(!this._validateSignature(razorpay_payment_id,razorpay_order_id,razorpay_signature))
+       return
+      const paymentIntent = await this.razorpay_.payments.fetch(razorpay_payment_id)
+      if(paymentIntent.status === "captured")
+      {
+        return paymentIntent
+      }
+      else{
+        return   await this.razorpay_.payments.capture(razorpay_payment_id,paymentIntent.amount,paymentIntent.currency)
+      }
+      
+  
     } catch (error) {
       if (error.code === "payment_intent_unexpected_state") {
         if (error.payment_intent.status === "succeeded") {
@@ -447,31 +442,38 @@ class RazorpayProviderService extends PaymentService {
   }
 
   /**
-   * Refunds payment for Razorpay payment intent.
+   * Refunds payment for Razorpay order.
    * @param {object} paymentData - payment method data from cart
    * @param {number} amountToRefund - amount to refund
-   * @returns {string} refunded payment intent
+   * @returns {string} refunded order
    */
-  async refundPayment(paymentData, amountToRefund,speed="normal") {
-    const { id } = paymentData.data.payment_id
+  async refundPayment(paymentData, amountToRefund,speed="optimum") {amountToRefund
+    const orderInformation = await this.razorpay_.orders.fetch(paymentData.data.order_id)
+    const { razorpay_payment_id,razorpay_order_id,razorpay_signature } = orderInformation.notes
+    if(!this._validateSignature(razorpay_payment_id,razorpay_order_id,razorpay_signature))
+      return
     try {
-      await this.razorpay_.refunds.create({
-        amount: Math.round(amountToRefund),
-        id: id,
-        speed:speed,
-        receipt: paymentData.receipt
-      })
-
-      return payment.data
-    } catch (error) {
+      let paymentMade = await this.razorpay_.payments.fetch(razorpay_payment_id)
+      if(paymentMade.amount-paymentMade.amount_refunded >= amountToRefund){
+         const refundResult = await this.razorpay_.payments.refund(razorpay_payment_id,{
+          amount: Math.round(amountToRefund),
+         // id: razorpay_payment_id,
+          speed:speed,
+          receipt: paymentData.data.order_id
+        })
+        return refundResult
+      }else 
+        return
+    
+      } catch (error) {
       throw error
     }
   }
 
   /**
-   * Cancels payment for Razorpay payment intent.
+   * Cancels payment for Razorpay order.
    * @param {object} paymentData - payment method data from cart
-   * @returns {object} canceled payment intent
+   * @returns {object} canceled order
    */
   async cancelPayment(payment) {
     const { id } = payment.data
