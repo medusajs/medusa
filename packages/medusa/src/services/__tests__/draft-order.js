@@ -12,22 +12,22 @@ const eventBusService = {
 
 describe("DraftOrderService", () => {
   const totalsService = {
-    getTotal: o => {
+    getTotal: (o) => {
       return o.total || 0
     },
-    getSubtotal: o => {
+    getSubtotal: (o) => {
       return o.subtotal || 0
     },
-    getTaxTotal: o => {
+    getTaxTotal: (o) => {
       return o.tax_total || 0
     },
-    getDiscountTotal: o => {
+    getDiscountTotal: (o) => {
       return o.discount_total || 0
     },
-    getShippingTotal: o => {
+    getShippingTotal: (o) => {
       return o.shipping_total || 0
     },
-    getGiftCardTotal: o => {
+    getGiftCardTotal: (o) => {
       return o.gift_card_total || 0
     },
   }
@@ -83,7 +83,7 @@ describe("DraftOrderService", () => {
     }
 
     const cartService = {
-      create: jest.fn().mockImplementation(data =>
+      create: jest.fn().mockImplementation((data) =>
         Promise.resolve({
           id: "test-cart",
           ...data,
@@ -110,16 +110,16 @@ describe("DraftOrderService", () => {
     }
 
     const addressRepository = MockRepository({
-      create: addr => ({
+      create: (addr) => ({
         ...addr,
       }),
     })
 
     const draftOrderRepository = MockRepository({
-      create: d => ({
+      create: (d) => ({
         ...d,
       }),
-      save: d => ({
+      save: (d) => ({
         id: "test-draft-order",
         ...d,
       }),
@@ -170,7 +170,13 @@ describe("DraftOrderService", () => {
         "test-variant",
         "test-region",
         2,
-        { metadata: {}, unit_price: undefined }
+        {
+          metadata: {},
+          unit_price: undefined,
+          cart: expect.objectContaining({
+            id: "test-cart",
+          }),
+        }
       )
 
       expect(lineItemService.create).toHaveBeenCalledTimes(1)
@@ -228,14 +234,14 @@ describe("DraftOrderService", () => {
     }
 
     const draftOrderRepository = MockRepository({
-      create: d => ({
+      create: (d) => ({
         ...d,
       }),
-      save: d => ({
+      save: (d) => ({
         id: "test-draft-order",
         ...d,
       }),
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case "completed":
             return Promise.resolve(completedOrder)
