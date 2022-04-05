@@ -45,7 +45,7 @@ The default build and deploy settings fit the needs of a Gatsby application, so 
 #### Add an environment variable
 
 ```shell=
-netlify env:set GATSBY_STORE_URL "https://your-medusa-server.com"
+netlify env:set GATSBY_MEDUSA_BACKEND_URL "https://your-medusa-server.com"
 ```
 
 The above environment variable should point to your Medusa server.
