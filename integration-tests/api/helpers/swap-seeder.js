@@ -427,6 +427,7 @@ const createSwap = async (options, manager) => {
 
   const return_item1 = manager.create(LineItem, {
     ...li,
+    is_return: true,
     unit_price: -1 * li.unit_price,
   })
 
