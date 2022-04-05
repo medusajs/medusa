@@ -193,8 +193,15 @@ class LineItemAdjustmentService extends BaseService {
     context: AdjustmentContext
   ): Promise<GeneratedAdjustment[]> {
     return this.atomicPhase_(async (manager) => {
-      // if lineItem should not be discounted or the cart does not have any discounts then do nothing
-      if (!generatedLineItem.allow_discounts || !cart?.discounts?.length) {
+      // if lineItem should not be discounted
+      // or lineItem is a return line item
+      // or the cart does not have any discounts
+      // then do nothing
+      if (
+        !generatedLineItem.allow_discounts ||
+        generatedLineItem.is_return ||
+        !cart?.discounts?.length
+      ) {
         return []
       }
 
