@@ -156,37 +156,6 @@ class TaxProviderService extends BaseService {
     ).flat()
   }
 
-  async upsertTaxLines_(
-    taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
-  ): Promise<UpdateResult[]> {
-    const itemTaxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
-    const shippingTaxLineRepo = this.manager_.getCustomRepository(
-      this.smTaxLineRepo_
-    )
-
-    return await Promise.all(
-      taxLines.map(async (tl) => {
-        if ("item_id" in tl) {
-          return await itemTaxLineRepo.update(
-            { item_id: tl.item_id, code: tl.code },
-            {
-              rate: tl.rate,
-              name: tl.name,
-            }
-          )
-        }
-
-        return await shippingTaxLineRepo.update(
-          { shipping_method_id: tl.shipping_method_id, code: tl.code },
-          {
-            rate: tl.rate,
-            name: tl.name,
-          }
-        )
-      })
-    )
-  }
-
   /**
    * Persists the tax lines relevant for a shipping method to the database. Used
    * for return shipping methods.
