@@ -1213,6 +1213,13 @@ class CartService extends BaseService {
         return cartRepository.save(cart)
       }
 
+      if (!cart.payment_session) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "You cannot complete a cart without a payment session."
+        )
+      }
+
       const session = await this.paymentProviderService_
         .withTransaction(manager)
         .authorizePayment(cart.payment_session, context)
@@ -1874,9 +1881,8 @@ class CartService extends BaseService {
       })
       const calculationContext = this.totalsService_.getCalculationContext(cart)
 
-      await this.taxProviderService_
-        .withTransaction(manager)
-        .createTaxLines(cart, calculationContext)
+      const txTaxProvider = this.taxProviderService_.withTransaction(manager)
+      await txTaxProvider.createTaxLines(cart, calculationContext)
 
       return cart
     })
