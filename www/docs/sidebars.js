@@ -140,6 +140,18 @@ module.exports = {
               ]
             },
             {
+              type: "category",
+              label: 'Shipping',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/shipping/add-fulfillment-provider",
+                  label: "Add Fulfillment Provider"
+                },
+              ]
+            },
+            {
               type: "doc",
               id: "tutorial/adding-custom-functionality",
               label: "Add Custom Functionality"
