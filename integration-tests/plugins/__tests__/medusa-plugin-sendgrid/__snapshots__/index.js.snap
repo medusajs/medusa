@@ -427,6 +427,7 @@ Object {
     "idempotency_key": null,
     "items": Array [
       Object {
+        "adjustments": Array [],
         "allow_discounts": true,
         "cart_id": null,
         "claim_order_id": null,
@@ -761,6 +762,7 @@ Object {
   "idempotency_key": null,
   "items": Array [
     Object {
+      "adjustments": Array [],
       "allow_discounts": true,
       "cart_id": null,
       "claim_order_id": null,
@@ -982,6 +984,7 @@ Object {
   "idempotency_key": null,
   "items": Array [
     Object {
+      "adjustments": Array [],
       "allow_discounts": true,
       "cart_id": null,
       "claim_order_id": null,
@@ -1248,6 +1251,7 @@ Object {
     "idempotency_key": null,
     "items": Array [
       Object {
+        "adjustments": Array [],
         "allow_discounts": true,
         "cart_id": null,
         "claim_order_id": null,
@@ -1569,6 +1573,7 @@ Object {
     "idempotency_key": null,
     "items": Array [
       Object {
+        "adjustments": Array [],
         "allow_discounts": true,
         "cart_id": null,
         "claim_order_id": null,
