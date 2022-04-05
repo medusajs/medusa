@@ -468,9 +468,11 @@ class CartService extends BaseService {
       })
 
       // delete all old line item adjustments
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .delete({ item_id: result.items.map((item) => item.id) })
+      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
+        item_id: result.items
+          .filter((i) => !i.is_return)
+          .map((item) => item.id),
+      })
 
       // adjust existing line item adjustments
       await this.lineItemAdjustmentService_
@@ -597,9 +599,11 @@ class CartService extends BaseService {
       })
 
       // delete all old line item adjustments
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .delete({ item_id: result.items.map((item) => item.id) })
+      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
+        item_id: result.items
+          .filter((i) => !i.is_return)
+          .map((item) => item.id),
+      })
 
       // potentially create/update line item adjustments
       await this.lineItemAdjustmentService_
@@ -661,9 +665,11 @@ class CartService extends BaseService {
         relations: ["items", "discounts", "discounts.rule"],
       })
 
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .delete({ item_id: result.items.map((item) => item.id) })
+      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
+        item_id: result.items
+          .filter((i) => !i.is_return)
+          .map((item) => item.id),
+      })
 
       await this.lineItemAdjustmentService_
         .withTransaction(manager)
