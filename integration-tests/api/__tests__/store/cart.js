@@ -473,6 +473,221 @@ describe("/store/carts", () => {
         }),
       ])
     })
+
+    describe("ensures correct line item adjustment generation", () => {
+      const discountData = {
+        code: "MEDUSA185DKK",
+        id: "medusa-185",
+        rule: {
+          allocation: "total",
+          type: "fixed",
+          value: 185,
+        },
+        regions: ["test-region"],
+      }
+
+      let discountCart, discount
+      beforeEach(async () => {
+        try {
+          discount = await simpleDiscountFactory(
+            dbConnection,
+            discountData,
+            100
+          )
+          discountCart = await simpleCartFactory(
+            dbConnection,
+            {
+              id: "discount-cart",
+              customer: "test-customer",
+              region: "test-region",
+              shipping_address: {
+                address_1: "next door",
+                first_name: "lebron",
+                last_name: "james",
+                country_code: "dk",
+                postal_code: "100",
+              },
+              line_items: [
+                {
+                  id: "test-li",
+                  variant_id: "test-variant",
+                  quantity: 1,
+                  unit_price: 100,
+                  adjustments: [
+                    {
+                      amount: 185,
+                      description: "discount",
+                      discount_id: "medusa-185",
+                    },
+                  ],
+                },
+              ],
+              shipping_methods: [
+                {
+                  shipping_option: "test-option",
+                  price: 1000,
+                },
+              ],
+            },
+            100
+          )
+          await dbConnection.manager
+            .createQueryBuilder()
+            .relation(Cart, "discounts")
+            .of(discountCart)
+            .add(discount)
+        } catch (err) {
+          console.log(err)
+        }
+      })
+
+      afterEach(async () => {
+        await doAfterEach()
+      })
+
+      it("updates an old line item adjustment when a new line item is added to a discount cart", async () => {
+        const api = useApi()
+
+        const response = await api
+          .post(
+            "/store/carts/discount-cart/line-items",
+            {
+              quantity: 1,
+              variant_id: "test-variant-quantity",
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .catch((err) => console.log(err))
+
+        expect(response.data.cart.items.length).toEqual(2)
+        expect(response.data.cart.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  item_id: "test-li",
+                  amount: 17,
+                  discount_id: "medusa-185",
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  amount: 168,
+                  discount_id: "medusa-185",
+                }),
+              ],
+            }),
+          ])
+        )
+      })
+
+      it("updates an existing item adjustment when a line item is updated", async () => {
+        const api = useApi()
+
+        await simpleLineItemFactory(
+          dbConnection,
+          {
+            id: "line-item-2",
+            cart_id: discountCart.id,
+            variant_id: "test-variant-quantity",
+            unit_price: 950,
+            quantity: 1,
+            adjustments: [
+              {
+                id: "lia-2",
+                amount: 92,
+                description: "discount",
+                discount_id: "medusa-185",
+              },
+            ],
+          },
+          100
+        )
+
+        const response = await api
+          .post(
+            "/store/carts/discount-cart/line-items/line-item-2",
+            {
+              quantity: 2,
+            },
+            {
+              withCredentials: true,
+            }
+          )
+          .catch((err) => console.log(err))
+
+        expect(response.data.cart.items.length).toEqual(2)
+        expect(response.data.cart.items).toEqual(
+          expect.arrayContaining([
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  item_id: "test-li",
+                  discount_id: "medusa-185",
+                  amount: 9,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              adjustments: [
+                expect.objectContaining({
+                  item_id: "line-item-2",
+                  amount: 176,
+                  discount_id: "medusa-185",
+                }),
+              ],
+            }),
+          ])
+        )
+      })
+
+      it("updates an existing item adjustment when a line item is deleted from a discount cart", async () => {
+        const api = useApi()
+
+        await simpleLineItemFactory(
+          dbConnection,
+          {
+            id: "line-item-2",
+            cart_id: discountCart.id,
+            variant_id: "test-variant-quantity",
+            unit_price: 1000,
+            quantity: 1,
+            adjustments: [
+              {
+                id: "lia-2",
+                amount: 93,
+                description: "discount",
+                discount_id: "medusa-185",
+              },
+            ],
+          },
+          100
+        )
+
+        const response = await api
+          .delete("/store/carts/discount-cart/line-items/test-li", {
+            withCredentials: true,
+          })
+          .catch((err) => console.log(err))
+
+        expect(response.data.cart.items.length).toEqual(1)
+        expect(response.data.cart.items).toEqual([
+          expect.objectContaining({
+            adjustments: [
+              expect.objectContaining({
+                item_id: "line-item-2",
+                amount: 185,
+                discount_id: "medusa-185",
+              }),
+            ],
+          }),
+        ])
+      })
+    })
   })
 
   describe("POST /store/carts/:id/line-items/:line_id", () => {
