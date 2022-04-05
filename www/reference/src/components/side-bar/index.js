@@ -1,19 +1,14 @@
+import { Box, Flex, Image } from "theme-ui"
 import React, { useEffect, useState } from "react"
-import { Flex, Image, Box } from "theme-ui"
-import styled from "@emotion/styled"
+
 import Logo from "../../assets/logo.svg"
 import LogoMuted from "../../assets/logo-muted.svg"
 import SideBarItem from "./sidebar-item"
 import SideBarSelector from "./sidebar-selector"
 import { navigate } from "gatsby"
+import styled from "@emotion/styled"
 
 const SideBarContainer = styled(Flex)`
-  --side-bar-width: 220px;
-
-  @media screen and (min-width: 1680px) {
-    --side-bar-width: 280px;
-  }
-
   @media screen and (max-width: 848px) {
     display: none;
   }
