@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { AwilixContainer } from "awilix"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, UpdateResult } from "typeorm"
 import Redis from "ioredis"
 
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
@@ -15,6 +15,7 @@ import { ShippingMethod } from "../models/shipping-method"
 import { Region } from "../models/region"
 import { Cart } from "../models/cart"
 import { isCart } from "../types/cart"
+import { PostgresError } from "../utils/exception-formatter"
 import {
   ITaxService,
   ItemTaxCalculationLine,
@@ -94,6 +95,18 @@ class TaxProviderService extends BaseService {
     return provider
   }
 
+  async clearTaxLines(cartId: string): Promise<void> {
+    const taxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
+    const shippingTaxRepo = this.manager_.getCustomRepository(
+      this.smTaxLineRepo_
+    )
+
+    await Promise.all([
+      taxLineRepo.deleteForCart(cartId),
+      shippingTaxRepo.deleteForCart(cartId),
+    ])
+  }
+
   /**
    * Persists the tax lines relevant for an order to the database.
    * @param cartOrLineItems - the cart or line items to create tax lines for
@@ -114,7 +127,33 @@ class TaxProviderService extends BaseService {
       taxLines = await this.getTaxLines(cartOrLineItems, calculationContext)
     }
 
-    return this.manager_.save(taxLines)
+    const itemTaxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
+    const shippingTaxLineRepo = this.manager_.getCustomRepository(
+      this.smTaxLineRepo_
+    )
+
+    const { shipping, lineItems } = taxLines.reduce<{
+      shipping: ShippingMethodTaxLine[]
+      lineItems: LineItemTaxLine[]
+    }>(
+      (acc, tl) => {
+        if ("item_id" in tl) {
+          acc.lineItems.push(tl)
+        } else {
+          acc.shipping.push(tl)
+        }
+
+        return acc
+      },
+      { shipping: [], lineItems: [] }
+    )
+
+    return (
+      await Promise.all([
+        itemTaxLineRepo.upsertLines(lineItems),
+        shippingTaxLineRepo.upsertLines(shipping),
+      ])
+    ).flat()
   }
 
   /**
