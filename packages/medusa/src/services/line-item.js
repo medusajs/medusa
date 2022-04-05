@@ -135,6 +135,14 @@ class LineItemService extends BaseService {
           })
         }),
         metadata: i.metadata,
+        adjustments: i.adjustments.map((adjustment) => {
+          return {
+            amount: -1 * adjustment.amount,
+            description: adjustment.description,
+            discount_id: adjustment.discount_id,
+            metadata: adjustment.metadata,
+          }
+        }),
       })
     )
 
