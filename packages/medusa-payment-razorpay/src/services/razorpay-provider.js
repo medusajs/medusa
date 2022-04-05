@@ -17,8 +17,6 @@ class RazorpayProviderService extends PaymentService {
      *  {
      *    api_key: "razorpay_secret_key", REQUIRED
      *    api_key_secret: "razor_pay_key_secret", REQUIRED
-     *    webhook_secret: "razorpay_key_secret", REQUIRED
-     *    // Use this flag to capture payment immediately (default is false)
      *    capture: true
      *  }
      */
@@ -45,8 +43,8 @@ class RazorpayProviderService extends PaymentService {
       let expectedSignature = crypto.createHmac('sha256', this.razorpay_.key_secret)
                                   .update(body.toString())
                                   .digest('hex');
-                                  console.log("sig received " ,razorpay_signature);
-                                  console.log("sig generated " ,expectedSignature);
+     //                             console.log("sig received " ,razorpay_signature);
+     //                             console.log("sig generated " ,expectedSignature);
      return expectedSignature === razorpay_signature
   }
 
@@ -64,10 +62,6 @@ class RazorpayProviderService extends PaymentService {
 
     let status = "pending"
 
-   /* if (orderResponse.status === "requires_payment_method") {
-      return status
-    }*/
-
     if (orderResponse.status === "created") {
       return status
     }
@@ -76,37 +70,11 @@ class RazorpayProviderService extends PaymentService {
       return "processing"
     }
 
-   /*  if (paymentResponse.status === "created") {
-      status = "requires_more"
+  
+  if (orderResponse.status === "paid") {
+    status = "authorized"
+      return status
     }
-
-    if (paymentResponse.status === "failed") {
-      status = "canceled"
-    }
-*/
-  /*  if (paymentResponse.status === "authorized") {
-      status = "authorized"
-    }
-*/
-if (orderResponse.status === "paid") {
-  status = "authorized"
-  /*if(orderResponse?.data?.notes)
-    {
-      const { razorpay_payment_id,razorpay_order_id,razorpay_signature } = orderResponse.data.notes
-      if(this._validateSignature(razorpay_payment_id,razorpay_order_id,razorpay_signature))
-            status = "authorized"
-          else
-            if (orderResponse.attempts > 0)
-            {
-              status = "pending"
-            }
-            else
-              status = "created"
-      }
-  } */
-      
-    return status
-  }
   }
   /**
    * This function is irrelavent in razorpay standard checkout, as the payment types are stored and activiated in the client
@@ -115,15 +83,6 @@ if (orderResponse.status === "paid") {
    * @returns {Promise<Array<object>>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
-/*    if (customer.metadata && customer.metadata.razorpay_id) {
-      const methods = await this.razorpay_.paymentMethods.list({
-        customer: customer.metadata.razorpay_id,
-        type: "card",
-      })
-
-      return methods.data
-    }
-*/
     return Promise.resolve([])
   }
 
@@ -150,10 +109,7 @@ if (orderResponse.status === "paid") {
    * @returns {Promise<object>} Razorpay customer
    */
   
-  getValidatedName_(first_name,last_name)
-  {
-     
-  }
+
   async createCustomer(customer) {
     try {
       let createCustomerQueryParams = {fail_existing:0}
@@ -174,8 +130,8 @@ if (orderResponse.status === "paid") {
         createCustomerQueryParams.contact =customer.contact
       }
       createCustomerQueryParams["notes"]["customer_id"]=customer.id
-     const razorpayCustomer = await this.razorpay_.customers.create( createCustomerQueryParams)
-      let razorpayCustomerUpdated
+      const razorpayCustomer = await this.razorpay_.customers.create( createCustomerQueryParams)
+      let razorpayCustomerUpdated ={}
       if (customer.id) {
         await this.customerService_.update(customer.id, {
           metadata: { razorpay_id: razorpayCustomer.id },
@@ -226,9 +182,9 @@ if (orderResponse.status === "paid") {
    * @param {object} cart - cart to create an order for
    * @returns {object} Razorpay order intent
    */
-   async createOrder (cart) {
+  async createOrder (cart) {
     
-    const { customer_id, region_id, email ,order_number} = cart
+    const { customer_id, region_id, email ,order_number,display_id} = cart
     const { currency_code } = await this.regionService_.retrieve(region_id)
 
     const amount = await this.totalsService_.getTotal(cart)
@@ -236,7 +192,7 @@ if (orderResponse.status === "paid") {
     const intentRequest = {
       amount: amount, 
       currency: currency_code.toString().toUpperCase(),
-      receipt:(order_number??"0000")+"_seq_"+RazorpayProviderService.seq_number,
+      receipt:(display_id??"0000")+"_seq_"+RazorpayProviderService.seq_number,
      // partial_payment:true,
       notes: { cart_id: `${cart.id}` },
     }
@@ -277,12 +233,7 @@ if (orderResponse.status === "paid") {
    * @returns {object} Razorpay order
    */
   async createPayment(cart) {
-    const { customer_id, region_id, email,contact,method} = cart
-    const { currency_code } = await this.regionService_.retrieve(region_id)
-
-    
     const orderIntent = await this.createOrder(cart)
-
     return orderIntent
   }
 
