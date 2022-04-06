@@ -27,7 +27,7 @@ async function sourceAllNodes(
     createRegionsOperation,
     createOrdersOperation,
     createCollectionsOperation,
-  } = createOperations(pluginOptions, gatsbyApi)
+  } = createOperations(pluginOptions)
 
   const operations = [
     createProductsOperation,
@@ -54,22 +54,17 @@ const medusaNodeTypes = [
   "MedusaCollections",
 ]
 
-export async function sourceUpdatedNodes(
+async function sourceUpdatedNodes(
   gatsbyApi: SourceNodesArgs,
-  pluginOptions: MedusaPluginOptions
+  pluginOptions: MedusaPluginOptions,
+  lastBuildTime: string
 ): Promise<void> {
   const {
     incrementalProductsOperation,
     incrementalRegionsOperation,
     incrementalOrdersOperation,
     incrementalCollectionsOperation,
-  } = createOperations(pluginOptions, gatsbyApi)
-
-  const lastBuildTime = new Date(
-    gatsbyApi.store.getState().status.plugins?.[`gatsby-source-medusa`]?.[
-      `lastBuildTime`
-    ]
-  )
+  } = createOperations(pluginOptions)
 
   for (const nodeType of medusaNodeTypes) {
     gatsbyApi
@@ -94,36 +89,25 @@ export async function sourceUpdatedNodes(
   }
 }
 
+export async function onPostBuild({ cache }: { cache: any }): Promise<void> {
+  await cache.set("timestamp", Date.now())
+}
+
 export async function sourceNodes(
   gatsbyApi: SourceNodesArgs,
   pluginOptions: MedusaPluginOptions
 ): Promise<void> {
-  const pluginStatus =
-    gatsbyApi.store.getState().status.plugins?.[`gatsby-source-medusa`]
-
-  const lastBuildTime = pluginStatus?.[`lastBuildTime`]
+  const { cache } = gatsbyApi
+  const lastBuildTime = await cache.get("timestamp")
 
   if (lastBuildTime !== undefined) {
-    gatsbyApi.reporter.info(
-      `Cache is warm, but incremental builds are currently not supported. Running a clean build.`
-    )
-    await sourceAllNodes(gatsbyApi, pluginOptions)
+    await sourceUpdatedNodes(gatsbyApi, pluginOptions, lastBuildTime)
   } else {
     gatsbyApi.reporter.info(`Cache is cold, running a clean build.`)
     await sourceAllNodes(gatsbyApi, pluginOptions)
   }
 
-  gatsbyApi.reporter.info(`Finished sourcing nodes, caching last build time`)
-  gatsbyApi.actions.setPluginStatus(
-    pluginStatus !== undefined
-      ? {
-          ...pluginStatus,
-          [`lastBuildTime`]: Date.now(),
-        }
-      : {
-          [`lastBuildTime`]: Date.now(),
-        }
-  )
+  gatsbyApi.reporter.info(`Finished sourcing nodes`)
 }
 
 export function createResolvers({ createResolvers }: CreateResolversArgs): any {

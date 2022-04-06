@@ -42,5 +42,5 @@ export class StorePostSearchReq {
   limit?: number
 
   @IsOptional()
-  filter?: any
+  filter?: unknown
 }

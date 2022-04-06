@@ -1,9 +1,9 @@
-const { Product } = require("@medusajs/medusa")
 const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
+const { simpleProductFactory } = require("../../factories")
 const productSeeder = require("../../helpers/store-product-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
 jest.setTimeout(30000)
@@ -200,17 +200,26 @@ describe("/store/products", () => {
       })
 
       expect(response.status).toEqual(200)
+      expect(response.data.products.length).toEqual(5)
       expect(response.data.products).toEqual([
         expect.objectContaining({
-          id: "giftcard",
+          id: "test-product1",
+          collection_id: "test-collection",
+        }),
+        expect.objectContaining({
+          id: "test-product",
+          collection_id: "test-collection",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          collection_id: "test-collection2",
         }),
         expect.objectContaining({
           id: "test-product_filtering_1",
           collection_id: "test-collection1",
         }),
         expect.objectContaining({
-          id: "test-product_filtering_2",
-          collection_id: "test-collection2",
+          id: "giftcard",
         }),
       ])
 
@@ -219,6 +228,173 @@ describe("/store/products", () => {
           expect.not.arrayContaining([notExpect])
         )
       }
+    })
+  })
+
+  describe("list params", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Includes Additional prices when queried with a cart id", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/store/products?cart_id=test-cart")
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-product1",
+          collection_id: "test-collection",
+        }),
+        expect.objectContaining({
+          id: "test-product",
+          collection_id: "test-collection",
+          variants: [
+            expect.objectContaining({
+              original_price: 100,
+              calculated_price: 80,
+              prices: [
+                expect.objectContaining({
+                  id: "test-price",
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  id: "test-price-discount",
+                  currency_code: "usd",
+                  amount: 80,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              original_price: 100,
+              calculated_price: 80,
+              prices: [
+                expect.objectContaining({
+                  id: "test-price2",
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  id: "test-price2-discount",
+                  currency_code: "usd",
+                  amount: 80,
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              original_price: 100,
+              calculated_price: 80,
+              prices: [
+                expect.objectContaining({
+                  id: "test-price1",
+                  currency_code: "usd",
+                  amount: 100,
+                }),
+                expect.objectContaining({
+                  id: "test-price1-discount",
+                  currency_code: "usd",
+                  amount: 80,
+                }),
+              ],
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_2",
+          collection_id: "test-collection2",
+        }),
+        expect.objectContaining({
+          id: "test-product_filtering_1",
+          collection_id: "test-collection1",
+        }),
+        expect.objectContaining({
+          id: "giftcard",
+        }),
+      ])
+    })
+  })
+
+  describe("list params", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        await simpleProductFactory(
+          dbConnection,
+          {
+            title: "testprod",
+            status: "published",
+            variants: [{ title: "test-variant" }],
+          },
+          11
+        )
+
+        await simpleProductFactory(
+          dbConnection,
+          {
+            title: "testprod3",
+            status: "published",
+            variants: [{ title: "test-variant1" }],
+          },
+          12
+        )
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("works with expand and fields", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/store/products?expand=variants,variants.prices&fields=id,title&limit=1"
+      )
+
+      expect(response.data).toMatchSnapshot({
+        products: [
+          {
+            id: expect.any(String),
+            variants: [
+              {
+                created_at: expect.any(String),
+                updated_at: expect.any(String),
+                id: expect.any(String),
+                product_id: expect.any(String),
+                prices: [
+                  {
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                    id: expect.any(String),
+                    variant_id: expect.any(String),
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      })
     })
   })
 
@@ -263,6 +439,8 @@ describe("/store/products", () => {
               height: null,
               hs_code: null,
               origin_country: null,
+              calculated_price: null,
+              original_price: null,
               barcode: "test-barcode",
               product_id: "test-product",
               created_at: expect.any(String),
@@ -275,18 +453,34 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
-                  created_at: expect.any(String),
                   currency_code: "usd",
                   deleted_at: null,
+                  min_quantity: null,
+                  max_quantity: null,
+                  price_list_id: null,
                   id: "test-price",
                   region_id: null,
-                  sale_amount: null,
-                  updated_at: expect.any(String),
                   variant_id: "test-variant",
+                },
+                {
+                  id: "test-price-discount",
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  amount: 80,
+                  currency_code: "usd",
+                  price_list_id: "pl",
+                  deleted_at: null,
+                  region_id: null,
+                  variant_id: "test-variant",
+                  price_list: {
+                    id: "pl",
+                    type: "sale",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  },
                 },
               ],
             },
@@ -307,6 +501,8 @@ describe("/store/products", () => {
               hs_code: null,
               origin_country: null,
               barcode: null,
+              calculated_price: null,
+              original_price: null,
               product_id: "test-product",
               created_at: expect.any(String),
               updated_at: expect.any(String),
@@ -318,17 +514,32 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
+                  id: "test-price2",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
-                  created_at: expect.any(String),
                   currency_code: "usd",
+                  price_list_id: null,
                   deleted_at: null,
-                  id: "test-price2",
                   region_id: null,
-                  sale_amount: null,
                   variant_id: "test-variant_2",
+                },
+                {
+                  id: "test-price2-discount",
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  amount: 80,
+                  currency_code: "usd",
+                  price_list_id: "pl",
+                  deleted_at: null,
+                  region_id: null,
+                  variant_id: "test-variant_2",
+                  price_list: {
+                    id: "pl",
+                    type: "sale",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  },
                 },
               ],
             },
@@ -348,6 +559,8 @@ describe("/store/products", () => {
               height: null,
               hs_code: null,
               origin_country: null,
+              calculated_price: null,
+              original_price: null,
               barcode: "test-barcode 1",
               product_id: "test-product",
               created_at: expect.any(String),
@@ -360,18 +573,34 @@ describe("/store/products", () => {
               ],
               prices: [
                 {
-                  id: "test-money-amount",
+                  id: "test-price1",
                   created_at: expect.any(String),
                   updated_at: expect.any(String),
                   amount: 100,
-                  created_at: expect.any(String),
                   currency_code: "usd",
+                  min_quantity: null,
+                  max_quantity: null,
+                  price_list_id: null,
                   deleted_at: null,
-                  id: "test-price1",
                   region_id: null,
-                  sale_amount: null,
-                  updated_at: expect.any(String),
                   variant_id: "test-variant_1",
+                },
+                {
+                  id: "test-price1-discount",
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  amount: 80,
+                  currency_code: "usd",
+                  price_list_id: "pl",
+                  deleted_at: null,
+                  region_id: null,
+                  variant_id: "test-variant_1",
+                  price_list: {
+                    id: "pl",
+                    type: "sale",
+                    created_at: expect.any(String),
+                    updated_at: expect.any(String),
+                  },
                 },
               ],
             },
@@ -473,7 +702,7 @@ describe("/store/products", () => {
     it("lists all published products", async () => {
       const api = useApi()
 
-      //update test-product status to published
+      // update test-product status to published
       await api
         .post(
           "/admin/products/test-product",

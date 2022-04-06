@@ -1,5 +1,5 @@
 import axios from "axios"
-import { zeroDecimalCurrencies, humanizeAmount } from "medusa-core-utils"
+import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
 class SlackService extends BaseService {
@@ -41,7 +41,6 @@ class SlackService extends BaseService {
         "shipping_address",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_methods",
         "payments",
         "fulfillments",
@@ -69,7 +68,7 @@ class SlackService extends BaseService {
       return humanAmount.toFixed(2)
     }
 
-    let blocks = [
+    const blocks = [
       {
         type: "section",
         text: {
@@ -147,7 +146,7 @@ class SlackService extends BaseService {
           include_tax: true,
         }
       )
-      let line = {
+      const line = {
         type: "section",
         text: {
           type: "mrkdwn",

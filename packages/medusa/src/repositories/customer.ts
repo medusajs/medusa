@@ -3,10 +3,7 @@ import { Customer } from "../models/customer"
 
 @EntityRepository(Customer)
 export class CustomerRepository extends Repository<Customer> {
-  async listAndCount(query): Promise<[Customer[], number]> {
-    const groups = query?.where?.groups
-    delete query?.where?.groups
-
+  async listAndCount(query, groups): Promise<[Customer[], number]> {
     let qb = this.createQueryBuilder("customer")
       .where(query.where)
       .skip(query.skip)
