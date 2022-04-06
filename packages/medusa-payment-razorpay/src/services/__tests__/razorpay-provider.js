@@ -5,6 +5,19 @@ import { carts } from "../../__mocks__/cart"
 import { TotalsServiceMock } from "../../__mocks__/totals"
 import _ from "lodash"
 
+const _validateSignature = function (razorpay_payment_id,razorpay_order_id,secret_key)
+  {
+    
+      let crypto = require("crypto");
+      let body = razorpay_order_id + "|" + razorpay_payment_id
+      let expectedSignature = crypto.createHmac('sha256', secret_key)
+                                  .update(body.toString())
+                                  .digest('hex');
+     //                             console.log("sig received " ,razorpay_signature);
+     //                             console.log("sig generated " ,expectedSignature);
+     return expectedSignature 
+  }
+
 const RegionServiceMock = {
   retrieve: jest.fn().mockReturnValue(Promise.resolve({currency_code:"INR"})),
 }
@@ -159,22 +172,17 @@ describe("RazorpayProviderService", () => {
       )
 
       result = await razorpayProviderService.retrievePayment({
-        payment_method: {
-          data: {
-            id: "pi_lebron",
-          },
-        },
+               id: "order_ABCD",
       })
     })
 
     it("returns razorpay payment intent", () => {
-      expect(result).toEqual({
-        id: "pi_lebron",
-        customer: "cus_lebron",
+      expect(result).toMatchObject( { 
+        id: "order_ABCD"
       })
     })
   })
-/*
+  /**razorpay only allows you to update the payment order notes, nothing else */
   describe("updatePayment", () => {
     let result
     beforeAll(async () => {
@@ -194,8 +202,7 @@ describe("RazorpayProviderService", () => {
 
       result = await razorpayProviderService.updatePayment(
         {
-          id: "pi_lebron",
-          amount: 800,
+          id: "order_ABCD",
         },
         {
           total: 1000,
@@ -204,15 +211,15 @@ describe("RazorpayProviderService", () => {
     })
 
     it("returns updated razorpay payment intent", () => {
-      expect(result).toEqual({
-        id: "pi_lebron",
-        customer: "cus_lebron",
-        amount: 1000,
+      expect(result).toMatchObject({
+        id: expect.any(String),
+        amount: expect.any(Number),
+        notes:expect.any(Object),
       })
     })
   })
 
-  describe("updatePaymentIntentCustomer", () => {
+/*  describe("updatePaymentIntentCustomer", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
@@ -243,7 +250,7 @@ describe("RazorpayProviderService", () => {
       })
     })
   })
-
+*/
   describe("capturePayment", () => {
     let result
     beforeAll(async () => {
@@ -259,19 +266,18 @@ describe("RazorpayProviderService", () => {
 
       result = await razorpayProviderService.capturePayment({
         data: {
-          id: "pi_lebron",
-          customer: "cus_lebron",
-          amount: 1000,
+          notes:{
+            razorpay_payment_id:"pay_JFbzW5PV980gUH",
+            razorpay_order_id:"order_JFapRWBCWCR3bx",
+            razorpay_signature:_validateSignature("pay_JFbzW5PV980gUH","order_JFapRWBCWCR3bx","WODzfTDhSkEbagTzKnwH0W85")
+          },          
         },
       })
     })
 
     it("returns captured razorpay payment intent", () => {
-      expect(result).toEqual({
-        id: "pi_lebron",
-        customer: "cus_lebron",
-        amount: 1000,
-        status: "succeeded",
+      expect(result).toMatchObject({
+        status: "captured",
       })
     })
   })
@@ -292,27 +298,25 @@ describe("RazorpayProviderService", () => {
       result = await razorpayProviderService.refundPayment(
         {
           data: {
-            id: "re_123",
-            payment_intent: "pi_lebron",
-            amount: 1000,
-            status: "succeeded",
+            order_id: "order_JFapRWBCWCR3bx",
           },
         },
         1000
+        ,"normal"
       )
     })
 
     it("returns refunded razorpay payment intent", () => {
-      expect(result).toEqual({
-        id: "re_123",
-        payment_intent: "pi_lebron",
-        amount: 1000,
-        status: "succeeded",
+      expect(result).toMatchObject({
+        id:expect.any(String),
+        payment_id:expect.any(String),
+        entity: "refund",
+        status: "processed",
       })
     })
   })
 
-  describe("cancelPayment", () => {
+  /*describe("cancelPayment", () => {
     let result
     beforeAll(async () => {
       jest.clearAllMocks()
