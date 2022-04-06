@@ -21,8 +21,8 @@ const _validateSignature = function (razorpay_payment_id,razorpay_order_id,secre
 const RegionServiceMock = {
   retrieve: jest.fn().mockReturnValue(Promise.resolve({currency_code:"INR"})),
 }
-const api_key = "rzp_test_7Hu0soLWS2QJo7"
-const api_key_secret="WODzfTDhSkEbagTzKnwH0W85"
+const api_key = "WWW"
+const api_key_secret="XXX"
 describe("RazorpayProviderService", () => {
   describe("createCustomer", () => {
     const test_customer = {
@@ -269,7 +269,7 @@ describe("RazorpayProviderService", () => {
           notes:{
             razorpay_payment_id:"pay_JFbzW5PV980gUH",
             razorpay_order_id:"order_JFapRWBCWCR3bx",
-            razorpay_signature:_validateSignature("pay_JFbzW5PV980gUH","order_JFapRWBCWCR3bx","WODzfTDhSkEbagTzKnwH0W85")
+            razorpay_signature:_validateSignature("pay_JFbzW5PV980gUH","order_JFapRWBCWCR3bx",api_key_secret)
           },          
         },
       })
