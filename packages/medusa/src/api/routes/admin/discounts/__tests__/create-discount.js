@@ -166,6 +166,49 @@ describe("POST /admin/discounts", () => {
     })
   })
 
+  describe("fails on xor constraint for conditions", () => {
+    let subject
+
+    beforeAll(async () => {
+      subject = await request("POST", "/admin/discounts", {
+        payload: {
+          code: "TEST",
+          rule: {
+            description: "Test",
+            type: "fixed",
+            value: 10,
+            allocation: "total",
+            conditions: [
+              {
+                products: ["product1"],
+                operator: "in",
+                product_types: ["producttype1"],
+              },
+            ],
+          },
+          starts_at: "02/02/2021 13:45",
+          is_dynamic: true,
+          valid_duration: "P1Y2M03DT04H05M",
+        },
+        adminSession: {
+          jwt: {
+            userId: IdMap.getId("admin_user"),
+          },
+        },
+      })
+    })
+
+    it("returns 400", () => {
+      expect(subject.status).toEqual(400)
+    })
+
+    it("returns error", () => {
+      expect(subject.body.message).toEqual(
+        `Only one of products, product_types is allowed, Only one of product_types, products is allowed`
+      )
+    })
+  })
+
   describe("fails on invalid date intervals", () => {
     let subject
 

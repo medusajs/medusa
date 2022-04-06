@@ -29,7 +29,6 @@ export const discounts = {
       type: "percentage",
       allocation: "item",
       value: 10,
-      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -50,7 +49,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 9,
-      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -61,7 +59,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 2,
-      valid_for: [IdMap.getId("eur-8-us-10"), IdMap.getId("eur-10-us-12")],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -72,7 +69,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -84,7 +80,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -95,7 +90,6 @@ export const discounts = {
       type: "free_shipping",
       allocation: "total",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -106,7 +100,6 @@ export const discounts = {
       type: "free_shipping",
       allocation: "total",
       value: 10,
-      valid_for: [],
     },
     regions: [IdMap.getId("us")],
   },
@@ -125,10 +118,10 @@ export const DiscountServiceMock = {
   withTransaction: function() {
     return this
   },
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve(data)
   }),
-  retrieveByCode: jest.fn().mockImplementation(data => {
+  retrieveByCode: jest.fn().mockImplementation((data) => {
     if (data === "10%OFF") {
       return Promise.resolve(discounts.total10Percent)
     }
@@ -140,7 +133,7 @@ export const DiscountServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  retrieve: jest.fn().mockImplementation(data => {
+  retrieve: jest.fn().mockImplementation((data) => {
     if (data === IdMap.getId("total10")) {
       return Promise.resolve(discounts.total10Percent)
     }
@@ -152,20 +145,20 @@ export const DiscountServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  delete: jest.fn().mockImplementation(data => {
+  delete: jest.fn().mockImplementation((data) => {
     return Promise.resolve({
       id: IdMap.getId("total10"),
       object: "discount",
       deleted: true,
     })
   }),
-  list: jest.fn().mockImplementation(data => {
+  list: jest.fn().mockImplementation((data) => {
     return Promise.resolve([{}])
   }),
-  listAndCount: jest.fn().mockImplementation(data => {
+  listAndCount: jest.fn().mockImplementation((data) => {
     return Promise.resolve([{}])
   }),
   addRegion: jest.fn().mockReturnValue(Promise.resolve()),
