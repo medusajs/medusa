@@ -13,6 +13,7 @@ import {
 import { ulid } from "ulid"
 import { resolveDbType } from "../utils/db-aware-column"
 import { Currency } from "./currency"
+import { PriceList } from "./price-list"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
 
@@ -31,16 +32,33 @@ export class MoneyAmount {
   @Column({ type: "int" })
   amount: number
 
-  @Column({ type: "int", nullable: true, default: null })
-  sale_amount?: number
+  @Column({ type: "int", nullable: true })
+  min_quantity: number | null
+
+  @Column({ type: "int", nullable: true })
+  max_quantity: number | null
+
+  @Column({ nullable: true })
+  price_list_id: string | null
+
+  @ManyToOne(() => PriceList, (priceList) => priceList.prices, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "price_list_id" })
+  price_list: PriceList | null
 
   @Index()
   @Column({ nullable: true })
   variant_id: string
 
-  @ManyToOne(() => ProductVariant, (variant) => variant.prices, {
-    onDelete: "CASCADE",
-  })
+  @ManyToOne(
+    () => ProductVariant,
+    (variant) => variant.prices,
+    {
+      onDelete: "CASCADE",
+    }
+  )
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
 
@@ -86,8 +104,11 @@ export class MoneyAmount {
  *   amount:
  *     description: "The amount in the smallest currecny unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost."
  *     type: integer
- *   sale_amount:
- *     description: "An optional sale amount that the Product Variant will be available for when defined."
+ *   min_quantity:
+ *     description: "The minimum quantity that the Money Amount applies to. If this value is not set, the Money Amount applies to all quantities."
+ *     type: integer
+ *   max_quantity:
+ *     description: "The maximum quantity that the Money Amount applies to. If this value is not set, the Money Amount applies to all quantities."
  *     type: integer
  *   variant_id:
  *     description: "The id of the Product Variant that the Money Amount belongs to."

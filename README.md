@@ -10,7 +10,6 @@
 <h4 align="center">
   <a href="https://github.com/medusajs/admin">Medusa Admin</a> |
   <a href="https://www.medusajs.com">Website</a> |
-  <a href="https://roadmap.medusa-commerce.com">Roadmap</a> |
   <a href="https://www.medusajs.com/blog">Blog</a> |
   <a href="https://www.linkedin.com/company/medusa-commerce">LinkedIn</a> |
   <a href="https://twitter.com/medusajs">Twitter</a> |
@@ -68,19 +67,21 @@ After these four steps and only a couple of minutes, you now have a complete com
 Write-ups for all features will be made available in [Github discussions](https://github.com/medusajs/medusa/discussions) prior to starting the implementation process.
 
 ### Q1
+
 - [x] Admin revamp
-- [ ] Tax API
-- [ ] Strategy pattern
+- [x] Tax API
+- [x] Strategy pattern
 - [ ] Promotions API
 - [ ] Bulk import / export
 
 ### Q2
+
 - [ ] Extended Product API (custom fields, price lists, publishing control, and more)
 - [ ] Extended Order API (managing placed orders, improved inventory control, and more)
 - [ ] Sales Channel API
 - [ ] Multi-warehouse support
 - [ ] GraphQL API
-  
+
 ## Setting up a storefront for your Medusa project
 
 Medusa is a headless commerce engine which means that it can be used for any type of digital commerce experience - you may use it as the backend for an app, a voice application, social commerce experiences or a traditional e-commerce website, you may even want to integrate Medusa into your own software to enable commerce functionality. All of these are use cases that Medusa supports - to learn more read the documentation or reach out.

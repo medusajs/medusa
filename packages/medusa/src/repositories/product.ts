@@ -9,12 +9,15 @@ import {
 } from "typeorm"
 import { ProductTag } from ".."
 import { Product } from "../models/product"
+import { PriceList } from "../models/price-list"
 
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
 type CustomOptions = {
+  select?: DefaultWithoutRelations["select"]
   where?: DefaultWithoutRelations["where"] & {
     tags?: FindOperator<ProductTag>
+    price_list_id?: FindOperator<PriceList>
   }
   order?: OrderByCondition
   skip?: number
@@ -41,27 +44,50 @@ export class ProductRepository extends Repository<Product> {
   ): Promise<[Product[], number]> {
     const tags = optionsWithoutRelations?.where?.tags
     delete optionsWithoutRelations?.where?.tags
-    let qb = this.createQueryBuilder("product")
+
+    const price_lists = optionsWithoutRelations?.where?.price_list_id
+    delete optionsWithoutRelations?.where?.price_list_id
+
+    const qb = this.createQueryBuilder("product")
       .select(["product.id"])
       .skip(optionsWithoutRelations.skip)
       .take(optionsWithoutRelations.take)
 
-    qb = optionsWithoutRelations.where
-      ? qb.where(optionsWithoutRelations.where)
-      : qb
+    if (optionsWithoutRelations.where) {
+      qb.where(optionsWithoutRelations.where)
+    }
 
-    qb = optionsWithoutRelations.order
-      ? qb.orderBy(optionsWithoutRelations.order)
-      : qb
+    if (optionsWithoutRelations.order) {
+      const toSelect: string[] = []
+      const parsed = Object.entries(optionsWithoutRelations.order).reduce(
+        (acc, [k, v]) => {
+          const key = `product.${k}`
+          toSelect.push(key)
+          acc[key] = v
+          return acc
+        },
+        {}
+      )
+      qb.addSelect(toSelect)
+      qb.orderBy(parsed)
+    }
 
     if (tags) {
-      qb = qb
-        .leftJoinAndSelect("product.tags", "tags")
-        .andWhere(`tags.id IN (:...ids)`, { ids: tags.value })
+      qb.leftJoin("product.tags", "tags").andWhere(`tags.id IN (:...tag_ids)`, {
+        tag_ids: tags.value,
+      })
+    }
+
+    if (price_lists) {
+      qb.leftJoin("product.variants", "variants")
+        .leftJoin("variants.prices", "ma")
+        .andWhere("ma.price_list_id IN (:...price_list_ids)", {
+          price_list_ids: price_lists.value,
+        })
     }
 
     if (optionsWithoutRelations.withDeleted) {
-      qb = qb.withDeleted()
+      qb.withDeleted()
     }
 
     let entities: Product[]
@@ -77,9 +103,7 @@ export class ProductRepository extends Repository<Product> {
     return [entities, count]
   }
 
-  private getGroupedRelations(
-    relations: Array<keyof Product>
-  ): {
+  private getGroupedRelations(relations: Array<keyof Product>): {
     [toplevel: string]: string[]
   } {
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -98,11 +122,16 @@ export class ProductRepository extends Repository<Product> {
   private async queryProductsWithIds(
     entityIds: string[],
     groupedRelations: { [toplevel: string]: string[] },
-    withDeleted = false
+    withDeleted = false,
+    select: (keyof Product)[] = []
   ): Promise<Product[]> {
     const entitiesIdsWithRelations = await Promise.all(
       Object.entries(groupedRelations).map(([toplevel, rels]) => {
         let querybuilder = this.createQueryBuilder("products")
+
+        if (select && select.length) {
+          querybuilder.select(select.map((f) => `products.${f}`))
+        }
 
         if (toplevel === "variants") {
           querybuilder = querybuilder
@@ -193,13 +222,13 @@ export class ProductRepository extends Repository<Product> {
     const entitiesIdsWithRelations = await this.queryProductsWithIds(
       entitiesIds,
       groupedRelations,
-      idsOrOptionsWithoutRelations.withDeleted
+      idsOrOptionsWithoutRelations.withDeleted,
+      idsOrOptionsWithoutRelations.select
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn = this.mergeEntitiesWithRelations(
-      entitiesAndRelations
-    )
+    const entitiesToReturn =
+      this.mergeEntitiesWithRelations(entitiesAndRelations)
 
     return [entitiesToReturn, count]
   }
@@ -240,9 +269,8 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn = this.mergeEntitiesWithRelations(
-      entitiesAndRelations
-    )
+    const entitiesToReturn =
+      this.mergeEntitiesWithRelations(entitiesAndRelations)
 
     return entitiesToReturn
   }

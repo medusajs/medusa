@@ -74,9 +74,9 @@ export const ProductVariantServiceMock = {
     }
     return Promise.resolve(undefined)
   }),
-  getRegionPrice: jest.fn().mockImplementation((variantId, regionId) => {
+  getRegionPrice: jest.fn().mockImplementation((variantId, context) => {
     if (variantId === IdMap.getId("test-variant-1")) {
-      if (regionId === IdMap.getId("world")) {
+      if (context.regionId === IdMap.getId("world")) {
         return Promise.resolve(10)
       } else {
         return Promise.resolve(20)

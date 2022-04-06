@@ -189,7 +189,7 @@ export class AdminPostDraftOrdersReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: Record<string, any> = {}
+  metadata?: Record<string, unknown> = {}
 }
 
 class ShippingMethod {
@@ -198,7 +198,7 @@ class ShippingMethod {
 
   @IsObject()
   @IsOptional()
-  data?: Record<string, any> = {}
+  data?: Record<string, unknown> = {}
 
   @IsNumber()
   @IsOptional()
@@ -228,5 +228,5 @@ class Item {
 
   @IsObject()
   @IsOptional()
-  metadata?: Record<string, any> = {}
+  metadata?: Record<string, unknown> = {}
 }
