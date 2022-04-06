@@ -40,7 +40,7 @@ class RazorpayProviderService extends PaymentService {
     
       let crypto = require("crypto");
       let body = razorpay_order_id + "|" + razorpay_payment_id
-      let expectedSignature = crypto.createHmac('sha256', this.razorpay_.key_secret)
+      let expectedSignature = crypto.createHmac('sha256', this.options_.api_key_secret)
                                   .update(body.toString())
                                   .digest('hex');
      //                             console.log("sig received " ,razorpay_signature);
@@ -137,7 +137,7 @@ class RazorpayProviderService extends PaymentService {
           metadata: { razorpay_id: razorpayCustomer.id },
         })
       }
-      if (razorpayCustomer.created_at != undefined) {
+      if (razorpayCustomer?.created_at) {
         razorpayCustomerUpdated= await this.updateCustomer(razorpayCustomer.id,customer)  /* updating the remaining details */
       }
 
@@ -398,7 +398,7 @@ class RazorpayProviderService extends PaymentService {
    * @param {number} amountToRefund - amount to refund
    * @returns {string} refunded order
    */
-  async refundPayment(paymentData, amountToRefund,speed="optimum") {amountToRefund
+  async refundPayment(paymentData, amountToRefund,speed="optimum") {
     const orderInformation = await this.razorpay_.orders.fetch(paymentData.data.order_id)
     const { razorpay_payment_id,razorpay_order_id,razorpay_signature } = orderInformation.notes
     if(!this._validateSignature(razorpay_payment_id,razorpay_order_id,razorpay_signature))
@@ -425,11 +425,13 @@ class RazorpayProviderService extends PaymentService {
    * Cancels payment for Razorpay order.
    * @param {object} paymentData - payment method data from cart
    * @returns {object} canceled order
+   * razorpay doesn't support cancelled orders once created, 
+   * the status of the, it merely returns the current order.
    */
   async cancelPayment(payment) {
     const { id } = payment.data
     try {
-      return await this.razorpay_.paymentIntents.cancel(id)
+      return await this.razorpay_.orders.fetch(id)
     } catch (error) {
       if (error.payment_intent.status === "canceled") {
         return error.payment_intent

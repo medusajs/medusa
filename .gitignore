@@ -4,5 +4,6 @@ node_modules
 lerna-debug.log
 
 .eslintcache
-
+*.tgz
 .idea
+__mocks__
