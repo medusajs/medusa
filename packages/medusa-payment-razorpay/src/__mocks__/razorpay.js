@@ -100,7 +100,7 @@ export const RazorpayMock = {
         receipt: "12345",
         status: "created",
         notes: {cart_id:"TestCart",razorpay_payment_id:"pay_JFbzW5PV980gUH",razorpay_order_id:"order_JFapRWBCWCR3bx",
-        razorpay_signature:_validateSignature("pay_JFbzW5PV980gUH","order_JFapRWBCWCR3bx","YYY")},
+        razorpay_signature:_validateSignature("pay_JFbzW5PV980gUH","order_JFapRWBCWCR3bx","XXX")},
         created_at:1234566})
 
     }),
