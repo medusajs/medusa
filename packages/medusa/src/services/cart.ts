@@ -1633,10 +1633,6 @@ class CartService extends BaseService {
         }
       }
 
-      const lineItemRepository = transactionManager.getCustomRepository(
-        this.lineItemRepository_
-      )
-
       if (cart.items?.length) {
         await Promise.all(
           cart.items.map(async (item) => {
