@@ -1,9 +1,11 @@
 import _ from "lodash"
+import { IN } from 'typeorm'
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { carts } from "../__mocks__/cart"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -11,6 +13,8 @@ const eventBusService = {
     return this
   },
 }
+
+const lineItemRepository = MockRepository();
 
 describe("CartService", () => {
   const totalsService = {
@@ -40,12 +44,25 @@ describe("CartService", () => {
       findOneWithRelations: () =>
         Promise.resolve({ id: IdMap.getId("emptyCart") }),
     })
+    const regionService = {
+      withTransaction: function() {
+        return this
+      },
+      retrieve: () => {
+        return Promise.resolve({
+          id: IdMap.getId("region-id"),
+        })
+      }
+    }
+
     beforeAll(async () => {
       jest.clearAllMocks()
       const cartService = new CartService({
         manager: MockManager,
         totalsService,
         cartRepository,
+        lineItemRepository,
+        regionService
       })
       result = await cartService.retrieve(IdMap.getId("emptyCart"))
     })
@@ -76,6 +93,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      lineItemRepository
     })
 
     beforeEach(() => {
@@ -136,6 +154,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       eventBusService,
+      lineItemRepository
     })
 
     beforeEach(() => {
@@ -193,6 +212,9 @@ describe("CartService", () => {
 
   describe("create", () => {
     const regionService = {
+      withTransaction: function () {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("testRegion"),
@@ -217,6 +239,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       manager: MockManager,
       addressRepository,
+      lineItemRepository,
       totalsService,
       cartRepository,
       customerService,
@@ -330,6 +353,18 @@ describe("CartService", () => {
       },
     }
 
+    const regionService = {
+      withTransaction: function () {
+        return this
+      },
+      retrieve: () => {
+        return {
+          id: IdMap.getId("testRegion"),
+          countries: [{ iso_2: "us" }],
+        }
+      },
+    }
+
     const inventoryService = {
       ...InventoryServiceMock,
       confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
@@ -377,8 +412,10 @@ describe("CartService", () => {
       manager: MockManager,
       totalsService,
       cartRepository,
+      lineItemRepository,
       lineItemService,
       eventBusService,
+      regionService,
       shippingOptionService,
       inventoryService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
@@ -476,7 +513,8 @@ describe("CartService", () => {
 
       await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
-      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemRepository.update).toHaveBeenCalledTimes(1)
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
       expect(lineItemService.update).toHaveBeenCalledWith(
         IdMap.getId("merger"),
         {
@@ -592,6 +630,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       lineItemService,
+      lineItemRepository,
       shippingOptionService,
       eventBusService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
@@ -698,6 +737,7 @@ describe("CartService", () => {
       cartRepository,
       totalsService,
       eventBusService,
+      lineItemRepository
     })
 
     beforeEach(() => {
@@ -781,6 +821,7 @@ describe("CartService", () => {
       manager: MockManager,
       totalsService,
       cartRepository,
+      lineItemRepository,
       lineItemService,
       eventBusService,
       inventoryService,
@@ -863,6 +904,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       manager: MockManager,
       totalsService,
+      lineItemRepository,
       cartRepository,
       eventBusService,
       customerService,
@@ -943,6 +985,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       manager: MockManager,
       totalsService,
+      lineItemRepository,
       cartRepository,
       addressRepository,
       eventBusService,
@@ -1004,6 +1047,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       manager: MockManager,
       addressRepository,
+      lineItemRepository,
       totalsService,
       cartRepository,
       eventBusService,
@@ -1089,6 +1133,9 @@ describe("CartService", () => {
       }),
     }
     const regionService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: jest.fn().mockReturnValue(
         Promise.resolve({
           id: "region",
@@ -1146,6 +1193,7 @@ describe("CartService", () => {
       manager: MockManager,
       paymentProviderService,
       addressRepository,
+      lineItemRepository,
       totalsService,
       cartRepository,
       regionService,
@@ -1192,7 +1240,7 @@ describe("CartService", () => {
         shipping_address: {
           country_code: "us",
         },
-        items: [IdMap.getId("testitem"), null],
+        items: [IdMap.getId("testitem")],
         payment_session: null,
         payment_sessions: [],
         gift_cards: [],
@@ -1237,6 +1285,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       manager: MockManager,
       paymentSessionRepository,
+      lineItemRepository,
       totalsService,
       cartRepository,
       eventBusService,
@@ -1352,6 +1401,7 @@ describe("CartService", () => {
       manager: MockManager,
       totalsService,
       cartRepository,
+      lineItemRepository,
       paymentProviderService,
       eventBusService,
     })
@@ -1520,6 +1570,9 @@ describe("CartService", () => {
     }
 
     const customShippingOptionService = {
+      withTransaction: function() {
+        return this
+      },
       list: jest.fn().mockImplementation(({ cart_id }) => {
         if (cart_id === IdMap.getId("cart-with-custom-so")) {
           return [
@@ -1537,6 +1590,7 @@ describe("CartService", () => {
       manager: MockManager,
       totalsService,
       cartRepository,
+      lineItemRepository,
       shippingOptionService,
       lineItemService,
       eventBusService,
@@ -1738,6 +1792,9 @@ describe("CartService", () => {
     })
 
     const discountService = {
+      withTransaction: function () {
+        return this
+      },
       retrieveByCode: jest.fn().mockImplementation((code) => {
         if (code === "US10") {
           return Promise.resolve({
@@ -1880,6 +1937,7 @@ describe("CartService", () => {
     const cartService = new CartService({
       manager: MockManager,
       totalsService,
+      lineItemRepository,
       cartRepository,
       discountService,
       eventBusService,
@@ -2067,6 +2125,14 @@ describe("CartService", () => {
       )
     })
 
+    it("throws if discount is not available in region", async () => {
+      await expect(
+        cartService.update(IdMap.getId("cart"), {
+          discounts: [{ code: "US10" }],
+        })
+      ).rejects.toThrow("The discount is not available in the current region")
+    })
+
     it("successfully applies discount with a check for customer applicableness", async () => {
       await cartService.update("with-d-and-customer", {
         discounts: [
@@ -2135,6 +2201,7 @@ describe("CartService", () => {
       manager: MockManager,
       totalsService,
       cartRepository,
+      lineItemRepository,
       eventBusService,
     })
 
