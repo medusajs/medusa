@@ -1512,7 +1512,7 @@
     "/store/carts/{id}": {
       "post": {
         "operationId": "PostCartsCartPaymentMethodUpdate",
-        "summary": "Update a Cart\"",
+        "summary": "Update a Cart",
         "description": "Updates a Cart.",
         "parameters": [
           {
