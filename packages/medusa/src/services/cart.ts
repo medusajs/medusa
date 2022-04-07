@@ -467,17 +467,7 @@ class CartService extends BaseService {
         relations: ["items", "discounts", "discounts.rule"],
       })
 
-      // delete all old line item adjustments
-      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
-        item_id: result.items
-          .filter((i) => !i.is_return)
-          .map((item) => item.id),
-      })
-
-      // adjust existing line item adjustments
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .createAdjustments(result)
+      await this.refreshAdjustments_(result)
 
       // Notify subscribers
       await this.eventBus_
@@ -598,17 +588,7 @@ class CartService extends BaseService {
         relations: ["items", "discounts", "discounts.rule"],
       })
 
-      // delete all old line item adjustments
-      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
-        item_id: result.items
-          .filter((i) => !i.is_return)
-          .map((item) => item.id),
-      })
-
-      // potentially create/update line item adjustments
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .createAdjustments(result)
+      await this.refreshAdjustments_(result)
 
       await this.eventBus_
         .withTransaction(manager)
@@ -665,15 +645,7 @@ class CartService extends BaseService {
         relations: ["items", "discounts", "discounts.rule"],
       })
 
-      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
-        item_id: result.items
-          .filter((i) => !i.is_return)
-          .map((item) => item.id),
-      })
-
-      await this.lineItemAdjustmentService_
-        .withTransaction(manager)
-        .createAdjustments(result)
+      await this.refreshAdjustments_(result)
 
       // Update the line item
       await this.eventBus_
@@ -1099,17 +1071,7 @@ class CartService extends BaseService {
 
       // ignore if free shipping
       if (rule.type !== "free_shipping" && cart?.items) {
-        // delete old line item adjustments associated with old discount(s)
-        await this.lineItemAdjustmentService_.withTransaction(manager).delete({
-          item_id: cart.items.filter((i) => !i.is_return).map((li) => li.id),
-        })
-
-        // potentially create line item adjustments from discounts
-        if (cart.discounts.length) {
-          await this.lineItemAdjustmentService_
-            .withTransaction(manager)
-            .createAdjustments(cart)
-        }
+        await this.refreshAdjustments_(cart)
       }
     })
   }
@@ -1884,6 +1846,23 @@ class CartService extends BaseService {
         .createTaxLines(cart, calculationContext)
 
       return cart
+    })
+  }
+
+  async refreshAdjustments_(cart: Cart): Promise<void> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const nonReturnLines = cart.items.filter((item) => !item.is_return)
+      const nonReturnLineIDs = nonReturnLines.map((i) => i.id)
+
+      // delete all old non return line item adjustments
+      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
+        item_id: nonReturnLineIDs,
+      })
+
+      // potentially create/update line item adjustments
+      await this.lineItemAdjustmentService_
+        .withTransaction(manager)
+        .createAdjustments(cart)
     })
   }
 
