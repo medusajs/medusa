@@ -2346,6 +2346,7 @@ Object {
     "deleted_at": null,
     "difference_due": 488,
     "fulfillment_status": "shipped",
+    "generateId": [Function],
     "id": Any<String>,
     "idempotency_key": Any<String>,
     "metadata": null,
