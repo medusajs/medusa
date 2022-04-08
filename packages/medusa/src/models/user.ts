@@ -8,6 +8,7 @@ import {
   Column,
   PrimaryColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -18,9 +19,8 @@ export enum UserRoles {
 }
 
 @Entity()
-export class User {
-  @PrimaryColumn()
-  id: string
+export class User extends BaseEntity {
+  prefixId = "usr"
 
   @DbAwareColumn({
     type: "enum",
@@ -45,25 +45,6 @@ export class User {
 
   @Column({ nullable: true })
   api_token: string
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `usr_${id}`
-  }
 }
 
 /**

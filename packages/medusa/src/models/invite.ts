@@ -10,14 +10,14 @@ import {
   UpdateDateColumn,
   Index,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 import { UserRoles } from "./user"
 
 @Entity()
-export class Invite {
-  @PrimaryColumn()
-  id: string
+export class Invite extends BaseEntity {
+  prefixId = "invite"
 
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
@@ -39,25 +39,4 @@ export class Invite {
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   expires_at: Date
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `invite_${id}`
-  }
 }

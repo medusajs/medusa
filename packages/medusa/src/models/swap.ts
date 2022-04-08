@@ -14,6 +14,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -47,9 +48,8 @@ export enum SwapPaymentStatus {
 }
 
 @Entity()
-export class Swap {
-  @PrimaryColumn()
-  id: string
+export class Swap extends BaseEntity {
+  prefixId = "swap"
 
   @DbAwareColumn({ type: "enum", enum: SwapFulfillmentStatus })
   fulfillment_status: SwapFulfillmentStatus
@@ -123,15 +123,6 @@ export class Swap {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   confirmed_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
@@ -141,18 +132,8 @@ export class Swap {
   @Column({ type: "boolean", default: false })
   allow_backorder: Boolean
 
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
   @Column({ nullable: true })
   idempotency_key: string
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `swap_${id}`
-  }
 }
 
 /**

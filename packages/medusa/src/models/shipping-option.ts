@@ -16,6 +16,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -31,9 +32,8 @@ export enum ShippingOptionPriceType {
 
 @Check(`"amount" >= 0`)
 @Entity()
-export class ShippingOption {
-  @PrimaryColumn()
-  id: string
+export class ShippingOption extends BaseEntity {
+  prefixId = "so"
 
   @Column()
   name: string
@@ -82,26 +82,7 @@ export class ShippingOption {
   requirements: ShippingOptionRequirement[]
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `so_${id}`
-  }
+  data: Record<string, unknown>
 }
 
 /**

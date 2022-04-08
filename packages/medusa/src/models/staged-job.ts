@@ -26,7 +26,7 @@ export class StagedJob {
   event_name: string
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
+  data: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert() {

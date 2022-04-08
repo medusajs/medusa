@@ -11,6 +11,7 @@ import {
   Unique,
   UpdateDateColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
@@ -18,9 +19,8 @@ import { ShippingOption } from "./shipping-option"
 
 @Entity()
 @Unique(["shipping_option_id", "cart_id"])
-export class CustomShippingOption {
-  @PrimaryColumn()
-  id: string
+export class CustomShippingOption extends BaseEntity {
+  prefixId = "cso"
 
   @Column({ type: "int" })
   price: number
@@ -40,25 +40,6 @@ export class CustomShippingOption {
   @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `cso_${id}`
-  }
 }
 
 /**

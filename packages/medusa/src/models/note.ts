@@ -10,14 +10,14 @@ import {
   PrimaryColumn,
   ManyToOne,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { User } from "./user"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class Note {
-  @PrimaryColumn()
-  id: string
+export class Note extends BaseEntity {
+  prefixId = "note"
 
   @Column()
   value: string
@@ -36,25 +36,6 @@ export class Note {
   @ManyToOne(() => User)
   @JoinColumn({ name: "author_id" })
   author: User
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `note_${id}`
-  }
 }
 
 /**

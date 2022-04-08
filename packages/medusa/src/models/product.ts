@@ -14,6 +14,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Image } from "./image"
@@ -32,9 +33,8 @@ export enum Status {
 }
 
 @Entity()
-export class Product {
-  @PrimaryColumn()
-  id: string
+export class Product extends BaseEntity {
+  prefixId = "prod"
 
   @Column()
   title: string
@@ -151,24 +151,8 @@ export class Product {
   @Column({ nullable: true })
   external_id: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `prod_${id}`
-
+  private createHandleIfNotProvided() {
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }

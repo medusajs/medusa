@@ -1,9 +1,5 @@
 import {
   Entity,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
   PrimaryColumn,
   Index,
@@ -13,6 +9,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -30,9 +27,8 @@ export enum ClaimReason {
 }
 
 @Entity()
-export class ClaimItem {
-  @PrimaryColumn()
-  id: string
+export class ClaimItem extends BaseEntity {
+  prefixId = "citm"
 
   @OneToMany(
     () => ClaimImage,
@@ -90,25 +86,6 @@ export class ClaimItem {
     },
   })
   tags: ClaimTag[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `citm_${id}`
-  }
 }
 
 /**

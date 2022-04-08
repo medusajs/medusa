@@ -10,6 +10,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -26,9 +27,8 @@ export enum RefundReason {
 }
 
 @Entity()
-export class Refund {
-  @PrimaryColumn()
-  id: string
+export class Refund extends BaseEntity {
+  prefixId = "ref"
 
   @Index()
   @Column()
@@ -61,12 +61,6 @@ export class Refund {
 
   @Column({ nullable: true })
   idempotency_key: string
-
-  @BeforeInsert()
-  private beforeInsert() {
-    const id = ulid()
-    this.id = `ref_${id}`
-  }
 }
 
 /**

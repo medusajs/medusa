@@ -11,13 +11,13 @@ import {
   OneToMany,
   JoinColumn
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ReturnReason {
-  @PrimaryColumn()
-  id: string
+export class ReturnReason extends BaseEntity {
+  prefixId = "rr"
 
   @Index({ unique: true })
   @Column()
@@ -43,25 +43,6 @@ export class ReturnReason {
     { cascade: ["insert", 'soft-remove'] }
   )
   return_reason_children: ReturnReason[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `rr_${id}`
-  }
 }
 
 /**

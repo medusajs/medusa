@@ -14,15 +14,15 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Fulfillment } from "./fulfillment"
 
 @Entity()
-export class TrackingLink {
-  @PrimaryColumn()
-  id: string
+export class TrackingLink extends BaseEntity {
+  prefixId = "tlink"
 
   @Column({ nullable: true })
   url: string
@@ -40,27 +40,8 @@ export class TrackingLink {
   @JoinColumn({ name: "fulfillment_id" })
   fulfillment: Fulfillment
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
   @Column({ nullable: true })
   idempotency_key: string
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `tlink_${id}`
-  }
 }
 
 /**

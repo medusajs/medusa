@@ -7,35 +7,16 @@ import {
   Column,
   PrimaryColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ProductTag {
-  @PrimaryColumn()
-  id: string
+export class ProductTag extends BaseEntity {
+  prefixId = "ptag"
 
   @Column()
   value: string
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `ptag_${id}`
-  }
 }
 
 /**

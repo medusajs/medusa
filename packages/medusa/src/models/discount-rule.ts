@@ -8,6 +8,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { DiscountCondition } from "./discount-condition"
@@ -24,9 +25,8 @@ export enum AllocationType {
 }
 
 @Entity()
-export class DiscountRule {
-  @PrimaryColumn()
-  id: string
+export class DiscountRule extends BaseEntity {
+  prefixId = "dru"
 
   @Column({ nullable: true })
   description: string
@@ -49,24 +49,6 @@ export class DiscountRule {
 
   @OneToMany(() => DiscountCondition, (conditions) => conditions.discount_rule)
   conditions: DiscountCondition[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    const id = ulid()
-    this.id = `dru_${id}`
-  }
 }
 
 /**

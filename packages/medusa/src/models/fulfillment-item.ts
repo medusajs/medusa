@@ -15,6 +15,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 
 import { Fulfillment } from "./fulfillment"
 import { LineItem } from "./line-item"

@@ -13,6 +13,7 @@ import {
   ManyToMany,
   JoinTable,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -21,9 +22,8 @@ import { CustomerGroup } from "./customer-group"
 import { Order } from "./order"
 
 @Entity()
-export class Customer {
-  @PrimaryColumn()
-  id: string
+export class Customer extends BaseEntity {
+  prefixId = "cus"
 
   @Index({ unique: true })
   @Column()
@@ -73,27 +73,6 @@ export class Customer {
     onDelete: "CASCADE",
   })
   groups: CustomerGroup[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `cus_${id}`
-  }
 }
 
 /**

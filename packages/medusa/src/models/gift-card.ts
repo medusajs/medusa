@@ -10,6 +10,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -17,9 +18,8 @@ import { Region } from "./region"
 import { Order } from "./order"
 
 @Entity()
-export class GiftCard {
-  @PrimaryColumn()
-  id: string
+export class GiftCard extends BaseEntity {
+  prefixId = "gift"
 
   @Index({ unique: true })
   @Column()
@@ -55,25 +55,6 @@ export class GiftCard {
     nullable: true,
   })
   ends_at: Date
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `gift_${id}`
-  }
 }
 
 /**

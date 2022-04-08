@@ -12,6 +12,7 @@ import {
   OneToMany,
   JoinColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -47,9 +48,8 @@ export enum ClaimFulfillmentStatus {
 }
 
 @Entity()
-export class ClaimOrder {
-  @PrimaryColumn()
-  id: string
+export class ClaimOrder extends BaseEntity {
+  prefixId = "claim"
 
   @DbAwareColumn({
     type: "enum",
@@ -143,13 +143,6 @@ export class ClaimOrder {
 
   @Column({ nullable: true })
   idempotency_key: string
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `claim_${id}`
-  }
 }
 
 /**

@@ -12,6 +12,7 @@ import {
   JoinTable,
   JoinColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -23,9 +24,8 @@ import { FulfillmentProvider } from "./fulfillment-provider"
 import { TaxProvider } from "./tax-provider"
 
 @Entity()
-export class Region {
-  @PrimaryColumn()
-  id: string
+export class Region extends BaseEntity {
+  prefixId = "reg"
 
   @Column()
   name: string
@@ -95,25 +95,6 @@ export class Region {
     },
   })
   fulfillment_providers: FulfillmentProvider[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `reg_${id}`
-  }
 }
 
 /**

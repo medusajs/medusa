@@ -9,6 +9,7 @@ import {
   Unique,
   JoinColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType } from "../utils/db-aware-column"
 

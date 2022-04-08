@@ -29,25 +29,18 @@
 import {
   Entity,
   Index,
-  BeforeInsert,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
   ManyToOne,
   JoinColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Customer } from "./customer"
 import { Country } from "./country"
+import { BaseEntity } from "./_base"
 
 @Entity()
-export class Address {
-  @PrimaryColumn()
-  id: string
+export class Address extends BaseEntity {
+  prefixId = 'addr'
 
   @Index()
   @Column({ type: "varchar", nullable: true })
@@ -90,23 +83,4 @@ export class Address {
 
   @Column({ type: "varchar", nullable: true })
   phone: string | null
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date | null
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `addr_${id}`
-  }
 }

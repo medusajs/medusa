@@ -84,10 +84,7 @@
 
 import {
   AfterLoad,
-  BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -96,10 +93,8 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
+import { BaseEntity } from "./_base"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Address } from "./address"
 import { Customer } from "./customer"
@@ -120,9 +115,8 @@ export enum CartType {
 }
 
 @Entity()
-export class Cart {
-  @PrimaryColumn()
-  id: string
+export class Cart extends BaseEntity {
+  prefixId = "cart"
 
   readonly object = "cart"
 
@@ -227,23 +221,11 @@ export class Cart {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   payment_authorized_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
   @Column({ nullable: true })
   idempotency_key: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  context: any
+  context: Record<string, unknown>
 
   shipping_total?: number
   discount_total?: number
@@ -253,15 +235,6 @@ export class Cart {
   subtotal?: number
   refundable_amount?: number
   gift_card_total?: number
-
-  @BeforeInsert()
-  private beforeInsert(): undefined | void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `cart_${id}`
-  }
 
   @AfterLoad()
   private afterLoad(): void {

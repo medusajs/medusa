@@ -8,6 +8,7 @@ import {
   PrimaryColumn,
   OneToMany,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -21,9 +22,8 @@ export enum ShippingProfileType {
 }
 
 @Entity()
-export class ShippingProfile {
-  @PrimaryColumn()
-  id: string
+export class ShippingProfile extends BaseEntity {
+  prefixId = "sp"
 
   @Column()
   name: string
@@ -42,25 +42,6 @@ export class ShippingProfile {
     so => so.profile
   )
   shipping_options: ShippingOption[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `sp_${id}`
-  }
 }
 
 /**

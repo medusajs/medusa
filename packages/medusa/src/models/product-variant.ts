@@ -13,6 +13,7 @@ import {
   JoinColumn,
   JoinTable,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
@@ -21,9 +22,8 @@ import { MoneyAmount } from "./money-amount"
 import { ProductOptionValue } from "./product-option-value"
 
 @Entity()
-export class ProductVariant {
-  @PrimaryColumn()
-  id: string
+export class ProductVariant extends BaseEntity {
+  prefixId = "variant"
 
   @Column()
   title: string
@@ -98,27 +98,6 @@ export class ProductVariant {
     cascade: true,
   })
   options: ProductOptionValue[]
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `variant_${id}`
-  }
 }
 
 /**

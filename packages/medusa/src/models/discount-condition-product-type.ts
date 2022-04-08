@@ -6,6 +6,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { DiscountCondition } from "./discount-condition"
 import { ProductType } from "./product-type"
@@ -33,7 +34,7 @@ export class DiscountConditionProductType {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 }
 
 /**

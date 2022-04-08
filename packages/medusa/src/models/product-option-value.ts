@@ -10,15 +10,15 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
 
 @Entity()
-export class ProductOptionValue {
-  @PrimaryColumn()
-  id: string
+export class ProductOptionValue extends BaseEntity {
+  prefixId = "optval"
 
   @Column()
   value: string
@@ -40,27 +40,6 @@ export class ProductOptionValue {
   })
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
-  @BeforeInsert()
-  private beforeInsert(): void | undefined {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `optval_${id}`
-  }
 }
 
 /**

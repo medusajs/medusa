@@ -12,15 +12,15 @@ import {
   PrimaryColumn,
   UpdateDateColumn
 } from "typeorm"
+import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
 
 @Entity()
-export class Discount {
-  @PrimaryColumn()
-  id: string
+export class Discount extends BaseEntity {
+  prefixId = "disc"
 
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
@@ -79,25 +79,8 @@ export class Discount {
   @Column({ default: 0 })
   usage_count: number
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `disc_${id}`
+  private upperCaseCode() {
     this.code = this.code.toUpperCase()
   }
 }
