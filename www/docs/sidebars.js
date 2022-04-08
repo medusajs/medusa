@@ -283,6 +283,11 @@ module.exports = {
           id: "troubleshooting/signing-in-to-admin",
           label: "Signing in to Medusa Admin",
         },
+        {
+          type: "doc",
+          id: "troubleshooting/documentation-error",
+          label: "Documentation Error",
+        },
       ],
     },
   ],
