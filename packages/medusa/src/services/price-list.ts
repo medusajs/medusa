@@ -238,8 +238,6 @@ class PriceListService extends BaseService {
       }
 
       await priceListRepo.remove(priceList)
-
-      return Promise.resolve()
     })
   }
 
