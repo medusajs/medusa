@@ -255,3 +255,7 @@ footer {
 .prism-code div:active {
   outline: none !important;
 }
+
+details summary {
+  cursor: pointer;
+}
