@@ -1,17 +1,17 @@
 import {
-  Entity,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
-  PrimaryColumn,
-  ManyToOne,
-  ManyToMany,
+  CreateDateColumn,
+  Entity,
   JoinColumn,
   JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Region } from "./region"
 import { Product } from "./product"
@@ -46,7 +46,7 @@ export class TaxRate {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @ManyToMany(() => Product)
   @JoinTable({
@@ -96,8 +96,10 @@ export class TaxRate {
   shipping_option_count?: number
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `txr_${id}`
   }

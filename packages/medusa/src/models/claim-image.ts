@@ -1,10 +1,4 @@
-import {
-  Entity,
-  Index,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from "typeorm"
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { ClaimItem } from "./claim-item"
 import { BaseEntity } from "./_base"
 
@@ -16,10 +10,7 @@ export class ClaimImage extends BaseEntity {
   @Column()
   claim_item_id: string
 
-  @ManyToOne(
-    () => ClaimItem,
-    ci => ci.images
-  )
+  @ManyToOne(() => ClaimItem, (ci) => ci.images)
   @JoinColumn({ name: "claim_item_id" })
   claim_item: ClaimItem
 

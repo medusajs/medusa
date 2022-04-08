@@ -1,15 +1,5 @@
-import {
-  Entity,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-  PrimaryColumn,
-} from "typeorm"
+import { Column, Entity } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class ProductTag extends BaseEntity {

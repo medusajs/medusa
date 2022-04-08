@@ -1,22 +1,18 @@
 import {
-  Entity,
-  Index,
-  RelationId,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Index,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Order } from "./order"
 import { Swap } from "./swap"
@@ -43,21 +39,17 @@ export class Return {
   })
   status: ReturnStatus
 
-  @OneToMany(
-    () => ReturnItem,
-    item => item.return_order,
-    { eager: true, cascade: ["insert"] }
-  )
+  @OneToMany(() => ReturnItem, (item) => item.return_order, {
+    eager: true,
+    cascade: ["insert"],
+  })
   items: ReturnItem[]
 
   @Index()
   @Column({ nullable: true })
   swap_id: string
 
-  @OneToOne(
-    () => Swap,
-    swap => swap.return_order
-  )
+  @OneToOne(() => Swap, (swap) => swap.return_order)
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
@@ -65,10 +57,7 @@ export class Return {
   @Column({ nullable: true })
   claim_order_id: string
 
-  @OneToOne(
-    () => ClaimOrder,
-    co => co.return_order
-  )
+  @OneToOne(() => ClaimOrder, (co) => co.return_order)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
@@ -76,22 +65,17 @@ export class Return {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    o => o.returns
-  )
+  @ManyToOne(() => Order, (o) => o.returns)
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @OneToOne(
-    () => ShippingMethod,
-    method => method.return_order,
-    { cascade: true }
-  )
+  @OneToOne(() => ShippingMethod, (method) => method.return_order, {
+    cascade: true,
+  })
   shipping_method: ShippingMethod
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  shipping_data: any
+  shipping_data: Record<string, unknown>
 
   @Column({ type: "int" })
   refund_amount: number
@@ -106,17 +90,19 @@ export class Return {
   updated_at: Date
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: Boolean
+  no_notification: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `ret_${id}`
   }

@@ -1,21 +1,17 @@
 import {
-  Entity,
-  RelationId,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
   JoinColumn,
   JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
 
@@ -64,10 +60,10 @@ export class Store {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
+  private beforeInsert(): void {
     const id = ulid()
     this.id = `store_${id}`
   }

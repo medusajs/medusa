@@ -1,24 +1,14 @@
 import {
-  Entity,
   Check,
-  Index,
-  BeforeInsert,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Index,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingProfile } from "./shipping-profile"
 import { Region } from "./region"
@@ -74,11 +64,9 @@ export class ShippingOption extends BaseEntity {
   @Column({ default: false })
   admin_only: boolean
 
-  @OneToMany(
-    () => ShippingOptionRequirement,
-    req => req.shipping_option,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => ShippingOptionRequirement, (req) => req.shipping_option, {
+    cascade: ["insert"],
+  })
   requirements: ShippingOptionRequirement[]
 
   @DbAwareColumn({ type: "jsonb" })

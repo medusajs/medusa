@@ -1,16 +1,6 @@
-import {
-  Entity,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToMany,
-} from "typeorm"
+import { Column, Entity, OneToMany } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
 import { Product } from "./product"
@@ -31,16 +21,10 @@ export class ShippingProfile extends BaseEntity {
   @DbAwareColumn({ type: "enum", enum: ShippingProfileType })
   type: ShippingProfileType
 
-  @OneToMany(
-    () => Product,
-    product => product.profile
-  )
+  @OneToMany(() => Product, (product) => product.profile)
   products: Product[]
 
-  @OneToMany(
-    () => ShippingOption,
-    so => so.profile
-  )
+  @OneToMany(() => ShippingOption, (so) => so.profile)
   shipping_options: ShippingOption[]
 }
 

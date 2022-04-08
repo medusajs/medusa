@@ -1,5 +1,4 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from "typeorm"
-import { BaseEntity } from "./_base"
+import { Column, Entity, PrimaryColumn } from "typeorm"
 
 @Entity()
 export class FulfillmentProvider {

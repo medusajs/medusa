@@ -1,21 +1,14 @@
 import {
-  Entity,
-  BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
   Column,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
+  Entity,
+  Index,
   JoinColumn,
-  ManyToMany,
   JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Address } from "./address"
 import { CustomerGroup } from "./customer-group"

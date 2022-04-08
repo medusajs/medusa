@@ -2,8 +2,6 @@ import _ from "lodash"
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -11,12 +9,9 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { Image } from "./image"
 import { ProductCollection } from "./product-collection"
 import { ProductOption } from "./product-option"
@@ -72,17 +67,12 @@ export class Product extends BaseEntity {
   @Column({ nullable: true })
   thumbnail: string
 
-  @OneToMany(
-    () => ProductOption,
-    (productOption) => productOption.product
-  )
+  @OneToMany(() => ProductOption, (productOption) => productOption.product)
   options: ProductOption[]
 
-  @OneToMany(
-    () => ProductVariant,
-    (variant) => variant.product,
-    { cascade: true }
-  )
+  @OneToMany(() => ProductVariant, (variant) => variant.product, {
+    cascade: true,
+  })
   variants: ProductVariant[]
 
   @Index()
@@ -152,7 +142,7 @@ export class Product extends BaseEntity {
   external_id: string
 
   @BeforeInsert()
-  private createHandleIfNotProvided() {
+  private createHandleIfNotProvided(): void {
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }

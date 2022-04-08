@@ -1,19 +1,5 @@
-import {
-  Entity,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-  PrimaryColumn,
-  Index,
-  ManyToOne,
-  OneToMany,
-  JoinColumn,
-} from "typeorm"
+import { Column, Entity, Index } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class ClaimTag extends BaseEntity {

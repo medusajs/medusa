@@ -1,23 +1,22 @@
 import {
-  Entity,
-  Index,
   BeforeInsert,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Swap } from "./swap"
 import { Currency } from "./currency"
 import { Cart } from "./cart"
 import { Order } from "./order"
-import { DraftOrder } from "./draft-order"
 
 @Entity()
 export class Payment {
@@ -44,10 +43,7 @@ export class Payment {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    order => order.payments
-  )
+  @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
   order: Order
 
@@ -69,7 +65,7 @@ export class Payment {
   provider_id: string
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
+  data: Record<string, unknown>
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   captured_at: Date
@@ -84,14 +80,16 @@ export class Payment {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `pay_${id}`
   }

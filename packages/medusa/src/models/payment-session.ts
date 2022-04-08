@@ -1,17 +1,17 @@
 import {
-  Entity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Index,
   BeforeInsert,
   Column,
-  PrimaryColumn,
-  ManyToOne,
+  CreateDateColumn,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
   Unique,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {
@@ -47,7 +47,7 @@ export class PaymentSession {
   status: string
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
+  data: Record<string, unknown>
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -59,8 +59,10 @@ export class PaymentSession {
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `ps_${id}`
   }

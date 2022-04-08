@@ -1,22 +1,14 @@
 import {
+  Column,
   Entity,
   Index,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Order } from "./order"
 import { Fulfillment } from "./fulfillment"
@@ -61,39 +53,22 @@ export class Swap extends BaseEntity {
   @Column({ type: "string" })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    (o) => o.swaps
-  )
+  @ManyToOne(() => Order, (o) => o.swaps)
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @OneToMany(
-    () => LineItem,
-    (item) => item.swap,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => LineItem, (item) => item.swap, { cascade: ["insert"] })
   additional_items: LineItem[]
 
-  @OneToOne(
-    () => Return,
-    (ret) => ret.swap,
-    { cascade: ["insert"] }
-  )
+  @OneToOne(() => Return, (ret) => ret.swap, { cascade: ["insert"] })
   return_order: Return
 
-  @OneToMany(
-    () => Fulfillment,
-    (fulfillment) => fulfillment.swap,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.swap, {
+    cascade: ["insert"],
+  })
   fulfillments: Fulfillment[]
 
-  @OneToOne(
-    () => Payment,
-    (p) => p.swap,
-    { cascade: ["insert"] }
-  )
+  @OneToOne(() => Payment, (p) => p.swap, { cascade: ["insert"] })
   payment: Payment
 
   @Column({ type: "int", nullable: true })
@@ -106,11 +81,9 @@ export class Swap extends BaseEntity {
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
-  @OneToMany(
-    () => ShippingMethod,
-    (method) => method.swap,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => ShippingMethod, (method) => method.swap, {
+    cascade: ["insert"],
+  })
   shipping_methods: ShippingMethod[]
 
   @Column({ nullable: true })
@@ -127,10 +100,10 @@ export class Swap extends BaseEntity {
   canceled_at: Date
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: Boolean
+  no_notification: boolean
 
   @Column({ type: "boolean", default: false })
-  allow_backorder: Boolean
+  allow_backorder: boolean
 
   @Column({ nullable: true })
   idempotency_key: string

@@ -1,21 +1,15 @@
 import {
-  BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn,
   Unique,
-  UpdateDateColumn,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { CustomerGroup } from "./customer-group"
 import { DiscountRule } from "./discount-rule"
 import { Product } from "./product"

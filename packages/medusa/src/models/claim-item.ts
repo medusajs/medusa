@@ -1,17 +1,15 @@
 import {
-  Entity,
   Column,
-  PrimaryColumn,
+  Entity,
   Index,
+  JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
-  JoinColumn,
-  JoinTable,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { LineItem } from "./line-item"
 import { ClaimImage } from "./claim-image"
@@ -30,21 +28,16 @@ export enum ClaimReason {
 export class ClaimItem extends BaseEntity {
   prefixId = "citm"
 
-  @OneToMany(
-    () => ClaimImage,
-    ci => ci.claim_item,
-    { cascade: ["insert", "remove"] }
-  )
+  @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
+    cascade: ["insert", "remove"],
+  })
   images: ClaimImage[]
 
   @Index()
   @Column()
   claim_order_id: string
 
-  @ManyToOne(
-    () => ClaimOrder,
-    co => co.claim_items
-  )
+  @ManyToOne(() => ClaimOrder, (co) => co.claim_items)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 

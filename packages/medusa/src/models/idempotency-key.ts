@@ -1,14 +1,13 @@
 import {
-  Entity,
   BeforeInsert,
-  CreateDateColumn,
-  Index,
   Column,
+  CreateDateColumn,
+  Entity,
+  Index,
   PrimaryColumn,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 @Entity()
 export class IdempotencyKey {
@@ -29,7 +28,7 @@ export class IdempotencyKey {
   request_method: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  request_params: any
+  request_params: Record<string, unknown>
 
   @Column({ nullable: true })
   request_path: string
@@ -38,13 +37,13 @@ export class IdempotencyKey {
   response_code: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  response_body: any
+  response_body: Record<string, unknown>
 
   @Column({ default: "started" })
   recovery_point: string
 
   @BeforeInsert()
-  private beforeInsert() {
+  private beforeInsert(): void {
     const id = ulid()
     this.id = `ikey_${id}`
   }

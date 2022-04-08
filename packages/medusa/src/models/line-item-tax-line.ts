@@ -24,8 +24,10 @@ export class LineItemTaxLine extends TaxLine {
   item: LineItem
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `litl_${id}`
   }

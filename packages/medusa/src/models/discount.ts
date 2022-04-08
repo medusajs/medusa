@@ -1,20 +1,15 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { resolveDbType } from "../utils/db-aware-column"
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
 
@@ -80,7 +75,7 @@ export class Discount extends BaseEntity {
   usage_count: number
 
   @BeforeInsert()
-  private upperCaseCode() {
+  private upperCaseCode(): void {
     this.code = this.code.toUpperCase()
   }
 }

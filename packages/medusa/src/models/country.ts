@@ -9,7 +9,7 @@ import {
 import { Region } from "./region"
 
 @Entity()
-export class Country  {
+export class Country {
   @PrimaryGeneratedColumn()
   id: number
 

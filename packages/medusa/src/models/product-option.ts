@@ -1,18 +1,5 @@
-import {
-  Entity,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
-  OneToMany,
-  Column,
-  PrimaryColumn,
-  JoinColumn,
-} from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Product } from "./product"
 import { ProductOptionValue } from "./product-option-value"
@@ -24,19 +11,13 @@ export class ProductOption extends BaseEntity {
   @Column()
   title: string
 
-  @OneToMany(
-    () => ProductOptionValue,
-    value => value.option
-  )
+  @OneToMany(() => ProductOptionValue, (value) => value.option)
   values: ProductOptionValue[]
 
   @Column()
   product_id: string
 
-  @ManyToOne(
-    () => Product,
-    product => product.options
-  )
+  @ManyToOne(() => Product, (product) => product.options)
   @JoinColumn({ name: "product_id" })
   product: Product
 }

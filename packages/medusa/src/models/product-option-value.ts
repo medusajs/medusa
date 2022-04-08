@@ -1,18 +1,5 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
 

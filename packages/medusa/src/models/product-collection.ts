@@ -1,18 +1,5 @@
-import {
-  Entity,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-  PrimaryColumn,
-  ManyToMany,
-  Index,
-  OneToMany,
-} from "typeorm"
+import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 import _ from "lodash"
 
 import { Product } from "./product"
@@ -28,14 +15,11 @@ export class ProductCollection extends BaseEntity {
   @Column({ nullable: true })
   handle: string
 
-  @OneToMany(
-    () => Product,
-    product => product.collection
-  )
+  @OneToMany(() => Product, (product) => product.collection)
   products: Product[]
 
   @BeforeInsert()
-  private createHandleIfNotProvided() {
+  private createHandleIfNotProvided(): void {
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }

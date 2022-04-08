@@ -1,15 +1,14 @@
 import {
-  Entity,
   BeforeInsert,
-  Index,
-  CreateDateColumn,
   Column,
-  PrimaryColumn,
-  ManyToOne,
-  Unique,
+  CreateDateColumn,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+  Unique,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
 import { resolveDbType } from "../utils/db-aware-column"
 
@@ -44,8 +43,10 @@ export class GiftCardTransaction {
   created_at: Date
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `gct_${id}`
   }

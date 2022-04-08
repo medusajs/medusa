@@ -1,19 +1,6 @@
-import {
-  Entity,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Index,
-  JoinColumn,
-  PrimaryColumn,
-  ManyToOne,
-} from "typeorm"
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
 import { User } from "./user"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class Note extends BaseEntity {

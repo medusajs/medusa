@@ -7,11 +7,9 @@ import {
   Index,
   JoinColumn,
   OneToOne,
-  PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
 import {
   DbAwareColumn,
   resolveDbGenerationStrategy,
@@ -70,7 +68,7 @@ export class DraftOrder extends BaseEntity {
   no_notification_order: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string

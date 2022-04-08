@@ -1,14 +1,14 @@
 import {
-  Entity,
-  Check,
   BeforeInsert,
+  Check,
   Column,
-  PrimaryColumn,
-  ManyToOne,
-  OneToOne,
-  OneToMany,
-  JoinColumn,
+  Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
@@ -87,11 +87,13 @@ export class ShippingMethod {
   price: number
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
+  data: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `sm_${id}`
   }

@@ -1,19 +1,12 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
-  Index,
   DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Index,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  PrimaryColumn,
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
@@ -48,8 +41,10 @@ export class ShippingOptionRequirement {
   deleted_at: Date
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `sor_${id}`
   }

@@ -1,19 +1,18 @@
 import {
-  Entity,
-  OneToMany,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
   Check,
-  Index,
   Column,
-  PrimaryColumn,
-  ManyToOne,
+  CreateDateColumn,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { LineItemTaxLine } from "./line-item-tax-line"
 import { Swap } from "./swap"
@@ -124,13 +123,15 @@ export class LineItem {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   refundable: number | null
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `item_${id}`
   }

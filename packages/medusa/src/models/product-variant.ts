@@ -1,21 +1,12 @@
 import {
+  Column,
   Entity,
   Index,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Product } from "./product"
 import { MoneyAmount } from "./money-amount"

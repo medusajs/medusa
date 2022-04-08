@@ -1,13 +1,12 @@
 import {
-  Entity,
-  DeleteDateColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToOne,
+  Entity,
   JoinColumn,
+  ManyToOne,
   PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Product } from "./product"
 import { TaxRate } from "./tax-rate"
@@ -36,7 +35,7 @@ export class ProductTaxRate {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 }
 
 /**

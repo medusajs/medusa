@@ -1,17 +1,17 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   Index,
-  PrimaryColumn,
-  OneToMany,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Customer } from "./customer"
 import { NotificationProvider } from "./notification-provider"
@@ -44,7 +44,7 @@ export class Notification {
   to: string
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
+  data: Record<string, unknown>
 
   @Column({ nullable: true })
   parent_id: string
@@ -53,10 +53,7 @@ export class Notification {
   @JoinColumn({ name: "parent_id" })
   parent_notification: Notification
 
-  @OneToMany(
-    () => Notification,
-    noti => noti.parent_notification
-  )
+  @OneToMany(() => Notification, (noti) => noti.parent_notification)
   resends: Notification[]
 
   @Column({ nullable: true })
@@ -73,8 +70,10 @@ export class Notification {
   updated_at: Date
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `noti_${id}`
   }

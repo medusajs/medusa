@@ -1,19 +1,12 @@
 import {
+  Column,
   Entity,
   Index,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  ManyToOne, 
+  JoinColumn,
+  ManyToOne,
   OneToMany,
-  JoinColumn
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 export class ReturnReason extends BaseEntity {
@@ -32,15 +25,14 @@ export class ReturnReason extends BaseEntity {
   @Column({ nullable: true })
   parent_return_reason_id: string
 
-  @ManyToOne(() => ReturnReason, {cascade: ['soft-remove']}
-  )
+  @ManyToOne(() => ReturnReason, { cascade: ["soft-remove"] })
   @JoinColumn({ name: "parent_return_reason_id" })
   parent_return_reason: ReturnReason
 
   @OneToMany(
     () => ReturnReason,
-    return_reason => return_reason.parent_return_reason,
-    { cascade: ["insert", 'soft-remove'] }
+    (return_reason) => return_reason.parent_return_reason,
+    { cascade: ["insert", "soft-remove"] }
   )
   return_reason_children: ReturnReason[]
 }

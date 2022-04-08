@@ -1,10 +1,10 @@
 import {
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
+  CreateDateColumn,
   PrimaryColumn,
+  UpdateDateColumn,
 } from "typeorm"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 export class TaxLine {
   @PrimaryColumn()
@@ -26,7 +26,7 @@ export class TaxLine {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 }
 
 /**

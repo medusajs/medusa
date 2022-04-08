@@ -225,7 +225,7 @@ export class Order {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ type: "boolean", nullable: true })
   no_notification: boolean

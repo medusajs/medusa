@@ -26,13 +26,7 @@
  *    $ref: "#/components/schemas/country"
  */
 
-import {
-  Entity,
-  Index,
-  Column,
-  ManyToOne,
-  JoinColumn,
-} from "typeorm"
+import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 
 import { Customer } from "./customer"
 import { Country } from "./country"
@@ -40,7 +34,7 @@ import { BaseEntity } from "./_base"
 
 @Entity()
 export class Address extends BaseEntity {
-  prefixId = 'addr'
+  prefixId = "addr"
 
   @Index()
   @Column({ type: "varchar", nullable: true })

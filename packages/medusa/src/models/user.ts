@@ -1,16 +1,6 @@
-import {
-  Entity,
-  BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
-  Column,
-  PrimaryColumn,
-} from "typeorm"
+import { Column, Entity, Index } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 export enum UserRoles {
   ADMIN = "admin",

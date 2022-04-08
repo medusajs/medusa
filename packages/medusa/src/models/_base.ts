@@ -1,4 +1,10 @@
-import { BeforeInsert, CreateDateColumn, DeleteDateColumn, PrimaryColumn, UpdateDateColumn } from "typeorm"
+import {
+  BeforeInsert,
+  CreateDateColumn,
+  DeleteDateColumn,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
@@ -6,7 +12,7 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
  * Base abstract entity for all entities
  */
 export abstract class BaseEntity {
-  abstract prefixId: string;
+  abstract prefixId: string
 
   @PrimaryColumn()
   id: string
@@ -24,11 +30,15 @@ export abstract class BaseEntity {
   metadata: Record<string, unknown>
 
   @BeforeInsert()
-  protected beforeInsert() {
-    if (this.id) return
+  protected beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     if (!this.prefixId) {
-      throw new Error(`Missing property prefixId from the model ${this.constructor.name}`)
+      throw new Error(
+        `Missing property prefixId from the model ${this.constructor.name}`
+      )
     }
     this.id = `${this.prefixId}_${id}`
   }

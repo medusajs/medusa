@@ -1,21 +1,14 @@
 import {
-  Entity,
-  BeforeInsert,
   Column,
-  Index,
   CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  UpdateDateColumn,
 } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-
-import { Currency } from "./currency"
-import { Cart } from "./cart"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Order } from "./order"
 
 export enum RefundReason {
@@ -34,10 +27,7 @@ export class Refund extends BaseEntity {
   @Column()
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    order => order.payments
-  )
+  @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
   order: Order
 
@@ -57,7 +47,7 @@ export class Refund extends BaseEntity {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string

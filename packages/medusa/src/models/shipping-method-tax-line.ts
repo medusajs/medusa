@@ -24,8 +24,10 @@ export class ShippingMethodTaxLine extends TaxLine {
   shipping_method: ShippingMethod
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `smtl_${id}`
   }

@@ -1,22 +1,5 @@
-import {
-  Entity,
-  Index,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
-  JoinColumn,
-  JoinTable,
-} from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity } from "./_base"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Fulfillment } from "./fulfillment"
 
@@ -33,10 +16,7 @@ export class TrackingLink extends BaseEntity {
   @Column()
   fulfillment_id: string
 
-  @ManyToOne(
-    () => Fulfillment,
-    ful => ful.tracking_links
-  )
+  @ManyToOne(() => Fulfillment, (ful) => ful.tracking_links)
   @JoinColumn({ name: "fulfillment_id" })
   fulfillment: Fulfillment
 
