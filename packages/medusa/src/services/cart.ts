@@ -479,13 +479,14 @@ class CartService extends BaseService {
 
         // Remove shipping methods if they are not needed
         if (cart.shipping_methods?.length) {
-          await Promise.all(
-            cart.shipping_methods.map(async (shippingMethod) => {
-              return this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .deleteShippingMethod(shippingMethod)
-            })
+          const shippingMethodRepository = this.manager_.getCustomRepository(
+            this.shippingMethodRepository_
           )
+          await shippingMethodRepository.delete({
+            id: In(
+              cart.shipping_methods.map((shippingMethod) => shippingMethod.id)
+            ),
+          })
         }
 
         const lineItemRepository = transactionManager.getCustomRepository(
