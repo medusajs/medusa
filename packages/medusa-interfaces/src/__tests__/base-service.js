@@ -1,7 +1,38 @@
 import BaseService from "../base-service"
 import { In, Not } from "typeorm"
+import { MockManager } from "medusa-test-utils"
 
 describe("BaseService", () => {
+  it("should cloned the child class withTransaction", () => {
+    class Child extends BaseService {
+      constructor(container) {
+        super(container, {});
+        this.container = container
+      }
+
+      message() {
+        return `child class message method called with title ${this.container.title}`
+      }
+
+      getTransactionManager() {
+        return this.transactionManager_
+      }
+    }
+
+    const child = new Child({ title: 'title' })
+
+    expect(child.message()).toBe(`child class message method called with title title`)
+    expect(child.getTransactionManager()).toBeFalsy()
+
+    const fakeManager = MockManager
+    fakeManager.testProp = 'testProp'
+    const child2 = child.withTransaction(fakeManager)
+
+    expect(child2.message()).toBe(`child class message method called with title title`)
+    expect(child2.getTransactionManager()).toBeTruthy()
+    expect(child2.getTransactionManager().testProp).toBe('testProp')
+  })
+
   describe("buildQuery_", () => {
     const baseService = new BaseService()
 

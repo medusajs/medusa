@@ -1,26 +1,54 @@
 import { MedusaError } from "medusa-core-utils"
-import { FindOperator, In, Raw } from "typeorm"
+import { EntityManager, FindOperator, In, Raw } from "typeorm"
+import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
+
+type Selector<TEntity> = { [key in keyof TEntity]: unknown }
+type QueryBuilderConfig<TEntity> = {
+  skip?: number
+  take?: number
+  relations?: string[],
+  select?: (keyof TEntity)[]
+  order?: { [key in keyof TEntity]: "ASC" | "DESC" }
+}
 
 /**
  * Common functionality for Services
  * @interface
  */
-class BaseService {
-  constructor() {
-    this.decorators_ = []
+class BaseService<TContainer = unknown, TChildClass extends BaseService<TContainer> = any> {
+  protected transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
+  private readonly decorators_: ((...args: unknown[]) => unknown)[] = []
+  private readonly container_: TContainer
+
+  constructor(container: TContainer, protected readonly configModule: Record<string, unknown>) {
+    this.container_ = container
   }
 
-  withTransaction() {
-    console.log("WARN: withTransaction called without custom implementation")
-    return this
+  withTransaction(transactionManager?: EntityManager): this | TChildClass {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new (<typeof BaseService>this.constructor)<TContainer>({
+      ...this.container_,
+      manager: transactionManager,
+    }, this.configModule)
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned as TChildClass
   }
 
   /**
    * Used to build TypeORM queries.
    */
-  buildQuery_(selector, config = {}) {
-    const build = (obj) => {
-      const where = Object.entries(obj).reduce((acc, [key, value]) => {
+  buildQuery_<TEntity extends new (...args: unknown[]) => TEntity = any>(
+    selector: Selector<TEntity>,
+    config: QueryBuilderConfig<TEntity> = {}
+  ): QueryBuilderConfig<TEntity> & { where: { [key in keyof TEntity]: unknown }; withDeleted?: boolean } {
+    const build = (obj: Record<string, unknown>): { [key in keyof TEntity]: unknown } => {
+      return Object.entries(obj).reduce((acc, [key, value]: any) => {
         // Undefined values indicate that they have no significance to the query.
         // If the query is looking for rows where a column is not set it should use null instead of undefined
         if (typeof value === "undefined") {
@@ -31,12 +59,12 @@ class BaseService {
             acc[key] = value
             break
           case Array.isArray(value):
-            acc[key] = In([...value])
+            acc[key] = In([...(value as unknown[])])
             break
           case value !== null && typeof value === "object":
-            const subquery = []
+            const subquery: { operator: "<" | ">" | "<=" | ">="; value: unknown }[] = []
 
-            Object.entries(value).map(([modifier, val]) => {
+            Object.entries(value as Record<string, unknown>).map(([modifier, val]) => {
               switch (modifier) {
                 case "lt":
                   subquery.push({ operator: "<", value: val })
@@ -72,12 +100,13 @@ class BaseService {
         }
 
         return acc
-      }, {})
-
-      return where
+      }, {} as { [key in keyof TEntity]: unknown })
     }
 
-    const query = {
+    const query: QueryBuilderConfig<TEntity> & {
+      where: { [key in keyof TEntity]: unknown }
+      withDeleted?: boolean
+    } = {
       where: build(selector),
     }
 
@@ -112,11 +141,11 @@ class BaseService {
    * Confirms whether a given raw id is valid. Fails if the provided
    * id is null or undefined. The validate function takes an optional config
    * param, to support checking id prefix and length.
-   * @param {string} rawId - the id to validate.
-   * @param {object?} config - optional config
-   * @returns {string} the rawId given that nothing failed
+   * @param rawId - the id to validate.
+   * @param config - optional config
+   * @returns the rawId given that nothing failed
    */
-  validateId_(rawId, config = {}) {
+  validateId_(rawId: string, config: { prefix?: string; length?: number } = {}): string {
     const { prefix, length } = config
     if (!rawId) {
       throw new MedusaError(
@@ -145,8 +174,11 @@ class BaseService {
     return rawId
   }
 
-  shouldRetryTransaction(err) {
-    const code = typeof err === "object" ? String(err.code) : null
+  shouldRetryTransaction(err: { code: string } | Object): boolean {
+    if (!(err as { code: string })?.code) {
+      return false
+    }
+    const code = (err as { code: string })?.code
     return code === "40001" || code === "40P01"
   }
 
@@ -154,17 +186,18 @@ class BaseService {
    * Wraps some work within a transactional block. If the service already has
    * a transaction manager attached this will be reused, otherwise a new
    * transaction manager is created.
-   * @param {function} work - the transactional work to be done
-   * @param {string} isolation - the isolation level to be used for the work.
-   * @return {any} the result of the transactional work
+   * @param work - the transactional work to be done
+   * @param isolationOrErrorHandler - the isolation level to be used for the work.
+   * @param maybeErrorHandlerOrDontFail
+   * @return the result of the transactional work
    */
   async atomicPhase_(
-    work,
-    isolationOrErrorHandler,
-    maybeErrorHandlerOrDontFail
-  ) {
+    work: (transactionManager: EntityManager) => Promise<unknown>,
+    isolationOrErrorHandler?: IsolationLevel | ((error: unknown) => Promise<unknown>),
+    maybeErrorHandlerOrDontFail?: ((error: unknown) => Promise<unknown>)
+  ): Promise<unknown | never> {
     let errorHandler = maybeErrorHandlerOrDontFail
-    let isolation = isolationOrErrorHandler
+    let isolation: IsolationLevel | ((error: unknown) => Promise<unknown>) | undefined | null = isolationOrErrorHandler
     let dontFail = false
     if (typeof isolationOrErrorHandler === "function") {
       isolation = null
@@ -173,16 +206,15 @@ class BaseService {
     }
 
     if (this.transactionManager_) {
-      const doWork = async (m) => {
+      const doWork = async (m: EntityManager) => {
         this.manager_ = m
         this.transactionManager_ = m
         try {
-          const result = await work(m)
-          return result
+          return await work(m)
         } catch (error) {
           if (errorHandler) {
             const queryRunner = this.transactionManager_.queryRunner
-            if (queryRunner.isTransactionActive) {
+            if (queryRunner && queryRunner.isTransactionActive) {
               await queryRunner.rollbackTransaction()
             }
 
@@ -195,7 +227,7 @@ class BaseService {
       return doWork(this.transactionManager_)
     } else {
       const temp = this.manager_
-      const doWork = async (m) => {
+      const doWork = async (m: EntityManager) => {
         this.manager_ = m
         this.transactionManager_ = m
         try {
@@ -213,11 +245,11 @@ class BaseService {
       if (isolation) {
         let result
         try {
-          result = await this.manager_.transaction(isolation, (m) => doWork(m))
+          result = await this.manager_.transaction(isolation as IsolationLevel, (m) => doWork(m))
           return result
         } catch (error) {
           if (this.shouldRetryTransaction(error)) {
-            return this.manager_.transaction(isolation, (m) => doWork(m))
+            return this.manager_.transaction(isolation as IsolationLevel, (m) => doWork(m))
           } else {
             if (errorHandler) {
               await errorHandler(error)
@@ -228,8 +260,7 @@ class BaseService {
       }
 
       try {
-        const result = await this.manager_.transaction((m) => doWork(m))
-        return result
+        return await this.manager_.transaction((m) => doWork(m))
       } catch (error) {
         if (errorHandler) {
           const result = await errorHandler(error)
@@ -245,11 +276,14 @@ class BaseService {
 
   /**
    * Dedicated method to set metadata.
-   * @param {string} obj - the entity to apply metadata to.
-   * @param {object} metadata - the metadata to set
-   * @return {Promise} resolves to the updated result.
+   * @param obj - the entity to apply metadata to.
+   * @param metadata - the metadata to set
+   * @return resolves to the updated result.
    */
-  setMetadata_(obj, metadata) {
+  setMetadata_(
+    obj: { metadata: Record<string, unknown> },
+    metadata: Record<string, unknown>
+  ): Record<string, unknown> {
     const existing = obj.metadata || {}
     const newData = {}
     for (const [key, value] of Object.entries(metadata)) {
@@ -262,20 +296,18 @@ class BaseService {
       newData[key] = value
     }
 
-    const updated = {
+    return {
       ...existing,
       ...newData,
     }
-
-    return updated
   }
 
   /**
    * Adds a decorator to a service. The decorator must be a function and should
    * return a decorated object.
-   * @param {function} fn - the decorator to add to the service
+   * @param fn - the decorator to add to the service
    */
-  addDecorator(fn) {
+  addDecorator(fn: (...args: unknown[]) => unknown): void {
     if (typeof fn !== "function") {
       throw Error("Decorators must be of type function")
     }
@@ -287,10 +319,12 @@ class BaseService {
    * Runs the decorators registered on the service. The decorators are run in
    * the order they have been registered in. Failing decorators will be skipped
    * in order to ensure deliverability in spite of breaking code.
-   * @param {object} obj - the object to decorate.
-   * @return {object} the decorated object.
+   * @param obj - the object to decorate.
+   * @param fields
+   * @param expandFields
+   * @return the decorated object.
    */
-  runDecorators_(obj, fields = [], expandFields = []) {
+  runDecorators_(obj: unknown, fields: string[] = [], expandFields: string[] = []): Promise<unknown> {
     return this.decorators_.reduce(async (acc, next) => {
       return acc.then((res) => next(res, fields, expandFields)).catch(() => acc)
     }, Promise.resolve(obj))
