@@ -1,12 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm"
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity } from "./_base"
 
 import { Fulfillment } from "./fulfillment"
 
 @Entity()
 export class TrackingLink extends BaseEntity {
-  prefixId = "tlink"
-
   @Column({ nullable: true })
   url: string
 
@@ -22,6 +20,11 @@ export class TrackingLink extends BaseEntity {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('tlink')
+  }
 }
 
 /**

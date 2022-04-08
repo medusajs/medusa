@@ -1,4 +1,4 @@
-import { Column, Entity, Index } from "typeorm"
+import { BeforeInsert, Column, Entity, Index } from "typeorm"
 import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
@@ -10,8 +10,6 @@ export enum UserRoles {
 
 @Entity()
 export class User extends BaseEntity {
-  prefixId = "usr"
-
   @DbAwareColumn({
     type: "enum",
     enum: UserRoles,
@@ -35,6 +33,11 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   api_token: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('usr')
+  }
 }
 
 /**

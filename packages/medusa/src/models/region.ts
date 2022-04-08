@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   JoinColumn,
@@ -18,8 +19,6 @@ import { TaxProvider } from "./tax-provider"
 
 @Entity()
 export class Region extends BaseEntity {
-  prefixId = "reg"
-
   @Column()
   name: string
 
@@ -88,6 +87,11 @@ export class Region extends BaseEntity {
     },
   })
   fulfillment_providers: FulfillmentProvider[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('reg')
+  }
 }
 
 /**

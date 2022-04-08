@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from "typeorm"
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
 import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
@@ -13,8 +13,6 @@ export enum ShippingProfileType {
 
 @Entity()
 export class ShippingProfile extends BaseEntity {
-  prefixId = "sp"
-
   @Column()
   name: string
 
@@ -26,6 +24,11 @@ export class ShippingProfile extends BaseEntity {
 
   @OneToMany(() => ShippingOption, (so) => so.profile)
   shipping_options: ShippingOption[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('sp')
+  }
 }
 
 /**

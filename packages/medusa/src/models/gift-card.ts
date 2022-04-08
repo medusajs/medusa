@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity } from "./_base"
 import { resolveDbType } from "../utils/db-aware-column"
 
@@ -7,8 +7,6 @@ import { Order } from "./order"
 
 @Entity()
 export class GiftCard extends BaseEntity {
-  prefixId = "gift"
-
   @Index({ unique: true })
   @Column()
   code: string
@@ -43,6 +41,11 @@ export class GiftCard extends BaseEntity {
     nullable: true,
   })
   ends_at: Date
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('gift')
+  }
 }
 
 /**

@@ -6,8 +6,6 @@ import { Product } from "./product"
 
 @Entity()
 export class ProductCollection extends BaseEntity {
-  prefixId = "pcol"
-
   @Column()
   title: string
 
@@ -20,6 +18,11 @@ export class ProductCollection extends BaseEntity {
 
   @BeforeInsert()
   private createHandleIfNotProvided(): void {
+    const shouldContinue = this.generateId('pcol')
+    if (shouldContinue === false) {
+      return
+    }
+
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }

@@ -1,12 +1,15 @@
-import { Column, Entity } from "typeorm"
+import { BeforeInsert, Column, Entity } from "typeorm"
 import { BaseEntity } from "./_base"
 
 @Entity()
 export class ProductType extends BaseEntity {
-  prefixId = "ptyp"
-
   @Column()
   value: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('ptyp')
+  }
 }
 
 /**

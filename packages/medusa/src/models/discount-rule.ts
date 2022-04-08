@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from "typeorm"
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
 import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { DiscountCondition } from "./discount-condition"
@@ -16,8 +16,6 @@ export enum AllocationType {
 
 @Entity()
 export class DiscountRule extends BaseEntity {
-  prefixId = "dru"
-
   @Column({ nullable: true })
   description: string
 
@@ -39,6 +37,11 @@ export class DiscountRule extends BaseEntity {
 
   @OneToMany(() => DiscountCondition, (conditions) => conditions.discount_rule)
   conditions: DiscountCondition[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('dru')
+  }
 }
 
 /**

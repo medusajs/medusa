@@ -1,12 +1,15 @@
-import { Column, Entity } from "typeorm"
+import { BeforeInsert, Column, Entity } from "typeorm"
 import { BaseEntity } from "./_base"
 
 @Entity()
 export class Image extends BaseEntity {
-  prefixId = "img"
-
   @Column()
   url: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('img')
+  }
 }
 
 /**

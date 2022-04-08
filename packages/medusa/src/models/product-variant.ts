@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   Index,
@@ -14,8 +15,6 @@ import { ProductOptionValue } from "./product-option-value"
 
 @Entity()
 export class ProductVariant extends BaseEntity {
-  prefixId = "variant"
-
   @Column()
   title: string
 
@@ -89,6 +88,11 @@ export class ProductVariant extends BaseEntity {
     cascade: true,
   })
   options: ProductOptionValue[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('variant')
+  }
 }
 
 /**

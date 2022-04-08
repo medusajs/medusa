@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   Index,
@@ -16,8 +17,6 @@ import { Order } from "./order"
 
 @Entity()
 export class Customer extends BaseEntity {
-  prefixId = "cus"
-
   @Index({ unique: true })
   @Column()
   email: string
@@ -66,6 +65,11 @@ export class Customer extends BaseEntity {
     onDelete: "CASCADE",
   })
   groups: CustomerGroup[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('cus')
+  }
 }
 
 /**

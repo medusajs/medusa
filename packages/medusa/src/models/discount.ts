@@ -15,8 +15,6 @@ import { Region } from "./region"
 
 @Entity()
 export class Discount extends BaseEntity {
-  prefixId = "disc"
-
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   code: string
@@ -76,6 +74,10 @@ export class Discount extends BaseEntity {
 
   @BeforeInsert()
   private upperCaseCode(): void {
+    const shouldContinue = this.generateId('disc')
+    if (shouldContinue === false) {
+      return
+    }
     this.code = this.code.toUpperCase()
   }
 }

@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Check,
   Column,
   Entity,
@@ -23,8 +24,6 @@ export enum ShippingOptionPriceType {
 @Check(`"amount" >= 0`)
 @Entity()
 export class ShippingOption extends BaseEntity {
-  prefixId = "so"
-
   @Column()
   name: string
 
@@ -71,6 +70,11 @@ export class ShippingOption extends BaseEntity {
 
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('so')
+  }
 }
 
 /**

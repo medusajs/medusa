@@ -83,7 +83,7 @@
  */
 
 import {
-  AfterLoad,
+  AfterLoad, BeforeInsert,
   Column,
   Entity,
   Index,
@@ -116,8 +116,6 @@ export enum CartType {
 
 @Entity()
 export class Cart extends BaseEntity {
-  prefixId = "cart"
-
   readonly object = "cart"
 
   @Column({ nullable: true })
@@ -241,5 +239,10 @@ export class Cart extends BaseEntity {
     if (this.payment_sessions) {
       this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
     }
+  }
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('cart')
   }
 }

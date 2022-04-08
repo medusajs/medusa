@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   Index,
@@ -41,8 +42,6 @@ export enum SwapPaymentStatus {
 
 @Entity()
 export class Swap extends BaseEntity {
-  prefixId = "swap"
-
   @DbAwareColumn({ type: "enum", enum: SwapFulfillmentStatus })
   fulfillment_status: SwapFulfillmentStatus
 
@@ -107,6 +106,11 @@ export class Swap extends BaseEntity {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('swap')
+  }
 }
 
 /**

@@ -1,14 +1,17 @@
 import {
-  Column,
-  CreateDateColumn,
   Entity,
+  BeforeInsert,
+  Column,
   Index,
-  JoinColumn,
-  ManyToOne,
+  CreateDateColumn,
   UpdateDateColumn,
+  PrimaryColumn,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm"
-import { BaseEntity } from "./_base"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { ulid } from "ulid"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+
 import { Order } from "./order"
 
 export enum RefundReason {
@@ -20,14 +23,18 @@ export enum RefundReason {
 }
 
 @Entity()
-export class Refund extends BaseEntity {
-  prefixId = "ref"
+export class Refund {
+  @PrimaryColumn()
+  id: string
 
   @Index()
   @Column()
   order_id: string
 
-  @ManyToOne(() => Order, (order) => order.payments)
+  @ManyToOne(
+    () => Order,
+    order => order.payments
+  )
   @JoinColumn({ name: "order_id" })
   order: Order
 
@@ -47,10 +54,16 @@ export class Refund extends BaseEntity {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: any
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @BeforeInsert()
+  private beforeInsert() {
+    const id = ulid()
+    this.id = `ref_${id}`
+  }
 }
 
 /**

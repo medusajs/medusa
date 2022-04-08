@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm"
+import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm"
 import { BaseEntity } from "./_base"
 
 import { Product } from "./product"
@@ -6,8 +6,6 @@ import { ProductOptionValue } from "./product-option-value"
 
 @Entity()
 export class ProductOption extends BaseEntity {
-  prefixId = "opt"
-
   @Column()
   title: string
 
@@ -20,6 +18,11 @@ export class ProductOption extends BaseEntity {
   @ManyToOne(() => Product, (product) => product.options)
   @JoinColumn({ name: "product_id" })
   product: Product
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('opt')
+  }
 }
 
 /**

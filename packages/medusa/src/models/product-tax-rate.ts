@@ -1,12 +1,13 @@
 import {
-  CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
+  DeleteDateColumn,
+  CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+  PrimaryColumn,
 } from "typeorm"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Product } from "./product"
 import { TaxRate } from "./tax-rate"

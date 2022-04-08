@@ -29,8 +29,6 @@ export enum Status {
 
 @Entity()
 export class Product extends BaseEntity {
-  prefixId = "prod"
-
   @Column()
   title: string
 
@@ -142,7 +140,12 @@ export class Product extends BaseEntity {
   external_id: string
 
   @BeforeInsert()
-  private createHandleIfNotProvided(): void {
+  private beforeInsert(): void {
+    const shouldContinue = this.generateId('prod')
+    if (shouldContinue === false) {
+      return
+    }
+
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }

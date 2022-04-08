@@ -1,11 +1,9 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity } from "./_base"
 import { User } from "./user"
 
 @Entity()
 export class Note extends BaseEntity {
-  prefixId = "note"
-
   @Column()
   value: string
 
@@ -23,6 +21,11 @@ export class Note extends BaseEntity {
   @ManyToOne(() => User)
   @JoinColumn({ name: "author_id" })
   author: User
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('note')
+  }
 }
 
 /**

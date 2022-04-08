@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -46,8 +47,6 @@ export enum ClaimFulfillmentStatus {
 
 @Entity()
 export class ClaimOrder extends BaseEntity {
-  prefixId = "claim"
-
   @DbAwareColumn({
     type: "enum",
     enum: ClaimPaymentStatus,
@@ -123,6 +122,11 @@ export class ClaimOrder extends BaseEntity {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('claim')
+  }
 }
 
 /**

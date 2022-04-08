@@ -26,7 +26,7 @@
  *    $ref: "#/components/schemas/country"
  */
 
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 
 import { Customer } from "./customer"
 import { Country } from "./country"
@@ -34,8 +34,6 @@ import { BaseEntity } from "./_base"
 
 @Entity()
 export class Address extends BaseEntity {
-  prefixId = "addr"
-
   @Index()
   @Column({ type: "varchar", nullable: true })
   customer_id: string | null
@@ -77,4 +75,9 @@ export class Address extends BaseEntity {
 
   @Column({ type: "varchar", nullable: true })
   phone: string | null
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('addr')
+  }
 }

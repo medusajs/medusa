@@ -1,4 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, Unique } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, Unique } from "typeorm"
 import { BaseEntity } from "./_base"
 import { Cart } from "./cart"
 import { ShippingOption } from "./shipping-option"
@@ -6,8 +6,6 @@ import { ShippingOption } from "./shipping-option"
 @Entity()
 @Unique(["shipping_option_id", "cart_id"])
 export class CustomShippingOption extends BaseEntity {
-  prefixId = "cso"
-
   @Column({ type: "int" })
   price: number
 
@@ -26,6 +24,11 @@ export class CustomShippingOption extends BaseEntity {
   @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('cso')
+  }
 }
 
 /**

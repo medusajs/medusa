@@ -1,12 +1,10 @@
-import { Column, Entity, Index, ManyToMany } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, ManyToMany } from "typeorm"
 import { BaseEntity } from "./_base"
 import { Customer } from "./customer"
 import { PriceList } from "./price-list"
 
 @Entity()
 export class CustomerGroup extends BaseEntity {
-  prefixId = "cgrp"
-
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   name: string
@@ -20,4 +18,9 @@ export class CustomerGroup extends BaseEntity {
     onDelete: "CASCADE",
   })
   price_lists: PriceList[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('cgrp')
+  }
 }

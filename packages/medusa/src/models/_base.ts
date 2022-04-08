@@ -12,8 +12,6 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
  * Base abstract entity for all entities
  */
 export abstract class BaseEntity {
-  abstract prefixId: string
-
   @PrimaryColumn()
   id: string
 
@@ -29,17 +27,16 @@ export abstract class BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @BeforeInsert()
-  protected beforeInsert(): void {
+  protected generateId(prefix: string): void | false {
     if (this.id) {
-      return
+      return false
     }
     const id = ulid()
-    if (!this.prefixId) {
+    if (!prefix) {
       throw new Error(
-        `Missing property prefixId from the model ${this.constructor.name}`
+        `Missing static property prefixId from the model ${this.constructor.name}`
       )
     }
-    this.id = `${this.prefixId}_${id}`
+    this.id = `${prefix}_${id}`
   }
 }

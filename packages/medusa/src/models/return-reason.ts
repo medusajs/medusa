@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   Index,
@@ -10,8 +11,6 @@ import { BaseEntity } from "./_base"
 
 @Entity()
 export class ReturnReason extends BaseEntity {
-  prefixId = "rr"
-
   @Index({ unique: true })
   @Column()
   value: string
@@ -35,6 +34,11 @@ export class ReturnReason extends BaseEntity {
     { cascade: ["insert", "soft-remove"] }
   )
   return_reason_children: ReturnReason[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('rr')
+  }
 }
 
 /**

@@ -7,9 +7,10 @@ import {
   Index,
   JoinColumn,
   OneToOne,
+  PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
-import { BaseEntity } from "./_base"
+import { ulid } from "ulid"
 import {
   DbAwareColumn,
   resolveDbGenerationStrategy,
@@ -25,8 +26,9 @@ enum DraftOrderStatus {
 }
 
 @Entity()
-export class DraftOrder extends BaseEntity {
-  prefixId = "dorder"
+export class DraftOrder {
+  @PrimaryColumn()
+  id: string
 
   @DbAwareColumn({ type: "enum", enum: DraftOrderStatus, default: "open" })
   status: DraftOrderStatus
@@ -68,13 +70,18 @@ export class DraftOrder extends BaseEntity {
   no_notification_order: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: any
 
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
-  private async manuallyAutoIncrementDisplayIdOnDevelopment(): Promise<void> {
+  private async beforeInsert(): Promise<void> {
+    if (!this.id) {
+      const id = ulid()
+      this.id = `dorder_${id}`
+    }
+
     if (process.env.NODE_ENV === "development" && !this.display_id) {
       const disId = await manualAutoIncrement("draft_order")
 

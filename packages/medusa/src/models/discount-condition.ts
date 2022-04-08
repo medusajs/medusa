@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   Index,
@@ -33,8 +34,6 @@ export enum DiscountConditionOperator {
 @Entity()
 @Unique("dctypeuniq", ["type", "operator", "discount_rule_id"])
 export class DiscountCondition extends BaseEntity {
-  prefixId = "discon"
-
   @DbAwareColumn({
     type: "enum",
     enum: DiscountConditionType,
@@ -124,6 +123,11 @@ export class DiscountCondition extends BaseEntity {
     },
   })
   customer_groups: CustomerGroup[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('discon')
+  }
 }
 
 /**

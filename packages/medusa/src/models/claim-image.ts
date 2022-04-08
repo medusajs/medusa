@@ -1,11 +1,9 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { ClaimItem } from "./claim-item"
 import { BaseEntity } from "./_base"
 
 @Entity()
 export class ClaimImage extends BaseEntity {
-  prefixId = "cimg"
-
   @Index()
   @Column()
   claim_item_id: string
@@ -16,6 +14,11 @@ export class ClaimImage extends BaseEntity {
 
   @Column()
   url: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('cimg')
+  }
 }
 
 /**

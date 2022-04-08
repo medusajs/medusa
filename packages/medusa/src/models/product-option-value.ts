@@ -1,12 +1,10 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { BaseEntity } from "./_base"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
 
 @Entity()
 export class ProductOptionValue extends BaseEntity {
-  prefixId = "optval"
-
   @Column()
   value: string
 
@@ -27,6 +25,11 @@ export class ProductOptionValue extends BaseEntity {
   })
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('optval')
+  }
 }
 
 /**

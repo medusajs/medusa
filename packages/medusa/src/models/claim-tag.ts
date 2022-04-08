@@ -1,13 +1,16 @@
-import { Column, Entity, Index } from "typeorm"
+import { BeforeInsert, Column, Entity, Index } from "typeorm"
 import { BaseEntity } from "./_base"
 
 @Entity()
 export class ClaimTag extends BaseEntity {
-  prefixId = "ctag"
-
   @Index()
   @Column()
   value: string
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('ctag')
+  }
 }
 
 /**

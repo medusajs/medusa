@@ -1,4 +1,5 @@
 import {
+  BeforeInsert,
   Column,
   Entity,
   Index,
@@ -26,8 +27,6 @@ export enum ClaimReason {
 
 @Entity()
 export class ClaimItem extends BaseEntity {
-  prefixId = "citm"
-
   @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
     cascade: ["insert", "remove"],
   })
@@ -79,6 +78,11 @@ export class ClaimItem extends BaseEntity {
     },
   })
   tags: ClaimTag[]
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.generateId('citm')
+  }
 }
 
 /**
