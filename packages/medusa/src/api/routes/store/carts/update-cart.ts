@@ -90,23 +90,20 @@ export default async (req, res) => {
   // Update the cart
   const { shipping_address, billing_address, ...rest } = validated
 
-  const toUpdate: CartUpdateProps = {
-    ...rest,
-  }
-
+  const cartDataToUpdate: CartUpdateProps = { ...rest };
   if (typeof shipping_address === "string") {
-    toUpdate.shipping_address_id = shipping_address
+    cartDataToUpdate.shipping_address_id = shipping_address
   } else {
-    toUpdate.shipping_address = shipping_address
+    cartDataToUpdate.shipping_address = shipping_address
   }
 
   if (typeof billing_address === "string") {
-    toUpdate.billing_address_id = billing_address
+    cartDataToUpdate.billing_address_id = billing_address
   } else {
-    toUpdate.billing_address = billing_address
+    cartDataToUpdate.billing_address = billing_address
   }
 
-  await cartService.update(id, toUpdate)
+  await cartService.update(id, cartDataToUpdate)
 
   // If the cart has payment sessions update these
   const updated = await cartService.retrieve(id, {

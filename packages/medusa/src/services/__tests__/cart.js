@@ -1,5 +1,4 @@
 import _ from "lodash"
-import { IN } from 'typeorm'
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import CartService from "../cart"

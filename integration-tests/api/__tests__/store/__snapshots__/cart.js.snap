@@ -44,3 +44,24 @@ Object {
   "updated_at": Any<String>,
 }
 `;
+
+exports[`/store/carts shipping address + region updates updates region only - single to multiple countries 1`] = `
+Object {
+  "address_1": null,
+  "address_2": null,
+  "city": null,
+  "company": null,
+  "country_code": null,
+  "created_at": Any<String>,
+  "customer_id": null,
+  "deleted_at": null,
+  "first_name": "lebron",
+  "id": Any<String>,
+  "last_name": null,
+  "metadata": null,
+  "phone": null,
+  "postal_code": null,
+  "province": null,
+  "updated_at": Any<String>,
+}
+`;
