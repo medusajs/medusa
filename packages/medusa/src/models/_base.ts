@@ -39,4 +39,9 @@ export abstract class BaseEntity {
     }
     this.id = `${prefix}_${id}`
   }
+
+  public toJSON(): Omit<this, 'generateId'> {
+    const { generateId, ...data } = this
+    return data;
+  }
 }
