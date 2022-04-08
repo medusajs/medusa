@@ -1,8 +1,8 @@
-import { asFunction, asValue, AwilixContainer } from "awilix"
+import { AwilixContainer } from "awilix"
 import { Logger as _Logger } from "winston"
 
 export type ClassConstructor<T> = {
-  new (...args: any[]): T
+  new (...args: unknown[]): T
 }
 
 export type MedusaContainer = AwilixContainer & {

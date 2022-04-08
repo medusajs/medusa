@@ -873,7 +873,7 @@ class OrderService extends BaseService {
           ) {
             await this.shippingOptionService_
               .withTransaction(manager)
-              .deleteShippingMethod(sm)
+              .deleteShippingMethods(sm)
           } else {
             methods.push(sm)
           }

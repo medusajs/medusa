@@ -479,14 +479,9 @@ class CartService extends BaseService {
 
         // Remove shipping methods if they are not needed
         if (cart.shipping_methods?.length) {
-          const shippingMethodRepository = this.manager_.getCustomRepository(
-            this.shippingMethodRepository_
-          )
-          await shippingMethodRepository.delete({
-            id: In(
-              cart.shipping_methods.map((shippingMethod) => shippingMethod.id)
-            ),
-          })
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
         }
 
         const lineItemRepository = transactionManager.getCustomRepository(
@@ -711,39 +706,37 @@ class CartService extends BaseService {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         if (cart.shipping_methods?.length) {
+          const shippingMethodRepository =
+            transactionManager.getCustomRepository(
+              this.shippingMethodRepository_
+            )
+
           // if any free shipping discounts, we ensure to update shipping method amount
           if (shouldAdd) {
-            await Promise.all(
-              cart.shipping_methods.map(async (shippingMethod) => {
-                const smRepo = transactionManager.getCustomRepository(
-                  this.shippingMethodRepository_
-                )
-
-                return smRepo.update(
-                  {
-                    id: shippingMethod.id,
-                  },
-                  {
-                    price: 0,
-                  }
-                )
-              })
+            return shippingMethodRepository.update(
+              {
+                id: In(
+                  cart.shipping_methods.map(
+                    (shippingMethod) => shippingMethod.id
+                  )
+                ),
+              },
+              {
+                price: 0,
+              }
             )
           } else {
             await Promise.all(
               cart.shipping_methods.map(async (shippingMethod) => {
-                const smRepo = transactionManager.getCustomRepository(
-                  this.shippingMethodRepository_
-                )
-
                 // if free shipping discount is removed, we adjust the shipping
                 // back to its original amount
                 shippingMethod.price = shippingMethod.shipping_option.amount
-                return smRepo.save(shippingMethod)
+                return shippingMethodRepository.save(shippingMethod)
               })
             )
           }
         }
+        return
       }
     )
   }
@@ -1603,16 +1596,16 @@ class CartService extends BaseService {
 
         const methods = [newShippingMethod]
         if (shipping_methods?.length) {
-          for (const sm of shipping_methods) {
+          for (const shippingMethod of shipping_methods) {
             if (
-              sm.shipping_option.profile_id ===
+              shippingMethod.shipping_option.profile_id ===
               newShippingMethod.shipping_option.profile_id
             ) {
               await this.shippingOptionService_
                 .withTransaction(transactionManager)
-                .deleteShippingMethod(sm)
+                .deleteShippingMethods(shippingMethod)
             } else {
-              methods.push(sm)
+              methods.push(shippingMethod)
             }
           }
         }
@@ -1835,10 +1828,9 @@ class CartService extends BaseService {
         // Shipping methods are determined by region so the user needs to find a
         // new shipping method
         if (cart.shipping_methods && cart.shipping_methods.length) {
-          const smRepo = this.manager_.getCustomRepository(
-            this.shippingMethodRepository_
-          )
-          await smRepo.remove(cart.shipping_methods)
+          await this.shippingOptionService_
+            .withTransaction(transactionManager)
+            .deleteShippingMethods(cart.shipping_methods)
         }
 
         if (cart.discounts && cart.discounts.length) {

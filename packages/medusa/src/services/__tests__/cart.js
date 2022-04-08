@@ -340,13 +340,14 @@ describe("CartService", () => {
     const lineItemService = {
       update: jest.fn(),
       create: jest.fn(),
+      delete: jest.fn(),
       withTransaction: function() {
         return this
       },
     }
 
     const shippingOptionService = {
-      deleteShippingMethod: jest.fn(),
+      deleteShippingMethods: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -618,7 +619,7 @@ describe("CartService", () => {
     })
 
     const shippingOptionService = {
-      deleteShippingMethod: jest.fn(),
+      deleteShippingMethods: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -679,15 +680,15 @@ describe("CartService", () => {
         IdMap.getId("itemToRemove")
       )
 
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledTimes(
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledTimes(
         1
       )
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledWith([{
         id: IdMap.getId("ship-method"),
         shipping_option: {
           profile_id: IdMap.getId("prevPro"),
         },
-      })
+      }])
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
@@ -1562,7 +1563,7 @@ describe("CartService", () => {
           },
         })
       }),
-      deleteShippingMethod: jest.fn(),
+      deleteShippingMethods: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -1573,7 +1574,7 @@ describe("CartService", () => {
         return this
       },
       list: jest.fn().mockImplementation(({ cart_id }) => {
-        if (cart_id === IdMap.getId("cart-with-custom-so")) {
+          if (cart_id === IdMap.getId("cart-with-custom-so")) {
           return [
             {
               id: "cso-test",
@@ -1628,7 +1629,7 @@ describe("CartService", () => {
       expect(
         shippingOptionService.createShippingMethod
       ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart2 })
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledWith({
         id: IdMap.getId("ship1"),
         shipping_option: {
           profile_id: IdMap.getId("profile1"),
@@ -1647,7 +1648,7 @@ describe("CartService", () => {
         data
       )
 
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledTimes(
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledTimes(
         0
       )
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
@@ -1669,7 +1670,7 @@ describe("CartService", () => {
         data
       )
 
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledTimes(
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledTimes(
         0
       )
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
