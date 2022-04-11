@@ -175,82 +175,113 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Gatsby + Contentful + Medusa",
+          label: "Analytics",
           items: [
             {
               type: "doc",
-              id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
-            },
-            {
-              type: "doc",
-              id: "how-to/making-your-store-more-powerful-with-contentful",
+              id: "add-plugins/segment",
+              label: "Segment",
             },
           ],
         },
         {
-          type: "doc",
-          id: "add-plugins/contentful",
-          label: "CMS: Contentful",
+          type: "category",
+          label: "Bot",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/slack",
+              label: "Slack",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/strapi",
-          label: "CMS: Strapi",
+          type: "category",
+          label: "CMS",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/contentful",
+              label: "Contentful",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/strapi",
+              label: "Strapi",
+            },
+            {
+              type: "category",
+              label: "Gatsby + Contentful + Medusa",
+              items: [
+                {
+                  type: "doc",
+                  id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
+                },
+                {
+                  type: "doc",
+                  id: "how-to/making-your-store-more-powerful-with-contentful",
+                },
+              ],
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/segment",
-          label: "Analytics: Segment",
+          type: "category",
+          label: "Payment",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/klarna",
+              label: "Klarna",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/paypal",
+              label: "PayPal",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/stripe",
+              label: "Stripe",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/meilisearch",
-          label: "Search: MeiliSearch",
+          type: "category",
+          label: "Search",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/algolia",
+              label: "Algolia",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/meilisearch",
+              label: "MeiliSearch",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/algolia",
-          label: "Search: Algolia",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/spaces",
-          label: "File: Spaces",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/s3",
-          label: "File: S3",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/minio",
-          label: "File: MinIO",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/stripe",
-          label: "Payment: Stripe",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/klarna",
-          label: "Payment: Klarna",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/paypal",
-          label: "Payment: PayPal",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/sendgrid",
-          label: "Notification: SendGrid",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/slack",
-          label: "Bot: Slack",
+          type: "category",
+          label: "Storage",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/minio",
+              label: "MinIO",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/s3",
+              label: "S3",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/spaces",
+              label: "Spaces",
+            },
+          ],
         },
       ],
     },
@@ -282,6 +313,11 @@ module.exports = {
           type: "doc",
           id: "troubleshooting/signing-in-to-admin",
           label: "Signing in to Medusa Admin",
+        },
+        {
+          type: "doc",
+          id: "troubleshooting/documentation-error",
+          label: "Documentation Error",
         },
       ],
     },
