@@ -65,6 +65,10 @@ module.exports = {
         },
         {
           type: "doc",
+          id: "admin/quickstart",
+        },
+        {
+          type: "doc",
           id: "how-to/create-medusa-app",
         },
         {
