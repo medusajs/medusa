@@ -14,15 +14,15 @@ import { Discount } from "../models/discount"
 import { CartType } from "../models/cart"
 
 type InjectedDependencies = {
-  manager: EntityManager;
-  draftOrderRepository: typeof DraftOrderRepository;
-  paymentRepository: typeof PaymentRepository;
-  orderRepository: typeof OrderRepository;
-  eventBusService: EventBusService;
-  cartService: CartService;
-  lineItemService: LineItemService;
-  productVariantService: ProductVariantService;
-  shippingOptionService: ShippingOptionService;
+  manager: EntityManager
+  draftOrderRepository: typeof DraftOrderRepository
+  paymentRepository: typeof PaymentRepository
+  orderRepository: typeof OrderRepository
+  eventBusService: EventBusService
+  cartService: CartService
+  lineItemService: LineItemService
+  productVariantService: ProductVariantService
+  shippingOptionService: ShippingOptionService
 }
 
 /**
@@ -45,19 +45,17 @@ class DraftOrderService extends BaseService {
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingOptionService_: ShippingOptionService
 
-  constructor(
-    {
-      manager,
-      draftOrderRepository,
-      paymentRepository,
-      orderRepository,
-      eventBusService,
-      cartService,
-      lineItemService,
-      productVariantService,
-      shippingOptionService,
-    }: InjectedDependencies
-  ) {
+  constructor({
+    manager,
+    draftOrderRepository,
+    paymentRepository,
+    orderRepository,
+    eventBusService,
+    cartService,
+    lineItemService,
+    productVariantService,
+    shippingOptionService,
+  }: InjectedDependencies) {
     super()
 
     this.manager_ = manager
@@ -100,22 +98,26 @@ class DraftOrderService extends BaseService {
    * @return {Promise<DraftOrder>} the draft order
    */
   async retrieve(id: string, config = {}): Promise<DraftOrder> {
-    const draftOrderRepo = this.manager_.getCustomRepository(
-      this.draftOrderRepository_,
-    )
-
-    const validatedId = this.validateId_(id)
-
-    const query = this.buildQuery_({ id: validatedId }, config)
-    return draftOrderRepo.findOne(query)
-      .then((draftOrder) => {
-        if (draftOrder) return draftOrder
-
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Draft order with ${id} was not found`,
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const draftOrderRepo = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
         )
-      })
+
+        const validatedId = this.validateId_(id)
+
+        const query = this.buildQuery_({ id: validatedId }, config)
+        const draftOrder = await draftOrderRepo.findOne(query)
+        if (!draftOrder) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Draft order with ${id} was not found`
+          )
+        }
+
+        return draftOrder
+      }
+    )
   }
 
   /**
@@ -125,18 +127,21 @@ class DraftOrderService extends BaseService {
    * @return {Promise<DraftOrder>} the draft order
    */
   async retrieveByCartId(cartId: string, config = {}): Promise<DraftOrder> {
-    const draftOrderRepo = this.manager_.getCustomRepository(
-      this.draftOrderRepository_,
-    )
-
-    const query = this.buildQuery_({ cart_id: cartId }, config)
-    return await draftOrderRepo.findOneOrFail(query)
-      .catch(() => {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Draft order was not found`,
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const draftOrderRepo = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
         )
-      })
+
+        const query = this.buildQuery_({ cart_id: cartId }, config)
+        return await draftOrderRepo.findOneOrFail(query).catch(() => {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Draft order was not found`
+          )
+        })
+      }
+    )
   }
 
   /**
@@ -145,17 +150,21 @@ class DraftOrderService extends BaseService {
    * @return {Promise<DraftOrder | undefined>} empty promise
    */
   async delete(draftOrderId: string): Promise<DraftOrder | undefined> {
-    return this.atomicPhase_(async (manager: EntityManager) => {
-      const draftOrderRepo = manager.getCustomRepository(
-        this.draftOrderRepository_,
-      )
-      const draftOrder = await draftOrderRepo.findOne({
-        where: { id: draftOrderId },
-      })
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const draftOrderRepo = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
+        )
+        const draftOrder = await draftOrderRepo.findOne({
+          where: { id: draftOrderId },
+        })
 
-      if (!draftOrder) return
-      return await draftOrderRepo.remove(draftOrder);
-    })
+        if (!draftOrder) {
+          return
+        }
+        return await draftOrderRepo.remove(draftOrder)
+      }
+    )
   }
 
   /**
@@ -166,61 +175,69 @@ class DraftOrderService extends BaseService {
    */
   async listAndCount(
     selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } },
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
   ): Promise<[DraftOrder[], number]> {
-    const draftOrderRepository = this.manager_.getCustomRepository(
-      this.draftOrderRepository_,
-    )
-
-    const { q, ...restSelector } = selector
-    const query = this.buildQuery_(restSelector, config)
-
-    if (q) {
-      const where = query.where
-      delete where.display_id
-
-      query.join = {
-        alias: "draft_order",
-        innerJoin: {
-          cart: "draft_order.cart",
-        },
-      }
-
-      query.where = (qb) => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where(`cart.email ILIKE :q`, {
-              q: `%${q}%`,
-            }).orWhere(`draft_order.display_id::TEXT ILIKE :displayId`, {
-              displayId: `${q}`,
-            })
-          }),
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const draftOrderRepository = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
         )
-      }
-    }
 
-    return await draftOrderRepository.findAndCount(query)
+        const { q, ...restSelector } = selector
+        const query = this.buildQuery_(restSelector, config)
+
+        if (q) {
+          const where = query.where
+          delete where.display_id
+
+          query.join = {
+            alias: "draft_order",
+            innerJoin: {
+              cart: "draft_order.cart",
+            },
+          }
+
+          query.where = (qb): void => {
+            qb.where(where)
+
+            qb.andWhere(
+              new Brackets((qb) => {
+                qb.where(`cart.email ILIKE :q`, {
+                  q: `%${q}%`,
+                }).orWhere(`draft_order.display_id::TEXT ILIKE :displayId`, {
+                  displayId: `${q}`,
+                })
+              })
+            )
+          }
+        }
+
+        return await draftOrderRepository.findAndCount(query)
+      }
+    )
   }
 
   /**
    * Lists draft orders
-   * @param {Object} selector - query object for find
-   * @param {Object} config - configurable attributes for find
-   * @return {Promise<DraftOrder[]} list of draft orders
+   * @param selector - query object for find
+   * @param config - configurable attributes for find
+   * @return list of draft orders
    */
   async list(
     selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } },
+    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
   ): Promise<DraftOrder[]> {
-    const draftOrderRepo = this.manager_.getCustomRepository(
-      this.draftOrderRepository_,
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const draftOrderRepo = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
+        )
+
+        const query = this.buildQuery_(selector, config)
+
+        return await draftOrderRepo.find(query)
+      }
     )
-
-    const query = this.buildQuery_(selector, config)
-
-    return draftOrderRepo.find(query)
   }
 
   /**
@@ -229,104 +246,106 @@ class DraftOrderService extends BaseService {
    * @return {Promise<DraftOrder>} the created draft order
    */
   async create(data: any): Promise<DraftOrder> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const draftOrderRepo = transactionManager.getCustomRepository(
-        this.draftOrderRepository_,
-      )
-
-      if (!data.region_id) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `region_id is required to create a draft order`,
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const draftOrderRepo = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
         )
-      }
 
-      if (!data?.items?.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Items are required to create a draft order`,
-        )
-      }
+        if (!data.region_id) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `region_id is required to create a draft order`
+          )
+        }
 
-      const {
-        shipping_methods,
-        discounts,
-        no_notification_order,
-        items,
-        ...rest
-      } = data
+        if (!data.items || !data.items.length) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Items are required to create a draft order`
+          )
+        }
 
-      if (discounts) {
-        rest.discounts = [];
-        await Promise.all(
-          discounts.map(({ code }: Discount) => {
-            return this.cartService_
+        const {
+          shipping_methods,
+          discounts,
+          no_notification_order,
+          items,
+          ...rest
+        } = data
+
+        if (discounts) {
+          for (const { code } of discounts) {
+            rest.discounts = []
+            await this.cartService_
               .withTransaction(transactionManager)
               .applyDiscount(rest, code)
-          })
-        )
-      }
-
-      const createdCart = await this.cartService_
-        .withTransaction(transactionManager)
-        .create({ type: CartType.DRAFT_ORDER, ...rest })
-
-      const draftOrder = draftOrderRepo.create({
-        cart_id: createdCart.id,
-        no_notification_order,
-      })
-      const createdDraftOrder = await draftOrderRepo.save(draftOrder)
-
-      await this.eventBus_
-        .withTransaction(transactionManager)
-        .emit(DraftOrderService.Events.CREATED, {
-          id: createdDraftOrder.id,
-        })
-
-      await Promise.all(items.map(async (item) => {
-        if (item.variant_id) {
-          const line = await this.lineItemService_
-            .withTransaction(transactionManager)
-            .generate(item.variant_id, data.region_id, item.quantity, {
-              metadata: item?.metadata || {},
-              unit_price: item.unit_price,
-              cart: createdCart,
-            })
-
-          await this.lineItemService_.withTransaction(transactionManager).create({
-            cart_id: createdCart.id,
-            ...line,
-          })
-        } else {
-          let price
-          if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
-            price = 0
-          } else {
-            price = item.unit_price
           }
-
-          // custom line items can be added to a draft order
-          await this.lineItemService_.withTransaction(transactionManager).create({
-            cart_id: createdCart.id,
-            has_shipping: true,
-            title: item.title || "Custom item",
-            allow_discounts: false,
-            unit_price: price,
-            quantity: item.quantity,
-          })
         }
-      }))
 
-      await Promise.all(
-        shipping_methods.map(shippingMethod => {
-          return this.cartService_
-            .withTransaction(transactionManager)
-            .addShippingMethod(createdCart.id, shippingMethod.option_id, shippingMethod.data)
+        const createdCart = await this.cartService_
+          .withTransaction(transactionManager)
+          .create({ type: "draft_order", ...rest })
+
+        const draftOrder = draftOrderRepo.create({
+          cart_id: createdCart.id,
+          no_notification_order,
         })
-      )
+        const result = await draftOrderRepo.save(draftOrder)
 
-      return createdDraftOrder
-    })
+        await this.eventBus_
+          .withTransaction(transactionManager)
+          .emit(DraftOrderService.Events.CREATED, {
+            id: result.id,
+          })
+
+        for (const item of items) {
+          if (item.variant_id) {
+            const line = await this.lineItemService_
+              .withTransaction(transactionManager)
+              .generate(item.variant_id, data.region_id, item.quantity, {
+                metadata: item?.metadata || {},
+                unit_price: item.unit_price,
+                cart: createdCart,
+              })
+
+            await this.lineItemService_
+              .withTransaction(transactionManager)
+              .create({
+                ...line,
+                cart_id: createdCart.id,
+              })
+          } else {
+            let price
+            if (typeof item.unit_price === `undefined` || item.unit_price < 0) {
+              price = 0
+            } else {
+              price = item.unit_price
+            }
+
+            // custom line items can be added to a draft order
+            await this.lineItemService_
+              .withTransaction(transactionManager)
+              .create({
+                cart_id: createdCart.id,
+                has_shipping: true,
+                title: item.title || "Custom item",
+                allow_discounts: false,
+                unit_price: price,
+                quantity: item.quantity,
+              })
+          }
+        }
+
+        for (const method of shipping_methods) {
+          await this.cartService_
+            .withTransaction(transactionManager)
+            .addShippingMethod(createdCart.id, method.option_id, method.data)
+        }
+
+        return result
+      }
+    )
   }
 
   /**
@@ -335,16 +354,25 @@ class DraftOrderService extends BaseService {
    * @param {string} orderId - id of order completed from draft order cart
    * @return {Promise<DraftOrder>} the created order
    */
-  async registerCartCompletion(draftOrderId: string, orderId: string): Promise<DraftOrder> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      return transactionManager.update(DraftOrder, {
-        id: draftOrderId
-      }, {
-        status: DraftOrderStatus.COMPLETED,
-        completed_at: new Date(),
-        order_id: orderId
-      })
-    })
+  async registerCartCompletion(
+    draftOrderId: string,
+    orderId: string
+  ): Promise<DraftOrder> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        return transactionManager.update(
+          DraftOrder,
+          {
+            id: draftOrderId,
+          },
+          {
+            status: DraftOrderStatus.COMPLETED,
+            completed_at: new Date(),
+            order_id: orderId,
+          }
+        )
+      }
+    )
   }
 
   /**
@@ -353,36 +381,43 @@ class DraftOrderService extends BaseService {
    * @param {{no_notification_order: boolean}} data - values to update the order with
    * @return {Promise<DraftOrder>} the updated draft order
    */
-  async update(id: string, data: { no_notification_order: boolean }): Promise<DraftOrder> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const draftOrderRepo = transactionManager.getCustomRepository(this.draftOrderRepository_)
-      const draftOrder = await this.retrieve(id)
-
-      if (draftOrder.status === DraftOrderStatus.COMPLETED) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Can't update a draft order which is complete",
+  async update(
+    id: string,
+    data: { no_notification_order: boolean }
+  ): Promise<DraftOrder> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const draftOrderRepo = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
         )
+        const draftOrder = await this.retrieve(id)
+
+        if (draftOrder.status === DraftOrderStatus.COMPLETED) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Can't update a draft order which is complete"
+          )
+        }
+
+        let touched = false
+        if (data.no_notification_order !== undefined) {
+          touched = true
+          draftOrder.no_notification_order = data.no_notification_order
+        }
+
+        if (touched) {
+          await draftOrderRepo.save(draftOrder)
+
+          await this.eventBus_
+            .withTransaction(transactionManager)
+            .emit(DraftOrderService.Events.UPDATED, {
+              id: draftOrder.id,
+            })
+        }
+
+        return draftOrder
       }
-
-      let touched = false
-      if (data.no_notification_order !== undefined) {
-        touched = true
-        draftOrder.no_notification_order = data.no_notification_order
-      }
-
-      if (touched) {
-        await draftOrderRepo.save(draftOrder)
-
-        await this.eventBus_
-          .withTransaction(transactionManager)
-          .emit(DraftOrderService.Events.UPDATED, {
-            id: draftOrder.id,
-          })
-      }
-
-      return draftOrder
-    })
+    )
   }
 }
 
