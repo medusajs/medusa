@@ -1618,8 +1618,28 @@ describe("/admin/orders", () => {
           it("Then should not delete existing return line item adjustments", async () => {
             const api = useApi()
 
+            const createSwapRes = await api.post(
+              "/admin/orders/test-order/swaps",
+              {
+                return_items: [
+                  {
+                    item_id: "test-item",
+                    quantity: 1,
+                  },
+                ],
+                additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+              },
+              {
+                headers: {
+                  authorization: "Bearer test_token",
+                },
+              }
+            )
+
+            const swapCartId = createSwapRes.data.order.swaps[0].cart_id
+
             const response = await api.post(
-              `/store/carts/disc-swap-cart/line-items`,
+              `/store/carts/${swapCartId}/line-items`,
               {
                 variant_id: "test-variant-2",
                 quantity: 1,
@@ -1637,10 +1657,9 @@ describe("/admin/orders", () => {
             expect(returnItem.adjustments).toEqual([
               expect.objectContaining({
                 amount: -800,
-                item_id: "disc-swap-return-item-1",
               }),
             ])
-            expect(cart.total).toBe(0)
+            expect(cart.total).toBe(7200)
           })
         })
       })
