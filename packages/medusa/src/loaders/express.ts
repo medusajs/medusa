@@ -1,13 +1,19 @@
+import { Express } from 'express'
 import session from "express-session"
 import cookieParser from "cookie-parser"
 import morgan from "morgan"
-import redis from "redis"
+import redis, { RedisConfig } from "redis"
 import createStore from "connect-redis"
 
 import config from "../config"
 
-export default async ({ app, configModule }) => {
-  let sameSite = false
+type Options = {
+  app: Express;
+  configModule: { projectConfig: RedisConfig }
+}
+
+export default async ({ app, configModule }: Options): Promise<Express> => {
+  let sameSite: string | boolean = false
   let secure = false
   if (
     process.env.NODE_ENV === "production" ||
@@ -17,7 +23,7 @@ export default async ({ app, configModule }) => {
     sameSite = "none"
   }
 
-  let sessionOpts = {
+  const sessionOpts = {
     resave: true,
     saveUninitialized: true,
     cookieName: "session",
@@ -28,6 +34,7 @@ export default async ({ app, configModule }) => {
       secure,
       maxAge: 10 * 60 * 60 * 1000,
     },
+    store: null
   }
 
   if (configModule.projectConfig.redis_url) {

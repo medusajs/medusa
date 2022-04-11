@@ -1,12 +1,14 @@
+import config from "../config"
 import passport from "passport"
-import { Strategy as LocalStrategy } from "passport-local"
+import { AuthService } from "../services"
+import { Express } from 'express'
+import { MedusaContainer } from "../types/global"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy } from "passport-jwt"
-import config from "../config"
+import { Strategy as LocalStrategy } from "passport-local"
 
-export default async ({ app, container }) => {
-  const authService = container.resolve("authService")
-  const userService = container.resolve("userService")
+export default async ({ app, container }: { app: Express; container: MedusaContainer }): Promise<void> => {
+  const authService = container.resolve<AuthService>("authService")
 
   // For good old email password authentication
   passport.use(
@@ -17,7 +19,7 @@ export default async ({ app, container }) => {
       },
       async (email, password, done) => {
         try {
-          const { success, user } = authService.authenticate(email, password)
+          const { success, user } = await authService.authenticate(email, password)
           if (success) {
             return done(null, user)
           } else {

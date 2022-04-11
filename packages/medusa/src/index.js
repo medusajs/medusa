@@ -4,6 +4,9 @@ export * from "./api"
 // Interfaces
 export * from "./interfaces"
 
+// Types
+export * from "./types/price-list"
+
 // Models
 export * from "./models/shipping-tax-rate"
 export * from "./models/product-tax-rate"
@@ -23,6 +26,12 @@ export * from "./models/custom-shipping-option"
 export * from "./models/customer"
 export * from "./models/customer-group"
 export * from "./models/discount"
+export * from "./models/discount-condition-customer-group"
+export * from "./models/discount-condition-product-collection"
+export * from "./models/discount-condition-product-tag"
+export * from "./models/discount-condition-product-type"
+export * from "./models/discount-condition-product"
+export * from "./models/discount-condition"
 export * from "./models/discount-rule"
 export * from "./models/draft-order"
 export * from "./models/fulfillment"

@@ -1,21 +1,22 @@
 import glob from "glob"
 import path from "path"
-import { Lifetime, asClass, asValue } from "awilix"
+import { asClass } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
+import { ClassConstructor, MedusaContainer } from "../types/global"
 
 /**
  * Registers all models in the model directory
  */
-export default ({ container }) => {
+export default ({ container }: { container: MedusaContainer }): void => {
   let corePath = "../repositories/*.js"
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, { cwd: __dirname })
   core.forEach(fn => {
-    const loaded = require(fn)
+    const loaded = require(fn) as ClassConstructor<unknown>
 
-    Object.entries(loaded).map(([key, val]) => {
+    Object.entries(loaded).map(([, val]: [string, ClassConstructor<unknown>]) => {
       if (typeof val === "function") {
         const name = formatRegistrationName(fn)
         container.register({

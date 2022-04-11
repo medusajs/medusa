@@ -1190,7 +1190,7 @@ class CartService extends BaseService {
    */
   async authorizePayment(
     cartId: string,
-    context: Record<string, any> = {}
+    context: Record<string, unknown> = {}
   ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cartRepository = manager.getCustomRepository(this.cartRepository_)
@@ -1211,6 +1211,13 @@ class CartService extends BaseService {
       if (cart.total <= 0) {
         cart.payment_authorized_at = new Date()
         return cartRepository.save(cart)
+      }
+
+      if (!cart.payment_session) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "You cannot complete a cart without a payment session."
+        )
       }
 
       const session = await this.paymentProviderService_
@@ -1500,7 +1507,7 @@ class CartService extends BaseService {
   async addShippingMethod(
     cartId: string,
     optionId: string,
-    data: Record<string, any> = {}
+    data: Record<string, unknown> = {}
   ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cart = await this.retrieve(cartId, {
@@ -1874,9 +1881,8 @@ class CartService extends BaseService {
       })
       const calculationContext = this.totalsService_.getCalculationContext(cart)
 
-      await this.taxProviderService_
-        .withTransaction(manager)
-        .createTaxLines(cart, calculationContext)
+      const txTaxProvider = this.taxProviderService_.withTransaction(manager)
+      await txTaxProvider.createTaxLines(cart, calculationContext)
 
       return cart
     })

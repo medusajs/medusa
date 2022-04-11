@@ -107,7 +107,7 @@ export type AdminRegionsDeleteRes = DeleteResponse
 
 export class FulfillmentOption {
   provider_id: string
-  options: any[]
+  options: unknown[]
 }
 
 export class AdminGetRegionsRegionFulfillmentOptionsRes {
