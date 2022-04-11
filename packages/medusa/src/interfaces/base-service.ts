@@ -59,7 +59,7 @@ class BaseService<
    * @param config The config
    * @return The QueryBuilderConfig
    */
-  buildQuery_<TEntity = any>(
+  buildQuery_<TEntity = unknown>(
     selector: Selector<TEntity>,
     config: QueryBuilderConfig<TEntity> = {}
   ): QueryBuilderConfig<TEntity> & {
