@@ -63,12 +63,12 @@ class BaseService<
     selector: Selector<TEntity>,
     config: QueryBuilderConfig<TEntity> = {}
   ): QueryBuilderConfig<TEntity> & {
-    where: { [key in keyof TEntity]: unknown }
+    where: { [key in keyof TEntity]?: unknown }
     withDeleted?: boolean
   } {
     const build = (
       obj: Record<string, unknown>
-    ): { [key in keyof TEntity]: unknown } => {
+    ): { [key in keyof TEntity]?: unknown } => {
       return Object.entries(obj).reduce((acc, [key, value]: any) => {
         // Undefined values indicate that they have no significance to the query.
         // If the query is looking for rows where a column is not set it should use null instead of undefined
@@ -127,11 +127,11 @@ class BaseService<
         }
 
         return acc
-      }, {} as { [key in keyof TEntity]: unknown })
+      }, {} as { [key in keyof TEntity]?: unknown })
     }
 
     const query: QueryBuilderConfig<TEntity> & {
-      where: { [key in keyof TEntity]: unknown }
+      where: { [key in keyof TEntity]?: unknown }
       withDeleted?: boolean
     } = {
       where: build(selector),
