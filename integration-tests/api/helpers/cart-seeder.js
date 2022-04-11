@@ -144,6 +144,69 @@ module.exports = async (connection, data = {}) => {
   tenPercent.rule = tenPercentRule
   await manager.save(tenPercent)
 
+  const totalFixed100Rule = manager.create(DiscountRule, {
+    id: "total-fixed-100-rule",
+    description: "Fixed 100 total",
+    type: "fixed",
+    value: 100,
+    allocation: "total",
+  })
+
+  const totalFixed100 = manager.create(Discount, {
+    id: "total-fixed-100",
+    code: "FIXED100",
+    is_dynamic: false,
+    is_disabled: false,
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+  })
+
+  totalFixed100.regions = [r]
+  totalFixed100.rule = totalFixed100Rule
+  await manager.save(totalFixed100)
+
+  const itemFixed200Rule = manager.create(DiscountRule, {
+    id: "item-fixed-200-rule",
+    description: "Item 200 fixed",
+    type: "fixed",
+    value: 200,
+    allocation: "item",
+  })
+
+  const itemFixed200 = manager.create(Discount, {
+    id: "item-fixed-200",
+    code: "FIXED200",
+    is_dynamic: false,
+    is_disabled: false,
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+  })
+
+  itemFixed200.regions = [r]
+  itemFixed200.rule = itemFixed200Rule
+  await manager.save(itemFixed200)
+
+  const itemPerc15Rule = manager.create(DiscountRule, {
+    id: "item-percentage-15-rule",
+    description: "Item 15 percentage",
+    type: "percentage",
+    value: 15,
+    allocation: "item",
+  })
+
+  const itemPerc15 = manager.create(Discount, {
+    id: "item-percentage-15",
+    code: "15PERCENT",
+    is_dynamic: false,
+    is_disabled: false,
+    starts_at: tenDaysAgo,
+    ends_at: tenDaysFromToday,
+  })
+
+  itemPerc15.regions = [r]
+  itemPerc15.rule = itemPerc15Rule
+  await manager.save(itemPerc15)
+
   const dUsageLimit = await manager.create(Discount, {
     id: "test-discount-usage-limit",
     code: "SPENT",
@@ -569,6 +632,74 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(cart)
+
+  const cartWithTotalFixedDiscount = manager.create(Cart, {
+    id: "test-cart-w-total-fixed-discount",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    discounts: [totalFixed100],
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    items: [],
+  })
+
+  await manager.save(cartWithTotalFixedDiscount)
+
+  const cartWithItemFixedDiscount = manager.create(Cart, {
+    id: "test-cart-w-item-fixed-discount",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    discounts: [itemFixed200],
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    items: [],
+  })
+
+  await manager.save(cartWithItemFixedDiscount)
+
+  const cartWithTotalPercDiscount = manager.create(Cart, {
+    id: "test-cart-w-total-percentage-discount",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    discounts: [tenPercent],
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    items: [],
+  })
+
+  await manager.save(cartWithTotalPercDiscount)
+
+  const cartWithItemPercDiscount = manager.create(Cart, {
+    id: "test-cart-w-item-percentage-discount",
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    discounts: [itemPerc15],
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    items: [],
+  })
+
+  await manager.save(cartWithItemPercDiscount)
 
   const cart2 = manager.create(Cart, {
     id: "test-cart-2",

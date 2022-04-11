@@ -272,6 +272,7 @@ describe("LineItemAdjustmentService", () => {
       const cart = {
           id: "cart1",
           discounts: ["disc-1"],
+          items: [{ id: "li-1" }],
         },
         lineItem = { id: "li-1" }
 

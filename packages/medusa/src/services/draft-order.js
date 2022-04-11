@@ -290,6 +290,7 @@ class DraftOrderService extends BaseService {
             .generate(item.variant_id, data.region_id, item.quantity, {
               metadata: item?.metadata || {},
               unit_price: item.unit_price,
+              cart: createdCart,
             })
 
           await this.lineItemService_.withTransaction(manager).create({

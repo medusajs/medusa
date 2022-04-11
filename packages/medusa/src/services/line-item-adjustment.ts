@@ -7,11 +7,20 @@ import { LineItemAdjustment } from "../models/line-item-adjustment"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
 import { LineItem } from "../models/line-item"
 import { Cart } from "../models/cart"
+import DiscountService from "./discount"
+import { ProductVariant } from "../models/product-variant"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
   lineItemAdjustmentRepository: typeof LineItemAdjustmentRepository
+  discountService: DiscountService
 }
+
+type AdjustmentContext = {
+  variant: ProductVariant
+}
+
+type GeneratedAdjustment = Omit<LineItem, "id" | "item_id">
 
 /**
  * Provides layer to manipulate line item adjustments.
@@ -20,14 +29,17 @@ type LineItemAdjustmentServiceProps = {
 class LineItemAdjustmentService extends BaseService {
   private manager_: EntityManager
   private lineItemAdjustmentRepo_: typeof LineItemAdjustmentRepository
+  private discountService: DiscountService
 
   constructor({
     manager,
     lineItemAdjustmentRepository,
+    discountService,
   }: LineItemAdjustmentServiceProps) {
     super()
     this.manager_ = manager
     this.lineItemAdjustmentRepo_ = lineItemAdjustmentRepository
+    this.discountService = discountService
   }
 
   withTransaction(
@@ -40,6 +52,7 @@ class LineItemAdjustmentService extends BaseService {
     const cloned = new LineItemAdjustmentService({
       manager: transactionManager,
       lineItemAdjustmentRepository: this.lineItemAdjustmentRepo_,
+      discountService: this.discountService,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -170,35 +183,96 @@ class LineItemAdjustmentService extends BaseService {
   /**
    * Creates adjustment for a line item
    * @param cart - the cart object holding discounts
+   * @param generatedLineItem - the line item for which a line item adjustment might be created
+   * @param context - the line item for which a line item adjustment might be created
+   * @return a line item adjustment or undefined if no adjustment was created
+   */
+  async generateAdjustments(
+    cart: Cart,
+    generatedLineItem: LineItem,
+    context: AdjustmentContext
+  ): Promise<GeneratedAdjustment[]> {
+    return this.atomicPhase_(async (manager) => {
+      // if lineItem should not be discounted
+      // or lineItem is a return line item
+      // or the cart does not have any discounts
+      // then do nothing
+      if (
+        !generatedLineItem.allow_discounts ||
+        generatedLineItem.is_return ||
+        !cart?.discounts?.length
+      ) {
+        return []
+      }
+
+      const [discount] = cart.discounts.filter(
+        (d) => d.rule.type !== "free_shipping"
+      )
+
+      // if no discount is applied to the cart then return
+      if (!discount) {
+        return []
+      }
+
+      const lineItemProduct = context.variant.product_id
+
+      const isValid = await this.discountService
+        .withTransaction(manager)
+        .validateDiscountForProduct(discount.rule_id, lineItemProduct)
+
+      // if discount is not valid for line item, then do nothing
+      if (!isValid) {
+        return []
+      }
+
+      const amount = await this.discountService.calculateDiscountForLineItem(
+        discount.id,
+        generatedLineItem,
+        cart
+      )
+
+      // if discounted amount is 0, then do nothing
+      if (amount === 0) {
+        return []
+      }
+
+      const adjustments = [
+        {
+          amount,
+          discount_id: discount.id,
+          description: "discount",
+        },
+      ]
+
+      return adjustments
+    })
+  }
+
+  /**
+   * Creates adjustment for a line item
+   * @param cart - the cart object holding discounts
    * @param lineItem - the line item for which a line item adjustment might be created
    * @return a line item adjustment or undefined if no adjustment was created
    */
   async createAdjustmentForLineItem(
     cart: Cart,
     lineItem: LineItem
-  ): Promise<LineItemAdjustment | undefined> {
-    return this.atomicPhase_(async (manager) => {
-      const discount = await this.discountService
-        .withTransaction(manager)
-        .validateDiscountsForLineItem(cart.discounts, lineItem)
+  ): Promise<LineItemAdjustment[]> {
+    const adjustments = await this.generateAdjustments(cart, lineItem, {
+      variant: lineItem.variant,
+    })
 
-      if (!discount) {
-        return
-      }
-
-      const amount = await this.discountService.calculateDiscountApplied(
-        discount
-      )
-
-      const lineItemAdjustment = await this.create({
+    const createdAdjustments: LineItemAdjustment[] = []
+    for (const adjustment of adjustments) {
+      const created = await this.create({
         item_id: lineItem.id,
-        amount,
-        discount_id: discount.id,
-        description: "discount",
+        ...adjustment,
       })
 
-      return lineItemAdjustment
-    })
+      createdAdjustments.push(created)
+    }
+
+    return createdAdjustments
   }
 
   /**
@@ -211,11 +285,13 @@ class LineItemAdjustmentService extends BaseService {
   async createAdjustments(
     cart: Cart,
     lineItem?: LineItem
-  ): Promise<
-    LineItemAdjustment | undefined | (LineItemAdjustment | undefined)[]
-  > {
+  ): Promise<LineItemAdjustment[] | LineItemAdjustment[][]> {
     if (lineItem) {
       return await this.createAdjustmentForLineItem(cart, lineItem)
+    }
+
+    if (!cart.items) {
+      return []
     }
 
     return await Promise.all(
