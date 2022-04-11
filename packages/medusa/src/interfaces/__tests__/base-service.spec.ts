@@ -4,8 +4,8 @@ import { MockManager } from "medusa-test-utils"
 
 describe("BaseService", () => {
   it("should cloned the child class withTransaction", () => {
-    class Child extends BaseService {
-      constructor(container) {
+    class Child extends BaseService<Child> {
+      constructor(protected readonly container) {
         super(container, {});
         this.container = container
       }
@@ -30,11 +30,11 @@ describe("BaseService", () => {
 
     expect(child2.message()).toBe(`child class message method called with title title`)
     expect(child2.getTransactionManager()).toBeTruthy()
-    expect(child2.getTransactionManager().testProp).toBe('testProp')
+    expect((child2.getTransactionManager() as any)?.testProp).toBe('testProp')
   })
 
   describe("buildQuery_", () => {
-    const baseService = new BaseService()
+    const baseService = new BaseService({}, {})
 
     it("successfully creates query", () => {
       const q = baseService.buildQuery_(

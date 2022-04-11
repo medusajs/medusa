@@ -16,7 +16,7 @@ type QueryBuilderConfig<TEntity> = {
  * @interface
  */
 class BaseService<
-  TChild extends BaseService<any, TContainer>,
+  TChild extends BaseService<TChild, TContainer>,
   TContainer = unknown
 > {
   protected transactionManager_: EntityManager | undefined
