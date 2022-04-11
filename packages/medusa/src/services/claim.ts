@@ -150,11 +150,12 @@ export default class ClaimService extends BaseService {
     return cloned
   }
 
-  update(
+  async update(
     id: string,
     data: AdminPostOrdersOrderClaimsClaimReq
   ): Promise<ClaimItem> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
+    return this.atomicPhase_(async (manager) => {
+      const claimRepo = manager.getCustomRepository(this.claimRepository_)
       const claim = await this.retrieve(id, { relations: ["shipping_methods"] })
 
       if (claim.canceled_at) {
@@ -166,80 +167,59 @@ export default class ClaimService extends BaseService {
 
       const { claim_items, shipping_methods, metadata, no_notification } = data
 
-      const claimRepo = transactionManager.getCustomRepository(
-        this.claimRepository_
-      )
-      if (metadata || no_notification) {
-        claim.metadata = metadata
-          ? this.setMetadata_(claim, metadata)
-          : claim.metadata
-        claim.no_notification =
-          no_notification !== undefined
-            ? no_notification
-            : claim.no_notification
+      if (metadata) {
+        claim.metadata = this.setMetadata_(claim, metadata)
         await claimRepo.save(claim)
       }
 
-      if (shipping_methods?.length) {
-        const shippingMethodsIds = new Set(
-          shipping_methods.map((shippingMethod) => shippingMethod.id)
-        )
-        const differenceShippingMethodIds = claim.shipping_methods.filter(
-          (claimShippingMethod) =>
-            !shippingMethodsIds.has(claimShippingMethod.id)
-        )
-        const shippingMethodRepo = transactionManager.getCustomRepository(
-          this.shippingMethodRepository_
-        )
-        await shippingMethodRepo.update(
-          {
-            id: In(
-              differenceShippingMethodIds.map(
-                (claimShippingMethod) => claimShippingMethod.id
-              )
-            ),
-          },
-          {
-            claim_order_id: null,
-          }
-        )
+      if (shipping_methods) {
+        for (const m of claim.shipping_methods) {
+          await this.shippingOptionService_
+            .withTransaction(manager)
+            .updateShippingMethod(m.id, {
+              claim_order_id: null,
+            })
+        }
 
-        await Promise.all(
-          shipping_methods.map((shippingMethod) => {
-            if (shippingMethod.id) {
-              return this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .updateShippingMethod(shippingMethod.id, {
+        for (const method of shipping_methods) {
+          if (method.id) {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .updateShippingMethod(method.id, {
+                claim_order_id: claim.id,
+              })
+          } else {
+            await this.shippingOptionService_
+              .withTransaction(manager)
+              .createShippingMethod(
+                method.option_id as string,
+                (method as any).data,
+                {
                   claim_order_id: claim.id,
-                })
-            } else if (shippingMethod.option_id) {
-              // TODO: data does not exists on shippingMethod, should have a look
-              return this.shippingOptionService_
-                .withTransaction(transactionManager)
-                .createShippingMethod(
-                  shippingMethod.option_id,
-                  (shippingMethod as any)?.data,
-                  {
-                    claim_order_id: claim.id,
-                    price: shippingMethod.price,
-                  }
-                )
-            }
-            return Promise.resolve()
-          })
-        )
+                  price: method.price,
+                }
+              )
+          }
+        }
+      }
+
+      if (no_notification !== undefined) {
+        claim.no_notification = no_notification
+        await claimRepo.save(claim)
       }
 
       if (claim_items) {
-        await Promise.all(
-          claim_items
-            .filter((claimItem) => claimItem.id)
-            .map((claimItem) => this.update(claimItem.id, claimItem))
-        )
+        for (const i of claim_items) {
+          if (i.id) {
+            await this.claimItemService_
+              .withTransaction(manager)
+              .update(i.id, i)
+          }
+        }
       }
 
       await this.eventBus_
-        .withTransaction(transactionManager)
+        .withTransaction(manager)
         .emit(ClaimService.Events.UPDATED, {
           id: claim.id,
           no_notification: claim.no_notification,
@@ -256,14 +236,17 @@ export default class ClaimService extends BaseService {
    * @param {Object} data - the object containing all data required to create a claim
    * @return {Object} created claim
    */
-  create(
+  async create(
     data: AdminPostOrdersOrderClaimsReq & {
       order: Order
       type?: string
       claim_order_id?: string
+      shipping_address_id?: string
     }
   ): Promise<ClaimItem> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
+    return this.atomicPhase_(async (manager) => {
+      const claimRepo = manager.getCustomRepository(this.claimRepository_)
+
       const {
         type,
         claim_items,
@@ -273,9 +256,35 @@ export default class ClaimService extends BaseService {
         shipping_methods,
         refund_amount,
         shipping_address,
+        shipping_address_id,
         no_notification,
         ...rest
       } = data
+
+      for (const item of claim_items) {
+        const line = await this.lineItemService_.retrieve(item.item_id, {
+          relations: ["order", "swap", "claim_order", "tax_lines"],
+        })
+
+        if (
+          line.order?.canceled_at ||
+          line.swap?.canceled_at ||
+          line.claim_order?.canceled_at
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Cannot create a claim on a canceled item.`
+          )
+        }
+      }
+
+      let addressId = shipping_address_id || order.shipping_address_id
+      if (shipping_address) {
+        const addressRepo = manager.getCustomRepository(this.addressRepo_)
+        const created = addressRepo.create(shipping_address)
+        const saved = await addressRepo.save(created)
+        addressId = saved.id
+      }
 
       if (type !== "refund" && type !== "replace") {
         throw new MedusaError(
@@ -303,33 +312,6 @@ export default class ClaimService extends BaseService {
           MedusaError.Types.INVALID_DATA,
           `Claim has type "${type}" but must be type "refund" to have a refund_amount.`
         )
-      }
-
-      for (const item of claim_items) {
-        const line = await this.lineItemService_.retrieve(item.item_id, {
-          relations: ["order", "swap", "claim_order", "tax_lines"],
-        })
-
-        if (
-          line.order?.canceled_at ||
-          line.swap?.canceled_at ||
-          line.claim_order?.canceled_at
-        ) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Cannot create a claim on a canceled item.`
-          )
-        }
-      }
-
-      let addressId = order.shipping_address_id
-      if (shipping_address) {
-        const addressRepo = transactionManager.getCustomRepository(
-          this.addressRepository_
-        )
-        const address = addressRepo.create(shipping_address)
-        const createdAddress = await addressRepo.save(address)
-        addressId = createdAddress.id
       }
 
       let toRefund = refund_amount
@@ -379,21 +361,21 @@ export default class ClaimService extends BaseService {
       if (typeof additional_items !== "undefined") {
         for (const item of additional_items) {
           await this.inventoryService_
-            .withTransaction(transactionManager)
+            .withTransaction(manager)
             .confirmInventory(item.variant_id, item.quantity)
         }
 
         newItems = await Promise.all(
           additional_items.map((i) =>
             this.lineItemService_
-              .withTransaction(transactionManager)
+              .withTransaction(manager)
               .generate(i.variant_id, order.region_id, i.quantity)
           )
         )
 
         for (const newItem of newItems) {
           await this.inventoryService_
-            .withTransaction(transactionManager)
+            .withTransaction(manager)
             .adjustInventory(newItem.variant_id, -newItem.quantity)
         }
       }
@@ -401,10 +383,7 @@ export default class ClaimService extends BaseService {
       const evaluatedNoNotification =
         no_notification !== undefined ? no_notification : order.no_notification
 
-      const claimRepo = transactionManager.getCustomRepository(
-        this.claimRepository_
-      )
-      const created: ClaimOrder = claimRepo.create({
+      const created = claimRepo.create({
         shipping_address_id: addressId,
         payment_status: type === "refund" ? "not_refunded" : "na",
         ...rest,
@@ -413,19 +392,19 @@ export default class ClaimService extends BaseService {
         additional_items: newItems,
         order_id: order.id,
         no_notification: evaluatedNoNotification,
-      } as Partial<ClaimOrder>)
+      })
 
-      const claimOrder = await claimRepo.save(created)
+      const result = await claimRepo.save(created)
 
-      if (claimOrder.additional_items && claimOrder.additional_items.length) {
+      if (result.additional_items && result.additional_items.length) {
         const calcContext = this.totalsService_.getCalculationContext(order)
         const lineItems = await this.lineItemService_
-          .withTransaction(transactionManager)
+          .withTransaction(manager)
           .list({
-            id: claimOrder.additional_items.map((i) => i.id),
+            id: result.additional_items.map((i) => i.id),
           })
         await this.taxProviderService_
-          .withTransaction(transactionManager)
+          .withTransaction(manager)
           .createTaxLines(lineItems, calcContext)
       }
 
@@ -433,42 +412,40 @@ export default class ClaimService extends BaseService {
         for (const method of shipping_methods) {
           if (method.id) {
             await this.shippingOptionService_
-              .withTransaction(transactionManager)
+              .withTransaction(manager)
               .updateShippingMethod(method.id, {
-                claim_order_id: claimOrder.id,
+                claim_order_id: result.id,
               })
-          } else if (method.option_id) {
-            // TODO: data does not exists on shippingMethod, should have a look
+          } else {
             await this.shippingOptionService_
-              .withTransaction(transactionManager)
-              .createShippingMethod(method.option_id, (method as any).data, {
-                claim_order_id: claimOrder.id,
-                price: method.price,
-              })
+              .withTransaction(manager)
+              .createShippingMethod(
+                method.option_id as string,
+                (method as any).data,
+                {
+                  claim_order_id: result.id,
+                  price: method.price,
+                }
+              )
           }
         }
       }
 
-      await Promise.all(
-        claim_items.map((claimItem) => {
-          return this.claimItemService_
-            .withTransaction(transactionManager)
-            .create({
-              ...claimItem,
-              claim_order_id: claimOrder.id,
-            })
+      for (const ci of claim_items) {
+        await this.claimItemService_.withTransaction(manager).create({
+          ...ci,
+          claim_order_id: result.id,
         })
-      )
+      }
 
       if (return_shipping) {
-        // TODO: metadata does not exists on Item from AdminPostOrdersOrderClaimsReq
-        await this.returnService_.withTransaction(transactionManager).create({
+        await this.returnService_.withTransaction(manager).create({
           order_id: order.id,
-          claim_order_id: claimOrder.id,
-          items: claim_items.map((claimItem) => ({
-            item_id: claimItem.item_id,
-            quantity: claimItem.quantity,
-            metadata: (claimItem as any).metadata,
+          claim_order_id: result.id,
+          items: claim_items.map((ci) => ({
+            item_id: ci.item_id,
+            quantity: ci.quantity,
+            metadata: (ci as any).metadata,
           })),
           shipping_method: return_shipping,
           no_notification: evaluatedNoNotification,
@@ -476,13 +453,13 @@ export default class ClaimService extends BaseService {
       }
 
       await this.eventBus_
-        .withTransaction(transactionManager)
+        .withTransaction(manager)
         .emit(ClaimService.Events.CREATED, {
-          id: claimOrder.id,
-          no_notification: claimOrder.no_notification,
+          id: result.id,
+          no_notification: result.no_notification,
         })
 
-      return claimOrder
+      return result
     })
   }
 
@@ -504,203 +481,211 @@ export default class ClaimService extends BaseService {
   ): Promise<ClaimOrder> {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const claim = await this.retrieve(id, {
-        relations: [
-          "additional_items",
-          "additional_items.tax_lines",
-          "shipping_methods",
-          "shipping_methods.tax_lines",
-          "shipping_address",
-          "order",
-          "order.billing_address",
-          "order.discounts",
-          "order.discounts.rule",
-          "order.payments",
-        ],
-      })
-
-      if (claim.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Canceled claim cannot be fulfilled"
-        )
-      }
-
-      const order = claim.order
-
-      if (
-        claim.fulfillment_status !== "not_fulfilled" &&
-        claim.fulfillment_status !== "canceled"
-      ) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "The claim has already been fulfilled."
-        )
-      }
-
-      if (claim.type !== "replace") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Claims with the type "${claim.type}" can not be fulfilled.`
-        )
-      }
-
-      if (!claim.shipping_methods?.length) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot fulfill a claim without a shipping method."
-        )
-      }
-
-      const evaluatedNoNotification =
-        no_notification !== undefined ? no_notification : claim.no_notification
-
-      const fulfillments = await this.fulfillmentService_
-        .withTransaction(transactionManager)
-        .createFulfillment(
-          {
-            ...claim,
-            email: order.email,
-            payments: order.payments,
-            discounts: order.discounts,
-            currency_code: order.currency_code,
-            tax_rate: order.tax_rate,
-            region_id: order.region_id,
-            display_id: order.display_id,
-            billing_address: order.billing_address,
-            items: claim.additional_items,
-            shipping_methods: claim.shipping_methods,
-            is_claim: true,
-            no_notification: evaluatedNoNotification,
-          },
-          claim.additional_items.map((i) => ({
-            item_id: i.id,
-            quantity: i.quantity,
-          })),
-          { claim_order_id: id, metadata }
-        )
-
-      let successfullyFulfilledItems: FulfillmentItem[] = []
-      for (const fulfillment of fulfillments) {
-        successfullyFulfilledItems = successfullyFulfilledItems.concat(
-          fulfillment.items
-        )
-      }
-
-      claim.fulfillment_status = ClaimFulfillmentStatus.FULFILLED
-
-      for (const item of claim.additional_items) {
-        const fulfillmentItem = successfullyFulfilledItems.find(
-          (successfullyFulfilledItem) => {
-            return successfullyFulfilledItem.item_id === item.id
-          }
-        )
-
-        if (fulfillmentItem) {
-          const fulfilledQuantity =
-            (item.fulfilled_quantity || 0) + fulfillmentItem.quantity
-
-          // Update the fulfilled quantity
-          await this.lineItemService_
-            .withTransaction(transactionManager)
-            .update(item.id, {
-              fulfilled_quantity: fulfilledQuantity,
-            })
-
-          if (item.quantity !== fulfilledQuantity) {
-            claim.fulfillment_status = ClaimFulfillmentStatus.REQUIRES_ACTION
-          }
-        } else if (item.quantity !== item.fulfilled_quantity) {
-          claim.fulfillment_status = ClaimFulfillmentStatus.REQUIRES_ACTION
-        }
-      }
-
-      const claimRepo = transactionManager.getCustomRepository(
-        this.claimRepository_
-      )
-      const claimOrder = await claimRepo.save(claim)
-
-      for (const fulfillment of fulfillments) {
-        await this.eventBus_
-          .withTransaction(transactionManager)
-          .emit(ClaimService.Events.FULFILLMENT_CREATED, {
-            id: id,
-            fulfillment_id: fulfillment.id,
-            no_notification: claim.no_notification,
-          })
-      }
-
-      return claimOrder
-    })
-  }
-
-  cancelFulfillment(fulfillmentId: string): Promise<ClaimOrder> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const canceled = await this.fulfillmentService_
-        .withTransaction(transactionManager)
-        .cancelFulfillment(fulfillmentId)
-
-      if (!canceled.claim_order_id) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Fufillment not related to a claim`
-        )
-      }
-
-      const claim = await this.retrieve(canceled.claim_order_id)
-
-      claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
-
-      const claimRepo = transactionManager.getCustomRepository(
-        this.claimRepository_
-      )
-      return claimRepo.save(claim)
-    })
-  }
-
-  processRefund(id: string): Promise<ClaimOrder> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const claim = await this.retrieve(id, {
-        relations: ["order", "order.payments"],
-      })
-
-      if (claim.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Canceled claim cannot be processed"
-        )
-      }
-
-      if (claim.type !== "refund") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          `Claim must have type "refund" to create a refund.`
-        )
-      }
-
-      if (claim.refund_amount) {
-        await this.paymentProviderService_
-          .withTransaction(transactionManager)
-          .refundPayment(claim.order.payments, claim.refund_amount, "claim")
-      }
-
-      claim.payment_status = ClaimPaymentStatus.REFUNDED
-
-      const claimRepo = transactionManager.getCustomRepository(
-        this.claimRepository_
-      )
-      const claimOrder = await claimRepo.save(claim)
-
-      await this.eventBus_
-        .withTransaction(transactionManager)
-        .emit(ClaimService.Events.REFUND_PROCESSED, {
-          id,
-          no_notification: claimOrder.no_notification,
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const claim = await this.retrieve(id, {
+          relations: [
+            "additional_items",
+            "additional_items.tax_lines",
+            "shipping_methods",
+            "shipping_methods.tax_lines",
+            "shipping_address",
+            "order",
+            "order.billing_address",
+            "order.discounts",
+            "order.discounts.rule",
+            "order.payments",
+          ],
         })
 
-      return claimOrder
-    })
+        if (claim.canceled_at) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Canceled claim cannot be fulfilled"
+          )
+        }
+
+        const order = claim.order
+
+        if (
+          claim.fulfillment_status !== "not_fulfilled" &&
+          claim.fulfillment_status !== "canceled"
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "The claim has already been fulfilled."
+          )
+        }
+
+        if (claim.type !== "replace") {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Claims with the type "${claim.type}" can not be fulfilled.`
+          )
+        }
+
+        if (!claim.shipping_methods?.length) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Cannot fulfill a claim without a shipping method."
+          )
+        }
+
+        const evaluatedNoNotification =
+          no_notification !== undefined
+            ? no_notification
+            : claim.no_notification
+
+        const fulfillments = await this.fulfillmentService_
+          .withTransaction(transactionManager)
+          .createFulfillment(
+            {
+              ...claim,
+              email: order.email,
+              payments: order.payments,
+              discounts: order.discounts,
+              currency_code: order.currency_code,
+              tax_rate: order.tax_rate,
+              region_id: order.region_id,
+              display_id: order.display_id,
+              billing_address: order.billing_address,
+              items: claim.additional_items,
+              shipping_methods: claim.shipping_methods,
+              is_claim: true,
+              no_notification: evaluatedNoNotification,
+            },
+            claim.additional_items.map((i) => ({
+              item_id: i.id,
+              quantity: i.quantity,
+            })),
+            { claim_order_id: id, metadata }
+          )
+
+        let successfullyFulfilledItems: FulfillmentItem[] = []
+        for (const fulfillment of fulfillments) {
+          successfullyFulfilledItems = successfullyFulfilledItems.concat(
+            fulfillment.items
+          )
+        }
+
+        claim.fulfillment_status = ClaimFulfillmentStatus.FULFILLED
+
+        for (const item of claim.additional_items) {
+          const fulfillmentItem = successfullyFulfilledItems.find(
+            (successfullyFulfilledItem) => {
+              return successfullyFulfilledItem.item_id === item.id
+            }
+          )
+
+          if (fulfillmentItem) {
+            const fulfilledQuantity =
+              (item.fulfilled_quantity || 0) + fulfillmentItem.quantity
+
+            // Update the fulfilled quantity
+            await this.lineItemService_
+              .withTransaction(transactionManager)
+              .update(item.id, {
+                fulfilled_quantity: fulfilledQuantity,
+              })
+
+            if (item.quantity !== fulfilledQuantity) {
+              claim.fulfillment_status = ClaimFulfillmentStatus.REQUIRES_ACTION
+            }
+          } else if (item.quantity !== item.fulfilled_quantity) {
+            claim.fulfillment_status = ClaimFulfillmentStatus.REQUIRES_ACTION
+          }
+        }
+
+        const claimRepo = transactionManager.getCustomRepository(
+          this.claimRepository_
+        )
+        const claimOrder = await claimRepo.save(claim)
+
+        for (const fulfillment of fulfillments) {
+          await this.eventBus_
+            .withTransaction(transactionManager)
+            .emit(ClaimService.Events.FULFILLMENT_CREATED, {
+              id: id,
+              fulfillment_id: fulfillment.id,
+              no_notification: claim.no_notification,
+            })
+        }
+
+        return claimOrder
+      }
+    )
+  }
+
+  async cancelFulfillment(fulfillmentId: string): Promise<ClaimOrder> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const canceled = await this.fulfillmentService_
+          .withTransaction(transactionManager)
+          .cancelFulfillment(fulfillmentId)
+
+        if (!canceled.claim_order_id) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Fufillment not related to a claim`
+          )
+        }
+
+        const claim = await this.retrieve(canceled.claim_order_id)
+
+        claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
+
+        const claimRepo = transactionManager.getCustomRepository(
+          this.claimRepository_
+        )
+        return claimRepo.save(claim)
+      }
+    )
+  }
+
+  async processRefund(id: string): Promise<ClaimOrder> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const claim = await this.retrieve(id, {
+          relations: ["order", "order.payments"],
+        })
+
+        if (claim.canceled_at) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Canceled claim cannot be processed"
+          )
+        }
+
+        if (claim.type !== "refund") {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            `Claim must have type "refund" to create a refund.`
+          )
+        }
+
+        if (claim.refund_amount) {
+          await this.paymentProviderService_
+            .withTransaction(transactionManager)
+            .refundPayment(claim.order.payments, claim.refund_amount, "claim")
+        }
+
+        claim.payment_status = ClaimPaymentStatus.REFUNDED
+
+        const claimRepo = transactionManager.getCustomRepository(
+          this.claimRepository_
+        )
+        const claimOrder = await claimRepo.save(claim)
+
+        await this.eventBus_
+          .withTransaction(transactionManager)
+          .emit(ClaimService.Events.REFUND_PROCESSED, {
+            id,
+            no_notification: claimOrder.no_notification,
+          })
+
+        return claimOrder
+      }
+    )
   }
 
   async createShipment(
@@ -714,116 +699,123 @@ export default class ClaimService extends BaseService {
   ): Promise<ClaimOrder> {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const claim = await this.retrieve(id, {
-        relations: ["additional_items"],
-      })
-
-      if (claim.canceled_at) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Canceled claim cannot be fulfilled as shipped"
-        )
-      }
-      const evaluatedNoNotification =
-        no_notification !== undefined ? no_notification : claim.no_notification
-
-      const shipment = await this.fulfillmentService_
-        .withTransaction(transactionManager)
-        .createShipment(fulfillmentId, trackingLinks, {
-          metadata,
-          no_notification: evaluatedNoNotification,
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const claim = await this.retrieve(id, {
+          relations: ["additional_items"],
         })
 
-      claim.fulfillment_status = ClaimFulfillmentStatus.SHIPPED
+        if (claim.canceled_at) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Canceled claim cannot be fulfilled as shipped"
+          )
+        }
+        const evaluatedNoNotification =
+          no_notification !== undefined
+            ? no_notification
+            : claim.no_notification
 
-      for (const additionalItem of claim.additional_items) {
-        const shipped = shipment.items.find(
-          (si) => si.item_id === additionalItem.id
-        )
-        if (shipped) {
-          const shippedQty =
-            (additionalItem.shipped_quantity || 0) + shipped.quantity
-          await this.lineItemService_
-            .withTransaction(transactionManager)
-            .update(additionalItem.id, {
-              shipped_quantity: shippedQty,
-            })
+        const shipment = await this.fulfillmentService_
+          .withTransaction(transactionManager)
+          .createShipment(fulfillmentId, trackingLinks, {
+            metadata,
+            no_notification: evaluatedNoNotification,
+          })
 
-          if (shippedQty !== additionalItem.quantity) {
+        claim.fulfillment_status = ClaimFulfillmentStatus.SHIPPED
+
+        for (const additionalItem of claim.additional_items) {
+          const shipped = shipment.items.find(
+            (si) => si.item_id === additionalItem.id
+          )
+          if (shipped) {
+            const shippedQty =
+              (additionalItem.shipped_quantity || 0) + shipped.quantity
+            await this.lineItemService_
+              .withTransaction(transactionManager)
+              .update(additionalItem.id, {
+                shipped_quantity: shippedQty,
+              })
+
+            if (shippedQty !== additionalItem.quantity) {
+              claim.fulfillment_status =
+                ClaimFulfillmentStatus.PARTIALLY_SHIPPED
+            }
+          } else if (
+            additionalItem.shipped_quantity !== additionalItem.quantity
+          ) {
             claim.fulfillment_status = ClaimFulfillmentStatus.PARTIALLY_SHIPPED
           }
-        } else if (
-          additionalItem.shipped_quantity !== additionalItem.quantity
-        ) {
-          claim.fulfillment_status = ClaimFulfillmentStatus.PARTIALLY_SHIPPED
         }
+
+        const claimRepo = transactionManager.getCustomRepository(
+          this.claimRepository_
+        )
+        const claimOrder = await claimRepo.save(claim)
+
+        await this.eventBus_
+          .withTransaction(transactionManager)
+          .emit(ClaimService.Events.SHIPMENT_CREATED, {
+            id,
+            fulfillment_id: shipment.id,
+            no_notification: evaluatedNoNotification,
+          })
+
+        return claimOrder
       }
-
-      const claimRepo = transactionManager.getCustomRepository(
-        this.claimRepository_
-      )
-      const claimOrder = await claimRepo.save(claim)
-
-      await this.eventBus_
-        .withTransaction(transactionManager)
-        .emit(ClaimService.Events.SHIPMENT_CREATED, {
-          id,
-          fulfillment_id: shipment.id,
-          no_notification: evaluatedNoNotification,
-        })
-
-      return claimOrder
-    })
+    )
   }
 
-  cancel(id: string): Promise<ClaimOrder> {
-    return this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const claim = await this.retrieve(id, {
-        relations: ["return_order", "fulfillments", "order", "order.refunds"],
-      })
-      if (claim.refund_amount) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Claim with a refund cannot be canceled"
-        )
-      }
+  async cancel(id: string): Promise<ClaimOrder> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const claim = await this.retrieve(id, {
+          relations: ["return_order", "fulfillments", "order", "order.refunds"],
+        })
+        if (claim.refund_amount) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Claim with a refund cannot be canceled"
+          )
+        }
 
-      if (claim.fulfillments) {
-        for (const f of claim.fulfillments) {
-          if (!f.canceled_at) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              "All fulfillments must be canceled before the claim can be canceled"
-            )
+        if (claim.fulfillments) {
+          for (const f of claim.fulfillments) {
+            if (!f.canceled_at) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_ALLOWED,
+                "All fulfillments must be canceled before the claim can be canceled"
+              )
+            }
           }
         }
-      }
 
-      if (claim.return_order && claim.return_order.status !== "canceled") {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Return must be canceled before the claim can be canceled"
+        if (claim.return_order && claim.return_order.status !== "canceled") {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Return must be canceled before the claim can be canceled"
+          )
+        }
+
+        claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
+        claim.canceled_at = new Date()
+
+        const claimRepo = transactionManager.getCustomRepository(
+          this.claimRepository_
         )
+        const claimOrder = await claimRepo.save(claim)
+
+        await this.eventBus_
+          .withTransaction(transactionManager)
+          .emit(ClaimService.Events.CANCELED, {
+            id: claimOrder.id,
+            no_notification: claimOrder.no_notification,
+          })
+
+        return claimOrder
       }
-
-      claim.fulfillment_status = ClaimFulfillmentStatus.CANCELED
-      claim.canceled_at = new Date()
-
-      const claimRepo = transactionManager.getCustomRepository(
-        this.claimRepository_
-      )
-      const claimOrder = await claimRepo.save(claim)
-
-      await this.eventBus_
-        .withTransaction(transactionManager)
-        .emit(ClaimService.Events.CANCELED, {
-          id: claimOrder.id,
-          no_notification: claimOrder.no_notification,
-        })
-
-      return claimOrder
-    })
+    )
   }
 
   /**
@@ -837,7 +829,7 @@ export default class ClaimService extends BaseService {
   ): Promise<ClaimOrder[]> {
     const claimRepo = this.manager_.getCustomRepository(this.claimRepository_)
     const query = this.buildQuery_(selector, config)
-    return claimRepo.find(query)
+    return await claimRepo.find(query)
   }
 
   /**
