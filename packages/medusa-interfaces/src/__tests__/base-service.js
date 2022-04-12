@@ -1,38 +1,7 @@
 import BaseService from "../base-service"
 import { In, Not } from "typeorm"
-import { MockManager } from "medusa-test-utils"
 
 describe("BaseService", () => {
-  it("should cloned the child class withTransaction", () => {
-    class Child extends BaseService {
-      constructor(container) {
-        super(container, {});
-        this.container = container
-      }
-
-      message() {
-        return `child class message method called with title ${this.container.title}`
-      }
-
-      getTransactionManager() {
-        return this.transactionManager_
-      }
-    }
-
-    const child = new Child({ title: 'title' })
-
-    expect(child.message()).toBe(`child class message method called with title title`)
-    expect(child.getTransactionManager()).toBeFalsy()
-
-    const fakeManager = MockManager
-    fakeManager.testProp = 'testProp'
-    const child2 = child.withTransaction(fakeManager)
-
-    expect(child2.message()).toBe(`child class message method called with title title`)
-    expect(child2.getTransactionManager()).toBeTruthy()
-    expect(child2.getTransactionManager().testProp).toBe('testProp')
-  })
-
   describe("buildQuery_", () => {
     const baseService = new BaseService()
 
@@ -55,6 +24,69 @@ describe("BaseService", () => {
           test2: Not("this"),
         },
         relations: ["1234"],
+      })
+    })
+  })
+
+  describe("addDecorator", () => {
+    const baseService = new BaseService()
+
+    it("successfully adds decorator", () => {
+      baseService.addDecorator(obj => {
+        return (obj.decorator1 = true)
+      })
+
+      expect(baseService.decorators_.length).toEqual(1)
+    })
+
+    it("throws if decorator is not a function", () => {
+      expect(() => baseService.addDecorator("not a function")).toThrow(
+        "Decorators must be of type function"
+      )
+    })
+  })
+
+  describe("runDecorators_", () => {
+    it("returns success when passwords match", async () => {
+      const baseService = new BaseService()
+
+      baseService.addDecorator(obj => {
+        obj.decorator1 = true
+        return obj
+      })
+      baseService.addDecorator(obj => {
+        obj.decorator2 = true
+        return obj
+      })
+
+      const result = await baseService.runDecorators_({ data: "initial" })
+      expect(result).toEqual({
+        data: "initial",
+        decorator1: true,
+        decorator2: true,
+      })
+    })
+
+    it("skips failing decorator", async () => {
+      const baseService = new BaseService()
+
+      baseService.addDecorator(obj => {
+        obj.decorator1 = true
+        return obj
+      })
+      baseService.addDecorator(obj => {
+        return Promise.reject("fail")
+      })
+      baseService.addDecorator(obj => {
+        obj.decorator3 = true
+        return Promise.resolve(obj)
+      })
+
+      const result = await baseService.runDecorators_({ data: "initial" })
+      expect(result).toEqual({
+        data: "initial",
+        decorator1: true,
+        decorator3: true,
       })
     })
   })
