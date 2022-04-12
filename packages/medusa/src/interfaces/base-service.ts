@@ -1,23 +1,18 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, FindOperator, In, Raw } from "typeorm"
 import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
+import { FindConfig } from "../types/common"
 
 type Selector<TEntity> = { [key in keyof TEntity]?: unknown }
-type QueryBuilderConfig<TEntity> = {
-  skip?: number
-  take?: number
-  relations?: string[]
-  select?: (keyof TEntity)[]
-  order?: { [key in keyof TEntity]: "ASC" | "DESC" }
-}
 
 /**
  * Common functionality for Services
  * @interface
  */
 class BaseService<
-  TChild extends BaseService<TChild, TContainer>,
-  TContainer = unknown
+  TChild extends BaseService<TChild, TContainer, TConfigModule>,
+  TContainer = unknown,
+  TConfigModule = unknown
 > {
   protected transactionManager_: EntityManager | undefined
   protected manager_: EntityManager
@@ -39,7 +34,8 @@ class BaseService<
 
     const cloned = new (<typeof BaseService>this.constructor)<
       TChild,
-      TContainer
+      TContainer,
+      TConfigModule
     >(
       {
         ...this.container_,
@@ -61,8 +57,8 @@ class BaseService<
    */
   buildQuery_<TEntity = unknown>(
     selector: Selector<TEntity>,
-    config: QueryBuilderConfig<TEntity> = {}
-  ): QueryBuilderConfig<TEntity> & {
+    config: FindConfig<TEntity> = {}
+  ): FindConfig<TEntity> & {
     where: { [key in keyof TEntity]?: unknown }
     withDeleted?: boolean
   } {
@@ -130,7 +126,7 @@ class BaseService<
       }, {} as { [key in keyof TEntity]?: unknown })
     }
 
-    const query: QueryBuilderConfig<TEntity> & {
+    const query: FindConfig<TEntity> & {
       where: { [key in keyof TEntity]?: unknown }
       withDeleted?: boolean
     } = {
