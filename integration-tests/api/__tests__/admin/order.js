@@ -1555,6 +1555,116 @@ describe("/admin/orders", () => {
       expect(response.status).toEqual(200)
     })
 
+    describe("Given an existing discount order", () => {
+      describe("When a store operator attemps to create a swap form the discount order", () => {
+        it("Then should successfully create the swap", async () => {
+          const api = useApi()
+
+          const response = await api.post(
+            "/admin/orders/test-order/swaps",
+            {
+              return_items: [
+                {
+                  item_id: "test-item",
+                  quantity: 1,
+                },
+              ],
+              additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+            },
+            {
+              headers: {
+                authorization: "Bearer test_token",
+              },
+            }
+          )
+
+          const swapCartId = response.data.order.swaps[0].cart_id
+
+          const swapCartRes = await api.get(`/store/carts/${swapCartId}`, {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          })
+          const cart = swapCartRes.data.cart
+
+          expect(response.status).toEqual(200)
+          expect(cart.items.length).toEqual(2)
+          expect(cart.items).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                unit_price: -8000,
+                adjustments: [
+                  expect.objectContaining({
+                    amount: -800,
+                  }),
+                ],
+              }),
+              expect.objectContaining({
+                unit_price: 8000,
+                adjustments: [
+                  expect.objectContaining({
+                    amount: 800,
+                  }),
+                ],
+              }),
+            ])
+          )
+          expect(cart.total).toEqual(0)
+        })
+      })
+
+      describe("And given a swap cart", () => {
+        describe("When a line item is added to the swap cart", () => {
+          it("Then should not delete existing return line item adjustments", async () => {
+            const api = useApi()
+
+            const createSwapRes = await api.post(
+              "/admin/orders/test-order/swaps",
+              {
+                return_items: [
+                  {
+                    item_id: "test-item",
+                    quantity: 1,
+                  },
+                ],
+                additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+              },
+              {
+                headers: {
+                  authorization: "Bearer test_token",
+                },
+              }
+            )
+
+            const swapCartId = createSwapRes.data.order.swaps[0].cart_id
+
+            const response = await api.post(
+              `/store/carts/${swapCartId}/line-items`,
+              {
+                variant_id: "test-variant-2",
+                quantity: 1,
+              },
+              {
+                headers: {
+                  authorization: "Bearer test_token",
+                },
+              }
+            )
+
+            const cart = response.data.cart
+            const items = cart.items
+            const [returnItem] = items.filter((i) => i.is_return)
+            expect(returnItem.adjustments).toEqual([
+              expect.objectContaining({
+                amount: -800,
+              }),
+            ])
+            expect(cart.total).toBe(7200)
+          })
+        })
+      })
+    })
+
     it("creates a swap with custom shipping options", async () => {
       const api = useApi()
 
