@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { BatchJobStatus, BatchJobType } from "../types/batch-job"
+import { BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 @Entity()
@@ -16,13 +16,13 @@ export class BatchJob {
   @PrimaryColumn()
   id: string
 
-  @DbAwareColumn({ type: "enum", enum: BatchJobType })
-  type: BatchJobType
+  @DbAwareColumn({ type: "text" })
+  type: string
 
   @DbAwareColumn({ type: "enum", enum: BatchJobStatus })
   status: BatchJobStatus
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   created_by: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
