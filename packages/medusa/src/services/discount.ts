@@ -30,6 +30,7 @@ import {
   UpdateDiscountInput,
   UpsertDiscountConditionInput,
 } from "../types/discount"
+import { isFuture, isPast } from "../utils/date-helpers"
 import { formatException, PostgresError } from "../utils/exception-formatter"
 
 /**
@@ -733,6 +734,99 @@ class DiscountService extends BaseService {
     // if the amount of the discount exceeds the total price of the item,
     // we return the total item price, else the fixed amount
     return adjustment >= fullItemPrice ? fullItemPrice : adjustment
+  }
+
+  async validateDiscountForCartOrThrow(
+    cart: Cart,
+    discount: Discount
+  ): Promise<void> {
+    if (this.hasReachedLimit(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount has been used maximum allowed times"
+      )
+    }
+
+    if (this.hasNotStarted(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is not valid yet"
+      )
+    }
+
+    if (this.hasExpired(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is expired"
+      )
+    }
+
+    if (this.isDisabled(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The discount code is disabled"
+      )
+    }
+
+    const isValidForRegion = await this.isValidForRegion(
+      discount,
+      cart.region_id
+    )
+    if (!isValidForRegion) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The discount is not available in current region"
+      )
+    }
+
+    if (cart.customer_id) {
+      const canApplyForCustomer = await this.canApplyForCustomer(
+        discount.rule.id,
+        cart.customer_id
+      )
+
+      if (!canApplyForCustomer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Discount is not valid for customer"
+        )
+      }
+    }
+  }
+
+  hasReachedLimit(discount: Discount): boolean {
+    const count = discount.usage_count || 0
+    const limit = discount.usage_limit
+    return !!limit && count >= limit
+  }
+
+  hasNotStarted(discount: Discount): boolean {
+    return isFuture(discount.starts_at)
+  }
+
+  hasExpired(discount: Discount): boolean {
+    return discount.ends_at && isPast(discount.ends_at)
+  }
+
+  isDisabled(discount: Discount): boolean {
+    return discount.is_disabled
+  }
+
+  async isValidForRegion(
+    discount: Discount,
+    region_id: string
+  ): Promise<boolean> {
+    let regions = discount.regions
+
+    if (discount.parent_discount_id) {
+      const parent = await this.retrieve(discount.parent_discount_id, {
+        relations: ["rule", "regions"],
+      })
+
+      regions = parent.regions
+    }
+
+    return regions.find(({ id }) => id === region_id) !== undefined
   }
 
   async canApplyForCustomer(
