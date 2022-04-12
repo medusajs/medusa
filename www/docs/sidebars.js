@@ -134,7 +134,7 @@ module.exports = {
             {
               type: "category",
               label: 'Services',
-              collapsed: true,
+              collapsed: false,
               items: [
                 {
                   type: "doc",
@@ -146,7 +146,7 @@ module.exports = {
             {
               type: "category",
               label: 'Subscribers',
-              collapsed: true,
+              collapsed: false,
               items: [
                 {
                   type: "doc",
@@ -154,6 +154,23 @@ module.exports = {
                   label: "Create a Subscriber"
                 },
               ]
+            },
+            {
+              type: "category",
+              label: 'Shipping',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/shipping/overview",
+                  label: "Architecture Overview"
+                },
+              ]
+            },
+            {
+              type: "doc",
+              id: "tutorial/adding-custom-functionality",
+              label: "Add Custom Functionality"
             },
             {
               type: "doc",
