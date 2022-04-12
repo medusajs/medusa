@@ -34,6 +34,7 @@ module.exports = {
       indexName: "medusa-commerce",
       placeholder: "Search docs...",
       appId: algoliaAppId,
+      contextualSearch: false,
     },
     prism: {
       defaultLanguage: "js",
