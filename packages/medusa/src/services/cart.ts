@@ -21,12 +21,10 @@ import {
   LineItemUpdate,
 } from "../types/cart"
 import { FindConfig, TotalField } from "../types/common"
-import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
 import EventBusService from "./event-bus"
 import GiftCardService from "./gift-card"
-import InventoryService from "./inventory"
 import LineItemService from "./line-item"
 import PaymentProviderService from "./payment-provider"
 import ProductService from "./product"
@@ -35,6 +33,9 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import InventoryService from "./inventory"
+import CustomShippingOptionService from "./custom-shipping-option"
+import LineItemAdjustmentService from "./line-item-adjustment"
 
 type CartConstructorProps = {
   manager: EntityManager
@@ -56,6 +57,7 @@ type CartConstructorProps = {
   totalsService: TotalsService
   inventoryService: InventoryService
   customShippingOptionService: CustomShippingOptionService
+  lineItemAdjustmentService: LineItemAdjustmentService
   priceSelectionStrategy: IPriceSelectionStrategy
 }
 
@@ -92,6 +94,7 @@ class CartService extends BaseService {
   private paymentSessionRepository_: typeof PaymentSessionRepository
   private inventoryService_: InventoryService
   private customShippingOptionService_: CustomShippingOptionService
+  private lineItemAdjustmentService_: LineItemAdjustmentService
   private priceSelectionStrategy_: IPriceSelectionStrategy
 
   constructor({
@@ -114,6 +117,7 @@ class CartService extends BaseService {
     paymentSessionRepository,
     inventoryService,
     customShippingOptionService,
+    lineItemAdjustmentService,
     priceSelectionStrategy,
   }: CartConstructorProps) {
     super()
@@ -137,6 +141,7 @@ class CartService extends BaseService {
     this.inventoryService_ = inventoryService
     this.customShippingOptionService_ = customShippingOptionService
     this.taxProviderService_ = taxProviderService
+    this.lineItemAdjustmentService_ = lineItemAdjustmentService
     this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
@@ -165,6 +170,7 @@ class CartService extends BaseService {
       giftCardService: this.giftCardService_,
       inventoryService: this.inventoryService_,
       customShippingOptionService: this.customShippingOptionService_,
+      lineItemAdjustmentService: this.lineItemAdjustmentService_,
       priceSelectionStrategy: this.priceSelectionStrategy_,
     })
 
@@ -457,7 +463,12 @@ class CartService extends BaseService {
 
       await this.lineItemService_.withTransaction(manager).delete(lineItem.id)
 
-      const result = await this.retrieve(cartId)
+      const result = await this.retrieve(cartId, {
+        relations: ["items", "discounts", "discounts.rule"],
+      })
+
+      await this.refreshAdjustments_(result)
+
       // Notify subscribers
       await this.eventBus_
         .withTransaction(manager)
@@ -512,9 +523,12 @@ class CartService extends BaseService {
         relations: [
           "shipping_methods",
           "items",
+          "items.adjustments",
           "payment_sessions",
           "items.variant",
           "items.variant.product",
+          "discounts",
+          "discounts.rule",
         ],
       })
 
@@ -570,10 +584,16 @@ class CartService extends BaseService {
         }
       }
 
-      const result = await this.retrieve(cartId)
+      const result = await this.retrieve(cartId, {
+        relations: ["items", "discounts", "discounts.rule"],
+      })
+
+      await this.refreshAdjustments_(result)
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
+
       return result
     })
   }
@@ -592,7 +612,7 @@ class CartService extends BaseService {
   ): Promise<Cart> {
     return this.atomicPhase_(async (manager: EntityManager) => {
       const cart = await this.retrieve(cartId, {
-        relations: ["items", "payment_sessions"],
+        relations: ["items", "items.adjustments", "payment_sessions"],
       })
 
       // Ensure that the line item exists in the cart
@@ -621,8 +641,13 @@ class CartService extends BaseService {
         .withTransaction(manager)
         .update(lineItemId, lineItemUpdate)
 
+      const result = await this.retrieve(cartId, {
+        relations: ["items", "discounts", "discounts.rule"],
+      })
+
+      await this.refreshAdjustments_(result)
+
       // Update the line item
-      const result = await this.retrieve(cartId)
       await this.eventBus_
         .withTransaction(manager)
         .emit(CartService.Events.UPDATED, result)
@@ -1004,109 +1029,51 @@ class CartService extends BaseService {
    * @return the result of the update operation
    */
   async applyDiscount(cart: Cart, discountCode: string): Promise<void> {
-    const discount = await this.discountService_.retrieveByCode(discountCode, [
-      "rule",
-      "regions",
-    ])
-
-    if (cart.customer_id) {
-      const canApply = await this.discountService_.canApplyForCustomer(
-        discount.rule.id,
-        cart.customer_id
+    return this.atomicPhase_(async (manager) => {
+      const discount = await this.discountService_.retrieveByCode(
+        discountCode,
+        ["rule", "regions"]
       )
 
-      if (!canApply) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount is not valid for customer"
-        )
+      await this.discountService_.validateDiscountForCartOrThrow(cart, discount)
+
+      const rule = discount.rule
+
+      // if discount is already there, we simply resolve
+      if (cart.discounts.find(({ id }) => id === discount.id)) {
+        return Promise.resolve()
       }
-    }
 
-    const rule = discount.rule
+      const toParse = [...cart.discounts, discount]
 
-    // if limit is set and reached, we make an early exit
-    if (discount.usage_limit) {
-      discount.usage_count = discount.usage_count || 0
-
-      if (discount.usage_count >= discount.usage_limit) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Discount has been used maximum allowed times"
-        )
-      }
-    }
-
-    const today = new Date()
-    if (discount.starts_at > today) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Discount is not valid yet"
-      )
-    }
-
-    if (discount.ends_at && discount.ends_at < today) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "Discount is expired"
-      )
-    }
-
-    let regions = discount.regions
-    if (discount.parent_discount_id) {
-      const parent = await this.discountService_.retrieve(
-        discount.parent_discount_id,
-        {
-          relations: ["rule", "regions"],
-        }
-      )
-
-      regions = parent.regions
-    }
-
-    if (discount.is_disabled) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "The discount code is disabled"
-      )
-    }
-
-    if (!regions.find(({ id }) => id === cart.region_id)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The discount is not available in current region"
-      )
-    }
-
-    // if discount is already there, we simply resolve
-    if (cart.discounts.find(({ id }) => id === discount.id)) {
-      return Promise.resolve()
-    }
-
-    const toParse = [...cart.discounts, discount]
-
-    let sawNotShipping = false
-    const newDiscounts = toParse.map((d) => {
-      const drule = d.rule
-      switch (drule.type) {
-        case "free_shipping":
-          if (d.rule.type === rule.type) {
-            return discount
-          }
-          return d
-        default:
-          if (!sawNotShipping) {
-            sawNotShipping = true
-            if (rule.type !== "free_shipping") {
+      let sawNotShipping = false
+      const newDiscounts = toParse.map((d) => {
+        const drule = d.rule
+        switch (drule.type) {
+          case "free_shipping":
+            if (d.rule.type === rule.type) {
               return discount
             }
             return d
-          }
-          return null
+          default:
+            if (!sawNotShipping) {
+              sawNotShipping = true
+              if (rule.type !== "free_shipping") {
+                return discount
+              }
+              return d
+            }
+            return null
+        }
+      })
+
+      cart.discounts = newDiscounts.filter(Boolean) as Discount[]
+
+      // ignore if free shipping
+      if (rule.type !== "free_shipping" && cart?.items) {
+        await this.refreshAdjustments_(cart)
       }
     })
-
-    cart.discounts = newDiscounts.filter(Boolean) as Discount[]
   }
 
   /**
@@ -1885,6 +1852,23 @@ class CartService extends BaseService {
       await txTaxProvider.createTaxLines(cart, calculationContext)
 
       return cart
+    })
+  }
+
+  async refreshAdjustments_(cart: Cart): Promise<void> {
+    return this.atomicPhase_(async (manager: EntityManager) => {
+      const nonReturnLines = cart.items.filter((item) => !item.is_return)
+      const nonReturnLineIDs = nonReturnLines.map((i) => i.id)
+
+      // delete all old non return line item adjustments
+      await this.lineItemAdjustmentService_.withTransaction(manager).delete({
+        item_id: nonReturnLineIDs,
+      })
+
+      // potentially create/update line item adjustments
+      await this.lineItemAdjustmentService_
+        .withTransaction(manager)
+        .createAdjustments(cart)
     })
   }
 
