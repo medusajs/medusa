@@ -1,4 +1,5 @@
 import React, { useReducer } from "react"
+
 import { checkDisplay } from "../utils/check-display"
 import scrollParent from "../utils/scroll-parent"
 import types from "./types"
@@ -7,6 +8,11 @@ export const defaultNavigationContext = {
   api: "null",
   setApi: () => {},
   currentSection: null,
+  currentSectionObj: {
+    section_name: "",
+    paths: [],
+    schema: {}
+  },
   updateSection: () => {},
   currentHash: null,
   updateHash: () => {},
@@ -21,6 +27,7 @@ const NavigationContext = React.createContext(defaultNavigationContext)
 export default NavigationContext
 
 const reducer = (state, action) => {
+  let obj = []
   switch (action.type) {
     case types.SET_API: {
       return {
@@ -29,23 +36,30 @@ const reducer = (state, action) => {
       }
     }
     case types.UPDATE_HASH:
-      return {
-        ...state,
-        currentSection: action.payload.section,
-        currentHash: action.payload.method,
-      }
-    case types.UPDATE_SECTION:
-      return {
-        ...state,
-        currentSection: action.payload,
-        currentHash: null,
-      }
-    case types.OPEN_SECTION:
-      const obj = state.openSections
-      obj.push(action.payload)
+      obj.push(action.payload.section)
       return {
         ...state,
         openSections: obj,
+        currentSection: action.payload.section,
+        currentHash: action.payload.method,
+        currentSectionObj: action.payload.sectionObj
+      }
+    case types.UPDATE_SECTION:
+      obj.push(action.payload.id)
+      return {
+        ...state,
+        openSections: obj,
+        currentSection: action.payload.id,
+        currentHash: null,
+        currentSectionObj: action.payload.section
+      }
+    case types.OPEN_SECTION:
+      obj.push(action.payload.id)
+      return {
+        ...state,
+        openSections: obj,
+        currentSection: action.payload.id,
+        currentSectionObj: action.payload.section
       }
     case types.RESET:
       return {
@@ -53,6 +67,11 @@ const reducer = (state, action) => {
         openSections: [],
         currentSection: null,
         currentHash: null,
+        currentSectionObj: {
+          section_name: "",
+          paths: [],
+          schema: {}
+        }
       }
     case types.UPDATE_METADATA:
       return {
@@ -108,10 +127,10 @@ export const NavigationProvider = ({ children }) => {
     dispatch({ type: types.UPDATE_METADATA, payload: metadata })
   }
 
-  const updateHash = (section, method) => {
+  const updateHash = (section, method, sectionObj) => {
     dispatch({
       type: types.UPDATE_HASH,
-      payload: { method: method, section: section },
+      payload: { method: method, section: section, sectionObj },
     })
     window.history.replaceState(
       null,
@@ -121,21 +140,21 @@ export const NavigationProvider = ({ children }) => {
     scrollNav(method)
   }
 
-  const updateSection = section => {
-    dispatch({ type: types.UPDATE_SECTION, payload: section })
-    window.history.replaceState(null, "", `/api/${state.api}/${section}`)
-    scrollNav(section)
+  const updateSection = ({id, section}) => {
+    dispatch({ type: types.UPDATE_SECTION, payload: {id, section} })
+    window.history.replaceState(null, "", `/api/${state.api}/${id}`)
+    scrollNav(id)
   }
 
-  const openSection = sectionName => {
-    dispatch({ type: types.OPEN_SECTION, payload: sectionName })
+  const openSection = ({id, section}) => {
+    dispatch({ type: types.OPEN_SECTION, payload: {id, section} })
   }
 
   const goTo = to => {
-    const { section, method } = to
+    const { section, method, sectionObj } = to
 
     if (!state.openSections.includes(section)) {
-      openSection(section)
+      openSection({id: section, section: sectionObj})
     }
     scrollToElement(method || section)
   }

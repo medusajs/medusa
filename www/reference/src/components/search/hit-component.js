@@ -1,9 +1,10 @@
 import React, { useContext } from "react"
-import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
+
 import NavigationContext from "../../context/navigation-context"
+import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
 import { navigate } from "gatsby"
 
-const HitComponent = ({ hit, children }) => {
+const HitComponent = ({ hit, children, data }) => {
   const { goTo, api } = useContext(NavigationContext)
   let { url, type, hierarchy } = hit
 
@@ -20,13 +21,17 @@ const HitComponent = ({ hit, children }) => {
    */
   const goToHierarchy = e => {
     e.preventDefault()
+    //find section
+    let section = data.sections.find((s) => s.section.section_name == hierarchy.lvl1);
+    section = section ? section.section : {}
     if (hierarchy.lvl2) {
       goTo({
         section: convertToKebabCase(hierarchy.lvl1),
         method: convertToKebabCase(hierarchy.lvl2),
+        sectionObj: section
       })
     } else {
-      goTo({ section: convertToKebabCase(hierarchy.lvl1) })
+      goTo({ section: convertToKebabCase(hierarchy.lvl1), sectionObj: section })
     }
   }
 
