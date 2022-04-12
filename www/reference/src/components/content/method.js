@@ -13,7 +13,7 @@ import { formatMethodParams } from "../../utils/format-parameters"
 import { formatRoute } from "../../utils/format-route"
 import useInView from "../../hooks/use-in-view"
 
-const Method = ({ data, section, pathname, api }) => {
+const Method = ({ data, section, sectionData, pathname, api }) => {
   const { parameters, requestBody, description, method, summary } = data
   const jsonResponse = data.responses[0].content?.[0].json
   const { updateHash, updateMetadata } = useContext(NavigationContext)
@@ -27,7 +27,7 @@ const Method = ({ data, section, pathname, api }) => {
 
   useEffect(() => {
     if (isInView) {
-      updateHash(section, convertToKebabCase(summary))
+      updateHash(section, convertToKebabCase(summary), sectionData)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView])
