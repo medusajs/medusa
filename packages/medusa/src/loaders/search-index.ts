@@ -4,7 +4,9 @@ import { MedusaContainer } from "../types/global"
 import DefaultSearchService from "../services/search"
 import { Logger } from "../types/global"
 
-async function loadProductsIntoSearchEngine(container: MedusaContainer): Promise<void> {
+async function loadProductsIntoSearchEngine(
+  container: MedusaContainer
+): Promise<void> {
   const searchService = container.resolve<DefaultSearchService>("searchService")
   const productService = container.resolve<ProductService>("productService")
 
@@ -61,7 +63,11 @@ async function loadProductsIntoSearchEngine(container: MedusaContainer): Promise
   }
 }
 
-export default async ({ container }: { container: MedusaContainer }): Promise<void> => {
+export default async ({
+  container,
+}: {
+  container: MedusaContainer
+}): Promise<void> => {
   const searchService = container.resolve<DefaultSearchService>("searchService")
   const logger = container.resolve<Logger>("logger")
   if (searchService.isDefault) {
