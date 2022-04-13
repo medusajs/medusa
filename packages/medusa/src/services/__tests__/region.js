@@ -8,12 +8,11 @@ const eventBusService = {
   },
 }
 
-
 describe("RegionService", () => {
   describe("create", () => {
     const regionRepository = MockRepository({})
     const ppRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -23,7 +22,7 @@ describe("RegionService", () => {
       },
     })
     const fpRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -33,11 +32,12 @@ describe("RegionService", () => {
       },
     })
     const countryRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.iso_2 === "dk") {
           return Promise.resolve({
             id: IdMap.getId("dk"),
             name: "Denmark",
+            display_name: "Denmark",
             region_id: IdMap.getId("dk-reg"),
           })
         }
@@ -109,7 +109,7 @@ describe("RegionService", () => {
         })
       } catch (error) {
         expect(error.message).toBe(
-          "Denmark already exists in Denmark, delete it in that region before adding it"
+          `Denmark already exists in region ${IdMap.getId("dk-reg")}`
         )
       }
     })
@@ -198,7 +198,7 @@ describe("RegionService", () => {
   describe("validateFields_", () => {
     const regionRepository = MockRepository({})
     const ppRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -208,7 +208,7 @@ describe("RegionService", () => {
       },
     })
     const fpRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -218,11 +218,12 @@ describe("RegionService", () => {
       },
     })
     const countryRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.iso_2 === "dk") {
           return Promise.resolve({
             id: IdMap.getId("dk"),
             name: "Denmark",
+            display_name: "Denmark",
             region_id: IdMap.getId("dk-reg"),
           })
         }
@@ -269,7 +270,7 @@ describe("RegionService", () => {
       await expect(
         regionService.validateFields_({ countries: ["DK"] })
       ).rejects.toThrow(
-        "Denmark already exists in Denmark, delete it in that region before adding it"
+        `Denmark already exists in region ${IdMap.getId("dk-reg")}`
       )
     })
 
@@ -293,7 +294,7 @@ describe("RegionService", () => {
       findOne: () => Promise.resolve({ id: IdMap.getId("test-region") }),
     })
     const ppRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -303,7 +304,7 @@ describe("RegionService", () => {
       },
     })
     const fpRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -313,7 +314,7 @@ describe("RegionService", () => {
       },
     })
     const countryRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.iso_2 === "dk") {
           return Promise.resolve({
             id: IdMap.getId("dk"),
@@ -387,13 +388,21 @@ describe("RegionService", () => {
 
   describe("delete", () => {
     const regionRepository = MockRepository({
-      findOne: () => Promise.resolve({ id: IdMap.getId("region") }),
+      findOne: () =>
+        Promise.resolve({
+          id: IdMap.getId("region"),
+          countries: [{ id: "us" }],
+        }),
+    })
+    const countryRepository = MockRepository({
+      findOne: (query) => Promise.resolve(),
     })
 
     const regionService = new RegionService({
       manager: MockManager,
       eventBusService,
       regionRepository,
+      countryRepository,
     })
 
     beforeEach(async () => {
@@ -406,13 +415,14 @@ describe("RegionService", () => {
       expect(regionRepository.softRemove).toHaveBeenCalledTimes(1)
       expect(regionRepository.softRemove).toHaveBeenCalledWith({
         id: IdMap.getId("region"),
+        countries: [{ id: "us" }],
       })
     })
   })
 
   describe("addCountry", () => {
     const regionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("region-with-country")) {
           return Promise.resolve({
             id: IdMap.getId("region-with-country"),
@@ -425,7 +435,7 @@ describe("RegionService", () => {
       },
     })
     const countryRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.iso_2 === "dk") {
           return Promise.resolve({
             id: IdMap.getId("dk"),
@@ -477,7 +487,7 @@ describe("RegionService", () => {
 
   describe("removeCountry", () => {
     const regionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         return Promise.resolve({
           id: IdMap.getId("region"),
           countries: [{ id: IdMap.getId("dk"), name: "Denmark", iso_2: "dk" }],
@@ -515,7 +525,7 @@ describe("RegionService", () => {
         }),
     })
     const ppRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -525,7 +535,7 @@ describe("RegionService", () => {
       },
     })
     const fpRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
@@ -586,7 +596,7 @@ describe("RegionService", () => {
         }),
     })
     const fpRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === "should_fail") {
           return Promise.resolve(undefined)
         }
