@@ -10,9 +10,8 @@ type Selector<TEntity> = { [key in keyof TEntity]?: unknown }
  * @interface
  */
 class BaseService<
-  TChild extends BaseService<TChild, TContainer, TConfigModule>,
-  TContainer = unknown,
-  TConfigModule = unknown
+  TChild extends BaseService<TChild, TContainer>,
+  TContainer = unknown
 > {
   protected transactionManager_: EntityManager | undefined
   protected manager_: EntityManager
@@ -34,8 +33,7 @@ class BaseService<
 
     const cloned = new (<typeof BaseService>this.constructor)<
       TChild,
-      TContainer,
-      TConfigModule
+      TContainer
     >(
       {
         ...this.container_,
