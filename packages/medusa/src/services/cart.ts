@@ -826,14 +826,14 @@ class CartService extends BaseService {
           )
 
           const hasFreeShipping = cart.discounts.some(
-            ({ rule }) => rule.type === "free_shipping"
+            ({ rule }) => rule?.type === "free_shipping"
           )
 
           // if we previously had a free shipping discount and then removed it,
           // we need to update shipping methods to original price
           if (
             previousDiscounts.some(
-              ({ rule }) => rule.type === "free_shipping"
+              ({ rule }) => rule?.type === "free_shipping"
             ) &&
             !hasFreeShipping
           ) {
@@ -1096,7 +1096,7 @@ class CartService extends BaseService {
 
         let sawNotShipping = false
         const newDiscounts = toParse.map((discountToParse) => {
-          switch (discountToParse.rule.type) {
+          switch (discountToParse.rule?.type) {
             case "free_shipping":
               if (discountToParse.rule.type === rule.type) {
                 return discount
@@ -1105,7 +1105,7 @@ class CartService extends BaseService {
             default:
               if (!sawNotShipping) {
                 sawNotShipping = true
-                if (rule.type !== "free_shipping") {
+                if (rule?.type !== "free_shipping") {
                   return discount
                 }
                 return discountToParse
@@ -1121,7 +1121,7 @@ class CartService extends BaseService {
         )
 
         // ignore if free shipping
-        if (rule.type !== "free_shipping" && cart?.items) {
+        if (rule?.type !== "free_shipping" && cart?.items) {
           await this.refreshAdjustments_(cart)
         }
       }

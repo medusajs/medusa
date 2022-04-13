@@ -1755,7 +1755,7 @@ describe("/store/carts", () => {
           }),
         ])
       )
-      expect(cartWithGiftcard.data.cart.total).toBe(1900) // 1000 (giftcard) + 900 (standard item with 10% discount)
+      expect(cartWithGiftcard.data.cart.total).toBe(2900) // 1000 (giftcard) + 900 (standard item with 10% discount) + 1000 Shipping
       expect(cartWithGiftcard.data.cart.discount_total).toBe(100)
       expect(cartWithGiftcard.status).toEqual(200)
     })
