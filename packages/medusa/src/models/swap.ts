@@ -38,7 +38,7 @@ export enum SwapPaymentStatus {
   NOT_PAID = "not_paid",
   AWAITING = "awaiting",
   CAPTURED = "captured",
-  CONFIRMED = "confqirmed",
+  CONFIRMED = "confirmed",
   CANCELED = "canceled",
   DIFFERENCE_REFUNDED = "difference_refunded",
   PARTIALLY_REFUNDED = "partially_refunded",
