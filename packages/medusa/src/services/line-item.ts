@@ -6,6 +6,9 @@ import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ProductService, RegionService, ProductVariantService } from "./index"
 import { CartRepository } from "../repositories/cart"
 import { LineItem } from "../models/line-item"
+import LineItemAdjustmentService from "./line-item-adjustment"
+import { Cart } from "../models/cart"
+import { LineItemAdjustment } from "../models/line-item-adjustment"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -15,6 +18,7 @@ type InjectedDependencies = {
   productVariantService: ProductVariantService
   productService: ProductService
   regionService: RegionService
+  lineItemAdjustmentService: LineItemAdjustmentService
 }
 
 /**
@@ -29,6 +33,7 @@ class LineItemService extends BaseService {
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
   protected readonly regionService_: RegionService
+  protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
 
   constructor({
     manager,
@@ -38,6 +43,7 @@ class LineItemService extends BaseService {
     productService,
     regionService,
     cartRepository,
+    lineItemAdjustmentService
   }: InjectedDependencies) {
     super()
 
@@ -48,6 +54,7 @@ class LineItemService extends BaseService {
     this.productService_ = productService
     this.regionService_ = regionService
     this.cartRepository_ = cartRepository
+    this.lineItemAdjustmentService_ = lineItemAdjustmentService
   }
 
   withTransaction(transactionManager: EntityManager): LineItemService {
@@ -63,6 +70,7 @@ class LineItemService extends BaseService {
       productService: this.productService_,
       regionService: this.regionService_,
       cartRepository: this.cartRepository_,
+      lineItemAdjustmentService: this.lineItemAdjustmentService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -158,6 +166,14 @@ class LineItemService extends BaseService {
                   })
                 }),
                 metadata: lineItem.metadata,
+                adjustments: lineItem.adjustments.map((adjustment) => {
+                  return {
+                    amount: -1 * adjustment.amount,
+                    description: adjustment.description,
+                    discount_id: adjustment.discount_id,
+                    metadata: adjustment.metadata,
+                  }
+                }),
               })
             )
           })
@@ -171,10 +187,11 @@ class LineItemService extends BaseService {
     variantId: string,
     regionId: string,
     quantity: number,
-    config: {
+    context: {
       unit_price?: number
       metadata?: Record<string, unknown>
       customer_id?: string
+      cart?: Cart
     } = {}
   ): Promise<LineItem> {
     return await this.atomicPhase_(
@@ -191,23 +208,23 @@ class LineItemService extends BaseService {
             .retrieve(regionId),
         ])
 
-        let unit_price = Number(config.unit_price) < 0 ? 0 : config.unit_price
+        let unit_price = Number(context.unit_price) < 0 ? 0 : context.unit_price
         let shouldMerge = false
 
-        if (config.unit_price === undefined || config.unit_price === null) {
+        if (context.unit_price === undefined || context.unit_price === null) {
           shouldMerge = true
           unit_price = await this.productVariantService_
             .withTransaction(transactionManager)
             .getRegionPrice(variant.id, {
               regionId: region.id,
               quantity: quantity,
-              customer_id: config?.customer_id,
+              customer_id: context?.customer_id,
               include_discount_prices: true,
             })
         }
 
-        return {
-          unit_price,
+        const rawLineItem: Partial<LineItem> = {
+          unit_price: unit_price as number,
           title: variant.product.title,
           description: variant.title,
           thumbnail: variant.product.thumbnail,
@@ -215,9 +232,21 @@ class LineItemService extends BaseService {
           quantity: quantity || 1,
           allow_discounts: variant.product.discountable,
           is_giftcard: variant.product.is_giftcard,
-          metadata: config?.metadata || {},
-          should_merge: shouldMerge,
+          metadata: context?.metadata || {},
+          should_merge: shouldMerge
         }
+
+        const lineLitemRepo = transactionManager.getCustomRepository(this.lineItemRepository_)
+        const lineItem = lineLitemRepo.create(rawLineItem)
+
+        if (context.cart) {
+          const adjustments = await this.lineItemAdjustmentService_
+            .withTransaction(transactionManager)
+            .generateAdjustments(context.cart, lineItem, { variant })
+          lineItem.adjustments = adjustments as unknown as LineItemAdjustment[]
+        }
+
+        return lineItem
       }
     )
   }
