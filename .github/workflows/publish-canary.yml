@@ -25,18 +25,15 @@ jobs:
 
       - name: Build Packages
         run: yarn build
-
+      - name: "Get Branch Name"
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
       - name: Format Version Name
-        uses: actions/github-script@v5
-        id: format-branch
-        with:
-          script: return "${{ github.ref_name }}"
-          result-encoding: string
-      - name: Get formatted branch name
-        run: echo "${{steps.format-branch.outputs.result}}"
-
-      # - name: Publish Canary
-      #   run: lerna publish --yes --canary --preid ${{steps.format-branch.outputs.result}} --force-publish="*"
-      #   env:
-      #     # TODO: Add token
-      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          VERSION_NAME=`echo ${{ env.BRANCH_NAME }} | sed "s/[/_]/-/g"`
+          echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV 
+      - name: Publish Canary
+        run: lerna publish --yes --canary --preid ${{ env.VERSION_NAME }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
