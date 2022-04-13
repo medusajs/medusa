@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { BaseService } from "../interfaces"
 import Scrypt from "scrypt-kdf"
 import { Brackets, ILike } from "typeorm"
 import { formatException } from "../utils/exception-formatter"
@@ -17,42 +17,20 @@ class CustomerService extends BaseService {
     UPDATED: "customer.updated",
   }
 
-  constructor({
-    manager,
-    customerRepository,
-    eventBusService,
-    addressRepository,
-  }) {
-    super()
+  constructor(cradle) {
+    super(cradle)
 
     /** @private @const {EntityManager} */
-    this.manager_ = manager
+    this.manager_ = cradle.manager
 
     /** @private @const {CustomerRepository} */
-    this.customerRepository_ = customerRepository
+    this.customerRepository_ = cradle.customerRepository
 
     /** @private @const {EventBus} */
-    this.eventBus_ = eventBusService
+    this.eventBus_ = cradle.eventBusService
 
     /** @private @const {AddressRepository} */
-    this.addressRepository_ = addressRepository
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new CustomerService({
-      manager: transactionManager,
-      customerRepository: this.customerRepository_,
-      eventBusService: this.eventBus_,
-      addressRepository: this.addressRepository_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
+    this.addressRepository_ = cradle.addressRepository
   }
 
   /**
@@ -95,37 +73,41 @@ class CustomerService extends BaseService {
    * @return {string} the generated JSON web token
    */
   async generateResetPasswordToken(customerId) {
-    const customer = await this.retrieve(customerId, {
-      select: [
-        "id",
-        "has_account",
-        "password_hash",
-        "email",
-        "first_name",
-        "last_name",
-      ],
-    })
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customer = await this.retrieve(customerId, {
+        select: [
+          "id",
+          "has_account",
+          "password_hash",
+          "email",
+          "first_name",
+          "last_name",
+        ],
+      })
 
-    if (!customer.has_account) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
-        "You must have an account to reset the password. Create an account first"
-      )
-    }
+      if (!customer.has_account) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "You must have an account to reset the password. Create an account first"
+        )
+      }
 
-    const secret = customer.password_hash
-    const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
-    const payload = { customer_id: customer.id, exp: expiry }
-    const token = jwt.sign(payload, secret)
-    // Notify subscribers
-    this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
-      id: customerId,
-      email: customer.email,
-      first_name: customer.first_name,
-      last_name: customer.last_name,
-      token,
+      const secret = customer.password_hash
+      const expiry = Math.floor(Date.now() / 1000) + 60 * 15 // 15 minutes ahead
+      const payload = { customer_id: customer.id, exp: expiry }
+      const token = jwt.sign(payload, secret)
+      // Notify subscribers
+      this.eventBus_
+        .withTransaction(transactionManager)
+        .emit(CustomerService.Events.PASSWORD_RESET, {
+          id: customerId,
+          email: customer.email,
+          first_name: customer.first_name,
+          last_name: customer.last_name,
+          token,
+        })
+      return token
     })
-    return token
   }
 
   /**
@@ -134,39 +116,41 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the find operation
    */
   async list(selector = {}, config = { relations: [], skip: 0, take: 50 }) {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepo = transactionManager.getCustomRepository(
+        this.customerRepository_
+      )
 
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = this.buildQuery_(selector, config)
-
-    if (q) {
-      const where = query.where
-
-      delete where.email
-      delete where.first_name
-      delete where.last_name
-
-      query.where = (qb) => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where({ email: ILike(`%${q}%`) })
-              .orWhere({ first_name: ILike(`%${q}%`) })
-              .orWhere({ last_name: ILike(`%${q}%`) })
-          })
-        )
+      let q
+      if ("q" in selector) {
+        q = selector.q
+        delete selector.q
       }
-    }
 
-    return customerRepo.find(query)
+      const query = this.buildQuery_(selector, config)
+
+      if (q) {
+        const where = query.where
+
+        where.email = undefined
+        where.first_name = undefined
+        where.last_name = undefined
+
+        query.where = (qb) => {
+          qb.where(where)
+
+          qb.andWhere(
+            new Brackets((qb) => {
+              qb.where({ email: ILike(`%${q}%`) })
+                .orWhere({ first_name: ILike(`%${q}%`) })
+                .orWhere({ last_name: ILike(`%${q}%`) })
+            })
+          )
+        }
+      }
+
+      return customerRepo.find(query)
+    })
   }
 
   /**
@@ -178,52 +162,56 @@ class CustomerService extends BaseService {
     selector,
     config = { relations: [], skip: 0, take: 50, order: { created_at: "DESC" } }
   ) {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepo = transactionManager.getCustomRepository(
+        this.customerRepository_
+      )
 
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
-
-    const query = this.buildQuery_(selector, config)
-
-    const groups = query.where.groups
-    delete query.where.groups
-
-    if (q) {
-      const where = query.where
-
-      delete where.email
-      delete where.first_name
-      delete where.last_name
-
-      query.where = (qb) => {
-        qb.where(where)
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where({ email: ILike(`%${q}%`) })
-              .orWhere({ first_name: ILike(`%${q}%`) })
-              .orWhere({ last_name: ILike(`%${q}%`) })
-          })
-        )
+      let q
+      if ("q" in selector) {
+        q = selector.q
+        delete selector.q
       }
-    }
 
-    return await customerRepo.listAndCount(query, groups)
+      const query = this.buildQuery_(selector, config)
+
+      const groups = query.where.groups
+      delete query.where.groups
+
+      if (q) {
+        const where = query.where
+
+        where.email = undefined
+        where.first_name = undefined
+        where.last_name = undefined
+
+        query.where = (qb) => {
+          qb.where(where)
+          qb.andWhere(
+            new Brackets((qb) => {
+              qb.where({ email: ILike(`%${q}%`) })
+                .orWhere({ first_name: ILike(`%${q}%`) })
+                .orWhere({ last_name: ILike(`%${q}%`) })
+            })
+          )
+        }
+      }
+
+      return await customerRepo.listAndCount(query, groups)
+    })
   }
 
   /**
    * Return the total number of documents in database
    * @return {Promise} the result of the count operation
    */
-  count() {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
-    return customerRepo.count({})
+  async count() {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepo = transactionManager.getCustomRepository(
+        this.customerRepository_
+      )
+      return await customerRepo.count({})
+    })
   }
 
   /**
@@ -233,22 +221,24 @@ class CustomerService extends BaseService {
    * @return {Promise<Customer>} the customer document.
    */
   async retrieve(customerId, config = {}) {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
-
-    const validatedId = this.validateId_(customerId)
-    const query = this.buildQuery_({ id: validatedId }, config)
-
-    const customer = await customerRepo.findOne(query)
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with ${customerId} was not found`
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepo = transactionManager.getCustomRepository(
+        this.customerRepository_
       )
-    }
 
-    return customer
+      const validatedId = this.validateId_(customerId)
+      const query = this.buildQuery_({ id: validatedId }, config)
+
+      const customer = await customerRepo.findOne(query)
+      if (!customer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Customer with ${customerId} was not found`
+        )
+      }
+
+      return customer
+    })
   }
 
   /**
@@ -258,21 +248,23 @@ class CustomerService extends BaseService {
    * @return {Promise<Customer>} the customer document.
    */
   async retrieveByEmail(email, config = {}) {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
-
-    const query = this.buildQuery_({ email: email.toLowerCase() }, config)
-    const customer = await customerRepo.findOne(query)
-
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with email ${email} was not found`
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepo = transactionManager.getCustomRepository(
+        this.customerRepository_
       )
-    }
 
-    return customer
+      const query = this.buildQuery_({ email: email.toLowerCase() }, config)
+      const customer = await customerRepo.findOne(query)
+
+      if (!customer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Customer with email ${email} was not found`
+        )
+      }
+
+      return customer
+    })
   }
 
   /**
@@ -282,21 +274,23 @@ class CustomerService extends BaseService {
    * @return {Promise<Customer>} the customer document.
    */
   async retrieveByPhone(phone, config = {}) {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
-
-    const query = this.buildQuery_({ phone }, config)
-    const customer = await customerRepo.findOne(query)
-
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with phone ${phone} was not found`
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepo = transactionManager.getCustomRepository(
+        this.customerRepository_
       )
-    }
 
-    return customer
+      const query = this.buildQuery_({ phone }, config)
+      const customer = await customerRepo.findOne(query)
+
+      if (!customer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Customer with phone ${phone} was not found`
+        )
+      }
+
+      return customer
+    })
   }
 
   /**
@@ -318,8 +312,8 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of create
    */
   async create(customer) {
-    return this.atomicPhase_(async (manager) => {
-      const customerRepository = manager.getCustomRepository(
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepository = transactionManager.getCustomRepository(
         this.customerRepository_
       )
 
@@ -350,7 +344,7 @@ class CustomerService extends BaseService {
         const toUpdate = { ...existing, ...customer }
         const updated = await customerRepository.save(toUpdate)
         await this.eventBus_
-          .withTransaction(manager)
+          .withTransaction(transactionManager)
           .emit(CustomerService.Events.UPDATED, updated)
         return updated
       } else {
@@ -364,7 +358,7 @@ class CustomerService extends BaseService {
         const created = await customerRepository.create(customer)
         const result = await customerRepository.save(created)
         await this.eventBus_
-          .withTransaction(manager)
+          .withTransaction(transactionManager)
           .emit(CustomerService.Events.CREATED, result)
         return result
       }
@@ -379,12 +373,14 @@ class CustomerService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(customerId, update) {
-    return this.atomicPhase_(
-      async (manager) => {
-        const customerRepository = manager.getCustomRepository(
+    return await this.atomicPhase_(
+      async (transactionManager) => {
+        const customerRepository = transactionManager.getCustomRepository(
           this.customerRepository_
         )
-        const addrRepo = manager.getCustomRepository(this.addressRepository_)
+        const addrRepo = transactionManager.getCustomRepository(
+          this.addressRepository_
+        )
 
         const customer = await this.retrieve(customerId)
 
@@ -428,7 +424,7 @@ class CustomerService extends BaseService {
         const updated = await customerRepository.save(customer)
 
         await this.eventBus_
-          .withTransaction(manager)
+          .withTransaction(transactionManager)
           .emit(CustomerService.Events.UPDATED, updated)
         return updated
       },
@@ -469,18 +465,19 @@ class CustomerService extends BaseService {
 
         await addrRepo.save({ ...addr, ...addressOrId })
       } else {
-        const created = addrRepo.create({
+        const createdAddress = addrRepo.create({
           ...addressOrId,
         })
-        const saved = await addrRepo.save(created)
-        customer.billing_address = saved
+        customer.billing_address = await addrRepo.save(createdAddress)
       }
     }
   }
 
   async updateAddress(customerId, addressId, address) {
-    return this.atomicPhase_(async (manager) => {
-      const addressRepo = manager.getCustomRepository(this.addressRepository_)
+    return await this.atomicPhase_(async (transactionManager) => {
+      const addressRepo = transactionManager.getCustomRepository(
+        this.addressRepository_
+      )
 
       address.country_code = address.country_code.toLowerCase()
 
@@ -494,14 +491,15 @@ class CustomerService extends BaseService {
         toUpdate[key] = value
       }
 
-      const result = addressRepo.save(toUpdate)
-      return result
+      return await addressRepo.save(toUpdate)
     })
   }
 
   async removeAddress(customerId, addressId) {
-    return this.atomicPhase_(async (manager) => {
-      const addressRepo = manager.getCustomRepository(this.addressRepository_)
+    return await this.atomicPhase_(async (transactionManager) => {
+      const addressRepo = transactionManager.getCustomRepository(
+        this.addressRepository_
+      )
 
       // Should not fail, if user does not exist, since delete is idempotent
       const address = await addressRepo.findOne({
@@ -509,18 +507,16 @@ class CustomerService extends BaseService {
       })
 
       if (!address) {
-        return Promise.resolve()
+        return
       }
 
       await addressRepo.softRemove(address)
-
-      return Promise.resolve()
     })
   }
 
   async addAddress(customerId, address) {
-    return this.atomicPhase_(async (manager) => {
-      const addressRepository = manager.getCustomRepository(
+    return await this.atomicPhase_(async (transactionManager) => {
+      const addressRepository = transactionManager.getCustomRepository(
         this.addressRepository_
       )
 
@@ -549,8 +545,7 @@ class CustomerService extends BaseService {
           customer_id: customerId,
           ...address,
         })
-        const result = await addressRepository.save(created)
-        return result
+        return await addressRepository.save(created)
       } else {
         return customer
       }
@@ -564,19 +559,19 @@ class CustomerService extends BaseService {
    * @return {Promise} the result of the delete operation.
    */
   async delete(customerId) {
-    return this.atomicPhase_(async (manager) => {
-      const customerRepo = manager.getCustomRepository(this.customerRepository_)
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customerRepo = transactionManager.getCustomRepository(
+        this.customerRepository_
+      )
 
       // Should not fail, if user does not exist, since delete is idempotent
       const customer = await customerRepo.findOne({ where: { id: customerId } })
 
       if (!customer) {
-        return Promise.resolve()
+        return
       }
 
       await customerRepo.softRemove(customer)
-
-      return Promise.resolve()
     })
   }
 
@@ -591,8 +586,7 @@ class CustomerService extends BaseService {
     const requiredFields = ["_id", "metadata"]
     const decorated = _.pick(customer, fields.concat(requiredFields))
 
-    const final = await this.runDecorators_(decorated)
-    return final
+    return await this.runDecorators_(decorated)
   }
 }
 

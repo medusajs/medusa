@@ -1,7 +1,7 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager, In } from "typeorm"
+import { BaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import { Address } from "../models/address"
 import { Cart } from "../models/cart"
@@ -70,7 +70,7 @@ type TotalsConfig = {
 /* Provides layer to manipulate carts.
  * @implements BaseService
  */
-class CartService extends BaseService {
+class CartService extends BaseService<CartService> {
   static Events = {
     CUSTOMER_UPDATED: "cart.customer_updated",
     CREATED: "cart.created",
@@ -100,89 +100,31 @@ class CartService extends BaseService {
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
 
-  constructor({
-    manager,
-    cartRepository,
-    shippingMethodRepository,
-    lineItemRepository,
-    eventBusService,
-    paymentProviderService,
-    productService,
-    productVariantService,
-    taxProviderService,
-    regionService,
-    lineItemService,
-    shippingOptionService,
-    customerService,
-    discountService,
-    giftCardService,
-    totalsService,
-    addressRepository,
-    paymentSessionRepository,
-    inventoryService,
-    customShippingOptionService,
-    lineItemAdjustmentService,
-    priceSelectionStrategy,
-  }: InjectedDependencies) {
-    super()
+  constructor(cradle: InjectedDependencies) {
+    super(cradle)
 
-    this.manager_ = manager
-    this.shippingMethodRepository_ = shippingMethodRepository
-    this.cartRepository_ = cartRepository
-    this.lineItemRepository_ = lineItemRepository
-    this.eventBus_ = eventBusService
-    this.productVariantService_ = productVariantService
-    this.productService_ = productService
-    this.regionService_ = regionService
-    this.lineItemService_ = lineItemService
-    this.paymentProviderService_ = paymentProviderService
-    this.customerService_ = customerService
-    this.shippingOptionService_ = shippingOptionService
-    this.discountService_ = discountService
-    this.giftCardService_ = giftCardService
-    this.totalsService_ = totalsService
-    this.addressRepository_ = addressRepository
-    this.paymentSessionRepository_ = paymentSessionRepository
-    this.inventoryService_ = inventoryService
-    this.customShippingOptionService_ = customShippingOptionService
-    this.taxProviderService_ = taxProviderService
-    this.lineItemAdjustmentService_ = lineItemAdjustmentService
-    this.priceSelectionStrategy_ = priceSelectionStrategy
-  }
-
-  withTransaction(transactionManager: EntityManager): CartService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new CartService({
-      manager: transactionManager,
-      taxProviderService: this.taxProviderService_,
-      cartRepository: this.cartRepository_,
-      lineItemRepository: this.lineItemRepository_,
-      eventBusService: this.eventBus_,
-      paymentProviderService: this.paymentProviderService_,
-      paymentSessionRepository: this.paymentSessionRepository_,
-      shippingMethodRepository: this.shippingMethodRepository_,
-      productService: this.productService_,
-      productVariantService: this.productVariantService_,
-      regionService: this.regionService_,
-      lineItemService: this.lineItemService_,
-      shippingOptionService: this.shippingOptionService_,
-      customerService: this.customerService_,
-      discountService: this.discountService_,
-      totalsService: this.totalsService_,
-      addressRepository: this.addressRepository_,
-      giftCardService: this.giftCardService_,
-      inventoryService: this.inventoryService_,
-      customShippingOptionService: this.customShippingOptionService_,
-      lineItemAdjustmentService: this.lineItemAdjustmentService_,
-      priceSelectionStrategy: this.priceSelectionStrategy_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
+    this.manager_ = cradle.manager
+    this.shippingMethodRepository_ = cradle.shippingMethodRepository
+    this.cartRepository_ = cradle.cartRepository
+    this.lineItemRepository_ = cradle.lineItemRepository
+    this.eventBus_ = cradle.eventBusService
+    this.productVariantService_ = cradle.productVariantService
+    this.productService_ = cradle.productService
+    this.regionService_ = cradle.regionService
+    this.lineItemService_ = cradle.lineItemService
+    this.paymentProviderService_ = cradle.paymentProviderService
+    this.customerService_ = cradle.customerService
+    this.shippingOptionService_ = cradle.shippingOptionService
+    this.discountService_ = cradle.discountService
+    this.giftCardService_ = cradle.giftCardService
+    this.totalsService_ = cradle.totalsService
+    this.addressRepository_ = cradle.addressRepository
+    this.paymentSessionRepository_ = cradle.paymentSessionRepository
+    this.inventoryService_ = cradle.inventoryService
+    this.customShippingOptionService_ = cradle.customShippingOptionService
+    this.taxProviderService_ = cradle.taxProviderService
+    this.lineItemAdjustmentService_ = cradle.lineItemAdjustmentService
+    this.priceSelectionStrategy_ = cradle.priceSelectionStrategy
   }
 
   protected transformQueryForTotals_(
@@ -320,10 +262,10 @@ class CartService extends BaseService {
         const { select, relations, totalsToSelect } =
           this.transformQueryForTotals_(options)
 
-        const query = this.buildQuery_(
-          { id: validatedId },
-          { ...options, select, relations }
-        )
+    const query = this.buildQuery_<Cart>(
+      { id: validatedId },
+      { ...options, select, relations }
+    )
 
         if (relations && relations.length > 0) {
           query.relations = relations
@@ -715,15 +657,17 @@ class CartService extends BaseService {
    * @return void
    */
   async adjustFreeShipping_(cart: Cart, shouldAdd: boolean): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
     if (cart.shipping_methods?.length) {
       const shippingMethodRepository =
-        this.transactionManager_.getCustomRepository(
+        transactionManager.getCustomRepository(
           this.shippingMethodRepository_
         )
 
       // if any free shipping discounts, we ensure to update shipping method amount
       if (shouldAdd) {
-        return shippingMethodRepository.update(
+        await shippingMethodRepository.update(
           {
             id: In(
               cart.shipping_methods.map((shippingMethod) => shippingMethod.id)
@@ -855,7 +799,7 @@ class CartService extends BaseService {
           )
         }
 
-        if ("metadata" in data) {
+        if (data.metadata) {
           cart.metadata = this.setMetadata_(cart, data.metadata)
         }
 
@@ -1448,6 +1392,8 @@ class CartService extends BaseService {
             )
           }
         }
+
+        return cart
       }
     )
   }
@@ -1679,12 +1625,14 @@ class CartService extends BaseService {
     regionId?: string,
     customer_id?: string
   ): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
     // If the cart contains items, we update the price of the items
     // to match the updated region or customer id (keeping the old
     // value if it exists)
     if (cart.items?.length) {
       const region = await this.regionService_
-        .withTransaction(this.transactionManager_)
+        .withTransaction(transactionManager)
         .retrieve(regionId || cart.region_id, {
           relations: ["countries"],
         })
@@ -1693,7 +1641,7 @@ class CartService extends BaseService {
         await Promise.all(
           cart.items.map(async (item) => {
             const availablePrice = await this.priceSelectionStrategy_
-              .withTransaction(this.transactionManager_)
+              .withTransaction(transactionManager)
               .calculateVariantPrice(item.variant_id, {
                 region_id: region.id,
                 currency_code: region.currency_code,
@@ -1708,14 +1656,14 @@ class CartService extends BaseService {
               availablePrice.calculatedPrice !== null
             ) {
               return this.lineItemService_
-                .withTransaction(this.transactionManager_)
+                .withTransaction(transactionManager)
                 .update(item.id, {
                   has_shipping: false,
                   unit_price: availablePrice.calculatedPrice,
                 })
             } else {
               await this.lineItemService_
-                .withTransaction(this.transactionManager_)
+                .withTransaction(transactionManager)
                 .delete(item.id)
               return null
             }
@@ -1737,6 +1685,8 @@ class CartService extends BaseService {
     regionId: string,
     countryCode: string | null
   ): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
     if (cart.completed_at || cart.payment_authorized_at) {
       throw new MedusaError(
         MedusaError.Types.NOT_ALLOWED,
@@ -1746,11 +1696,11 @@ class CartService extends BaseService {
 
     // Set the new region for the cart
     const region = await this.regionService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(transactionManager)
       .retrieve(regionId, {
         relations: ["countries"],
       })
-    const addrRepo = this.transactionManager_.getCustomRepository(
+    const addrRepo = transactionManager.getCustomRepository(
       this.addressRepository_
     )
     cart.region = region
@@ -1828,7 +1778,7 @@ class CartService extends BaseService {
     // new shipping method
     if (cart.shipping_methods && cart.shipping_methods.length) {
       await this.shippingOptionService_
-        .withTransaction(this.transactionManager_)
+        .withTransaction(transactionManager)
         .deleteShippingMethods(cart.shipping_methods)
     }
 
@@ -1841,7 +1791,7 @@ class CartService extends BaseService {
     cart.gift_cards = []
 
     if (cart.payment_sessions && cart.payment_sessions.length) {
-      const paymentSessionRepo = this.transactionManager_.getCustomRepository(
+      const paymentSessionRepo = transactionManager.getCustomRepository(
         this.paymentSessionRepository_
       )
       await paymentSessionRepo.delete({
@@ -1859,7 +1809,7 @@ class CartService extends BaseService {
    * @param cartId - the id of the cart to delete
    * @return the deleted cart or undefined if the cart was not found.
    */
-  async delete(cartId: string): Promise<string> {
+  async delete(cartId: string): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
@@ -1972,20 +1922,22 @@ class CartService extends BaseService {
   }
 
   protected async refreshAdjustments_(cart: Cart): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
     const nonReturnLineIDs = cart.items
       .filter((item) => !item.is_return)
       .map((i) => i.id)
 
     // delete all old non return line item adjustments
     await this.lineItemAdjustmentService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(transactionManager)
       .delete({
         item_id: nonReturnLineIDs,
       })
 
     // potentially create/update line item adjustments
     await this.lineItemAdjustmentService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(transactionManager)
       .createAdjustments(cart)
   }
 

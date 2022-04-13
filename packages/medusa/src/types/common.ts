@@ -25,6 +25,8 @@ export interface FindConfig<Entity> {
   order?: Record<string, "ASC" | "DESC">
 }
 
+export type Writable<T> = { -readonly [key in keyof T]: T[key] }
+
 export type PaginatedResponse = { limit: number; offset: number; count: number }
 
 export type DeleteResponse = {

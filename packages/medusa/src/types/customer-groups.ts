@@ -37,5 +37,5 @@ export class CustomerGroupsBatchCustomer {
 
 export class CustomerGroupUpdate {
   name?: string
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager, FindOperator, In, Raw } from "typeorm"
 import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
-import { FindConfig } from "../types/common"
+import { FindConfig, Writable } from "../types/common"
 
 type Selector<TEntity> = { [key in keyof TEntity]?: unknown }
 
@@ -9,7 +9,7 @@ type Selector<TEntity> = { [key in keyof TEntity]?: unknown }
  * Common functionality for Services
  * @interface
  */
-class BaseService<
+export class BaseService<
   TChild extends BaseService<TChild, TContainer>,
   TContainer = unknown
 > {
@@ -19,22 +19,17 @@ class BaseService<
 
   constructor(
     container: TContainer,
-    protected readonly configModule: Record<string, unknown>
+    protected readonly configModule?: Record<string, unknown>
   ) {
     this.container_ = container
   }
 
-  withTransaction(): this
-  withTransaction(transactionManager: EntityManager): TChild
   withTransaction(transactionManager?: EntityManager): this | TChild {
     if (!transactionManager) {
       return this
     }
 
-    const cloned = new (<typeof BaseService>this.constructor)<
-      TChild,
-      TContainer
-    >(
+    const cloned = new (<any>this.constructor)(
       {
         ...this.container_,
         manager: transactionManager,
@@ -57,12 +52,12 @@ class BaseService<
     selector: Selector<TEntity>,
     config: FindConfig<TEntity> = {}
   ): FindConfig<TEntity> & {
-    where: { [key in keyof TEntity]?: unknown }
+    where: Partial<Writable<TEntity>>
     withDeleted?: boolean
   } {
     const build = (
       obj: Record<string, unknown>
-    ): { [key in keyof TEntity]?: unknown } => {
+    ): Partial<Writable<TEntity>> => {
       return Object.entries(obj).reduce((acc, [key, value]: any) => {
         // Undefined values indicate that they have no significance to the query.
         // If the query is looking for rows where a column is not set it should use null instead of undefined
@@ -83,27 +78,25 @@ class BaseService<
             acc[key] = In([...(value as unknown[])])
             break
           case value !== null && typeof value === "object":
-            Object.entries(value as Record<string, unknown>).map(
-              ([modifier, val]) => {
-                switch (modifier) {
-                  case "lt":
-                    subquery.push({ operator: "<", value: val })
-                    break
-                  case "gt":
-                    subquery.push({ operator: ">", value: val })
-                    break
-                  case "lte":
-                    subquery.push({ operator: "<=", value: val })
-                    break
-                  case "gte":
-                    subquery.push({ operator: ">=", value: val })
-                    break
-                  default:
-                    acc[key] = value
-                    break
-                }
+            Object.entries(value).map(([modifier, val]) => {
+              switch (modifier) {
+                case "lt":
+                  subquery.push({ operator: "<", value: val })
+                  break
+                case "gt":
+                  subquery.push({ operator: ">", value: val })
+                  break
+                case "lte":
+                  subquery.push({ operator: "<=", value: val })
+                  break
+                case "gte":
+                  subquery.push({ operator: ">=", value: val })
+                  break
+                default:
+                  acc[key] = value
+                  break
               }
-            )
+            })
 
             if (subquery.length) {
               acc[key] = Raw(
@@ -121,11 +114,11 @@ class BaseService<
         }
 
         return acc
-      }, {} as { [key in keyof TEntity]?: unknown })
+      }, {} as Partial<Writable<TEntity>>)
     }
 
     const query: FindConfig<TEntity> & {
-      where: { [key in keyof TEntity]?: unknown }
+      where: Partial<Writable<TEntity>>
       withDeleted?: boolean
     } = {
       where: build(selector),
@@ -217,17 +210,19 @@ class BaseService<
    * @param maybeErrorHandlerOrDontFail Potential error handler
    * @return the result of the transactional work
    */
-  async atomicPhase_(
-    work: (transactionManager: EntityManager) => Promise<unknown>,
+  async atomicPhase_<TResult, TError>(
+    work: (transactionManager: EntityManager) => Promise<TResult | never>,
     isolationOrErrorHandler?:
       | IsolationLevel
-      | ((error: unknown) => Promise<unknown>),
-    maybeErrorHandlerOrDontFail?: (error: unknown) => Promise<unknown>
-  ): Promise<unknown | never> {
+      | ((error: TError) => Promise<never | TResult | void>),
+    maybeErrorHandlerOrDontFail?: (
+      error: TError
+    ) => Promise<never | TResult | void>
+  ): Promise<never | TResult> {
     let errorHandler = maybeErrorHandlerOrDontFail
     let isolation:
       | IsolationLevel
-      | ((error: unknown) => Promise<unknown>)
+      | ((error: TError) => Promise<never | TResult | void>)
       | undefined
       | null = isolationOrErrorHandler
     let dontFail = false
@@ -238,7 +233,7 @@ class BaseService<
     }
 
     if (this.transactionManager_) {
-      const doWork = async (m: EntityManager): Promise<unknown | never> => {
+      const doWork = async (m: EntityManager): Promise<never | TResult> => {
         this.manager_ = m
         this.transactionManager_ = m
         try {
@@ -256,10 +251,10 @@ class BaseService<
         }
       }
 
-      return doWork(this.transactionManager_)
+      return await doWork(this.transactionManager_)
     } else {
       const temp = this.manager_
-      const doWork = async (m: EntityManager): Promise<unknown | never> => {
+      const doWork = async (m: EntityManager): Promise<never | TResult> => {
         this.manager_ = m
         this.transactionManager_ = m
         try {
@@ -284,8 +279,9 @@ class BaseService<
           return result
         } catch (error) {
           if (this.shouldRetryTransaction(error)) {
-            return this.manager_.transaction(isolation as IsolationLevel, (m) =>
-              doWork(m)
+            return this.manager_.transaction(
+              isolation as IsolationLevel,
+              (m): Promise<never | TResult> => doWork(m)
             )
           } else {
             if (errorHandler) {
@@ -302,7 +298,7 @@ class BaseService<
         if (errorHandler) {
           const result = await errorHandler(error)
           if (dontFail) {
-            return result
+            return result as TResult
           }
         }
 
@@ -339,4 +335,3 @@ class BaseService<
     }
   }
 }
-export default BaseService

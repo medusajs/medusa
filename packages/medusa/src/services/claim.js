@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { BaseService } from "../interfaces"
 
 class ClaimService extends BaseService {
   static Events = {
@@ -11,70 +11,25 @@ class ClaimService extends BaseService {
     REFUND_PROCESSED: "claim.refund_processed",
   }
 
-  constructor({
-    manager,
-    addressRepository,
-    claimItemService,
-    claimRepository,
-    eventBusService,
-    fulfillmentProviderService,
-    fulfillmentService,
-    inventoryService,
-    lineItemService,
-    paymentProviderService,
-    regionService,
-    returnService,
-    shippingOptionService,
-    taxProviderService,
-    totalsService,
-  }) {
-    super()
+  constructor(cradle) {
+    super(cradle)
 
     /** @private @constant {EntityManager} */
-    this.manager_ = manager
-
-    this.addressRepo_ = addressRepository
-    this.claimItemService_ = claimItemService
-    this.claimRepository_ = claimRepository
-    this.eventBus_ = eventBusService
-    this.fulfillmentProviderService_ = fulfillmentProviderService
-    this.fulfillmentService_ = fulfillmentService
-    this.inventoryService_ = inventoryService
-    this.lineItemService_ = lineItemService
-    this.paymentProviderService_ = paymentProviderService
-    this.regionService_ = regionService
-    this.returnService_ = returnService
-    this.shippingOptionService_ = shippingOptionService
-    this.taxProviderService_ = taxProviderService
-    this.totalsService_ = totalsService
-  }
-
-  withTransaction(manager) {
-    if (!manager) {
-      return this
-    }
-
-    const cloned = new ClaimService({
-      manager,
-      addressRepository: this.addressRepo_,
-      claimItemService: this.claimItemService_,
-      claimRepository: this.claimRepository_,
-      eventBusService: this.eventBus_,
-      fulfillmentProviderService: this.fulfillmentProviderService_,
-      fulfillmentService: this.fulfillmentService_,
-      inventoryService: this.inventoryService_,
-      lineItemService: this.lineItemService_,
-      paymentProviderService: this.paymentProviderService_,
-      regionService: this.regionService_,
-      returnService: this.returnService_,
-      shippingOptionService: this.shippingOptionService_,
-      totalsService: this.totalsService_,
-      taxProviderService: this.taxProviderService_,
-    })
-
-    cloned.transactionManager_ = manager
-
-    return cloned
+    this.manager_ = cradle.manager
+    this.addressRepo_ = cradle.addressRepository
+    this.claimItemService_ = cradle.claimItemService
+    this.claimRepository_ = cradle.claimRepository
+    this.eventBus_ = cradle.eventBusService
+    this.fulfillmentProviderService_ = cradle.fulfillmentProviderService
+    this.fulfillmentService_ = cradle.fulfillmentService
+    this.inventoryService_ = cradle.inventoryService
+    this.lineItemService_ = cradle.lineItemService
+    this.paymentProviderService_ = cradle.paymentProviderService
+    this.regionService_ = cradle.regionService
+    this.returnService_ = cradle.returnService
+    this.shippingOptionService_ = cradle.shippingOptionService
+    this.taxProviderService_ = cradle.taxProviderService
+    this.totalsService_ = cradle.totalsService
   }
 
   update(id, data) {

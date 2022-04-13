@@ -1,6 +1,5 @@
-import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { BaseService } from "../interfaces"
 import { ITaxCalculationStrategy, TaxCalculationContext } from "../interfaces"
 import { Cart } from "../models/cart"
 import { Discount } from "../models/discount"
@@ -19,6 +18,7 @@ import {
   SubtotalOptions,
 } from "../types/totals"
 import TaxProviderService from "./tax-provider"
+import { EntityManager } from "typeorm"
 
 type ShippingMethodTotals = {
   price: number
@@ -59,6 +59,7 @@ type GetLineItemTotalOptions = {
 }
 
 type TotalsServiceProps = {
+  manager: EntityManager
   taxProviderService: TaxProviderService
   taxCalculationStrategy: ITaxCalculationStrategy
 }
@@ -83,18 +84,17 @@ type CalculationContextOptions = {
  * A service that calculates total and subtotals for orders, carts etc..
  * @implements {BaseService}
  */
-class TotalsService extends BaseService {
-  private taxProviderService_: TaxProviderService
-  private taxCalculationStrategy_: ITaxCalculationStrategy
+class TotalsService extends BaseService<TotalsService> {
+  protected readonly manager_: EntityManager
+  protected readonly taxProviderService_: TaxProviderService
+  protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
 
-  constructor({
-    taxProviderService,
-    taxCalculationStrategy,
-  }: TotalsServiceProps) {
-    super()
+  constructor(cradle: TotalsServiceProps) {
+    super(cradle)
 
-    this.taxProviderService_ = taxProviderService
-    this.taxCalculationStrategy_ = taxCalculationStrategy
+    this.manager_ = cradle.manager
+    this.taxProviderService_ = cradle.taxProviderService
+    this.taxCalculationStrategy_ = cradle.taxCalculationStrategy
   }
 
   /**
@@ -107,14 +107,16 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     options: GetTotalsOptions = {}
   ): Promise<number> {
-    const subtotal = this.getSubtotal(cartOrOrder)
-    const taxTotal =
-      (await this.getTaxTotal(cartOrOrder, options.force_taxes)) || 0
-    const discountTotal = this.getDiscountTotal(cartOrOrder)
-    const giftCardTotal = this.getGiftCardTotal(cartOrOrder)
-    const shippingTotal = this.getShippingTotal(cartOrOrder)
+    return await this.atomicPhase_(async () => {
+      const subtotal = this.getSubtotal(cartOrOrder)
+      const taxTotal =
+        (await this.getTaxTotal(cartOrOrder, options.force_taxes)) || 0
+      const discountTotal = this.getDiscountTotal(cartOrOrder)
+      const giftCardTotal = this.getGiftCardTotal(cartOrOrder)
+      const shippingTotal = this.getShippingTotal(cartOrOrder)
 
-    return subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal
+      return subtotal + taxTotal + shippingTotal - discountTotal - giftCardTotal
+    })
   }
 
   /**
@@ -123,12 +125,10 @@ class TotalsService extends BaseService {
    * @return the total paid amount
    */
   getPaidTotal(order: Order): number {
-    const total = order.payments?.reduce((acc, next) => {
+    return order.payments?.reduce((acc, next) => {
       acc += next.amount
       return acc
     }, 0)
-
-    return total
   }
 
   /**
@@ -161,77 +161,82 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     opts: GetShippingMethodTotalsOptions = {}
   ): Promise<ShippingMethodTotals> {
-    const calculationContext = this.getCalculationContext(cartOrOrder, {
-      exclude_shipping: true,
-    })
-    calculationContext.shipping_methods = [shippingMethod]
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const calculationContext = this.getCalculationContext(cartOrOrder, {
+          exclude_shipping: true,
+        })
+        calculationContext.shipping_methods = [shippingMethod]
 
-    const totals = {
-      price: shippingMethod.price,
-      original_total: shippingMethod.price,
-      total: shippingMethod.price,
-      original_tax_total: 0,
-      tax_total: 0,
-      tax_lines: shippingMethod.tax_lines || [],
-    }
+        const totals = {
+          price: shippingMethod.price,
+          original_total: shippingMethod.price,
+          total: shippingMethod.price,
+          original_tax_total: 0,
+          tax_total: 0,
+          tax_lines: shippingMethod.tax_lines || [],
+        }
 
-    if (opts.include_tax) {
-      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
-        totals.original_tax_total = Math.round(
-          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
-        )
-        totals.tax_total = Math.round(
-          totals.original_tax_total * (cartOrOrder.tax_rate / 100)
-        )
-      } else {
-        let taxLines: ShippingMethodTaxLine[]
-        if (opts.use_tax_lines || isOrder(cartOrOrder)) {
-          if (typeof shippingMethod.tax_lines === "undefined") {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              "Tax Lines must be joined on shipping method to calculate taxes"
+        if (opts.include_tax) {
+          if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+            totals.original_tax_total = Math.round(
+              totals.original_tax_total * (cartOrOrder.tax_rate / 100)
             )
+            totals.tax_total = Math.round(
+              totals.original_tax_total * (cartOrOrder.tax_rate / 100)
+            )
+          } else {
+            let taxLines: ShippingMethodTaxLine[]
+            if (opts.use_tax_lines || isOrder(cartOrOrder)) {
+              if (typeof shippingMethod.tax_lines === "undefined") {
+                throw new MedusaError(
+                  MedusaError.Types.UNEXPECTED_STATE,
+                  "Tax Lines must be joined on shipping method to calculate taxes"
+                )
+              }
+
+              taxLines = shippingMethod.tax_lines
+            } else {
+              const orderLines = await this.taxProviderService_
+                .withTransaction(transactionManager)
+                .getTaxLines(cartOrOrder.items, calculationContext)
+
+              taxLines = orderLines.filter((ol) => {
+                if ("shipping_method_id" in ol) {
+                  return ol.shipping_method_id === shippingMethod.id
+                }
+                return false
+              }) as ShippingMethodTaxLine[]
+            }
+            totals.tax_lines = taxLines
           }
 
-          taxLines = shippingMethod.tax_lines
-        } else {
-          const orderLines = await this.taxProviderService_.getTaxLines(
-            cartOrOrder.items,
-            calculationContext
-          )
+          if (totals.tax_lines.length > 0) {
+            totals.original_tax_total =
+              await this.taxCalculationStrategy_.calculate(
+                [],
+                totals.tax_lines,
+                calculationContext
+              )
+            totals.tax_total = totals.original_tax_total
 
-          taxLines = orderLines.filter((ol) => {
-            if ("shipping_method_id" in ol) {
-              return ol.shipping_method_id === shippingMethod.id
-            }
-            return false
-          }) as ShippingMethodTaxLine[]
+            totals.original_total += totals.original_tax_total
+            totals.total += totals.tax_total
+          }
         }
-        totals.tax_lines = taxLines
+
+        if (cartOrOrder.discounts) {
+          if (
+            cartOrOrder.discounts.some((d) => d.rule.type === "free_shipping")
+          ) {
+            totals.total = 0
+            totals.tax_total = 0
+          }
+        }
+
+        return totals
       }
-
-      if (totals.tax_lines.length > 0) {
-        totals.original_tax_total =
-          await this.taxCalculationStrategy_.calculate(
-            [],
-            totals.tax_lines,
-            calculationContext
-          )
-        totals.tax_total = totals.original_tax_total
-
-        totals.original_total += totals.original_tax_total
-        totals.total += totals.tax_total
-      }
-    }
-
-    if (cartOrOrder.discounts) {
-      if (cartOrOrder.discounts.some((d) => d.rule.type === "free_shipping")) {
-        totals.total = 0
-        totals.tax_total = 0
-      }
-    }
-
-    return totals
+    )
   }
 
   /**
@@ -283,78 +288,81 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     forceTaxes = false
   ): Promise<number | null> {
-    if (
-      isCart(cartOrOrder) &&
-      !forceTaxes &&
-      !cartOrOrder.region.automatic_taxes
-    ) {
-      return null
-    }
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        if (
+          isCart(cartOrOrder) &&
+          !forceTaxes &&
+          !cartOrOrder.region.automatic_taxes
+        ) {
+          return null
+        }
 
-    const calculationContext = this.getCalculationContext(cartOrOrder)
+        const calculationContext = this.getCalculationContext(cartOrOrder)
 
-    let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
-    if (isOrder(cartOrOrder)) {
-      const taxLinesJoined = cartOrOrder.items.every(
-        (i) => typeof i.tax_lines !== "undefined"
-      )
-      if (!taxLinesJoined) {
-        throw new MedusaError(
-          MedusaError.Types.UNEXPECTED_STATE,
-          "Order tax calculations must have tax lines joined on line items"
-        )
-      }
-
-      if (cartOrOrder.tax_rate === null) {
-        taxLines = cartOrOrder.items.flatMap((li) => li.tax_lines)
-
-        const shippingTaxLines = cartOrOrder.shipping_methods.flatMap(
-          (sm) => sm.tax_lines
-        )
-
-        taxLines = taxLines.concat(shippingTaxLines)
-      } else {
-        const subtotal = this.getSubtotal(cartOrOrder)
-        const shippingTotal = this.getShippingTotal(cartOrOrder)
-        const discountTotal = this.getDiscountTotal(cartOrOrder)
-        const giftCardTotal = this.getGiftCardTotal(cartOrOrder)
-        return this.rounded(
-          (subtotal - discountTotal - giftCardTotal + shippingTotal) *
-            (cartOrOrder.tax_rate / 100)
-        )
-      }
-    } else {
-      taxLines = await this.taxProviderService_.getTaxLines(
-        cartOrOrder.items,
-        calculationContext
-      )
-
-      if (cartOrOrder.type === "swap") {
-        const returnTaxLines = cartOrOrder.items.flatMap((i) => {
-          if (i.is_return) {
-            if (typeof i.tax_lines === "undefined") {
-              throw new MedusaError(
-                MedusaError.Types.UNEXPECTED_STATE,
-                "Return Line Items must join tax lines"
-              )
-            }
-            return i.tax_lines
+        let taxLines: (ShippingMethodTaxLine | LineItemTaxLine)[]
+        if (isOrder(cartOrOrder)) {
+          const taxLinesJoined = cartOrOrder.items.every(
+            (i) => typeof i.tax_lines !== "undefined"
+          )
+          if (!taxLinesJoined) {
+            throw new MedusaError(
+              MedusaError.Types.UNEXPECTED_STATE,
+              "Order tax calculations must have tax lines joined on line items"
+            )
           }
 
-          return []
-        })
+          if (cartOrOrder.tax_rate === null) {
+            taxLines = cartOrOrder.items.flatMap((li) => li.tax_lines)
 
-        taxLines = taxLines.concat(returnTaxLines)
+            const shippingTaxLines = cartOrOrder.shipping_methods.flatMap(
+              (sm) => sm.tax_lines
+            )
+
+            taxLines = taxLines.concat(shippingTaxLines)
+          } else {
+            const subtotal = this.getSubtotal(cartOrOrder)
+            const shippingTotal = this.getShippingTotal(cartOrOrder)
+            const discountTotal = this.getDiscountTotal(cartOrOrder)
+            const giftCardTotal = this.getGiftCardTotal(cartOrOrder)
+            return this.rounded(
+              (subtotal - discountTotal - giftCardTotal + shippingTotal) *
+                (cartOrOrder.tax_rate / 100)
+            )
+          }
+        } else {
+          taxLines = await this.taxProviderService_
+            .withTransaction(transactionManager)
+            .getTaxLines(cartOrOrder.items, calculationContext)
+
+          if (cartOrOrder.type === "swap") {
+            const returnTaxLines = cartOrOrder.items.flatMap((i) => {
+              if (i.is_return) {
+                if (typeof i.tax_lines === "undefined") {
+                  throw new MedusaError(
+                    MedusaError.Types.UNEXPECTED_STATE,
+                    "Return Line Items must join tax lines"
+                  )
+                }
+                return i.tax_lines
+              }
+
+              return []
+            })
+
+            taxLines = taxLines.concat(returnTaxLines)
+          }
+        }
+
+        const toReturn = await this.taxCalculationStrategy_.calculate(
+          cartOrOrder.items,
+          taxLines,
+          calculationContext
+        )
+
+        return this.rounded(toReturn)
       }
-    }
-
-    const toReturn = await this.taxCalculationStrategy_.calculate(
-      cartOrOrder.items,
-      taxLines,
-      calculationContext
     )
-
-    return this.rounded(toReturn)
   }
 
   /**
@@ -542,7 +550,7 @@ class TotalsService extends BaseService {
    * @param discountType - the type of discount (fixed or percentage)
    * @return triples of lineitem, variant and applied discount
    */
-  calculateDiscount_(
+  protected calculateDiscount_(
     lineItem: LineItem,
     variant: string,
     variantPrice: number,
@@ -588,13 +596,11 @@ class TotalsService extends BaseService {
     discount: Discount,
     cart: Cart | Order
   ): LineDiscount[] {
-    const discounts: LineDiscount[] = cart.items.map((item) => ({
+    return cart.items.map((item) => ({
       lineItem: item,
       variant: item.variant.id,
       amount: this.getLineItemDiscountAdjustment(item, discount),
     }))
-
-    return discounts
   }
 
   getLineItemDiscountAdjustment(
@@ -686,107 +692,111 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     options: LineItemTotalsOptions = {}
   ): Promise<LineItemTotals> {
-    const calculationContext = this.getCalculationContext(cartOrOrder, {
-      exclude_shipping: true,
-    })
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const calculationContext = this.getCalculationContext(cartOrOrder, {
+          exclude_shipping: true,
+        })
 
-    const lineItemAllocation =
-      calculationContext.allocation_map[lineItem.id] || {}
+        const lineItemAllocation =
+          calculationContext.allocation_map[lineItem.id] || {}
 
-    const subtotal = lineItem.unit_price * lineItem.quantity
-    const gift_card_total = lineItemAllocation.gift_card?.amount || 0
-    const discount_total =
-      (lineItemAllocation.discount?.unit_amount || 0) * lineItem.quantity
+        const subtotal = lineItem.unit_price * lineItem.quantity
+        const gift_card_total = lineItemAllocation.gift_card?.amount || 0
+        const discount_total =
+          (lineItemAllocation.discount?.unit_amount || 0) * lineItem.quantity
 
-    const lineItemTotals: LineItemTotals = {
-      unit_price: lineItem.unit_price,
-      quantity: lineItem.quantity,
-      subtotal,
-      gift_card_total,
-      discount_total,
-      total: subtotal - discount_total,
-      original_total: subtotal,
-      original_tax_total: 0,
-      tax_total: 0,
-      tax_lines: lineItem.tax_lines || [],
-    }
+        const lineItemTotals: LineItemTotals = {
+          unit_price: lineItem.unit_price,
+          quantity: lineItem.quantity,
+          subtotal,
+          gift_card_total,
+          discount_total,
+          total: subtotal - discount_total,
+          original_total: subtotal,
+          original_tax_total: 0,
+          tax_total: 0,
+          tax_lines: lineItem.tax_lines || [],
+        }
 
-    // Tax Information
-    if (options.include_tax) {
-      // When we have an order with a null'ed tax rate we know that it is an
-      // order from the old tax system. The following is a backward compat
-      // calculation.
-      if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
-        lineItemTotals.original_tax_total =
-          subtotal * (cartOrOrder.tax_rate / 100)
-        lineItemTotals.tax_total =
-          (subtotal - discount_total) * (cartOrOrder.tax_rate / 100)
+        // Tax Information
+        if (options.include_tax) {
+          // When we have an order with a null'ed tax rate we know that it is an
+          // order from the old tax system. The following is a backward compat
+          // calculation.
+          if (isOrder(cartOrOrder) && cartOrOrder.tax_rate !== null) {
+            lineItemTotals.original_tax_total =
+              subtotal * (cartOrOrder.tax_rate / 100)
+            lineItemTotals.tax_total =
+              (subtotal - discount_total) * (cartOrOrder.tax_rate / 100)
 
-        lineItemTotals.total += lineItemTotals.tax_total
-        lineItemTotals.original_total += lineItemTotals.original_tax_total
-      } else {
-        let taxLines: LineItemTaxLine[]
-
-        /*
-         * Line Items on orders will already have tax lines. But for cart line
-         * items we have to get the line items from the tax provider.
-         */
-        if (options.use_tax_lines || isOrder(cartOrOrder)) {
-          if (typeof lineItem.tax_lines === "undefined") {
-            throw new MedusaError(
-              MedusaError.Types.UNEXPECTED_STATE,
-              "Tax Lines must be joined on items to calculate taxes"
-            )
-          }
-
-          taxLines = lineItem.tax_lines
-        } else {
-          if (lineItem.is_return) {
-            if (typeof lineItem.tax_lines === "undefined") {
-              throw new MedusaError(
-                MedusaError.Types.UNEXPECTED_STATE,
-                "Return Line Items must join tax lines"
-              )
-            }
-            taxLines = lineItem.tax_lines
+            lineItemTotals.total += lineItemTotals.tax_total
+            lineItemTotals.original_total += lineItemTotals.original_tax_total
           } else {
-            const orderLines = await this.taxProviderService_.getTaxLines(
-              cartOrOrder.items,
-              calculationContext
-            )
+            let taxLines: LineItemTaxLine[]
 
-            taxLines = orderLines.filter((ol) => {
-              if ("item_id" in ol) {
-                return ol.item_id === lineItem.id
+            /*
+             * Line Items on orders will already have tax lines. But for cart line
+             * items we have to get the line items from the tax provider.
+             */
+            if (options.use_tax_lines || isOrder(cartOrOrder)) {
+              if (typeof lineItem.tax_lines === "undefined") {
+                throw new MedusaError(
+                  MedusaError.Types.UNEXPECTED_STATE,
+                  "Tax Lines must be joined on items to calculate taxes"
+                )
               }
-              return false
-            }) as LineItemTaxLine[]
+
+              taxLines = lineItem.tax_lines
+            } else {
+              if (lineItem.is_return) {
+                if (typeof lineItem.tax_lines === "undefined") {
+                  throw new MedusaError(
+                    MedusaError.Types.UNEXPECTED_STATE,
+                    "Return Line Items must join tax lines"
+                  )
+                }
+                taxLines = lineItem.tax_lines
+              } else {
+                const orderLines = await this.taxProviderService_
+                  .withTransaction(transactionManager)
+                  .getTaxLines(cartOrOrder.items, calculationContext)
+
+                taxLines = orderLines.filter((ol) => {
+                  if ("item_id" in ol) {
+                    return ol.item_id === lineItem.id
+                  }
+                  return false
+                }) as LineItemTaxLine[]
+              }
+            }
+
+            lineItemTotals.tax_lines = taxLines
           }
         }
 
-        lineItemTotals.tax_lines = taxLines
+        if (lineItemTotals.tax_lines.length > 0) {
+          lineItemTotals.tax_total =
+            await this.taxCalculationStrategy_.calculate(
+              [lineItem],
+              lineItemTotals.tax_lines,
+              calculationContext
+            )
+          lineItemTotals.total += lineItemTotals.tax_total
+
+          calculationContext.allocation_map = {} // Don't account for discounts
+          lineItemTotals.original_tax_total =
+            await this.taxCalculationStrategy_.calculate(
+              [lineItem],
+              lineItemTotals.tax_lines,
+              calculationContext
+            )
+          lineItemTotals.original_total += lineItemTotals.original_tax_total
+        }
+
+        return lineItemTotals
       }
-    }
-
-    if (lineItemTotals.tax_lines.length > 0) {
-      lineItemTotals.tax_total = await this.taxCalculationStrategy_.calculate(
-        [lineItem],
-        lineItemTotals.tax_lines,
-        calculationContext
-      )
-      lineItemTotals.total += lineItemTotals.tax_total
-
-      calculationContext.allocation_map = {} // Don't account for discounts
-      lineItemTotals.original_tax_total =
-        await this.taxCalculationStrategy_.calculate(
-          [lineItem],
-          lineItemTotals.tax_lines,
-          calculationContext
-        )
-      lineItemTotals.original_total += lineItemTotals.original_tax_total
-    }
-
-    return lineItemTotals
+    )
   }
 
   /**
@@ -802,24 +812,30 @@ class TotalsService extends BaseService {
     cartOrOrder: Cart | Order,
     options: GetLineItemTotalOptions = {}
   ): Promise<number> {
-    const lineItemTotals = await this.getLineItemTotals(lineItem, cartOrOrder, {
-      include_tax: options.include_tax,
+    return await this.atomicPhase_(async () => {
+      const lineItemTotals = await this.getLineItemTotals(
+        lineItem,
+        cartOrOrder,
+        {
+          include_tax: options.include_tax,
+        }
+      )
+
+      let toReturn = lineItemTotals.subtotal
+      if (!options.exclude_discounts) {
+        toReturn += lineItemTotals.discount_total
+      }
+
+      if (!options.exclude_gift_cards) {
+        toReturn += lineItemTotals.gift_card_total
+      }
+
+      if (options.include_tax) {
+        toReturn += lineItemTotals.tax_total
+      }
+
+      return toReturn
     })
-
-    let toReturn = lineItemTotals.subtotal
-    if (!options.exclude_discounts) {
-      toReturn += lineItemTotals.discount_total
-    }
-
-    if (!options.exclude_gift_cards) {
-      toReturn += lineItemTotals.gift_card_total
-    }
-
-    if (options.include_tax) {
-      toReturn += lineItemTotals.tax_total
-    }
-
-    return toReturn
   }
 
   /**

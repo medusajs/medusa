@@ -1,34 +1,16 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { BaseService } from "../interfaces"
+import { EntityManager } from "typeorm"
 
 class CustomShippingOptionService extends BaseService {
-  constructor({ manager, customShippingOptionRepository }) {
-    super()
+  constructor(cradle) {
+    super(cradle)
 
     /** @private @const {EntityManager} */
-    this.manager_ = manager
+    this.manager_ = cradle.manager
 
     /** @private @const {CustomShippingOptionRepository} */
-    this.customShippingOptionRepository_ = customShippingOptionRepository
-  }
-
-  /**
-   * Sets the service's manager to a given transaction manager
-   * @param {EntityManager} manager - the manager to use
-   * @return {CustomShippingOptionService} a cloned CustomShippingOption service
-   */
-  withTransaction(manager) {
-    if (!manager) {
-      return this
-    }
-
-    const cloned = new CustomShippingOptionService({
-      manager,
-      customShippingOptionRepository: this.customShippingOptionRepository_,
-    })
-
-    cloned.transactionManager_ = manager
-    return cloned
+    this.customShippingOptionRepository_ = cradle.customShippingOptionRepository
   }
 
   /**
@@ -38,23 +20,25 @@ class CustomShippingOptionService extends BaseService {
    * @return {Promise<CustomShippingOption>} which resolves to the requested custom shipping option.
    */
   async retrieve(id, config = {}) {
-    const customShippingOptionRepo = this.manager_.getCustomRepository(
-      this.customShippingOptionRepository_
-    )
-
-    const validatedId = this.validateId_(id)
-    const query = this.buildQuery_({ id: validatedId }, config)
-
-    const customShippingOption = await customShippingOptionRepo.findOne(query)
-
-    if (!customShippingOption) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Custom shipping option with id: ${id} was not found.`
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customShippingOptionRepo = transactionManager.getCustomRepository(
+        this.customShippingOptionRepository_
       )
-    }
 
-    return customShippingOption
+      const validatedId = this.validateId_(id)
+      const query = this.buildQuery_({ id: validatedId }, config)
+
+      const customShippingOption = await customShippingOptionRepo.findOne(query)
+
+      if (!customShippingOption) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Custom shipping option with id: ${id} was not found.`
+        )
+      }
+
+      return customShippingOption
+    })
   }
 
   /** Fetches all custom shipping options related to the given selector
@@ -70,13 +54,15 @@ class CustomShippingOptionService extends BaseService {
       relations: [],
     }
   ) {
-    const customShippingOptionRepo = this.manager_.getCustomRepository(
-      this.customShippingOptionRepository_
-    )
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customShippingOptionRepo = transactionManager.getCustomRepository(
+        this.customShippingOptionRepository_
+      )
 
-    const query = this.buildQuery_(selector, config)
+      const query = this.buildQuery_(selector, config)
 
-    return customShippingOptionRepo.find(query)
+      return customShippingOptionRepo.find(query)
+    })
   }
 
   /**
@@ -90,8 +76,8 @@ class CustomShippingOptionService extends BaseService {
 
     const { cart_id, shipping_option_id, price } = data
 
-    return this.atomicPhase_(async (manager) => {
-      const customShippingOptionRepo = manager.getCustomRepository(
+    return await this.atomicPhase_(async (transactionManager) => {
+      const customShippingOptionRepo = transactionManager.getCustomRepository(
         this.customShippingOptionRepository_
       )
 
@@ -101,9 +87,7 @@ class CustomShippingOptionService extends BaseService {
         price,
         metadata,
       })
-      const result = await customShippingOptionRepo.save(customShippingOption)
-
-      return result
+      return await customShippingOptionRepo.save(customShippingOption)
     })
   }
 }

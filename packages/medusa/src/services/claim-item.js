@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { BaseService } from "../interfaces"
 
 class ClaimItemService extends BaseService {
   static Events = {
@@ -8,48 +8,22 @@ class ClaimItemService extends BaseService {
     CANCELED: "claim_item.canceled",
   }
 
-  constructor({
-    manager,
-    claimItemRepository,
-    claimTagRepository,
-    claimImageRepository,
-    lineItemService,
-    eventBusService,
-  }) {
-    super()
+  constructor(cradle) {
+    super(cradle)
 
     /** @private @constant {EntityManager} */
-    this.manager_ = manager
+    this.manager_ = cradle.manager
 
     /** @private @constant {ClaimRepository} */
-    this.claimItemRepository_ = claimItemRepository
-    this.claimTagRepository_ = claimTagRepository
-    this.claimImageRepository_ = claimImageRepository
+    this.claimItemRepository_ = cradle.claimItemRepository
+    this.claimTagRepository_ = cradle.claimTagRepository
+    this.claimImageRepository_ = cradle.claimImageRepository
 
     /** @private @constant {LineItemService} */
-    this.lineItemService_ = lineItemService
+    this.lineItemService_ = cradle.lineItemService
 
     /** @private @constant {EventBus} */
-    this.eventBus_ = eventBusService
-  }
-
-  withTransaction(manager) {
-    if (!manager) {
-      return this
-    }
-
-    const cloned = new ClaimItemService({
-      manager,
-      claimItemRepository: this.claimItemRepository_,
-      claimTagRepository: this.claimTagRepository_,
-      claimImageRepository: this.claimImageRepository_,
-      lineItemService: this.lineItemService_,
-      eventBusService: this.eventBus_,
-    })
-
-    cloned.transactionManager_ = manager
-
-    return cloned
+    this.eventBus_ = cradle.eventBusService
   }
 
   create(data) {

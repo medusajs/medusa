@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { BaseService } from "../interfaces"
 import { DeepPartial, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import { CustomerService } from "."
 import { CustomerGroup } from ".."
@@ -21,61 +21,40 @@ type CustomerGroupConstructorProps = {
  * Provides layer to manipulate discounts.
  * @implements {BaseService}
  */
-class CustomerGroupService extends BaseService {
-  private manager_: EntityManager
+class CustomerGroupService extends BaseService<CustomerGroupService> {
+  protected readonly manager_: EntityManager
+  protected readonly customerGroupRepository_: typeof CustomerGroupRepository
+  protected readonly customerService_: CustomerService
 
-  private customerGroupRepository_: typeof CustomerGroupRepository
+  constructor(cradle: CustomerGroupConstructorProps) {
+    super(cradle)
 
-  private customerService_: CustomerService
-
-  constructor({
-    manager,
-    customerGroupRepository,
-    customerService,
-  }: CustomerGroupConstructorProps) {
-    super()
-
-    this.manager_ = manager
-
-    this.customerGroupRepository_ = customerGroupRepository
-
-    /** @private @const {CustomerGroupService} */
-    this.customerService_ = customerService
-  }
-
-  withTransaction(transactionManager: EntityManager): CustomerGroupService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new CustomerGroupService({
-      manager: transactionManager,
-      customerGroupRepository: this.customerGroupRepository_,
-      customerService: this.customerService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
+    this.manager_ = cradle.manager
+    this.customerGroupRepository_ = cradle.customerGroupRepository
+    this.customerService_ = cradle.customerService
   }
 
   async retrieve(id: string, config = {}): Promise<CustomerGroup> {
-    const cgRepo = this.manager_.getCustomRepository(
-      this.customerGroupRepository_
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const cgRepo = transactionManager.getCustomRepository(
+          this.customerGroupRepository_
+        )
+
+        const validatedId = this.validateId_(id)
+        const query = this.buildQuery_({ id: validatedId }, config)
+
+        const customerGroup = await cgRepo.findOne(query)
+        if (!customerGroup) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `CustomerGroup with id ${id} was not found`
+          )
+        }
+
+        return customerGroup
+      }
     )
-
-    const validatedId = this.validateId_(id)
-    const query = this.buildQuery_({ id: validatedId }, config)
-
-    const customerGroup = await cgRepo.findOne(query)
-    if (!customerGroup) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `CustomerGroup with id ${id} was not found`
-      )
-    }
-
-    return customerGroup
   }
 
   /**
@@ -84,24 +63,24 @@ class CustomerGroupService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(group: DeepPartial<CustomerGroup>): Promise<CustomerGroup> {
-    return this.atomicPhase_(async (manager) => {
-      try {
-        const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
-          this.customerGroupRepository_
-        )
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        try {
+          const cgRepo: CustomerGroupRepository =
+            transactionManager.getCustomRepository(
+              this.customerGroupRepository_
+            )
 
-        const created = cgRepo.create(group)
-
-        const result = await cgRepo.save(created)
-
-        return result
-      } catch (err) {
-        if (err.code === "23505") {
-          throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
+          const created = cgRepo.create(group)
+          return await cgRepo.save(created)
+        } catch (err) {
+          if (err.code === "23505") {
+            throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
+          }
+          throw err
         }
-        throw err
       }
-    })
+    )
   }
 
   /**
@@ -121,14 +100,13 @@ class CustomerGroupService extends BaseService {
       ids = customerIds
     }
 
-    return this.atomicPhase_(
-      async (manager) => {
-        const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
-          this.customerGroupRepository_
-        )
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const cgRepo: CustomerGroupRepository =
+          transactionManager.getCustomRepository(this.customerGroupRepository_)
         return await cgRepo.addCustomers(id, ids)
       },
-      async (error) => {
+      async (error: { code?: string }) => {
         if (error.code === "23503") {
           await this.retrieve(id)
 
@@ -162,27 +140,28 @@ class CustomerGroupService extends BaseService {
   async update(
     customerGroupId: string,
     update: CustomerGroupUpdate
-  ): Promise<CustomerGroup[]> {
-    return this.atomicPhase_(async (manager) => {
-      const { metadata, ...properties } = update
+  ): Promise<CustomerGroup> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const { metadata, ...properties } = update
 
-      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
-        this.customerGroupRepository_
-      )
+        const cgRepo: CustomerGroupRepository =
+          transactionManager.getCustomRepository(this.customerGroupRepository_)
 
-      const customerGroup = await this.retrieve(customerGroupId)
+        const customerGroup = await this.retrieve(customerGroupId)
 
-      for (const key in properties) {
-        if (typeof properties[key] !== "undefined") {
-          customerGroup[key] = properties[key]
+        for (const key in properties) {
+          if (typeof properties[key] !== "undefined") {
+            customerGroup[key] = properties[key]
+          }
         }
-      }
 
-      if (typeof metadata !== "undefined") {
-        customerGroup.metadata = this.setMetadata_(customerGroup, metadata)
+        if (typeof metadata !== "undefined") {
+          customerGroup.metadata = this.setMetadata_(customerGroup, metadata)
+        }
+        return await cgRepo.save(customerGroup)
       }
-      return await cgRepo.save(customerGroup)
-    })
+    )
   }
 
   /**
@@ -192,19 +171,18 @@ class CustomerGroupService extends BaseService {
    * @return {Promise} a promise
    */
   async delete(groupId: string): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
-      const cgRepo: CustomerGroupRepository = manager.getCustomRepository(
-        this.customerGroupRepository_
-      )
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const cgRepo: CustomerGroupRepository =
+          transactionManager.getCustomRepository(this.customerGroupRepository_)
 
-      const customerGroup = await cgRepo.findOne({ where: { id: groupId } })
+        const customerGroup = await cgRepo.findOne({ where: { id: groupId } })
 
-      if (customerGroup) {
-        await cgRepo.remove(customerGroup)
+        if (customerGroup) {
+          await cgRepo.remove(customerGroup)
+        }
       }
-
-      return Promise.resolve()
-    })
+    )
   }
 
   /**
@@ -218,12 +196,15 @@ class CustomerGroupService extends BaseService {
     selector: FilterableCustomerGroupProps = {},
     config: FindConfig<CustomerGroup>
   ): Promise<CustomerGroup[]> {
-    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
-      this.customerGroupRepository_
-    )
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const cgRepo: CustomerGroupRepository =
+          transactionManager.getCustomRepository(this.customerGroupRepository_)
 
-    const query = this.buildQuery_(selector, config)
-    return await cgRepo.find(query)
+        const query = this.buildQuery_(selector, config)
+        return await cgRepo.find(query)
+      }
+    )
   }
 
   /**
@@ -237,28 +218,30 @@ class CustomerGroupService extends BaseService {
     selector: FilterableCustomerGroupProps = {},
     config: FindConfig<CustomerGroup>
   ): Promise<[CustomerGroup[], number]> {
-    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
-      this.customerGroupRepository_
-    )
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const cgRepo: CustomerGroupRepository =
+          transactionManager.getCustomRepository(this.customerGroupRepository_)
 
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
+        let q
+        if ("q" in selector) {
+          q = selector.q
+          delete selector.q
+        }
 
-    const query = this.buildQuery_(selector, config)
+        const query = this.buildQuery_(selector, config)
 
-    if (q) {
-      const where = query.where
+        if (q) {
+          const where = query.where
+          where.name = undefined
 
-      delete where.name
-
-      query.where = (qb: SelectQueryBuilder<CustomerGroup>): void => {
-        qb.where(where).andWhere([{ name: ILike(`%${q}%`) }])
+          query.where = ((qb: SelectQueryBuilder<CustomerGroup>): void => {
+            qb.where(where).andWhere([{ name: ILike(`%${q}%`) }])
+          }) as any
+        }
+        return await cgRepo.findAndCount(query)
       }
-    }
-    return await cgRepo.findAndCount(query)
+    )
   }
 
   /**
@@ -272,21 +255,24 @@ class CustomerGroupService extends BaseService {
     id: string,
     customerIds: string[] | string
   ): Promise<CustomerGroup> {
-    const cgRepo: CustomerGroupRepository = this.manager_.getCustomRepository(
-      this.customerGroupRepository_
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const cgRepo: CustomerGroupRepository =
+          transactionManager.getCustomRepository(this.customerGroupRepository_)
+        let ids: string[]
+        if (typeof customerIds === "string") {
+          ids = [customerIds]
+        } else {
+          ids = customerIds
+        }
+
+        const customerGroup = await this.retrieve(id)
+
+        await cgRepo.removeCustomers(id, ids)
+
+        return customerGroup
+      }
     )
-    let ids: string[]
-    if (typeof customerIds === "string") {
-      ids = [customerIds]
-    } else {
-      ids = customerIds
-    }
-
-    const customerGroup = await this.retrieve(id)
-
-    await cgRepo.removeCustomers(id, ids)
-
-    return customerGroup
   }
 }
 

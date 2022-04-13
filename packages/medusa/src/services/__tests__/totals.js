@@ -1,4 +1,4 @@
-import { IdMap } from "medusa-test-utils"
+import { IdMap, MockManager } from "medusa-test-utils"
 import TotalsService from "../totals"
 
 const discounts = {
@@ -96,7 +96,12 @@ const calculateAdjustment = (cart, lineItem, discount) => {
 
 describe("TotalsService", () => {
   const container = {
-    taxProviderService: {},
+    manager: MockManager,
+    taxProviderService: {
+      withTransaction: function() {
+        return this
+      },
+    },
     taxCalculationStrategy: {},
   }
 
@@ -532,8 +537,12 @@ describe("TotalsService", () => {
     const getAllocationMapMock = jest.fn(() => ({}))
 
     const cradle = {
+      manager: MockManager,
       taxProviderService: {
         getTaxLines: getTaxLinesMock,
+        withTransaction: function() {
+          return this
+        },
       },
       taxCalculationStrategy: {
         calculate: calculateMock,

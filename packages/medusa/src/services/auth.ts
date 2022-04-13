@@ -1,22 +1,29 @@
 import Scrypt from "scrypt-kdf"
-import { BaseService } from "medusa-interfaces"
+import { BaseService } from "../interfaces"
 import { AuthenticateResult } from "../types/auth"
 import { User } from "../models/user"
 import { Customer } from "../models/customer"
+import UserService from "./user"
+import CustomerService from "./customer"
+
+type InjectedDependencies = {
+  userService: UserService
+  customerService: CustomerService
+}
 
 /**
  * Can authenticate a user based on email password combination
  * @extends BaseService
  */
-class AuthService extends BaseService {
-  constructor({ userService, customerService }) {
-    super()
+class AuthService extends BaseService<AuthService> {
+  protected readonly userService_: UserService
+  protected readonly customerService_: CustomerService
 
-    /** @private @const {UserService} */
-    this.userService_ = userService
+  constructor(cradle: InjectedDependencies) {
+    super(cradle)
 
-    /** @private @const {CustomerService} */
-    this.customerService_ = customerService
+    this.userService_ = cradle.userService
+    this.customerService_ = cradle.customerService
   }
 
   /**

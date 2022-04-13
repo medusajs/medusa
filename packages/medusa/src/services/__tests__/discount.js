@@ -1156,6 +1156,9 @@ describe("DiscountService", () => {
     }
 
     const customerService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: jest.fn().mockImplementation((id) => {
         if (id === "customer-no-groups") {
           return Promise.resolve({ id: "customer-no-groups" })
