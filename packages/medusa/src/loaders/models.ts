@@ -14,7 +14,7 @@ export default ({ container }: { container: MedusaContainer }, config = { regist
 
   const models: (ClassConstructor<unknown> | EntitySchema)[] = []
 
-  const core = glob.sync(coreFull, { cwd: __dirname })
+  const core = glob.sync(coreFull, { cwd: __dirname, ignore: ["index.js", "index.ts"] })
   core.forEach((fn) => {
     const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
     if (loaded) {
