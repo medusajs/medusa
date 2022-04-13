@@ -924,19 +924,19 @@ describe("/store/carts", () => {
     })
 
     it("fails on apply discount if limit has been reached", async () => {
-      expect.assertions(2)
       const api = useApi()
 
-      await api
+      const err = await api
         .post("/store/carts/test-cart", {
           discounts: [{ code: "SPENT" }],
         })
-        .catch((error) => {
-          expect(error.response.status).toEqual(400)
-          expect(error.response.data.message).toEqual(
-            "Discount has been used maximum allowed times"
-          )
-        })
+        .catch((err) => err)
+
+      expect(err).toBeTruthy()
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toEqual(
+        "Discount has been used maximum allowed times"
+      )
     })
 
     it("successfully passes customer conditions with `in` operator and applies discount", async () => {
@@ -1755,7 +1755,7 @@ describe("/store/carts", () => {
           }),
         ])
       )
-      expect(cartWithGiftcard.data.cart.total).toBe(1900) // 1000 (giftcard) + 900 (standard item with 10% discount)
+      expect(cartWithGiftcard.data.cart.total).toBe(2900) // 1000 (giftcard) + 900 (standard item with 10% discount) + 1000 Shipping
       expect(cartWithGiftcard.data.cart.discount_total).toBe(100)
       expect(cartWithGiftcard.status).toEqual(200)
     })
@@ -1925,7 +1925,7 @@ describe("/store/carts", () => {
       await doAfterEach()
     })
 
-    it("updates region only - single to multipe countries", async () => {
+    it("updates region only - single to multiple countries", async () => {
       const api = useApi()
 
       const { data, status } = await api
@@ -1947,7 +1947,7 @@ describe("/store/carts", () => {
       })
     })
 
-    it("updates region only - single to multipe countries", async () => {
+    it("should reset the shipping_address on null value", async () => {
       const api = useApi()
 
       const { data, status } = await api
@@ -1962,7 +1962,5 @@ describe("/store/carts", () => {
       expect(status).toEqual(200)
       expect(data.cart.shipping_address).toEqual(null)
     })
-
-    // it("updates cart.customer_id on cart retrieval if cart.customer_id differ from session customer", async () => {})
   })
 })

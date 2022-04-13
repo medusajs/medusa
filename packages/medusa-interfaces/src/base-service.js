@@ -228,8 +228,7 @@ class BaseService {
       }
 
       try {
-        const result = await this.manager_.transaction((m) => doWork(m))
-        return result
+        return await this.manager_.transaction((m) => doWork(m))
       } catch (error) {
         if (errorHandler) {
           const result = await errorHandler(error)

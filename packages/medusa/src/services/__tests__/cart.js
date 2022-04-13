@@ -193,6 +193,9 @@ describe("CartService", () => {
 
   describe("create", () => {
     const regionService = {
+      withTransaction: function() {
+        return this
+      },
       retrieve: () => {
         return {
           id: IdMap.getId("testRegion"),
@@ -324,7 +327,7 @@ describe("CartService", () => {
     }
 
     const shippingOptionService = {
-      deleteShippingMethod: jest.fn(),
+      deleteShippingMethods: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -378,6 +381,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       lineItemService,
+      lineItemRepository: MockRepository(),
       eventBusService,
       shippingOptionService,
       inventoryService,
@@ -476,7 +480,7 @@ describe("CartService", () => {
 
       await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
 
-      expect(lineItemService.update).toHaveBeenCalledTimes(2)
+      expect(lineItemService.update).toHaveBeenCalledTimes(1)
       expect(lineItemService.update).toHaveBeenCalledWith(
         IdMap.getId("merger"),
         {
@@ -581,7 +585,7 @@ describe("CartService", () => {
     })
 
     const shippingOptionService = {
-      deleteShippingMethod: jest.fn(),
+      deleteShippingMethods: jest.fn(),
       withTransaction: function() {
         return this
       },
@@ -592,6 +596,7 @@ describe("CartService", () => {
       totalsService,
       cartRepository,
       lineItemService,
+      lineItemRepository: MockRepository(),
       shippingOptionService,
       eventBusService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
@@ -641,15 +646,15 @@ describe("CartService", () => {
         IdMap.getId("itemToRemove")
       )
 
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledTimes(
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledTimes(
         1
       )
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledWith([{
         id: IdMap.getId("ship-method"),
         shipping_option: {
           profile_id: IdMap.getId("prevPro"),
         },
-      })
+      }])
 
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledTimes(1)
       expect(LineItemAdjustmentServiceMock.delete).toHaveBeenCalledWith({
@@ -1095,6 +1100,9 @@ describe("CartService", () => {
           countries: [{ iso_2: "us" }],
         })
       ),
+      withTransaction: function() {
+        return this
+      },
     }
     const cartRepository = MockRepository({
       findOneWithRelations: () =>
@@ -1131,6 +1139,9 @@ describe("CartService", () => {
     }
 
     const priceSelectionStrat = {
+      withTransaction: function() {
+        return this
+      },
       calculateVariantPrice: async (variantId, context) => {
         if (variantId === IdMap.getId("fail")) {
           throw new MedusaError(
@@ -1152,6 +1163,7 @@ describe("CartService", () => {
       lineItemService,
       productVariantService,
       eventBusService,
+      paymentSessionRepository: MockRepository(),
       priceSelectionStrategy: priceSelectionStrat,
     })
 
@@ -1192,7 +1204,7 @@ describe("CartService", () => {
         shipping_address: {
           country_code: "us",
         },
-        items: [IdMap.getId("testitem"), null],
+        items: [IdMap.getId("testitem")],
         payment_session: null,
         payment_sessions: [],
         gift_cards: [],
@@ -1513,13 +1525,16 @@ describe("CartService", () => {
           },
         })
       }),
-      deleteShippingMethod: jest.fn(),
+      deleteShippingMethods: jest.fn(),
       withTransaction: function() {
         return this
       },
     }
 
     const customShippingOptionService = {
+      withTransaction: function() {
+        return this
+      },
       list: jest.fn().mockImplementation(({ cart_id }) => {
         if (cart_id === IdMap.getId("cart-with-custom-so")) {
           return [
@@ -1575,7 +1590,7 @@ describe("CartService", () => {
       expect(
         shippingOptionService.createShippingMethod
       ).toHaveBeenCalledWith(IdMap.getId("profile1"), data, { cart: cart2 })
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledWith({
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledWith({
         id: IdMap.getId("ship1"),
         shipping_option: {
           profile_id: IdMap.getId("profile1"),
@@ -1594,7 +1609,7 @@ describe("CartService", () => {
         data
       )
 
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledTimes(
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledTimes(
         0
       )
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
@@ -1616,7 +1631,7 @@ describe("CartService", () => {
         data
       )
 
-      expect(shippingOptionService.deleteShippingMethod).toHaveBeenCalledTimes(
+      expect(shippingOptionService.deleteShippingMethods).toHaveBeenCalledTimes(
         0
       )
       expect(shippingOptionService.createShippingMethod).toHaveBeenCalledTimes(
@@ -1738,6 +1753,9 @@ describe("CartService", () => {
     })
 
     const discountService = {
+      withTransaction: function () {
+        return this
+      },
       retrieveByCode: jest.fn().mockImplementation((code) => {
         if (code === "US10") {
           return Promise.resolve({
