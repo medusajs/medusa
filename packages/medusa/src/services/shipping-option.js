@@ -208,12 +208,16 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Removes a given shipping method
-   * @param {ShippingMethod} sm - the shipping method to remove
+   * @param {ShippingMethod | Array<ShippingMethod>} shippingMethods - the shipping method to remove
    */
-  async deleteShippingMethod(sm) {
+  async deleteShippingMethods(shippingMethods) {
+    if (!Array.isArray(shippingMethods)) {
+      shippingMethods = [shippingMethods]
+    }
+
     return this.atomicPhase_(async (manager) => {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
-      return methodRepo.remove(sm)
+      return methodRepo.remove(shippingMethods)
     })
   }
 
