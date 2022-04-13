@@ -26,8 +26,17 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Publish Canary
-        run: lerna publish --yes --canary --preid ci --force-publish="*"
-        env:
-          # TODO: Add token
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Format Version Name
+        uses: actions/github-script@v5
+        id: format-branch
+        with:
+          script: return "${{ github.ref_name }}"
+          result-encoding: string
+      - name: Get formatted branch name
+        run: echo "${{steps.format-branch.outputs.result}}"
+
+      # - name: Publish Canary
+      #   run: lerna publish --yes --canary --preid ${{steps.format-branch.outputs.result}} --force-publish="*"
+      #   env:
+      #     # TODO: Add token
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
