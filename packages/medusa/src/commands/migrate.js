@@ -17,6 +17,7 @@ const t = async function({ directory }) {
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
+    database: configModule.projectConfig.database_database,
     extra: configModule.projectConfig.database_extra || {},
     migrations: migrationDirs,
     logging: true,
