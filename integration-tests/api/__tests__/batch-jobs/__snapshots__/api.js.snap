@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/admin/batch GET /admin/batch lists batch jobs created by the user 1`] = `
+Object {
+  "batch_jobs": Array [
+    Object {
+      "context": Object {},
+      "created_at": Any<String>,
+      "created_by": "admin_user",
+      "deleted_at": null,
+      "id": "job_3",
+      "result": null,
+      "status": "created",
+      "type": "batch_2",
+      "updated_at": Any<String>,
+    },
+    Object {
+      "context": Object {},
+      "created_at": Any<String>,
+      "created_by": "admin_user",
+      "deleted_at": null,
+      "id": "job_2",
+      "result": null,
+      "status": "created",
+      "type": "batch_2",
+      "updated_at": Any<String>,
+    },
+    Object {
+      "context": Object {},
+      "created_at": Any<String>,
+      "created_by": "admin_user",
+      "deleted_at": null,
+      "id": "job_1",
+      "result": null,
+      "status": "created",
+      "type": "batch_1",
+      "updated_at": Any<String>,
+    },
+  ],
+  "count": 3,
+  "limit": 10,
+  "offset": 0,
+}
+`;

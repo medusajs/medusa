@@ -14,6 +14,7 @@ import noteRoutes from "./notes"
 import notificationRoutes from "./notifications"
 import orderRoutes from "./orders"
 import priceListRoutes from "./price-lists"
+import batchRoutes from "./batch"
 import productTagRoutes from "./product-tags"
 import productTypesRoutes from "./product-types"
 import productRoutes from "./products"
@@ -63,6 +64,7 @@ export default (app, container, config) => {
 
   appRoutes(route)
   productRoutes(route)
+  batchRoutes(route)
   userRoutes(route)
   regionRoutes(route)
   shippingOptionRoutes(route)
