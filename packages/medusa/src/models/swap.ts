@@ -26,7 +26,7 @@ import { Cart } from "./cart"
 import { Payment } from "./payment"
 import { ShippingMethod } from "./shipping-method"
 
-export enum FulfillmentStatus {
+export enum SwapFulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
   FULFILLED = "fulfilled",
   SHIPPED = "shipped",
@@ -34,7 +34,7 @@ export enum FulfillmentStatus {
   REQUIRES_ACTION = "requires_action",
 }
 
-export enum PaymentStatus {
+export enum SwapPaymentStatus {
   NOT_PAID = "not_paid",
   AWAITING = "awaiting",
   CAPTURED = "captured",
@@ -51,11 +51,11 @@ export class Swap {
   @PrimaryColumn()
   id: string
 
-  @DbAwareColumn({ type: "enum", enum: FulfillmentStatus })
-  fulfillment_status: FulfillmentStatus
+  @DbAwareColumn({ type: "enum", enum: SwapFulfillmentStatus })
+  fulfillment_status: SwapFulfillmentStatus
 
-  @DbAwareColumn({ type: "enum", enum: PaymentStatus })
-  payment_status: PaymentStatus
+  @DbAwareColumn({ type: "enum", enum: SwapPaymentStatus })
+  payment_status: SwapPaymentStatus
 
   @Index()
   @Column({ type: "string" })
