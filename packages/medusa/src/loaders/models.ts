@@ -14,24 +14,25 @@ export default ({ container }: { container: MedusaContainer }, config = { regist
 
   const models: (ClassConstructor<unknown> | EntitySchema)[] = []
 
-  const core = glob.sync(coreFull, { cwd: __dirname })
+  const core = glob.sync(coreFull, { cwd: __dirname, ignore: ["index.js", "index.ts"] })
   core.forEach((fn) => {
     const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
+    if (loaded) {
+     Object.entries(loaded).map(([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
+        if (typeof val === "function" || val instanceof EntitySchema) {
+          if (config.register) {
+            const name = formatRegistrationName(fn)
+            container.register({
+              [name]: asClass(val as ClassConstructor<unknown>),
+            })
 
-    Object.entries(loaded).map(([key, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
-      if (typeof val === "function" || val instanceof EntitySchema) {
-        if (config.register) {
-          const name = formatRegistrationName(fn)
-          container.register({
-            [name]: asClass(val as ClassConstructor<unknown>),
-          })
+            container.registerAdd("db_entities", asValue(val))
+          }
 
-          container.registerAdd("db_entities", asValue(val))
+          models.push(val)
         }
-
-        models.push(val)
-      }
-    })
+      })
+    }
   })
 
   return models
