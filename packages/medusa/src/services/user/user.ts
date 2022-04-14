@@ -3,15 +3,16 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Scrypt from "scrypt-kdf"
 import { EntityManager } from "typeorm"
-import { User } from "../models/user"
-import { UserRepository } from "../repositories/user"
-import { FindConfig } from "../types/common"
+import { User } from "../../models/user"
+import { UserRepository } from "../../repositories/user"
+import { FindConfig } from "../../types/common"
 import {
   CreateUserInput,
   FilterableUserProps,
   UpdateUserInput,
-} from "../types/user"
-import EventBusService from "./event-bus"
+} from "../../types/user"
+import EventBusService from "../event-bus"
+import { IUserService } from "./interfaces"
 
 type UserServiceProps = {
   userRepository: typeof UserRepository
@@ -23,15 +24,15 @@ type UserServiceProps = {
  * Provides layer to manipulate users.
  * @extends BaseService
  */
-class UserService extends BaseService {
+class UserService extends BaseService implements IUserService {
   static Events = {
     PASSWORD_RESET: "user.password_reset",
   }
 
-  private userRepository_: typeof UserRepository
-  private eventBus_: EventBusService
-  private manager_: EntityManager
-  private transactionManager_: EntityManager
+  protected readonly userRepository_: typeof UserRepository
+  protected readonly eventBus_: EventBusService
+  protected readonly manager_: EntityManager
+  protected transactionManager_: EntityManager
 
   constructor({ userRepository, eventBusService, manager }: UserServiceProps) {
     super()

@@ -1,21 +1,27 @@
 import Scrypt from "scrypt-kdf"
 import { BaseService } from "medusa-interfaces"
-import { AuthenticateResult } from "../types/auth"
-import { User } from "../models/user"
-import { Customer } from "../models/customer"
+import { AuthenticateResult } from "../../types/auth"
+import { User } from "../../models/user"
+import { Customer } from "../../models/customer"
+import { AuthCustomerService, AuthUserService } from "./interfaces"
+
+export type InjectedDependencies = {
+  userService: AuthUserService
+  customerService: AuthCustomerService
+}
 
 /**
  * Can authenticate a user based on email password combination
  * @extends BaseService
  */
 class AuthService extends BaseService {
-  constructor({ userService, customerService }) {
+  protected readonly userService_: AuthUserService
+  protected readonly customerService_: AuthCustomerService
+
+  constructor({ userService, customerService }: InjectedDependencies) {
     super()
 
-    /** @private @const {UserService} */
     this.userService_ = userService
-
-    /** @private @const {CustomerService} */
     this.customerService_ = customerService
   }
 
@@ -41,7 +47,9 @@ class AuthService extends BaseService {
   async authenticateAPIToken(token: string): Promise<AuthenticateResult> {
     if (process.env.NODE_ENV === "development") {
       try {
-        const user: User = await this.userService_.retrieve(token)
+        const user: User = await this.userService_
+          .withTransaction(this.manager_)
+          .retrieve(token)
         return {
           success: true,
           user,

@@ -15,7 +15,7 @@ class BaseService<
 > {
   protected transactionManager_: EntityManager | undefined
   protected manager_: EntityManager
-  private readonly container_: TContainer
+  protected readonly container_: TContainer
 
   constructor(
     container: TContainer,
