@@ -96,7 +96,7 @@ The `data` attribute is used to specify any data necessary for fulfilling the 
 
 The `data` attribute does not have any specific format. It’s up to you to choose whatever data is included here.
 
-# Shipping Method
+## Shipping Method
 
 ### Overview
 
