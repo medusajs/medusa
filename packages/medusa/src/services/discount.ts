@@ -75,19 +75,41 @@ class DiscountService extends BaseService<DiscountService> {
   protected readonly customerService_: CustomerService
   protected readonly eventBus_: EventBusService
 
-  constructor(cradle: InjectedDependencies) {
-    super(cradle)
+  constructor({
+    manager,
+    discountRepository,
+    discountRuleRepository,
+    giftCardRepository,
+    discountConditionRepository,
+    totalsService,
+    productService,
+    regionService,
+    customerService,
+    eventBusService,
+  }: InjectedDependencies) {
+    super({
+      manager,
+      discountRepository,
+      discountRuleRepository,
+      giftCardRepository,
+      discountConditionRepository,
+      totalsService,
+      productService,
+      regionService,
+      customerService,
+      eventBusService,
+    })
 
-    this.manager_ = cradle.manager
-    this.discountRepository_ = cradle.discountRepository
-    this.discountRuleRepository_ = cradle.discountRuleRepository
-    this.giftCardRepository_ = cradle.giftCardRepository
-    this.discountConditionRepository_ = cradle.discountConditionRepository
-    this.totalsService_ = cradle.totalsService
-    this.productService_ = cradle.productService
-    this.regionService_ = cradle.regionService
-    this.customerService_ = cradle.customerService
-    this.eventBus_ = cradle.eventBusService
+    this.manager_ = manager
+    this.discountRepository_ = discountRepository
+    this.discountRuleRepository_ = discountRuleRepository
+    this.giftCardRepository_ = giftCardRepository
+    this.discountConditionRepository_ = discountConditionRepository
+    this.totalsService_ = totalsService
+    this.productService_ = productService
+    this.regionService_ = regionService
+    this.customerService_ = customerService
+    this.eventBus_ = eventBusService
   }
 
   /**

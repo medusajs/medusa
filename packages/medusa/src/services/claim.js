@@ -11,25 +11,57 @@ class ClaimService extends BaseService {
     REFUND_PROCESSED: "claim.refund_processed",
   }
 
-  constructor(cradle) {
-    super(cradle)
+  constructor({ 
+    manager,
+    addressRepository,
+    claimItemService,
+    claimRepository,
+    eventBusService,
+    fulfillmentProviderService,
+    fulfillmentService,
+    inventoryService,
+    lineItemService,
+    paymentProviderService,
+    regionService,
+    returnService,
+    shippingOptionService,
+    taxProviderService,
+    totalsService,
+  }) {
+    super({ 
+      manager,
+      addressRepository,
+      claimItemService,
+      claimRepository,
+      eventBusService,
+      fulfillmentProviderService,
+      fulfillmentService,
+      inventoryService,
+      lineItemService,
+      paymentProviderService,
+      regionService,
+      returnService,
+      shippingOptionService,
+      taxProviderService,
+      totalsService,
+    })
 
     /** @private @constant {EntityManager} */
-    this.manager_ = cradle.manager
-    this.addressRepo_ = cradle.addressRepository
-    this.claimItemService_ = cradle.claimItemService
-    this.claimRepository_ = cradle.claimRepository
-    this.eventBus_ = cradle.eventBusService
-    this.fulfillmentProviderService_ = cradle.fulfillmentProviderService
-    this.fulfillmentService_ = cradle.fulfillmentService
-    this.inventoryService_ = cradle.inventoryService
-    this.lineItemService_ = cradle.lineItemService
-    this.paymentProviderService_ = cradle.paymentProviderService
-    this.regionService_ = cradle.regionService
-    this.returnService_ = cradle.returnService
-    this.shippingOptionService_ = cradle.shippingOptionService
-    this.taxProviderService_ = cradle.taxProviderService
-    this.totalsService_ = cradle.totalsService
+    this.manager_ = manager
+    this.addressRepo_ = addressRepository
+    this.claimItemService_ = claimItemService
+    this.claimRepository_ = claimRepository
+    this.eventBus_ = eventBusService
+    this.fulfillmentProviderService_ = fulfillmentProviderService
+    this.fulfillmentService_ = fulfillmentService
+    this.inventoryService_ = inventoryService
+    this.lineItemService_ = lineItemService
+    this.paymentProviderService_ = paymentProviderService
+    this.regionService_ = regionService
+    this.returnService_ = returnService
+    this.shippingOptionService_ = shippingOptionService
+    this.taxProviderService_ = taxProviderService
+    this.totalsService_ = totalsService
   }
 
   update(id, data) {

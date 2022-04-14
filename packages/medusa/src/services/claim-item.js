@@ -8,22 +8,36 @@ class ClaimItemService extends BaseService {
     CANCELED: "claim_item.canceled",
   }
 
-  constructor(cradle) {
-    super(cradle)
+  constructor({
+    manager,
+    claimItemRepository,
+    claimTagRepository,
+    claimImageRepository,
+    lineItemService,
+    eventBusService,
+  }) {
+    super({
+      manager,
+      claimItemRepository,
+      claimTagRepository,
+      claimImageRepository,
+      lineItemService,
+      eventBusService,
+    })
 
     /** @private @constant {EntityManager} */
-    this.manager_ = cradle.manager
+    this.manager_ = manager
 
     /** @private @constant {ClaimRepository} */
-    this.claimItemRepository_ = cradle.claimItemRepository
-    this.claimTagRepository_ = cradle.claimTagRepository
-    this.claimImageRepository_ = cradle.claimImageRepository
+    this.claimItemRepository_ = claimItemRepository
+    this.claimTagRepository_ = claimTagRepository
+    this.claimImageRepository_ = claimImageRepository
 
     /** @private @constant {LineItemService} */
-    this.lineItemService_ = cradle.lineItemService
+    this.lineItemService_ = lineItemService
 
     /** @private @constant {EventBus} */
-    this.eventBus_ = cradle.eventBusService
+    this.eventBus_ = eventBusService
   }
 
   create(data) {

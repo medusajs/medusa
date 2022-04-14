@@ -89,12 +89,20 @@ class TotalsService extends BaseService<TotalsService> {
   protected readonly taxProviderService_: TaxProviderService
   protected readonly taxCalculationStrategy_: ITaxCalculationStrategy
 
-  constructor(cradle: TotalsServiceProps) {
-    super(cradle)
+  constructor({
+    manager,
+    taxProviderService,
+    taxCalculationStrategy,
+  }: TotalsServiceProps) {
+    super({
+      manager,
+      taxProviderService,
+      taxCalculationStrategy,
+    })
 
-    this.manager_ = cradle.manager
-    this.taxProviderService_ = cradle.taxProviderService
-    this.taxCalculationStrategy_ = cradle.taxCalculationStrategy
+    this.manager_ = manager
+    this.taxProviderService_ = taxProviderService
+    this.taxCalculationStrategy_ = taxCalculationStrategy
   }
 
   /**

@@ -17,20 +17,30 @@ class CustomerService extends BaseService {
     UPDATED: "customer.updated",
   }
 
-  constructor(cradle) {
-    super(cradle)
+  constructor({
+    manager,
+    customerRepository,
+    eventBusService,
+    addressRepository,
+  }) {
+    super({
+      manager,
+      customerRepository,
+      eventBusService,
+      addressRepository,
+    })
 
     /** @private @const {EntityManager} */
-    this.manager_ = cradle.manager
+    this.manager_ = manager
 
     /** @private @const {CustomerRepository} */
-    this.customerRepository_ = cradle.customerRepository
+    this.customerRepository_ = customerRepository
 
     /** @private @const {EventBus} */
-    this.eventBus_ = cradle.eventBusService
+    this.eventBus_ = eventBusService
 
     /** @private @const {AddressRepository} */
-    this.addressRepository_ = cradle.addressRepository
+    this.addressRepository_ = addressRepository
   }
 
   /**

@@ -1,16 +1,15 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "../interfaces"
-import { EntityManager } from "typeorm"
 
 class CustomShippingOptionService extends BaseService {
-  constructor(cradle) {
-    super(cradle)
+  constructor({ manager, customShippingOptionRepository }) {
+    super({ manager, customShippingOptionRepository })
 
     /** @private @const {EntityManager} */
-    this.manager_ = cradle.manager
+    this.manager_ = manager
 
     /** @private @const {CustomShippingOptionRepository} */
-    this.customShippingOptionRepository_ = cradle.customShippingOptionRepository
+    this.customShippingOptionRepository_ = customShippingOptionRepository
   }
 
   /**

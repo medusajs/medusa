@@ -19,11 +19,11 @@ class AuthService extends BaseService<AuthService> {
   protected readonly userService_: UserService
   protected readonly customerService_: CustomerService
 
-  constructor(cradle: InjectedDependencies) {
-    super(cradle)
+  constructor({ userService, customerService }: InjectedDependencies) {
+    super({ userService, customerService })
 
-    this.userService_ = cradle.userService
-    this.customerService_ = cradle.customerService
+    this.userService_ = userService
+    this.customerService_ = customerService
   }
 
   /**

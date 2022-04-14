@@ -27,12 +27,20 @@ class CustomerGroupService extends BaseService<CustomerGroupService> {
   protected readonly customerGroupRepository_: typeof CustomerGroupRepository
   protected readonly customerService_: CustomerService
 
-  constructor(cradle: CustomerGroupConstructorProps) {
-    super(cradle)
+  constructor({
+    manager,
+    customerGroupRepository,
+    customerService,
+  }: CustomerGroupConstructorProps) {
+    super({
+      manager,
+      customerGroupRepository,
+      customerService,
+    })
 
-    this.manager_ = cradle.manager
-    this.customerGroupRepository_ = cradle.customerGroupRepository
-    this.customerService_ = cradle.customerService
+    this.manager_ = manager
+    this.customerGroupRepository_ = customerGroupRepository
+    this.customerService_ = customerService
   }
 
   async retrieve(id: string, config = {}): Promise<CustomerGroup> {

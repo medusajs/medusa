@@ -100,31 +100,77 @@ class CartService extends BaseService<CartService> {
   protected readonly priceSelectionStrategy_: IPriceSelectionStrategy
   protected readonly lineItemAdjustmentService_: LineItemAdjustmentService
 
-  constructor(cradle: InjectedDependencies) {
-    super(cradle)
+  constructor({
+    manager,
+    cartRepository,
+    shippingMethodRepository,
+    addressRepository,
+    paymentSessionRepository,
+    lineItemRepository,
+    eventBusService,
+    taxProviderService,
+    paymentProviderService,
+    productService,
+    productVariantService,
+    regionService,
+    lineItemService,
+    shippingOptionService,
+    customerService,
+    discountService,
+    giftCardService,
+    totalsService,
+    inventoryService,
+    customShippingOptionService,
+    lineItemAdjustmentService,
+    priceSelectionStrategy,
+  }: InjectedDependencies) {
+    super({
+      manager,
+      cartRepository,
+      shippingMethodRepository,
+      addressRepository,
+      paymentSessionRepository,
+      lineItemRepository,
+      eventBusService,
+      taxProviderService,
+      paymentProviderService,
+      productService,
+      productVariantService,
+      regionService,
+      lineItemService,
+      shippingOptionService,
+      customerService,
+      discountService,
+      giftCardService,
+      totalsService,
+      inventoryService,
+      customShippingOptionService,
+      lineItemAdjustmentService,
+      priceSelectionStrategy,
+    })
 
-    this.manager_ = cradle.manager
-    this.shippingMethodRepository_ = cradle.shippingMethodRepository
-    this.cartRepository_ = cradle.cartRepository
-    this.lineItemRepository_ = cradle.lineItemRepository
-    this.eventBus_ = cradle.eventBusService
-    this.productVariantService_ = cradle.productVariantService
-    this.productService_ = cradle.productService
-    this.regionService_ = cradle.regionService
-    this.lineItemService_ = cradle.lineItemService
-    this.paymentProviderService_ = cradle.paymentProviderService
-    this.customerService_ = cradle.customerService
-    this.shippingOptionService_ = cradle.shippingOptionService
-    this.discountService_ = cradle.discountService
-    this.giftCardService_ = cradle.giftCardService
-    this.totalsService_ = cradle.totalsService
-    this.addressRepository_ = cradle.addressRepository
-    this.paymentSessionRepository_ = cradle.paymentSessionRepository
-    this.inventoryService_ = cradle.inventoryService
-    this.customShippingOptionService_ = cradle.customShippingOptionService
-    this.taxProviderService_ = cradle.taxProviderService
-    this.lineItemAdjustmentService_ = cradle.lineItemAdjustmentService
-    this.priceSelectionStrategy_ = cradle.priceSelectionStrategy
+    this.manager_ = manager
+    this.shippingMethodRepository_ = shippingMethodRepository
+    this.cartRepository_ = cartRepository
+    this.lineItemRepository_ = lineItemRepository
+    this.eventBus_ = eventBusService
+    this.productVariantService_ = productVariantService
+    this.productService_ = productService
+    this.regionService_ = regionService
+    this.lineItemService_ = lineItemService
+    this.paymentProviderService_ = paymentProviderService
+    this.customerService_ = customerService
+    this.shippingOptionService_ = shippingOptionService
+    this.discountService_ = discountService
+    this.giftCardService_ = giftCardService
+    this.totalsService_ = totalsService
+    this.addressRepository_ = addressRepository
+    this.paymentSessionRepository_ = paymentSessionRepository
+    this.inventoryService_ = inventoryService
+    this.customShippingOptionService_ = customShippingOptionService
+    this.taxProviderService_ = taxProviderService
+    this.lineItemAdjustmentService_ = lineItemAdjustmentService
+    this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
   protected transformQueryForTotals_(
@@ -262,10 +308,10 @@ class CartService extends BaseService<CartService> {
         const { select, relations, totalsToSelect } =
           this.transformQueryForTotals_(options)
 
-    const query = this.buildQuery_<Cart>(
-      { id: validatedId },
-      { ...options, select, relations }
-    )
+        const query = this.buildQuery_<Cart>(
+          { id: validatedId },
+          { ...options, select, relations }
+        )
 
         if (relations && relations.length > 0) {
           query.relations = relations
@@ -660,10 +706,9 @@ class CartService extends BaseService<CartService> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     if (cart.shipping_methods?.length) {
-      const shippingMethodRepository =
-        transactionManager.getCustomRepository(
-          this.shippingMethodRepository_
-        )
+      const shippingMethodRepository = transactionManager.getCustomRepository(
+        this.shippingMethodRepository_
+      )
 
       // if any free shipping discounts, we ensure to update shipping method amount
       if (shouldAdd) {
