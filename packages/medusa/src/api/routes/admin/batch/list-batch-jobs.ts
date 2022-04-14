@@ -1,4 +1,3 @@
-import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
 import {
   IsArray,
@@ -12,7 +11,10 @@ import { pickBy, omit, identity } from "lodash"
 import { defaultAdminBatchFields } from "."
 import BatchJobService from "../../../../services/batch-job"
 import { BatchJob } from "../../../../models"
-import { BatchJobStatus } from "../../../../types/batch-job"
+import {
+  FilterableBatchJobProps,
+  BatchJobStatus,
+} from "../../../../types/batch-job"
 import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { getListConfig } from "../../../../utils/get-query-config"
@@ -29,9 +31,12 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) type {string | string[]} Filter by the batch type
  *   - (query) status {string} Filter by the status of the batch operation
+<<<<<<< HEAD
  *   - (query) order {string} Order used when retrieving batch jobs
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
+=======
+>>>>>>> e63a4ad8... feat: add list batch endpoint
  *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
@@ -78,16 +83,15 @@ export default async (req, res) => {
   const [jobs, count] = await batchService.listAndCount(
     pickBy(
       { created_by, ...filterableFields },
-      (val) => typeof val !== "undefined"
-    ),
+      (val) => typeof val !== "undefined"),
     listConfig
   )
 
   res.status(200).json({
     batch_jobs: jobs,
     count,
-    offset: offset,
-    limit: limit,
+    offset,
+    limit,
   })
 }
 
@@ -117,7 +121,6 @@ export class AdminGetBatchPaginationParams {
 
 export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @IsOptional()
-  @IsArray()
   @IsType([String, [String]])
   id?: string | string[]
 

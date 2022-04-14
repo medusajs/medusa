@@ -5,7 +5,6 @@ import middlewares from "../../../middlewares"
 
 export default (app) => {
   const route = Router()
-
   app.use("/batch", route)
 
   route.get(
