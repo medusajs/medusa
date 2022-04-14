@@ -1,5 +1,4 @@
 import { EntityManager } from "typeorm"
-
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import { FilterableBatchJobProps } from "../types/batch-job"
