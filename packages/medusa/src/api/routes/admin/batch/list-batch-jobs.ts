@@ -12,7 +12,10 @@ import { pickBy, omit, identity } from "lodash"
 import { defaultAdminBatchFields } from "."
 import BatchJobService from "../../../../services/batch-job"
 import { BatchJob } from "../../../../models"
-import { BatchJobStatus } from "../../../../types/batch-job"
+import {
+  FilterableBatchJobProps,
+  BatchJobStatus,
+} from "../../../../types/batch-job"
 import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { getListConfig } from "../../../../utils/get-query-config"
@@ -86,8 +89,8 @@ export default async (req, res) => {
   res.status(200).json({
     batch_jobs: jobs,
     count,
-    offset: offset,
-    limit: limit,
+    offset,
+    limit,
   })
 }
 
@@ -117,7 +120,6 @@ export class AdminGetBatchPaginationParams {
 
 export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @IsOptional()
-  @IsArray()
   @IsType([String, [String]])
   id?: string | string[]
 
