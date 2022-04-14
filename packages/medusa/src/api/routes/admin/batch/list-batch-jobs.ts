@@ -8,7 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { pickBy, omit, identity } from "lodash"
+import { pickBy } from "lodash"
 import { defaultAdminBatchFields } from "."
 import BatchJobService from "../../../../services/batch-job"
 import { BatchJob } from "../../../../models"
@@ -51,8 +51,6 @@ export default async (req, res) => {
   const { fields, expand, order, limit, offset, ...filterableFields } =
     await validator(AdminGetBatchParams, req.query)
 
-  const batchService: BatchJobService = req.scope.resolve("batchJobService")
-
   let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
   if (typeof order !== "undefined") {
     if (order.startsWith("-")) {
@@ -75,6 +73,7 @@ export default async (req, res) => {
 
   const created_by: string = req.user.id || req.user.userId
 
+  const batchService: BatchJobService = req.scope.resolve("batchJobService")
   const [jobs, count] = await batchService.listAndCount(
     pickBy(
       { created_by, ...filterableFields },
@@ -86,8 +85,8 @@ export default async (req, res) => {
   res.status(200).json({
     batch_jobs: jobs,
     count,
-    offset: offset,
-    limit: limit,
+    offset,
+    limit,
   })
 }
 
@@ -117,7 +116,6 @@ export class AdminGetBatchPaginationParams {
 
 export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @IsOptional()
-  @IsArray()
   @IsType([String, [String]])
   id?: string | string[]
 
