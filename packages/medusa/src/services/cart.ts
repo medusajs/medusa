@@ -1717,11 +1717,11 @@ class CartService extends BaseService {
               await this.lineItemService_
                 .withTransaction(this.transactionManager_)
                 .delete(item.id)
-              return null
+              return
             }
           })
         )
-      ).filter((item): item is LineItem => item)
+      ).filter((item): item is LineItem => !!item)
     }
   }
 
