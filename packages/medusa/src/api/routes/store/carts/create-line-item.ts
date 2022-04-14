@@ -74,5 +74,5 @@ export class StorePostCartsCartLineItemsReq {
   quantity: number
 
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown> | undefined
 }
