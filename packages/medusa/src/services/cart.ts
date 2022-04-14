@@ -1714,9 +1714,10 @@ class CartService extends BaseService {
                   unit_price: availablePrice.calculatedPrice,
                 })
             } else {
-              return this.lineItemService_
+              await this.lineItemService_
                 .withTransaction(this.transactionManager_)
                 .delete(item.id)
+              return
             }
           })
         )
