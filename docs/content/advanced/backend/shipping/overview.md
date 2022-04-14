@@ -130,4 +130,5 @@ The `ShippingMethod` instance holds a `price` attribute, which will either b
 
 ## What’s Next :rocket:
 
+- [Learn how to Create a Fulfillment Provider.](./add-fulfillment-provider.md)
 - Check out [available shipping plugins](https://github.com/medusajs/medusa/tree/master/packages).
