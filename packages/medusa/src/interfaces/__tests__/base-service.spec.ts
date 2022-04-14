@@ -1,4 +1,4 @@
-import BaseService from "../base-service"
+import { BaseService } from "../base-service"
 import { In, Not } from "typeorm"
 import { MockManager } from "medusa-test-utils"
 
@@ -6,7 +6,7 @@ describe("BaseService", () => {
   it("should cloned the child class withTransaction", () => {
     class Child extends BaseService<Child> {
       constructor(protected readonly container) {
-        super(container, {});
+        super(container);
         this.container = container
       }
 
