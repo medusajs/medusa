@@ -1,5 +1,4 @@
 import { EntityManager } from "typeorm"
-
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import { FilterableBatchJobProps } from "../types/batch-job"
@@ -25,8 +24,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   }
 
   constructor({ manager, batchJobRepository }: InjectedDependencies) {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({ manager, batchJobRepository })
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
