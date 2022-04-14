@@ -22,13 +22,13 @@ export default async ({ app, configModule }: Options): Promise<Express> => {
     sameSite = "none"
   }
 
-  const { cookieSecret } = configModule.projectConfig
+  const { cookie_secret } = configModule.projectConfig
   let sessionOpts = {
     resave: true,
     saveUninitialized: true,
     cookieName: "session",
     proxy: true,
-    secret: cookieSecret,
+    secret: cookie_secret,
     cookie: {
       sameSite,
       secure,

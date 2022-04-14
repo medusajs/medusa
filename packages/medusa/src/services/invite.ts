@@ -69,7 +69,6 @@ class InviteService extends BaseService {
       return this
     }
 
-    console.log("-------", JSON.stringify(this.configModule_, null, 4))
     const cloned = new InviteService(
       {
         manager,
@@ -87,13 +86,13 @@ class InviteService extends BaseService {
   }
 
   generateToken(data): string {
-    const { jwtSecret } = this.configModule_.projectConfig
-    if (jwtSecret) {
-      return jwt.sign(data, jwtSecret)
+    const { jwt_secret } = this.configModule_.projectConfig
+    if (jwt_secret) {
+      return jwt.sign(data, jwt_secret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Please configure JwtSecret"
+      "Please configure jwt_secret"
     )
   }
 
@@ -260,14 +259,13 @@ class InviteService extends BaseService {
   }
 
   verifyToken(token): JwtPayload | string {
-    console.log("----", this.configModule_)
-    const { jwtSecret } = this.configModule_.projectConfig
-    if (jwtSecret) {
-      return jwt.verify(token, jwtSecret)
+    const { jwt_secret } = this.configModule_.projectConfig
+    if (jwt_secret) {
+      return jwt.verify(token, jwt_secret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Please configure JwtSecret"
+      "Please configure jwt_secret"
     )
   }
 

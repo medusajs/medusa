@@ -23,8 +23,8 @@ const clientSessionOpts = {
 
 const config = {
   projectConfig: {
-    jwtSecret: 'supersecret',
-    cookieSecret: 'superSecret',
+    jwt_secret: 'supersecret',
+    cookie_secret: 'superSecret',
     admin_cors: '',
     store_cors: ''
   }
@@ -77,7 +77,7 @@ export async function request(method, url, opts = {}) {
     if (opts.adminSession.jwt) {
       opts.adminSession.jwt = jwt.sign(
         opts.adminSession.jwt,
-        config.projectConfig.jwtSecret,
+        config.projectConfig.jwt_secret,
         {
           expiresIn: "30m",
         }
@@ -89,7 +89,7 @@ export async function request(method, url, opts = {}) {
     if (opts.clientSession.jwt) {
       opts.clientSession.jwt = jwt.sign(
         opts.clientSession.jwt,
-        config.projectConfig.jwtSecret,
+        config.projectConfig.jwt_secret,
         {
           expiresIn: "30d",
         }

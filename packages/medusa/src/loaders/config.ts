@@ -1,11 +1,13 @@
 import { ConfigModule } from "../types/global"
 import { getConfigFile } from "medusa-core-utils/dist"
 
-const isProduction = ['production', 'prod'].includes(process.env.NODE_ENV || '')
+const isProduction = ["production", "prod"].includes(process.env.NODE_ENV || "")
 
-const errorHandler = isProduction ? (msg: string) => {
-  throw new Error(msg)
-} : console.log
+const errorHandler = isProduction
+  ? (msg: string): never => {
+      throw new Error(msg)
+    }
+  : console.log
 
 export default (rootDirectory: string): ConfigModule => {
   const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as {
@@ -18,15 +20,27 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
-  if (!configModule?.projectConfig?.jwtSecret) {
+  const jwt_secret =
+    configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
+  if (!jwt_secret) {
     errorHandler(
-      `[medusa-config] ⚠️ jwtSecret not found.${isProduction ? '' : " fallback to default 'supersecret'."}`
+      `[medusa-config] ⚠️ jwt_secret not found.${
+        isProduction
+          ? ""
+          : " fallback to either cookie_secret or default 'supersecret'."
+      }`
     )
   }
 
-  if (!configModule?.projectConfig?.cookieSecret) {
+  const cookie_secret =
+    configModule?.projectConfig?.cookie_secret ?? process.env.COOKIE_SECRET
+  if (!cookie_secret) {
     errorHandler(
-      `[medusa-config] ⚠️ cookieSecret not found.${isProduction ? '' : " fallback to default 'supersecret'."}`
+      `[medusa-config] ⚠️ cookie_secret not found.${
+        isProduction
+          ? ""
+          : " fallback to either cookie_secret or default 'supersecret'."
+      }`
     )
   }
 
@@ -38,8 +52,8 @@ export default (rootDirectory: string): ConfigModule => {
 
   return {
     projectConfig: {
-      jwtSecret: "supersecret",
-      cookieSecret: "supersecret",
+      jwt_secret: jwt_secret ?? "supersecret",
+      cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
     },
     plugins: configModule?.plugins ?? [],

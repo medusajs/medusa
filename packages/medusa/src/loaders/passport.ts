@@ -33,12 +33,12 @@ export default async ({ app, container, configModule }: { app: Express; containe
 
   // After a user has authenticated a JWT will be placed on a cookie, all
   // calls will be authenticated based on the JWT
-  const { jwtSecret } = configModule.projectConfig
+  const { jwt_secret } = configModule.projectConfig
   passport.use(
     new JWTStrategy(
       {
         jwtFromRequest: (req) => req.session.jwt,
-        secretOrKey: jwtSecret,
+        secretOrKey: jwt_secret,
       },
       async (jwtPayload, done) => {
         return done(null, jwtPayload)

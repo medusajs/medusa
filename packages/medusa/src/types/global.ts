@@ -18,8 +18,8 @@ export type ConfigModule = {
   projectConfig: {
     redis_url?: string
 
-    jwtSecret?: string
-    cookieSecret?: string
+    jwt_secret?: string
+    cookie_secret?: string
 
     database_url?: string
     database_type: string
@@ -32,8 +32,11 @@ export type ConfigModule = {
     store_cors?: string
     admin_cors?: string
   }
-  plugins: {
-    resolve: string
-    options: Record<string, unknown>
-  }[]
+  plugins: (
+    | {
+        resolve: string
+        options: Record<string, unknown>
+      }
+    | string
+  )[]
 }
