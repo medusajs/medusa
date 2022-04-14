@@ -36,7 +36,11 @@ This exports a function that returns an Express router. In that function, you ca
 
 Now, if you run your server and send a request to `/admin/hello`, you will receive a JSON response message.
 
-> Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run `npm run build`.
+:::note
+
+Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run `npm run build`.
+
+:::
 
 ## Accessing Endpoints from Admin
 

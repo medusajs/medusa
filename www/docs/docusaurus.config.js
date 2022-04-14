@@ -6,7 +6,7 @@ const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
 
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
-  title: "Medusa Commerce",
+  title: "Medusa",
   tagline: "Explore and learn how to use Medusa",
   url: "https://docs.medusajs.com",
   baseUrl: "/",
@@ -25,18 +25,22 @@ module.exports = {
     ],
   ],
   themeConfig: {
-    disableSwitch: true,
+    colorMode: {
+      defaultMode: 'light',
+      disableSwitch: true,
+    },
     algolia: {
       apiKey: algoliaApiKey,
       indexName: "medusa-commerce",
       placeholder: "Search docs...",
       appId: algoliaAppId,
+      contextualSearch: false,
     },
     prism: {
       defaultLanguage: "js",
       plugins: ["line-numbers", "show-language"],
-      theme: require("@kiwicopple/prism-react-renderer/themes/vsDark"),
-      darkTheme: require("@kiwicopple/prism-react-renderer/themes/vsDark"),
+      theme: require("prism-react-renderer/themes/vsDark"),
+      darkTheme: require("prism-react-renderer/themes/vsDark"),
     },
     navbar: {
       hideOnScroll: true,
@@ -44,6 +48,7 @@ module.exports = {
         alt: "Medusa Commerce",
         src: "img/logo.svg",
         srcDark: "img/logo.svg",
+        width: 100
       },
       items: [
         {
@@ -98,12 +103,12 @@ module.exports = {
           title: "More",
           items: [
             {
-              label: "Contact",
-              href: "https://medusa-commere.com",
+              label: "Medusa Home",
+              href: "https://medusajs.com",
             },
             {
-              label: "Privacy & Terms",
-              href: "https://medusa-commere.com",
+              label: "Contact",
+              href: "https://ky5eo2x1u81.typeform.com/get-in-touch",
             },
             {
               label: "GitHub",
@@ -112,7 +117,7 @@ module.exports = {
           ],
         },
       ],
-      copyright: `© ${new Date().getFullYear()} Medusa Commerce`,
+      copyright: `© ${new Date().getFullYear()} Medusa`,
     },
   },
   presets: [
