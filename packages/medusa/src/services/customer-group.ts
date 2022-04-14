@@ -10,6 +10,7 @@ import {
   FilterableCustomerGroupProps,
 } from "../types/customer-groups"
 import { formatException } from "../utils/exception-formatter"
+import { AdminPostCustomerGroupsGroupReq } from "../api/routes/admin/customer-groups"
 
 type CustomerGroupConstructorProps = {
   manager: EntityManager
@@ -139,7 +140,7 @@ class CustomerGroupService extends BaseService<CustomerGroupService> {
    */
   async update(
     customerGroupId: string,
-    update: CustomerGroupUpdate
+    update: CustomerGroupUpdate | AdminPostCustomerGroupsGroupReq
   ): Promise<CustomerGroup> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
