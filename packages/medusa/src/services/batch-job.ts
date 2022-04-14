@@ -1,11 +1,10 @@
 import { EntityManager } from "typeorm"
-
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import { FilterableBatchJobProps } from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, validateId } from "../utils"
+import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
@@ -62,12 +61,14 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     config: FindConfig<BatchJob> = { skip: 0, take: 20 }
   ): Promise<[BatchJob[], number]> {
     return await this.atomicPhase_(
-      async (manager: EntityManager): Promise<[BatchJob[], number]> => {
-        const batchJobRepo = manager.getCustomRepository(
+      async (
+        transactionManager: EntityManager
+      ): Promise<[BatchJob[], number]> => {
+        const batchJobRepo = transactionManager.getCustomRepository(
           this.batchJobRepository_
         )
 
-        const query = buildQuery(selector, config)
+        const query = buildQuery<BatchJob>(selector, config)
         return await batchJobRepo.findAndCount(query)
       }
     )
