@@ -32,8 +32,12 @@ export default ({ container, configModule, isTest }: Options): void => {
        * TODO: See how that could be improved without breaking changes
        */
       const pathSegments = fn.split('/')
-      const path = pathSegments.splice(0, pathSegments.indexOf('dist') + 2).join('/') + '/' + pathSegments.at(-1)
-      const name = formatRegistrationName(path)
+      const computedPath = pathSegments
+        .splice(
+          0,
+          pathSegments.indexOf(isTest ? 'src' : 'dist') + 2
+        ).join('/') + '/' + pathSegments[pathSegments.length - 1]
+      const name = formatRegistrationName(computedPath)
       container.register({
         [name]: asFunction(
           (cradle) => new loaded(cradle, configModule)

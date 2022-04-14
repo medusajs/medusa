@@ -22,44 +22,52 @@ const clientSessionOpts = {
   secret: "test",
 }
 
-const testApp = express()
+global.supertestRequest = undefined;
 
-const container = createContainer()
-container.register({
-  logger: asValue({
-    error: () => {},
-  }),
-  manager: asValue(MockManager),
-})
+async function bootstrapSuperTest() {
+  const testApp = express()
 
-testApp.set("trust proxy", 1)
-testApp.use((req, res, next) => {
-  req.session = {}
-  const data = req.get("Cookie")
-  if (data) {
-    req.session = {
-      ...req.session,
-      ...JSON.parse(data),
+  const container = createContainer()
+  container.register({
+    logger: asValue({
+      error: () => {},
+    }),
+    manager: asValue(MockManager),
+  })
+
+  testApp.set("trust proxy", 1)
+  testApp.use((req, res, next) => {
+    req.session = {}
+    const data = req.get("Cookie")
+    if (data) {
+      req.session = {
+        ...req.session,
+        ...JSON.parse(data),
+      }
     }
-  }
-  next()
-})
+    next()
+  })
 
-servicesLoader({ container })
-strategiesLoader({ container })
-passportLoader({ app: testApp, container })
+  await servicesLoader({ container, isTest: true })
+  await strategiesLoader({ container })
+  await passportLoader({ app: testApp, container })
 
-testApp.use((req, res, next) => {
-  req.scope = container.createScope()
-  next()
-})
+  testApp.use((req, res, next) => {
+    req.scope = container.createScope()
+    next()
+  })
 
-apiLoader({ container, rootDirectory: ".", app: testApp })
+  await apiLoader({ container, rootDirectory: ".", app: testApp })
 
-const supertestRequest = supertest(testApp)
+  return supertest(testApp)
+}
 
 export async function request(method, url, opts = {}) {
   let { payload, headers } = opts
+
+  if (!global.supertestRequest) {
+    global.supertestRequest = await bootstrapSuperTest()
+  }
 
   const req = supertestRequest[method.toLowerCase()](url)
   headers = headers || {}
