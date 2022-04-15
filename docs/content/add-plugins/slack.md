@@ -69,7 +69,7 @@ The next step is to install Medusa’s [Slack plugin](https://github.com/medusaj
 
 Open the terminal in the Medusa server’s directory and run the following command:
 
-```bash
+```bash npm2yarn
 npm install medusa-plugin-slack-notification
 ```
 

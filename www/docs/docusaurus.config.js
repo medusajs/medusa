@@ -129,6 +129,9 @@ module.exports = {
           editUrl: "https://github.com/medusajs/medusa/edit/master/www/",
           path: docsPath,
           routeBasePath: "/",
+          remarkPlugins: [
+            [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
+          ],
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

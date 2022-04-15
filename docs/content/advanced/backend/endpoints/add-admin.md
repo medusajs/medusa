@@ -38,7 +38,11 @@ Now, if you run your server and send a request to `/admin/hello`, you will recei
 
 :::note
 
-Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run `npm run build`.
+Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run:
+
+```bash npm2yarn
+npm run build
+```
 
 :::
 

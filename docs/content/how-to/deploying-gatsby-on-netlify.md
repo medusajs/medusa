@@ -12,7 +12,7 @@ This is a guide for deploying our [Gatsby storefront starter](https://github.com
 
 Install Netlify CLI on your machine using npm:
 
-```shell=
+```bash npm2yarn
 npm install netlify-cli -g
 ```
 
@@ -20,7 +20,7 @@ npm install netlify-cli -g
 
 Connect to your Netlify account from your terminal:
 
-```shell=
+```bash
 netlify login
 ```
 
@@ -34,7 +34,7 @@ The Netlify CLI is used to achieve this.
 
 #### Create a new site
 
-```shell=
+```bash
 netlify init
 ```
 
@@ -44,7 +44,7 @@ The default build and deploy settings fit the needs of a Gatsby application, so 
 
 #### Add an environment variable
 
-```shell=
+```bash
 netlify env:set GATSBY_MEDUSA_BACKEND_URL "https://your-medusa-server.com"
 ```
 
@@ -54,7 +54,7 @@ The above environment variable should point to your Medusa server.
 
 Finally to deploy the storefront, commit and push your changes to the repository connected in step 3.
 
-```shell=
+```bash
 git add .
 git commit -m "Deploy Medusa Admin on Netlify"
 git push origin main

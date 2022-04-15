@@ -26,8 +26,8 @@ Navigate to users and perform the following steps:
 
 First, install the plugin using your preferred package manager:
 
-```
-yarn add medusa-file-minio
+```bash npm2yarn
+npm install medusa-file-minio
 ```
 
 Then configure your `medusa-config.js` to include the plugin alongside the required options:
