@@ -173,6 +173,18 @@ module.exports = {
               ]
             },
             {
+              type: "category",
+              label: 'Payment',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/payment/overview",
+                  label: "Architecture Overview"
+                },
+              ]
+            },
+            {
               type: "doc",
               id: "tutorial/adding-custom-functionality",
               label: "Add Custom Functionality"
