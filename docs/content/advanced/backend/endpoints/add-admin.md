@@ -204,6 +204,18 @@ const userService = req.scope.resolve("userService")
 const user = await userService.retrieve(id)
 ```
 
+### Route Parameters
+
+The routes you create receive 2 parameters. The first one is the absolute path to the root directory that your server is running from. The second one is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+
+```js
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  //...
+}
+```
+
 ## What’s Next 🚀
 
 - [Learn how to add an endpoint for the Storefront.](/advanced/backend/endpoints/add-storefront)
