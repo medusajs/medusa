@@ -1,6 +1,16 @@
 # Quickstart
 
-This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](https://docs.medusajs.com/tutorial/set-up-your-development-environment).
+This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](../tutorial/0-set-up-your-development-environment.md).
+
+## Prerequisites
+
+Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
+
+```bash
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
 
 ## Getting started
 
