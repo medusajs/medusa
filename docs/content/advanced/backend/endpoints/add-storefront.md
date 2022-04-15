@@ -175,6 +175,18 @@ const customerService = req.scope.resolve("customerService")
 const customer = await customerService.retrieve(id)
 ```
 
+### Route Parameters
+
+The routes you create receive 2 parameters. The first one is the absolute path to the root directory that your server is running from. The second one is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+
+```js
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  //...
+}
+```
+
 ## What’s Next :rocket:
 
 - [Learn how to add an endpoint for the Admin.](/advanced/backend/endpoints/add-admin)
