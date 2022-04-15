@@ -279,6 +279,11 @@ module.exports = {
               id: "add-plugins/sendgrid",
               label: "SendGrid",
             },
+            {
+              type: "doc",
+              id: "add-plugins/mailchimp",
+              label: "Mailchimp",
+            },
           ],
         },
         {
