@@ -165,6 +165,11 @@ module.exports = {
                   id: "advanced/backend/shipping/overview",
                   label: "Architecture Overview"
                 },
+                {
+                  type: "doc",
+                  id: "advanced/backend/shipping/add-fulfillment-provider",
+                  label: "Add Fulfillment Provider"
+                }
               ]
             },
             {
