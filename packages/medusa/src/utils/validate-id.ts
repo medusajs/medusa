@@ -8,7 +8,7 @@
 */
 import { MedusaError } from "medusa-core-utils/dist"
 
-export function validateId_(
+export function validateId(
   rawId: string,
   config: { prefix?: string; length?: number } = {}
 ): string {

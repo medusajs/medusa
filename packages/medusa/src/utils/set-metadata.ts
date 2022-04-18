@@ -6,7 +6,7 @@ import { MedusaError } from "medusa-core-utils/dist"
 * @param metadata - the metadata to set
 * @return resolves to the updated result.
 */
-export function setMetadata_(
+export function setMetadata(
   obj: { metadata: Record<string, unknown> },
   metadata: Record<string, unknown>
 ): Record<string, unknown> {
