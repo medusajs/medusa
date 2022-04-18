@@ -27,7 +27,7 @@ describe("/admin/discounts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -1512,6 +1512,376 @@ describe("/admin/discounts", () => {
           ends_at: null,
         })
       )
+    })
+  })
+
+  describe("DELETE /admin/discounts/:id/conditions/:condition_id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "products",
+              operator: "in",
+              products: [prod.id],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should delete condition", async () => {
+      const api = useApi()
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition",
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      const response = await api
+        .delete("/admin/discounts/test-discount/conditions/test-condition", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data
+
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-condition",
+          deleted: true,
+          object: "discount-condition",
+        })
+      )
+    })
+
+    it("should not fail if condition does not exist", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete("/admin/discounts/test-discount/conditions/test-condition", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data
+
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-condition",
+          deleted: true,
+          object: "discount-condition",
+        })
+      )
+    })
+  })
+
+  describe("POST /admin/discounts/:id/conditions", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should create a condition", async () => {
+      const api = useApi()
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      const response = await api
+        .post(
+          "/admin/discounts/test-discount/conditions",
+          {
+            operator: "in",
+            products: [prod.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+
+      expect(response.status).toEqual(200)
+      expect(disc).toMatchSnapshot({
+        id: "test-discount",
+        code: "TEST",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        rule_id: expect.any(String),
+        starts_at: expect.any(String),
+        rule: {
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          conditions: [
+            {
+              id: expect.any(String),
+              discount_rule_id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+        },
+      })
+    })
+
+    it("fails if more than one condition type is provided", async () => {
+      const api = useApi()
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount/conditions",
+          {
+            operator: "in",
+            products: [prod.id],
+            customer_groups: ["customer-group-1"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed"
+        )
+      }
+    })
+  })
+
+  describe("POST /admin/discounts/:id/conditions/:condition_id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition",
+              type: "products",
+              operator: "in",
+              products: [prod.id],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should update a condition", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      const discount = await api
+        .get("/admin/discounts/test-discount", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const cond = discount.data.discount.rule.conditions[0]
+
+      const response = await api
+        .post(
+          `/admin/discounts/test-discount/conditions/${cond.id}`,
+          {
+            id: "test-condition",
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+
+      expect(response.status).toEqual(200)
+      expect(disc).toMatchSnapshot({
+        id: "test-discount",
+        code: "TEST",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        rule_id: expect.any(String),
+        starts_at: expect.any(String),
+        rule: {
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          conditions: [
+            {
+              id: expect.any(String),
+              discount_rule_id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+        },
+      })
+    })
+
+    it("fails if more than one condition type is provided", async () => {
+      const api = useApi()
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount/conditions",
+          {
+            operator: "in",
+            products: [prod.id],
+            customer_groups: ["customer-group-1"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed"
+        )
+      }
     })
   })
 })

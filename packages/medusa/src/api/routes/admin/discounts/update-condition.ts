@@ -67,7 +67,7 @@ import { validator } from "../../../../utils/validator"
  */
 
 export default async (req, res) => {
-  const { discount_id, condition_id } = req.query
+  const { discount_id, condition_id } = req.params
 
   const validated = await validator(
     AdminPostDiscountsConditionsCondition,
@@ -110,12 +110,6 @@ export class AdminPostDiscountsConditionsCondition extends AdminUpsertConditions
 }
 
 export class AdminPostDiscountsConditionsConditionParams {
-  @IsString()
-  discount_id: string
-
-  @IsString()
-  condition_id: string
-
   @IsArray()
   @IsOptional()
   expand?: string

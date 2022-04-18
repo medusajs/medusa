@@ -59,6 +59,20 @@ export default (app) => {
     middlewares.wrap(require("./remove-region").default)
   )
 
+  // Discount condition management
+  route.post(
+    "/:discount_id/conditions/:condition_id",
+    middlewares.wrap(require("./update-condition").default)
+  )
+  route.post(
+    "/:discount_id/conditions",
+    middlewares.wrap(require("./create-condition").default)
+  )
+  route.delete(
+    "/:discount_id/conditions/:condition_id",
+    middlewares.wrap(require("./delete-condition").default)
+  )
+
   return app
 }
 

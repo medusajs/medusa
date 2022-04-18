@@ -46,7 +46,7 @@ export default async (req, res) => {
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  await conditionService.delete(condition_id)
+  await conditionService.remove(condition_id)
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,
@@ -66,12 +66,6 @@ export default async (req, res) => {
 }
 
 export class AdminDeleteDiscountsConditionsConditionParams {
-  @IsString()
-  discount_id: string
-
-  @IsString()
-  condition_id: string
-
   @IsString()
   @IsOptional()
   expand?: string

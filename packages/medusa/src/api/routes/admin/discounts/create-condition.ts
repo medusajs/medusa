@@ -68,7 +68,7 @@ import { AdminPostDiscountsDiscountParams } from "./update-discount"
  */
 
 export default async (req, res) => {
-  const { discount_id } = req.query
+  const { discount_id } = req.params
 
   const validated = await validator(
     AdminPostDiscountsDiscountCondition,
@@ -105,9 +105,6 @@ export class AdminPostDiscountsDiscountCondition extends AdminUpsertConditionsRe
 }
 
 export class AdminPostDiscountsParams {
-  @IsString()
-  discount_id: string
-
   @IsArray()
   @IsOptional()
   expand?: string[]

@@ -2,10 +2,12 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
+import { DiscountConditionType } from "../models"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { UpsertDiscountConditionInput } from "../types/discount"
 import { PostgresError } from "../utils/exception-formatter"
+import DiscountService from "./discount"
 
 /**
  * Provides layer to manipulate discounts.
@@ -14,12 +16,14 @@ import { PostgresError } from "../utils/exception-formatter"
 class DiscountConditionService extends BaseService {
   private manager_: EntityManager
   private discountRuleRepository_: typeof DiscountRuleRepository
+  private discountService_: DiscountService
   private discountConditionRepository_: typeof DiscountConditionRepository
   private eventBus_: EventBusService
 
   constructor({
     manager,
     discountRuleRepository,
+    discountService,
     discountConditionRepository,
     eventBusService,
   }) {
@@ -30,6 +34,9 @@ class DiscountConditionService extends BaseService {
 
     /** @private @const {DiscountRuleRepository} */
     this.discountRuleRepository_ = discountRuleRepository
+
+    /** @private @const {DiscountService} */
+    this.discountService_ = discountService
 
     /** @private @const {DiscountConditionRepository} */
     this.discountConditionRepository_ = discountConditionRepository
@@ -46,6 +53,7 @@ class DiscountConditionService extends BaseService {
     const cloned = new DiscountConditionService({
       manager: transactionManager,
       discountRuleRepository: this.discountRuleRepository_,
+      discountService: this.discountService_,
       discountConditionRepository: this.discountConditionRepository_,
       eventBusService: this.eventBus_,
     })
@@ -54,6 +62,43 @@ class DiscountConditionService extends BaseService {
     cloned.manager_ = transactionManager
 
     return cloned
+  }
+
+  resolveConditionType_(data: UpsertDiscountConditionInput):
+    | {
+        type: DiscountConditionType
+        resource_ids: string[]
+      }
+    | undefined {
+    switch (true) {
+      case !!data.products?.length:
+        return {
+          type: DiscountConditionType.PRODUCTS,
+          resource_ids: data.products!,
+        }
+      case !!data.product_collections?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_COLLECTIONS,
+          resource_ids: data.product_collections!,
+        }
+      case !!data.product_types?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_TYPES,
+          resource_ids: data.product_types!,
+        }
+      case !!data.product_tags?.length:
+        return {
+          type: DiscountConditionType.PRODUCT_TAGS,
+          resource_ids: data.product_tags!,
+        }
+      case !!data.customer_groups?.length:
+        return {
+          type: DiscountConditionType.CUSTOMER_GROUPS,
+          resource_ids: data.customer_groups!,
+        }
+      default:
+        return undefined
+    }
   }
 
   async upsertCondition(
@@ -74,9 +119,20 @@ class DiscountConditionService extends BaseService {
           )
         }
 
-        const discount = await this.retrieve(discountId, {
-          relations: ["rule", "rule.conditions"],
-        })
+        if (data.id) {
+          return await discountConditionRepo.addConditionResources(
+            data.id,
+            resolvedConditionType.resource_ids,
+            resolvedConditionType.type,
+            true
+          )
+        }
+
+        const discount = await this.discountService_
+          .withTransaction(manager)
+          .retrieve(discountId, {
+            relations: ["rule", "rule.conditions"],
+          })
 
         const created = discountConditionRepo.create({
           discount_rule_id: discount.rule_id,
