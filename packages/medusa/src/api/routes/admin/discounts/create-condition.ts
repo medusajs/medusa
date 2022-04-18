@@ -9,51 +9,38 @@ import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 import { AdminPostDiscountsDiscountParams } from "./update-discount"
 /**
- * @oas [post] /discounts
- * operationId: "PostDiscounts"
- * summary: "Creates a Discount"
+ * @oas [post] /discounts/:id/conditions
+ * operationId: "PostDiscountsConditions"
+ * summary: "Creates a DiscountCondition"
  * x-authenticated: true
- * description: "Creates a Discount with a given set of rules that define how the Discount behaves."
+ * description: "Creates a DiscountCondition"
  * requestBody:
  *   content:
  *     application/json:
  *       required:
- *         - code
- *         - rule
+ *         - id
  *       schema:
  *         properties:
- *           code:
- *             type: string
- *             description: A unique code that will be used to redeem the Discount
- *           is_dynamic:
- *             type: string
- *             description: Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules.
- *           rule:
- *             description: The Discount Rule that defines how Discounts are calculated
- *             oneOf:
- *               - $ref: "#/components/schemas/discount_rule"
- *           is_disabled:
- *             type: boolean
- *             description: Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers.
- *           starts_at:
- *             type: string
- *             format: date-time
- *             description: The time at which the Discount should be available.
- *           ends_at:
- *             type: string
- *             format: date-time
- *             description: The time at which the Discount should no longer be available.
- *           regions:
- *             description: A list of Region ids representing the Regions in which the Discount can be used.
- *             type: array
- *             items:
- *               type: string
- *           usage_limit:
- *             type: number
- *             description: Maximum times the discount can be used
- *           metadata:
- *             description: An optional set of key-value pairs to hold additional information.
- *             type: object
+ *           operator:
+ *              description: Operator of the condition
+ *              type: string
+ *           items:
+ *              properties:
+ *                products:
+ *                  type: array
+ *                  description: list of products
+ *                product_types:
+ *                  type: array
+ *                  description: list of product types
+ *                product_collections:
+ *                  type: array
+ *                  description: list of product collections
+ *                product_tags:
+ *                  type: array
+ *                  description: list of product tags
+ *                customer_groups:
+ *                  type: array
+ *                  description: list of customer_groups
  * tags:
  *   - Discount
  * responses:
@@ -66,14 +53,10 @@ import { AdminPostDiscountsDiscountParams } from "./update-discount"
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
-
 export default async (req, res) => {
   const { discount_id } = req.params
 
-  const validated = await validator(
-    AdminPostDiscountsDiscountCondition,
-    req.body
-  )
+  const validated = await validator(AdminPostDiscountsConditions, req.body)
 
   const validatedParams = await validator(
     AdminPostDiscountsDiscountParams,
@@ -99,12 +82,12 @@ export default async (req, res) => {
   res.status(200).json({ discount })
 }
 
-export class AdminPostDiscountsDiscountCondition extends AdminUpsertConditionsReq {
+export class AdminPostDiscountsConditions extends AdminUpsertConditionsReq {
   @IsString()
   operator: DiscountConditionOperator
 }
 
-export class AdminPostDiscountsParams {
+export class AdminPostDiscountsConditionsParams {
   @IsArray()
   @IsOptional()
   expand?: string[]

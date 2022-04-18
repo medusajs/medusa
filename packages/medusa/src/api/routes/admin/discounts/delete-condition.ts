@@ -7,7 +7,7 @@ import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /discounts/{id}/conditions/{conditionId}
+ * @oas [delete] /discounts/{id}/conditions/{condition_id}
  * operationId: "DeleteDiscountsDiscountCondition"
  * summary: "Delete a DiscountCondition"
  * description: "Deletes a DiscountCondition"
@@ -26,12 +26,15 @@ import { validator } from "../../../../utils/validator"
  *           properties:
  *             id:
  *               type: string
- *               description: The id of the deleted Discount
+ *               description: The id of the deleted DiscountCondition
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *             discount:
+ *               type: object
+ *               description: The Discount to which the condition used to belong
  */
 export default async (req, res) => {
   const { discount_id, condition_id } = req.params
