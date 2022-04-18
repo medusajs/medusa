@@ -3,11 +3,11 @@ import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
 import { DiscountConditionType } from "../models"
+import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
 import { UpsertDiscountConditionInput } from "../types/discount"
 import { PostgresError } from "../utils/exception-formatter"
-import DiscountService from "./discount"
 
 /**
  * Provides layer to manipulate discounts.
@@ -16,14 +16,14 @@ import DiscountService from "./discount"
 class DiscountConditionService extends BaseService {
   private manager_: EntityManager
   private discountRuleRepository_: typeof DiscountRuleRepository
-  private discountService_: DiscountService
+  private discountRepository_: typeof DiscountRepository
   private discountConditionRepository_: typeof DiscountConditionRepository
   private eventBus_: EventBusService
 
   constructor({
     manager,
     discountRuleRepository,
-    discountService,
+    discountRepository,
     discountConditionRepository,
     eventBusService,
   }) {
@@ -35,8 +35,8 @@ class DiscountConditionService extends BaseService {
     /** @private @const {DiscountRuleRepository} */
     this.discountRuleRepository_ = discountRuleRepository
 
-    /** @private @const {DiscountService} */
-    this.discountService_ = discountService
+    /** @private @const {DiscountRepository} */
+    this.discountRepository_ = discountRepository
 
     /** @private @const {DiscountConditionRepository} */
     this.discountConditionRepository_ = discountConditionRepository
@@ -53,7 +53,7 @@ class DiscountConditionService extends BaseService {
     const cloned = new DiscountConditionService({
       manager: transactionManager,
       discountRuleRepository: this.discountRuleRepository_,
-      discountService: this.discountService_,
+      discountRepository: this.discountRepository_,
       discountConditionRepository: this.discountConditionRepository_,
       eventBusService: this.eventBus_,
     })
@@ -111,6 +111,9 @@ class DiscountConditionService extends BaseService {
       async (manager) => {
         const discountConditionRepo: DiscountConditionRepository =
           manager.getCustomRepository(this.discountConditionRepository_)
+        const discountRepo: DiscountRepository = manager.getCustomRepository(
+          this.discountRepository_
+        )
 
         if (!resolvedConditionType) {
           throw new MedusaError(
@@ -128,11 +131,17 @@ class DiscountConditionService extends BaseService {
           )
         }
 
-        const discount = await this.discountService_
-          .withTransaction(manager)
-          .retrieve(discountId, {
-            relations: ["rule", "rule.conditions"],
-          })
+        const discount = await discountRepo.findOne({
+          where: { id: discountId },
+          relations: ["rule", "rule.conditions"],
+        })
+
+        if (!discount) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Discount with ${discountId} was not found`
+          )
+        }
 
         const created = discountConditionRepo.create({
           discount_rule_id: discount.rule_id,
@@ -180,30 +189,6 @@ class DiscountConditionService extends BaseService {
       await conditionRepo.remove(condition)
 
       return Promise.resolve()
-    })
-  }
-
-  async canApplyForCustomer(
-    discountRuleId: string,
-    customerId: string | undefined
-  ): Promise<boolean> {
-    return this.atomicPhase_(async (manager) => {
-      const discountConditionRepo: DiscountConditionRepository =
-        manager.getCustomRepository(this.discountConditionRepository_)
-
-      // Instead of throwing on missing customer id, we simply invalidate the discount
-      if (!customerId) {
-        return false
-      }
-
-      const customer = await this.customerService_.retrieve(customerId, {
-        relations: ["groups"],
-      })
-
-      return await discountConditionRepo.canApplyForCustomer(
-        discountRuleId,
-        customer.id
-      )
     })
   }
 }
