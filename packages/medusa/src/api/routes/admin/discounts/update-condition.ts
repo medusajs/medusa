@@ -1,4 +1,4 @@
-import { IsArray, IsOptional } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../../models/discount"
 import { DiscountService } from "../../../../services"
@@ -86,11 +86,11 @@ export default async (req, res) => {
 export class AdminPostDiscountsConditionsCondition extends AdminUpsertConditionsReq {}
 
 export class AdminPostDiscountsConditionsConditionParams {
-  @IsArray()
+  @IsString()
   @IsOptional()
   expand?: string
 
-  @IsArray()
+  @IsString()
   @IsOptional()
   fields?: string
 }

@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../../models/discount"
 import { DiscountConditionOperator } from "../../../../models/discount-condition"
@@ -88,11 +88,11 @@ export class AdminPostDiscountsConditions extends AdminUpsertConditionsReq {
 }
 
 export class AdminPostDiscountsConditionsParams {
-  @IsArray()
+  @IsString()
   @IsOptional()
-  expand?: string[]
+  expand?: string
 
-  @IsArray()
+  @IsString()
   @IsOptional()
-  fields?: string[]
+  fields?: string
 }

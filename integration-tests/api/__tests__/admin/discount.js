@@ -27,7 +27,7 @@ describe("/admin/discounts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -1790,7 +1790,10 @@ describe("/admin/discounts", () => {
     it("should update a condition", async () => {
       const api = useApi()
 
-      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+      const prod2 = await simpleProductFactory(dbConnection, {
+        id: "test-product",
+        type: "pants",
+      })
 
       const discount = await api
         .get("/admin/discounts/test-discount", {
@@ -1806,7 +1809,7 @@ describe("/admin/discounts", () => {
 
       const response = await api
         .post(
-          `/admin/discounts/test-discount/conditions/${cond.id}`,
+          `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule,rule.conditions,rule.conditions.products`,
           {
             products: [prod2.id],
           },
@@ -1840,6 +1843,15 @@ describe("/admin/discounts", () => {
               discount_rule_id: expect.any(String),
               created_at: expect.any(String),
               updated_at: expect.any(String),
+              products: [
+                {
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  profile_id: expect.any(String),
+                  type_id: expect.any(String),
+                  id: "test-product",
+                },
+              ],
             },
           ],
         },
