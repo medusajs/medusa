@@ -1,7 +1,20 @@
-import { FindConfig, Writable } from "../types/common"
+import {
+  DateComparisonOperator,
+  FindConfig,
+  NumericalComparisonOperator,
+  StringComparisonOperator,
+  Writable,
+} from "../types/common"
 import { FindOperator, In, Raw } from "typeorm"
 
-type Selector<TEntity> = { [key in keyof TEntity]?: unknown }
+type Selector<TEntity> = {
+  [key in keyof TEntity]?: TEntity[key]
+    | TEntity[key][]
+    | DateComparisonOperator
+    | StringComparisonOperator
+    | NumericalComparisonOperator
+}
+
 /**
 * Used to build TypeORM queries.
 * @param selector The selector
@@ -16,7 +29,7 @@ export function buildQuery<TEntity = unknown>(
   withDeleted?: boolean
 } {
   const build = (
-    obj: Record<string, unknown>
+    obj: Selector<TEntity>
   ): Partial<Writable<TEntity>> => {
     return Object.entries(obj).reduce((acc, [key, value]: any) => {
       // Undefined values indicate that they have no significance to the query.
