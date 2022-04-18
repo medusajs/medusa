@@ -32,7 +32,7 @@ If you don’t have a Medusa server installed yet, you must follow our [quicksta
 
 In the root of your Medusa server, run the following command to install the stripe plugin:
 
-```bash
+```bash npm2yarn
 npm install medusa-payment-stripe
 ```
 
@@ -184,14 +184,14 @@ The integration with stripe must have the following workflow:
 
 Before you start the implementations you need to install the necessary dependencies. You’ll be using Stripe’s React libraries to show the UI and handle the payment confirmation:
 
-```bash
+```bash npm2yarn
 npm install --save @stripe/react-stripe-js @stripe/stripe-js
 ```
 
 You’ll also use Medusa’s JS Client to easily call Medusa’s REST APIs:
 
-```bash
-npm i @medusajs/medusa-js
+```bash npm2yarn
+npm install @medusajs/medusa-js
 ```
 
 #### Initialize Stripe

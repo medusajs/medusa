@@ -33,21 +33,21 @@ Our Medusa project needs a bit of configuration to fit the needs of Qovery.
 
 First, add the Postgres and Redis database url to your `medusa-config.js`. In Qovery, click on your Medusa app in the environment overview. Navigate to environment variables in the sidebar on the left. Among the secret variables you should find your database urls. They should look something like this:
 
-```javascript=
+```bash
 QOVERY_REDIS_123456789_DATABASE_URL
 QOVERY_POSTGRESQL_123456789_DATABASE_URL
 ```
 
 Add these to your `medusa-config.js`.
 
-```javascript=
+```js
 const DATABASE_URL = process.env.QOVERY_POSTGRESQL_123456789_DATABASE_URL
 const REDIS_URL= process.env.QOVERY_REDIS_123456789_DATABASE_URL
 ```
 
 Furthermore, update `module.exports` to include the following:
 
-```javascript=
+```js
 module.exports = {
   projectConfig: {
     redis_url: REDIS_URL,
@@ -70,7 +70,7 @@ module.exports = {
 
 We need to add a couple of more environment variables in Qovery. Add the following variables in your Console with an application scope:
 
-```javascript=
+```bash
 JTW_SECRET=something_secret_jwt
 COOKIE_SECRET=something_secret_cookie
 ```
@@ -81,7 +81,7 @@ COOKIE_SECRET=something_secret_cookie
 
 Update `scripts` to the following:
 
-```json=
+```json
 "scripts": {
     "serve": "medusa start",
     "start": "medusa migrations run && medusa start",
@@ -102,7 +102,7 @@ In your environment overview in Qovery, deploy your databases one after the othe
 
 To initialise your first build Qovery, simply commit and push your changes.
 
-```shell=
+```bash
 git add .
 git commit -m "chore: Qovery setup"
 git push origin main

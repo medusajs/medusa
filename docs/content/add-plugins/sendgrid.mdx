@@ -3895,8 +3895,8 @@ You don’t have to create a template for every type in the reference. You can s
 
 In the directory of your Medusa server run the following command to install the SendGrid plugin:
 
-```bash
-npm i medusa-plugin-sendgrid
+```bash npm2yarn
+npm install medusa-plugin-sendgrid
 ```
 
 Then, in your `.env` file add the API key you created earlier as well as the send from email:
@@ -3945,8 +3945,8 @@ You can also optionally pass the option `localization` if you want to support di
 
 Run your server now:
 
-```bash
-npm start
+```bash npm2yarn
+npm run start
 ```
 
 To test it out, perform an action that would trigger one of the emails being sent. For example, you can use your Medusa storefront to create an order. An email from your SendGrid account will be sent to the customer email.

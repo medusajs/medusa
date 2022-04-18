@@ -19,9 +19,7 @@ const plugins = [
 
 And installing them through your favourite package manager:
 
-```bash
-yarn add medusa-payment-stripe
-# or
+```bash npm2yarn
 npm install medusa-payment-stripe
 ```
 
