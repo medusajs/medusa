@@ -1858,29 +1858,16 @@ describe("/admin/discounts", () => {
       })
     })
 
-    it("fails if more than one condition type is provided", async () => {
+    it("throws if condition does not exist", async () => {
       const api = useApi()
 
-      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
-
-      const group = await dbConnection.manager.insert(CustomerGroup, {
-        id: "customer-group-1",
-        name: "vip-customers",
-      })
-
-      await dbConnection.manager.insert(Customer, {
-        id: "cus_1234",
-        email: "oli@email.com",
-        groups: [group],
-      })
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
 
       try {
         await api.post(
-          "/admin/discounts/test-discount/conditions",
+          "/admin/discounts/test-discount/conditions/does-not-exist",
           {
-            operator: "in",
-            products: [prod.id],
-            customer_groups: ["customer-group-1"],
+            products: [prod2.id],
           },
           {
             headers: {
@@ -1890,7 +1877,7 @@ describe("/admin/discounts", () => {
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
-          "Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed"
+          "DiscountCondition with id does-not-exist was not found"
         )
       }
     })

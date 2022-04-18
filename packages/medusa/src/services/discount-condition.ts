@@ -2,10 +2,11 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
-import { DiscountConditionType } from "../models"
+import { DiscountCondition, DiscountConditionType } from "../models"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
+import { FindConfig } from "../types/common"
 import { UpsertDiscountConditionInput } from "../types/discount"
 import { PostgresError } from "../utils/exception-formatter"
 
@@ -14,11 +15,11 @@ import { PostgresError } from "../utils/exception-formatter"
  * @implements {BaseService}
  */
 class DiscountConditionService extends BaseService {
-  private manager_: EntityManager
-  private discountRuleRepository_: typeof DiscountRuleRepository
-  private discountRepository_: typeof DiscountRepository
-  private discountConditionRepository_: typeof DiscountConditionRepository
-  private eventBus_: EventBusService
+  protected readonly manager_: EntityManager
+  protected readonly discountRuleRepository_: typeof DiscountRuleRepository
+  protected readonly discountRepository_: typeof DiscountRepository
+  protected readonly discountConditionRepository_: typeof DiscountConditionRepository
+  protected readonly eventBus_: EventBusService
 
   constructor({
     manager,
@@ -59,9 +60,29 @@ class DiscountConditionService extends BaseService {
     })
 
     cloned.transactionManager_ = transactionManager
-    cloned.manager_ = transactionManager
 
     return cloned
+  }
+
+  async retrieve(
+    conditionId: string,
+    config: FindConfig<DiscountCondition> = {}
+  ): Promise<DiscountCondition> {
+    const conditionRepo = this.manager_.getCustomRepository(
+      this.discountConditionRepository_
+    )
+
+    const query = this.buildQuery_({ id: conditionId }, config)
+    const condition = await conditionRepo.findOne(query)
+
+    if (!condition) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `DiscountCondition with id: ${conditionId} was not found`
+      )
+    }
+
+    return condition
   }
 
   resolveConditionType_(data: UpsertDiscountConditionInput):
@@ -107,8 +128,8 @@ class DiscountConditionService extends BaseService {
   ): Promise<void> {
     const resolvedConditionType = this.resolveConditionType_(data)
 
-    const res = this.atomicPhase_(
-      async (manager) => {
+    return await this.atomicPhase_(
+      async (manager: EntityManager) => {
         const discountConditionRepo: DiscountConditionRepository =
           manager.getCustomRepository(this.discountConditionRepository_)
         const discountRepo: DiscountRepository = manager.getCustomRepository(
@@ -123,8 +144,11 @@ class DiscountConditionService extends BaseService {
         }
 
         if (data.id) {
+          // throw if condition does not exist
+          const condition = await this.retrieve(data.id)
+
           return await discountConditionRepo.addConditionResources(
-            data.id,
+            condition.id,
             resolvedConditionType.resource_ids,
             resolvedConditionType.type,
             true
@@ -168,12 +192,10 @@ class DiscountConditionService extends BaseService {
         }
       }
     )
-
-    return res
   }
 
   async remove(discountConditionId): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_
       )
@@ -186,9 +208,7 @@ class DiscountConditionService extends BaseService {
         return Promise.resolve()
       }
 
-      await conditionRepo.remove(condition)
-
-      return Promise.resolve()
+      return await conditionRepo.remove(condition)
     })
   }
 }
