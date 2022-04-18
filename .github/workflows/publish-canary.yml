@@ -5,7 +5,10 @@ on:
       - develop
 
 jobs:
+  tests:
+    uses: ./.github/workflows/action.yml
   publish-canary:
+    needs: [tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
