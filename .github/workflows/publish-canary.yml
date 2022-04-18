@@ -19,12 +19,6 @@ jobs:
           node-version: "14"
           cache: "yarn"
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
-
-      - name: Build Packages
-        run: yarn build
       - name: "Get Branch Name"
         run: |
           BRANCH_NAME="${GITHUB_HEAD_REF}"
@@ -34,6 +28,6 @@ jobs:
           VERSION_NAME=`echo ${{ env.BRANCH_NAME }} | sed "s/[/_]/-/g"`
           echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV 
       - name: Publish Canary
-        run: lerna publish --yes --canary --preid ${{ env.VERSION_NAME }}
+        run: lerna publish --yes --canary --preid ${{ env.VERSION_NAME }} --force-publish="*"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
