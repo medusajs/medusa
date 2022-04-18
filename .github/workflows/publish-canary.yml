@@ -35,8 +35,9 @@ jobs:
           echo "@oliverjuhl:registry=http://registry.npmjs.org/" > .npmrc
           echo "registry=http://registry.npmjs.org/" >> .npmrc
           echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami
         env:
-          NPM_TOKEN: ${{ secrets.NPMTOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Publish Canary
         run: lerna publish --yes --canary --preid ${{ env.VERSION_NAME }} --force-publish="*"
         env:
