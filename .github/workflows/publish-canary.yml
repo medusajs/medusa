@@ -30,6 +30,13 @@ jobs:
         run: |
           VERSION_NAME=`echo ${{ env.BRANCH_NAME }} | sed "s/[/_]/-/g"`
           echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV 
+      - name: Authenticate with NPM
+        run: |
+          echo "@oliverjuhl:registry=http://registry.npmjs.org/" > .npmrc
+          echo "registry=http://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPMTOKEN }}
       - name: Publish Canary
         run: lerna publish --yes --canary --preid ${{ env.VERSION_NAME }} --force-publish="*"
         env:
