@@ -97,14 +97,8 @@ brew services start redis
 
 The final installation to do to get started with Medusa is the Medusa CLI, which is an npm package you can install globally on your computer to get instant access to commands that help you manage and run your Medusa project. As the Medusa CLI is distributed as an npm package it is very easily installed by running:
 
-```
-npm install -g @medusajs/medusa-cli
-```
-
-We like to use Yarn instead of npm; if you wish to do the same you can install the CLI with:
-
-```
-yarn global add @medusajs/medusa-cli
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
 ```
 
 ### Text editor

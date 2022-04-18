@@ -15,18 +15,25 @@ You can install Node from the [official website](https://nodejs.org/en/).
 ## Getting started
 
 1. **Install Medusa CLI**
-   ```bash
+
+   ```bash npm2yarn
    npm install -g @medusajs/medusa-cli
    ```
+
 2. **Create a new Medusa project**
-   ```
+
+   ```bash
    medusa new my-medusa-store --seed
    ```
+
 3. **Start your Medusa engine**
+
    ```bash
    medusa develop
    ```
+
 4. **Use the API**
+
    ```bash
    curl localhost:9000/store/products | python -m json.tool
    ```

@@ -19,6 +19,7 @@
   "dependencies": {
     "@docusaurus/core": "2.0.0-beta.17",
     "@docusaurus/preset-classic": "2.0.0-beta.17",
+    "@docusaurus/remark-plugin-npm2yarn": "^2.0.0-beta.18",
     "@svgr/webpack": "6.2.1",
     "clsx": "^1.1.1",
     "docusaurus2-dotenv": "^1.4.0",

@@ -20,16 +20,16 @@ If you’re not very familiar with Medusa’s architecture, you can learn more a
 
 ## Install the Admin
 
-Start by cloning the [Admin GitHub repository](https://github.com/medusajs/admin):
+Start by cloning the [Admin GitHub repository](https://github.com/medusajs/admin) and changing to the cloned directory:
 
 ```bash
 git clone https://github.com/medusajs/admin medusa-admin
+cd medusa-admin
 ```
 
-Then, change to the cloned directory and install the dependencies:
+Then, install the dependencies:
 
-```bash
-cd medusa-admin
+```bash npm2yarn
 npm install
 ```
 
@@ -39,14 +39,18 @@ Before running your Medusa admin, make sure that your Medusa server is running.
 
 :::tip
 
-To run your Medusa server, go to the directory holding the server and run `npm start`.
+To run your Medusa server, go to the directory holding the server and run:
+
+```bash npm2yarn
+npm run start
+```
 
 :::
 
 Then, in the directory holding your Medusa admin, run the following to start the development server:
 
-```bash
-npm start
+```bash npm2yarn
+npm run start
 ```
 
 By default, the admin runs on port 7000. So, in your browser, go to `localhost:7000` to view your admin.
@@ -57,7 +61,13 @@ Use your Medusa admin’s user credentials to log in.
 
 :::tip
 
-If you installed the demo data when you installed the Medusa server by using the `--seed` option or running `npm run seed`, you can use the email `admin@medusa-test.com` and password `supersecret` to log in.
+If you installed the demo data when you installed the Medusa server by using the `--seed` option or running:
+
+```bash npm2yarn
+npm run seed
+```
+
+You can use the email `admin@medusa-test.com` and password `supersecret` to log in.
 
 :::
 
