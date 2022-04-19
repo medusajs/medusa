@@ -62,8 +62,6 @@ Object {
 }
 `;
 
-exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id fails if more than one condition type is provided: Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed 1`] = `"Request failed with status code 400"`;
-
 exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id should update a condition 1`] = `
 Object {
   "code": "TEST",
@@ -137,5 +135,3 @@ Object {
 `;
 
 exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if condition does not exist: DiscountCondition with id does-not-exist was not found 1`] = `"Request failed with status code 404"`;
-
-exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if condition does not exist: Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed 1`] = `"Request failed with status code 400"`;
