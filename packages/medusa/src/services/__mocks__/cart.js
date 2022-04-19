@@ -210,7 +210,7 @@ export const CartServiceMock = {
   withTransaction: function() {
     return this
   },
-  updatePaymentSession: jest.fn().mockImplementation(data => {
+  updatePaymentSession: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
   authorizePayment: jest.fn().mockImplementation((id, data) => {
@@ -223,13 +223,13 @@ export const CartServiceMock = {
     }
     return Promise.resolve(carts.testCart)
   }),
-  refreshPaymentSession: jest.fn().mockImplementation(data => {
+  refreshPaymentSession: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((data) => {
     return Promise.resolve()
   }),
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     if (data.region_id === IdMap.getId("testRegion")) {
       return Promise.resolve(carts.regionCart)
     }
@@ -238,7 +238,7 @@ export const CartServiceMock = {
     }
     return Promise.resolve(carts.regionCart)
   }),
-  retrieve: jest.fn().mockImplementation(cartId => {
+  retrieve: jest.fn().mockImplementation((cartId) => {
     if (cartId === IdMap.getId("fr-cart")) {
       return Promise.resolve(carts.frCart)
     }
@@ -326,20 +326,20 @@ export const CartServiceMock = {
   applyDiscount: jest.fn().mockImplementation((cartId, code) => {
     return Promise.resolve()
   }),
-  setPaymentSession: jest.fn().mockImplementation(cartId => {
+  setPaymentSession: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
-  setPaymentSessions: jest.fn().mockImplementation(cartId => {
+  setPaymentSessions: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
-  setShippingOptions: jest.fn().mockImplementation(cartId => {
+  setShippingOptions: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
-  decorate: jest.fn().mockImplementation(cart => {
+  decorate: jest.fn().mockImplementation((cart) => {
     cart.decorated = true
     return cart
   }),
-  addShippingMethod: jest.fn().mockImplementation(cartId => {
+  addShippingMethod: jest.fn().mockImplementation((cartId) => {
     return Promise.resolve()
   }),
   retrieveShippingOption: jest.fn().mockImplementation((cartId, optionId) => {
@@ -377,6 +377,9 @@ export const CartServiceMock = {
         },
       }
     }
+  }),
+  refreshAdjustments_: jest.fn().mockImplementation((cart) => {
+    return Promise.resolve({})
   }),
 }
 
