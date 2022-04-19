@@ -1,19 +1,53 @@
 import Bull from "bull"
 import Redis from "ioredis"
+import { EntityManager } from "typeorm"
+import { Logger } from "../types/global"
+import { StagedJobRepository } from "../repositories/staged-job"
+import { StagedJob } from "../models"
+import { sleep } from "../utils/sleep"
+
+type InjectedDependencies = {
+  manager: EntityManager
+  logger: Logger
+  stagedJobRepository: typeof StagedJobRepository
+  redisClient: Redis
+  redisSubscriber: Redis
+}
+
+type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
 
 /**
  * Can keep track of multiple subscribers to different events and run the
  * subscribers when events happen. Events will run asynchronously.
- * @class
  */
-class EventBusService {
+export default class EventBusService {
+  protected readonly config_: { projectConfig: { redis_url?: string } }
+  protected readonly manager_: EntityManager
+  protected readonly logger_: Logger
+  protected readonly stagedJobRepository_: typeof StagedJobRepository
+  protected readonly observers_: Map<string | symbol, Subscriber[]>
+  protected readonly cronHandlers_: Map<string | symbol, Subscriber[]>
+  protected readonly redisClient_: Redis
+  protected readonly redisSubscriber_: Redis
+  protected readonly cronQueue_: Bull
+  protected queue_: Bull
+  protected shouldEnqueuerRun: boolean
+  protected transactionManager_: EntityManager | undefined
+
   constructor(
-    { manager, logger, stagedJobRepository, redisClient, redisSubscriber },
-    config,
+    {
+      manager,
+      logger,
+      stagedJobRepository,
+      redisClient,
+      redisSubscriber,
+    }: InjectedDependencies,
+    // TODO: Update the type once the PR 1290 is marged
+    config: { projectConfig: { redis_url?: string } },
     singleton = true
   ) {
     const opts = {
-      createClient: (type) => {
+      createClient: (type: string): Redis => {
         switch (type) {
           case "client":
             return redisClient
@@ -29,34 +63,19 @@ class EventBusService {
     }
 
     this.config_ = config
-
-    /** @private {EntityManager} */
     this.manager_ = manager
-
-    /** @private {logger} */
     this.logger_ = logger
-
     this.stagedJobRepository_ = stagedJobRepository
 
     if (singleton) {
-      /** @private {object} */
-      this.observers_ = {}
-
-      /** @private {BullQueue} */
+      this.observers_ = new Map()
       this.queue_ = new Bull(`${this.constructor.name}:queue`, opts)
-
-      /** @private {object} to handle cron jobs */
-      this.cronHandlers_ = {}
-
+      this.cronHandlers_ = new Map()
       this.redisClient_ = redisClient
       this.redisSubscriber_ = redisSubscriber
-
-      /** @private {BullQueue} used for cron jobs */
       this.cronQueue_ = new Bull(`cron-jobs:queue`, opts)
-
       // Register our worker to handle emit calls
       this.queue_.process(this.worker_)
-
       // Register cron worker
       this.cronQueue_.process(this.cronWorker_)
 
@@ -66,7 +85,7 @@ class EventBusService {
     }
   }
 
-  withTransaction(transactionManager) {
+  withTransaction(transactionManager): this | EventBusService {
     if (!transactionManager) {
       return this
     }
@@ -91,80 +110,94 @@ class EventBusService {
 
   /**
    * Adds a function to a list of event subscribers.
-   * @param {string} event - the event that the subscriber will listen for.
-   * @param {func} subscriber - the function to be called when a certain event
+   * @param event - the event that the subscriber will listen for.
+   * @param subscriber - the function to be called when a certain event
    * happens. Subscribers must return a Promise.
+   * @return this
    */
-  subscribe(event, subscriber) {
+  subscribe(event: string | symbol, subscriber: Subscriber): this {
     if (typeof subscriber !== "function") {
       throw new Error("Subscriber must be a function")
     }
 
-    if (this.observers_[event]) {
-      this.observers_[event].push(subscriber)
-    } else {
-      this.observers_[event] = [subscriber]
-    }
+    this.observers_.set(event, [
+      ...(this.observers_.get(event) ?? []),
+      subscriber,
+    ])
+
+    return this
   }
 
   /**
    * Adds a function to a list of event subscribers.
-   * @param {string} event - the event that the subscriber will listen for.
-   * @param {func} subscriber - the function to be called when a certain event
+   * @param event - the event that the subscriber will listen for.
+   * @param subscriber - the function to be called when a certain event
    * happens. Subscribers must return a Promise.
+   * @return this
    */
-  unsubscribe(event, subscriber) {
+  unsubscribe(event: string | symbol, subscriber: Subscriber): this {
     if (typeof subscriber !== "function") {
       throw new Error("Subscriber must be a function")
     }
 
-    if (this.observers_[event]) {
-      const index = this.observers_[event].indexOf(subscriber)
+    if (this.observers_.get(event)?.length) {
+      const index = this.observers_.get(event)?.indexOf(subscriber)
       if (index !== -1) {
         this.observers_[event].splice(index, 1)
       }
     }
+
+    return this
   }
 
   /**
    * Adds a function to a list of event subscribers.
-   * @param {string} event - the event that the subscriber will listen for.
-   * @param {func} subscriber - the function to be called when a certain event
+   * @param event - the event that the subscriber will listen for.
+   * @param subscriber - the function to be called when a certain event
    * happens. Subscribers must return a Promise.
+   * @return this
    */
-  registerCronHandler_(event, subscriber) {
+  protected registerCronHandler_(
+    event: string | symbol,
+    subscriber: Subscriber
+  ): this {
     if (typeof subscriber !== "function") {
       throw new Error("Handler must be a function")
     }
 
-    if (this.observers_[event]) {
-      this.cronHandlers_[event].push(subscriber)
-    } else {
-      this.cronHandlers_[event] = [subscriber]
-    }
+    this.cronHandlers_.set(event, [
+      ...(this.cronHandlers_.get(event) ?? []),
+      subscriber,
+    ])
+
+    return this
   }
 
   /**
    * Calls all subscribers when an event occurs.
    * @param {string} eventName - the name of the event to be process.
-   * @param {?any} data - the data to send to the subscriber.
-   * @param {?any} options - options to add the job with
-   * @return {BullJob} - the job from our queue
+   * @param data - the data to send to the subscriber.
+   * @param options - options to add the job with
+   * @return the job from our queue
    */
-  async emit(eventName, data, options = {}) {
+  async emit<T>(
+    eventName: string,
+    data: T,
+    options: { delay?: number } = {}
+  ): Promise<StagedJob | void> {
     if (this.transactionManager_) {
       const stagedJobRepository = this.transactionManager_.getCustomRepository(
         this.stagedJobRepository_
       )
 
-      const created = await stagedJobRepository.create({
+      return await stagedJobRepository.save({
         event_name: eventName,
         data,
       })
-
-      return stagedJobRepository.save(created)
     } else {
-      const opts = { removeOnComplete: true }
+      const opts: { removeOnComplete: boolean; delay?: number } = {
+        removeOnComplete: true,
+      }
       if (typeof options.delay === "number") {
         opts.delay = options.delay
       }
@@ -172,34 +205,27 @@ class EventBusService {
     }
   }
 
-  async sleep(ms) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, ms)
-    })
+  startEnqueuer(): void {
+    this.shouldEnqueuerRun = true
+    this.enqueuer_()
   }
 
-  async startEnqueuer() {
-    this.enRun_ = true
-    this.enqueue_ = this.enqueuer_()
+  stopEnqueuer(): void {
+    this.shouldEnqueuerRun = false
   }
 
-  async stopEnqueuer() {
-    this.enRun_ = false
-    await this.enqueue_
-  }
-
-  async enqueuer_() {
-    while (this.enRun_) {
+  async enqueuer_(): Promise<void> {
+    while (this.shouldEnqueuerRun) {
       const listConfig = {
         relations: [],
         skip: 0,
         take: 1000,
       }
 
-      const sjRepo = this.manager_.getCustomRepository(
+      const stagedJobRepo = this.manager_.getCustomRepository(
         this.stagedJobRepository_
       )
-      const jobs = await sjRepo.find({}, listConfig)
+      const jobs = await stagedJobRepo.find(listConfig)
 
       await Promise.all(
         jobs.map((job) => {
@@ -209,24 +235,26 @@ class EventBusService {
               { removeOnComplete: true }
             )
             .then(async () => {
-              await sjRepo.remove(job)
+              await stagedJobRepo.remove(job)
             })
         })
       )
 
-      await this.sleep(3000)
+      await sleep(3000)
     }
   }
 
   /**
    * Handles incoming jobs.
-   * @param {Object} job The job object
-   * @return {Promise} resolves to the results of the subscriber calls.
+   * @param job The job object
+   * @return resolves to the results of the subscriber calls.
    */
-  worker_ = (job) => {
+  worker_ = async <T>(job: {
+    data: { eventName: string; data: T }
+  }): Promise<unknown[]> => {
     const { eventName, data } = job.data
-    const eventObservers = this.observers_[eventName] || []
-    const wildcardObservers = this.observers_["*"] || []
+    const eventObservers = this.observers_.get(eventName) || []
+    const wildcardObservers = this.observers_.get("*") || []
 
     const observers = eventObservers.concat(wildcardObservers)
 
@@ -234,13 +262,13 @@ class EventBusService {
       `Processing ${eventName} which has ${eventObservers.length} subscribers`
     )
 
-    return Promise.all(
+    return await Promise.all(
       observers.map((subscriber) => {
         return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(
-            `An error occured while processing ${eventName}: ${err}`
+            `An error occurred while processing ${eventName}: ${err}`
           )
-          console.log(err)
+          console.error(err)
           return err
         })
       })
@@ -249,15 +277,17 @@ class EventBusService {
 
   /**
    * Handles incoming jobs.
-   * @param {Object} job The job object
-   * @return {Promise} resolves to the results of the subscriber calls.
+   * @param job The job object
+   * @return resolves to the results of the subscriber calls.
    */
-  cronWorker_ = (job) => {
+  cronWorker_ = async <T>(job: {
+    data: { eventName: string; data: T }
+  }): Promise<unknown[]> => {
     const { eventName, data } = job.data
-    const observers = this.cronHandlers_[eventName] || []
+    const observers = this.cronHandlers_.get(eventName) || []
     this.logger_.info(`Processing cron job: ${eventName}`)
 
-    return Promise.all(
+    return await Promise.all(
       observers.map((subscriber) => {
         return subscriber(data, eventName).catch((err) => {
           this.logger_.warn(
@@ -271,13 +301,18 @@ class EventBusService {
 
   /**
    * Registers a cron job.
-   * @param {string} eventName - the name of the event
-   * @param {object} data - the data to be sent with the event
-   * @param {string} cron - the cron pattern
-   * @param {function} handler - the handler to call on each cron job
-   * @return {void}
+   * @param eventName - the name of the event
+   * @param data - the data to be sent with the event
+   * @param cron - the cron pattern
+   * @param handler - the handler to call on each cron job
+   * @return void
    */
-  createCronJob(eventName, data, cron, handler) {
+  createCronJob<T>(
+    eventName: string,
+    data: T,
+    cron: string,
+    handler: Subscriber
+  ): void {
     this.logger_.info(`Registering ${eventName}`)
     this.registerCronHandler_(eventName, handler)
     return this.cronQueue_.add(
@@ -289,5 +324,3 @@ class EventBusService {
     )
   }
 }
-
-export default EventBusService

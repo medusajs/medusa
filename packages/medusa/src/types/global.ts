@@ -23,6 +23,8 @@ export type MedusaContainer = AwilixContainer & {
 
 export type Logger = _Logger & {
   progress: (activityId: string, msg: string) => void
+  info: (msg: string) => void
+  warn: (msg: string) => void
 }
 
 export type ConfigModule = {
