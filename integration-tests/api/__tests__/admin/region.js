@@ -11,9 +11,9 @@ jest.setTimeout(30000)
 describe("/admin/regions", () => {
   let medusaProcess
   let dbConnection
+  const cwd = path.resolve(path.join(__dirname, "..", ".."))
 
   beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
     medusaProcess = await setupServer({ cwd })
   })
@@ -21,11 +21,98 @@ describe("/admin/regions", () => {
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
+
     medusaProcess.kill()
   })
 
+  describe("Remove region from country on delete", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        const manager = dbConnection.manager
+        await manager.insert(Region, {
+          id: "test-region",
+          name: "Test Region",
+          currency_code: "usd",
+          tax_rate: 0,
+        })
+
+        await manager.query(
+          `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
+        )
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully creates a region with countries from a previously deleted region", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete(`/admin/regions/test-region`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toMatchSnapshot({
+        id: "test-region",
+        object: "region",
+        deleted: true,
+      })
+
+      const newReg = await api.post(
+        `/admin/regions`,
+        {
+          name: "World",
+          currency_code: "usd",
+          tax_rate: 0,
+          payment_providers: ["test-pay"],
+          fulfillment_providers: ["test-ful"],
+          countries: ["us"],
+        },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(newReg.status).toEqual(200)
+      expect(newReg.data.region).toMatchSnapshot({
+        id: expect.any(String),
+        name: "World",
+        currency_code: "usd",
+        countries: [
+          {
+            region_id: expect.any(String),
+          },
+        ],
+        tax_rate: 0,
+        fulfillment_providers: [
+          {
+            id: "test-ful",
+            is_installed: true,
+          },
+        ],
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
+
   describe("GET /admin/regions", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
       const manager = dbConnection.manager
       await adminSeeder(dbConnection)
       await manager.insert(Region, {
@@ -57,7 +144,7 @@ describe("/admin/regions", () => {
       })
     })
 
-    afterAll(async () => {
+    afterEach(async () => {
       const db = useDb()
       await db.teardown()
     })
@@ -116,14 +203,23 @@ describe("/admin/regions", () => {
 
   describe("DELETE /admin/regions/:id", () => {
     beforeEach(async () => {
-      const manager = dbConnection.manager
-      await adminSeeder(dbConnection)
-      await manager.insert(Region, {
-        id: "test-region",
-        name: "Test Region",
-        currency_code: "usd",
-        tax_rate: 0,
-      })
+      try {
+        await adminSeeder(dbConnection)
+        const manager = dbConnection.manager
+        await manager.insert(Region, {
+          id: "test-region",
+          name: "Test Region",
+          currency_code: "usd",
+          tax_rate: 0,
+        })
+
+        await manager.query(
+          `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`
+        )
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
     })
 
     afterEach(async () => {
@@ -163,6 +259,34 @@ describe("/admin/regions", () => {
         deleted: true,
       })
       expect(response.status).toEqual(200)
+    })
+
+    it("fails to create when countries exists in different region", async () => {
+      const api = useApi()
+
+      try {
+        await api.post(
+          `/admin/regions`,
+          {
+            name: "World",
+            currency_code: "usd",
+            tax_rate: 0,
+            payment_providers: ["test-pay"],
+            fulfillment_providers: ["test-ful"],
+            countries: ["us"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.response.status).toEqual(422)
+        expect(error.response.data.message).toEqual(
+          "United States already exists in region test-region"
+        )
+      }
     })
   })
 })
