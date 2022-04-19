@@ -257,3 +257,12 @@ footer {
 details summary {
   cursor: pointer;
 }
+
+.theme-doc-markdown a {
+  color: #9461ff;
+}
+
+.theme-doc-markdown a:hover {
+  color: #6e3eff;
+  text-decoration: none;
+}
