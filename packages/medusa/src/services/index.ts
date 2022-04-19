@@ -1,4 +1,5 @@
 export { default as AuthService } from "./auth"
+export { default as BatchJobService } from "./batch-job"
 export { default as CartService } from "./cart"
 export { default as ClaimService } from "./claim"
 export { default as ClaimItemService } from "./claim-item"
