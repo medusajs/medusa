@@ -23286,7 +23286,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-promise@^8.0.1:
+promise@^8.1.0:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/promise/-/promise-8.1.0.tgz#697c25c3dfe7435dd79fcd58c38a135888eaf05e"
   integrity sha512-W04AqnILOL/sPRXziNicCjSNRruLAuIHEOVBazepu0545DDNGYHz7ar9ZgZ1fMU8/MA4mVxp5rkBWRi6OXIy3Q==
@@ -23629,14 +23629,14 @@ raw-loader@^4.0.2:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
 
-razorpay@^1.0:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/razorpay/-/razorpay-1.7.1.tgz#2212e5a6912ce734332b4f6b3060d9e7a6342c43"
-  integrity sha512-0EDCYwhgvmjqvOmJkpqeW56lVXQc2C0zTz3Qkii7d/H+QXbdOMWvAhbPZ8OXFQkI+oC8/a/h0cEvOb0OhmEHkg==
+razorpay@^2.8.1:
+  version "2.8.1"
+  resolved "https://registry.yarnpkg.com/razorpay/-/razorpay-2.8.1.tgz#abb4115ee7b9a4a153f0bcb26548cc3fe706ba1e"
+  integrity sha512-+ClZj8GvgviaG1fic98yAnf84Wf0WOKFqQcF7YTxe2aSQ/pAuEjJkhBE7Vuk3tKBHjcuE4cmMi3/l508SkPcqw==
   dependencies:
-    promise "^8.0.1"
-    request "^2.75.0"
-    request-promise "^4.1.1"
+    promise "^8.1.0"
+    request "^2.88.0"
+    request-promise "^4.2.6"
 
 rc@^1.2.7, rc@^1.2.8:
   version "1.2.8"
@@ -24581,7 +24581,7 @@ request-promise-native@^1.0.7:
     stealthy-require "^1.1.1"
     tough-cookie "^2.3.3"
 
-request-promise@^4.1.1:
+request-promise@^4.2.6:
   version "4.2.6"
   resolved "https://registry.yarnpkg.com/request-promise/-/request-promise-4.2.6.tgz#7e7e5b9578630e6f598e3813c0f8eb342a27f0a2"
   integrity sha512-HCHI3DJJUakkOr8fNoCc73E5nU5bqITjOYFMDrKHYOXWXrgD/SBaC7LjwuPymUprRyuF06UK7hd/lMHkmUXglQ==
@@ -24617,7 +24617,7 @@ request@2.88.0:
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
-request@2.88.2, request@^2.75.0, request@^2.87.0, request@^2.88.0:
+request@2.88.2, request@^2.87.0, request@^2.88.0:
   version "2.88.2"
   resolved "https://registry.npmjs.org/request/-/request-2.88.2.tgz"
   integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
