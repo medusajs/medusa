@@ -45,6 +45,50 @@ class BatchJobService extends BaseService<BatchJobService> {
     return cloned
   }
 
+  /*
+   * if job is started with dry_run: true, then it's required
+   * to complete the job before it's written to DB
+   */
+  async complete(batchJobId: string, userId: string): Promise<BatchJob> {
+    return await this.atomicPhase_(async (manager) => {
+      // logic...
+
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
+
+      const batchJob = await batchJobRepo.findOne(batchJobId)
+
+      if (!batchJob || batchJob.created_by_id !== userId) {
+        // TODO: check if user is admin
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "You cannot complete batch jobs created by other users"
+        )
+      }
+
+      // check that job has run
+
+      if (batchJob.awaiting_confirmation_at && !batchJob.confirmed_at) {
+        batchJob.confirmed_at = new Date()
+
+        await batchJobRepo.save(batchJob)
+
+        const result = (await batchJobRepo.findOne(batchJobId)) as BatchJob
+
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(BatchJobService.Events.UPDATED, {
+            id: result.id,
+          })
+
+        return result
+      }
+
+      return batchJob
+    })
+  }
+
   async listAndCount(
     selector: FilterableBatchJobProps = {},
     config: FindConfig<BatchJob> = { skip: 0, take: 20 }
