@@ -1,11 +1,16 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import { LineItem, LineItemTaxLine } from "@medusajs/medusa"
+import { LineItem, LineItemAdjustment, LineItemTaxLine } from "@medusajs/medusa"
 
 type TaxLineFactoryData = {
   rate: number
   code: string
   name: string
+}
+
+type LineItemAdjustmentFactoryData = Omit<LineItemAdjustment, "discount_id"> & {
+  discount_id: string
+  discount_code: string
 }
 
 export type LineItemFactoryData = {
@@ -24,6 +29,7 @@ export type LineItemFactoryData = {
   shipped_quantity?: boolean
   returned_quantity?: boolean
   tax_lines?: TaxLineFactoryData[]
+  adjustments: LineItemAdjustmentFactoryData[]
 }
 
 export const simpleLineItemFactory = async (
@@ -63,6 +69,7 @@ export const simpleLineItemFactory = async (
     fulfilled_quantity: data.fulfilled_quantity || null,
     shipped_quantity: data.shipped_quantity || null,
     returned_quantity: data.returned_quantity || null,
+    adjustments: data.adjustments,
   })
 
   const line = await manager.save(toSave)

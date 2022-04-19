@@ -24,7 +24,7 @@ Object {
 }
 `;
 
-exports[`/store/carts shipping address + region updates updates region only - single to multipe countries 1`] = `
+exports[`/store/carts shipping address + region updates updates region only - single to multiple countries 1`] = `
 Object {
   "address_1": null,
   "address_2": null,

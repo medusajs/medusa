@@ -145,11 +145,11 @@ export class AdminPostPriceListsPriceListPriceListReq {
   @IsArray()
   @Type(() => AdminPriceListPricesUpdateReq)
   @ValidateNested({ each: true })
-  prices: AdminPriceListPricesUpdateReq[]
+  prices?: AdminPriceListPricesUpdateReq[]
 
   @IsOptional()
   @IsArray()
   @Type(() => CustomerGroup)
   @ValidateNested({ each: true })
-  customer_groups: CustomerGroup[]
+  customer_groups?: CustomerGroup[]
 }
