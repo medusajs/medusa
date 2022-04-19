@@ -4,12 +4,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { User } from "./user"
 
 @Entity()
 export class BatchJob {
@@ -19,11 +21,12 @@ export class BatchJob {
   @DbAwareColumn({ type: "text" })
   type: string
 
-  @DbAwareColumn({ type: "enum", enum: BatchJobStatus })
-  status: BatchJobStatus
+  @Column({ nullable: true })
+  created_by_id: string | null
 
-  @Column({ type: "text", nullable: true })
-  created_by: string | null
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "created_by_id" })
+  created_by: User
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   context: Record<string, unknown>
@@ -34,6 +37,18 @@ export class BatchJob {
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  processing_at: Date
+
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  awaiting_confirmation_at: Date
+
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  confirmed_at: Date
+
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  cancelled_at: Date
+
   @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
 
@@ -42,7 +57,9 @@ export class BatchJob {
 
   @BeforeInsert()
   private beforeInsert() {
-    if (this.id) return
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `batch_${id}`
   }
