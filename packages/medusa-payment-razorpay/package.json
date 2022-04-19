@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-razorpay",
-  "version": "1.1.40",
+  "version": "1.0.0",
   "description": "Razorpay Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
@@ -8,7 +8,7 @@
     "url": "https://github.com/medusajs/medusa",
     "directory": "packages/medusa-payment-razorpay"
   },
-  "author": "Sebastian Rindom",
+  "author": "Govind Diwakar",
   "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.7.5",
