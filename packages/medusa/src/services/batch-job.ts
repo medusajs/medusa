@@ -23,6 +23,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   static readonly Events = {
     CREATED: "batch.created",
     UPDATED: "batch.updated",
+    COMPLETED: "batch.completed",
     CANCELED: "batch.canceled",
   }
 
@@ -69,8 +70,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
    */
   async complete(batchJobId: string, userId: string): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      // logic...
-
       const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
         this.batchJobRepository_
       )
@@ -78,7 +77,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       const batchJob = await batchJobRepo.findOne(batchJobId)
 
       if (!batchJob || batchJob.created_by !== userId) {
-        // TODO: check if user is admin
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot complete batch jobs created by other users"
@@ -102,7 +100,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(BatchJobService.Events.UPDATED, {
+        .emit(BatchJobService.Events.COMPLETED, {
           id: result.id,
         })
 
