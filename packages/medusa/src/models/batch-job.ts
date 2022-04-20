@@ -22,10 +22,10 @@ export class BatchJob {
   type: string
 
   @Column({ nullable: true })
-  created_by_id: string | null
+  created_by_user_id: string | null
 
   @ManyToOne(() => User)
-  @JoinColumn({ name: "created_by_id" })
+  @JoinColumn({ name: "created_by_user_id" })
   created_by: User
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
