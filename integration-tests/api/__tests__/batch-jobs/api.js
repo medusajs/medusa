@@ -121,6 +121,44 @@ describe("/admin/batch", () => {
     })
   })
 
+  describe("POST /admin/batch/", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Creates a batch job", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/batch",
+        {
+          type: "batch_1",
+          context: JSON.stringify({}),
+        },
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.batch_job).toMatchSnapshot({
+        created_by: "admin_user",
+        status: "created",
+        id: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
+
   describe("GET /admin/batch", () => {
     beforeEach(async () => {
       try {

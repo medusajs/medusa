@@ -43,6 +43,24 @@ Object {
 }
 `;
 
+exports[`/admin/batch POST /admin/batch/ Creates a batch job 1`] = `
+Object {
+  "awaiting_confirmation_at": null,
+  "cancelled_at": null,
+  "completed_at": null,
+  "context": "{}",
+  "created_at": Any<String>,
+  "created_by": "admin_user",
+  "deleted_at": null,
+  "id": Any<String>,
+  "processing_at": null,
+  "result": null,
+  "status": "created",
+  "type": "batch_1",
+  "updated_at": Any<String>,
+}
+`;
+
 exports[`/admin/batch POST /admin/batch/:id/complete Completes batch job created by the user 1`] = `
 Object {
   "awaiting_confirmation_at": null,
