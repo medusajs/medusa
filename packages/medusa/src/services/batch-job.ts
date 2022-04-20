@@ -23,7 +23,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   static readonly Events = {
     CREATED: "batch.created",
     UPDATED: "batch.updated",
-    CANCELED: "batch.canceled",
+    CANCELLED: "batch.cancelled",
   }
 
   constructor({
@@ -64,14 +64,44 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     )
   }
 
+  async cancel(batchJobId: string, userId: string): Promise<BatchJob> {
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
+
+      const batchJob = await batchJobRepo.findOne(batchJobId)
+
+      if (!batchJob || batchJob.created_by !== userId) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot cancel batch jobs created by other users"
+        )
+      }
+
+      batchJob.cancelled_at = new Date()
+      batchJob.status = BatchJobStatus.CANCELLED
+
+      await batchJobRepo.save(batchJob)
+
+      const result = (await batchJobRepo.findOne(batchJobId)) as BatchJob
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(BatchJobService.Events.CANCELLED, {
+          id: result.id,
+        })
+
+      return result
+    })
+  }
+
   /*
    * if job is started with dry_run: true, then it's required
    * to complete the job before it's written to DB
    */
   async complete(batchJobId: string, userId: string): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
-      // logic...
-
       const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
         this.batchJobRepository_
       )

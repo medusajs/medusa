@@ -19,6 +19,11 @@ export default (app) => {
     middlewares.wrap(require("./complete-batch-job").default)
   )
 
+  route.post(
+    "/:id/cancel",
+    middlewares.wrap(require("./cancel-batch-job").default)
+  )
+
   return app
 }
 
