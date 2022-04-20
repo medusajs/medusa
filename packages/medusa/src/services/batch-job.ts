@@ -1,16 +1,16 @@
 import { EntityManager } from "typeorm"
-import { MedusaError } from "medusa-core-utils"
-
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
-import { FilterableBatchJobProps } from "../types/batch-job"
+import { BatchJobStatus, FilterableBatchJobProps } from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, validateId } from "../utils"
 import { MedusaError } from "medusa-core-utils"
+import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
   manager: EntityManager
+  eventBusService: EventBusService
   batchJobRepository: typeof BatchJobRepository
 }
 
@@ -18,6 +18,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   protected readonly manager_: EntityManager
   protected readonly transactionManager_: EntityManager | undefined
   protected readonly batchJobRepository_: typeof BatchJobRepository
+  protected readonly eventBus_: EventBusService
 
   static readonly Events = {
     CREATED: "batch.created",
@@ -75,29 +76,32 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         // TODO: check if user is admin
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "You cannot complete batch jobs created by other users"
+          "Cannot complete batch jobs created by other users"
         )
       }
 
       // check that job has run
-
-      if (batchJob.awaiting_confirmation_at && !batchJob.confirmed_at) {
-        batchJob.confirmed_at = new Date()
-
-        await batchJobRepo.save(batchJob)
-
-        const result = (await batchJobRepo.findOne(batchJobId)) as BatchJob
-
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit(BatchJobService.Events.UPDATED, {
-            id: result.id,
-          })
-
-        return result
+      if (batchJob.status !== BatchJobStatus.AWAITING_CONFIRMATION) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot complete a batch job with status "${batchJob.status}"`
+        )
       }
 
-      return batchJob
+      batchJob.completed_at = new Date()
+      batchJob.status = BatchJobStatus.COMPLETED
+
+      await batchJobRepo.save(batchJob)
+
+      const result = (await batchJobRepo.findOne(batchJobId)) as BatchJob
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(BatchJobService.Events.UPDATED, {
+          id: result.id,
+        })
+
+      return result
     })
   }
 
