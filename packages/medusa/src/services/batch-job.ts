@@ -71,7 +71,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       const batchJob = await batchJobRepo.findOne(batchJobId)
 
-      if (!batchJob || batchJob.created_by_id !== userId) {
+      if (!batchJob || batchJob.created_by !== userId) {
         // TODO: check if user is admin
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
