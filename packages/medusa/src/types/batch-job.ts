@@ -6,6 +6,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { BatchJob } from "../models"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator } from "./common"
 
@@ -16,6 +17,11 @@ export enum BatchJobStatus {
   CANCELLED = "cancelled",
   COMPLETED = "completed",
 }
+
+export type BatchJobCreateProps = Pick<
+  BatchJob,
+  "context" | "type" | "created_by"
+>
 
 export class FilterableBatchJobProps {
   @IsOptional()
