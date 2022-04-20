@@ -34,8 +34,11 @@ npx create-medusa-app
 # using yarn
 yarn create medusa-app
 ```
+:::note
 
-> When choosing `npx` you are shown different store engine options as part of the setup. For this Strapi tutorial, you should choose `medusa-starter-default`. Optionally, pick a storefront.
+ When choosing `npx` you are shown different store engine options as part of the setup. For this Strapi tutorial, you should choose `medusa-starter-default`. Optionally, pick a storefront.
+
+:::
 
 **Use `medusa-cli`**
 `@medusajs/medusa-cli` is our Command Line Tool for creating the Medusa store engine (alongside many other powerful commands). Use it as such:
@@ -120,12 +123,19 @@ yarn global add create-strapi-app@3.6.8
 
 create-strapi-app strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
 ```
+:::note
 
-> Note: The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it will throw an error.
+ Note: The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it will throw an error.
+
+ :::
 
 After running the command, you have a full Strapi project configured to synchronize with Medusa. Upon the initial start of the Strapi server, all the required models will be created. They will correlate with models from Medusa to allow for two-way synchronization.
 
-> Note: The Strapi template starter uses SQLite as the default database. There is a known bug related to `knex.js` that comes from multiple write connections. Restarting the Strapi server should make the error disappear.
+:::note
+
+ Note: The Strapi template starter uses SQLite as the default database. There is a known bug related to `knex.js` that comes from multiple write connections. Restarting the Strapi server should make the error disappear.
+
+ :::
 
 **Synchronization**
 
@@ -137,7 +147,11 @@ When products are created in Medusa, the two-way communication ensures that data
 **Variants**: title
 **Region**: name
 
-> Further down the road, the support for synchronizing more entities is expected to be introduced
+:::note
+
+Further down the road, the support for synchronizing more entities is expected to be introduced
+
+:::
 
 **Using Postgres in Medusa (optional)**
 
@@ -161,7 +175,11 @@ projectConfig: {
 },
 ```
 
-> Note: the `DATABASE_URL` variable should use the Postgres database created in the previous step
+:::note
+
+Note: the `DATABASE_URL` variable should use the Postgres database created in the previous step
+
+:::
 
 ## Summary and next steps
 
