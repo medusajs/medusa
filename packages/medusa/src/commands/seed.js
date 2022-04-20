@@ -9,9 +9,9 @@ import { track } from "medusa-telemetry"
 import Logger from "../loaders/logger"
 import loaders from "../loaders"
 
-import getProjectDirectory from "./utils/get-project-directory"
+import getMigrations from "./utils/get-migrations"
 
-const t = async function ({ directory, migrate, seedFile }) {
+const t = async function({ directory, migrate, seedFile }) {
   track("CLI_SEED")
   let resolvedPath = seedFile
 
@@ -30,7 +30,7 @@ const t = async function ({ directory, migrate, seedFile }) {
   const { configModule } = getConfigFile(directory, `medusa-config`)
   const dbType = configModule.projectConfig.database_type
   if (migrate && dbType !== "sqlite") {
-    const migrationDirs = getProjectDirectory(directory, "migrations")
+    const migrationDirs = getMigrations(directory)
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
       database: configModule.projectConfig.database_database,
@@ -61,7 +61,7 @@ const t = async function ({ directory, migrate, seedFile }) {
   const shippingOptionService = container.resolve("shippingOptionService")
   const shippingProfileService = container.resolve("shippingProfileService")
 
-  await manager.transaction(async (tx) => {
+  await manager.transaction(async tx => {
     const { store, regions, products, shipping_options, users } = JSON.parse(
       fs.readFileSync(resolvedPath, `utf-8`)
     )
@@ -74,14 +74,14 @@ const t = async function ({ directory, migrate, seedFile }) {
     }
 
     for (const u of users) {
-      const pass = u.password
+      let pass = u.password
       if (pass) {
         delete u.password
       }
       await userService.withTransaction(tx).create(u, pass)
     }
 
-    const regionIds = {}
+    let regionIds = {}
     for (const r of regions) {
       let dummyId
       if (!r.id || !r.id.startsWith("reg_")) {
@@ -126,7 +126,7 @@ const t = async function ({ directory, migrate, seedFile }) {
 
       if (variants && variants.length) {
         const optionIds = p.options.map(
-          (o) => newProd.options.find((newO) => newO.title === o.title).id
+          o => newProd.options.find(newO => newO.title === o.title).id
         )
 
         for (const v of variants) {

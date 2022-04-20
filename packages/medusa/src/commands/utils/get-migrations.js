@@ -33,7 +33,7 @@ function resolvePlugin(pluginName) {
           fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
         )
         const name = packageJSON.name || pluginName
-        // warnOnIncompatiblePeerDependency(name, packageJSON)
+        //warnOnIncompatiblePeerDependency(name, packageJSON)
 
         return {
           resolve: resolvedPath,
@@ -86,11 +86,11 @@ function resolvePlugin(pluginName) {
   }
 }
 
-export default (directory, folder) => {
+export default directory => {
   const { configModule } = getConfigFile(directory, `medusa-config`)
   const { plugins } = configModule
 
-  const resolved = plugins.map((plugin) => {
+  const resolved = plugins.map(plugin => {
     if (isString(plugin)) {
       return resolvePlugin(plugin)
     }
@@ -111,15 +111,15 @@ export default (directory, folder) => {
 
   const migrationDirs = []
   const coreMigrations = path.resolve(
-    path.join(__dirname, "..", "..", `${folder}`)
+    path.join(__dirname, "..", "..", "migrations")
   )
 
   migrationDirs.push(path.join(coreMigrations, "*.js"))
 
   for (const p of resolved) {
-    const exists = existsSync(`${p.resolve}/${folder}`)
+    const exists = existsSync(`${p.resolve}/migrations`)
     if (exists) {
-      migrationDirs.push(`${p.resolve}/${folder}/*.js`)
+      migrationDirs.push(`${p.resolve}/migrations/*.js`)
     }
   }
 
