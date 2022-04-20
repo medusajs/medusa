@@ -104,7 +104,7 @@ describe("/admin/batch", () => {
         })
     })
 
-    it("Fails to complete a batch job created by a different user", async () => {
+    it("Fails to complete a batch job not awaiting completion", async () => {
       const api = useApi()
 
       const jobId = "job_1"
