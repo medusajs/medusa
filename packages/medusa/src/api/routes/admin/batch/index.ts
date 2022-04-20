@@ -12,6 +12,12 @@ export default (app) => {
     middlewares.normalizeQuery(),
     middlewares.wrap(require("./list-batch-jobs").default)
   )
+
+  route.post(
+    "/:id/complete",
+    middlewares.wrap(require("./complete-batch-job").default)
+  )
+
   return app
 }
 
