@@ -6,7 +6,12 @@ title: Checkouts
 
 ## Introduction
 The purpose of this guide is to describe a checkout flow in Medusa. It is assumed that you've completed our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or [Tutorial](https://docs.medusajs.com/tutorial/set-up-your-development-environment) and are familiar with the technologies we use in our stack. Additionally, having an understanding of the [core API](https://docs.medusajs.com/api/store/auth) would serve as a great foundation for this walkthrough.
-> All code snippets in the following guide, use the JS SDK distributed through **npm**. To install it, run `yarn add @medusajs/medusa-js` or `npm install @medusajs/medusa-js`.
+
+:::note
+
+All code snippets in the following guide, use the JS SDK distributed through **npm**. To install it, run `yarn add @medusajs/medusa-js` or `npm install @medusajs/medusa-js`.
+
+:::
 
 ## Glossary
 - **Cart**: The Cart contains all the information needed for customers to complete an Order. In the Cart customers gather the items they wish to purchase, they add shipping and billing details and complete payment information.
@@ -17,7 +22,12 @@ The purpose of this guide is to describe a checkout flow in Medusa. It is assume
 
 ## Checkout flow
 To create an order from a cart, we go through the following flow.
-> At this point, it assumed that the customer has created a cart, added items and is now at the initial step of the checkout flow.
+
+:::note
+
+At this point, it assumed that the customer has created a cart, added items and is now at the initial step of the checkout flow.
+
+:::
 
 ### Initializing the checkout
 The first step in the flow is to _initialize_ the configured Payment Sessions for the Cart. If you are using the `medusa-starter-default` starter, this call will result in the `cart.payment_sessions` array being filled with one Payment Session for the manual payment provider.
