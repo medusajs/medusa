@@ -2,6 +2,7 @@ import {
   AdminDiscountsDeleteRes,
   AdminDiscountsListRes,
   AdminDiscountsRes,
+  AdminGetDiscountParams,
   AdminGetDiscountsParams,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
