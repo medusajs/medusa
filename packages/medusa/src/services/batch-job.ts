@@ -1,7 +1,11 @@
 import { EntityManager } from "typeorm"
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
-import { BatchJobStatus, FilterableBatchJobProps } from "../types/batch-job"
+import {
+  BatchJobStatus,
+  BatchJobUpdateProps,
+  FilterableBatchJobProps,
+} from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
@@ -62,6 +66,53 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         return batchJob
       }
     )
+  }
+
+  async update(
+    batchJobId: string,
+    data: BatchJobUpdateProps
+  ): Promise<BatchJob> {
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
+
+      const batchJob = await batchJobRepo.findOne(batchJobId) // TODO replace with retrieve
+
+      if (!batchJob) {
+        return new BatchJob()
+      }
+
+      const { status, ...rest } = data
+
+      if (typeof status !== "undefined") {
+        batchJob.status = status
+
+        switch (status) {
+          case BatchJobStatus.PROCESSING:
+            batchJob.processing_at = new Date()
+            break
+          case BatchJobStatus.AWAITING_CONFIRMATION:
+            batchJob.awaiting_confirmation_at = new Date()
+            break
+          case BatchJobStatus.COMPLETED:
+            batchJob.completed_at = new Date()
+            break
+          case BatchJobStatus.CANCELLED:
+            batchJob.cancelled_at = new Date()
+            break
+        }
+      }
+
+      for (const key of Object.keys(rest).filter(
+        (k) => typeof rest[k] !== `undefined`
+      )) {
+        batchJob[key] = rest[key]
+      }
+
+      const updated = await batchJobRepo.save(batchJob)
+      return updated
+    })
   }
 
   /*
