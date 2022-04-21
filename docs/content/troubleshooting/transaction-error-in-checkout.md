@@ -33,5 +33,8 @@ module.exports = {
   plugins,
 }
 ```
+:::note
 
-> When changing from SQLite to Postgres, you should seed the database again using: `yarn seed`
+ When changing from SQLite to Postgres, you should seed the database again using: `yarn seed`
+
+:::

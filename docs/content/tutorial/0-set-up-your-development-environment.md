@@ -48,7 +48,11 @@ If you prefer using something like homebrew you can also run:
 brew install node
 ```
 
-> **Mac users**: Make sure that you have Xcode command line tools installed; if not run `xcode-select --install`
+:::note
+
+ **Mac users**: Make sure that you have Xcode command line tools installed; if not run `xcode-select --install`
+
+:::
 
 ### Git
 
