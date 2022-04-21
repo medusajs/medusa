@@ -22,6 +22,8 @@ class IdealProviderService extends PaymentService {
      */
     this.options_ = options
 
+    this.description = options.description
+
     /** @private @const {Stripe} */
     this.stripe_ = Stripe(options.api_key)
 
@@ -90,6 +92,7 @@ class IdealProviderService extends PaymentService {
 
     const intentRequest = {
       amount: Math.round(amount),
+      description: this.description,
       currency: currency_code,
       payment_method_types: ["ideal"],
       capture_method: "automatic",

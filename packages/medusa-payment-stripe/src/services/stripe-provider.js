@@ -15,12 +15,16 @@ class StripeProviderService extends PaymentService {
      *    webhook_secret: "stripe_webhook_secret", REQUIRED
      *    // Use this flag to capture payment immediately (default is false)
      *    capture: true
+     *    // stripe needs description to be passed to work in some countries
+     *    description: "your service or business"
      *  }
      */
     this.options_ = options
 
     /** @private @const {Stripe} */
     this.stripe_ = Stripe(options.api_key)
+
+    this.description = options.description
 
     /** @private @const {CustomerService} */
     this.customerService_ = customerService
@@ -141,6 +145,7 @@ class StripeProviderService extends PaymentService {
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
+      description: this.description,
       amount: Math.round(amount),
       currency: currency_code,
       setup_future_usage: "on_session",
