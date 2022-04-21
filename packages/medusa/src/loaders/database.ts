@@ -2,17 +2,10 @@ import { Connection, createConnection, LoggerOptions } from "typeorm"
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
 import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"
-
-export type DatabaseConfig = {
-  database_type: string;
-  database_url?: string;
-  database_database?: string;
-  database_extra?: Record<string, unknown>;
-  database_logging: LoggerOptions
-}
+import { ConfigModule } from "../types/global"
 
 type Options = {
-  configModule: { projectConfig: DatabaseConfig };
+  configModule: ConfigModule
   container: AwilixContainer
 }
 
