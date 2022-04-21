@@ -13,8 +13,8 @@ import { PriceListStatus, PriceListType } from "../types/price-list"
 type CustomOptions = {
   select?: FindManyOptions["select"]
   where?: FindManyOptions["where"] & {
-    status?: FindOperator<PriceListStatus>
-    type?: FindOperator<PriceListType>
+    status?: FindOperator<PriceListStatus>[]
+    type?: FindOperator<PriceListType>[]
   }
   order?: OrderByCondition
   skip?: number
