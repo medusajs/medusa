@@ -33,6 +33,67 @@ describe("/admin/batch", () => {
     medusaProcess.kill()
   })
 
+  describe("POST /admin/batch/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await userSeeder(dbConnection)
+
+        await simpleBatchJobFactory(dbConnection, {
+          id: "job_1",
+          type: "batch_1",
+          created_by: "admin_user",
+          status: "created",
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Updates batch job", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/batch/job_1",
+        { type: "batch_2" },
+        adminReqConfig
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data.batch_job).toMatchSnapshot({
+        id: expect.any(String),
+        type: "batch_2",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+
+    it("Updates batch job with status sets time of update", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/batch/job_1",
+        { status: "processing" },
+        adminReqConfig
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data.batch_job).toMatchSnapshot({
+        id: expect.any(String),
+        status: "processing",
+        processing_at: expect.any(String),
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
+
   describe("POST /admin/batch/:id/complete", () => {
     beforeEach(async () => {
       try {
