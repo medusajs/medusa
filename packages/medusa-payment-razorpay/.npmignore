@@ -10,4 +10,5 @@ src
 .eslintrc
 .babelrc
 .prettierrc
+.vscode
 
