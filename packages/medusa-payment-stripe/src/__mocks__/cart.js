@@ -96,6 +96,7 @@ export const carts = {
     billing_address: {},
     discounts: [],
     customer_id: IdMap.getId("lebron"),
+    metadata: {}
   },
   frCartNoStripeCustomer: {
     id: IdMap.getId("fr-cart-no-customer"),

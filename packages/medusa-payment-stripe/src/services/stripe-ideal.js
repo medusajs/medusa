@@ -90,6 +90,7 @@ class IdealProviderService extends PaymentService {
 
     const intentRequest = {
       amount: Math.round(amount),
+      description: this.options?.description ?? cart?.metadata?.description,
       currency: currency_code,
       payment_method_types: ["ideal"],
       capture_method: "automatic",
