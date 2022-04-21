@@ -48,5 +48,6 @@
     "testTimeout": 60000,
     "verbose": true
   },
-  "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
+  "keywords": [
+    "medusa","razorpay","payment gateway","nodejs","medusajs"]
 }
