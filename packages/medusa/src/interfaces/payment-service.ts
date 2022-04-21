@@ -22,7 +22,7 @@ export interface PaymentService {
 
   createPayment(paymentSession: PaymentSession): Promise<PaymentData>
 
-  retrievePayment(cart: Cart): Promise<Payment>
+  retrievePayment(paymentData: PaymentData): Promise<Data>
 
   updatePayment(
     paymentSessionData: PaymentSessionData,
@@ -75,7 +75,7 @@ export abstract class AbstractPaymentService
     paymentSession: PaymentSession
   ): Promise<PaymentData>
 
-  public abstract retrievePayment(cart: Cart): Promise<Payment>
+  public abstract retrievePayment(paymentData: PaymentData): Promise<Data>
 
   public abstract updatePayment(
     paymentSessionData: PaymentSessionData,
