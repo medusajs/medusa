@@ -90,7 +90,7 @@ class GiropayProviderService extends PaymentService {
 
     const intentRequest = {
       amount: Math.round(amount),
-      description: cart?.metadata?.description ?? this.options?.description,
+      description: cart?.context?.description ?? this.options?.description,
       currency: currency_code,
       payment_method_types: ["giropay"],
       capture_method: "automatic",

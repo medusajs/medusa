@@ -125,7 +125,7 @@ class StripeProviderService extends PaymentService {
     const amount = await this.totalsService_.getTotal(cart)
 
     const intentRequest = {
-      description: cart?.metadata?.description ?? this.options?.description,
+      description: cart?.context?.description ?? this.options?.description,
       amount: Math.round(amount),
       currency: currency_code,
       setup_future_usage: "on_session",
