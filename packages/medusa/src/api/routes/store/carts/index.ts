@@ -82,11 +82,6 @@ export default (app, container) => {
     middlewares.wrap(require("./set-payment-session").default)
   )
 
-  route.post(
-    "/:id/payment-method",
-    middlewares.wrap(require("./update-payment-method").default)
-  )
-
   // Shipping Options
   route.post(
     "/:id/shipping-methods",
@@ -155,5 +150,4 @@ export * from "./create-payment-sessions"
 export * from "./set-payment-session"
 export * from "./update-cart"
 export * from "./update-line-item"
-export * from "./update-payment-method"
 export * from "./update-payment-session"

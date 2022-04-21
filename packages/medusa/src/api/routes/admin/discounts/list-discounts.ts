@@ -43,9 +43,12 @@ export default async (req, res) => {
 
   const discountService: DiscountService = req.scope.resolve("discountService")
 
+  const relations =
+    validated.expand?.split(",") ?? defaultAdminDiscountsRelations
+
   const listConfig: FindConfig<Discount> = {
     select: defaultAdminDiscountsFields,
-    relations: defaultAdminDiscountsRelations,
+    relations,
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },

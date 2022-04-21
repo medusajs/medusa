@@ -142,6 +142,58 @@ describe("/admin/discounts", () => {
       )
     })
 
+    it("should retrieve discount and only select the id field and retrieve the relation parent_discount", async () => {
+      const api = useApi()
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      const response = await api
+        .get(
+          "/admin/discounts/test-discount?fields=id&expand=parent_discount",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual({
+        id: "test-discount",
+        parent_discount: null,
+      })
+    })
+
     it("should retrieve discount with product conditions created with factory", async () => {
       const api = useApi()
 
