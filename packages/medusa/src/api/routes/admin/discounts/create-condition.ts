@@ -7,7 +7,6 @@ import DiscountConditionService from "../../../../services/discount-condition"
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
-import { AdminPostDiscountsDiscountParams } from "./update-discount"
 /**
  * @oas [post] /discounts/:id/conditions
  * operationId: "PostDiscountsConditions"
@@ -59,7 +58,7 @@ export default async (req, res) => {
   const validated = await validator(AdminPostDiscountsConditions, req.body)
 
   const validatedParams = await validator(
-    AdminPostDiscountsDiscountParams,
+    AdminPostDiscountsConditionsParams,
     req.query
   )
 

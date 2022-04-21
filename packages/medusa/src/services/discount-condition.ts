@@ -11,7 +11,7 @@ import { UpsertDiscountConditionInput } from "../types/discount"
 import { PostgresError } from "../utils/exception-formatter"
 
 /**
- * Provides layer to manipulate discounts.
+ * Provides layer to manipulate discount conditions.
  * @implements {BaseService}
  */
 class DiscountConditionService extends BaseService {
@@ -128,6 +128,13 @@ class DiscountConditionService extends BaseService {
   ): Promise<void> {
     const resolvedConditionType = this.resolveConditionType_(data)
 
+    if (!resolvedConditionType) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Missing one of products, collections, tags, types or customer groups in data`
+      )
+    }
+
     return await this.atomicPhase_(
       async (manager: EntityManager) => {
         const discountConditionRepo: DiscountConditionRepository =
@@ -135,13 +142,6 @@ class DiscountConditionService extends BaseService {
         const discountRepo: DiscountRepository = manager.getCustomRepository(
           this.discountRepository_
         )
-
-        if (!resolvedConditionType) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Missing one of products, collections, tags, types or customer groups in data`
-          )
-        }
 
         if (data.id) {
           // throw if condition does not exist
