@@ -277,6 +277,48 @@ describe("/admin/price-lists", () => {
       expect(response.data.price_lists).toEqual([])
       expect(response.data.count).toEqual(0)
     })
+
+    it("given a search query and a status filter not matching any price list, returns an empty set", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=draft", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual([])
+      expect(response.data.count).toEqual(0)
+    })
+
+    it("given a search query and a status filter matching a price list, returns a price list", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=active", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
   })
 
   describe("POST /admin/price-lists/:id", () => {
