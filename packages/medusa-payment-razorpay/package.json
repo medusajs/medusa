@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/medusajs/medusa",
+    "url": "https://github.com/SGFGOV/medusa",
     "directory": "packages/medusa-payment-razorpay"
   },
   "author": "Govind Diwakar",
