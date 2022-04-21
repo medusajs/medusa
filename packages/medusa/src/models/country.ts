@@ -1,12 +1,11 @@
 import {
-  Entity,
   Column,
-  ManyToOne,
-  JoinColumn,
+  Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from "typeorm"
-
 import { Region } from "./region"
 
 @Entity()
@@ -32,12 +31,9 @@ export class Country {
 
   @Index()
   @Column({ nullable: true })
-  region_id: string
+  region_id: string | null
 
-  @ManyToOne(
-    () => Region,
-    r => r.countries
-  )
+  @ManyToOne(() => Region, (r) => r.countries)
   @JoinColumn({ name: "region_id" })
   region: Region
 }

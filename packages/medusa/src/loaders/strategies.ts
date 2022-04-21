@@ -7,7 +7,7 @@ import formatRegistrationName from "../utils/format-registration-name"
 type LoaderOptions = {
   container: AwilixContainer
   configModule: object
-  isTest: boolean
+  isTest?: boolean
 }
 
 /**

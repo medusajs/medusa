@@ -26,18 +26,6 @@ class AdminDiscountsResource extends BaseResource {
   }
 
   /**
-   * @description Add valid product
-   */
-  addValidProduct(
-    id: string,
-    productId: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}/products/${productId}`
-    return this.client.request("POST", path, {})
-  }
-
-  /**
    * @description Creates discounts
    */
   create(
@@ -100,16 +88,9 @@ class AdminDiscountsResource extends BaseResource {
    */
   retrieve(
     id: string,
-    query?: AdminGetDiscountParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    let path = `/admin/discounts/${id}`
-
-    if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/discounts/${id}?${queryString}`
-    }
-
+    const path = `/admin/discounts/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
@@ -150,18 +131,6 @@ class AdminDiscountsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/regions/${regionId}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
-  }
-
-  /**
-   * @description Removes a valid product from a discount
-   */
-  removeValidProduct(
-    id: string,
-    productId: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDiscountsRes> {
-    const path = `/admin/discounts/${id}/products/${productId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 }

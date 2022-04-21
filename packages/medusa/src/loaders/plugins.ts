@@ -18,30 +18,30 @@ import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import { AbstractTaxService, isTaxCalculationStrategy } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
-import { ClassConstructor, Logger, MedusaContainer } from "../types/global"
-import { ConfigModule } from "./index"
+import { ClassConstructor, ConfigModule, Logger, MedusaContainer } from "../types/global"
 import { MiddlewareService } from "../services"
 
 type Options = {
-  rootDirectory: string;
-  container: MedusaContainer;
-  app: Express;
+  rootDirectory: string
+  container: MedusaContainer
+  configModule: ConfigModule
+  app: Express
   activityId: string
 }
 
 type PluginDetails = {
-  resolve: string;
-  name: string;
-  id: string;
-  options: Record<string, unknown>;
-  version: string;
+  resolve: string
+  name: string
+  id: string
+  options: Record<string, unknown>
+  version: string
 }
 
 /**
  * Registers all services in the services directory
  */
-export default async ({ rootDirectory, container, app, activityId }: Options): Promise<void> => {
-  const resolved = getResolvedPlugins(rootDirectory) || []
+export default async ({ rootDirectory, container, app, configModule, activityId }: Options): Promise<void> => {
+  const resolved = getResolvedPlugins(rootDirectory, configModule) || []
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
@@ -59,13 +59,7 @@ export default async ({ rootDirectory, container, app, activityId }: Options): P
   )
 }
 
-function getResolvedPlugins(rootDirectory: string): undefined | PluginDetails[] {
-  const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as { configModule: ConfigModule }
-
-  if (!configModule) {
-    return
-  }
-
+function getResolvedPlugins(rootDirectory: string, configModule: ConfigModule): undefined | PluginDetails[] {
   const { plugins } = configModule
 
   const resolved = plugins.map((plugin) => {
@@ -90,8 +84,12 @@ function getResolvedPlugins(rootDirectory: string): undefined | PluginDetails[] 
   return resolved
 }
 
-export async function registerPluginModels({ rootDirectory, container }: { rootDirectory: string; container: MedusaContainer }): Promise<void> {
-  const resolved = getResolvedPlugins(rootDirectory) || []
+export async function registerPluginModels({
+                                             rootDirectory,
+                                             container,
+                                             configModule
+}: { rootDirectory: string; container: MedusaContainer; configModule: ConfigModule; }): Promise<void> {
+  const resolved = getResolvedPlugins(rootDirectory, configModule) || []
   await Promise.all(
     resolved.map(async (pluginDetails) => {
       registerModels(pluginDetails, container)
