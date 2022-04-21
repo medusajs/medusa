@@ -1,16 +1,12 @@
 import { asValue } from "awilix"
 import RealRedis from "ioredis"
 import FakeRedis from "ioredis-mock"
-import { MedusaContainer } from "../types/global"
+import { ConfigModule, MedusaContainer } from "../types/global"
 import { Logger } from "../types/global"
-
-export type RedisConfig = {
-  redis_url?: string;
-}
 
 type Options = {
   container: MedusaContainer;
-  configModule: { projectConfig: RedisConfig };
+  configModule: ConfigModule;
   logger: Logger;
 }
 
