@@ -18,10 +18,7 @@ export enum BatchJobStatus {
   COMPLETED = "completed",
 }
 
-export type BatchJobCreateProps = Pick<
-  BatchJob,
-  "context" | "type" | "created_by"
->
+export type BatchJobCreateProps = Partial<BatchJob>
 
 export class FilterableBatchJobProps {
   @IsOptional()
