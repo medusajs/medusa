@@ -11,10 +11,15 @@ type Options = {
 }
 
 async function redisLoader({ container, configModule, logger }: Options): Promise<void> {
-  if (configModule.projectConfig.redis_url) {
+  if (configModule.projectConfig.redis_url && configModule.projectConfig.redis_options) {
+    throw new Error('You cannot set both config redis_url and redis_options together. If you use redis_options then use the options host, port, username, password, ... instead')
+  }
+
+  const shouldLoadRedis = configModule.projectConfig.redis_url || configModule.projectConfig.redis_options
+  if (shouldLoadRedis) {
     // Economical way of dealing with redis clients
-    const client = new RealRedis(configModule.projectConfig.redis_url)
-    const subscriber = new RealRedis(configModule.projectConfig.redis_url)
+    const client = new RealRedis(configModule.projectConfig.redis_url ?? configModule.projectConfig.redis_options)
+    const subscriber = new RealRedis(configModule.projectConfig.redis_url ?? configModule.projectConfig.redis_options)
 
     container.register({
       redisClient: asValue(client),

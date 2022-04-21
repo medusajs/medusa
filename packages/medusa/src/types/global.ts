@@ -17,6 +17,10 @@ export type Logger = _Logger & {
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
+    /**
+     * The redis options for the version 4.28.2 can be found [here](https://github.com/luin/ioredis/blob/v4.28.2/API.md#new_Redis)
+     */
+    redis_options?: Record<string, unknown>
 
     jwt_secret?: string
     cookie_secret?: string
