@@ -95,7 +95,7 @@ class StoreService extends BaseService {
   /**
    * Retrieve the store settings. There is always a maximum of one store.
    * @param relations - relations to fetch with store
-   * @return {Promise<Store>} the store
+   * @return the store
    */
   async retrieve(relations: string[] = []): Promise<Store> {
     return await this.atomicPhase_(
