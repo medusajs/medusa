@@ -43,16 +43,27 @@ Object {
 }
 `;
 
+<<<<<<< HEAD
 exports[`/admin/batch POST /admin/batch/ Creates a batch job 1`] = `
 Object {
-  "awaiting_confirmation_at": null,
-  "cancelled_at": null,
-  "completed_at": null,
   "context": "{}",
   "created_at": Any<String>,
   "created_by": "admin_user",
   "deleted_at": null,
   "id": Any<String>,
+}
+`;
+
+exports[`/admin/batch GET /admin/batch/id Retrieves batch job with id 1`] = `
+Object {
+  "awaiting_confirmation_at": null,
+  "cancelled_at": null,
+  "completed_at": null,
+  "context": Object {},
+  "created_at": Any<String>,
+  "created_by": "admin_user",
+  "deleted_at": null,
+  "id": "job_1",
   "processing_at": null,
   "result": null,
   "status": "created",
