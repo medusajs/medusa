@@ -78,7 +78,11 @@ https://[bucket].s3.[region].amazonaws.com
 
 The two access keys in the options are the ones created in the previous section.
 
-> Make sure to use an environment variable for the secret key in a live environment.
+:::note
+
+Make sure to use an environment variable for the secret key in a live environment.
+
+:::
 
 ### Try it out
 

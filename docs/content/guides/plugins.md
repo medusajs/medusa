@@ -12,7 +12,11 @@ Plugins offer a way to extend and integrate the core functionality of Medusa.
 
 In most commerce solutions, you can extend the basic features but it often comes with the expense of having to build standalone web applications. Our architecture is built such that plugins run within the same process as the core eliminating the need for extra server capacity, infrastructure and maintenance. As a result, the plugins can use all other services as dependencies and access the database.
 
-> You will notice that plugins vary in naming. The name should signal what functionality they provide.
+:::note
+
+You will notice that plugins vary in naming. The name should signal what functionality they provide.
+
+:::
 
 In the following sections, we will go through the basics of implementing a generic plugin. And finally, how to use it as part of your commerce setup.
 
@@ -34,7 +38,11 @@ We've already gone through the process of building custom services, endpoints, a
 
 To quickly get started with the implementation, we advise you to copy `/services/welcome.js`, `/api/index.js`, `/subscribers/welcome.js` and the config files from the tutorial and add them in `/src`. As a result, you should have the following folder structure:
 
-> Please note: since the container resolution paths are automatically generated from the used directories and filenames you should avoid pre- or suffixing your file (e.g. `services/welcomeService.js` would result in the service being registered as `WelcomeServiceService`).
+:::note 
+
+Since the container resolution paths are automatically generated from the used directories and filenames you should avoid pre- or suffixing your file (e.g. `services/welcomeService.js` would result in the service being registered as `WelcomeServiceService`).
+
+:::
 
 ```js
 .
@@ -55,7 +63,11 @@ Please note that you will need some build step before being able to properly loa
 
 It is worth mentioning the difference between building a generic and a non-generic plugin. A non-generic plugin has a specific purpose such as processing payments or creating fulfillments. Medusa core depends on a specific implementation from such plugins, which is why we've created interfaces that enforce this. These can be found in `medusa-interfaces`.
 
-> Note: Non-generic plugins are required to extend the correct interface, otherwise they will not be loaded correctly as part of your Medusa setup.
+:::note
+
+Non-generic plugins are required to extend the correct interface, otherwise they will not be loaded correctly as part of your Medusa setup.
+
+:::
 
 For a more comprehensive walkthrough of the implementation of such plugins, see our guides:
 

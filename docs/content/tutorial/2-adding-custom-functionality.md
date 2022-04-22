@@ -52,7 +52,11 @@ constructor({ cartService, orderService }) {
 
 In the constructor we specify that our `WelcomeService` will depend upon the `cartService` and `orderService` and Medusa will make sure to provide those as the first argument to the constructor when starting up Medusa. We then keep a reference to these services within the `WelcomeService` so that we can use them later on.
 
-> Note: Just like we can depend on the `cartService` and `orderService` other services will be able to depend on our newly created `WelcomeService`. The registration name of our service is the camelCased version of our file name with the registration type appended. I.e. `/src/services/welcome.js` -> `welcomeService`.
+:::note
+
+Just like we can depend on the `cartService` and `orderService` other services will be able to depend on our newly created `WelcomeService`. The registration name of our service is the camelCased version of our file name with the registration type appended. I.e. `/src/services/welcome.js` -> `welcomeService`.
+
+:::
 
 ### `registerOptin`
 
@@ -72,7 +76,12 @@ async registerOptin(cartId, optin) {
 
 The `registerOptin` implementation simply validates that the provided argument is of the correct type and calls the CartService function `update`. `update` takes two arguments: the first is the id of the cart to update and the second is an object that with the key/value pairs that we want to update. In this case we are updating the metadata on the cart. The `metadata` field on the cart is itself an object so we need to pass an object when updating this field.
 
-> Note: Most entities in Medusa have a `metadata` field that can be used for customizations or integrations when it is necessary to persist some data relating to the entity. Metadata cannot be overridden by other plugins.
+:::note
+
+Most entities in Medusa have a `metadata` field that can be used for customizations or integrations when it is necessary to persist some data relating to the entity. Metadata cannot be overridden by other 
+plugins.
+
+:::
 
 ### `sendWelcome`
 
@@ -115,7 +124,11 @@ We then check if the number of previous orders is greater than 1, indicating tha
 
 The final part of the implementation checks if the `welcome_optin` metadata has been set to true. If the customer has opted in we use `someEmailService.send` to trigger and email dispatch to the email stored on the order. In this case `someEmailSender` could be any email service for example Sendgrid, SES, Mailgun, etc.
 
-> Note: If you have `medusa-plugin-sendgrid` installed you can use `sendgridService` in your constructor to use it later in `sendWelcome`. You will then be able to do `sendgridService.send({ ... })`.
+:::note
+
+If you have `medusa-plugin-sendgrid` installed you can use `sendgridService` in your constructor to use it later in `sendWelcome`. You will then be able to do `sendgridService.send({ ... })`.
+
+:::
 
 We have completed the implementation of our custom service and we will now be able to call it from elsewhere in our project.
 
