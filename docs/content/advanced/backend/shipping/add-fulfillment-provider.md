@@ -59,7 +59,7 @@ class MyFulfillmentService extends FulfillmentService {
 export default MyFulfillmentService;
 ```
 
-## constructor
+### constructor
 
 You can use the `constructor` of your fulfillment provider to have access to different services in Medusa through dependency injection.
 
