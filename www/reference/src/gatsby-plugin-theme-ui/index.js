@@ -69,6 +69,7 @@ export default {
     placeholder: "#a3acb9",
     dark: "#0a3149",
     darkContrast: "#0a314940",
+    selectBg: "rgba(9, 10, 17, 0.8)",
     light: "#ffffff",
     faded: "#eef0f5",
     fadedContrast: "#eef0f540",
@@ -87,6 +88,7 @@ export default {
         separator: "#eef0f540",
         codeBoxShadow: "#d2d2d22b",
         sectionSeparator: "#404244",
+        selectBg: "rgba(9, 10, 17, 0.8)"
       }
     }
   },
