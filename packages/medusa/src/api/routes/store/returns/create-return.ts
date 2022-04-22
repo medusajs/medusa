@@ -219,11 +219,6 @@ export default async (req, res) => {
   }
 }
 
-class ReturnShipping {
-  @IsString()
-  @IsNotEmpty()
-  option_id: string
-}
 
 class Item {
   @IsString()
@@ -255,6 +250,5 @@ export class StorePostReturnsReq {
 
   @IsOptional()
   @ValidateNested()
-  @Type(() => ReturnShipping)
-  return_shipping?: ReturnShipping
+  return_shipping?: string
 }
