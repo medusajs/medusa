@@ -5,7 +5,7 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TYPE "batch_job_status_enum" AS ENUM('created', 'processing', 'awaiting_confirmation', 'cancelled', 'completed')`
+      `CREATE TYPE "batch_job_status_enum" AS ENUM('created', 'processing', 'awaiting_confirmation', 'canceled', 'completed')`
     )
 
     await queryRunner.query(

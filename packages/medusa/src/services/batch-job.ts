@@ -23,8 +23,8 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   static readonly Events = {
     CREATED: "batch.created",
     UPDATED: "batch.updated",
-    COMPLETED: "batch.completed",
     CANCELED: "batch.canceled",
+    COMPLETED: "batch.completed",
   }
 
   constructor({
@@ -81,7 +81,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       }
 
       batchJob.cancelled_at = new Date()
-      batchJob.status = BatchJobStatus.CANCELLED
+      batchJob.status = BatchJobStatus.CANCELED
 
       await batchJobRepo.save(batchJob)
 
