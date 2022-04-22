@@ -71,21 +71,14 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         this.batchJobRepository_
       )
 
-      const batchJob = await batchJobRepo.findOne(batchJobId)
-
-      if (!batchJob || batchJob.created_by !== userId) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot cancel batch jobs created by other users"
-        )
-      }
+      const batchJob = await this.retrieve(batchJobId)
 
       batchJob.cancelled_at = new Date()
       batchJob.status = BatchJobStatus.CANCELED
 
       await batchJobRepo.save(batchJob)
 
-      const result = (await batchJobRepo.findOne(batchJobId)) as BatchJob
+      const result = await this.retrieve(batchJobId)
 
       await this.eventBus_
         .withTransaction(manager)
