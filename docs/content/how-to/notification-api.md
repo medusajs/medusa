@@ -77,9 +77,12 @@ class MyService extends NotificationService {
 
 export default MyService;
 ```
+:::note Note
 
-> **Note:** a notification service must have a static property called `identifier` this is used to determine which classes are called when subscribing to different events. In this case the service identifier is `my-service` so to subscribe to notifications you must use:
-> `notificationService.subscribe([eventname], "my-service")`
+ A notification service must have a static property called `identifier` this is used to determine which classes are called when subscribing to different events. In this case the service identifier is `my-service` so to subscribe to notifications you must use:
+ `notificationService.subscribe([eventname], "my-service")`
+
+:::
 
 The above class is an example implementation of a NotificationService. It uses a fictional email service called `CoolEmailSender` to send emails to a customer whenever an order is placed. The `sendNotification` implementation gets the event name and fetches relevant data based on what event is being processed; in this case it retrieves an order, which is later used when requesting `CoolEmailSender` to dispatch an email. The address to send the email to is likewise fetched from the order.
 
