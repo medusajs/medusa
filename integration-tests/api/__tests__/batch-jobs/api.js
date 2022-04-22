@@ -147,6 +147,65 @@ describe("/admin/batch", () => {
       await db.teardown()
     })
 
+    it("Cancels batch job created by the user", async () => {
+      const api = useApi()
+
+      const jobId = "job_1"
+
+      const response = await api.post(
+        `/admin/batch/${jobId}/cancel`,
+        {},
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.batch_job).toMatchSnapshot({
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        cancelled_at: expect.any(String),
+        status: "canceled",
+      })
+    })
+
+    it("Fails to cancel a batch job created by a different user", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      const jobId = "job_2"
+
+      api
+        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("not_allowed")
+          expect(err.response.data.message).toEqual(
+            "Cannot cancel batch jobs created by other users"
+          )
+        })
+    })
+  })
+
+  describe("GET /admin/batch/id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        await simpleBatchJobFactory(dbConnection, {
+          id: "job_1",
+          type: "batch_1",
+          created_by: "admin_user",
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
     it("Retrieves batch job with id", async () => {
       const api = useApi()
 
