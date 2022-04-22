@@ -4,7 +4,7 @@ import { BatchJobRepository } from "../repositories/batch-job"
 import { BatchJobStatus, FilterableBatchJobProps } from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, validateId } from "../utils"
+import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import EventBusService from "./event-bus"
 
