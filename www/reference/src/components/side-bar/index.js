@@ -2,11 +2,13 @@ import { Box, Flex, Image } from "theme-ui"
 import React, { useEffect, useState } from "react"
 
 import Logo from "../../assets/logo.svg"
+import LogoDark from "../../assets/logo-dark.svg"
 import LogoMuted from "../../assets/logo-muted.svg"
 import SideBarItem from "./sidebar-item"
 import SideBarSelector from "./sidebar-selector"
 import { navigate } from "gatsby"
 import styled from "@emotion/styled"
+import { useColorMode } from 'theme-ui'
 
 const SideBarContainer = styled(Flex)`
   @media screen and (max-width: 848px) {
@@ -26,6 +28,7 @@ const SideBarFade = styled(Box)`
 
 const Sidebar = ({ data, api }) => {
   const [scrollPos, setScrollPos] = useState(0)
+  const [colorMode, setColorMode] = useColorMode()
 
   useEffect(() => {
     const nav = document.querySelector("#nav")
@@ -47,24 +50,25 @@ const Sidebar = ({ data, api }) => {
         top: "0",
         bottom: "0",
         height: "100vh",
-        backgroundColor: "light",
+        backgroundColor: "var(--theme-ui-colors-background)",
         boxShadow: "sidebarShadow",
         minWidth: "var(--side-bar-width)",
         flexDirection: "column",
       }}
+      className="sidebar-container"
     >
       <Flex
         sx={{
           px: "4",
           pt: "3",
-          background: "light",
+          background: "var(--theme-ui-colors-background)",
           width: "calc(var(--side-bar-width) - 1px)",
           flexDirection: "column",
         }}
       >
         <Flex>
           <Image
-            src={Logo}
+            src={colorMode == 'light' ? Logo : LogoDark}
             alt="Medusa logo"
             onClick={() => navigate("/")}
             sx={{
@@ -96,7 +100,7 @@ const Sidebar = ({ data, api }) => {
           return <SideBarItem item={s} key={i} />
         })}
       </Flex>
-      <Flex sx={{ py: 4, px: 4, borderTop: "1px solid #efefef" }}>
+      <Flex sx={{ py: 4, px: 4, borderTop: "1px solid var(--theme-ui-colors-separator)" }}>
         <Image src={LogoMuted} alt="Medusa Type" sx={{ height: "10px" }} />
       </Flex>
     </SideBarContainer>

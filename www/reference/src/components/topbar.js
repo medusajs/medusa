@@ -2,6 +2,7 @@ import { Box, Flex, Link, Select } from "@theme-ui/components"
 import React, { useContext } from "react"
 
 import ChevronDown from "./icons/chevron-down"
+import ColorModeToggler from "./ColorModeToggler"
 import GitHub from "../components/icons/github"
 import NavigationContext from "../context/navigation-context"
 import Search from "./search"
@@ -116,6 +117,7 @@ const Topbar = ({ data, api }) => {
           <GitHub />
         </Link>
         <Search data={data} />
+        <ColorModeToggler />
       </Flex>
     </Flex>
   )
