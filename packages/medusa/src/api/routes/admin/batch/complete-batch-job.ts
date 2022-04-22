@@ -1,3 +1,4 @@
+import { MedusaError } from "medusa-core-utils"
 import { BatchJobService } from "../../../../services"
 
 /**
@@ -27,7 +28,16 @@ export default async (req, res) => {
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
 
-  const batch_job = await batchJobService.complete(id, userId)
+  const batch_job = await batchJobService.retrieve(id)
 
-  res.json({ batch_job })
+  if (batch_job.created_by !== userId) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Cannot complete batch jobs created by other users"
+    )
+  }
+
+  const result = await batchJobService.complete(id, userId)
+
+  res.json({ batch_job: result })
 }
