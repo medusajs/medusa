@@ -128,7 +128,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
    * if job is started with dry_run: true, then it's required
    * to complete the job before it's written to DB
    */
-  async complete(batchJobId: string, userId: string): Promise<BatchJob> {
+  async complete(batchJobId: string): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
       const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
         this.batchJobRepository_

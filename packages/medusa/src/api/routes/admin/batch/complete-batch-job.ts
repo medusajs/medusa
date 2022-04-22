@@ -37,7 +37,7 @@ export default async (req, res) => {
     )
   }
 
-  const result = await batchJobService.complete(id, userId)
+  const result = await batchJobService.complete(id)
 
   res.json({ batch_job: result })
 }
