@@ -795,8 +795,8 @@ describe("/admin/price-lists", () => {
         await simplePriceListFactory(dbConnection, {
           id: "test-list",
           prices: [
-            { variant_id: "test-variant-1", currency_code: "usd", amount: 100 },
-            { variant_id: "test-variant-4", currency_code: "usd", amount: 100 },
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 150 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
           ],
         })
       } catch (err) {
@@ -826,8 +826,50 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
       expect(response.data.products).toEqual([
-        expect.objectContaining({ id: "test-prod-1" }),
-        expect.objectContaining({ id: "test-prod-2" }),
+        expect.objectContaining({
+          id: "test-prod-1",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-1",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-2",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          id: "test-prod-2",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-3",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-4",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+          ],
+        }),
       ])
     })
 
