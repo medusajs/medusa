@@ -97,6 +97,27 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
+  async retrieve(
+    batchJobId: string,
+    config: FindConfig<BatchJob> = {}
+  ): Promise<BatchJob> {
+    const batchJobRepo: BatchJobRepository =
+      this.container_.manager.getCustomRepository(this.batchJobRepository_)
+
+    const validatedId = this.validateId_(batchJobId)
+    const query = this.buildQuery_({ id: validatedId }, config)
+    const batchJob = await batchJobRepo.findOne(query)
+
+    if (!batchJob) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Batch job with id ${batchJobId} was not found`
+      )
+    }
+
+    return batchJob
+  }
+
   /*
    * if job is started with dry_run: true, then it's required
    * to complete the job before it's written to DB
