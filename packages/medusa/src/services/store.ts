@@ -1,0 +1,290 @@
+import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import { currencies, Currency } from "../utils/currencies"
+import { EntityManager } from "typeorm"
+import { StoreRepository } from "../repositories/store"
+import { CurrencyRepository } from "../repositories/currency"
+import EventBusService from "./event-bus"
+import { Store } from "../models"
+import { AdminPostStoreReq } from "../api/routes/admin/store"
+
+type InjectedDependencies = {
+  manager: EntityManager
+  storeRepository: typeof StoreRepository
+  currencyRepository: typeof CurrencyRepository
+  eventBusService: EventBusService
+}
+
+/**
+ * Provides layer to manipulate store settings.
+ * @extends BaseService
+ */
+class StoreService extends BaseService {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager
+  protected readonly storeRepository_: typeof StoreRepository
+  protected readonly currencyRepository_: typeof CurrencyRepository
+  protected readonly eventBus_: EventBusService
+
+  constructor({
+    manager,
+    storeRepository,
+    currencyRepository,
+    eventBusService,
+  }: InjectedDependencies) {
+    super()
+
+    this.manager_ = manager
+    this.storeRepository_ = storeRepository
+    this.currencyRepository_ = currencyRepository
+    this.eventBus_ = eventBusService
+  }
+
+  withTransaction(transactionManager): this | StoreService {
+    if (!transactionManager) {
+      return this
+    }
+
+    const cloned = new StoreService({
+      manager: transactionManager,
+      storeRepository: this.storeRepository_,
+      currencyRepository: this.currencyRepository_,
+      eventBusService: this.eventBus_,
+    })
+
+    cloned.transactionManager_ = transactionManager
+
+    return cloned
+  }
+
+  /**
+   * Creates a store if it doesn't already exist.
+   * @return The store.
+   */
+  async create(): Promise<Store> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const storeRepository = transactionManager.getCustomRepository(
+          this.storeRepository_
+        )
+        const currencyRepository = transactionManager.getCustomRepository(
+          this.currencyRepository_
+        )
+
+        let store = await this.retrieve()
+
+        if (!store) {
+          const newStore = await storeRepository.create()
+          // Add default currency (USD) to store currencies
+          const usd = await currencyRepository.findOne({
+            code: "usd",
+          })
+
+          if (usd) {
+            newStore.currencies = [usd]
+          }
+
+          store = await storeRepository.save(newStore)
+        }
+
+        return store
+      }
+    )
+  }
+
+  /**
+   * Retrieve the store settings. There is always a maximum of one store.
+   * @param relations - relations to fetch with store
+   * @return {Promise<Store>} the store
+   */
+  async retrieve(relations: string[] = []): Promise<Store> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const storeRepo = transactionManager.getCustomRepository(
+          this.storeRepository_
+        )
+        return await storeRepo.findOne({ relations })
+      }
+    )
+  }
+
+  protected getDefaultCurrency_(code: string): Partial<Currency> {
+    const currencyObject = currencies[code.toUpperCase()]
+
+    return {
+      code: currencyObject.code.toLowerCase(),
+      symbol: currencyObject.symbol,
+      symbol_native: currencyObject.symbol_native,
+      name: currencyObject.name,
+    }
+  }
+
+  /**
+   * Updates a store
+   * @param data - an object with the update values.
+   * @return resolves to the update result.
+   */
+  async update(data: AdminPostStoreReq): Promise<Store> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const storeRepository = transactionManager.getCustomRepository(
+          this.storeRepository_
+        )
+        const currencyRepository = transactionManager.getCustomRepository(
+          this.currencyRepository_
+        )
+
+        const {
+          metadata,
+          default_currency_code,
+          currencies: storeCurrencies,
+          ...rest
+        } = data
+
+        const store = await this.retrieve(["currencies"])
+        if (metadata) {
+          store.metadata = this.setMetadata_(store.id, metadata)
+        }
+
+        if (storeCurrencies) {
+          const defaultCurr =
+            default_currency_code ?? store.default_currency_code
+          const hasDefCurrency = storeCurrencies.find(
+            (c) => c.toLowerCase() === defaultCurr.toLowerCase()
+          )
+
+          // throw if we are trying to remove a currency from store currently used as default
+          if (!hasDefCurrency) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `You are not allowed to remove default currency from store currencies without replacing it as well`
+            )
+          }
+
+          store.currencies = await Promise.all(
+            storeCurrencies.map(async (curr) => {
+              const currency = await currencyRepository.findOne({
+                where: { code: curr.toLowerCase() },
+              })
+
+              if (!currency) {
+                throw new MedusaError(
+                  MedusaError.Types.INVALID_DATA,
+                  `Invalid currency ${curr}`
+                )
+              }
+
+              return currency
+            })
+          )
+        }
+
+        if (default_currency_code) {
+          const storeCurrCodes = store.currencies.map((c) => c.code)
+          const hasDefCurrency = storeCurrCodes.find(
+            (c) => c === default_currency_code.toLowerCase()
+          )
+
+          // throw if store currencies does not have default currency
+          if (!hasDefCurrency) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Store does not have currency: ${default_currency_code}`
+            )
+          }
+
+          const curr = await currencyRepository.findOne({
+            code: default_currency_code.toLowerCase(),
+          })
+
+          if (!curr) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Currency ${default_currency_code} not found`
+            )
+          }
+
+          store.default_currency = curr
+          store.default_currency_code = curr.code
+        }
+
+        for (const [key, value] of Object.entries(rest)) {
+          store[key] = value
+        }
+
+        return await storeRepository.save(store)
+      }
+    )
+  }
+
+  /**
+   * Add a currency to the store
+   * @param code - 3 character ISO currency code
+   * @return result after update
+   */
+  async addCurrency(code: string): Promise<Store> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const storeRepo = transactionManager.getCustomRepository(
+          this.storeRepository_
+        )
+        const currencyRepository = transactionManager.getCustomRepository(
+          this.currencyRepository_
+        )
+
+        const curr = await currencyRepository.findOne({
+          where: { code: code.toLowerCase() },
+        })
+
+        if (!curr) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Currency ${code} not found`
+          )
+        }
+
+        const store = await this.retrieve(["currencies"])
+        if (
+          store.currencies.map((c) => c.code).includes(curr.code.toLowerCase())
+        ) {
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            `Currency already added`
+          )
+        }
+
+        store.currencies = [...store.currencies, curr]
+        return await storeRepo.save(store)
+      }
+    )
+  }
+
+  /**
+   * Removes a currency from the store
+   * @param code - 3 character ISO currency code
+   * @return result after update
+   */
+  async removeCurrency(code: string): Promise<Store> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const storeRepo = transactionManager.getCustomRepository(
+          this.storeRepository_
+        )
+        const store = await this.retrieve(["currencies"])
+
+        const exists = store.currencies.some(
+          (c) => c.code === code.toLowerCase()
+        )
+        // If currency does not exist, return early
+        if (!exists) {
+          return store
+        }
+
+        store.currencies = store.currencies.filter((c) => c.code !== code)
+        return await storeRepo.save(store)
+      }
+    )
+  }
+}
+
+export default StoreService
