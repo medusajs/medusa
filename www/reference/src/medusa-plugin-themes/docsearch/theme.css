@@ -1,5 +1,5 @@
 :root {
-    --docsearch-primary-color: #0a3149;
+    --docsearch-primary-color: #7C53FF;
     /*dark*/
     --docsearch-secondary-color: #eef0f5;
     /*faded*/
@@ -38,13 +38,14 @@
 
 /* Darkmode */
 
-html[data-theme='dark'] {
+.dark {
+    --docsearch-secondary-color: rgb(127, 132, 151);
     --docsearch-text-color: rgb(245, 246, 247);
     --docsearch-container-background: rgba(9, 10, 17, 0.8);
     --docsearch-modal-background: rgb(21, 23, 42);
     --docsearch-modal-shadow: inset 1px 1px 0 0 rgb(44, 46, 64), 0 3px 8px 0 rgb(0, 3, 9);
     --docsearch-searchbox-background: rgb(9, 10, 17);
-    --docsearch-searchbox-focus-background: #000;
+    --docsearch-searchbox-focus-background: var(--docsearch-modal-background);
     --docsearch-hit-color: rgb(190, 195, 201);
     --docsearch-hit-shadow: none;
     --docsearch-hit-background: rgb(9, 10, 17);
@@ -53,7 +54,7 @@ html[data-theme='dark'] {
     --docsearch-footer-background: rgb(30, 33, 54);
     --docsearch-footer-shadow: inset 0 1px 0 0 rgba(73, 76, 106, 0.5), 0 -4px 8px 0 rgba(0, 0, 0, 0.2);
     --docsearch-logo-color: rgb(255, 255, 255);
-    --docsearch-muted-color: rgb(127, 132, 151);
+    --docsearch-muted-color: #d7d7d7;
 }
 
 /* Body modifier */
@@ -650,25 +651,26 @@ svg.DocSearch-Hit-Select-Icon {
 .DocSearch-Button {
     display: flex;
     align-items: center;
-    background: white;
+    background: var(--docsearch-container-background);
     border: 0;
     border-radius: 36px;
     color: var(--docsearch-muted-color);
     cursor: pointer;
     display: flex;
     font-weight: 500;
-    height: 36px;
+    height: 38px;
     justify-content: space-between;
     padding: 0 8px;
     user-select: none;
-    border: 1px solid var(--docsearch-secondary-color);
     flex-grow: 1;
     max-width: 200px;
     margin-left: 12px;
+    border: 2px solid transparent;
+    transition: all .1s;
 }
 
 .DocSearch-Button:hover, .DocSearch-Button:active, .DocSearch-Button:focus {
-    color: var(--docsearch-primary-color);
+    border-color: var(--docsearch-primary-color);
     outline: none;
 }
 
