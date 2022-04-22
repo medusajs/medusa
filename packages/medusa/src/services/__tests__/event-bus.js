@@ -32,7 +32,7 @@ describe("EventBusService", () => {
     })
 
     afterAll(async () => {
-      eventBus.stopEnqueuer()
+      await eventBus.stopEnqueuer()
     })
 
     it("creates bull queue", () => {

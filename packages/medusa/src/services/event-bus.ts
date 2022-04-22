@@ -33,6 +33,7 @@ export default class EventBusService {
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
   protected transactionManager_: EntityManager | undefined
+  protected enqueu_: Promise<void>
 
   constructor(
     {
@@ -190,10 +191,11 @@ export default class EventBusService {
         this.stagedJobRepository_
       )
 
-      return await stagedJobRepository.save({
+      const stagedJobInstance = stagedJobRepository.create({
         event_name: eventName,
         data,
       })
+      return await stagedJobRepository.save(stagedJobInstance)
     } else {
       const opts: { removeOnComplete: boolean; delay?: number } = {
         removeOnComplete: true,
@@ -207,11 +209,12 @@ export default class EventBusService {
 
   startEnqueuer(): void {
     this.shouldEnqueuerRun = true
-    this.enqueuer_()
+    this.enqueu_ = this.enqueuer_()
   }
 
-  stopEnqueuer(): void {
+  async stopEnqueuer(): Promise<void> {
     this.shouldEnqueuerRun = false
+    await this.enqueu_
   }
 
   async enqueuer_(): Promise<void> {
