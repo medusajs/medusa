@@ -266,3 +266,7 @@ details summary {
   color: #6e3eff;
   text-decoration: none;
 }
+
+.DocSearch-Container {
+  z-index: 1001 !important;
+}
