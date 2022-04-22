@@ -54,21 +54,24 @@ class BatchJobService extends BaseService<BatchJobService> {
     batchJobId: string,
     config: FindConfig<BatchJob> = {}
   ): Promise<BatchJob> {
-    const batchJobRepo: BatchJobRepository =
-      this.container_.manager.getCustomRepository(this.batchJobRepository_)
-
-    const validatedId = this.validateId_(batchJobId)
-    const query = this.buildQuery_({ id: validatedId }, config)
-    const batchJob = await batchJobRepo.findOne(query)
-
-    if (!batchJob) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Batch job with id ${batchJobId} was not found`
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
       )
-    }
 
-    return batchJob
+      const validatedId = this.validateId_(batchJobId)
+      const query = this.buildQuery_({ id: validatedId }, config)
+      const batchJob = await batchJobRepo.findOne(query)
+
+      if (!batchJob) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Batch job with id ${batchJobId} was not found`
+        )
+      }
+
+      return batchJob
+    })
   }
 
   /*
@@ -81,14 +84,7 @@ class BatchJobService extends BaseService<BatchJobService> {
         this.batchJobRepository_
       )
 
-      const batchJob = await batchJobRepo.findOne(batchJobId)
-
-      if (!batchJob || batchJob.created_by !== userId) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot complete batch jobs created by other users"
-        )
-      }
+      const batchJob = await this.retrieve(batchJobId)
 
       // check that job has run
       if (batchJob.status !== BatchJobStatus.AWAITING_CONFIRMATION) {
@@ -103,7 +99,7 @@ class BatchJobService extends BaseService<BatchJobService> {
 
       await batchJobRepo.save(batchJob)
 
-      const result = (await batchJobRepo.findOne(batchJobId)) as BatchJob
+      const result = await this.retrieve(batchJobId)
 
       await this.eventBus_
         .withTransaction(manager)
