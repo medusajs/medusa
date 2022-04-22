@@ -99,6 +99,7 @@ export default async (req, res) => {
       allowedFields: allowedAdminProductFields,
       defaultFields: defaultAdminProductFields as (keyof Product)[],
       defaultRelations: defaultAdminProductRelations,
+      include_discount_prices: true,
     }
   )
 
