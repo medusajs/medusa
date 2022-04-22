@@ -148,8 +148,6 @@ describe("StoreService", () => {
       await expect(storeService.addCurrency("1cd")).rejects.toThrow(
         "Currency 1cd not found"
       )
-
-      expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
 
     it("fails if currency already existis", async () => {
