@@ -73,6 +73,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       const batchJob = await this.retrieve(batchJobId)
 
+      if (!batchJob || batchJob.created_by !== userId) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot cancel batch jobs created by other users"
+        )
+      }
+
       batchJob.cancelled_at = new Date()
       batchJob.status = BatchJobStatus.CANCELED
 
@@ -94,21 +101,24 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     batchJobId: string,
     config: FindConfig<BatchJob> = {}
   ): Promise<BatchJob> {
-    const batchJobRepo: BatchJobRepository =
-      this.container_.manager.getCustomRepository(this.batchJobRepository_)
-
-    const validatedId = this.validateId_(batchJobId)
-    const query = this.buildQuery_({ id: validatedId }, config)
-    const batchJob = await batchJobRepo.findOne(query)
-
-    if (!batchJob) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Batch job with id ${batchJobId} was not found`
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
       )
-    }
 
-    return batchJob
+      const validatedId = this.validateId_(batchJobId)
+      const query = this.buildQuery_({ id: validatedId }, config)
+      const batchJob = await batchJobRepo.findOne(query)
+
+      if (!batchJob) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Batch job with id ${batchJobId} was not found`
+        )
+      }
+
+      return batchJob
+    })
   }
 
   /*
