@@ -33,11 +33,11 @@ export default async (req, res) => {
   if (batch_job.created_by !== userId) {
     throw new MedusaError(
       MedusaError.Types.NOT_ALLOWED,
-      "Cannot complete batch jobs created by other users"
+      "Cannot confirm batch jobs created by other users"
     )
   }
 
-  const result = await batchJobService.complete(id)
+  const result = await batchJobService.confirm(id)
 
   res.json({ batch_job: result })
 }
