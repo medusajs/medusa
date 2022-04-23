@@ -65,8 +65,8 @@ Object {
 exports[`/admin/batch POST /admin/batch/:id/cancel Cancels batch job created by the user 1`] = `
 Object {
   "awaiting_confirmation_at": null,
-  "cancelled_at": Any<String>,
-  "completed_at": null,
+  "cancelled_at": null,
+  "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,
   "created_by": "admin_user",
@@ -74,7 +74,7 @@ Object {
   "id": "job_1",
   "processing_at": null,
   "result": null,
-  "status": "canceled",
+  "status": "created",
   "type": "batch_1",
   "updated_at": Any<String>,
 }
