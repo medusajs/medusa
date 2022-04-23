@@ -1,4 +1,5 @@
 import { BatchJobService } from "../../../../services"
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /batch/{id}/cancel
@@ -29,5 +30,14 @@ export default async (req, res) => {
 
   const batch_job = await batchJobService.cancel(id, userId)
 
-  res.json({ batch_job })
+  if (batch_job.created_by !== userId) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Cannot cancel batch jobs created by other users"
+    )
+  }
+
+  const result = await batchJobService.cancel(id)
+
+  res.json({ batch_job: result })
 }
