@@ -810,7 +810,7 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it("lists only product 1, 2", async () => {
+    it("lists only product 1, 2 with price list prices", async () => {
       const api = useApi()
 
       const response = await api
