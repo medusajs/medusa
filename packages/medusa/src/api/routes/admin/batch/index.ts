@@ -17,7 +17,7 @@ export default (app) => {
 
   route.post(
     "/:id/complete",
-    middlewares.wrap(require("./complete-batch-job").default)
+    middlewares.wrap(require("./confirm-batch-job").default)
   )
 
   route.post("/", middlewares.wrap(require("./create-batch-job").default))
