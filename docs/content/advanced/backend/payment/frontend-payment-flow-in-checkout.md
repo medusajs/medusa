@@ -1,8 +1,4 @@
----
-title: Checkouts
----
-
-# Checkouts
+# Frontend Payment Flow in Checkout
 
 ## Introduction
 The purpose of this guide is to describe a checkout flow in Medusa. It is assumed that you've completed our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or [Tutorial](https://docs.medusajs.com/tutorial/set-up-your-development-environment) and are familiar with the technologies we use in our stack. Additionally, having an understanding of the [core API](https://docs.medusajs.com/api/store/auth) would serve as a great foundation for this walkthrough.

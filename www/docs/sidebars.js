@@ -182,6 +182,14 @@ module.exports = {
                   id: "advanced/backend/payment/overview",
                   label: "Architecture Overview"
                 },
+                {
+                  type: "doc",
+                  id: "advanced/backend/payment/how-to-create-payment-provider",
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/payment/frontend-payment-flow-in-checkout",
+                },
               ]
             },
             {
@@ -200,10 +208,6 @@ module.exports = {
             {
               type: "doc",
               id: "guides/plugins",
-            },
-            {
-              type: "doc",
-              id: "guides/checkouts",
             },
             {
               type: "doc",
