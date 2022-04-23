@@ -23,7 +23,7 @@ describe("/admin/batch", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: false })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -68,7 +68,7 @@ describe("/admin/batch", () => {
       await db.teardown()
     })
 
-    it("Completes batch job created by the user", async () => {
+    it("Requests completion of batch job created by the user", async () => {
       const api = useApi()
 
       const jobId = "job_2"
@@ -83,39 +83,24 @@ describe("/admin/batch", () => {
       expect(response.data.batch_job).toMatchSnapshot({
         created_at: expect.any(String),
         updated_at: expect.any(String),
-        completed_at: expect.any(String),
-        status: "completed",
+        confirmed_at: null,
+        status: "awaiting_confirmation",
       })
     })
 
-    it("Fails to complete a batch job created by a different user", async () => {
+    it("Fails to confirm a batch job created by a different user", async () => {
       const api = useApi()
 
       const jobId = "job_3"
 
-      api
+      await api
         .post(`/admin/batch/${jobId}/complete`, {}, adminReqConfig)
         .catch((err) => {
+          console.log(err)
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
-            "Cannot complete batch jobs created by other users"
-          )
-        })
-    })
-
-    it("Fails to complete a batch job not awaiting completion", async () => {
-      const api = useApi()
-
-      const jobId = "job_1"
-
-      api
-        .post(`/admin/batch/${jobId}/complete`, {}, adminReqConfig)
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.type).toEqual("invalid_data")
-          expect(err.response.data.message).toEqual(
-            `Cannot complete a batch job with status "created"`
+            "Cannot confirm batch jobs created by other users"
           )
         })
     })
