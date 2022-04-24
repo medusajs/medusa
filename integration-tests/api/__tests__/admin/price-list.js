@@ -4,6 +4,10 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 
+const {
+  simpleProductFactory,
+  simplePriceListFactory,
+} = require("../../factories")
 const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
 const priceListSeeder = require("../../helpers/price-list-seeder")
@@ -748,6 +752,103 @@ describe("/admin/price-lists", () => {
       expect(getPriceListResponse.data.price_list.prices[0].id).toEqual(
         "ma_test_3"
       )
+    })
+  })
+
+  describe("GET /admin/price-lists/:id/products", () => {
+    let tag
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-1",
+            title: "MedusaHeadphones",
+            variants: [{ id: "test-variant-1" }, { id: "test-variant-2" }],
+          },
+          1
+        )
+
+        const prod = await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-2",
+            tags: ["test-tag"],
+            variants: [{ id: "test-variant-3" }, { id: "test-variant-4" }],
+          },
+          2
+        )
+
+        tag = prod.tags[0].id
+
+        await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-3",
+            variants: [{ id: "test-variant-5" }],
+          },
+          3
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list",
+          prices: [
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 100 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 100 },
+          ],
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("lists only product 1, 2", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/admin/price-lists/test-list/products?order=-created_at`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(2)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({ id: "test-prod-1" }),
+        expect.objectContaining({ id: "test-prod-2" }),
+      ])
+    })
+
+    it("lists only product 2", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/admin/price-lists/test-list/products?tags[]=${tag}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({ id: "test-prod-2" }),
+      ])
     })
   })
 })

@@ -111,7 +111,7 @@ It is not important which editor you use as long as you feel comfortable working
 
 As the final step in this part of the tutorial you should create a Medusa Cloud account. Medusa Cloud is the platform that works with Medusa; the platform is where you view and manage your store, but is also a key part of the development process as you will be linking your local project to the platform so that you can manage your store while in development.
 
-[Sign up for Medusa Cloud](https://app.medusa-commerce.com) -->
+[Sign up for Medusa Cloud](https://app.medusajs.com) -->
 
 ## Summary
 

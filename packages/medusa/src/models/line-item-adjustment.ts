@@ -14,6 +14,10 @@ import { Discount } from "./discount"
 import { LineItem } from "./line-item"
 
 @Entity()
+@Index(["discount_id", "item_id"], {
+  unique: true,
+  where: `"discount_id" IS NOT NULL`,
+})
 export class LineItemAdjustment {
   @PrimaryColumn()
   id: string
@@ -22,15 +26,19 @@ export class LineItemAdjustment {
   @Column()
   item_id: string
 
-  @ManyToOne(() => LineItem, (li) => li.adjustments)
+  @ManyToOne(
+    () => LineItem,
+    (li) => li.adjustments,
+    { onDelete: "CASCADE" }
+  )
   @JoinColumn({ name: "item_id" })
   item: LineItem
 
   @Column()
   description: string
 
-  @OneToOne(() => Discount)
-  @JoinColumn({ name: 'discount_id'})
+  @ManyToOne(() => Discount)
+  @JoinColumn({ name: "discount_id" })
   discount: Discount
 
   @Index()
@@ -50,4 +58,3 @@ export class LineItemAdjustment {
     this.id = `lia_${id}`
   }
 }
-

@@ -1076,6 +1076,18 @@
       "deleted_at": null,
       "metadata": null
     },
+    "price_list": {
+      "id": "pl_ZXDBABWJVW6115VEMZXDBAB",
+      "name": "test price list",
+      "description": "test price list",
+      "type": "products",
+      "status": "active",
+      "starts_at": null,
+      "ends_at": null,
+      "created_at": "2021-03-16T21:24:35.828Z",
+      "updated_at": "2021-03-16T21:24:35.828Z",
+      "deleted_at": null
+    },
     "note": {
       "id": "note_01F0ZXDBAB9KVZWJVW6115VEM7",
       "value": "customer contacted",

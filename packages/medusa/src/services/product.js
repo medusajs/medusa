@@ -156,7 +156,7 @@ class ProductService extends BaseService {
    *   by
    * @param {object} config - object that defines the scope for what should be
    *   returned
-   * @return {[Promise<Product[]>, number]} an array containing the products as
+   * @return {Promise<[Product[], number]>} an array containing the products as
    *   the first element and the total count of products that matches the query
    *   as the second element.
    */

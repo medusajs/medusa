@@ -1,4 +1,3 @@
-import { JsonWebTokenError } from "jsonwebtoken"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
