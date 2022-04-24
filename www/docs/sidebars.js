@@ -288,6 +288,11 @@ module.exports = {
               id: "add-plugins/mailchimp",
               label: "Mailchimp",
             },
+            {
+              type: "doc",
+              id: "add-plugins/twilio-sms",
+              label: "Twilio SMS",
+            },
           ],
         },
         {
