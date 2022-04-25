@@ -164,7 +164,7 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
-  is_giftcard?: boolean = false
+  is_giftcard?: boolean
 
   @IsString()
   @IsOptional()
