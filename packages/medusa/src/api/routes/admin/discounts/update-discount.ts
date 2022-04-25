@@ -161,7 +161,7 @@ export class AdminUpdateDiscountRule {
   type: string
 
   @IsNumber()
-  value: string
+  value: number
 
   @IsString()
   @IsNotEmpty()

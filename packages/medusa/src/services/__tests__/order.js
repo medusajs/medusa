@@ -230,7 +230,6 @@ describe("OrderService", () => {
           "items",
           "discounts",
           "discounts.rule",
-          // TODO: Add conditions relation
           "gift_cards",
           "shipping_methods",
         ],
@@ -1229,7 +1228,7 @@ describe("OrderService", () => {
         .mockImplementation((optionId, data, config) =>
           Promise.resolve({ shipping_option: { profile_id: optionId } })
         ),
-      deleteShippingMethod: jest
+      deleteShippingMethods: jest
         .fn()
         .mockImplementation(() => Promise.resolve({})),
 
@@ -1277,7 +1276,7 @@ describe("OrderService", () => {
         }
       )
 
-      expect(optionService.deleteShippingMethod).not.toHaveBeenCalled()
+      expect(optionService.deleteShippingMethods).not.toHaveBeenCalled()
     })
 
     it("successfully removes shipping method if same option profile", async () => {
@@ -1306,8 +1305,8 @@ describe("OrderService", () => {
         }
       )
 
-      expect(optionService.deleteShippingMethod).toHaveBeenCalledTimes(1)
-      expect(optionService.deleteShippingMethod).toHaveBeenCalledWith({
+      expect(optionService.deleteShippingMethods).toHaveBeenCalledTimes(1)
+      expect(optionService.deleteShippingMethods).toHaveBeenCalledWith({
         shipping_option: {
           profile_id: IdMap.getId("method1"),
         },

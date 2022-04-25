@@ -77,7 +77,7 @@ describe("/admin/customer-groups", () => {
           },
         })
         .catch((err) => {
-          expect(err.response.status).toEqual(402)
+          expect(err.response.status).toEqual(422)
           expect(err.response.data.type).toEqual("duplicate_error")
           expect(err.response.data.message).toEqual(
             "Key (name)=(vip-customers) already exists."
@@ -189,6 +189,53 @@ describe("/admin/customer-groups", () => {
         expect.objectContaining({
           groups: [],
         })
+      )
+    })
+  })
+
+  describe("GET /admin/customer-groups/{id}/customers", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        await customerSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("lists customers in group and count", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/customer-groups/test-group-5/customers", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(3)
+      expect(response.data.customers).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-customer-5",
+          }),
+          expect.objectContaining({
+            id: "test-customer-6",
+          }),
+          expect.objectContaining({
+            id: "test-customer-7",
+          }),
+        ])
       )
     })
   })

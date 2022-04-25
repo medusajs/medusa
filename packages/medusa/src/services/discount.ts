@@ -9,8 +9,15 @@ import {
   RegionService,
   TotalsService,
 } from "."
-import { Discount, DiscountRule } from ".."
+import { Cart } from "../models/cart"
+import { Discount } from "../models/discount"
 import { DiscountConditionType } from "../models/discount-condition"
+import {
+  AllocationType as DiscountAllocation,
+  DiscountRule,
+  DiscountRuleType,
+} from "../models/discount-rule"
+import { LineItem } from "../models/line-item"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
@@ -23,6 +30,7 @@ import {
   UpdateDiscountInput,
   UpsertDiscountConditionInput,
 } from "../types/discount"
+import { isFuture, isPast } from "../utils/date-helpers"
 import { formatException, PostgresError } from "../utils/exception-formatter"
 
 /**
@@ -49,6 +57,7 @@ class DiscountService extends BaseService {
     totalsService,
     productService,
     regionService,
+    customerService,
     eventBusService,
   }) {
     super()
@@ -77,6 +86,9 @@ class DiscountService extends BaseService {
     /** @private @const {RegionService} */
     this.regionService_ = regionService
 
+    /** @private @const {CustomerService} */
+    this.customerService_ = customerService
+
     /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
@@ -95,6 +107,7 @@ class DiscountService extends BaseService {
       totalsService: this.totalsService_,
       productService: this.productService_,
       regionService: this.regionService_,
+      customerService: this.customerService_,
       eventBusService: this.eventBus_,
     })
 
@@ -116,7 +129,6 @@ class DiscountService extends BaseService {
       type: Validator.string().required(),
       value: Validator.number().min(0).required(),
       allocation: Validator.string().required(),
-      valid_for: Validator.array().optional(),
       created_at: Validator.date().optional(),
       updated_at: Validator.date().allow(null).optional(),
       deleted_at: Validator.date().allow(null).optional(),
@@ -643,7 +655,7 @@ class DiscountService extends BaseService {
           resolvedConditionType.type
         )
       },
-      async (err: any) => {
+      async (err: { code: string }) => {
         if (err.code === PostgresError.DUPLICATE_ERROR) {
           // A unique key constraint failed meaning the combination of
           // discount rule id, type, and operator already exists in the db.
@@ -656,6 +668,189 @@ class DiscountService extends BaseService {
     )
 
     return res
+  }
+
+  async validateDiscountForProduct(
+    discountRuleId: string,
+    productId: string | undefined
+  ): Promise<boolean> {
+    return this.atomicPhase_(async (manager) => {
+      const discountConditionRepo: DiscountConditionRepository =
+        manager.getCustomRepository(this.discountConditionRepository_)
+
+      // In case of custom line items, we don't have a product id.
+      // Instead of throwing, we simply invalidate the discount.
+      if (!productId) {
+        return false
+      }
+
+      const product = await this.productService_.retrieve(productId, {
+        relations: ["tags"],
+      })
+
+      return await discountConditionRepo.isValidForProduct(
+        discountRuleId,
+        product.id
+      )
+    })
+  }
+
+  async calculateDiscountForLineItem(
+    discountId: string,
+    lineItem: LineItem,
+    cart: Cart
+  ): Promise<number> {
+    let adjustment = 0
+
+    if (!lineItem.allow_discounts) {
+      return adjustment
+    }
+
+    const discount = await this.retrieve(discountId, { relations: ["rule"] })
+
+    const { type, value, allocation } = discount.rule
+
+    const fullItemPrice = lineItem.unit_price * lineItem.quantity
+
+    if (type === DiscountRuleType.PERCENTAGE) {
+      adjustment = Math.round((fullItemPrice / 100) * value)
+    } else if (
+      type === DiscountRuleType.FIXED &&
+      allocation === DiscountAllocation.TOTAL
+    ) {
+      // when a fixed discount should be applied to the total,
+      // we create line adjustments for each item with an amount
+      // relative to the subtotal
+      const subtotal = this.totalsService_.getSubtotal(cart, {
+        excludeNonDiscounts: true,
+      })
+      const nominator = Math.min(value, subtotal)
+      const itemRelativeToSubtotal = lineItem.unit_price / subtotal
+      const totalItemPercentage = itemRelativeToSubtotal * lineItem.quantity
+      adjustment = Math.round(nominator * totalItemPercentage)
+    } else {
+      adjustment = value * lineItem.quantity
+    }
+    // if the amount of the discount exceeds the total price of the item,
+    // we return the total item price, else the fixed amount
+    return adjustment >= fullItemPrice ? fullItemPrice : adjustment
+  }
+
+  async validateDiscountForCartOrThrow(
+    cart: Cart,
+    discount: Discount
+  ): Promise<void> {
+    if (this.hasReachedLimit(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount has been used maximum allowed times"
+      )
+    }
+
+    if (this.hasNotStarted(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is not valid yet"
+      )
+    }
+
+    if (this.hasExpired(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Discount is expired"
+      )
+    }
+
+    if (this.isDisabled(discount)) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "The discount code is disabled"
+      )
+    }
+
+    const isValidForRegion = await this.isValidForRegion(
+      discount,
+      cart.region_id
+    )
+    if (!isValidForRegion) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "The discount is not available in current region"
+      )
+    }
+
+    if (cart.customer_id) {
+      const canApplyForCustomer = await this.canApplyForCustomer(
+        discount.rule.id,
+        cart.customer_id
+      )
+
+      if (!canApplyForCustomer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Discount is not valid for customer"
+        )
+      }
+    }
+  }
+
+  hasReachedLimit(discount: Discount): boolean {
+    const count = discount.usage_count || 0
+    const limit = discount.usage_limit
+    return !!limit && count >= limit
+  }
+
+  hasNotStarted(discount: Discount): boolean {
+    return isFuture(discount.starts_at)
+  }
+
+  hasExpired(discount: Discount): boolean {
+    return discount.ends_at && isPast(discount.ends_at)
+  }
+
+  isDisabled(discount: Discount): boolean {
+    return discount.is_disabled
+  }
+
+  async isValidForRegion(
+    discount: Discount,
+    region_id: string
+  ): Promise<boolean> {
+    let regions = discount.regions
+
+    if (discount.parent_discount_id) {
+      const parent = await this.retrieve(discount.parent_discount_id, {
+        relations: ["rule", "regions"],
+      })
+
+      regions = parent.regions
+    }
+
+    return regions.find(({ id }) => id === region_id) !== undefined
+  }
+
+  async canApplyForCustomer(
+    discountRuleId: string,
+    customerId: string | undefined
+  ): Promise<boolean> {
+    return this.atomicPhase_(async (manager) => {
+      const discountConditionRepo: DiscountConditionRepository =
+        manager.getCustomRepository(this.discountConditionRepository_)
+
+      // Instead of throwing on missing customer id, we simply invalidate the discount
+      if (!customerId) {
+        return false
+      }
+
+      const customer = await this.customerService_.retrieve(customerId, {
+        relations: ["groups"],
+      })
+
+      return await discountConditionRepo.canApplyForCustomer(
+        discountRuleId,
+        customer.id
+      )
+    })
   }
 }
 

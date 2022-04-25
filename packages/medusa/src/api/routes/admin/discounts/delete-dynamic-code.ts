@@ -1,3 +1,4 @@
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 
 /**
@@ -28,8 +29,8 @@ export default async (req, res) => {
   await discountService.deleteDynamicCode(discount_id, code)
 
   const discount = await discountService.retrieve(discount_id, {
-    // TODO: Add conditions relation
-    relations: ["rule", "regions"],
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount })

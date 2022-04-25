@@ -1,16 +1,17 @@
+import { Box, Flex, Heading, Text } from "theme-ui"
 import React, { useContext, useEffect, useRef } from "react"
-import Markdown from "react-markdown"
-import { Flex, Text, Box, Heading } from "theme-ui"
-import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
-import Parameters from "./parameters"
-import Route from "./route"
-import JsonContainer from "./json-container"
+
 import Description from "./description"
-import ResponsiveContainer from "./responsive-container"
-import { formatMethodParams } from "../../utils/format-parameters"
-import useInView from "../../hooks/use-in-view"
+import JsonContainer from "./json-container"
+import Markdown from "react-markdown"
 import NavigationContext from "../../context/navigation-context"
+import Parameters from "./parameters"
+import ResponsiveContainer from "./responsive-container"
+import Route from "./route"
+import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
+import { formatMethodParams } from "../../utils/format-parameters"
 import { formatRoute } from "../../utils/format-route"
+import useInView from "../../hooks/use-in-view"
 
 const Method = ({ data, section, pathname, api }) => {
   const { parameters, requestBody, description, method, summary } = data
@@ -86,7 +87,7 @@ const Method = ({ data, section, pathname, api }) => {
   }
 
   const getCurlJson = (properties, prefix, bodyParameters) => {
-    if (!properties[0]) {
+    if (!properties[0] || !jsonResponse) {
       return
     }
     const jsonObject = JSON.parse(jsonResponse)

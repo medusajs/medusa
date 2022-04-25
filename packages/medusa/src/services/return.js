@@ -560,7 +560,6 @@ class ReturnService extends BaseService {
             "payments",
             "discounts",
             "discounts.rule",
-            // TODO: Add conditions relation
             "refunds",
             "shipping_methods",
             "region",

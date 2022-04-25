@@ -190,6 +190,9 @@ class CustomerService extends BaseService {
 
     const query = this.buildQuery_(selector, config)
 
+    const groups = query.where.groups
+    delete query.where.groups
+
     if (q) {
       const where = query.where
 
@@ -199,7 +202,6 @@ class CustomerService extends BaseService {
 
       query.where = (qb) => {
         qb.where(where)
-
         qb.andWhere(
           new Brackets((qb) => {
             qb.where({ email: ILike(`%${q}%`) })
@@ -210,8 +212,7 @@ class CustomerService extends BaseService {
       }
     }
 
-    const [customers, count] = await customerRepo.findAndCount(query)
-    return [customers, count]
+    return await customerRepo.listAndCount(query, groups)
   }
 
   /**

@@ -19,6 +19,7 @@ export default (container, config) => {
 export * from "./routes/admin/collections"
 export * from "./routes/admin/auth"
 export * from "./routes/admin/customers"
+export * from "./routes/admin/customer-groups"
 export * from "./routes/admin/discounts"
 export * from "./routes/admin/draft-orders"
 export * from "./routes/admin/gift-cards"
@@ -40,6 +41,7 @@ export * from "./routes/admin/shipping-options"
 export * from "./routes/admin/regions"
 export * from "./routes/admin/product-tags"
 export * from "./routes/admin/product-types"
+export * from "./routes/admin/price-lists"
 
 // Store
 export * from "./routes/store/auth"

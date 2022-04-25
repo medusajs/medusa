@@ -259,6 +259,14 @@ const createReturnableOrder = async (dbConnection, options) => {
         variant_id: "test-variant",
         quantity: 2,
         unit_price: 1000,
+        adjustments: [
+          {
+            amount: 200,
+            discount_code: "TESTCODE",
+            description: "discount",
+            item_id: "test-item",
+          },
+        ],
         tax_lines: [
           {
             name: "default",

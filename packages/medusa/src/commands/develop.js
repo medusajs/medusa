@@ -29,7 +29,7 @@ export default async function({ port, directory }) {
     Logger.info(`${f} changed: restarting...`)
     child.kill("SIGINT")
 
-    execSync(`${babelPath} src -d dist`, {
+    execSync(`${babelPath} src -d dist --extensions \".ts,.js\"`, {
       cwd: directory,
       stdio: ["pipe", process.stdout, process.stderr],
     })

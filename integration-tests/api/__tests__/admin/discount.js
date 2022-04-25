@@ -1,5 +1,11 @@
 const path = require("path")
-const { Region, DiscountRule, Discount } = require("@medusajs/medusa")
+const {
+  Region,
+  DiscountRule,
+  Discount,
+  Customer,
+  CustomerGroup,
+} = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -8,6 +14,9 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const discountSeeder = require("../../helpers/discount-seeder")
 const { exportAllDeclaration } = require("@babel/types")
 const { simpleProductFactory } = require("../../factories")
+const {
+  simpleDiscountFactory,
+} = require("../../factories/simple-discount-factory")
 
 jest.setTimeout(30000)
 
@@ -25,6 +34,205 @@ describe("/admin/discounts", () => {
     const db = useDb()
     await db.shutdown()
     medusaProcess.kill()
+  })
+
+  describe("GET /admin/discounts/:id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "products",
+              operator: "in",
+              products: [prod.id],
+            },
+            {
+              type: "product_types",
+              operator: "not_in",
+              product_types: [prod.type_id],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should retrieve discount with customer conditions created with factory", async () => {
+      const api = useApi()
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      const response = await api
+        .get(
+          "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.customer_groups",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+        })
+      )
+      expect(disc.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "customer_groups",
+            operator: "in",
+            discount_rule_id: disc.rule.id,
+          }),
+        ])
+      )
+    })
+
+    it("should retrieve discount and only select the id field and retrieve the relation parent_discount", async () => {
+      const api = useApi()
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      const response = await api
+        .get(
+          "/admin/discounts/test-discount?fields=id&expand=parent_discount",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual({
+        id: "test-discount",
+        parent_discount: null,
+      })
+    })
+
+    it("should retrieve discount with product conditions created with factory", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(
+          "/admin/discounts/test-discount?expand=rule,rule.conditions,rule.conditions.products,rule.conditions.product_types",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-discount",
+          code: "TEST",
+        })
+      )
+      expect(disc.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "in",
+            discount_rule_id: disc.rule.id,
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+            discount_rule_id: disc.rule.id,
+          }),
+        ])
+      )
+    })
   })
 
   describe("GET /admin/discounts", () => {
@@ -333,32 +541,34 @@ describe("/admin/discounts", () => {
         })
 
       expect(response.status).toEqual(200)
-      expect(response.data.discount.rule.conditions).toEqual([
-        expect.objectContaining({
-          type: "products",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "products",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "in",
-        }),
-        expect.objectContaining({
-          type: "product_tags",
-          operator: "not_in",
-        }),
-        expect.objectContaining({
-          type: "product_tags",
-          operator: "in",
-        }),
-      ])
+      expect(response.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "products",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "in",
+          }),
+          expect.objectContaining({
+            type: "product_tags",
+            operator: "not_in",
+          }),
+          expect.objectContaining({
+            type: "product_tags",
+            operator: "in",
+          }),
+        ])
+      )
     })
 
     it("creates a discount with conditions and updates said conditions", async () => {
@@ -512,36 +722,32 @@ describe("/admin/discounts", () => {
 
       const createdRule = response.data.discount.rule
 
-      try {
-        await api.post(
-          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            rule: {
-              id: createdRule.id,
-              type: createdRule.type,
-              value: createdRule.value,
-              allocation: createdRule.allocation,
-              conditions: [
-                {
-                  products: [anotherProduct.id],
-                  operator: "in",
-                },
-              ],
+      await expect(
+        api
+          .post(
+            `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+            {
+              rule: {
+                id: createdRule.id,
+                type: createdRule.type,
+                value: createdRule.value,
+                allocation: createdRule.allocation,
+                conditions: [
+                  {
+                    products: [anotherProduct.id],
+                    operator: "in",
+                  },
+                ],
+              },
             },
-          },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
-      } catch (error) {
-        console.log(error)
-        expect(error.response.data.type).toEqual("duplicate_error")
-        expect(error.response.data.message).toEqual(
-          `Discount Condition with operator 'in' and type 'products' already exist on a Discount Rule`
-        )
-      }
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => err.response.data)
+      ).resolves.toMatchSnapshot()
     })
 
     it("fails if multiple types of resources are provided on create", async () => {
@@ -629,37 +835,33 @@ describe("/admin/discounts", () => {
 
       const createdRule = response.data.discount.rule
 
-      try {
-        await api.post(
-          `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
-          {
-            rule: {
-              id: createdRule.id,
-              type: createdRule.type,
-              value: createdRule.value,
-              allocation: createdRule.allocation,
-              conditions: [
-                {
-                  products: [anotherProduct.id],
-                  product_types: [product.type_id],
-                  operator: "in",
-                },
-              ],
+      await expect(
+        api
+          .post(
+            `/admin/discounts/${response.data.discount.id}?expand=rule,rule.conditions,rule.conditions.products`,
+            {
+              rule: {
+                id: createdRule.id,
+                type: createdRule.type,
+                value: createdRule.value,
+                allocation: createdRule.allocation,
+                conditions: [
+                  {
+                    products: [anotherProduct.id],
+                    product_types: [product.type_id],
+                    operator: "in",
+                  },
+                ],
+              },
             },
-          },
-          {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          }
-        )
-      } catch (error) {
-        console.log(error)
-        expect(error.response.data.type).toEqual("invalid_data")
-        expect(error.response.data.message).toEqual(
-          `Only one of products, product_types is allowed, Only one of product_types, products is allowed`
-        )
-      }
+            {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            }
+          )
+          .catch((err) => err.response.data)
+      ).resolves.toMatchSnapshot()
     })
 
     it("creates a discount and updates it", async () => {

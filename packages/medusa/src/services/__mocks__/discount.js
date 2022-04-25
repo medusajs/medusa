@@ -29,7 +29,6 @@ export const discounts = {
       type: "percentage",
       allocation: "item",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -50,7 +49,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 9,
-      // TODO: Add conditions relation
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -61,7 +59,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 2,
-      // TODO: Add conditions relation
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -72,7 +69,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -84,7 +80,6 @@ export const discounts = {
       type: "fixed",
       allocation: "item",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -95,7 +90,6 @@ export const discounts = {
       type: "free_shipping",
       allocation: "total",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [IdMap.getId("region-france")],
   },
@@ -106,7 +100,6 @@ export const discounts = {
       type: "free_shipping",
       allocation: "total",
       value: 10,
-      // TODO: Add conditions relation
     },
     regions: [IdMap.getId("us")],
   },
