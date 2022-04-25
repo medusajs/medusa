@@ -32,17 +32,9 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
       .from(DiscountRule, "dr")
       .getCount()
 
-    // INSERT INTO discount_condition(id, operator, type, discount_rule_id)
-    // (SELECT ROW_NUMBER() OVER(ORDER BY sq.d_id), sq.op, sq.tp, sq.d_id FROM
-    // 	(SELECT DISTINCT
-    // 			'in'::discount_condition_operator_enum op,
-    // 			'products'::discount_condition_type_enum tp,
-    // 			discount_rule_products.discount_rule_id d_id
-    // 	FROM discount_rule_products) sq)
-
     let offset = 0
     while (offset < discountRuleCount) {
-      const test = await manager
+      const discountRules = await manager
         .createQueryBuilder()
         .from(DiscountRule, "dr")
         .select("dr.id", "dr_id")
@@ -61,7 +53,7 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
         .insert()
         .into(DiscountCondition)
         .values(
-          test.map((dr) =>
+          discountRules.map((dr) =>
             Object.assign(new DiscountCondition(), {
               type: DiscountConditionType.PRODUCTS,
               operator: DiscountConditionOperator.IN,
@@ -75,12 +67,8 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
     }
 
     const discountRuleProductCount = await manager.query(
-      "SELECT COUNT(*) FROM discount_rule_products" // count old "valid_for"
+      "SELECT COUNT(*) FROM discount_rule_products"
     )
-
-    // INSERT INTO discount_condition_product(condition_id, product_id)
-    // (SELECT cond.id, drp.product_id FROM discount_rule_products as drp
-    // LEFT JOIN discount_condition as cond ON cond.discount_rule_id = drp.discount_rule_id)
 
     offset = 0
     while (offset < parseInt(discountRuleProductCount[0].count)) {
