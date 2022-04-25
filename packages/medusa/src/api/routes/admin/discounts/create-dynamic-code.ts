@@ -1,6 +1,4 @@
-import { Type } from "class-transformer"
 import {
-  IsDate,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -47,7 +45,6 @@ export default async (req, res) => {
     validated
   )
 
-  // TODO: Add conditions relation
   const discount = await discountService.retrieve(created.id, {
     select: defaultAdminDiscountsFields,
     relations: defaultAdminDiscountsRelations,
@@ -60,11 +57,6 @@ export class AdminPostDiscountsDiscountDynamicCodesReq {
   @IsString()
   @IsNotEmpty()
   code: string
-
-  @IsDate()
-  @IsOptional()
-  @Type(() => Date)
-  ends_at?: Date
 
   @IsNumber()
   @IsOptional()
