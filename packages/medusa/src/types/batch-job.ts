@@ -21,7 +21,9 @@ export enum BatchJobStatus {
 export type BatchJobCreateProps = Pick<
   BatchJob,
   "context" | "type" | "created_by"
->
+> & {
+  dry_run: boolean
+}
 
 export class FilterableBatchJobProps {
   @IsOptional()

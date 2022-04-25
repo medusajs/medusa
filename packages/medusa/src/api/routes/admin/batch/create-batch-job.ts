@@ -1,4 +1,10 @@
-import { IsJSON, IsObject, IsString } from "class-validator"
+import {
+  IsBoolean,
+  IsJSON,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import { BatchJobService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -46,4 +52,8 @@ export class AdminPostBatchesReq {
 
   @IsJSON()
   context: Record<string, unknown>
+
+  @IsBoolean()
+  @IsOptional()
+  dry_run = false
 }
