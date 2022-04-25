@@ -4,6 +4,7 @@ const {
   Order,
   LineItem,
   CustomShippingOption,
+  ShippingMethod,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -912,6 +913,215 @@ describe("/admin/orders", () => {
           ],
         }),
       ])
+    })
+
+    it("creates a claim on a claim additional item", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/orders/test-order/claims",
+          {
+            type: "replace",
+            shipping_methods: [
+              {
+                id: "test-method",
+              },
+            ],
+            claim_items: [
+              {
+                item_id: "test-item",
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant",
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const cid = response.data.order.claims[0].id
+      const fulRes = await api.post(
+        `/admin/orders/test-order/claims/${cid}/fulfillments`,
+        {},
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      const claimItemIdToClaim =
+        fulRes.data.order.claims[0].additional_items[0].id
+
+      const claimRes = await api
+        .post(
+          "/admin/orders/test-order/claims",
+          {
+            type: "replace",
+            shipping_methods: [
+              {
+                id: "test-method",
+              },
+            ],
+            claim_items: [
+              {
+                item_id: claimItemIdToClaim,
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image2.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant-2",
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(claimRes.status).toEqual(200)
+      expect(claimRes.data.order.claims.length).toEqual(2)
+
+      const newClaim = claimRes.data.order.claims.find(
+        (c) => c.fulfillment_status === "not_fulfilled"
+      )
+
+      expect(newClaim.claim_items[0].item.id).toEqual(claimItemIdToClaim)
+    })
+
+    it("creates a claim on a swap additional item", async () => {
+      const api = useApi()
+
+      // create a swap
+      const response = await api
+        .post(
+          "/admin/orders/test-order/swaps",
+          {
+            custom_shipping_options: [{ option_id: "test-option", price: 0 }],
+            return_items: [
+              {
+                item_id: "test-item",
+                quantity: 1,
+              },
+            ],
+            additional_items: [{ variant_id: "test-variant-2", quantity: 1 }],
+          },
+          {
+            headers: {
+              authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((e) => console.log(e))
+
+      const sid = response.data.order.swaps[0].id
+      const manager = dbConnection.manager
+
+      // add a shipping method so we can fulfill the swap
+      const sm = await manager.create(ShippingMethod, {
+        id: "test-method-swap-cart",
+        swap_id: sid,
+        shipping_option_id: "test-option",
+        price: 0,
+        data: {},
+      })
+
+      await manager.save(sm)
+
+      // fulfill the swap
+      const fulRes = await api
+        .post(
+          `/admin/orders/test-order/swaps/${sid}/fulfillments`,
+          {},
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((e) => console.log(e))
+
+      // ship the swap
+      await api
+        .post(
+          `/admin/orders/test-order/swaps/${sid}/shipments`,
+          {
+            fulfillment_id: fulRes.data.order.swaps[0].fulfillments[0].id,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((e) => console.log(e))
+
+      const claimItemIdToClaim =
+        fulRes.data.order.swaps[0].additional_items[0].id
+
+      // create a claim on the exchange
+      const claimRes = await api
+        .post(
+          "/admin/orders/test-order/claims",
+          {
+            type: "replace",
+            claim_items: [
+              {
+                item_id: claimItemIdToClaim,
+                quantity: 1,
+                reason: "production_failure",
+                tags: ["fluff"],
+                images: ["https://test.image2.com"],
+              },
+            ],
+            additional_items: [
+              {
+                variant_id: "test-variant-2",
+                quantity: 1,
+              },
+            ],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(claimRes.status).toEqual(200)
+      expect(claimRes.data.order.claims.length).toEqual(1)
+
+      const newClaim = claimRes.data.order.claims[0]
+
+      expect(newClaim.claim_items[0].item.id).toEqual(claimItemIdToClaim)
     })
 
     it("Only allow canceling claim after canceling fulfillments", async () => {
