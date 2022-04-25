@@ -66,7 +66,7 @@ git push origin main
 
 Within a couple of minutes, your Medusa Admin is live and running on Netlify.
 
-:::note
+:::tip
 
 If you experience CORS issues in your new setup, you might need to add your admin url as part of the ADMIN_CORS environment variable in your server setup.
 
