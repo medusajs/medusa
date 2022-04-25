@@ -87,7 +87,7 @@ JTW_SECRET=something_secret_jwt
 COOKIE_SECRET=something_secret_cookie
 ```
 
-:::note
+:::tip
 
 Make sure to use actual secrets in a production environment.
 

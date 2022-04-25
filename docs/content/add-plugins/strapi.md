@@ -128,7 +128,7 @@ The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it wi
 
 After running the command, you have a full Strapi project configured to synchronize with Medusa. Upon the initial start of the Strapi server, all the required models will be created. They will correlate with models from Medusa to allow for two-way synchronization.
 
-:::note
+:::caution
 
 The Strapi template starter uses SQLite as the default database. There is a known bug related to `knex.js` that comes from multiple write connections. Restarting the Strapi server should make the error disappear.
 
@@ -172,9 +172,11 @@ projectConfig: {
 },
 ```
 
-:::note
+:::tip
 
 The `DATABASE_URL` variable should use the Postgres database created in the previous step
+
+:::
 
 ## Summary and next steps
 
