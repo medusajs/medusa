@@ -76,7 +76,7 @@ npm run migrate:contentful --file contentful-migrations/update-page-module-valid
 
 To use your new Rich Text module **Content > Page > About**, and click **Add Content > Page**. You will now make use of the new Rich Text module to add some more details about your store. You can write your own text or use the text provided below if you just want to copy/paste.
 
-:::note About Medusa
+:::info About Medusa
 
  Medusa is an open-source headless commerce engine for fast-growing businesses. Getting started with Medusa is very easy and you will be able to start selling online with a basic setup in no time, however, the real power of Medusa starts showing up when you add custom functionality and extend your core to fit your needs.
 

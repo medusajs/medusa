@@ -87,7 +87,7 @@ Navigate to the top-right dropdown **Create** and select **Apps**.
 
 Choose **GitHub** or **GitLab** and select the repository that holds your Medusa project. Check **Autodeploy code changes**, if you want DigitalOcean to deploy on every push to your repository.
 
-:::note
+:::tip
 
 It's important, that DigitalOcean is pointing to the directory holding the Medusa store engine as it is only this which that will be deployed (If you followed the quickstart guide this will simply be the created project, and if you used the npx command this will be the backend folder inside of the newly created project).
 
@@ -108,7 +108,7 @@ JWT_SECRET=your-jwt-secret
 COOKIE_SECRET=your-cookie-secret
 ```
 
-:::note
+:::tip
 
 Make sure to use actual secrets in a production environment
 
