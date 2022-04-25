@@ -68,7 +68,7 @@ heroku git:remote -a medusa-test-app
 
 Medusa requires a Postgres database and a Redis instance to work. These are added through the Heroku CLI using the following commands.
 
-:::note
+:::tip
 
 In this below example, we initialize the resources on free plans. This is not a valid configuration for a production environment.
 
@@ -110,7 +110,7 @@ heroku config:set JWT_SECRET=your-super-secret
 heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
-:::note
+:::tip
 
 Make sure to use actual secrets in a production environment.
 

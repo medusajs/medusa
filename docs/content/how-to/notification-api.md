@@ -77,7 +77,7 @@ class MyService extends NotificationService {
 
 export default MyService;
 ```
-:::note Note
+:::note 
 
  A notification service must have a static property called `identifier` this is used to determine which classes are called when subscribing to different events. In this case the service identifier is `my-service` so to subscribe to notifications you must use:
  `notificationService.subscribe([eventname], "my-service")`
