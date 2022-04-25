@@ -23,7 +23,7 @@ describe("/admin/batch", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -96,7 +96,6 @@ describe("/admin/batch", () => {
       await api
         .post(`/admin/batch/${jobId}/complete`, {}, adminReqConfig)
         .catch((err) => {
-          console.log(err)
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
