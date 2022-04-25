@@ -82,11 +82,6 @@ export default (app, container) => {
     middlewares.wrap(require("./set-payment-session").default)
   )
 
-  route.post(
-    "/:id/payment-method",
-    middlewares.wrap(require("./update-payment-method").default)
-  )
-
   // Shipping Options
   route.post(
     "/:id/shipping-methods",
@@ -115,6 +110,7 @@ export const defaultStoreCartRelations = [
   "gift_cards",
   "region",
   "items",
+  "items.adjustments",
   "payment",
   "shipping_address",
   "billing_address",
@@ -125,23 +121,25 @@ export const defaultStoreCartRelations = [
   "shipping_methods.shipping_option",
   "discounts",
   "discounts.rule",
-  "discounts.rule.valid_for",
 ]
 
 export type StoreCartsRes = {
   cart: Omit<Cart, "refundable_amount" | "refunded_total">
 }
 
-export type StoreCompleteCartRes = {
-  type: "cart"
-  data: Cart
-} | {
-  type: "order"
-  data: Order
-} | {
-  type: "swap"
-  data: Swap
-}
+export type StoreCompleteCartRes =
+  | {
+      type: "cart"
+      data: Cart
+    }
+  | {
+      type: "order"
+      data: Order
+    }
+  | {
+      type: "swap"
+      data: Swap
+    }
 
 export type StoreCartsDeleteRes = DeleteResponse
 
@@ -152,5 +150,4 @@ export * from "./create-payment-sessions"
 export * from "./set-payment-session"
 export * from "./update-cart"
 export * from "./update-line-item"
-export * from "./update-payment-method"
 export * from "./update-payment-session"

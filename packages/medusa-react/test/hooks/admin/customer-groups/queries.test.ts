@@ -1,6 +1,10 @@
 import { renderHook } from "@testing-library/react-hooks"
 
-import { useAdminCustomerGroup, useAdminCustomerGroups } from "../../../../src"
+import {
+  useAdminCustomerGroup,
+  useAdminCustomerGroupCustomers,
+  useAdminCustomerGroups,
+} from "../../../../src"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
@@ -30,5 +34,22 @@ describe("useAdminCustomerGroup hook", () => {
 
     expect(result.current.response.status).toEqual(200)
     expect(result.current.customer_groups).toEqual(groups)
+  })
+
+  test("returns a list of customers that belong to a group", async () => {
+    const groups = fixtures.list("customer_group")
+    const customers = fixtures.list("customer")
+
+    const { result, waitFor } = renderHook(
+      () => useAdminCustomerGroupCustomers(groups[0].id),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.response.status).toEqual(200)
+    expect(result.current.customers).toEqual(customers)
   })
 })

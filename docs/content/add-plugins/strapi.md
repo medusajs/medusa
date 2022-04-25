@@ -18,7 +18,7 @@ Both projects are open-source, headless, and built with Node.js. They use a very
 
 ## Installation
 
-The following guide for setting up the plugin assumes, that you are familiar with both Strapi and Medusa. If this is not the case, visit the official [Medusa](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) and [Strapi](https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html) documentation.
+The following guide for setting up the plugin assumes, that you are familiar with both Strapi and Medusa. If this is not the case, visit the official [Medusa](https://docs.medusajs.com/tutorial/set-up-your-development-environment) and [Strapi](https://strapi.io/documentation/developer-docs/latest/getting-started/introduction.html) documentation.
 
 ### Setting up Medusa
 
@@ -120,8 +120,8 @@ yarn global add create-strapi-app@3.6.8
 
 create-strapi-app strapi-medusa --template https://github.com/Deathwish98/strapi-medusa-template.git
 ```
-> Note: The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it will throw an error.
 
+> Note: The plugin expects node version to be '>= 10.16.0 and <=14.x.x', otherwise it will throw an error.
 
 After running the command, you have a full Strapi project configured to synchronize with Medusa. Upon the initial start of the Strapi server, all the required models will be created. They will correlate with models from Medusa to allow for two-way synchronization.
 
