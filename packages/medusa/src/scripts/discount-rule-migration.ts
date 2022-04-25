@@ -1,5 +1,5 @@
 import dotenv from "dotenv"
-import { createConnection, SelectQueryBuilder } from "typeorm"
+import { createConnection } from "typeorm"
 import Logger from "../loaders/logger"
 import {
   DiscountCondition,
