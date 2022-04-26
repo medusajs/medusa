@@ -228,6 +228,10 @@ describe("/admin/price-lists", () => {
         customer_groups: ["customer-group-2"],
       })
       await simplePriceListFactory(dbConnection, {
+        id: "test-list-cgroup-3",
+        customer_groups: ["customer-group-3"],
+      })
+      await simplePriceListFactory(dbConnection, {
         id: "test-list-no-cgroup",
       })
 
