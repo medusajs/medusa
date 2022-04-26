@@ -239,7 +239,13 @@ class PriceListService extends BaseService {
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
     const query = this.buildQuery_(selector, config)
-    return await priceListRepo.find(query)
+
+    const groups = query.where.customer_groups
+    delete query.where.customer_groups
+
+    const [priceLists, _] = await priceListRepo.listAndCount(query, groups)
+
+    return priceLists
   }
 
   /**
@@ -255,7 +261,11 @@ class PriceListService extends BaseService {
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
     const query = this.buildQuery_(selector, config)
-    return await priceListRepo.findAndCount(query)
+
+    const groups = query.where.customer_groups
+    delete query.where.customer_groups
+
+    return await priceListRepo.listAndCount(query, groups)
   }
 
   async upsertCustomerGroups_(
