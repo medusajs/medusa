@@ -152,7 +152,7 @@ async function registerMedusaApi(
   container: MedusaContainer
 ): Promise<void> {
   registerMedusaMiddleware(pluginDetails, container)
-  registerStrategies(pluginDetails, container)
+  await registerStrategies(pluginDetails, container)
 }
 
 export function registerStrategies(
