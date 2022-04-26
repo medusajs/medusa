@@ -7,7 +7,6 @@ import {
   JoinColumn,
   PrimaryColumn,
   OneToOne,
-  Unique,
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
