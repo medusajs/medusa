@@ -141,6 +141,11 @@ module.exports = {
             },
             {
               type: "doc",
+              id: "advanced/backend/migrations",
+              label: "Migrations"
+            },
+            {
+              type: "doc",
               id: "tutorial/adding-custom-functionality",
               label: "Add Custom Functionality"
             },
@@ -163,6 +168,18 @@ module.exports = {
             {
               type: "doc",
               id: "guides/carts-in-medusa",
+            },
+            {
+              type: "category",
+              label: 'Upgrade Guides',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/upgrade-guides/1-3-1",
+                  label: "v1.3.1"
+                },
+              ]
             },
           ]
         }
