@@ -39,6 +39,10 @@ export class FilterablePriceListProps {
   @IsOptional()
   name?: string
 
+  @IsOptional()
+  @IsString({ each: true })
+  customer_groups?: string[]
+
   @IsString()
   @IsOptional()
   description?: string
