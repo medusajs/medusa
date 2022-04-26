@@ -107,7 +107,7 @@ So, to avoid the need to run the `build` command each time, add the following sc
 
 Now, you can just run the `watch-build` script:
 
-```json
+```bash npm2yarn
 npm run watch-build
 ```
 
