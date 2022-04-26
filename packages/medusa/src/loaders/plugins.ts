@@ -1,5 +1,5 @@
 import glob from "glob"
-import { Express } from 'express'
+import { Express } from "express"
 import { EntitySchema } from "typeorm"
 import {
   BaseService,
@@ -18,8 +18,14 @@ import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import { AbstractTaxService, isTaxCalculationStrategy } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
-import { ClassConstructor, ConfigModule, Logger, MedusaContainer } from "../types/global"
+import {
+  ClassConstructor,
+  ConfigModule,
+  Logger,
+  MedusaContainer,
+} from "../types/global"
 import { MiddlewareService } from "../services"
+import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
 
 type Options = {
   rootDirectory: string
@@ -40,14 +46,20 @@ type PluginDetails = {
 /**
  * Registers all services in the services directory
  */
-export default async ({ rootDirectory, container, app, configModule, activityId }: Options): Promise<void> => {
+export default async ({
+  rootDirectory,
+  container,
+  app,
+  configModule,
+  activityId,
+}: Options): Promise<void> => {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
 
   await Promise.all(
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
-      registerMedusaApi(pluginDetails, container)
+      await registerMedusaApi(pluginDetails, container)
       registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
@@ -59,7 +71,10 @@ export default async ({ rootDirectory, container, app, configModule, activityId 
   )
 }
 
-function getResolvedPlugins(rootDirectory: string, configModule: ConfigModule): undefined | PluginDetails[] {
+function getResolvedPlugins(
+  rootDirectory: string,
+  configModule: ConfigModule
+): undefined | PluginDetails[] {
   const { plugins } = configModule
 
   const resolved = plugins.map((plugin) => {
@@ -85,10 +100,14 @@ function getResolvedPlugins(rootDirectory: string, configModule: ConfigModule): 
 }
 
 export async function registerPluginModels({
-                                             rootDirectory,
-                                             container,
-                                             configModule
-}: { rootDirectory: string; container: MedusaContainer; configModule: ConfigModule; }): Promise<void> {
+  rootDirectory,
+  container,
+  configModule,
+}: {
+  rootDirectory: string
+  container: MedusaContainer
+  configModule: ConfigModule
+}): Promise<void> {
   const resolved = getResolvedPlugins(rootDirectory, configModule) || []
   await Promise.all(
     resolved.map(async (pluginDetails) => {
@@ -97,7 +116,10 @@ export async function registerPluginModels({
   )
 }
 
-async function runLoaders(pluginDetails: PluginDetails, container: MedusaContainer): Promise<void> {
+async function runLoaders(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): Promise<void> {
   const loaderFiles = glob.sync(
     `${pluginDetails.resolve}/loaders/[!__]*.js`,
     {}
@@ -118,39 +140,75 @@ async function runLoaders(pluginDetails: PluginDetails, container: MedusaContain
   )
 }
 
-function registerMedusaApi(pluginDetails: PluginDetails, container: MedusaContainer): void {
+async function registerMedusaApi(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): Promise<void> {
   registerMedusaMiddleware(pluginDetails, container)
-  registerStrategies(pluginDetails, container)
+  await registerStrategies(pluginDetails, container)
 }
 
-function registerStrategies(pluginDetails: PluginDetails, container: MedusaContainer): void {
-  let module
-  try {
-    const path = `${pluginDetails.resolve}/strategies/tax-calculation`
-    if (existsSync(path)) {
-      module = require(path).default
-    } else {
-      return
-    }
-  } catch (err) {
-    return
-  }
+async function registerStrategies(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): Promise<void> {
+  const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
+  await Promise.all(
+    files.map(async (file) => {
+      const loaded = require(file).default
+      const name = formatRegistrationName(file)
 
-  if (isTaxCalculationStrategy(module.prototype)) {
-    container.register({
-      taxCalculationStrategy: asFunction(
-        (cradle) => new module(cradle, pluginDetails.options)
-      ).singleton(),
+      if (isTaxCalculationStrategy(module.prototype)) {
+        container.register({
+          taxCalculationStrategy: asFunction(
+            (cradle) => new module(cradle, pluginDetails.options)
+          ).singleton(),
+        })
+      } else if (isBatchJobStrategy(module.prototype)) {
+        container.register({
+          batchJobStrategy: asFunction(
+            (cradle) => new module(cradle, pluginDetails.options)
+          ).singleton(),
+        })
+      } else {
+        const logger = container.resolve<Logger>("logger")
+        logger.warn(
+          `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
+        )
+      }
     })
-  } else {
-    const logger = container.resolve<Logger>("logger")
-    logger.warn(
-      `${pluginDetails.resolve}/strategies/tax-calculation did not export a class that implements ITaxCalculationStrategy. Your Medusa server will still work, but if you have written custom tax calculation logic it will not be used. Make sure to implement the ITaxCalculationStrategy interface.`
-    )
-  }
+  )
+
+  // let module
+  // try {
+  //   const path = `${pluginDetails.resolve}/strategies/tax-calculation`
+  //   if (existsSync(path)) {
+  //     module = require(path).default
+  //   } else {
+  //     return
+  //   }
+  // } catch (err) {
+  //   return
+  // }
+
+  // if (isTaxCalculationStrategy(module.prototype)) {
+  //   container.register({
+  //     taxCalculationStrategy: asFunction(
+  //       (cradle) => new module(cradle, pluginDetails.options)
+  //     ).singleton(),
+  //   })
+  // } else {
+  //   const logger = container.resolve<Logger>("logger")
+  //   logger.warn(
+  //     `${pluginDetails.resolve}/strategies/tax-calculation did not export a class that implements ITaxCalculationStrategy. Your Medusa server will still work, but if you have written custom tax calculation logic it will not be used. Make sure to implement the ITaxCalculationStrategy interface.`
+  //   )
+  // }
 }
 
-function registerMedusaMiddleware(pluginDetails: PluginDetails, container: MedusaContainer): void {
+function registerMedusaMiddleware(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): void {
   let module
   try {
     module = require(`${pluginDetails.resolve}/api/medusa-middleware`).default
@@ -158,7 +216,8 @@ function registerMedusaMiddleware(pluginDetails: PluginDetails, container: Medus
     return
   }
 
-  const middlewareService = container.resolve<MiddlewareService>("middlewareService")
+  const middlewareService =
+    container.resolve<MiddlewareService>("middlewareService")
   if (module.postAuthentication) {
     middlewareService.addPostAuthentication(
       module.postAuthentication,
@@ -178,8 +237,12 @@ function registerMedusaMiddleware(pluginDetails: PluginDetails, container: Medus
   }
 }
 
-function registerCoreRouters(pluginDetails: PluginDetails, container: MedusaContainer): void {
-  const middlewareService = container.resolve<MiddlewareService>("middlewareService")
+function registerCoreRouters(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): void {
+  const middlewareService =
+    container.resolve<MiddlewareService>("middlewareService")
   const { resolve } = pluginDetails
   const adminFiles = glob.sync(`${resolve}/api/admin/[!__]*.js`, {})
   const storeFiles = glob.sync(`${resolve}/api/store/[!__]*.js`, {})
@@ -245,7 +308,10 @@ function registerApi(
  *    registered
  * @return {void}
  */
-async function registerServices(pluginDetails: PluginDetails, container: MedusaContainer): Promise<void> {
+async function registerServices(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/services/[!__]*`, {})
   await Promise.all(
     files.map(async (fn) => {
@@ -277,7 +343,8 @@ async function registerServices(pluginDetails: PluginDetails, container: MedusaC
       } else if (loaded.prototype instanceof OauthService) {
         const appDetails = loaded.getAppDetails(pluginDetails.options)
 
-        const oauthService = container.resolve<typeof OauthService>("oauthService")
+        const oauthService =
+          container.resolve<typeof OauthService>("oauthService")
         await oauthService.registerOauthApp(appDetails)
 
         const name = appDetails.application_name
@@ -365,7 +432,10 @@ async function registerServices(pluginDetails: PluginDetails, container: MedusaC
  *    registered
  * @return {void}
  */
-function registerSubscribers(pluginDetails: PluginDetails, container: MedusaContainer): void {
+function registerSubscribers(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): void {
   const files = glob.sync(`${pluginDetails.resolve}/subscribers/*.js`, {})
   files.forEach((fn) => {
     const loaded = require(fn).default
@@ -387,19 +457,24 @@ function registerSubscribers(pluginDetails: PluginDetails, container: MedusaCont
  *    registered
  * @return {void}
  */
-function registerRepositories(pluginDetails: PluginDetails, container: MedusaContainer): void {
+function registerRepositories(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): void {
   const files = glob.sync(`${pluginDetails.resolve}/repositories/*.js`, {})
   files.forEach((fn) => {
     const loaded = require(fn) as ClassConstructor<unknown>
 
-    Object.entries(loaded).map(([, val]: [string, ClassConstructor<unknown>]) => {
-      if (typeof val === "function") {
-        const name = formatRegistrationName(fn)
-        container.register({
-          [name]: asClass(val),
-        })
+    Object.entries(loaded).map(
+      ([, val]: [string, ClassConstructor<unknown>]) => {
+        if (typeof val === "function") {
+          const name = formatRegistrationName(fn)
+          container.register({
+            [name]: asClass(val),
+          })
+        }
       }
-    })
+    )
   })
 }
 
@@ -414,21 +489,26 @@ function registerRepositories(pluginDetails: PluginDetails, container: MedusaCon
  *    registered
  * @return {void}
  */
-function registerModels(pluginDetails: PluginDetails, container: MedusaContainer): void {
+function registerModels(
+  pluginDetails: PluginDetails,
+  container: MedusaContainer
+): void {
   const files = glob.sync(`${pluginDetails.resolve}/models/*.js`, {})
   files.forEach((fn) => {
     const loaded = require(fn) as ClassConstructor<unknown> | EntitySchema
 
-    Object.entries(loaded).map(([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
-      if (typeof val === "function" || val instanceof EntitySchema) {
-        const name = formatRegistrationName(fn)
-        container.register({
-          [name]: asValue(val),
-        })
+    Object.entries(loaded).map(
+      ([, val]: [string, ClassConstructor<unknown> | EntitySchema]) => {
+        if (typeof val === "function" || val instanceof EntitySchema) {
+          const name = formatRegistrationName(fn)
+          container.register({
+            [name]: asValue(val),
+          })
 
-        container.registerAdd("db_entities", asValue(val))
+          container.registerAdd("db_entities", asValue(val))
+        }
       }
-    })
+    )
   })
 }
 
@@ -446,11 +526,11 @@ function createPluginId(name: string): string {
  * @return {object} the plugin details
  */
 function resolvePlugin(pluginName: string): {
-  resolve: string;
-  id: string;
-  name: string;
+  resolve: string
+  id: string
+  name: string
   options: Record<string, unknown>
-  version: string;
+  version: string
 } {
   // Only find plugins when we're not given an absolute path
   if (!existsSync(pluginName)) {
