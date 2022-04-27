@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
-import { DiscountCondition, DiscountConditionType } from "../models"
+import { Discount, DiscountCondition, DiscountConditionType } from "../models"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
@@ -125,12 +125,14 @@ class DiscountConditionService extends BaseService {
   }
 
   async upsertCondition(
-    discountId: string,
+    discountIdOrDiscount: string | Discount,
     data: UpsertDiscountConditionInput
   ): Promise<void> {
+    let resolvedConditionType
+
     return await this.atomicPhase_(
       async (manager: EntityManager) => {
-        const resolvedConditionType = this.resolveConditionType_(data)
+        resolvedConditionType = this.resolveConditionType_(data)
 
         if (!resolvedConditionType) {
           throw new MedusaError(
@@ -145,6 +147,31 @@ class DiscountConditionService extends BaseService {
           this.discountRepository_
         )
 
+        let discount
+        if (typeof discountIdOrDiscount === `string`) {
+          discount = await discountRepo.findOne({
+            where: { id: discountIdOrDiscount },
+            relations: ["rule", "rule.conditions"],
+          })
+
+          if (!discount) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_FOUND,
+              `Discount with ${discountIdOrDiscount} was not found`
+            )
+          }
+        } else {
+          discount = discountIdOrDiscount
+
+          // ensure discount has rule_id, will also ensure that object is in fact discount
+          if (!discount?.rule_id) {
+            throw new MedusaError(
+              MedusaError.Types.INVALID_DATA,
+              `Discount is missing rule_id`
+            )
+          }
+        }
+
         if (data.id) {
           // throw if condition does not exist
           const condition = await this.retrieve(data.id)
@@ -154,18 +181,6 @@ class DiscountConditionService extends BaseService {
             resolvedConditionType.resource_ids,
             resolvedConditionType.type,
             true
-          )
-        }
-
-        const discount = await discountRepo.findOne({
-          where: { id: discountId },
-          relations: ["rule", "rule.conditions"],
-        })
-
-        if (!discount) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Discount with ${discountId} was not found`
           )
         }
 

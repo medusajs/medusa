@@ -1911,6 +1911,8 @@ describe("/admin/discounts", () => {
     })
 
     it("throws if condition does not exist", async () => {
+      expect.assertions(1)
+
       const api = useApi()
 
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
