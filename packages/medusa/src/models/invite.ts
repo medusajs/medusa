@@ -61,3 +61,40 @@ export class Invite {
     this.id = `invite_${id}`
   }
 }
+
+/**
+ * @schema invite
+ * title: "Invite"
+ * description: "Represents an invite"
+ * x-resourceId: invite
+ * properties:
+ *   id:
+ *     type: string
+ *   user_email:
+ *     type: string
+ *   role:
+ *     type: string
+ *     enum:
+ *       - admin
+ *       - member
+ *       - developer
+ *   accepted:
+ *     type: boolean
+ *   token:
+ *     type: string
+ *   expores_at:
+ *     type: string
+ *     format: date-time
+ *   created_at:
+ *     type: string
+ *     format: date-time
+ *   updated_at:
+ *     type: string
+ *     format: date-time
+ *   deleted_at:
+ *     type: string
+ *     format: date-time
+ *   metadata:
+ *     type: object
+ */
+

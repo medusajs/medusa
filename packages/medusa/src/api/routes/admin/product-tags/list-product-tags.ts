@@ -28,8 +28,8 @@ import { IsType } from "../../../../utils/validators/is-type"
  *   - (query) offset {string} The offset of tags to return.
  *   - (query) value {string} The value of tags to return.
  *   - (query) id {string} The id of tags to return.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting tas was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting tas was updated, i.e. less than, greater than etc.
+ *   - (query) created_at {object} Date comparison for when resulting tas was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {object} Date comparison for when resulting tas was updated, i.e. less than, greater than etc.
  * tags:
  *   - Product Tag
  * responses:

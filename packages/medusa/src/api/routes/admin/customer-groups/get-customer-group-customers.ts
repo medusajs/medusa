@@ -6,6 +6,8 @@ import CustomerController from "../../../../controllers/customers"
  * summary: "List Customers"
  * description: "Retrieves a list of Customers."
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The id of the customer group.
  * tags:
  *   - Customer
  * responses:

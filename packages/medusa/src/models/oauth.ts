@@ -1,20 +1,4 @@
-import {
-  Entity,
-  Index,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
-  JoinColumn,
-  JoinTable,
-} from "typeorm"
+import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
@@ -46,3 +30,23 @@ export class Oauth {
     this.id = `oauth_${id}`
   }
 }
+
+/**
+ * @schema OAuth
+ * title: "OAuth"
+ * description: "Represent an OAuth app"
+ * x-resourceId: OAuth
+ * properties:
+ *   id:
+ *     type: string
+ *   display_name:
+ *     type: string
+ *   application_name:
+ *     type: string
+ *   install_url:
+ *     type: string
+ *   uninstall_url:
+ *     type: integer
+ *   data:
+ *     type: object
+ */

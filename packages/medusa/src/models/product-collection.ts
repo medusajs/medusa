@@ -77,7 +77,7 @@ export class ProductCollection {
  *     description: "The Products contained in the Product Collection."
  *     type: array
  *     items:
- *       type: object
+ *       $ref: "#/components/schemas/product"
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

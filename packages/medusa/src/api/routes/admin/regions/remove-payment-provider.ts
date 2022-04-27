@@ -8,7 +8,7 @@ import { defaultAdminRegionRelations, defaultAdminRegionFields } from "."
  * description: "Removes a Payment Provider."
  * x-authenticated: true
  * parameters:
- *   - (path) region_id=* {string} The id of the Region.
+ *   - (path) id=* {string} The id of the Region.
  *   - (path) provider_id=* {string} The id of the Payment Provider.
  * tags:
  *   - Region

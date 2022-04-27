@@ -11,23 +11,20 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  * description: "Retrieves a list of Shipping Options."
  * x-authenticated: true
  * parameters:
- *  - in: path
+ *  - in: query
  *    name: region_id
  *    schema:
  *      type: string
- *    required: false
  *    description: Region to fetch options from
- *  - in: path
+ *  - in: query
  *    name: is_return
  *    schema:
  *      type: boolean
- *    required: false
  *    description: Flag for fetching return options
- *  - in: path
+ *  - in: query
  *    name: admin_only
  *    schema:
  *      type: boolean
- *    required: false
  *    description: Flag for fetching admin specific options
  * tags:
  *   - Shipping Option

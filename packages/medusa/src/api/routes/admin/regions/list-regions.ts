@@ -26,22 +26,22 @@ import { DateComparisonOperator } from "../../../../types/common"
  *      type: integer
  *    required: false
  *    description: Offset of regions in response (used for pagination)
- * - in: query
+ *  - in: query
  *    name: created_at
  *    schema:
- *      type: DateComparisonOperator
+ *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was created, i.e. less than, greater than etc.
- * - in: query
+ *  - in: query
  *    name: updated_at
  *    schema:
- *      type: DateComparisonOperator
+ *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was updated, i.e. less than, greater than etc.
- * - in: query
+ *  - in: query
  *    name: deleted_at
  *    schema:
- *      type: DateComparisonOperator
+ *      type: object
  *    required: false
  *    description: Date comparison for when resulting region was deleted, i.e. less than, greater than etc.
  * tags:

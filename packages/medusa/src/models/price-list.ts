@@ -99,10 +99,12 @@ export class PriceList {
  *       - override
  *   starts_at:
  *     description: "The date with timezone that the Price List starts being valid."
- *     type: date-time
+ *     type: string
+ *     format: date-time
  *   ends_at:
  *     description: "The date with timezone that the Price List stops being valid."
- *     type: date-time
+ *     type: string
+ *     format: date-time
  *   customer_groups:
  *     description: "The Customer Groups that the Price List applies to."
  *     type: array

@@ -21,8 +21,8 @@ import { validator } from "../../../../utils/validator"
  *   - (query) region_id {string} to search for.
  *   - (query) code {string} to search for.
  *   - (query) rate {string} to search for.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
+ *   - (query) created_at {object} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {object} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
  *   - (query) offset {string} How many orders to skip in the result.
  *   - (query) limit {string} Limit the number of orders returned.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.

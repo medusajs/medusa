@@ -12,7 +12,21 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the customer group.
- *   - (body) customers=* {{id: string }[]} ids of the customers to remove
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           customers:
+ *             description: "The ids of the customers to remove"
+ *             type: array
+ *             items:
+ *               required:
+ *                 - id
+ *               properties:
+ *                 id:
+ *                   description: Id of the customer
+ *                   type: string
  * tags:
  *   - CustomerGroup
  * responses:
@@ -23,7 +37,7 @@ import { validator } from "../../../../utils/validator"
  *         schema:
  *           properties:
  *             customerGroup:
- *               $ref: "#/components/schemas/customergroup"
+ *               $ref: "#/components/schemas/customer_group"
  */
 
 export default async (req, res) => {

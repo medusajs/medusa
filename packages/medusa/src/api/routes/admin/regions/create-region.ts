@@ -12,11 +12,11 @@ import RegionService from "../../../../services/region"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - name
- *         - currency_code
- *         - tax_rate
  *       schema:
+ *         required:
+ *           - name
+ *           - currency_code
+ *           - tax_rate
  *         properties:
  *           name:
  *             description: "The name of the Region"

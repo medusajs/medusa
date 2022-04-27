@@ -11,10 +11,10 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) user_id=* {string} The id of the User.
- *   - (body) first_name {string} The name of the User.
- *   - (body) last_name {string} The name of the User.
- *   - (body) role {string} The role of the User(admin, member, developer).
- *   - (body) api_token {string} The api_token of the User.
+ *   - (body) first_name=* {string} The name of the User.
+ *   - (body) last_name=* {string} The name of the User.
+ *   - (body) role=* {string} The role of the User(admin, member, developer).
+ *   - (body) api_token=* {string} The api_token of the User.
  * tags:
  *   - Users
  * responses:
