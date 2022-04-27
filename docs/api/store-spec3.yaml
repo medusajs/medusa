@@ -122,428 +122,6 @@ paths:
                 properties:
                   exists:
                     type: boolean
-  "/collections/{id}":
-    get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: "#/components/schemas/product_collection"
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-      tags:
-        - Collection
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: "#/components/schemas/product_collection"
-  /customers/me/addresses:
-    post:
-      operationId: PostCustomersCustomerAddresses
-      summary: Add a Shipping Address
-      description: Adds a Shipping Address to a Customer's saved addresses.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - address
-              properties:
-                address:
-                  description: The Address to add to the Customer.
-                  anyOf:
-                    - $ref: "#/components/schemas/address"
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer account.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                password:
-                  type: string
-                  description: The Customer's password for login.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-  "/customers/me/addresses/{address_id}":
-    delete:
-      operationId: DeleteCustomersCustomerAddressesAddress
-      summary: Delete an Address
-      description: Removes an Address from the Customer's saved addresse.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to remove.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-    post:
-      operationId: PostCustomersCustomerAddressesAddress
-      summary: Update a Shipping Address
-      description: Updates a Customer's saved Shipping Address.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to update.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                address:
-                  description: The updated Address.
-                  anyOf:
-                    - $ref: "#/components/schemas/address"
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-  /customers/me:
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieves a Customer
-      description: >-
-        Retrieves a Customer - the Customer must be logged in to retrieve their
-        details.
-      x-authenticated: true
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update Customer details
-      description: Updates a Customer's saved details.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                first_name:
-                  description: The Customer's first name.
-                  type: string
-                last_name:
-                  description: The Customer's last name.
-                  type: string
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: "#/components/schemas/address"
-                password:
-                  description: The Customer's password.
-                  type: string
-                phone:
-                  description: The Customer's phone number.
-                  type: string
-                email:
-                  description: The email of the customer.
-                  type: string
-                metadata:
-                  description: Metadata about the customer.
-                  type: object
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-  /customers/me/payment-methods:
-    get:
-      operationId: GetCustomersCustomerPaymentMethods
-      summary: Retrieve saved payment methods
-      description: >-
-        Retrieves a list of a Customer's saved payment methods. Payment methods
-        are saved with Payment Providers and it is their responsibility to fetch
-        saved methods.
-      x-authenticated: true
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  payment_methods:
-                    type: array
-                    items:
-                      properties:
-                        provider_id:
-                          type: string
-                          description: >-
-                            The id of the Payment Provider where the payment
-                            method is saved.
-                        data:
-                          type: object
-                          description: >-
-                            The data needed for the Payment Provider to use the
-                            saved payment method.
-  /customers/me/orders:
-    get:
-      operationId: GetCustomersCustomerOrders
-      summary: Retrieve Customer Orders
-      description: Retrieves a list of a Customer's Orders.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: How many addresses to return.
-          schema:
-            type: integer
-        - in: query
-          name: offset
-          description: The offset in the resulting addresses.
-          schema:
-            type: integer
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated string) Which fields should be included in the
-            resulting addresses.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated string) Which relations should be expanded in the
-            resulting addresses.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of Orders.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: "The maxmimum number of Orders to return,"
-                    type: integer
-                  orders:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/order"
-  /customers/password-token:
-    post:
-      operationId: PostCustomersCustomerPasswordToken
-      summary: Creates a reset password token
-      description: >-
-        Creates a reset password token to be used in a subsequent
-        /reset-password request. The password token should be sent out of band
-        e.g. via email and will not be returned.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        "204":
-          description: OK
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  description: Email of the user whose password should be reset.
-  /customers/reset-password:
-    post:
-      operationId: PostCustomersResetPassword
-      summary: Resets Customer password
-      description: >-
-        Resets a Customer's password using a password token created by a
-        previous /password-token request.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - token
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                token:
-                  type: string
-                  description: The password token created by a /password-token request.
-                password:
-                  type: string
-                  description: The new password to set for the Customer.
-  "/gift-cards/{code}":
-    get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      tags:
-        - Gift Card
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    description: The id of the Gift Card
-                  code:
-                    description: The code of the Gift Card
-                  value:
-                    description: The original value of the Gift Card.
-                  balance:
-                    description: The current balanace of the Gift Card
-                  region:
-                    $ref: "#/components/schemas/region"
   "/carts/{id}/shipping-methods":
     post:
       operationId: PostCartsCartShippingMethod
@@ -1043,7 +621,7 @@ paths:
                   description: The id of the Payment Provider.
   "/store/carts/{id}":
     post:
-      operationId: PostCartsCartPaymentMethodUpdate
+      operationId: PostCartsCart
       summary: Update a Cart"
       description: Updates a Cart.
       parameters:
@@ -1057,15 +635,50 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - provider_id
               properties:
-                provider_id:
+                region_id:
                   type: string
-                  description: The id of the Payment Provider.
-                data:
+                  description: The id of the Region to create the Cart in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO country code to create the Cart in.
+                email:
+                  type: string
+                  description: An email to be used on the Cart.
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+                gift_cards:
+                  description: An array of Gift Card codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Gift Card is identified by.
+                        type: string
+                discounts:
+                  description: An array of Discount codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                customer_id:
+                  description: The id of the Customer to associate the Cart with.
+                  type: string
+                context:
+                  description: An optional object to provide context to the Cart.
                   type: object
-                  description: ""
       tags:
         - Cart
       responses:
@@ -1077,6 +690,428 @@ paths:
                 properties:
                   cart:
                     $ref: "#/components/schemas/cart"
+  "/collections/{id}":
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: "#/components/schemas/product_collection"
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: "#/components/schemas/product_collection"
+  /customers/me/addresses:
+    post:
+      operationId: PostCustomersCustomerAddresses
+      summary: Add a Shipping Address
+      description: Adds a Shipping Address to a Customer's saved addresses.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - address
+              properties:
+                address:
+                  description: The Address to add to the Customer.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer account.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                password:
+                  type: string
+                  description: The Customer's password for login.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+  "/customers/me/addresses/{address_id}":
+    delete:
+      operationId: DeleteCustomersCustomerAddressesAddress
+      summary: Delete an Address
+      description: Removes an Address from the Customer's saved addresse.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to remove.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
+    post:
+      operationId: PostCustomersCustomerAddressesAddress
+      summary: Update a Shipping Address
+      description: Updates a Customer's saved Shipping Address.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  description: The updated Address.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
+  /customers/me:
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieves a Customer
+      description: >-
+        Retrieves a Customer - the Customer must be logged in to retrieve their
+        details.
+      x-authenticated: true
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update Customer details
+      description: Updates a Customer's saved details.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                first_name:
+                  description: The Customer's first name.
+                  type: string
+                last_name:
+                  description: The Customer's last name.
+                  type: string
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+                password:
+                  description: The Customer's password.
+                  type: string
+                phone:
+                  description: The Customer's phone number.
+                  type: string
+                email:
+                  description: The email of the customer.
+                  type: string
+                metadata:
+                  description: Metadata about the customer.
+                  type: object
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
+  /customers/me/payment-methods:
+    get:
+      operationId: GetCustomersCustomerPaymentMethods
+      summary: Retrieve saved payment methods
+      description: >-
+        Retrieves a list of a Customer's saved payment methods. Payment methods
+        are saved with Payment Providers and it is their responsibility to fetch
+        saved methods.
+      x-authenticated: true
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_methods:
+                    type: array
+                    items:
+                      properties:
+                        provider_id:
+                          type: string
+                          description: >-
+                            The id of the Payment Provider where the payment
+                            method is saved.
+                        data:
+                          type: object
+                          description: >-
+                            The data needed for the Payment Provider to use the
+                            saved payment method.
+  /customers/me/orders:
+    get:
+      operationId: GetCustomersCustomerOrders
+      summary: Retrieve Customer Orders
+      description: Retrieves a list of a Customer's Orders.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: How many addresses to return.
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          description: The offset in the resulting addresses.
+          schema:
+            type: integer
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated string) Which fields should be included in the
+            resulting addresses.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated string) Which relations should be expanded in the
+            resulting addresses.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Orders.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: "The maxmimum number of Orders to return,"
+                    type: integer
+                  orders:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/order"
+  /customers/password-token:
+    post:
+      operationId: PostCustomersCustomerPasswordToken
+      summary: Creates a reset password token
+      description: >-
+        Creates a reset password token to be used in a subsequent
+        /reset-password request. The password token should be sent out of band
+        e.g. via email and will not be returned.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        "204":
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  description: Email of the user whose password should be reset.
+  /customers/reset-password:
+    post:
+      operationId: PostCustomersResetPassword
+      summary: Resets Customer password
+      description: >-
+        Resets a Customer's password using a password token created by a
+        previous /password-token request.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - token
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                token:
+                  type: string
+                  description: The password token created by a /password-token request.
+                password:
+                  type: string
+                  description: The new password to set for the Customer.
+  "/gift-cards/{code}":
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: The id of the Gift Card
+                  code:
+                    description: The code of the Gift Card
+                  value:
+                    description: The original value of the Gift Card.
+                  balance:
+                    description: The current balanace of the Gift Card
+                  region:
+                    $ref: "#/components/schemas/region"
   "/orders/cart/{cart_id}":
     get:
       operationId: GetOrdersOrderCartId
@@ -1198,14 +1233,22 @@ paths:
             type: string
         - in: query
           name: collection_id
-          description: Collection ids to search for.
+          style: form
+          explode: false
+          description: Collection ids to search for
           schema:
             type: array
+            items:
+              type: string
         - in: query
           name: tags
-          description: Tags to search for.
+          style: form
+          explode: false
+          description: Tags to search for
           schema:
             type: array
+            items:
+              type: string
         - in: query
           name: title
           description: to search for.
@@ -1671,6 +1714,51 @@ components:
           type: string
         country:
           $ref: "#/components/schemas/country"
+    batch_job:
+      title: Batch Job
+      description: A Batch Job.
+      x-resourceId: batch_job
+      properties:
+        id:
+          description: The unique identifier for the batch job.
+          type: string
+        type:
+          description: The type of batch job.
+          type: string
+          enum:
+            - product_import
+            - product_export
+        status:
+          description: The status of the batch job.
+          type: string
+          enum:
+            - created
+            - processing
+            - awaiting_confirmation
+            - completed
+        created_by:
+          description: The unique identifier of the user that created the batch job.
+          type: string
+        context:
+          description: >-
+            The context of the batch job, the type of the batch job determines
+            what the context should contain.
+          type: object
+        result:
+          description: The result of the batch job.
+          type: object
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
     cart:
       title: Cart
       description: Represents a user cart
@@ -2044,7 +2132,7 @@ components:
         customers:
           type: array
           items:
-            type: object
+            $ref: "#/components/schemas/customer"
         created_at:
           type: string
           format: date-time
@@ -2094,6 +2182,168 @@ components:
           format: date-time
         metadata:
           type: object
+    discount_condition_customer_group:
+      title: Product Tag Discount Condition
+      description: Associates a discount condition with a customer group
+      x-resourceId: discount_condition_customer_group
+      properties:
+        customer_group_id:
+          description: The id of the Product Tag
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_collection:
+      title: Product Collection Discount Condition
+      description: Associates a discount condition with a product collection
+      x-resourceId: discount_condition_product_collection
+      properties:
+        product_collection_id:
+          description: The id of the Product Collection
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_tag:
+      title: Product Tag Discount Condition
+      description: Associates a discount condition with a product tag
+      x-resourceId: discount_condition_product_tag
+      properties:
+        product_tag_id:
+          description: The id of the Product Tag
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_type:
+      title: Product Type Discount Condition
+      description: Associates a discount condition with a product type
+      x-resourceId: discount_condition_product
+      properties:
+        product_type_id:
+          description: The id of the Product Type
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product:
+      title: Product Discount Condition
+      description: Associates a discount condition with a product
+      x-resourceId: discount_condition_product
+      properties:
+        product_id:
+          description: The id of the Product
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition:
+      title: Discount Condition
+      description: Holds rule conditions for when a discount is applicable
+      x-resourceId: discount_condition
+      properties:
+        id:
+          description: The id of the Discount Condition. Will be prefixed by `discon_`.
+          type: string
+        type:
+          description: The type of the Condition
+          type: string
+          enum:
+            - products
+            - product_types
+            - product_collections
+            - product_tags
+            - customer_groups
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        update_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
     discount_rule:
       title: Discount Rule
       description: >-
@@ -2128,11 +2378,13 @@ components:
           enum:
             - total
             - item
-        valid_for:
-          description: A set of Products that the discount can be used for.
+        conditions:
+          description: >-
+            A set of conditions that can be used to limit when  the discount can
+            be used
           type: array
           items:
-            $ref: "#/components/schemas/product"
+            $ref: "#/components/schemas/discount_condition"
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -2628,10 +2880,15 @@ components:
             The amount in the smallest currecny unit (e.g. cents 100 cents to
             charge $1) that the Product Variant will cost.
           type: integer
-        sale_amount:
+        min_quantity:
           description: >-
-            An optional sale amount that the Product Variant will be available
-            for when defined.
+            The minimum quantity that the Money Amount applies to. If this value
+            is not set, the Money Amount applies to all quantities.
+          type: integer
+        max_quantity:
+          description: >-
+            The maximum quantity that the Money Amount applies to. If this value
+            is not set, the Money Amount applies to all quantities.
           type: integer
         variant_id:
           description: The id of the Product Variant that the Money Amount belongs to.
@@ -3110,6 +3367,49 @@ components:
         metadata:
           description: An optional key-value map with additional information.
           type: object
+    price_list:
+      title: Price List
+      description: >-
+        Price Lists represents a set of prices that overrides the default price
+        for one or more product variants.
+      x-resourceId: price_list
+      properties:
+        id:
+          description: The id of the Price List. This value will be prefixed by `pl_`.
+          type: string
+        type:
+          description: >-
+            The type of Price List. This can be one of either `sale` or
+            `override`.
+          type: string
+          enum:
+            - sale
+            - override
+        starts_at:
+          description: The date with timezone that the Price List starts being valid.
+          type: string
+          format: date-time
+        ends_at:
+          description: The date with timezone that the Price List stops being valid.
+          type: string
+          format: date-time
+        customer_groups:
+          description: The Customer Groups that the Price List applies to.
+          type: array
+          items:
+            $ref: "#/components/schemas/customer_group"
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
     product_collection:
       title: Product Collection
       description: Product Collections represents a group of Products that are related.
@@ -3132,7 +3432,7 @@ components:
           description: The Products contained in the Product Collection.
           type: array
           items:
-            type: object
+            $ref: "#/components/schemas/product"
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
