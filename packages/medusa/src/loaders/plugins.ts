@@ -155,7 +155,7 @@ async function registerStrategies(
 ): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
   await Promise.all(
-    files.map((file) => {
+    files.map(async (file) => {
       const module = require(file).default
 
       if (isTaxCalculationStrategy(module.prototype)) {
