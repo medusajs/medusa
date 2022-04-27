@@ -42,6 +42,16 @@ Node.js is an environment that can execute JavaScript code on outside of the bro
 
 Node.js has a bundled package manager called npm. npm helps you install "packages" which are small pieces of code that you can leverage in your Node.js applications. Medusa's core is itself a package distributed via npm and so are all of the plugins that exist around the core. [You can install Node.js from here.](https://nodejs.org/en/)
 
+:::caution
+
+Medusa supports Node versions 14 and 16. You can check which Node version you have using the following command:
+
+```bash
+node -v
+```
+
+:::
+
 If you prefer using something like homebrew you can also run:
 
 ```
@@ -87,14 +97,8 @@ brew services start redis
 
 The final installation to do to get started with Medusa is the Medusa CLI, which is an npm package you can install globally on your computer to get instant access to commands that help you manage and run your Medusa project. As the Medusa CLI is distributed as an npm package it is very easily installed by running:
 
-```
-npm install -g @medusajs/medusa-cli
-```
-
-We like to use Yarn instead of npm; if you wish to do the same you can install the CLI with:
-
-```
-yarn global add @medusajs/medusa-cli
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
 ```
 
 ### Text editor

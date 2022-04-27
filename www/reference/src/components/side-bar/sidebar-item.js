@@ -1,10 +1,11 @@
-import React, { useContext } from "react"
-import Collapsible from "react-collapsible"
-import { Flex, Box, Text } from "theme-ui"
-import styled from "@emotion/styled"
-import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
+import { Box, Flex, Text } from "theme-ui"
+import React, { useContext, useEffect, useState } from "react"
+
 import ChevronDown from "../icons/chevron-down"
+import Collapsible from "react-collapsible"
 import NavigationContext from "../../context/navigation-context"
+import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
+import styled from "@emotion/styled"
 
 const StyledCollapsible = styled(Collapsible)`
   margin-bottom: 10px;
@@ -26,6 +27,7 @@ const SideBarItem = ({ item }) => {
     currentSection,
     goTo,
   } = useContext(NavigationContext)
+  const [isOpen, setIsOpen] = useState(false);
   const { section } = item
   const subItems = section.paths
     .map(p => {
@@ -47,15 +49,20 @@ const SideBarItem = ({ item }) => {
     if (element) {
       element.scrollIntoView()
       if (!openSections.includes(id)) {
-        openSection(id)
+        openSection({id, section})
       }
     }
   }
 
   const handleSubClick = path => {
     const id = convertToKebabCase(section.section_name)
-    goTo({ section: id, method: path })
+    goTo({ section: id, method: path, sectionObj: section })
   }
+
+  useEffect(() => {
+    setIsOpen(currentSection === convertToKebabCase(section.section_name) ||
+    openSections.includes(convertToKebabCase(section.section_name)));
+  }, [section.section_name, currentSection, openSections])
 
   return (
     <Container id={`nav-${convertToKebabCase(section.section_name)}`}>
@@ -86,10 +93,7 @@ const SideBarItem = ({ item }) => {
             {section.section_name} <ChevronDown />
           </Flex>
         }
-        open={
-          currentSection === convertToKebabCase(section.section_name) ||
-          openSections.includes(convertToKebabCase(section.section_name))
-        }
+        open={isOpen}
         onTriggerOpening={handleClick}
         transitionTime={1}
       >

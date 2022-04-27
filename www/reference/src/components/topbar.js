@@ -1,12 +1,12 @@
 import { Box, Flex, Link, Select } from "@theme-ui/components"
-import { navigate } from "gatsby-link"
 import React, { useContext } from "react"
+
+import ChevronDown from "./icons/chevron-down"
 import GitHub from "../components/icons/github"
 import NavigationContext from "../context/navigation-context"
-import { convertToKebabCase } from "../utils/convert-to-kebab-case"
-import ChevronDown from "./icons/chevron-down"
 import Search from "./search"
-
+import { convertToKebabCase } from "../utils/convert-to-kebab-case"
+import { navigate } from "gatsby-link"
 
 const Topbar = ({ data, api }) => {
   const { goTo, reset, currentSection } = useContext(NavigationContext)
@@ -15,7 +15,10 @@ const Topbar = ({ data, api }) => {
     const parts = e.target.value.split(" ")
 
     if (parts[0] === api) {
-      goTo({ section: parts[1] })
+      //find section
+      let sectionObj = data.sections.find((s) => convertToKebabCase(s.section.section_name) === parts[1]);
+      sectionObj = sectionObj ? sectionObj.section : {};
+      goTo({ section: parts[1], sectionObj })
     } else {
       reset()
       navigate(`/api/${api === "admin" ? "store" : "admin"}`)
@@ -112,7 +115,7 @@ const Topbar = ({ data, api }) => {
         >
           <GitHub />
         </Link>
-        <Search />
+        <Search data={data} />
       </Flex>
     </Flex>
   )
