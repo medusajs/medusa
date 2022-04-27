@@ -39,8 +39,8 @@ module.exports = function (migration, context) {
 
 This small snippet will create a content model in your Contentful space with two fields: a title which will be used to name entries in a meaningful manner (i.e. it won't be displayed to customers) and a body which contains the rich text to display. To apply your migration run:
 
-```shell
-yarn migrate:contentful --file contentful-migrations/rich-text.js
+```bash npm2yarn
+npm run migrate:contentful --file contentful-migrations/rich-text.js
 ```
 
 If you go to your Contentful space and click Content Model you will see that the Rich Text model has been added to your space:
@@ -68,8 +68,8 @@ module.exports = function (migration, context) {
 
 After migrating your space you are ready create your new contact page:
 
-```shell
-yarn migrate:contentful --file contentful-migrations/update-page-module-validation.js
+```bash npm2yarn
+npm run migrate:contentful --file contentful-migrations/update-page-module-validation.js
 ```
 
 ## Adding Rich Text to About
@@ -197,8 +197,8 @@ module.exports = function (migration, context) {
 
 Run the migration:
 
-```
-yarn migrate:contentful --file contentful-migrations/product-add-modules.js
+```bash npm2yarn
+npm run migrate:contentful --file contentful-migrations/product-add-modules.js
 ```
 
 ### Adding "Related Products" Tile Section

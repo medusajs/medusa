@@ -38,17 +38,20 @@ If you want to jump straight to the code for this series you can checkout:
 In order to get you started with your Gatsby, Contentful, Medusa store you must complete a couple of installations:
 
 - Install the Medusa CLI
+  
+  ```bash npm2yarn
+  npm install @medusajs/medusa-cli -g
   ```
-  yarn global add @medusajs/medusa-cli
-  npm install -g @medusajs/medusa-cli
-  ```
+
 - Install the Gatsby CLI
+
+  ```bash npm2yarn
+  npm install gatsby-cli -g
   ```
-  yarn global add gatsby-cli
-  npm install -g gatsby-cli
-  ```
+
 - [Create a Contentful account](https://www.contentful.com/sign-up/)
 - [Install Redis](https://redis.io/topics/quickstart)
+
   ```
   brew install redis
   brew services start redis
@@ -60,7 +63,7 @@ Medusa has support for SQLite and PostgreSQL and uses Redis for caching and queu
 
 We will make use of `medusa new` to setup your local Medusa server.
 
-```sh
+```bash
 medusa new medusa-contentful-store https://github.com/medusajs/medusa-starter-contentful
 ```
 
@@ -146,7 +149,14 @@ In the `/src` directory there are 4 special subdirectories that are added for yo
 
 #### `/data`
 
-We will be using two seed scripts to kickstart your development, namely `yarn seed:contentful` and `yarn seed`. Data for these seed scripts are contained in the `/data` directory.
+We will be using two seed scripts to kickstart your development, namely:
+
+```bash npm2yarn
+npm run seed:contentful
+npm run seed
+```
+
+Data for these seed scripts are contained in the `/data` directory.
 
 When the seed scripts have been executed you will have a Contentful space that holds all the data for your website; this includes content for Pages, Navigtion Menu, etc.
 
@@ -229,8 +239,8 @@ Now that we have collected your credentials we are ready to migrate the Contentf
 
 You can now run:
 
-```shell
-yarn migrate:contentful
+```bash npm2yarn
+npm run migrate:contentful
 ```
 
 This script will run each of the migrations in the `contentful-migrations` directory. After it has completed navigate to your Contentful space and click "Content model" in the top navigation bar. You will see that the content types will be imported into your space. Feel free to familiarize yourself with the different types by clicking them and inspecting the different fields that they hold.
@@ -239,8 +249,8 @@ This script will run each of the migrations in the `contentful-migrations` direc
 
 The next step is to seed the Contentful space with some data that can be used to display your ecommerce store's pages and navigation. To seed the database open up your command line and run:
 
-```shell
-yarn seed:contentful
+```bash npm2yarn
+npm run seed:contentful
 ```
 
 In your Contentful space navigate to "Content" and you will be able to see the different entries in your space. You can filter the entries by type to, for example, only view Pages:
@@ -251,9 +261,9 @@ You will notice that there are not any Products in your store yet and this is be
 
 To do this open your command line and run:
 
-```shell
-yarn seed
-yarn start
+```bash npm2yarn
+npm run seed
+npm run start
 ```
 
 This will seed your Medusa database, which will result in `medusa-plugin-contentful` synchronizing data to your Contentful space. Everytime you add or update a product the data will be copied into your Contentful space for further enrichment.
@@ -289,7 +299,11 @@ Once `gatsby new` is complete you should rename the `.env.template` file to `.en
 
 To get your token go to **Settings** > **API Keys** > **Add API key**. Now click save and copy the token specified in the field "Content Delivery API - access token".
 
-After you have copied the token and your space ID to your `.env`, you can run `yarn start` which will start your Gatsby development server on port 8000.
+After you have copied the token and your space ID to your `.env`, you can start your Gatsby development server on port 8000 by running:
+
+```bash npm2yarn
+npm run start
+```
 
 You can now go to https://localhost:8000 to check out your new Medusa store.
 

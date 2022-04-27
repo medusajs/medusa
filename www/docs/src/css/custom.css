@@ -62,12 +62,19 @@ p {
 
 /* DocSearch */
 
-html[data-theme="light"] .DocSearch-Button {
+/* html[data-theme="light"] .DocSearch-Button {
   --docsearch-searchbox-background: #fff;
 }
 
 html[data-theme="dark"] .DocSearch-Button {
   --docsearch-searchbox-background: #1f1f1f;
+} */
+
+.DocSearch-Button {
+  width: 100%;
+  max-width: 175px;
+  border-radius: 8px !important;
+  --docsearch-container-background: #f5f6f7;
 }
 
 span.DocSearch-Button-Key {
@@ -88,11 +95,6 @@ html[data-theme="dark"] .docusaurus-highlight-code-line {
 .navbar {
   z-index: 1000;
   font-size: 14px;
-}
-
-/* Medusa logo */
-.navbar__brand {
-  width: 100px;
 }
 
 .navbar-github-link:before {
@@ -203,10 +205,6 @@ footer .footer__items svg {
   display: none;
 }
 
-footer .footer__item a:hover {
-  color: white;
-}
-
 @media screen and (min-width: 966px) {
   footer .footer__col {
     display: flex;
@@ -254,4 +252,21 @@ footer {
 .prism-code div:focus,
 .prism-code div:active {
   outline: none !important;
+}
+
+details summary {
+  cursor: pointer;
+}
+
+.theme-doc-markdown a {
+  color: #9461ff;
+}
+
+.theme-doc-markdown a:hover {
+  color: #6e3eff;
+  text-decoration: none;
+}
+
+.DocSearch-Container {
+  z-index: 1001 !important;
 }

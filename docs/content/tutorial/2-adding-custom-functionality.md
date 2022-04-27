@@ -16,7 +16,7 @@ The custom functionality will do a number of things:
 
 ## Services
 
-We will begin our custom implementation by adding a custom service. In you project create a new file at `/src/services/welcome.js`. Open the newly created file and add a class:
+We will begin our custom implementation by adding a custom service. In your project create a new file at `/src/services/welcome.js`. Open the newly created file and add a class:
 
 ```javascript
 import { BaseService } from "medusa-interfaces"

@@ -22,7 +22,7 @@ A plugin is essentially a Node.js project of their own. They contain a file in r
 
 The first step in creating a plugin is to initialize the Node.js project:
 
-```bash
+```bash npm2yarn
 npm init
 ```
 
@@ -88,7 +88,11 @@ Official Medusa plugins can be found within the [mono repo](https://github.com/m
 
 Note: For plugins to become a part of the mono repo, we require you to submit a PR request. If approved, we will publish it under the Medusa organisation on Github.
 
-Plugins are distributed as NPM packages making it possible for developers to simply install and use a plugin via `yarn add` or `npm install`.
+Plugins are distributed as NPM packages making it possible for developers to simply install and use a plugin via:
+
+```bash npm2yarn
+npm install
+```
 
 After installing a plugin using your preferred package manager, it should be added to `medusa-config.js`. We allow you to provide options for plugins. These options can be used for anything ranging from provider requirements such as API keys or custom configuration used in the plugin's logic. These options are injected into the services, subscribers, and APIs of the plugin.
 
@@ -98,8 +102,8 @@ The following steps will install the official Contentful plugin for your Medusa 
 
 First, we add the plugin as a dependency to your project:
 
-```bash
-yarn add medusa-plugin-contentful
+```bash npm2yarn
+npm install medusa-plugin-contentful
 ```
 
 ### Step 2: Configuration
