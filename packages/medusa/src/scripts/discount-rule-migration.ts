@@ -39,7 +39,7 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
         .from(DiscountRule, "dr")
         .select("dr.id")
         .innerJoin(
-          "discount_rule_product",
+          "discount_rule_products",
           "drp",
           "dr.id = drp.discount_rule_id"
         )
