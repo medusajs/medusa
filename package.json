@@ -2,12 +2,13 @@
   "name": "root",
   "private": true,
   "workspaces": {
-    "packages":  [
+    "packages": [
       "packages/*"
     ],
     "nohoist": [
       "**/tsdx",
-      "**/tsdx/**"
+      "**/tsdx/**",
+      "**/orval/**"
     ]
   },
   "devDependencies": {
@@ -41,8 +42,11 @@
     "lint-staged": "^11.2.3",
     "microbundle": "^0.13.3",
     "mongoose": "^5.10.15",
+    "openapi-typescript": "^5.2.0",
+    "orval": "^6.6.4",
     "pg-god": "^1.0.11",
     "prettier": "^2.1.1",
+    "qs": "^6.10.3",
     "resolve-cwd": "^3.0.0",
     "ts-jest": "^26.5.6",
     "typeorm": "^0.2.31"
@@ -64,7 +68,8 @@
     "test:integration": "jest --config=integration-tests/jest.config.js",
     "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api",
     "test:integration:plugins": "jest --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
-    "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
+    "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
+    "openapi:generate": "node ./scripts/build-openapi.js"
   },
   "dependencies": {
     "global": "^4.4.0",
