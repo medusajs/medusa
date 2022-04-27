@@ -55,7 +55,10 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const { discount_id } = req.params
 
-  const validated = await validator(AdminPostDiscountsConditions, req.body)
+  const validatedCondition = await validator(
+    AdminPostDiscountsConditions,
+    req.body
+  )
 
   const validatedParams = await validator(
     AdminPostDiscountsConditionsParams,
@@ -67,7 +70,7 @@ export default async (req, res) => {
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  await conditionService.upsertCondition(discount_id, validated)
+  await conditionService.upsertCondition(discount_id, validatedCondition)
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,

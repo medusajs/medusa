@@ -68,24 +68,26 @@ class DiscountConditionService extends BaseService {
     conditionId: string,
     config: FindConfig<DiscountCondition> = {}
   ): Promise<DiscountCondition> {
-    const conditionRepo = this.manager_.getCustomRepository(
-      this.discountConditionRepository_
-    )
-
-    const query = this.buildQuery_({ id: conditionId }, config)
-    const condition = await conditionRepo.findOne(query)
-
-    if (!condition) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `DiscountCondition with id: ${conditionId} was not found`
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const conditionRepo = manager.getCustomRepository(
+        this.discountConditionRepository_
       )
-    }
 
-    return condition
+      const query = this.buildQuery_({ id: conditionId }, config)
+      const condition = await conditionRepo.findOne(query)
+
+      if (!condition) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `DiscountCondition with id: ${conditionId} was not found`
+        )
+      }
+
+      return condition
+    })
   }
 
-  resolveConditionType_(data: UpsertDiscountConditionInput):
+  protected resolveConditionType_(data: UpsertDiscountConditionInput):
     | {
         type: DiscountConditionType
         resource_ids: string[]
@@ -126,17 +128,17 @@ class DiscountConditionService extends BaseService {
     discountId: string,
     data: UpsertDiscountConditionInput
   ): Promise<void> {
-    const resolvedConditionType = this.resolveConditionType_(data)
-
-    if (!resolvedConditionType) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Missing one of products, collections, tags, types or customer groups in data`
-      )
-    }
-
     return await this.atomicPhase_(
       async (manager: EntityManager) => {
+        const resolvedConditionType = this.resolveConditionType_(data)
+
+        if (!resolvedConditionType) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Missing one of products, collections, tags, types or customer groups in data`
+          )
+        }
+
         const discountConditionRepo: DiscountConditionRepository =
           manager.getCustomRepository(this.discountConditionRepository_)
         const discountRepo: DiscountRepository = manager.getCustomRepository(
@@ -194,7 +196,7 @@ class DiscountConditionService extends BaseService {
     )
   }
 
-  async remove(discountConditionId): Promise<void> {
+  async remove(discountConditionId: string): Promise<void> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_

@@ -268,11 +268,13 @@ class DiscountService extends BaseService {
         const result = await discountRepo.save(created)
 
         if (conditions?.length) {
-          for (const cond of conditions) {
-            await this.discountConditionService_
-              .withTransaction(manager)
-              .upsertCondition(result.id, cond)
-          }
+          await Promise.all(
+            conditions.map(async (cond) => {
+              await this.discountConditionService_
+                .withTransaction(manager)
+                .upsertCondition(result.id, cond)
+            })
+          )
         }
 
         return result
@@ -389,11 +391,13 @@ class DiscountService extends BaseService {
       }
 
       if (conditions?.length) {
-        for (const cond of conditions) {
-          await this.discountConditionService_
-            .withTransaction(manager)
-            .upsertCondition(discount.id, cond)
-        }
+        await Promise.all(
+          conditions.map(async (cond) => {
+            await this.discountConditionService_
+              .withTransaction(manager)
+              .upsertCondition(discount.id, cond)
+          })
+        )
       }
 
       if (regions) {
