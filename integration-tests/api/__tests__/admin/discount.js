@@ -1798,6 +1798,32 @@ describe("/admin/discounts", () => {
         )
       }
     })
+
+    it("throws if discount does not exist", async () => {
+      expect.assertions(1)
+
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/does-not-exist/conditions/test-condition",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Discount with id does-not-exist was not found"
+        )
+      }
+    })
   })
 
   describe("POST /admin/discounts/:id/conditions/:condition_id", () => {
@@ -1932,6 +1958,32 @@ describe("/admin/discounts", () => {
       } catch (error) {
         expect(error.message).toMatchSnapshot(
           "DiscountCondition with id does-not-exist was not found"
+        )
+      }
+    })
+
+    it("throws if discount does not exist", async () => {
+      expect.assertions(1)
+
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/does-not-exist/conditions/test-condition",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Discount with id does-not-exist was not found"
         )
       }
     })

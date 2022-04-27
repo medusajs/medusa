@@ -151,7 +151,7 @@ class DiscountConditionService extends BaseService {
         if (typeof discountIdOrDiscount === `string`) {
           discount = await discountRepo.findOne({
             where: { id: discountIdOrDiscount },
-            relations: ["rule", "rule.conditions"],
+            relations: ["rule"],
           })
 
           if (!discount) {

@@ -62,6 +62,8 @@ Object {
 }
 `;
 
+exports[`/admin/discounts POST /admin/discounts/:id/conditions throws if discount does not exist: Discount with id does-not-exist was not found 1`] = `"Request failed with status code 404"`;
+
 exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id should update a condition 1`] = `
 Object {
   "code": "TEST",
@@ -135,3 +137,5 @@ Object {
 `;
 
 exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if condition does not exist: DiscountCondition with id does-not-exist was not found 1`] = `"Request failed with status code 404"`;
+
+exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if discount does not exist: Discount with id does-not-exist was not found 1`] = `"Request failed with status code 404"`;
