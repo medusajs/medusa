@@ -1,6 +1,6 @@
 {
   "name": "medusa-interfaces",
-  "version": "1.1.35-next.83+d7971ba6",
+  "version": "1.1.35",
   "description": "Core interfaces for Medusa",
   "main": "dist/index.js",
   "repository": {
@@ -29,8 +29,8 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-core-utils": "^1.1.32-next.146+d7971ba6",
-    "medusa-test-utils": "^1.1.38-next.98+d7971ba6",
+    "medusa-core-utils": "^1.1.32",
+    "medusa-test-utils": "^1.1.38",
     "prettier": "^1.19.1",
     "typeorm": "^0.2.29",
     "typescript": "^4.4.4"

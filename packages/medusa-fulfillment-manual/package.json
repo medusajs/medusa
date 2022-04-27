@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-manual",
-  "version": "1.1.32-next.146+d7971ba6",
+  "version": "1.1.32",
   "description": "A manual fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -36,7 +36,7 @@
     "@babel/plugin-transform-instanceof": "^7.8.3",
     "@babel/runtime": "^7.7.6",
     "express": "^4.17.1",
-    "medusa-core-utils": "^1.1.32-next.146+d7971ba6"
+    "medusa-core-utils": "^1.1.32"
   },
   "gitHead": "d7971ba604799da7cab6ec94ee06c4a72f607d83"
 }

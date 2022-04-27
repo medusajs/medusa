@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.12](https://github.com/medusajs/medusa/compare/medusa-telemetry@0.0.11...medusa-telemetry@0.0.12) (2022-04-27)
+
+**Note:** Version bump only for package medusa-telemetry
+
+
+
+
+
 ## [0.0.11](https://github.com/medusajs/medusa/compare/medusa-telemetry@0.0.10...medusa-telemetry@0.0.11) (2021-12-08)
 
 ### Features
