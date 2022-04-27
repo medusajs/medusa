@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-medusa",
-  "version": "0.0.49",
+  "version": "0.0.50-next.83+d7971ba6",
   "description": "Gatsby source plugin for building websites using Medusa Commerce as a data source",
   "scripts": {
     "test": "jest --watchAll",
@@ -43,5 +43,5 @@
   "peerDependencies": {
     "gatsby": "^4.1.0"
   },
-  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
+  "gitHead": "d7971ba604799da7cab6ec94ee06c4a72f607d83"
 }

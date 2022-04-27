@@ -1,6 +1,6 @@
 {
   "name": "babel-preset-medusa-package",
-  "version": "1.1.19",
+  "version": "1.1.20-next.146+d7971ba6",
   "author": "Sebastian Rindom <sebastian@mrbltech.com>",
   "repository": {
     "type": "git",
@@ -27,5 +27,5 @@
   "engines": {
     "node": ">=10.14.0"
   },
-  "gitHead": "41a5425405aea5045a26def95c0dc00cf4a5a44d"
+  "gitHead": "d7971ba604799da7cab6ec94ee06c4a72f607d83"
 }
