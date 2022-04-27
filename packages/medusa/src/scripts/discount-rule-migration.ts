@@ -37,11 +37,11 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
       const discountRules = await manager
         .createQueryBuilder()
         .from(DiscountRule, "dr")
-        .select("dr.id", "dr_id")
+        .select("dr.id")
         .innerJoin(
           "discount_rule_product",
           "drp",
-          "dr_id = drp.discount_rule_id"
+          "dr.id = drp.discount_rule_id"
         )
         .distinct(true)
         .limit(BATCH_SIZE)
@@ -57,7 +57,7 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
             Object.assign(new DiscountCondition(), {
               type: DiscountConditionType.PRODUCTS,
               operator: DiscountConditionOperator.IN,
-              discount_rule_id: dr.dr_id,
+              discount_rule_id: dr.id,
             })
           )
         )
