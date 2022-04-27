@@ -57,7 +57,7 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
             Object.assign(new DiscountCondition(), {
               type: DiscountConditionType.PRODUCTS,
               operator: DiscountConditionOperator.IN,
-              discount_rule_id: dr.id,
+              discount_rule_id: dr.dr_id,
             })
           )
         )
