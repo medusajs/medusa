@@ -40,6 +40,7 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
         bucket: "test",
         access_key_id: "YOUR-ACCESS-KEY",
         secret_access_key: "YOUR-SECRET-KEY",
+	sslEnabled: true || false, // if you're running locally with no ssl certificate, use false. Defaults to true if not set
     },
 },
 ```

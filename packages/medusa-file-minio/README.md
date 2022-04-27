@@ -9,6 +9,7 @@ Upload files to a MinIO server.
   bucket: [name of your bucket],
   access_key_id: [access-key],
   secret_access_key: [secret-access-key],
+  sslEnabled: [if ssl is enabled or not]
 ```
 
 Follow [this guide](https://docs.medusa-commerce.com/how-to/uploading-images-to-minio) to configure the plugin.
