@@ -184,31 +184,6 @@ async function registerStrategies(
       }
     })
   )
-
-  // let module
-  // try {
-  //   const path = `${pluginDetails.resolve}/strategies/tax-calculation`
-  //   if (existsSync(path)) {
-  //     module = require(path).default
-  //   } else {
-  //     return
-  //   }
-  // } catch (err) {
-  //   return
-  // }
-
-  // if (isTaxCalculationStrategy(module.prototype)) {
-  //   container.register({
-  //     taxCalculationStrategy: asFunction(
-  //       (cradle) => new module(cradle, pluginDetails.options)
-  //     ).singleton(),
-  //   })
-  // } else {
-  //   const logger = container.resolve<Logger>("logger")
-  //   logger.warn(
-  //     `${pluginDetails.resolve}/strategies/tax-calculation did not export a class that implements ITaxCalculationStrategy. Your Medusa server will still work, but if you have written custom tax calculation logic it will not be used. Make sure to implement the ITaxCalculationStrategy interface.`
-  //   )
-  // }
 }
 
 function registerMedusaMiddleware(
