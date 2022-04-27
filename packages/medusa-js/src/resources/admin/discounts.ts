@@ -2,11 +2,14 @@ import {
   AdminDiscountsDeleteRes,
   AdminDiscountsListRes,
   AdminDiscountsRes,
-  AdminGetDiscountParams,
+  AdminPostDiscountsConditionsParams,
   AdminGetDiscountsParams,
+  AdminPostDiscountsConditions,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
+  AdminPostDiscountsConditionsConditionParams,
+  AdminPostDiscountsConditionsCondition,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -131,6 +134,57 @@ class AdminDiscountsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/regions/${regionId}`
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * @description creates a discount condition
+   */
+  createCondition(
+    id: string,
+    payload: AdminPostDiscountsConditions,
+    query: AdminPostDiscountsConditionsParams = {},
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
+    let path = `/admin/discounts/${id}/conditions`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/discounts/${id}/conditions?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Updates a discount condition
+   */
+  updateCondition(
+    id: string,
+    conditionId: string,
+    payload: AdminPostDiscountsConditionsCondition,
+    query: AdminPostDiscountsConditionsConditionParams = {},
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
+    let path = `/admin/discounts/${id}/conditions/${conditionId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/discounts/${id}/conditions/${conditionId}?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Removes a condition from a discount
+   */
+  deleteCondition(
+    id: string,
+    conditionId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsDeleteRes> {
+    const path = `/admin/discounts/${id}/conditions/${conditionId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 }
