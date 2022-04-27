@@ -26,6 +26,7 @@ import {
 } from "../types/global"
 import { MiddlewareService } from "../services"
 import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
+import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 
 type Options = {
   rootDirectory: string
@@ -154,9 +155,8 @@ async function registerStrategies(
 ): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
   await Promise.all(
-    files.map(async (file) => {
-      const loaded = require(file).default
-      const name = formatRegistrationName(file)
+    files.map((file) => {
+      const module = require(file).default
 
       if (isTaxCalculationStrategy(module.prototype)) {
         container.register({
@@ -167,6 +167,12 @@ async function registerStrategies(
       } else if (isBatchJobStrategy(module.prototype)) {
         container.register({
           batchJobStrategy: asFunction(
+            (cradle) => new module(cradle, pluginDetails.options)
+          ).singleton(),
+        })
+      } else if (isPriceSelectionStrategy(module.prototype)) {
+        container.register({
+          priceSelectionStrategy: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
         })
