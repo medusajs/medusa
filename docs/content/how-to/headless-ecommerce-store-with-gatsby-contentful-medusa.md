@@ -4,7 +4,7 @@ title: Create a headless ecommerce store with Gatsby, Contentful & Medusa
 
 # Creating a headless ecommerce store with Gatsby, Contentful and Medusa
 
-:::note
+:::info About Medusa
 
 Medusa is an open source headless commerce engine that allow you to create amazing digital commerce experiences. Medusa is highly customizable, allowing you to extend the core to fit your needs.
 
