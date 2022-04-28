@@ -3,14 +3,13 @@
 ## Introduction
 The purpose of this guide is to describe a checkout flow in Medusa. It is assumed that you've completed our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or [Tutorial](https://docs.medusajs.com/tutorial/set-up-your-development-environment) and are familiar with the technologies we use in our stack. Additionally, having an understanding of the [core API](https://docs.medusajs.com/api/store/auth) would serve as a great foundation for this walkthrough.
 
+:::note
 
+All code snippets in the following guide, use the JS SDK distributed through **npm**. To install it, run:
 
 ```bash npm2yarn
 npm install @medusajs/medusa-js
 ```
-:::note
-
-All code snippets in the following guide, use the JS SDK distributed through **npm**. To install it, run:
 
 :::
 
