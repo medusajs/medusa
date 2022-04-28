@@ -4,7 +4,11 @@ title: Create a headless ecommerce store with Gatsby, Contentful & Medusa
 
 # Creating a headless ecommerce store with Gatsby, Contentful and Medusa
 
-> Medusa is an open source headless commerce engine that allow you to create amazing digital commerce experiences. Medusa is highly customizable, allowing you to extend the core to fit your needs.
+:::info About Medusa
+
+Medusa is an open source headless commerce engine that allow you to create amazing digital commerce experiences. Medusa is highly customizable, allowing you to extend the core to fit your needs.
+
+:::
 
 ## Introduction
 
@@ -33,7 +37,11 @@ If you want to jump straight to the code for this series you can checkout:
 
 ## Prerequisites
 
-> For a full guide to how to set up your development environment for Medusa please see [the tutorial](https://docs.medusajs.com/tutorials/set-up-your-development-environment)
+:::note
+
+For a full guide to how to set up your development environment for Medusa please see [the tutorial](https://docs.medusajs.com/tutorials/set-up-your-development-environment)
+
+:::
 
 In order to get you started with your Gatsby, Contentful, Medusa store you must complete a couple of installations:
 
