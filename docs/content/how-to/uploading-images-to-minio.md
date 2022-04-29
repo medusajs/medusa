@@ -46,7 +46,11 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
 
 The two access keys in the options are the ones created in the previous section.
 
-> Make sure to use an environment variable for the secret key in a live environment.
+:::tip
+
+Make sure to use an environment variable for the secret key in a live environment.
+
+:::
 
 ### Try it out
 

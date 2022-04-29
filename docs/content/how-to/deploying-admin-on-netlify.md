@@ -6,7 +6,11 @@ title: "Deploying Admin on Netlify"
 
 This is a guide for deploying Medusa Admin on Netlify. Netlify is a platform that offers hosting and backend services for applications and static websites.
 
-> At this point, you should have a running instance of Medusa Admin. If not, check out [these steps](https://github.com/medusajs/admin#-setting-up-admin) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+:::note
+
+At this point, you should have a running instance of Medusa Admin. If not, check out [these steps](https://github.com/medusajs/admin#-setting-up-admin) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+
+:::
 
 ### 1. Install the Netlify CLI
 
@@ -62,7 +66,11 @@ git push origin main
 
 Within a couple of minutes, your Medusa Admin is live and running on Netlify.
 
-> If you experience CORS issues in your new setup, you might need to add your admin url as part of the ADMIN_CORS environment variable in your server setup.
+:::tip
+
+If you experience CORS issues in your new setup, you might need to add your admin url as part of the ADMIN_CORS environment variable in your server setup.
+
+:::
 
 ### What's next?
 

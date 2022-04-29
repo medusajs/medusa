@@ -50,7 +50,11 @@ We have created two starters for you that can help you lay a foundation for your
 - [Nextjs Starter](https://github.com/medusajs/nextjs-starter-medusa)
 - [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
 
-> Note: Medusa runs on port 9000 by default and the storefront starters are both configured to run on port 8000. If you wish to run your storefront starter on another port you should update your CORS settings in your project's `medusa-config.js`.
+:::tip
+
+Medusa runs on port 9000 by default and the storefront starters are both configured to run on port 8000. If you wish to run your storefront starter on another port you should update your CORS settings in your project's `medusa-config.js`.
+
+:::
 
 <!-- ### Link you local development to Medusa Cloud (Coming soon!)
 
