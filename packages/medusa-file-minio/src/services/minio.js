@@ -12,7 +12,7 @@ class MinioService extends FileService {
     this.endpoint_ = options.endpoint
     this.s3ForcePathStyle_ = true
     this.signatureVersion_ = "v4"
-    this.sslEnabled_ = ('sslEnabled' in options && options.sslEnabled !== undefined) ? options.sslEnabled : true
+    this.sslEnabled_ = !!options?.ssl_enabled
   }
 
   upload(file) {
