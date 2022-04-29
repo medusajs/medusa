@@ -8,7 +8,8 @@
     "nohoist": [
       "**/tsdx",
       "**/tsdx/**",
-      "**/orval/**"
+      "**/medusa-client/orval",
+      "**/medusa-client/orval/**"
     ]
   },
   "devDependencies": {
