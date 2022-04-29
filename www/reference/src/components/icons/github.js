@@ -5,11 +5,11 @@ import React from "react"
 import { useColorMode } from 'theme-ui'
 
 const GitHub = () => {
-  const [colorMode, setColorMode] = useColorMode()
+  const [colorMode,] = useColorMode()
 
   return (
     <Image
-      src={colorMode == 'light' ? Logo : LogoLight}
+      src={colorMode === 'light' ? Logo : LogoLight}
       sx={{
         height: "24px",
       }}
