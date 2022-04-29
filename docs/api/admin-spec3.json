@@ -230,6 +230,673 @@
         }
       }
     },
+    "/customer-groups/{id}/customers/batch": {
+      "post": {
+        "operationId": "PostCustomerGroupsGroupCustomersBatch",
+        "summary": "Add a list of customers to a customer group ",
+        "description": "Adds a list of customers, represented by id's, to a customer group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customers": {
+                    "description": "The ids of the customers to add",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customerGroup": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
+        "summary": "Remove a list of customers from a customer group ",
+        "description": "Removes a list of customers, represented by id's, from a customer group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customers": {
+                    "description": "The ids of the customers to remove",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customerGroup": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups": {
+      "post": {
+        "operationId": "PostCustomerGroups",
+        "summary": "Create a CustomerGroup",
+        "description": "Creates a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the customer group"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomerGroups",
+        "summary": "Retrieve a list of customer groups",
+        "description": "Retrieve a list of customer groups.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching user group names.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many groups to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Ids of the groups to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "to retrieve customer groups in.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of customer groups returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customerGroup": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}": {
+      "delete": {
+        "operationId": "DeleteCustomerGroupsCustomerGroup",
+        "summary": "Delete a CustomerGroup",
+        "description": "Deletes a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted customer group."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomerGroupsGroup",
+        "summary": "Retrieve a CustomerGroup",
+        "description": "Retrieves a Customer Group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomerGroupsGroup",
+        "summary": "Update a CustomerGroup",
+        "description": "Update a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the customer group"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}/customers": {
+      "get": {
+        "operationId": "GetCustomerGroupsGroupCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers": {
+      "post": {
+        "operationId": "PostCustomers",
+        "summary": "Create a Customer",
+        "description": "Creates a Customer.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "first_name",
+                  "last_name"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email address."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "x-authenticated": true,
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "operationId": "GetCustomersCustomer",
+        "summary": "Retrieve a Customer",
+        "description": "Retrieves a Customer.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomersCustomer",
+        "summary": "Update a Customer",
+        "description": "Updates a Customer.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email. Only providable if user not registered."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password."
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "The id of a customer group",
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "description": "A list of customer groups to which the customer belongs."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/collections/{id}/products/batch": {
       "post": {
         "operationId": "PostProductsToCollection",
@@ -601,15 +1268,130 @@
         }
       }
     },
-    "/customers": {
+    "/draft-orders": {
       "post": {
-        "operationId": "PostCustomers",
-        "summary": "Create a Customer",
-        "description": "Creates a Customer.",
+        "operationId": "PostDraftOrders",
+        "summary": "Create a Draft Order",
+        "description": "Creates a Draft Order",
         "x-authenticated": true,
-        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "items",
+                  "region_id",
+                  "shipping_methods"
+                ],
+                "properties": {
+                  "status": {
+                    "description": "The status of the draft order",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "The email of the customer of the draft order",
+                    "type": "string"
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "The Address to be used for shipping.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "items": {
+                    "description": "The Line Items that have been received.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "variant_id": {
+                          "description": "The id of the Product Variant to generate the Line Item from.",
+                          "type": "string"
+                        },
+                        "unit_price": {
+                          "description": "The potential custom price of the item.",
+                          "type": "integer"
+                        },
+                        "title": {
+                          "description": "The potential custom title of the item.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        },
+                        "metadata": {
+                          "description": "The optional key-value map with additional details about the Line Item.",
+                          "type": "object"
+                        }
+                      }
+                    }
+                  },
+                  "region_id": {
+                    "description": "The id of the region for the draft order",
+                    "type": "string"
+                  },
+                  "discounts": {
+                    "description": "The discounts to add on the draft order",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "code": {
+                          "description": "The code of the discount to apply",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "customer_id": {
+                    "description": "The id of the customer to add on the draft order",
+                    "type": "string"
+                  },
+                  "no_notification_order": {
+                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
+                    "type": "boolean"
+                  },
+                  "shipping_methods": {
+                    "description": "The shipping methods for the draft order",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "option_id": {
+                          "description": "The id of the shipping option in use",
+                          "type": "string"
+                        },
+                        "data": {
+                          "description": "The optional additional data needed for the shipping method",
+                          "type": "object"
+                        },
+                        "price": {
+                          "description": "The potential custom price of the shipping",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "metadata": {
+                    "description": "The optional key-value map with additional details about the Draft Order.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Customer"
+          "Draft Order"
         ],
         "responses": {
           "200": {
@@ -618,45 +1400,9 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
                     }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "first_name",
-                  "last_name"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email address."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
                   }
                 }
               }
@@ -665,12 +1411,12 @@
         }
       },
       "get": {
-        "operationId": "GetCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
+        "operationId": "GetDraftOrders",
+        "summary": "List Draft Orders",
+        "description": "Retrieves an list of Draft Orders",
         "x-authenticated": true,
         "tags": [
-          "Customer"
+          "Draft Order"
         ],
         "responses": {
           "200": {
@@ -679,8 +1425,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
                     }
                   }
                 }
@@ -690,25 +1436,58 @@
         }
       }
     },
-    "/customers/{id}": {
-      "get": {
-        "operationId": "GetCustomersCustomer",
-        "summary": "Retrieve a Customer",
-        "description": "Retrieves a Customer.",
+    "/draft-orders/{id}/line-items": {
+      "post": {
+        "operationId": "PostDraftOrdersDraftOrderLineItems",
+        "summary": "Create a Line Item for Draft Order",
+        "description": "Creates a Line Item for the Draft Order",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Customer.",
+            "description": "The id of the Draft Order.",
             "schema": {
               "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "quantity"
+                ],
+                "properties": {
+                  "variant_id": {
+                    "description": "The id of the Product Variant to generate the Line Item from.",
+                    "type": "string"
+                  },
+                  "unit_price": {
+                    "description": "The potential custom price of the item.",
+                    "type": "integer"
+                  },
+                  "title": {
+                    "description": "The potential custom title of the item.",
+                    "type": "string"
+                  },
+                  "quantity": {
+                    "description": "The quantity of the Line Item.",
+                    "type": "integer"
+                  },
+                  "metadata": {
+                    "description": "The optional key-value map with additional details about the Line Item.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Customer"
+          "Draft Order"
         ],
         "responses": {
           "200": {
@@ -717,8 +1496,137 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draft-orders/{id}": {
+      "delete": {
+        "operationId": "DeleteDraftOrdersDraftOrder",
+        "summary": "Delete a Draft Order",
+        "description": "Deletes a Draft Order",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Draft Order."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetDraftOrdersDraftOrder",
+        "summary": "Retrieve a Draft Order",
+        "description": "Retrieves a Draft Order.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draft-orders/{id}/line-items/{line_id}": {
+      "delete": {
+        "operationId": "DeleteDraftOrdersDraftOrderLineItemsItem",
+        "summary": "Delete a Line Item",
+        "description": "Removes a Line Item from a Draft Order.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "line_id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
                     }
                   }
                 }
@@ -728,30 +1636,27 @@
         }
       },
       "post": {
-        "operationId": "PostCustomersCustomer",
-        "summary": "Update a Customer",
-        "description": "Updates a Customer.",
+        "operationId": "PostDraftOrdersDraftOrderLineItemsItem",
+        "summary": "Update a Line Item for a Draft Order",
+        "description": "Updates a Line Item for a Draft Order",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Customer.",
+            "description": "The id of the Draft Order.",
             "schema": {
               "type": "string"
             }
           },
           {
-            "in": "query",
-            "name": "expand",
-            "style": "form",
-            "explode": false,
+            "in": "path",
+            "name": "line_id",
+            "required": true,
+            "description": "The id of the Line Item.",
             "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
+              "type": "string"
             }
           }
         ],
@@ -760,44 +1665,21 @@
             "application/json": {
               "schema": {
                 "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email. Only providable if user not registered."
+                  "unit_price": {
+                    "description": "The potential custom price of the item.",
+                    "type": "integer"
                   },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
+                  "title": {
+                    "description": "The potential custom title of the item.",
+                    "type": "string"
                   },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The Customer's password."
-                  },
-                  "groups": {
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "The id of a customer group",
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "description": "A list of customer groups to which the customer belongs."
+                  "quantity": {
+                    "description": "The quantity of the Line Item.",
+                    "type": "integer"
                   },
                   "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
+                    "description": "The optional key-value map with additional details about the Line Item.",
+                    "type": "object"
                   }
                 }
               }
@@ -805,7 +1687,7 @@
           }
         },
         "tags": [
-          "Customer"
+          "Draft Order"
         ],
         "responses": {
           "200": {
@@ -814,8 +1696,379 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/draft-orders/{id}/register-payment": {
+      "post": {
+        "summary": "Registers a payment for a Draft Order",
+        "operationId": "PostDraftOrdersDraftOrderRegisterPayment",
+        "description": "Registers a payment for a Draft Order.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The Draft Order id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/draft-orders/{id}": {
+      "post": {
+        "operationId": "PostDraftOrdersDraftOrder",
+        "summary": "Update a Draft Order\"",
+        "description": "Updates a Draft Order.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "region_id": {
+                    "type": "string",
+                    "description": "The id of the Region to create the Draft Order in."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "An email to be used on the Draft Order."
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "The Address to be used for shipping.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "discounts": {
+                    "description": "An array of Discount codes to add to the Draft Order.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Discount is identifed by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "no_notification_order": {
+                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
+                    "type": "boolean"
+                  },
+                  "customer_id": {
+                    "description": "The id of the Customer to associate the Draft Order with.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Draft Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "draft_order": {
+                      "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gift-cards": {
+      "post": {
+        "operationId": "PostGiftCards",
+        "summary": "Create a Gift Card",
+        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "value": {
+                    "type": "integer",
+                    "description": "The value (excluding VAT) that the Gift Card should represent."
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Gift Card should no longer be available."
+                  },
+                  "region_id": {
+                    "description": "The id of the Region in which the Gift Card can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetGiftCards",
+        "summary": "List Gift Cards",
+        "description": "Retrieves a list of Gift Cards.",
+        "x-authenticated": true,
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_cards": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/gift_card"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gift-cards/{id}": {
+      "delete": {
+        "operationId": "DeleteGiftCardsGiftCard",
+        "summary": "Delete a Gift Card",
+        "description": "Deletes a Gift Card",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Gift Card"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetGiftCardsGiftCard",
+        "summary": "Retrieve a Gift Card",
+        "description": "Retrieves a Gift Card.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostGiftCardsGiftCard",
+        "summary": "Create a Gift Card",
+        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Gift Card.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "balance": {
+                    "type": "integer",
+                    "description": "The value (excluding VAT) that the Gift Card should represent."
+                  },
+                  "is_disabled": {
+                    "type": "boolean",
+                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time at which the Gift Card should no longer be available."
+                  },
+                  "region_id": {
+                    "description": "The id of the Region in which the Gift Card can be used.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Gift Card"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "gift_card": {
+                      "$ref": "#/components/schemas/gift_card"
                     }
                   }
                 }
@@ -1413,1267 +2666,6 @@
         }
       }
     },
-    "/draft-orders": {
-      "post": {
-        "operationId": "PostDraftOrders",
-        "summary": "Create a Draft Order",
-        "description": "Creates a Draft Order",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "email",
-                  "items",
-                  "region_id",
-                  "shipping_methods"
-                ],
-                "properties": {
-                  "status": {
-                    "description": "The status of the draft order",
-                    "type": "string"
-                  },
-                  "email": {
-                    "description": "The email of the customer of the draft order",
-                    "type": "string"
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "variant_id": {
-                          "description": "The id of the Product Variant to generate the Line Item from.",
-                          "type": "string"
-                        },
-                        "unit_price": {
-                          "description": "The potential custom price of the item.",
-                          "type": "integer"
-                        },
-                        "title": {
-                          "description": "The potential custom title of the item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        },
-                        "metadata": {
-                          "description": "The optional key-value map with additional details about the Line Item.",
-                          "type": "object"
-                        }
-                      }
-                    }
-                  },
-                  "region_id": {
-                    "description": "The id of the region for the draft order",
-                    "type": "string"
-                  },
-                  "discounts": {
-                    "description": "The discounts to add on the draft order",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "code": {
-                          "description": "The code of the discount to apply",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "customer_id": {
-                    "description": "The id of the customer to add on the draft order",
-                    "type": "string"
-                  },
-                  "no_notification_order": {
-                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
-                    "type": "boolean"
-                  },
-                  "shipping_methods": {
-                    "description": "The shipping methods for the draft order",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "option_id": {
-                          "description": "The id of the shipping option in use",
-                          "type": "string"
-                        },
-                        "data": {
-                          "description": "The optional additional data needed for the shipping method",
-                          "type": "object"
-                        },
-                        "price": {
-                          "description": "The potential custom price of the shipping",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "metadata": {
-                    "description": "The optional key-value map with additional details about the Draft Order.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetDraftOrders",
-        "summary": "List Draft Orders",
-        "description": "Retrieves an list of Draft Orders",
-        "x-authenticated": true,
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}/line-items": {
-      "post": {
-        "operationId": "PostDraftOrdersDraftOrderLineItems",
-        "summary": "Create a Line Item for Draft Order",
-        "description": "Creates a Line Item for the Draft Order",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "quantity"
-                ],
-                "properties": {
-                  "variant_id": {
-                    "description": "The id of the Product Variant to generate the Line Item from.",
-                    "type": "string"
-                  },
-                  "unit_price": {
-                    "description": "The potential custom price of the item.",
-                    "type": "integer"
-                  },
-                  "title": {
-                    "description": "The potential custom title of the item.",
-                    "type": "string"
-                  },
-                  "quantity": {
-                    "description": "The quantity of the Line Item.",
-                    "type": "integer"
-                  },
-                  "metadata": {
-                    "description": "The optional key-value map with additional details about the Line Item.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}": {
-      "delete": {
-        "operationId": "DeleteDraftOrdersDraftOrder",
-        "summary": "Delete a Draft Order",
-        "description": "Deletes a Draft Order",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Draft Order."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetDraftOrdersDraftOrder",
-        "summary": "Retrieve a Draft Order",
-        "description": "Retrieves a Draft Order.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}/line-items/{line_id}": {
-      "delete": {
-        "operationId": "DeleteDraftOrdersDraftOrderLineItemsItem",
-        "summary": "Delete a Line Item",
-        "description": "Removes a Line Item from a Draft Order.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "line_id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostDraftOrdersDraftOrderLineItemsItem",
-        "summary": "Update a Line Item for a Draft Order",
-        "description": "Updates a Line Item for a Draft Order",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "line_id",
-            "required": true,
-            "description": "The id of the Line Item.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "unit_price": {
-                    "description": "The potential custom price of the item.",
-                    "type": "integer"
-                  },
-                  "title": {
-                    "description": "The potential custom title of the item.",
-                    "type": "string"
-                  },
-                  "quantity": {
-                    "description": "The quantity of the Line Item.",
-                    "type": "integer"
-                  },
-                  "metadata": {
-                    "description": "The optional key-value map with additional details about the Line Item.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/draft-orders/{id}/register-payment": {
-      "post": {
-        "summary": "Registers a payment for a Draft Order",
-        "operationId": "PostDraftOrdersDraftOrderRegisterPayment",
-        "description": "Registers a payment for a Draft Order.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The Draft Order id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/admin/draft-orders/{id}": {
-      "post": {
-        "operationId": "PostDraftOrdersDraftOrder",
-        "summary": "Update a Draft Order\"",
-        "description": "Updates a Draft Order.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Draft Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "region_id": {
-                    "type": "string",
-                    "description": "The id of the Region to create the Draft Order in."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "An email to be used on the Draft Order."
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "discounts": {
-                    "description": "An array of Discount codes to add to the Draft Order.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Discount is identifed by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "no_notification_order": {
-                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
-                    "type": "boolean"
-                  },
-                  "customer_id": {
-                    "description": "The id of the Customer to associate the Draft Order with.",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Draft Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers/batch": {
-      "post": {
-        "operationId": "PostCustomerGroupsGroupCustomersBatch",
-        "summary": "Add a list of customers to a customer group ",
-        "description": "Adds a list of customers, represented by id's, to a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to add",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
-        "summary": "Remove a list of customers from a customer group ",
-        "description": "Removes a list of customers, represented by id's, from a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to remove",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups": {
-      "post": {
-        "operationId": "PostCustomerGroups",
-        "summary": "Create a CustomerGroup",
-        "description": "Creates a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroups",
-        "summary": "Retrieve a list of customer groups",
-        "description": "Retrieve a list of customer groups.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching user group names.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many groups to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Ids of the groups to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "to retrieve customer groups in.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many customer groups to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of customer groups returned.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}": {
-      "delete": {
-        "operationId": "DeleteCustomerGroupsCustomerGroup",
-        "summary": "Delete a CustomerGroup",
-        "description": "Deletes a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer Group",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted customer group."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroupsGroup",
-        "summary": "Retrieve a CustomerGroup",
-        "description": "Retrieves a Customer Group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer Group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomerGroupsGroup",
-        "summary": "Update a CustomerGroup",
-        "description": "Update a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers": {
-      "get": {
-        "operationId": "GetCustomerGroupsGroupCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards": {
-      "post": {
-        "operationId": "PostGiftCards",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "value": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCards",
-        "summary": "List Gift Cards",
-        "description": "Retrieves a list of Gift Cards.",
-        "x-authenticated": true,
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_cards": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/gift_card"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/gift-cards/{id}": {
-      "delete": {
-        "operationId": "DeleteGiftCardsGiftCard",
-        "summary": "Delete a Gift Card",
-        "description": "Deletes a Gift Card",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card to delete.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Gift Card"
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCardsGiftCard",
-        "summary": "Retrieve a Gift Card",
-        "description": "Retrieves a Gift Card.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostGiftCardsGiftCard",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Gift Card.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "balance": {
-                    "type": "integer",
-                    "description": "The value (excluding VAT) that the Gift Card should represent."
-                  },
-                  "is_disabled": {
-                    "type": "boolean",
-                    "description": "Whether the Gift Card is disabled on creation. You will have to enable it later to make it available to Customers."
-                  },
-                  "ends_at": {
-                    "type": "string",
-                    "format": "date-time",
-                    "description": "The time at which the Gift Card should no longer be available."
-                  },
-                  "region_id": {
-                    "description": "The id of the Region in which the Gift Card can be used.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Gift Card"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "gift_card": {
-                      "$ref": "#/components/schemas/gift_card"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/invites/accept": {
       "post": {
         "operationId": "PostInvitesInviteAccept",
@@ -3236,6 +3228,720 @@
                   "properties": {
                     "notification": {
                       "$ref": "#/components/schemas/notification"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/price-lists/{id}/prices/batch": {
+      "post": {
+        "operationId": "PostPriceListsPriceListPricesBatch",
+        "summary": "Batch update prices for a Price List",
+        "description": "Batch update prices for a Price List",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Price List to update prices for.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "prices": {
+                    "description": "The prices to update or add.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The id of the price.",
+                          "type": "string"
+                        },
+                        "status": {
+                          "description": "The status of the Price List.",
+                          "type": "string",
+                          "enum": [
+                            "active",
+                            "draft"
+                          ]
+                        },
+                        "region_id": {
+                          "description": "The id of the Region for which the price is used.",
+                          "type": "string"
+                        },
+                        "currency_code": {
+                          "description": "The 3 character ISO currency code for which the price will be used.",
+                          "type": "string"
+                        },
+                        "amount": {
+                          "description": "The amount of the price.",
+                          "type": "number"
+                        },
+                        "min_quantity": {
+                          "description": "The minimum quantity for which the price will be used.",
+                          "type": "number"
+                        },
+                        "max_quantity": {
+                          "description": "The maximum quantity for which the price will be used.",
+                          "type": "number"
+                        }
+                      }
+                    }
+                  },
+                  "override": {
+                    "description": "If true the prices will replace all existing prices associated with the Price List.",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Price List."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeletePriceListsPriceListPricesBatch",
+        "summary": "Batch delete prices that belongs to a Price List",
+        "description": "Batch delete prices that belongs to a Price List",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Price List that the Money Amounts that will be deleted belongs to.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "price_ids": {
+                    "description": "The price id's of the Money Amounts to delete.",
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "description": "The id of the deleted Money Amount."
+                      }
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/price_lists": {
+      "post": {
+        "operationId": "PostPriceListsPriceList",
+        "summary": "Creates a Price List",
+        "description": "Creates a Price List",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Price List",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "A description of the Price List.",
+                    "type": "string"
+                  },
+                  "type": {
+                    "description": "The type of the Price List.",
+                    "type": "string",
+                    "enum": [
+                      "sale",
+                      "override"
+                    ]
+                  },
+                  "status": {
+                    "description": "The status of the Price List.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "draft"
+                    ]
+                  },
+                  "prices": {
+                    "description": "The prices of the Price List.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "region_id": {
+                          "description": "The id of the Region for which the price is used.",
+                          "type": "string"
+                        },
+                        "currency_code": {
+                          "description": "The 3 character ISO currency code for which the price will be used.",
+                          "type": "string"
+                        },
+                        "amount": {
+                          "description": "The amount to charge for the Product Variant.",
+                          "type": "integer"
+                        },
+                        "min_quantity": {
+                          "description": "The minimum quantity for which the price will be used.",
+                          "type": "integer"
+                        },
+                        "max_quantity": {
+                          "description": "The maximum quantity for which the price will be used.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "customer_groups": {
+                    "type": "array",
+                    "description": "A list of customer groups that the Price List applies to.",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "The id of a customer group",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/price_list"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/price-lists/{id}": {
+      "delete": {
+        "operationId": "DeletePriceListsPriceList",
+        "summary": "Delete a Price List",
+        "description": "Deletes a Price List",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Price List to delete.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Price List."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetPriceListsPriceList",
+        "summary": "Retrieve a Price List",
+        "description": "Retrieves a Price List.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Price List.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "price_list": {
+                      "$ref": "#/components/schemas/price_list"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/price-lists/:id/products": {
+      "get": {
+        "operationId": "GetPriceListsPriceListProducts",
+        "summary": "List Product in a Price List",
+        "description": "Retrieves a list of Product that are part of a Price List",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching products.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Id of the product to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "description": "Status to search for",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "description": "Collection ids to search for",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "tags",
+            "description": "Tags to search for",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "handle",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_giftcard",
+            "description": "Search for giftcards using is_giftcard=true.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "to retrieve products in.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "description": "Date comparison for when resulting products was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting products was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting products was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many products to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of products returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each product of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each product of the result.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "count": {
+                      "description": "The number of Products.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset of the Product query.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The limit of the Product query.",
+                      "type": "integer"
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/price-lists": {
+      "get": {
+        "operationId": "GetPriceLists",
+        "summary": "List Price Lists",
+        "description": "Retrieves a list of Price Lists.",
+        "x-authenticated": true,
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "price_lists": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/price_list"
+                      }
+                    },
+                    "count": {
+                      "description": "The number of Price Lists.",
+                      "type": "integer"
+                    },
+                    "offset": {
+                      "description": "The offset of the Price List query.",
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "description": "The limit of the Price List query.",
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/price_lists/{id}": {
+      "post": {
+        "operationId": "PostPriceListsPriceListPriceList",
+        "summary": "Update a Price List",
+        "description": "Updates a Price List",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Price List.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "name": {
+                    "description": "The name of the Price List",
+                    "type": "string"
+                  },
+                  "description": {
+                    "description": "A description of the Price List.",
+                    "type": "string"
+                  },
+                  "type": {
+                    "description": "The type of the Price List.",
+                    "type": "string",
+                    "enum": [
+                      "sale",
+                      "override"
+                    ]
+                  },
+                  "status": {
+                    "description": "The status of the Price List.",
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "draft"
+                    ]
+                  },
+                  "prices": {
+                    "description": "The prices of the Price List.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The id of the price.",
+                          "type": "string"
+                        },
+                        "region_id": {
+                          "description": "The id of the Region for which the price is used.",
+                          "type": "string"
+                        },
+                        "currency_code": {
+                          "description": "The 3 character ISO currency code for which the price will be used.",
+                          "type": "string"
+                        },
+                        "amount": {
+                          "description": "The amount to charge for the Product Variant.",
+                          "type": "integer"
+                        },
+                        "min_quantity": {
+                          "description": "The minimum quantity for which the price will be used.",
+                          "type": "integer"
+                        },
+                        "max_quantity": {
+                          "description": "The maximum quantity for which the price will be used.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "customer_groups": {
+                    "type": "array",
+                    "description": "A list of customer groups that the Price List applies to.",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "The id of a customer group",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Price List"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/price_list"
                     }
                   }
                 }
@@ -5329,720 +6035,6 @@
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price-lists/{id}/prices/batch": {
-      "post": {
-        "operationId": "PostPriceListsPriceListPricesBatch",
-        "summary": "Batch update prices for a Price List",
-        "description": "Batch update prices for a Price List",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Price List to update prices for.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "prices": {
-                    "description": "The prices to update or add.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The id of the price.",
-                          "type": "string"
-                        },
-                        "status": {
-                          "description": "The status of the Price List.",
-                          "type": "string",
-                          "enum": [
-                            "active",
-                            "draft"
-                          ]
-                        },
-                        "region_id": {
-                          "description": "The id of the Region for which the price is used.",
-                          "type": "string"
-                        },
-                        "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
-                          "type": "string"
-                        },
-                        "amount": {
-                          "description": "The amount of the price.",
-                          "type": "number"
-                        },
-                        "min_quantity": {
-                          "description": "The minimum quantity for which the price will be used.",
-                          "type": "number"
-                        },
-                        "max_quantity": {
-                          "description": "The maximum quantity for which the price will be used.",
-                          "type": "number"
-                        }
-                      }
-                    }
-                  },
-                  "override": {
-                    "description": "If true the prices will replace all existing prices associated with the Price List.",
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Price List."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeletePriceListsPriceListPricesBatch",
-        "summary": "Batch delete prices that belongs to a Price List",
-        "description": "Batch delete prices that belongs to a Price List",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Price List that the Money Amounts that will be deleted belongs to.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "price_ids": {
-                    "description": "The price id's of the Money Amounts to delete.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "ids": {
-                      "type": "array",
-                      "items": {
-                        "type": "string",
-                        "description": "The id of the deleted Money Amount."
-                      }
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price_lists": {
-      "post": {
-        "operationId": "PostPriceListsPriceList",
-        "summary": "Creates a Price List",
-        "description": "Creates a Price List",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "name": {
-                    "description": "The name of the Price List",
-                    "type": "string"
-                  },
-                  "description": {
-                    "description": "A description of the Price List.",
-                    "type": "string"
-                  },
-                  "type": {
-                    "description": "The type of the Price List.",
-                    "type": "string",
-                    "enum": [
-                      "sale",
-                      "override"
-                    ]
-                  },
-                  "status": {
-                    "description": "The status of the Price List.",
-                    "type": "string",
-                    "enum": [
-                      "active",
-                      "draft"
-                    ]
-                  },
-                  "prices": {
-                    "description": "The prices of the Price List.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "region_id": {
-                          "description": "The id of the Region for which the price is used.",
-                          "type": "string"
-                        },
-                        "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
-                          "type": "string"
-                        },
-                        "amount": {
-                          "description": "The amount to charge for the Product Variant.",
-                          "type": "integer"
-                        },
-                        "min_quantity": {
-                          "description": "The minimum quantity for which the price will be used.",
-                          "type": "integer"
-                        },
-                        "max_quantity": {
-                          "description": "The maximum quantity for which the price will be used.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "customer_groups": {
-                    "type": "array",
-                    "description": "A list of customer groups that the Price List applies to.",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "The id of a customer group",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/price_list"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price-lists/{id}": {
-      "delete": {
-        "operationId": "DeletePriceListsPriceList",
-        "summary": "Delete a Price List",
-        "description": "Deletes a Price List",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Price List to delete.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Price List."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetPriceListsPriceList",
-        "summary": "Retrieve a Price List",
-        "description": "Retrieves a Price List.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Price List.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "price_list": {
-                      "$ref": "#/components/schemas/price_list"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price-lists/:id/products": {
-      "get": {
-        "operationId": "GetPriceListsPriceListProducts",
-        "summary": "List Product in a Price List",
-        "description": "Retrieves a list of Product that are part of a Price List",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching products.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Id of the product to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "status",
-            "description": "Status to search for",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "collection_id",
-            "description": "Collection ids to search for",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "tags",
-            "description": "Tags to search for",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "title",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "description",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "handle",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "is_giftcard",
-            "description": "Search for giftcards using is_giftcard=true.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "type",
-            "description": "to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "to retrieve products in.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "description": "Date comparison for when resulting products was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting products was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting products was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many products to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of products returned.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each product of the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "fields",
-            "description": "(Comma separated) Which fields should be included in each product of the result.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "count": {
-                      "description": "The number of Products.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset of the Product query.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The limit of the Product query.",
-                      "type": "integer"
-                    },
-                    "products": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price-lists": {
-      "get": {
-        "operationId": "GetPriceLists",
-        "summary": "List Price Lists",
-        "description": "Retrieves a list of Price Lists.",
-        "x-authenticated": true,
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "price_lists": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/price_list"
-                      }
-                    },
-                    "count": {
-                      "description": "The number of Price Lists.",
-                      "type": "integer"
-                    },
-                    "offset": {
-                      "description": "The offset of the Price List query.",
-                      "type": "integer"
-                    },
-                    "limit": {
-                      "description": "The limit of the Price List query.",
-                      "type": "integer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/price_lists/{id}": {
-      "post": {
-        "operationId": "PostPriceListsPriceListPriceList",
-        "summary": "Update a Price List",
-        "description": "Updates a Price List",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Price List.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "name": {
-                    "description": "The name of the Price List",
-                    "type": "string"
-                  },
-                  "description": {
-                    "description": "A description of the Price List.",
-                    "type": "string"
-                  },
-                  "type": {
-                    "description": "The type of the Price List.",
-                    "type": "string",
-                    "enum": [
-                      "sale",
-                      "override"
-                    ]
-                  },
-                  "status": {
-                    "description": "The status of the Price List.",
-                    "type": "string",
-                    "enum": [
-                      "active",
-                      "draft"
-                    ]
-                  },
-                  "prices": {
-                    "description": "The prices of the Price List.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The id of the price.",
-                          "type": "string"
-                        },
-                        "region_id": {
-                          "description": "The id of the Region for which the price is used.",
-                          "type": "string"
-                        },
-                        "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
-                          "type": "string"
-                        },
-                        "amount": {
-                          "description": "The amount to charge for the Product Variant.",
-                          "type": "integer"
-                        },
-                        "min_quantity": {
-                          "description": "The minimum quantity for which the price will be used.",
-                          "type": "integer"
-                        },
-                        "max_quantity": {
-                          "description": "The maximum quantity for which the price will be used.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "customer_groups": {
-                    "type": "array",
-                    "description": "A list of customer groups that the Price List applies to.",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "The id of a customer group",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Price List"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "product": {
-                      "$ref": "#/components/schemas/price_list"
                     }
                   }
                 }
@@ -9624,74 +9616,6 @@
         }
       }
     },
-    "/swaps/{id}": {
-      "get": {
-        "operationId": "GetSwapsSwap",
-        "summary": "Retrieve a Swap",
-        "description": "Retrieves a Swap.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Swap.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Swap"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "swap": {
-                      "$ref": "#/components/schemas/swap"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/swaps": {
-      "get": {
-        "operationId": "GetSwaps",
-        "summary": "List Swaps",
-        "description": "Retrieves a list of Swaps.",
-        "x-authenticated": true,
-        "tags": [
-          "Swap"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "swaps": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/swap"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/tax-rates/:id/product-types/batch": {
       "post": {
         "operationId": "PostTaxRatesTaxRateProductTypes",
@@ -10100,6 +10024,74 @@
                       "type": "array",
                       "items": {
                         "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/swaps/{id}": {
+      "get": {
+        "operationId": "GetSwapsSwap",
+        "summary": "Retrieve a Swap",
+        "description": "Retrieves a Swap.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Swap.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Swap"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "swap": {
+                      "$ref": "#/components/schemas/swap"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/swaps": {
+      "get": {
+        "operationId": "GetSwaps",
+        "summary": "List Swaps",
+        "description": "Retrieves a list of Swaps.",
+        "x-authenticated": true,
+        "tags": [
+          "Swap"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "swaps": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/swap"
                       }
                     }
                   }

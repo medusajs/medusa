@@ -140,157 +140,56 @@ paths:
                 properties:
                   user:
                     $ref: "#/components/schemas/user"
-  "/collections/{id}/products/batch":
+  /customers:
     post:
-      operationId: PostProductsToCollection
-      summary: Updates products associated with a Product Collection
-      description: Updates products associated with a Product Collection
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
       x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Collection.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                product_ids:
-                  description: An array of Product IDs to add to the Product Collection.
-                  type: array
-                  items:
-                    properties:
-                      id:
-                        description: The ID of a Product to add to the Product Collection.
-                        type: string
+      parameters: []
       tags:
-        - Collection
+        - Customer
       responses:
         "200":
           description: OK
-    delete:
-      operationId: DeleteProductsFromCollection
-      summary: Removes products associated with a Product Collection
-      description: Removes products associated with a Product Collection
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Collection.
-          schema:
-            type: string
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: "#/components/schemas/customer"
       requestBody:
         content:
           application/json:
             schema:
-              properties:
-                product_ids:
-                  description: >-
-                    An array of Product IDs to remove from the Product
-                    Collection.
-                  type: array
-                  items:
-                    properties:
-                      id:
-                        description: >-
-                          The ID of a Product to remove from the Product
-                          Collection.
-                        type: string
-      tags:
-        - Collection
-      responses:
-        "200":
-          description: OK
-  /collections:
-    post:
-      operationId: PostCollections
-      summary: Create a Product Collection
-      description: Creates a Product Collection.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
+              type: object
               required:
-                - title
+                - email
+                - first_name
+                - last_name
               properties:
-                title:
+                email:
                   type: string
-                  description: The title to identify the Collection by.
-                handle:
+                  description: The Customer's email address.
+                first_name:
                   type: string
-                  description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
                 metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
                   type: object
-      tags:
-        - Collection
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: "#/components/schemas/product_collection"
+                  description: Metadata for the customer.
     get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
       x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: The offset of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: title
-          description: The title of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: handle
-          description: The handle of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: deleted_at
-          description: >-
-            Date comparison for when resulting collections was deleted, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: created_at
-          description: >-
-            Date comparison for when resulting collections was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: updated_at
-          description: >-
-            Date comparison for when resulting collections was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
       tags:
-        - Collection
+        - Customer
       responses:
         "200":
           description: OK
@@ -298,23 +197,23 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: "#/components/schemas/product_collection"
-  "/collections/{id}":
-    delete:
-      operationId: DeleteCollectionsCollection
-      summary: Delete a Product Collection
-      description: Deletes a Product Collection.
+                  customer:
+                    $ref: "#/components/schemas/customer"
+  "/customers/{id}":
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Collection.
+          description: The id of the Customer.
           schema:
             type: string
       tags:
-        - Collection
+        - Customer
       responses:
         "200":
           description: OK
@@ -322,69 +221,65 @@ paths:
             application/json:
               schema:
                 properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Collection
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-    get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: "#/components/schemas/product_collection"
+                  customer:
+                    $ref: "#/components/schemas/customer"
     post:
-      operationId: PostCollectionsCollection
-      summary: Update a Product Collection
-      description: Updates a Product Collection.
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Collection.
+          description: The id of the Customer.
           schema:
             type: string
+        - in: query
+          name: expand
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
       requestBody:
         content:
           application/json:
             schema:
               properties:
-                title:
-                  type: string
-                  description: The title to identify the Collection by.
-                handle:
+                email:
                   type: string
                   description: >-
-                    An optional handle to be used in slugs, if none is provided
-                    we will kebab-case the title.
+                    The Customer's email. Only providable if user not
+                    registered.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
                 metadata:
-                  description: >-
-                    An optional set of key-value pairs to hold additional
-                    information.
                   type: object
+                  description: Metadata for the customer.
       tags:
-        - Collection
+        - Customer
       responses:
         "200":
           description: OK
@@ -392,8 +287,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: "#/components/schemas/product_collection"
+                  customer:
+                    $ref: "#/components/schemas/customer"
   "/customer-groups/{id}/customers/batch":
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -544,11 +439,6 @@ paths:
           schema:
             type: object
         - in: query
-          name: offset
-          description: How many customer groups to skip in the result.
-          schema:
-            type: string
-        - in: query
           name: limit
           description: Limit the number of customer groups returned.
           schema:
@@ -685,540 +575,6 @@ paths:
                 properties:
                   customer:
                     $ref: "#/components/schemas/customer"
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-  "/customers/{id}":
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          style: form
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: >-
-                    The Customer's email. Only providable if user not
-                    registered.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The id of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-  /draft-orders:
-    post:
-      operationId: PostDraftOrders
-      summary: Create a Draft Order
-      description: Creates a Draft Order
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - email
-                - items
-                - region_id
-                - shipping_methods
-              properties:
-                status:
-                  description: The status of the draft order
-                  type: string
-                email:
-                  description: The email of the customer of the draft order
-                  type: string
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: "#/components/schemas/address"
-                shipping_address:
-                  description: The Address to be used for shipping.
-                  anyOf:
-                    - $ref: "#/components/schemas/address"
-                items:
-                  description: The Line Items that have been received.
-                  type: array
-                  items:
-                    properties:
-                      variant_id:
-                        description: >-
-                          The id of the Product Variant to generate the Line
-                          Item from.
-                        type: string
-                      unit_price:
-                        description: The potential custom price of the item.
-                        type: integer
-                      title:
-                        description: The potential custom title of the item.
-                        type: string
-                      quantity:
-                        description: The quantity of the Line Item.
-                        type: integer
-                      metadata:
-                        description: >-
-                          The optional key-value map with additional details
-                          about the Line Item.
-                        type: object
-                region_id:
-                  description: The id of the region for the draft order
-                  type: string
-                discounts:
-                  description: The discounts to add on the draft order
-                  type: array
-                  items:
-                    properties:
-                      code:
-                        description: The code of the discount to apply
-                        type: string
-                customer_id:
-                  description: The id of the customer to add on the draft order
-                  type: string
-                no_notification_order:
-                  description: >-
-                    An optional flag passed to the resulting order to determine
-                    use of notifications.
-                  type: boolean
-                shipping_methods:
-                  description: The shipping methods for the draft order
-                  type: array
-                  items:
-                    properties:
-                      option_id:
-                        description: The id of the shipping option in use
-                        type: string
-                      data:
-                        description: >-
-                          The optional additional data needed for the shipping
-                          method
-                        type: object
-                      price:
-                        description: The potential custom price of the shipping
-                        type: integer
-                metadata:
-                  description: >-
-                    The optional key-value map with additional details about the
-                    Draft Order.
-                  type: object
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
-    get:
-      operationId: GetDraftOrders
-      summary: List Draft Orders
-      description: Retrieves an list of Draft Orders
-      x-authenticated: true
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
-  "/draft-orders/{id}/line-items":
-    post:
-      operationId: PostDraftOrdersDraftOrderLineItems
-      summary: Create a Line Item for Draft Order
-      description: Creates a Line Item for the Draft Order
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Draft Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - quantity
-              properties:
-                variant_id:
-                  description: >-
-                    The id of the Product Variant to generate the Line Item
-                    from.
-                  type: string
-                unit_price:
-                  description: The potential custom price of the item.
-                  type: integer
-                title:
-                  description: The potential custom title of the item.
-                  type: string
-                quantity:
-                  description: The quantity of the Line Item.
-                  type: integer
-                metadata:
-                  description: >-
-                    The optional key-value map with additional details about the
-                    Line Item.
-                  type: object
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
-  "/draft-orders/{id}":
-    delete:
-      operationId: DeleteDraftOrdersDraftOrder
-      summary: Delete a Draft Order
-      description: Deletes a Draft Order
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Draft Order.
-          schema:
-            type: string
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Draft Order.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-    get:
-      operationId: GetDraftOrdersDraftOrder
-      summary: Retrieve a Draft Order
-      description: Retrieves a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Draft Order.
-          schema:
-            type: string
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
-  "/draft-orders/{id}/line-items/{line_id}":
-    delete:
-      operationId: DeleteDraftOrdersDraftOrderLineItemsItem
-      summary: Delete a Line Item
-      description: Removes a Line Item from a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Draft Order.
-          schema:
-            type: string
-        - in: path
-          name: line_id
-          required: true
-          description: The id of the Draft Order.
-          schema:
-            type: string
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
-    post:
-      operationId: PostDraftOrdersDraftOrderLineItemsItem
-      summary: Update a Line Item for a Draft Order
-      description: Updates a Line Item for a Draft Order
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Draft Order.
-          schema:
-            type: string
-        - in: path
-          name: line_id
-          required: true
-          description: The id of the Line Item.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                unit_price:
-                  description: The potential custom price of the item.
-                  type: integer
-                title:
-                  description: The potential custom title of the item.
-                  type: string
-                quantity:
-                  description: The quantity of the Line Item.
-                  type: integer
-                metadata:
-                  description: >-
-                    The optional key-value map with additional details about the
-                    Line Item.
-                  type: object
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
-  "/draft-orders/{id}/register-payment":
-    post:
-      summary: Registers a payment for a Draft Order
-      operationId: PostDraftOrdersDraftOrderRegisterPayment
-      description: Registers a payment for a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The Draft Order id.
-          schema:
-            type: string
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
-  "/admin/draft-orders/{id}":
-    post:
-      operationId: PostDraftOrdersDraftOrder
-      summary: Update a Draft Order"
-      description: Updates a Draft Order.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Draft Order.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                region_id:
-                  type: string
-                  description: The id of the Region to create the Draft Order in.
-                email:
-                  type: string
-                  description: An email to be used on the Draft Order.
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: "#/components/schemas/address"
-                shipping_address:
-                  description: The Address to be used for shipping.
-                  anyOf:
-                    - $ref: "#/components/schemas/address"
-                discounts:
-                  description: An array of Discount codes to add to the Draft Order.
-                  type: array
-                  items:
-                    properties:
-                      code:
-                        description: The code that a Discount is identifed by.
-                        type: string
-                no_notification_order:
-                  description: >-
-                    An optional flag passed to the resulting order to determine
-                    use of notifications.
-                  type: boolean
-                customer_id:
-                  description: The id of the Customer to associate the Draft Order with.
-                  type: string
-      tags:
-        - Draft Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  draft_order:
-                    $ref: "#/components/schemas/draft-order"
   "/discounts/{id}/regions/{region_id}":
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -1630,6 +986,645 @@ paths:
                 properties:
                   discount:
                     $ref: "#/components/schemas/discount"
+  /draft-orders:
+    post:
+      operationId: PostDraftOrders
+      summary: Create a Draft Order
+      description: Creates a Draft Order
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+                - items
+                - region_id
+                - shipping_methods
+              properties:
+                status:
+                  description: The status of the draft order
+                  type: string
+                email:
+                  description: The email of the customer of the draft order
+                  type: string
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+                items:
+                  description: The Line Items that have been received.
+                  type: array
+                  items:
+                    properties:
+                      variant_id:
+                        description: >-
+                          The id of the Product Variant to generate the Line
+                          Item from.
+                        type: string
+                      unit_price:
+                        description: The potential custom price of the item.
+                        type: integer
+                      title:
+                        description: The potential custom title of the item.
+                        type: string
+                      quantity:
+                        description: The quantity of the Line Item.
+                        type: integer
+                      metadata:
+                        description: >-
+                          The optional key-value map with additional details
+                          about the Line Item.
+                        type: object
+                region_id:
+                  description: The id of the region for the draft order
+                  type: string
+                discounts:
+                  description: The discounts to add on the draft order
+                  type: array
+                  items:
+                    properties:
+                      code:
+                        description: The code of the discount to apply
+                        type: string
+                customer_id:
+                  description: The id of the customer to add on the draft order
+                  type: string
+                no_notification_order:
+                  description: >-
+                    An optional flag passed to the resulting order to determine
+                    use of notifications.
+                  type: boolean
+                shipping_methods:
+                  description: The shipping methods for the draft order
+                  type: array
+                  items:
+                    properties:
+                      option_id:
+                        description: The id of the shipping option in use
+                        type: string
+                      data:
+                        description: >-
+                          The optional additional data needed for the shipping
+                          method
+                        type: object
+                      price:
+                        description: The potential custom price of the shipping
+                        type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Draft Order.
+                  type: object
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+    get:
+      operationId: GetDraftOrders
+      summary: List Draft Orders
+      description: Retrieves an list of Draft Orders
+      x-authenticated: true
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+  "/draft-orders/{id}/line-items":
+    post:
+      operationId: PostDraftOrdersDraftOrderLineItems
+      summary: Create a Line Item for Draft Order
+      description: Creates a Line Item for the Draft Order
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - quantity
+              properties:
+                variant_id:
+                  description: >-
+                    The id of the Product Variant to generate the Line Item
+                    from.
+                  type: string
+                unit_price:
+                  description: The potential custom price of the item.
+                  type: integer
+                title:
+                  description: The potential custom title of the item.
+                  type: string
+                quantity:
+                  description: The quantity of the Line Item.
+                  type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Line Item.
+                  type: object
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+  "/draft-orders/{id}":
+    delete:
+      operationId: DeleteDraftOrdersDraftOrder
+      summary: Delete a Draft Order
+      description: Deletes a Draft Order
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Draft Order.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetDraftOrdersDraftOrder
+      summary: Retrieve a Draft Order
+      description: Retrieves a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+  "/draft-orders/{id}/line-items/{line_id}":
+    delete:
+      operationId: DeleteDraftOrdersDraftOrderLineItemsItem
+      summary: Delete a Line Item
+      description: Removes a Line Item from a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+    post:
+      operationId: PostDraftOrdersDraftOrderLineItemsItem
+      summary: Update a Line Item for a Draft Order
+      description: Updates a Line Item for a Draft Order
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Line Item.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                unit_price:
+                  description: The potential custom price of the item.
+                  type: integer
+                title:
+                  description: The potential custom title of the item.
+                  type: string
+                quantity:
+                  description: The quantity of the Line Item.
+                  type: integer
+                metadata:
+                  description: >-
+                    The optional key-value map with additional details about the
+                    Line Item.
+                  type: object
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+  "/draft-orders/{id}/register-payment":
+    post:
+      summary: Registers a payment for a Draft Order
+      operationId: PostDraftOrdersDraftOrderRegisterPayment
+      description: Registers a payment for a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Draft Order id.
+          schema:
+            type: string
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+  "/admin/draft-orders/{id}":
+    post:
+      operationId: PostDraftOrdersDraftOrder
+      summary: Update a Draft Order"
+      description: Updates a Draft Order.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Draft Order.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                region_id:
+                  type: string
+                  description: The id of the Region to create the Draft Order in.
+                email:
+                  type: string
+                  description: An email to be used on the Draft Order.
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: "#/components/schemas/address"
+                discounts:
+                  description: An array of Discount codes to add to the Draft Order.
+                  type: array
+                  items:
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                no_notification_order:
+                  description: >-
+                    An optional flag passed to the resulting order to determine
+                    use of notifications.
+                  type: boolean
+                customer_id:
+                  description: The id of the Customer to associate the Draft Order with.
+                  type: string
+      tags:
+        - Draft Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  draft_order:
+                    $ref: "#/components/schemas/draft-order"
+  "/collections/{id}/products/batch":
+    post:
+      operationId: PostProductsToCollection
+      summary: Updates products associated with a Product Collection
+      description: Updates products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                product_ids:
+                  description: An array of Product IDs to add to the Product Collection.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The ID of a Product to add to the Product Collection.
+                        type: string
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+    delete:
+      operationId: DeleteProductsFromCollection
+      summary: Removes products associated with a Product Collection
+      description: Removes products associated with a Product Collection
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                product_ids:
+                  description: >-
+                    An array of Product IDs to remove from the Product
+                    Collection.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: >-
+                          The ID of a Product to remove from the Product
+                          Collection.
+                        type: string
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+  /collections:
+    post:
+      operationId: PostCollections
+      summary: Create a Product Collection
+      description: Creates a Product Collection.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - title
+              properties:
+                title:
+                  type: string
+                  description: The title to identify the Collection by.
+                handle:
+                  type: string
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: "#/components/schemas/product_collection"
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: The offset of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: title
+          description: The title of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: handle
+          description: The handle of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: deleted_at
+          description: >-
+            Date comparison for when resulting collections was deleted, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: created_at
+          description: >-
+            Date comparison for when resulting collections was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: updated_at
+          description: >-
+            Date comparison for when resulting collections was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: "#/components/schemas/product_collection"
+  "/collections/{id}":
+    delete:
+      operationId: DeleteCollectionsCollection
+      summary: Delete a Product Collection
+      description: Deletes a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Collection.
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Collection
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: "#/components/schemas/product_collection"
+    post:
+      operationId: PostCollectionsCollection
+      summary: Update a Product Collection
+      description: Updates a Product Collection.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Collection.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                title:
+                  type: string
+                  description: The title to identify the Collection by.
+                handle:
+                  type: string
+                  description: >-
+                    An optional handle to be used in slugs, if none is provided
+                    we will kebab-case the title.
+                metadata:
+                  description: >-
+                    An optional set of key-value pairs to hold additional
+                    information.
+                  type: object
+      tags:
+        - Collection
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: "#/components/schemas/product_collection"
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -1924,6 +1919,107 @@ paths:
       responses:
         "200":
           description: OK
+  /notifications:
+    get:
+      operationId: GetNotifications
+      summary: List Notifications
+      description: Retrieves a list of Notifications.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of notifications to skip before starting to collect the
+            notifications set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of notifications to return
+          schema:
+            type: integer
+            default: 50
+        - in: query
+          name: fields
+          description: The fields to include in the result set
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: The fields to populate
+          schema:
+            type: string
+        - in: query
+          name: event_name
+          schema:
+            type: string
+        - in: query
+          name: resource_type
+          schema:
+            type: string
+        - in: query
+          name: resource_id
+          schema:
+            type: string
+        - in: query
+          name: to
+          schema:
+            type: string
+        - in: query
+          name: include_resends
+          description: Whether the result set should include resent notifications or not
+          schema:
+            type: boolean
+      tags:
+        - Notification
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notifications:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/notification"
+  "/notifications/{id}/resend":
+    post:
+      operationId: PostNotificationsNotificationResend
+      summary: Resend Notification
+      description: >-
+        Resends a previously sent notifications, with the same data but
+        optionally to a different address
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Notification
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                to:
+                  description: >-
+                    The address or user identifier that the Notification was
+                    sent to
+                  type: string
+      tags:
+        - Notification
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  notification:
+                    $ref: "#/components/schemas/notification"
   /notes:
     post:
       operationId: PostNotes
@@ -2079,107 +2175,6 @@ paths:
                 properties:
                   note:
                     $ref: "#/components/schemas/note"
-  /notifications:
-    get:
-      operationId: GetNotifications
-      summary: List Notifications
-      description: Retrieves a list of Notifications.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of notifications to skip before starting to collect the
-            notifications set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of notifications to return
-          schema:
-            type: integer
-            default: 50
-        - in: query
-          name: fields
-          description: The fields to include in the result set
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: The fields to populate
-          schema:
-            type: string
-        - in: query
-          name: event_name
-          schema:
-            type: string
-        - in: query
-          name: resource_type
-          schema:
-            type: string
-        - in: query
-          name: resource_id
-          schema:
-            type: string
-        - in: query
-          name: to
-          schema:
-            type: string
-        - in: query
-          name: include_resends
-          description: Whether the result set should include resent notifications or not
-          schema:
-            type: boolean
-      tags:
-        - Notification
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notifications:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/notification"
-  "/notifications/{id}/resend":
-    post:
-      operationId: PostNotificationsNotificationResend
-      summary: Resend Notification
-      description: >-
-        Resends a previously sent notifications, with the same data but
-        optionally to a different address
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Notification
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                to:
-                  description: >-
-                    The address or user identifier that the Notification was
-                    sent to
-                  type: string
-      tags:
-        - Notification
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  notification:
-                    $ref: "#/components/schemas/notification"
   "/orders/{id}/shipping-methods":
     post:
       operationId: PostOrdersOrderShippingMethods
@@ -6354,134 +6349,6 @@ paths:
                 properties:
                   shipping_option:
                     $ref: "#/components/schemas/shipping_option"
-  /shipping-profiles:
-    post:
-      operationId: PostShippingProfiles
-      summary: Create a Shipping Profile
-      description: Creates a Shipping Profile
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - name
-              properties:
-                name:
-                  description: The name of the Shipping Profile
-                  type: string
-      tags:
-        - Shipping Profile
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profile:
-                    $ref: "#/components/schemas/shipping_profile"
-    get:
-      operationId: GetShippingProfiles
-      summary: List Shipping Profiles
-      description: Retrieves a list of Shipping Profile.
-      x-authenticated: true
-      tags:
-        - Shipping Profile
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profiles:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/shipping_profile"
-  "/shipping-profiles/{id}":
-    delete:
-      operationId: DeleteShippingProfilesProfile
-      summary: Delete a Shipping Profile
-      description: Deletes a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Shipping Profile.
-          schema:
-            type: string
-      tags:
-        - Shipping Profile
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Shipping Profile.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-    get:
-      operationId: GetShippingProfilesProfile
-      summary: Retrieve a Shipping Profile
-      description: Retrieves a Shipping Profile.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Shipping Profile.
-          schema:
-            type: string
-      tags:
-        - Shipping Profile
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profile:
-                    $ref: "#/components/schemas/shipping_profile"
-    post:
-      operationId: PostShippingProfilesProfile
-      summary: Update a Shipping Profiles
-      description: Updates a Shipping Profile
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Shipping Profile.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                name:
-                  description: The name of the Shipping Profile
-                  type: string
-      tags:
-        - Shipping Profile
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  shipping_profiles:
-                    $ref: "#/components/schemas/shipping_profile"
   "/store/currencies/{code}":
     post:
       operationId: PostStoreCurrenciesCode
@@ -6669,6 +6536,134 @@ paths:
                     type: array
                     items:
                       $ref: "#/components/schemas/swap"
+  /shipping-profiles:
+    post:
+      operationId: PostShippingProfiles
+      summary: Create a Shipping Profile
+      description: Creates a Shipping Profile
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+              properties:
+                name:
+                  description: The name of the Shipping Profile
+                  type: string
+      tags:
+        - Shipping Profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_profile:
+                    $ref: "#/components/schemas/shipping_profile"
+    get:
+      operationId: GetShippingProfiles
+      summary: List Shipping Profiles
+      description: Retrieves a list of Shipping Profile.
+      x-authenticated: true
+      tags:
+        - Shipping Profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_profiles:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/shipping_profile"
+  "/shipping-profiles/{id}":
+    delete:
+      operationId: DeleteShippingProfilesProfile
+      summary: Delete a Shipping Profile
+      description: Deletes a Shipping Profile.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Shipping Profile.
+          schema:
+            type: string
+      tags:
+        - Shipping Profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Shipping Profile.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetShippingProfilesProfile
+      summary: Retrieve a Shipping Profile
+      description: Retrieves a Shipping Profile.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Shipping Profile.
+          schema:
+            type: string
+      tags:
+        - Shipping Profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_profile:
+                    $ref: "#/components/schemas/shipping_profile"
+    post:
+      operationId: PostShippingProfilesProfile
+      summary: Update a Shipping Profiles
+      description: Updates a Shipping Profile
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Shipping Profile.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Shipping Profile
+                  type: string
+      tags:
+        - Shipping Profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  shipping_profiles:
+                    $ref: "#/components/schemas/shipping_profile"
   "/tax-rates/:id/product-types/batch":
     post:
       operationId: PostTaxRatesTaxRateProductTypes
@@ -6973,6 +6968,41 @@ paths:
                     type: array
                     items:
                       type: string
+  /variants:
+    get:
+      operationId: GetVariants
+      summary: List Product Variants.
+      description: Retrieves a list of Product Variants
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching variants.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many variants to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit the number of variants returned.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variants:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/product_variant"
   /users:
     post:
       operationId: PostUsers
@@ -7166,41 +7196,6 @@ paths:
                 properties:
                   user:
                     $ref: "#/components/schemas/user"
-  /variants:
-    get:
-      operationId: GetVariants
-      summary: List Product Variants.
-      description: Retrieves a list of Product Variants
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching variants.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many variants to skip in the result.
-          schema:
-            type: string
-        - in: query
-          name: limit
-          description: Limit the number of variants returned.
-          schema:
-            type: string
-      tags:
-        - Product Variant
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  variants:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/product_variant"
 components:
   schemas:
     address:
