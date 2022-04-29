@@ -293,3 +293,12 @@ details summary {
 .box-link:hover {
   color: #0a3149;
 }
+
+.theme-doc-markdown a:hover {
+  color: #6e3eff;
+  text-decoration: none;
+}
+
+.DocSearch-Container {
+  z-index: 1001 !important;
+}
