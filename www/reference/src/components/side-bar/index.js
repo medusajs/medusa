@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react"
 
 import Logo from "../../assets/logo.svg"
 import LogoDark from "../../assets/logo-dark.svg"
-import LogoMuted from "../../assets/logo-muted.svg"
 import SideBarItem from "./sidebar-item"
 import SideBarSelector from "./sidebar-selector"
 import { navigate } from "gatsby"
@@ -28,7 +27,7 @@ const SideBarFade = styled(Box)`
 
 const Sidebar = ({ data, api }) => {
   const [scrollPos, setScrollPos] = useState(0)
-  const [colorMode, setColorMode] = useColorMode()
+  const [colorMode,] = useColorMode()
 
   useEffect(() => {
     const nav = document.querySelector("#nav")
@@ -68,7 +67,7 @@ const Sidebar = ({ data, api }) => {
       >
         <Flex>
           <Image
-            src={colorMode == 'light' ? Logo : LogoDark}
+            src={colorMode === 'light' ? Logo : LogoDark}
             alt="Medusa logo"
             onClick={() => navigate("/")}
             sx={{
@@ -99,9 +98,6 @@ const Sidebar = ({ data, api }) => {
         {data.sections.map((s, i) => {
           return <SideBarItem item={s} key={i} />
         })}
-      </Flex>
-      <Flex sx={{ py: 4, px: 4, borderTop: "1px solid var(--theme-ui-colors-separator)" }}>
-        <Image src={LogoMuted} alt="Medusa Type" sx={{ height: "10px" }} />
       </Flex>
     </SideBarContainer>
   )
