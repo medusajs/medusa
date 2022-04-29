@@ -194,16 +194,7 @@ module.exports = {
             },
             {
               type: "doc",
-              id: "tutorial/adding-custom-functionality",
-              label: "Add Custom Functionality"
-            },
-            {
-              type: "doc",
               id: "how-to/notification-api",
-            },
-            {
-              type: "doc",
-              id: "guides/fulfillment-api",
             },
             {
               type: "doc",
