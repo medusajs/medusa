@@ -21,7 +21,6 @@ import { validator } from "../../../../utils/validator"
  *   - (query) order {string} to retrieve customer groups in.
  *   - (query) created_at {object} Date comparison for when resulting customer group was created, i.e. less than, greater than etc.
  *   - (query) updated_at {object} Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.
- *   - (query) offset {string} How many customer groups to skip in the result.
  *   - (query) limit {string} Limit the number of customer groups returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer groups of the result.
 
