@@ -13,7 +13,7 @@ class SendGridService extends NotificationService {
    *      from: Medusa <hello@medusa.example>,
    *      order_placed_template: 01234,
    *      order_updated_template: 56789,
-   *      order_cancelled_template: 4242,
+   *      order_canceled_template: 4242,
    *      user_password_reset_template: 0000,
    *      customer_password_reset_template: 1111,
    *    }
