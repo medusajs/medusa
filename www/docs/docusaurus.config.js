@@ -27,7 +27,8 @@ module.exports = {
   themeConfig: {
     colorMode: {
       defaultMode: 'light',
-      disableSwitch: true,
+      disableSwitch: false,
+      respectPrefersColorScheme: true,
     },
     algolia: {
       apiKey: algoliaApiKey,
@@ -45,9 +46,9 @@ module.exports = {
     navbar: {
       hideOnScroll: true,
       logo: {
-        alt: "Medusa Commerce",
+        alt: "Medusa",
         src: "img/logo.svg",
-        srcDark: "img/logo.svg",
+        srcDark: "img/logo-dark.svg",
         width: 100
       },
       items: [
