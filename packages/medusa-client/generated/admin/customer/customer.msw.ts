@@ -7,10 +7,6 @@
 import { rest } from "msw"
 import { faker } from "@faker-js/faker"
 
-export const getGetCustomerGroupsGroupCustomersMock = () => ({
-  customer: faker.helpers.randomize([{}, undefined]),
-})
-
 export const getPostCustomersMock = () => ({
   customer: faker.helpers.randomize([{}, undefined]),
 })
@@ -27,14 +23,11 @@ export const getPostCustomersCustomerMock = () => ({
   customer: faker.helpers.randomize([{}, undefined]),
 })
 
+export const getGetCustomerGroupsGroupCustomersMock = () => ({
+  customer: faker.helpers.randomize([{}, undefined]),
+})
+
 export const getCustomerMSW = () => [
-  rest.get("*/admin/customer-groups/:id/customers", (_req, res, ctx) => {
-    return res(
-      ctx.delay(1000),
-      ctx.status(200, "Mocked status"),
-      ctx.json(getGetCustomerGroupsGroupCustomersMock())
-    )
-  }),
   rest.post("*/admin/customers", (_req, res, ctx) => {
     return res(
       ctx.delay(1000),
@@ -61,6 +54,13 @@ export const getCustomerMSW = () => [
       ctx.delay(1000),
       ctx.status(200, "Mocked status"),
       ctx.json(getPostCustomersCustomerMock())
+    )
+  }),
+  rest.get("*/admin/customer-groups/:id/customers", (_req, res, ctx) => {
+    return res(
+      ctx.delay(1000),
+      ctx.status(200, "Mocked status"),
+      ctx.json(getGetCustomerGroupsGroupCustomersMock())
     )
   }),
 ]

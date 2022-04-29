@@ -1,0 +1,30 @@
+import * as Auth from "../../generated/store/auth/auth";
+import * as Cart from "../../generated/store/cart/cart";
+import * as Collection from "../../generated/store/collection/collection";
+import * as Customer from "../../generated/store/customer/customer";
+import * as GiftCard from "../../generated/store/gift-card/gift-card";
+import * as Order from "../../generated/store/order/order";
+import * as Product from "../../generated/store/product/product";
+import * as ProductVariant from "../../generated/store/product-variant/product-variant";
+import * as Region from "../../generated/store/region/region";
+import * as Return from "../../generated/store/return/return";
+import * as ReturnReason from "../../generated/store/return-reason/return-reason";
+import * as ShippingOption from "../../generated/store/shipping-option/shipping-option";
+import * as Swap from "../../generated/store/swap/swap";
+declare class Medusa {
+    auth: typeof Auth;
+    carts: typeof Cart;
+    collections: typeof Collection;
+    customers: typeof Customer;
+    giftCards: typeof GiftCard;
+    orders: typeof Order;
+    products: typeof Product;
+    variants: typeof ProductVariant;
+    regions: typeof Region;
+    returns: typeof Return;
+    returnReasons: typeof ReturnReason;
+    shippingOptions: typeof ShippingOption;
+    swaps: typeof Swap;
+    constructor();
+}
+export default Medusa;

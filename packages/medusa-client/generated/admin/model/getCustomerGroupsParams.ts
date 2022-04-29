@@ -12,7 +12,6 @@ export type GetCustomerGroupsParams = {
   order?: string
   created_at?: { [key: string]: any }
   updated_at?: { [key: string]: any }
-  offset?: string
   limit?: string
   expand?: string
 }

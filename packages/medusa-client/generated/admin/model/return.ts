@@ -17,7 +17,7 @@ export interface Return {
   id?: string
   /** Status of the Return. */
   status?: ReturnStatus
-  /** The Return Items that will be shipped back to the warehouse. type: array items: $ref: */
+  /** The Return Items that will be shipped back to the warehouse. type: array items: $ref:  */
   items?: unknown
   /** The id of the Swap that the Return is a part of. */
   swap_id?: string

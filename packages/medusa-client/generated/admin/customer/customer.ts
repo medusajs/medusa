@@ -5,7 +5,6 @@
  * OpenAPI spec version: 1.0.0
  */
 import type {
-  GetCustomerGroupsGroupCustomers200,
   PostCustomers200,
   PostCustomersBody,
   GetCustomers200,
@@ -13,19 +12,10 @@ import type {
   PostCustomersCustomer200,
   PostCustomersCustomerBody,
   PostCustomersCustomerParams,
+  GetCustomerGroupsGroupCustomers200,
 } from ".././model"
 import { getClient } from "../../../src/custom-instance"
 
-/**
- * Retrieves a list of Customers.
- * @summary List Customers
- */
-export const getCustomerGroupsGroupCustomers = (id: string) => {
-  return getClient<GetCustomerGroupsGroupCustomers200>({
-    url: `/admin/customer-groups/${id}/customers`,
-    method: "get",
-  })
-}
 /**
  * Creates a Customer.
  * @summary Create a Customer
@@ -72,6 +62,16 @@ export const postCustomersCustomer = (
     params,
   })
 }
+/**
+ * Retrieves a list of Customers.
+ * @summary List Customers
+ */
+export const getCustomerGroupsGroupCustomers = (id: string) => {
+  return getClient<GetCustomerGroupsGroupCustomers200>({
+    url: `/admin/customer-groups/${id}/customers`,
+    method: "get",
+  })
+}
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type AsyncReturnType<T extends (...args: any) => Promise<any>> = T extends (
@@ -80,9 +80,6 @@ type AsyncReturnType<T extends (...args: any) => Promise<any>> = T extends (
   ? R
   : any
 
-export type GetCustomerGroupsGroupCustomersResult = NonNullable<
-  AsyncReturnType<typeof getCustomerGroupsGroupCustomers>
->
 export type PostCustomersResult = NonNullable<
   AsyncReturnType<typeof postCustomers>
 >
@@ -94,4 +91,7 @@ export type GetCustomersCustomerResult = NonNullable<
 >
 export type PostCustomersCustomerResult = NonNullable<
   AsyncReturnType<typeof postCustomersCustomer>
+>
+export type GetCustomerGroupsGroupCustomersResult = NonNullable<
+  AsyncReturnType<typeof getCustomerGroupsGroupCustomers>
 >
