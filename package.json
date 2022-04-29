@@ -7,7 +7,6 @@
     ],
     "nohoist": [
       "**/tsdx",
-      "**/tsdx/**",
       "**/medusa-client/orval",
       "**/medusa-client/orval/**"
     ]
