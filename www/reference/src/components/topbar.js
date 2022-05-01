@@ -2,6 +2,7 @@ import { Box, Flex, Link, Select } from "@theme-ui/components"
 import React, { useContext } from "react"
 
 import ChevronDown from "./icons/chevron-down"
+import ColorModeToggler from "./ColorModeToggler"
 import GitHub from "../components/icons/github"
 import NavigationContext from "../context/navigation-context"
 import Search from "./search"
@@ -40,7 +41,6 @@ const Topbar = ({ data, api }) => {
           left: "0",
           right: "0",
           zIndex: "100",
-          backgroundColor: "light",
         },
       }}
     >
@@ -64,7 +64,6 @@ const Topbar = ({ data, api }) => {
               fontWeight: "500",
               flexGrow: "1",
               px: "0",
-              backgroundColor: "light",
               transition: "all .1s ease-in-out",
               "&:focus": {
                 outline: "none !important",
@@ -116,6 +115,7 @@ const Topbar = ({ data, api }) => {
           <GitHub />
         </Link>
         <Search data={data} />
+        <ColorModeToggler />
       </Flex>
     </Flex>
   )

@@ -12,7 +12,11 @@ This is a guide for deploying a Medusa project on Heroku. Heroku is at PaaS that
   </video>
 </div>
 
-> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+:::note
+
+We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+
+:::
 
 ### 1. Install the Heroku CLI
 
@@ -45,7 +49,11 @@ Connect to your Heroku account from your terminal:
 heroku login
 ```
 
-> Follow the instructions on your terminal
+:::note
+
+Follow the instructions on your terminal
+
+:::
 
 ### 3. Create an app on Heroku
 
@@ -60,7 +68,11 @@ heroku git:remote -a medusa-test-app
 
 Medusa requires a Postgres database and a Redis instance to work. These are added through the Heroku CLI using the following commands.
 
-> In this below example, we initialize the resources on free plans. This is not a valid configuration for a production environment.
+:::tip
+
+In this below example, we initialize the resources on free plans. This is not a valid configuration for a production environment.
+
+:::
 
 #### Postgresql
 
@@ -76,7 +88,11 @@ You can find more informations, plans and pricing about Heroku Postgres [here](h
 
 Add a Redis instance to your Heroku app
 
-> The addon `redistogo:nano` is free, but Heroku requires you to add a payment method to proceed.
+:::note
+
+The addon `redistogo:nano` is free, but Heroku requires you to add a payment method to proceed.
+
+:::
 
 ```bash
 heroku addons:create redistogo:nano
@@ -94,8 +110,11 @@ heroku config:set JWT_SECRET=your-super-secret
 heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
+:::tip
 
-> Make sure to use actual secrets in a production environment.
+Make sure to use actual secrets in a production environment.
+
+:::
 
 Additionally, we need to set the buildpack to Node.js
 

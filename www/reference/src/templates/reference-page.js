@@ -9,7 +9,7 @@ import { convertToKebabCase } from "../utils/convert-to-kebab-case"
 export default function ReferencePage({
   pageContext: { data, api, title, description, to },
 }) {
-  const { setApi, goTo, metadata, currentSection, currentSectionObj } = useContext(NavigationContext)
+  const { setApi, goTo, metadata, currentSectionObj } = useContext(NavigationContext)
   const [siteData, setSiteData] = useState({
     title: title,
     description: description,
