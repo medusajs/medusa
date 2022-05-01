@@ -36,7 +36,15 @@ This exports a function that returns an Express router. In that function, you ca
 
 Now, if you run your server and send a request to `/admin/hello`, you will receive a JSON response message.
 
-> Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run `npm run build`.
+:::note
+
+Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run:
+
+```bash npm2yarn
+npm run build
+```
+
+:::
 
 ## Accessing Endpoints from Admin
 
@@ -196,6 +204,18 @@ const id = req.user.userId
 const userService = req.scope.resolve("userService")
 
 const user = await userService.retrieve(id)
+```
+
+### Route Parameters
+
+The routes you create receive 2 parameters. The first one is the absolute path to the root directory that your server is running from. The second one is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+
+```js
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  //...
+}
 ```
 
 ## What’s Next 🚀

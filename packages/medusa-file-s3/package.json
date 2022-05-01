@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-s3",
-  "version": "1.0.12",
+  "version": "1.1.0",
   "description": "AWS s3 file connector for Medusa",
   "main": "index.js",
   "repository": {

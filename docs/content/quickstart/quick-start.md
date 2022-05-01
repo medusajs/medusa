@@ -1,22 +1,39 @@
 # Quickstart
 
-This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](https://docs.medusajs.com/tutorial/set-up-your-development-environment).
+This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](../tutorial/0-set-up-your-development-environment.md).
+
+## Prerequisites
+
+Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
+
+```bash
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
 
 ## Getting started
 
 1. **Install Medusa CLI**
-   ```bash
+
+   ```bash npm2yarn
    npm install -g @medusajs/medusa-cli
    ```
+
 2. **Create a new Medusa project**
-   ```
+
+   ```bash
    medusa new my-medusa-store --seed
    ```
+
 3. **Start your Medusa engine**
+
    ```bash
    medusa develop
    ```
+
 4. **Use the API**
+
    ```bash
    curl localhost:9000/store/products | python -m json.tool
    ```
@@ -33,7 +50,11 @@ We have created two starters for you that can help you lay a foundation for your
 - [Nextjs Starter](https://github.com/medusajs/nextjs-starter-medusa)
 - [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
 
-> Note: Medusa runs on port 9000 by default and the storefront starters are both configured to run on port 8000. If you wish to run your storefront starter on another port you should update your CORS settings in your project's `medusa-config.js`.
+:::tip
+
+Medusa runs on port 9000 by default and the storefront starters are both configured to run on port 8000. If you wish to run your storefront starter on another port you should update your CORS settings in your project's `medusa-config.js`.
+
+:::
 
 <!-- ### Link you local development to Medusa Cloud (Coming soon!)
 
