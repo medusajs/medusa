@@ -6,6 +6,7 @@ import {
   Not,
   Repository,
 } from "typeorm"
+import { Discount } from "../models"
 import {
   DiscountCondition,
   DiscountConditionOperator,
@@ -35,6 +36,17 @@ type DiscountConditionResourceType = EntityTarget<
 
 @EntityRepository(DiscountCondition)
 export class DiscountConditionRepository extends Repository<DiscountCondition> {
+  async findOneWithDiscount(
+    conditionId: string,
+    discountId: string
+  ): Promise<DiscountCondition | undefined> {
+    return await this.createQueryBuilder("discon")
+      .innerJoin(Discount, "disc", `discon.discount_rule_id = disc.rule_id`)
+      .where(`discon.id = :dcId`, { dcId: conditionId })
+      .where(`disc.id = :discId`, { discId: discountId })
+      .getOneOrFail()
+  }
+
   getJoinTableResourceIdentifiers(type: string): {
     joinTable: string
     resourceKey: string

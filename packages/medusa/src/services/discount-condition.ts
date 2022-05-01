@@ -6,7 +6,6 @@ import { Discount, DiscountCondition, DiscountConditionType } from "../models"
 import { DiscountRepository } from "../repositories/discount"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
 import { DiscountRuleRepository } from "../repositories/discount-rule"
-import { FindConfig } from "../types/common"
 import { UpsertDiscountConditionInput } from "../types/discount"
 import { PostgresError } from "../utils/exception-formatter"
 
@@ -66,15 +65,18 @@ class DiscountConditionService extends BaseService {
 
   async retrieve(
     conditionId: string,
-    config: FindConfig<DiscountCondition> = {}
+    discountId: string
   ): Promise<DiscountCondition> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_
       )
 
-      const query = this.buildQuery_({ id: conditionId }, config)
-      const condition = await conditionRepo.findOne(query)
+      // inner join with discount to ensure that it exists
+      const condition = await conditionRepo.findOneWithDiscount(
+        conditionId,
+        discountId
+      )
 
       if (!condition) {
         throw new MedusaError(
@@ -87,7 +89,7 @@ class DiscountConditionService extends BaseService {
     })
   }
 
-  protected resolveConditionType_(data: UpsertDiscountConditionInput):
+  static resolveConditionType_(data: UpsertDiscountConditionInput):
     | {
         type: DiscountConditionType
         resource_ids: string[]
@@ -132,7 +134,8 @@ class DiscountConditionService extends BaseService {
 
     return await this.atomicPhase_(
       async (manager: EntityManager) => {
-        resolvedConditionType = this.resolveConditionType_(data)
+        resolvedConditionType =
+          DiscountConditionService.resolveConditionType_(data)
 
         if (!resolvedConditionType) {
           throw new MedusaError(
@@ -141,8 +144,6 @@ class DiscountConditionService extends BaseService {
           )
         }
 
-        const discountConditionRepo: DiscountConditionRepository =
-          manager.getCustomRepository(this.discountConditionRepository_)
         const discountRepo: DiscountRepository = manager.getCustomRepository(
           this.discountRepository_
         )
@@ -172,9 +173,12 @@ class DiscountConditionService extends BaseService {
           }
         }
 
+        const discountConditionRepo: DiscountConditionRepository =
+          manager.getCustomRepository(this.discountConditionRepository_)
+
         if (data.id) {
-          // throw if condition does not exist
-          const condition = await this.retrieve(data.id)
+          // throws if condition or discount does not exist
+          const condition = await this.retrieve(data.id, discount.id)
 
           return await discountConditionRepo.addConditionResources(
             condition.id,

@@ -1,6 +1,5 @@
 const path = require("path")
 const {
-  Region,
   DiscountRule,
   Discount,
   Customer,
@@ -12,7 +11,6 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const discountSeeder = require("../../helpers/discount-seeder")
-const { exportAllDeclaration } = require("@babel/types")
 const { simpleProductFactory } = require("../../factories")
 const {
   simpleDiscountFactory,
@@ -27,7 +25,7 @@ describe("/admin/discounts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -1683,6 +1681,27 @@ describe("/admin/discounts", () => {
         })
       )
     })
+
+    it("should fail if discount does not exist", async () => {
+      expect.assertions(1)
+
+      const api = useApi()
+
+      try {
+        await api.delete(
+          "/admin/discounts/not-exist/conditions/test-condition",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Discount with not-exist was not found"
+        )
+      }
+    })
   })
 
   describe("POST /admin/discounts/:id/conditions", () => {
@@ -1819,6 +1838,7 @@ describe("/admin/discounts", () => {
           }
         )
       } catch (error) {
+        console.log(error)
         expect(error.message).toMatchSnapshot(
           "Discount with id does-not-exist was not found"
         )
@@ -1956,6 +1976,7 @@ describe("/admin/discounts", () => {
           }
         )
       } catch (error) {
+        console.log(error)
         expect(error.message).toMatchSnapshot(
           "DiscountCondition with id does-not-exist was not found"
         )

@@ -49,6 +49,11 @@ export default async (req, res) => {
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
 
+  // ensure that we delete condition from existing discount
+  let discount = await discountService.retrieve(discount_id, {
+    select: ["id"],
+  })
+
   await conditionService.remove(condition_id)
 
   const config = getRetrieveConfig<Discount>(
@@ -58,7 +63,7 @@ export default async (req, res) => {
     validatedParams?.expand?.split(",")
   )
 
-  const discount = await discountService.retrieve(discount_id, config)
+  discount = await discountService.retrieve(discount_id, config)
 
   res.json({
     id: condition_id,

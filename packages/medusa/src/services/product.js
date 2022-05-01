@@ -672,7 +672,7 @@ class ProductService extends BaseService {
       )
 
       if (!product) {
-        return Promise.resolve()
+        return
       }
 
       await productRepo.softRemove(product)
@@ -1069,22 +1069,25 @@ class ProductService extends BaseService {
 
       const productArray = Array.isArray(products) ? products : [products]
 
-      const priceSelectionStrategy =
-        this.priceSelectionStrategy_.withTransaction(manager)
+      const priceSelectionStrategy = this.priceSelectionStrategy_.withTransaction(
+        manager
+      )
 
       const productsWithPrices = await Promise.all(
         productArray.map(async (p) => {
           if (p.variants?.length) {
             p.variants = await Promise.all(
               p.variants.map(async (v) => {
-                const prices =
-                  await priceSelectionStrategy.calculateVariantPrice(v.id, {
+                const prices = await priceSelectionStrategy.calculateVariantPrice(
+                  v.id,
+                  {
                     region_id: regionId,
                     currency_code: currencyCode,
                     cart_id: cart_id,
                     customer_id: customer_id,
                     include_discount_prices,
-                  })
+                  }
+                )
 
                 return {
                   ...v,
