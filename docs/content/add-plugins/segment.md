@@ -21,7 +21,11 @@ Common integration use cases that can be implemented with Segment include:
 
 ## Adding Segment to your Medusa store
 
-> Note: you should create a [Node.js source in Segment](https://segment.com/docs/connections/sources/catalog/libraries/server/node/quickstart/) in order to obtain the write key that will be provided in the plugin options.
+:::note
+
+You should create a [Node.js source in Segment](https://segment.com/docs/connections/sources/catalog/libraries/server/node/quickstart/) in order to obtain the write key that will be provided in the plugin options.
+
+:::
 
 Plugins in Medusa's ecosystem come as separate npm packages, that can be installed from the npm registry.
 

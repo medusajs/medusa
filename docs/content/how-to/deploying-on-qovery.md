@@ -2,7 +2,11 @@
 
 This is a guide for deploying a Medusa project to Qovery. Qovery is a Continuous Deployment Platform, that provides you with the developer experience of Heroku on top of your cloud provider (e.g. AWS, DigitalOcean).
 
-> We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+:::note
+
+We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+
+:::
 
 ### 1. Qovery Console
 
@@ -16,7 +20,11 @@ Create a project and an environment.
 
 Add a new app to your Qovery environment and connect the Git repository that holds your Medusa project. In your application settings, set the port to 9000 unless something else is specified in your setup.
 
-> If you used our `npx` starter, your repository will most likely hold all components; storefront, admin and backend. Ensure that **Root application path** in Qovery is pointing to your Medusa project (`/backend`).
+:::note
+
+If you used our `npx` starter, your repository will most likely hold all components; storefront, admin and backend. Ensure that **Root application path** in Qovery is pointing to your Medusa project (`/backend`).
+
+:::
 
 ### 4. Add a database
 
@@ -61,10 +69,14 @@ module.exports = {
 };
 ```
 
-> **IMPORTANT**: We are using the Qovery community plan, that does not allow SSL connections for the database, so this is disabled.
->
-> In a production environment, you would need the following in the config:
-> `database_extra: { ssl: { rejectUnauthorized: false } }`
+:::caution IMPORTANT
+
+We are using the Qovery community plan, that does not allow SSL connections for the database, so this is disabled.
+
+In a production environment, you would need the following in the config:
+ `database_extra: { ssl: { rejectUnauthorized: false } }`
+
+:::
 
 #### Add some extra variables
 
@@ -75,7 +87,11 @@ JTW_SECRET=something_secret_jwt
 COOKIE_SECRET=something_secret_cookie
 ```
 
-> Make sure to use actual secrets in a production environment.
+:::tip
+
+Make sure to use actual secrets in a production environment.
+
+:::
 
 #### Update `package.json`
 
