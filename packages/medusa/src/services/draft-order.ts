@@ -11,7 +11,8 @@ import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
 import { DraftOrder, DraftOrderStatus } from "../models/draft-order"
 import { Discount } from "../models/discount"
-import { CartType } from "../models/cart"
+import { Cart, CartType } from "../models/cart"
+import { AdminPostDraftOrdersReq } from "../api/routes/admin/draft-orders/create-draft-order"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -97,7 +98,7 @@ class DraftOrderService extends BaseService {
    * @param {object} config - query object for findOne
    * @return {Promise<DraftOrder>} the draft order
    */
-  async retrieve(id: string, config = {}): Promise<DraftOrder> {
+  async retrieve(id: string, config = {}): Promise<DraftOrder | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const draftOrderRepo = transactionManager.getCustomRepository(
@@ -126,7 +127,10 @@ class DraftOrderService extends BaseService {
    * @param {object} config - query object for findOne
    * @return {Promise<DraftOrder>} the draft order
    */
-  async retrieveByCartId(cartId: string, config = {}): Promise<DraftOrder> {
+  async retrieveByCartId(
+    cartId: string,
+    config = {}
+  ): Promise<DraftOrder | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const draftOrderRepo = transactionManager.getCustomRepository(
@@ -134,12 +138,15 @@ class DraftOrderService extends BaseService {
         )
 
         const query = this.buildQuery_({ cart_id: cartId }, config)
-        return await draftOrderRepo.findOneOrFail(query).catch(() => {
+        const draftOrder = await draftOrderRepo.findOne(query)
+        if (!draftOrder) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
             `Draft order was not found`
           )
-        })
+        }
+
+        return draftOrder
       }
     )
   }
@@ -242,10 +249,10 @@ class DraftOrderService extends BaseService {
 
   /**
    * Creates a draft order.
-   * @param {object} data - data to create draft order from
+   * @param data - data to create draft order from
    * @return {Promise<DraftOrder>} the created draft order
    */
-  async create(data: any): Promise<DraftOrder> {
+  async create(data: AdminPostDraftOrdersReq): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const draftOrderRepo = transactionManager.getCustomRepository(
@@ -276,16 +283,15 @@ class DraftOrderService extends BaseService {
 
         if (discounts) {
           for (const { code } of discounts) {
-            rest.discounts = []
             await this.cartService_
               .withTransaction(transactionManager)
-              .applyDiscount(rest, code)
+              .applyDiscount(rest as Cart, code)
           }
         }
 
         const createdCart = await this.cartService_
           .withTransaction(transactionManager)
-          .create({ type: "draft_order", ...rest })
+          .create({ type: CartType.DRAFT_ORDER, ...rest })
 
         const draftOrder = draftOrderRepo.create({
           cart_id: createdCart.id,
@@ -360,7 +366,7 @@ class DraftOrderService extends BaseService {
   ): Promise<DraftOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        return transactionManager.update(
+        return await transactionManager.update(
           DraftOrder,
           {
             id: draftOrderId,
