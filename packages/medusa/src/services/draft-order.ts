@@ -10,7 +10,6 @@ import { OrderRepository } from "../repositories/order"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
 import { DraftOrder, DraftOrderStatus } from "../models/draft-order"
-import { Discount } from "../models/discount"
 import { Cart, CartType } from "../models/cart"
 import { AdminPostDraftOrdersReq } from "../api/routes/admin/draft-orders/create-draft-order"
 
