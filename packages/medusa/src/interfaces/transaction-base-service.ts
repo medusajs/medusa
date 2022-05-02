@@ -31,7 +31,7 @@ export abstract class TransactionBaseService<
     return cloned as TChild
   }
 
-  shouldRetryTransaction(
+  protected shouldRetryTransaction_(
     err: { code: string } | Record<string, unknown>
   ): boolean {
     if (!(err as { code: string })?.code) {
@@ -50,7 +50,7 @@ export abstract class TransactionBaseService<
    * @param maybeErrorHandlerOrDontFail Potential error handler
    * @return the result of the transactional work
    */
-  async atomicPhase_<TResult, TError>(
+  protected async atomicPhase_<TResult, TError>(
     work: (transactionManager: EntityManager) => Promise<TResult | never>,
     isolationOrErrorHandler?:
       | IsolationLevel
@@ -118,7 +118,7 @@ export abstract class TransactionBaseService<
           )
           return result
         } catch (error) {
-          if (this.shouldRetryTransaction(error)) {
+          if (this.shouldRetryTransaction_(error)) {
             return this.manager_.transaction(
               isolation as IsolationLevel,
               (m): Promise<never | TResult> => doWork(m)
