@@ -7,6 +7,7 @@ import { CurrencyRepository } from "../repositories/currency"
 import EventBusService from "./event-bus"
 import { Store } from "../models"
 import { AdminPostStoreReq } from "../api/routes/admin/store"
+import { FindConfig } from "../types/common"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -94,16 +95,17 @@ class StoreService extends BaseService {
 
   /**
    * Retrieve the store settings. There is always a maximum of one store.
-   * @param relations - relations to fetch with store
+   * @param config The config object from which the query will be built
    * @return the store
    */
-  async retrieve(relations: string[] = []): Promise<Store> {
+  async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
+        const query = this.buildQuery_({}, config)
         const storeRepo = transactionManager.getCustomRepository(
           this.storeRepository_
         )
-        return await storeRepo.findOne({ relations })
+        return await storeRepo.findOne(query)
       }
     )
   }
@@ -141,7 +143,7 @@ class StoreService extends BaseService {
           ...rest
         } = data
 
-        const store = await this.retrieve(["currencies"])
+        const store = await this.retrieve({ relations: ["currencies"] })
         if (metadata) {
           store.metadata = this.setMetadata_(store.id, metadata)
         }
@@ -243,7 +245,7 @@ class StoreService extends BaseService {
           )
         }
 
-        const store = await this.retrieve(["currencies"])
+        const store = await this.retrieve({ relations: ["currencies"] })
         if (
           store.currencies.map((c) => c.code).includes(curr.code.toLowerCase())
         ) {
@@ -270,7 +272,7 @@ class StoreService extends BaseService {
         const storeRepo = transactionManager.getCustomRepository(
           this.storeRepository_
         )
-        const store = await this.retrieve(["currencies"])
+        const store = await this.retrieve({ relations: ["currencies"] })
 
         const exists = store.currencies.some(
           (c) => c.code === code.toLowerCase()
