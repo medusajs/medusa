@@ -127,30 +127,8 @@ class CartService extends TransactionBaseService<CartService> {
     lineItemAdjustmentService,
     priceSelectionStrategy,
   }: InjectedDependencies) {
-    super({
-      manager,
-      cartRepository,
-      shippingMethodRepository,
-      lineItemRepository,
-      eventBusService,
-      paymentProviderService,
-      productService,
-      productVariantService,
-      taxProviderService,
-      regionService,
-      lineItemService,
-      shippingOptionService,
-      customerService,
-      discountService,
-      giftCardService,
-      totalsService,
-      addressRepository,
-      paymentSessionRepository,
-      inventoryService,
-      customShippingOptionService,
-      lineItemAdjustmentService,
-      priceSelectionStrategy,
-    })
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     this.manager_ = manager
     this.shippingMethodRepository_ = shippingMethodRepository
