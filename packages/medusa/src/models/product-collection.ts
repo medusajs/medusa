@@ -22,7 +22,7 @@ export class ProductCollection extends SoftDeletableEntity {
 
   @BeforeInsert()
   private createHandleIfNotProvided(): void {
-    const shouldContinue = this.generateId('pcol')
+    const shouldContinue = this.generateId("pcol")
     if (shouldContinue === false) {
       return
     }

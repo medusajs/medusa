@@ -39,7 +39,7 @@ export class User extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('usr')
+    this.generateId("usr")
   }
 }
 

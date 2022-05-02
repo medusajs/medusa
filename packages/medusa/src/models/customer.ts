@@ -72,7 +72,7 @@ export class Customer extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('cus')
+    this.generateId("cus")
   }
 }
 

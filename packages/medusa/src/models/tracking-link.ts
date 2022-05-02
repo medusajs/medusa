@@ -27,7 +27,7 @@ export class TrackingLink extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('tlink')
+    this.generateId("tlink")
   }
 }
 

@@ -12,7 +12,7 @@ export class ProductType extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('ptyp')
+    this.generateId("ptyp")
   }
 }
 

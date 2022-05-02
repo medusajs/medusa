@@ -30,7 +30,7 @@ export class ShippingProfile extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('sp')
+    this.generateId("sp")
   }
 }
 

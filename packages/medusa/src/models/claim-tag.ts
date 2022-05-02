@@ -13,7 +13,7 @@ export class ClaimTag extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('ctag')
+    this.generateId("ctag")
   }
 }
 

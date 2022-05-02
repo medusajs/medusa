@@ -25,6 +25,6 @@ export class CustomerGroup extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('cgrp')
+    this.generateId("cgrp")
   }
 }

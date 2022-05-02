@@ -83,7 +83,8 @@
  */
 
 import {
-  AfterLoad, BeforeInsert,
+  AfterLoad,
+  BeforeInsert,
   Column,
   Entity,
   Index,
@@ -246,6 +247,6 @@ export class Cart extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('cart')
+    this.generateId("cart")
   }
 }

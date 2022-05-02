@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from "typeorm"
 
 import { Product } from "./product"
 import { ProductOptionValue } from "./product-option-value"
@@ -25,7 +32,7 @@ export class ProductOption extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('opt')
+    this.generateId("opt")
   }
 }
 

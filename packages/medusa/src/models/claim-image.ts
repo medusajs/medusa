@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+} from "typeorm"
 import { ClaimItem } from "./claim-item"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
@@ -21,7 +28,7 @@ export class ClaimImage extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('cimg')
+    this.generateId("cimg")
   }
 }
 

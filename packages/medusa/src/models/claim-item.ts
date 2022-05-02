@@ -84,7 +84,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('citm')
+    this.generateId("citm")
   }
 }
 

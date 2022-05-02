@@ -1,18 +1,14 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
   Unique,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
 export enum PaymentSessionStatus {

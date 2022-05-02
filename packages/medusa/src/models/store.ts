@@ -1,18 +1,14 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
 

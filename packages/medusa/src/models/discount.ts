@@ -77,7 +77,7 @@ export class Discount extends SoftDeletableEntity {
 
   @BeforeInsert()
   private upperCaseCode(): void {
-    const shouldContinue = this.generateId('disc')
+    const shouldContinue = this.generateId("disc")
     if (shouldContinue === false) {
       return
     }

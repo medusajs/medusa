@@ -43,7 +43,7 @@ export class DiscountRule extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('dru')
+    this.generateId("dru")
   }
 }
 

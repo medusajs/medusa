@@ -144,7 +144,7 @@ export class Product extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    const shouldContinue = this.generateId('prod')
+    const shouldContinue = this.generateId("prod")
     if (shouldContinue === false) {
       return
     }

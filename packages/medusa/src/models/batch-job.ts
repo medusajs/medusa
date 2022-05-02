@@ -1,15 +1,6 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
-import { ulid } from "ulid"
+import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
 import { BatchJobStatus } from "../types/batch-job"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 @Entity()
@@ -34,7 +25,7 @@ export class BatchJob extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('batch')
+    this.generateId("batch")
   }
 }
 

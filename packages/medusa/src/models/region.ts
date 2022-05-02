@@ -94,7 +94,7 @@ export class Region extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('reg')
+    this.generateId("reg")
   }
 }
 

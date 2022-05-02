@@ -3,15 +3,11 @@ import {
   BeforeInsert,
   Column,
   Index,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
   ManyToOne,
   JoinColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Order } from "./order"
 
@@ -29,10 +25,7 @@ export class Refund extends BaseEntity {
   @Column()
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    order => order.payments
-  )
+  @ManyToOne(() => Order, (order) => order.payments)
   @JoinColumn({ name: "order_id" })
   order: Order
 
@@ -52,7 +45,7 @@ export class Refund extends BaseEntity {
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
+  private beforeInsert(): void {
     this.generateId("ref")
   }
 }

@@ -95,7 +95,7 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('variant')
+    this.generateId("variant")
   }
 }
 

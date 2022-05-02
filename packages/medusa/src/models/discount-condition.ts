@@ -129,7 +129,7 @@ export class DiscountCondition extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('discon')
+    this.generateId("discon")
   }
 }
 

@@ -125,7 +125,7 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('claim')
+    this.generateId("claim")
   }
 }
 

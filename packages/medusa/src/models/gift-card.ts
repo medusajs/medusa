@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+} from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Region } from "./region"
@@ -47,7 +54,7 @@ export class GiftCard extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('gift')
+    this.generateId("gift")
   }
 }
 

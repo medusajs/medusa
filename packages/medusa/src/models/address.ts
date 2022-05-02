@@ -26,7 +26,14 @@
  *    $ref: "#/components/schemas/country"
  */
 
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+} from "typeorm"
 
 import { Customer } from "./customer"
 import { Country } from "./country"
@@ -82,6 +89,6 @@ export class Address extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('addr')
+    this.generateId("addr")
   }
 }

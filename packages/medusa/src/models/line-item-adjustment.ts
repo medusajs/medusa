@@ -25,11 +25,7 @@ export class LineItemAdjustment {
   @Column()
   item_id: string
 
-  @ManyToOne(
-    () => LineItem,
-    (li) => li.adjustments,
-    { onDelete: "CASCADE" }
-  )
+  @ManyToOne(() => LineItem, (li) => li.adjustments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "item_id" })
   item: LineItem
 
@@ -51,8 +47,10 @@ export class LineItemAdjustment {
   metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
+  private beforeInsert(): void {
+    if (this.id) {
+      return
+    }
     const id = ulid()
     this.id = `lia_${id}`
   }

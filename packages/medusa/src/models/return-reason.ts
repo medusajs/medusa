@@ -41,7 +41,7 @@ export class ReturnReason extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('rr')
+    this.generateId("rr")
   }
 }
 

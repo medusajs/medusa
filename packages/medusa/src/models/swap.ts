@@ -112,7 +112,7 @@ export class Swap extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('swap')
+    this.generateId("swap")
   }
 }
 

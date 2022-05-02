@@ -1,4 +1,12 @@
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, Unique } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Unique,
+} from "typeorm"
 import { Cart } from "./cart"
 import { ShippingOption } from "./shipping-option"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
@@ -31,7 +39,7 @@ export class CustomShippingOption extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('cso')
+    this.generateId("cso")
   }
 }
 

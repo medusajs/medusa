@@ -31,6 +31,6 @@ export class Invite extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('invite')
+    this.generateId("invite")
   }
 }

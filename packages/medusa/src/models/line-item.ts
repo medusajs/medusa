@@ -2,17 +2,13 @@ import {
   BeforeInsert,
   Check,
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { LineItemTaxLine } from "./line-item-tax-line"
 import { Swap } from "./swap"
@@ -64,7 +60,9 @@ export class LineItem extends BaseEntity {
   @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
   tax_lines: LineItemTaxLine[]
 
-  @OneToMany(() => LineItemAdjustment, (lia) => lia.item, { cascade: ["insert"] })
+  @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
+    cascade: ["insert"],
+  })
   adjustments: LineItemAdjustment[]
 
   @Column()

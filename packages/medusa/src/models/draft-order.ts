@@ -1,16 +1,12 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
   Generated,
   Index,
   JoinColumn,
   OneToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import {
   DbAwareColumn,

@@ -12,7 +12,7 @@ export class ProductTag extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('ptag')
+    this.generateId("ptag")
   }
 }
 

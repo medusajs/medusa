@@ -76,7 +76,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('so')
+    this.generateId("so")
   }
 }
 

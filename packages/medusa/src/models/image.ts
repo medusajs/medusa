@@ -12,7 +12,7 @@ export class Image extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('img')
+    this.generateId("img")
   }
 }
 

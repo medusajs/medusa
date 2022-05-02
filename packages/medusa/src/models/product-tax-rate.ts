@@ -1,6 +1,5 @@
 import {
   Entity,
-  DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,

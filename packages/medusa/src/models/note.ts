@@ -1,4 +1,11 @@
-import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+} from "typeorm"
 import { User } from "./user"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
@@ -28,7 +35,7 @@ export class Note extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId('note')
+    this.generateId("note")
   }
 }
 
