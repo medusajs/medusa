@@ -1,10 +1,11 @@
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
-import { BaseEntity } from "./_base"
 
 import { Fulfillment } from "./fulfillment"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class TrackingLink extends BaseEntity {
+export class TrackingLink extends SoftDeletableEntity {
   @Column({ nullable: true })
   url: string
 
@@ -20,6 +21,9 @@ export class TrackingLink extends BaseEntity {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

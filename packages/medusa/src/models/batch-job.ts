@@ -10,9 +10,10 @@ import {
 import { ulid } from "ulid"
 import { BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 @Entity()
-export class BatchJob {
+export class BatchJob extends SoftDeletableEntity {
   @PrimaryColumn()
   id: string
 
@@ -31,20 +32,9 @@ export class BatchJob {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   result: Record<string, unknown>
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date | null
-
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `batch_${id}`
+  private beforeInsert(): void {
+    this.generateId('batch')
   }
 }
 

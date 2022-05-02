@@ -1,10 +1,11 @@
 import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
-import { BaseEntity } from "./_base"
 import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ProductOptionValue extends BaseEntity {
+export class ProductOptionValue extends SoftDeletableEntity {
   @Column()
   value: string
 
@@ -25,6 +26,9 @@ export class ProductOptionValue extends BaseEntity {
   })
   @JoinColumn({ name: "variant_id" })
   variant: ProductVariant
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

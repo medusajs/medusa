@@ -1,16 +1,12 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Order } from "./order"
@@ -19,12 +15,10 @@ import { FulfillmentItem } from "./fulfillment-item"
 import { Swap } from "./swap"
 import { ClaimOrder } from "./claim-order"
 import { TrackingLink } from "./tracking-link"
+import { BaseEntity } from "../interfaces/models/base-entity"
 
 @Entity()
-export class Fulfillment {
-  @PrimaryColumn()
-  id: string
-
+export class Fulfillment extends BaseEntity {
   @Index()
   @Column({ nullable: true })
   claim_order_id: string
@@ -83,12 +77,6 @@ export class Fulfillment {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
@@ -97,11 +85,7 @@ export class Fulfillment {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `ful_${id}`
+    this.generateId("ful")
   }
 }
 

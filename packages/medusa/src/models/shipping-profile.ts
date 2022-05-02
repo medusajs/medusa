@@ -1,9 +1,9 @@
 import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
 import { Product } from "./product"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum ShippingProfileType {
   DEFAULT = "default",
@@ -12,7 +12,7 @@ export enum ShippingProfileType {
 }
 
 @Entity()
-export class ShippingProfile extends BaseEntity {
+export class ShippingProfile extends SoftDeletableEntity {
   @Column()
   name: string
 
@@ -24,6 +24,9 @@ export class ShippingProfile extends BaseEntity {
 
   @OneToMany(() => ShippingOption, (so) => so.profile)
   shipping_options: ShippingOption[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

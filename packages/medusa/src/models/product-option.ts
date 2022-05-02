@@ -1,11 +1,12 @@
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm"
-import { BaseEntity } from "./_base"
 
 import { Product } from "./product"
 import { ProductOptionValue } from "./product-option-value"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ProductOption extends BaseEntity {
+export class ProductOption extends SoftDeletableEntity {
   @Column()
   title: string
 
@@ -18,6 +19,9 @@ export class ProductOption extends BaseEntity {
   @ManyToOne(() => Product, (product) => product.options)
   @JoinColumn({ name: "product_id" })
   product: Product
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

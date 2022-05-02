@@ -11,15 +11,13 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
 
 @Entity()
-export class Store {
-  @PrimaryColumn()
-  id: string
-
+export class Store extends BaseEntity {
   @Column({ default: "Medusa Store" })
   name: string
 
@@ -53,19 +51,12 @@ export class Store {
   @Column({ nullable: true })
   invite_link_template: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {
-    const id = ulid()
-    this.id = `store_${id}`
+    this.generateId("store")
   }
 }
 

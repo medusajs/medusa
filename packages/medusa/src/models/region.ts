@@ -8,7 +8,6 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 
 import { Currency } from "./currency"
 import { TaxRate } from "./tax-rate"
@@ -16,9 +15,11 @@ import { Country } from "./country"
 import { PaymentProvider } from "./payment-provider"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { TaxProvider } from "./tax-provider"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class Region extends BaseEntity {
+export class Region extends SoftDeletableEntity {
   @Column()
   name: string
 
@@ -87,6 +88,9 @@ export class Region extends BaseEntity {
     },
   })
   fulfillment_providers: FulfillmentProvider[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

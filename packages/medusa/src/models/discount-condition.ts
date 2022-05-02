@@ -9,7 +9,6 @@ import {
   ManyToOne,
   Unique,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { CustomerGroup } from "./customer-group"
 import { DiscountRule } from "./discount-rule"
@@ -17,6 +16,7 @@ import { Product } from "./product"
 import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum DiscountConditionType {
   PRODUCTS = "products",
@@ -33,7 +33,7 @@ export enum DiscountConditionOperator {
 
 @Entity()
 @Unique("dctypeuniq", ["type", "operator", "discount_rule_id"])
-export class DiscountCondition extends BaseEntity {
+export class DiscountCondition extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
     enum: DiscountConditionType,
@@ -123,6 +123,9 @@ export class DiscountCondition extends BaseEntity {
     },
   })
   customer_groups: CustomerGroup[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

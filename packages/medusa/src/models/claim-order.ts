@@ -11,7 +11,6 @@ import {
   OneToOne,
   UpdateDateColumn,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Fulfillment } from "./fulfillment"
@@ -21,6 +20,7 @@ import { Order } from "./order"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
 import { Address } from "./address"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum ClaimType {
   REFUND = "refund",
@@ -46,7 +46,7 @@ export enum ClaimFulfillmentStatus {
 }
 
 @Entity()
-export class ClaimOrder extends BaseEntity {
+export class ClaimOrder extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
     enum: ClaimPaymentStatus,

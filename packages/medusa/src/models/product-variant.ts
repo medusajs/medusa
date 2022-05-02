@@ -7,14 +7,15 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 
 import { Product } from "./product"
 import { MoneyAmount } from "./money-amount"
 import { ProductOptionValue } from "./product-option-value"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ProductVariant extends BaseEntity {
+export class ProductVariant extends SoftDeletableEntity {
   @Column()
   title: string
 
@@ -88,6 +89,9 @@ export class ProductVariant extends BaseEntity {
     cascade: true,
   })
   options: ProductOptionValue[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -30,10 +30,11 @@ import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "type
 
 import { Customer } from "./customer"
 import { Country } from "./country"
-import { BaseEntity } from "./_base"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class Address extends BaseEntity {
+export class Address extends SoftDeletableEntity {
   @Index()
   @Column({ type: "varchar", nullable: true })
   customer_id: string | null
@@ -75,6 +76,9 @@ export class Address extends BaseEntity {
 
   @Column({ type: "varchar", nullable: true })
   phone: string | null
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

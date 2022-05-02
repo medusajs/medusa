@@ -1,27 +1,19 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType } from "../utils/db-aware-column"
 import { Currency } from "./currency"
 import { PriceList } from "./price-list"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 @Entity()
-export class MoneyAmount {
-  @PrimaryColumn()
-  id: string
-
+export class MoneyAmount extends SoftDeletableEntity {
   @Column()
   currency_code: string
 
@@ -66,22 +58,9 @@ export class MoneyAmount {
   @JoinColumn({ name: "region_id" })
   region: Region
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @BeforeInsert()
   private beforeInsert(): undefined | void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `ma_${id}`
+    this.generateId("ma")
   }
 }
 

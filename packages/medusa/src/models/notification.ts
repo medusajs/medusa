@@ -11,16 +11,14 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Customer } from "./customer"
 import { NotificationProvider } from "./notification-provider"
 
 @Entity()
-export class Notification {
-  @PrimaryColumn()
-  id: string
-
+export class Notification extends BaseEntity {
   @Column({ nullable: true })
   event_name: string
 
@@ -63,19 +61,9 @@ export class Notification {
   @JoinColumn({ name: "provider_id" })
   provider: NotificationProvider
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `noti_${id}`
+    this.generateId("noti")
   }
 }
 

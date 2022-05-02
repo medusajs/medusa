@@ -1,7 +1,6 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
   Generated,
   Index,
@@ -11,10 +10,8 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import {
   DbAwareColumn,
   resolveDbGenerationStrategy,
@@ -70,10 +67,7 @@ export enum PaymentStatus {
 }
 
 @Entity()
-export class Order {
-  @PrimaryColumn()
-  id: string
-
+export class Order extends BaseEntity {
   readonly object = "order"
 
   @DbAwareColumn({ type: "enum", enum: OrderStatus, default: "pending" })
@@ -218,12 +212,6 @@ export class Order {
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
@@ -249,10 +237,7 @@ export class Order {
 
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
-    if (!this.id) {
-      const id = ulid()
-      this.id = `order_${id}`
-    }
+    this.generateId("order")
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
       const disId = await manualAutoIncrement("order")

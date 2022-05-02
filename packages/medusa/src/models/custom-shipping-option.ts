@@ -1,11 +1,12 @@
 import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne, Unique } from "typeorm"
-import { BaseEntity } from "./_base"
 import { Cart } from "./cart"
 import { ShippingOption } from "./shipping-option"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
 @Unique(["shipping_option_id", "cart_id"])
-export class CustomShippingOption extends BaseEntity {
+export class CustomShippingOption extends SoftDeletableEntity {
   @Column({ type: "int" })
   price: number
 
@@ -24,6 +25,9 @@ export class CustomShippingOption extends BaseEntity {
   @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

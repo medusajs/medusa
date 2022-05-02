@@ -10,7 +10,6 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Image } from "./image"
 import { ProductCollection } from "./product-collection"
@@ -19,6 +18,7 @@ import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum Status {
   DRAFT = "draft",
@@ -28,7 +28,7 @@ export enum Status {
 }
 
 @Entity()
-export class Product extends BaseEntity {
+export class Product extends SoftDeletableEntity {
   @Column()
   title: string
 
@@ -138,6 +138,9 @@ export class Product extends BaseEntity {
 
   @Column({ nullable: true })
   external_id: string
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

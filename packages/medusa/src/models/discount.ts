@@ -8,13 +8,13 @@ import {
   ManyToMany,
   ManyToOne,
 } from "typeorm"
-import { BaseEntity } from "./_base"
-import { resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 @Entity()
-export class Discount extends BaseEntity {
+export class Discount extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   code: string
@@ -71,6 +71,9 @@ export class Discount extends BaseEntity {
 
   @Column({ default: 0 })
   usage_count: number
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private upperCaseCode(): void {

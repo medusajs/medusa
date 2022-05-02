@@ -94,7 +94,6 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Address } from "./address"
 import { Customer } from "./customer"
@@ -105,6 +104,7 @@ import { Payment } from "./payment"
 import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { ShippingMethod } from "./shipping-method"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum CartType {
   DEFAULT = "default",
@@ -115,7 +115,7 @@ export enum CartType {
 }
 
 @Entity()
-export class Cart extends BaseEntity {
+export class Cart extends SoftDeletableEntity {
   readonly object = "cart"
 
   @Column({ nullable: true })
@@ -224,6 +224,9 @@ export class Cart extends BaseEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   context: Record<string, unknown>
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   shipping_total?: number
   discount_total?: number

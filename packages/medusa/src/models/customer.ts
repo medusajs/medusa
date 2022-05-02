@@ -9,14 +9,15 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 
 import { Address } from "./address"
 import { CustomerGroup } from "./customer-group"
 import { Order } from "./order"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class Customer extends BaseEntity {
+export class Customer extends SoftDeletableEntity {
   @Index({ unique: true })
   @Column()
   email: string
@@ -65,6 +66,9 @@ export class Customer extends BaseEntity {
     onDelete: "CASCADE",
   })
   groups: CustomerGroup[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

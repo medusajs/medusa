@@ -8,7 +8,6 @@ import {
   OneToMany,
   OneToOne,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Order } from "./order"
@@ -19,6 +18,7 @@ import { Return } from "./return"
 import { Cart } from "./cart"
 import { Payment } from "./payment"
 import { ShippingMethod } from "./shipping-method"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum SwapFulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
@@ -41,7 +41,7 @@ export enum SwapPaymentStatus {
 }
 
 @Entity()
-export class Swap extends BaseEntity {
+export class Swap extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: SwapFulfillmentStatus })
   fulfillment_status: SwapFulfillmentStatus
 
@@ -106,6 +106,9 @@ export class Swap extends BaseEntity {
 
   @Column({ nullable: true })
   idempotency_key: string
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

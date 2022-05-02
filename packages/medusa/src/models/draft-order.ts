@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import {
   DbAwareColumn,
   resolveDbGenerationStrategy,
@@ -26,10 +27,7 @@ enum DraftOrderStatus {
 }
 
 @Entity()
-export class DraftOrder {
-  @PrimaryColumn()
-  id: string
-
+export class DraftOrder extends BaseEntity {
   @DbAwareColumn({ type: "enum", enum: DraftOrderStatus, default: "open" })
   status: DraftOrderStatus
 
@@ -57,12 +55,6 @@ export class DraftOrder {
   @Column({ nullable: true, type: resolveDbType("timestamptz") })
   canceled_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at: Date
 
@@ -70,17 +62,14 @@ export class DraftOrder {
   no_notification_order: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
-    if (!this.id) {
-      const id = ulid()
-      this.id = `dorder_${id}`
-    }
+    this.generateId("dorder")
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
       const disId = await manualAutoIncrement("draft_order")

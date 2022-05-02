@@ -21,16 +21,14 @@ import { Order } from "./order"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
 import { LineItemAdjustment } from "./line-item-adjustment"
+import { BaseEntity } from "../interfaces/models/base-entity"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
 @Check(`"returned_quantity" <= "quantity"`)
 @Check(`"quantity" > 0`)
 @Entity()
-export class LineItem {
-  @PrimaryColumn()
-  id: string
-
+export class LineItem extends BaseEntity {
   @Index()
   @Column({ nullable: true })
   cart_id: string
@@ -116,12 +114,6 @@ export class LineItem {
   @Column({ nullable: true, type: "int" })
   shipped_quantity: number
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
@@ -129,11 +121,7 @@ export class LineItem {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `item_${id}`
+    this.generateId("item")
   }
 }
 

@@ -7,7 +7,6 @@ import {
   ManyToOne,
   Unique,
 } from "typeorm"
-import { ulid } from "ulid"
 
 import { TaxLine } from "./tax-line"
 import { LineItem } from "./line-item"
@@ -25,10 +24,6 @@ export class LineItemTaxLine extends TaxLine {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `litl_${id}`
+    this.generateId("litl")
   }
 }

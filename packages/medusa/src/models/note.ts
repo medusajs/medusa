@@ -1,9 +1,10 @@
 import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
-import { BaseEntity } from "./_base"
 import { User } from "./user"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class Note extends BaseEntity {
+export class Note extends SoftDeletableEntity {
   @Column()
   value: string
 
@@ -21,6 +22,9 @@ export class Note extends BaseEntity {
   @ManyToOne(() => User)
   @JoinColumn({ name: "author_id" })
   author: User
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

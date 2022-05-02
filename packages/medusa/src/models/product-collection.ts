@@ -1,11 +1,12 @@
 import { BeforeInsert, Column, Entity, Index, OneToMany } from "typeorm"
-import { BaseEntity } from "./_base"
 import _ from "lodash"
 
 import { Product } from "./product"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ProductCollection extends BaseEntity {
+export class ProductCollection extends SoftDeletableEntity {
   @Column()
   title: string
 
@@ -15,6 +16,9 @@ export class ProductCollection extends BaseEntity {
 
   @OneToMany(() => Product, (product) => product.collection)
   products: Product[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private createHandleIfNotProvided(): void {

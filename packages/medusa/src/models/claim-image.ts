@@ -1,9 +1,10 @@
 import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
 import { ClaimItem } from "./claim-item"
-import { BaseEntity } from "./_base"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ClaimImage extends BaseEntity {
+export class ClaimImage extends SoftDeletableEntity {
   @Index()
   @Column()
   claim_item_id: string
@@ -14,6 +15,9 @@ export class ClaimImage extends BaseEntity {
 
   @Column()
   url: string
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -6,7 +6,6 @@ import {
   ManyToOne,
   JoinColumn,
   PrimaryColumn,
-  OneToOne,
 } from "typeorm"
 import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
@@ -49,7 +48,7 @@ export class LineItemAdjustment {
   amount: number
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert() {

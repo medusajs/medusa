@@ -1,12 +1,12 @@
 import { BeforeInsert, Column, Entity, Index, JoinColumn, ManyToOne } from "typeorm"
-import { BaseEntity } from "./_base"
-import { resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Region } from "./region"
 import { Order } from "./order"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 @Entity()
-export class GiftCard extends BaseEntity {
+export class GiftCard extends SoftDeletableEntity {
   @Index({ unique: true })
   @Column()
   code: string
@@ -41,6 +41,9 @@ export class GiftCard extends BaseEntity {
     nullable: true,
   })
   ends_at: Date
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

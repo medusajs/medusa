@@ -1,11 +1,10 @@
 import {
   CreateDateColumn,
-  DeleteDateColumn,
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../../utils/db-aware-column"
 
 /**
  * Base abstract entity for all entities
@@ -19,12 +18,6 @@ export abstract class BaseEntity {
 
   @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date | null
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
 
   protected generateId(prefix: string): void | false {
     if (this.id) {

@@ -1,10 +1,10 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, Index } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { UserRoles } from "./user"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 @Entity()
-export class Invite extends BaseEntity {
+export class Invite extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   user_email: string
@@ -25,6 +25,9 @@ export class Invite extends BaseEntity {
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   expires_at: Date
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

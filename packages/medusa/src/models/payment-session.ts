@@ -11,6 +11,7 @@ import {
   UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
+import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 
@@ -24,10 +25,7 @@ export enum PaymentSessionStatus {
 
 @Unique("OneSelected", ["cart_id", "is_selected"])
 @Entity()
-export class PaymentSession {
-  @PrimaryColumn()
-  id: string
-
+export class PaymentSession extends BaseEntity {
   @Index()
   @Column()
   cart_id: string
@@ -49,22 +47,12 @@ export class PaymentSession {
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `ps_${id}`
+    this.generateId("ps")
   }
 }
 

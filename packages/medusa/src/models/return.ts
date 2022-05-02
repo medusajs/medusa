@@ -19,6 +19,7 @@ import { Swap } from "./swap"
 import { ClaimOrder } from "./claim-order"
 import { ReturnItem } from "./return-item"
 import { ShippingMethod } from "./shipping-method"
+import { BaseEntity } from "../interfaces/models/base-entity"
 
 export enum ReturnStatus {
   REQUESTED = "requested",
@@ -28,10 +29,7 @@ export enum ReturnStatus {
 }
 
 @Entity()
-export class Return {
-  @PrimaryColumn()
-  id: string
-
+export class Return extends BaseEntity {
   @DbAwareColumn({
     type: "enum",
     enum: ReturnStatus,
@@ -83,12 +81,6 @@ export class Return {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   received_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @Column({ type: "boolean", nullable: true })
   no_notification: boolean
 
@@ -100,11 +92,7 @@ export class Return {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `ret_${id}`
+    this.generateId("ret")
   }
 }
 

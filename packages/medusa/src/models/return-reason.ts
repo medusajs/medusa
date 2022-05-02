@@ -7,10 +7,11 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-import { BaseEntity } from "./_base"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ReturnReason extends BaseEntity {
+export class ReturnReason extends SoftDeletableEntity {
   @Index({ unique: true })
   @Column()
   value: string
@@ -34,6 +35,9 @@ export class ReturnReason extends BaseEntity {
     { cascade: ["insert", "soft-remove"] }
   )
   return_reason_children: ReturnReason[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

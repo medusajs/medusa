@@ -1,10 +1,14 @@
 import { BeforeInsert, Column, Entity } from "typeorm"
-import { BaseEntity } from "./_base"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 @Entity()
-export class ProductType extends BaseEntity {
+export class ProductType extends SoftDeletableEntity {
   @Column()
   value: string
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

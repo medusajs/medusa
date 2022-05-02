@@ -8,13 +8,13 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingProfile } from "./shipping-profile"
 import { Region } from "./region"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { ShippingOptionRequirement } from "./shipping-option-requirement"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum ShippingOptionPriceType {
   FLAT_RATE = "flat_rate",
@@ -23,7 +23,7 @@ export enum ShippingOptionPriceType {
 
 @Check(`"amount" >= 0`)
 @Entity()
-export class ShippingOption extends BaseEntity {
+export class ShippingOption extends SoftDeletableEntity {
   @Column()
   name: string
 
@@ -70,6 +70,9 @@ export class ShippingOption extends BaseEntity {
 
   @DbAwareColumn({ type: "jsonb" })
   data: Record<string, unknown>
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

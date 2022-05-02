@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum UserRoles {
   ADMIN = "admin",
@@ -9,7 +9,7 @@ export enum UserRoles {
 }
 
 @Entity()
-export class User extends BaseEntity {
+export class User extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
     enum: UserRoles,
@@ -33,6 +33,9 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true })
   api_token: string
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

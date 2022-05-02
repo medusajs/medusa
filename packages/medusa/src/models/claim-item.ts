@@ -9,7 +9,6 @@ import {
   ManyToOne,
   OneToMany,
 } from "typeorm"
-import { BaseEntity } from "./_base"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { LineItem } from "./line-item"
@@ -17,6 +16,7 @@ import { ClaimImage } from "./claim-image"
 import { ClaimTag } from "./claim-tag"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 
 export enum ClaimReason {
   MISSING_ITEM = "missing_item",
@@ -26,7 +26,7 @@ export enum ClaimReason {
 }
 
 @Entity()
-export class ClaimItem extends BaseEntity {
+export class ClaimItem extends SoftDeletableEntity {
   @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
     cascade: ["insert", "remove"],
   })
@@ -78,6 +78,9 @@ export class ClaimItem extends BaseEntity {
     },
   })
   tags: ClaimTag[]
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {

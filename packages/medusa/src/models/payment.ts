@@ -1,28 +1,22 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Swap } from "./swap"
 import { Currency } from "./currency"
 import { Cart } from "./cart"
 import { Order } from "./order"
+import { BaseEntity } from "../interfaces/models/base-entity"
 
 @Entity()
-export class Payment {
-  @PrimaryColumn()
-  id: string
-
+export class Payment extends BaseEntity {
   @Index()
   @Column({ nullable: true })
   swap_id: string
@@ -73,12 +67,6 @@ export class Payment {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
@@ -87,11 +75,7 @@ export class Payment {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `pay_${id}`
+    this.generateId("pay")
   }
 }
 
