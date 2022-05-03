@@ -6,7 +6,7 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
-const { ProductVariant, ProductOptionValue } = require("@medusajs/medusa")
+const { ProductVariant, ProductOptionValue, MoneyAmount } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
 
 jest.setTimeout(50000)
@@ -1798,6 +1798,66 @@ describe("/admin/products", () => {
       )
 
       expect(optValPost).toEqual(undefined)
+    })
+
+    it("successfully deletes a product variant and its associated prices", async () => {
+      const api = useApi()
+
+      // Validate that the price exists
+      const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
+        id: "test-price",
+      })
+
+      expect(pricePre).not.toEqual(undefined)
+
+      // Soft delete the variant
+      const response = await api.delete(
+        "/admin/products/test-product/variants/test-variant",
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toEqual(200)
+
+      // Validate that the price was deleted
+      const pricePost = await dbConnection.manager.findOne(
+        MoneyAmount,
+        {
+          id: "test-price",
+        }
+      )
+
+      expect(pricePost).toEqual(undefined)
+    })
+
+    it("successfully deletes a product and any prices associated with one of its variants", async () => {
+      const api = useApi()
+
+      // Validate that the price exists
+      const pricePre = await dbConnection.manager.findOne(MoneyAmount, {
+        id: "test-price",
+      })
+
+      expect(pricePre).not.toEqual(undefined)
+
+      // Soft delete the product
+      const response = await api.delete("/admin/products/test-product", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toEqual(200)
+
+      // Validate that the price has been deleted
+      const pricePost = await dbConnection.manager.findOne(MoneyAmount, {
+        id: "test-price",
+      })
+
+      expect(pricePost).toEqual(undefined)
     })
 
     it("successfully creates product with soft-deleted product handle and deletes it again", async () => {
