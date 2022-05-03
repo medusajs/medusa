@@ -44,7 +44,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       .innerJoin(Discount, "disc", `discon.discount_rule_id = disc.rule_id`)
       .where(`discon.id = :dcId`, { dcId: conditionId })
       .where(`disc.id = :discId`, { discId: discountId })
-      .getOneOrFail()
+      .getOne()
   }
 
   getJoinTableResourceIdentifiers(type: string): {

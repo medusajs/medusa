@@ -70,7 +70,9 @@ export default async (req, res) => {
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  await conditionService.upsertCondition(discount_id, validatedCondition)
+  let discount = await discountService.retrieve(discount_id)
+
+  await conditionService.upsertCondition(discount, validatedCondition)
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,
@@ -79,7 +81,7 @@ export default async (req, res) => {
     validatedParams?.expand?.split(",")
   )
 
-  const discount = await discountService.retrieve(discount_id, config)
+  discount = await discountService.retrieve(discount.id, config)
 
   res.status(200).json({ discount })
 }

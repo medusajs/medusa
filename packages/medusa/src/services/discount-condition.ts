@@ -72,16 +72,17 @@ class DiscountConditionService extends BaseService {
         this.discountConditionRepository_
       )
 
-      // inner join with discount to ensure that it exists
+      // inner join with discount to ensure we are working with comb. of condition and discount
       const condition = await conditionRepo.findOneWithDiscount(
         conditionId,
         discountId
       )
 
+      // slightly different error message than usual accouting for the inner join error
       if (!condition) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `DiscountCondition with id: ${conditionId} was not found`
+          `DiscountCondition with id ${conditionId} was not found for Discount ${discountId}`
         )
       }
 
@@ -149,10 +150,10 @@ class DiscountConditionService extends BaseService {
         )
 
         let discount
+        // in case id is passed, we retrieve the discount
         if (typeof discountIdOrDiscount === `string`) {
           discount = await discountRepo.findOne({
             where: { id: discountIdOrDiscount },
-            relations: ["rule"],
           })
 
           if (!discount) {

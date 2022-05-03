@@ -69,7 +69,9 @@ export default async (req, res) => {
 
   const updateObj = { ...validatedCondition, id: condition_id }
 
-  await conditionService.upsertCondition(discount_id, updateObj)
+  let discount = await discountService.retrieve(discount_id)
+
+  await conditionService.upsertCondition(discount, updateObj)
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,
@@ -78,7 +80,7 @@ export default async (req, res) => {
     validatedParams?.expand?.split(",")
   )
 
-  const discount = await discountService.retrieve(discount_id, config)
+  discount = await discountService.retrieve(discount.id, config)
 
   res.status(200).json({ discount })
 }

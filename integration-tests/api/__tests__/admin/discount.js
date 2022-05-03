@@ -25,7 +25,7 @@ describe("/admin/discounts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -1878,6 +1878,16 @@ describe("/admin/discounts", () => {
           ],
         },
       })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount-2",
+        code: "TEST2",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+        },
+      })
     })
 
     afterEach(async () => {
@@ -1957,8 +1967,6 @@ describe("/admin/discounts", () => {
     })
 
     it("throws if condition does not exist", async () => {
-      expect.assertions(1)
-
       const api = useApi()
 
       const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
@@ -1978,7 +1986,7 @@ describe("/admin/discounts", () => {
       } catch (error) {
         console.log(error)
         expect(error.message).toMatchSnapshot(
-          "DiscountCondition with id does-not-exist was not found"
+          "DiscountCondition with id does-not-exist was not found for Discount test-discount"
         )
       }
     })
@@ -2005,6 +2013,31 @@ describe("/admin/discounts", () => {
       } catch (error) {
         expect(error.message).toMatchSnapshot(
           "Discount with id does-not-exist was not found"
+        )
+      }
+    })
+
+    it("throws if condition does not belong to discount", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount-2/conditions/test-condition",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        console.log(error)
+        expect(error.message).toMatchSnapshot(
+          "DiscountCondition with id test-condition was not found for Discount test-discount-2"
         )
       }
     })
