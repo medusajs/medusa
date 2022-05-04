@@ -254,6 +254,8 @@ describe("/admin/price-lists", () => {
         expect.arrayContaining([
           expect.objectContaining({
             name: "VIP winter sale",
+            description:
+              "Winter sale for VIP customers. 25% off selected items.",
           }),
         ])
       )
