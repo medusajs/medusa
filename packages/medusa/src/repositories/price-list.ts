@@ -1,4 +1,4 @@
-import { flatten, groupBy, map } from "lodash"
+import { groupBy, map } from "lodash"
 import {
   Brackets,
   EntityRepository,
@@ -14,7 +14,7 @@ export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
-    relations: Array<keyof PriceList> = []
+    relations: (keyof PriceList)[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
     let qb = this.createQueryBuilder("price_list")
@@ -42,7 +42,7 @@ export class PriceListRepository extends Repository<PriceList> {
   }
 
   public async findWithRelations(
-    relations: Array<keyof PriceList> = [],
+    relations: (keyof PriceList)[] = [],
     idsOrOptionsWithoutRelations:
       | Omit<FindManyOptions<PriceList>, "relations">
       | string[] = {}
@@ -53,43 +53,43 @@ export class PriceListRepository extends Repository<PriceList> {
     } else {
       entities = await this.find(idsOrOptionsWithoutRelations)
     }
-    const entitiesIds = entities.map(({ id }) => id)
-
-    const groupedRelations = {}
-    for (const rel of relations) {
-      const [topLevel] = rel.split(".")
+    
+    const groupedRelations: Record<string, string[]> = {}
+    for (const relation of relations) {
+      const [topLevel] = relation.split(".")
       if (groupedRelations[topLevel]) {
-        groupedRelations[topLevel].push(rel)
+        groupedRelations[topLevel].push(relation)
       } else {
-        groupedRelations[topLevel] = [rel]
+        groupedRelations[topLevel] = [relation]
       }
     }
-
+    
+    const entitiesIds = entities.map(({ id }) => id)
     const entitiesIdsWithRelations = await Promise.all(
-      Object.entries(groupedRelations).map(([_, rels]) => {
+      Object.values(groupedRelations).map((relations: string[]) => {
         return this.findByIds(entitiesIds, {
           select: ["id"],
-          relations: rels as string[],
+          relations: relations as string[],
         })
       })
-    ).then(flatten)
+    ).then(entitiesIdsWithRelations => entitiesIdsWithRelations.flat())
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
     return map(entitiesAndRelationsById, (entityAndRelations) =>
-      this.merge({} as PriceList, ...entityAndRelations)
+      this.merge(this.create(), ...entityAndRelations)
     )
   }
 
   public async findOneWithRelations(
-    relations: Array<keyof PriceList> = [],
-    optionsWithoutRelations: Omit<FindManyOptions<PriceList>, "relations"> = {}
+    relations: (keyof PriceList)[] = [],
+    options: Omit<FindManyOptions<PriceList>, "relations"> = {}
   ): Promise<PriceList> {
-    optionsWithoutRelations.take = 1
+    options.take = 1
 
     const result = await this.findWithRelations(
       relations,
-      optionsWithoutRelations
+      options
     )
     return result[0]
   }
