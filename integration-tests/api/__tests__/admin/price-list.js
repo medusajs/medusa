@@ -262,7 +262,7 @@ describe("/admin/price-lists", () => {
       expect(response.data.count).toEqual(1)
     })
 
-    it("given a wrong search query, returns empty list", async () => {
+    it("given a search query, returns empty list when does not exist", async () => {
       const api = useApi()
 
       const response = await api
