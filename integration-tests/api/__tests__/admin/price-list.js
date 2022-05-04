@@ -316,6 +316,7 @@ describe("/admin/price-lists", () => {
         expect.arrayContaining([
           expect.objectContaining({
             name: "VIP winter sale",
+            status: "active",
           }),
         ])
       )
