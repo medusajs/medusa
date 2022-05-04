@@ -242,7 +242,7 @@ class PriceListService extends BaseService {
       const query = this.buildQuery_(selector, config)
 
       const groups = query.where.customer_groups
-      delete query.where.customer_groups
+      query.where.customer_groups = undefined
 
       const [priceLists, _] = await priceListRepo.listAndCount(query, groups)
 
@@ -266,7 +266,7 @@ class PriceListService extends BaseService {
       const query = this.buildQuery_(selector, config)
 
       const groups = query.where.customer_groups
-      delete query.where.customer_groups
+      query.where.customer_groups = undefined
 
       return await priceListRepo.listAndCount(query, groups)
     })
