@@ -258,14 +258,11 @@ class PriceListService extends BaseService {
 
     if (q) {
       delete query.where.q
-      const resultsWithCount =
-        await priceListRepo.getFreeTextSearchResultsAndCount(
-          q,
-          query,
-          relations
-        )
-
-      return resultsWithCount
+      return await priceListRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
+      )
     }
     return await priceListRepo.findAndCount({ ...query, relations })
   }
