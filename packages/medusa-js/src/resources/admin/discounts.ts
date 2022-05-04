@@ -141,16 +141,16 @@ class AdminDiscountsResource extends BaseResource {
    * @description creates a discount condition
    */
   createCondition(
-    id: string,
+    discountId: string,
     payload: AdminPostDiscountsConditions,
     query: AdminPostDiscountsConditionsParams = {},
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    let path = `/admin/discounts/${id}/conditions`
+    let path = `/admin/discounts/${discountId}/conditions`
 
     if (query) {
       const queryString = qs.stringify(query)
-      path = `/admin/discounts/${id}/conditions?${queryString}`
+      path = `/admin/discounts/${discountId}/conditions?${queryString}`
     }
 
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -160,17 +160,17 @@ class AdminDiscountsResource extends BaseResource {
    * @description Updates a discount condition
    */
   updateCondition(
-    id: string,
+    discountId: string,
     conditionId: string,
     payload: AdminPostDiscountsConditionsCondition,
     query: AdminPostDiscountsConditionsConditionParams = {},
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
-    let path = `/admin/discounts/${id}/conditions/${conditionId}`
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`
 
     if (query) {
       const queryString = qs.stringify(query)
-      path = `/admin/discounts/${id}/conditions/${conditionId}?${queryString}`
+      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
     }
 
     return this.client.request("POST", path, payload, {}, customHeaders)
@@ -180,11 +180,11 @@ class AdminDiscountsResource extends BaseResource {
    * @description Removes a condition from a discount
    */
   deleteCondition(
-    id: string,
+    discountId: string,
     conditionId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsDeleteRes> {
-    const path = `/admin/discounts/${id}/conditions/${conditionId}`
+    const path = `/admin/discounts/${discountId}/conditions/${conditionId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 }

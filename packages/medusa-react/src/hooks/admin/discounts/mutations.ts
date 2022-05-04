@@ -119,7 +119,7 @@ export const useAdminDeleteDynamicDiscountCode = (
 }
 
 export const useAdminDiscountCreateCondition = (
-  id: string,
+  discountId: string,
   options?: UseMutationOptions<
     Response<AdminDiscountsRes>,
     Error,
@@ -130,13 +130,13 @@ export const useAdminDiscountCreateCondition = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostDiscountsConditions) =>
-      client.admin.discounts.createCondition(id, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
+      client.admin.discounts.createCondition(discountId, payload),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
   )
 }
 
 export const useAdminDiscountUpdateCondition = (
-  id: string,
+  discountId: string,
   conditionId: string,
   options?: UseMutationOptions<
     Response<AdminDiscountsRes>,
@@ -148,20 +148,20 @@ export const useAdminDiscountUpdateCondition = (
   const queryClient = useQueryClient()
   return useMutation(
     (payload: AdminPostDiscountsConditionsCondition) =>
-      client.admin.discounts.updateCondition(id, conditionId, payload),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
+      client.admin.discounts.updateCondition(discountId, conditionId, payload),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
   )
 }
 
 export const useAdminDiscountRemoveCondition = (
-  id: string,
+  discountId: string,
   options?: UseMutationOptions<Response<AdminDiscountsDeleteRes>, Error, string>
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
     (conditionId: string) =>
-      client.admin.discounts.deleteCondition(id, conditionId),
-    buildOptions(queryClient, adminDiscountKeys.detail(id), options)
+      client.admin.discounts.deleteCondition(discountId, conditionId),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
   )
 }
