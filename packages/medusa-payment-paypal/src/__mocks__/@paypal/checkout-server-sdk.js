@@ -80,11 +80,29 @@ export const PayPalMock = {
         },
       }
     }),
-    OrdersGetRequest: jest.fn().mockImplementation(() => {
-      return {
-        result: {
-          id: "test",
-        },
+    OrdersGetRequest: jest.fn().mockImplementation((id) => {
+      switch (id) {
+        case "test-refund":
+          return {
+            result: {
+              id: "test-refund",
+              status: "COMPLETED",
+              invoice_id: "invoice_id"
+            }
+          }
+        case "test-voided":
+          return {
+            result: {
+              id: "test-voided",
+              status: "VOIDED"
+            }
+          }
+        default:
+          return {
+            result: {
+              id: "test",
+            },
+          }
       }
     }),
   },

@@ -310,7 +310,7 @@ describe("PaypalProviderService", () => {
         "test_cap"
       )
       expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test")
-      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(2)
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(3)
 
       expect(result.id).toEqual("test")
     })
@@ -338,7 +338,7 @@ describe("PaypalProviderService", () => {
         PayPalMock.payments.AuthorizationsVoidRequest
       ).toHaveBeenCalledWith("test_auth")
       expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test")
-      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(2)
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(3)
 
       expect(result.id).toEqual("test")
     })
@@ -346,60 +346,33 @@ describe("PaypalProviderService", () => {
     it("should return the order if already canceled", async () => {
       result = await paypalProviderService.cancelPayment({
         currency_code: "eur",
-        data: {
-          id: "test",
-          status: "VOIDED",
-          purchase_units: [
-            {
-              payments: {
-                authorizations: [
-                  {
-                    id: "test_auth",
-                  },
-                ],
-              },
-            },
-          ],
-        },
+        data: { id: "test-voided" },
       })
 
-      expect(
-        PayPalMock.payments.AuthorizationsVoidRequest
-      ).toHaveBeenCalledWith("test_auth")
-      expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test")
-      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(3)
+      expect(PayPalMock.payments.AuthorizationsVoidRequest).not.toHaveBeenCalled()
+      expect(PayPalMock.payments.CapturesRefundRequest).not.toHaveBeenCalled()
+      expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test-voided")
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(1)
 
-      expect(result.id).toEqual("test")
+      expect(result.id).toEqual("test-voided")
+      expect(result.status).toEqual("VOIDED")
     })
 
     it("should return the order if already fully refund", async () => {
       result = await paypalProviderService.cancelPayment({
         currency_code: "eur",
         data: {
-          id: "test",
-          status: "COMPLETED",
-          invoice_id: "invoice_id",
-          purchase_units: [
-            {
-              payments: {
-                authorizations: [
-                  {
-                    id: "test_auth",
-                  },
-                ],
-              },
-            },
-          ],
+          id: "test-refund",
         },
       })
 
-      expect(
-        PayPalMock.payments.AuthorizationsVoidRequest
-      ).toHaveBeenCalledWith("test_auth")
-      expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test")
-      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(3)
+      expect(PayPalMock.payments.AuthorizationsVoidRequest).not.toHaveBeenCalled()
+      expect(PayPalMock.payments.CapturesRefundRequest).not.toHaveBeenCalled()
+      expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test-refund")
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(1)
 
-      expect(result.id).toEqual("test")
+      expect(result.id).toEqual("test-refund")
+      expect(result.status).toEqual("COMPLETED")
     })
   })
 })
