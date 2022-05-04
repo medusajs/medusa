@@ -1,10 +1,14 @@
 import { EntityRepository, FindOperator, Repository } from "typeorm"
 import { PriceList } from "../models/price-list"
+import { FindConfig } from "../types/common"
 
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
   async listAndCount(
-    query,
+    query: FindConfig<PriceList> & {
+      where: Partial<{ -readonly [key in keyof PriceList]: PriceList[key] }>
+      withDeleted?: boolean
+    },
     groups?: FindOperator<PriceList>
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")
