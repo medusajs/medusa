@@ -1,19 +1,10 @@
 import {
-  DateComparisonOperator,
+  ExtendedFindConfig,
   FindConfig,
-  NumericalComparisonOperator,
-  StringComparisonOperator,
+  Selector,
   Writable,
 } from "../types/common"
 import { FindOperator, In, Raw } from "typeorm"
-
-type Selector<TEntity> = {
-  [key in keyof TEntity]?: TEntity[key]
-    | TEntity[key][]
-    | DateComparisonOperator
-    | StringComparisonOperator
-    | NumericalComparisonOperator
-}
 
 /**
 * Used to build TypeORM queries.
@@ -24,10 +15,7 @@ type Selector<TEntity> = {
 export function buildQuery<TEntity = unknown>(
   selector: Selector<TEntity>,
   config: FindConfig<TEntity> = {}
-): FindConfig<TEntity> & {
-  where: Partial<Writable<TEntity>>
-  withDeleted?: boolean
-} {
+): ExtendedFindConfig<TEntity> {
   const build = (
     obj: Selector<TEntity>
   ): Partial<Writable<TEntity>> => {
