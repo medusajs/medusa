@@ -236,16 +236,18 @@ class PriceListService extends BaseService {
     selector: FilterablePriceListProps = {},
     config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
-    const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
-    const query = this.buildQuery_(selector, config)
+      const query = this.buildQuery_(selector, config)
 
-    const groups = query.where.customer_groups
-    delete query.where.customer_groups
+      const groups = query.where.customer_groups
+      delete query.where.customer_groups
 
-    const [priceLists, _] = await priceListRepo.listAndCount(query, groups)
+      const [priceLists, _] = await priceListRepo.listAndCount(query, groups)
 
-    return priceLists
+      return priceLists
+    })
   }
 
   /**
@@ -258,14 +260,16 @@ class PriceListService extends BaseService {
     selector: FilterablePriceListProps = {},
     config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<[PriceList[], number]> {
-    const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
-    const query = this.buildQuery_(selector, config)
+      const query = this.buildQuery_(selector, config)
 
-    const groups = query.where.customer_groups
-    delete query.where.customer_groups
+      const groups = query.where.customer_groups
+      delete query.where.customer_groups
 
-    return await priceListRepo.listAndCount(query, groups)
+      return await priceListRepo.listAndCount(query, groups)
+    })
   }
 
   async upsertCustomerGroups_(

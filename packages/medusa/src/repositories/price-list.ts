@@ -1,9 +1,12 @@
-import { EntityRepository, Repository } from "typeorm"
+import { EntityRepository, FindOperator, Repository } from "typeorm"
 import { PriceList } from "../models/price-list"
 
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
-  async listAndCount(query, groups): Promise<[PriceList[], number]> {
+  async listAndCount(
+    query,
+    groups?: FindOperator<PriceList>
+  ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")
       .where(query.where)
       .skip(query.skip)
