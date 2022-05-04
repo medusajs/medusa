@@ -2,26 +2,13 @@ import { flatten, groupBy, map } from "lodash"
 import {
   Brackets,
   EntityRepository,
-  FindManyOptions,
-  FindOperator,
-  OrderByCondition,
-  Repository,
+  FindManyOptions, Repository
 } from "typeorm"
 import { PriceList } from "../models/price-list"
-import { PriceListStatus, PriceListType } from "../types/price-list"
+import { CustomFindOptions } from "../types/common"
 
-type CustomOptions = {
-  select?: FindManyOptions["select"]
-  where?: FindManyOptions["where"] & {
-    status?: FindOperator<PriceListStatus>[]
-    type?: FindOperator<PriceListType>[]
-  }
-  order?: OrderByCondition
-  skip?: number
-  take?: number
-}
+type FindOptions = CustomFindOptions<PriceList, 'status' | 'type'>
 
-type FindOptions = CustomOptions
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
