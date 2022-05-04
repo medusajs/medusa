@@ -244,7 +244,7 @@ class PriceListService extends BaseService {
       const groups = query.where.customer_groups
       query.where.customer_groups = undefined
 
-      const [priceLists, _] = await priceListRepo.listAndCount(query, groups)
+      const [priceLists] = await priceListRepo.listAndCount(query, groups)
 
       return priceLists
     })
