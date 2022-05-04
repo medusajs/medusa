@@ -22,7 +22,7 @@ describe("/admin/price-lists", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -509,6 +509,113 @@ describe("/admin/price-lists", () => {
         updated_at: expect.any(String),
       })
     })
+
+    it("updates a price list (inser new a new MA for a specific region)", async () => {
+      const api = useApi()
+
+      const payload = {
+        id: "pl_with_some_ma",
+        prices: [
+          {
+            id: "ma_test_1",
+            amount: 100,
+            currency_code: "usd",
+            variant_id: "test-variant",
+          },
+          {
+            amount: 10,
+            currency_code: "usd",
+            variant_id: "test-variant",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/price-lists/pl_with_some_ma", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+
+      // expect(response.data.price_list)
+      console.log(response.data.price_list)
+    })
+  })
+
+  it("updates a price list (inser new a new MA for a specific region)", async () => {
+    const api = useApi()
+
+    const payload = {
+      id: "pl_with_some_ma",
+      prices: [
+        {
+          id: "ma_test_1",
+          amount: 100,
+          currency_code: "usd",
+          variant_id: "test-variant",
+        },
+        {
+          amount: 10,
+          currency_code: "usd",
+          variant_id: "test-variant",
+        },
+      ],
+    }
+
+    const response = await api
+      .post("/admin/price-lists/pl_with_some_ma", payload, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+      .catch((err) => {
+        console.warn(err.response.data)
+      })
+
+    expect(response.status).toEqual(200)
+
+    // expect(response.data.price_list)
+    console.log(response.data.price_list)
+  })
+  it("updates a price list (inser new a new MA for a specific region)", async () => {
+    const api = useApi()
+
+    const payload = {
+      id: "pl_with_some_ma",
+      prices: [
+        {
+          id: "ma_test_1",
+          amount: 100,
+          currency_code: "usd",
+          variant_id: "test-variant",
+        },
+        {
+          amount: 10,
+          currency_code: "usd",
+          variant_id: "test-variant",
+        },
+      ],
+    }
+
+    const response = await api
+      .post("/admin/price-lists/pl_with_some_ma", payload, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+      .catch((err) => {
+        console.warn(err.response.data)
+      })
+
+    expect(response.status).toEqual(200)
+
+    // expect(response.data.price_list)
+    console.log(response.data.price_list)
   })
 
   describe("POST /admin/price-lists/:id/prices/batch", () => {
