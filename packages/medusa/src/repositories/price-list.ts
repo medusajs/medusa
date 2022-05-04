@@ -16,9 +16,7 @@ export class PriceListRepository extends Repository<PriceList> {
     options: PriceListFindOptions = { where: {} },
     relations: Array<keyof PriceList> = []
   ): Promise<[PriceList[], number]> {
-    if (!options.where) {
-      options.where = {}
-    }
+    options.where = options.where ?? {}
     let qb = this.createQueryBuilder("price_list")
       .leftJoinAndSelect("price_list.customer_groups", "customer_group")
       .select(["price_list.id"])
