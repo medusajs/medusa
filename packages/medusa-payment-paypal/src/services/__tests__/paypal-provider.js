@@ -342,5 +342,64 @@ describe("PaypalProviderService", () => {
 
       expect(result.id).toEqual("test")
     })
+
+    it("should return the order if already canceled", async () => {
+      result = await paypalProviderService.cancelPayment({
+        currency_code: "eur",
+        data: {
+          id: "test",
+          status: "VOIDED",
+          purchase_units: [
+            {
+              payments: {
+                authorizations: [
+                  {
+                    id: "test_auth",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      })
+
+      expect(
+        PayPalMock.payments.AuthorizationsVoidRequest
+      ).toHaveBeenCalledWith("test_auth")
+      expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test")
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(3)
+
+      expect(result.id).toEqual("test")
+    })
+
+    it("should return the order if already fully refund", async () => {
+      result = await paypalProviderService.cancelPayment({
+        currency_code: "eur",
+        data: {
+          id: "test",
+          status: "COMPLETED",
+          invoice_id: "invoice_id",
+          purchase_units: [
+            {
+              payments: {
+                authorizations: [
+                  {
+                    id: "test_auth",
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      })
+
+      expect(
+        PayPalMock.payments.AuthorizationsVoidRequest
+      ).toHaveBeenCalledWith("test_auth")
+      expect(PayPalMock.orders.OrdersGetRequest).toHaveBeenCalledWith("test")
+      expect(PayPalClientMock.execute).toHaveBeenCalledTimes(3)
+
+      expect(result.id).toEqual("test")
+    })
   })
 })
