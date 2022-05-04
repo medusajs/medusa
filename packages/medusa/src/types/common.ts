@@ -27,6 +27,11 @@ export interface FindConfig<Entity> {
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }
 
+export type RepositoryQuery<T> = FindConfig<T> & {
+  where: Partial<{ -readonly [key in keyof T]: T[key] }>
+  withDeleted?: boolean
+}
+
 export type DeleteResponse = {
   id: string
   object: string
