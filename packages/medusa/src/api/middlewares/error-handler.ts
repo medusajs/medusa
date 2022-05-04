@@ -1,5 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { Logger } from "../../types/global"
 
 const QUERY_RUNNER_RELEASED = "QueryRunnerAlreadyReleasedError"
@@ -11,7 +11,7 @@ const INVALID_REQUEST_ERROR = "invalid_request_error"
 const INVALID_STATE_ERROR = "invalid_state_error"
 
 export default () => {
-  return (err: MedusaError, req: Request, res: Response) => {
+  return (err: MedusaError, req: Request, res: Response, next: NextFunction) => {
     const logger: Logger = req.scope.resolve("logger")
     logger.error(err)
 
