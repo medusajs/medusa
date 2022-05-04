@@ -388,7 +388,9 @@ class ProductService extends BaseService {
    * @return {Promise} an array of variants
    */
   async retrieveVariants(productId) {
-    const product = await this.retrieve(productId, { relations: ["variants"] })
+    const product = await this.retrieve(productId, {
+      relations: ["variants", "variants.prices"],
+    })
     return product.variants
   }
 

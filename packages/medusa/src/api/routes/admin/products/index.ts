@@ -17,6 +17,10 @@ export default (app) => {
     middlewares.wrap(require("./list-tag-usage-count").default)
   )
 
+  route.get(
+    "/:id/variants",
+    middlewares.wrap(require("./get-variants").default)
+  )
   route.post(
     "/:id/variants",
     middlewares.wrap(require("./create-variant").default)
