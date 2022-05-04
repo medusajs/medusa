@@ -9,12 +9,16 @@ import {
   ValidateNested,
 } from "class-validator"
 import { PriceList } from "../models/price-list"
-import { DateComparisonOperator } from "./common"
+import { DateComparisonOperator, FindConfig } from "./common"
 import { XorConstraint } from "./validators/xor"
 
 export enum PriceListType {
   SALE = "sale",
   OVERRIDE = "override",
+}
+
+export type PriceListListQuery = FindConfig<PriceList> & {
+  where: Partial<{ -readonly [key in keyof PriceList]: PriceList[key] }>
 }
 
 export enum PriceListStatus {
