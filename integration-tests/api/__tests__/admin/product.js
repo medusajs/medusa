@@ -1856,7 +1856,7 @@ describe("/admin/products", () => {
 
       expect(pricePost).toEqual(undefined)
 
-      // Validate that the option still exists in the DB with deleted_at
+      // Validate that the price still exists in the DB with deleted_at
       const optValDeleted = await dbConnection.manager.findOne(MoneyAmount, {
         id: "test-price",
       }, {
@@ -1895,7 +1895,7 @@ describe("/admin/products", () => {
 
       expect(pricePost).toEqual(undefined)
 
-      // Validate that the option still exists in the DB with deleted_at
+      // Validate that the price still exists in the DB with deleted_at
       const optValDeleted = await dbConnection.manager.findOne(MoneyAmount, {
         id: "test-price",
       }, {
