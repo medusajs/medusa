@@ -7,13 +7,13 @@ import {
 import { PriceList } from "../models/price-list"
 import { CustomFindOptions } from "../types/common"
 
-type FindOptions = CustomFindOptions<PriceList, 'status' | 'type'>
+type PriceListFindOptions = CustomFindOptions<PriceList, 'status' | 'type'>
 
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
-    options: FindOptions = { where: {} },
+    options: PriceListFindOptions = { where: {} },
     relations: Array<keyof PriceList> = []
   ): Promise<[PriceList[], number]> {
     if (!options.where) {
