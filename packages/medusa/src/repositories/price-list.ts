@@ -1,11 +1,11 @@
 import { EntityRepository, FindOperator, Repository } from "typeorm"
 import { PriceList } from "../models/price-list"
-import { PriceListListQuery } from "../types/price-list"
+import { ExtendedFindConfig } from "../types/common"
 
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
   async listAndCount(
-    query: PriceListListQuery,
+    query: ExtendedFindConfig<PriceList>,
     groups?: FindOperator<PriceList>
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")

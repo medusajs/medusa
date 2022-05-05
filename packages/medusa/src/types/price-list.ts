@@ -17,10 +17,6 @@ export enum PriceListType {
   OVERRIDE = "override",
 }
 
-export type PriceListListQuery = FindConfig<PriceList> & {
-  where: Partial<{ -readonly [key in keyof PriceList]: PriceList[key] }>
-}
-
 export enum PriceListStatus {
   ACTIVE = "active",
   DRAFT = "draft",

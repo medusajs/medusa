@@ -7,6 +7,13 @@ export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
 }
 
+export type Writable<T> = { -readonly [key in keyof T]: T[key] }
+
+export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
+  where: Partial<Writable<TEntity>>
+  withDeleted?: boolean
+}
+
 export type TotalField =
   | "shipping_total"
   | "discount_total"
