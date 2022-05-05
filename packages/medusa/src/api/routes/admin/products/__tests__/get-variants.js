@@ -32,8 +32,8 @@ describe("GET /admin/products/:id/variants", () => {
     it("returns product decorated", () => {
       expect(subject.body.variants.length).toEqual(2)
       expect(subject.body.variants).toEqual(expect.arrayContaining([
-        expect.objectContaining({ product_id: "product1" }),
-        expect.objectContaining({ product_id: "product1" }),
+        expect.objectContaining({ product_id: IdMap.getId("product1") }),
+        expect.objectContaining({ product_id: IdMap.getId("product1") }),
       ]))
     })
   })
