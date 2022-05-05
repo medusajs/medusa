@@ -84,13 +84,12 @@ export class PriceListRepository extends Repository<PriceList> {
   public async findOneWithRelations(
     relations: (keyof PriceList)[] = [],
     options: Omit<FindManyOptions<PriceList>, "relations"> = {}
-  ): Promise<PriceList> {
+  ): Promise<PriceList | undefined> {
     options.take = 1
 
-    const result = await this.findWithRelations(
+    return (await this.findWithRelations(
       relations,
       options
-    )
-    return result[0]
+    ))?.pop()
   }
 }
