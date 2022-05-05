@@ -23,8 +23,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/medusajs/medusa.git",
-    "directory": "package/medusa-js"
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-js"
   },
   "bugs": {
     "url": "https://github.com/medusajs/medusa/issues"
