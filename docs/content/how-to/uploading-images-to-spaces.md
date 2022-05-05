@@ -20,8 +20,8 @@ Navigate to API in the left sidebar. Generate a new Spaces access key. This shou
 
 First, install the plugin using your preferred package manager:
 
-```
-yarn add medusa-file-spaces
+```bash npm2yarn
+npm install medusa-file-spaces
 ```
 
 Then configure your `medusa-config.js` to include the plugin alongside the required options:
@@ -41,7 +41,11 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
 
 In the above options, a `spaces_url` is included. This can be found in your Space overview. The `bucket` should point to the name you gave your Space. The `endpoint` identifies the region in which you created the Space. And finally the two keys are the ones created in the previous section.
 
-> Make sure to use an environment variable for the secret key in a live environment.
+:::tip
+
+Make sure to use an environment variable for the secret key in a live environment.
+
+:::
 
 ### Try it out!
 

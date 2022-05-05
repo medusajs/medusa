@@ -24,7 +24,7 @@ export default () => {
 
   router.get("/store/hello", (req, res) => {
     res.json({
-      message: "Welcome to My Store!"
+      message: "Welcome to My Store!",
     })
   })
 
@@ -36,7 +36,15 @@ This exports a function that returns an Express router. In that function, you ca
 
 Now, if you run your server and send a request to `/store/hello`, you will receive a JSON response message.
 
-> Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run `npm run build`.
+:::note
+
+Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run:
+
+```bash npm2yarn
+npm run build
+```
+
+:::
 
 ## Multiple Endpoints
 
@@ -47,13 +55,13 @@ You can add more than one endpoints in `src/api/index.js`:
 ```js
 router.get("/store/hello", (req, res) => {
   res.json({
-    message: "Welcome to My Store!"
+    message: "Welcome to My Store!",
   })
 })
 
 router.get("/store/bye", (req, res) => {
   res.json({
-    message: "Come back again!"
+    message: "Come back again!",
   })
 })
 ```
@@ -68,7 +76,7 @@ To do that with the previous example, first, create the file `src/api/hello.js` 
 export default (router) => {
   router.get("/store/hello", (req, res) => {
     res.json({
-      message: "Welcome to My Store!"
+      message: "Welcome to My Store!",
     })
   })
 }
@@ -82,7 +90,7 @@ Next, create the file `src/api/bye.js` with the following content:
 export default (router) => {
   router.get("/store/bye", (req, res) => {
     res.json({
-      message: "Come back again!"
+      message: "Come back again!",
     })
   })
 }
@@ -119,17 +127,15 @@ You can retrieve any registered service in your endpoint using `req.scope.resolv
 Here’s an example of an endpoint that retrieves the count of products in your store:
 
 ```js
-router.get('/store/products/count', (req, res) => {
-    const productService = req.scope.resolve('productService')
+router.get("/store/products/count", (req, res) => {
+  const productService = req.scope.resolve("productService")
 
-    productService
-      .count()
-      .then((count) => {
-        res.json({
-          count
-        })
-      })
+  productService.count().then((count) => {
+    res.json({
+      count,
+    })
   })
+})
 ```
 
 The `productService` has a `count` method that returns a Promise. This Promise resolves to the count of the products. You return a JSON of the product count.
@@ -141,13 +147,13 @@ Protected routes are routes that should be accessible by logged-in customers onl
 To make a route protected, first, import the `authenticate` middleware:
 
 ```js
-import authenticate from '@medusajs/medusa/dist/api/middlewares/authenticate'
+import authenticate from "@medusajs/medusa/dist/api/middlewares/authenticate"
 ```
 
 Then, add the middleware to your route:
 
 ```jsx
-router.get('/store/products/count', authenticate(), (req, res) => {
+router.get("/store/products/count", authenticate(), (req, res) => {
   //...
 })
 ```
@@ -171,6 +177,19 @@ const customerService = req.scope.resolve("customerService")
 const customer = await customerService.retrieve(id)
 ```
 
+### Route Parameters
+
+The routes you create receive 2 parameters. The first one is the absolute path to the root directory that your server is running from. The second one is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+
+```js
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  //...
+}
+```
+
 ## What’s Next :rocket:
 
+- [Learn how to add an endpoint for the Admin.](/advanced/backend/endpoints/add-admin)
 - [Check out the API reference for all available endpoints.](https://docs.medusajs.com/api/store)

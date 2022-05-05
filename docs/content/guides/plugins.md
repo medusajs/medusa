@@ -12,7 +12,11 @@ Plugins offer a way to extend and integrate the core functionality of Medusa.
 
 In most commerce solutions, you can extend the basic features but it often comes with the expense of having to build standalone web applications. Our architecture is built such that plugins run within the same process as the core eliminating the need for extra server capacity, infrastructure and maintenance. As a result, the plugins can use all other services as dependencies and access the database.
 
-> You will notice that plugins vary in naming. The name should signal what functionality they provide.
+:::note
+
+You will notice that plugins vary in naming. The name should signal what functionality they provide.
+
+:::
 
 In the following sections, we will go through the basics of implementing a generic plugin. And finally, how to use it as part of your commerce setup.
 
@@ -22,7 +26,7 @@ A plugin is essentially a Node.js project of their own. They contain a file in r
 
 The first step in creating a plugin is to initialize the Node.js project:
 
-```bash
+```bash npm2yarn
 npm init
 ```
 
@@ -34,7 +38,11 @@ We've already gone through the process of building custom services, endpoints, a
 
 To quickly get started with the implementation, we advise you to copy `/services/welcome.js`, `/api/index.js`, `/subscribers/welcome.js` and the config files from the tutorial and add them in `/src`. As a result, you should have the following folder structure:
 
-> Please note: since the container resolution paths are automatically generated from the used directories and filenames you should avoid pre- or suffixing your file (e.g. `services/welcomeService.js` would result in the service being registered as `WelcomeServiceService`).
+:::note 
+
+Since the container resolution paths are automatically generated from the used directories and filenames you should avoid pre- or suffixing your file (e.g. `services/welcomeService.js` would result in the service being registered as `WelcomeServiceService`).
+
+:::
 
 ```js
 .
@@ -55,7 +63,11 @@ Please note that you will need some build step before being able to properly loa
 
 It is worth mentioning the difference between building a generic and a non-generic plugin. A non-generic plugin has a specific purpose such as processing payments or creating fulfillments. Medusa core depends on a specific implementation from such plugins, which is why we've created interfaces that enforce this. These can be found in `medusa-interfaces`.
 
-> Note: Non-generic plugins are required to extend the correct interface, otherwise they will not be loaded correctly as part of your Medusa setup.
+:::note
+
+Non-generic plugins are required to extend the correct interface, otherwise they will not be loaded correctly as part of your Medusa setup.
+
+:::
 
 For a more comprehensive walkthrough of the implementation of such plugins, see our guides:
 
@@ -88,7 +100,11 @@ Official Medusa plugins can be found within the [mono repo](https://github.com/m
 
 Note: For plugins to become a part of the mono repo, we require you to submit a PR request. If approved, we will publish it under the Medusa organisation on Github.
 
-Plugins are distributed as NPM packages making it possible for developers to simply install and use a plugin via `yarn add` or `npm install`.
+Plugins are distributed as NPM packages making it possible for developers to simply install and use a plugin via:
+
+```bash npm2yarn
+npm install
+```
 
 After installing a plugin using your preferred package manager, it should be added to `medusa-config.js`. We allow you to provide options for plugins. These options can be used for anything ranging from provider requirements such as API keys or custom configuration used in the plugin's logic. These options are injected into the services, subscribers, and APIs of the plugin.
 
@@ -98,8 +114,8 @@ The following steps will install the official Contentful plugin for your Medusa 
 
 First, we add the plugin as a dependency to your project:
 
-```bash
-yarn add medusa-plugin-contentful
+```bash npm2yarn
+npm install medusa-plugin-contentful
 ```
 
 ### Step 2: Configuration

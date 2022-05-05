@@ -8,6 +8,8 @@ import {
   AdminPostCustomerGroupsGroupCustomersBatchReq,
   AdminDeleteCustomerGroupsGroupCustomerBatchReq,
   AdminGetCustomerGroupsGroupParams,
+  AdminCustomersListRes,
+  AdminGetCustomersParams,
 } from "@medusajs/medusa"
 import qs from "qs"
 
@@ -130,6 +132,28 @@ class AdminCustomerGroupsResource extends BaseResource {
   ): ResponsePromise<AdminCustomerGroupsRes> {
     const path = `/admin/customer-groups/${id}/customers/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * List and count customers that belong to provided customer groups.
+   *
+   * @param id - customer group id
+   * @param query - params for filtering customers
+   * @param customHeaders
+   */
+  listCustomers(
+    id: string,
+    query?: AdminGetCustomersParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminCustomersListRes> {
+    let path = `/admin/customer-groups/${id}/customers`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }
 

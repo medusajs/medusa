@@ -1,5 +1,5 @@
 import { omit, pickBy } from "lodash"
-import { AdminGetCustomersParams } from "../../api/routes/admin/customers/list-customers"
+import { AdminGetCustomersParams } from "../../api/routes/admin/customers"
 import { AdminCustomersListRes } from "../../api"
 import { CustomerService } from "../../services"
 import { FindConfig } from "../../types/common"
@@ -9,8 +9,7 @@ import { Customer } from "../../models/customer"
 const listAndCount = async (
   scope,
   query,
-  body,
-  context = {}
+  body
 ): Promise<AdminCustomersListRes> => {
   const validatedQueryParams = await validator(AdminGetCustomersParams, query)
 

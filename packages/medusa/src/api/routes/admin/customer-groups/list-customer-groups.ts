@@ -1,13 +1,12 @@
-import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import omit from "lodash/omit"
-
-import { validator } from "../../../../utils/validator"
-import { CustomerGroupService } from "../../../../services"
-import { CustomerGroup } from "../../../../models/customer-group"
-import { FindConfig } from "../../../../types/common"
 import { defaultAdminCustomerGroupsRelations } from "."
+import { CustomerGroup } from "../../../../models/customer-group"
+import { CustomerGroupService } from "../../../../services"
+import { FindConfig } from "../../../../types/common"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [get] /customer-groups

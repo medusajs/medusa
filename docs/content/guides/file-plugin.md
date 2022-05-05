@@ -62,7 +62,7 @@ api_secret: "xx"
 
 The first step in creating a plugin is to initialize the Node.js project:
 
-```bash
+```bash npm2yarn
 npm init
 ```
 
@@ -70,7 +70,7 @@ This command will ask you to fill out your project's metadata, which will eventu
 
 Next up, we need to install cloudinary's Node.js SDK.
 
-```bash
+```bash npm2yarn
 npm install cloudinary
 ```
 

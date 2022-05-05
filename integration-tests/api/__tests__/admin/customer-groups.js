@@ -77,7 +77,7 @@ describe("/admin/customer-groups", () => {
           },
         })
         .catch((err) => {
-          expect(err.response.status).toEqual(402)
+          expect(err.response.status).toEqual(422)
           expect(err.response.data.type).toEqual("duplicate_error")
           expect(err.response.data.message).toEqual(
             "Key (name)=(vip-customers) already exists."

@@ -16,17 +16,15 @@ mv .env.template .env.local
 **Install dependencies**
 Use your favourite package manager to install dependencies:
 
-```shell
-yarn
-# or
+```bash npm2yarn
 npm install
 ```
 
 **Start developing.**
 Start up the local server:
 
-```shell
-yarn dev
+```bash npm2yarn
+npm run dev
 ```
 
 Your site is now running at http://localhost:8000!
@@ -35,9 +33,9 @@ Edit `src/pages/index.js` to see your site update in real-time!
 
 **Learn more about Medusa**
 
-- [Website](https://www.medusa-commerce.com/)
+- [Website](https://www.medusajs.com/)
 - [GitHub](https://github.com/medusajs)
-- [Documentation](https://docs.medusa-commerce.com/)
+- [Documentation](https://docs.medusajs.com/)
 
 **Learn more about Next.js**
 

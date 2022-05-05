@@ -51,8 +51,8 @@ Upon successful creation of the user, you are presented with an **Access key ID*
 
 First, install the plugin using your preferred package manager:
 
-```
-yarn add medusa-file-s3
+```bash npm2yarn
+npm install medusa-file-s3
 ```
 
 Then configure your `medusa-config.js` to include the plugin alongside the required options:
@@ -78,7 +78,11 @@ https://[bucket].s3.[region].amazonaws.com
 
 The two access keys in the options are the ones created in the previous section.
 
-> Make sure to use an environment variable for the secret key in a live environment.
+:::tip
+
+Make sure to use an environment variable for the secret key in a live environment.
+
+:::
 
 ### Try it out
 

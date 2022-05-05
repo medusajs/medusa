@@ -5,12 +5,15 @@ import { SwapServiceMock } from "../../../../../services/__mocks__/swap"
 const defaultRelations = [
   "order",
   "additional_items",
+  "additional_items.adjustments",
   "return_order",
   "fulfillments",
   "payment",
   "shipping_address",
   "shipping_methods",
   "cart",
+  "cart.items",
+  "cart.items.adjustments",
 ]
 
 const defaultFields = [

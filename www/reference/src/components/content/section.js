@@ -1,21 +1,22 @@
-import React, { useState, useRef, useEffect, useContext } from "react"
-import { Flex, Box, Heading, Text, Button } from "theme-ui"
-import Method from "./method"
-import Parameters from "./parameters"
-import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
-import EndpointContainer from "./endpoint-container"
-import Markdown from "react-markdown"
-import JsonContainer from "./json-container"
-import ResponsiveContainer from "./responsive-container"
-import Description from "./description"
-import NavigationContext from "../../context/navigation-context"
+import { Box, Button, Flex, Heading, Text } from "theme-ui"
+import React, { useContext, useEffect, useRef, useState } from "react"
+
 import ChevronDown from "../icons/chevron-down"
+import Description from "./description"
+import EndpointContainer from "./endpoint-container"
+import JsonContainer from "./json-container"
+import Markdown from "react-markdown"
+import Method from "./method"
+import NavigationContext from "../../context/navigation-context"
+import Parameters from "./parameters"
+import ResponsiveContainer from "./responsive-container"
+import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
 import useInView from "../../hooks/use-in-view"
 
 const Section = ({ data, api }) => {
-  const { section } = data
+  const section = data;
   const [isExpanded, setIsExpanded] = useState(false)
-  const { openSections, updateSection, updateMetadata } = useContext(
+  const { openSections, updateSection, updateMetadata, updateHash } = useContext(
     NavigationContext
   )
 
@@ -61,6 +62,12 @@ const Section = ({ data, api }) => {
     }
   }, [section.section_name, openSections, openSections.length])
 
+  useEffect(() => {
+    if (section.section_name) {
+      updateHash(convertToKebabCase(section.section_name), section.paths && section.paths.length ? (section.paths[0].methods[0].path || '') : '', section)
+    }
+  }, [section.section_name])
+
   const [containerRef, isInView] = useInView({
     root: null,
     rootMargin: "0px 0px -80% 0px",
@@ -70,7 +77,7 @@ const Section = ({ data, api }) => {
   useEffect(() => {
     const handleInView = () => {
       if (isInView) {
-        updateSection(convertToKebabCase(section.section_name))
+        updateSection({id: convertToKebabCase(section.section_name), section})
       }
     }
     handleInView()
@@ -188,6 +195,7 @@ const Section = ({ data, api }) => {
                         key={i}
                         data={m}
                         section={convertToKebabCase(section.section_name)}
+                        sectionData={section}
                         pathname={p.name}
                       />
                     )
