@@ -16,18 +16,13 @@ type ListContext = {
   allowedFields?: string[]
   defaultFields?: (keyof Product)[]
   defaultRelations?: string[]
-  include_discount_prices?: boolean
 }
 
 const listAndCount = async (
   scope: AwilixContainer,
   query: FilterableProductProps,
   body?: object,
-  context: ListContext = {
-    limit: 50,
-    offset: 0,
-    include_discount_prices: false,
-  }
+  context: ListContext = { limit: 50, offset: 0 }
 ): Promise<AdminProductsListRes> => {
   const { limit, offset, allowedFields, defaultFields, defaultRelations } =
     context
@@ -74,7 +69,7 @@ const listAndCount = async (
 
   const [products, count] = await productService.listAndCount(
     pickBy(query, (val) => typeof val !== "undefined"),
-    { ...listConfig, include_discount_prices: context.include_discount_prices }
+    listConfig
   )
 
   return {
