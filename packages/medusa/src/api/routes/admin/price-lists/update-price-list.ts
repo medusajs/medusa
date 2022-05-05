@@ -100,8 +100,9 @@ export default async (req, res) => {
     req.body
   )
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  const priceListService: PriceListService = req.scope.resolve(
+    "priceListService"
+  )
 
   await priceListService.update(id, validated)
 

@@ -12,14 +12,17 @@ import {
   CreatePriceListInput,
   FilterablePriceListProps,
   PriceListPriceCreateInput,
+  PriceListPriceUpdateInput,
   UpdatePriceListInput,
 } from "../types/price-list"
 import { formatException } from "../utils/exception-formatter"
+import RegionService from "./region"
 import ProductService from "./product"
 
 type PriceListConstructorProps = {
   manager: EntityManager
   customerGroupService: CustomerGroupService
+  regionService: RegionService
   productService: ProductService
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: typeof MoneyAmountRepository
@@ -32,6 +35,7 @@ type PriceListConstructorProps = {
 class PriceListService extends BaseService {
   private manager_: EntityManager
   private customerGroupService_: CustomerGroupService
+  private regionService_: RegionService
   private productService_: ProductService
   private priceListRepo_: typeof PriceListRepository
   private moneyAmountRepo_: typeof MoneyAmountRepository
@@ -39,6 +43,7 @@ class PriceListService extends BaseService {
   constructor({
     manager,
     customerGroupService,
+    regionService,
     productService,
     priceListRepository,
     moneyAmountRepository,
@@ -47,6 +52,7 @@ class PriceListService extends BaseService {
     this.manager_ = manager
     this.customerGroupService_ = customerGroupService
     this.productService_ = productService
+    this.regionService_ = regionService
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
   }
@@ -60,6 +66,7 @@ class PriceListService extends BaseService {
       manager: transactionManager,
       customerGroupService: this.customerGroupService_,
       productService: this.productService_,
+      regionService: this.regionService_,
       priceListRepository: this.priceListRepo_,
       moneyAmountRepository: this.moneyAmountRepo_,
     })
@@ -152,7 +159,8 @@ class PriceListService extends BaseService {
       await priceListRepo.save(priceList)
 
       if (prices) {
-        await moneyAmountRepo.updatePriceListPrices(id, prices)
+        const p = await this.joinCurrencyForRegion(prices)
+        await moneyAmountRepo.updatePriceListPrices(id, p)
       }
 
       if (customer_groups) {
@@ -184,7 +192,12 @@ class PriceListService extends BaseService {
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
-      await moneyAmountRepo.addPriceListPrices(priceList.id, prices, replace)
+      await moneyAmountRepo.addPriceListPrices(
+        priceList.id,
+        // @ts-ignore
+        await this.joinCurrencyForRegion(prices),
+        replace
+      )
 
       const result = await this.retrieve(priceList.id, {
         relations: ["prices"],
@@ -335,6 +348,22 @@ class PriceListService extends BaseService {
 
       return [productsWithPrices, count]
     })
+  }
+
+  async joinCurrencyForRegion(
+    prices: (PriceListPriceCreateInput | PriceListPriceUpdateInput)[]
+  ): Promise<typeof prices> {
+    const ret: typeof prices = []
+
+    for (const p of prices) {
+      if (p.region_id) {
+        const region = await this.regionService_.retrieve(p.region_id)
+        p.currency_code = region.currency_code
+      }
+
+      ret.push(p)
+    }
+    return ret
   }
 }
 

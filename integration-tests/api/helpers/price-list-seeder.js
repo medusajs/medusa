@@ -18,7 +18,7 @@ module.exports = async (connection, data = {}) => {
   await manager.insert(Region, {
     id: "region-pl",
     name: "Test Region",
-    currency_code: "usd",
+    currency_code: "eur",
     tax_rate: 0,
   })
 

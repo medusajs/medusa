@@ -514,18 +514,19 @@ describe("/admin/price-lists", () => {
       const api = useApi()
 
       const payload = {
-        id: "pl_with_some_ma",
         prices: [
+          // updated MA
           {
             id: "ma_test_1",
-            amount: 100,
+            amount: 1001,
             currency_code: "usd",
             variant_id: "test-variant",
           },
+          // created MA
           {
-            amount: 10,
-            currency_code: "usd",
+            amount: 101,
             variant_id: "test-variant",
+            region_id: "region-pl",
           },
         ],
       }
@@ -542,80 +543,36 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
 
-      // expect(response.data.price_list)
-      console.log(response.data.price_list)
+      expect(response.data.price_list.prices.length).toEqual(2)
+      expect(response.data.price_list.prices).toMatchSnapshot([
+        {
+          id: expect.any(String),
+          currency_code: "eur",
+          amount: 101,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: "region-pl",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: "ma_test_1",
+          currency_code: "usd",
+          amount: 1001,
+          min_quantity: 1,
+          max_quantity: 100,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+      ])
     })
-  })
-
-  it("updates a price list (inser new a new MA for a specific region)", async () => {
-    const api = useApi()
-
-    const payload = {
-      id: "pl_with_some_ma",
-      prices: [
-        {
-          id: "ma_test_1",
-          amount: 100,
-          currency_code: "usd",
-          variant_id: "test-variant",
-        },
-        {
-          amount: 10,
-          currency_code: "usd",
-          variant_id: "test-variant",
-        },
-      ],
-    }
-
-    const response = await api
-      .post("/admin/price-lists/pl_with_some_ma", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
-      .catch((err) => {
-        console.warn(err.response.data)
-      })
-
-    expect(response.status).toEqual(200)
-
-    // expect(response.data.price_list)
-    console.log(response.data.price_list)
-  })
-  it("updates a price list (inser new a new MA for a specific region)", async () => {
-    const api = useApi()
-
-    const payload = {
-      id: "pl_with_some_ma",
-      prices: [
-        {
-          id: "ma_test_1",
-          amount: 100,
-          currency_code: "usd",
-          variant_id: "test-variant",
-        },
-        {
-          amount: 10,
-          currency_code: "usd",
-          variant_id: "test-variant",
-        },
-      ],
-    }
-
-    const response = await api
-      .post("/admin/price-lists/pl_with_some_ma", payload, {
-        headers: {
-          Authorization: "Bearer test_token",
-        },
-      })
-      .catch((err) => {
-        console.warn(err.response.data)
-      })
-
-    expect(response.status).toEqual(200)
-
-    // expect(response.data.price_list)
-    console.log(response.data.price_list)
   })
 
   describe("POST /admin/price-lists/:id/prices/batch", () => {
