@@ -412,7 +412,7 @@ class CartService extends BaseService {
         }
 
         if (!data.shipping_address) {
-          if (region.countries.length === 1) {
+          if (!rawCart.shipping_address && region.countries.length === 1) {
             // Preselect the country if the region only has 1
             // and create address entity
             rawCart.shipping_address = addressRepo.create({
