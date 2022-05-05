@@ -15,7 +15,7 @@ import { Region } from "./region"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { ShippingOptionRequirement } from "./shipping-option-requirement"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ShippingOptionPriceType {
   FLAT_RATE = "flat_rate",
@@ -77,7 +77,7 @@ export class ShippingOption extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "so")
+    this.id = generateEntityId(this.id, "so")
   }
 }
 

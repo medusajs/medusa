@@ -35,7 +35,7 @@ import { Region } from "./region"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -238,7 +238,7 @@ export class Order extends BaseEntity {
 
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
-    generateAndApplyEntityId(this, "id", "order")
+    this.id = generateEntityId(this.id, "order")
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
       const disId = await manualAutoIncrement("order")

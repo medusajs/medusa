@@ -2,7 +2,7 @@ import { BeforeInsert, Column, CreateDateColumn, Entity, Index } from "typeorm"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { UserRoles } from "./user"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Invite extends SoftDeletableEntity {
@@ -32,6 +32,6 @@ export class Invite extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "invite")
+    this.id = generateEntityId(this.id, "invite")
   }
 }

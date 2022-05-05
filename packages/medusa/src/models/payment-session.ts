@@ -10,7 +10,7 @@ import {
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Cart } from "./cart"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",
@@ -49,7 +49,7 @@ export class PaymentSession extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "ps")
+    this.id = generateEntityId(this.id, "ps")
   }
 }
 

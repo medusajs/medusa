@@ -10,7 +10,7 @@ import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Order } from "./order"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum RefundReason {
   DISCOUNT = "discount",
@@ -47,7 +47,7 @@ export class Refund extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "ref")
+    this.id = generateEntityId(this.id, "ref")
   }
 }
 

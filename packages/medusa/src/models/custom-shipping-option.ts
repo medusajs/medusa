@@ -11,7 +11,7 @@ import { Cart } from "./cart"
 import { ShippingOption } from "./shipping-option"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["shipping_option_id", "cart_id"])
@@ -40,7 +40,7 @@ export class CustomShippingOption extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "cso")
+    this.id = generateEntityId(this.id, "cso")
   }
 }
 

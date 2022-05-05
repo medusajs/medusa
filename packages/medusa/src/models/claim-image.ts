@@ -9,7 +9,7 @@ import {
 import { ClaimItem } from "./claim-item"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class ClaimImage extends SoftDeletableEntity {
@@ -29,7 +29,7 @@ export class ClaimImage extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "cimg")
+    this.id = generateEntityId(this.id, "cimg")
   }
 }
 

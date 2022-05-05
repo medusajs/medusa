@@ -2,7 +2,7 @@ import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
 import { BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class BatchJob extends SoftDeletableEntity {
@@ -23,7 +23,7 @@ export class BatchJob extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "batch")
+    this.id = generateEntityId(this.id, "batch")
   }
 }
 

@@ -17,7 +17,7 @@ import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum DiscountConditionType {
   PRODUCTS = "products",
@@ -130,7 +130,7 @@ export class DiscountCondition extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "discon")
+    this.id = generateEntityId(this.id, "discon")
   }
 }
 

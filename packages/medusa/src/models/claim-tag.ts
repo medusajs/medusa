@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class ClaimTag extends SoftDeletableEntity {
@@ -14,7 +14,7 @@ export class ClaimTag extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "ctag")
+    this.id = generateEntityId(this.id, "ctag")
   }
 }
 

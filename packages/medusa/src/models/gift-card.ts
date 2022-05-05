@@ -11,7 +11,7 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Region } from "./region"
 import { Order } from "./order"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class GiftCard extends SoftDeletableEntity {
@@ -55,7 +55,7 @@ export class GiftCard extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "gift")
+    this.id = generateEntityId(this.id, "gift")
   }
 }
 

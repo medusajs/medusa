@@ -19,7 +19,7 @@ import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum Status {
   DRAFT = "draft",
@@ -145,11 +145,9 @@ export class Product extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    const shouldContinue = generateAndApplyEntityId(this, "id", "prod")
-    if (shouldContinue === false) {
-      return
-    }
+    if (this.id) return
 
+    this.id = generateEntityId(this.id, "prod")
     if (!this.handle) {
       this.handle = _.kebabCase(this.title)
     }

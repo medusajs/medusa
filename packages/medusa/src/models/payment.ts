@@ -14,7 +14,7 @@ import { Currency } from "./currency"
 import { Cart } from "./cart"
 import { Order } from "./order"
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Payment extends BaseEntity {
@@ -76,7 +76,7 @@ export class Payment extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "pay")
+    this.id = generateEntityId(this.id, "pay")
   }
 }
 

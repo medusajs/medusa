@@ -13,7 +13,7 @@ import { resolveDbType } from "../utils/db-aware-column"
 
 import { GiftCard } from "./gift-card"
 import { Order } from "./order"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Unique("gcuniq", ["gift_card_id", "order_id"])
 @Entity()
@@ -44,7 +44,7 @@ export class GiftCardTransaction {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "gct")
+    this.id = generateEntityId(this.id, "gct")
   }
 }
 

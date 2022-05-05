@@ -14,7 +14,7 @@ import { Product } from "./product"
 import { ProductType } from "./product-type"
 import { ShippingOption } from "./shipping-option"
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class TaxRate extends BaseEntity {
@@ -86,7 +86,7 @@ export class TaxRate extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "txr")
+    this.id = generateEntityId(this.id, "txr")
   }
 }
 

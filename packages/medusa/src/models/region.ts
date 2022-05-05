@@ -17,7 +17,7 @@ import { FulfillmentProvider } from "./fulfillment-provider"
 import { TaxProvider } from "./tax-provider"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Region extends SoftDeletableEntity {
@@ -95,7 +95,7 @@ export class Region extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "reg")
+    this.id = generateEntityId(this.id, "reg")
   }
 }
 

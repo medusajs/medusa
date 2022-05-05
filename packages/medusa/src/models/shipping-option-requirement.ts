@@ -11,7 +11,7 @@ import {
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum RequirementType {
   MIN_SUBTOTAL = "min_subtotal",
@@ -42,7 +42,7 @@ export class ShippingOptionRequirement {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "sor")
+    this.id = generateEntityId(this.id, "sor")
   }
 }
 

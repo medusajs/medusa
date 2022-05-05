@@ -11,7 +11,7 @@ import { PriceList } from "./price-list"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class MoneyAmount extends SoftDeletableEntity {
@@ -61,7 +61,7 @@ export class MoneyAmount extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {
-    generateAndApplyEntityId(this, "id", "ma")
+    this.id = generateEntityId(this.id, "ma")
   }
 }
 

@@ -16,7 +16,7 @@ import { ClaimOrder } from "./claim-order"
 import { ReturnItem } from "./return-item"
 import { ShippingMethod } from "./shipping-method"
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ReturnStatus {
   REQUESTED = "requested",
@@ -89,7 +89,7 @@ export class Return extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "ret")
+    this.id = generateEntityId(this.id, "ret")
   }
 }
 

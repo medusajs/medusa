@@ -2,7 +2,7 @@ import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { DiscountCondition } from "./discount-condition"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum DiscountRuleType {
   FIXED = "fixed",
@@ -44,7 +44,7 @@ export class DiscountRule extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "dru")
+    this.id = generateEntityId(this.id, "dru")
   }
 }
 

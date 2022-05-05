@@ -3,7 +3,7 @@ import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
 import { Fulfillment } from "./fulfillment"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class TrackingLink extends SoftDeletableEntity {
@@ -28,7 +28,7 @@ export class TrackingLink extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "tlink")
+    this.id = generateEntityId(this.id, "tlink")
   }
 }
 

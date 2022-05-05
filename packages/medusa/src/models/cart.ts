@@ -106,7 +106,7 @@ import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { ShippingMethod } from "./shipping-method"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum CartType {
   DEFAULT = "default",
@@ -248,6 +248,6 @@ export class Cart extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "cart")
+    this.id = generateEntityId(this.id, "cart")
   }
 }

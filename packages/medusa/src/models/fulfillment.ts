@@ -16,7 +16,7 @@ import { Swap } from "./swap"
 import { ClaimOrder } from "./claim-order"
 import { TrackingLink } from "./tracking-link"
 import { BaseEntity } from "../interfaces/models/base-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Fulfillment extends BaseEntity {
@@ -86,7 +86,7 @@ export class Fulfillment extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "ful")
+    this.id = generateEntityId(this.id, "ful")
   }
 }
 

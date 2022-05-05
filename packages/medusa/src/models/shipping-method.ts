@@ -19,7 +19,7 @@ import { Swap } from "./swap"
 import { Return } from "./return"
 import { ShippingOption } from "./shipping-option"
 import { ShippingMethodTaxLine } from "./shipping-method-tax-line"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
@@ -91,7 +91,7 @@ export class ShippingMethod {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "sm")
+    this.id = generateEntityId(this.id, "sm")
   }
 }
 

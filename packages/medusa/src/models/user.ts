@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity, Index } from "typeorm"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum UserRoles {
   ADMIN = "admin",
@@ -40,7 +40,7 @@ export class User extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "usr")
+    this.id = generateEntityId(this.id, "usr")
   }
 }
 

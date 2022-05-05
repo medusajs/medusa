@@ -10,7 +10,7 @@ import {
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Discount } from "./discount"
 import { LineItem } from "./line-item"
-import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Index(["discount_id", "item_id"], {
@@ -48,6 +48,6 @@ export class LineItemAdjustment {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    generateAndApplyEntityId(this, "id", "lia")
+    this.id = generateEntityId(this.id, "lia")
   }
 }
