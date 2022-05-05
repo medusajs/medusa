@@ -22,7 +22,7 @@ describe("/admin/price-lists", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -799,6 +799,13 @@ describe("/admin/price-lists", () => {
             { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
           ],
         })
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list-2",
+          prices: [
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 200 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 200 },
+          ],
+        })
       } catch (err) {
         console.log(err)
         throw err
@@ -810,7 +817,7 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it("lists only product 1, 2 with price list prices", async () => {
+    it.only("lists only product 1, 2 with price list prices", async () => {
       const api = useApi()
 
       const response = await api
@@ -825,6 +832,8 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
+      console.log(response.data.products[0].variants[0].prices)
+      console.log(response.data.products[0].variants[0].prices)
       expect(response.data.products).toEqual([
         expect.objectContaining({
           id: "test-prod-1",
