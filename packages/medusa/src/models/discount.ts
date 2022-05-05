@@ -12,6 +12,7 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class Discount extends SoftDeletableEntity {
@@ -77,7 +78,7 @@ export class Discount extends SoftDeletableEntity {
 
   @BeforeInsert()
   private upperCaseCode(): void {
-    const shouldContinue = this.generateId("disc")
+    const shouldContinue = generateAndApplyEntityId(this, "id", "disc")
     if (shouldContinue === false) {
       return
     }

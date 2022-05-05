@@ -9,6 +9,7 @@ import {
 import { User } from "./user"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class Note extends SoftDeletableEntity {
@@ -35,7 +36,7 @@ export class Note extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("note")
+    generateAndApplyEntityId(this, "id", "note")
   }
 }
 

@@ -18,17 +18,4 @@ export abstract class BaseEntity {
 
   @UpdateDateColumn({ type: resolveDbType("timestamptz") })
   updated_at: Date
-
-  protected generateId(prefix: string): void | false {
-    if (this.id) {
-      return false
-    }
-    const id = ulid()
-    if (!prefix) {
-      throw new Error(
-        `Missing static property prefixId from the model ${this.constructor.name}`
-      )
-    }
-    this.id = `${prefix}_${id}`
-  }
 }

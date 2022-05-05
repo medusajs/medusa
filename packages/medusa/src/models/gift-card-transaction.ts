@@ -9,11 +9,11 @@ import {
   PrimaryColumn,
   Unique,
 } from "typeorm"
-import { ulid } from "ulid"
 import { resolveDbType } from "../utils/db-aware-column"
 
 import { GiftCard } from "./gift-card"
 import { Order } from "./order"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Unique("gcuniq", ["gift_card_id", "order_id"])
 @Entity()
@@ -44,11 +44,7 @@ export class GiftCardTransaction {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `gct_${id}`
+    generateAndApplyEntityId(this, "id", "gct")
   }
 }
 

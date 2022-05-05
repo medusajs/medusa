@@ -11,6 +11,7 @@ import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class Store extends BaseEntity {
@@ -52,7 +53,7 @@ export class Store extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("store")
+    generateAndApplyEntityId(this, "id", "store")
   }
 }
 

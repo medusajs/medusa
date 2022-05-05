@@ -10,6 +10,7 @@ import {
 
 import { TaxLine } from "./tax-line"
 import { LineItem } from "./line-item"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 @Unique(["item_id", "code"])
@@ -24,6 +25,6 @@ export class LineItemTaxLine extends TaxLine {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("litl")
+    generateAndApplyEntityId(this, "id", "litl")
   }
 }

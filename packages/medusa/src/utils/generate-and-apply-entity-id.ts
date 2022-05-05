@@ -6,7 +6,7 @@ import { ulid } from "ulid"
  * @param targetIdColumnName
  * @param prefix
  */
-export function generateEntityId<TEntity extends Object>(entity: TEntity, targetIdColumnName: string, prefix?: string): void | false {
+export function generateAndApplyEntityId<TEntity extends Object>(entity: TEntity, targetIdColumnName: string, prefix?: string): void | false {
   if (!entity.hasOwnProperty(targetIdColumnName)) {
     throw new Error(`Unable to generate the id for the entity ${entity.constructor.name} based on the id column name ${targetIdColumnName}. This column is not part of that entity.`)
   }

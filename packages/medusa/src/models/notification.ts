@@ -12,6 +12,7 @@ import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Customer } from "./customer"
 import { NotificationProvider } from "./notification-provider"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class Notification extends BaseEntity {
@@ -59,7 +60,7 @@ export class Notification extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("noti")
+    generateAndApplyEntityId(this, "id", "noti")
   }
 }
 

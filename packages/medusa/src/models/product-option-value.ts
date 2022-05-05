@@ -10,6 +10,7 @@ import { ProductOption } from "./product-option"
 import { ProductVariant } from "./product-variant"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class ProductOptionValue extends SoftDeletableEntity {
@@ -39,7 +40,7 @@ export class ProductOptionValue extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("optval")
+    generateAndApplyEntityId(this, "id", "optval")
   }
 }
 

@@ -11,6 +11,7 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { CustomerGroup } from "./customer-group"
 import { MoneyAmount } from "./money-amount"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class PriceList extends SoftDeletableEntity {
@@ -58,7 +59,7 @@ export class PriceList extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): undefined | void {
-    this.generateId("pl")
+    generateAndApplyEntityId(this, "id", "pl")
   }
 }
 

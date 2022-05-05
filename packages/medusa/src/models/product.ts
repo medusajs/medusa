@@ -19,6 +19,7 @@ import { ProductType } from "./product-type"
 import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 export enum Status {
   DRAFT = "draft",
@@ -144,7 +145,7 @@ export class Product extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    const shouldContinue = this.generateId("prod")
+    const shouldContinue = generateAndApplyEntityId(this, "id", "prod")
     if (shouldContinue === false) {
       return
     }

@@ -4,6 +4,7 @@ import { DbAwareColumn } from "../utils/db-aware-column"
 import { ShippingOption } from "./shipping-option"
 import { Product } from "./product"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 export enum ShippingProfileType {
   DEFAULT = "default",
@@ -30,7 +31,7 @@ export class ShippingProfile extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("sp")
+    generateAndApplyEntityId(this, "id", "sp")
   }
 }
 

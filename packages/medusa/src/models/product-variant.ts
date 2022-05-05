@@ -13,6 +13,7 @@ import { MoneyAmount } from "./money-amount"
 import { ProductOptionValue } from "./product-option-value"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class ProductVariant extends SoftDeletableEntity {
@@ -95,7 +96,7 @@ export class ProductVariant extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("variant")
+    generateAndApplyEntityId(this, "id", "variant")
   }
 }
 

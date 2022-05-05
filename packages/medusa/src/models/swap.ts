@@ -19,6 +19,7 @@ import { Cart } from "./cart"
 import { Payment } from "./payment"
 import { ShippingMethod } from "./shipping-method"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 export enum SwapFulfillmentStatus {
   NOT_FULFILLED = "not_fulfilled",
@@ -112,7 +113,7 @@ export class Swap extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("swap")
+    generateAndApplyEntityId(this, "id", "swap")
   }
 }
 

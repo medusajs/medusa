@@ -9,6 +9,7 @@ import {
 } from "typeorm"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class ReturnReason extends SoftDeletableEntity {
@@ -41,7 +42,7 @@ export class ReturnReason extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("rr")
+    generateAndApplyEntityId(this, "id", "rr")
   }
 }
 

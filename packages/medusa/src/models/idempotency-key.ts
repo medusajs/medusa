@@ -6,8 +6,8 @@ import {
   Index,
   PrimaryColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class IdempotencyKey {
@@ -44,7 +44,6 @@ export class IdempotencyKey {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    const id = ulid()
-    this.id = `ikey_${id}`
+    generateAndApplyEntityId(this, "id", "ikey")
   }
 }

@@ -10,6 +10,7 @@ import {
 
 import { TaxLine } from "./tax-line"
 import { ShippingMethod } from "./shipping-method"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 @Unique(["shipping_method_id", "code"])
@@ -24,6 +25,6 @@ export class ShippingMethodTaxLine extends TaxLine {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("smtl")
+    generateAndApplyEntityId(this, "id", "smtl")
   }
 }

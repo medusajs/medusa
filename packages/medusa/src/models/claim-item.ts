@@ -17,6 +17,7 @@ import { ClaimTag } from "./claim-tag"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 export enum ClaimReason {
   MISSING_ITEM = "missing_item",
@@ -84,7 +85,7 @@ export class ClaimItem extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("citm")
+    generateAndApplyEntityId(this, "id", "citm")
   }
 }
 

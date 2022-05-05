@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class Oauth {
@@ -25,10 +25,6 @@ export class Oauth {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `oauth_${id}`
+    generateAndApplyEntityId(this, "id", "oauth")
   }
 }

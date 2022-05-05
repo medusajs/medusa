@@ -39,6 +39,7 @@ import { Customer } from "./customer"
 import { Country } from "./country"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class Address extends SoftDeletableEntity {
@@ -89,6 +90,6 @@ export class Address extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("addr")
+    generateAndApplyEntityId(this, "id", "addr")
   }
 }

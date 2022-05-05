@@ -7,10 +7,10 @@ import {
   JoinColumn,
   PrimaryColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Discount } from "./discount"
 import { LineItem } from "./line-item"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 @Index(["discount_id", "item_id"], {
@@ -48,10 +48,6 @@ export class LineItemAdjustment {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `lia_${id}`
+    generateAndApplyEntityId(this, "id", "lia")
   }
 }

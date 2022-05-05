@@ -21,6 +21,7 @@ import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
 import { Address } from "./address"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 export enum ClaimType {
   REFUND = "refund",
@@ -125,7 +126,7 @@ export class ClaimOrder extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("claim")
+    generateAndApplyEntityId(this, "id", "claim")
   }
 }
 

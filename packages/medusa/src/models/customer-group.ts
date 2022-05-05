@@ -3,6 +3,7 @@ import { Customer } from "./customer"
 import { PriceList } from "./price-list"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class CustomerGroup extends SoftDeletableEntity {
@@ -25,6 +26,6 @@ export class CustomerGroup extends SoftDeletableEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("cgrp")
+    generateAndApplyEntityId(this, "id", "cgrp")
   }
 }

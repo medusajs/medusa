@@ -4,6 +4,7 @@ import _ from "lodash"
 import { Product } from "./product"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class ProductCollection extends SoftDeletableEntity {
@@ -22,7 +23,7 @@ export class ProductCollection extends SoftDeletableEntity {
 
   @BeforeInsert()
   private createHandleIfNotProvided(): void {
-    const shouldContinue = this.generateId("pcol")
+    const shouldContinue = generateAndApplyEntityId(this, "id", "pcol")
     if (shouldContinue === false) {
       return
     }

@@ -16,6 +16,7 @@ import {
 import { manualAutoIncrement } from "../utils/manual-auto-increment"
 import { Cart } from "./cart"
 import { Order } from "./order"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 enum DraftOrderStatus {
   OPEN = "open",
@@ -65,7 +66,7 @@ export class DraftOrder extends BaseEntity {
 
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {
-    this.generateId("dorder")
+    generateAndApplyEntityId(this, "id", "dorder")
 
     if (process.env.NODE_ENV === "development" && !this.display_id) {
       const disId = await manualAutoIncrement("draft_order")

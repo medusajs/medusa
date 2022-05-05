@@ -8,10 +8,10 @@ import {
   ManyToOne,
   PrimaryColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { ShippingOption } from "./shipping-option"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 export enum RequirementType {
   MIN_SUBTOTAL = "min_subtotal",
@@ -42,11 +42,7 @@ export class ShippingOptionRequirement {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `sor_${id}`
+    generateAndApplyEntityId(this, "id", "sor")
   }
 }
 

@@ -18,6 +18,7 @@ import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
 import { LineItemAdjustment } from "./line-item-adjustment"
 import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
@@ -119,7 +120,7 @@ export class LineItem extends BaseEntity {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    this.generateId("item")
+    generateAndApplyEntityId(this, "id", "item")
   }
 }
 

@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateAndApplyEntityId } from "../utils/generate-and-apply-entity-id"
 
 @Entity()
 export class StagedJob {
@@ -15,7 +15,6 @@ export class StagedJob {
 
   @BeforeInsert()
   private beforeInsert(): void {
-    const id = ulid()
-    this.id = `job_${id}`
+    generateAndApplyEntityId(this, "id", "job")
   }
 }
