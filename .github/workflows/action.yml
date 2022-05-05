@@ -38,8 +38,11 @@ jobs:
           restore-keys: |
             turbo-v1-${{ github.job }}-${{ github.ref_name }}-
 
-      - name: Run Pipeline
-        run: yarn turbo run build test
+      - name: Build
+        run: yarn build
+
+      - name: Test
+        run: yarn test
 
   integration-tests-api:
     runs-on: ubuntu-latest
