@@ -159,8 +159,8 @@ class PriceListService extends BaseService {
       await priceListRepo.save(priceList)
 
       if (prices) {
-        const p = await this.joinCurrencyForRegion(prices)
-        await moneyAmountRepo.updatePriceListPrices(id, p)
+        const prices_ = await this.addCurrencyFromRegion(prices)
+        await moneyAmountRepo.updatePriceListPrices(id, prices_)
       }
 
       if (customer_groups) {
@@ -192,12 +192,8 @@ class PriceListService extends BaseService {
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
-      await moneyAmountRepo.addPriceListPrices(
-        priceList.id,
-        // @ts-ignore
-        await this.joinCurrencyForRegion(prices),
-        replace
-      )
+      const prices_ = await this.addCurrencyFromRegion(prices)
+      await moneyAmountRepo.addPriceListPrices(priceList.id, prices_, replace)
 
       const result = await this.retrieve(priceList.id, {
         relations: ["prices"],
@@ -350,10 +346,15 @@ class PriceListService extends BaseService {
     })
   }
 
-  async joinCurrencyForRegion(
-    prices: (PriceListPriceCreateInput | PriceListPriceUpdateInput)[]
-  ): Promise<typeof prices> {
-    const ret: typeof prices = []
+  /**
+   * Add `currency_code` to a MA record if `region_id`is passed.
+   * @param prices - list of create/update MA records
+   * @return {Promise} updated `prices` list
+   */
+  private async addCurrencyFromRegion<
+    T extends PriceListPriceUpdateInput | PriceListPriceCreateInput
+  >(prices: T[]): Promise<T[]> {
+    const prices_: typeof prices = []
 
     for (const p of prices) {
       if (p.region_id) {
@@ -361,9 +362,9 @@ class PriceListService extends BaseService {
         p.currency_code = region.currency_code
       }
 
-      ret.push(p)
+      prices_.push(p)
     }
-    return ret
+    return prices_
   }
 }
 
