@@ -299,8 +299,6 @@ class PriceListService extends BaseService {
         config
       )
 
-      console.log("got products")
-
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
       const productsWithPrices = await Promise.all(

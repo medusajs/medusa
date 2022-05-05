@@ -121,13 +121,15 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     price_list_id: string
   ): Promise<[MoneyAmount[], number]> {
     const qb = this.createQueryBuilder("ma")
-      .leftJoinAndSelect(
-        "ma.price_list",
-        "price_list",
-        "ma.price_list_id = :price_list_id OR ma.price_list_id IS NULL",
-        { price_list_id: price_list_id }
+      .leftJoinAndSelect("ma.price_list", "price_list")
+      .where("ma.variant_id = :variant_id", { variant_id })
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where("ma.price_list_id = :price_list_id", {
+            price_list_id,
+          }).orWhere("ma.price_list_id IS NULL")
+        })
       )
-      .where({ variant_id: variant_id })
 
     return await qb.getManyAndCount()
   }
