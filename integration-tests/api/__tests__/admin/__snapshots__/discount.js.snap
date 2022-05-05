@@ -1,7 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/discounts DELETE /admin/discounts/:id/conditions/:condition_id should fail if discount does not exist: Discount with not-exist was not found 1`] = `"Request failed with status code 404"`;
-
 exports[`/admin/discounts POST /admin/discounts fails if multiple types of resources are provided on update 1`] = `
 Object {
   "message": "Only one of products, product_types is allowed, Only one of product_types, products is allowed",
@@ -139,5 +137,7 @@ Object {
 `;
 
 exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if condition does not belong to discount: DiscountCondition with id test-condition was not found for Discount test-discount-2 1`] = `"Request failed with status code 404"`;
+
+exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if condition does not exist: DiscountCondition with id does-not-exist was not found for Discount test-discount 1`] = `"Request failed with status code 404"`;
 
 exports[`/admin/discounts POST /admin/discounts/:id/conditions/:condition_id throws if discount does not exist: Discount with id does-not-exist was not found 1`] = `"Request failed with status code 404"`;

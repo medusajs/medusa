@@ -66,20 +66,20 @@ class DiscountConditionService extends BaseService {
   async retrieve(
     conditionId: string,
     discountId: string
-  ): Promise<DiscountCondition> {
+  ): Promise<DiscountCondition & { discount: Discount }> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_
       )
 
-      // inner join with discount to ensure we are working with comb. of condition and discount
+      // left join with discount to ensure we are working with correct comb. of condition and discount
       const condition = await conditionRepo.findOneWithDiscount(
         conditionId,
         discountId
       )
 
-      // slightly different error message than usual accouting for the inner join error
-      if (!condition) {
+      // slightly different error message than usual accouting for the left join
+      if (!condition || !condition?.discount) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
           `DiscountCondition with id ${conditionId} was not found for Discount ${discountId}`

@@ -39,12 +39,16 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
   async findOneWithDiscount(
     conditionId: string,
     discountId: string
-  ): Promise<DiscountCondition | undefined> {
-    return await this.createQueryBuilder("discon")
-      .innerJoin(Discount, "disc", `discon.discount_rule_id = disc.rule_id`)
-      .where(`discon.id = :dcId`, { dcId: conditionId })
-      .where(`disc.id = :discId`, { discId: discountId })
-      .getOne()
+  ): Promise<(DiscountCondition & { discount: Discount }) | undefined> {
+    return (await this.createQueryBuilder("condition")
+      .leftJoinAndMapOne(
+        "condition.discount",
+        Discount,
+        "discount",
+        `condition.discount_rule_id = discount.rule_id and discount.id = :discId and condition.id = :dcId`,
+        { discId: discountId, dcId: conditionId }
+      )
+      .getOne()) as (DiscountCondition & { discount: Discount }) | undefined
   }
 
   getJoinTableResourceIdentifiers(type: string): {

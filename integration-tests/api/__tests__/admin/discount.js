@@ -431,7 +431,6 @@ describe("/admin/discounts", () => {
         await adminSeeder(dbConnection)
         await discountSeeder(dbConnection)
       } catch (err) {
-        console.log(err)
         throw err
       }
     })
@@ -1466,41 +1465,37 @@ describe("/admin/discounts", () => {
   describe("POST /admin/discounts/:discount_id/dynamic-codes", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule",
-          description: "Dynamic rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount",
-          code: "DYNAMIC",
-          is_dynamic: true,
-          is_disabled: false,
-          rule_id: "test-discount-rule",
-          valid_duration: "P2Y",
-        })
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule1",
-          description: "Dynamic rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount1",
-          code: "DYNAMICCode",
-          is_dynamic: true,
-          is_disabled: false,
-          rule_id: "test-discount-rule1",
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+
+      await adminSeeder(dbConnection)
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Dynamic rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount",
+        code: "DYNAMIC",
+        is_dynamic: true,
+        is_disabled: false,
+        rule_id: "test-discount-rule",
+        valid_duration: "P2Y",
+      })
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule1",
+        description: "Dynamic rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount1",
+        code: "DYNAMICCode",
+        is_dynamic: true,
+        is_disabled: false,
+        rule_id: "test-discount-rule1",
+      })
     })
 
     afterEach(async () => {
@@ -1552,7 +1547,7 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          // console.log(err)
+          console.log(err)
         })
 
       expect(response.status).toEqual(200)
@@ -1683,8 +1678,6 @@ describe("/admin/discounts", () => {
     })
 
     it("should fail if discount does not exist", async () => {
-      expect.assertions(1)
-
       const api = useApi()
 
       try {
@@ -1698,7 +1691,7 @@ describe("/admin/discounts", () => {
         )
       } catch (error) {
         expect(error.message).toMatchSnapshot(
-          "Discount with not-exist was not found"
+          "Discount with id not-exist was not found"
         )
       }
     })
@@ -1838,7 +1831,6 @@ describe("/admin/discounts", () => {
           }
         )
       } catch (error) {
-        console.log(error)
         expect(error.message).toMatchSnapshot(
           "Discount with id does-not-exist was not found"
         )
@@ -1984,7 +1976,6 @@ describe("/admin/discounts", () => {
           }
         )
       } catch (error) {
-        console.log(error)
         expect(error.message).toMatchSnapshot(
           "DiscountCondition with id does-not-exist was not found for Discount test-discount"
         )
@@ -2035,7 +2026,6 @@ describe("/admin/discounts", () => {
           }
         )
       } catch (error) {
-        console.log(error)
         expect(error.message).toMatchSnapshot(
           "DiscountCondition with id test-condition was not found for Discount test-discount-2"
         )

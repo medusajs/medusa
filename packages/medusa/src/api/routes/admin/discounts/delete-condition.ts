@@ -1,4 +1,5 @@
 import { IsOptional, IsString } from "class-validator"
+import { MedusaError } from "medusa-core-utils"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import { Discount } from "../../../../models"
 import { DiscountService } from "../../../../services"
@@ -49,10 +50,25 @@ export default async (req, res) => {
   )
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  // ensure that we delete condition from existing discount
-  let discount = await discountService.retrieve(discount_id, {
-    select: ["id"],
-  })
+  const condition = await conditionService
+    .retrieve(condition_id, discount_id)
+    .catch(() => void 0)
+
+  if (!condition) {
+    // resolves idempotently in case of non-existing condition
+    return res.json({
+      id: condition_id,
+      object: "discount-condition",
+      deleted: true,
+    })
+  }
+
+  if (!condition?.discount) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `Discount with id ${discount_id} was not found`
+    )
+  }
 
   await conditionService.remove(condition_id)
 
@@ -63,7 +79,7 @@ export default async (req, res) => {
     validatedParams?.expand?.split(",")
   )
 
-  discount = await discountService.retrieve(discount_id, config)
+  const discount = await discountService.retrieve(discount_id, config)
 
   res.json({
     id: condition_id,
