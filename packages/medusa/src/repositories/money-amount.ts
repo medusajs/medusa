@@ -128,7 +128,6 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         { price_list_id: price_list_id }
       )
       .where({ variant_id: variant_id })
-      .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
 
     return await qb.getManyAndCount()
   }
