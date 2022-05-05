@@ -58,6 +58,15 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(moneyAmount3)
 
+  const moneyAmount4 = await manager.create(MoneyAmount, {
+    id: "ma_test_4",
+    amount: 70,
+    currency_code: "usd",
+    variant_id: "test-variant",
+  })
+
+  await manager.save(moneyAmount4)
+
   const priceListWithMA = await manager.create(PriceList, {
     id: "pl_with_some_ma",
     name: "Weeken sale",
@@ -68,7 +77,7 @@ module.exports = async (connection, data = {}) => {
     ends_at: "2022-07-31T00:00:00.000Z",
   })
 
-  priceListWithMA.prices = [moneyAmount1]
+  priceListWithMA.prices = [moneyAmount4]
 
   await manager.save(priceListWithMA)
 }

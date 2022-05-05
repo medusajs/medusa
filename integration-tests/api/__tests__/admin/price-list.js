@@ -22,7 +22,7 @@ describe("/admin/price-lists", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -515,14 +515,14 @@ describe("/admin/price-lists", () => {
 
       const payload = {
         prices: [
-          // updated MA
+          // update MA
           {
-            id: "ma_test_1",
+            id: "ma_test_4",
             amount: 1001,
             currency_code: "usd",
             variant_id: "test-variant",
           },
-          // created MA
+          // create MA
           {
             amount: 101,
             variant_id: "test-variant",
@@ -559,11 +559,9 @@ describe("/admin/price-lists", () => {
           deleted_at: null,
         },
         {
-          id: "ma_test_1",
+          id: "ma_test_4",
           currency_code: "usd",
           amount: 1001,
-          min_quantity: 1,
-          max_quantity: 100,
           price_list_id: "pl_with_some_ma",
           variant_id: "test-variant",
           region_id: null,
@@ -823,11 +821,9 @@ describe("/admin/price-lists", () => {
       expect(response.data.price_list.prices.length).toEqual(3) // initially this PL has 1 MA record
       expect(response.data.price_list.prices).toMatchSnapshot([
         {
-          id: "ma_test_1",
+          id: "ma_test_4",
           currency_code: "usd",
-          amount: 100,
-          min_quantity: 1,
-          max_quantity: 100,
+          amount: 70,
           price_list_id: "pl_with_some_ma",
           variant_id: "test-variant",
           region_id: null,
@@ -836,7 +832,7 @@ describe("/admin/price-lists", () => {
           deleted_at: null,
         },
         {
-          id: "ma_01G2A3MMXTJFGBZZKMDM1KBB40",
+          id: expect.any(String),
           currency_code: "eur",
           amount: 100,
           min_quantity: null,
@@ -849,7 +845,7 @@ describe("/admin/price-lists", () => {
           deleted_at: null,
         },
         {
-          id: "ma_01G2A3MMXV93F4SED96NWM5Z05",
+          id: expect.any(String),
           currency_code: "usd",
           amount: 200,
           min_quantity: null,
