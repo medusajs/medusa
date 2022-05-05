@@ -817,7 +817,7 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it.only("lists only product 1, 2 with price list prices", async () => {
+    it("lists only product 1, 2 with price list prices", async () => {
       const api = useApi()
 
       const response = await api
@@ -832,8 +832,6 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
-      console.log(response.data.products[0].variants[0].prices)
-      console.log(response.data.products[0].variants[0].prices)
       expect(response.data.products).toEqual([
         expect.objectContaining({
           id: "test-prod-1",
