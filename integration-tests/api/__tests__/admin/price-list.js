@@ -794,6 +794,7 @@ describe("/admin/price-lists", () => {
 
         await simplePriceListFactory(dbConnection, {
           id: "test-list",
+          customer_groups: ["test-group"],
           prices: [
             { variant_id: "test-variant-1", currency_code: "usd", amount: 150 },
             { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
