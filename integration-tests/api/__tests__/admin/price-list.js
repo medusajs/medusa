@@ -510,7 +510,7 @@ describe("/admin/price-lists", () => {
       })
     })
 
-    it("updates a price list (inser new a new MA for a specific region)", async () => {
+    it("updates price list prices (inser a new MA for a specific region)", async () => {
       const api = useApi()
 
       const payload = {
@@ -786,6 +786,80 @@ describe("/admin/price-lists", () => {
           max_quantity: 4000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+        },
+      ])
+    })
+
+    it("Adds a batch of new prices where a MA record have a `region_id` instead of `currency_code`", async () => {
+      const api = useApi()
+
+      const payload = {
+        prices: [
+          {
+            amount: 100,
+            variant_id: "test-variant",
+            region_id: "region-pl",
+          },
+          {
+            amount: 200,
+            variant_id: "test-variant",
+            currency_code: "usd",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/price-lists/pl_with_some_ma/prices/batch", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.price_list.prices.length).toEqual(3) // initially this PL has 1 MA record
+      expect(response.data.price_list.prices).toMatchSnapshot([
+        {
+          id: "ma_test_1",
+          currency_code: "usd",
+          amount: 100,
+          min_quantity: 1,
+          max_quantity: 100,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: "ma_01G2A3MMXTJFGBZZKMDM1KBB40",
+          currency_code: "eur",
+          amount: 100,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: "region-pl",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: "ma_01G2A3MMXV93F4SED96NWM5Z05",
+          currency_code: "usd",
+          amount: 200,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
         },
       ])
     })
