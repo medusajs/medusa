@@ -116,6 +116,23 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .execute()
   }
 
+  public async findManyForVariantInPriceList(
+    variant_id: string,
+    price_list_id: string
+  ): Promise<[MoneyAmount[], number]> {
+    const qb = this.createQueryBuilder("ma")
+      .leftJoinAndSelect(
+        "ma.price_list",
+        "price_list",
+        "ma.price_list_id = :price_list_id OR ma.price_list_id IS NULL",
+        { price_list_id: price_list_id }
+      )
+      .where({ variant_id: variant_id })
+      .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
+
+    return await qb.getManyAndCount()
+  }
+
   public async findManyForVariantInRegion(
     variant_id: string,
     region_id?: string,
