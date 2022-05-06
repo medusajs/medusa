@@ -71,7 +71,15 @@ module.exports = {
       options: {
         output: '/api/sitemap'
       }
-    }
+    },
+    {
+      resolve: `gatsby-plugin-segment-js`,
+      options: {
+        prodKey: process.env.SEGMENT_API_KEY,
+        devKey: process.env.SEGMENT_API_KEY_DEV,
+        trackPage: true,
+      }
+    },
     // `gatsby-plugin-preact`,
     // {
     //   resolve: `gatsby-source-openapi-aggregate`,
