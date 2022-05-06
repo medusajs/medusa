@@ -15,7 +15,7 @@ export default (container, config) => {
   return app
 }
 
-// Admin routes
+// Admin
 export * from "./routes/admin/collections"
 export * from "./routes/admin/auth"
 export * from "./routes/admin/customers"

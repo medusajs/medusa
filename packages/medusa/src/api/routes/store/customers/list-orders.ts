@@ -39,7 +39,7 @@ import {
  *             orders:
  *               type: array
  *               items:
- *                 $ref: "#/components/schemas/order"
+ *                 $ref: "#/components/schemas/orders"
  */
 export default async (req, res) => {
   const id: string = req.user.customer_id
