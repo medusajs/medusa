@@ -276,7 +276,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it("successfully creates a cart with a shipping address id", async () => {
+    it("successfully creates a cart with a shipping address id but no shippings_address", async () => {
       await cartService.create({
         region_id: IdMap.getId("testRegion"),
         email: "email@test.com",
@@ -309,7 +309,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it("creates a cart with a prefilled shipping address", async () => {
+    it("creates a cart with a prefilled shipping address but a country not part of the region", async () => {
       const res = cartService.create({
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
