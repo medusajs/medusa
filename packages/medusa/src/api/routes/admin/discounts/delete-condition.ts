@@ -66,7 +66,7 @@ export default async (req, res) => {
   if (!condition?.discount) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Discount with id ${discount_id} was not found`
+      `Discount with id ${discount_id} does not belong to condition with id ${condition.id}`
     )
   }
 
