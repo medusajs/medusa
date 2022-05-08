@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@medusajs/medusa": "^1.2.1",
-    "axios": "^0.24.0",
+    "axios": "^0.26.1",
     "form-data": "^4.0.0",
     "qs": "^6.10.3",
     "retry-axios": "^2.6.0"
