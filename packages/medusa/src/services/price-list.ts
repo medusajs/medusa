@@ -260,9 +260,18 @@ class PriceListService extends BaseService {
     config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<[PriceList[], number]> {
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    const q = selector.q
+    const { relations, ...query } = this.buildQuery_(selector, config)
 
-    const query = this.buildQuery_(selector, config)
-    return await priceListRepo.findAndCount(query)
+    if (q) {
+      delete query.where.q
+      return await priceListRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
+      )
+    }
+    return await priceListRepo.findAndCount({ ...query, relations })
   }
 
   async upsertCustomerGroups_(
