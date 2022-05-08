@@ -262,13 +262,21 @@ class PriceListService extends BaseService {
   ): Promise<[PriceList[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
-
-      const query = this.buildQuery_(selector, config)
+      const q = selector.q
+      const { relations, ...query } = this.buildQuery_(selector, config)
 
       const groups = query.where.customer_groups
       query.where.customer_groups = undefined
 
-      return await priceListRepo.listAndCount(query, groups)
+      if (q) {
+        delete query.where.q
+        return await priceListRepo.getFreeTextSearchResultsAndCount(
+          q,
+          query,
+          relations
+        )
+      }
+      return await priceListRepo.listAndCount({ ...query, relations }, groups)
     })
   }
 
