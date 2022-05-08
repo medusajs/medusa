@@ -347,8 +347,8 @@ class PriceListService extends BaseService {
   }
 
   /**
-   * Add `currency_code` to a MA record if `region_id`is passed.
-   * @param prices - list of create/update MA records
+   * Add `currency_code` to an MA record if `region_id`is passed.
+   * @param prices - a list of PriceListPrice(Create/Update)Input records
    * @return {Promise} updated `prices` list
    */
   private async addCurrencyFromRegion<
@@ -364,6 +364,7 @@ class PriceListService extends BaseService {
 
       prices_.push(p)
     }
+
     return prices_
   }
 }
