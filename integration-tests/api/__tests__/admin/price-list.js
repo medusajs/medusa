@@ -211,6 +211,117 @@ describe("/admin/price-lists", () => {
         ])
       )
     })
+
+    it("given a search query, returns matching results by name", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=winter", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
+
+    it("given a search query, returns matching results by description", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=25%", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+            description:
+              "Winter sale for VIP customers. 25% off selected items.",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
+
+    it("given a search query, returns empty list when does not exist", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=blablabla", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual([])
+      expect(response.data.count).toEqual(0)
+    })
+
+    it("given a search query and a status filter not matching any price list, returns an empty set", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=draft", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual([])
+      expect(response.data.count).toEqual(0)
+    })
+
+    it("given a search query and a status filter matching a price list, returns a price list", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=active", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+            status: "active",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
   })
 
   describe("POST /admin/price-lists/:id", () => {
