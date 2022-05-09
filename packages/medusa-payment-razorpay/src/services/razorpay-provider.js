@@ -143,7 +143,7 @@ class RazorpayProviderService extends PaymentService {
 
   async createCustomer(customer) {
     try {
-      let createCustomerQueryParams = {fail_existing:0}
+      let createCustomerQueryParams = {fail_existing:0,email:"startup@medusa.com"}
       let razorpayCustomer =undefined
       let razorpayCustomerUpdated = undefined
       let fullname = (customer.first_name??"")+" "+(customer.last_name??"")
