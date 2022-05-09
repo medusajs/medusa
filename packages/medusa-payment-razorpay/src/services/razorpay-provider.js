@@ -153,7 +153,7 @@ class RazorpayProviderService extends PaymentService {
           createCustomerQueryParams.name = customerName?.substring(0,50)
       }
       else {
-        createCustomerQueryParams.name   = customerName??""
+        createCustomerQueryParams.name   = customerName??"medusa-startup"
       }
       createCustomerQueryParams.notes={fullname:customerName} 
       if (customer.email !=undefined )  {
@@ -165,11 +165,11 @@ class RazorpayProviderService extends PaymentService {
       createCustomerQueryParams["notes"]["customer_id"]=customer.id
       try {
       razorpayCustomer = await this.razorpay_.customers.create( createCustomerQueryParams)
-      if (customer.id) {
-        await this.customerService_.update(customer.id, {
-          metadata: { razorpay_id: razorpayCustomer.id },
-        })
-      }
+        if (customer.id) {
+          await this.customerService_.update(customer.id, {
+            metadata: { razorpay_id: razorpayCustomer.id },
+          })
+        }
       }
       catch (error)
       {
