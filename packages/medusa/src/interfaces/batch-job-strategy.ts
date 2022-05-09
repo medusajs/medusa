@@ -67,6 +67,8 @@ export function isBatchJobStrategy(
   return (
     typeof object.validateContext === "function" &&
     typeof object.processJob === "function" &&
-    typeof object.completeJob === "function"
+    typeof object.completeJob === "function" &&
+    typeof object.validateFile === "function" &&
+    typeof object.buildTemplate === "function"
   )
 }
