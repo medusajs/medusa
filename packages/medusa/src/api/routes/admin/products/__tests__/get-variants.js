@@ -31,7 +31,7 @@ describe("GET /admin/products/:id/variants", () => {
         {
           include_discount_prices: true,
           relations: ["variants", "variants.prices"],
-          select: undefined,
+          select: [],
           skip: 0,
           take: 100
         }
@@ -65,11 +65,11 @@ describe("GET /admin/products/:id/variants", () => {
       )
 
       expect(ProductServiceMock.retrieveVariants).toHaveBeenCalledTimes(2)
-      expect(ProductServiceMock.retrieveVariants).toHaveBeenNthCalledWith(2,
+      expect(ProductServiceMock.retrieveVariants).toHaveBeenLastCalledWith(2,
         IdMap.getId("product1"),
         {
           include_discount_prices: true,
-          relations: ["variants.options", "variants", "variants.prices"],
+          relations: ["variants", "variants.prices", "variants.options"],
           select: ["id", "variants.id"],
           skip: 0,
           take: 10
@@ -78,3 +78,6 @@ describe("GET /admin/products/:id/variants", () => {
     })
   })
 })
+
+"DHa9dQ3fL5", {"include_discount_prices": true, "relations": ["variants", "variants.prices", "variants.options"], "select": ["id", "variants.id"], "skip": 0, "take": 10}
+"DHa9dQ3fL5", {"include_discount_prices": true, "relations": ["variants", "variants.prices", "variants.options"], "select": ["id", "variants.id"], "skip": 0, "take": 10}

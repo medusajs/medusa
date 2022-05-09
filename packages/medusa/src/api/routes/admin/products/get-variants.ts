@@ -35,18 +35,18 @@ import { Product, ProductVariant } from "../../../../models"
 export default async (req, res) => {
   const { id } = req.params
 
-  const {
-    expand = "",
-    fields = "",
-    limit,
-    offset,
-  } = await validator(StoreGetProductsVariantsParams, req.query)
+  const { expand, fields, limit, offset } = await validator(
+    StoreGetProductsVariantsParams,
+    req.query
+  )
 
   const queryConfig = getRetrieveConfig<Product>(
     [],
-    [],
-    fields.split(",") as (keyof Product)[],
-    [...defaultStoreProductsVariantsRelations, ...expand.split(",")]
+    defaultStoreProductsVariantsRelations,
+    fields?.split(",") as (keyof Product)[],
+    expand
+      ? [...defaultStoreProductsVariantsRelations, ...expand.split(",")]
+      : undefined
   )
 
   const productService: ProductService = req.scope.resolve("productService")
