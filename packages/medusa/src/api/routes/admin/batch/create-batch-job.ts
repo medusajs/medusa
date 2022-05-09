@@ -5,7 +5,7 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { BatchJobService } from "../../../../services"
+import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -34,12 +34,18 @@ export default async (req, res) => {
 
   const userId: string = req.user.id || req.user.userId
 
+  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
+
+  const validatedContext = await batchJobService.validateBatchContext(
+    validated.type,
+    validated.context
+  )
+
   const toCreate = {
     created_by: userId,
     ...validated,
+    context: validatedContext,
   }
-
-  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
 
   const batch_job = await batchJobService.create(toCreate)
 

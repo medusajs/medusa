@@ -65,6 +65,15 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     )
   }
 
+  async validateBatchContext(
+    type: string,
+    context: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    // TODO validate context with batch job strategy corresponding to the given type
+
+    return context
+  }
+
   async create(data: BatchJobCreateProps): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
       const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
