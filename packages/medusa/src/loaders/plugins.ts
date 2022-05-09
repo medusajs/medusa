@@ -10,7 +10,7 @@ import {
   OauthService,
   SearchService,
 } from "medusa-interfaces"
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import { createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
@@ -27,6 +27,7 @@ import {
 import { MiddlewareService } from "../services"
 import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
 import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
+import logger from "./logger"
 
 type Options = {
   rootDirectory: string
@@ -154,36 +155,59 @@ async function registerStrategies(
   container: MedusaContainer
 ): Promise<void> {
   const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
-  await Promise.all(
-    files.map(async (file) => {
-      const module = require(file).default
+  const registeredServices = {}
 
-      if (isTaxCalculationStrategy(module.prototype)) {
+  files.map((file) => {
+    const module = require(file).default
+
+    if (isTaxCalculationStrategy(module.prototype)) {
+      if (!("taxCalculationStrategy" in registeredServices)) {
         container.register({
           taxCalculationStrategy: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
         })
-      } else if (isBatchJobStrategy(module.prototype)) {
+        registeredServices["taxCalculationStrategy"] = file
+      } else {
+        logger.warn(
+          `Cannot register ${file}. A tax calculation strategy is already registered`
+        )
+      }
+    } else if (isBatchJobStrategy(module.prototype)) {
+      if (!("batchJobStrategy" in registeredServices)) {
         container.register({
           batchJobStrategy: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
         })
-      } else if (isPriceSelectionStrategy(module.prototype)) {
+
+        registeredServices["batchJobStrategy"] = file
+      } else {
+        logger.warn(
+          `Cannot register ${file}. A batch job strategy is already registered`
+        )
+      }
+    } else if (isPriceSelectionStrategy(module.prototype)) {
+      if (!("priceSelectionStrategy" in registeredServices)) {
         container.register({
           priceSelectionStrategy: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
         })
+
+        registeredServices["priceSelectionStrategy"] = file
       } else {
-        const logger = container.resolve<Logger>("logger")
         logger.warn(
-          `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
+          `Cannot register ${file}. A price selection strategy is already registered`
         )
       }
-    })
-  )
+    } else {
+      const logger = container.resolve<Logger>("logger")
+      logger.warn(
+        `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
+      )
+    }
+  })
 }
 
 function registerMedusaMiddleware(
