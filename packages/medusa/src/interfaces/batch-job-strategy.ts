@@ -2,6 +2,9 @@ import { EntityManager } from "typeorm"
 import { BatchJob } from "../models/batch-job"
 
 export interface IBatchJobStrategy {
+  identifier: string
+  batchType: string
+
   /**
    * Instantiate a new price selection strategy with the active transaction in
    * order to ensure reads are accurate.
@@ -39,6 +42,9 @@ export interface IBatchJobStrategy {
 }
 
 export abstract class AbstractBatchJobStrategy implements IBatchJobStrategy {
+  public abstract identifier: string
+  public abstract batchType: string
+
   public abstract withTransaction(manager: EntityManager): IBatchJobStrategy
 
   public abstract validateContext(
@@ -48,6 +54,10 @@ export abstract class AbstractBatchJobStrategy implements IBatchJobStrategy {
   public abstract processJob(batchJobId: string): Promise<BatchJob>
 
   public abstract completeJob(batchJobId: string): Promise<BatchJob>
+
+  public abstract validateFile(fileLocation: string): Promise<boolean>
+
+  public abstract buildTemplate(): Promise<string>
 }
 
 export function isBatchJobStrategy(
