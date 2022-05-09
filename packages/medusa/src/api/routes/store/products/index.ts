@@ -28,6 +28,11 @@ export const defaultStoreProductsRelations = [
   "type",
 ]
 
+export const defaultStoreProductsVariantsRelations = [
+  "variants",
+  "variants.prices",
+]
+
 export * from "./list-products"
 export * from "./search"
 
