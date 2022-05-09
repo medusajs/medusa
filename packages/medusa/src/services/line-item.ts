@@ -236,10 +236,10 @@ class LineItemService extends BaseService {
           should_merge: shouldMerge,
         }
 
-        const lineLitemRepo = transactionManager.getCustomRepository(
+        const lineItemRepo = transactionManager.getCustomRepository(
           this.lineItemRepository_
         )
-        const lineItem = lineLitemRepo.create(rawLineItem)
+        const lineItem = lineItemRepo.create(rawLineItem)
 
         if (context.cart) {
           const adjustments = await this.lineItemAdjustmentService_
