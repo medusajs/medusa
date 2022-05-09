@@ -157,6 +157,8 @@ async function registerStrategies(
   const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
   const registeredServices = {}
 
+  const batchJobsStrategyFiles: string[] = []
+
   files.map((file) => {
     const module = require(file).default
 
@@ -174,19 +176,7 @@ async function registerStrategies(
         )
       }
     } else if (isBatchJobStrategy(module.prototype)) {
-      if (!("batchJobStrategy" in registeredServices)) {
-        container.register({
-          batchJobStrategy: asFunction(
-            (cradle) => new module(cradle, pluginDetails.options)
-          ).singleton(),
-        })
-
-        registeredServices["batchJobStrategy"] = file
-      } else {
-        logger.warn(
-          `Cannot register ${file}. A batch job strategy is already registered`
-        )
-      }
+      batchJobsStrategyFiles.push(file)
     } else if (isPriceSelectionStrategy(module.prototype)) {
       if (!("priceSelectionStrategy" in registeredServices)) {
         container.register({
@@ -208,6 +198,18 @@ async function registerStrategies(
       )
     }
   })
+
+  if (batchJobsStrategyFiles.length > 0) {
+    container.register({
+      batchJobStrategies: asFunction((cradle) =>
+        batchJobsStrategyFiles.map((bs) => {
+          const module = require(bs).default
+
+          return new module(cradle, pluginDetails.options)
+        })
+      ).singleton(),
+    })
+  }
 }
 
 function registerMedusaMiddleware(

@@ -26,6 +26,16 @@ export interface IBatchJobStrategy {
    *  Method performs the completion of the job. Will not be run if `processJob` has already moved the BatchJob to a `complete` status.
    */
   completeJob(batchJobId: string): Promise<BatchJob>
+
+  /**
+   * Validates that the file can be used for processJob
+   */
+  validateFile(fileLocation: string)
+
+  /**
+   * Builds and returns a template file that can be downloaded and filled in
+   */
+  buildTemplate()
 }
 
 export abstract class AbstractBatchJobStrategy implements IBatchJobStrategy {
