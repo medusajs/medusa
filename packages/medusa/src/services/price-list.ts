@@ -273,6 +273,7 @@ class PriceListService extends BaseService {
         return await priceListRepo.getFreeTextSearchResultsAndCount(
           q,
           query,
+          groups,
           relations
         )
       }

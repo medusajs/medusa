@@ -16,6 +16,7 @@ export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
+    groups?: FindOperator<PriceList>,
     relations: (keyof PriceList)[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
@@ -33,6 +34,10 @@ export class PriceListRepository extends Repository<PriceList> {
       )
       .skip(options.skip)
       .take(options.take)
+
+    if (groups) {
+      qb.andWhere("group.id IN (:...ids)", { ids: groups.value })
+    }
 
     const [results, count] = await qb.getManyAndCount()
 
