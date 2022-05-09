@@ -162,6 +162,8 @@ export function registerStrategies(
   const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*.js`, {})
   const registeredServices = {}
 
+  const batchJobsStrategyFiles: string[] = []
+
   files.map((file) => {
     const module = require(file).default
 
@@ -222,6 +224,18 @@ export function registerStrategies(
         )
     }
   })
+
+  if (batchJobsStrategyFiles.length > 0) {
+    container.register({
+      batchJobStrategies: asFunction((cradle) =>
+        batchJobsStrategyFiles.map((bs) => {
+          const module = require(bs).default
+
+          return new module(cradle, pluginDetails.options)
+        })
+      ).singleton(),
+    })
+  }
 }
 
 function registerMedusaMiddleware(
