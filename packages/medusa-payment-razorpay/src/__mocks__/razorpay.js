@@ -21,13 +21,47 @@ export const RazorpayMock = {
           created_at: 1234567,
         })
       }
+     
       if (data.email === "lebron@james.com") {
-        return Promise.resolve({
+        return Promise.reject({
           id: "cus_lebron",
-          cateated_at: 1234567,
+          created_at: 1234567,
         })
       }
+      
     }),
+    fetch: jest.fn().mockImplementation((id,data) => {
+      return Promise.resolve( {
+        id:"cust_1Aa00000000001",
+        entity:"customer",
+        name:"james lebron",
+        email:"lebron@james.com",
+        contact:"9876543210",
+        gstin:"37AADCS0472N1Z1",
+        notes:{fullname:"james lebron",customer_id:"cust_1Aa00000000001"},
+        created_at :1234567890
+      })
+      }),
+    all:jest.fn().mockImplementation((id,data)=>
+    {
+      return Promise.resolve({
+         "entity":"collection",
+          "count":1,
+          "items":[
+            {
+              id:"cust_1Aa00000000001",
+              entity:"customer",
+              name:"james lebron",
+              email:"lebron@james.com",
+              contact:"9876543210",
+              gstin:"37AADCS0472N1Z1",
+              notes:{fullname:"james lebron",customer_id:"cust_1Aa00000000001"},
+              created_at :1234567890
+            }],
+      })
+
+    }),
+    
     edit: jest.fn().mockImplementation((id,data) => {
       if (id === "cus_vvd") {
         return Promise.resolve({
