@@ -68,6 +68,8 @@ describe("RazorpayProviderService", () => {
     
   })
 
+  
+
   describe("createOrder", () => {
     let result
     const razorpayProviderService = new RazorpayProviderService(
@@ -206,6 +208,7 @@ describe("RazorpayProviderService", () => {
         },
         {
           total: 1000,
+          email:"lebron@james.com",
         }
       )
     })
@@ -346,5 +349,45 @@ describe("RazorpayProviderService", () => {
       })
     })
   })*/
- 
+  describe("createCustomer with existing customer", () => {
+    const test_customer = {
+      id: IdMap.getId("vvd"),
+      first_name: "james",
+      last_name: "lebron",
+      email: "lebron@james.com",
+      contact:"9876543210",
+      notes: {},
+      gstin:"37AADCS0472N1Z1"
+    }
+    let result
+      const razorpayProviderService = new RazorpayProviderService(
+        {
+          customerService: CustomerServiceMock,
+          regionService: RegionServiceMock,
+          totalsService: TotalsServiceMock,
+        },
+        {
+          api_key: api_key,
+          api_key_secret:api_key_secret,
+
+
+        })
+        
+      beforeEach(async () => {
+          jest.clearAllMocks()
+          result = await razorpayProviderService.createCustomer(_.cloneDeep(test_customer))
+        })
+   
+    it("returns created razorpay customer existing customer", () => {
+     
+      expect(result).toHaveProperty('created_at')
+      expect(result).toMatchObject({ name: test_customer.name?.substring(0,50)??(((test_customer.first_name??"")+" "+(test_customer.last_name??"")).substring(0,50)),
+      email: test_customer.email,
+      contact:test_customer.contact,
+      notes: {customer_id:expect.any(String),
+        fullname:test_customer.name??((test_customer.first_name??"")+" "+(test_customer.last_name??""))},
+      gstin:test_customer.gstin})
+    })
+    
+  })
 })

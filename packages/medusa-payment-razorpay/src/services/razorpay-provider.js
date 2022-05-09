@@ -103,6 +103,37 @@ class RazorpayProviderService extends PaymentService {
     }
   }
 
+  async _findExistingCustomer(email,contact)
+  {
+    let customer_limit_per_page = 100
+    let razorpayCustomerOfInterest = undefined
+    let notFound = true;
+    let fectchCustomerQueryParams = {
+      count : customer_limit_per_page,
+      skip : 0
+    }
+  
+    do{
+      let razorpayCustomers = await this.razorpay_.customers.all( fectchCustomerQueryParams)
+      let customers = razorpayCustomers.items;
+      let customer_interest = customers.filter(customer=>{if (customer.email === email|| customer.contact === contact) return true})
+      if (customer_interest.length > 0)
+      {
+        razorpayCustomerOfInterest = await this.razorpay_.customers.fetch( customer_interest[0].id)
+        notFound = false
+        break;
+      }
+      else{
+      fectchCustomerQueryParams = {
+        count : customer_limit_per_page,
+        skip : razorpayCustomers.count
+      }
+    }
+    }while(razorpayCustomers.response<=customer_limit_per_page && notFound && razorpayCustomers.count);
+    
+    return razorpayCustomerOfInterest
+  }
+
   /**
    * Creates a Razorpay customer using a Medusa customer.
    * @param {object} customer - Customer data from Medusa
@@ -113,6 +144,8 @@ class RazorpayProviderService extends PaymentService {
   async createCustomer(customer) {
     try {
       let createCustomerQueryParams = {fail_existing:0}
+      let razorpayCustomer =undefined
+      let razorpayCustomerUpdated = undefined
       let fullname = (customer.first_name??"")+" "+(customer.last_name??"")
       let customerName = customer.name??fullname
       let notes = {}
@@ -130,12 +163,17 @@ class RazorpayProviderService extends PaymentService {
         createCustomerQueryParams.contact =customer.contact
       }
       createCustomerQueryParams["notes"]["customer_id"]=customer.id
-      const razorpayCustomer = await this.razorpay_.customers.create( createCustomerQueryParams)
-      let razorpayCustomerUpdated ={}
+      try {
+      razorpayCustomer = await this.razorpay_.customers.create( createCustomerQueryParams)
       if (customer.id) {
         await this.customerService_.update(customer.id, {
           metadata: { razorpay_id: razorpayCustomer.id },
         })
+      }
+      }
+      catch (error)
+      {
+        razorpayCustomer = this._findExistingCustomer(customer.email,customer.contact)  
       }
       if (razorpayCustomer?.created_at) {
         razorpayCustomerUpdated= await this.updateCustomer(razorpayCustomer.id,customer)  /* updating the remaining details */
@@ -208,14 +246,14 @@ class RazorpayProviderService extends PaymentService {
           id: customer_id,
         })
 
-        intentRequest.notes["customer"] = razorpayCustomer.id
+        intentRequest.notes["customer_id"] = razorpayCustomer.id
       }
     } else {
       const razorpayCustomer = await this.createCustomer({
         email,
       })
 
-      intentRequest.notes["customer"] = razorpayCustomer.id
+      intentRequest.notes["customer_id"] = razorpayCustomer.id
     }
 
     const orderIntent = await this.razorpay_.orders.create(
