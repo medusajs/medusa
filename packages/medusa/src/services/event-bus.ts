@@ -1,7 +1,7 @@
 import Bull from "bull"
 import Redis from "ioredis"
 import { EntityManager } from "typeorm"
-import { Logger } from "../types/global"
+import { ConfigModule, Logger } from "../types/global"
 import { StagedJobRepository } from "../repositories/staged-job"
 import { StagedJob } from "../models"
 import { sleep } from "../utils/sleep"
@@ -21,7 +21,7 @@ type Subscriber<T = unknown> = (data: T, eventName: string) => Promise<void>
  * subscribers when events happen. Events will run asynchronously.
  */
 export default class EventBusService {
-  protected readonly config_: { projectConfig: { redis_url?: string } }
+  protected readonly config_: ConfigModule
   protected readonly manager_: EntityManager
   protected readonly logger_: Logger
   protected readonly stagedJobRepository_: typeof StagedJobRepository
@@ -43,8 +43,7 @@ export default class EventBusService {
       redisClient,
       redisSubscriber,
     }: InjectedDependencies,
-    // TODO: Update the type once the PR 1290 is marged
-    config: { projectConfig: { redis_url?: string } },
+    config: ConfigModule,
     singleton = true
   ) {
     const opts = {
