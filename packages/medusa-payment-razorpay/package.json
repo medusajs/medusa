@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-razorpay",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Razorpay Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {
