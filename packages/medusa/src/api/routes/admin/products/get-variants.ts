@@ -3,15 +3,17 @@ import { defaultStoreProductsVariantsRelations } from "../../store/products"
 import { validator } from "../../../../utils/validator"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
+import { Product, ProductVariant } from "../../../../models"
 
 /**
- * @oas [get] /products/{id}/variants
+ * @oas [get] /products/:id/variants
  * operationId: "GetProductsProductVariants"
  * summary: "List a Product's Product Variants"
  * description: "Retrieves a list of the Product Variants associated with a Product."
  * x-authenticated: true
  * parameters:
- *   - (query) id=* {string} Id of the product to search for.
+ *   - (path) id=* {string} Id of the product to search for.
  *   - (query) fields {string} Comma separated string of the column to select.
  *   - (query) expand {string} Comma separated string of the relations to include.
  *   - (query) offset {string} How many products to skip in the result.
@@ -35,28 +37,22 @@ export default async (req, res) => {
 
   const validated = await validator(StoreGetProductsVariantsParams, req.query)
 
-  let includeFields: string[] = []
-  if (validated.fields) {
-    includeFields = [...new Set(validated.fields.split(",")), "id"]
-  }
-
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = [...new Set([...validated.expand.split(",")])]
-  }
-
-  const listConfig = {
-    select: includeFields.length ? includeFields : undefined,
-    relations: expandFields.length
-      ? [...new Set([...expandFields, ...defaultStoreProductsVariantsRelations])]
-      : defaultStoreProductsVariantsRelations,
-    skip: validated.offset,
-    take: validated.limit,
-    include_discount_prices: true,
-  }
+  const queryConfig = getRetrieveConfig<Product>(
+    [],
+    defaultStoreProductsVariantsRelations,
+    validated?.fields
+      ?.split(",")
+      .map((field) => field.trim()) as (keyof Product)[],
+    validated?.expand?.split(",").map((relation) => relation.trim())
+  )
 
   const productService: ProductService = req.scope.resolve("productService")
-  const variants = await productService.retrieveVariants(id, listConfig)
+  const variants = await productService.retrieveVariants(id, {
+    ...queryConfig,
+    include_discount_prices: true,
+    skip: validated.offset ?? 0,
+    take: validated.limit ?? 50,
+  })
 
   res.json({ variants })
 }

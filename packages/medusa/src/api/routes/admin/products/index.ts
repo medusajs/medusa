@@ -19,6 +19,7 @@ export default (app) => {
 
   route.get(
     "/:id/variants",
+    middlewares.normalizeQuery(),
     middlewares.wrap(require("./get-variants").default)
   )
   route.post(
