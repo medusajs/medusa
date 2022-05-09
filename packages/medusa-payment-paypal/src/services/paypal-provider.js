@@ -288,9 +288,9 @@ class PayPalProviderService extends PaymentService {
    */
   async cancelPayment(payment) {
     const order = await this.retrievePayment(payment.data)
-    const isAlreadyCanceled = order.status === "VOIDED"
-    const isCanceledAndFullyRefund = order.status === "COMPLETED" && !!order.invoice_id
-    if (isAlreadyCanceled || isCanceledAndFullyRefund) {
+    const isAlreadyCancelled = order.status === "VOIDED"
+    const isCancelledAndFullyRefund = order.status === "COMPLETED" && !!order.invoice_id
+    if (isAlreadyCancelled || isCancelledAndFullyRefund) {
       return order
     }
 
