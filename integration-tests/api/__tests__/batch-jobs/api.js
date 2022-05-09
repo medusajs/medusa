@@ -3,6 +3,7 @@ const path = require("path")
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
+import { BatchJobStatus } from "@medusajs/medusa"
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const userSeeder = require("../../helpers/user-seeder")
@@ -23,7 +24,7 @@ describe("/admin/batch", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: true })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -117,6 +118,13 @@ describe("/admin/batch", () => {
           created_by: "admin_user",
         })
         await simpleBatchJobFactory(dbConnection, {
+          id: "job_complete",
+          type: "batch_1",
+          created_by: "admin_user",
+          status: BatchJobStatus.COMPLETED,
+        })
+
+        await simpleBatchJobFactory(dbConnection, {
           id: "job_2",
           type: "batch_1",
           created_by: "member-user",
@@ -165,6 +173,23 @@ describe("/admin/batch", () => {
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
             "Cannot cancel batch jobs created by other users"
+          )
+        })
+    })
+
+    it("Fails to cancel a batch job that is already complete", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      const jobId = "job_complete"
+
+      api
+        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
+        .catch((err) => {
+          expect(err.response.status).toEqual(422)
+          expect(err.response.data.type).toEqual("duplicate_error")
+          expect(err.response.data.message).toEqual(
+            "Cannot cancel completed batch job"
           )
         })
     })
