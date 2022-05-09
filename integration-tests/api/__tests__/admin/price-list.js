@@ -635,7 +635,9 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.price_list.prices.length).toEqual(6)
-      expect(response.data.price_list.prices).toMatchSnapshot([
+      expect(
+        response.data.price_list.prices.sort((a, b) => b.amount - a.amount)
+      ).toMatchSnapshot([
         {
           id: expect.any(String),
           price_list_id: "pl_no_customer_groups",
