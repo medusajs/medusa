@@ -121,10 +121,8 @@ export default class EventBusService {
       throw new Error("Subscriber must be a function")
     }
 
-    this.observers_.set(event, [
-      ...(this.observers_.get(event) ?? []),
-      subscriber,
-    ])
+    const observers = this.observers_.get(event) ?? []
+    this.observers_.set(event, [...observers, subscriber])
 
     return this
   }
@@ -166,10 +164,8 @@ export default class EventBusService {
       throw new Error("Handler must be a function")
     }
 
-    this.cronHandlers_.set(event, [
-      ...(this.cronHandlers_.get(event) ?? []),
-      subscriber,
-    ])
+    const cronHandlers = this.cronHandlers_.get(event) ?? []
+    this.cronHandlers_.set(event, [...cronHandlers, subscriber])
 
     return this
   }
