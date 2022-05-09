@@ -266,7 +266,7 @@ class PriceListService extends BaseService {
       const { relations, ...query } = this.buildQuery_(selector, config)
 
       const groups = query.where.customer_groups
-      query.where.customer_groups = undefined
+      delete query.where.customer_groups
 
       if (q) {
         delete query.where.q

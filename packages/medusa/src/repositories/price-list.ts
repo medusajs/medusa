@@ -7,7 +7,7 @@ import {
   Repository,
 } from "typeorm"
 import { PriceList } from "../models/price-list"
-import { CustomFindOptions } from "../types/common"
+import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
 
 type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
 
@@ -19,6 +19,7 @@ export class PriceListRepository extends Repository<PriceList> {
     relations: (keyof PriceList)[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
+
     const qb = this.createQueryBuilder("price_list")
       .leftJoinAndSelect("price_list.customer_groups", "customer_group")
       .select(["price_list.id"])
