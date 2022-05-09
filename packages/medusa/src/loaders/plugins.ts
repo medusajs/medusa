@@ -218,7 +218,7 @@ export function registerStrategies(
 
       default:
         logger.warn(
-          `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
+          `Cannot register ${file}. A price selection strategy is already registered`
         )
     }
   })
