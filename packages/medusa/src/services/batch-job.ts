@@ -7,6 +7,7 @@ import { TransactionBaseService } from "../interfaces"
 import { buildQuery, validateId } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import EventBusService from "./event-bus"
+import { AdminGetRegionsRegionFulfillmentOptionsRes } from "../api"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -86,6 +87,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       await batchJobRepo.save(batchJob)
 
       const result = await this.retrieve(batchJobId)
+
+      if (result.status === BatchJobStatus.COMPLETED) {
+        throw new MedusaError(
+          MedusaError.Types.DUPLICATE_ERROR,
+          "Cannot cancel completed batch job"
+        )
+      }
 
       await this.eventBus_
         .withTransaction(manager)
