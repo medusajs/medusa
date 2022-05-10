@@ -276,7 +276,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it("creates a cart with a prefilled shipping address but a country not part of the region", async () => {
+    it("should throw shipping country not in region", async () => {
       const res = cartService.create({
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
@@ -293,7 +293,7 @@ describe("CartService", () => {
       await expect(res).rejects.toThrow("Shipping country not in region")
     })
 
-    it("creates a cart with a prefilled shipping address", async () => {
+    it("a cart with a prefilled shipping address", async () => {
       await cartService.create({
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
