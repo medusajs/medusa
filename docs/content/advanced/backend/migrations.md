@@ -10,23 +10,23 @@ Medusa’s Migrations do not work with SQLite databases. They are intended to be
 
 ## Overview
 
-Migrations in Medusa are scripts that are used to make additions or changes to your database schema. They are essential for both when you first install your server and for subsequent server upgrades later on.
+Migrations are scripts that are used to make additions or changes to your database schema. In Medusa, they are essential for both when you first install your server and for subsequent server upgrades later on.
 
-When you first install your Medusa server, the database schema used must have all the tables necessary for the server to run. This is automatically done when you run the `seed` command which also seeds your database with dummy data:
+When you first create your Medusa server, the database schema used must have all the tables necessary for the server to run.
 
-```bash npm2yarn
-npm run seed
-```
-
-When a new Medusa version requires changes to your database schema, it will introduce new migration scripts that must run before using the upgraded version. Not running the necessary migrations for a new update will result in a lot of unexpected behaviors and inconsistencies.
+When a new Medusa version introduces changes to the database schema, you'll have to run migrations to apply them to your own database.
 
 :::tip
 
-Migrations are used for changes in the database schema. However, there are some version updates of Medusa that require updating the data in your database to fit the new schema or architecture. Those are specific to each version and you should check out the version under Upgrade Guides for details on the steps.
+Migrations are used to apply changes to the database schema. However, there are some version updates of Medusa that require updating the data in your database to fit the new schema. Those are specific to each version and you should check out the version under Upgrade Guides for details on the steps.
 
 :::
 
 ## How to Run Migrations
+
+Migrations in Medusa can be done in one of two ways:
+
+### Migrate Command
 
 Using the Medusa CLI tool, you can run migrations with the following command:
 
@@ -35,6 +35,18 @@ medusa migrations run
 ```
 
 This will check for any migrations that contain changes to your database schema that aren't applied yet and run them on your server.
+
+### Seed Command
+
+Seeding is the process of filling your database with data that is either essential or for testing and demo purposes. In Medusa, the `seed` command will run the migrations to your database if necessary before it seeds your database with dummy data.
+
+You can use the following command to seed your database:
+
+```bash npm2yarn
+npm run seed
+```
+
+This will use the underlying `seed` command provided by Medusa's CLI to seed your database with data from the file `data/seed.json` on your Medusa server.
 
 ## How to Create Migrations
 
