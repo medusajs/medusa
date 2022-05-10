@@ -156,12 +156,12 @@ class RazorpayProviderService extends PaymentService {
         createCustomerQueryParams.name   = customerName??"medusa-startup"
       }
       createCustomerQueryParams.notes={fullname:customerName} 
-      if (customer.email !=undefined )  {
-        createCustomerQueryParams.email = customer.email
-      }
-      if (customer.contact !=undefined ) {
-        createCustomerQueryParams.contact =customer.contact
-      }
+    //  if (customer.email !=undefined )  {
+        createCustomerQueryParams.email = customer.email??"startup@medusa.com"
+     // }
+    //  if (customer.contact !=undefined ) {
+        createCustomerQueryParams.contact =customer.contact??"90000000000"
+     //}
       createCustomerQueryParams["notes"]["customer_id"]=customer.id
       try {
       razorpayCustomer = await this.razorpay_.customers.create( createCustomerQueryParams)
@@ -244,6 +244,7 @@ class RazorpayProviderService extends PaymentService {
         const razorpayCustomer = await this.createCustomer({
           email,
           id: customer_id,
+          name:"unknown"
         })
 
         intentRequest.notes["customer_id"] = razorpayCustomer.id
@@ -251,6 +252,7 @@ class RazorpayProviderService extends PaymentService {
     } else {
       const razorpayCustomer = await this.createCustomer({
         email,
+        name:"unknown"
       })
 
       intentRequest.notes["customer_id"] = razorpayCustomer.id
