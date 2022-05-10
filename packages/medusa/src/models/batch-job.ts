@@ -63,7 +63,7 @@ export class BatchJob {
   deleted_at: Date | null
 
   @AfterInsert()
-  setStatus(): void {
+  loadStatus(): void {
     if (this.cancelled_at) {
       this.status = BatchJobStatus.CANCELLED
     } else if (this.completed_at) {
