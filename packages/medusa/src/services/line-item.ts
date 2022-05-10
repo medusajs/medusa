@@ -43,7 +43,7 @@ class LineItemService extends BaseService {
     productService,
     regionService,
     cartRepository,
-    lineItemAdjustmentService
+    lineItemAdjustmentService,
   }: InjectedDependencies) {
     super()
 
@@ -233,10 +233,12 @@ class LineItemService extends BaseService {
           allow_discounts: variant.product.discountable,
           is_giftcard: variant.product.is_giftcard,
           metadata: context?.metadata || {},
-          should_merge: shouldMerge
+          should_merge: shouldMerge,
         }
 
-        const lineLitemRepo = transactionManager.getCustomRepository(this.lineItemRepository_)
+        const lineLitemRepo = transactionManager.getCustomRepository(
+          this.lineItemRepository_
+        )
         const lineItem = lineLitemRepo.create(rawLineItem)
 
         if (context.cart) {

@@ -12,7 +12,7 @@ If no values are defined for a given option, the plugin will not try to send an 
   from: [the from field, i.e. ACME <acme@mail.com>] (required),
   gift_card_created_template: [used on gift_card.created],
   order_placed_template: [used on order.placed],
-  order_cancelled_template: [used on order.cancelled],
+  order_canceled_template: [used on order.canceled],
   order_shipped_template: [used on order.shipment_created],
   order_completed_template: [used on order.completed],
   user_password_reset_template: [used on user.password_reset],
@@ -21,7 +21,7 @@ If no values are defined for a given option, the plugin will not try to send an 
     "de-DE": { // locale key
       gift_card_created_template: [used on gift_card.created],
       order_placed_template: [used on order.placed],
-      order_cancelled_template: [used on order.cancelled],
+      order_canceled_template: [used on order.canceled],
       order_shipped_template: [used on order.shipment_created],
       order_completed_template: [used on order.completed],
       user_password_reset_template: [used on user.password_reset],
