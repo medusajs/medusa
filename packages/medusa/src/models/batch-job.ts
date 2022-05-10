@@ -22,7 +22,6 @@ export class BatchJob {
   @DbAwareColumn({ type: "text" })
   type: string
 
-  @DbAwareColumn({ type: "enum", enum: BatchJobStatus })
   status: BatchJobStatus
 
   @Column({ nullable: true })
@@ -38,16 +37,19 @@ export class BatchJob {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   result: Record<string, unknown>
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   processing_at: Date | null
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   awaiting_confirmation_at: Date | null
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   confirmed_at: Date | null
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
+  completed_at: Date | null
+
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   cancelled_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
