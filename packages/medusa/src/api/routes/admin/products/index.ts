@@ -20,7 +20,7 @@ export default (app) => {
   route.get(
     "/:id/variants",
     middlewares.normalizeQuery(),
-    middlewares.wrap(require("./get-variants").default)
+    middlewares.wrap(require("./list-variants").default)
   )
   route.post(
     "/:id/variants",
@@ -183,7 +183,7 @@ export * from "./delete-option"
 export * from "./delete-product"
 export * from "./delete-variant"
 export * from "./get-product"
-export * from "./get-variants"
+export * from "./list-variants"
 export * from "./list-products"
 export * from "./list-tag-usage-count"
 export * from "./list-types"
