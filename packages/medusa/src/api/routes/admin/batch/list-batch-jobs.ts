@@ -71,14 +71,14 @@ export default async (req, res) => {
     orderBy
   )
 
-  const created_by: string = req.user.id || req.user.userId
+  const created_by = req.user.id ?? req.user.userId
 
   const batchService: BatchJobService = req.scope.resolve("batchJobService")
   const [jobs, count] = await batchService.listAndCount(
-    pickBy(
-      { created_by, ...filterableFields },
-      (val) => typeof val !== "undefined"
-    ),
+    {
+      created_by,
+      ...pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    },
     listConfig
   )
 
