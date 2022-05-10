@@ -8,7 +8,7 @@ import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [delete] /discounts/{id}/conditions/{condition_id}
+ * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}
  * operationId: "DeleteDiscountsDiscountCondition"
  * summary: "Delete a DiscountCondition"
  * description: "Deletes a DiscountCondition"
@@ -66,7 +66,7 @@ export default async (req, res) => {
   if (!condition?.discount) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Discount with id ${discount_id} does not belong to condition with id ${condition.id}`
+      `Condition with id ${condition.id} does not belong to Discount with id ${discount_id}`
     )
   }
 

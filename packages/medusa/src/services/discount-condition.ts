@@ -66,7 +66,7 @@ class DiscountConditionService extends BaseService {
   async retrieve(
     conditionId: string,
     discountId: string
-  ): Promise<DiscountCondition & { discount: Discount }> {
+  ): Promise<(DiscountCondition & { discount: Discount }) | never> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_
@@ -178,7 +178,6 @@ class DiscountConditionService extends BaseService {
           manager.getCustomRepository(this.discountConditionRepository_)
 
         if (data.id) {
-          // throws if condition or discount does not exist
           const condition = await this.retrieve(data.id, discount.id)
 
           return await discountConditionRepo.addConditionResources(
@@ -216,7 +215,7 @@ class DiscountConditionService extends BaseService {
     )
   }
 
-  async remove(discountConditionId: string): Promise<void> {
+  async remove(discountConditionId: string): Promise<DiscountCondition> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_

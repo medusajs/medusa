@@ -7,10 +7,14 @@ import { AdminUpsertConditionsReq } from "../../../../types/discount"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 /**
- * @oas [post] /discounts/{id}/conditions/{condition_id}
+ * @oas [post] /discounts/{discount_id}/conditions/{condition_id}
  * operationId: "PostDiscountsConditionsCondition"
  * summary: "Updates a DiscountCondition"
  * x-authenticated: true
+ * parameters:
+ *   - (path) discount_id=* {string} The id of the Product.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  * description: "Updates a DiscountCondition"
  * requestBody:
  *   content:
