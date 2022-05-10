@@ -24,6 +24,7 @@ class BatchJobService extends BaseService<BatchJobService> {
     UPDATED: "batch.updated",
     COMPLETED: "batch.completed",
     CANCELED: "batch.canceled",
+    PROCESS_COMPLETE: "batch-process.complete",
   }
 
   constructor(container: InjectedContainer) {
@@ -84,7 +85,7 @@ class BatchJobService extends BaseService<BatchJobService> {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(BatchJobService.Events.COMPLETED, {
+        .emit(BatchJobService.Events.PROCESS_COMPLETE, {
           id: result.id,
         })
 
