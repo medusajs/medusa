@@ -2,6 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { CustomerGroupService } from "."
+import { Product } from "../models"
 import { CustomerGroup } from "../models/customer-group"
 import { PriceList } from "../models/price-list"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -14,10 +15,12 @@ import {
   UpdatePriceListInput,
 } from "../types/price-list"
 import { formatException } from "../utils/exception-formatter"
+import ProductService from "./product"
 
 type PriceListConstructorProps = {
   manager: EntityManager
   customerGroupService: CustomerGroupService
+  productService: ProductService
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: typeof MoneyAmountRepository
 }
@@ -29,18 +32,21 @@ type PriceListConstructorProps = {
 class PriceListService extends BaseService {
   private manager_: EntityManager
   private customerGroupService_: CustomerGroupService
+  private productService_: ProductService
   private priceListRepo_: typeof PriceListRepository
   private moneyAmountRepo_: typeof MoneyAmountRepository
 
   constructor({
     manager,
     customerGroupService,
+    productService,
     priceListRepository,
     moneyAmountRepository,
   }: PriceListConstructorProps) {
     super()
     this.manager_ = manager
     this.customerGroupService_ = customerGroupService
+    this.productService_ = productService
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
   }
@@ -53,6 +59,7 @@ class PriceListService extends BaseService {
     const cloned = new PriceListService({
       manager: transactionManager,
       customerGroupService: this.customerGroupService_,
+      productService: this.productService_,
       priceListRepository: this.priceListRepo_,
       moneyAmountRepository: this.moneyAmountRepo_,
     })
@@ -253,9 +260,18 @@ class PriceListService extends BaseService {
     config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<[PriceList[], number]> {
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    const q = selector.q
+    const { relations, ...query } = this.buildQuery_(selector, config)
 
-    const query = this.buildQuery_(selector, config)
-    return await priceListRepo.findAndCount(query)
+    if (q) {
+      delete query.where.q
+      return await priceListRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
+      )
+    }
+    return await priceListRepo.findAndCount({ ...query, relations })
   }
 
   async upsertCustomerGroups_(
@@ -275,6 +291,50 @@ class PriceListService extends BaseService {
     priceList.customer_groups = groups
 
     await priceListRepo.save(priceList)
+  }
+
+  async listProducts(
+    priceListId: string,
+    selector = {},
+    config: FindConfig<Product> = {
+      relations: [],
+      skip: 0,
+      take: 20,
+    }
+  ): Promise<[Product[], number]> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const [products, count] = await this.productService_.listAndCount(
+        selector,
+        config
+      )
+
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+
+      const productsWithPrices = await Promise.all(
+        products.map(async (p) => {
+          if (p.variants?.length) {
+            p.variants = await Promise.all(
+              p.variants.map(async (v) => {
+                const [prices] =
+                  await moneyAmountRepo.findManyForVariantInPriceList(
+                    v.id,
+                    priceListId
+                  )
+
+                return {
+                  ...v,
+                  prices,
+                }
+              })
+            )
+          }
+
+          return p
+        })
+      )
+
+      return [productsWithPrices, count]
+    })
   }
 }
 

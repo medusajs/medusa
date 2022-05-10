@@ -211,6 +211,117 @@ describe("/admin/price-lists", () => {
         ])
       )
     })
+
+    it("given a search query, returns matching results by name", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=winter", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
+
+    it("given a search query, returns matching results by description", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=25%", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+            description:
+              "Winter sale for VIP customers. 25% off selected items.",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
+
+    it("given a search query, returns empty list when does not exist", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=blablabla", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual([])
+      expect(response.data.count).toEqual(0)
+    })
+
+    it("given a search query and a status filter not matching any price list, returns an empty set", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=draft", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual([])
+      expect(response.data.count).toEqual(0)
+    })
+
+    it("given a search query and a status filter matching a price list, returns a price list", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=active", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+            status: "active",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
   })
 
   describe("POST /admin/price-lists/:id", () => {
@@ -794,9 +905,17 @@ describe("/admin/price-lists", () => {
 
         await simplePriceListFactory(dbConnection, {
           id: "test-list",
+          customer_groups: ["test-group"],
           prices: [
-            { variant_id: "test-variant-1", currency_code: "usd", amount: 100 },
-            { variant_id: "test-variant-4", currency_code: "usd", amount: 100 },
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 150 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
+          ],
+        })
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list-2",
+          prices: [
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 200 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 200 },
           ],
         })
       } catch (err) {
@@ -810,7 +929,7 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it("lists only product 1, 2", async () => {
+    it("lists only product 1, 2 with price list prices", async () => {
       const api = useApi()
 
       const response = await api
@@ -826,8 +945,50 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
       expect(response.data.products).toEqual([
-        expect.objectContaining({ id: "test-prod-1" }),
-        expect.objectContaining({ id: "test-prod-2" }),
+        expect.objectContaining({
+          id: "test-prod-1",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-1",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-2",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          id: "test-prod-2",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-3",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-4",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+          ],
+        }),
       ])
     })
 
