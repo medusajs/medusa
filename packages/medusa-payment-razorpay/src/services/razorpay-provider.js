@@ -149,7 +149,7 @@ class RazorpayProviderService extends PaymentService {
       let fullname = (customer.first_name??"")+" "+(customer.last_name??"")
       let customerName = customer.name??fullname
       let notes = {}
-      if (customerName?.length > RazorpayProviderService.RAZORPAY_NAME_LENGTH_LIMIT){
+      if (customerName?.length > RazorpayProviderService.RAZORPAY_NAME_LENGTH_LIMIT||customerName===" "){
           createCustomerQueryParams.name = customerName?.substring(0,50)
       }
       else {

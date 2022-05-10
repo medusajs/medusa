@@ -11,4 +11,4 @@ src
 .babelrc
 .prettierrc
 .vscode
-
+__mocks__
