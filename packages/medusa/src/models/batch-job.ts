@@ -51,7 +51,7 @@ export class BatchJob {
   completed_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  cancelled_at: Date | null
+  canceled_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -64,8 +64,8 @@ export class BatchJob {
 
   @AfterLoad()
   loadStatus(): void {
-    if (this.cancelled_at) {
-      this.status = BatchJobStatus.CANCELLED
+    if (this.canceled_at) {
+      this.status = BatchJobStatus.CANCELED
     } else if (this.completed_at) {
       this.status = BatchJobStatus.COMPLETED
     } else if (this.confirmed_at) {
