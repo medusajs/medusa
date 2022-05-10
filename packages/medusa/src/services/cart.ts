@@ -37,6 +37,7 @@ import InventoryService from "./inventory"
 import CustomShippingOptionService from "./custom-shipping-option"
 import LineItemAdjustmentService from "./line-item-adjustment"
 import { LineItemRepository } from "../repositories/line-item"
+import { raw } from "express"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -417,7 +418,7 @@ class CartService extends BaseService {
                 "Shipping country not in region"
               )
             }
-            rawCart.shipping_address = addr
+            rawCart.shipping_address_id = data.shipping_address_id
           }
         }
 
