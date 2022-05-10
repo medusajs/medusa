@@ -7,6 +7,11 @@ export type BatchJobFactoryData = {
   status?: BatchJobStatus
   created_by?: string
   context?: Record<string, unknown>
+  processing_at?: Date
+  awaiting_confirmation_at?: Date
+  confirmed_at?: Date
+  completed_at?: Date
+  cancelled_at?: Date
 }
 
 export const simpleBatchJobFactory = async (
@@ -21,6 +26,11 @@ export const simpleBatchJobFactory = async (
     type: data.type ?? "test-job",
     created_by: data.created_by ?? null,
     context: data.context ?? {},
+    processing_at: data.processing_at,
+    awaiting_confirmation_at: data.awaiting_confirmation_at,
+    confirmed_at: data.confirmed_at,
+    completed_at: data.completed_at,
+    cancelled_at: data.cancelled_at,
   })
 
   return await manager.save(job)
