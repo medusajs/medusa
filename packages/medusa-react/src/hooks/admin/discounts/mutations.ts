@@ -1,6 +1,8 @@
 import {
   AdminDiscountsDeleteRes,
   AdminDiscountsRes,
+  AdminPostDiscountsConditions,
+  AdminPostDiscountsConditionsCondition,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
@@ -113,5 +115,53 @@ export const useAdminDeleteDynamicDiscountCode = (
       [adminDiscountKeys.lists(), adminDiscountKeys.detail(id)],
       options
     )
+  )
+}
+
+export const useAdminDiscountCreateCondition = (
+  discountId: string,
+  options?: UseMutationOptions<
+    Response<AdminDiscountsRes>,
+    Error,
+    AdminPostDiscountsConditions
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostDiscountsConditions) =>
+      client.admin.discounts.createCondition(discountId, payload),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+  )
+}
+
+export const useAdminDiscountUpdateCondition = (
+  discountId: string,
+  conditionId: string,
+  options?: UseMutationOptions<
+    Response<AdminDiscountsRes>,
+    Error,
+    AdminPostDiscountsConditionsCondition
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostDiscountsConditionsCondition) =>
+      client.admin.discounts.updateCondition(discountId, conditionId, payload),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+  )
+}
+
+export const useAdminDiscountRemoveCondition = (
+  discountId: string,
+  options?: UseMutationOptions<Response<AdminDiscountsDeleteRes>, Error, string>
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (conditionId: string) =>
+      client.admin.discounts.deleteCondition(discountId, conditionId),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
   )
 }
