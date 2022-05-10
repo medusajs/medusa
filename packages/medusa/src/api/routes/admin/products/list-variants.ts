@@ -53,9 +53,8 @@ export default async (req: Request, res: Response) => {
   const productService: ProductService = req.scope.resolve("productService")
   const variants = await productService.retrieveVariants(id, {
     ...queryConfig,
-    include_discount_prices: true,
-    skip: offset ?? 0,
-    take: limit ?? 50,
+    skip: offset,
+    take: limit,
   })
 
   res.json({ variants })
