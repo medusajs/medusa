@@ -1,11 +1,9 @@
 import _ from "lodash"
-import { getManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
-import { CartRepository } from "../../repositories/cart"
 
 const eventBusService = {
   emit: jest.fn(),
