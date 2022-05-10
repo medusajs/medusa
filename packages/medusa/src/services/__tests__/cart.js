@@ -1,9 +1,11 @@
 import _ from "lodash"
+import { getManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import CartService from "../cart"
 import { InventoryServiceMock } from "../__mocks__/inventory"
 import { LineItemAdjustmentServiceMock } from "../__mocks__/line-item-adjustment"
+import { CartRepository } from "../../repositories/cart"
 
 const eventBusService = {
   emit: jest.fn(),
@@ -272,39 +274,6 @@ describe("CartService", () => {
         email: "email@test.com",
         customer: expect.any(Object),
       })
-
-      expect(cartRepository.save).toHaveBeenCalledTimes(1)
-    })
-
-    it("successfully creates a cart with a shipping address id but no shippings_address", async () => {
-      await cartService.create({
-        region_id: IdMap.getId("testRegion"),
-        email: "email@test.com",
-        shipping_address_id: "test_shipping_address",
-      })
-
-      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
-      expect(eventBusService.emit).toHaveBeenCalledWith(
-        "cart.created",
-        expect.any(Object)
-      )
-
-      expect(cartRepository.create).toHaveBeenCalledTimes(1)
-      expect(cartRepository.create).toHaveBeenCalledWith(expect.objectContaining({
-        region_id: IdMap.getId("testRegion"),
-        shipping_address: {
-          id: "test_shipping_address",
-          first_name: "LeBron",
-          last_name: "James",
-          address_1: "Dunk St",
-          city: "Dunkville",
-          province: "CA",
-          postal_code: "12345",
-          country_code: "us",
-        },
-        customer_id: IdMap.getId("customer"),
-        email: "email@test.com"
-      }))
 
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
     })
