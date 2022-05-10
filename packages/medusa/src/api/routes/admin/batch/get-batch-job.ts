@@ -1,3 +1,4 @@
+import { MedusaError } from "medusa-core-utils"
 import { BatchJobService } from "../../../../services"
 /**
  * @oas [get] /batch/{id}
@@ -22,8 +23,18 @@ import { BatchJobService } from "../../../../services"
 export default async (req, res) => {
   const { id } = req.params
 
+  const userId: string = req.user.id || req.user.userId
+
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
 
   const batch_job = await batchJobService.retrieve(id)
+
+  if (userId !== batch_job.created_by) {
+    throw new MedusaError(
+      MedusaError.Types.NOT_ALLOWED,
+      "Cannot retrieve batch jobs created by other users"
+    )
+  }
+
   res.status(200).json({ batch_job })
 }
