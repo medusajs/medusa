@@ -95,10 +95,11 @@ export default async (req, res) => {
     "expand",
     "fields",
   ])
+
   filterableFields.created_by = req.user.id
 
   const [jobs, count] = await batchService.listAndCount(
-    pickBy(filterableFields, identity),
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 

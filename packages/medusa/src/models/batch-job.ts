@@ -1,5 +1,5 @@
 import {
-  AfterInsert,
+  AfterLoad,
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -62,7 +62,7 @@ export class BatchJob {
   @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date | null
 
-  @AfterInsert()
+  @AfterLoad()
   loadStatus(): void {
     if (this.cancelled_at) {
       this.status = BatchJobStatus.CANCELLED
