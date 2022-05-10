@@ -1,14 +1,14 @@
 import { Request, Response } from "express"
 import { ProductService } from "../../../../services"
-import { defaultStoreProductsVariantsRelations } from "../../store/products"
 import { validator } from "../../../../utils/validator"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { Product } from "../../../../models"
+import { defaultAdminProductsVariantsRelations } from "./index"
 
 /**
- * @oas [get] /products/:id/variants
+ * @oas [get] /products/{id}/variants
  * operationId: "GetProductsProductVariants"
  * summary: "List a Product's Product Variants"
  * description: "Retrieves a list of the Product Variants associated with a Product."
@@ -37,16 +37,16 @@ export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const { expand, fields, limit, offset } = await validator(
-    StoreGetProductsVariantsParams,
+    AdminGetProductsVariantsParams,
     req.query
   )
 
   const queryConfig = getRetrieveConfig<Product>(
     [],
-    defaultStoreProductsVariantsRelations,
+    defaultAdminProductsVariantsRelations,
     fields?.split(",") as (keyof Product)[],
     expand
-      ? [...defaultStoreProductsVariantsRelations, ...expand.split(",")]
+      ? [...defaultAdminProductsVariantsRelations, ...expand.split(",")]
       : undefined
   )
 
@@ -61,7 +61,7 @@ export default async (req: Request, res: Response) => {
   res.json({ variants })
 }
 
-export class StoreGetProductsVariantsParams {
+export class AdminGetProductsVariantsParams {
   @IsString()
   @IsOptional()
   fields?: string

@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
 import { formatException } from "../utils/exception-formatter"
-import { defaultStoreProductsVariantsRelations } from "../api/routes/store/products"
+import { defaultAdminProductsVariantsRelations } from "../api/routes/admin/products"
 
 /**
  * Provides layer to manipulate products.
@@ -394,7 +394,7 @@ class ProductService extends BaseService {
     config = {
       skip: 0,
       take: 50,
-      relations: defaultStoreProductsVariantsRelations,
+      relations: defaultAdminProductsVariantsRelations,
     }
   ) {
     const product = await this.retrieve(productId, config)

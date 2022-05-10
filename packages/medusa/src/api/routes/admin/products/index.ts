@@ -102,6 +102,11 @@ export const defaultAdminProductFields = [
   "metadata",
 ]
 
+export const defaultAdminProductsVariantsRelations = [
+  "variants",
+  "variants.prices",
+]
+
 export const allowedAdminProductFields = [
   "id",
   "title",
