@@ -90,6 +90,7 @@ class BancontactProviderService extends PaymentService {
 
     const intentRequest = {
       amount: Math.round(amount),
+      description: cart?.context?.payment_description ?? this.options?.payment_description,
       currency: currency_code,
       payment_method_types: ["bancontact"],
       capture_method: "automatic",
