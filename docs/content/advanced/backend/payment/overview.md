@@ -127,4 +127,4 @@ This prevents any payment issues from occurring with the customers and allows fo
 ## What’s Next 🚀
 
 - [Check out how the checkout flow is implemented on the frontend.](./frontend-payment-flow-in-checkout.md)
-- Check out payment plugins like [Stripe](../../../add-plugins/stripe.md), [Paypal](/add-plugins/paypal), and [Klarna](../../../add-plugins/klarna.md).
+- Check out payment plugins like [Stripe](../../../add-plugins/stripe.md), [Paypal](../../../add-plugins/paypal.md), and [Klarna](../../../add-plugins/klarna.md).
