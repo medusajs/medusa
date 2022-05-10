@@ -108,11 +108,18 @@ describe("/admin/batch", () => {
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
+        await userSeeder(dbConnection)
 
         await simpleBatchJobFactory(dbConnection, {
           id: "job_1",
           type: "batch_1",
           created_by: "admin_user",
+        })
+
+        await simpleBatchJobFactory(dbConnection, {
+          id: "job_2",
+          type: "batch_2",
+          created_by: "member-user",
         })
       } catch (err) {
         console.log(err)
@@ -139,7 +146,7 @@ describe("/admin/batch", () => {
       })
     })
 
-    it("Fails with a descriptive error when retrieving batch job that doesn't exist", async () => {
+    it("Fails to retrieve a batch job created by a different user", async () => {
       expect.assertions(3)
 
       const api = useApi()
@@ -147,10 +154,28 @@ describe("/admin/batch", () => {
       try {
         await api.get(`/admin/batch/job_2`, adminReqConfig)
       } catch (error) {
+        expect(error.response.status).toEqual(400)
+        expect(error.response.data.type).toEqual("not_allowed")
+        expect(error.response.data.message).toEqual(
+          "Cannot retrieve batch jobs created by other users"
+        )
+      }
+    })
+
+    it("Fails with a descriptive error when retrieving batch job that doesn't exist", async () => {
+      expect.assertions(3)
+
+      const api = useApi()
+
+      const jobId = "job_doesnt_exist"
+
+      try {
+        await api.get(`/admin/batch/${jobId}`, adminReqConfig)
+      } catch (error) {
         expect(error.response.status).toEqual(404)
         expect(error.response.data.type).toEqual("not_found")
         expect(error.response.data.message).toEqual(
-          "Batch job with id job_2 was not found"
+          `Batch job with id ${jobId} was not found`
         )
       }
     })
