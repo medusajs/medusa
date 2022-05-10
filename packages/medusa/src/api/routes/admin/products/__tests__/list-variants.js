@@ -29,7 +29,6 @@ describe("GET /admin/products/:id/variants", () => {
       expect(ProductServiceMock.retrieveVariants).toHaveBeenCalledWith(
         IdMap.getId("product1"),
         {
-          include_discount_prices: true,
           relations: ["variants", "variants.prices"],
           select: [],
           skip: 0,
@@ -68,7 +67,6 @@ describe("GET /admin/products/:id/variants", () => {
       expect(ProductServiceMock.retrieveVariants).toHaveBeenLastCalledWith(
         IdMap.getId("product1"),
         {
-          include_discount_prices: true,
           relations: ["variants", "variants.prices", "variants.options"],
           select: ["id", "variants.id"],
           skip: 0,
