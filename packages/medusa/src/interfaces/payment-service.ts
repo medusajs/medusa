@@ -2,7 +2,7 @@ import { Payment } from "@models/payment"
 import { Cart } from "@models/cart"
 import { PaymentSession, PaymentSessionStatus } from "@models/payment-session"
 import { Customer } from "@models/customer"
-import { BaseService } from "medusa-interfaces"
+import { TransactionBaseService } from "./transaction-base-service"
 
 export type Data = Record<string, unknown>
 export type PaymentData = Data
@@ -48,7 +48,7 @@ export interface PaymentService {
 }
 
 export abstract class AbstractPaymentService
-  extends BaseService
+  extends TransactionBaseService<AbstractPaymentService>
   implements PaymentService
 {
   protected static identifier: string
