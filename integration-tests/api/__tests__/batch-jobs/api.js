@@ -43,12 +43,11 @@ describe("/admin/batch", () => {
           id: "job_1",
           type: "batch_1",
           created_by: "admin_user",
-          status: "created",
         })
         await simpleBatchJobFactory(dbConnection, {
           id: "job_2",
           type: "batch_1",
-          status: "awaiting_confirmation",
+          awaiting_confirmation_at: new Date(),
           created_by: "admin_user",
         })
         await simpleBatchJobFactory(dbConnection, {
@@ -81,9 +80,9 @@ describe("/admin/batch", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.batch_job).toMatchSnapshot({
+        awaiting_confirmation_at: expect.any(String),
         created_at: expect.any(String),
         updated_at: expect.any(String),
-        confirmed_at: null,
         status: "awaiting_confirmation",
       })
     })
