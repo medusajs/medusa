@@ -351,14 +351,17 @@ class PriceListService extends BaseService {
    * @param prices - a list of PriceListPrice(Create/Update)Input records
    * @return {Promise} updated `prices` list
    */
-  private async addCurrencyFromRegion<
+  protected async addCurrencyFromRegion<
     T extends PriceListPriceUpdateInput | PriceListPriceCreateInput
   >(prices: T[]): Promise<T[]> {
     const prices_: typeof prices = []
 
     for (const p of prices) {
       if (p.region_id) {
-        const region = await this.regionService_.retrieve(p.region_id)
+        const region = await this.regionService_
+          .withTransaction(this.manager_)
+          .retrieve(p.region_id)
+
         p.currency_code = region.currency_code
       }
 
