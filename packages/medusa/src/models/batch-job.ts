@@ -1,4 +1,5 @@
 import {
+  AfterInsert,
   BeforeInsert,
   Column,
   CreateDateColumn,
@@ -60,6 +61,23 @@ export class BatchJob {
 
   @DeleteDateColumn({ type: resolveDbType("timestamptz") })
   deleted_at: Date | null
+
+  @AfterInsert()
+  setStatus(): void {
+    if (this.cancelled_at) {
+      this.status = BatchJobStatus.CANCELLED
+    } else if (this.completed_at) {
+      this.status = BatchJobStatus.COMPLETED
+    } else if (this.confirmed_at) {
+      this.status = BatchJobStatus.CONFIRMED
+    } else if (this.awaiting_confirmation_at) {
+      this.status = BatchJobStatus.AWAITING_CONFIRMATION
+    } else if (this.processing_at) {
+      this.status = BatchJobStatus.PROCESSING
+    } else {
+      this.status = BatchJobStatus.CREATED
+    }
+  }
 
   @BeforeInsert()
   private beforeInsert() {
