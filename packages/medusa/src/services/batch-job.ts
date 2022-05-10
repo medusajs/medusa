@@ -25,6 +25,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     UPDATED: "batch.updated",
     COMPLETED: "batch.completed",
     CANCELED: "batch.canceled",
+    PROCESS_COMPLETE: "batch-process.complete",
   }
 
   constructor({ manager, batchJobRepository }: InjectedDependencies) {
@@ -69,7 +70,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(BatchJobService.Events.COMPLETED, {
+        .emit(BatchJobService.Events.PROCESS_COMPLETE, {
           id: result.id,
         })
 
