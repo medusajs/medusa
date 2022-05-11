@@ -1,6 +1,7 @@
 import axios from "axios"
 import _ from "lodash"
-import { PaymentService } from "medusa-interfaces"
+import { PaymentSessionStatus } from "@medusajs/medusa/dist"
+import { PaymentService } from "@medusajs/medusa"
 
 class KlarnaProviderService extends PaymentService {
   static identifier = "klarna"
@@ -246,19 +247,19 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Status for Klarna order.
-   * @param {Object} paymentData - payment method data from cart
-   * @returns {string} the status of the Klarna order
+   * @param {PaymentSessionData} paymentSessionsData - payment session data from cart
+   * @returns {Promise<PaymentSessionStatus>} the status of the Klarna order
    */
-  async getStatus(paymentData) {
-    const { order_id } = paymentData
+  async getStatus(paymentSessionsData) {
+    const { order_id } = paymentSessionsData
     const { data: order } = await this.klarna_.get(
       `${this.klarnaOrderUrl_}/${order_id}`
     )
 
-    let status = "pending"
+    let status = PaymentSessionStatus.PENDING
 
     if (order.status === "checkout_complete") {
-      status = "authorized"
+      status = PaymentSessionStatus.AUTHORIZED
     }
 
     return status
@@ -266,9 +267,8 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Creates Stripe PaymentIntent.
-   * @param {string} cart - the cart to create a payment for
-   * @param {number} amount - the amount to create a payment for
-   * @returns {string} id of payment intent
+   * @param {Cart} cart - the cart to create a payment for
+   * @returns {Record<string, unknown>} payment intent
    */
   async createPayment(cart) {
     try {
@@ -286,12 +286,12 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Retrieves Klarna Order.
-   * @param {string} cart - the cart to retrieve order for
+   * @param {PaymentData} paymentData - the cart to retrieve order for
    * @returns {Object} Klarna order
    */
   async retrievePayment(paymentData) {
     try {
-      return this.klarna_
+      return await this.klarna_
         .get(`${this.klarnaOrderUrl_}/${paymentData.order_id}`)
         .then(({ data }) => data)
     } catch (error) {
@@ -300,14 +300,14 @@ class KlarnaProviderService extends PaymentService {
   }
 
   /**
-   * Gets a Klarna payment objec.
-   * @param {object} sessionData - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * Gets a Klarna payment object.
+   * @param {PaymentSession} paymentSession - the session of the payment to retrieve
+   * @returns {Promise<PaymentData>} Klarna payment intent
    */
-  async getPaymentData(sessionData) {
+  async getPaymentData(paymentSession) {
     try {
-      return this.klarna_
-        .get(`${this.klarnaOrderUrl_}/${sessionData.data.order_id}`)
+      return await this.klarna_
+        .get(`${this.klarnaOrderUrl_}/${paymentSession.data.order_id}`)
         .then(({ data }) => data)
     } catch (error) {
       throw error
@@ -332,15 +332,15 @@ class KlarnaProviderService extends PaymentService {
   /**
    * Authorizes Klarna payment by simply returning the status for the payment
    * in use.
-   * @param {object} sessionData - payment session data
-   * @param {object} context - properties relevant to current context
-   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   * @param {PaymentSession} paymentSession - payment session data
+   * @param {Data} context - properties relevant to current context
+   * @returns {Promise<{ status: PaymentSessionStatus, data: PaymentSessionData }>} result with data and status
    */
-  async authorizePayment(sessionData, context = {}) {
+  async authorizePayment(paymentSession, context = {}) {
     try {
-      const paymentStatus = await this.getStatus(sessionData.data)
+      const paymentStatus = await this.getStatus(paymentSession.data)
 
-      return { data: sessionData.data, status: paymentStatus }
+      return { data: paymentSession.data, status: paymentStatus }
     } catch (error) {
       throw error
     }
@@ -391,9 +391,9 @@ class KlarnaProviderService extends PaymentService {
     }
   }
 
-  async updatePaymentData(sessionData, update) {
+  async updatePaymentData(paymentSessionData, data) {
     try {
-      return { ...sessionData, ...update }
+      return { ...paymentSessionData, ...data }
     } catch (error) {
       throw error
     }
@@ -401,14 +401,14 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Updates Klarna order.
-   * @param {string} order - the order to update
-   * @param {Object} data - the update object
-   * @returns {Object} updated order
+   * @param {PaymentSessionData} paymentSessionData - the order to update
+   * @param {Cart} cart - the update object
+   * @returns {Promise<PaymentSessionData>} updated order
    */
-  async updatePayment(paymentData, cart) {
-    if (cart.total !== paymentData.order_amount) {
+  async updatePayment(paymentSessionData, cart) {
+    if (cart.total !== paymentSessionData.order_amount) {
       const order = await this.cartToKlarnaOrder(cart)
-      return this.klarna_
+      return await this.klarna_
         .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
         .then(({ data }) => data)
         .catch(async (_) => {
@@ -423,8 +423,8 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Captures Klarna order.
-   * @param {Object} paymentData - payment method data from cart
-   * @returns {string} id of captured order
+   * @param {Payment} payment - payment method data from cart
+   * @returns {PaymentData} captured order
    */
   async capturePayment(payment) {
     const { order_id } = payment.data
@@ -441,7 +441,7 @@ class KlarnaProviderService extends PaymentService {
         }
       )
 
-      return this.retrieveCompletedOrder(order_id)
+      return await this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
@@ -449,10 +449,11 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Refunds payment for Klarna Order.
-   * @param {Object} paymentData - payment method data from cart
+   * @param {Payment} payment - payment method data from cart
+   * @param {number} refundAmount - the amount to refund
    * @returns {string} id of refunded order
    */
-  async refundPayment(payment, amountToRefund) {
+  async refundPayment(payment, refundAmount) {
     const { order_id } = payment.data
     try {
       await this.klarna_.post(
@@ -462,7 +463,7 @@ class KlarnaProviderService extends PaymentService {
         }
       )
 
-      return this.retrieveCompletedOrder(order_id)
+      return await this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
@@ -470,8 +471,8 @@ class KlarnaProviderService extends PaymentService {
 
   /**
    * Cancels payment for Klarna Order.
-   * @param {Object} paymentData - payment method data from cart
-   * @returns {string} id of cancelled order
+   * @param {Payment} payment - payment from cart
+   * @returns {Promise<PaymentData>} cancelled order
    */
   async cancelPayment(payment) {
     const { order_id } = payment.data
@@ -480,7 +481,7 @@ class KlarnaProviderService extends PaymentService {
         `${this.klarnaOrderManagementUrl_}/${order_id}/cancel`
       )
 
-      return this.retrieveCompletedOrder(order_id)
+      return await this.retrieveCompletedOrder(order_id)
     } catch (error) {
       throw error
     }
