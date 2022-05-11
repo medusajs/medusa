@@ -51,6 +51,10 @@ export abstract class AbstractPaymentService
   extends TransactionBaseService<AbstractPaymentService>
   implements PaymentService
 {
+  protected constructor(container: unknown, config?: Record<string, unknown>) {
+    super(container, config)
+  }
+
   protected static identifier: string
 
   public getIdentifier(): string {
