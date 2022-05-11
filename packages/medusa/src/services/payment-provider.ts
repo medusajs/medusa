@@ -320,7 +320,7 @@ export default class PaymentProviderService extends TransactionBaseService<Payme
         const provider = this.retrieveProvider(paymentSession.provider_id)
         const paymentData = await provider
           .withTransaction(transactionManager)
-          .getPaymentData(paymentSession)
+          .createPayment(paymentSession)
 
         const paymentRepo = transactionManager.getCustomRepository(
           this.paymentRepository_
