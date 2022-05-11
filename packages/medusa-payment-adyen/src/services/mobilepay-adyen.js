@@ -13,8 +13,8 @@ class MobilePayAdyenService extends PaymentService {
     return await this.adyenService_.getStatus(paymentSessionData)
   }
 
-  async createPaymentSession(cart) {
-    const raw = await this.adyenService_.createPaymentSession(cart)
+  async createPayment(cart) {
+    const raw = await this.adyenService_.createPayment(cart)
     raw.type = "mobilepay"
     return raw
   }
