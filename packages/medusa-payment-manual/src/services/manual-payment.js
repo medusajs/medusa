@@ -1,11 +1,10 @@
-import { PaymentService } from "@medusajs/medusa"
-import { PaymentSession, PaymentSessionStatus } from "@medusajs/medusa/src/models"
+import { PaymentService, PaymentSession, PaymentSessionStatus } from "@medusajs/medusa"
 
-class ManualPaymentService extends PaymentService {
+class ManualPaymentService extends AbstractPaymentService {
   static identifier = "manual"
 
   constructor() {
-    super()
+    super({})
   }
 
   /**

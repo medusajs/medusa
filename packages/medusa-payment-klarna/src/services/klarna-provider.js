@@ -1,13 +1,12 @@
 import axios from "axios"
 import _ from "lodash"
-import { PaymentSessionStatus } from "@medusajs/medusa/dist"
-import { PaymentService } from "@medusajs/medusa"
+import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 
-class KlarnaProviderService extends PaymentService {
+class KlarnaProviderService extends AbstractPaymentService {
   static identifier = "klarna"
 
   constructor({ shippingProfileService, totalsService }, options) {
-    super()
+    super({ shippingProfileService, totalsService }, options)
 
     /**
      * Required Klarna options:
