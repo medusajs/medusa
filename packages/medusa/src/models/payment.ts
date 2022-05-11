@@ -63,10 +63,10 @@ export class Payment extends BaseEntity {
   data: Record<string, unknown>
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  captured_at: Date
+  captured_at: Date | string
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date
+  canceled_at: Date | string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
