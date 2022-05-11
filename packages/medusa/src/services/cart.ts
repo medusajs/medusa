@@ -362,41 +362,32 @@ class CartService extends TransactionBaseService<CartService> {
 
         rawCart.region_id = region.id
 
-        if (data.shipping_address_id !== undefined) {
-          const shippingAddress = data.shipping_address_id
-            ? await addressRepo.findOne(data.shipping_address_id)
-            : null
-
-          if (
-            shippingAddress &&
-            !regCountries.includes(shippingAddress.country_code)
-          ) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              "Shipping country not in region"
-            )
-          }
-
-          rawCart.shipping_address = shippingAddress
-        }
-
-        if (!data.shipping_address) {
+        if (!data.shipping_address && !data.shipping_address_id) {
           if (region.countries.length === 1) {
-            // Preselect the country if the region only has 1
-            // and create address entity
             rawCart.shipping_address = addressRepo.create({
               country_code: regCountries[0],
             })
           }
         } else {
-          if (!regCountries.includes(data.shipping_address.country_code)) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_ALLOWED,
-              "Shipping country not in region"
-            )
+          if (data.shipping_address) {
+            if (!regCountries.includes(data.shipping_address.country_code)) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_ALLOWED,
+                "Shipping country not in region"
+              )
+            }
+            rawCart.shipping_address = data.shipping_address
           }
-
-          rawCart.shipping_address = data.shipping_address
+          if (data.shipping_address_id) {
+            const addr = await addressRepo.findOne(data.shipping_address_id)
+            if (addr && !regCountries.includes(addr.country_code)) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_ALLOWED,
+                "Shipping country not in region"
+              )
+            }
+            rawCart.shipping_address_id = data.shipping_address_id
+          }
         }
 
         const remainingFields: (keyof Cart)[] = [
