@@ -39,6 +39,7 @@ import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
 import { DiscountRuleType } from "../models"
+import { PaymentSession } from "@models/payment-session"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -1153,7 +1154,10 @@ class CartService extends TransactionBaseService<CartService> {
    * @param update - the data to update the payment session with
    * @return the resulting cart
    */
-  async updatePaymentSession(cartId: string, update: object): Promise<Cart> {
+  async updatePaymentSession(
+    cartId: string,
+    update: Record<string, unknown>
+  ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
@@ -1223,14 +1227,14 @@ class CartService extends TransactionBaseService<CartService> {
           )
         }
 
-        const session = await this.paymentProviderService_
+        const session = (await this.paymentProviderService_
           .withTransaction(transactionManager)
-          .authorizePayment(cart.payment_session, context)
+          .authorizePayment(cart.payment_session, context)) as PaymentSession
 
-        const freshCart = await this.retrieve(cart.id, {
+        const freshCart = (await this.retrieve(cart.id, {
           select: ["total"],
           relations: ["payment_sessions", "items", "items.adjustments"],
-        })
+        })) as Cart & { payment_session: PaymentSession }
 
         if (session.status === "authorized") {
           freshCart.payment = await this.paymentProviderService_

@@ -205,7 +205,7 @@ export class Cart extends SoftDeletableEntity {
 
   @OneToOne(() => Payment)
   @JoinColumn({ name: "payment_id" })
-  payment: Payment
+  payment?: Payment
 
   @OneToMany(() => ShippingMethod, (method) => method.cart, {
     cascade: ["soft-remove", "remove"],
