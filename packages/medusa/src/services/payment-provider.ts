@@ -25,7 +25,10 @@ type InjectedDependencies = {
 /**
  * Helps retrieve payment providers
  */
-export default class PaymentProviderService extends TransactionBaseService<PaymentProviderService> {
+export default class PaymentProviderService extends TransactionBaseService<
+  PaymentProviderService,
+  InjectedDependencies
+> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected readonly container_: AwilixContainer<InjectedDependencies>["cradle"]
@@ -40,6 +43,7 @@ export default class PaymentProviderService extends TransactionBaseService<Payme
     this.container_ = container
     this.manager_ = container.manager
     this.paymentSessionRepository_ = container.paymentSessionRepository
+    this.paymentProviderRepository_ = container.paymentProviderRepository
     this.paymentRepository_ = container.paymentRepository
     this.refundRepository_ = container.refundRepository
   }
