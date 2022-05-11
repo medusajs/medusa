@@ -1,10 +1,10 @@
-import { PaymentService } from "@medusa/medusa"
+import { AbstractPaymentService } from "@medusajs/medusa"
 
-class MobilePayAdyenService extends PaymentService {
+class MobilePayAdyenService extends AbstractPaymentService {
   static identifier = "mobilepay-adyen"
 
   constructor({ adyenService }) {
-    super()
+    super({ adyenService })
 
     this.adyenService_ = adyenService
   }

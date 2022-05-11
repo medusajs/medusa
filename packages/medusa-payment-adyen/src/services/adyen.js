@@ -1,13 +1,12 @@
 import axios from "axios"
 import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
-import { BaseService } from "medusa-interfaces"
+import { TransactionBaseService, PaymentSessionStatus } from "@medusajs/medusa"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
-import { PaymentSessionStatus } from "@medusajs/medusa/dist"
 
-class AdyenService extends BaseService {
+class AdyenService extends TransactionBaseService {
   constructor({ cartService }, options) {
-    super()
+    super({ cartService }, options)
 
     /** @private @constant {CartService} */
     this.cartService_ = cartService
@@ -31,21 +30,6 @@ class AdyenService extends BaseService {
 
     /** @private @constant {AxiosClient} */
     this.adyenPaymentApi = this.initPaymentClient()
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new AdyenService({
-      cartService: this.cartService_,
-      totalsService: this.totalsService_,
-    })
-
-    this.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   getOptions() {

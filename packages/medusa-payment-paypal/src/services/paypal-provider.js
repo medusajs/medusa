@@ -1,7 +1,6 @@
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import PayPal from "@paypal/checkout-server-sdk"
-import { PaymentSessionStatus, PaymentService } from "@medusajs/medusa"
-import { PaymentSessionData } from "@medusajs/medusa/src/interfaces"
+import { PaymentSessionStatus, AbstractPaymentService, PaymentSessionData } from "@medusajs/medusa"
 
 function roundToTwo(num, currency) {
   if (zeroDecimalCurrencies.includes(currency.toLowerCase())) {
@@ -10,11 +9,11 @@ function roundToTwo(num, currency) {
   return num.toFixed(2)
 }
 
-class PayPalProviderService extends PaymentService {
+class PayPalProviderService extends AbstractPaymentService {
   static identifier = "paypal"
 
   constructor({ totalsService, regionService }, options) {
-    super()
+    super({ totalsService, regionService }, options)
 
     /**
      * Required PayPal options:
