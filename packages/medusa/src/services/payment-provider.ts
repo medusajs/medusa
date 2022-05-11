@@ -310,13 +310,12 @@ export default class PaymentProviderService extends TransactionBaseService<Payme
     }
   }
 
-  async createPayment(cart: Cart): Promise<Payment | undefined> {
+  async createPayment(
+    cart: Cart & { payment_session: PaymentSession }
+  ): Promise<Payment> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const { payment_session: paymentSession, region, total } = cart
-        if (!paymentSession) {
-          return
-        }
 
         const provider = this.retrieveProvider(paymentSession.provider_id)
         const paymentData = await provider
