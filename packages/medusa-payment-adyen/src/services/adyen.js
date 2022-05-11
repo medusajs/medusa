@@ -198,7 +198,7 @@ class AdyenService extends BaseService {
    * @param {Cart} cart - cart to initiate payment for
    * @returns {object} empty payment data
    */
-  async createPaymentSession(cart) {
+  async createPayment(cart) {
     return { cart_id: cart.id }
   }
 
