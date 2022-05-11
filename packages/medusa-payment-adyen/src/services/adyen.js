@@ -129,7 +129,7 @@ class AdyenService extends BaseService {
    * @param {string} customerId - id of the customer paying
    * @returns {Promise} result containing the payment methods from Adyen
    */
-  async retrievePaymentMethods(allowedMethods, total, currency, customerId) {
+  async retrieveSavedMethods(allowedMethods, total, currency, customerId) {
     let request = {
       allowedPaymentMethods: allowedMethods,
       amount: {
@@ -198,7 +198,7 @@ class AdyenService extends BaseService {
    * @param {Cart} cart - cart to initiate payment for
    * @returns {object} empty payment data
    */
-  async createPayment(cart) {
+  async createPaymentSession(cart) {
     return { cart_id: cart.id }
   }
 
