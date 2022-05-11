@@ -1,4 +1,4 @@
-import { PaymentService } from "medusa-interfaces"
+import { PaymentService } from "@medusajs/medusa"
 
 class TestPayService extends PaymentService {
   static identifier = "test-pay"
