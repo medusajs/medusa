@@ -15,7 +15,7 @@ import path from "path"
 import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
-import { AbstractPaymentService, AbstractTaxService, isTaxCalculationStrategy } from "../interfaces"
+import { TransactionBaseService, AbstractPaymentService, AbstractTaxService, isTaxCalculationStrategy } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
 import { ClassConstructor, ConfigModule, Logger, MedusaContainer } from "../types/global"
 import { MiddlewareService } from "../services"
@@ -251,7 +251,8 @@ export async function registerServices(pluginDetails: PluginDetails, container: 
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
-      if (!(loaded.prototype instanceof BaseService)) {
+      const isService = loaded.prototype instanceof BaseService || loaded.prototype instanceof TransactionBaseService
+      if (!isService) {
         const logger = container.resolve<Logger>("logger")
         const message = `Services must inherit from BaseService, please check ${fn}`
         logger.error(message)
