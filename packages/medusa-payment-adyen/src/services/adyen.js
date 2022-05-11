@@ -315,11 +315,11 @@ class AdyenService extends BaseService {
 
   /**
    * Updates an Adyen payment.
-   * @param {object} paymentData - payment data to update
-   * @param {details} details - details to update
+   * @param {PaymentSessionData} paymentSessionData - payment data to update
+   * @param {Cart} cart
    * @returns {Promise} result of the update operation
    */
-  async updatePayment(paymentData, details) {
+  async updatePayment(paymentSessionData, details) {
     return paymentData
   }
 
