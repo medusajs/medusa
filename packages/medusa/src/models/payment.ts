@@ -72,10 +72,10 @@ export class Payment {
   data: any
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  captured_at: Date
+  captured_at: Date | string
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date
+  canceled_at: Date | string
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date

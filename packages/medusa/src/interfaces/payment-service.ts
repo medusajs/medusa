@@ -44,7 +44,9 @@ export interface PaymentService {
 
   retrieveSavedMethods(customer: Customer): Promise<Data[]>
 
-  getStatus(): PaymentSessionStatus
+  getStatus(
+    paymentSessionData: PaymentSessionData
+  ): Promise<PaymentSessionStatus>
 }
 
 export abstract class AbstractPaymentService
@@ -103,5 +105,7 @@ export abstract class AbstractPaymentService
     return Promise.resolve([])
   }
 
-  public abstract getStatus(): PaymentSessionStatus
+  public abstract getStatus(
+    paymentSessionData: PaymentSessionData
+  ): Promise<PaymentSessionStatus>
 }
