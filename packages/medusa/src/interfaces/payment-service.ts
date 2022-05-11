@@ -18,8 +18,6 @@ export interface PaymentService {
     data: Data
   ): Promise<PaymentSessionData>
 
-  createPaymentSession(cart: Cart): Promise<PaymentSessionData>
-
   createPayment(cart: Cart): Promise<PaymentSessionData>
 
   retrievePayment(paymentData: PaymentData): Promise<Data>
@@ -70,8 +68,6 @@ export abstract class AbstractPaymentService
     paymentSessionData: PaymentSessionData,
     data: Data
   ): Promise<PaymentSessionData>
-
-  public abstract createPaymentSession(cart: Cart): Promise<PaymentSessionData>
 
   public abstract createPayment(cart: Cart): Promise<PaymentSessionData>
 
