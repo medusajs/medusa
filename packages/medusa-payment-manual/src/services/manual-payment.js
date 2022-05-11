@@ -1,7 +1,7 @@
-import { PaymentService } from "@medusajs/medusa"
+import { AbstractPaymentService } from "@medusajs/medusa"
 import { PaymentSession, PaymentSessionStatus } from "@medusajs/medusa/src/models"
 
-class ManualPaymentService extends PaymentService {
+class ManualPaymentService extends AbstractPaymentService {
   static identifier = "manual"
 
   constructor() {
@@ -56,6 +56,14 @@ class ManualPaymentService extends PaymentService {
    */
   async updatePayment(paymentSessionData, cart) {
     return paymentSessionData
+  }
+
+  async updatePaymentData(paymentSessionData, data) {
+    try {
+      return { ...paymentSessionData, ...data }
+    } catch (error) {
+      throw error
+    }
   }
 
   async deletePayment(paymentSession) {
