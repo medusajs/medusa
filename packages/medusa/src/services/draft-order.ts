@@ -272,25 +272,23 @@ class DraftOrderService extends BaseService {
           )
         }
 
-        const {
-          shipping_methods,
-          discounts,
-          no_notification_order,
-          items,
-          ...rest
-        } = data
+        const { shipping_methods, no_notification_order, items, ...rawCart } =
+          data
 
-        if (discounts) {
+        if (rawCart.discounts) {
+          const discounts = [...rawCart.discounts]
+          rawCart.discounts.length = 0
+
           for (const { code } of discounts) {
             await this.cartService_
               .withTransaction(transactionManager)
-              .applyDiscount(rest as Cart, code)
+              .applyDiscount(rawCart as Cart, code)
           }
         }
 
         const createdCart = await this.cartService_
           .withTransaction(transactionManager)
-          .create({ type: CartType.DRAFT_ORDER, ...rest })
+          .create({ type: CartType.DRAFT_ORDER, ...rawCart })
 
         const draftOrder = draftOrderRepo.create({
           cart_id: createdCart.id,
