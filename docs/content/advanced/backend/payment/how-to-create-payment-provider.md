@@ -384,4 +384,4 @@ async retrieveSavedMethods(customer) {
 ## What’s Next 🚀
 
 - Check out the Payment Providers for [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) for implementation examples.
-- Learn more about the [frontend checkout flow](./frontend-payment-flow-in-checkout.md).
+- Learn more about the [frontend checkout flow](./../../storefront/how-to-implement-checkout-flow.mdx).
