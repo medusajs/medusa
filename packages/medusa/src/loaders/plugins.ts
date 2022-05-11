@@ -3,20 +3,19 @@ import { Express } from 'express'
 import { EntitySchema } from "typeorm"
 import {
   BaseService,
-  PaymentService,
   FulfillmentService,
   NotificationService,
   FileService,
   OauthService,
   SearchService,
 } from "medusa-interfaces"
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import { createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
-import { AbstractTaxService, isTaxCalculationStrategy } from "../interfaces"
+import { AbstractPaymentService, AbstractTaxService, isTaxCalculationStrategy } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
 import { ClassConstructor, ConfigModule, Logger, MedusaContainer } from "../types/global"
 import { MiddlewareService } from "../services"
@@ -259,7 +258,7 @@ export async function registerServices(pluginDetails: PluginDetails, container: 
         throw new Error(message)
       }
 
-      if (loaded.prototype instanceof PaymentService) {
+      if (loaded.prototype instanceof AbstractPaymentService) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "paymentProviders",
