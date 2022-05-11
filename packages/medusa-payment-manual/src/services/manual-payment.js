@@ -58,6 +58,14 @@ class ManualPaymentService extends PaymentService {
     return paymentSessionData
   }
 
+  async updatePaymentData(paymentSessionData, data) {
+    try {
+      return { ...paymentSessionData, ...data }
+    } catch (error) {
+      throw error
+    }
+  }
+
   async deletePayment(paymentSession) {
     return
   }
