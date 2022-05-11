@@ -33,6 +33,9 @@ describe("ProductService", () => {
       manager: MockManager,
       paymentSessionRepository: MockRepository(),
       pp_default_provider: {
+        withTransaction: function () {
+          return this
+        },
         createPayment,
       },
     }
@@ -67,6 +70,9 @@ describe("ProductService", () => {
           }),
       }),
       pp_default_provider: {
+        withTransaction: function () {
+          return this
+        },
         updatePayment,
       },
     }
