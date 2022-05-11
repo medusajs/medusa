@@ -3,6 +3,7 @@ import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
 import { BaseService } from "medusa-interfaces"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
+import { PaymentSessionStatus } from "@medusajs/medusa/dist"
 
 class AdyenService extends BaseService {
   constructor({ cartService }, options) {
@@ -150,12 +151,12 @@ class AdyenService extends BaseService {
 
   /**
    * Status for Adyen payment.
-   * @param {object} paymentData - payment method data from cart
-   * @returns {string} the status of the payment
+   * @param {Record<string, unknown>} paymentData - payment method data from cart
+   * @returns {Promise<PaymentSessionStatus>} the status of the payment
    */
-  getStatus(paymentData) {
+  async getStatus(paymentData) {
     const { resultCode } = paymentData
-    let status = "pending"
+    let status = PaymentSessionStatus.PENDING
 
     if (resultCode === "Pending") {
       return status
@@ -166,27 +167,27 @@ class AdyenService extends BaseService {
     }
 
     if (resultCode === "Error") {
-      status = "error"
+      status = PaymentSessionStatus.ERROR
     }
 
     if (resultCode === "Authorised") {
-      status = "authorized"
+      status = PaymentSessionStatus.AUTHORIZED
     }
 
     if (resultCode === "Canceled") {
-      status = "canceled"
+      status = PaymentSessionStatus.CANCELED
     }
 
     if (resultCode === "ChallengeShopper") {
-      status = "requires_more"
+      status = PaymentSessionStatus.REQUIRES_MORE
     }
 
     if (resultCode === "RedirectShopper") {
-      status = "requires_more"
+      status = PaymentSessionStatus.REQUIRES_MORE
     }
 
     if (resultCode === "IdentifyShopper") {
-      status = "requires_more"
+      status = PaymentSessionStatus.REQUIRES_MORE
     }
 
     return status
@@ -232,7 +233,7 @@ class AdyenService extends BaseService {
   async authorizePayment(session, context) {
     const sessionData = session.data
 
-    const status = this.getStatus(sessionData)
+    const status = await this.getStatus(sessionData)
 
     if (sessionData.resultCode === "RedirectShopper") {
       return { data: sessionData, status: "requires_more" }
@@ -246,7 +247,7 @@ class AdyenService extends BaseService {
         paymentData: sessionData.paymentData,
       })
 
-      return { data: updated, status: this.getStatus(updated) }
+      return { data: updated, status: await this.getStatus(updated) }
     }
 
     if (status === "authorized") {
@@ -294,7 +295,7 @@ class AdyenService extends BaseService {
 
       return {
         data: authorizedPayment,
-        status: this.getStatus(authorizedPayment),
+        status: await this.getStatus(authorizedPayment),
       }
     } catch (error) {
       throw error

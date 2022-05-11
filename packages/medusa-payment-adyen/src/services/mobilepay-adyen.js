@@ -1,5 +1,4 @@
-import _ from "lodash"
-import { PaymentService } from "medusa-interfaces"
+import { PaymentService } from "@medusa/medusa"
 
 class MobilePayAdyenService extends PaymentService {
   static identifier = "mobilepay-adyen"
@@ -11,7 +10,7 @@ class MobilePayAdyenService extends PaymentService {
   }
 
   async getStatus(paymentData) {
-    return this.adyenService_.getStatus(paymentData)
+    return await this.adyenService_.getStatus(paymentData)
   }
 
   async createPayment(data) {
