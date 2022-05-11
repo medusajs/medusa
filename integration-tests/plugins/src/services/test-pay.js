@@ -1,10 +1,10 @@
-import { PaymentService } from "@medusajs/medusa"
+import { AbstractPaymentService } from "@medusajs/medusa"
 
-class TestPayService extends PaymentService {
+class TestPayService extends AbstractPaymentService {
   static identifier = "test-pay"
 
   constructor() {
-    super()
+    super({})
   }
 
   async getStatus(paymentData) {
