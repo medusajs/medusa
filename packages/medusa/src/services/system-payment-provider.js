@@ -1,10 +1,10 @@
-import { BaseService } from "medusa-interfaces"
+import { TransactionBaseService } from "../interfaces"
 
-class SystemProviderService extends BaseService {
+class SystemProviderService extends TransactionBaseService {
   static identifier = "system"
 
   constructor(_) {
-    super()
+    super(_)
   }
 
   async createPayment(_) {
