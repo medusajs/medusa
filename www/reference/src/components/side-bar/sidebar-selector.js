@@ -1,8 +1,9 @@
-import React, { useContext } from "react"
 import { Flex, Select } from "theme-ui"
-import { navigate } from "gatsby-link"
-import NavigationContext from "../../context/navigation-context"
+import React, { useContext } from "react"
+
 import ChevronDown from "../icons/chevron-down"
+import NavigationContext from "../../context/navigation-context"
+import { navigate } from "gatsby-link"
 
 const SideBarSelector = ({ api }) => {
   const { reset } = useContext(NavigationContext)

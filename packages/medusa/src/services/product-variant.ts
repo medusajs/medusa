@@ -751,7 +751,7 @@ class ProductVariantService extends BaseService {
 
       const variant = await variantRepo.findOne({
         where: { id: variantId },
-        relations: ["prices"],
+        relations: ["prices", "options"],
       })
 
       if (!variant) {
