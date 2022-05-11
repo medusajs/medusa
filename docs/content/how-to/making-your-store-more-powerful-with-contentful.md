@@ -39,8 +39,8 @@ module.exports = function (migration, context) {
 
 This small snippet will create a content model in your Contentful space with two fields: a title which will be used to name entries in a meaningful manner (i.e. it won't be displayed to customers) and a body which contains the rich text to display. To apply your migration run:
 
-```shell
-yarn migrate:contentful --file contentful-migrations/rich-text.js
+```bash npm2yarn
+npm run migrate:contentful --file contentful-migrations/rich-text.js
 ```
 
 If you go to your Contentful space and click Content Model you will see that the Rich Text model has been added to your space:
@@ -68,19 +68,21 @@ module.exports = function (migration, context) {
 
 After migrating your space you are ready create your new contact page:
 
-```shell
-yarn migrate:contentful --file contentful-migrations/update-page-module-validation.js
+```bash npm2yarn
+npm run migrate:contentful --file contentful-migrations/update-page-module-validation.js
 ```
 
 ## Adding Rich Text to About
 
 To use your new Rich Text module **Content > Page > About**, and click **Add Content > Page**. You will now make use of the new Rich Text module to add some more details about your store. You can write your own text or use the text provided below if you just want to copy/paste.
 
-> ### About Medusa
->
-> Medusa is an open-source headless commerce engine for fast-growing businesses. Getting started with Medusa is very easy and you will be able to start selling online with a basic setup in no time, however, the real power of Medusa starts showing up when you add custom functionality and extend your core to fit your needs.
->
-> The core Medusa package and all the official Medusa plugins ship as individual NPM packages that you install into a Node project. You store and plugins are configured in your medusa-config.js file making it very easy to manage your store as your business grows. Custom functionality doesn't have to come from plugins, you can also add project-level functionality by simply adding files in your `src/` folder. Medusa will automatically register your custom functionalities in the bootstrap phase.
+:::info About Medusa
+
+ Medusa is an open-source headless commerce engine for fast-growing businesses. Getting started with Medusa is very easy and you will be able to start selling online with a basic setup in no time, however, the real power of Medusa starts showing up when you add custom functionality and extend your core to fit your needs.
+
+ The core Medusa package and all the official Medusa plugins ship as individual NPM packages that you install into a Node project. You store and plugins are configured in your medusa-config.js file making it very easy to manage your store as your business grows. Custom functionality doesn't have to come from plugins, you can also add project-level functionality by simply adding files in your `src/` folder. Medusa will automatically register your custom functionalities in the bootstrap phase.
+
+:::
 
 ![](https://i.imgur.com/hqiaoFq.png)
 
@@ -88,7 +90,11 @@ When you have added your text you can click **Publish changes** (make sure the A
 
 ## Updating the storefront to support the Rich Text module
 
-> If you want to jump straight to the final frontend code visit [medusajs/medusa-contentful-storefront@part-2](https://github.com/medusajs/medusa-contentful-storefront/tree/part-2).
+:::note
+
+ If you want to jump straight to the final frontend code visit [medusajs/medusa-contentful-storefront@part-2](https://github.com/medusajs/medusa-contentful-storefront/tree/part-2).
+
+:::
 
 To display your newly created Rich Text module open up the storefront code and create a new file at `src/components/rich-text/rich-text.jsx`.
 
@@ -197,8 +203,8 @@ module.exports = function (migration, context) {
 
 Run the migration:
 
-```
-yarn migrate:contentful --file contentful-migrations/product-add-modules.js
+```bash npm2yarn
+npm run migrate:contentful --file contentful-migrations/product-add-modules.js
 ```
 
 ### Adding "Related Products" Tile Section

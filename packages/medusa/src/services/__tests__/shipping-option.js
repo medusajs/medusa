@@ -26,7 +26,7 @@ describe("ShippingOptionService", () => {
 
   describe("update", () => {
     const shippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case IdMap.getId("noCalc"):
             return Promise.resolve({
@@ -47,11 +47,13 @@ describe("ShippingOptionService", () => {
     })
 
     const fulfillmentProviderService = {
-      canCalculate: jest.fn().mockImplementation(id => id !== "no_calc"),
+      canCalculate: jest
+        .fn()
+        .mockImplementation((option) => option.provider_id !== "no_calc"),
     }
 
     const shippingOptionRequirementRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
     const optionService = new ShippingOptionService({
       manager: MockManager,
@@ -151,12 +153,12 @@ describe("ShippingOptionService", () => {
       })
 
       expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledTimes(1)
-      expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledWith(
-        "provider",
-        {
-          provider_data: "true",
-        }
-      )
+      expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledWith({
+        amount: null,
+        data: { provider_data: "true" },
+        price_type: "calculated",
+        provider_id: "provider",
+      })
 
       expect(shippingOptionRepository.save).toHaveBeenCalledTimes(1)
       expect(shippingOptionRepository.save).toHaveBeenCalledWith({
@@ -204,7 +206,7 @@ describe("ShippingOptionService", () => {
 
   describe("delete", () => {
     const shippingOptionRepository = MockRepository({
-      findOne: i =>
+      findOne: (i) =>
         i.where.id === IdMap.getId("validId")
           ? { id: IdMap.getId("validId") }
           : null,
@@ -236,7 +238,7 @@ describe("ShippingOptionService", () => {
 
   describe("addRequirement", () => {
     const shippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           case IdMap.getId("has-min"):
             return Promise.resolve({
@@ -254,7 +256,7 @@ describe("ShippingOptionService", () => {
     })
 
     const shippingOptionRequirementRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
     const optionService = new ShippingOptionService({
       manager: MockManager,
@@ -297,10 +299,10 @@ describe("ShippingOptionService", () => {
 
   describe("removeRequirement", () => {
     const shippingOptionRequirementRepository = MockRepository({
-      softRemove: q => {
+      softRemove: (q) => {
         return Promise.resolve()
       },
-      findOne: i =>
+      findOne: (i) =>
         i.where.id === IdMap.getId("requirement_id")
           ? { id: IdMap.getId("requirement_id") }
           : null,
@@ -334,17 +336,17 @@ describe("ShippingOptionService", () => {
 
   describe("create", () => {
     const shippingOptionRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
 
     const fulfillmentProviderService = {
-      validateOption: jest.fn().mockImplementation(o => {
+      validateOption: jest.fn().mockImplementation((o) => {
         return Promise.resolve(o.data.res)
       }),
     }
 
     const regionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -353,7 +355,7 @@ describe("ShippingOptionService", () => {
     }
 
     const shippingOptionRequirementRepository = MockRepository({
-      create: r => r,
+      create: (r) => r,
     })
     const optionService = new ShippingOptionService({
       manager: MockManager,
@@ -481,7 +483,7 @@ describe("ShippingOptionService", () => {
   })
 
   describe("createShippingMethod", () => {
-    const option = id => ({
+    const option = (id) => ({
       id,
       region_id: IdMap.getId("region"),
       price_type: "flat_rate",
@@ -497,16 +499,16 @@ describe("ShippingOptionService", () => {
       ],
     })
     const shippingOptionRepository = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         switch (q.where.id) {
           default:
             return Promise.resolve(option(q.where.id))
         }
       },
     })
-    const shippingMethodRepository = MockRepository({ create: r => r })
+    const shippingMethodRepository = MockRepository({ create: (r) => r })
     const totalsService = {
-      getSubtotal: c => {
+      getSubtotal: (c) => {
         return c.subtotal
       },
     }
@@ -514,8 +516,8 @@ describe("ShippingOptionService", () => {
     const providerService = {
       validateFulfillmentData: jest
         .fn()
-        .mockImplementation(r => Promise.resolve(r.data)),
-      getPrice: d => d.price,
+        .mockImplementation((r) => Promise.resolve(r.data)),
+      getPrice: (d) => d.price,
     }
 
     const optionService = new ShippingOptionService({
