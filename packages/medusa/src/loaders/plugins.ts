@@ -17,6 +17,7 @@ import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import {
+  AbstractFileService, AbstractPaymentService,
   AbstractTaxService,
   isFileService,
   isTaxCalculationStrategy,
@@ -349,7 +350,10 @@ export async function registerServices(
         throw new Error(message)
       }
 
-      if (loaded.prototype instanceof PaymentService) {
+      if (
+        loaded.prototype instanceof AbstractPaymentService ||
+        loaded.prototype instanceof BasePaymentService
+      ) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
           "paymentProviders",
