@@ -175,7 +175,7 @@ export default class PaymentProviderService extends TransactionBaseService<Payme
         const provider = this.retrieveProvider(providerId)
         const sessionData = await provider
           .withTransaction(transactionManager)
-          .createPaymentSession(cart)
+          .createPayment(cart)
 
         const sessionRepo = transactionManager.getCustomRepository(
           this.paymentSessionRepository_
@@ -217,7 +217,7 @@ export default class PaymentProviderService extends TransactionBaseService<Payme
 
       await sessionRepo.remove(session)
 
-      const sessionData = await provider.createPaymentSession(cart)
+      const sessionData = await provider.createPayment(cart)
       const toCreate = {
         cart_id: cart.id,
         provider_id: session.provider_id,
@@ -320,7 +320,7 @@ export default class PaymentProviderService extends TransactionBaseService<Payme
         const provider = this.retrieveProvider(paymentSession.provider_id)
         const paymentData = await provider
           .withTransaction(transactionManager)
-          .createPayment(paymentSession)
+          .getPaymentData(paymentSession)
 
         const paymentRepo = transactionManager.getCustomRepository(
           this.paymentRepository_
