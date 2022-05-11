@@ -26,8 +26,8 @@ Navigate to users and perform the following steps:
 
 First, install the plugin using your preferred package manager:
 
-```
-yarn add medusa-file-minio
+```bash npm2yarn
+npm install medusa-file-minio
 ```
 
 Then configure your `medusa-config.js` to include the plugin alongside the required options:
@@ -46,7 +46,11 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
 
 The two access keys in the options are the ones created in the previous section.
 
-> Make sure to use an environment variable for the secret key in a live environment.
+:::tip
+
+Make sure to use an environment variable for the secret key in a live environment.
+
+:::
 
 ### Try it out
 

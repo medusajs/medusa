@@ -2,13 +2,16 @@ import "../fonts/index.css"
 
 import breakpoints from "./breakpoints"
 import buttons from "./buttons"
-import spacing from "./spacing"
-import shadows from "./shadows"
 import forms from "./forms"
 import labels from "./labels"
+import shadows from "./shadows"
+import spacing from "./spacing"
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  config: {
+    initialColorModeName: 'light',
+  },
   sizes: {
     headerHeight: "50px",
   },
@@ -59,18 +62,38 @@ export default {
     },
   },
   colors: {
-    primary: "#53725D",
+    primary: "#7C53FF",
+    primaryLight: "#7c53ff4a",
     secondary: "#79B28A",
     danger: "#FF7675",
     placeholder: "#a3acb9",
     dark: "#0a3149",
     darkContrast: "#0a314940",
+    selectBg: "rgba(9, 10, 17, 0.8)",
     light: "#ffffff",
     faded: "#eef0f5",
     fadedContrast: "#eef0f540",
+    text: '#000',
+    background: '#fff',
+    inverseText: '#000',
+    separator: "#eef0f5",
+    codeBoxShadow: "rgb(0 0 0 / 7%)",
+    sectionSeparator: "#E3E8EE",
+    modes: {
+      dark: {
+        text: '#fff',
+        background: "#242526",
+        inverseText: '#000',
+        dark: "#eef0f5",
+        separator: "#eef0f540",
+        codeBoxShadow: "#d2d2d22b",
+        sectionSeparator: "#404244",
+        selectBg: "rgba(9, 10, 17, 0.8)"
+      }
+    }
   },
   borders: {
-    hairline: "1px solid #E3E8EE",
+    hairline: "1px solid var(--theme-ui-colors-sectionSeparator)",
   },
   fontSizes: [12, 14, 16, 18, 22],
   fonts: {

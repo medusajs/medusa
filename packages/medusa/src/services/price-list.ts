@@ -2,6 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { CustomerGroupService } from "."
+import { Product } from "../models"
 import { CustomerGroup } from "../models/customer-group"
 import { PriceList } from "../models/price-list"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -11,13 +12,18 @@ import {
   CreatePriceListInput,
   FilterablePriceListProps,
   PriceListPriceCreateInput,
+  PriceListPriceUpdateInput,
   UpdatePriceListInput,
 } from "../types/price-list"
 import { formatException } from "../utils/exception-formatter"
+import RegionService from "./region"
+import ProductService from "./product"
 
 type PriceListConstructorProps = {
   manager: EntityManager
   customerGroupService: CustomerGroupService
+  regionService: RegionService
+  productService: ProductService
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: typeof MoneyAmountRepository
 }
@@ -29,18 +35,24 @@ type PriceListConstructorProps = {
 class PriceListService extends BaseService {
   private manager_: EntityManager
   private customerGroupService_: CustomerGroupService
+  private regionService_: RegionService
+  private productService_: ProductService
   private priceListRepo_: typeof PriceListRepository
   private moneyAmountRepo_: typeof MoneyAmountRepository
 
   constructor({
     manager,
     customerGroupService,
+    regionService,
+    productService,
     priceListRepository,
     moneyAmountRepository,
   }: PriceListConstructorProps) {
     super()
     this.manager_ = manager
     this.customerGroupService_ = customerGroupService
+    this.productService_ = productService
+    this.regionService_ = regionService
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
   }
@@ -53,6 +65,8 @@ class PriceListService extends BaseService {
     const cloned = new PriceListService({
       manager: transactionManager,
       customerGroupService: this.customerGroupService_,
+      productService: this.productService_,
+      regionService: this.regionService_,
       priceListRepository: this.priceListRepo_,
       moneyAmountRepository: this.moneyAmountRepo_,
     })
@@ -145,7 +159,8 @@ class PriceListService extends BaseService {
       await priceListRepo.save(priceList)
 
       if (prices) {
-        await moneyAmountRepo.updatePriceListPrices(id, prices)
+        const prices_ = await this.addCurrencyFromRegion(prices)
+        await moneyAmountRepo.updatePriceListPrices(id, prices_)
       }
 
       if (customer_groups) {
@@ -177,7 +192,8 @@ class PriceListService extends BaseService {
 
       const priceList = await this.retrieve(id, { select: ["id"] })
 
-      await moneyAmountRepo.addPriceListPrices(priceList.id, prices, replace)
+      const prices_ = await this.addCurrencyFromRegion(prices)
+      await moneyAmountRepo.addPriceListPrices(priceList.id, prices_, replace)
 
       const result = await this.retrieve(priceList.id, {
         relations: ["prices"],
@@ -298,6 +314,75 @@ class PriceListService extends BaseService {
     priceList.customer_groups = groups
 
     await priceListRepo.save(priceList)
+  }
+
+  async listProducts(
+    priceListId: string,
+    selector = {},
+    config: FindConfig<Product> = {
+      relations: [],
+      skip: 0,
+      take: 20,
+    }
+  ): Promise<[Product[], number]> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const [products, count] = await this.productService_.listAndCount(
+        selector,
+        config
+      )
+
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+
+      const productsWithPrices = await Promise.all(
+        products.map(async (p) => {
+          if (p.variants?.length) {
+            p.variants = await Promise.all(
+              p.variants.map(async (v) => {
+                const [prices] =
+                  await moneyAmountRepo.findManyForVariantInPriceList(
+                    v.id,
+                    priceListId
+                  )
+
+                return {
+                  ...v,
+                  prices,
+                }
+              })
+            )
+          }
+
+          return p
+        })
+      )
+
+      return [productsWithPrices, count]
+    })
+  }
+
+  /**
+   * Add `currency_code` to an MA record if `region_id`is passed.
+   * @param prices - a list of PriceListPrice(Create/Update)Input records
+   * @return {Promise} updated `prices` list
+   */
+  protected async addCurrencyFromRegion<
+    T extends PriceListPriceUpdateInput | PriceListPriceCreateInput
+  >(prices: T[]): Promise<T[]> {
+    const prices_: typeof prices = []
+
+    for (const p of prices) {
+      if (p.region_id) {
+        const region = await this.regionService_
+          .withTransaction(this.manager_)
+          .retrieve(p.region_id)
+
+        p.currency_code = region.currency_code
+      }
+
+      prices_.push(p)
+    }
+
+    return prices_
   }
 }
 

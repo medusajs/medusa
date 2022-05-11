@@ -41,9 +41,13 @@ export default async (req, res) => {
   const {
     projectConfig: { jwt_secret },
   } = req.scope.resolve("configModule")
-  req.session.jwt = jwt.sign({ customer_id: result.customer?.id }, jwt_secret!, {
-    expiresIn: "30d",
-  })
+  req.session.jwt = jwt.sign(
+    { customer_id: result.customer?.id },
+    jwt_secret!,
+    {
+      expiresIn: "30d",
+    }
+  )
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   const customer = await customerService.retrieve(result.customer?.id || "", {

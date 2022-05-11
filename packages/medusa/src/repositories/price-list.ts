@@ -61,7 +61,6 @@ export class PriceListRepository extends Repository<PriceList> {
     } else {
       entities = await this.find(idsOrOptionsWithoutRelations)
     }
-
     const groupedRelations: Record<string, string[]> = {}
     for (const relation of relations) {
       const [topLevel] = relation.split(".")
@@ -71,7 +70,6 @@ export class PriceListRepository extends Repository<PriceList> {
         groupedRelations[topLevel] = [relation]
       }
     }
-
     const entitiesIds = entities.map(({ id }) => id)
     const entitiesIdsWithRelations = await Promise.all(
       Object.values(groupedRelations).map((relations: string[]) => {

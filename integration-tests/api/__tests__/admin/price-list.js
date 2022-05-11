@@ -555,6 +555,68 @@ describe("/admin/price-lists", () => {
         updated_at: expect.any(String),
       })
     })
+
+    it("updates price list prices (inser a new MA for a specific region)", async () => {
+      const api = useApi()
+
+      const payload = {
+        prices: [
+          // update MA
+          {
+            id: "ma_test_4",
+            amount: 1001,
+            currency_code: "usd",
+            variant_id: "test-variant",
+          },
+          // create MA
+          {
+            amount: 101,
+            variant_id: "test-variant",
+            region_id: "region-pl",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/price-lists/pl_with_some_ma", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.price_list.prices.length).toEqual(2)
+      expect(response.data.price_list.prices).toMatchSnapshot([
+        {
+          id: expect.any(String),
+          currency_code: "eur",
+          amount: 101,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: "region-pl",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: "ma_test_4",
+          currency_code: "usd",
+          amount: 1001,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+      ])
+    })
   })
 
   describe("POST /admin/price-lists/:id/prices/batch", () => {
@@ -619,7 +681,9 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.price_list.prices.length).toEqual(6)
-      expect(response.data.price_list.prices).toMatchSnapshot([
+      expect(
+        response.data.price_list.prices.sort((a, b) => b.amount - a.amount)
+      ).toMatchSnapshot([
         {
           id: expect.any(String),
           price_list_id: "pl_no_customer_groups",
@@ -768,6 +832,78 @@ describe("/admin/price-lists", () => {
           max_quantity: 4000,
           created_at: expect.any(String),
           updated_at: expect.any(String),
+        },
+      ])
+    })
+
+    it("Adds a batch of new prices where a MA record have a `region_id` instead of `currency_code`", async () => {
+      const api = useApi()
+
+      const payload = {
+        prices: [
+          {
+            amount: 100,
+            variant_id: "test-variant",
+            region_id: "region-pl",
+          },
+          {
+            amount: 200,
+            variant_id: "test-variant",
+            currency_code: "usd",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/price-lists/pl_with_some_ma/prices/batch", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.price_list.prices.length).toEqual(3) // initially this PL has 1 MA record
+      expect(response.data.price_list.prices).toMatchSnapshot([
+        {
+          id: "ma_test_4",
+          currency_code: "usd",
+          amount: 70,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: expect.any(String),
+          currency_code: "eur",
+          amount: 100,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: "region-pl",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: expect.any(String),
+          currency_code: "usd",
+          amount: 200,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
         },
       ])
     })
@@ -951,9 +1087,17 @@ describe("/admin/price-lists", () => {
 
         await simplePriceListFactory(dbConnection, {
           id: "test-list",
+          customer_groups: ["test-group"],
           prices: [
-            { variant_id: "test-variant-1", currency_code: "usd", amount: 100 },
-            { variant_id: "test-variant-4", currency_code: "usd", amount: 100 },
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 150 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
+          ],
+        })
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list-2",
+          prices: [
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 200 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 200 },
           ],
         })
       } catch (err) {
@@ -967,7 +1111,7 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it("lists only product 1, 2", async () => {
+    it("lists only product 1, 2 with price list prices", async () => {
       const api = useApi()
 
       const response = await api
@@ -983,8 +1127,50 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
       expect(response.data.products).toEqual([
-        expect.objectContaining({ id: "test-prod-1" }),
-        expect.objectContaining({ id: "test-prod-2" }),
+        expect.objectContaining({
+          id: "test-prod-1",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-1",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-2",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          id: "test-prod-2",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-3",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-4",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+          ],
+        }),
       ])
     })
 

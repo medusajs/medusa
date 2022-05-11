@@ -20,6 +20,15 @@ export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
   withDeleted?: boolean
 }
 
+export type Selector<TEntity> = {
+  [key in keyof TEntity]?:
+    | TEntity[key]
+    | TEntity[key][]
+    | DateComparisonOperator
+    | StringComparisonOperator
+    | NumericalComparisonOperator
+}
+
 export type TotalField =
   | "shipping_total"
   | "discount_total"

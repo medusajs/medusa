@@ -26,11 +26,7 @@ For other installation alternatives, you can head over to Meilisearch's [install
 
 In order to add the plugin to your medusa project, you will need to first install the plugin using your favorite package manager:
 
-```bash
-# yarn
-yarn add medusa-plugin-meilisearch
-
-# npm
+```bash npm2yarn
 npm install medusa-plugin-meilisearch
 ```
 
@@ -83,11 +79,8 @@ The Medusa + MeiliSearch integration opens up a lot of capabilities for creating
 
 In order to leverage this functionality, you'll need to install the corresponding packages by running:
 
-```bash
-# npm
+```bash npm2yarn
 npm install react-instantsearch-dom @meilisearch/instant-meilisearch
-# yarn
-yarn add react-instantsearch-dom @meilisearch/instant-meilisearch
 ```
 
 You can then use the MeiliSearch client in your react app:
