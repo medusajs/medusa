@@ -1,10 +1,10 @@
 import { Request, Response } from "express"
-import { ProductService } from "../../../../services"
+import { ProductVariantService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
-import { Product } from "../../../../models"
+import { ProductVariant } from "../../../../models"
 import { defaultAdminProductsVariantsRelations } from "./index"
 
 /**
@@ -41,21 +41,28 @@ export default async (req: Request, res: Response) => {
     req.query
   )
 
-  const queryConfig = getRetrieveConfig<Product>(
+  const queryConfig = getRetrieveConfig<ProductVariant>(
     [],
     defaultAdminProductsVariantsRelations,
-    fields?.split(",") as (keyof Product)[],
+    fields?.split(",") as (keyof ProductVariant)[],
     expand
       ? [...defaultAdminProductsVariantsRelations, ...expand.split(",")]
       : undefined
   )
 
-  const productService: ProductService = req.scope.resolve("productService")
-  const variants = await productService.retrieveVariants(id, {
-    ...queryConfig,
-    skip: offset,
-    take: limit,
-  })
+  const productVariantService: ProductVariantService = req.scope.resolve(
+    "productVariantService"
+  )
+  const variants = await productVariantService.listAndCount(
+    {
+      product_id: id,
+    },
+    {
+      ...queryConfig,
+      skip: offset,
+      take: limit,
+    }
+  )
 
   res.json({ variants })
 }

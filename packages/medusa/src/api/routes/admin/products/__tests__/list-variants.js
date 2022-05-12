@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { ProductServiceMock } from "../../../../../services/__mocks__/product"
+import { ProductVariantServiceMock } from "../../../../../services/__mocks__/product-variant"
 
 describe("GET /admin/products/:id/variants", () => {
   describe("successfully gets a product variants", () => {
@@ -25,9 +25,11 @@ describe("GET /admin/products/:id/variants", () => {
     })
 
     it("should cal the get product from productService with the expected parameters without giving any config", () => {
-      expect(ProductServiceMock.retrieveVariants).toHaveBeenCalledTimes(1)
-      expect(ProductServiceMock.retrieveVariants).toHaveBeenCalledWith(
-        IdMap.getId("product1"),
+      expect(ProductVariantServiceMock.listAndCount).toHaveBeenCalledTimes(1)
+      expect(ProductVariantServiceMock.listAndCount).toHaveBeenCalledWith(
+        {
+          product_id: IdMap.getId("product1"),
+        },
         {
           relations: ["variants", "variants.prices"],
           select: [],
@@ -63,9 +65,11 @@ describe("GET /admin/products/:id/variants", () => {
         }
       )
 
-      expect(ProductServiceMock.retrieveVariants).toHaveBeenCalledTimes(2)
-      expect(ProductServiceMock.retrieveVariants).toHaveBeenLastCalledWith(
-        IdMap.getId("product1"),
+      expect(ProductVariantServiceMock.listAndCount).toHaveBeenCalledTimes(2)
+      expect(ProductVariantServiceMock.listAndCount).toHaveBeenLastCalledWith(
+        {
+          product_id: IdMap.getId("product1"),
+        },
         {
           relations: ["variants", "variants.prices", "variants.options"],
           select: ["id", "variants.id"],
