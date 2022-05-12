@@ -1,3 +1,4 @@
+const { PriceList, CustomerGroup } = require("@medusajs/medusa")
 const path = require("path")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -8,6 +9,9 @@ const {
   simpleProductFactory,
   simplePriceListFactory,
 } = require("../../factories")
+const {
+  simpleCustomerGroupFactory,
+} = require("../../factories/simple-customer-group-factory")
 const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
 const priceListSeeder = require("../../helpers/price-list-seeder")
@@ -321,6 +325,48 @@ describe("/admin/price-lists", () => {
         ])
       )
       expect(response.data.count).toEqual(1)
+    })
+
+    it("lists only price lists with customer_group", async () => {
+      await customerSeeder(dbConnection)
+
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-cgroup-1",
+        customer_groups: ["customer-group-1"],
+      })
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-cgroup-2",
+        customer_groups: ["customer-group-2"],
+      })
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-cgroup-3",
+        customer_groups: ["customer-group-3"],
+      })
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-no-cgroup",
+      })
+
+      const api = useApi()
+
+      const response = await api
+        .get(
+          `/admin/price-lists?customer_groups[]=customer-group-1,customer-group-2`,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists.length).toEqual(2)
+      expect(response.data.price_lists).toEqual([
+        expect.objectContaining({ id: "test-list-cgroup-1" }),
+        expect.objectContaining({ id: "test-list-cgroup-2" }),
+      ])
     })
   })
 
