@@ -1,16 +1,14 @@
-import {
-  useAdminCreateDiscount,
-  useAdminUpdateDiscount,
-  useAdminDeleteDiscount,
-  useAdminDiscountAddRegion,
-  useAdminDiscountAddValidProduct,
-  useAdminDiscountRemoveRegion,
-  useAdminDiscountRemoveValidProduct,
-  useAdminCreateDynamicDiscountCode,
-  useAdminDeleteDynamicDiscountCode,
-} from "../../../../src/"
 import { renderHook } from "@testing-library/react-hooks"
 import { fixtures } from "../../../../mocks/data"
+import {
+  useAdminCreateDiscount,
+  useAdminCreateDynamicDiscountCode,
+  useAdminDeleteDiscount,
+  useAdminDeleteDynamicDiscountCode,
+  useAdminDiscountAddRegion,
+  useAdminDiscountRemoveRegion,
+  useAdminUpdateDiscount,
+} from "../../../../src/"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminCreateDiscount hook", () => {
@@ -115,28 +113,6 @@ describe("useAdminDiscountAddRegion hook", () => {
   })
 })
 
-describe("useAdminDiscountAddValidProduct hook", () => {
-  test("adds a product to the discount", async () => {
-    const id = fixtures.get("discount").id
-
-    const { result, waitFor } = renderHook(
-      () => useAdminDiscountAddValidProduct(id),
-      {
-        wrapper: createWrapper(),
-      }
-    )
-
-    result.current.mutate("test-product")
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.discount).toEqual(
-      expect.objectContaining(fixtures.get("discount"))
-    )
-  })
-})
-
 describe("useAdminCreateDynamicDiscountCode hook", () => {
   test("creates a dynamic discount code", async () => {
     const discount = {
@@ -177,28 +153,6 @@ describe("useAdminDiscountRemoveRegion hook", () => {
     )
 
     result.current.mutate("test-region")
-
-    await waitFor(() => result.current.isSuccess)
-
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.discount).toEqual(
-      expect.objectContaining(fixtures.get("discount"))
-    )
-  })
-})
-
-describe("useAdminDiscountRemoveValidProduct hook", () => {
-  test("adds a product to the discount", async () => {
-    const id = fixtures.get("discount").id
-
-    const { result, waitFor } = renderHook(
-      () => useAdminDiscountRemoveValidProduct(id),
-      {
-        wrapper: createWrapper(),
-      }
-    )
-
-    result.current.mutate("test-product")
 
     await waitFor(() => result.current.isSuccess)
 

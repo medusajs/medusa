@@ -1,15 +1,17 @@
 import { Image } from "@theme-ui/components"
-import React from "react"
-
 import Logo from "../../assets/github.svg"
+import LogoLight from "../../assets/github-light.svg"
+import React from "react"
+import { useColorMode } from 'theme-ui'
 
 const GitHub = () => {
+  const [colorMode,] = useColorMode()
+
   return (
     <Image
-      src={Logo}
+      src={colorMode === 'light' ? Logo : LogoLight}
       sx={{
-        height: "20px",
-        fill: "#000",
+        height: "24px",
       }}
     />
   )

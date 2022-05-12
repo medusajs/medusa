@@ -19,6 +19,7 @@ const discounts = {
       type: "fixed",
       allocation: "item",
       value: 2,
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -29,6 +30,7 @@ const discounts = {
       type: "percentage",
       allocation: "item",
       value: 10,
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -39,6 +41,7 @@ const discounts = {
       type: "fixed",
       allocation: "total",
       value: 10,
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },
@@ -50,6 +53,7 @@ const discounts = {
       type: "fixed",
       allocation: "item",
       value: 10,
+      // TODO: Add conditions relation
     },
     regions: [{ id: "fr" }],
   },

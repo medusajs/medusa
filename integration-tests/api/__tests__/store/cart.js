@@ -1739,7 +1739,7 @@ describe("/store/carts", () => {
         .catch((err) => console.log(err))
 
       // Ensure that the discount is only applied to the standard item
-      const itemId = cartWithGiftcard.data.cart.items[0].id
+      const itemId = cartWithGiftcard.data.cart.items.find(item => !item.is_giftcard).id
       expect(cartWithGiftcard.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.1.1...@medusajs/medusa-js@1.2.0) (2022-05-01)
+
+
+### Bug Fixes
+
+* **medusa:** Remove unsupported Discount endpoints ([#1367](https://github.com/medusajs/medusa-js/issues/1367)) ([9acee27](https://github.com/medusajs/medusa-js/commit/9acee2799ead683575edd0f7172f336878569dfe))
+* `CustomerGroups` missing  features in the clients ([#1159](https://github.com/medusajs/medusa-js/issues/1159)) ([218b20b](https://github.com/medusajs/medusa-js/commit/218b20b26db46f0a91736ece2530a83fa94aed97))
+* default `POST` request payloads to an empty object ([#1141](https://github.com/medusajs/medusa-js/issues/1141)) ([4e7435e](https://github.com/medusajs/medusa-js/commit/4e7435e4d706e9237e08e1bef1818c4d564a5f9c))
+* merge conflicts ([562a1b4](https://github.com/medusajs/medusa-js/commit/562a1b427a6aeb634fbc8b1a6d023c451ca2cd62))
+* use /admin/returns/:id/receive for swap returns ([#1041](https://github.com/medusajs/medusa-js/issues/1041)) ([7ae754b](https://github.com/medusajs/medusa-js/commit/7ae754bb6187db17c45b2cfadc625df8f997f5ab))
+
+
+### Features
+
+* customer group customers client endpoints ([#1221](https://github.com/medusajs/medusa-js/issues/1221)) ([b7f6996](https://github.com/medusajs/medusa-js/commit/b7f699654bd8c5b08919667d4e29c835901e1af9))
+* customer groups client endpoints ([#1147](https://github.com/medusajs/medusa-js/issues/1147)) ([93426bf](https://github.com/medusajs/medusa-js/commit/93426bfc0263b3a19e6d47e19cc498fea441fb30))
+* customer groups react hooks ([#1153](https://github.com/medusajs/medusa-js/issues/1153)) ([daf49bc](https://github.com/medusajs/medusa-js/commit/daf49bcaf31e6e86cfd13a24efd5b3de626617a4))
+* new tax api ([#979](https://github.com/medusajs/medusa-js/issues/979)) ([c56660f](https://github.com/medusajs/medusa-js/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa-js/issues/885) [#896](https://github.com/medusajs/medusa-js/issues/896) [#911](https://github.com/medusajs/medusa-js/issues/911) [#945](https://github.com/medusajs/medusa-js/issues/945) [#950](https://github.com/medusajs/medusa-js/issues/950) [#951](https://github.com/medusajs/medusa-js/issues/951) [#954](https://github.com/medusajs/medusa-js/issues/954) [#969](https://github.com/medusajs/medusa-js/issues/969) [#998](https://github.com/medusajs/medusa-js/issues/998) [#1017](https://github.com/medusajs/medusa-js/issues/1017) [#1110](https://github.com/medusajs/medusa-js/issues/1110)
+
+
+
+
+
 ## [1.1.1](https://github.com/medusajs/medusa-js/compare/@medusajs/medusa-js@1.0.12...@medusajs/medusa-js@1.1.1) (2022-02-28)
 
 

@@ -1,13 +1,12 @@
-import config from "../config"
 import passport from "passport"
 import { AuthService } from "../services"
 import { Express } from 'express'
-import { MedusaContainer } from "../types/global"
+import { ConfigModule, MedusaContainer } from "../types/global"
 import { Strategy as BearerStrategy } from "passport-http-bearer"
 import { Strategy as JWTStrategy } from "passport-jwt"
 import { Strategy as LocalStrategy } from "passport-local"
 
-export default async ({ app, container }: { app: Express; container: MedusaContainer }): Promise<void> => {
+export default async ({ app, container, configModule }: { app: Express; container: MedusaContainer; configModule: ConfigModule; }): Promise<void> => {
   const authService = container.resolve<AuthService>("authService")
 
   // For good old email password authentication
@@ -34,11 +33,12 @@ export default async ({ app, container }: { app: Express; container: MedusaConta
 
   // After a user has authenticated a JWT will be placed on a cookie, all
   // calls will be authenticated based on the JWT
+  const { jwt_secret } = configModule.projectConfig
   passport.use(
     new JWTStrategy(
       {
         jwtFromRequest: (req) => req.session.jwt,
-        secretOrKey: config.jwtSecret,
+        secretOrKey: jwt_secret,
       },
       async (jwtPayload, done) => {
         return done(null, jwtPayload)

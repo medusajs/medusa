@@ -13,7 +13,16 @@ import { queryKeysFactory } from "../../utils/index"
 
 const ADMIN_PRICE_LISTS_QUERY_KEY = `admin_price_lists` as const
 
-export const adminPriceListKeys = queryKeysFactory(ADMIN_PRICE_LISTS_QUERY_KEY)
+export const adminPriceListKeys = {
+  ...queryKeysFactory(ADMIN_PRICE_LISTS_QUERY_KEY),
+  detailProducts(id: string, query?: any) {
+    return [
+      ...this.detail(id),
+      "products" as const,
+      { ...(query || {}) },
+    ] as const
+  },
+}
 
 type PriceListQueryKeys = typeof adminPriceListKeys
 
@@ -40,12 +49,12 @@ export const useAdminPriceListProducts = (
   options?: UseQueryOptionsWrapper<
     Response<AdminProductsListRes>,
     Error,
-    ReturnType<PriceListQueryKeys["detail"]>
+    ReturnType<PriceListQueryKeys["detailProducts"]>
   >
 ) => {
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
-    adminPriceListKeys.detail(id),
+    adminPriceListKeys.detailProducts(id, query),
     () => client.admin.priceLists.listProducts(id, query),
     options
   )
