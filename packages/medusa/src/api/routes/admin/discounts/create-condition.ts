@@ -96,7 +96,7 @@ export class AdminPostDiscountsDiscountConditions extends AdminUpsertConditionsR
   operator: DiscountConditionOperator
 }
 
-export class AdminPostDiscountsConditionsParams {
+export class AdminPostDiscountsDiscountConditionsParams {
   @IsString()
   @IsOptional()
   expand?: string
