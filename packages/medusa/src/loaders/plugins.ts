@@ -152,7 +152,7 @@ async function registerMedusaApi(
   container: MedusaContainer
 ): Promise<void> {
   registerMedusaMiddleware(pluginDetails, container)
-  await registerStrategies(pluginDetails, container)
+  registerStrategies(pluginDetails, container)
 }
 
 export function registerStrategies(
@@ -230,6 +230,8 @@ export function registerStrategies(
       batchJobStrategies: asFunction((cradle) =>
         batchJobsStrategyFiles.map((bs) => {
           const module = require(bs).default
+
+          const a = new module(cradle, pluginDetails.options)
 
           return new module(cradle, pluginDetails.options)
         })
