@@ -408,7 +408,7 @@ class KlarnaProviderService extends AbstractPaymentService {
     if (cart.total !== paymentSessionData.order_amount) {
       const order = await this.cartToKlarnaOrder(cart)
       return await this.klarna_
-        .post(`${this.klarnaOrderUrl_}/${paymentData.order_id}`, order)
+        .post(`${this.klarnaOrderUrl_}/${paymentSessionData.order_id}`, order)
         .then(({ data }) => data)
         .catch(async (_) => {
           return this.klarna_
@@ -417,7 +417,7 @@ class KlarnaProviderService extends AbstractPaymentService {
         })
     }
 
-    return paymentData
+    return paymentSessionData
   }
 
   /**
@@ -458,7 +458,7 @@ class KlarnaProviderService extends AbstractPaymentService {
       await this.klarna_.post(
         `${this.klarnaOrderManagementUrl_}/${order_id}/refunds`,
         {
-          refunded_amount: amountToRefund,
+          refunded_amount: refundAmount,
         }
       )
 
