@@ -33,6 +33,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) type {string | string[]} Filter by the batch type
  *   - (query) status {string} Filter by the status of the batch operation
+ *   - (query) order {string} Order used when retrieving batch jobs
+ *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
+ *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
  *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
@@ -49,64 +52,46 @@ import { validator } from "../../../../utils/validator"
  *              $ref: "#/components/schemas/batch_job"
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetBatchParams, req.query)
+  const { fields, expand, order, limit, offset, ...filterableFields } =
+    await validator(AdminGetBatchParams, req.query)
 
   const batchService: BatchJobService = req.scope.resolve("batchJobService")
 
-  let includeFields: (keyof BatchJob)[] | undefined
-  if (validated.fields) {
-    includeFields = validated.fields.split(",") as (keyof BatchJob)[]
-  }
-
-  let expandFields: string[] | undefined
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
   let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
-  if (typeof validated.order !== "undefined") {
-    if (validated.order.startsWith("-")) {
-      const [, field] = validated.order.split("-")
+  if (typeof order !== "undefined") {
+    if (order.startsWith("-")) {
+      const [, field] = order.split("-")
       orderBy = { [field]: "DESC" }
     } else {
-      orderBy = { [validated.order]: "ASC" }
+      orderBy = { [order]: "ASC" }
     }
-
-    throw new MedusaError(
-      MedusaError.Types.INVALID_DATA,
-      "Order field must be a valid BatchJob field"
-    )
   }
 
   const listConfig = getListConfig<BatchJob>(
     defaultAdminBatchFields as (keyof BatchJob)[],
     [],
-    includeFields,
-    expandFields,
-    validated.limit,
-    validated.offset,
+    fields?.split(",") as (keyof BatchJob)[],
+    expand?.split(","),
+    limit,
+    offset,
     orderBy
   )
 
-  const filterableFields: FilterableBatchJobProps = omit(validated, [
-    "limit",
-    "offset",
-    "order",
-    "expand",
-    "fields",
-  ])
-  filterableFields.created_by = req.user.id
+  const created_by: string = req.user.id || req.user.userId
 
   const [jobs, count] = await batchService.listAndCount(
-    pickBy(filterableFields, identity),
+    pickBy(
+      { created_by, ...filterableFields },
+      (val) => typeof val !== "undefined"
+    ),
     listConfig
   )
 
   res.status(200).json({
     batch_jobs: jobs,
     count,
-    offset: validated.offset,
-    limit: validated.limit,
+    offset: offset,
+    limit: limit,
   })
 }
 

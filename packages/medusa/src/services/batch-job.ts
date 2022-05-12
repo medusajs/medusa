@@ -1,48 +1,34 @@
 import { EntityManager } from "typeorm"
-import { BaseService } from "medusa-interfaces"
-import { MedusaError } from "medusa-core-utils"
 
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import { FilterableBatchJobProps } from "../types/batch-job"
 import { FindConfig } from "../types/common"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
-type InjectedContainer = {
+type InjectedDependencies = {
   manager: EntityManager
   batchJobRepository: typeof BatchJobRepository
 }
 
-class BatchJobService extends BaseService<BatchJobService> {
-  protected readonly container_: InjectedContainer
+class BatchJobService extends TransactionBaseService<BatchJobService> {
+  protected readonly manager_: EntityManager
+  protected readonly transactionManager_: EntityManager | undefined
   protected readonly batchJobRepository_: typeof BatchJobRepository
 
-  static Events = {
+  static readonly Events = {
     CREATED: "batch.created",
     UPDATED: "batch.updated",
     CANCELED: "batch.canceled",
   }
 
-  constructor(container: InjectedContainer) {
-    super()
+  constructor({ manager, batchJobRepository }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.container_ = container
-    this.manager_ = container.manager
-    this.batchJobRepository_ = container.batchJobRepository
-  }
-
-  withTransaction(transactionManager: EntityManager): BatchJobService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new BatchJobService({
-      ...this.container_,
-      manager: transactionManager,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
+    this.manager_ = manager
+    this.batchJobRepository_ = batchJobRepository
   }
 
   async listAndCount(
@@ -50,14 +36,12 @@ class BatchJobService extends BaseService<BatchJobService> {
     config: FindConfig<BatchJob> = { skip: 0, take: 20 }
   ): Promise<[BatchJob[], number]> {
     return await this.atomicPhase_(
-      async (
-        transactionManager: EntityManager
-      ): Promise<[BatchJob[], number]> => {
-        const batchJobRepo = transactionManager.getCustomRepository(
+      async (manager: EntityManager): Promise<[BatchJob[], number]> => {
+        const batchJobRepo = manager.getCustomRepository(
           this.batchJobRepository_
         )
 
-        const query = this.buildQuery_(selector, config)
+        const query = buildQuery(selector, config)
         return await batchJobRepo.findAndCount(query)
       }
     )
