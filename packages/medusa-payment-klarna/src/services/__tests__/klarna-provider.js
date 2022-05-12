@@ -20,7 +20,7 @@ describe("KlarnaProviderService", () => {
           terms: "terms",
           checkout: "checkout",
           confirmation: "confirmation",
-        },refundPayment
+        },
       }
     )
 
