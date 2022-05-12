@@ -8,7 +8,7 @@ import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}
- * operationId: "PostDiscountsConditionsCondition"
+ * operationId: "PostDiscountsDiscountConditionsCondition"
  * summary: "Updates a DiscountCondition"
  * x-authenticated: true
  * parameters:
@@ -57,12 +57,12 @@ export default async (req, res) => {
   const { discount_id, condition_id } = req.params
 
   const validatedCondition = await validator(
-    AdminPostDiscountsConditionsCondition,
+    AdminPostDiscountsDiscountConditionsCondition,
     req.body
   )
 
   const validatedParams = await validator(
-    AdminPostDiscountsConditionsConditionParams,
+    AdminPostDiscountsDiscountConditionsConditionParams,
     req.query
   )
 
@@ -96,9 +96,9 @@ export default async (req, res) => {
   res.status(200).json({ discount })
 }
 
-export class AdminPostDiscountsConditionsCondition extends AdminUpsertConditionsReq {}
+export class AdminPostDiscountsDiscountConditionsCondition extends AdminUpsertConditionsReq {}
 
-export class AdminPostDiscountsConditionsConditionParams {
+export class AdminPostDiscountsDiscountConditionsConditionParams {
   @IsString()
   @IsOptional()
   expand?: string

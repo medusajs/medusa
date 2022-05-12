@@ -58,12 +58,12 @@ export default async (req, res) => {
   const { discount_id } = req.params
 
   const validatedCondition = await validator(
-    AdminPostDiscountsConditions,
+    AdminPostDiscountsDiscountConditions,
     req.body
   )
 
   const validatedParams = await validator(
-    AdminPostDiscountsConditionsParams,
+    AdminPostDiscountsDiscountConditionsParams,
     req.query
   )
 
@@ -91,12 +91,12 @@ export default async (req, res) => {
   res.status(200).json({ discount })
 }
 
-export class AdminPostDiscountsConditions extends AdminUpsertConditionsReq {
+export class AdminPostDiscountsDiscountConditions extends AdminUpsertConditionsReq {
   @IsString()
   operator: DiscountConditionOperator
 }
 
-export class AdminPostDiscountsConditionsParams {
+export class AdminPostDiscountsDiscountConditionsParams {
   @IsString()
   @IsOptional()
   expand?: string

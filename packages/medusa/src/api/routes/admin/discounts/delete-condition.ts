@@ -9,7 +9,7 @@ import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [delete] /discounts/{discount_id}/conditions/{condition_id}
- * operationId: "DeleteDiscountsDiscountCondition"
+ * operationId: "DeleteDiscountsDiscountConditionsCondition"
  * summary: "Delete a DiscountCondition"
  * description: "Deletes a DiscountCondition"
  * x-authenticated: true
@@ -41,7 +41,7 @@ export default async (req, res) => {
   const { discount_id, condition_id } = req.params
 
   const validatedParams = await validator(
-    AdminDeleteDiscountsConditionsConditionParams,
+    AdminDeleteDiscountsDiscountConditionsConditionParams,
     req.query
   )
 
@@ -98,7 +98,7 @@ export default async (req, res) => {
   })
 }
 
-export class AdminDeleteDiscountsConditionsConditionParams {
+export class AdminDeleteDiscountsDiscountConditionsConditionParams {
   @IsString()
   @IsOptional()
   expand?: string
