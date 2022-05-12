@@ -46,7 +46,7 @@ export default async (req: Request, res: Response) => {
     defaultAdminProductsVariantsRelations,
     fields?.split(",") as (keyof ProductVariant)[],
     expand
-      ? [...defaultAdminProductsVariantsRelations, ...expand.split(",")]
+      ? [...defaultAdminProductsVariantsRelations, ...(expand ?? []).split(",")]
       : undefined
   )
 
