@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { omit } from "lodash"
+import { omit, pickBy } from "lodash"
 import {
   IsArray,
   IsBoolean,
@@ -19,6 +19,9 @@ import {
   defaultAdminProductRelations,
 } from "../products"
 import listAndCount from "../../../../controllers/products/admin-list-products"
+import { MedusaError } from "medusa-core-utils"
+import { getListConfig } from "../../../../utils/get-query-config"
+import PriceListService from "../../../../services/price-list"
 
 /**
  * @oas [get] /price-lists/:id/products
@@ -78,7 +81,7 @@ export default async (req, res) => {
 
   req.query.price_list_id = [id]
 
-  const filterableFields: FilterableProductProps = omit(req.query, [
+  const query: FilterableProductProps = omit(req.query, [
     "limit",
     "offset",
     "expand",
@@ -86,23 +89,71 @@ export default async (req, res) => {
     "order",
   ])
 
-  const result = await listAndCount(
-    req.scope,
-    filterableFields,
-    {},
-    {
-      limit: validatedParams.limit ?? 50,
-      offset: validatedParams.offset ?? 0,
-      expand: validatedParams.expand,
-      fields: validatedParams.fields,
-      order: validatedParams.order,
-      allowedFields: allowedAdminProductFields,
-      defaultFields: defaultAdminProductFields as (keyof Product)[],
-      defaultRelations: defaultAdminProductRelations,
-    }
+  const limit = validatedParams.limit ?? 50
+  const offset = validatedParams.offset ?? 0
+  const expand = validatedParams.expand
+  const fields = validatedParams.fields
+  const order = validatedParams.order
+  const allowedFields = allowedAdminProductFields
+  const defaultFields = defaultAdminProductFields as (keyof Product)[]
+  const defaultRelations = defaultAdminProductRelations.filter(
+    (r) => r !== "variants.prices"
   )
 
-  res.json(result)
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
+
+  let includeFields: (keyof Product)[] | undefined
+  if (fields) {
+    includeFields = fields.split(",") as (keyof Product)[]
+  }
+
+  let expandFields: string[] | undefined
+  if (expand) {
+    expandFields = expand.split(",")
+  }
+
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
+  if (typeof order !== "undefined") {
+    let orderField = order
+    if (order.startsWith("-")) {
+      const [, field] = order.split("-")
+      orderField = field
+      orderBy = { [field]: "DESC" }
+    } else {
+      orderBy = { [order]: "ASC" }
+    }
+
+    if (!(allowedFields || []).includes(orderField)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        "Order field must be a valid product field"
+      )
+    }
+  }
+
+  const listConfig = getListConfig<Product>(
+    defaultFields ?? [],
+    defaultRelations ?? [],
+    includeFields,
+    expandFields,
+    limit,
+    offset,
+    orderBy
+  )
+
+  const [products, count] = await priceListService.listProducts(
+    id,
+    pickBy(query, (val) => typeof val !== "undefined"),
+    listConfig
+  )
+
+  res.json({
+    products,
+    count,
+    offset,
+    limit,
+  })
 }
 
 enum ProductStatus {

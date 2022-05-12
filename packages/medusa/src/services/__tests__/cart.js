@@ -204,7 +204,21 @@ describe("CartService", () => {
       },
     }
 
-    const addressRepository = MockRepository({ create: (c) => c })
+    const addressRepository = MockRepository({
+      create: (c) => c,
+      findOne: (id) => {
+        return {
+          id,
+          first_name: "LeBron",
+          last_name: "James",
+          address_1: "Dunk St",
+          city: "Dunkville",
+          province: "CA",
+          postal_code: "12345",
+          country_code: "us",
+        }
+      }
+    })
     const cartRepository = MockRepository()
     const customerService = {
       retrieveByEmail: jest.fn().mockReturnValue(
@@ -262,7 +276,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it("creates a cart with a prefilled shipping address", async () => {
+    it("should throw shipping country not in region", async () => {
       const res = cartService.create({
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
@@ -279,7 +293,7 @@ describe("CartService", () => {
       await expect(res).rejects.toThrow("Shipping country not in region")
     })
 
-    it("creates a cart with a prefilled shipping address", async () => {
+    it("a cart with a prefilled shipping address", async () => {
       await cartService.create({
         region_id: IdMap.getId("testRegion"),
         shipping_address: {

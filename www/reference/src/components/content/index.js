@@ -1,9 +1,10 @@
-import React from "react"
 import { Box, Flex } from "theme-ui"
-import Topbar from "../topbar"
-import Section from "./section"
 
-const Content = ({ data, api }) => {
+import React from "react"
+import Section from "./section"
+import Topbar from "../topbar"
+
+const Content = ({ data, currentSection, api }) => {
   return (
     <Flex
       sx={{
@@ -20,11 +21,7 @@ const Content = ({ data, api }) => {
           },
         }}
       >
-        <main className="DocSearch-content">
-          {data.sections.map((s, i) => {
-            return <Section key={i} data={s} api={api} />
-          })}
-        </main>
+        <Section data={currentSection} api={api} />
       </Box>
     </Flex>
   )
