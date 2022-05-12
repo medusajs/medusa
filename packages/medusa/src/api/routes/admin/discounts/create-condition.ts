@@ -9,7 +9,7 @@ import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /discounts/{discount_id}/conditions
- * operationId: "PostDiscountsConditions"
+ * operationId: "PostDiscountsDiscountConditions"
  * summary: "Creates a DiscountCondition"
  * x-authenticated: true
  * parameters:

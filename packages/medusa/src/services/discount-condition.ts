@@ -59,7 +59,6 @@ class DiscountConditionService extends BaseService {
 
       const condition = await conditionRepo.findOne(query)
 
-      // slightly different error message than usual accouting for the left join
       if (!condition) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
