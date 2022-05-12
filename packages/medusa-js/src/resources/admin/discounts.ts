@@ -2,14 +2,14 @@ import {
   AdminDiscountsDeleteRes,
   AdminDiscountsListRes,
   AdminDiscountsRes,
-  AdminPostDiscountsConditionsParams,
   AdminGetDiscountsParams,
-  AdminPostDiscountsConditions,
+  AdminPostDiscountsDiscountConditions,
+  AdminPostDiscountsDiscountConditionsCondition,
+  AdminPostDiscountsDiscountConditionsConditionParams,
+  AdminPostDiscountsDiscountConditionsParams,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
-  AdminPostDiscountsConditionsConditionParams,
-  AdminPostDiscountsConditionsCondition,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -142,8 +142,8 @@ class AdminDiscountsResource extends BaseResource {
    */
   createCondition(
     discountId: string,
-    payload: AdminPostDiscountsConditions,
-    query: AdminPostDiscountsConditionsParams = {},
+    payload: AdminPostDiscountsDiscountConditions,
+    query: AdminPostDiscountsDiscountConditionsParams = {},
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     let path = `/admin/discounts/${discountId}/conditions`
@@ -162,8 +162,8 @@ class AdminDiscountsResource extends BaseResource {
   updateCondition(
     discountId: string,
     conditionId: string,
-    payload: AdminPostDiscountsConditionsCondition,
-    query: AdminPostDiscountsConditionsConditionParams = {},
+    payload: AdminPostDiscountsDiscountConditionsCondition,
+    query: AdminPostDiscountsDiscountConditionsConditionParams = {},
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminDiscountsRes> {
     let path = `/admin/discounts/${discountId}/conditions/${conditionId}`

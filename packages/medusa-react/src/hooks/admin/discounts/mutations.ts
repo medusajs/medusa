@@ -1,11 +1,11 @@
 import {
   AdminDiscountsDeleteRes,
   AdminDiscountsRes,
-  AdminPostDiscountsConditions,
-  AdminPostDiscountsConditionsCondition,
+  AdminPostDiscountsDiscountConditions,
+  AdminPostDiscountsDiscountConditionsCondition,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
-  AdminPostDiscountsReq,
+  AdminPostDiscountsReq
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -123,13 +123,13 @@ export const useAdminDiscountCreateCondition = (
   options?: UseMutationOptions<
     Response<AdminDiscountsRes>,
     Error,
-    AdminPostDiscountsConditions
+    AdminPostDiscountsDiscountConditions
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
-    (payload: AdminPostDiscountsConditions) =>
+    (payload: AdminPostDiscountsDiscountConditions) =>
       client.admin.discounts.createCondition(discountId, payload),
     buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
   )
@@ -141,13 +141,13 @@ export const useAdminDiscountUpdateCondition = (
   options?: UseMutationOptions<
     Response<AdminDiscountsRes>,
     Error,
-    AdminPostDiscountsConditionsCondition
+    AdminPostDiscountsDiscountConditionsCondition
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
-    (payload: AdminPostDiscountsConditionsCondition) =>
+    (payload: AdminPostDiscountsDiscountConditionsCondition) =>
       client.admin.discounts.updateCondition(discountId, conditionId, payload),
     buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
   )
