@@ -11,7 +11,11 @@ export default (app) => {
 
   route.get("/:id", middlewares.wrap(require("./get-price-list").default))
 
-  route.get("/", middlewares.wrap(require("./list-price-lists").default))
+  route.get(
+    "/",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./list-price-lists").default)
+  )
 
   route.get(
     "/:id/products",

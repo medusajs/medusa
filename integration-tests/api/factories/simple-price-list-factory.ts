@@ -7,6 +7,7 @@ import {
 } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
+import { simpleCustomerGroupFactory } from "./simple-customer-group-factory"
 
 type ProductListPrice = {
   variant_id: string
@@ -42,22 +43,10 @@ export const simplePriceListFactory = async (
 
   let customerGroups = []
   if (typeof data.customer_groups !== "undefined") {
-    await manager
-      .createQueryBuilder()
-      .insert()
-      .into(CustomerGroup)
-      .values(
-        data.customer_groups.map((group) => ({
-          id: group,
-          name: faker.company.companyName(),
-        }))
+    customerGroups = await Promise.all(
+      data.customer_groups.map((group) =>
+        simpleCustomerGroupFactory(connection, { id: group })
       )
-      .orIgnore()
-      .execute()
-
-    customerGroups = await manager.findByIds(
-      CustomerGroup,
-      data.customer_groups
     )
   }
 

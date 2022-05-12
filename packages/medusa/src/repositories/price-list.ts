@@ -2,22 +2,26 @@ import { groupBy, map } from "lodash"
 import {
   Brackets,
   EntityRepository,
-  FindManyOptions, Repository
+  FindManyOptions,
+  FindOperator,
+  Repository,
 } from "typeorm"
 import { PriceList } from "../models/price-list"
-import { CustomFindOptions } from "../types/common"
+import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
 
-type PriceListFindOptions = CustomFindOptions<PriceList, 'status' | 'type'>
+type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
 
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
+    groups?: FindOperator<PriceList>,
     relations: (keyof PriceList)[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
-    let qb = this.createQueryBuilder("price_list")
+
+    const qb = this.createQueryBuilder("price_list")
       .leftJoinAndSelect("price_list.customer_groups", "customer_group")
       .select(["price_list.id"])
       .where(options.where)
@@ -30,6 +34,10 @@ export class PriceListRepository extends Repository<PriceList> {
       )
       .skip(options.skip)
       .take(options.take)
+
+    if (groups) {
+      qb.andWhere("group.id IN (:...ids)", { ids: groups.value })
+    }
 
     const [results, count] = await qb.getManyAndCount()
 
@@ -53,7 +61,6 @@ export class PriceListRepository extends Repository<PriceList> {
     } else {
       entities = await this.find(idsOrOptionsWithoutRelations)
     }
-    
     const groupedRelations: Record<string, string[]> = {}
     for (const relation of relations) {
       const [topLevel] = relation.split(".")
@@ -63,7 +70,6 @@ export class PriceListRepository extends Repository<PriceList> {
         groupedRelations[topLevel] = [relation]
       }
     }
-    
     const entitiesIds = entities.map(({ id }) => id)
     const entitiesIdsWithRelations = await Promise.all(
       Object.values(groupedRelations).map((relations: string[]) => {
@@ -72,7 +78,7 @@ export class PriceListRepository extends Repository<PriceList> {
           relations: relations as string[],
         })
       })
-    ).then(entitiesIdsWithRelations => entitiesIdsWithRelations.flat())
+    ).then((entitiesIdsWithRelations) => entitiesIdsWithRelations.flat())
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
@@ -87,9 +93,31 @@ export class PriceListRepository extends Repository<PriceList> {
   ): Promise<PriceList | undefined> {
     options.take = 1
 
-    return (await this.findWithRelations(
-      relations,
-      options
-    ))?.pop()
+    return (await this.findWithRelations(relations, options))?.pop()
+  }
+
+  async listAndCount(
+    query: ExtendedFindConfig<PriceList>,
+    groups?: FindOperator<PriceList>
+  ): Promise<[PriceList[], number]> {
+    const qb = this.createQueryBuilder("price_list")
+      .where(query.where)
+      .skip(query.skip)
+      .take(query.take)
+
+    if (groups) {
+      qb.leftJoinAndSelect("price_list.customer_groups", "group").andWhere(
+        "group.id IN (:...ids)",
+        { ids: groups.value }
+      )
+    }
+
+    if (query.relations?.length) {
+      query.relations.forEach((rel) => {
+        qb.leftJoinAndSelect(`price_list.${rel}`, rel)
+      })
+    }
+
+    return await qb.getManyAndCount()
   }
 }
