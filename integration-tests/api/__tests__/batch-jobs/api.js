@@ -97,7 +97,6 @@ describe("/admin/batch", () => {
       await api
         .post(`/admin/batch/${jobId}/complete`, {}, adminReqConfig)
         .catch((err) => {
-          console.log(err)
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
