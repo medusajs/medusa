@@ -157,8 +157,6 @@ function registerStrategies(
   const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
   const registeredServices = {}
 
-  const batchJobsStrategyFiles: string[] = []
-
   files.map((file) => {
     const module = require(file).default
 
@@ -193,7 +191,6 @@ function registerStrategies(
         ).singleton(),
         [`bs_${module.identifier}`]: aliasTo(name),
       })
-      batchJobsStrategyFiles.push(file)
     } else if (isPriceSelectionStrategy(module.prototype)) {
       if (!("priceSelectionStrategy" in registeredServices)) {
         container.register({
@@ -215,20 +212,6 @@ function registerStrategies(
       )
     }
   })
-
-  if (batchJobsStrategyFiles.length > 0) {
-    container.register({
-      batchJobStrategies: asFunction((cradle) =>
-        batchJobsStrategyFiles.map((bs) => {
-          const module = require(bs).default
-
-          const a = new module(cradle, pluginDetails.options)
-
-          return new module(cradle, pluginDetails.options)
-        })
-      ).singleton(),
-    })
-  }
 }
 
 function registerMedusaMiddleware(
