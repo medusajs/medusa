@@ -147,13 +147,13 @@ async function registerMedusaApi(
   container: MedusaContainer
 ): Promise<void> {
   registerMedusaMiddleware(pluginDetails, container)
-  await registerStrategies(pluginDetails, container)
+  registerStrategies(pluginDetails, container)
 }
 
-async function registerStrategies(
+function registerStrategies(
   pluginDetails: PluginDetails,
   container: MedusaContainer
-): Promise<void> {
+): void {
   const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*`, {})
   const registeredServices = {}
 
@@ -176,6 +176,23 @@ async function registerStrategies(
         )
       }
     } else if (isBatchJobStrategy(module.prototype)) {
+      container.registerAdd(
+        "batchJobStrategies",
+        asFunction((cradle) => new module(cradle, pluginDetails.options))
+      )
+
+      container.registerAdd(
+        module.batchType,
+        asFunction((cradle) => new module(cradle, pluginDetails.options))
+      )
+
+      const name = formatRegistrationName(file)
+      container.register({
+        [name]: asFunction(
+          (cradle) => new module(cradle, pluginDetails.options)
+        ).singleton(),
+        [`bs_${module.identifier}`]: aliasTo(name),
+      })
       batchJobsStrategyFiles.push(file)
     } else if (isPriceSelectionStrategy(module.prototype)) {
       if (!("priceSelectionStrategy" in registeredServices)) {
@@ -204,6 +221,8 @@ async function registerStrategies(
       batchJobStrategies: asFunction((cradle) =>
         batchJobsStrategyFiles.map((bs) => {
           const module = require(bs).default
+
+          const a = new module(cradle, pluginDetails.options)
 
           return new module(cradle, pluginDetails.options)
         })
