@@ -1,4 +1,4 @@
-import { BasePaymentService, BaseNotificationService, BaseFulfillmentService } from 'medusa-interfaces'
+import { BaseNotificationService, BaseFulfillmentService } from 'medusa-interfaces'
 import { currencies } from "../utils/currencies"
 import { countries } from "../utils/countries"
 import { AwilixContainer } from "awilix"
@@ -13,7 +13,7 @@ import {
   StoreService, TaxProviderService,
 } from "../services"
 import { CurrencyRepository } from "../repositories/currency"
-import { AbstractTaxService } from "../interfaces"
+import { AbstractPaymentService, AbstractTaxService } from "../interfaces"
 
 const silentResolution = <T>(container: AwilixContainer, name: string, logger: Logger): T | never | undefined => {
   try {
@@ -99,7 +99,7 @@ export default async ({ container }: { container: AwilixContainer }): Promise<vo
 
 
     const payProviders =
-      silentResolution<typeof BasePaymentService[]>(container, "paymentProviders", logger) || []
+      silentResolution<AbstractPaymentService[]>(container, "paymentProviders", logger) || []
     const payIds = payProviders.map((p) => p.getIdentifier())
 
     const pProviderService = container.resolve<PaymentProviderService>("paymentProviderService")
