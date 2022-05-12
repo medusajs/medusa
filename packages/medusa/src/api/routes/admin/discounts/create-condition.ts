@@ -91,7 +91,7 @@ export default async (req, res) => {
   res.status(200).json({ discount })
 }
 
-export class AdminPostDiscountsConditions extends AdminUpsertConditionsReq {
+export class AdminPostDiscountsDiscountConditions extends AdminUpsertConditionsReq {
   @IsString()
   operator: DiscountConditionOperator
 }
