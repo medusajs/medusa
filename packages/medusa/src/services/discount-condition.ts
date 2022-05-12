@@ -16,17 +16,13 @@ class DiscountConditionService extends BaseService {
   protected readonly manager_: EntityManager
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly eventBus_: EventBusService
+  protected transactionManager_?: EntityManager
 
   constructor({ manager, discountConditionRepository, eventBusService }) {
     super()
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
-
-    /** @private @const {DiscountConditionRepository} */
     this.discountConditionRepository_ = discountConditionRepository
-
-    /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
 
@@ -70,7 +66,7 @@ class DiscountConditionService extends BaseService {
     })
   }
 
-  static resolveConditionType_(data: UpsertDiscountConditionInput):
+  protected static resolveConditionType_(data: UpsertDiscountConditionInput):
     | {
         type: DiscountConditionType
         resource_ids: string[]
