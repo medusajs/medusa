@@ -272,7 +272,7 @@ class DiscountService extends BaseService {
             conditions.map(async (cond) => {
               await this.discountConditionService_
                 .withTransaction(manager)
-                .upsertCondition(result.id, cond)
+                .upsertCondition({ rule_id: result.rule_id, ...cond })
             })
           )
         }
@@ -395,7 +395,7 @@ class DiscountService extends BaseService {
           conditions.map(async (cond) => {
             await this.discountConditionService_
               .withTransaction(manager)
-              .upsertCondition(discount.id, cond)
+              .upsertCondition({ rule_id: discount.rule_id, ...cond })
           })
         )
       }

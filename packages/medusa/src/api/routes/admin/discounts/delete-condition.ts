@@ -48,10 +48,9 @@ export default async (req, res) => {
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
   )
-  const discountService: DiscountService = req.scope.resolve("discountService")
 
   const condition = await conditionService
-    .retrieve(condition_id, discount_id)
+    .retrieve(condition_id)
     .catch(() => void 0)
 
   if (!condition) {
@@ -63,14 +62,24 @@ export default async (req, res) => {
     })
   }
 
-  if (!condition?.discount) {
+  const discountService: DiscountService = req.scope.resolve("discountService")
+
+  let discount = await discountService.retrieve(discount_id, {
+    relations: ["rule", "rule.conditions"],
+  })
+
+  const existsOnDiscount = discount.rule.conditions.some(
+    (c) => c.id === condition_id
+  )
+
+  if (!existsOnDiscount) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Condition with id ${condition.id} does not belong to Discount with id ${discount_id}`
+      `Condition with id ${condition_id} does not belong to Discount with id ${discount_id}`
     )
   }
 
-  await conditionService.remove(condition_id)
+  await conditionService.delete(condition_id)
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,
@@ -79,7 +88,7 @@ export default async (req, res) => {
     validatedParams?.expand?.split(",")
   )
 
-  const discount = await discountService.retrieve(discount_id, config)
+  discount = await discountService.retrieve(discount_id, config)
 
   res.json({
     id: condition_id,

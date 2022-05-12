@@ -69,13 +69,20 @@ export default async (req, res) => {
   const conditionService: DiscountConditionService = req.scope.resolve(
     "discountConditionService"
   )
-  const discountService: DiscountService = req.scope.resolve("discountService")
 
-  const updateObj = { ...validatedCondition, id: condition_id }
+  const condition = await conditionService.retrieve(condition_id)
+
+  const discountService: DiscountService = req.scope.resolve("discountService")
 
   let discount = await discountService.retrieve(discount_id)
 
-  await conditionService.upsertCondition(discount, updateObj)
+  const updateObj = {
+    ...validatedCondition,
+    rule_id: discount.rule_id,
+    id: condition.id,
+  }
+
+  await conditionService.upsertCondition(updateObj)
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,

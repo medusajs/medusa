@@ -74,7 +74,10 @@ export default async (req, res) => {
 
   let discount = await discountService.retrieve(discount_id)
 
-  await conditionService.upsertCondition(discount, validatedCondition)
+  await conditionService.upsertCondition({
+    ...validatedCondition,
+    rule_id: discount.rule_id,
+  })
 
   const config = getRetrieveConfig<Discount>(
     defaultAdminDiscountsFields,

@@ -2,10 +2,9 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService } from "."
-import { Discount, DiscountCondition, DiscountConditionType } from "../models"
-import { DiscountRepository } from "../repositories/discount"
+import { DiscountCondition, DiscountConditionType } from "../models"
 import { DiscountConditionRepository } from "../repositories/discount-condition"
-import { DiscountRuleRepository } from "../repositories/discount-rule"
+import { FindConfig } from "../types/common"
 import { UpsertDiscountConditionInput } from "../types/discount"
 import { PostgresError } from "../utils/exception-formatter"
 
@@ -15,28 +14,14 @@ import { PostgresError } from "../utils/exception-formatter"
  */
 class DiscountConditionService extends BaseService {
   protected readonly manager_: EntityManager
-  protected readonly discountRuleRepository_: typeof DiscountRuleRepository
-  protected readonly discountRepository_: typeof DiscountRepository
   protected readonly discountConditionRepository_: typeof DiscountConditionRepository
   protected readonly eventBus_: EventBusService
 
-  constructor({
-    manager,
-    discountRuleRepository,
-    discountRepository,
-    discountConditionRepository,
-    eventBusService,
-  }) {
+  constructor({ manager, discountConditionRepository, eventBusService }) {
     super()
 
     /** @private @const {EntityManager} */
     this.manager_ = manager
-
-    /** @private @const {DiscountRuleRepository} */
-    this.discountRuleRepository_ = discountRuleRepository
-
-    /** @private @const {DiscountRepository} */
-    this.discountRepository_ = discountRepository
 
     /** @private @const {DiscountConditionRepository} */
     this.discountConditionRepository_ = discountConditionRepository
@@ -52,8 +37,6 @@ class DiscountConditionService extends BaseService {
 
     const cloned = new DiscountConditionService({
       manager: transactionManager,
-      discountRuleRepository: this.discountRuleRepository_,
-      discountRepository: this.discountRepository_,
       discountConditionRepository: this.discountConditionRepository_,
       eventBusService: this.eventBus_,
     })
@@ -65,24 +48,22 @@ class DiscountConditionService extends BaseService {
 
   async retrieve(
     conditionId: string,
-    discountId: string
-  ): Promise<(DiscountCondition & { discount: Discount }) | never> {
+    config?: FindConfig<DiscountCondition>
+  ): Promise<DiscountCondition | never> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_
       )
 
-      // left join with discount to ensure we are working with correct comb. of condition and discount
-      const condition = await conditionRepo.findOneWithDiscount(
-        conditionId,
-        discountId
-      )
+      const query = this.buildQuery_({ id: conditionId }, config)
+
+      const condition = await conditionRepo.findOne(query)
 
       // slightly different error message than usual accouting for the left join
-      if (!condition || !condition?.discount) {
+      if (!condition) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `DiscountCondition with id ${conditionId} was not found for Discount ${discountId}`
+          `DiscountCondition with id ${conditionId} was not found`
         )
       }
 
@@ -127,10 +108,7 @@ class DiscountConditionService extends BaseService {
     }
   }
 
-  async upsertCondition(
-    discountIdOrDiscount: string | Discount,
-    data: UpsertDiscountConditionInput
-  ): Promise<void> {
+  async upsertCondition(data: UpsertDiscountConditionInput): Promise<void> {
     let resolvedConditionType
 
     return await this.atomicPhase_(
@@ -145,43 +123,12 @@ class DiscountConditionService extends BaseService {
           )
         }
 
-        const discountRepo: DiscountRepository = manager.getCustomRepository(
-          this.discountRepository_
-        )
-
-        let discount
-        // in case id is passed, we retrieve the discount
-        if (typeof discountIdOrDiscount === `string`) {
-          discount = await discountRepo.findOne({
-            where: { id: discountIdOrDiscount },
-          })
-
-          if (!discount) {
-            throw new MedusaError(
-              MedusaError.Types.NOT_FOUND,
-              `Discount with ${discountIdOrDiscount} was not found`
-            )
-          }
-        } else {
-          discount = discountIdOrDiscount
-
-          // ensure discount has rule_id, will also ensure that object is in fact discount
-          if (!discount?.rule_id) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Discount is missing rule_id`
-            )
-          }
-        }
-
         const discountConditionRepo: DiscountConditionRepository =
           manager.getCustomRepository(this.discountConditionRepository_)
 
         if (data.id) {
-          const condition = await this.retrieve(data.id, discount.id)
-
           return await discountConditionRepo.addConditionResources(
-            condition.id,
+            data.id,
             resolvedConditionType.resource_ids,
             resolvedConditionType.type,
             true
@@ -189,7 +136,7 @@ class DiscountConditionService extends BaseService {
         }
 
         const created = discountConditionRepo.create({
-          discount_rule_id: discount.rule_id,
+          discount_rule_id: data.rule_id,
           operator: data.operator,
           type: resolvedConditionType.type,
         })
@@ -215,7 +162,7 @@ class DiscountConditionService extends BaseService {
     )
   }
 
-  async remove(discountConditionId: string): Promise<DiscountCondition> {
+  async delete(discountConditionId: string): Promise<DiscountCondition> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const conditionRepo = manager.getCustomRepository(
         this.discountConditionRepository_
