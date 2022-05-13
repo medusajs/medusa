@@ -3,6 +3,7 @@ import "regenerator-runtime/runtime"
 
 import express from "express"
 import { track } from "medusa-telemetry"
+import { scheduleJob } from "node-schedule"
 
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
@@ -15,12 +16,16 @@ export default async function({ port, directory }) {
 
     const { dbConnection } = await loaders({ directory, expressApp: app })
     const serverActivity = Logger.activity(`Creating server`)
-    const server = app.listen(port, err => {
+    const server = app.listen(port, (err) => {
       if (err) {
         return
       }
       Logger.success(serverActivity, `Server is ready on port: ${port}`)
       track("CLI_START_COMPLETED")
+    })
+
+    scheduleJob("* * * * * *", () => {
+      console.log("ping")
     })
 
     return { dbConnection, server }
