@@ -5,7 +5,7 @@ import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { ProductVariant } from "../../../../models"
-import { defaultAdminProductsVariantsRelations } from "./index"
+import { defaultAdminGetProductsVariantsFields } from "./index"
 
 /**
  * @oas [get] /products/{id}/variants
@@ -42,18 +42,21 @@ export default async (req: Request, res: Response) => {
   )
 
   const queryConfig = getRetrieveConfig<ProductVariant>(
+    defaultAdminGetProductsVariantsFields as (keyof ProductVariant)[],
     [],
-    defaultAdminProductsVariantsRelations,
-    fields?.split(",") as (keyof ProductVariant)[],
-    expand
-      ? [...defaultAdminProductsVariantsRelations, ...(expand ?? []).split(",")]
-      : undefined
+    [
+      ...new Set([
+        ...defaultAdminGetProductsVariantsFields,
+        ...(fields?.split(",") ?? []),
+      ]),
+    ] as (keyof ProductVariant)[],
+    expand ? expand?.split(",") : undefined
   )
 
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-  const variants = await productVariantService.listAndCount(
+  const [variants, count] = await productVariantService.listAndCount(
     {
       product_id: id,
     },
@@ -64,7 +67,12 @@ export default async (req: Request, res: Response) => {
     }
   )
 
-  res.json({ variants })
+  res.json({
+    count,
+    variants,
+    offset,
+    limit,
+  })
 }
 
 export class AdminGetProductsVariantsParams {

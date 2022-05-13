@@ -1417,6 +1417,7 @@ describe("/admin/products", () => {
         })
 
       expect(res.status).toEqual(200)
+      expect(res.data.variants.length).toBe(4)
       expect(res.data.variants).toEqual(
         expect.arrayContaining([
           expect.objectContaining({ id: "test-variant", product_id: "test-product" }),
