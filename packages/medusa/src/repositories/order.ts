@@ -1,5 +1,5 @@
 import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, Repository, FindManyOptions } from "typeorm"
+import { EntityRepository, FindManyOptions, Repository } from "typeorm"
 import { Order } from "../models/order"
 
 @EntityRepository(Order)
