@@ -6,7 +6,7 @@ In this document, you’ll learn how to add a Payment Provider to your Medusa se
 
 A Payment Provider is the payment method used to authorize, capture, and refund payment, among other actions. An example of a Payment Provider is Stripe.
 
-By default, Medusa has a [manual payment provider](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-fulfillment-manual) that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows store operators to manage the payment themselves but still keep track of its different stages on Medusa.
+By default, Medusa has a [manual payment provider](https://github.com/medusajs/medusa/tree/master/packages/medusa-payment-manual) that has minimal implementation. It can be synonymous with a Cash on Delivery payment method. It allows store operators to manage the payment themselves but still keep track of its different stages on Medusa.
 
 Adding a Payment Provider is as simple as creating a [service](../services/create-service.md) file in `src/services`. A Payment Provider is essentially a service that extends `PaymentService` from `medusa-interfaces`.
 
@@ -42,9 +42,9 @@ These methods are used at different points in the Checkout flow as well as when 
 
 ![Payment Flows.jpg](https://i.imgur.com/WeDr0ph.jpg)
 
-## Create a Fulfillment Provider
+## Create a Payment Provider
 
-The first step to create a fulfillment provider is to create a file in `src/services` with the following content:
+The first step to create a payment provider is to create a file in `src/services` with the following content:
 
 ```jsx
 import { PaymentService } from "medusa-interfaces"
