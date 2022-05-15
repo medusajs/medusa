@@ -2137,6 +2137,41 @@ describe("CartService", () => {
         ],
       })
     })
+
+    it("successfully remove all discounts that have been applied", async () => {
+      await cartService.update(IdMap.getId("with-d"), {
+        discounts: [],
+      })
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("cart"),
+        region_id: IdMap.getId("good"),
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
+        discounts: [],
+      })
+    })
   })
 
   describe("removeDiscount", () => {
