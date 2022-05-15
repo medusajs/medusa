@@ -779,7 +779,7 @@ class CartService extends TransactionBaseService<CartService> {
           await this.updateShippingAddress_(cart, shippingAddress, addrRepo)
         }
 
-        if (data.discounts?.length) {
+        if (typeof data.discounts !== "undefined") {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 
@@ -796,9 +796,7 @@ class CartService extends TransactionBaseService<CartService> {
           // if we previously had a free shipping discount and then removed it,
           // we need to update shipping methods to original price
           if (
-            previousDiscounts.some(
-              ({ rule }) => rule?.type === "free_shipping"
-            ) &&
+            previousDiscounts.some(({ rule }) => rule.type === "free_shipping") &&
             !hasFreeShipping
           ) {
             await this.adjustFreeShipping_(cart, false)
