@@ -30,11 +30,11 @@ import { validator } from "../../../../utils/validator"
  *   - (query) type {string | string[]} Filter by the batch type
  *   - (query) status {string} Filter by the status of the batch operation
  *   - (query) order {string} Order used when retrieving batch jobs
- *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
- *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each batch job of the result.
+ *   - (query) fields[] {string} (Comma separated) Which fields should be included in each batch job of the result.
+ *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting batch job was deleted, i.e. less than, greater than etc.
+ *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting batch job was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting batch job was updated, i.e. less than, greater than etc.
  * tags:
  *   - Batch Job
  * responses:
