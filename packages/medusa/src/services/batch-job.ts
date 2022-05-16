@@ -4,10 +4,9 @@ import { BatchJobRepository } from "../repositories/batch-job"
 import { BatchJobStatus, FilterableBatchJobProps } from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, validateId } from "../utils"
+import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import EventBusService from "./event-bus"
-import { AdminGetRegionsRegionFulfillmentOptionsRes } from "../api"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -26,6 +25,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     UPDATED: "batch.updated",
     CANCELED: "batch.canceled",
     COMPLETED: "batch.completed",
+    PROCESS_COMPLETE: "batch-process.complete",
   }
 
   constructor({
@@ -66,64 +66,33 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     )
   }
 
-  async cancel(batchJobId: string, userId: string): Promise<BatchJob> {
+  async cancel(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async (manager) => {
       const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
         this.batchJobRepository_
       )
 
-      const batchJob = await this.retrieve(batchJobId)
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
 
-      if (!batchJob || batchJob.created_by !== userId) {
+      if (batchJob.status === BatchJobStatus.COMPLETED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Cannot cancel batch jobs created by other users"
+          "Cannot cancel completed batch job"
         )
       }
 
       batchJob.cancelled_at = new Date()
       batchJob.status = BatchJobStatus.CANCELED
-
       await batchJobRepo.save(batchJob)
-
-      const result = await this.retrieve(batchJobId)
-
-      if (result.status === BatchJobStatus.COMPLETED) {
-        throw new MedusaError(
-          MedusaError.Types.DUPLICATE_ERROR,
-          "Cannot cancel completed batch job"
-        )
-      }
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(BatchJobService.Events.CANCELED, {
-          id: result.id,
+          id: batchJob.id,
         })
-
-      return result
-    })
-  }
-
-  async retrieve(
-    batchJobId: string,
-    config: FindConfig<BatchJob> = {}
-  ): Promise<BatchJob> {
-    return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
-        this.batchJobRepository_
-      )
-
-      const validatedId = this.validateId_(batchJobId)
-      const query = this.buildQuery_({ id: validatedId }, config)
-      const batchJob = await batchJobRepo.findOne(query)
-
-      if (!batchJob) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Batch job with id ${batchJobId} was not found`
-        )
-      }
 
       return batchJob
     })
@@ -133,17 +102,20 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
    * if job is started with dry_run: true, then it's required
    * to confirm the job before it's written to DB
    */
-  async confirm(batchJobId: string): Promise<BatchJob> {
+  async confirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async (manager) => {
-      const result = await this.retrieve(batchJobId)
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(BatchJobService.Events.COMPLETED, {
-          id: result.id,
+        .emit(BatchJobService.Events.PROCESS_COMPLETE, {
+          id: batchJob.id,
         })
 
-      return result
+      return batchJob
     })
   }
 

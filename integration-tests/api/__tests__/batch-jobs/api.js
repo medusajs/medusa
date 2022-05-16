@@ -100,22 +100,24 @@ describe("/admin/batch", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
-            "Cannot confirm batch jobs created by other users"
+            "Cannot access a batch job that does not belong to the logged in user"
           )
         })
     })
   })
 
-  describe("GET /admin/batch/id", () => {
+  describe("POST /admin/batch/:id/cancel", () => {
     beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
+        await userSeeder(dbConnection)
 
         await simpleBatchJobFactory(dbConnection, {
           id: "job_1",
           type: "batch_1",
           created_by: "admin_user",
         })
+
         await simpleBatchJobFactory(dbConnection, {
           id: "job_complete",
           type: "batch_1",
@@ -154,8 +156,8 @@ describe("/admin/batch", () => {
       expect(response.data.batch_job).toMatchSnapshot({
         created_at: expect.any(String),
         updated_at: expect.any(String),
-        cancelled_at: null,
-        status: "created",
+        cancelled_at: expect.any(String),
+        status: "canceled",
       })
     })
 
@@ -171,7 +173,7 @@ describe("/admin/batch", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
-            "Cannot cancel batch jobs created by other users"
+            "Cannot access a batch job that does not belong to the logged in user"
           )
         })
     })
@@ -185,8 +187,8 @@ describe("/admin/batch", () => {
       api
         .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
         .catch((err) => {
-          expect(err.response.status).toEqual(422)
-          expect(err.response.data.type).toEqual("duplicate_error")
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
             "Cannot cancel completed batch job"
           )

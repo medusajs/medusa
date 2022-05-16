@@ -1,4 +1,3 @@
-import { MedusaError } from "medusa-core-utils"
 import { BatchJobService } from "../../../../services"
 
 /**
@@ -22,22 +21,10 @@ import { BatchJobService } from "../../../../services"
  *              $ref: "#/components/schemas/batch_job"
  */
 export default async (req, res) => {
-  const { id } = req.params
-
-  const userId: string = req.user.id || req.user.userId
+  let batch_job = req.batch_job
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
+  batch_job = await batchJobService.confirm(batch_job)
 
-  const batch_job = await batchJobService.retrieve(id)
-
-  if (batch_job.created_by !== userId) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_ALLOWED,
-      "Cannot confirm batch jobs created by other users"
-    )
-  }
-
-  const result = await batchJobService.confirm(id)
-
-  res.json({ batch_job: result })
+  res.json({ batch_job })
 }
