@@ -31,8 +31,8 @@ describe("GET /admin/products/:id/variants", () => {
           product_id: IdMap.getId("product1"),
         },
         {
-          relations: ["variants", "variants.prices"],
-          select: [],
+          relations: [],
+          select: ["id", "product_id"],
           skip: 0,
           take: 100
         }
@@ -71,8 +71,8 @@ describe("GET /admin/products/:id/variants", () => {
           product_id: IdMap.getId("product1"),
         },
         {
-          relations: ["variants", "variants.prices", "variants.options"],
-          select: ["id", "variants.id"],
+          relations: ["variants.options"],
+          select: ["id", "product_id", "variants.id"],
           skip: 0,
           take: 10
         }

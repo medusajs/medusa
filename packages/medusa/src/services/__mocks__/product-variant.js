@@ -304,10 +304,14 @@ export const ProductVariantServiceMock = {
   }),
   listAndCount: jest.fn().mockImplementation(({ product_id }) => {
     if (product_id === IdMap.getId("product1")) {
-      return Promise.resolve([
-        { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
-        { id: IdMap.getId("2"), product_id: IdMap.getId("product1") }
-      ])
+      return Promise.resolve( [
+          [
+            { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
+            { id: IdMap.getId("2"), product_id: IdMap.getId("product1") }
+          ],
+          2
+        ],
+      )
     }
 
     return []
