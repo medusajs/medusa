@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import _ from "lodash"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import Scrypt from "scrypt-kdf"
 import { Brackets, ILike } from "typeorm"
@@ -53,36 +53,6 @@ class CustomerService extends BaseService {
     cloned.transactionManager_ = transactionManager
 
     return cloned
-  }
-
-  /**
-   * Used to validate customer email.
-   * @param {string} email - email to validate
-   * @return {string} the validated email
-   */
-  validateEmail_(email) {
-    const schema = Validator.string().email().required()
-    const { value, error } = schema.validate(email)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The email is not valid"
-      )
-    }
-
-    return value.toLowerCase()
-  }
-
-  validateBillingAddress_(address) {
-    const { value, error } = Validator.address().validate(address)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The address is not valid"
-      )
-    }
-
-    return value
   }
 
   /**
@@ -323,12 +293,7 @@ class CustomerService extends BaseService {
         this.customerRepository_
       )
 
-      const { email, billing_address, password } = customer
-      customer.email = this.validateEmail_(email)
-
-      if (billing_address) {
-        customer.billing_address = this.validateBillingAddress_(billing_address)
-      }
+      const { email, password } = customer
 
       const existing = await this.retrieveByEmail(email).catch(
         (err) => undefined
@@ -389,7 +354,6 @@ class CustomerService extends BaseService {
         const customer = await this.retrieve(customerId)
 
         const {
-          email,
           password,
           metadata,
           billing_address,
@@ -400,10 +364,6 @@ class CustomerService extends BaseService {
 
         if (metadata) {
           customer.metadata = this.setMetadata_(customer, metadata)
-        }
-
-        if (email) {
-          customer.email = this.validateEmail_(email)
         }
 
         if ("billing_address_id" in update || "billing_address" in update) {
@@ -488,8 +448,6 @@ class CustomerService extends BaseService {
         where: { id: addressId, customer_id: customerId },
       })
 
-      this.validateBillingAddress_(address)
-
       for (const [key, value] of Object.entries(address)) {
         toUpdate[key] = value
       }
@@ -529,7 +487,6 @@ class CustomerService extends BaseService {
       const customer = await this.retrieve(customerId, {
         relations: ["shipping_addresses"],
       })
-      this.validateBillingAddress_(address)
 
       const shouldAdd = !customer.shipping_addresses.find(
         (a) =>

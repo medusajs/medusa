@@ -1,4 +1,4 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
 
@@ -138,42 +138,6 @@ class OrderService extends BaseService {
    */
   validateId_(rawId) {
     return rawId
-  }
-
-  /**
-   * Used to validate order addresses. Can be used to both
-   * validate shipping and billing address.
-   * @param {Address} address - the address to validate
-   * @return {Address} the validated address
-   */
-  validateAddress_(address) {
-    const { value, error } = Validator.address().validate(address)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The address is not valid"
-      )
-    }
-
-    return value
-  }
-
-  /**
-   * Used to validate email.
-   * @param {string} email - the email to vaildate
-   * @return {string} the validate email
-   */
-  validateEmail_(email) {
-    const schema = Validator.string().email()
-    const { value, error } = schema.validate(email)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The email is not valid"
-      )
-    }
-
-    return value
   }
 
   /**
