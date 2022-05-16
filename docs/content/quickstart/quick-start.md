@@ -1,6 +1,6 @@
 # Quickstart
 
-This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](../tutorial/0-set-up-your-development-environment.md).
+This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](/tutorial/set-up-your-development-environment).
 
 ## Prerequisites
 
