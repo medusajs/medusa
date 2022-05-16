@@ -252,10 +252,18 @@ class PriceListService extends BaseService {
     selector: FilterablePriceListProps = {},
     config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
-    const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
-    const query = this.buildQuery_(selector, config)
-    return await priceListRepo.find(query)
+      const query = this.buildQuery_(selector, config)
+
+      const groups = query.where.customer_groups
+      query.where.customer_groups = undefined
+
+      const [priceLists] = await priceListRepo.listAndCount(query, groups)
+
+      return priceLists
+    })
   }
 
   /**
@@ -268,19 +276,25 @@ class PriceListService extends BaseService {
     selector: FilterablePriceListProps = {},
     config: FindConfig<PriceList> = { skip: 0, take: 20 }
   ): Promise<[PriceList[], number]> {
-    const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
-    const q = selector.q
-    const { relations, ...query } = this.buildQuery_(selector, config)
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
+      const q = selector.q
+      const { relations, ...query } = this.buildQuery_(selector, config)
 
-    if (q) {
-      delete query.where.q
-      return await priceListRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query,
-        relations
-      )
-    }
-    return await priceListRepo.findAndCount({ ...query, relations })
+      const groups = query.where.customer_groups
+      delete query.where.customer_groups
+
+      if (q) {
+        delete query.where.q
+        return await priceListRepo.getFreeTextSearchResultsAndCount(
+          q,
+          query,
+          groups,
+          relations
+        )
+      }
+      return await priceListRepo.listAndCount({ ...query, relations }, groups)
+    })
   }
 
   async upsertCustomerGroups_(

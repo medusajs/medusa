@@ -144,27 +144,6 @@ describe("CustomerService", () => {
         has_account: true,
       })
     })
-
-    it("fails if email is in incorrect format", async () => {
-      await expect(
-        customerService.create({
-          email: "olivermedusa.com",
-        })
-      ).rejects.toThrow("The email is not valid")
-    })
-
-    it("fails if billing address is in incorrect format", async () => {
-      await expect(
-        customerService.create({
-          email: "oliver@medusa.com",
-          first_name: "Oliver",
-          last_name: "Juhl",
-          billing_address: {
-            first_name: 1234,
-          },
-        })
-      ).rejects.toThrow("The address is not valid")
-    })
   })
 
   describe("update", () => {
@@ -327,22 +306,6 @@ describe("CustomerService", () => {
           postal_code: "90046",
           phone: "+1 (222) 333 4444",
         })
-      })
-
-      it("throws on invalid address", async () => {
-        await expect(
-          customerService.updateAddress(
-            IdMap.getId("ironman"),
-            IdMap.getId("hollywood-boulevard"),
-            {
-              first_name: "Tony",
-              last_name: "Stark",
-              country_code: "us",
-              unknown: "key",
-              address_1: "Hollywood",
-            }
-          )
-        ).rejects.toThrow("The address is not valid")
       })
     })
 

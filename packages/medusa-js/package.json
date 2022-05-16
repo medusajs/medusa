@@ -23,10 +23,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/medusajs/medusa-js.git"
+    "url": "https://github.com/medusajs/medusa",
+    "directory": "packages/medusa-js"
   },
   "bugs": {
-    "url": "https://github.com/medusajs/medusa-js/issues"
+    "url": "https://github.com/medusajs/medusa/issues"
   },
   "devDependencies": {
     "@types/jest": "^26.0.19",

@@ -1387,6 +1387,48 @@ describe("/admin/products", () => {
     })
   })
 
+  describe("GET /admin/products/:id/variants", () => {
+    beforeEach(async() => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async() => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it('should return the variants related to the requested product', async () => {
+      const api = useApi()
+
+      const res = await api
+        .get("/admin/products/test-product/variants", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.variants.length).toBe(4)
+      expect(res.data.variants).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ id: "test-variant", product_id: "test-product" }),
+          expect.objectContaining({ id: "test-variant_1", product_id: "test-product" }),
+          expect.objectContaining({ id: "test-variant_2", product_id: "test-product" }),
+          expect.objectContaining({ id: "test-variant-sale", product_id: "test-product" }),
+        ])
+      )
+    })
+  })
+
   describe("updates a variant's default prices (ignores prices associated with a Price List)", () => {
     beforeEach(async () => {
       try {
