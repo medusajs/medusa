@@ -77,11 +77,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         this.batchJobRepository_
       )
 
-      const batchJob = await batchJobRepo.findOne(batchJobId) // TODO replace with retrieve
-
-      if (!batchJob) {
-        return new BatchJob()
-      }
+      const batchJob = await this.retrieve(batchJobId)
 
       const { status, ...rest } = data
 
@@ -104,14 +100,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         }
       }
 
-      for (const key of Object.keys(rest).filter(
-        (k) => typeof rest[k] !== `undefined`
-      )) {
-        batchJob[key] = rest[key]
-      }
+      Object.keys(rest)
+        .filter((restKey) => typeof rest[restKey] !== `undefined`)
+        .forEach((restKey) => {
+          batchJob[restKey] = rest[restKey]
+        })
 
-      const updated = await batchJobRepo.save(batchJob)
-      return updated
+      return await batchJobRepo.save(batchJob)
     })
   }
 
