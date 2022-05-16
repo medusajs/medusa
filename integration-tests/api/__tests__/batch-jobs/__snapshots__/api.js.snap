@@ -1,71 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/batch GET /admin/batch lists batch jobs created by the user 1`] = `
-Object {
-  "batch_jobs": Array [
-    Object {
-      "context": Object {},
-      "created_at": Any<String>,
-      "created_by": "admin_user",
-      "deleted_at": null,
-      "id": "job_3",
-      "result": null,
-      "status": "created",
-      "type": "batch_2",
-      "updated_at": Any<String>,
-    },
-    Object {
-      "context": Object {},
-      "created_at": Any<String>,
-      "created_by": "admin_user",
-      "deleted_at": null,
-      "id": "job_2",
-      "result": null,
-      "status": "created",
-      "type": "batch_2",
-      "updated_at": Any<String>,
-    },
-    Object {
-      "context": Object {},
-      "created_at": Any<String>,
-      "created_by": "admin_user",
-      "deleted_at": null,
-      "id": "job_1",
-      "result": null,
-      "status": "created",
-      "type": "batch_1",
-      "updated_at": Any<String>,
-    },
-  ],
-  "count": 3,
-  "limit": 10,
-  "offset": 0,
-}
-`;
-
-exports[`/admin/batch GET /admin/batch/id Retrieves batch job with id 1`] = `
-Object {
-  "awaiting_confirmation_at": null,
-  "cancelled_at": null,
-  "confirmed_at": null,
-  "context": Object {},
-  "created_at": Any<String>,
-  "created_by": "admin_user",
-  "deleted_at": null,
-  "id": "job_1",
-  "processing_at": null,
-  "result": null,
-  "status": "created",
-  "type": "batch_1",
-  "updated_at": Any<String>,
-}
-`;
-
 exports[`/admin/batch POST /admin/batch/ Creates a batch job 1`] = `
 Object {
   "awaiting_confirmation_at": null,
   "cancelled_at": null,
-  "completed_at": null,
+  "confirmed_at": null,
   "context": "{}",
   "created_at": Any<String>,
   "created_by": "admin_user",
@@ -74,42 +13,6 @@ Object {
   "processing_at": null,
   "result": null,
   "status": "created",
-  "type": "batch_1",
-  "updated_at": Any<String>,
-}
-`;
-
-exports[`/admin/batch POST /admin/batch/:id/complete Completes batch job created by the user 1`] = `
-Object {
-  "awaiting_confirmation_at": null,
-  "cancelled_at": null,
-  "completed_at": Any<String>,
-  "context": Object {},
-  "created_at": Any<String>,
-  "created_by": "admin_user",
-  "deleted_at": null,
-  "id": "job_2",
-  "processing_at": null,
-  "result": null,
-  "status": "completed",
-  "type": "batch_1",
-  "updated_at": Any<String>,
-}
-`;
-
-exports[`/admin/batch POST /admin/batch/:id/complete Requests completion of batch job created by the user 1`] = `
-Object {
-  "awaiting_confirmation_at": null,
-  "cancelled_at": null,
-  "confirmed_at": null,
-  "context": Object {},
-  "created_at": Any<String>,
-  "created_by": "admin_user",
-  "deleted_at": null,
-  "id": "job_2",
-  "processing_at": null,
-  "result": null,
-  "status": "awaiting_confirmation",
   "type": "batch_1",
   "updated_at": Any<String>,
 }

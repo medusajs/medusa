@@ -7,19 +7,6 @@ export default (app) => {
   const route = Router()
   app.use("/batch", route)
 
-  route.get(
-    "/",
-    middlewares.normalizeQuery(),
-    middlewares.wrap(require("./list-batch-jobs").default)
-  )
-
-  route.get("/:id", middlewares.wrap(require("./get-batch-job").default))
-
-  route.post(
-    "/:id/complete",
-    middlewares.wrap(require("./confirm-batch-job").default)
-  )
-
   route.post("/", middlewares.wrap(require("./create-batch-job").default))
 
   return app
@@ -46,5 +33,3 @@ export const defaultAdminBatchFields = [
   "updated_at",
   "deleted_at",
 ]
-
-export * from "./list-batch-jobs"

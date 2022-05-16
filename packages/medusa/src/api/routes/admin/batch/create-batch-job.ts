@@ -1,7 +1,6 @@
 import {
   IsBoolean,
   IsJSON,
-  IsObject,
   IsOptional,
   IsString,
 } from "class-validator"
