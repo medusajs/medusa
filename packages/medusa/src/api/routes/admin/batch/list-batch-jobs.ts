@@ -32,12 +32,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) type {string | string[]} Filter by the batch type
  *   - (query) status {string} Filter by the status of the batch operation
-<<<<<<< HEAD
  *   - (query) order {string} Order used when retrieving batch jobs
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
-=======
->>>>>>> e63a4ad8... feat: add list batch endpoint
  *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
