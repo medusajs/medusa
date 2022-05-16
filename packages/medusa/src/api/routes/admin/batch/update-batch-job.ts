@@ -42,27 +42,14 @@ import { MedusaError } from "medusa-core-utils"
  *              $ref: "#/components/schemas/batch_job"
  */
 export default async (req, res) => {
-  const { id } = req.params
-  const userId = req.user.id ?? req.user.userId
+  let batch_job = req.batch_job
 
   const validated = await validator(AdminPostBatchJobsBatchJobReq, req.body)
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-  let batch_job = await batchJobService.retrieve(id)
+  await batchJobService.update(batch_job.id, validated)
 
-  if (
-    validated.status === BatchJobStatus.COMPLETED &&
-    batch_job.created_by !== userId
-  ) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_ALLOWED,
-      "Cannot complete batch jobs created by other users"
-    )
-  }
-
-  await batchJobService.update(id, validated)
-  batch_job = await batchJobService.retrieve(id)
-
+  batch_job = await batchJobService.retrieve(batch_job.id)
   res.status(200).json({ batch_job })
 }
 

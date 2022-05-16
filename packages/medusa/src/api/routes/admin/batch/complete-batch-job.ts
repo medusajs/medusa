@@ -22,21 +22,10 @@ import { MedusaError } from "medusa-core-utils"
  *              $ref: "#/components/schemas/batch_job"
  */
 export default async (req, res) => {
-  const { id } = req.params
-
-  const userId: string = req.user.id ?? req.user.userId
+  let batch_job = req.batch_job
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-  const batchJob = await batchJobService.retrieve(id)
-
-  if (batchJob.created_by !== userId) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_ALLOWED,
-      "Cannot complete batch jobs that does not belong to the logged in user"
-    )
-  }
-
-  const batch_job = await batchJobService.complete(batchJob)
+  batch_job = await batchJobService.complete(batch_job)
 
   res.json({ batch_job })
 }
