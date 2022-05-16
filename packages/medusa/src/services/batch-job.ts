@@ -1,4 +1,5 @@
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import {
@@ -10,7 +11,6 @@ import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 import EventBusService from "./event-bus"
-import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -19,8 +19,8 @@ type InjectedDependencies = {
 }
 
 class BatchJobService extends TransactionBaseService<BatchJobService> {
-  protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
   protected readonly batchJobRepository_: typeof BatchJobRepository
   protected readonly eventBus_: EventBusService
 
@@ -119,22 +119,17 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
    * if job is started with dry_run: true, then it's required
    * to complete the job before it's written to DB
    */
-  async complete(batchJobId: string, userId: string): Promise<BatchJob> {
+  async complete(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async (manager) => {
       const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
         this.batchJobRepository_
       )
 
-      const batchJob = await batchJobRepo.findOne(batchJobId)
-
-      if (!batchJob || batchJob.created_by !== userId) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot complete batch jobs created by other users"
-        )
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
       }
 
-      // check that job has run
       if (batchJob.status !== BatchJobStatus.AWAITING_CONFIRMATION) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
@@ -147,15 +142,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       await batchJobRepo.save(batchJob)
 
-      const result = (await batchJobRepo.findOne(batchJobId)) as BatchJob
-
       await this.eventBus_
         .withTransaction(manager)
         .emit(BatchJobService.Events.COMPLETED, {
-          id: result.id,
+          id: batchJob.id,
         })
 
-      return result
+      return batchJob
     })
   }
 
@@ -169,7 +162,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
           this.batchJobRepository_
         )
 
-        const query = buildQuery(selector, config)
+        const query = buildQuery<BatchJob>(selector, config)
         return await batchJobRepo.findAndCount(query)
       }
     )
