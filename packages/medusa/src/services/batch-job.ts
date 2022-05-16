@@ -5,7 +5,8 @@ import { BatchJobRepository } from "../repositories/batch-job"
 import { FilterableBatchJobProps } from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery } from "../utils"
+import { buildQuery, validateId } from "../utils"
+import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -29,6 +30,31 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
+  }
+
+  async retrieve(
+    batchJobId: string,
+    config: FindConfig<BatchJob> = {}
+  ): Promise<BatchJob | never> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        const batchJobRepo = transactionManager.getCustomRepository(
+          this.batchJobRepository_
+        )
+
+        const query = buildQuery<BatchJob>({ id: batchJobId }, config)
+        const batchJob = await batchJobRepo.findOne(query)
+
+        if (!batchJob) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `BatchJob with id: ${batchJobId} was not found`
+          )
+        }
+
+        return batchJob
+      }
+    )
   }
 
   async listAndCount(
