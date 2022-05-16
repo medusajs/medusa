@@ -46,7 +46,7 @@ Object {
 exports[`/admin/batch GET /admin/batch/id Retrieves batch job with id 1`] = `
 Object {
   "awaiting_confirmation_at": null,
-  "cancelled_at": null,
+  "canceled_at": null,
   "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,
@@ -64,7 +64,7 @@ Object {
 exports[`/admin/batch POST /admin/batch/:id/cancel Cancels batch job created by the user 1`] = `
 Object {
   "awaiting_confirmation_at": null,
-  "cancelled_at": Any<String>,
+  "canceled_at": Any<String>,
   "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,
@@ -82,7 +82,7 @@ Object {
 exports[`/admin/batch POST /admin/batch/:id/complete Requests completion of batch job created by the user 1`] = `
 Object {
   "awaiting_confirmation_at": null,
-  "cancelled_at": null,
+  "canceled_at": null,
   "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,

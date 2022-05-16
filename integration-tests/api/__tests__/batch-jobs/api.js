@@ -156,7 +156,7 @@ describe("/admin/batch", () => {
       expect(response.data.batch_job).toMatchSnapshot({
         created_at: expect.any(String),
         updated_at: expect.any(String),
-        cancelled_at: expect.any(String),
+        canceled_at: expect.any(String),
         status: "canceled",
       })
     })
