@@ -32,7 +32,7 @@ export default async (req, res) => {
   if (batchJob.created_by !== userId) {
     throw new MedusaError(
       MedusaError.Types.NOT_ALLOWED,
-      "Cannot complete batch jobs created by other users"
+      "Cannot complete batch jobs that does not belong to the logged in user"
     )
   }
 
