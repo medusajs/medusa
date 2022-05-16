@@ -98,7 +98,7 @@ describe("/admin/batch", () => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
-            "Cannot confirm batch jobs created by other users"
+            "Cannot access a batch job that does not belong to the logged in user"
           )
         })
     })
