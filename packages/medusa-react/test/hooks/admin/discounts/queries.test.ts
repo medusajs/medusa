@@ -1,10 +1,11 @@
+import { renderHook } from "@testing-library/react-hooks"
+import { fixtures } from "../../../../mocks/data"
 import {
   useAdminDiscount,
   useAdminDiscounts,
   useAdminGetDiscountByCode,
+  useAdminGetDiscountCondition,
 } from "../../../../src"
-import { renderHook } from "@testing-library/react-hooks"
-import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminDiscounts hook", () => {
@@ -52,5 +53,28 @@ describe("useAdminDiscount hook", () => {
 
     expect(result.current.response.status).toEqual(200)
     expect(result.current.discount).toEqual(discount)
+  })
+})
+
+describe("useAdminGetDiscountCondition hook", () => {
+  test("returns a discount condition", async () => {
+    const discount = fixtures.get("discount")
+    const { result, waitFor } = renderHook(
+      () =>
+        useAdminGetDiscountCondition(
+          discount.id,
+          discount.rule.conditions[0].id
+        ),
+      {
+        wrapper: createWrapper(),
+      }
+    )
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.response.status).toEqual(200)
+    expect(result.current.discount_condition).toEqual(
+      discount.rule.conditions[0]
+    )
   })
 })

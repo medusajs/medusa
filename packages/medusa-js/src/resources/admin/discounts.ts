@@ -1,7 +1,9 @@
 import {
+  AdminDiscountConditionsRes,
   AdminDiscountsDeleteRes,
   AdminDiscountsListRes,
   AdminDiscountsRes,
+  AdminGetDiscountsDiscountConditionsConditionParams,
   AdminGetDiscountsParams,
   AdminPostDiscountsDiscountConditions,
   AdminPostDiscountsDiscountConditionsCondition,
@@ -186,6 +188,25 @@ class AdminDiscountsResource extends BaseResource {
   ): ResponsePromise<AdminDiscountsDeleteRes> {
     const path = `/admin/discounts/${discountId}/conditions/${conditionId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * @description Gets a condition from a discount
+   */
+  getCondition(
+    discountId: string,
+    conditionId: string,
+    query?: AdminGetDiscountsDiscountConditionsConditionParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountConditionsRes> {
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
+    }
+
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }
 
