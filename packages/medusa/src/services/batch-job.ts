@@ -48,7 +48,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         if (!batchJob) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
-            `BatchJob with id: ${batchJobId} was not found`
+            `Batch job with id ${batchJobId} was not found`
           )
         }
 
