@@ -4,7 +4,7 @@ title: "Deploying on Heroku"
 
 # Deploying on Heroku
 
-This is a guide for deploying a Medusa project on Heroku. Heroku is at PaaS that allows you to easily deploy your applications in the cloud.
+This is a guide for deploying a Medusa project on Heroku. Heroku is a PaaS that allows you to easily deploy your applications in the cloud.
 
 <div>
   <video width="100%" height="100%" playsinline autoplay muted controls>
@@ -57,7 +57,7 @@ Follow the instructions on your terminal
 
 ### 3. Create an app on Heroku
 
-In your **Medusa project directory** run the following commands to create an app on Heroku and add it as a remote origin.
+In your **Medusa project directory**, run the following commands to create an app on Heroku and add it as a remote origin.
 
 ```bash
 heroku create medusa-test-app
@@ -70,13 +70,13 @@ Medusa requires a Postgres database and a Redis instance to work. These are adde
 
 :::tip
 
-In this below example, we initialize the resources on free plans. This is not a valid configuration for a production environment.
+In this example below, we initialize the resources on free plans. This is not a valid configuration for a production environment.
 
 :::
 
 #### Postgresql
 
-Add a Postgres addon to your Heroku app
+Add a Postgres add-on to your Heroku app
 
 ```bash
 heroku addons:create heroku-postgresql:hobby-dev
@@ -90,7 +90,7 @@ Add a Redis instance to your Heroku app
 
 :::note
 
-The addon `redistogo:nano` is free, but Heroku requires you to add a payment method to proceed.
+The add-on `redistogo:nano` is free, but Heroku requires you to add a payment method to proceed.
 
 :::
 
@@ -102,7 +102,7 @@ You can find more informations, plans and pricing about Redis To Go [here](https
 
 ### 5. Configure environment variables on Heroku
 
-Medusa requires a set of environment variables. From you project repository run the following commands:.
+Medusa requires a set of environment variables. From you project repository, run the following commands:.
 
 ```bash
 heroku config:set NODE_ENV=production
