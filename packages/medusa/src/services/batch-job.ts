@@ -84,7 +84,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         )
       }
 
-      batchJob.cancelled_at = new Date()
+      batchJob.canceled_at = new Date()
       batchJob.status = BatchJobStatus.CANCELED
       await batchJobRepo.save(batchJob)
 

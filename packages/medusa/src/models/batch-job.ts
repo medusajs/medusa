@@ -48,7 +48,7 @@ export class BatchJob {
   confirmed_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  cancelled_at: Date | null
+  canceled_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date

@@ -3,8 +3,8 @@ import { BatchJobService } from "../../../../services"
 /**
  * @oas [post] /batch/{id}/cancel
  * operationId: "PostBatchBatchCancel"
- * summary: "Marks a batch job as cancelled"
- * description: "Marks a batch job as cancelled"
+ * summary: "Marks a batch job as canceled"
+ * description: "Marks a batch job as canceled"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the batch job.
