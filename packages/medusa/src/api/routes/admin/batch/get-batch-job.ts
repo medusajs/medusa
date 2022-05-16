@@ -1,4 +1,3 @@
-import { BatchJobService } from "../../../../services"
 /**
  * @oas [get] /batch/{id}
  * operationId: "GetBatchJobsBatchJob"
@@ -20,10 +19,6 @@ import { BatchJobService } from "../../../../services"
  *              $ref: "#/components/schemas/batch_job"
  */
 export default async (req, res) => {
-  const { id } = req.params
-
-  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-
-  const batch_job = await batchJobService.retrieve(id)
+  const batch_job = req.batch_job
   res.status(200).json({ batch_job })
 }

@@ -64,17 +64,20 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
    * if job is started with dry_run: true, then it's required
    * to confirm the job before it's written to DB
    */
-  async confirm(batchJobId: string): Promise<BatchJob> {
+  async confirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async (manager) => {
-      const result = await this.retrieve(batchJobId)
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
 
       await this.eventBus_
         .withTransaction(manager)
         .emit(BatchJobService.Events.PROCESS_COMPLETE, {
-          id: result.id,
+          id: batchJob.id,
         })
 
-      return result
+      return batchJob
     })
   }
 
