@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import { Address } from "../models/address"
 import { Cart } from "../models/cart"
@@ -11,6 +12,7 @@ import { LineItem } from "../models/line-item"
 import { ShippingMethod } from "../models/shipping-method"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
+import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
@@ -20,11 +22,15 @@ import {
   LineItemUpdate,
 } from "../types/cart"
 import { FindConfig, TotalField } from "../types/common"
+import { buildQuery, setMetadata, validateId } from "../utils"
+import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
 import EventBusService from "./event-bus"
 import GiftCardService from "./gift-card"
+import InventoryService from "./inventory"
 import LineItemService from "./line-item"
+import LineItemAdjustmentService from "./line-item-adjustment"
 import PaymentProviderService from "./payment-provider"
 import ProductService from "./product"
 import ProductVariantService from "./product-variant"
@@ -32,12 +38,6 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
-import InventoryService from "./inventory"
-import CustomShippingOptionService from "./custom-shipping-option"
-import LineItemAdjustmentService from "./line-item-adjustment"
-import { LineItemRepository } from "../repositories/line-item"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -1339,6 +1339,7 @@ class CartService extends TransactionBaseService<CartService> {
             ],
             relations: [
               "items",
+              "items.adjustments",
               "discounts",
               "discounts.rule",
               "gift_cards",
