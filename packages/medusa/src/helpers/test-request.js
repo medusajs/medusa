@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken"
 import { MockManager } from "medusa-test-utils"
 import "reflect-metadata"
 import supertest from "supertest"
+import querystring from "querystring"
 import apiLoader from "../loaders/api"
 import passportLoader from "../loaders/passport"
 import servicesLoader from "../loaders/services"
@@ -68,10 +69,10 @@ apiLoader({ container, app: testApp, configModule: config })
 const supertestRequest = supertest(testApp)
 
 export async function request(method, url, opts = {}) {
-  let { payload, headers } = opts
+  const { payload, query, headers = {} } = opts
 
-  const req = supertestRequest[method.toLowerCase()](url)
-  headers = headers || {}
+  const queryParams = query && querystring.stringify(query);
+  const req = supertestRequest[method.toLowerCase()](`${url}${queryParams ? "?" + queryParams : ''}`)
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
     if (opts.adminSession.jwt) {
