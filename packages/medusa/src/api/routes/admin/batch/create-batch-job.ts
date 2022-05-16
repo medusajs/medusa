@@ -32,22 +32,13 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostBatchesReq, req.body)
 
-  const userId: string = req.user.id || req.user.userId
+  const userId = req.user.id ?? req.user.userId
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-
-  const validatedContext = await batchJobService.validateBatchContext(
-    validated.type,
-    validated.context
-  )
-
-  const toCreate = {
-    created_by: userId,
+  const batch_job = await batchJobService.create({
     ...validated,
-    context: validatedContext,
-  }
-
-  const batch_job = await batchJobService.create(toCreate)
+    created_by: userId,
+  })
 
   res.status(200).json({ batch_job })
 }

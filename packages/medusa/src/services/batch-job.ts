@@ -31,7 +31,11 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     CANCELED: "batch.canceled",
   }
 
-  constructor({ manager, batchJobRepository, eventBusService }: InjectedDependencies) {
+  constructor({
+    manager,
+    batchJobRepository,
+    eventBusService,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
@@ -82,8 +86,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       // TODO use strategy to validate the context
 
+      const validatedContext = await this.validateBatchContext(
+        data.type,
+        data.context
+      )
       const toCreate = {
         ...data,
+        ...validatedContext,
         status: BatchJobStatus.CREATED,
       }
 
@@ -97,30 +106,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         })
 
       return result
-    })
-  }
-
-  async retrieve(
-    batchJobId: string,
-    config: FindConfig<BatchJob> = {}
-  ): Promise<BatchJob> {
-    return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
-        this.batchJobRepository_
-      )
-
-      const validatedId = this.validateId_(batchJobId)
-      const query = this.buildQuery_({ id: validatedId }, config)
-      const batchJob = await batchJobRepo.findOne(query)
-
-      if (!batchJob) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Batch job with id ${batchJobId} was not found`
-        )
-      }
-
-      return batchJob
     })
   }
 
