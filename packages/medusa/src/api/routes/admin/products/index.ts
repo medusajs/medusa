@@ -17,6 +17,11 @@ export default (app) => {
     middlewares.wrap(require("./list-tag-usage-count").default)
   )
 
+  route.get(
+    "/:id/variants",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./list-variants").default)
+  )
   route.post(
     "/:id/variants",
     middlewares.wrap(require("./create-variant").default)
@@ -95,6 +100,11 @@ export const defaultAdminProductFields = [
   "updated_at",
   "deleted_at",
   "metadata",
+]
+
+export const defaultAdminGetProductsVariantsFields = [
+  "id",
+  "product_id"
 ]
 
 export const allowedAdminProductFields = [
@@ -178,7 +188,7 @@ export * from "./delete-option"
 export * from "./delete-product"
 export * from "./delete-variant"
 export * from "./get-product"
-export * from "./get-variants"
+export * from "./list-variants"
 export * from "./list-products"
 export * from "./list-tag-usage-count"
 export * from "./list-types"

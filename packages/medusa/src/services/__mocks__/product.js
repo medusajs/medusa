@@ -108,9 +108,16 @@ export const ProductServiceMock = {
     .mockReturnValue(Promise.resolve(products.productWithOptions)),
   retrieveVariants: jest
     .fn()
-    .mockReturnValue(
-      Promise.resolve([{ id: IdMap.getId("1") }, { id: IdMap.getId("2") }])
-    ),
+    .mockImplementation((productId) => {
+      if (productId === IdMap.getId("product1")) {
+        return Promise.resolve([
+          { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
+          { id: IdMap.getId("2"), product_id: IdMap.getId("product1") }
+        ])
+      }
+
+      return []
+    }),
   retrieve: jest.fn().mockImplementation((productId) => {
     if (productId === IdMap.getId("product1")) {
       return Promise.resolve(products.product1)
