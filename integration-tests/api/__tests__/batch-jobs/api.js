@@ -73,7 +73,7 @@ describe("/admin/batch", () => {
       const jobId = "job_2"
 
       const response = await api.post(
-        `/admin/batch/${jobId}/complete`,
+        `/admin/batch/${jobId}/confirm`,
         {},
         adminReqConfig
       )
