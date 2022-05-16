@@ -28,11 +28,16 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     PROCESS_COMPLETE: "batch-process.complete",
   }
 
-  constructor({ manager, batchJobRepository }: InjectedDependencies) {
+  constructor({
+    manager,
+    batchJobRepository,
+    eventBusService,
+  }: InjectedDependencies) {
     super({ manager, batchJobRepository })
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
+    this.eventBus_ = eventBusService
   }
 
   async retrieve(
