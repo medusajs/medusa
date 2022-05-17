@@ -153,6 +153,7 @@ module.exports = async (connection, data = {}) => {
         currency_code: "usd",
         amount_refunded: 0,
         provider_id: "test-pay",
+        captured_at: new Date(),
         data: {},
       },
     ],
