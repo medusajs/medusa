@@ -112,9 +112,9 @@ npm run build
 You can access your custom entity data in the database in services or subscribers using the repository. For example, here’s a service that lists all posts:
 
 ```tsx
-import { BaseService } from "medusa-interfaces";
+import { TransactionBaseService } from "medusa-interfaces";
 
-class PostService extends BaseService {
+class PostService extends TransactionBaseService {
   constructor({ postRepository, manager }) {
     super();
 
