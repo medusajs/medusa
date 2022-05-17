@@ -1,5 +1,5 @@
-import { fixtures } from "../data"
 import { rest } from "msw"
+import { fixtures } from "../data"
 
 export const adminHandlers = [
   rest.post("/admin/collections/", (req, res, ctx) => {
@@ -779,6 +779,19 @@ export const adminHandlers = [
       ctx.json({
         discount: {
           ...fixtures.get("discount"),
+        },
+      })
+    )
+  }),
+
+  rest.get("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount_condition: {
+          ...fixtures
+            .get("discount")
+            .rule.conditions.find(c => c.id === req.params.conditionId),
         },
       })
     )

@@ -1,5 +1,67 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id should get condition 1`] = `
+Object {
+  "created_at": Any<String>,
+  "discount_rule": Object {
+    "allocation": "total",
+    "created_at": Any<String>,
+    "deleted_at": null,
+    "description": null,
+    "id": Any<String>,
+    "metadata": null,
+    "type": "percentage",
+    "updated_at": Any<String>,
+    "value": 10,
+  },
+  "discount_rule_id": Any<String>,
+  "id": "test-condition",
+  "operator": "in",
+  "type": "products",
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id should get condition with expand + fields 1`] = `
+Object {
+  "id": "test-condition",
+  "products": Array [
+    Object {
+      "collection_id": null,
+      "created_at": Any<String>,
+      "deleted_at": null,
+      "description": null,
+      "discountable": true,
+      "external_id": null,
+      "handle": null,
+      "height": null,
+      "hs_code": null,
+      "id": "test-product",
+      "is_giftcard": false,
+      "length": null,
+      "material": null,
+      "metadata": null,
+      "mid_code": null,
+      "origin_country": null,
+      "profile_id": Any<String>,
+      "status": "draft",
+      "subtitle": null,
+      "thumbnail": null,
+      "title": "Practical Frozen Fish",
+      "type_id": Any<String>,
+      "updated_at": Any<String>,
+      "weight": null,
+      "width": null,
+    },
+  ],
+  "type": "products",
+}
+`;
+
+exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id throws if condition does not belong to discount: DiscountCondition with id test-condition was not found for Discount test-discount-2 1`] = `"Request failed with status code 404"`;
+
+exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id throws if condition does not exist: DiscountCondition with id test-condition was not found 1`] = `"Request failed with status code 404"`;
+
 exports[`/admin/discounts POST /admin/discounts fails if multiple types of resources are provided on update 1`] = `
 Object {
   "message": "Only one of products, product_types is allowed, Only one of product_types, products is allowed",
