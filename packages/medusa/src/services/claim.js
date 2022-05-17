@@ -232,7 +232,7 @@ class ClaimService extends BaseService {
         const lines = claim_items.map((ci) => {
           const allOrderItems = order.items
 
-          if (order.swaps && order.swaps.length) {
+          if (order.swaps?.length) {
             for (const swap of order.swaps) {
               swap.additional_items.forEach((it) => {
                 if (
@@ -245,7 +245,7 @@ class ClaimService extends BaseService {
             }
           }
 
-          if (order.claims && order.claims.length) {
+          if (order.claims?.length) {
             for (const claim of order.claims) {
               claim.additional_items.forEach((it) => {
                 if (
