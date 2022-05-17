@@ -10,7 +10,7 @@ Aside from Medusa’s core entities, you can also create your own entities to us
 
 Entities are TypeScript files and they are based on [Typeorm’s Entities](https://typeorm.io/entities) and use Typeorm decorators.
 
-All entities must extend either the `BaseEntity` or `SoftDeletableEntity` classes. The `BaseEntity` class holds common columns including the `id`, `created_at`, and `updated_at` columns. It also includes the method that takes care of automatically generating the ID field of your entity.
+All entities must extend either the `BaseEntity` or `SoftDeletableEntity` classes. The `BaseEntity` class holds common columns including the `id`, `created_at`, and `updated_at` columns.
 
 The `SoftDeletableEntity` class extends the `BaseEntity` class and adds another column `deleted_at`. If an entity can be soft deleted, meaning that a row in it can appear to the user as deleted but still be available in the database, it should extend `SoftDeletableEntity`.
 
@@ -64,6 +64,8 @@ import { SoftDeletableEntity } from "@medusajs/medusa/dist/interfaces/models/sof
 
 @Entity()
 export class Post extends SoftDeletableEntity {
+  //...
+}
 ```
 
 You can learn more about what decorators and column types you can use in [Typeorm’s documentation](https://typeorm.io/entities).
