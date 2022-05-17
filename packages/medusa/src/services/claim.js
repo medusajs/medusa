@@ -230,7 +230,35 @@ class ClaimService extends BaseService {
       let toRefund = refund_amount
       if (type === "refund" && typeof refund_amount === "undefined") {
         const lines = claim_items.map((ci) => {
-          const orderItem = order.items.find((oi) => oi.id === ci.item_id)
+          const allOrderItems = order.items
+
+          if (order.swaps?.length) {
+            for (const swap of order.swaps) {
+              swap.additional_items.forEach((it) => {
+                if (
+                  it.shipped_quantity ||
+                  it.shipped_quantity === it.fulfilled_quantity
+                ) {
+                  allOrderItems.push(it)
+                }
+              })
+            }
+          }
+
+          if (order.claims?.length) {
+            for (const claim of order.claims) {
+              claim.additional_items.forEach((it) => {
+                if (
+                  it.shipped_quantity ||
+                  it.shipped_quantity === it.fulfilled_quantity
+                ) {
+                  allOrderItems.push(it)
+                }
+              })
+            }
+          }
+
+          const orderItem = allOrderItems.find((oi) => oi.id === ci.item_id)
           return {
             ...orderItem,
             quantity: ci.quantity,
