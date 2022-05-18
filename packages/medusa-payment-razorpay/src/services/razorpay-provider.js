@@ -112,25 +112,29 @@ class RazorpayProviderService extends PaymentService {
       count : customer_limit_per_page,
       skip : 0
     }
-  
-    do{
-      let razorpayCustomers = await this.razorpay_.customers.all( fectchCustomerQueryParams)
-      let customers = razorpayCustomers.items;
-      let customer_interest = customers.filter(customer=>{if (customer.email === email|| customer.contact === contact) return true})
-      if (customer_interest.length > 0)
-      {
-        razorpayCustomerOfInterest = await this.razorpay_.customers.fetch( customer_interest[0].id)
-        notFound = false
-        break;
+    try {
+      do{
+        let razorpayCustomers = await this.razorpay_.customers.all( fectchCustomerQueryParams)
+        let customers = razorpayCustomers.items;
+        let customer_interest = customers.filter(customer=>{if (customer.email === email|| customer.contact === contact) return true})
+        if (customer_interest.length > 0)
+        {
+          razorpayCustomerOfInterest = await this.razorpay_.customers.fetch( customer_interest[0].id)
+          notFound = false
+          break;
+        }
+        else{
+        fectchCustomerQueryParams = {
+          count : customer_limit_per_page,
+          skip : razorpayCustomers.count
+        }
       }
-      else{
-      fectchCustomerQueryParams = {
-        count : customer_limit_per_page,
-        skip : razorpayCustomers.count
-      }
+      }while(razorpayCustomers.response<=customer_limit_per_page && notFound && razorpayCustomers.count);
     }
-    }while(razorpayCustomers.response<=customer_limit_per_page && notFound && razorpayCustomers.count);
-    
+    catch (err)
+    {
+      return err;
+    }
     return razorpayCustomerOfInterest
   }
 
@@ -207,6 +211,9 @@ class RazorpayProviderService extends PaymentService {
   try{
     delete updateCustomerQueryParams.id
     delete updateCustomerQueryParams.password_hash
+    let razorpayCustomerOfInterest = await this.razorpay_.customers.fetch( razorpayCustomerId)
+    updateCustomerQueryParams.email = razorpayCustomerOfInterest.email;
+    updateCustomerQueryParams.contact = razorpayCustomerOfInterest.contact;
     const razorpayUpdateCustomer = await this.razorpay_.customers.edit(razorpayCustomerId, updateCustomerQueryParams)
     return razorpayUpdateCustomer
   }
@@ -257,12 +264,17 @@ class RazorpayProviderService extends PaymentService {
 
       intentRequest.notes["customer_id"] = razorpayCustomer.id
     }
-
+    try{
     const orderIntent = await this.razorpay_.orders.create(
       intentRequest
     )
 
     return orderIntent
+    }
+    catch (err)
+    {
+      throw (err)
+    }
   }
 
 

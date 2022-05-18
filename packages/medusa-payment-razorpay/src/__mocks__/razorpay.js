@@ -47,25 +47,52 @@ export const RazorpayMock = {
       return Promise.resolve({
          "entity":"collection",
           "count":1,
-          "items":[
-            {
-              id:"cust_1Aa00000000001",
-              entity:"customer",
-              name:"james lebron",
-              email:"lebron@james.com",
-              contact:"9876543210",
-              gstin:"37AADCS0472N1Z1",
-              notes:{fullname:"james lebron",customer_id:"cust_1Aa00000000001"},
-              created_at :1234567890
-            }],
+          "items":
+            [
+              {
+                id: "cust_1Aa00000000002",
+                entity: "customer",
+                name: "james lebron",
+                email: "lebron@james.com",
+                contact: "9876543210",
+                gstin: "37AADCS0472N1Z1",
+                notes: { fullname: "james lebron", customer_id: "cust_1Aa00000000002" },
+                created_at: 1234567890 
+              },
+              {
+                id: "cust_1Aa00000000001",
+                entity: "customer",
+                name: "Virgil Van Dijk",
+                email: "virg@vvd.com",
+                contact: "9876543210",
+                gstin: "37AADCS0472N1Z1",
+                notes: { fullname: "Virgil Van Dijk", customer_id: "cust_1Aa00000000001" },
+                created_at: 1234567890 
+              }
+            
+              ] ,
       })
 
     }),
     
     edit: jest.fn().mockImplementation((id,data) => {
-      if (id === "cus_vvd") {
+      if (id === "cust_1Aa00000000001"|| id === "cus_vvd") 
+      {
+        return Promise.resolve(
+          {
+          id: "cust_1Aa00000000001",
+          entity: "customer",
+          name: "Virgil Van Dijk",
+          email: "virg@vvd.com",
+          contact: "9876543210",
+          gstin: "37AADCS0472N1Z1",
+          notes: { fullname: "Virgil Van Dijk", customer_id: "cust_1Aa00000000001" },
+          created_at: 1234567890 }
+          )
+     }
+      else {
         return Promise.resolve({
-          id: "cus_vvd",
+          id: "cust_1Aa00000000002",
           email: data.email,
           name:data.name,
           contact:data.contact,
@@ -74,18 +101,7 @@ export const RazorpayMock = {
           created_at: 1234567,
         })
       }
-      if (id === "cus_lebron") {
-        return Promise.resolve({
-          id: "cus_lebron",
-          email: data.email,
-          name:data.name,
-          contact:data.contact,
-          notes:{fullname:data.name,customer_id:id},
-          gstin:data.gstin,
-          created_at: 1234567,
-        })
-      }
-    })
+    }),
   },
 
   orders: {
@@ -229,8 +245,8 @@ export const RazorpayMock = {
       }
     )
   }   
-}
 
+}
 const razorpay = jest.fn(() => RazorpayMock)
 
 export default razorpay
