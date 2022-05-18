@@ -26,7 +26,7 @@ const api_key_secret="XXX"
 describe("RazorpayProviderService", () => {
   describe("createCustomer", () => {
     const test_customer = {
-      id: IdMap.getId("vvd"),
+      id: "cust_1Aa00000000001",
       first_name: "Virgil",
       last_name: "Van Dijk",
       email: "virg@vvd.com",
