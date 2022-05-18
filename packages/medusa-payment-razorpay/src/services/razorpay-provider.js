@@ -160,7 +160,7 @@ class RazorpayProviderService extends PaymentService {
         createCustomerQueryParams.email = customer.email??"startup@medusa.com"
      // }
     //  if (customer.contact !=undefined ) {
-        createCustomerQueryParams.contact =customer.contact??"90000000000"
+        createCustomerQueryParams.contact =customer.contact??"9000000000"
      //}
       createCustomerQueryParams["notes"]["customer_id"]=customer.id
       try {
