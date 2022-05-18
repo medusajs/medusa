@@ -72,7 +72,7 @@ describe("/admin/product-types", () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/product-types?q=test-type-2", {
+        .get("/admin/product-types?q=test-type-new", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -90,7 +90,7 @@ describe("/admin/product-types", () => {
 
       // The value of the type should match the search param
       expect(res.data.product_types.map((pt) => pt.value)).toEqual([
-        "test-type-2"
+        "test-type-new"
       ])
 
       // Should only return one type as there is only one match to the search param

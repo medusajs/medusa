@@ -70,8 +70,8 @@ module.exports = async (connection, data = {}) => {
   await manager.save(type)
 
   const type2 = await manager.create(ProductType, {
-    id: "test-type-2",
-    value: "test-type-2",
+    id: "test-type-new",
+    value: "test-type-new",
   })
 
   await manager.save(type2)
