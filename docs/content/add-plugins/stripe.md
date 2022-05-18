@@ -48,8 +48,8 @@ const plugins = [
   {
     resolve: `medusa-payment-stripe`,
     options: {
-      api_key: STRIPE_API_KEY,
-      webhook_secret: STRIPE_WEBHOOK_SECRET,
+      api_key: process.env.STRIPE_API_KEY,
+      webhook_secret: process.env.STRIPE_WEBHOOK_SECRET,
     },
   },
 ];
@@ -57,7 +57,7 @@ const plugins = [
 
 :::note
 
-You might find that this code is already available but commented out. You can proceed with removing the comments instead of adding the code again.
+You might find that this code is already available but commented out. You can proceed with removing the comments instead of adding the code again, but make sure to replace `STRIPE_API_KEY` and `STRIPE_WEBHOOK_SECRET` with `process.env.STRIPE_API_KEY` and `process.env.STRIPE_WEBHOOK_SECRET` respectively.
 
 :::
 
@@ -131,7 +131,7 @@ All storefronts require that you obtain your Stripe’s Publishable Key. You can
 
 Medusa has a Next.js storefront that you can easily use with your Medusa server. If you don’t have the storefront installed, you can follow [this quickstart guide](../starters/nextjs-medusa-starter).
 
-In your `.env` file, add the following variable with its value set to the Publishable Key:
+In your `.env.local` file (or the file you’re using for your environment variables), add the following variable with its value set to the Publishable Key:
 
 ```jsx
 NEXT_PUBLIC_STRIPE_KEY=pk_...
