@@ -2,17 +2,16 @@ import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
-  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
-  Validate,
   ValidateNested,
 } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, ProductVariantService } from "../../../../services"
-import { XorConstraint } from "../../../../types/validators/xor"
+import { PriceSelectionParams } from "../../../../types/price-selection"
+import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -84,6 +83,9 @@ import { validator } from "../../../../utils/validator"
  *             type: array
  *             items:
  *               properties:
+ *                 id:
+ *                   description: The id of the price.
+ *                   type: string
  *                 region_id:
  *                   description: The id of the Region for which the price is used.
  *                   type: string
@@ -93,8 +95,11 @@ import { validator } from "../../../../utils/validator"
  *                 amount:
  *                   description: The amount to charge for the Product Variant.
  *                   type: integer
- *                 sale_amount:
- *                   description: The sale amount to charge for the Product Variant.
+ *                 min_quantity:
+ *                  description: The minimum quantity for which the price will be used.
+ *                  type: integer
+ *                 max_quantity:
+ *                   description: The maximum quantity for which the price will be used.
  *                   type: integer
  *           options:
  *             type: array
@@ -126,6 +131,8 @@ export default async (req, res) => {
     req.body
   )
 
+  const validatedQueryParams = await validator(PriceSelectionParams, req.query)
+
   const productService: ProductService = req.scope.resolve("productService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
@@ -136,9 +143,12 @@ export default async (req, res) => {
     ...validated,
   })
 
+  await productVariantService.retrieve(variant_id)
+
   const product = await productService.retrieve(id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
+    ...validatedQueryParams,
   })
 
   res.json({ product })
@@ -150,21 +160,6 @@ class ProductVariantOptionReq {
 
   @IsString()
   option_id: string
-}
-
-class ProductVariantPricesReq {
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @Validate(XorConstraint, ["region_id"])
-  currency_code?: string
-
-  @IsInt()
-  amount: number
-
-  @IsOptional()
-  @IsInt()
-  sale_amount?: number
 }
 
 export class AdminPostProductsProductVariantsVariantReq {
@@ -238,8 +233,8 @@ export class AdminPostProductsProductVariantsVariantReq {
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  @Type(() => ProductVariantPricesUpdateReq)
+  prices: ProductVariantPricesUpdateReq[]
 
   @Type(() => ProductVariantOptionReq)
   @ValidateNested({ each: true })

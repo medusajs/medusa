@@ -9,7 +9,6 @@ import {
   IsOptional,
   IsString,
   NotEquals,
-  Validate,
   ValidateIf,
   ValidateNested,
 } from "class-validator"
@@ -19,7 +18,7 @@ import {
   ProductStatus,
 } from "."
 import { ProductService } from "../../../../services"
-import { XorConstraint } from "../../../../types/validators/xor"
+import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -248,21 +247,6 @@ class ProductVariantOptionReq {
   option_id: string
 }
 
-class ProductVariantPricesReq {
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @Validate(XorConstraint, ["region_id"])
-  currency_code?: string
-
-  @IsInt()
-  amount: number
-
-  @IsOptional()
-  @IsInt()
-  sale_amount?: number
-}
-
 class ProductVariantReq {
   @IsString()
   @IsOptional()
@@ -339,8 +323,8 @@ class ProductVariantReq {
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  @Type(() => ProductVariantPricesUpdateReq)
+  prices: ProductVariantPricesUpdateReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)

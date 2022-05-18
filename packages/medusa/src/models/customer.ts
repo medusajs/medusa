@@ -69,7 +69,9 @@ export class Customer {
       referencedColumnName: "id",
     },
   })
-  @ManyToMany(() => CustomerGroup, (cg) => cg.customers, { cascade: true })
+  @ManyToMany(() => CustomerGroup, (cg) => cg.customers, {
+    onDelete: "CASCADE",
+  })
   groups: CustomerGroup[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })

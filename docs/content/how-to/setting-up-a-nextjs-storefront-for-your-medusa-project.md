@@ -15,7 +15,7 @@ This article assumes you already have the Medusa project created and ready to be
 
 ## Getting started
 
-In order to get started let's open the terminal and use the following command to create an instance of your storefront:
+In order to get started, let's open the terminal and use the following command to create an instance of your storefront:
 
 ```zsh
     npx create-next-app -e https://github.com/medusajs/nextjs-starter-medusa my-medusa-storefront
@@ -31,7 +31,7 @@ Let's jump to these two.
 
 For this part, we should navigate to a `client.js` file which you can find in the utils folder.
 
-We don't need to do much in here, but to make sure that our storefront is pointing to the port, where the server is running
+We don't need to do much in here, but to make sure that our storefront is pointing to the port where the server is running
 
 ```js
 import Medusa from "@medusajs/medusa-js"
@@ -39,13 +39,13 @@ const BACKEND_URL = process.env.GATSBY_STORE_URL || "http://localhost:9000" // <
 export const createClient = () => new Medusa({ baseUrl: BACKEND_URL })
 ```
 
-By default the Medusa server is running at port 9000, so if you didn't change that we are good to go to our next step.
+By default, the Medusa server is running at port 9000. So if you didn't change that, we are good to go to our next step.
 
 ## Update the `STORE_CORS` variable
 
 Here let's navigate to your Medusa server and open `medusa-config.js`
 
-Let's locate the `STORE_CORS` variable and make sure it's the right port (which is 3000 by default for Next.js projects)
+Let's locate the `STORE_CORS` variable and make sure it's the right port (which is 3000 by default for Next.js projects).
 
 ```js
 /*

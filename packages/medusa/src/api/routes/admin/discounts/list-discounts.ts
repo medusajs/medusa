@@ -1,7 +1,6 @@
-import { Type, Transform } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsBoolean,
-  IsEnum,
   IsInt,
   IsOptional,
   IsString,
@@ -9,12 +8,10 @@ import {
 } from "class-validator"
 import _, { pickBy } from "lodash"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-import {
-  AllocationType,
-  DiscountRuleType,
-} from "../../../../models/discount-rule"
+import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
-import { DateComparisonOperator } from "../../../../types/common"
+import { FindConfig } from "../../../../types/common"
+import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts
@@ -46,9 +43,12 @@ export default async (req, res) => {
 
   const discountService: DiscountService = req.scope.resolve("discountService")
 
-  const listConfig = {
+  const relations =
+    validated.expand?.split(",") ?? defaultAdminDiscountsRelations
+
+  const listConfig: FindConfig<Discount> = {
     select: defaultAdminDiscountsFields,
-    relations: defaultAdminDiscountsRelations,
+    relations,
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },
@@ -69,17 +69,12 @@ export default async (req, res) => {
   })
 }
 
-class AdminGetDiscountsDiscountRuleParams {
-  @IsOptional()
-  @IsEnum(DiscountRuleType)
-  type: DiscountRuleType
-
-  @IsOptional()
-  @IsEnum(AllocationType)
-  allocation: AllocationType
-}
-
 export class AdminGetDiscountsParams {
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => AdminGetDiscountsDiscountRuleParams)
+  rule?: AdminGetDiscountsDiscountRuleParams
+
   @IsString()
   @IsOptional()
   q?: string
@@ -93,11 +88,6 @@ export class AdminGetDiscountsParams {
   @IsOptional()
   @Transform(({ value }) => value === "true")
   is_disabled?: boolean
-
-  @ValidateNested()
-  @IsOptional()
-  @Type(() => AdminGetDiscountsDiscountRuleParams)
-  rule?: AdminGetDiscountsDiscountRuleParams
 
   @IsInt()
   @IsOptional()

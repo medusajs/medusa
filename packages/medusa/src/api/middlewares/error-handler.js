@@ -32,7 +32,7 @@ export default () => {
           "The request conflicted with another request. You may retry the request with the provided Idempotency-Key."
         break
       case MedusaError.Types.DUPLICATE_ERROR:
-        statusCode = 402
+        statusCode = 422
         errObj.code = INVALID_REQUEST_ERROR
         break
       case MedusaError.Types.NOT_ALLOWED:
@@ -46,7 +46,13 @@ export default () => {
         statusCode = 500
         errObj.code = API_ERROR
         break
+      case MedusaError.Types.UNEXPECTED_STATE:
+      case MedusaError.Types.INVALID_ARGUMENT:
+        break
       default:
+        errObj.code = "unknown_error"
+        errObj.message = "An unknown error occurred."
+        errObj.type = "unknown_error"
         break
     }
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://github.com/medusajs/medusa/compare/gatsby-source-medusa@0.0.49...gatsby-source-medusa@0.1.0) (2022-05-01)
+
+
+### Bug Fixes
+
+* **gatsby-source-medusa:** adds support for incremental sourcing of medusa data ([#1217](https://github.com/medusajs/medusa/issues/1217)) ([23f8399](https://github.com/medusajs/medusa/commit/23f8399c16e3f3c7a01a6846b2b96750dde55a60))
+
+
+
+
+
 ## [0.0.49](https://github.com/medusajs/medusa/compare/gatsby-source-medusa@0.0.48...gatsby-source-medusa@0.0.49) (2022-02-06)
 
 ### Bug Fixes
