@@ -58,7 +58,7 @@ describe("/store/customers", () => {
       expect(response.data.customer).not.toHaveProperty("password_hash")
     })
 
-    it("responds 409 on duplicate", async () => {
+    it("responds 422 on duplicate", async () => {
       const api = useApi()
 
       const response = await api
@@ -70,7 +70,7 @@ describe("/store/customers", () => {
         })
         .catch((err) => err.response)
 
-      expect(response.status).toEqual(402)
+      expect(response.status).toEqual(422)
     })
   })
 

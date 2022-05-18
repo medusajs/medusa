@@ -5,7 +5,7 @@ import { Cart } from "../models/cart"
 @EntityRepository(Cart)
 export class CartRepository extends Repository<Cart> {
   public async findWithRelations(
-    relations: Array<keyof Cart> = [],
+    relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart[]> {
     const entities = await this.find(optionsWithoutRelations)
@@ -38,7 +38,7 @@ export class CartRepository extends Repository<Cart> {
   }
 
   public async findOneWithRelations(
-    relations: Array<keyof Cart> = [],
+    relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Cart>, "relations"> = {}
   ): Promise<Cart> {
     // Limit 1

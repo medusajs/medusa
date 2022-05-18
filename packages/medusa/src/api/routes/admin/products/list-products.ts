@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -8,17 +8,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { pickBy, omit } from "lodash"
-import { MedusaError } from "medusa-core-utils"
+import { omit } from "lodash"
 import { Product } from "../../../../models/product"
+import { DateComparisonOperator } from "../../../../types/common"
 import {
   allowedAdminProductFields,
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "."
-import { ProductService } from "../../../../services"
-import { FindConfig, DateComparisonOperator } from "../../../../types/common"
+import listAndCount from "../../../../controllers/products/admin-list-products"
 import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /products
@@ -71,47 +71,6 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validatedParams = await validator(AdminGetProductsParams, req.query)
 
-  const productService: ProductService = req.scope.resolve("productService")
-
-  let includeFields: string[] = []
-  if (validatedParams.fields) {
-    includeFields = validatedParams.fields!.split(",")
-  }
-
-  let expandFields: string[] = []
-  if (validatedParams.expand) {
-    expandFields = validatedParams.expand!.split(",")
-  }
-
-  const listConfig: FindConfig<Product> = {
-    select: (includeFields.length
-      ? includeFields
-      : defaultAdminProductFields) as (keyof Product)[],
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminProductRelations,
-    skip: validatedParams.offset,
-    take: validatedParams.limit,
-  }
-
-  if (typeof validatedParams.order !== "undefined") {
-    let orderField = validatedParams.order
-    if (validatedParams.order.startsWith("-")) {
-      const [, field] = validatedParams.order.split("-")
-      orderField = field
-      listConfig.order = { [field]: "DESC" }
-    } else {
-      listConfig.order = { [validatedParams.order]: "ASC" }
-    }
-
-    if (!allowedAdminProductFields.includes(orderField)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Order field must be a valid product field"
-      )
-    }
-  }
-
   const filterableFields = omit(validatedParams, [
     "limit",
     "offset",
@@ -120,17 +79,22 @@ export default async (req, res) => {
     "order",
   ])
 
-  const [products, count] = await productService.listAndCount(
-    pickBy(filterableFields, (val) => typeof val !== "undefined"),
-    listConfig
+  const result = await listAndCount(
+    req.scope,
+    filterableFields,
+    {},
+    {
+      limit: validatedParams.limit ?? 50,
+      offset: validatedParams.offset ?? 0,
+      expand: validatedParams.expand,
+      fields: validatedParams.fields,
+      allowedFields: allowedAdminProductFields,
+      defaultFields: defaultAdminProductFields as (keyof Product)[],
+      defaultRelations: defaultAdminProductRelations,
+    }
   )
 
-  res.json({
-    products,
-    count,
-    offset: validatedParams.offset,
-    limit: validatedParams.limit,
-  })
+  res.json(result)
 }
 
 export enum ProductStatus {
@@ -181,6 +145,10 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   @IsOptional()
   tags?: string[]
 
+  @IsArray()
+  @IsOptional()
+  price_list_id?: string[]
+
   @IsString()
   @IsOptional()
   title?: string
@@ -195,8 +163,8 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
 
   @IsBoolean()
   @IsOptional()
-  @Type(() => Boolean)
-  is_giftcard?: string
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  is_giftcard?: boolean
 
   @IsString()
   @IsOptional()

@@ -1,19 +1,16 @@
 import {
-  Entity,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
   Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  OneToMany,
   PrimaryColumn,
-  ManyToMany,
-  JoinTable,
+  UpdateDateColumn,
 } from "typeorm"
 import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
-
-import { Product } from "./product"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DiscountCondition } from "./discount-condition"
 
 export enum DiscountRuleType {
   FIXED = "fixed",
@@ -50,19 +47,8 @@ export class DiscountRule {
   })
   allocation: AllocationType
 
-  @ManyToMany(() => Product, { cascade: true })
-  @JoinTable({
-    name: "discount_rule_products",
-    joinColumn: {
-      name: "discount_rule_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "product_id",
-      referencedColumnName: "id",
-    },
-  })
-  valid_for: Product[]
+  @OneToMany(() => DiscountCondition, (conditions) => conditions.discount_rule)
+  conditions: DiscountCondition[]
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -111,11 +97,11 @@ export class DiscountRule {
  *     enum:
  *       - total
  *       - item
- *   valid_for:
- *     description: "A set of Products that the discount can be used for."
+ *   conditions:
+ *     description: "A set of conditions that can be used to limit when  the discount can be used"
  *     type: array
  *     items:
- *       $ref: "#/components/schemas/product"
+ *       $ref: "#/components/schemas/discount_condition"
  *   created_at:
  *     description: "The date with timezone at which the resource was created."
  *     type: string

@@ -24,8 +24,10 @@ export default async (req, res) => {
   try {
     const customerService: CustomerService =
       req.scope.resolve("customerService")
-    const customer = await customerService.retrieveByEmail(email)
-    res.status(200).json({ exists: !!customer.password_hash })
+    const customer = await customerService.retrieveByEmail(email, {
+      select: ["has_account"],
+    })
+    res.status(200).json({ exists: customer.has_account })
   } catch (err) {
     res.status(200).json({ exists: false })
   }

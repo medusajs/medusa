@@ -22,8 +22,8 @@ interface IOperations {
   createCollectionsOperation: IMedusaOperation
   createRegionsOperation: IMedusaOperation
   createOrdersOperation: IMedusaOperation
-  incrementalProductsOperation: (date: Date) => IMedusaOperation
-  incrementalCollectionsOperation: (date: Date) => IMedusaOperation
-  incrementalRegionsOperation: (date: Date) => IMedusaOperation
-  incrementalOrdersOperation: (date: Date) => IMedusaOperation
+  incrementalProductsOperation: (date: string) => IMedusaOperation
+  incrementalCollectionsOperation: (date: string) => IMedusaOperation
+  incrementalRegionsOperation: (date: string) => IMedusaOperation
+  incrementalOrdersOperation: (date: string) => IMedusaOperation
 }

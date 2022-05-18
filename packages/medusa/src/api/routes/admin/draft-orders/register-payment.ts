@@ -56,7 +56,6 @@ export default async (req, res) => {
         relations: [
           "discounts",
           "discounts.rule",
-          "discounts.rule.valid_for",
           "shipping_methods",
           "region",
           "items",

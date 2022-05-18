@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
 import DiscountService from "../../../../services/discount"
 import { validator } from "../../../../utils/validator"
 /**
@@ -16,6 +17,7 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The id of the Discount to create the dynamic code from."
  *   - (body) code=* {string} The unique code that will be used to redeem the Discount.
+ *   - (body) usage_limit=* {number} amount of times the discount can be applied
  *   - (body) metadata {object} An optional set of key-value paris to hold additional information.
  * tags:
  *   - Discount
@@ -44,7 +46,8 @@ export default async (req, res) => {
   )
 
   const discount = await discountService.retrieve(created.id, {
-    relations: ["rule", "rule.valid_for", "regions"],
+    select: defaultAdminDiscountsFields,
+    relations: defaultAdminDiscountsRelations,
   })
 
   res.status(200).json({ discount })

@@ -1,6 +1,6 @@
 {
   "name": "medusa-file-spaces",
-  "version": "1.1.37",
+  "version": "1.2.0",
   "description": "Digital Ocean Spaces file connector for Medusa",
   "main": "index.js",
   "repository": {
@@ -24,7 +24,7 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^0.3.0"
+    "medusa-test-utils": "^1.1.37"
   },
   "scripts": {
     "build": "babel src -d .",

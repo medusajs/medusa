@@ -297,6 +297,62 @@ describe("/admin/draft-orders", () => {
       )
     })
 
+    it("creates a draft order with discount and line item", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        discounts: [{ code: "TEST" }],
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/draft-orders", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const draftOrder = response.data.draft_order
+      const lineItemId = draftOrder.cart.items[0].id
+
+      expect(response.status).toEqual(200)
+      expect(draftOrder.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant",
+            unit_price: 8000,
+            quantity: 2,
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: lineItemId,
+                amount: 1600,
+                description: "discount",
+                discount_id: "test-discount",
+              }),
+            ]),
+          }),
+        ])
+      )
+    })
+
     it("creates a draft order with created shipping address", async () => {
       const api = useApi()
 
