@@ -1,8 +1,8 @@
-import { EntityManager } from "typeorm"
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
-import { ProductTagRepository } from "../repositories/product-tag"
+import { BaseService } from "medusa-interfaces"
+import { EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import { ProductTag } from "../models/product-tag"
+import { ProductTagRepository } from "../repositories/product-tag"
 import { FindConfig } from "../types/common"
 import { FilterableProductTagProps } from "../types/product"
 
@@ -107,7 +107,24 @@ class ProductTagService extends BaseService {
   ): Promise<[ProductTag[], number]> {
     const tagRepo = this.manager_.getCustomRepository(this.tagRepo_)
 
+    let q: string | undefined = undefined
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.value
+
+      query.where = (qb: SelectQueryBuilder<ProductTag>): void => {
+        qb.where(where).andWhere([{ value: ILike(`%${q}%`) }])
+      }
+    }
+
     return await tagRepo.findAndCount(query)
   }
 }

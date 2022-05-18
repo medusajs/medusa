@@ -9,7 +9,7 @@ const productSeeder = require("../../helpers/product-seeder")
 
 jest.setTimeout(50000)
 
-describe("/admin/product-tags", () => {
+describe("/admin/product-types", () => {
   let medusaProcess
   let dbConnection
 
@@ -26,7 +26,7 @@ describe("/admin/product-tags", () => {
     medusaProcess.kill()
   })
 
-  describe("GET /admin/product-tags", () => {
+  describe("GET /admin/product-types", () => {
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
@@ -42,11 +42,11 @@ describe("/admin/product-tags", () => {
       await db.teardown()
     })
 
-    it("returns a list of product tags", async () => {
+    it("returns a list of product types", async () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/product-tags", {
+        .get("/admin/product-types", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -57,23 +57,22 @@ describe("/admin/product-tags", () => {
 
       expect(res.status).toEqual(200)
 
-      const tagMatch = {
+      const typeMatch = {
         created_at: expect.any(String),
         updated_at: expect.any(String),
       }
 
-      expect(res.data.product_tags).toMatchSnapshot([
-        tagMatch,
-        tagMatch,
-        tagMatch,
+      expect(res.data.product_types).toMatchSnapshot([
+        typeMatch,
+        typeMatch,
       ])
     })
 
-    it("returns a list of product tags matching free text search param", async () => {
+    it("returns a list of product types matching free text search param", async () => {
       const api = useApi()
 
       const res = await api
-        .get("/admin/product-tags?q=123", {
+        .get("/admin/product-types?q=test-type-new", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -84,21 +83,19 @@ describe("/admin/product-tags", () => {
 
       expect(res.status).toEqual(200)
 
-      const tagMatch = {
+      const typeMatch = {
         created_at: expect.any(String),
         updated_at: expect.any(String),
       }
 
-      expect(res.data.product_tags.map((pt) => pt.value)).toEqual([
-        "123",
-        "123",
-        "123",
+      // The value of the type should match the search param
+      expect(res.data.product_types.map((pt) => pt.value)).toEqual([
+        "test-type-new"
       ])
 
-      expect(res.data.product_tags).toMatchSnapshot([
-        tagMatch,
-        tagMatch,
-        tagMatch,
+      // Should only return one type as there is only one match to the search param
+      expect(res.data.product_types).toMatchSnapshot([
+        typeMatch
       ])
     })
   })
