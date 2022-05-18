@@ -44,25 +44,21 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     batchJobId: string,
     config: FindConfig<BatchJob> = {}
   ): Promise<BatchJob | never> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const batchJobRepo = transactionManager.getCustomRepository(
-          this.batchJobRepository_
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const batchJobRepo = manager.getCustomRepository(this.batchJobRepository_)
+
+      const query = buildQuery<BatchJob>({ id: batchJobId }, config)
+      const batchJob = await batchJobRepo.findOne(query)
+
+      if (!batchJob) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Batch job with id ${batchJobId} was not found`
         )
-
-        const query = buildQuery<BatchJob>({ id: batchJobId }, config)
-        const batchJob = await batchJobRepo.findOne(query)
-
-        if (!batchJob) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Batch job with id ${batchJobId} was not found`
-          )
-        }
-
-        return batchJob
       }
-    )
+
+      return batchJob
+    })
   }
 
   /*
@@ -91,10 +87,8 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     config: FindConfig<BatchJob> = { skip: 0, take: 20 }
   ): Promise<[BatchJob[], number]> {
     return await this.atomicPhase_(
-      async (
-        transactionManager: EntityManager
-      ): Promise<[BatchJob[], number]> => {
-        const batchJobRepo = transactionManager.getCustomRepository(
+      async (manager: EntityManager): Promise<[BatchJob[], number]> => {
+        const batchJobRepo = manager.getCustomRepository(
           this.batchJobRepository_
         )
 
