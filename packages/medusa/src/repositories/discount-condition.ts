@@ -306,7 +306,6 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
         condition.operator === DiscountConditionOperator.IN &&
         numConditions === 0
       ) {
-        console.warn("Throws on condition IN")
         return false
       }
 
