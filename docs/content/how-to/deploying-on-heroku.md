@@ -4,7 +4,7 @@ title: "Deploying on Heroku"
 
 # Deploying on Heroku
 
-This is a guide for deploying a Medusa project on Heroku. Heroku is a PaaS that allows you to easily deploy your applications in the cloud.
+This is a guide for deploying a Medusa project on Heroku. Heroku is a PaaS (Platform as a Service) that allows you to easily deploy your applications in the cloud.
 
 <div>
   <video width="100%" height="100%" playsinline autoplay muted controls>
