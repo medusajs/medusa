@@ -106,7 +106,7 @@ describe("PaymentProviderService", () => {
   })
 })
 
-describe(`PaymentProviderService (Legacy)`, () => {
+describe(`PaymentProviderService (with legacy base payment service)`, () => {
   const container = {
     manager: MockManager,
     paymentSessionRepository: MockRepository({
@@ -286,7 +286,7 @@ describe(`PaymentProviderService (Legacy)`, () => {
   })
 })
 
-describe(`PaymentProviderService (New version)`, () => {
+describe(`PaymentProviderService (with new base payment service)`, () => {
   const container = {
     manager: MockManager,
     paymentSessionRepository: MockRepository({
