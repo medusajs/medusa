@@ -1,4 +1,5 @@
 import { MedusaError } from "medusa-core-utils"
+import { BasePaymentService } from "medusa-interfaces"
 import { AbstractPaymentService, TransactionBaseService } from "../interfaces"
 import { EntityManager } from "typeorm"
 import { PaymentSessionRepository } from "../repositories/payment-session"
@@ -297,9 +298,13 @@ export default class PaymentProviderService extends TransactionBaseService<
    * @param {string} providerId - the id of the provider to get
    * @return {PaymentService} the payment provider
    */
-  retrieveProvider<TProvider extends AbstractPaymentService>(
+  retrieveProvider<
+    TProvider extends AbstractPaymentService | typeof BasePaymentService
+  >(
     providerId: string
-  ): TProvider {
+  ): TProvider extends AbstractPaymentService
+    ? AbstractPaymentService
+    : typeof BasePaymentService {
     try {
       let provider
       if (providerId === "system") {
@@ -519,6 +524,7 @@ export default class PaymentProviderService extends TransactionBaseService<
         let paymentToRefund = payments.find(
           (payment) => payment.amount - payment.amount_refunded > 0
         )
+
         while (paymentToRefund) {
           const currentRefundable =
             paymentToRefund.amount - paymentToRefund.amount_refunded
@@ -529,6 +535,7 @@ export default class PaymentProviderService extends TransactionBaseService<
           paymentToRefund.data = await provider
             .withTransaction(transactionManager)
             .refundPayment(paymentToRefund, refundAmount)
+
           paymentToRefund.amount_refunded += refundAmount
           await paymentRepo.save(paymentToRefund)
 
