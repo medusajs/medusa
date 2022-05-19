@@ -4,13 +4,13 @@ import {
   EntityTarget,
   In,
   Not,
-  Repository,
+  Repository
 } from "typeorm"
 import { Discount } from "../models"
 import {
   DiscountCondition,
   DiscountConditionOperator,
-  DiscountConditionType,
+  DiscountConditionType
 } from "../models/discount-condition"
 import { DiscountConditionCustomerGroup } from "../models/discount-condition-customer-group"
 import { DiscountConditionProduct } from "../models/discount-condition-product"
@@ -282,6 +282,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       .where("discon.discount_rule_id = :discountRuleId", {
         discountRuleId,
       })
+      .andWhere("discon.type = :type", { type: DiscountConditionType.CUSTOMER_GROUPS })
       .getMany()
 
     // in case of no discount conditions, we assume that the discount
