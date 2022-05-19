@@ -7,11 +7,11 @@ class TestPayLegacyService extends PaymentService {
     return TestPayLegacyService.identifier
   }
 
-  constructor() {
-    super()
+  constructor(...args) {
+    super(...args)
   }
 
-  withTransaction(...args) {
+  withTransaction() {
       return this
   }
 

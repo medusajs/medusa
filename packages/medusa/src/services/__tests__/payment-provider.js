@@ -339,8 +339,8 @@ describe(`PaymentProviderService (with new base payment service)`, () => {
       total: 100,
     })
 
-    expect(TestPayLegacyService.prototype.createPayment).toBeCalledTimes(1)
-    expect(TestPayLegacyService.prototype.createPayment).toBeCalledWith({
+    expect(TestPayService.prototype.createPayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.createPayment).toBeCalledWith({
       total: 100,
     })
   })
@@ -359,8 +359,8 @@ describe(`PaymentProviderService (with new base payment service)`, () => {
       }
     )
 
-    expect(TestPayLegacyService.prototype.updatePayment).toBeCalledTimes(1)
-    expect(TestPayLegacyService.prototype.updatePayment).toBeCalledWith(
+    expect(TestPayService.prototype.updatePayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.updatePayment).toBeCalledWith(
       { id: "1234" },
       {
         total: 100,
@@ -382,8 +382,8 @@ describe(`PaymentProviderService (with new base payment service)`, () => {
       }
     )
 
-    expect(TestPayLegacyService.prototype.deletePayment).toBeCalledTimes(1)
-    expect(TestPayLegacyService.prototype.createPayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.deletePayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.createPayment).toBeCalledTimes(1)
   })
 
   it("successfully delete session", async () => {
@@ -397,7 +397,7 @@ describe(`PaymentProviderService (with new base payment service)`, () => {
       }
     )
 
-    expect(TestPayLegacyService.prototype.deletePayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.deletePayment).toBeCalledTimes(1)
   })
 
   it("successfully delete session", async () => {
@@ -411,7 +411,7 @@ describe(`PaymentProviderService (with new base payment service)`, () => {
       }
     )
 
-    expect(TestPayLegacyService.prototype.deletePayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.deletePayment).toBeCalledTimes(1)
   })
 
   it("successfully authorize payment", async () => {
@@ -426,7 +426,7 @@ describe(`PaymentProviderService (with new base payment service)`, () => {
       {}
     )
 
-    expect(TestPayLegacyService.prototype.authorizePayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.authorizePayment).toBeCalledTimes(1)
   })
 
   it("successfully update session data", async () => {
@@ -441,27 +441,27 @@ describe(`PaymentProviderService (with new base payment service)`, () => {
       {}
     )
 
-    expect(TestPayLegacyService.prototype.updatePaymentData).toBeCalledTimes(1)
+    expect(TestPayService.prototype.updatePaymentData).toBeCalledTimes(1)
   })
 
   it("successfully cancel payment", async () => {
     await providerService.cancelPayment({
       id: "pay_jadazdjk"
     })
-    expect(TestPayLegacyService.prototype.cancelPayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.cancelPayment).toBeCalledTimes(1)
   })
 
   it("successfully capture payment", async () => {
     await providerService.capturePayment({
       id: "pay_jadazdjk"
     })
-    expect(TestPayLegacyService.prototype.capturePayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.capturePayment).toBeCalledTimes(1)
   })
 
   it("successfully refund payment", async () => {
     await providerService.refundPayment([{
       id: "pay_jadazdjk"
     }], 50)
-    expect(TestPayLegacyService.prototype.refundPayment).toBeCalledTimes(1)
+    expect(TestPayService.prototype.refundPayment).toBeCalledTimes(1)
   })
 })
