@@ -16,8 +16,8 @@ import {
   UpdatePriceListInput,
 } from "../types/price-list"
 import { formatException } from "../utils/exception-formatter"
-import RegionService from "./region"
 import ProductService from "./product"
+import RegionService from "./region"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -232,11 +232,12 @@ class PriceListService extends BaseService {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
       const priceList = await priceListRepo.findOne({ where: { id: id } })
+
       if (!priceList) {
         return Promise.resolve()
       }
 
-      await priceListRepo.delete(priceList)
+      await priceListRepo.remove(priceList)
 
       return Promise.resolve()
     })

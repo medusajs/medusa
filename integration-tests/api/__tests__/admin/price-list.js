@@ -945,6 +945,19 @@ describe("/admin/price-lists", () => {
         object: "price-list",
         deleted: true,
       })
+
+      try {
+        await api.get("/admin/price-lists/pl_no_customer_groups", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.status).toBe(404)
+        expect(error.response.data.message).toEqual(
+          "Price list with id: pl_no_customer_groups was not found"
+        )
+      }
     })
   })
 
