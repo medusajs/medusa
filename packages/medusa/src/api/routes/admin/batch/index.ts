@@ -10,12 +10,6 @@ export default (app) => {
   const route = Router()
   app.use("/batch", route)
 
-  route.get(
-    "/",
-    middlewares.normalizeQuery(),
-    middlewares.wrap(require("./list-batch-jobs").default)
-  )
-
   const routerOnBatch = Router()
   route.use("/:id", getRequestedBatchJob, canAccessBatchJob, routerOnBatch)
   routerOnBatch.post(
