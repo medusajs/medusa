@@ -15,8 +15,9 @@ type InjectedDependencies = {
 }
 
 class BatchJobService extends TransactionBaseService<BatchJobService> {
-  protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly batchJobRepository_: typeof BatchJobRepository
   protected readonly eventBus_: EventBusService
 
