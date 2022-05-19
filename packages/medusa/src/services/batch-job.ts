@@ -14,8 +14,8 @@ type InjectedDependencies = {
 }
 
 class BatchJobService extends TransactionBaseService<BatchJobService> {
-  protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
   protected readonly batchJobRepository_: typeof BatchJobRepository
 
   static readonly Events = {
@@ -25,8 +25,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   }
 
   constructor({ manager, batchJobRepository }: InjectedDependencies) {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    super({ manager, batchJobRepository })
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
