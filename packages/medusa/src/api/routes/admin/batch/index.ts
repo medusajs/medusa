@@ -18,11 +18,6 @@ export default (app) => {
 
   const routerOnBatch = Router()
   route.use("/:id", getRequestedBatchJob, canAccessBatchJob, routerOnBatch)
-  routerOnBatch.get("/", middlewares.wrap(require("./get-batch-job").default))
-  routerOnBatch.post(
-    "/complete",
-    middlewares.wrap(require("./confirm-batch-job").default)
-  )
   routerOnBatch.post(
     "/cancel",
     middlewares.wrap(require("./cancel-batch-job").default)
@@ -52,5 +47,3 @@ export const defaultAdminBatchFields = [
   "updated_at",
   "deleted_at",
 ]
-
-export * from "./list-batch-jobs"
