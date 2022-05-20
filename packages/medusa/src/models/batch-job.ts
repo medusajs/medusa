@@ -48,7 +48,7 @@ export class BatchJob extends SoftDeletableEntity {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at: Date | null
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  @CreateDateColumn({ type: resolveDbType("timestamptz"), nullable: true })
   cancelled_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
