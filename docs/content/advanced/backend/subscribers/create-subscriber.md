@@ -6,7 +6,7 @@ title: Create a Subscriber
 
 # Create a Subscriber
 
-In this document, you’ll learn how you create a subscriber in your Medusa server that listens to events to perform an action.
+In this document, you’ll learn how you create a Subscriber in your Medusa server that listens to events to perform an action.
 
 ## Overview
 
@@ -16,7 +16,7 @@ The purpose of these events is to allow other parts of the platform, or third-pa
 
 Subscribers register handlers for an events and allows you to perform an action when that event occurs. For example, if you want to send your customer an email when they place an order, then you can listen to the `order.placed` event and send the email when the event is emitted.
 
-Natively in Medusa there are subscribers to handle different events. However, you can also create your own custom subscribers. 
+Natively in Medusa, there are subscribers to handle different events. However, you can also create your own custom subscribers. 
 
 Custom subscribers reside in your project's `src/subscribers` directory. Files here should export classes, which will be treated as subscribers by Medusa. By convention, the class name should end with `Subscriber` and the file name should be the camel-case version of the class name without `Subscriber`. For example, the `WelcomeSubscriber` class is in the file `src/subscribers/welcome.js`.
 
