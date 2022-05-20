@@ -42,12 +42,6 @@ export class BatchJob {
   processing_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  awaiting_confirmation_at: Date | null
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  confirmed_at: Date | null
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
   @UpdateDateColumn({ type: resolveDbType("timestamptz") })
@@ -87,7 +81,6 @@ export class BatchJob {
  *    enum:
  *      - created
  *      - processing
- *      - awaiting_confirmation
  *      - completed
  *  created_by:
  *    description: "The unique identifier of the user that created the batch job."
