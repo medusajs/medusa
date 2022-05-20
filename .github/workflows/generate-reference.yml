@@ -1,10 +1,10 @@
-name: Generate Services Reference
+name: Generate References
 on: 
   push:
     branches:
       - 'master'
 jobs:
-  Explore-GitHub-Actions:
+  services:
     runs-on: ubuntu-latest
     steps:
       - name: Cancel Previous Runs
@@ -37,3 +37,4 @@ jobs:
           commit_message: Automatically Generated Services Reference
           file_pattern: docs/content/*
           skip_dirty_check: false
+
