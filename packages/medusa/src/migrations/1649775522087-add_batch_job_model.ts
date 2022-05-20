@@ -5,7 +5,7 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TYPE "batch_job_status_enum" AS ENUM('created', 'processing', 'awaiting_confirmation', 'cancelled', 'completed')`
+      `CREATE TYPE "batch_job_status_enum" AS ENUM('created', 'processing', 'awaiting_confirmation', 'canceled', 'completed')`
     )
 
     await queryRunner.query(
@@ -22,7 +22,7 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
              "awaiting_confirmation_at" TIMESTAMP WITH TIME ZONE,
              "confirmed_at"             TIMESTAMP WITH TIME ZONE,
              "completed_at"             TIMESTAMP WITH TIME ZONE,
-             "cancelled_at"             TIMESTAMP WITH TIME ZONE,
+             "canceled_at"             TIMESTAMP WITH TIME ZONE,
              "updated_at"               TIMESTAMP WITH TIME ZONE         NOT NULL DEFAULT now(),
              "deleted_at"               TIMESTAMP WITH TIME ZONE,
              CONSTRAINT "PK_e57f84d485145d5be96bc6d871e" PRIMARY KEY ("id")
