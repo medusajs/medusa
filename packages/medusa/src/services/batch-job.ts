@@ -1,5 +1,4 @@
 import { DeepPartial, EntityManager } from "typeorm"
-
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import {
@@ -11,7 +10,7 @@ import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
-import EventBusService from "../../dist/services/event-bus"
+import { EventBusService } from "./index"
 
 type InjectedDependencies = {
   manager: EntityManager
