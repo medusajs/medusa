@@ -38,6 +38,10 @@ export default (app) => {
     "/cancel",
     middlewares.wrap(require("./cancel-batch-job").default)
   )
+  routerOnBatch.post(
+    "/cancel",
+    middlewares.wrap(require("./cancel-batch-job").default)
+  )
 
   return app
 }
