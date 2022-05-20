@@ -5,6 +5,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
+const userSeeder = require("../../helpers/user-seeder")
 const { simpleBatchJobFactory } = require("../../factories")
 
 jest.setTimeout(50000)
@@ -13,6 +14,40 @@ const adminReqConfig = {
   headers: {
     Authorization: "Bearer test_token",
   },
+}
+
+const tryToCreateSomeJobs = async (dbConnection) => {
+  try {
+    await adminSeeder(dbConnection)
+    await userSeeder(dbConnection)
+
+    await simpleBatchJobFactory(dbConnection, {
+      id: "job_1",
+      type: "batch_1",
+      created_by: "admin_user",
+    })
+    await simpleBatchJobFactory(dbConnection, {
+      id: "job_2",
+      type: "batch_2",
+      awaiting_confirmation_at: new Date(),
+      created_by: "admin_user",
+    })
+    await simpleBatchJobFactory(dbConnection, {
+      id: "job_3",
+      type: "batch_2",
+      awaiting_confirmation_at: new Date(),
+      created_by: "admin_user",
+    })
+    await simpleBatchJobFactory(dbConnection, {
+      id: "job_4",
+      type: "batch_1",
+      status: "awaiting_confirmation",
+      created_by: "member-user",
+    })
+  } catch (err) {
+    console.log(err)
+    throw err
+  }
 }
 
 describe("/admin/batch", () => {
@@ -34,32 +69,7 @@ describe("/admin/batch", () => {
 
   describe("GET /admin/batch", () => {
     beforeEach(async () => {
-      try {
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_1",
-          type: "batch_1",
-          created_by: "admin_user",
-        })
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_2",
-          type: "batch_2",
-          created_by: "admin_user",
-        })
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_3",
-          type: "batch_2",
-          created_by: "admin_user",
-        })
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_4",
-          type: "batch_1",
-          created_by: "not_this_user",
-        })
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await tryToCreateSomeJobs(dbConnection)
     })
 
     afterEach(async () => {
@@ -78,72 +88,34 @@ describe("/admin/batch", () => {
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            created_by: "admin_user"
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            created_by: "admin_user"
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            created_by: "admin_user"
           },
         ],
       })
     })
   })
 
-  describe("POST /admin/batch", () => {
-  let medusaProcess
-  let dbConnection
-
-  beforeAll(async () => {
-    const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
-  })
-
-  afterAll(async () => {
-    const db = useDb()
-    await db.shutdown()
-
-    medusaProcess.kill()
-  })
-
-  describe("POST /:id/complete", () => {
-    beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-        await userSeeder(dbConnection)
-
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_1",
-          type: "batch_1",
-          created_by: "admin_user",
-        })
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_2",
-          type: "batch_1",
-          awaiting_confirmation_at: new Date(),
-          created_by: "admin_user",
-        })
-        await simpleBatchJobFactory(dbConnection, {
-          id: "job_3",
-          type: "batch_1",
-          status: "awaiting_confirmation",
-          created_by: "member-user",
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+  /*describe("POST /admin/batch/:id/confirm", () => {
+    beforeEach(async() => {
+      await tryToCreateSomeJobs(dbConnection)
     })
 
-    afterEach(async () => {
+    afterEach(async() => {
       const db = useDb()
       await db.teardown()
     })
 
-    it("Requests completion of batch job created by the user", async () => {
+    it("Requests completion of batch job created by the user", async() => {
       const api = useApi()
 
       const jobId = "job_2"
@@ -163,13 +135,13 @@ describe("/admin/batch", () => {
       })
     })
 
-    it("Fails to confirm a batch job created by a different user", async () => {
+    it("Fails to confirm a batch job created by a different user", async() => {
       const api = useApi()
 
-      const jobId = "job_3"
+      const jobId = "job_4"
 
       await api
-        .post(`/admin/batch/${jobId}/complete`, {}, adminReqConfig)
+        .post(`/admin/batch/${jobId}/confirm`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
@@ -178,5 +150,5 @@ describe("/admin/batch", () => {
           )
         })
     })
-  })
+  })*/
 })
