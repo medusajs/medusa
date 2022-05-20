@@ -31,7 +31,7 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
                 ADD CONSTRAINT "FK_fa53ca4f5fd90605b532802a626" FOREIGN KEY ("created_by") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
-    `ALTER TABLE "batch_job" ADD CONSTRAINT "FK_cdf30493ba1c9ef207e1e80c10a" FOREIGN KEY ("created_by") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    `ALTER TABLE "batch_job" ADD CONSTRAINT "FK_fa53ca4f5fd90605b532802a626" FOREIGN KEY ("created_by") REFERENCES "user"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
   }
 
@@ -39,9 +39,6 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
     await queryRunner.query(
         `ALTER TABLE "batch_job"
                 DROP CONSTRAINT "FK_fa53ca4f5fd90605b532802a626"`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "batch_job" DROP CONSTRAINT "FK_cdf30493ba1c9ef207e1e80c10a"`
     )
     await queryRunner.query(`DROP TABLE "batch_job"`)
   }
