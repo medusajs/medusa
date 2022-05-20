@@ -8,8 +8,8 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
 
 ```js
 {
-  space_id: CONTENTFUL_SPACE_ID,
-  access_token: CONTENTFUL_ACCESS_TOKEN,
-  environment: CONTENTFUL_ENV,
+  space_id: "CONTENTFUL_SPACE_ID",
+  access_token: "CONTENTFUL_ACCESS_TOKEN",
+  environment: "CONTENTFUL_ENV",
 }
 ```
