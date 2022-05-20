@@ -2,9 +2,11 @@
 
 Meilisearch Plugin for Medusa to search for products.
 
-## Plugin Options
+Learn more about how you can use this plugin in the [documentaion](https://docs.medusajs.com/add-plugins/meilisearch).
 
-```
+## Options
+
+```js
 {
   config: {
     host: [your meilisearch host],
