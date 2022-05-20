@@ -14,6 +14,7 @@ export enum BatchJobStatus {
   PROCESSING = "processing",
   AWAITING_CONFIRMATION = "awaiting_confirmation",
   COMPLETED = "completed",
+  CONFIRMED = "confirmed",
 }
 
 export class FilterableBatchJobProps {
