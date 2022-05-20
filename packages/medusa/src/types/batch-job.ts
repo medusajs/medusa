@@ -14,9 +14,14 @@ export enum BatchJobStatus {
   CREATED = "created",
   PROCESSING = "processing",
   AWAITING_CONFIRMATION = "awaiting_confirmation",
+  CANCELLED = "cancelled",
   COMPLETED = "completed",
   CONFIRMED = "confirmed",
 }
+
+export type BatchJobUpdateProps = Partial<
+  Pick<BatchJob, "type" | "context" | "result" | "status">
+>
 
 export class FilterableBatchJobProps {
   @IsOptional()
