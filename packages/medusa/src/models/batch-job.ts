@@ -49,7 +49,7 @@ export class BatchJob extends SoftDeletableEntity {
   completed_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  cancelled_at: Date | null
+  canceled_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -128,7 +128,7 @@ export class BatchJob extends SoftDeletableEntity {
  *    description: "The date of the completion."
  *    type: string
  *    format: date-time
-  *  cancelled_at:
+  *  canceled_at:
  *    description: "The date of the concellation."
  *    type: string
  *    format: date-time

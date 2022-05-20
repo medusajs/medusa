@@ -3,7 +3,8 @@ import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import {
   BatchJobCreateProps,
-  BatchJobStatus, BatchJobUpdateProps,
+  BatchJobStatus,
+  BatchJobUpdateProps,
   FilterableBatchJobProps,
 } from "../types/batch-job"
 import { FindConfig } from "../types/common"
@@ -168,8 +169,8 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
           case BatchJobStatus.COMPLETED:
             batchJob.completed_at = new Date()
             break
-          case BatchJobStatus.CANCELLED:
-            batchJob.cancelled_at = new Date()
+          case BatchJobStatus.CANCELED:
+            batchJob.canceled_at = new Date()
             break
         }
       }
@@ -214,6 +215,38 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       await this.eventBus_
         .withTransaction(manager)
         .emit(BatchJobService.Events.COMPLETED, {
+          id: batchJob.id,
+        })
+
+      return batchJob
+    })
+  }
+
+  async cancel(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
+
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
+
+      if (batchJob.status === BatchJobStatus.COMPLETED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot cancel completed batch job"
+        )
+      }
+
+      batchJob.canceled_at = new Date()
+      batchJob.status = BatchJobStatus.CANCELED
+      await batchJobRepo.save(batchJob)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(BatchJobService.Events.CANCELED, {
           id: batchJob.id,
         })
 
