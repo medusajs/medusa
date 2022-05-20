@@ -8,6 +8,7 @@ import {
 } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator } from "./common"
+import { BatchJob } from "../models"
 
 export enum BatchJobStatus {
   CREATED = "created",
@@ -44,4 +45,11 @@ export class FilterableBatchJobProps {
   @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
+}
+
+export type BatchJobCreateProps = Pick<
+  BatchJob,
+  "context" | "type" | "created_by"
+> & {
+  dry_run: boolean
 }
