@@ -1,10 +1,12 @@
 # medusa-plugin-algolia
 
-algolia Plugin for Medusa to search for products.
+Algolia Plugin for Medusa to search for products.
 
-## Plugin Options
+Learn more about how you can use this plugin in the [documentaion](https://docs.medusajs.com/add-plugins/algolia).
 
-```
+## Options
+
+```js
 {
   application_id: "someId",
   admin_api_key: "someApiKey",
