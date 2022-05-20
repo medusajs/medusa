@@ -108,7 +108,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       const toCreate = {
         status: BatchJobStatus.CREATED,
         ...data,
-        ...validatedContext,
+        context: validatedContext,
       } as DeepPartial<BatchJob>
 
       const batchJob = await batchJobRepo.create(toCreate)
