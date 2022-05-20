@@ -5,6 +5,8 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
+const userSeeder = require("../../helpers/user-seeder")
+
 const { simpleBatchJobFactory } = require("../../factories")
 
 jest.setTimeout(50000)
@@ -35,6 +37,8 @@ describe("/admin/batch", () => {
   describe("GET /admin/batch", () => {
     beforeEach(async () => {
       try {
+        await adminSeeder(dbConnection)
+        await userSeeder(dbConnection)
         await simpleBatchJobFactory(dbConnection, {
           id: "job_1",
           type: "batch_1",
@@ -53,9 +57,8 @@ describe("/admin/batch", () => {
         await simpleBatchJobFactory(dbConnection, {
           id: "job_4",
           type: "batch_1",
-          created_by: "not_this_user",
+          created_by: "member-user",
         })
-        await adminSeeder(dbConnection)
       } catch (err) {
         console.log(err)
         throw err
@@ -78,21 +81,24 @@ describe("/admin/batch", () => {
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            created_by: "admin_user"
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            created_by: "admin_user"
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            created_by: "admin_user"
           },
         ],
       })
     })
   })
 
-   describe("POST /admin/batch/", () => {
+  describe("POST /admin/batch/", () => {
     beforeEach(async() => {
       try {
         await adminSeeder(dbConnection)
