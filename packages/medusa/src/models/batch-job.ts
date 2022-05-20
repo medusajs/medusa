@@ -5,12 +5,15 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   UpdateDateColumn,
 } from "typeorm"
 import { BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { User } from "./user"
 
 @Entity()
 export class BatchJob extends SoftDeletableEntity {
@@ -20,8 +23,12 @@ export class BatchJob extends SoftDeletableEntity {
   @DbAwareColumn({ type: "enum", enum: BatchJobStatus })
   status: BatchJobStatus
 
-  @Column({ type: "text", nullable: true })
+  @Column({ nullable: true })
   created_by: string | null
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: "created_by" })
+  created_by_user: User
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   context: Record<string, unknown>
@@ -40,6 +47,9 @@ export class BatchJob extends SoftDeletableEntity {
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at: Date | null
+
+  @CreateDateColumn({ type: resolveDbType("timestamptz") })
+  cancelled_at: Date | null
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
