@@ -1,4 +1,5 @@
 const path = require("path")
+import { BatchJobStatus } from "@medusajs/medusa"
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -272,6 +273,82 @@ describe("/admin/batch-jobs", () => {
 
       await api
         .post(`/admin/batch-jobs/${jobId}/cancel`, {}, adminReqConfig)
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("not_allowed")
+          expect(err.response.data.message).toEqual(
+            "Cannot cancel completed batch job"
+          )
+        })
+    })
+  })
+
+  describe("POST /admin/batch/:id/cancel", () => {
+    beforeEach(async () => {
+      try {
+        await setupJobDb(dbConnection)
+        await simpleBatchJobFactory(dbConnection, {
+          id: "job_complete",
+          type: "batch_1",
+          created_by: "admin_user",
+          completed_at: new Date(),
+        })
+      } catch (e) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("Cancels batch job created by the user", async () => {
+      const api = useApi()
+
+      const jobId = "job_1"
+
+      const response = await api.post(
+        `/admin/batch/${jobId}/cancel`,
+        {},
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.batch_job).toMatchSnapshot({
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        canceled_at: expect.any(String),
+        status: "canceled",
+      })
+    })
+
+    it("Fails to cancel a batch job created by a different user", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      const jobId = "job_4"
+
+      api
+        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.type).toEqual("not_allowed")
+          expect(err.response.data.message).toEqual(
+            "Cannot access a batch job that does not belong to the logged in user"
+          )
+        })
+    })
+
+    it("Fails to cancel a batch job that is already complete", async () => {
+      expect.assertions(3)
+      const api = useApi()
+
+      const jobId = "job_complete"
+
+      await api
+        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
