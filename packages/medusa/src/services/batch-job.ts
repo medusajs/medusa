@@ -336,6 +336,85 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       return await this.updateStatus(batchJobOrId, BatchJobStatus.FAILED)
     })
   }
+
+  async update(
+    batchJobId: string,
+    data: BatchJobUpdateProps
+  ): Promise<BatchJob> {
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
+
+      const batchJob = await this.retrieve(batchJobId)
+
+      const { status, ...rest } = data
+
+      if (typeof status !== "undefined") {
+        batchJob.status = status
+
+        switch (status) {
+          case BatchJobStatus.PROCESSING:
+            batchJob.processing_at = new Date()
+            break
+          case BatchJobStatus.AWAITING_CONFIRMATION:
+            batchJob.awaiting_confirmation_at = new Date()
+            break
+          case BatchJobStatus.COMPLETED:
+            batchJob.completed_at = new Date()
+            break
+          case BatchJobStatus.CANCELLED:
+            batchJob.cancelled_at = new Date()
+            break
+        }
+      }
+
+      Object.keys(rest)
+        .filter((restKey) => typeof rest[restKey] !== `undefined`)
+        .forEach((restKey) => {
+          batchJob[restKey] = rest[restKey]
+        })
+
+      return await batchJobRepo.save(batchJob)
+    })
+  }
+
+  /*
+   * if job is started with dry_run: true, then it's required
+   * to complete the job before it's written to DB
+   */
+  async complete(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
+
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
+
+      if (batchJob.status !== BatchJobStatus.AWAITING_CONFIRMATION) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Cannot complete a batch job with status "${batchJob.status}"`
+        )
+      }
+
+      batchJob.completed_at = new Date()
+      batchJob.status = BatchJobStatus.COMPLETED
+
+      await batchJobRepo.save(batchJob)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(BatchJobService.Events.COMPLETED, {
+          id: batchJob.id,
+        })
+
+      return batchJob
+    })
+  }
 }
 
 export default BatchJobService
