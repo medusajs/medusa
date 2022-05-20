@@ -45,9 +45,6 @@ Object {
 
 exports[`/admin/batch POST /admin/batch/ Creates a batch job 1`] = `
 Object {
-  "awaiting_confirmation_at": null,
-  "cancelled_at": null,
-  "confirmed_at": null,
   "context": "{}",
   "created_at": Any<String>,
   "created_by": "admin_user",

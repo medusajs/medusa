@@ -102,7 +102,6 @@ export class BatchJob extends SoftDeletableEntity {
  *    enum:
  *      - created
  *      - processing
- *      - awaiting_confirmation
  *      - completed
  *  created_by:
  *    description: "The unique identifier of the user that created the batch job."
