@@ -13,6 +13,8 @@ export default (app) => {
     middlewares.normalizeQuery(),
     middlewares.wrap(require("./list-batch-jobs").default)
   )
+  route.post("/", middlewares.wrap(require("./create-batch-job").default))
+
   return app
 }
 
