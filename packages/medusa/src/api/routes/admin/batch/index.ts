@@ -1,7 +1,10 @@
 import { Router } from "express"
 import { BatchJob } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, {
+  getRequestedBatchJob,
+  canAccessBatchJob,
+} from "../../../middlewares"
 
 export default (app) => {
   const route = Router()
@@ -13,6 +16,14 @@ export default (app) => {
     middlewares.normalizeQuery(),
     middlewares.wrap(require("./list-batch-jobs").default)
   )
+
+  const routerOnBatch = Router()
+  route.use("/:id", getRequestedBatchJob, canAccessBatchJob, routerOnBatch)
+  routerOnBatch.post(
+    "/confirm",
+    middlewares.wrap(require("./confirm-batch-job").default)
+  )
+
   return app
 }
 
