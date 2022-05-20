@@ -1,11 +1,15 @@
-import { EntityManager } from "typeorm"
+import { DeepPartial, EntityManager } from "typeorm"
 
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
-import { FilterableBatchJobProps } from "../types/batch-job"
+import {
+  BatchJobCreateProps,
+  BatchJobStatus,
+  FilterableBatchJobProps,
+} from "../types/batch-job"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, validateId } from "../utils"
+import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import { EventBusService } from "./index"
 
@@ -34,11 +38,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     batchJobRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super({
-      manager,
-      batchJobRepository,
-      eventBusService,
-    })
+    super({ manager, batchJobRepository, eventBusService })
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
@@ -100,6 +100,46 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         })
 
       return batchJob
+    })
+  }
+
+  async validateBatchContext(
+    type: string,
+    context: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
+    // TODO validate context with batch job strategy corresponding to the given type
+
+    return context
+  }
+
+  async create(data: BatchJobCreateProps): Promise<BatchJob> {
+    return await this.atomicPhase_(async (manager) => {
+      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
+        this.batchJobRepository_
+      )
+
+      // TODO use strategy to validate the context
+
+      const validatedContext = await this.validateBatchContext(
+        data.type,
+        data.context
+      )
+      const toCreate = {
+        status: BatchJobStatus.CREATED,
+        ...data,
+        ...validatedContext,
+      } as DeepPartial<BatchJob>
+
+      const batchJob = await batchJobRepo.create(toCreate)
+      const result = await batchJobRepo.save(batchJob)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(BatchJobService.Events.CREATED, {
+          id: result.id,
+        })
+
+      return result
     })
   }
 }
