@@ -56,7 +56,7 @@ export class Discount {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   ends_at: Date | null
 
-  @Column({ nullable: true })
+  @Column({ type: String, nullable: true })
   valid_duration: string | null
 
   @ManyToMany(() => Region, { cascade: true })
@@ -73,7 +73,7 @@ export class Discount {
   })
   regions: Region[]
 
-  @Column({ nullable: true })
+  @Column({ type: Number, nullable: true })
   usage_limit: number | null
 
   @Column({ default: 0 })
