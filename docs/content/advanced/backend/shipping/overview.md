@@ -66,7 +66,7 @@ After the admin adds a shipping profile, they can add shipping options that belo
 
 Shipping options have a set of conditions like the region they’re available in or cart-specific conditions. For example, if your company operates in the United States as well as Germany, you might use a different shipping option for each of the two countries.
 
-Among the configurations that the admin has to set when creating a shipping option is specifying the fulfillment provider it uses. This means that when you create a plugin for a fulfillment provider, that provider needs to be chosen as the fulfillment provider of a shipping option to be used in the store.
+Among the configurations that the admin has to set when creating a shipping option, is specifying the fulfillment provider it uses. This means that when you create a plugin for a fulfillment provider, that provider needs to be chosen as the fulfillment provider of a shipping option to be used in the store.
 
 Shipping options are only shown to a customer during checkout if their cart satisfies the option’s conditions. Also, as they belong to a shipping profile, they’re only shown when products that belong to the same shipping profile are in the cart.
 
@@ -108,7 +108,7 @@ A shipping method can be fulfilled automatically or manually through the admin d
 
 ### Purpose
 
-It’s important to understand the distinction between shipping methods and shipping options. Shipping options are templates created by the admin to indicate what shipping options should be shown to a customer. This provides customization capabilities in a store, as an admin is free to specify configurations for that option such as what fulfillment provider it uses or what are its rates.
+It’s important to understand the distinction between **shipping methods** and **shipping options**. Shipping options are templates created by the admin to indicate what shipping options should be shown to a customer. This provides customization capabilities in a store, as an admin is free to specify configurations for that option such as what fulfillment provider it uses or what are its rates.
 
 When handling the order and fulfilling it, you, as a developer, will be mostly interacting with the shipping method.
 
