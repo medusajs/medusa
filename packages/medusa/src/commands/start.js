@@ -8,7 +8,10 @@ import { scheduleJob } from "node-schedule"
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 
-export default async function({ port, directory }) {
+const EVERY_SIXTH_HOUR = "* */6 * * *"
+const CRON_SCHEDULE = EVERY_SIXTH_HOUR
+
+export default async function ({ port, directory }) {
   async function start() {
     track("CLI_START")
 
@@ -24,8 +27,8 @@ export default async function({ port, directory }) {
       track("CLI_START_COMPLETED")
     })
 
-    scheduleJob("* * * * * *", () => {
-      console.log("ping")
+    scheduleJob(CRON_SCHEDULE, () => {
+      track("PING")
     })
 
     return { dbConnection, server }
