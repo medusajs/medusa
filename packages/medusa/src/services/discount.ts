@@ -721,7 +721,11 @@ class DiscountService extends BaseService {
   }
 
   hasExpired(discount: Discount): boolean {
-    return discount.ends_at && isPast(discount.ends_at)
+    if (!discount.ends_at) {
+      return false
+    }
+
+    return isPast(discount.ends_at)
   }
 
   isDisabled(discount: Discount): boolean {
