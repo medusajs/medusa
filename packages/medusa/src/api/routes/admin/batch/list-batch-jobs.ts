@@ -121,18 +121,32 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @IsType([String, [String]])
   id?: string | string[]
 
-  @IsOptional()
-  @IsArray()
-  @IsEnum(BatchJobStatus, { each: true })
-  status?: BatchJobStatus[]
-
   @IsArray()
   @IsOptional()
   type?: string[]
 
   @IsOptional()
-  @ValidateNested()
   @Type(() => DateComparisonOperator)
+  awaiting_confirmation_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  processing_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  confirmed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  completed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  canceled_at?: DateComparisonOperator
+
+  @IsType([DateComparisonOperator])
+  @IsOptional()
   created_at?: DateComparisonOperator
 
   @IsOptional()

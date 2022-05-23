@@ -20,21 +20,10 @@ export default (app) => {
 
   const routerOnBatch = Router()
   route.use("/:id", getRequestedBatchJob, canAccessBatchJob, routerOnBatch)
-  routerOnBatch.get(
-    "/",
-    middlewares.wrap(require("./get-batch-job").default)
-  )
-  routerOnBatch.post(
-    "/",
-    middlewares.wrap(require("./update-batch-job").default)
-  )
+  routerOnBatch.get("/", middlewares.wrap(require("./get-batch-job").default))
   routerOnBatch.post(
     "/confirm",
     middlewares.wrap(require("./confirm-batch-job").default)
-  )
-  routerOnBatch.post(
-    "/complete",
-    middlewares.wrap(require("./complete-batch-job").default)
   )
   routerOnBatch.post(
     "/cancel",
