@@ -6,7 +6,7 @@ This document will guide you through installing the MinIO file service plugin on
 
 To manage images in Medusa, you need a file service plugin responsible for hosting. Without a file service plugin, you will face issues while working with Medusa, such as when uploading images for products.
 
-Medusa provides 3 different options to handle your file storage. This document will focus on setting up [MinIO](https://min.io) on your local machine and connecting Medusa to it.
+Medusa provides three different options to handle your file storage. This document will focus on setting up [MinIO](https://min.io) on your local machine and connecting Medusa to it.
 
 ## Prerequisites
 
