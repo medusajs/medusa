@@ -1,5 +1,4 @@
 const path = require("path")
-import { BatchJobStatus } from "@medusajs/medusa"
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
@@ -359,7 +358,7 @@ describe("/admin/batch-jobs", () => {
     })
   })
 
-  describe("POST /admin/batch/:id", () => {
+  describe("POST /admin/batch/:id/confirm", () => {
     beforeEach(async () => {
       await setupJobDb(dbConnection)
     })
@@ -369,103 +368,18 @@ describe("/admin/batch-jobs", () => {
       await db.teardown()
     })
 
-    it("Updates batch job", async () => {
-      const api = useApi()
-
-      const response = await api.post(
-        "/admin/batch/job_1",
-        { type: "batch_2" },
-        adminReqConfig
-      )
-
-      expect(response.status).toBe(200)
-      expect(response.data.batch_job).toMatchSnapshot({
-        id: expect.any(String),
-        type: "batch_2",
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
-    })
-
-    it("Updates batch job with status sets time of update", async () => {
-      const api = useApi()
-
-      const response = await api.post(
-        "/admin/batch/job_1",
-        { status: "processing" },
-        adminReqConfig
-      )
-
-      expect(response.status).toBe(200)
-      expect(response.data.batch_job).toMatchSnapshot({
-        id: expect.any(String),
-        status: "processing",
-        processing_at: expect.any(String),
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-      })
-    })
-  })
-
-  describe("POST /admin/batch/:id/complete", () => {
-    beforeEach(async () => {
-      await setupJobDb(dbConnection)
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
-    })
-
-    it("Completes batch job created by the user", async () => {
-      const api = useApi()
-
-      const jobId = "job_2"
-
-      const response = await api.post(
-        `/admin/batch/${jobId}/complete`,
-        {},
-        adminReqConfig
-      )
-
-      expect(response.status).toEqual(200)
-      expect(response.data.batch_job).toMatchSnapshot({
-        awaiting_confirmation_at: expect.any(String),
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        completed_at: expect.any(String),
-        status: "completed",
-      })
-    })
-
-    it("Fails to complete a batch job created by a different user", async () => {
+    it("Fails to confirm a batch job created by a different user", async () => {
       const api = useApi()
 
       const jobId = "job_4"
 
       api
-        .post(`/admin/batch/${jobId}/complete`, {}, adminReqConfig)
+        .post(`/admin/batch/${jobId}/confirm`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
           expect(err.response.data.message).toEqual(
             "Cannot access a batch job that does not belong to the logged in user"
-          )
-        })
-    })
-
-    it("Fails to complete a batch job not awaiting completion", async () => {
-      const api = useApi()
-
-      const jobId = "job_1"
-
-      api
-        .post(`/admin/batch/${jobId}/complete`, {}, adminReqConfig)
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.type).toEqual("invalid_data")
-          expect(err.response.data.message).toEqual(
-            `Cannot complete a batch job with status "created"`
           )
         })
     })
