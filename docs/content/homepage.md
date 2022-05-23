@@ -48,7 +48,7 @@ Then, you can follow our [quickstart guide](quickstart/quick-start.md) to instal
 
 The Medusa Admin provides you with a lot of functionalities and configurations such as Product Management, Order Management, Discounts and Promotions, and more.
 
-You can install the Medusa admin in 2 steps by following our [Medusa Admin quickstart guide](admin/quickstart.md).
+You can install the Medusa admin in two steps by following our [Medusa Admin quickstart guide](admin/quickstart.md).
 
 ### The Storefront
 
