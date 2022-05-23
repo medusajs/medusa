@@ -21,7 +21,7 @@ import {
   FilterableCartProps,
   LineItemUpdate,
 } from "../types/cart"
-import { FindConfig, TotalField } from "../types/common"
+import { AddressPayload, FindConfig, TotalField } from "../types/common"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
@@ -404,6 +404,9 @@ class CartService extends TransactionBaseService<CartService> {
             typeof data[remainingField] !== "undefined" &&
             remainingField !== "object"
           ) {
+            /* TODO: See how to fix the error TS2590 properly while keeping the DeepPartial type */
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             rawCart[remainingField] = data[remainingField]
           }
         }
@@ -915,7 +918,7 @@ class CartService extends TransactionBaseService<CartService> {
    */
   protected async updateBillingAddress_(
     cart: Cart,
-    addressOrId: Partial<Address> | string,
+    addressOrId: AddressPayload | Partial<Address> | string,
     addrRepo: AddressRepository
   ): Promise<void> {
     let address: Address
@@ -955,7 +958,7 @@ class CartService extends TransactionBaseService<CartService> {
    */
   protected async updateShippingAddress_(
     cart: Cart,
-    addressOrId: Partial<Address> | string,
+    addressOrId: AddressPayload | Partial<Address> | string,
     addrRepo: AddressRepository
   ): Promise<void> {
     let address: Address

@@ -8,7 +8,7 @@ export interface CreateNoteInput {
   resource_id: string
   author_id?: string
   author?: User
-  metadata?: JSON
+  metadata?: Record<string, unknown>
 }
 
 export type selector = {
