@@ -246,7 +246,9 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         config
       )
 
-      const groups = query.where.customer_groups
+      const groups =
+        query.where.customer_groups &&
+        new FindOperator("in", query.where.customer_groups)
       query.where.customer_groups = undefined
 
       const [priceLists] = await priceListRepo.listAndCount(query, groups)
