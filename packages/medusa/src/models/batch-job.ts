@@ -20,9 +20,6 @@ export class BatchJob extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text" })
   type: string
 
-  @DbAwareColumn({ type: "enum", enum: BatchJobStatus })
-  status: BatchJobStatus
-
   @Column({ nullable: true })
   created_by: string | null
 
@@ -36,20 +33,23 @@ export class BatchJob extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   result: Record<string, unknown>
 
-  @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  awaiting_confirmation_at: Date | null
+  @Column({ type: "boolean", nullable: false, default: false })
+  dry_run: boolean = false;
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  processing_at: Date | null
+  awaiting_confirmation_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  confirmed_at: Date | null
+  processing_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  completed_at: Date | null
+  confirmed_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  canceled_at: Date | null
+  completed_at?: Date
+
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
+  canceled_at?: Date
 
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
@@ -58,7 +58,9 @@ export class BatchJob extends SoftDeletableEntity {
   updated_at: Date
 
   @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date | null
+  deleted_at?: Date
+
+  status: BatchJobStatus
 
   @AfterLoad()
   loadStatus(): void {
@@ -70,6 +72,8 @@ export class BatchJob extends SoftDeletableEntity {
       this.status = BatchJobStatus.AWAITING_CONFIRMATION
     } else if (this.processing_at) {
       this.status = BatchJobStatus.PROCESSING
+    } else if (this.canceled_at) {
+      this.status = BatchJobStatus.CANCELED
     } else {
       this.status = BatchJobStatus.CREATED
     }
@@ -78,6 +82,11 @@ export class BatchJob extends SoftDeletableEntity {
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "batch")
+  }
+
+  toJSON() {
+    this.loadStatus()
+    return this
   }
 }
 
@@ -103,12 +112,17 @@ export class BatchJob extends SoftDeletableEntity {
  *      - created
  *      - processing
  *      - completed
+ *      - canceled
  *  created_by:
  *    description: "The unique identifier of the user that created the batch job."
  *    type: string
  *  context:
  *    description: "The context of the batch job, the type of the batch job determines what the context should contain."
  *    type: object
+ *  dry_run:
+ *    description: "Specify if the job must apply the modifications or not."
+ *    type: boolean
+ *    default: false
  *  result:
  *    description: "The result of the batch job."
  *    type: object

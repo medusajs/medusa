@@ -93,6 +93,8 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         batchJob = await this.retrieve(batchJobOrId)
       }
 
+      batchJob.confirmed_at = new Date()
+
       await this.eventBus_
         .withTransaction(manager)
         .emit(BatchJobService.Events.PROCESS_COMPLETE, {
@@ -118,12 +120,11 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         this.batchJobRepository_
       )
 
-      // TODO use strategy to validate the context
-
       const validatedContext = await this.validateBatchContext(
         data.type,
         data.context
       )
+
       const toCreate = {
         status: BatchJobStatus.CREATED,
         ...data,
@@ -154,31 +155,15 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       const batchJob = await this.retrieve(batchJobId)
 
-      const { status, ...rest } = data
-
-      if (typeof status !== "undefined") {
-        batchJob.status = status
-
-        switch (status) {
-          case BatchJobStatus.PROCESSING:
-            batchJob.processing_at = new Date()
-            break
-          case BatchJobStatus.AWAITING_CONFIRMATION:
-            batchJob.awaiting_confirmation_at = new Date()
-            break
-          case BatchJobStatus.COMPLETED:
-            batchJob.completed_at = new Date()
-            break
-          case BatchJobStatus.CANCELED:
-            batchJob.canceled_at = new Date()
-            break
-        }
+      const { context, type, ...rest } = data
+      if (context) {
+        batchJob.context = await this.validateBatchContext(type, context)
       }
 
       Object.keys(rest)
-        .filter((restKey) => typeof rest[restKey] !== `undefined`)
-        .forEach((restKey) => {
-          batchJob[restKey] = rest[restKey]
+        .filter((key) => typeof rest[key] !== `undefined`)
+        .forEach((key) => {
+          batchJob[key] = rest[key]
         })
 
       return await batchJobRepo.save(batchJob)
@@ -208,7 +193,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       }
 
       batchJob.completed_at = new Date()
-      batchJob.status = BatchJobStatus.COMPLETED
 
       await batchJobRepo.save(batchJob)
 
@@ -241,7 +225,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       }
 
       batchJob.canceled_at = new Date()
-      batchJob.status = BatchJobStatus.CANCELED
       await batchJobRepo.save(batchJob)
 
       await this.eventBus_

@@ -5,18 +5,14 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TYPE "batch_job_status_enum" AS ENUM('created', 'processing', 'awaiting_confirmation', 'canceled', 'completed')`
-    )
-
-    await queryRunner.query(
         `CREATE TABLE "batch_job"
          (
              "id"                       character varying                NOT NULL,
              "type"                     text                             NOT NULL,
-             "status"                   "public"."batch_job_status_enum" NOT NULL,
              "created_by"               character varying,
              "context"                  jsonb,
              "result"                   jsonb,
+             "dry_run"                  boolean                          NOT NULL DEFAULT FALSE,
              "created_at"               TIMESTAMP WITH TIME ZONE         NOT NULL DEFAULT now(),
              "processing_at"            TIMESTAMP WITH TIME ZONE,
              "awaiting_confirmation_at" TIMESTAMP WITH TIME ZONE,
@@ -41,6 +37,5 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
                 DROP CONSTRAINT "FK_fa53ca4f5fd90605b532802a626"`
     )
     await queryRunner.query(`DROP TABLE "batch_job"`)
-    await queryRunner.query(`DROP TYPE "batch_job_status_enum"`)
   }
 }
