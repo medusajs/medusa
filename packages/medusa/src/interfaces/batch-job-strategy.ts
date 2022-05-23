@@ -1,15 +1,8 @@
-import { EntityManager } from "typeorm"
 import { BatchJob } from "../models/batch-job"
+import { TransactionBaseService } from "./transaction-base-service"
 
-export interface IBatchJobStrategy {
-  /**
-   * Instantiate a new price selection strategy with the active transaction in
-   * order to ensure reads are accurate.
-   * @param manager EntityManager with the queryrunner of the active transaction
-   * @returns a new price selection strategy
-   */
-  withTransaction(manager: EntityManager): IBatchJobStrategy
-
+export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
+  extends TransactionBaseService<T> {
   /*
    * Used in the API controller to verify that the `context` param is valid
    */
@@ -38,11 +31,14 @@ export interface IBatchJobStrategy {
   buildTemplate()
 }
 
-export abstract class AbstractBatchJobStrategy implements IBatchJobStrategy {
+export abstract class AbstractBatchJobStrategy<
+    T extends TransactionBaseService<any>
+  >
+  extends TransactionBaseService<T>
+  implements IBatchJobStrategy<T>
+{
   static identifier: string
   static batchType: string
-
-  public abstract withTransaction(manager: EntityManager): IBatchJobStrategy
 
   public abstract validateContext(
     context: Record<string, unknown>
@@ -60,7 +56,7 @@ export abstract class AbstractBatchJobStrategy implements IBatchJobStrategy {
 export function isBatchJobStrategy(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   object: any
-): object is IBatchJobStrategy {
+): object is IBatchJobStrategy<any> {
   return (
     typeof object.validateContext === "function" &&
     typeof object.processJob === "function" &&
