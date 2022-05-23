@@ -1,6 +1,4 @@
-import { ArrayNotEmpty, IsString } from "class-validator"
 import PriceListService from "../../../../services/price-list"
-import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [delete] /price-lists/{id}/products/{product_id}
@@ -20,11 +18,9 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             ids:
- *               type: array
- *               items:
- *                 type: string
- *                 description: The ids of the deleted Money Amount.
+ *             count:
+ *               type: number
+ *               description: The number of prices that have been deleted.
  *             object:
  *               type: string
  *               description: The type of the object that was deleted.
@@ -36,4 +32,14 @@ export default async (req, res) => {
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
+
+  const deletedCount = await priceListService.deleteProductPrices(id, [
+    product_id,
+  ])
+
+  return res.json({
+    count: deletedCount,
+    object: "money-amount",
+    deleted: true,
+  })
 }

@@ -7,7 +7,7 @@ import {
   IsString,
 } from "class-validator"
 import "reflect-metadata"
-import { FindManyOptions, OrderByCondition } from "typeorm"
+import { FindManyOptions, FindOperator, OrderByCondition } from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
 
 export type PartialPick<T, K extends keyof T> = {
@@ -19,7 +19,7 @@ export type Writable<T> = { -readonly [key in keyof T]: T[key] }
 export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
   where: Partial<Writable<TEntity>>
   withDeleted?: boolean
-  relations?: (keyof TEntity)[]
+  relations?: string[]
 }
 
 export type Selector<TEntity> = {
@@ -29,6 +29,7 @@ export type Selector<TEntity> = {
     | DateComparisonOperator
     | StringComparisonOperator
     | NumericalComparisonOperator
+    | FindOperator<TEntity | string>
 }
 
 export type TotalField =
@@ -45,7 +46,7 @@ export interface FindConfig<Entity> {
   select?: (keyof Entity)[]
   skip?: number
   take?: number
-  relations?: (keyof Entity)[]
+  relations?: string[]
   order?: Record<string, "ASC" | "DESC">
 }
 

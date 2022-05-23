@@ -17,8 +17,8 @@ export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
-    groups?: FindOperator<CustomerGroup[]>,
-    relations: (keyof PriceList)[] = []
+    customerGroupsOrIds: CustomerGroup[] | string[] = [],
+    relations: string[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
 
@@ -36,8 +36,11 @@ export class PriceListRepository extends Repository<PriceList> {
       .skip(options.skip)
       .take(options.take)
 
-    if (groups) {
-      qb.andWhere("group.id IN (:...ids)", { ids: groups.value })
+    if (customerGroupsOrIds?.length) {
+      const groupIds = customerGroupsOrIds[0] instanceof CustomerGroup
+        ? customerGroupsOrIds.map(group => group.id)
+        : customerGroupsOrIds
+      qb.andWhere("group.id IN (:...ids)", { ids: groupIds })
     }
 
     const [results, count] = await qb.getManyAndCount()
@@ -51,7 +54,7 @@ export class PriceListRepository extends Repository<PriceList> {
   }
 
   public async findWithRelations(
-    relations: (keyof PriceList)[] = [],
+    relations: string[] = [],
     idsOrOptionsWithoutRelations:
       | Omit<FindManyOptions<PriceList>, "relations">
       | string[] = {}
@@ -99,17 +102,20 @@ export class PriceListRepository extends Repository<PriceList> {
 
   async listAndCount(
     query: ExtendedFindConfig<PriceList>,
-    groups?: FindOperator<CustomerGroup[]>
+    customerGroupsOrIds: CustomerGroup[] | string[] = [],
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")
       .where(query.where)
       .skip(query.skip)
       .take(query.take)
 
-    if (groups) {
+    if (customerGroupsOrIds?.length) {
+      const groupIds = customerGroupsOrIds[0] instanceof CustomerGroup
+        ? customerGroupsOrIds.map(group => group.id)
+        : customerGroupsOrIds
       qb.leftJoinAndSelect("price_list.customer_groups", "group").andWhere(
         "group.id IN (:...ids)",
-        { ids: groups.value.map(group => group.id) }
+        { ids: groupIds }
       )
     }
 

@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager, FindOperator } from "typeorm"
+import { EntityManager, In } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -21,6 +21,7 @@ import ProductService from "./product"
 import RegionService from "./region"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
+import { FilterableProductProps } from "../types/product"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -246,9 +247,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         config
       )
 
-      const groups =
-        query.where.customer_groups &&
-        new FindOperator("in", query.where.customer_groups)
+      const groups = query.where.customer_groups
       query.where.customer_groups = undefined
 
       const [priceLists] = await priceListRepo.listAndCount(query, groups)
@@ -275,9 +274,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         config
       )
 
-      const groups =
-        query.where.customer_groups &&
-        new FindOperator("in", query.where.customer_groups)
+      const groups = query.where.customer_groups
       delete query.where.customer_groups
 
       if (q) {
@@ -313,7 +310,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
 
   async listProducts(
     priceListId: string,
-    selector = {},
+    selector: FilterableProductProps | Selector<Product> = {},
     config: FindConfig<Product> = {
       relations: [],
       skip: 0,
@@ -352,6 +349,36 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       )
 
       return [productsWithPrices, count]
+    })
+  }
+
+  public async deleteProductPrices(
+    id: string,
+    productIds: string[]
+  ): Promise<number> {
+    return await this.atomicPhase_(async () => {
+      const [products, count] = await this.listProducts(id, {
+        id: productIds,
+      })
+
+      if (count === 0) {
+        return count
+      }
+
+      const priceIds = products
+        .map(({ variants }) =>
+          variants
+            .map((variant) => variant.prices.map((price) => price.id))
+            .flat()
+        )
+        .flat()
+
+      if (!priceIds.length) {
+        return 0
+      }
+
+      await this.deletePrices(id, priceIds)
+      return priceIds.length
     })
   }
 
