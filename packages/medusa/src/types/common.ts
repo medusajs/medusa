@@ -19,6 +19,7 @@ export type Writable<T> = { -readonly [key in keyof T]: T[key] }
 export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
   where: Partial<Writable<TEntity>>
   withDeleted?: boolean
+  relations?: (keyof TEntity)[]
 }
 
 export type Selector<TEntity> = {
@@ -44,7 +45,7 @@ export interface FindConfig<Entity> {
   select?: (keyof Entity)[]
   skip?: number
   take?: number
-  relations?: string[]
+  relations?: (keyof Entity)[]
   order?: Record<string, "ASC" | "DESC">
 }
 

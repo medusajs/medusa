@@ -1,13 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
-import { Product } from "../models"
-import { CustomerGroup } from "../models/customer-group"
-import { PriceList } from "../models/price-list"
+import { CustomerGroup, PriceList, Product } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import { PriceListRepository } from "../repositories/price-list"
-import { FindConfig } from "../types/common"
+import { CustomFindOptions, FindConfig, Selector } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -18,6 +16,8 @@ import {
 import { formatException } from "../utils/exception-formatter"
 import ProductService from "./product"
 import RegionService from "./region"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
 
 type PriceListConstructorProps = {
   manager: EntityManager
@@ -32,13 +32,15 @@ type PriceListConstructorProps = {
  * Provides layer to manipulate product tags.
  * @extends BaseService
  */
-class PriceListService extends BaseService {
-  private manager_: EntityManager
-  private customerGroupService_: CustomerGroupService
-  private regionService_: RegionService
-  private productService_: ProductService
-  private priceListRepo_: typeof PriceListRepository
-  private moneyAmountRepo_: typeof MoneyAmountRepository
+class PriceListService extends TransactionBaseService<PriceListService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly customerGroupService_: CustomerGroupService
+  protected readonly regionService_: RegionService
+  protected readonly productService_: ProductService
+  protected readonly priceListRepo_: typeof PriceListRepository
+  protected readonly moneyAmountRepo_: typeof MoneyAmountRepository
 
   constructor({
     manager,
@@ -48,32 +50,15 @@ class PriceListService extends BaseService {
     priceListRepository,
     moneyAmountRepository,
   }: PriceListConstructorProps) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+
     this.manager_ = manager
     this.customerGroupService_ = customerGroupService
     this.productService_ = productService
     this.regionService_ = regionService
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
-  }
-
-  withTransaction(transactionManager: EntityManager): PriceListService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new PriceListService({
-      manager: transactionManager,
-      customerGroupService: this.customerGroupService_,
-      productService: this.productService_,
-      regionService: this.regionService_,
-      priceListRepository: this.priceListRepo_,
-      moneyAmountRepository: this.moneyAmountRepo_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -88,7 +73,7 @@ class PriceListService extends BaseService {
   ): Promise<PriceList> {
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
-    const query = this.buildQuery_({ id: priceListId }, config)
+    const query = buildQuery({ id: priceListId }, config)
     const priceList = await priceListRepo.findOne(query)
 
     if (!priceList) {
@@ -216,8 +201,6 @@ class PriceListService extends BaseService {
       const priceList = await this.retrieve(id, { select: ["id"] })
 
       await moneyAmountRepo.deletePriceListPrices(priceList.id, priceIds)
-
-      return Promise.resolve()
     })
   }
 
@@ -254,7 +237,11 @@ class PriceListService extends BaseService {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
-      const query = this.buildQuery_(selector, config)
+      const { q, ...priceListSelector } = selector
+      const query = buildQuery<PriceList>(
+        priceListSelector as Selector<PriceList>,
+        config
+      )
 
       const groups = query.where.customer_groups
       query.where.customer_groups = undefined
@@ -277,17 +264,21 @@ class PriceListService extends BaseService {
   ): Promise<[PriceList[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
-      const q = selector.q
-      const { relations, ...query } = this.buildQuery_(selector, config)
+      const { q, ...priceListSelector } = selector
+      const { relations, ...query } = buildQuery<PriceList>(
+        priceListSelector as Selector<PriceList>,
+        config
+      )
 
-      const groups = query.where.customer_groups
+      const groups =
+        query.where.customer_groups &&
+        new FindOperator("in", query.where.customer_groups)
       delete query.where.customer_groups
 
       if (q) {
-        delete query.where.q
         return await priceListRepo.getFreeTextSearchResultsAndCount(
           q,
-          query,
+          query as CustomFindOptions<PriceList, "status" | "type">,
           groups,
           relations
         )

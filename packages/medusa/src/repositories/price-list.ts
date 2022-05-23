@@ -8,6 +8,7 @@ import {
 } from "typeorm"
 import { PriceList } from "../models/price-list"
 import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
+import { CustomerGroup } from "../models"
 
 type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
 
@@ -16,7 +17,7 @@ export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
-    groups?: FindOperator<PriceList>,
+    groups?: FindOperator<CustomerGroup[]>,
     relations: (keyof PriceList)[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
@@ -98,7 +99,7 @@ export class PriceListRepository extends Repository<PriceList> {
 
   async listAndCount(
     query: ExtendedFindConfig<PriceList>,
-    groups?: FindOperator<PriceList>
+    groups?: FindOperator<CustomerGroup[]>
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")
       .where(query.where)
