@@ -19,8 +19,8 @@ export enum BatchJobStatus {
   CONFIRMED = "confirmed",
 }
 
-export type BatchJobUpdateProps = Partial<
-  Pick<BatchJob, "type" | "context" | "result" | "status">
+export type BatchJobUpdateProps = { type: string } & Partial<
+  Pick<BatchJob, "context" | "result">
 >
 
 export class FilterableBatchJobProps {
