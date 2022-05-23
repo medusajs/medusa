@@ -168,7 +168,7 @@ describe("/admin/batch", () => {
         adminReqConfig
       )
 
-      expect(response.status).toEqual(200)
+      expect(response.status).toEqual(201)
       expect(response.data.batch_job).toMatchSnapshot({
         created_by: "admin_user",
         status: "created",
