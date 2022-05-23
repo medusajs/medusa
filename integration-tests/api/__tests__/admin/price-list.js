@@ -1207,4 +1207,91 @@ describe("/admin/price-lists", () => {
       ])
     })
   })
+
+  describe("DELETE /admin/price-lists/products/:product_id", () => {
+    let product1, product2
+
+    function getCustomPriceIdFromVariant(variantId, index) {
+      return "ma_" + index + "_" + variantId
+    }
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        product1 = await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-1",
+            title: "some product",
+            variants: [
+              {
+                id: `simple-test-variant-${Math.random() * 1000}`,
+                title: "Test",
+                prices: [{ currency: "usd", amount: 100 }],
+              },
+              {
+                id: `simple-test-variant-${Math.random() * 1000}`,
+                title: "Test 2",
+                prices: [{ currency: "usd", amount: 200 }],
+              }
+            ]
+          },
+          1
+        )
+
+        product2 = await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-2",
+            title: "some product 2"
+          },
+          2
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list",
+          customer_groups: ["test-group"],
+          prices: product1.variants.map((variant, i) => (
+            { id: getCustomPriceIdFromVariant(variant.id, i), variant_id: variant.id, currency_code: "usd", amount: (i + 1) * 150 }
+          )),
+        })
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list-2",
+          prices: product2.variants.map((variant, i) => (
+            { id: getCustomPriceIdFromVariant(variant.id, i), variant_id: variant.id, currency_code: "usd", amount: (i + 1) * 150 }
+          )),
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it('should delete the prices from all the variants related to product 1', async () => {
+       const api = useApi()
+
+        const response = await api
+          .delete("/admin/price-lists/test-list/products/test-prod-1", {
+            headers: {
+              Authorization: "Bearer test_token",
+            }
+          })
+
+      expect(response.status).toBe(200)
+      expect(response.data).toEqual({
+        ids: product1.variants.map((variant,  i) => {
+          return getCustomPriceIdFromVariant(variant.id, i)
+        }),
+        count: 2,
+        object: "money-amount",
+        deleted: true,
+      })
+    })
+  })
 })

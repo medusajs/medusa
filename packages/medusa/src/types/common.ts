@@ -14,7 +14,12 @@ export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
 }
 
-export type Writable<T> = { -readonly [key in keyof T]: T[key] }
+export type Writable<T> = {
+  -readonly [key in keyof T]:
+    | T[key]
+    | FindOperator<T[key]>
+    | FindOperator<string[]>
+}
 
 export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
   where: Partial<Writable<TEntity>>

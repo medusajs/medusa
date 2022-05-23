@@ -22,6 +22,11 @@ export default (app) => {
     middlewares.wrap(require("./list-price-list-products").default)
   )
 
+  route.delete(
+    "/:id/products/:product_id",
+    middlewares.wrap(require("./delete-product-prices").default)
+  )
+
   route.post("/", middlewares.wrap(require("./create-price-list").default))
 
   route.post("/:id", middlewares.wrap(require("./update-price-list").default))

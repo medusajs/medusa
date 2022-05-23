@@ -18,6 +18,9 @@ import PriceListService from "../../../../services/price-list"
  *       application/json:
  *         schema:
  *           properties:
+ *              ids:
+ *               type: number
+ *               description: The price ids that have been deleted.
  *             count:
  *               type: number
  *               description: The number of prices that have been deleted.
@@ -33,11 +36,12 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const deletedCount = await priceListService.deleteProductPrices(id, [
+  const [deletedPriceIds, deletedCount] = await priceListService.deleteProductPrices(id, [
     product_id,
   ])
 
   return res.json({
+    ids: deletedPriceIds,
     count: deletedCount,
     object: "money-amount",
     deleted: true,

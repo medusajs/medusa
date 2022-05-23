@@ -17,7 +17,7 @@ export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
-    customerGroupsOrIds: CustomerGroup[] | string[] = [],
+    groups: FindOperator<(CustomerGroup | string)[]>,
     relations: string[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
@@ -36,11 +36,8 @@ export class PriceListRepository extends Repository<PriceList> {
       .skip(options.skip)
       .take(options.take)
 
-    if (customerGroupsOrIds?.length) {
-      const groupIds = customerGroupsOrIds[0] instanceof CustomerGroup
-        ? customerGroupsOrIds.map(group => group.id)
-        : customerGroupsOrIds
-      qb.andWhere("group.id IN (:...ids)", { ids: groupIds })
+    if (groups) {
+      qb.andWhere("group.id IN (:...ids)", { ids: groups.value })
     }
 
     const [results, count] = await qb.getManyAndCount()
@@ -102,20 +99,17 @@ export class PriceListRepository extends Repository<PriceList> {
 
   async listAndCount(
     query: ExtendedFindConfig<PriceList>,
-    customerGroupsOrIds: CustomerGroup[] | string[] = [],
+    groups: FindOperator<(CustomerGroup | string)[]>
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")
       .where(query.where)
       .skip(query.skip)
       .take(query.take)
 
-    if (customerGroupsOrIds?.length) {
-      const groupIds = customerGroupsOrIds[0] instanceof CustomerGroup
-        ? customerGroupsOrIds.map(group => group.id)
-        : customerGroupsOrIds
+    if (groups) {
       qb.leftJoinAndSelect("price_list.customer_groups", "group").andWhere(
         "group.id IN (:...ids)",
-        { ids: groupIds }
+        { ids: groups.value }
       )
     }
 

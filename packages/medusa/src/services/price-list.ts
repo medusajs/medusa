@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
@@ -247,7 +247,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         config
       )
 
-      const groups = query.where.customer_groups
+      const groups = query.where.customer_groups as FindOperator<string[]>
       query.where.customer_groups = undefined
 
       const [priceLists] = await priceListRepo.listAndCount(query, groups)
@@ -274,7 +274,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         config
       )
 
-      const groups = query.where.customer_groups
+      const groups = query.where.customer_groups as FindOperator<string[]>
       delete query.where.customer_groups
 
       if (q) {
@@ -333,7 +333,8 @@ class PriceListService extends TransactionBaseService<PriceListService> {
                 const [prices] =
                   await moneyAmountRepo.findManyForVariantInPriceList(
                     v.id,
-                    priceListId
+                    priceListId,
+                    true
                   )
 
                 return {
@@ -355,14 +356,20 @@ class PriceListService extends TransactionBaseService<PriceListService> {
   public async deleteProductPrices(
     id: string,
     productIds: string[]
-  ): Promise<number> {
+  ): Promise<[string[], number]> {
     return await this.atomicPhase_(async () => {
-      const [products, count] = await this.listProducts(id, {
-        id: productIds,
-      })
+      const [products, count] = await this.listProducts(
+        id,
+        {
+          id: productIds,
+        },
+        {
+          relations: ["variants"],
+        }
+      )
 
       if (count === 0) {
-        return count
+        return [[], count]
       }
 
       const priceIds = products
@@ -374,11 +381,11 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         .flat()
 
       if (!priceIds.length) {
-        return 0
+        return [[], 0]
       }
 
       await this.deletePrices(id, priceIds)
-      return priceIds.length
+      return [priceIds, priceIds.length]
     })
   }
 
