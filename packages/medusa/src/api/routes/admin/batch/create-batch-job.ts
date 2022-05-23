@@ -1,9 +1,4 @@
-import {
-  IsBoolean,
-  IsJSON,
-  IsOptional,
-  IsString,
-} from "class-validator"
+import { IsBoolean, IsJSON, IsOptional, IsString } from "class-validator"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
 
@@ -40,7 +35,7 @@ export default async (req, res) => {
     created_by: userId,
   })
 
-  res.status(200).json({ batch_job })
+  res.status(201).json({ batch_job })
 }
 
 export class AdminPostBatchesReq {
