@@ -13,6 +13,7 @@ import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -84,7 +85,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .insert()
       .orIgnore(true)
       .into(MoneyAmount)
-      .values(toInsert)
+      .values(toInsert as QueryDeepPartialEntity<MoneyAmount>[])
       .execute()
 
     if (overrideExisting) {

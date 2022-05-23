@@ -1,30 +1,22 @@
 import {
-  Entity,
-  Index,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Index,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Product } from "./product"
 import { MoneyAmount } from "./money-amount"
 import { ProductOptionValue } from "./product-option-value"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class ProductVariant {
-  @PrimaryColumn()
-  id: string
-
+export class ProductVariant extends SoftDeletableEntity {
   @Column()
   title: string
 
@@ -99,25 +91,12 @@ export class ProductVariant {
   })
   options: ProductOptionValue[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `variant_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "variant")
   }
 }
 
