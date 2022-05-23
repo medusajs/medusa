@@ -1252,15 +1252,24 @@ describe("/admin/price-lists", () => {
         await simplePriceListFactory(dbConnection, {
           id: "test-list",
           customer_groups: ["test-group"],
-          prices: product1.variants.map((variant, i) => (
-            { id: getCustomPriceIdFromVariant(variant.id, i), variant_id: variant.id, currency_code: "usd", amount: (i + 1) * 150 }
-          )),
-        })
-        await simplePriceListFactory(dbConnection, {
-          id: "test-list-2",
-          prices: product2.variants.map((variant, i) => (
-            { id: getCustomPriceIdFromVariant(variant.id, i), variant_id: variant.id, currency_code: "usd", amount: (i + 1) * 150 }
-          )),
+          prices: [
+            ...product1.variants.map((variant, i) => (
+              {
+                id: getCustomPriceIdFromVariant(variant.id, i),
+                variant_id: variant.id,
+                currency_code: "usd",
+                amount: (i + 1) * 150
+              }
+            )),
+            ...product2.variants.map((variant, i) => (
+              {
+                id: getCustomPriceIdFromVariant(variant.id, i),
+                variant_id: variant.id,
+                currency_code: "usd",
+                amount: (i + 1) * 150
+              }
+            )),
+          ]
         })
       } catch (err) {
         console.log(err)
@@ -1273,15 +1282,25 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it('should delete the prices from all the variants related to product 1', async () => {
+    it('should delete all the prices for the specified product', async () => {
        const api = useApi()
 
-        const response = await api
-          .delete("/admin/price-lists/test-list/products/test-prod-1", {
-            headers: {
-              Authorization: "Bearer test_token",
-            }
-          })
+      response = await api
+        .get("/admin/price-lists/test-list", {
+          headers: {
+            Authorization: "Bearer test_token",
+          }
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(3)
+
+      let response = await api
+        .delete("/admin/price-lists/test-list/products/test-prod-1", {
+          headers: {
+            Authorization: "Bearer test_token",
+          }
+        })
 
       expect(response.status).toBe(200)
       expect(response.data).toEqual({
@@ -1292,6 +1311,16 @@ describe("/admin/price-lists", () => {
         object: "money-amount",
         deleted: true,
       })
+
+      response = await api
+        .get("/admin/price-lists/test-list", {
+          headers: {
+            Authorization: "Bearer test_token",
+          }
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(1)
     })
   })
 })
