@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager, In } from "typeorm"
+import { EntityManager } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
