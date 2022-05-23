@@ -1,5 +1,4 @@
 const path = require("path")
-import { BatchJobStatus } from "@medusajs/medusa"
 
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
