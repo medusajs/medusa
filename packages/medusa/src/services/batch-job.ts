@@ -525,9 +525,12 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       const batchJob = await this.retrieve(batchJobId)
 
-      const { context, type, ...rest } = data
+      const { context, ...rest } = data
       if (context) {
-        batchJob.context = await this.validateBatchContext(type, context)
+        batchJob.context = await this.validateBatchContext(
+          batchJob.type,
+          context
+        )
       }
 
       Object.keys(rest)
