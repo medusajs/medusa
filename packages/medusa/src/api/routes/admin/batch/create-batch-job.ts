@@ -15,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * tags:
  *   - Customer
  * responses:
- *   200:
+ *   201:
  *     description: OK
  *     content:
  *       application/json:
