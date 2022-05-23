@@ -4,8 +4,11 @@ import { EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
-import { PriceListRepository } from "../repositories/price-list"
-import { CustomFindOptions, FindConfig, Selector } from "../types/common"
+import {
+  PriceListFindOptions,
+  PriceListRepository,
+} from "../repositories/price-list"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -278,7 +281,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       if (q) {
         return await priceListRepo.getFreeTextSearchResultsAndCount(
           q,
-          query as CustomFindOptions<PriceList, "status" | "type">,
+          query as PriceListFindOptions,
           groups,
           relations
         )

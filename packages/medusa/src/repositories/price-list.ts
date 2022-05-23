@@ -10,7 +10,7 @@ import { PriceList } from "../models/price-list"
 import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
 import { CustomerGroup } from "../models"
 
-type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
+export type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
 
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
@@ -109,7 +109,7 @@ export class PriceListRepository extends Repository<PriceList> {
     if (groups) {
       qb.leftJoinAndSelect("price_list.customer_groups", "group").andWhere(
         "group.id IN (:...ids)",
-        { ids: groups.value }
+        { ids: groups.value.map(group => group.id) }
       )
     }
 
