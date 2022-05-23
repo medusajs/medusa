@@ -45,7 +45,6 @@ export type AdminBatchJobListRes = PaginatedResponse & {
 
 export const defaultAdminBatchFields = [
   "id",
-  "status",
   "type",
   "context",
   "result",
