@@ -2,12 +2,9 @@ import {
   AfterLoad,
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
-  UpdateDateColumn,
 } from "typeorm"
 import { BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
@@ -50,15 +47,6 @@ export class BatchJob extends SoftDeletableEntity {
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at?: Date
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at?: Date
 
   status: BatchJobStatus
 
