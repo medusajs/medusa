@@ -315,7 +315,8 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       relations: [],
       skip: 0,
       take: 20,
-    }
+    },
+    requiredRelation = false
   ): Promise<[Product[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const [products, count] = await this.productService_.listAndCount(
@@ -334,7 +335,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
                   await moneyAmountRepo.findManyForVariantInPriceList(
                     v.id,
                     priceListId,
-                    true
+                    requiredRelation
                   )
 
                 return {
@@ -365,7 +366,8 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         },
         {
           relations: ["variants"],
-        }
+        },
+        true
       )
 
       if (count === 0) {
