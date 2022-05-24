@@ -63,6 +63,10 @@
     {
       "name": "Product Variant",
       "x-resourceId": "product_variant"
+    },
+    {
+      "name": "OAuth",
+      "x-resourceId": "OAuth"
     }
   ],
   "servers": [
@@ -71,14 +75,41 @@
     }
   ],
   "paths": {
-    "/auth": {
+    "/apps": {
       "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate a User",
-        "description": "Logs a User in and authorizes them to manage Store settings.",
-        "parameters": [],
+        "operationId": "PostApps",
+        "summary": "Generates a token for an application.",
+        "description": "Generates a token for an application.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "application_name",
+                  "state",
+                  "code"
+                ],
+                "properties": {
+                  "application_name": {
+                    "type": "string",
+                    "description": "Name of the application for the token to be generated for."
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "State of the application."
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The code for the generated token."
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Auth"
+          "Apps"
         ],
         "responses": {
           "200": {
@@ -87,8 +118,61 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
+                    "apps": {
+                      "$ref": "#/components/schemas/OAuth"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetApps",
+        "summary": "List applications",
+        "description": "Retrieve a list of applications.",
+        "x-authenticated": true,
+        "tags": [
+          "Apps"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/OAuth"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups": {
+      "post": {
+        "operationId": "PostCustomerGroups",
+        "summary": "Create a CustomerGroup",
+        "description": "Creates a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
                     }
                   }
                 }
@@ -102,297 +186,16 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "email",
-                  "password"
+                  "name"
                 ],
                 "properties": {
-                  "email": {
+                  "name": {
                     "type": "string",
-                    "description": "The User's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The User's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "description": "Gets the currently logged in User.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers": {
-      "post": {
-        "operationId": "PostCustomers",
-        "summary": "Create a Customer",
-        "description": "Creates a Customer.",
-        "parameters": [],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "first_name",
-                  "last_name"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email address."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/{id}": {
-      "get": {
-        "operationId": "GetCustomersCustomer",
-        "summary": "Retrieve a Customer",
-        "description": "Retrieves a Customer.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomersCustomer",
-        "summary": "Update a Customer",
-        "description": "Updates a Customer.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email. Only providable if user not registered."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "description": "The Customer's phone number.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections": {
-      "post": {
-        "operationId": "PostCollections",
-        "summary": "Create a Product Collection",
-        "description": "Creates a Product Collection.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "title"
-                ],
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "The title to identify the Collection by."
-                  },
-                  "handle": {
-                    "type": "string",
-                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
+                    "description": "Name of the customer group"
                   },
                   "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
+                    "type": "object",
+                    "description": "Metadata for the customer."
                   }
                 }
               }
@@ -401,24 +204,25 @@
         }
       }
     },
-    "/collections/{id}": {
+    "/customer-groups/{id}": {
       "delete": {
-        "operationId": "DeleteCollectionsCollection",
-        "summary": "Delete a Product Collection",
-        "description": "Deletes a Product Collection.",
+        "operationId": "DeleteCustomerGroupsCustomerGroup",
+        "summary": "Delete a CustomerGroup",
+        "description": "Deletes a CustomerGroup.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Collection.",
+            "description": "The id of the Customer Group",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Collection"
+          "CustomerGroup"
         ],
         "responses": {
           "200": {
@@ -429,7 +233,7 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "description": "The id of the deleted Collection"
+                      "description": "The id of the deleted customer group."
                     },
                     "object": {
                       "type": "string",
@@ -445,23 +249,24 @@
           }
         }
       },
-      "get": {
-        "operationId": "GetCollectionsCollection",
-        "summary": "Retrieve a Product Collection",
-        "description": "Retrieves a Product Collection.",
+      "post": {
+        "operationId": "PostCustomerGroupsGroup",
+        "summary": "Update a CustomerGroup",
+        "description": "Update a CustomerGroup.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Product Collection",
+            "description": "The id of the customer group.",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "Collection"
+          "CustomerGroup"
         ],
         "responses": {
           "200": {
@@ -470,55 +275,58 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
                     }
                   }
                 }
               }
             }
           }
-        }
-      },
-      "post": {
-        "operationId": "PostCollectionsCollection",
-        "summary": "Update a Product Collection",
-        "description": "Updates a Product Collection.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Collection.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        },
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
                 "properties": {
-                  "title": {
+                  "name": {
                     "type": "string",
-                    "description": "The title to identify the Collection by."
-                  },
-                  "handle": {
-                    "type": "string",
-                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
+                    "description": "Name of the customer group"
                   },
                   "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
+                    "type": "object",
+                    "description": "Metadata for the customer."
                   }
                 }
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/customer-group/{id}": {
+      "get": {
+        "operationId": "GetCustomerGroupsGroup",
+        "summary": "Retrieve a CustomerGroup",
+        "description": "Retrieves a Customer Group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
-          "Collection"
+          "CustomerGroup"
         ],
         "responses": {
           "200": {
@@ -527,8 +335,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
                     }
                   }
                 }
@@ -543,6 +351,7 @@
         "operationId": "PostDiscountsDiscountRegionsRegion",
         "summary": "Adds Region availability",
         "description": "Adds a Region to the list of Regions that a Discount can be used in.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -586,6 +395,7 @@
       "delete": {
         "operationId": "DeleteDiscountsDiscountRegionsRegion",
         "summary": "Remove Region availability",
+        "x-authenticated": true,
         "description": "Removes a Region from the list of Regions that a Discount can be used in.",
         "parameters": [
           {
@@ -630,9 +440,55 @@
     },
     "/discounts/{id}/products/{product_id}": {
       "post": {
+        "operationId": "PostDiscountsDiscountProductsProduct",
+        "summary": "Adds Product availability",
+        "description": "Adds a Product to the list of Products that a Discount can be used for.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Discount.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "product_id",
+            "required": true,
+            "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Discount"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "discount": {
+                      "$ref": "#/components/schemas/discount"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
         "operationId": "DeleteDiscountsDiscountProductsProduct",
         "summary": "Remove Product availability",
         "description": "Removes a Product from the list of Products that a Discount can be used for.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -678,11 +534,16 @@
       "post": {
         "operationId": "PostDiscounts",
         "summary": "Creates a Discount",
+        "x-authenticated": true,
         "description": "Creates a Discount with a given set of rules that define how the Discount behaves.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "code",
+                  "rule"
+                ],
                 "properties": {
                   "code": {
                     "type": "string",
@@ -757,7 +618,58 @@
       "get": {
         "operationId": "GetDiscounts",
         "summary": "List Discounts",
+        "x-authenticated": true,
         "description": "Retrieves a list of Discounts",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Search query applied on results.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_dynamic",
+            "description": "Return only dynamic discounts.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_disabled",
+            "description": "Return only disabled discounts.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of items in the response",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of items in response",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "Comma separated list of relations to include in the results.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "Discount"
         ],
@@ -784,6 +696,7 @@
         "operationId": "PostDiscountsDiscountDynamicCodes",
         "summary": "Create a dynamic Discount code",
         "description": "Creates a unique code that can map to a parent Discount. This is useful if you want to automatically generate codes with the same behaviour.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -843,6 +756,7 @@
         "operationId": "DeleteDiscountsDiscount",
         "summary": "Delete a Discount",
         "description": "Deletes a Discount.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -886,6 +800,7 @@
         "operationId": "GetDiscountsDiscount",
         "summary": "Retrieve a Discount",
         "description": "Retrieves a Discount",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -921,6 +836,7 @@
         "operationId": "PostDiscountsDiscount",
         "summary": "Update a Discount",
         "description": "Updates a Discount with a given set of rules that define how the Discount behaves.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -973,6 +889,10 @@
                     "items": {
                       "type": "string"
                     }
+                  },
+                  "metadata": {
+                    "description": "An object containing metadata of the discount",
+                    "type": "object"
                   }
                 }
               }
@@ -1005,6 +925,7 @@
         "operationId": "DeleteDiscountsDiscountDynamicCodesCode",
         "summary": "Delete a dynamic code",
         "description": "Deletes a dynamic code from a Discount.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1051,6 +972,7 @@
         "operationId": "GetDiscountsDiscountCode",
         "summary": "Retrieve a Discount by code",
         "description": "Retrieves a Discount by its discount code",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1083,15 +1005,469 @@
         }
       }
     },
+    "/collections/{id}/products/batch": {
+      "post": {
+        "operationId": "PostProductsToCollection",
+        "summary": "Updates products associated with a Product Collection",
+        "description": "Updates products associated with a Product Collection",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "product_ids": {
+                    "description": "An array of Product IDs to add to the Product Collection.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The ID of a Product to add to the Product Collection.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteProductsFromCollection",
+        "summary": "Removes products associated with a Product Collection",
+        "description": "Removes products associated with a Product Collection",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "product_ids": {
+                    "description": "An array of Product IDs to remove from the Product Collection.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The ID of a Product to remove from the Product Collection.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/collections": {
+      "post": {
+        "operationId": "PostCollections",
+        "summary": "Create a Product Collection",
+        "description": "Creates a Product Collection.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title to identify the Collection by."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCollections",
+        "summary": "List Product Collections",
+        "description": "Retrieve a list of Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "description": "The title of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "handle",
+            "description": "The handle of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{id}": {
+      "delete": {
+        "operationId": "DeleteCollectionsCollection",
+        "summary": "Delete a Product Collection",
+        "description": "Deletes a Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Collection"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCollectionsCollection",
+        "summary": "Retrieve a Product Collection",
+        "description": "Retrieves a Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCollectionsCollection",
+        "summary": "Update a Product Collection",
+        "description": "Updates a Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title to identify the Collection by."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "operationId": "PostAuth",
+        "summary": "Authenticate a User",
+        "x-authenticated": false,
+        "description": "Logs a User in and authorizes them to manage Store settings.",
+        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The User's email."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The User's password."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAuth",
+        "summary": "Get Session",
+        "x-authenticated": true,
+        "description": "Gets the currently logged in User.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/draft-orders": {
       "post": {
         "operationId": "PostDraftOrders",
         "summary": "Create a Draft Order",
         "description": "Creates a Draft Order",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "email",
+                  "items",
+                  "region_id",
+                  "shipping_methods"
+                ],
                 "properties": {
                   "status": {
                     "description": "The status of the draft order",
@@ -1222,6 +1598,7 @@
         "operationId": "GetDraftOrders",
         "summary": "List Draft Orders",
         "description": "Retrieves an list of Draft Orders",
+        "x-authenticated": true,
         "tags": [
           "Draft Order"
         ],
@@ -1248,10 +1625,25 @@
         "operationId": "PostDraftOrdersDraftOrderLineItems",
         "summary": "Create a Line Item for Draft Order",
         "description": "Creates a Line Item for the Draft Order",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "quantity"
+                ],
                 "properties": {
                   "variant_id": {
                     "description": "The id of the Product Variant to generate the Line Item from.",
@@ -1304,6 +1696,7 @@
         "operationId": "DeleteDraftOrdersDraftOrder",
         "summary": "Delete a Draft Order",
         "description": "Deletes a Draft Order",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1347,6 +1740,7 @@
         "operationId": "GetDraftOrdersDraftOrder",
         "summary": "Retrieve a Draft Order",
         "description": "Retrieves a Draft Order.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1384,6 +1778,7 @@
         "operationId": "DeleteDraftOrdersDraftOrderLineItemsItem",
         "summary": "Delete a Line Item",
         "description": "Removes a Line Item from a Draft Order.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1428,6 +1823,27 @@
         "operationId": "PostDraftOrdersDraftOrderLineItemsItem",
         "summary": "Update a Line Item for a Draft Order",
         "description": "Updates a Line Item for a Draft Order",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Draft Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "line_id",
+            "required": true,
+            "description": "The id of the Line Item.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1480,6 +1896,7 @@
         "summary": "Registers a payment for a Draft Order",
         "operationId": "PostDraftOrdersDraftOrderRegisterPayment",
         "description": "Registers a payment for a Draft Order.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1517,6 +1934,7 @@
         "operationId": "PostDraftOrdersDraftOrder",
         "summary": "Update a Draft Order\"",
         "description": "Updates a Draft Order.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1603,11 +2021,236 @@
         }
       }
     },
+    "/customers": {
+      "post": {
+        "operationId": "PostCustomers",
+        "summary": "Create a Customer",
+        "description": "Creates a Customer.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "first_name",
+                  "last_name"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email address."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "x-authenticated": true,
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "operationId": "GetCustomersCustomer",
+        "summary": "Retrieve a Customer",
+        "description": "Retrieves a Customer.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomersCustomer",
+        "summary": "Update a Customer",
+        "description": "Updates a Customer.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email. Only providable if user not registered."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password."
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "The id of a customer group",
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "description": "A list of customer groups to which the customer belongs."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/gift-cards": {
       "post": {
         "operationId": "PostGiftCards",
         "summary": "Create a Gift Card",
         "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
@@ -1666,6 +2309,7 @@
         "operationId": "GetGiftCards",
         "summary": "List Gift Cards",
         "description": "Retrieves a list of Gift Cards.",
+        "x-authenticated": true,
         "tags": [
           "Gift Card"
         ],
@@ -1695,6 +2339,7 @@
         "operationId": "DeleteGiftCardsGiftCard",
         "summary": "Delete a Gift Card",
         "description": "Deletes a Gift Card",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1738,6 +2383,7 @@
         "operationId": "GetGiftCardsGiftCard",
         "summary": "Retrieve a Gift Card",
         "description": "Retrieves a Gift Card.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1773,6 +2419,7 @@
         "operationId": "PostGiftCardsGiftCard",
         "summary": "Create a Gift Card",
         "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1839,11 +2486,188 @@
         }
       }
     },
+    "/invites/accept": {
+      "post": {
+        "operationId": "PostInvitesInviteAccept",
+        "summary": "Accept an Invite",
+        "description": "Accepts an Invite and creates a corresponding user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "token",
+                  "user"
+                ],
+                "properties": {
+                  "token": {
+                    "description": "The invite token provided by the admin.",
+                    "type": "string"
+                  },
+                  "user": {
+                    "description": "The User to create.",
+                    "type": "object",
+                    "required": [
+                      "first_name",
+                      "last_name",
+                      "password"
+                    ],
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "description": "the first name of the User"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "description": "the last name of the User"
+                      },
+                      "password": {
+                        "description": "The desired password for the User",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Invites"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/invites": {
+      "post": {
+        "operationId": "PostInvites",
+        "summary": "Create an Invite",
+        "description": "Creates an Invite and triggers an 'invite' created event",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "user",
+                  "role"
+                ],
+                "properties": {
+                  "user": {
+                    "description": "The email for the user to be created.",
+                    "type": "string"
+                  },
+                  "role": {
+                    "description": "The role of the user to be created.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Invites"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetInvites",
+        "summary": "Lists all Invites",
+        "description": "Lists all Invites",
+        "x-authenticated": true,
+        "tags": [
+          "Invites"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "invites": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/invite"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invites/{invite_id}": {
+      "delete": {
+        "operationId": "DeleteInvitesInvite",
+        "summary": "Create an Invite",
+        "description": "Creates an Invite and triggers an 'invite' created event",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invite_id",
+            "required": true,
+            "description": "The id of the Invite",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Invites"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/invites/{invite_id}/resend": {
+      "post": {
+        "operationId": "PostInvitesInviteResend",
+        "summary": "Resend an Invite",
+        "description": "Resends an Invite by triggering the 'invite' created event again",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "invite_id",
+            "required": true,
+            "description": "The id of the Invite",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Invites"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/notes": {
       "post": {
         "operationId": "PostNotes",
         "summary": "Creates a Note",
         "description": "Creates a Note which can be associated with any resource as required.",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
@@ -1889,7 +2713,40 @@
       "get": {
         "operationId": "GetNotes",
         "summary": "List Notes",
+        "x-authenticated": true,
         "description": "Retrieves a list of notes",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "required": true,
+            "description": "The number of notes to get",
+            "schema": {
+              "type": "number",
+              "default": ""
+            }
+          },
+          {
+            "in": "path",
+            "name": "offset",
+            "required": true,
+            "description": "The offset at which to get notes",
+            "schema": {
+              "type": "number",
+              "default": ""
+            }
+          },
+          {
+            "in": "path",
+            "name": "resource_id",
+            "required": true,
+            "description": "The id which the notes belongs to",
+            "schema": {
+              "type": "string",
+              "default": ""
+            }
+          }
+        ],
         "tags": [
           "Note"
         ],
@@ -1919,6 +2776,7 @@
         "operationId": "DeleteNotesNote",
         "summary": "Deletes a Note",
         "description": "Deletes a Note.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1956,9 +2814,10 @@
         }
       },
       "get": {
-        "operationId": "GetNoteNote",
+        "operationId": "GetNotesNote",
         "summary": "Get Note",
         "description": "Retrieves a single note using its id",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -1993,6 +2852,7 @@
       "post": {
         "operationId": "PostNotesNote",
         "summary": "Updates a Note",
+        "x-authenticated": true,
         "description": "Updates a Note associated with some resource",
         "parameters": [
           {
@@ -2009,6 +2869,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "value"
+                ],
                 "properties": {
                   "value": {
                     "type": "string",
@@ -2045,6 +2908,79 @@
         "operationId": "GetNotifications",
         "summary": "List Notifications",
         "description": "Retrieves a list of Notifications.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of notifications to skip before starting to collect the notifications set",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of notifications to return",
+            "schema": {
+              "type": "integer",
+              "default": 50
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "The fields to include in the result set",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "The fields to populate",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "event_name",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "resource_type",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "resource_id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "include_resends",
+            "description": "Whether the result set should include resent notifications or not",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
         "tags": [
           "Notification"
         ],
@@ -2074,6 +3010,7 @@
         "operationId": "PostNotificationsNotificationResend",
         "summary": "Resend Notification",
         "description": "Resends a previously sent notifications, with the same data but optionally to a different address",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2085,6 +3022,20 @@
             }
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "to": {
+                    "description": "The address or user identifier that the Notification was sent to",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
           "Notification"
         ],
@@ -2106,11 +3057,89 @@
         }
       }
     },
+    "/product-tags": {
+      "get": {
+        "operationId": "GetProductTags",
+        "summary": "List Product Tags",
+        "description": "Retrieve a list of Product Tags.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of tags to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of tags to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "The value of tags to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "The id of tags to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting tas was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting tas was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "Product Tag"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tags": {
+                      "$ref": "#/components/schemas/product_tag"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/{id}/shipping-methods": {
       "post": {
         "operationId": "PostOrdersOrderShippingMethods",
         "summary": "Add a Shipping Method",
         "description": "Adds a Shipping Method to an Order. If another Shipping Method exists with the same Shipping Profile, the previous Shipping Method will be replaced.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2171,11 +3200,50 @@
         }
       }
     },
+    "/orders/{id}/archive": {
+      "post": {
+        "operationId": "PostOrdersOrderArchive",
+        "summary": "Archive order",
+        "description": "Archives the order with the given id.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/{id}/claims/{claim_id}/cancel": {
       "post": {
         "operationId": "PostOrdersClaimCancel",
         "summary": "Cancels a Claim",
         "description": "Cancels a Claim",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2222,6 +3290,7 @@
         "operationId": "PostOrdersClaimFulfillmentsCancel",
         "summary": "Cancels a fulfilmment related to a Claim",
         "description": "Registers a Fulfillment as canceled.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2277,6 +3346,7 @@
         "operationId": "PostOrdersSwapFulfillmentsCancel",
         "summary": "Cancels a fulfilmment related to a Swap",
         "description": "Registers a Fulfillment as canceled.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2332,6 +3402,7 @@
         "operationId": "PostOrdersOrderFulfillmentsCancel",
         "summary": "Cancels a fulfilmment",
         "description": "Registers a Fulfillment as canceled.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2378,6 +3449,7 @@
         "operationId": "PostOrdersOrderCancel",
         "summary": "Cancel an Order",
         "description": "Registers an Order as canceled. This triggers a flow that will cancel any created Fulfillments and Payments, may fail if the Payment or Fulfillment Provider is unable to cancel the Payment/Fulfillment.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2415,6 +3487,7 @@
         "operationId": "PostOrdersSwapCancel",
         "summary": "Cancels a Swap",
         "description": "Cancels a Swap",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2461,6 +3534,45 @@
         "operationId": "PostOrdersOrderCapture",
         "summary": "Capture an Order",
         "description": "Captures all the Payments associated with an Order.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{id}/complete": {
+      "post": {
+        "operationId": "PostOrdersOrderComplete",
+        "summary": "Complete an Order",
+        "description": "Completes an Order",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2498,6 +3610,7 @@
         "operationId": "PostOrdersOrderClaimsClaimShipments",
         "summary": "Create Claim Shipment",
         "description": "Registers a Claim Fulfillment as shipped.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2522,6 +3635,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "fulfillment_id"
+                ],
                 "properties": {
                   "fulfillment_id": {
                     "description": "The id of the Fulfillment.",
@@ -2565,6 +3681,7 @@
         "operationId": "PostOrdersOrderClaims",
         "summary": "Create a Claim",
         "description": "Creates a Claim.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2580,6 +3697,10 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "type",
+                  "claim_items"
+                ],
                 "properties": {
                   "type": {
                     "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
@@ -2729,6 +3850,7 @@
         "operationId": "PostOrdersOrderFulfillments",
         "summary": "Create a Fulfillment",
         "description": "Creates a Fulfillment of an Order - will notify Fulfillment Providers to prepare a shipment.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2744,6 +3866,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "items"
+                ],
                 "properties": {
                   "items": {
                     "description": "The Line Items to include in the Fulfillment.",
@@ -2795,11 +3920,347 @@
         }
       }
     },
+    "/orders": {
+      "post": {
+        "operationId": "PostOrders",
+        "summary": "Create an order",
+        "description": "Creates and order",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "billing_address",
+                  "shipping_address",
+                  "items",
+                  "region",
+                  "customer_id",
+                  "payment_method",
+                  "shipping_method"
+                ],
+                "properties": {
+                  "status": {
+                    "description": "status of the order",
+                    "type": "string"
+                  },
+                  "email": {
+                    "description": "the email for the order",
+                    "type": "string"
+                  },
+                  "billing_address": {
+                    "description": "Billing address",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "Shipping address",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "items": {
+                    "description": "The Line Items for the order",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/line_item"
+                    }
+                  },
+                  "region": {
+                    "description": "Region where the order belongs",
+                    "type": "string"
+                  },
+                  "discounts": {
+                    "description": "Discounts applied to the order",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/line_item"
+                    }
+                  },
+                  "customer_id": {
+                    "description": "id of the customer",
+                    "type": "string"
+                  },
+                  "payment_method": {
+                    "description": "payment method chosen for the order",
+                    "type": "object",
+                    "required": [
+                      "provider_id"
+                    ],
+                    "properties": {
+                      "provider_id": {
+                        "type": "string",
+                        "description": "id of the payment provider"
+                      },
+                      "data": {
+                        "description": "Data relevant for the given payment method",
+                        "type": "object"
+                      }
+                    }
+                  },
+                  "shipping_method": {
+                    "description": "The Shipping Method used for shipping the order.",
+                    "type": "object",
+                    "required": [
+                      "provider_id",
+                      "profile_id",
+                      "price"
+                    ],
+                    "properties": {
+                      "provider_id": {
+                        "type": "string",
+                        "description": "The id of the shipping provider."
+                      },
+                      "profile_id": {
+                        "type": "string",
+                        "description": "The id of the shipping profile."
+                      },
+                      "price": {
+                        "type": "integer",
+                        "description": "The price of the shipping."
+                      },
+                      "data": {
+                        "type": "object",
+                        "description": "Data relevant to the specific shipping method."
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/line_item"
+                        },
+                        "description": "Items to ship"
+                      }
+                    }
+                  },
+                  "no_notification": {
+                    "description": "A flag to indicate if no notifications should be emitted related to the updated order.",
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetOrders",
+        "summary": "List Orders",
+        "description": "Retrieves a list of Orders",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching orders.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Id of the order to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "style": "form",
+            "explode": false,
+            "description": "Status to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "fulfillment_status",
+            "description": "Fulfillment status to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "payment_status",
+            "description": "Payment status to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "display_id",
+            "description": "Display id to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cart_id",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "customer_id",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "email",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "region_id",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "currency_code",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "tax_rate",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cancelled_at",
+            "description": "Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting orders was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting orders was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many orders to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of orders returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/order"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/{id}/shipment": {
       "post": {
         "operationId": "PostOrdersOrderShipment",
         "summary": "Create a Shipment",
         "description": "Registers a Fulfillment as shipped.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2815,6 +4276,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "fulfillment_id"
+                ],
                 "properties": {
                   "fulfillment_id": {
                     "description": "The id of the Fulfillment.",
@@ -2862,6 +4326,7 @@
         "operationId": "PostOrdersOrderSwapsSwapShipments",
         "summary": "Create Swap Shipment",
         "description": "Registers a Swap Fulfillment as shipped.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2886,6 +4351,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "fulfillment_id"
+                ],
                 "properties": {
                   "fulfillment_id": {
                     "description": "The id of the Fulfillment.",
@@ -2933,6 +4401,7 @@
         "operationId": "PostOrdersOrderSwaps",
         "summary": "Create a Swap",
         "description": "Creates a Swap. Swaps are used to handle Return of previously purchased goods and Fulfillment of replacements simultaneously.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -2948,11 +4417,18 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "return_items"
+                ],
                 "properties": {
                   "return_items": {
                     "description": "The Line Items to return as part of the Swap.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "item_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item that will be claimed.",
@@ -2983,6 +4459,10 @@
                     "description": "The new items to send to the Customer.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "variant_id",
+                        "quantity"
+                      ],
                       "properties": {
                         "variant_id": {
                           "description": "The id of the Product Variant to ship.",
@@ -2999,6 +4479,10 @@
                     "description": "The custom shipping options to potentially create a Shipping Method from.",
                     "type": "array",
                     "items": {
+                      "required": [
+                        "option_id",
+                        "price"
+                      ],
                       "properties": {
                         "option_id": {
                           "description": "The id of the Shipping Option to override with a custom price.",
@@ -3050,6 +4534,7 @@
         "operationId": "DeleteOrdersOrderMetadataKey",
         "summary": "Delete Metadata",
         "description": "Deletes a metadata key.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -3096,6 +4581,7 @@
         "operationId": "PostOrdersOrderClaimsClaimFulfillments",
         "summary": "Create a Claim Fulfillment",
         "description": "Creates a Fulfillment for a Claim.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -3160,6 +4646,7 @@
         "operationId": "PostOrdersOrderSwapsSwapFulfillments",
         "summary": "Create a Swap Fulfillment",
         "description": "Creates a Fulfillment for a Swap.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -3224,6 +4711,7 @@
         "operationId": "GetOrdersOrder",
         "summary": "Retrieve an Order",
         "description": "Retrieves an Order",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -3254,103 +4742,18 @@
             }
           }
         }
-      }
-    },
-    "/orders": {
-      "get": {
-        "operationId": "GetOrders",
-        "summary": "List Orders",
-        "description": "Retrieves a list of Orders",
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "orders": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/order"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/swaps/{swap_id}/process-payment": {
+      },
       "post": {
-        "operationId": "PostOrdersOrderSwapsSwapProcessPayment",
-        "summary": "Process a Swap difference",
-        "description": "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured.",
+        "operationId": "PostOrdersOrder",
+        "summary": "Update an order",
+        "description": "Updates and order",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
             "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "swap_id",
-            "required": true,
-            "description": "The id of the Swap.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}/swaps/{swap_id}/receive": {
-      "post": {
-        "operationId": "PostOrdersOrderSwapsSwapReceive",
-        "summary": "Receive a Swap",
-        "description": "Registers a Swap as received.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "swap_id",
-            "required": true,
-            "description": "The id of the Swap.",
             "schema": {
               "type": "string"
             }
@@ -3361,21 +4764,94 @@
             "application/json": {
               "schema": {
                 "properties": {
+                  "email": {
+                    "description": "the email for the order",
+                    "type": "string"
+                  },
+                  "billing_address": {
+                    "description": "Billing address",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "Shipping address",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
                   "items": {
-                    "description": "The Line Items that have been received.",
+                    "description": "The Line Items for the order",
                     "type": "array",
                     "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
+                      "$ref": "#/components/schemas/line_item"
+                    }
+                  },
+                  "region": {
+                    "description": "Region where the order belongs",
+                    "type": "string"
+                  },
+                  "discounts": {
+                    "description": "Discounts applied to the order",
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/line_item"
+                    }
+                  },
+                  "customer_id": {
+                    "description": "id of the customer",
+                    "type": "string"
+                  },
+                  "payment_method": {
+                    "description": "payment method chosen for the order",
+                    "type": "object",
+                    "properties": {
+                      "provider_id": {
+                        "type": "string",
+                        "description": "id of the payment provider"
+                      },
+                      "data": {
+                        "description": "Data relevant for the given payment method",
+                        "type": "object"
                       }
                     }
+                  },
+                  "shipping_method": {
+                    "description": "The Shipping Method used for shipping the order.",
+                    "type": "object",
+                    "properties": {
+                      "provider_id": {
+                        "type": "string",
+                        "description": "The id of the shipping provider."
+                      },
+                      "profile_id": {
+                        "type": "string",
+                        "description": "The id of the shipping profile."
+                      },
+                      "price": {
+                        "type": "integer",
+                        "description": "The price of the shipping."
+                      },
+                      "data": {
+                        "type": "object",
+                        "description": "Data relevant to the specific shipping method."
+                      },
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/components/schemas/line_item"
+                        },
+                        "description": "Items to ship"
+                      }
+                    }
+                  },
+                  "no_notification": {
+                    "description": "A flag to indicate if no notifications should be emitted related to the updated order.",
+                    "type": "boolean"
                   }
                 }
               }
@@ -3403,11 +4879,59 @@
         }
       }
     },
+    "/orders/{id}/swaps/{swap_id}/process-payment": {
+      "post": {
+        "operationId": "PostOrdersOrderSwapsSwapProcessPayment",
+        "summary": "Process a Swap difference",
+        "description": "When there are differences between the returned and shipped Products in a Swap, the difference must be processed. Either a Refund will be issued or a Payment will be captured.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Order.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "swap_id",
+            "required": true,
+            "description": "The id of the Swap.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/orders/{id}/refunds": {
       "post": {
         "operationId": "PostOrdersOrderRefunds",
         "summary": "Create a Refund",
         "description": "Issues a Refund.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -3475,6 +4999,7 @@
         "operationId": "PostOrdersOrderReturns",
         "summary": "Request a Return",
         "description": "Requests a Return. If applicable a return label will be created and other plugins notified.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -3490,6 +5015,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "items"
+                ],
                 "properties": {
                   "items": {
                     "description": "The Line Items that will be returned.",
@@ -3572,6 +5100,7 @@
         "operationId": "PostOrdersOrderClaimsClaim",
         "summary": "Update a Claim",
         "description": "Updates a Claim.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -3698,10 +5227,88 @@
         }
       }
     },
+    "/product-types": {
+      "get": {
+        "operationId": "GetProductTypes",
+        "summary": "List Product Types",
+        "description": "Retrieve a list of Product Types.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of types to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of types to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "value",
+            "description": "The value of types to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "The id of types to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting tas was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting tas was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "Product Tag"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "types": {
+                      "$ref": "#/components/schemas/product_tag"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/products/{id}/options": {
       "post": {
         "operationId": "PostProductsProductOptions",
         "summary": "Add an Option",
+        "x-authenticated": true,
         "description": "Adds a Product Option to a Product",
         "parameters": [
           {
@@ -3718,6 +5325,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "title"
+                ],
                 "properties": {
                   "title": {
                     "description": "The title the Product Option will be identified by i.e. \"Size\"",
@@ -3753,11 +5363,17 @@
       "post": {
         "operationId": "PostProducts",
         "summary": "Create a Product",
+        "x-authenticated": true,
         "description": "Creates a Product",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "title",
+                  "subtitle",
+                  "description"
+                ],
                 "properties": {
                   "title": {
                     "description": "The title of the Product",
@@ -4007,6 +5623,168 @@
         "operationId": "GetProducts",
         "summary": "List Product",
         "description": "Retrieves a list of Product",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching products.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Id of the product to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "style": "form",
+            "explode": false,
+            "description": "Status to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "collection_id",
+            "style": "form",
+            "explode": false,
+            "description": "Collection ids to search for.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "tags",
+            "style": "form",
+            "explode": false,
+            "description": "Tags to search for",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "handle",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "is_giftcard",
+            "description": "Search for giftcards using is_giftcard=true.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "to retrieve products in.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "description": "Date comparison for when resulting products was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting products was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting products was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many products to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of products returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each product of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each product of the result.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "Product"
         ],
@@ -4048,6 +5826,7 @@
         "operationId": "PostProductsProductVariants",
         "summary": "Create a Product Variant",
         "description": "Creates a Product Variant. Each Product Variant must have a unique combination of Product Option Values.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4063,6 +5842,11 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "title",
+                  "prices",
+                  "options"
+                ],
                 "properties": {
                   "title": {
                     "description": "The title to identify the Product Variant by.",
@@ -4199,6 +5983,7 @@
         "operationId": "GetProductsProductVariants",
         "summary": "List a Product's Product Variants",
         "description": "Retrieves a list of the Product Variants associated with a Product.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4239,6 +6024,7 @@
         "operationId": "DeleteProductsProductOptionsOption",
         "summary": "Delete a Product Option",
         "description": "Deletes a Product Option. Before a Product Option can be deleted all Option Values for the Product Option must be the same. You may, for example, have to delete some of your variants prior to deleting the Product Option",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4294,6 +6080,7 @@
         "operationId": "PostProductsProductOptionsOption",
         "summary": "Update a Product Option.",
         "description": "Updates a Product Option",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4318,6 +6105,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "title"
+                ],
                 "properties": {
                   "title": {
                     "description": "The title of the Product Option",
@@ -4354,6 +6144,7 @@
         "operationId": "DeleteProductsProduct",
         "summary": "Delete a Product",
         "description": "Deletes a Product and it's associated Product Variants.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4397,6 +6188,7 @@
         "operationId": "GetProductsProduct",
         "summary": "Retrieve a Product",
         "description": "Retrieves a Product.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4432,6 +6224,7 @@
         "operationId": "PostProductsProduct",
         "summary": "Update a Product",
         "description": "Updates a Product",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4698,6 +6491,7 @@
         "operationId": "DeleteProductsProductVariantsVariant",
         "summary": "Delete a Product Variant",
         "description": "Deletes a Product Variant.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4750,6 +6544,7 @@
         "operationId": "PostProductsProductVariantsVariant",
         "summary": "Update a Product Variant",
         "description": "Update a Product Variant.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4912,6 +6707,7 @@
         "operationId": "GetProductsTypes",
         "summary": "List Product Types",
         "description": "Retrieves a list of Product Types.",
+        "x-authenticated": true,
         "tags": [
           "Product"
         ],
@@ -4936,11 +6732,72 @@
         }
       }
     },
+    "/products/{id}/metadata": {
+      "post": {
+        "operationId": "PostProductsProductMetadata",
+        "summary": "Set Product metadata",
+        "description": "Set metadata key/value pair for Product",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "properties": {
+                  "key": {
+                    "description": "The metadata key",
+                    "type": "string"
+                  },
+                  "value": {
+                    "description": "The metadata value",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/regions/{id}/countries": {
       "post": {
         "operationId": "PostRegionsRegionCountries",
         "summary": "Add Country",
         "description": "Adds a Country to the list of Countries in a Region",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -4956,6 +6813,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "country_code"
+                ],
                 "properties": {
                   "country_code": {
                     "description": "The 2 character ISO code for the Country.",
@@ -4992,6 +6852,7 @@
         "operationId": "PostRegionsRegionFulfillmentProviders",
         "summary": "Add Fulfillment Provider",
         "description": "Adds a Fulfillment Provider to a Region",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5007,6 +6868,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "provider_id"
+                ],
                 "properties": {
                   "provider_id": {
                     "description": "The id of the Fulfillment Provider to add.",
@@ -5043,6 +6907,7 @@
         "operationId": "PostRegionsRegionPaymentProviders",
         "summary": "Add Payment Provider",
         "description": "Adds a Payment Provider to a Region",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5058,6 +6923,9 @@
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "provider_id"
+                ],
                 "properties": {
                   "provider_id": {
                     "description": "The id of the Payment Provider to add.",
@@ -5094,10 +6962,16 @@
         "operationId": "PostRegions",
         "summary": "Create a Region",
         "description": "Creates a Region",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "name",
+                  "currency_code",
+                  "tax_rate"
+                ],
                 "properties": {
                   "name": {
                     "description": "The name of the Region",
@@ -5165,6 +7039,54 @@
         "operationId": "GetRegions",
         "summary": "List Regions",
         "description": "Retrieves a list of Regions.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "limit the number of regions in response"
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "schema": {
+              "type": "integer"
+            },
+            "required": false,
+            "description": "Offset of regions in response (used for pagination)"
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "schema": {
+              "type": "object"
+            },
+            "required": false,
+            "description": "Date comparison for when resulting region was created, i.e. less than, greater than etc."
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "schema": {
+              "type": "object"
+            },
+            "required": false,
+            "description": "Date comparison for when resulting region was updated, i.e. less than, greater than etc."
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "schema": {
+              "type": "object"
+            },
+            "required": false,
+            "description": "Date comparison for when resulting region was deleted, i.e. less than, greater than etc."
+          }
+        ],
         "tags": [
           "Region"
         ],
@@ -5194,6 +7116,7 @@
         "operationId": "DeleteRegionsRegionMetadataKey",
         "summary": "Delete Metadata",
         "description": "Deletes a metadata key.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5240,6 +7163,7 @@
         "operationId": "DeleteRegionsRegion",
         "summary": "Delete a Region",
         "description": "Deletes a Region.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5283,6 +7207,7 @@
         "operationId": "GetRegionsRegion",
         "summary": "Retrieve a Region",
         "description": "Retrieves a Region.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5318,6 +7243,7 @@
         "operationId": "PostRegionsRegion",
         "summary": "Update a Region",
         "description": "Updates a Region",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5340,6 +7266,18 @@
                   },
                   "currency_code": {
                     "description": "The 3 character ISO currency code to use for the Region.",
+                    "type": "string"
+                  },
+                  "automatic_taxes": {
+                    "description": "If true Medusa will automatically calculate taxes for carts in this region. If false you have to manually call POST /carts/:id/taxes.",
+                    "type": "boolean"
+                  },
+                  "gift_cards_taxable": {
+                    "description": "Whether gift cards in this region should be applied sales tax when purchasing a gift card",
+                    "type": "boolean"
+                  },
+                  "tax_provider_id": {
+                    "description": "The id of the tax provider to use; if null the system tax provider is used",
                     "type": "string"
                   },
                   "tax_code": {
@@ -5402,6 +7340,7 @@
         "operationId": "GetRegionsRegionFulfillmentOptions",
         "summary": "List Fulfillment Options available in the Region",
         "description": "Gathers all the fulfillment options available to in the Region.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5414,7 +7353,7 @@
           }
         ],
         "tags": [
-          "Product"
+          "Region"
         ],
         "responses": {
           "200": {
@@ -5426,7 +7365,16 @@
                     "fulfillment_options": {
                       "type": "array",
                       "items": {
-                        "type": "object"
+                        "properties": {
+                          "provider_id": {
+                            "type": "string",
+                            "description": "id of the fulfillment provider"
+                          },
+                          "options": {
+                            "type": "object",
+                            "description": "fulfillment provider options"
+                          }
+                        }
                       }
                     }
                   }
@@ -5441,6 +7389,7 @@
       "delete": {
         "operationId": "PostRegionsRegionCountriesCountry",
         "summary": "Remove Country",
+        "x-authenticated": true,
         "description": "Removes a Country from the list of Countries in a Region",
         "parameters": [
           {
@@ -5488,6 +7437,7 @@
         "operationId": "PostRegionsRegionFulfillmentProvidersProvider",
         "summary": "Remove Fulfillment Provider",
         "description": "Removes a Fulfillment Provider.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5534,6 +7484,7 @@
         "operationId": "PostRegionsRegionPaymentProvidersProvider",
         "summary": "Remove Payment Provider",
         "description": "Removes a Payment Provider.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5575,15 +7526,81 @@
         }
       }
     },
+    "/regions/{id}/metadata": {
+      "post": {
+        "operationId": "PostRegionsRegionMetadata",
+        "summary": "Set the metadata of a Region",
+        "description": "Sets the metadata of a Region",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Region.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Region"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "region": {
+                      "$ref": "#/components/schemas/region"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "properties": {
+                  "key": {
+                    "type": "string",
+                    "description": "Key for the metadata value."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "The value that the key relates to."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/return-reasons": {
       "post": {
         "operationId": "PostReturnReasons",
         "summary": "Create a Return Reason",
         "description": "Creates a Return Reason",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "label",
+                  "value"
+                ],
                 "properties": {
                   "label": {
                     "description": "The label to display to the Customer.",
@@ -5591,6 +7608,10 @@
                   },
                   "value": {
                     "description": "The value that the Return Reason will be identified by. Must be unique.",
+                    "type": "string"
+                  },
+                  "parent_return_reason_id": {
+                    "description": "The id of the parent return reason.",
                     "type": "string"
                   },
                   "description": {
@@ -5630,6 +7651,7 @@
         "operationId": "GetReturnReasons",
         "summary": "List Return Reasons",
         "description": "Retrieves a list of Return Reasons.",
+        "x-authenticated": true,
         "tags": [
           "Return Reason"
         ],
@@ -5654,11 +7676,12 @@
         }
       }
     },
-    "/return-reason/{id}": {
+    "/return-reasons/{id}": {
       "delete": {
         "operationId": "DeleteReturnReason",
         "summary": "Delete a return reason",
         "description": "Deletes a return reason.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5697,13 +7720,12 @@
             }
           }
         }
-      }
-    },
-    "/return-reasons/{id}": {
+      },
       "get": {
         "operationId": "GetReturnReasonsReason",
         "summary": "Retrieve a Return Reason",
         "description": "Retrieves a Return Reason.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5739,6 +7761,7 @@
         "operationId": "PostReturnReasonsReason",
         "summary": "Update a Return Reason",
         "description": "Updates a Return Reason",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5757,10 +7780,6 @@
                 "properties": {
                   "label": {
                     "description": "The label to display to the Customer.",
-                    "type": "string"
-                  },
-                  "value": {
-                    "description": "The value that the Return Reason will be identified by. Must be unique.",
                     "type": "string"
                   },
                   "description": {
@@ -5797,11 +7816,168 @@
         }
       }
     },
+    "/returns/{id}/cancel": {
+      "post": {
+        "operationId": "PostReturnsReturnCancel",
+        "summary": "Cancel a Return",
+        "description": "Registers a Return as canceled.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return": {
+                      "$ref": "#/components/schemas/order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns": {
+      "get": {
+        "operationId": "GetReturns",
+        "summary": "List Returns",
+        "description": "Retrieves a list of Returns",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "limit",
+            "required": true,
+            "description": "The upper limit for the amount of responses returned.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "in": "path",
+            "name": "offset",
+            "required": true,
+            "description": "The offset of the list returned.",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "returns": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/return"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/returns/{id}/receive": {
+      "post": {
+        "operationId": "PostReturnsReturnReceive",
+        "summary": "Receive a Return",
+        "description": "Registers a Return as received. Updates statuses on Orders and Swaps accordingly.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Return.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "items"
+                ],
+                "properties": {
+                  "items": {
+                    "description": "The Line Items that have been received.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "item_id": {
+                          "description": "The id of the Line Item.",
+                          "type": "string"
+                        },
+                        "quantity": {
+                          "description": "The quantity of the Line Item.",
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  },
+                  "refund": {
+                    "description": "The amount to refund.",
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Return"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "return": {
+                      "$ref": "#/components/schemas/return"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/shipping-options": {
       "post": {
         "operationId": "PostShippingOptions",
         "summary": "Create Shipping Option",
         "description": "Creates a Shipping Option",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
@@ -5862,6 +8038,14 @@
                   "is_return": {
                     "description": "Whether the Shipping Option defines a return shipment.",
                     "type": "boolean"
+                  },
+                  "admin_only": {
+                    "description": "If true, the option can be used for draft orders",
+                    "type": "boolean"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
                   }
                 }
               }
@@ -5892,6 +8076,33 @@
         "operationId": "GetShippingOptions",
         "summary": "List Shipping Options",
         "description": "Retrieves a list of Shipping Options.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "region_id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Region to fetch options from"
+          },
+          {
+            "in": "query",
+            "name": "is_return",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Flag for fetching return options"
+          },
+          {
+            "in": "query",
+            "name": "admin_only",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "Flag for fetching admin specific options"
+          }
+        ],
         "tags": [
           "Shipping Option"
         ],
@@ -5921,6 +8132,7 @@
         "operationId": "DeleteShippingOptionsOption",
         "summary": "Delete a Shipping Option",
         "description": "Deletes a Shipping Option.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5964,6 +8176,7 @@
         "operationId": "GetShippingOptionsOption",
         "summary": "Retrieve a Shipping Option",
         "description": "Retrieves a Shipping Option.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -5999,6 +8212,7 @@
         "operationId": "PostShippingOptionsOption",
         "summary": "Update Shipping Option",
         "description": "Updates a Shipping Option",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -6022,6 +8236,14 @@
                   "amount": {
                     "description": "The amount to charge for the Shipping Option.",
                     "type": "integer"
+                  },
+                  "admin_only": {
+                    "description": "If true, the option can be used for draft orders",
+                    "type": "boolean"
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs with additional information.",
+                    "type": "object"
                   },
                   "requirements": {
                     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
@@ -6074,10 +8296,14 @@
         "operationId": "PostShippingProfiles",
         "summary": "Create a Shipping Profile",
         "description": "Creates a Shipping Profile",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
+                "required": [
+                  "name"
+                ],
                 "properties": {
                   "name": {
                     "description": "The name of the Shipping Profile",
@@ -6112,6 +8338,7 @@
         "operationId": "GetShippingProfiles",
         "summary": "List Shipping Profiles",
         "description": "Retrieves a list of Shipping Profile.",
+        "x-authenticated": true,
         "tags": [
           "Shipping Profile"
         ],
@@ -6141,6 +8368,7 @@
         "operationId": "DeleteShippingProfilesProfile",
         "summary": "Delete a Shipping Profile",
         "description": "Deletes a Shipping Profile.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -6184,6 +8412,7 @@
         "operationId": "GetShippingProfilesProfile",
         "summary": "Retrieve a Shipping Profile",
         "description": "Retrieves a Shipping Profile.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -6270,6 +8499,7 @@
         "operationId": "PostStoreCurrenciesCode",
         "summary": "Add a Currency Code",
         "description": "Adds a Currency Code to the available currencies.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -6303,8 +8533,9 @@
       },
       "delete": {
         "operationId": "DeleteStoreCurrenciesCode",
-        "summary": "Remvoe a Currency Code",
+        "summary": "Remove a Currency Code",
         "description": "Removes a Currency Code from the available currencies.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -6342,6 +8573,7 @@
         "operationId": "GetStore",
         "summary": "Retrieve Store details.",
         "description": "Retrieves the Store details",
+        "x-authenticated": true,
         "tags": [
           "Store"
         ],
@@ -6366,6 +8598,7 @@
         "operationId": "PostStore",
         "summary": "Update Store details.",
         "description": "Updates the Store details",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
@@ -6377,6 +8610,14 @@
                   },
                   "swap_link_template": {
                     "description": "A template for Swap links - use `{{cart_id}}` to insert the Swap Cart id",
+                    "type": "string"
+                  },
+                  "payment_link_template": {
+                    "description": "A template for payment links links - use `{{cart_id}}` to insert the Cart id",
+                    "type": "string"
+                  },
+                  "invite_link_template": {
+                    "description": "A template for invite links - use `{{invite_token}}` to insert the invite token",
                     "type": "string"
                   },
                   "default_currency_code": {
@@ -6414,6 +8655,7 @@
         "operationId": "GetStorePaymentProviders",
         "summary": "Retrieve configured Payment Providers",
         "description": "Retrieves the configured Payment Providers",
+        "x-authenticated": true,
         "tags": [
           "Store"
         ],
@@ -6438,11 +8680,42 @@
         }
       }
     },
+    "/store/tax-providers": {
+      "get": {
+        "operationId": "GetStoreTaxProviders",
+        "summary": "Retrieve configured Tax Providers",
+        "description": "Retrieves the configured Tax Providers",
+        "x-authenticated": true,
+        "tags": [
+          "Store"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_providers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/store"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/swaps/{id}": {
       "get": {
         "operationId": "GetSwapsSwap",
         "summary": "Retrieve a Swap",
         "description": "Retrieves a Swap.",
+        "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
@@ -6480,6 +8753,7 @@
         "operationId": "GetSwaps",
         "summary": "List Swaps",
         "description": "Retrieves a list of Swaps.",
+        "x-authenticated": true,
         "tags": [
           "Swap"
         ],
@@ -6504,11 +8778,800 @@
         }
       }
     },
+    "/tax-rates/:id/product-types/batch": {
+      "post": {
+        "operationId": "PostTaxRatesTaxRateProductTypes",
+        "summary": "Add Tax Rate to Product Types",
+        "description": "Associates a Tax Rate with a list of Product Types",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteTaxRatesTaxRateProductTypes",
+        "summary": "Remove Tax Rate from Product Types",
+        "description": "Removes a Tax Rate from a list of Product Types",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax-rates/:id/products/batch": {
+      "post": {
+        "operationId": "PostTaxRatesTaxRateProducts",
+        "summary": "Add Tax Rate to Products",
+        "description": "Associates a Tax Rate with a list of Products",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteTaxRatesTaxRateProducts",
+        "summary": "Removes Tax Rate from Products",
+        "description": "Removes a Tax Rate from a list of Products",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax-rates/:id/shipping-options/batch": {
+      "post": {
+        "operationId": "PostTaxRatesTaxRateShippingOptions",
+        "summary": "Add Tax Rate to Product Types",
+        "description": "Associates a Tax Rate with a list of Product Types",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteTaxRatesTaxRateShippingOptions",
+        "summary": "Removes a Tax Rate from Product Types",
+        "description": "Removes a Tax Rate from a list of Product Types",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax-rates": {
+      "post": {
+        "operationId": "PostTaxRates",
+        "summary": "Create a Tax Rate",
+        "description": "Creates a Tax Rate",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetTaxRates",
+        "summary": "List Tax Rates",
+        "description": "Retrieves a list of TaxRates",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching orders.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Id of the order to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "region_id",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "code",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "rate",
+            "description": "to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting orders was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting orders was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many orders to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of orders returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Order"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/order"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax-rates/{id}": {
+      "delete": {
+        "operationId": "DeleteTaxRatesTaxRate",
+        "summary": "Delete a Tax Rate",
+        "description": "Deletes a Tax Rate",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Shipping Option.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Shipping Option."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tax-rates/:id": {
+      "get": {
+        "operationId": "GetTaxRatesTaxRate",
+        "summary": "Get Tax Rate",
+        "description": "Retrieves a TaxRate",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostTaxRatesTaxRate",
+        "summary": "Update a Tax Rate",
+        "description": "Updates a Tax Rate",
+        "x-authenticated": true,
+        "tags": [
+          "Tax Rates"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "tax_rate": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/tax_rate"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "post": {
+        "operationId": "PostUploads",
+        "summary": "Uploads an array of files",
+        "description": "Uploads an array of files to the specific fileservice that is installed in medusa.",
+        "x-authenticated": true,
+        "tags": [
+          "Uploads"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "uploads": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "operationId": "PostUsers",
+        "summary": "Create a User",
+        "description": "Creates a User",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "The Users email.",
+                    "type": "string"
+                  },
+                  "first_name": {
+                    "description": "The name of the User.",
+                    "type": "string"
+                  },
+                  "last_name": {
+                    "description": "The name of the User.",
+                    "type": "string"
+                  },
+                  "role": {
+                    "description": "Userrole assigned to the user.",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "The Users password.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetUsers",
+        "summary": "Retrieve all users",
+        "description": "Retrieves all users.",
+        "x-authenticated": true,
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/user"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "delete": {
+        "operationId": "DeleteUsersUser",
+        "summary": "Delete a User",
+        "description": "Deletes a User",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "description": "The id of the User.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Shipping Profile."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostUsersUser",
+        "summary": "Update a User",
+        "description": "Updates a User",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "user_id",
+            "required": true,
+            "description": "The id of the User.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "first_name",
+                  "last_name",
+                  "role",
+                  "api_token"
+                ],
+                "properties": {
+                  "first_name": {
+                    "type": "string",
+                    "description": "The name of the User."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The name of the User."
+                  },
+                  "role": {
+                    "type": "string",
+                    "description": "The role of the User(admin, member, developer)."
+                  },
+                  "api_token": {
+                    "type": "string",
+                    "description": "The api_token of the User."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "operationId": "GetUsersUser",
+        "summary": "Retrieve a User",
+        "description": "Retrieves a User.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the User.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/password-token": {
+      "post": {
+        "operationId": "PostUsersUserPassword",
+        "summary": "Set the password for a User.",
+        "description": "Sets the password for a User given the correct token.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "email",
+                  "token",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "description": "The Users email.",
+                    "type": "string"
+                  },
+                  "token": {
+                    "description": "The token generated from the 'password-token' endpoint.",
+                    "type": "string"
+                  },
+                  "password": {
+                    "description": "The Users new password.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/variants": {
       "get": {
         "operationId": "GetVariants",
         "summary": "List Product Variants.",
         "description": "Retrieves a list of Product Variants",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching variants.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many variants to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of variants returned.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
           "Product Variant"
         ],
@@ -6524,139 +9587,6 @@
                       "items": {
                         "$ref": "#/components/schemas/product_variant"
                       }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns/{id}/cancel": {
-      "post": {
-        "operationId": "PostReturnsReturnCancel",
-        "summary": "Cancel a Return",
-        "description": "Registers a Return as canceled.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Return.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "return": {
-                      "$ref": "#/components/schemas/order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns": {
-      "get": {
-        "operationId": "GetReturns",
-        "summary": "List Returns",
-        "description": "Retrieves a list of Returns",
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "returns": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/return"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/returns/{id}/receive": {
-      "post": {
-        "operationId": "PostReturnsReturnReceive",
-        "summary": "Receive a Return",
-        "description": "Registers a Return as received. Updates statuses on Orders and Swaps accordingly.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Return.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "items": {
-                    "description": "The Line Items that have been received.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "refund": {
-                    "description": "The amount to refund.",
-                    "type": "integer"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Return"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "return": {
-                      "$ref": "#/components/schemas/return"
                     }
                   }
                 }
@@ -7173,6 +10103,40 @@
           },
           "metadata": {
             "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "customer_group": {
+        "title": "Customer Group",
+        "description": "Represents a customer group",
+        "x-resourceId": "customer_group",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "customers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/customer"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
             "type": "object"
           }
         }
@@ -7700,6 +10664,52 @@
           }
         }
       },
+      "invite": {
+        "title": "Invite",
+        "description": "Represents an invite",
+        "x-resourceId": "invite",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "user_email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "member",
+              "developer"
+            ]
+          },
+          "accepted": {
+            "type": "boolean"
+          },
+          "token": {
+            "type": "string"
+          },
+          "expores_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "type": "object"
+          }
+        }
+      },
       "line_item": {
         "title": "Line Item",
         "description": "Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims.",
@@ -8037,6 +11047,31 @@
           }
         }
       },
+      "OAuth": {
+        "title": "OAuth",
+        "description": "Represent an OAuth app",
+        "x-resourceId": "OAuth",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "application_name": {
+            "type": "string"
+          },
+          "install_url": {
+            "type": "string"
+          },
+          "uninstall_url": {
+            "type": "integer"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
       "order": {
         "title": "Order",
         "description": "Represents an order",
@@ -8091,7 +11126,7 @@
             "type": "string"
           },
           "tax_rate": {
-            "type": "integer"
+            "type": "number"
           },
           "discounts": {
             "type": "array",
@@ -8412,7 +11447,7 @@
             "description": "The Products contained in the Product Collection.",
             "type": "array",
             "items": {
-              "type": "object"
+              "$ref": "#/components/schemas/product"
             }
           },
           "created_at": {
@@ -8534,6 +11569,74 @@
           },
           "value": {
             "description": "The value that the Product Tag represents (e.g. \"Pants\").",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "product_tax_rate": {
+        "title": "Product Tax Rate",
+        "description": "Associates a tax rate with a product to indicate that the product is taxed in a certain way",
+        "x-resourceId": "product_tax_rate",
+        "properties": {
+          "product_id": {
+            "description": "The id of the Product",
+            "type": "string"
+          },
+          "rate_id": {
+            "description": "The id of the Tax Rate",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "product_type_tax_rate": {
+        "title": "Product Type Tax Rate",
+        "description": "Associates a tax rate with a product type to indicate that the product type is taxed in a certain way",
+        "x-resourceId": "product_type_tax_rate",
+        "properties": {
+          "product_type_id": {
+            "description": "The id of the Product type",
+            "type": "string"
+          },
+          "rate_id": {
+            "description": "The id of the Tax Rate",
             "type": "string"
           },
           "created_at": {
@@ -9347,6 +12450,40 @@
           }
         }
       },
+      "shipping_tax_rate": {
+        "title": "Shipping Tax Rate",
+        "description": "Associates a tax rate with a shipping option to indicate that the shipping option is taxed in a certain way",
+        "x-resourceId": "shipping_tax_rate",
+        "properties": {
+          "shipping_option_id": {
+            "description": "The id of the Shipping Option",
+            "type": "string"
+          },
+          "rate_id": {
+            "description": "The id of the Tax Rate",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
       "store": {
         "title": "Store",
         "description": "Holds settings for the Store, such as name, currencies, etc.",
@@ -9515,6 +12652,103 @@
           "metadata": {
             "description": "An optional key-value map with additional information.",
             "type": "object"
+          }
+        }
+      },
+      "tax_line": {
+        "title": "Tax Line",
+        "description": "Line item that specifies an amount of tax to add to a line item.",
+        "x-resourceId": "tax_line",
+        "properties": {
+          "id": {
+            "description": "The id of the Tax Line. This value will be prefixed by `tl_`.",
+            "type": "string"
+          },
+          "code": {
+            "description": "A code to identify the tax type by",
+            "type": "string"
+          },
+          "name": {
+            "description": "A human friendly name for the tax",
+            "type": "string"
+          },
+          "rate": {
+            "description": "The numeric rate to charge tax by",
+            "type": "number"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "tax_provider": {
+        "title": "Tax Provider",
+        "description": "The tax service used to calculate taxes",
+        "x-resourceId": "tax_provider",
+        "properties": {
+          "id": {
+            "description": "The id of the tax provider as given by the plugin.",
+            "type": "string"
+          },
+          "is_installed": {
+            "description": "Whether the plugin is installed in the current version. Plugins that are no longer installed are not deleted by will have this field set to `false`.",
+            "type": "boolean"
+          }
+        }
+      },
+      "tax_rate": {
+        "title": "Tax Rate",
+        "description": "A Tax Rate can be used to associate a certain rate to charge on products within a given Region",
+        "x-resourceId": "line_item",
+        "properties": {
+          "id": {
+            "description": "The id of the Tax Rate. This value will be prefixed by `txr_`.",
+            "type": "string"
+          },
+          "rate": {
+            "description": "The numeric rate to charge",
+            "type": "number"
+          },
+          "code": {
+            "description": "A code to identify the tax type by",
+            "type": "string"
+          },
+          "name": {
+            "description": "A human friendly name for the tax",
+            "type": "string"
+          },
+          "region_id": {
+            "description": "The id of the Region that the rate belongs to",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          },
+          "refundable": {
+            "description": "The amount that can be refunded from the given Line Item. Takes taxes and discounts into consideration.",
+            "type": "integer"
           }
         }
       },
