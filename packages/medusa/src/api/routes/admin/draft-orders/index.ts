@@ -46,11 +46,17 @@ export default (app) => {
   return app
 }
 
-export const defaultAdminDraftOrdersRelations = ["order", "cart"]
+export const defaultAdminDraftOrdersRelations = [
+  "order",
+  "cart",
+  "cart.items",
+  "cart.items.adjustments",
+]
 
 export const defaultAdminDraftOrdersCartRelations = [
   "region",
   "items",
+  "items.adjustments",
   "payment",
   "shipping_address",
   "billing_address",

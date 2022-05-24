@@ -1,8 +1,13 @@
 import { Type } from "class-transformer"
+import { omit } from "lodash"
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { defaultStoreVariantRelations } from "."
+import { FilterableProductVariantProps } from "../../../../types/product-variant"
 import ProductVariantService from "../../../../services/product-variant"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
+import { NumericalComparisonOperator } from "../../../../types/common"
+import { PriceSelectionParams } from "../../../../types/price-selection"
 
 /**
  * @oas [get] /variants
@@ -29,38 +34,52 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/product_variant"
  */
 export default async (req, res) => {
-  const { limit, offset, expand, ids } = await validator(
-    StoreGetVariantsParams,
-    req.query
-  )
+  const validated = await validator(StoreGetVariantsParams, req.query)
+  const { expand, offset, limit } = validated
 
   let expandFields: string[] = []
   if (expand) {
     expandFields = expand.split(",")
   }
 
-  let selector = {}
+  const customer_id = req.user?.customer_id
+
   const listConfig = {
     relations: expandFields.length
       ? expandFields
       : defaultStoreVariantRelations,
     skip: offset,
     take: limit,
+    cart_id: validated.cart_id,
+    region_id: validated.region_id,
+    currency_code: validated.currency_code,
+    customer_id: customer_id,
+    include_discount_prices: true,
   }
 
-  if (ids) {
-    selector = { id: ids.split(",") }
+  const filterableFields: FilterableProductVariantProps = omit(validated, [
+    "ids",
+    "limit",
+    "offset",
+    "expand",
+    "cart_id",
+    "region_id",
+    "currency_code",
+  ])
+
+  if (validated.ids) {
+    filterableFields.id = validated.ids.split(",")
   }
 
   const variantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
-  const variants = await variantService.list(selector, listConfig)
+  const variants = await variantService.list(filterableFields, listConfig)
 
   res.json({ variants })
 }
 
-export class StoreGetVariantsParams {
+export class StoreGetVariantsParams extends PriceSelectionParams {
   @IsOptional()
   @IsInt()
   @Type(() => Number)
@@ -78,4 +97,16 @@ export class StoreGetVariantsParams {
   @IsOptional()
   @IsString()
   ids?: string
+
+  @IsOptional()
+  @IsType([String, [String]])
+  id?: string | string[]
+
+  @IsOptional()
+  @IsType([String, [String]])
+  title?: string | string[]
+
+  @IsOptional()
+  @IsType([Number, NumericalComparisonOperator])
+  inventory_quantity?: number | NumericalComparisonOperator
 }

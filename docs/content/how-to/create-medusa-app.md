@@ -55,7 +55,7 @@ For the walkthrough purposes, we assume that the selected starter is `medusa-sta
 
 ### Selecting a Storefront
 
-After selecting your Medusa starter you will be given the option to install one of our storefront starters. At the moment we have starters for Gatsby and Next.js:
+After selecting your Medusa starter, you will be given the option to install one of our storefront starters. At the moment, we have starters for Gatsby and Next.js:
 
 ```bash
 Which storefront starter would you like to install? …
@@ -74,7 +74,7 @@ Creating new project from git: https://github.com/medusajs/medusa-starter-defaul
 Installing packages...
 ```
 
-Once the installation has been completed you will have a Medusa backend, a demo storefront, and an admin dashboard.
+Once the installation has been completed, you will have a Medusa backend, a Demo storefront, and an Admin dashboard.
 
 ## What's inside
 
@@ -87,7 +87,7 @@ Inside the root folder which was specified at the beginning of the installation 
   /admin // Medusa admin panel 
 ```
 
-`create-medusa-app` prints out the commands that are available to you after installation. When each project is started you can visit your storefront, complete the order, and view the order in Medusa admin.
+`create-medusa-app` prints out the commands that are available to you after installation. When each project is started, you can visit your storefront, complete the order, and view the order in Medusa admin.
 
 ```bash
 ⠴ Installing packages...
@@ -112,10 +112,10 @@ Create initial git commit in my-medusa-store/admin
 
 ## **What's next?**
 
-To learn more about Medusa to go through our docs to get some inspiration and guidance for the next steps and further development:
+To learn more about Medusa, go through our docs to get some inspiration and guidance for the next steps and further development:
 
 - [Find out how to set up a Medusa project with Gatsby and Contentful](https://docs.medusajs.com/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa)
 - [Move your Medusa setup to the next level with some custom functionality](https://docs.medusajs.com/tutorial/adding-custom-functionality)
 - [Create your own Medusa plugin](https://docs.medusajs.com/guides/plugins)
 
-If you have any follow-up questions or want to chat directly with our engineering team we are always happy to meet you at our [Discord](https://discord.gg/DSHySyMu).
+If you have any follow-up questions or want to chat directly with our engineering team, we are always happy to meet you at our [Discord](https://discord.gg/DSHySyMu).

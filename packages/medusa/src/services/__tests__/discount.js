@@ -1,7 +1,5 @@
-import DiscountService from "../discount"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { MedusaError } from "medusa-core-utils"
-import { exportAllDeclaration } from "@babel/types"
+import DiscountService from "../discount"
 
 describe("DiscountService", () => {
   describe("create", () => {
@@ -15,7 +13,7 @@ describe("DiscountService", () => {
           id: IdMap.getId("france"),
         }
       },
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
     }
@@ -309,121 +307,6 @@ describe("DiscountService", () => {
     })
   })
 
-  describe("addValidProduct", () => {
-    const discountRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("total10"),
-          rule: {
-            id: IdMap.getId("test-rule"),
-            valid_for: [{ id: IdMap.getId("test-product") }],
-          },
-        }),
-    })
-
-    const discountRuleRepository = MockRepository({})
-
-    const productService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-product-2"),
-        }
-      },
-    }
-
-    const discountService = new DiscountService({
-      manager: MockManager,
-      discountRepository,
-      discountRuleRepository,
-      productService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully adds a product", async () => {
-      await discountService.addValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product-2")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
-      expect(discountRuleRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("test-rule"),
-        valid_for: [
-          { id: IdMap.getId("test-product") },
-          { id: IdMap.getId("test-product-2") },
-        ],
-      })
-    })
-
-    it("successfully resolves if product already exists", async () => {
-      await discountService.addValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
-    })
-  })
-
-  describe("removeValidVariant", () => {
-    const discountRepository = MockRepository({
-      findOne: () =>
-        Promise.resolve({
-          id: IdMap.getId("total10"),
-          rule: {
-            id: IdMap.getId("test-rule"),
-            valid_for: [{ id: IdMap.getId("test-product") }],
-          },
-        }),
-    })
-
-    const discountRuleRepository = MockRepository({})
-
-    const productService = {
-      retrieve: () => {
-        return {
-          id: IdMap.getId("test-product"),
-        }
-      },
-    }
-
-    const discountService = new DiscountService({
-      manager: MockManager,
-      discountRepository,
-      discountRuleRepository,
-      productService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("successfully removes a product", async () => {
-      await discountService.removeValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(1)
-      expect(discountRuleRepository.save).toHaveBeenCalledWith({
-        id: IdMap.getId("test-rule"),
-        valid_for: [],
-      })
-    })
-
-    it("successfully resolve if product does not exist", async () => {
-      await discountService.removeValidProduct(
-        IdMap.getId("total10"),
-        IdMap.getId("test-product-2")
-      )
-
-      expect(discountRuleRepository.save).toHaveBeenCalledTimes(0)
-    })
-  })
-
   describe("addRegion", () => {
     const discountRepository = MockRepository({
       findOne: (q) => {
@@ -638,7 +521,7 @@ describe("DiscountService", () => {
       expect(discountRepository.findAndCount).toHaveBeenCalledWith({
         where: expect.anything(),
         skip: 0,
-        take: 50,
+        take: 20,
         order: { created_at: "DESC" },
       })
     })
@@ -658,4 +541,670 @@ describe("DiscountService", () => {
       })
     })
   })
+
+  describe("calculateDiscountForLineItem", () => {
+    const discountRepository = MockRepository({
+      findOne: ({ where }) => {
+        if (where.id === "disc_percentage") {
+          return Promise.resolve({
+            code: "MEDUSA",
+            rule: {
+              type: "percentage",
+              allocation: "total",
+              value: 15,
+            },
+          })
+        }
+        if (where.id === "disc_fixed_total") {
+          return Promise.resolve({
+            code: "MEDUSA",
+            rule: {
+              type: "fixed",
+              allocation: "total",
+              value: 400,
+            },
+          })
+        }
+        return Promise.resolve({
+          id: "disc_fixed",
+          code: "MEDUSA",
+          rule: {
+            type: "fixed",
+            allocation: "item",
+            value: 200,
+          },
+        })
+      },
+    })
+
+    const totalsService = {
+      getSubtotal: () => {
+        return 1100
+      },
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountRepository,
+      totalsService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("correctly calculates fixed + item discount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 300,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(400)
+    })
+
+    it("correctly calculates fixed + total discount", async () => {
+      const adjustment1 = await discountService.calculateDiscountForLineItem(
+        "disc_fixed_total",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      const adjustment2 = await discountService.calculateDiscountForLineItem(
+        "disc_fixed_total",
+        {
+          unit_price: 300,
+          quantity: 1,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment1).toBe(291)
+      expect(adjustment2).toBe(109)
+    })
+
+    it("returns line item amount if discount exceeds lime item price", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 100,
+          quantity: 1,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(100)
+    })
+
+    it("correctly calculates percentage discount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_percentage",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(120)
+    })
+
+    it("returns full amount if exceeds total line item amount", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_fixed",
+        {
+          unit_price: 50,
+          quantity: 2,
+          allow_discounts: true,
+        }
+      )
+
+      expect(adjustment).toBe(100)
+    })
+
+    it("returns early if discounts are not allowed", async () => {
+      const adjustment = await discountService.calculateDiscountForLineItem(
+        "disc_percentage",
+        {
+          unit_price: 400,
+          quantity: 2,
+          allow_discounts: false,
+        }
+      )
+
+      expect(adjustment).toBe(0)
+    })
+  })
+
+  describe("validateDiscountForCartOrThrow", () => {
+    const getCart = (id) => {
+      if (id === "with-d") {
+        return {
+          id: "cart",
+          discounts: [
+            {
+              code: "1234",
+              rule: {
+                type: "fixed",
+              },
+            },
+            {
+              code: "FS1234",
+              rule: {
+                type: "free_shipping",
+              },
+            },
+          ],
+          region_id: "good",
+          items: [
+            {
+              id: "li1",
+              quantity: 2,
+              unit_price: 1000,
+            },
+            {
+              id: "li2",
+              quantity: 1,
+              unit_price: 500,
+            },
+          ],
+        }
+      }
+      if (id === "with-d-and-customer") {
+        return {
+          id: "with-d-and-customer",
+          discounts: [
+            {
+              code: "ApplicableForCustomer",
+              rule: {
+                type: "fixed",
+              },
+            },
+          ],
+          region_id: "good",
+          customer_id: "test-customer",
+        }
+      }
+      return {
+        id: "cart",
+        discounts: [
+          {
+            code: "CODE",
+            rule: {
+              type: "percentage",
+            },
+          },
+        ],
+        region_id: "good",
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
+      }
+    }
+
+    let discountService
+
+    beforeEach(async () => {
+      discountService = new DiscountService({})
+      const hasReachedLimitMock = jest.fn().mockImplementation(() => false)
+      const isDisabledMock = jest.fn().mockImplementation(() => false)
+      const isValidForRegionMock = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(true))
+      const canApplyForCustomerMock = jest.fn().mockImplementation(() => {
+        return Promise.resolve(true)
+      })
+      discountService.hasReachedLimit = hasReachedLimitMock
+      discountService.isDisabled = isDisabledMock
+      discountService.canApplyForCustomer = canApplyForCustomerMock
+      discountService.isValidForRegion = isValidForRegionMock
+    })
+
+    it("calls all validation methods when cart includes a customer_id and doesn't throw", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "good" }],
+        rule: {
+          id: "10off-rule",
+          type: "percentage",
+        },
+      }
+      const cart = getCart("with-d-and-customer")
+      const result = await discountService.validateDiscountForCartOrThrow(
+        cart,
+        discount
+      )
+      expect(result).toBeUndefined()
+
+      expect(discountService.hasReachedLimit).toHaveBeenCalledTimes(1)
+      expect(discountService.hasReachedLimit).toHaveBeenCalledWith(discount)
+
+      expect(discountService.isDisabled).toHaveBeenCalledTimes(1)
+      expect(discountService.isDisabled).toHaveBeenCalledWith(discount)
+
+      expect(discountService.isValidForRegion).toHaveBeenCalledTimes(1)
+      expect(discountService.isValidForRegion).toHaveBeenCalledWith(
+        discount,
+        cart.region_id
+      )
+
+      expect(discountService.canApplyForCustomer).toHaveBeenCalledTimes(1)
+      expect(discountService.canApplyForCustomer).toHaveBeenCalledWith(
+        discount.rule.id,
+        cart.customer_id
+      )
+    })
+
+    it("throws when hasReachedLimit returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.hasReachedLimit = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount has been used maximum allowed times",
+      })
+    })
+
+    it("throws when hasNotStarted returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.hasNotStarted = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount is not valid yet",
+      })
+    })
+
+    it("throws when hasExpired returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.hasExpired = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount is expired",
+      })
+    })
+
+    it("throws when isDisabled returns true", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.isDisabled = jest.fn().mockImplementation(() => true)
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "The discount code is disabled",
+      })
+    })
+
+    it("throws when isValidForRegion returns false", async () => {
+      const discount = {}
+      const cart = getCart("with-d-and-customer")
+      discountService.isValidForRegion = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(false))
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "The discount is not available in current region",
+      })
+    })
+
+    it("throws when canApplyForCustomer returns false", async () => {
+      const discount = { rule: { id: "" } }
+      const cart = getCart("with-d-and-customer")
+      discountService.canApplyForCustomer = jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(false))
+
+      expect(
+        discountService.validateDiscountForCartOrThrow(cart, discount)
+      ).rejects.toThrow({
+        message: "Discount is not valid for customer",
+      })
+    })
+  })
+
+  describe("hasReachedLimit", () => {
+    const discountService = new DiscountService({})
+
+    it("returns true if discount limit is reached", () => {
+      const discount = {
+        id: "limit-reached",
+        code: "limit-reached",
+        regions: [{ id: "good" }],
+        rule: {},
+        usage_count: 2,
+        usage_limit: 2,
+      }
+      const hasReachedLimit = discountService.hasReachedLimit(discount)
+      expect(hasReachedLimit).toBe(true)
+    })
+
+    it("returns false if discount limit is not reached", () => {
+      const discount = {
+        id: "limit-reached",
+        code: "limit-reached",
+        regions: [{ id: "good" }],
+        rule: {},
+        usage_count: 1,
+        usage_limit: 100,
+      }
+
+      const hasReachedLimit = discountService.hasReachedLimit(discount)
+      expect(hasReachedLimit).toBe(false)
+    })
+
+    it("returns false if discount limit is not set", () => {
+      const discount = {
+        id: "limit-reached",
+        code: "limit-reached",
+        regions: [{ id: "good" }],
+        rule: {},
+        usage_count: 1,
+      }
+
+      const hasReachedLimit = discountService.hasReachedLimit(discount)
+      expect(hasReachedLimit).toBe(false)
+    })
+  })
+
+  describe("isDisabled", () => {
+    const discountService = new DiscountService({})
+
+    it("returns false if discount not disabled", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "good" }],
+        rule: {
+          id: "10off-rule",
+          type: "percentage",
+        },
+        is_disabled: false,
+      }
+
+      const isDisabled = discountService.isDisabled(discount)
+      expect(isDisabled).toBe(false)
+    })
+
+    it("returns true if discount is disabled", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "good" }],
+        rule: {
+          id: "10off-rule",
+          type: "percentage",
+        },
+        is_disabled: true,
+      }
+
+      const isDisabled = discountService.isDisabled(discount)
+      expect(isDisabled).toBe(true)
+    })
+  })
+
+  describe("hasNotStarted", () => {
+    const discountService = new DiscountService({})
+
+    it("returns true if discount has a future starts_at date", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "good" }],
+        rule: {
+          type: "percentage",
+        },
+        starts_at: getOffsetDate(1),
+        ends_at: getOffsetDate(10),
+      }
+
+      const hasNotStarted = discountService.hasNotStarted(discount)
+      expect(hasNotStarted).toBe(true)
+    })
+
+    it("returns false if discount has a past starts_at date", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "good" }],
+        rule: {
+          type: "percentage",
+        },
+        starts_at: getOffsetDate(-2),
+        ends_at: getOffsetDate(10),
+      }
+
+      const hasNotStarted = discountService.hasNotStarted(discount)
+      expect(hasNotStarted).toBe(false)
+    })
+  })
+
+  describe("hasExpired", () => {
+    const discountService = new DiscountService({})
+
+    it("returns false if discount has a future ends_at date", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "good" }],
+        rule: {
+          type: "percentage",
+        },
+        ends_at: getOffsetDate(10),
+        starts_at: getOffsetDate(-1),
+      }
+
+      const hasExpired = discountService.hasExpired(discount)
+      expect(hasExpired).toBe(false)
+    })
+
+    it("returns true if discount has a past ends_at date", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "good" }],
+        rule: {
+          type: "percentage",
+        },
+        starts_at: getOffsetDate(-10),
+        ends_at: getOffsetDate(-1),
+      }
+
+      const hasExpired = discountService.hasExpired(discount)
+      expect(hasExpired).toBe(true)
+    })
+  })
+
+  describe("isValidForRegion", () => {
+    const retrieveMock = jest.fn().mockImplementation((id) => {
+      if (id === "parent-discount-us") {
+        return Promise.resolve({
+          id,
+          regions: [{ id: "us" }],
+          rule: {
+            id: "10off-rule",
+            type: "percentage",
+          },
+        })
+      } else if (id === "parent-discount-dk") {
+        return Promise.resolve({
+          id,
+          regions: [{ id: "dk" }],
+          rule: {
+            id: "10off-rule",
+            type: "percentage",
+          },
+        })
+      }
+    })
+
+    const discountService = new DiscountService({})
+    discountService.retrieve = retrieveMock
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("returns false if discount is not available in a given region", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "us" }],
+        rule: {
+          id: "10off-rule",
+          type: "percentage",
+        },
+      }
+
+      const isValidForRegion = await discountService.isValidForRegion(
+        discount,
+        "dk"
+      )
+
+      expect(retrieveMock).toBeCalledTimes(0)
+      expect(isValidForRegion).toBe(false)
+    })
+
+    it("returns true if discount is available in a given region", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        regions: [{ id: "us" }],
+        rule: {
+          id: "10off-rule",
+          type: "percentage",
+        },
+      }
+
+      const isValidForRegion = await discountService.isValidForRegion(
+        discount,
+        "us"
+      )
+
+      expect(retrieveMock).toBeCalledTimes(0)
+      expect(isValidForRegion).toBe(true)
+    })
+
+    it("returns false if discount has a parent discount and is not available in region", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        parent_discount_id: "parent-discount-us",
+      }
+
+      const isValidForRegion = await discountService.isValidForRegion(
+        discount,
+        "dk"
+      )
+
+      expect(retrieveMock).toBeCalledTimes(1)
+      expect(retrieveMock).toBeCalledWith(discount.parent_discount_id, {
+        relations: ["rule", "regions"],
+      })
+      expect(isValidForRegion).toBe(false)
+    })
+
+    it("returns true if discount has a parent discount and is available in region", async () => {
+      const discount = {
+        id: "10off",
+        code: "10%OFF",
+        parent_discount_id: "parent-discount-dk",
+      }
+
+      const isValidForRegion = await discountService.isValidForRegion(
+        discount,
+        "dk"
+      )
+      expect(retrieveMock).toBeCalledTimes(1)
+      expect(retrieveMock).toBeCalledWith(discount.parent_discount_id, {
+        relations: ["rule", "regions"],
+      })
+      expect(isValidForRegion).toBe(true)
+    })
+  })
+
+  describe("canApplyForCustomer", () => {
+    const discountConditionRepository = {
+      canApplyForCustomer: jest
+        .fn()
+        .mockImplementation(() => Promise.resolve(true)),
+    }
+
+    const customerService = {
+      retrieve: jest.fn().mockImplementation((id) => {
+        if (id === "customer-no-groups") {
+          return Promise.resolve({ id: "customer-no-groups" })
+        }
+        if (id === "customer-with-groups") {
+          return Promise.resolve({
+            id: "customer-with-groups",
+            groups: [{ id: "group-1" }],
+          })
+        }
+      }),
+    }
+
+    const discountService = new DiscountService({
+      manager: MockManager,
+      discountConditionRepository,
+      customerService,
+    })
+
+    it("returns false on undefined customer id", async () => {
+      const res = await discountService.canApplyForCustomer("rule-1")
+
+      expect(res).toBe(false)
+
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledTimes(0)
+    })
+
+    it("returns true on customer with groups", async () => {
+      const res = await discountService.canApplyForCustomer(
+        "rule-1",
+        "customer-with-groups"
+      )
+
+      expect(res).toBe(true)
+
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledTimes(1)
+      expect(
+        discountConditionRepository.canApplyForCustomer
+      ).toHaveBeenCalledWith("rule-1", "customer-with-groups")
+    })
+  })
 })
+
+const getOffsetDate = (offset) => {
+  const date = new Date()
+  date.setDate(date.getDate() + offset)
+  return date
+}

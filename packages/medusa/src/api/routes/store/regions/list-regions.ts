@@ -1,7 +1,10 @@
 import { Type } from "class-transformer"
-import { IsInt, IsOptional } from "class-validator"
+import { omit } from "lodash"
+import { ValidateNested, IsInt, IsOptional } from "class-validator"
 import RegionService from "../../../../services/region"
 import { validator } from "../../../../utils/validator"
+import { DateComparisonOperator } from "../../../../types/common"
+
 /**
  * @oas [get] /regions
  * operationId: GetRegions
@@ -31,11 +34,12 @@ import { validator } from "../../../../utils/validator"
  *                 $ref: "#/components/schemas/region"
  */
 export default async (req, res) => {
-  const { limit, offset } = await validator(StoreGetRegionsParams, req.query)
+  const validated = await validator(StoreGetRegionsParams, req.query)
+  const { limit, offset } = validated
 
   const regionService: RegionService = req.scope.resolve("regionService")
 
-  const selector = {}
+  const filterableFields = omit(validated, ["limit", "offset"])
 
   const listConfig = {
     relations: ["countries", "payment_providers", "fulfillment_providers"],
@@ -43,7 +47,7 @@ export default async (req, res) => {
     take: limit,
   }
 
-  const regions = await regionService.list(selector, listConfig)
+  const regions = await regionService.list(filterableFields, listConfig)
 
   res.json({ regions })
 }
@@ -58,4 +62,14 @@ export class StoreGetRegionsParams {
   @IsInt()
   @Type(() => Number)
   offset?: number = 0
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  created_at?: DateComparisonOperator
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => DateComparisonOperator)
+  updated_at?: DateComparisonOperator
 }

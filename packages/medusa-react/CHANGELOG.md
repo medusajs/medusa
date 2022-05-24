@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/medusajs/medusa/compare/medusa-react@0.2.1...medusa-react@0.3.0) (2022-05-01)
+
+
+### Bug Fixes
+
+* **medusa:** Remove unsupported Discount endpoints ([#1367](https://github.com/medusajs/medusa/issues/1367)) ([9acee27](https://github.com/medusajs/medusa/commit/9acee2799ead683575edd0f7172f336878569dfe))
+* `CustomerGroups` missing  features in the clients ([#1159](https://github.com/medusajs/medusa/issues/1159)) ([218b20b](https://github.com/medusajs/medusa/commit/218b20b26db46f0a91736ece2530a83fa94aed97))
+* query key ([#1350](https://github.com/medusajs/medusa/issues/1350)) ([95ea8fa](https://github.com/medusajs/medusa/commit/95ea8fa38526b64989a1b22c015a9f129fb64b4c))
+
+
+### Features
+
+* customer group customers client endpoints ([#1221](https://github.com/medusajs/medusa/issues/1221)) ([b7f6996](https://github.com/medusajs/medusa/commit/b7f699654bd8c5b08919667d4e29c835901e1af9))
+* customer groups react hooks ([#1153](https://github.com/medusajs/medusa/issues/1153)) ([daf49bc](https://github.com/medusajs/medusa/commit/daf49bcaf31e6e86cfd13a24efd5b3de626617a4))
+
+
+
+
+
 ## [0.2.1](https://github.com/medusajs/medusa/compare/medusa-react@0.1.5...medusa-react@0.2.1) (2022-02-28)
 
 

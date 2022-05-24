@@ -1,6 +1,5 @@
 import { IsEmail, IsNotEmpty } from "class-validator"
 import jwt from "jsonwebtoken"
-import config from "../../../../config"
 import AuthService from "../../../../services/auth"
 import CustomerService from "../../../../services/customer"
 import { validator } from "../../../../utils/validator"
@@ -29,8 +28,6 @@ export default async (req, res) => {
   const validated = await validator(StorePostAuthReq, req.body)
 
   const authService: AuthService = req.scope.resolve("authService")
-  const customerService: CustomerService = req.scope.resolve("customerService")
-
   const result = await authService.authenticateCustomer(
     validated.email,
     validated.password
@@ -41,14 +38,18 @@ export default async (req, res) => {
   }
 
   // Add JWT to cookie
+  const {
+    projectConfig: { jwt_secret },
+  } = req.scope.resolve("configModule")
   req.session.jwt = jwt.sign(
     { customer_id: result.customer?.id },
-    (config as any).jwtSecret,
+    jwt_secret!,
     {
       expiresIn: "30d",
     }
   )
 
+  const customerService: CustomerService = req.scope.resolve("customerService")
   const customer = await customerService.retrieve(result.customer?.id || "", {
     relations: ["orders", "orders.items"],
   })
