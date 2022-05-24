@@ -383,7 +383,12 @@ class DiscountService extends BaseService {
         }
       }
 
-      if (regions && regions?.length > 1 && discount.rule.type === "fixed") {
+      if (
+        regions &&
+        regions?.length > 1 &&
+        discount.rule.type === "fixed" &&
+        rule?.type === "fixed"
+      ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
           "Fixed discounts can have one region"
