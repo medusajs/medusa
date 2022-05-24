@@ -122,6 +122,13 @@ class DiscountConditionService extends BaseService {
           manager.getCustomRepository(this.discountConditionRepository_)
 
         if (data.id) {
+          const resolvedCondition = await this.retrieve(data.id)
+
+          if (data.operator && data.operator !== resolvedCondition.operator) {
+            resolvedCondition.operator = data.operator
+            await discountConditionRepo.save(resolvedCondition)
+          }
+
           return await discountConditionRepo.addConditionResources(
             data.id,
             resolvedConditionType.resource_ids,
