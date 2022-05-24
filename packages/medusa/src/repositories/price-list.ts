@@ -17,7 +17,7 @@ export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
-    groups: FindOperator<(CustomerGroup | string)[]>,
+    groups: FindOperator<string[]>,
     relations: string[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
@@ -99,7 +99,7 @@ export class PriceListRepository extends Repository<PriceList> {
 
   async listAndCount(
     query: ExtendedFindConfig<PriceList>,
-    groups: FindOperator<(CustomerGroup | string)[]>
+    groups: FindOperator<string[]>
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")
       .where(query.where)
