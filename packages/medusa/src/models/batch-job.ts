@@ -1,11 +1,4 @@
-import {
-  AfterLoad,
-  BeforeInsert,
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-} from "typeorm"
+import { AfterLoad, BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
 import { BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
@@ -48,23 +41,39 @@ export class BatchJob extends SoftDeletableEntity {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   canceled_at?: Date
 
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
+  ready_at?: Date
+
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
+  failed_at?: Date
+
   status: BatchJobStatus
 
   @AfterLoad()
   loadStatus(): void {
+    if (this.awaiting_confirmation_at) {
+      this.status = BatchJobStatus.AWAITING_CONFIRMATION
+    }
+    if (this.confirmed_at) {
+      this.status = BatchJobStatus.CONFIRMED
+    }
     if (this.completed_at) {
       this.status = BatchJobStatus.COMPLETED
-    } else if (this.confirmed_at) {
-      this.status = BatchJobStatus.CONFIRMED
-    } else if (this.awaiting_confirmation_at) {
-      this.status = BatchJobStatus.AWAITING_CONFIRMATION
-    } else if (this.processing_at) {
-      this.status = BatchJobStatus.PROCESSING
-    } else if (this.canceled_at) {
-      this.status = BatchJobStatus.CANCELED
-    } else {
-      this.status = BatchJobStatus.CREATED
     }
+    if (this.processing_at) {
+      this.status = BatchJobStatus.PROCESSING
+    }
+    if (this.canceled_at) {
+      this.status = BatchJobStatus.CANCELED
+    }
+    if (this.ready_at) {
+      this.status = BatchJobStatus.READY
+    }
+    if (this.failed_at) {
+      this.status = BatchJobStatus.FAILED
+    }
+
+    this.status = this.status ?? BatchJobStatus.CREATED
   }
 
   @BeforeInsert()
