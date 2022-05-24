@@ -18,7 +18,9 @@ export class addBatchJobModel1649775522087 implements MigrationInterface {
              "awaiting_confirmation_at" TIMESTAMP WITH TIME ZONE,
              "confirmed_at"             TIMESTAMP WITH TIME ZONE,
              "completed_at"             TIMESTAMP WITH TIME ZONE,
-             "canceled_at"             TIMESTAMP WITH TIME ZONE,
+             "ready_at"                 TIMESTAMP WITH TIME ZONE,
+             "failed_at"                TIMESTAMP WITH TIME ZONE,
+             "canceled_at"              TIMESTAMP WITH TIME ZONE,
              "updated_at"               TIMESTAMP WITH TIME ZONE         NOT NULL DEFAULT now(),
              "deleted_at"               TIMESTAMP WITH TIME ZONE,
              CONSTRAINT "PK_e57f84d485145d5be96bc6d871e" PRIMARY KEY ("id")
