@@ -150,7 +150,7 @@ async function registerMedusaApi(
   registerStrategies(pluginDetails, container)
 }
 
-function registerStrategies(
+export function registerStrategies(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): void {
@@ -184,7 +184,7 @@ function registerStrategies(
         )
 
         container.registerAdd(
-          module.batchType,
+          `batchType_${module.batchType}`,
           asFunction((cradle) => new module(cradle, pluginDetails.options))
         )
 
@@ -193,7 +193,7 @@ function registerStrategies(
           [name]: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
-          [`bs_${module.identifier}`]: aliasTo(name),
+          [`batch_${module.identifier}`]: aliasTo(name),
         })
         break
       }
