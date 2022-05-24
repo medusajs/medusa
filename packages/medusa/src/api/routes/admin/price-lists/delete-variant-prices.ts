@@ -1,14 +1,14 @@
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [delete] /price-lists/{id}/products/{product_id}
- * operationId: "DeletePriceListsProductPriceListPrices"
- * summary: "Delete all the prices related to a specific product in a price list"
- * description: "Delete all the prices related to a specific product in a price list"
+ * @oas [delete] /price-lists/{id}/variants/{variant_id}
+ * operationId: "DeletePriceListsVariantPriceListPrices"
+ * summary: "Delete all the prices related to a specific variant in a price list"
+ * description: "Delete all the prices related to a specific variant in a price list"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Price List that the Money Amounts that will be deleted belongs to.
- *   - (path) product_id=* {string} The id of the product from which the money amount will be deleted.
+ *   - (path) variant_id=* {string} The id of the variant from which the money amount will be deleted.
  * tags:
  *   - Price List
  * responses:
@@ -31,13 +31,13 @@ import PriceListService from "../../../../services/price-list"
  *               type: boolean
  */
 export default async (req, res) => {
-  const { id, product_id } = req.params
+  const { id, variant_id } = req.params
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
   const [deletedPriceIds, deletedCount] =
-    await priceListService.deleteProductPrices(id, [product_id])
+    await priceListService.deleteVariantPrices(id, [variant_id])
 
   return res.json({
     ids: deletedPriceIds,

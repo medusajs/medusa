@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
-import { CustomerGroup, PriceList, Product } from "../models"
+import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
 import {
   PriceListFindOptions,
@@ -22,12 +22,15 @@ import RegionService from "./region"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 import { FilterableProductProps } from "../types/product"
+import ProductVariantService from "./product-variant"
+import { FilterableProductVariantProps } from "../types/product-variant"
 
 type PriceListConstructorProps = {
   manager: EntityManager
   customerGroupService: CustomerGroupService
   regionService: RegionService
   productService: ProductService
+  productVariantService: ProductVariantService
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: typeof MoneyAmountRepository
 }
@@ -43,6 +46,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
   protected readonly customerGroupService_: CustomerGroupService
   protected readonly regionService_: RegionService
   protected readonly productService_: ProductService
+  protected readonly variantService_: ProductVariantService
   protected readonly priceListRepo_: typeof PriceListRepository
   protected readonly moneyAmountRepo_: typeof MoneyAmountRepository
 
@@ -51,6 +55,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     customerGroupService,
     regionService,
     productService,
+    productVariantService,
     priceListRepository,
     moneyAmountRepository,
   }: PriceListConstructorProps) {
@@ -60,6 +65,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     this.manager_ = manager
     this.customerGroupService_ = customerGroupService
     this.productService_ = productService
+    this.variantService_ = productVariantService
     this.regionService_ = regionService
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
@@ -156,11 +162,9 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         await this.upsertCustomerGroups_(id, customer_groups)
       }
 
-      const result = await this.retrieve(id, {
+      return await this.retrieve(id, {
         relations: ["prices", "customer_groups"],
       })
-
-      return result
     })
   }
 
@@ -184,11 +188,9 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       const prices_ = await this.addCurrencyFromRegion(prices)
       await moneyAmountRepo.addPriceListPrices(priceList.id, prices_, replace)
 
-      const result = await this.retrieve(priceList.id, {
+      return await this.retrieve(priceList.id, {
         relations: ["prices"],
       })
-
-      return result
     })
   }
 
@@ -289,7 +291,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     })
   }
 
-  async upsertCustomerGroups_(
+  protected async upsertCustomerGroups_(
     priceListId: string,
     customerGroups: { id: string }[]
   ): Promise<void> {
@@ -354,13 +356,48 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     })
   }
 
+  async listVariants(
+    priceListId: string,
+    selector: FilterableProductVariantProps = {},
+    config: FindConfig<ProductVariant> = {
+      relations: [],
+      skip: 0,
+      take: 20,
+    },
+    requiredRelation = false
+  ): Promise<[ProductVariant[], number]> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const [variants, count] = await this.variantService_.listAndCount(
+        selector,
+        config
+      )
+
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+
+      const variantsWithPrices = await Promise.all(
+        variants.map(async (variant) => {
+          const [prices] = await moneyAmountRepo.findManyForVariantInPriceList(
+            variant.id,
+            priceListId,
+            requiredRelation
+          )
+
+          variant.prices = prices
+          return variant
+        })
+      )
+
+      return [variantsWithPrices, count]
+    })
+  }
+
   public async deleteProductPrices(
-    id: string,
+    priceListId: string,
     productIds: string[]
   ): Promise<[string[], number]> {
     return await this.atomicPhase_(async () => {
       const [products, count] = await this.listProducts(
-        id,
+        priceListId,
         {
           id: productIds,
         },
@@ -386,7 +423,38 @@ class PriceListService extends TransactionBaseService<PriceListService> {
         return [[], 0]
       }
 
-      await this.deletePrices(id, priceIds)
+      await this.deletePrices(priceListId, priceIds)
+      return [priceIds, priceIds.length]
+    })
+  }
+
+  public async deleteVariantPrices(
+    priceListId: string,
+    variantIds: string[]
+  ): Promise<[string[], number]> {
+    return await this.atomicPhase_(async () => {
+      const [variants, count] = await this.listVariants(
+        priceListId,
+        {
+          id: variantIds,
+        },
+        {},
+        true
+      )
+
+      if (count === 0) {
+        return [[], count]
+      }
+
+      const priceIds = variants
+        .map((variant) => variant.prices.map((price) => price.id))
+        .flat()
+
+      if (!priceIds.length) {
+        return [[], 0]
+      }
+
+      await this.deletePrices(priceListId, priceIds)
       return [priceIds, priceIds.length]
     })
   }

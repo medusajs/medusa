@@ -26,6 +26,10 @@ export default (app) => {
     "/:id/products/:product_id",
     middlewares.wrap(require("./delete-product-prices").default)
   )
+  route.delete(
+    "/:id/variants/:variant_id",
+    middlewares.wrap(require("./delete-variant-prices").default)
+  )
 
   route.post("/", middlewares.wrap(require("./create-price-list").default))
 

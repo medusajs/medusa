@@ -1208,7 +1208,7 @@ describe("/admin/price-lists", () => {
     })
   })
 
-  describe("DELETE /admin/price-lists/products/:product_id", () => {
+  describe("delete prices from price list related to the specified product or variant", () => {
     let product1, product2
 
     function getCustomPriceIdFromVariant(variantId, index) {
@@ -1282,7 +1282,7 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it('should delete all the prices for the specified product', async () => {
+    it('should delete all the prices that are part of the price list for the specified product', async () => {
        const api = useApi()
 
       response = await api
@@ -1296,7 +1296,7 @@ describe("/admin/price-lists", () => {
       expect(response.data.price_list.prices.length).toBe(3)
 
       let response = await api
-        .delete("/admin/price-lists/test-list/products/test-prod-1", {
+        .delete(`/admin/price-lists/test-list/products/${product1.id}`, {
           headers: {
             Authorization: "Bearer test_token",
           }
@@ -1321,6 +1321,46 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toBe(200)
       expect(response.data.price_list.prices.length).toBe(1)
+    })
+
+    it('should delete all the prices that are part of the price list for the specified variant', async () => {
+       const api = useApi()
+
+      response = await api
+        .get("/admin/price-lists/test-list", {
+          headers: {
+            Authorization: "Bearer test_token",
+          }
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(3)
+
+      const variant = product2.variants[0]
+      let response = await api
+        .delete(`/admin/price-lists/test-list/variants/${variant.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          }
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.data).toEqual({
+        ids: [getCustomPriceIdFromVariant(variant.id, 0)],
+        count: 1,
+        object: "money-amount",
+        deleted: true,
+      })
+
+      response = await api
+        .get("/admin/price-lists/test-list", {
+          headers: {
+            Authorization: "Bearer test_token",
+          }
+        })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(2)
     })
   })
 })
