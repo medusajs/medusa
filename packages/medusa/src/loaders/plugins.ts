@@ -160,57 +160,117 @@ function registerStrategies(
   files.map((file) => {
     const module = require(file).default
 
-    if (isTaxCalculationStrategy(module.prototype)) {
-      if (!("taxCalculationStrategy" in registeredServices)) {
+    switch (true) {
+      case isTaxCalculationStrategy(module.prototype): {
+        if (!("taxCalculationStrategy" in registeredServices)) {
+          container.register({
+            taxCalculationStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
+          registeredServices["taxCalculationStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A tax calculation strategy is already registered`
+          )
+        }
+        break
+      }
+
+      case isBatchJobStrategy(module.prototype): {
+        container.registerAdd(
+          "batchJobStrategies",
+          asFunction((cradle) => new module(cradle, pluginDetails.options))
+        )
+
+        container.registerAdd(
+          module.getBatchType(),
+          asFunction((cradle) => new module(cradle, pluginDetails.options))
+        )
+
+        const name = formatRegistrationName(file)
         container.register({
-          taxCalculationStrategy: asFunction(
+          [name]: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
+          [`bs_${module.getIdentifier()}`]: aliasTo(name),
         })
-        registeredServices["taxCalculationStrategy"] = file
-      } else {
-        logger.warn(
-          `Cannot register ${file}. A tax calculation strategy is already registered`
-        )
+        break
       }
-    } else if (isBatchJobStrategy(module.prototype)) {
-      container.registerAdd(
-        "batchJobStrategies",
-        asFunction((cradle) => new module(cradle, pluginDetails.options))
-      )
 
-      container.registerAdd(
-        module.batchType,
-        asFunction((cradle) => new module(cradle, pluginDetails.options))
-      )
+      case isPriceSelectionStrategy(module.prototype): {
+        if (!("priceSelectionStrategy" in registeredServices)) {
+          container.register({
+            priceSelectionStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
 
-      const name = formatRegistrationName(file)
-      container.register({
-        [name]: asFunction(
-          (cradle) => new module(cradle, pluginDetails.options)
-        ).singleton(),
-        [`bs_${module.identifier}`]: aliasTo(name),
-      })
-    } else if (isPriceSelectionStrategy(module.prototype)) {
-      if (!("priceSelectionStrategy" in registeredServices)) {
-        container.register({
-          priceSelectionStrategy: asFunction(
-            (cradle) => new module(cradle, pluginDetails.options)
-          ).singleton(),
-        })
-
-        registeredServices["priceSelectionStrategy"] = file
-      } else {
-        logger.warn(
-          `Cannot register ${file}. A price selection strategy is already registered`
-        )
+          registeredServices["priceSelectionStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A price selection strategy is already registered`
+          )
+        }
+        break
       }
-    } else {
-      const logger = container.resolve<Logger>("logger")
-      logger.warn(
-        `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
-      )
+
+      default:
+        logger.warn(
+          `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
+        )
     }
+    // if (isTaxCalculationStrategy(module.prototype)) {
+    //   if (!("taxCalculationStrategy" in registeredServices)) {
+    //     container.register({
+    //       taxCalculationStrategy: asFunction(
+    //         (cradle) => new module(cradle, pluginDetails.options)
+    //       ).singleton(),
+    //     })
+    //     registeredServices["taxCalculationStrategy"] = file
+    //   } else {
+    //     logger.warn(
+    //       `Cannot register ${file}. A tax calculation strategy is already registered`
+    //     )
+    //   }
+    // } else if (isBatchJobStrategy(module.prototype)) {
+    //   container.registerAdd(
+    //     "batchJobStrategies",
+    //     asFunction((cradle) => new module(cradle, pluginDetails.options))
+    //   )
+
+    //   container.registerAdd(
+    //     module.batchType,
+    //     asFunction((cradle) => new module(cradle, pluginDetails.options))
+    //   )
+
+    //   const name = formatRegistrationName(file)
+    //   container.register({
+    //     [name]: asFunction(
+    //       (cradle) => new module(cradle, pluginDetails.options)
+    //     ).singleton(),
+    //     [`bs_${module.identifier}`]: aliasTo(name),
+    //   })
+    // } else if (isPriceSelectionStrategy(module.prototype)) {
+    //   if (!("priceSelectionStrategy" in registeredServices)) {
+    //     container.register({
+    //       priceSelectionStrategy: asFunction(
+    //         (cradle) => new module(cradle, pluginDetails.options)
+    //       ).singleton(),
+    //     })
+
+    //     registeredServices["priceSelectionStrategy"] = file
+    //   } else {
+    //     logger.warn(
+    //       `Cannot register ${file}. A price selection strategy is already registered`
+    //     )
+    //   }
+    // } else {
+    //   const logger = container.resolve<Logger>("logger")
+    //   logger.warn(
+    //     `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
+    //   )
+    // }
   })
 }
 
