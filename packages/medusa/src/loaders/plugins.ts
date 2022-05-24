@@ -184,7 +184,7 @@ function registerStrategies(
         )
 
         container.registerAdd(
-          module.getBatchType(),
+          module.batchType,
           asFunction((cradle) => new module(cradle, pluginDetails.options))
         )
 
@@ -193,7 +193,7 @@ function registerStrategies(
           [name]: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
-          [`bs_${module.getIdentifier()}`]: aliasTo(name),
+          [`bs_${module.identifier}`]: aliasTo(name),
         })
         break
       }
