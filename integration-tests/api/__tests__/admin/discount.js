@@ -656,7 +656,6 @@ describe("/admin/discounts", () => {
           console.log(err)
         })
 
-      console.log("CONDITIONS", updated.data.discount.rule.conditions)
       expect(updated.status).toEqual(200)
       expect(updated.data.discount.rule.conditions).toEqual(expect.arrayContaining([
         expect.objectContaining({
