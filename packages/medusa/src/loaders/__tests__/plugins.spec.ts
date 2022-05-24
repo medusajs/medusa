@@ -11,6 +11,12 @@ import { resolve } from "path"
 import Logger from "../logger"
 import { registerServices, registerStrategies } from "../plugins"
 import { MedusaContainer } from "../../types/global"
+import {
+  buildBatchJobStrategyTemplate,
+  buildPriceSelectionStrategyTemplate,
+  buildTaxCalcStrategyTemplate,
+  buildServiceTemplate,
+} from "./templates"
 
 // ***** TEMPLATES *****
 const buildServiceTemplate = (name: string): string => {
