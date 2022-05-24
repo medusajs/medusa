@@ -17,6 +17,8 @@ export enum BatchJobStatus {
   CANCELED = "canceled",
   COMPLETED = "completed",
   CONFIRMED = "confirmed",
+  READY = "ready",
+  FAILED = "failed",
 }
 
 export type BatchJobUpdateProps = Partial<Pick<BatchJob, "context" | "result">>
