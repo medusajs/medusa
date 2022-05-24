@@ -640,6 +640,7 @@ describe("/admin/discounts", () => {
               conditions: [
                 {
                   id: condsToUpdate.id,
+                  operator: "not_in",
                   products: [product.id, anotherProduct.id],
                 },
               ],
@@ -655,11 +656,12 @@ describe("/admin/discounts", () => {
           console.log(err)
         })
 
+      console.log("CONDITIONS", updated.data.discount.rule.conditions)
       expect(updated.status).toEqual(200)
-      expect(updated.data.discount.rule.conditions).toEqual([
+      expect(updated.data.discount.rule.conditions).toEqual(expect.arrayContaining([
         expect.objectContaining({
           type: "products",
-          operator: "in",
+          operator: "not_in",
           products: expect.arrayContaining([
             expect.objectContaining({
               id: product.id,
@@ -673,7 +675,7 @@ describe("/admin/discounts", () => {
           type: "product_types",
           operator: "not_in",
         }),
-      ])
+      ]))
     })
 
     it("fails to add condition on rule with existing comb. of type and operator", async () => {
