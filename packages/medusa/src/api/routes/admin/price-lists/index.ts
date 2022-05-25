@@ -77,6 +77,9 @@ export type AdminPriceListDeleteBatchRes = {
   object: string
 }
 
+export type AdminPriceListDeleteProductPricesRes = AdminPriceListDeleteBatchRes
+export type AdminPriceListDeleteVariantPricesRes = AdminPriceListDeleteBatchRes
+
 export type AdminPriceListDeleteRes = DeleteResponse
 
 export type AdminPriceListsListRes = PaginatedResponse & {

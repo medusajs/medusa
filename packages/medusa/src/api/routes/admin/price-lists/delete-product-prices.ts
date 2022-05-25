@@ -36,12 +36,12 @@ export default async (req, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const [deletedPriceIds, deletedCount] =
-    await priceListService.deleteProductPrices(id, [product_id])
+  const [deletedPriceIds] = await priceListService.deleteProductPrices(id, [
+    product_id,
+  ])
 
   return res.json({
     ids: deletedPriceIds,
-    count: deletedCount,
     object: "money-amount",
     deleted: true,
   })

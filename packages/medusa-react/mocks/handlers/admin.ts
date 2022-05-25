@@ -253,6 +253,28 @@ export const adminHandlers = [
     )
   }),
 
+  rest.delete("/admin/price-lists/:id/products/:product_id/prices", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        ids: [],
+        object: "money-amount",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.delete("/admin/price-lists/:id/variants/:variant_id/prices", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        ids: [],
+        object: "money-amount",
+        deleted: true,
+      })
+    )
+  }),
+
   rest.post("/admin/return-reasons/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
