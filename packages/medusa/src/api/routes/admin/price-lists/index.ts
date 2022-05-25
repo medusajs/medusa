@@ -23,11 +23,11 @@ export default (app) => {
   )
 
   route.delete(
-    "/:id/products/:product_id",
+    "/:id/products/:product_id/prices",
     middlewares.wrap(require("./delete-product-prices").default)
   )
   route.delete(
-    "/:id/variants/:variant_id",
+    "/:id/variants/:variant_id/prices",
     middlewares.wrap(require("./delete-variant-prices").default)
   )
 

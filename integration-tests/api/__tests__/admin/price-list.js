@@ -1296,7 +1296,7 @@ describe("/admin/price-lists", () => {
       expect(response.data.price_list.prices.length).toBe(3)
 
       let response = await api
-        .delete(`/admin/price-lists/test-list/products/${product1.id}`, {
+        .delete(`/admin/price-lists/test-list/products/${product1.id}/prices`, {
           headers: {
             Authorization: "Bearer test_token",
           }
@@ -1338,7 +1338,7 @@ describe("/admin/price-lists", () => {
 
       const variant = product2.variants[0]
       let response = await api
-        .delete(`/admin/price-lists/test-list/variants/${variant.id}`, {
+        .delete(`/admin/price-lists/test-list/variants/${variant.id}/prices`, {
           headers: {
             Authorization: "Bearer test_token",
           }
