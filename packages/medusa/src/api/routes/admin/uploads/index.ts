@@ -21,6 +21,12 @@ export default (app) => {
     middlewares.wrap(require("./generate-and-upload-csv").default)
   )
 
+  route.post(
+    "/stream-file",
+    upload.single("file"),
+    middlewares.wrap(require("./upload-csv-file").default)
+  )
+
   // removed on purpose
   // route.post("/delete", middlewares.wrap(require("./delete-upload").default))
 
