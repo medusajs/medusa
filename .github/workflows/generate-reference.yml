@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - 'master'
+    paths:
+      - packages/medusa/src/services/**
 jobs:
   services:
     runs-on: ubuntu-latest
@@ -22,9 +24,11 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
-
-      - name: Assert changed
-        run: ./scripts/assert-changed-files-actions.sh "packages/medusa/src/services"
+        
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: unit-tests
 
       - name: Build Packages
         run: yarn build
@@ -37,4 +41,3 @@ jobs:
           commit_message: Automatically Generated Services Reference
           file_pattern: docs/content/*
           skip_dirty_check: false
-
