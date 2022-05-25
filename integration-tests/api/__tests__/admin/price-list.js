@@ -1307,7 +1307,6 @@ describe("/admin/price-lists", () => {
         ids: product1.variants.map((variant,  i) => {
           return getCustomPriceIdFromVariant(variant.id, i)
         }),
-        count: 2,
         object: "money-amount",
         deleted: true,
       })
@@ -1347,7 +1346,6 @@ describe("/admin/price-lists", () => {
       expect(response.status).toBe(200)
       expect(response.data).toEqual({
         ids: [getCustomPriceIdFromVariant(variant.id, 0)],
-        count: 1,
         object: "money-amount",
         deleted: true,
       })
