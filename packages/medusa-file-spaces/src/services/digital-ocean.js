@@ -123,7 +123,7 @@ class DigitalOceanService extends AbstractFileService {
   //   })
   // }
 
-  async uploadStream(fileData) {
+  async getUploadStream(fileData) {
     aws.config.setPromisesDependency(null)
     aws.config.update(
       {
