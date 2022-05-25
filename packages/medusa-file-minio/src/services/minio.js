@@ -3,12 +3,7 @@ import aws from "aws-sdk"
 import { AbstractFileService } from '@medusajs/medusa'
 
 class MinioService extends AbstractFileService {
-  protected bucket_: string
-  protected accessKeyId_: string
-  protected secretAccessKey_: string
-  protected endpoint_: string
-  s3ForcePathStyle_: boolean
-  signatureVersion_: string
+  
   constructor({}, options) {
     super()
 
