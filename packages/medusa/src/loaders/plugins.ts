@@ -416,6 +416,15 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
+      } else if (loaded.prototype instanceof AbstractFileService) {
+        // Add the service directly to the container in order to make simple
+        // resolution if we already know which file storage provider we need to use
+        container.register({
+          [name]: asFunction(
+            (cradle) => new loaded(cradle, pluginDetails.options)
+          ),
+          [`fileService`]: aliasTo(name),
+        })
       } else if (loaded.prototype instanceof SearchService) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
@@ -437,12 +446,20 @@ export async function registerServices(
           ).singleton(),
           [`tp_${loaded.identifier}`]: aliasTo(name),
         })
-      } else {
+      } else if (
+        loaded.prototype instanceof BaseService ||
+        loaded.prototype instanceof TransactionBaseService
+      ) {
         container.register({
           [name]: asFunction(
             (cradle) => new loaded(cradle, pluginDetails.options)
           ),
         })
+      } else {
+        const logger = container.resolve<Logger>("logger")
+        const message = `Services must inherit from BaseService, please check ${fn}`
+        logger.error(message)
+        throw new Error(message)
       }
     })
   )
