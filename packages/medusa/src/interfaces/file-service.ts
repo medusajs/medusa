@@ -1,9 +1,21 @@
+import stream from "stream"
+
+export type FileServiceUploadResult = {
+  url: string
+}
+
+export type FileServiceGetUploadStreamResult = {
+  writeStream: stream.PassThrough
+  promise: Promise<any>
+  url: string
+}
+
 export interface IFileService {
   /**
    * upload file to fileservice
    * @param file Multer file from express multipart/form-data
    * */
-  upload(file: Express.Multer.File): void
+  upload(file: Express.Multer.File): Promise<FileServiceUploadResult>
 
   /**
    * remove file from fileservice
@@ -16,10 +28,9 @@ export interface IFileService {
    * @param fileData file metadata relevant for fileservice to create and upload the file
    * @param fileStream readable stream of the file to upload
    * */
-  uploadStream(
-    fileData: Record<string, any>,
-    fileStream: NodeJS.ReadableStream
-  ): Promise<string>
+  getUploadStream(
+    fileData: Record<string, any>
+  ): Promise<FileServiceGetUploadStreamResult>
 
   /**
    * download file from fileservice as stream
@@ -35,16 +46,16 @@ export interface IFileService {
    * */
   generatePresignedDownloadUrl(file: Record<string, any>): Promise<string>
 }
-
 export abstract class AbstractFileService implements IFileService {
-  abstract upload(fileData: Express.Multer.File): void
+  abstract upload(
+    fileData: Express.Multer.File
+  ): Promise<FileServiceUploadResult>
 
   abstract delete(fileData: Record<string, any>): void
 
-  uploadStream(
-    fileData: Record<string, any>,
-    fileStream: NodeJS.ReadableStream
-  ): Promise<string> {
+  getUploadStream(
+    fileData: Record<string, any>
+  ): Promise<FileServiceGetUploadStreamResult> {
     throw new Error(
       "Batch operations are not implemented for this fileservice."
     )
