@@ -16,17 +16,6 @@ export default async (req, res) => {
 
     fs.createReadStream(req.file.path).pipe(writeStream)
 
-    // for (const product of products) {
-    //   logger.info(`Uploading product ${product.id}`)
-    //   await new Promise((resolve) => setTimeout(resolve, 5000))
-    //   writeStream.write(Object.values(product).join(";"))
-    //   writeStream.write("\n")
-    //   result.push(Object.values(product).join(";"))
-    //   logger.info(`Uploaded product ${product.id}`)
-    // }
-
-    // writeStream.end()
-
     logger.info("Uploaded file")
 
     const resultUrl = await promise
