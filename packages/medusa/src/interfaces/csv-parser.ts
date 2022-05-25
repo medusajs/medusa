@@ -1,4 +1,5 @@
 import { AwilixContainer } from "awilix"
+import { IParser } from "./abstract-parser"
 
 export type CsvParserContext = {
   line: number

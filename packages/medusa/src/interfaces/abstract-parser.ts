@@ -25,7 +25,6 @@ export abstract class AbstractParser<TSchema, TParserResult, TOutputResult>
   ): Promise<TParserResult[]>
 
   public abstract validateSchema(
-    line: TParserResult,
-    context: LineContext
-  ): Promise<TOutputResult>
+    data: TParserResult[]
+  ): Promise<TOutputResult[]>
 }

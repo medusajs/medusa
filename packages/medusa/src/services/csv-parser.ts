@@ -50,7 +50,16 @@ class CsvParser<
     return parsedContent
   }
 
-  async validateSchema(
+  async validateSchema(data: TParserResult[]): Promise<TOutputResult[]> {
+    const validatedData = [] as TOutputResult[]
+    for (let i = 0; i < data.length; i++) {
+      const result = await this._validateLine(data[i], { lineNumber: i + 1 })
+      validatedData.push(result)
+    }
+    return validatedData
+  }
+
+  private async _validateLine(
     line: TParserResult,
     context: LineContext
   ): Promise<TOutputResult> {
