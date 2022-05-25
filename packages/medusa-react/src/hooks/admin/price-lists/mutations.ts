@@ -14,6 +14,8 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminPriceListKeys } from "./queries"
+import { adminProductKeys } from "../products"
+import { adminVariantKeys } from "../variants"
 
 export const useAdminCreatePriceList = (
   options?: UseMutationOptions<
@@ -139,6 +141,7 @@ export const useAdminDeletePriceListProductPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
+        adminProductKeys.detail(productId)
       ],
       options
     )
@@ -163,6 +166,7 @@ export const useAdminDeletePriceListVariantPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
+        adminVariantKeys.detail(variantId)
       ],
       options
     )
