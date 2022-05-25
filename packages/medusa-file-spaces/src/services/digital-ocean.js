@@ -1,9 +1,9 @@
 import fs from "fs"
 import aws from "aws-sdk"
 import { parse } from "path"
-import { FileService } from "medusa-interfaces"
+import { AbstractFileService } from '@medusajs/medusa'
 
-class DigitalOceanService extends FileService {
+class DigitalOceanService extends AbstractFileService {
   constructor({}, options) {
     super()
 

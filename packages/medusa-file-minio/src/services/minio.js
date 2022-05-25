@@ -1,8 +1,8 @@
 import fs from "fs"
 import aws from "aws-sdk"
-import { FileService } from "medusa-interfaces"
+import { AbstractFileService } from '@medusajs/medusa'
 
-class MinioService extends FileService {
+class MinioService extends AbstractFileService {
   constructor({}, options) {
     super()
 
