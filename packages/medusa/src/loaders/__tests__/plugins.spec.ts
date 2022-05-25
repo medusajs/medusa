@@ -194,7 +194,7 @@ describe("plugins loader", () => {
       expect(err).toBeFalsy()
     })
 
-    it("should register tax calculation strategy", () => {
+    it("registers price selection strategy", () => {
       const priceSelectionStrategy: (...args: unknown[]) => any =
         container.resolve("priceSelectionStrategy")
 
@@ -204,7 +204,7 @@ describe("plugins loader", () => {
       )
     })
 
-    it("should register price selection strategy", () => {
+    it("registers tax calculation strategy", () => {
       const taxCalculationStrategy: (...args: unknown[]) => any =
         container.resolve("taxCalculationStrategy")
 
@@ -214,7 +214,7 @@ describe("plugins loader", () => {
       )
     })
 
-    it("should register batch job strategies as single array", () => {
+    it("registers batch job strategies as single array", () => {
       const batchJobStrategies: (...args: unknown[]) => any =
         container.resolve("batchJobStrategies")
 
@@ -223,7 +223,7 @@ describe("plugins loader", () => {
       expect(batchJobStrategies.length).toBe(3)
     })
 
-    it("should register common batch job strategies in batch type array", () => {
+    it("registers batch job strategies in arrays according to type", () => {
       const batchJobStrategies: (...args: unknown[]) => any =
         container.resolve("batchType_type-1")
 
@@ -232,7 +232,7 @@ describe("plugins loader", () => {
       expect(batchJobStrategies.length).toBe(2)
     })
 
-    it("should register batch job strategies by identifier", () => {
+    it("registers batch job strategies by identifier", () => {
       const batchJobStrategy: (...args: unknown[]) => any = container.resolve(
         "batch_test3-identifier"
       )
@@ -272,7 +272,6 @@ describe("plugins loader", () => {
     })
 
     it("should load the services from the services directory but only js files", async () => {
-      console.log(getFolderTestTargetDirectoryPath("services"))
       let err
       try {
         await registerServices(pluginsDetails, container)
