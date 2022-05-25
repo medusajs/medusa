@@ -105,7 +105,6 @@ describe("POST /admin/discounts", () => {
             code: "10TOTALOFF",
             rule: {
               id: "1234",
-              type: "fixed",
               value: 10,
               allocation: "total",
             },
@@ -159,7 +158,6 @@ describe("POST /admin/discounts", () => {
             code: "10TOTALOFF",
             rule: {
               id: "1234",
-              type: "fixed",
               value: 10,
               allocation: "total",
             },

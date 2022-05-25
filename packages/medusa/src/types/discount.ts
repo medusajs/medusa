@@ -139,7 +139,6 @@ export type CreateDiscountInput = {
 export type UpdateDiscountRuleInput = {
   id: string
   description?: string
-  type: string
   value: number
   allocation: string
   conditions?: UpsertDiscountConditionInput[]
@@ -148,7 +147,6 @@ export type UpdateDiscountRuleInput = {
 export type UpdateDiscountInput = {
   code?: string
   rule?: UpdateDiscountRuleInput
-  is_dynamic?: boolean
   is_disabled?: boolean
   starts_at?: Date
   ends_at?: Date | null

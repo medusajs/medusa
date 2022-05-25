@@ -111,10 +111,6 @@ export class AdminPostDiscountsDiscountReq {
 
   @IsBoolean()
   @IsOptional()
-  is_dynamic?: boolean
-
-  @IsBoolean()
-  @IsOptional()
   is_disabled?: boolean
 
   @IsDate()
@@ -155,10 +151,6 @@ export class AdminUpdateDiscountRule {
   @IsString()
   @IsOptional()
   description?: string
-
-  @IsString()
-  @IsNotEmpty()
-  type: string
 
   @IsNumber()
   value: number

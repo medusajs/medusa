@@ -1,6 +1,6 @@
 import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import {
@@ -128,34 +128,14 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   validateDiscountRule_(discountRule): DiscountRule {
-    const schema = Validator.object().keys({
-      id: Validator.string().optional(),
-      description: Validator.string().optional(),
-      type: Validator.string().required(),
-      value: Validator.number().min(0).required(),
-      allocation: Validator.string().required(),
-      created_at: Validator.date().optional(),
-      updated_at: Validator.date().allow(null).optional(),
-      deleted_at: Validator.date().allow(null).optional(),
-      metadata: Validator.object().allow(null).optional(),
-    })
-
-    const { value, error } = schema.validate(discountRule)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        error.details[0].message
-      )
-    }
-
-    if (value.type === "percentage" && value.value > 100) {
+    if (discountRule.type === "percentage" && discountRule.value > 100) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Discount value above 100 is not allowed when type is percentage"
       )
     }
 
-    return value
+    return discountRule
   }
 
   /**
@@ -360,6 +340,7 @@ class DiscountService extends BaseService {
   ): Promise<Discount> {
     return this.atomicPhase_(async (manager) => {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
+      const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
       const discount = await this.retrieve(discountId, {
         relations: ["rule"],
@@ -411,7 +392,17 @@ class DiscountService extends BaseService {
       }
 
       if (rule) {
-        discount.rule = this.validateDiscountRule_(ruleToUpdate)
+        const validatedRule = this.validateDiscountRule_({
+          ...rule,
+          type: discount.rule.type,
+        })
+
+        const updatedRule = ruleRepo.create({
+          ...discount.rule,
+          ...validatedRule,
+        })
+
+        discount.rule = updatedRule
       }
 
       for (const key of Object.keys(rest).filter(
