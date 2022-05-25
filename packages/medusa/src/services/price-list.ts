@@ -1,5 +1,4 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
 import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
@@ -238,14 +237,14 @@ class PriceListService extends TransactionBaseService<PriceListService> {
    */
   async list(
     selector: FilterablePriceListProps = {},
-    config: FindConfig<PriceList> = { skip: 0, take: 20 }
+    config: FindConfig<FilterablePriceListProps> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
       const { q, ...priceListSelector } = selector
-      const query = buildQuery<PriceList>(
-        priceListSelector as Selector<PriceList>,
+      const query = buildQuery<FilterablePriceListProps>(
+        priceListSelector,
         config
       )
 
@@ -266,13 +265,16 @@ class PriceListService extends TransactionBaseService<PriceListService> {
    */
   async listAndCount(
     selector: FilterablePriceListProps = {},
-    config: FindConfig<PriceList> = { skip: 0, take: 20 }
+    config: FindConfig<FilterablePriceListProps> = {
+      skip: 0,
+      take: 20,
+    }
   ): Promise<[PriceList[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const { q, ...priceListSelector } = selector
-      const { relations, ...query } = buildQuery<PriceList>(
-        priceListSelector as Selector<PriceList>,
+      const { relations, ...query } = buildQuery<FilterablePriceListProps>(
+        priceListSelector,
         config
       )
 
@@ -318,7 +320,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       skip: 0,
       take: 20,
     },
-    requiredRelation = false
+    requiresPriceList = false
   ): Promise<[Product[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const [products, count] = await this.productService_.listAndCount(
@@ -337,7 +339,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
                   await moneyAmountRepo.findManyForVariantInPriceList(
                     v.id,
                     priceListId,
-                    requiredRelation
+                    requiresPriceList
                   )
 
                 return {
@@ -364,7 +366,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       skip: 0,
       take: 20,
     },
-    requiredRelation = false
+    requiresPriceList = false
   ): Promise<[ProductVariant[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const [variants, count] = await this.variantService_.listAndCount(
@@ -379,7 +381,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
           const [prices] = await moneyAmountRepo.findManyForVariantInPriceList(
             variant.id,
             priceListId,
-            requiredRelation
+            requiresPriceList
           )
 
           variant.prices = prices

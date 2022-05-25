@@ -9,6 +9,7 @@ import {
 import { PriceList } from "../models/price-list"
 import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
 import { CustomerGroup } from "../models"
+import { FilterablePriceListProps } from "../types/price-list"
 
 export type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
 
@@ -98,7 +99,7 @@ export class PriceListRepository extends Repository<PriceList> {
   }
 
   async listAndCount(
-    query: ExtendedFindConfig<PriceList>,
+    query: ExtendedFindConfig<FilterablePriceListProps>,
     groups: FindOperator<string[]>
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")

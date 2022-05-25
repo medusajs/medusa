@@ -120,7 +120,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
   public async findManyForVariantInPriceList(
     variant_id: string,
     price_list_id: string,
-    required: boolean = false
+    requiresPriceList = false
   ): Promise<[MoneyAmount[], number]> {
     const qb = this.createQueryBuilder("ma")
       .leftJoinAndSelect("ma.price_list", "price_list")
@@ -130,7 +130,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       const andWhere = subQb.where("ma.price_list_id = :price_list_id", {
         price_list_id,
       })
-      if (!required) {
+      if (!requiresPriceList) {
         andWhere.orWhere("ma.price_list_id IS NULL")
       }
       return andWhere
