@@ -3,6 +3,13 @@ import aws from "aws-sdk"
 import { AbstractFileService } from '@medusajs/medusa'
 
 class S3Service extends AbstractFileService {
+  protected bucket_: string
+  protected s3Url_: string
+  protected accessKeyId_: string
+  protected secretAccessKey_: string
+  protected region_: string
+  protected endpoint_: string
+
   constructor({}, options) {
     super()
 
@@ -15,13 +22,13 @@ class S3Service extends AbstractFileService {
   }
 
   upload(file) {
-    aws.config.setPromisesDependency()
+    aws.config.setPromisesDependency(null)
     aws.config.update({
       accessKeyId: this.accessKeyId_,
       secretAccessKey: this.secretAccessKey_,
       region: this.region_,
       endpoint: this.endpoint_,
-    })
+    }, true)
 
     const s3 = new aws.S3()
     var params = {
@@ -44,13 +51,13 @@ class S3Service extends AbstractFileService {
   }
 
   delete(file) {
-    aws.config.setPromisesDependency()
+    aws.config.setPromisesDependency(null)
     aws.config.update({
       accessKeyId: this.accessKeyId_,
       secretAccessKey: this.secretAccessKey_,
       region: this.region_,
       endpoint: this.endpoint_,
-    })
+    }, true)
 
     const s3 = new aws.S3()
     var params = {
