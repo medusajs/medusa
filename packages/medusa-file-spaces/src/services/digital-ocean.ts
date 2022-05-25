@@ -5,6 +5,13 @@ import { parse } from "path"
 import stream from "stream"
 
 class DigitalOceanService extends AbstractFileService {
+  protected bucket_: string
+  protected spacesUrl_: string
+  protected accessKeyId_: string
+  protected secretAccessKey_: string
+  protected region_: string
+  protected endpoint_: string
+
   constructor({}, options) {
     super()
 

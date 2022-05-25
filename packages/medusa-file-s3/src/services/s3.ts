@@ -3,6 +3,13 @@ import aws from "aws-sdk"
 import { AbstractFileService } from '@medusajs/medusa'
 
 class S3Service extends AbstractFileService {
+  protected bucket_: string
+  protected s3Url_: string
+  protected accessKeyId_: string
+  protected secretAccessKey_: string
+  protected region_: string
+  protected endpoint_: string
+
   constructor({}, options) {
     super()
 
