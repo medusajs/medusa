@@ -33,7 +33,7 @@ export default class EventBusService {
   protected queue_: Bull
   protected shouldEnqueuerRun: boolean
   protected transactionManager_: EntityManager | undefined
-  protected enqueu_: Promise<void>
+  protected enqueue_: Promise<void>
 
   constructor(
     {
@@ -204,12 +204,12 @@ export default class EventBusService {
 
   startEnqueuer(): void {
     this.shouldEnqueuerRun = true
-    this.enqueu_ = this.enqueuer_()
+    this.enqueue_ = this.enqueuer_()
   }
 
   async stopEnqueuer(): Promise<void> {
     this.shouldEnqueuerRun = false
-    await this.enqueu_
+    await this.enqueue_
   }
 
   async enqueuer_(): Promise<void> {
