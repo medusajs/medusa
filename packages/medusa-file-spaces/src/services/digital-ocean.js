@@ -84,6 +84,25 @@ class DigitalOceanService extends AbstractFileService {
       })
     })
   }
+
+  async getDownloadStream(file){
+    aws.config.setPromisesDependency(null)
+    aws.config.update({
+      accessKeyId: this.accessKeyId_,
+      secretAccessKey: this.secretAccessKey_,
+      region: this.region_,
+      endpoint: this.endpoint_,
+    }, true)
+
+    const s3 = new aws.S3()
+
+    var params = {
+      Bucket: this.bucket_,
+      Key: `${file.key}`,
+    }
+
+    return s3.getObject(params).createReadStream()
+  }
 }
 
 export default DigitalOceanService

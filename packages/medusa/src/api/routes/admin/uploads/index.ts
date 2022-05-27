@@ -16,6 +16,8 @@ export default (app) => {
     middlewares.wrap(require("./create-upload").default)
   )
 
+  route.post("/download", middlewares.wrap(require("./download-csv").default))
+
   // removed on purpose
   // route.post("/delete", middlewares.wrap(require("./delete-upload").default))
 
