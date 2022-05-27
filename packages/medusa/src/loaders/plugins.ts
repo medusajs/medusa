@@ -416,7 +416,7 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof AbstractFileService) {
+      } else if (isFileService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({
@@ -457,7 +457,7 @@ export async function registerServices(
         })
       } else {
         const logger = container.resolve<Logger>("logger")
-        const message = `Services must inherit from BaseService, please check ${fn}`
+        const message = `File must be a valid service implementation, please check ${fn}`
         logger.error(message)
         throw new Error(message)
       }
