@@ -16,6 +16,11 @@ export default (app) => {
     middlewares.wrap(require("./create-upload").default)
   )
 
+  route.get(
+    "/download-url",
+    middlewares.wrap(require("./get-download-url").default)
+  )
+
   route.post(
     "/stream",
     middlewares.wrap(require("./generate-and-upload-csv").default)
