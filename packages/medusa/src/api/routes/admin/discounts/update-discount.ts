@@ -39,9 +39,6 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  *           code:
  *             type: string
  *             description: A unique code that will be used to redeem the Discount
- *           is_dynamic:
- *             type: string
- *             description: Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules.
  *           rule:
  *             description: The Discount Rule that defines how Discounts are calculated
  *             oneOf:
