@@ -96,19 +96,17 @@ class DigitalOceanService extends AbstractFileService {
       true
     )
 
-    var pass = new stream.PassThrough()
-
-    const parsedFilename = fileData.name
-    const fileKey = `${parsedFilename}-${Date.now()}.csv`
-    const s3 = new aws.S3()
-
-    var params = {
+    const pass = new stream.PassThrough()
+    
+    const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
+    const params = {
       ACL: "bucket-owner-full-control",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,
     }
-
+    
+    const s3 = new aws.S3()
     return {
       writeStream: pass,
       promise: s3
