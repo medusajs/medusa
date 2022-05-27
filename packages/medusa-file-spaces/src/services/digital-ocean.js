@@ -84,6 +84,27 @@ class DigitalOceanService extends AbstractFileService {
       })
     })
   }
+
+  async generatePresignedDownloadUrl(file) {
+    aws.config.setPromisesDependency(null)
+    aws.config.update({
+      accessKeyId: this.accessKeyId_,
+      secretAccessKey: this.secretAccessKey_,
+      region: this.region_,
+      endpoint: this.endpoint_,
+      signatureVersion: "v4",
+    }, true)
+
+    const s3 = new aws.S3()
+
+    var params = {
+      Bucket: this.bucket_,
+      Key: `${file.key}`,
+      Expires: 60, // 60 seconds
+    }
+
+    return await s3.getSignedUrlPromise("getObject", params)
+  }
 }
 
 export default DigitalOceanService
