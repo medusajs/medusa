@@ -28,16 +28,18 @@ export interface IFileService {
    * @param fileData file metadata relevant for fileservice to create and upload the file
    * @param fileStream readable stream of the file to upload
    * */
-  getUploadStream(
+  getUploadStreamDescriptor(
     fileData: Record<string, any>
   ): Promise<FileServiceGetUploadStreamResult>
 
   /**
    * download file from fileservice as stream
-   * @param file file metadata relevant for fileservice to download the file
+   * @param fileData file metadata relevant for fileservice to download the file
    * @returns readable stream of the file to download
    * */
-  getDownloadStream(file: Record<string, any>): Promise<NodeJS.ReadableStream>
+  downloadAsStream(
+    fileData: Record<string, any>
+  ): Promise<NodeJS.ReadableStream>
 
   /**
    * Generate a presigned download url to obtain a file
@@ -53,7 +55,7 @@ export abstract class AbstractFileService implements IFileService {
 
   abstract delete(fileData: Record<string, any>): void
 
-  getUploadStream(
+  getUploadStreamDescriptor(
     fileData: Record<string, any>
   ): Promise<FileServiceGetUploadStreamResult> {
     throw new Error(
@@ -61,7 +63,9 @@ export abstract class AbstractFileService implements IFileService {
     )
   }
 
-  getDownloadStream(file: Record<string, any>): Promise<NodeJS.ReadableStream> {
+  downloadAsStream(
+    fileData: Record<string, any>
+  ): Promise<NodeJS.ReadableStream> {
     throw new Error(
       "Batch operations are not implemented for this fileservice."
     )
@@ -74,6 +78,6 @@ export abstract class AbstractFileService implements IFileService {
   }
 }
 
-export const isFileService = (object: any): boolean => {
+export const isFileService = (object: unknown): boolean => {
   return object instanceof AbstractFileService
 }
