@@ -28,23 +28,25 @@ export interface IFileService {
    * @param fileData file metadata relevant for fileservice to create and upload the file
    * @param fileStream readable stream of the file to upload
    * */
-  getUploadStream(
+  getUploadStreamDescriptor(
     fileData: Record<string, any>
   ): Promise<FileServiceGetUploadStreamResult>
 
   /**
    * download file from fileservice as stream
-   * @param file file metadata relevant for fileservice to download the file
+   * @param fileData file metadata relevant for fileservice to download the file
    * @returns readable stream of the file to download
    * */
-  getDownloadStream(file: Record<string, any>): Promise<NodeJS.ReadableStream>
+  downloadAsStream(
+    fileData: Record<string, any>
+  ): Promise<NodeJS.ReadableStream>
 
   /**
    * Generate a presigned download url to obtain a file
-   * @param file file metadata relevant for fileservice to download the file
+   * @param fileData file metadata relevant for fileservice to download the file
    * @returns presigned url to download the file
    * */
-  generatePresignedDownloadUrl(file: Record<string, any>): Promise<string>
+  getPresignedDownloadUrl(fileData: Record<string, any>): Promise<string>
 }
 export abstract class AbstractFileService implements IFileService {
   abstract upload(
@@ -53,27 +55,19 @@ export abstract class AbstractFileService implements IFileService {
 
   abstract delete(fileData: Record<string, any>): void
 
-  getUploadStream(
+  abstract getUploadStreamDescriptor(
     fileData: Record<string, any>
-  ): Promise<FileServiceGetUploadStreamResult> {
-    throw new Error(
-      "Batch operations are not implemented for this fileservice."
-    )
-  }
+  ): Promise<FileServiceGetUploadStreamResult>
 
-  getDownloadStream(file: Record<string, any>): Promise<NodeJS.ReadableStream> {
-    throw new Error(
-      "Batch operations are not implemented for this fileservice."
-    )
-  }
+  abstract downloadAsStream(
+    fileData: Record<string, any>
+  ): Promise<NodeJS.ReadableStream>
 
-  generatePresignedDownloadUrl(file: Record<string, any>): Promise<string> {
-    throw new Error(
-      "Batch operations are not implemented for this fileservice."
-    )
-  }
+  abstract getPresignedDownloadUrl(
+    fileData: Record<string, any>
+  ): Promise<string>
 }
 
-export const isFileService = (object: any): boolean => {
+export const isFileService = (object: unknown): boolean => {
   return object instanceof AbstractFileService
 }
