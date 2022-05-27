@@ -65,6 +65,7 @@ class DigitalOceanService extends AbstractFileService {
     })
   }
 
+
   async getUploadStreamDescriptor(fileData) {
     this.updateAwsConfig()
 
