@@ -16,6 +16,17 @@ export default (app) => {
     middlewares.wrap(require("./create-upload").default)
   )
 
+  route.post(
+    "/stream",
+    middlewares.wrap(require("./generate-and-upload-csv").default)
+  )
+
+  route.post(
+    "/stream-file",
+    upload.single("file"),
+    middlewares.wrap(require("./upload-csv-file").default)
+  )
+
   route.post("/download", middlewares.wrap(require("./download-csv").default))
 
   // removed on purpose
