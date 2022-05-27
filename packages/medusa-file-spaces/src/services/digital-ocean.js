@@ -18,16 +18,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   upload(file) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-      },
-      true
-    )
+    updateAwsConfig()
 
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
@@ -56,16 +47,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   delete(file) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-      },
-      true
-    )
+    updateAwsConfig()
 
     const s3 = new aws.S3()
     var params = {
@@ -86,16 +68,7 @@ class DigitalOceanService extends AbstractFileService {
 
 
   async getUploadStreamDescriptor(fileData) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-      },
-      true
-    )
+    updateAwsConfig()
 
     const pass = new stream.PassThrough()
     
@@ -118,13 +91,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async downloadAsStream(fileData) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update({
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
-      endpoint: this.endpoint_,
-    }, true)
+    updateAwsConfig()
 
     const s3 = new aws.S3()
 
@@ -137,14 +104,9 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async getPresignedDownloadUrl(fileData) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update({
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
-      endpoint: this.endpoint_,
+    updateAwsConfig({
       signatureVersion: "v4",
-    }, true)
+    })
 
     const s3 = new aws.S3()
 
@@ -155,6 +117,18 @@ class DigitalOceanService extends AbstractFileService {
     }
 
     return await s3.getSignedUrlPromise("getObject", params)
+  }
+
+  updateAwsConfig(additionalConfiguration = {}){
+    aws.config.setPromisesDependency(null)
+    aws.config.update({
+      accessKeyId: this.accessKeyId_,
+      secretAccessKey: this.secretAccessKey_,
+      region: this.region_,
+      endpoint: this.endpoint_,
+      ...additionalConfiguration
+    }, true)
+
   }
 }
 
