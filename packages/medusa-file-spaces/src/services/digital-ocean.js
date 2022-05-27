@@ -86,7 +86,35 @@ class DigitalOceanService extends AbstractFileService {
 
 
   async getUploadStreamDescriptor(fileData) {
-    throw new Error("Method not implemented.")
+    aws.config.setPromisesDependency(null)
+    aws.config.update(
+      {
+        accessKeyId: this.accessKeyId_,
+        secretAccessKey: this.secretAccessKey_,
+        region: this.region_,
+        endpoint: this.endpoint_,
+      },
+      true
+    )
+
+    const pass = new stream.PassThrough()
+    
+    const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
+    const params = {
+      ACL: "bucket-owner-full-control",
+      Bucket: this.bucket_,
+      Body: pass,
+      Key: fileKey,
+    }
+    
+    const s3 = new aws.S3()
+    return {
+      writeStream: pass,
+      promise: s3
+        .upload(params)
+        .promise(),
+      url: `${this.spacesUrl_}/${fileKey}`,
+    }
   }
 
   async downloadAsStream(fileData) {
