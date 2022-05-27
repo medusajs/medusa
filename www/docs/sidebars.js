@@ -153,6 +153,11 @@ module.exports = {
                   id: "advanced/backend/subscribers/create-subscriber",
                   label: "Create a Subscriber"
                 },
+                {
+                  type: "doc",
+                  id: "advanced/backend/subscribers/events-list",
+                  label: "List of Events"
+                },
               ]
             },
             {
