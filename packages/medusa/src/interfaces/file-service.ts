@@ -55,27 +55,17 @@ export abstract class AbstractFileService implements IFileService {
 
   abstract delete(fileData: Record<string, any>): void
 
-  getUploadStreamDescriptor(
+  abstract getUploadStreamDescriptor(
     fileData: Record<string, any>
-  ): Promise<FileServiceGetUploadStreamResult> {
-    throw new Error(
-      "Batch operations are not implemented for this fileservice."
-    )
-  }
+  ): Promise<FileServiceGetUploadStreamResult>
 
-  downloadAsStream(
+  abstract downloadAsStream(
     fileData: Record<string, any>
-  ): Promise<NodeJS.ReadableStream> {
-    throw new Error(
-      "Batch operations are not implemented for this fileservice."
-    )
-  }
+  ): Promise<NodeJS.ReadableStream>
 
-  getPresignedDownloadUrl(fileData: Record<string, any>): Promise<string> {
-    throw new Error(
-      "Batch operations are not implemented for this fileservice."
-    )
-  }
+  abstract getPresignedDownloadUrl(
+    fileData: Record<string, any>
+  ): Promise<string>
 }
 
 export const isFileService = (object: unknown): boolean => {

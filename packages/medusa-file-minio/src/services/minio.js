@@ -72,6 +72,18 @@ class MinioService extends AbstractFileService {
       })
     })
   }
+
+  async getUploadStreamDescriptor(fileData) {
+    throw new Error("Method not implemented.")
+  }
+
+  async downloadAsStream(fileData) {
+    throw new Error("Method not implemented.")
+  }
+
+  async getPresignedDownloadUrl(fileData) {
+    throw new Error("Method not implemented.")
+  }
 }
 
 export default MinioService
