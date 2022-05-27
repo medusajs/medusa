@@ -43,10 +43,10 @@ export interface IFileService {
 
   /**
    * Generate a presigned download url to obtain a file
-   * @param file file metadata relevant for fileservice to download the file
+   * @param fileData file metadata relevant for fileservice to download the file
    * @returns presigned url to download the file
    * */
-  generatePresignedDownloadUrl(file: Record<string, any>): Promise<string>
+  getPresignedDownloadUrl(fileData: Record<string, any>): Promise<string>
 }
 export abstract class AbstractFileService implements IFileService {
   abstract upload(
@@ -71,7 +71,7 @@ export abstract class AbstractFileService implements IFileService {
     )
   }
 
-  generatePresignedDownloadUrl(file: Record<string, any>): Promise<string> {
+  getPresignedDownloadUrl(fileData: Record<string, any>): Promise<string> {
     throw new Error(
       "Batch operations are not implemented for this fileservice."
     )
