@@ -6,13 +6,6 @@ import { EntityManager } from "typeorm"
 import stream from "stream"
 
 class DigitalOceanService extends AbstractFileService {
-  bucket_
-  spacesUrl_
-  accessKeyId_
-  secretAccessKey_
-  region_
-  endpoint_
-
   constructor({}, options) {
     super()
 
