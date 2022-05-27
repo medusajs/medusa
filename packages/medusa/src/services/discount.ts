@@ -2,7 +2,13 @@ import { parse, toSeconds } from "iso8601-duration"
 import { isEmpty, omit } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
+import {
+  Brackets,
+  DeepPartial,
+  EntityManager,
+  ILike,
+  SelectQueryBuilder,
+} from "typeorm"
 import {
   EventBusService,
   ProductService,
@@ -24,9 +30,11 @@ import { GiftCardRepository } from "../repositories/gift-card"
 import { FindConfig } from "../types/common"
 import {
   CreateDiscountInput,
+  CreateDiscountRuleInput,
   CreateDynamicDiscountInput,
   FilterableDiscountProps,
   UpdateDiscountInput,
+  UpdateDiscountRuleInput,
 } from "../types/discount"
 import { isFuture, isPast } from "../utils/date-helpers"
 import { formatException } from "../utils/exception-formatter"
@@ -127,7 +135,9 @@ class DiscountService extends BaseService {
    * @param {DiscountRule} discountRule - the discount rule to create
    * @return {Promise} the result of the create operation
    */
-  validateDiscountRule_(discountRule): DiscountRule {
+  validateDiscountRule_<T extends { type: DiscountRuleType; value: number }>(
+    discountRule: T
+  ): T {
     if (discountRule.type === "percentage" && discountRule.value > 100) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -208,16 +218,15 @@ class DiscountService extends BaseService {
    * @return {Promise} the result of the create operation
    */
   async create(discount: CreateDiscountInput): Promise<Discount> {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async (manager: EntityManager) => {
       const discountRepo = manager.getCustomRepository(this.discountRepository_)
       const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
 
       const conditions = discount.rule?.conditions
 
       const ruleToCreate = omit(discount.rule, ["conditions"])
-      discount.rule = ruleToCreate
-
-      const validatedRule = this.validateDiscountRule_(discount.rule)
+      const validatedRule: Omit<CreateDiscountRuleInput, "conditions"> =
+        this.validateDiscountRule_(ruleToCreate)
 
       if (
         discount?.regions &&
@@ -238,13 +247,16 @@ class DiscountService extends BaseService {
           )
         }
 
-        const discountRule = await ruleRepo.create(validatedRule)
+        const discountRule = ruleRepo.create(validatedRule)
         const createdDiscountRule = await ruleRepo.save(discountRule)
 
         discount.code = discount.code!.toUpperCase()
-        discount.rule = createdDiscountRule
 
-        const created = await discountRepo.create(discount)
+        const created: Discount = discountRepo.create(
+          discount as DeepPartial<Discount>
+        )
+        created.rule = createdDiscountRule
+
         const result = await discountRepo.save(created)
 
         if (conditions?.length) {
@@ -295,27 +307,26 @@ class DiscountService extends BaseService {
   /**
    * Gets a discount by discount code.
    * @param {string} discountCode - discount code of discount to retrieve
-   * @param {array} relations - list of relations
+   * @param {Object} config - the config object containing query settings
    * @return {Promise<Discount>} the discount document
    */
   async retrieveByCode(
     discountCode: string,
-    relations: string[] = []
+    config: FindConfig<Discount> = {}
   ): Promise<Discount> {
     const discountRepo = this.manager_.getCustomRepository(
       this.discountRepository_
     )
 
-    let discount = await discountRepo.findOne({
-      where: { code: discountCode.toUpperCase(), is_dynamic: false },
-      relations,
-    })
+    let query = this.buildQuery_(
+      { code: discountCode, is_dynamic: false },
+      config
+    )
+    let discount = await discountRepo.findOne(query)
 
     if (!discount) {
-      discount = await discountRepo.findOne({
-        where: { code: discountCode.toUpperCase(), is_dynamic: true },
-        relations,
-      })
+      query = this.buildQuery_({ code: discountCode, is_dynamic: true }, config)
+      discount = await discountRepo.findOne(query)
 
       if (!discount) {
         throw new MedusaError(
@@ -339,8 +350,12 @@ class DiscountService extends BaseService {
     update: UpdateDiscountInput
   ): Promise<Discount> {
     return this.atomicPhase_(async (manager) => {
-      const discountRepo = manager.getCustomRepository(this.discountRepository_)
-      const ruleRepo = manager.getCustomRepository(this.discountRuleRepository_)
+      const discountRepo: DiscountRepository = manager.getCustomRepository(
+        this.discountRepository_
+      )
+      const ruleRepo: DiscountRuleRepository = manager.getCustomRepository(
+        this.discountRuleRepository_
+      )
 
       const discount = await this.retrieve(discountId, {
         relations: ["rule"],
@@ -392,14 +407,21 @@ class DiscountService extends BaseService {
       }
 
       if (rule) {
-        const validatedRule = this.validateDiscountRule_({
-          ...rule,
-          type: discount.rule.type,
-        })
+        let ruleUpdate: Pick<
+          UpdateDiscountRuleInput,
+          "id" | "description" | "value" | "allocation"
+        > = rule
+
+        if (rule.value) {
+          ruleUpdate = this.validateDiscountRule_({
+            ...rule,
+            type: discount.rule.type,
+          })
+        }
 
         const updatedRule = ruleRepo.create({
           ...discount.rule,
-          ...validatedRule,
+          ...ruleUpdate,
         })
 
         discount.rule = updatedRule

@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -12,6 +13,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { AllocationType } from "../../../../models"
 import { Discount } from "../../../../models/discount"
 import { DiscountConditionOperator } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
@@ -153,11 +155,14 @@ export class AdminUpdateDiscountRule {
   description?: string
 
   @IsNumber()
+  @IsOptional()
   value: number
 
-  @IsString()
-  @IsNotEmpty()
-  allocation: string
+  @IsOptional()
+  @IsEnum(AllocationType, {
+    message: `Invalid allocation type, must be one of "total" or "item"`,
+  })
+  allocation: AllocationType
 
   @IsOptional()
   @IsArray()
