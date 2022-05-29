@@ -51,7 +51,7 @@ describe("CsvParser", () => {
     })
   })
 
-  describe("validateSchema", () => {
+  describe("buildData", () => {
     const csvParser = new CsvParser(createContainer(), {
       columns: [
         {
@@ -69,7 +69,7 @@ describe("CsvParser", () => {
 
     it("given a line containing a column which is not defined in the schema, then validation should fail", async () => {
       try {
-        await csvParser.validateSchema([{ first_name: "lebron " }])
+        await csvParser.buildData([{ first_name: "lebron " }])
       } catch (err) {
         expect(err.message).toEqual(
           "Unable to to treat column first_name from the csv file. No target column found in the provided schema"
@@ -79,16 +79,14 @@ describe("CsvParser", () => {
 
     it("given a line containing a column which does not pass a validation constraint, then validation should fail", async () => {
       try {
-        await csvParser.validateSchema([{ title: "contains a number 1" }])
+        await csvParser.buildData([{ title: "contains a number 1" }])
       } catch (err) {
         expect(err.message).toEqual("title should not contain a number")
       }
     })
 
     it("given a line which passes all validation constraints, then should returned validated content", async () => {
-      const content = await csvParser.validateSchema([
-        { title: "great product" },
-      ])
+      const content = await csvParser.buildData([{ title: "great product" }])
 
       expect(content).toEqual([
         {
