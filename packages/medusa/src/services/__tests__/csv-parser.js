@@ -1,7 +1,7 @@
 import CsvParser from "../csv-parser"
-import path from "path"
 import fs from "fs"
 import Papa from "papaparse"
+import { createContainer } from "awilix"
 
 function createDummyDataGenerator(data) {
   return async function*() {
@@ -13,12 +13,9 @@ function createDummyDataGenerator(data) {
 
 describe("CsvParser", () => {
   describe("parse", () => {
-    const csvParser = new CsvParser(
-      {},
-      {
-        columns: [],
-      }
-    )
+    const csvParser = new CsvParser(createContainer(), {
+      columns: [],
+    })
 
     let products
 
@@ -55,23 +52,20 @@ describe("CsvParser", () => {
   })
 
   describe("validateSchema", () => {
-    const csvParser = new CsvParser(
-      {},
-      {
-        columns: [
-          {
-            name: "title",
-            validator: {
-              validate: (value) => {
-                if (/\d/.test(value)) {
-                  throw new Error("title should not contain a number")
-                }
-              },
+    const csvParser = new CsvParser(createContainer(), {
+      columns: [
+        {
+          name: "title",
+          validator: {
+            validate: async (value) => {
+              if (/\d/.test(value)) {
+                throw new Error("title should not contain a number")
+              }
             },
           },
-        ],
-      }
-    )
+        },
+      ],
+    })
 
     it("given a line containing a column which is not defined in the schema, then validation should fail", async () => {
       try {

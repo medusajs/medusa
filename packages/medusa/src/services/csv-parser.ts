@@ -1,22 +1,24 @@
 import { AwilixContainer } from "awilix"
-import {
-  AbstractParser,
-  LineContext,
-  ParserOptions,
-} from "../interfaces/abstract-parser"
-import { CsvSchema, ICsvParser } from "../interfaces/csv-parser"
-import Papa, { ParseConfig } from "papaparse"
 import fs from "fs"
+import Papa from "papaparse"
+import { AbstractParser, ParserOptions } from "../interfaces/abstract-parser"
+import { CsvSchema, LineContext } from "../interfaces/csv-parser"
+
+const buildColumnMap = <TSchema extends CsvSchema>(
+  columns: TSchema["columns"]
+): Record<string, TSchema["columns"][number]> =>
+  columns.reduce((map, column) => {
+    map[column.name] = column
+    return map
+  }, {})
 
 class CsvParser<
-    TSchema extends CsvSchema = CsvSchema,
-    TParserResult = any,
-    TOutputResult = any
-  >
-  extends AbstractParser<TSchema, TParserResult, TOutputResult>
-  implements ICsvParser<TParserResult>
-{
-  $$delimiter = ";"
+  TLine = unknown,
+  TSchema extends CsvSchema<TLine> = CsvSchema<TLine>,
+  TParserResult = unknown,
+  TOutputResult = unknown
+> extends AbstractParser<TSchema, TParserResult, TOutputResult> {
+  protected $$delimiter = ";"
 
   constructor(
     protected readonly container: AwilixContainer,
@@ -37,9 +39,7 @@ class CsvParser<
     }
   ): Promise<TParserResult[]> {
     const fileStream = fs.createReadStream(path)
-    const csvStream = Papa.parse(Papa.NODE_STREAM_INPUT, {
-      ...(options as ParseConfig),
-    })
+    const csvStream = Papa.parse(Papa.NODE_STREAM_INPUT, options)
 
     const parsedContent: TParserResult[] = []
     fileStream.pipe(csvStream)
@@ -64,13 +64,12 @@ class CsvParser<
     context: LineContext
   ): Promise<TOutputResult> {
     const outputTuple = {} as TOutputResult
+    const columnMap = buildColumnMap(this.$$schema.columns)
 
     const tupleKeys = Object.keys(line)
 
     for (const tupleKey of tupleKeys) {
-      const column = this.$$schema.columns.find((column) => {
-        return column.name === tupleKey
-      })
+      const column = columnMap[tupleKey]
 
       if (!column) {
         throw new Error(
@@ -80,7 +79,7 @@ class CsvParser<
 
       if (column.validator) {
         await column.validator.validate(line[tupleKey], line, {
-          line: context.lineNumber,
+          ...context,
           column: tupleKey,
         })
       }

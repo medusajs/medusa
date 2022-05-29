@@ -1,19 +1,15 @@
 import { ParseConfig } from "papaparse"
 
-export interface IParser<TResult> {
-  parse(path: string): Promise<TResult[]>
-}
-
-export type LineContext = {
-  lineNumber: number
-}
-
 export type ParserOptions = ParseConfig
+
+export interface IParser<TResult> {
+  parse(path: string, options?: ParserOptions): Promise<TResult[]>
+}
 
 export abstract class AbstractParser<TSchema, TParserResult, TOutputResult>
   implements IParser<TParserResult>
 {
-  protected $$schema: TSchema
+  protected readonly $$schema: TSchema
 
   protected constructor(schema: TSchema) {
     this.$$schema = schema

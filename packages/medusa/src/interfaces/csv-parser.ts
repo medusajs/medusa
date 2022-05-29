@@ -1,8 +1,10 @@
 import { AwilixContainer } from "awilix"
-import { IParser } from "./abstract-parser"
 
-export type CsvParserContext = {
-  line: number
+export type LineContext = {
+  lineNumber: number
+}
+
+export type CsvParserContext = LineContext & {
   column: string
 }
 
@@ -11,24 +13,24 @@ export interface IValidator<TLine> {
     value: string,
     line: TLine,
     context: CsvParserContext
-  ) => Promise<boolean>
+  ) => Promise<boolean | never>
 }
 
-export abstract class AbstractValidator<TLine> implements IValidator<TLine> {
+export abstract class AbstractCsvValidator<TLine> implements IValidator<TLine> {
   constructor(protected readonly container: AwilixContainer) {}
 
-  abstract validate(value: string, line: TLine, context: CsvParserContext)
+  abstract validate(
+    value: string,
+    line: TLine,
+    context: CsvParserContext
+  ): Promise<boolean | never>
 }
 
-export type CsvSchema<TLine = any> = {
+export type CsvSchema<TLine = unknown> = {
   columns: {
     name: string
     required?: boolean
     mapTo?: string
-    validator?: AbstractValidator<TLine>
+    validator?: AbstractCsvValidator<TLine>
   }[]
-}
-
-export interface ICsvParser<TResult> extends IParser<TResult> {
-  $$delimiter: string
 }
