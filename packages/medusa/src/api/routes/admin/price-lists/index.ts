@@ -24,7 +24,7 @@ export default (app) => {
 
   route.get(
     "/",
-    transformQuery(AdminGetPriceListPaginationParams),
+    transformQuery(AdminGetPriceListPaginationParams, { isList: true }),
     middlewares.wrap(require("./list-price-lists").default)
   )
 

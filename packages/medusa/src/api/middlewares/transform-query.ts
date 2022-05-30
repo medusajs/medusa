@@ -14,7 +14,7 @@ type QueryConfig<TEntity extends BaseEntity> = {
   defaultRelations?: string[]
   allowedFields?: string[]
   defaultLimit?: number
-  isList: boolean
+  isList?: boolean
 }
 
 type QueryTypedClass = {
@@ -30,9 +30,7 @@ export function transformQuery<
   TEntity extends BaseEntity
 >(
   plainToClass: ClassConstructor<T>,
-  queryConfig: QueryConfig<TEntity> = {
-    isList: true,
-  },
+  queryConfig: QueryConfig<TEntity> = {},
   config: ValidatorOptions = {}
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
