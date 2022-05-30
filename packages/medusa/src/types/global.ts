@@ -2,7 +2,7 @@ import { AwilixContainer } from "awilix"
 import { Logger as _Logger } from "winston"
 import { LoggerOptions } from "typeorm"
 import { Customer, User } from "../models"
-import { FindConfig, QueryTypedClass } from "./common"
+import { FindConfig, RequestQueryFields } from "./common"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -10,7 +10,7 @@ declare global {
     interface Request {
       user?: User | Customer
       scope: MedusaContainer
-      validatedQuery: QueryTypedClass & Record<string, unknown>
+      validatedQuery: RequestQueryFields & Record<string, unknown>
       validatedBody: unknown
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>

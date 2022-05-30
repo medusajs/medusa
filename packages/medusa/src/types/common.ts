@@ -84,7 +84,7 @@ export type QueryConfig<TEntity extends BaseEntity> = {
   isList?: boolean
 }
 
-export type QueryTypedClass = {
+export type RequestQueryFields = {
   expand?: string
   fields?: string
   offset?: number

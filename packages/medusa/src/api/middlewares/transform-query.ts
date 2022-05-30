@@ -8,11 +8,11 @@ import {
   prepareRetrieveQuery,
 } from "../../utils/get-query-config"
 import { BaseEntity } from "../../interfaces/models/base-entity"
-import { FindConfig, QueryConfig, QueryTypedClass } from "../../types/common"
+import { FindConfig, QueryConfig, RequestQueryFields } from "../../types/common"
 import { omit } from "lodash"
 
 export function transformQuery<
-  T extends QueryTypedClass,
+  T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(
   plainToClass: ClassConstructor<T>,

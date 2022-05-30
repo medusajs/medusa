@@ -1,5 +1,5 @@
 import { pick } from "lodash"
-import { FindConfig, QueryConfig, QueryTypedClass } from "../types/common"
+import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
 import { MedusaError } from "medusa-core-utils/dist"
 import { BaseEntity } from "../interfaces/models/base-entity"
 
@@ -80,7 +80,7 @@ export function getListConfig<TModel extends BaseEntity>(
 }
 
 export function prepareListQuery<
-  T extends QueryTypedClass,
+  T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig?: QueryConfig<TEntity>) {
   const { order, fields, expand, limit, offset } = validated
@@ -126,7 +126,7 @@ export function prepareListQuery<
 }
 
 export function prepareRetrieveQuery<
-  T extends QueryTypedClass,
+  T extends RequestQueryFields,
   TEntity extends BaseEntity
 >(validated: T, queryConfig?: QueryConfig<TEntity>) {
   const { fields, expand } = validated
