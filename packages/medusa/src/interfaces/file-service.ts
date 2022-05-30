@@ -1,4 +1,5 @@
 import stream from "stream"
+import { TransactionBaseService } from "./transaction-base-service"
 
 export type FileServiceUploadResult = {
   url: string
@@ -10,7 +11,8 @@ export type FileServiceGetUploadStreamResult = {
   url: string
 }
 
-export interface IFileService {
+export interface IFileService<T extends TransactionBaseService<any>>
+  extends TransactionBaseService<T> {
   /**
    * upload file to fileservice
    * @param file Multer file from express multipart/form-data
@@ -48,7 +50,10 @@ export interface IFileService {
    * */
   getPresignedDownloadUrl(fileData: GetUploadedFileType): Promise<string>
 }
-export abstract class AbstractFileService implements IFileService {
+export abstract class AbstractFileService<T extends TransactionBaseService<any>>
+  extends TransactionBaseService<T>
+  implements IFileService<T>
+{
   abstract upload(
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult>

@@ -296,6 +296,16 @@ export async function registerServices(
       const loaded = require(fn).default
       const name = formatRegistrationName(fn)
 
+      if (
+        !(loaded.prototype instanceof BaseService) &&
+        !(loaded.prototype instanceof TransactionBaseService)
+      ) {
+        const logger = container.resolve<Logger>("logger")
+        const message = `File must be a valid service implementation, please check ${fn}`
+        logger.error(message)
+        throw new Error(message)
+      }
+
       if (loaded.prototype instanceof PaymentService) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
@@ -392,20 +402,12 @@ export async function registerServices(
           ).singleton(),
           [`tp_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (
-        loaded.prototype instanceof BaseService ||
-        loaded.prototype instanceof TransactionBaseService
-      ) {
+      } else {
         container.register({
           [name]: asFunction(
             (cradle) => new loaded(cradle, pluginDetails.options)
           ),
         })
-      } else {
-        const logger = container.resolve<Logger>("logger")
-        const message = `File must be a valid service implementation, please check ${fn}`
-        logger.error(message)
-        throw new Error(message)
       }
     })
   )
