@@ -1,28 +1,40 @@
 import { AwilixContainer } from "awilix"
 
-export type LineContext = {
-  lineNumber: number
-}
-
-export type CsvParserContext = LineContext & {
-  column: string
-}
-
+/**
+ * Generic validation interface used to run validation logic on every line or record.
+ * All different validation objects should implement this interface
+ */
 export interface IValidator<TLine> {
+  /**
+   *
+   * @param value value of column or property
+   * @param context includes contextual information such as line number, line, etc.
+   */
   validate: (
     value: string,
-    line: TLine,
-    context: CsvParserContext
+    context: CsvParserContext<TLine>
   ) => Promise<boolean | never>
 }
 
+export type CsvParserContext<TLine> = LineContext<TLine> & {
+  column: string
+}
+
+export type LineContext<TLine> = {
+  lineNumber: number
+  line: TLine
+}
+
+/**
+ * Abstract class implementation of the IValidator interface.
+ * All validation objects part of the schema should extend this class.
+ */
 export abstract class AbstractCsvValidator<TLine> implements IValidator<TLine> {
   constructor(protected readonly container: AwilixContainer) {}
 
   abstract validate(
     value: string,
-    line: TLine,
-    context: CsvParserContext
+    context: CsvParserContext<TLine>
   ): Promise<boolean | never>
 }
 

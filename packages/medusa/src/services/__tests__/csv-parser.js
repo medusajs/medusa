@@ -1,15 +1,6 @@
-import CsvParser from "../csv-parser"
-import fs from "fs"
-import Papa from "papaparse"
 import { createContainer } from "awilix"
-
-function createDummyDataGenerator(data) {
-  return async function*() {
-    for (let i = 0; i < data.length; i++) {
-      yield data[i]
-    }
-  }
-}
+import { Readable } from "stream"
+import CsvParser from "../csv-parser"
 
 describe("CsvParser", () => {
   describe("parse", () => {
@@ -17,17 +8,8 @@ describe("CsvParser", () => {
       columns: [],
     })
 
-    let products
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-
-      jest.spyOn(fs, "createReadStream").mockImplementation(() => {
-        return {
-          pipe: () => {},
-        }
-      })
-
+    let csvContent =
+        'title,subtitle\n"T-shirt","summer tee"\n"Sunglasses","Red sunglasses"',
       products = [
         {
           title: "T-shirt",
@@ -39,13 +21,13 @@ describe("CsvParser", () => {
         },
       ]
 
-      jest
-        .spyOn(Papa, "parse")
-        .mockImplementation(createDummyDataGenerator(products))
+    beforeEach(() => {
+      jest.clearAllMocks()
     })
 
     it("given a file location, can read the file contents and parse it", async () => {
-      const content = await csvParser.parse("file.csv")
+      const stream = Readable.from(csvContent)
+      const content = await csvParser.parse(stream)
 
       expect(content).toEqual(products)
     })

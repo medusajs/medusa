@@ -1,20 +1,15 @@
 import { AwilixContainer } from "awilix"
-import fs from "fs"
 import Papa from "papaparse"
 import { AbstractParser, ParserOptions } from "../interfaces/abstract-parser"
-import { CsvSchema, LineContext } from "../interfaces/csv-parser"
+import { CsvSchema } from "../interfaces/csv-parser"
+import fs from "fs"
 
-const buildColumnMap = <TSchema extends CsvSchema>(
-  columns: TSchema["columns"]
-): Record<string, TSchema["columns"][number]> =>
-  columns.reduce((map, column) => {
-    map[column.name] = column
-    return map
-  }, {})
-
+const DEFAULT_PARSE_OPTIONS = {
+  dynamicTyping: true,
+  header: true,
+}
 class CsvParser<
-  TLine = unknown,
-  TSchema extends CsvSchema<TLine> = CsvSchema<TLine>,
+  TSchema extends CsvSchema = CsvSchema,
   TParserResult = unknown,
   TOutputResult = unknown
 > extends AbstractParser<TSchema, TParserResult, TOutputResult> {
@@ -32,17 +27,13 @@ class CsvParser<
   }
 
   public async parse(
-    path: string,
-    options: ParserOptions = {
-      dynamicTyping: true,
-      header: true,
-    }
+    readableStream: NodeJS.ReadableStream,
+    options: ParserOptions = DEFAULT_PARSE_OPTIONS
   ): Promise<TParserResult[]> {
-    const fileStream = fs.createReadStream(path)
     const csvStream = Papa.parse(Papa.NODE_STREAM_INPUT, options)
 
     const parsedContent: TParserResult[] = []
-    fileStream.pipe(csvStream)
+    readableStream.pipe(csvStream)
     for await (const chunk of csvStream) {
       parsedContent.push(chunk)
     }
@@ -53,7 +44,7 @@ class CsvParser<
   async buildData(data: TParserResult[]): Promise<TOutputResult[]> {
     const validatedData = [] as TOutputResult[]
     for (let i = 0; i < data.length; i++) {
-      const result = await this._buildLine(data[i], { lineNumber: i + 1 })
+      const result = await this._buildLine(data[i], i + 1)
       validatedData.push(result)
     }
     return validatedData
@@ -61,10 +52,10 @@ class CsvParser<
 
   private async _buildLine(
     line: TParserResult,
-    context: LineContext
+    lineNumber: number
   ): Promise<TOutputResult> {
     const outputTuple = {} as TOutputResult
-    const columnMap = buildColumnMap(this.$$schema.columns)
+    const columnMap = this._buildColumnMap(this.$$schema.columns)
 
     const tupleKeys = Object.keys(line)
 
@@ -78,8 +69,9 @@ class CsvParser<
       }
 
       if (column.validator) {
-        await column.validator.validate(line[tupleKey], line, {
-          ...context,
+        await column.validator.validate(line[tupleKey], {
+          line,
+          lineNumber,
           column: tupleKey,
         })
       }
@@ -88,6 +80,15 @@ class CsvParser<
     }
 
     return outputTuple
+  }
+
+  private _buildColumnMap(
+    columns: TSchema["columns"]
+  ): Record<string, TSchema["columns"][number]> {
+    return columns.reduce((map, column) => {
+      map[column.name] = column
+      return map
+    }, {})
   }
 }
 
