@@ -36,8 +36,8 @@ To create an entity, create a TypeScript file in `src/models`. For example, here
 
 ```tsx
 import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
-import { BaseEntity} from "@medusajs/medusa/dist/interfaces/models/base-entity";
-import { generateEntityId } from "@medusajs/medusa/dist/utils/generate-entity-id"
+import { BaseEntity} from "@medusajs/medusa";
+import { generateEntityId } from "@medusajs/medusa/dist/utils"
 
 @Entity()
 export class Post extends BaseEntity {
@@ -60,7 +60,7 @@ To generate an ID for your entity that matches the IDs generated for Medusa’s 
 If you want the entity to also be soft deletable then it should extend `SoftDeletableEntity` instead:
 
 ```tsx
-import { SoftDeletableEntity } from "@medusajs/medusa/dist/interfaces/models/soft-deletable-entity";
+import { SoftDeletableEntity } from "@medusajs/medusa";
 
 @Entity()
 export class Post extends SoftDeletableEntity {
