@@ -51,6 +51,13 @@ export class BatchJob extends SoftDeletableEntity {
 
   @AfterLoad()
   loadStatus(): void {
+    /* Always keep the status order consistent. */
+    if (this.ready_at) {
+      this.status = BatchJobStatus.READY
+    }
+    if (this.processing_at) {
+      this.status = BatchJobStatus.PROCESSING
+    }
     if (this.awaiting_confirmation_at) {
       this.status = BatchJobStatus.AWAITING_CONFIRMATION
     }
@@ -60,14 +67,8 @@ export class BatchJob extends SoftDeletableEntity {
     if (this.completed_at) {
       this.status = BatchJobStatus.COMPLETED
     }
-    if (this.processing_at) {
-      this.status = BatchJobStatus.PROCESSING
-    }
     if (this.canceled_at) {
       this.status = BatchJobStatus.CANCELED
-    }
-    if (this.ready_at) {
-      this.status = BatchJobStatus.READY
     }
     if (this.failed_at) {
       this.status = BatchJobStatus.FAILED
@@ -107,9 +108,13 @@ export class BatchJob extends SoftDeletableEntity {
  *    type: string
  *    enum:
  *      - created
+ *      - ready
  *      - processing
+ *      - awaiting_confirmation
+ *      - confirmed
  *      - completed
  *      - canceled
+ *      - failed
  *  created_by:
  *    description: "The unique identifier of the user that created the batch job."
  *    type: string
