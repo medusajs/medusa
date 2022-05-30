@@ -29,7 +29,7 @@ export interface IFileService {
    * @param fileStream readable stream of the file to upload
    * */
   getUploadStreamDescriptor(
-    fileData: Record<string, any>
+    fileData: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult>
 
   /**
@@ -38,7 +38,7 @@ export interface IFileService {
    * @returns readable stream of the file to download
    * */
   downloadAsStream(
-    fileData: Record<string, any>
+    fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream>
 
   /**
@@ -46,7 +46,7 @@ export interface IFileService {
    * @param fileData file metadata relevant for fileservice to download the file
    * @returns presigned url to download the file
    * */
-  getPresignedDownloadUrl(fileData: Record<string, any>): Promise<string>
+  getPresignedDownloadUrl(fileData: GetUploadedFileType): Promise<string>
 }
 export abstract class AbstractFileService implements IFileService {
   abstract upload(
@@ -56,16 +56,28 @@ export abstract class AbstractFileService implements IFileService {
   abstract delete(fileData: Record<string, any>): void
 
   abstract getUploadStreamDescriptor(
-    fileData: Record<string, any>
+    fileData: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult>
 
   abstract downloadAsStream(
-    fileData: Record<string, any>
+    fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream>
 
   abstract getPresignedDownloadUrl(
-    fileData: Record<string, any>
+    fileData: GetUploadedFileType
   ): Promise<string>
+}
+
+export type GetUploadedFileType = {
+  key: string
+  [x: string]: unknown
+}
+
+export type UploadStreamDescriptorType = {
+  name: string
+  ext?: string
+  acl?: string
+  [x: string]: unknown
 }
 
 export const isFileService = (object: unknown): boolean => {
