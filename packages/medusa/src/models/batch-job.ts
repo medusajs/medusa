@@ -104,6 +104,8 @@ export class BatchJob extends SoftDeletableEntity {
  *      - created
  *      - pre_processed
  *      - processing
+ *      - awaiting_confirmation
+ *      - confirmed
  *      - completed
  *      - canceled
  *      - failed
