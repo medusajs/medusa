@@ -1,8 +1,8 @@
 import PriceListService from "../../../../services/price-list"
 
 /**
- * @oas [delete] /price-lists/{id}/variants/{variant_id}
- * operationId: "DeletePriceListsVariantPriceListPrices"
+ * @oas [delete] /price-lists/{id}/variants/{variant_id}/prices
+ * operationId: "DeletePriceListsPriceListVariantsVariantPrices"
  * summary: "Delete all the prices related to a specific variant in a price list"
  * description: "Delete all the prices related to a specific variant in a price list"
  * x-authenticated: true
