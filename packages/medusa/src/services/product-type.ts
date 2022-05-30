@@ -1,10 +1,10 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
-import { FindConfig } from "../types/common"
-import { FilterableProductTypeProps } from "../types/product"
+import { EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import { ProductType } from "../models/product-type"
 import { ProductTypeRepository } from "../repositories/product-type"
+import { FindConfig } from "../types/common"
+import { FilterableProductTypeProps } from "../types/product"
 
 /**
  * Provides layer to manipulate products.
@@ -91,7 +91,24 @@ class ProductTypeService extends BaseService {
   ): Promise<[ProductType[], number]> {
     const typeRepo = this.manager_.getCustomRepository(this.typeRepository_)
 
+    let q: string | undefined = undefined
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
     const query = this.buildQuery_(selector, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.value
+
+      query.where = (qb: SelectQueryBuilder<ProductType>): void => {
+        qb.where(where).andWhere([{ value: ILike(`%${q}%`) }])
+      }
+    }
+
     return await typeRepo.findAndCount(query)
   }
 }

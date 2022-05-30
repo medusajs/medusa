@@ -1,26 +1,23 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn,
   Unique,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { CustomerGroup } from "./customer-group"
 import { DiscountRule } from "./discount-rule"
 import { Product } from "./product"
 import { ProductCollection } from "./product-collection"
 import { ProductTag } from "./product-tag"
 import { ProductType } from "./product-type"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum DiscountConditionType {
   PRODUCTS = "products",
@@ -37,10 +34,7 @@ export enum DiscountConditionOperator {
 
 @Entity()
 @Unique("dctypeuniq", ["type", "operator", "discount_rule_id"])
-export class DiscountCondition {
-  @PrimaryColumn()
-  id: string
-
+export class DiscountCondition extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
     enum: DiscountConditionType,
@@ -131,26 +125,12 @@ export class DiscountCondition {
   })
   customer_groups: CustomerGroup[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-
-    const id = ulid()
-    this.id = `discon_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "discon")
   }
 }
 

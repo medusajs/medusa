@@ -66,7 +66,7 @@ In this example, you’ll create a subscriber that listens to the `order.placed`
 
 :::tip
 
-For this example to work, you’ll need to install and configure Redis on your server. You can refer to the [development guide](../tutorial/0-set-up-your-development-environment.md#redis) to learn how to do that.
+For this example to work, you’ll need to install and configure Redis on your server. You can refer to the [development guide](/tutorial/set-up-your-development-environment#redis) to learn how to do that.
 
 :::
 
@@ -75,27 +75,27 @@ Create the file `src/services/sms.js` in your Medusa server with the following c
 ```jsx
 class SmsSubscriber {
   constructor({ twilioSmsService, orderService, eventBusService }) {
-    this.twilioSmsService_ = twilioSmsService;
-    this.orderService = orderService;
+    this.twilioSmsService_ = twilioSmsService
+    this.orderService = orderService
 
-    eventBusService.subscribe("order.placed", this.sendSMS);
+    eventBusService.subscribe("order.placed", this.sendSMS)
   }
 
   sendSMS = async (data) => {
     const order = await this.orderService.retrieve(data.id, {
-      relations: ['shipping_address']
-    });
+      relations: ["shipping_address"],
+    })
 
     if (order.shipping_address.phone) {
       this.twilioSmsService_.sendSms({
         to: order.shipping_address.phone,
-        body: 'We have received your order #' + data.id,
+        body: "We have received your order #" + data.id,
       })
     }
-  };
+  }
 }
 
-export default SmsSubscriber;
+export default SmsSubscriber
 ```
 
 In the `constructor`, you resolve the `twilioSmsService` and `orderService` using dependency injection to use it later in the `sendSMS` method.
