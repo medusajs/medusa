@@ -18,7 +18,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   upload(file) {
-    updateAwsConfig()
+    this.updateAwsConfig()
 
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
@@ -47,7 +47,7 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   delete(file) {
-    updateAwsConfig()
+    this.updateAwsConfig()
 
     const s3 = new aws.S3()
     var params = {
@@ -68,13 +68,13 @@ class DigitalOceanService extends AbstractFileService {
 
 
   async getUploadStreamDescriptor(fileData) {
-    updateAwsConfig()
+    this.updateAwsConfig()
 
     const pass = new stream.PassThrough()
     
     const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
     const params = {
-      ACL: "bucket-owner-full-control",
+      ACL: "private",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,
@@ -91,20 +91,20 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async downloadAsStream(fileData) {
-    updateAwsConfig()
+    this.updateAwsConfig()
 
     const s3 = new aws.S3()
 
     var params = {
       Bucket: this.bucket_,
-      Key: `${file.key}`,
+      Key: `${fileData.key}`,
     }
 
     return s3.getObject(params).createReadStream()
   }
 
   async getPresignedDownloadUrl(fileData) {
-    updateAwsConfig({
+    this.updateAwsConfig({
       signatureVersion: "v4",
     })
 
@@ -112,7 +112,7 @@ class DigitalOceanService extends AbstractFileService {
 
     var params = {
       Bucket: this.bucket_,
-      Key: `${file.key}`,
+      Key: `${fileData.key}`,
       Expires: 60, // 60 seconds
     }
 
