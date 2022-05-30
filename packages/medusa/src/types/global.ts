@@ -17,6 +17,7 @@ declare global {
         limit?: number
         order?: string
       } & Record<string, unknown>
+      validatedBody: unknown
       listConfig: FindConfig<unknown>
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>

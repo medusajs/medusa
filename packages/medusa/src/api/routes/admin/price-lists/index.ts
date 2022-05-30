@@ -3,7 +3,7 @@ import "reflect-metadata"
 import { PriceList } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
-import { transformQuery } from "../../../middlewares/transformQuery"
+import { transformQuery } from "../../../middlewares/transform-query"
 import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import {
@@ -11,6 +11,8 @@ import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
+import { transformBody } from "../../../middlewares/transform-body"
+import { AdminPostPriceListsPriceListReq } from "./create-price-list"
 
 const route = Router()
 
@@ -48,7 +50,11 @@ export default (app) => {
     middlewares.wrap(require("./delete-variant-prices").default)
   )
 
-  route.post("/", middlewares.wrap(require("./create-price-list").default))
+  route.post(
+    "/",
+    transformBody(AdminPostPriceListsPriceListReq),
+    middlewares.wrap(require("./create-price-list").default)
+  )
 
   route.post("/:id", middlewares.wrap(require("./update-price-list").default))
 
