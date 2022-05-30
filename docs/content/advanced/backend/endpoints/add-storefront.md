@@ -69,7 +69,7 @@ const corsOptions = {
 Finally, for each route add `cors` as a middleware for the route passing it `corsOptions`:
 
 ```js
-router.get("/admin/hello", cors(corsOptions), (req, res) => {
+router.get("/store/hello", cors(corsOptions), (req, res) => {
   //...
 })
 ```
