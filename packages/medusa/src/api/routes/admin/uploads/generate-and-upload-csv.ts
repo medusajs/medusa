@@ -1,8 +1,9 @@
 import stream from "stream"
+import { IFileService } from "../../../../interfaces"
 
 export default async (req, res) => {
   try {
-    const fileService = req.scope.resolve("fileService")
+    const fileService: IFileService = req.scope.resolve("fileService")
 
     const productsService = req.scope.resolve("productService")
 
@@ -16,9 +17,11 @@ export default async (req, res) => {
 
     const result: string[] = []
 
-    const { writeStream, promise, url } = await fileService.getUploadStream({
-      name: "test",
-    })
+    const { writeStream, promise, url } =
+      await fileService.getUploadStreamDescriptor({
+        name: "test",
+        ext: "csv",
+      })
 
     for (const product of products) {
       logger.info(`Uploading product ${product.id}`)

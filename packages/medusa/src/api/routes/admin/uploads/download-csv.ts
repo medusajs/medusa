@@ -1,4 +1,5 @@
 import stream from "stream"
+import { IFileService } from "../../../../interfaces"
 
 /**
  * [delete] /uploads
@@ -23,14 +24,15 @@ function streamToString(stream) {
 
 export default async (req, res) => {
   try {
-    const fileService = req.scope.resolve("fileService")
+    const fileService: IFileService = req.scope.resolve("fileService")
     const logger = req.scope.resolve("logger")
 
     logger.info("Downloading file")
 
-    const readStream: stream.Readable = await fileService.getDownloadStream({
-      key: "test-1653493436170.csv",
-    })
+    const readStream: NodeJS.ReadableStream =
+      await fileService.downloadAsStream({
+        key: "test-1653493436170.csv",
+      })
 
     const result = await streamToString(readStream)
 

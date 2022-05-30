@@ -1,3 +1,5 @@
+import { IFileService } from "../../../../interfaces"
+
 /**
  * [delete] /uploads
  * operationId: "AdminDeleteUpload"
@@ -11,11 +13,12 @@
  *     description: OK
  */
 export default async (req, res) => {
+  const { key } = req.params
   try {
-    const fileService = req.scope.resolve("fileService")
+    const fileService: IFileService = req.scope.resolve("fileService")
 
-    const preSignedUrl = await fileService.generatePresignedDownloadUrl({
-      key: "test-1653490321530.csv",
+    const preSignedUrl = await fileService.getPresignedDownloadUrl({
+      key: key || "test-1653895914252.csv",
     })
 
     res.status(200).send({ preSignedUrl })
