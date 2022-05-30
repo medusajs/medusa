@@ -31,10 +31,10 @@ export class PriceList extends SoftDeletableEntity {
     type: resolveDbType("timestamptz"),
     nullable: true,
   })
-  starts_at: Date
+  starts_at: Date | null
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  ends_at: Date
+  ends_at: Date | null
 
   @JoinTable({
     name: "price_list_customer_groups",
