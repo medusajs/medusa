@@ -54,14 +54,7 @@ export abstract class AbstractBatchJobStrategy<
 }
 
 export function isBatchJobStrategy(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  object: any
+  object: unknown
 ): object is IBatchJobStrategy<any> {
-  return (
-    typeof object.validateContext === "function" &&
-    typeof object.processJob === "function" &&
-    typeof object.completeJob === "function" &&
-    typeof object.validateFile === "function" &&
-    typeof object.buildTemplate === "function"
-  )
+  return object instanceof AbstractBatchJobStrategy
 }
