@@ -74,7 +74,7 @@ class DigitalOceanService extends AbstractFileService {
     
     const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
     const params = {
-      ACL: "private",
+      ACL: fileData.acl ?? "private",
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,
