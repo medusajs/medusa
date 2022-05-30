@@ -153,13 +153,13 @@ export class AdminUpdateDiscountRule {
 
   @IsNumber()
   @IsOptional()
-  value: number
+  value?: number
 
   @IsOptional()
   @IsEnum(AllocationType, {
     message: `Invalid allocation type, must be one of "total" or "item"`,
   })
-  allocation: AllocationType
+  allocation?: AllocationType
 
   @IsOptional()
   @IsArray()

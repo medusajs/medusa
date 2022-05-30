@@ -139,8 +139,8 @@ export type CreateDiscountInput = {
 export type UpdateDiscountRuleInput = {
   id: string
   description?: string
-  value: number
-  allocation: AllocationType
+  value?: number
+  allocation?: AllocationType
   conditions?: UpsertDiscountConditionInput[]
 }
 

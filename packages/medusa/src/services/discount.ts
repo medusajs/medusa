@@ -407,14 +407,11 @@ class DiscountService extends BaseService {
       }
 
       if (rule) {
-        let ruleUpdate: Pick<
-          UpdateDiscountRuleInput,
-          "id" | "description" | "value" | "allocation"
-        > = rule
+        const ruleUpdate: Omit<UpdateDiscountRuleInput, "conditions"> = rule
 
         if (rule.value) {
-          ruleUpdate = this.validateDiscountRule_({
-            ...rule,
+          this.validateDiscountRule_({
+            value: rule.value,
             type: discount.rule.type,
           })
         }
