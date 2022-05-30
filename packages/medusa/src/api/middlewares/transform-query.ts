@@ -109,7 +109,7 @@ function prepareListQuery<
 
   return getListConfig<TEntity>(
     queryConfig.defaultFields as (keyof TEntity)[],
-    queryConfig.defaultRelations as string[],
+    (queryConfig.defaultRelations ?? []) as string[],
     expandFields,
     expandRelations,
     limit ?? queryConfig.defaultLimit,
@@ -136,7 +136,7 @@ function prepareRetrieveQuery<
 
   return getRetrieveConfig<TEntity>(
     queryConfig.defaultFields as (keyof TEntity)[],
-    queryConfig.defaultRelations as string[],
+    (queryConfig.defaultRelations ?? []) as string[],
     expandFields,
     expandRelations
   )
