@@ -25,7 +25,7 @@ describe("CsvParser", () => {
       jest.clearAllMocks()
     })
 
-    it("given a file location, can read the file contents and parse it", async () => {
+    it("given a readable stream, can parse the stream content", async () => {
       const stream = Readable.from(csvContent)
       const content = await csvParser.parse(stream)
 
