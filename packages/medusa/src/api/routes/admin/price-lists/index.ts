@@ -2,8 +2,10 @@ import { Router } from "express"
 import "reflect-metadata"
 import { PriceList } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
-import { transformQuery } from "../../../middlewares/transform-query"
+import middlewares, {
+  transformQuery,
+  transformBody,
+} from "../../../middlewares"
 import { AdminGetPriceListPaginationParams } from "./list-price-lists"
 import { AdminGetPriceListsPriceListProductsParams } from "./list-price-list-products"
 import {
@@ -11,7 +13,6 @@ import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
-import { transformBody } from "../../../middlewares/transform-body"
 import { AdminPostPriceListsPriceListReq } from "./create-price-list"
 
 const route = Router()
