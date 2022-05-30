@@ -1,16 +1,8 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { DiscountCondition } from "./discount-condition"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum DiscountRuleType {
   FIXED = "fixed",
@@ -24,10 +16,7 @@ export enum AllocationType {
 }
 
 @Entity()
-export class DiscountRule {
-  @PrimaryColumn()
-  id: string
-
+export class DiscountRule extends SoftDeletableEntity {
   @Column({ nullable: true })
   description: string
 
@@ -50,22 +39,12 @@ export class DiscountRule {
   @OneToMany(() => DiscountCondition, (conditions) => conditions.discount_rule)
   conditions: DiscountCondition[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    const id = ulid()
-    this.id = `dru_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "dru")
   }
 }
 

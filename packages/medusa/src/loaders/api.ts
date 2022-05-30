@@ -1,21 +1,18 @@
 import { Express } from 'express'
 import bodyParser from "body-parser"
-import { getConfigFile } from "medusa-core-utils"
 import routes from "../api"
 import { AwilixContainer } from "awilix"
+import { ConfigModule } from "../types/global"
 
 type Options = {
-  app: Express;
-  rootDirectory: string;
+  app: Express
   container: AwilixContainer
+  configModule: ConfigModule
 }
 
-export default async ({ app, rootDirectory, container }: Options) => {
-  const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as { configModule: Record<string, unknown> }
-  const config = (configModule && configModule.projectConfig) || {}
-
+export default async ({ app, container, configModule }: Options) => {
   app.use(bodyParser.json())
-  app.use("/", routes(container, config))
+  app.use("/", routes(container, configModule.projectConfig))
 
   return app
 }

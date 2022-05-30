@@ -1,26 +1,20 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
   OneToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { PriceListStatus, PriceListType } from "../types/price-list"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { CustomerGroup } from "./customer-group"
 import { MoneyAmount } from "./money-amount"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class PriceList {
-  @PrimaryColumn()
-  id: string
-
+export class PriceList extends SoftDeletableEntity {
   @Column()
   name: string
 
@@ -63,22 +57,9 @@ export class PriceList {
   })
   prices: MoneyAmount[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @BeforeInsert()
   private beforeInsert(): undefined | void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `pl_${id}`
+    this.id = generateEntityId(this.id, "pl")
   }
 }
 

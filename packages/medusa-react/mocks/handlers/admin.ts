@@ -1,5 +1,5 @@
-import { fixtures } from "../data"
 import { rest } from "msw"
+import { fixtures } from "../data"
 
 export const adminHandlers = [
   rest.post("/admin/collections/", (req, res, ctx) => {
@@ -761,6 +761,56 @@ export const adminHandlers = [
       })
     )
   }),
+
+  rest.post("/admin/discounts/:id/conditions", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount: {
+          ...fixtures.get("discount"),
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount: {
+          ...fixtures.get("discount"),
+        },
+      })
+    )
+  }),
+
+  rest.get("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount_condition: {
+          ...fixtures
+            .get("discount")
+            .rule.conditions.find(c => c.id === req.params.conditionId),
+        },
+      })
+    )
+  }),
+
+  rest.delete(
+    "/admin/discounts/:id/conditions/:conditionId",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          id: req.params.conditionId,
+          object: "discount-condition",
+          deleted: true,
+          discount: fixtures.get("discount"),
+        })
+      )
+    }
+  ),
 
   rest.get("/admin/draft-orders/", (req, res, ctx) => {
     return res(

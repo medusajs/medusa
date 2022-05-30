@@ -29,7 +29,7 @@ export type LineItemUpdate = {
   title?: string
   unit_price?: number
   quantity?: number
-  metadata?: object
+  metadata?: Record<string, unknown>
   region_id?: string
   variant_id?: string
 }
@@ -71,5 +71,5 @@ export type CartUpdateProps = {
   discounts?: Discount[]
   customer_id?: string
   context?: object
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

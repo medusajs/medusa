@@ -9,6 +9,12 @@ module.exports = {
   //      useCoverage ? `jest-junit` : []
   //    )
   //  : [`default`].concat(useCoverage ? `jest-junit` : []),
+  globals: {
+    'ts-jest': {
+      tsConfig: 'tsconfig.spec.json',
+      isolatedModules: false
+    }
+  },
   transform: {
     "^.+\\.[jt]s?$": `../../jest-transformer.js`,
   },
