@@ -122,7 +122,651 @@ paths:
                 properties:
                   exists:
                     type: boolean
-  "/collections/{id}":
+  '/carts/{id}/shipping-methods':
+    post:
+      operationId: PostCartsCartShippingMethod
+      description: Adds a Shipping Method to the Cart.
+      summary: Add a Shipping Method
+      tags:
+        - Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The cart id.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - option_id
+              properties:
+                option_id:
+                  type: string
+                  description: id of the shipping option to create the method from
+                data:
+                  type: object
+                  description: >-
+                    Used to hold any data that the shipping method may need to
+                    process the fulfillment of the order. Look at the
+                    documentation for your installed fulfillment providers to
+                    find out what to send.
+  '/carts/{id}/taxes':
+    post:
+      summary: Calculate Cart Taxes
+      operationId: PostCartsCartTaxes
+      description: >-
+        Calculates taxes for a cart. Depending on the cart's region this may
+        involve making 3rd party API calls to a Tax Provider service.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Cart id.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: A cart object with the tax_total field populated
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      cart:
+                        $ref: '#/components/schemas/cart'
+  '/carts/{id}/complete':
+    post:
+      summary: Complete a Cart
+      operationId: PostCartsCartComplete
+      description: >-
+        Completes a cart. The following steps will be performed. Payment
+        authorization is attempted and if more work is required, we simply
+        return the cart for further updates. If payment is authorized and order
+        is not yet created, we make sure to do so. The completion of a cart can
+        be performed idempotently with a provided header `Idempotency-Key`. If
+        not provided, we will generate one for the request.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The Cart id.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: >-
+            If a cart was successfully authorized, but requires further action
+            from the user the response body will contain the cart with an
+            updated payment session. If the Cart was successfully completed the
+            response body will contain the newly created Order.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      order:
+                        $ref: '#/components/schemas/order'
+                  - type: object
+                    properties:
+                      cart:
+                        $ref: '#/components/schemas/cart'
+                  - type: object
+                    properties:
+                      cart:
+                        $ref: '#/components/schemas/swap'
+  /carts:
+    post:
+      summary: Create a Cart
+      operationId: PostCart
+      description: >-
+        Creates a Cart within the given region and with the initial items. If no
+        `region_id` is provided the cart will be associated with the first
+        Region available. If no items are provided the cart will be empty after
+        creation. If a user is logged in the cart's customer id and email will
+        be set.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                region_id:
+                  type: string
+                  description: The id of the Region to create the Cart in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO country code to create the Cart in.
+                items:
+                  description: >-
+                    An optional array of `variant_id`, `quantity` pairs to
+                    generate Line Items from.
+                  type: array
+                  items:
+                    properties:
+                      variant_id:
+                        description: >-
+                          The id of the Product Variant to generate a Line Item
+                          from.
+                        type: string
+                      quantity:
+                        description: The quantity of the Product Variant to add
+                        type: integer
+                context:
+                  description: >-
+                    An optional object to provide context to the Cart. The
+                    `context` field is automatically populated with `ip` and
+                    `user_agent`
+                  type: object
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: Successfully created a new Cart
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/line-items':
+    post:
+      operationId: PostCartsCartLineItems
+      summary: Add a Line Item
+      description: >-
+        Generates a Line Item with a given Product Variant and adds it to the
+        Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart to add the Line Item to.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - variant_id
+                - quantity
+              properties:
+                variant_id:
+                  type: string
+                  description: >-
+                    The id of the Product Variant to generate the Line Item
+                    from.
+                quantity:
+                  type: integer
+                  description: The quantity of the Product Variant to add to the Line Item.
+                metadata:
+                  type: object
+                  description: >-
+                    An optional key-value map with additional details about the
+                    Line Item.
+  '/carts/{id}/payment-sessions':
+    post:
+      operationId: PostCartsCartPaymentSessions
+      summary: Initialize Payment Sessions
+      description: >-
+        Creates Payment Sessions for each of the available Payment Providers in
+        the Cart's Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/discounts/{code}':
+    delete:
+      operationId: DeleteCartsCartDiscountsDiscount
+      description: Removes a Discount from a Cart.
+      summary: Remove Discount from Cart
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: code
+          required: true
+          description: The unique Discount code.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/line-items/{line_id}':
+    delete:
+      operationId: DeleteCartsCartLineItemsItem
+      summary: Delete a Line Item
+      description: Removes a Line Item from a Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Line Item.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+    post:
+      operationId: PostCartsCartLineItemsItem
+      summary: Update a Line Item
+      description: Updates a Line Item if the desired quantity can be fulfilled.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: line_id
+          required: true
+          description: The id of the Line Item.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: "#/components/schemas/cart"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - quantity
+              properties:
+                quantity:
+                  type: integer
+                  description: The quantity to set the Line Item to.
+  '/carts/{id}/payment-sessions/{provider_id}':
+    delete:
+      operationId: DeleteCartsCartPaymentSessionsSession
+      summary: Delete a Payment Session
+      description: >-
+        Deletes a Payment Session on a Cart. May be useful if a payment has
+        failed.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: >-
+            The id of the Payment Provider used to create the Payment Session to
+            be deleted.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+    post:
+      operationId: PostCartsCartPaymentSessionUpdate
+      summary: Update a Payment Session
+      description: Updates a Payment Session with additional data.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: The id of the payment provider.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: object
+                  description: The data to update the payment session with.
+  '/carts/{id}':
+    get:
+      operationId: GetCartsCart
+      summary: Retrieve a Cart
+      description: Retrieves a Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/payment-sessions/{provider_id}/refresh':
+    post:
+      operationId: PostCartsCartPaymentSessionsSession
+      summary: Refresh a Payment Session
+      description: >-
+        Refreshes a Payment Session to ensure that it is in sync with the Cart -
+        this is usually not necessary.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+        - in: path
+          name: provider_id
+          required: true
+          description: >-
+            The id of the Payment Provider that created the Payment Session to
+            be refreshed.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/carts/{id}/payment-session':
+    post:
+      operationId: PostCartsCartPaymentSession
+      summary: Select a Payment Session
+      description: >-
+        Selects a Payment Session as the session intended to be used towards the
+        completion of the Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: "#/components/schemas/cart"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - provider_id
+              properties:
+                provider_id:
+                  type: string
+                  description: The id of the Payment Provider.
+  '/store/carts/{id}':
+    post:
+      operationId: PostCartsCartPaymentMethodUpdate
+      summary: Update a Cart"
+      description: Updates a Cart.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Cart.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - provider_id
+              properties:
+                provider_id:
+                  type: string
+                  description: The id of the Payment Provider.
+                data:
+                  type: object
+                  description: ''
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  cart:
+                    $ref: '#/components/schemas/cart'
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: The id of the Gift Card
+                  code:
+                    description: The code of the Gift Card
+                  value:
+                    description: The original value of the Gift Card.
+                  balance:
+                    description: The current balanace of the Gift Card
+                  region:
+                    $ref: '#/components/schemas/region'
+  '/orders/cart/{cart_id}':
+    get:
+      operationId: GetOrdersOrderCartId
+      summary: Retrieves Order by Cart id
+      description: >-
+        Retrieves an Order by the id of the Cart that was used to create the
+        Order.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of Cart.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieves an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /orders:
+    get:
+      operationId: GetOrders
+      summary: Look Up an Order
+      description: >-
+        Looks for an Order with a given `display_id`, `email` pair. The
+        `display_id`, `email` pair must match in order for the Order to be
+        returned.
+      parameters:
+        - in: query
+          name: display_id
+          required: true
+          description: The display id given to the Order.
+          schema:
+            type: number
+        - in: query
+          name: email
+          required: true
+          description: The email of the Order with the given display_id.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/collections/{id}':
     get:
       operationId: GetCollectionsCollection
       summary: Retrieve a Product Collection
@@ -137,14 +781,14 @@ paths:
       tags:
         - Collection
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   collection:
-                    $ref: "#/components/schemas/product_collection"
+                    $ref: '#/components/schemas/product_collection'
   /collections:
     get:
       operationId: GetCollections
@@ -168,14 +812,14 @@ paths:
       tags:
         - Collection
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   collection:
-                    $ref: "#/components/schemas/product_collection"
+                    $ref: '#/components/schemas/product_collection'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -192,18 +836,18 @@ paths:
                 address:
                   description: The Address to add to the Customer.
                   anyOf:
-                    - $ref: "#/components/schemas/address"
+                    - $ref: '#/components/schemas/address'
       tags:
         - Customer
       responses:
-        "200":
+        '200':
           description: A successful response
           content:
             application/json:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
   /customers:
     post:
       operationId: PostCustomers
@@ -220,7 +864,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
       requestBody:
         content:
           application/json:
@@ -247,7 +891,7 @@ paths:
                 phone:
                   type: string
                   description: The Customer's phone number.
-  "/customers/me/addresses/{address_id}":
+  '/customers/me/addresses/{address_id}':
     delete:
       operationId: DeleteCustomersCustomerAddressesAddress
       summary: Delete an Address
@@ -270,7 +914,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
     post:
       operationId: PostCustomersCustomerAddressesAddress
       summary: Update a Shipping Address
@@ -291,7 +935,7 @@ paths:
                 address:
                   description: The updated Address.
                   anyOf:
-                    - $ref: "#/components/schemas/address"
+                    - $ref: '#/components/schemas/address'
       tags:
         - Customer
       responses:
@@ -302,7 +946,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
   /customers/me:
     get:
       operationId: GetCustomersCustomer
@@ -314,14 +958,14 @@ paths:
       tags:
         - Customer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
     post:
       operationId: PostCustomersCustomer
       summary: Update Customer details
@@ -341,7 +985,7 @@ paths:
                 billing_address:
                   description: The Address to be used for billing purposes.
                   anyOf:
-                    - $ref: "#/components/schemas/address"
+                    - $ref: '#/components/schemas/address'
                 password:
                   description: The Customer's password.
                   type: string
@@ -364,7 +1008,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
   /customers/me/payment-methods:
     get:
       operationId: GetCustomersCustomerPaymentMethods
@@ -377,7 +1021,7 @@ paths:
       tags:
         - Customer
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -444,12 +1088,12 @@ paths:
                     description: The offset for pagination.
                     type: integer
                   limit:
-                    description: "The maxmimum number of Orders to return,"
+                    description: 'The maxmimum number of Orders to return,'
                     type: integer
                   orders:
                     type: array
                     items:
-                      $ref: "#/components/schemas/order"
+                      $ref: '#/components/schemas/order'
   /customers/password-token:
     post:
       operationId: PostCustomersCustomerPasswordToken
@@ -462,7 +1106,7 @@ paths:
       tags:
         - Customer
       responses:
-        "204":
+        '204':
           description: OK
       requestBody:
         content:
@@ -493,7 +1137,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
       requestBody:
         content:
           application/json:
@@ -513,20 +1157,20 @@ paths:
                 password:
                   type: string
                   description: The new password to set for the Customer.
-  "/gift-cards/{code}":
+  '/regions/{id}':
     get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
+      operationId: GetRegionsRegion
+      summary: Retrieves a Region
+      description: Retrieves a Region.
       parameters:
         - in: path
-          name: code
+          name: id
           required: true
-          description: The unique Gift Card code.
+          description: The id of the Region.
           schema:
             type: string
       tags:
-        - Gift Card
+        - Region
       responses:
         "200":
           description: OK
@@ -534,435 +1178,15 @@ paths:
             application/json:
               schema:
                 properties:
-                  id:
-                    description: The id of the Gift Card
-                  code:
-                    description: The code of the Gift Card
-                  value:
-                    description: The original value of the Gift Card.
-                  balance:
-                    description: The current balanace of the Gift Card
                   region:
-                    $ref: "#/components/schemas/region"
-  "/carts/{id}/shipping-methods":
-    post:
-      operationId: PostCartsCartShippingMethod
-      description: Adds a Shipping Method to the Cart.
-      summary: Add a Shipping Method
-      tags:
-        - Cart
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The cart id.
-          schema:
-            type: string
-      responses:
-        "200":
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - option_id
-              properties:
-                option_id:
-                  type: string
-                  description: id of the shipping option to create the method from
-                data:
-                  type: object
-                  description: >-
-                    Used to hold any data that the shipping method may need to
-                    process the fulfillment of the order. Look at the
-                    documentation for your installed fulfillment providers to
-                    find out what to send.
-  "/carts/{id}/taxes":
-    post:
-      summary: Calculate Cart Taxes
-      operationId: PostCartsCartTaxes
-      description: >-
-        Calculates taxes for a cart. Depending on the cart's region this may
-        involve making 3rd party API calls to a Tax Provider service.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The Cart id.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: A cart object with the tax_total field populated
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      cart:
-                        $ref: "#/components/schemas/cart"
-  "/carts/{id}/complete":
-    post:
-      summary: Complete a Cart
-      operationId: PostCartsCartComplete
-      description: >-
-        Completes a cart. The following steps will be performed. Payment
-        authorization is attempted and if more work is required, we simply
-        return the cart for further updates. If payment is authorized and order
-        is not yet created, we make sure to do so. The completion of a cart can
-        be performed idempotently with a provided header `Idempotency-Key`. If
-        not provided, we will generate one for the request.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The Cart id.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: >-
-            If a cart was successfully authorized, but requires further action
-            from the user the response body will contain the cart with an
-            updated payment session. If the Cart was successfully completed the
-            response body will contain the newly created Order.
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      order:
-                        $ref: "#/components/schemas/order"
-                  - type: object
-                    properties:
-                      cart:
-                        $ref: "#/components/schemas/cart"
-                  - type: object
-                    properties:
-                      cart:
-                        $ref: "#/components/schemas/swap"
-  /carts:
-    post:
-      summary: Create a Cart
-      operationId: PostCart
-      description: >-
-        Creates a Cart within the given region and with the initial items. If no
-        `region_id` is provided the cart will be associated with the first
-        Region available. If no items are provided the cart will be empty after
-        creation. If a user is logged in the cart's customer id and email will
-        be set.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                region_id:
-                  type: string
-                  description: The id of the Region to create the Cart in.
-                country_code:
-                  type: string
-                  description: The 2 character ISO country code to create the Cart in.
-                items:
-                  description: >-
-                    An optional array of `variant_id`, `quantity` pairs to
-                    generate Line Items from.
-                  type: array
-                  items:
-                    properties:
-                      variant_id:
-                        description: >-
-                          The id of the Product Variant to generate a Line Item
-                          from.
-                        type: string
-                      quantity:
-                        description: The quantity of the Product Variant to add
-                        type: integer
-                context:
-                  description: >-
-                    An optional object to provide context to the Cart. The
-                    `context` field is automatically populated with `ip` and
-                    `user_agent`
-                  type: object
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: Successfully created a new Cart
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-  "/carts/{id}/line-items":
-    post:
-      operationId: PostCartsCartLineItems
-      summary: Add a Line Item
-      description: >-
-        Generates a Line Item with a given Product Variant and adds it to the
-        Cart
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart to add the Line Item to.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - variant_id
-                - quantity
-              properties:
-                variant_id:
-                  type: string
-                  description: >-
-                    The id of the Product Variant to generate the Line Item
-                    from.
-                quantity:
-                  type: integer
-                  description: The quantity of the Product Variant to add to the Line Item.
-                metadata:
-                  type: object
-                  description: >-
-                    An optional key-value map with additional details about the
-                    Line Item.
-  "/carts/{id}/payment-sessions":
-    post:
-      operationId: PostCartsCartPaymentSessions
-      summary: Initialize Payment Sessions
-      description: >-
-        Creates Payment Sessions for each of the available Payment Providers in
-        the Cart's Region.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-  "/carts/{id}/discounts/{code}":
-    delete:
-      operationId: DeleteCartsCartDiscountsDiscount
-      description: Removes a Discount from a Cart.
-      summary: Remove Discount from Cart
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: code
-          required: true
-          description: The unique Discount code.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-  "/carts/{id}/line-items/{line_id}":
-    delete:
-      operationId: DeleteCartsCartLineItemsItem
-      summary: Delete a Line Item
-      description: Removes a Line Item from a Cart.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: line_id
-          required: true
-          description: The id of the Line Item.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-    post:
-      operationId: PostCartsCartLineItemsItem
-      summary: Update a Line Item
-      description: Updates a Line Item if the desired quantity can be fulfilled.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: line_id
-          required: true
-          description: The id of the Line Item.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - quantity
-              properties:
-                quantity:
-                  type: integer
-                  description: The quantity to set the Line Item to.
-  "/carts/{id}/payment-sessions/{provider_id}":
-    delete:
-      operationId: DeleteCartsCartPaymentSessionsSession
-      summary: Delete a Payment Session
-      description: >-
-        Deletes a Payment Session on a Cart. May be useful if a payment has
-        failed.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: provider_id
-          required: true
-          description: >-
-            The id of the Payment Provider used to create the Payment Session to
-            be deleted.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-    post:
-      operationId: PostCartsCartPaymentSessionUpdate
-      summary: Update a Payment Session
-      description: Updates a Payment Session with additional data.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: provider_id
-          required: true
-          description: The id of the payment provider.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - data
-              properties:
-                data:
-                  type: object
-                  description: The data to update the payment session with.
-  "/carts/{id}":
+                    $ref: '#/components/schemas/region'
+  /regions:
     get:
-      operationId: GetCartsCart
-      summary: Retrieve a Cart
-      description: Retrieves a Cart.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
+      operationId: GetRegions
+      summary: List Regions
+      description: Retrieves a list of Regions.
       tags:
-        - Cart
+        - Region
       responses:
         "200":
           description: OK
@@ -970,194 +1194,20 @@ paths:
             application/json:
               schema:
                 properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-  "/carts/{id}/payment-sessions/{provider_id}/refresh":
-    post:
-      operationId: PostCartsCartPaymentSessionsSession
-      summary: Refresh a Payment Session
-      description: >-
-        Refreshes a Payment Session to ensure that it is in sync with the Cart -
-        this is usually not necessary.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-        - in: path
-          name: provider_id
-          required: true
-          description: >-
-            The id of the Payment Provider that created the Payment Session to
-            be refreshed.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-  "/carts/{id}/payment-session":
-    post:
-      operationId: PostCartsCartPaymentSession
-      summary: Select a Payment Session
-      description: >-
-        Selects a Payment Session as the session intended to be used towards the
-        completion of the Cart.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - provider_id
-              properties:
-                provider_id:
-                  type: string
-                  description: The id of the Payment Provider.
-  "/store/carts/{id}":
-    post:
-      operationId: PostCartsCartPaymentMethodUpdate
-      summary: Update a Cart"
-      description: Updates a Cart.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Cart.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - provider_id
-              properties:
-                provider_id:
-                  type: string
-                  description: The id of the Payment Provider.
-                data:
-                  type: object
-                  description: ""
-      tags:
-        - Cart
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  cart:
-                    $ref: "#/components/schemas/cart"
-  "/orders/cart/{cart_id}":
-    get:
-      operationId: GetOrdersOrderCartId
-      summary: Retrieves Order by Cart id
-      description: >-
-        Retrieves an Order by the id of the Cart that was used to create the
-        Order.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of Cart.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: "#/components/schemas/order"
-  "/orders/{id}":
-    get:
-      operationId: GetOrdersOrder
-      summary: Retrieves an Order
-      description: Retrieves an Order
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: "#/components/schemas/customer"
-  /orders:
-    get:
-      operationId: GetOrders
-      summary: Look Up an Order
-      description: >-
-        Looks for an Order with a given `display_id`, `email` pair. The
-        `display_id`, `email` pair must match in order for the Order to be
-        returned.
-      parameters:
-        - in: query
-          name: display_id
-          required: true
-          description: The display id given to the Order.
-          schema:
-            type: number
-        - in: query
-          name: email
-          required: true
-          description: The email of the Order with the given display_id.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: "#/components/schemas/order"
-  "/products/{id}":
+                  count:
+                    description: The total number of regions.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of regions to return,'
+                    type: integer
+                  regions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/region'
+  '/products/{id}':
     get:
       operationId: GetProductsProduct
       summary: Retrieves a Product
@@ -1198,14 +1248,22 @@ paths:
             type: string
         - in: query
           name: collection_id
-          description: Collection ids to search for.
+          style: form
+          explode: false
+          description: Collection ids to search for
           schema:
             type: array
+            items:
+              type: string
         - in: query
           name: tags
-          description: Tags to search for.
+          style: form
+          explode: false
+          description: Tags to search for
           schema:
             type: array
+            items:
+              type: string
         - in: query
           name: title
           description: to search for.
@@ -1283,58 +1341,8 @@ paths:
                   products:
                     type: array
                     items:
-                      $ref: "#/components/schemas/product"
-  "/regions/{id}":
-    get:
-      operationId: GetRegionsRegion
-      summary: Retrieves a Region
-      description: Retrieves a Region.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Region.
-          schema:
-            type: string
-      tags:
-        - Region
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  region:
-                    $ref: "#/components/schemas/region"
-  /regions:
-    get:
-      operationId: GetRegions
-      summary: List Regions
-      description: Retrieves a list of Regions.
-      tags:
-        - Region
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of regions.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: "The maxmimum number of regions to return,"
-                    type: integer
-                  regions:
-                    type: array
-                    items:
-                      $ref: "#/components/schemas/region"
-  "/return-reasons/{id}":
+                      $ref: '#/components/schemas/product'
+  '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason
       summary: Retrieve a Return Reason
@@ -2044,7 +2052,7 @@ components:
         customers:
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/customer'
         created_at:
           type: string
           format: date-time
@@ -3132,7 +3140,7 @@ components:
           description: The Products contained in the Product Collection.
           type: array
           items:
-            type: object
+            $ref: '#/components/schemas/product'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
