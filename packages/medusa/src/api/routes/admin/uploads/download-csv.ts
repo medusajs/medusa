@@ -24,7 +24,7 @@ function streamToString(stream) {
 
 export default async (req, res) => {
   try {
-    const fileService: IFileService = req.scope.resolve("fileService")
+    const fileService: IFileService<any> = req.scope.resolve("fileService")
     const logger = req.scope.resolve("logger")
 
     logger.info("Downloading file")

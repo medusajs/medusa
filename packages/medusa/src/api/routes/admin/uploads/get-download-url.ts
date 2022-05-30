@@ -15,7 +15,7 @@ import { IFileService } from "../../../../interfaces"
 export default async (req, res) => {
   const { key } = req.params
   try {
-    const fileService: IFileService = req.scope.resolve("fileService")
+    const fileService: IFileService<any> = req.scope.resolve("fileService")
 
     const preSignedUrl = await fileService.getPresignedDownloadUrl({
       key: key || "test-1653895914252.csv",
