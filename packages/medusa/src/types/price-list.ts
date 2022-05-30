@@ -133,7 +133,7 @@ export type UpdatePriceListInput = Partial<
   >
 > & {
   prices?: AdminPriceListPricesUpdateReq[]
-  customer_groups?: { id: string }[] | null
+  customer_groups?: { id: string }[]
 }
 
 export type PriceListPriceUpdateInput = {
