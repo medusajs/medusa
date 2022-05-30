@@ -20,8 +20,8 @@ export function pickByConfig<TModel extends BaseEntity>(
 }
 
 export function getRetrieveConfig<TModel extends BaseEntity>(
-  defaultFields?: (keyof TModel)[],
-  defaultRelations?: string[],
+  defaultFields: (keyof TModel)[],
+  defaultRelations: string[],
   fields?: (keyof TModel)[],
   expand?: string[]
 ): FindConfig<TModel> {
@@ -142,7 +142,7 @@ export function prepareRetrieveQuery<
   }
 
   return getRetrieveConfig<TEntity>(
-    queryConfig?.defaultFields as (keyof TEntity)[] | undefined,
+    queryConfig?.defaultFields as (keyof TEntity)[],
     (queryConfig?.defaultRelations ?? []) as string[],
     expandFields,
     expandRelations
