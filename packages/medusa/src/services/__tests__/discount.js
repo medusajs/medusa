@@ -217,7 +217,6 @@ describe("DiscountService", () => {
           code: "10%OFF",
           is_dynamic: false,
         },
-        relations: [],
       })
     })
   })
@@ -232,7 +231,9 @@ describe("DiscountService", () => {
         }),
     })
 
-    const discountRuleRepository = MockRepository({})
+    const discountRuleRepository = MockRepository({
+      create: (values) => values,
+    })
 
     const regionService = {
       retrieve: () => {

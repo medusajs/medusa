@@ -634,7 +634,6 @@ describe("/admin/discounts", () => {
           {
             rule: {
               id: createdRule.id,
-              type: createdRule.type,
               value: createdRule.value,
               allocation: createdRule.allocation,
               conditions: [
@@ -657,24 +656,26 @@ describe("/admin/discounts", () => {
         })
 
       expect(updated.status).toEqual(200)
-      expect(updated.data.discount.rule.conditions).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          type: "products",
-          operator: "not_in",
-          products: expect.arrayContaining([
-            expect.objectContaining({
-              id: product.id,
-            }),
-            expect.objectContaining({
-              id: anotherProduct.id,
-            }),
-          ]),
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-      ]))
+      expect(updated.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "not_in",
+            products: expect.arrayContaining([
+              expect.objectContaining({
+                id: product.id,
+              }),
+              expect.objectContaining({
+                id: anotherProduct.id,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+        ])
+      )
     })
 
     it("fails to add condition on rule with existing comb. of type and operator", async () => {
@@ -728,9 +729,7 @@ describe("/admin/discounts", () => {
             {
               rule: {
                 id: createdRule.id,
-                type: createdRule.type,
                 value: createdRule.value,
-                allocation: createdRule.allocation,
                 conditions: [
                   {
                     products: [anotherProduct.id],
@@ -841,7 +840,6 @@ describe("/admin/discounts", () => {
             {
               rule: {
                 id: createdRule.id,
-                type: createdRule.type,
                 value: createdRule.value,
                 allocation: createdRule.allocation,
                 conditions: [
@@ -920,6 +918,121 @@ describe("/admin/discounts", () => {
           usage_limit: 20,
         })
       )
+    })
+
+    it("creates a discount and fails to update it because attempting type update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+        })
+      )
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            rule: {
+              id: response.data.discount.rule.id,
+              type: "free_shipping",
+            },
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            "property type should not exist"
+          )
+        })
+    })
+
+    it("creates a discount and fails to update it because attempting is_dynamic update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            is_dynamic: true,
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          is_dynamic: true,
+        })
+      )
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            is_dynamic: false,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            "property is_dynamic should not exist"
+          )
+        })
     })
 
     it("automatically sets the code to an uppercase string on update", async () => {
