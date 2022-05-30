@@ -23,8 +23,8 @@ export function pickByConfig<TModel extends BaseEntity>(
 }
 
 export function getRetrieveConfig<TModel extends BaseEntity>(
-  defaultFields: (keyof TModel)[],
-  defaultRelations: string[],
+  defaultFields?: (keyof TModel)[],
+  defaultRelations?: string[],
   fields?: (keyof TModel)[],
   expand?: string[]
 ): FindConfig<TModel> {

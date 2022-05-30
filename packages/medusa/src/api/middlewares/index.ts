@@ -5,6 +5,7 @@ import { default as wrap } from "./await-middleware"
 
 export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
+export { transformQuery } from "./transformQuery"
 
 export default {
   authenticate,

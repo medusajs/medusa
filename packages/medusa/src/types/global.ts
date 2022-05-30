@@ -2,6 +2,7 @@ import { AwilixContainer } from "awilix"
 import { Logger as _Logger } from "winston"
 import { LoggerOptions } from "typeorm"
 import { Customer, User } from "../models"
+import { FindConfig } from "./common"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -9,6 +10,16 @@ declare global {
     interface Request {
       user?: User | Customer
       scope: MedusaContainer
+      validatedQuery: {
+        expand?: string
+        fields?: string
+        offset?: number
+        limit?: number
+        order?: string
+      } & Record<string, unknown>
+      listConfig: FindConfig<unknown>
+      retrieveConfig: FindConfig<unknown>
+      filterableFields: Record<string, unknown>
     }
   }
 }
