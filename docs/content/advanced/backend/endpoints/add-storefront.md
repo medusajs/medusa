@@ -46,6 +46,34 @@ npm run build
 
 :::
 
+## Accessing Endpoints from Storefront
+
+If you’re customizing one of our storefronts or creating your own, you need to use the `cors` library.
+
+First, you need to import your Medusa’s configurations along with the `cors` library:
+
+```js
+import cors from "cors"
+import { projectConfig } from "../../medusa-config"
+```
+
+Then, create an object that will hold the CORS configurations:
+
+```js
+const corsOptions = {
+  origin: projectConfig.store_cors.split(","),
+  credentials: true,
+}
+```
+
+Finally, for each route add `cors` as a middleware for the route passing it `corsOptions`:
+
+```js
+router.get("/admin/hello", cors(corsOptions), (req, res) => {
+  //...
+})
+```
+
 ## Multiple Endpoints
 
 ### Same File
