@@ -19,7 +19,7 @@ export default async (req, res) => {
 
     const { writeStream, promise, url } =
       await fileService.getUploadStreamDescriptor({
-        name: "test",
+        name: "export/test",
         ext: "csv",
       })
 
