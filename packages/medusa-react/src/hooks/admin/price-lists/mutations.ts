@@ -6,12 +6,16 @@ import {
   AdminDeletePriceListPricesPricesReq,
   AdminPriceListDeleteRes,
   AdminPriceListDeleteBatchRes,
+  AdminPriceListDeleteProductPricesRes,
+  AdminPriceListDeleteVariantPricesRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { useMedusa } from "../../../contexts/medusa"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminPriceListKeys } from "./queries"
+import { adminProductKeys } from "../products"
+import { adminVariantKeys } from "../variants"
 
 export const useAdminCreatePriceList = (
   options?: UseMutationOptions<
@@ -113,6 +117,56 @@ export const useAdminDeletePriceListPrices = (
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
         adminPriceListKeys.detailProducts(id),
+      ],
+      options
+    )
+  )
+}
+
+export const useAdminDeletePriceListProductPrices = (
+  id: string,
+  productId: string,
+  options?: UseMutationOptions<
+    Response<AdminPriceListDeleteProductPricesRes>,
+    Error
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.admin.priceLists.deleteProductPrices(id, productId),
+    buildOptions(
+      queryClient,
+      [
+        adminPriceListKeys.detail(id),
+        adminPriceListKeys.lists(),
+        adminProductKeys.detail(productId)
+      ],
+      options
+    )
+  )
+}
+
+export const useAdminDeletePriceListVariantPrices = (
+  id: string,
+  variantId: string,
+  options?: UseMutationOptions<
+    Response<AdminPriceListDeleteVariantPricesRes>,
+    Error
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+
+  return useMutation(
+    () => client.admin.priceLists.deleteVariantPrices(id, variantId),
+    buildOptions(
+      queryClient,
+      [
+        adminPriceListKeys.detail(id),
+        adminPriceListKeys.lists(),
+        adminVariantKeys.detail(variantId)
       ],
       options
     )
