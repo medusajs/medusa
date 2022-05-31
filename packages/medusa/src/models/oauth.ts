@@ -1,22 +1,6 @@
-import {
-  Entity,
-  Index,
-  BeforeInsert,
-  Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
-  JoinColumn,
-  JoinTable,
-} from "typeorm"
-import { ulid } from "ulid"
+import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from "typeorm"
 import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 export class Oauth {
@@ -37,12 +21,10 @@ export class Oauth {
   uninstall_url: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  data: any
+  data: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `oauth_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "oauth")
   }
 }

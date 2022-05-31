@@ -1,6 +1,7 @@
 import _ from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
+import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
 import { Address } from "../models/address"
 import { Cart } from "../models/cart"
@@ -11,6 +12,7 @@ import { LineItem } from "../models/line-item"
 import { ShippingMethod } from "../models/shipping-method"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
+import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import {
@@ -19,12 +21,16 @@ import {
   FilterableCartProps,
   LineItemUpdate,
 } from "../types/cart"
-import { FindConfig, TotalField } from "../types/common"
+import { AddressPayload, FindConfig, TotalField } from "../types/common"
+import { buildQuery, setMetadata, validateId } from "../utils"
+import CustomShippingOptionService from "./custom-shipping-option"
 import CustomerService from "./customer"
 import DiscountService from "./discount"
 import EventBusService from "./event-bus"
 import GiftCardService from "./gift-card"
+import InventoryService from "./inventory"
 import LineItemService from "./line-item"
+import LineItemAdjustmentService from "./line-item-adjustment"
 import PaymentProviderService from "./payment-provider"
 import ProductService from "./product"
 import ProductVariantService from "./product-variant"
@@ -32,12 +38,6 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
-import InventoryService from "./inventory"
-import CustomShippingOptionService from "./custom-shipping-option"
-import LineItemAdjustmentService from "./line-item-adjustment"
-import { LineItemRepository } from "../repositories/line-item"
-import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -404,6 +404,9 @@ class CartService extends TransactionBaseService<CartService> {
             typeof data[remainingField] !== "undefined" &&
             remainingField !== "object"
           ) {
+            /* TODO: See how to fix the error TS2590 properly while keeping the DeepPartial type */
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             rawCart[remainingField] = data[remainingField]
           }
         }
@@ -779,7 +782,7 @@ class CartService extends TransactionBaseService<CartService> {
           await this.updateShippingAddress_(cart, shippingAddress, addrRepo)
         }
 
-        if (data.discounts?.length) {
+        if (typeof data.discounts !== "undefined") {
           const previousDiscounts = [...cart.discounts]
           cart.discounts.length = 0
 
@@ -797,7 +800,7 @@ class CartService extends TransactionBaseService<CartService> {
           // we need to update shipping methods to original price
           if (
             previousDiscounts.some(
-              ({ rule }) => rule?.type === "free_shipping"
+              ({ rule }) => rule.type === "free_shipping"
             ) &&
             !hasFreeShipping
           ) {
@@ -915,7 +918,7 @@ class CartService extends TransactionBaseService<CartService> {
    */
   protected async updateBillingAddress_(
     cart: Cart,
-    addressOrId: Partial<Address> | string,
+    addressOrId: AddressPayload | Partial<Address> | string,
     addrRepo: AddressRepository
   ): Promise<void> {
     let address: Address
@@ -955,7 +958,7 @@ class CartService extends TransactionBaseService<CartService> {
    */
   protected async updateShippingAddress_(
     cart: Cart,
-    addressOrId: Partial<Address> | string,
+    addressOrId: AddressPayload | Partial<Address> | string,
     addrRepo: AddressRepository
   ): Promise<void> {
     let address: Address
@@ -1043,7 +1046,7 @@ class CartService extends TransactionBaseService<CartService> {
       async (transactionManager: EntityManager) => {
         const discount = await this.discountService_
           .withTransaction(transactionManager)
-          .retrieveByCode(discountCode, ["rule", "regions"])
+          .retrieveByCode(discountCode, { relations: ["rule", "regions"] })
 
         await this.discountService_
           .withTransaction(transactionManager)
@@ -1339,6 +1342,7 @@ class CartService extends TransactionBaseService<CartService> {
             ],
             relations: [
               "items",
+              "items.adjustments",
               "discounts",
               "discounts.rule",
               "gift_cards",

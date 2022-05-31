@@ -8,7 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Product } from "../../../../models/product"
+import { Product } from "../../../../models"
 import { DateComparisonOperator } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { FilterableProductProps } from "../../../../types/product"
@@ -18,7 +18,6 @@ import {
   defaultAdminProductFields,
   defaultAdminProductRelations,
 } from "../products"
-import listAndCount from "../../../../controllers/products/admin-list-products"
 import { MedusaError } from "medusa-core-utils"
 import { getListConfig } from "../../../../utils/get-query-config"
 import PriceListService from "../../../../services/price-list"

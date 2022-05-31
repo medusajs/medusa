@@ -13,6 +13,7 @@ import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -84,7 +85,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .insert()
       .orIgnore(true)
       .into(MoneyAmount)
-      .values(toInsert)
+      .values(toInsert as QueryDeepPartialEntity<MoneyAmount>[])
       .execute()
 
     if (overrideExisting) {
@@ -118,18 +119,24 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
 
   public async findManyForVariantInPriceList(
     variant_id: string,
-    price_list_id: string
+    price_list_id: string,
+    requiresPriceList = false
   ): Promise<[MoneyAmount[], number]> {
     const qb = this.createQueryBuilder("ma")
       .leftJoinAndSelect("ma.price_list", "price_list")
       .where("ma.variant_id = :variant_id", { variant_id })
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where("ma.price_list_id = :price_list_id", {
-            price_list_id,
-          }).orWhere("ma.price_list_id IS NULL")
-        })
-      )
+
+    const getAndWhere = (subQb) => {
+      const andWhere = subQb.where("ma.price_list_id = :price_list_id", {
+        price_list_id,
+      })
+      if (!requiresPriceList) {
+        andWhere.orWhere("ma.price_list_id IS NULL")
+      }
+      return andWhere
+    }
+
+    qb.andWhere(new Brackets(getAndWhere))
 
     return await qb.getManyAndCount()
   }

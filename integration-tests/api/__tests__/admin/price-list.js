@@ -388,6 +388,41 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
+    it("removes configuration with update", async () => {
+      const priceList = await simplePriceListFactory(dbConnection, {
+        ends_at: new Date(),
+        starts_at: new Date(),
+        customer_groups: ["customer-group-1"],
+      })
+
+      const api = useApi()
+      const getResult = await api.get(`/admin/price-lists/${priceList.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(getResult.status).toEqual(200)
+      expect(getResult.data.price_list.starts_at).toBeTruthy()
+      expect(getResult.data.price_list.ends_at).toBeTruthy()
+      expect(getResult.data.price_list.customer_groups.length).toEqual(1)
+
+      const updateResult = await api.post(
+        `/admin/price-lists/${priceList.id}`,
+        { ends_at: null, starts_at: null, customer_groups: [] },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(updateResult.status).toEqual(200)
+      expect(updateResult.data.price_list.starts_at).toBeFalsy()
+      expect(updateResult.data.price_list.ends_at).toBeFalsy()
+      expect(updateResult.data.price_list.customer_groups.length).toEqual(0)
+    })
+
     it("updates a price list", async () => {
       const api = useApi()
 
@@ -945,6 +980,19 @@ describe("/admin/price-lists", () => {
         object: "price-list",
         deleted: true,
       })
+
+      try {
+        await api.get("/admin/price-lists/pl_no_customer_groups", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.status).toBe(404)
+        expect(error.response.data.message).toEqual(
+          "Price list with id: pl_no_customer_groups was not found"
+        )
+      }
     })
   })
 
@@ -1192,6 +1240,157 @@ describe("/admin/price-lists", () => {
       expect(response.data.products).toEqual([
         expect.objectContaining({ id: "test-prod-2" }),
       ])
+    })
+  })
+
+  describe("delete prices from price list related to the specified product or variant", () => {
+    let product1
+    let product2
+
+    function getCustomPriceIdFromVariant(variantId, index) {
+      return "ma_" + index + "_" + variantId
+    }
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        product1 = await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-1",
+            title: "some product",
+            variants: [
+              {
+                id: `simple-test-variant-${Math.random() * 1000}`,
+                title: "Test",
+                prices: [{ currency: "usd", amount: 100 }],
+              },
+              {
+                id: `simple-test-variant-${Math.random() * 1000}`,
+                title: "Test 2",
+                prices: [{ currency: "usd", amount: 200 }],
+              },
+            ],
+          },
+          1
+        )
+
+        product2 = await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-2",
+            title: "some product 2",
+          },
+          2
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list",
+          customer_groups: ["test-group"],
+          prices: [
+            ...product1.variants.map((variant, i) => ({
+              id: getCustomPriceIdFromVariant(variant.id, i),
+              variant_id: variant.id,
+              currency_code: "usd",
+              amount: (i + 1) * 150,
+            })),
+            ...product2.variants.map((variant, i) => ({
+              id: getCustomPriceIdFromVariant(variant.id, i),
+              variant_id: variant.id,
+              currency_code: "usd",
+              amount: (i + 1) * 150,
+            })),
+          ],
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should delete all the prices that are part of the price list for the specified product", async () => {
+      const api = useApi()
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(3)
+
+      let response = await api.delete(
+        `/admin/price-lists/test-list/products/${product1.id}/prices`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data).toEqual({
+        ids: product1.variants.map((variant, i) => {
+          return getCustomPriceIdFromVariant(variant.id, i)
+        }),
+        object: "money-amount",
+        deleted: true,
+      })
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(1)
+    })
+
+    it("should delete all the prices that are part of the price list for the specified variant", async () => {
+      const api = useApi()
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(3)
+
+      const variant = product2.variants[0]
+      let response = await api.delete(
+        `/admin/price-lists/test-list/variants/${variant.id}/prices`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data).toEqual({
+        ids: [getCustomPriceIdFromVariant(variant.id, 0)],
+        object: "money-amount",
+        deleted: true,
+      })
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(2)
     })
   })
 })
