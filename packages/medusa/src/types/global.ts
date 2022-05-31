@@ -8,7 +8,7 @@ declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      user?: User | Customer
+      user?: (User | Customer) & { userId?: string }
       scope: MedusaContainer
       validatedQuery: RequestQueryFields & Record<string, unknown>
       validatedBody: unknown

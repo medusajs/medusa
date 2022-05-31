@@ -106,7 +106,7 @@ export function prepareListQuery<
       orderBy = { [order]: "ASC" }
     }
 
-    if (!(queryConfig?.allowedFields || []).includes(orderField)) {
+    if (queryConfig?.allowedFields?.length && !queryConfig?.allowedFields.includes(orderField)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Order field must be a valid product field"
