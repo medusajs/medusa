@@ -6,11 +6,16 @@ import React from 'react'
 import { ThemeToggler } from 'gatsby-plugin-dark-mode'
 import { useColorMode } from 'theme-ui'
 
+const isBrowser = typeof window !== "undefined"
+
 export default function ColorModeToggler () {
   const [, setColorMode] = useColorMode()
 
   function checkLocalStorage (currentTheme, toggleTheme) {
     //check that theme local storage values are set correctly
+    if (!isBrowser) {
+      return currentTheme;
+    }
     let themeUiColorMode = window.localStorage.getItem('theme-ui-color-mode');
     let theme = window.localStorage.getItem('theme')
     if (!themeUiColorMode) {

@@ -21,7 +21,7 @@ export const adminPriceListKeys = {
       "products" as const,
       { ...(query || {}) },
     ] as const
-  },
+  }
 }
 
 type PriceListQueryKeys = typeof adminPriceListKeys

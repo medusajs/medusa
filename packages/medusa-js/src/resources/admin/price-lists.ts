@@ -94,6 +94,24 @@ class AdminPriceListResource extends BaseResource {
     const path = `/admin/price-lists/${id}/prices/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
+
+  deleteProductPrices(
+    priceListId: string,
+    productId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminPriceListDeleteBatchRes> {
+    const path = `/admin/price-lists/${priceListId}/products/${productId}/prices`
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
+
+  deleteVariantPrices(
+    priceListId: string,
+    variantId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminPriceListDeleteBatchRes> {
+    const path = `/admin/price-lists/${priceListId}/variants/${variantId}/prices`
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
 }
 
 export default AdminPriceListResource
