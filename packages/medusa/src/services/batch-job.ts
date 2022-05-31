@@ -20,19 +20,82 @@ type InjectedDependencies = {
 }
 
 class BatchJobService extends TransactionBaseService<BatchJobService> {
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-  protected readonly batchJobRepository_: typeof BatchJobRepository
-  protected readonly eventBus_: EventBusService
-
   static readonly Events = {
     CREATED: "batch.created",
     UPDATED: "batch.updated",
     CANCELED: "batch.canceled",
     COMPLETED: "batch.completed",
+<<<<<<< HEAD
     PROCESS_READY: "batch-process.ready",
     PROCESS_COMPLETE: "batch-process.complete",
+=======
+    READY: "batch.ready",
+    PROCESSING: "batch.processing",
+    AWAITING_CONFIRMATION: "batch.awaiting_confirmation",
+    CONFIRMED: "batch.confirmed",
+    FAILED: "batch.failed",
+>>>>>>> feat-batchJobEndPoints
   }
+
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+  protected readonly batchJobRepository_: typeof BatchJobRepository
+  protected readonly eventBus_: EventBusService
+
+  protected batchJobStatusMapToProps = new Map<
+    BatchJobStatus,
+    { entityColumnName: string; eventType: string }
+  >([
+    [
+      BatchJobStatus.READY,
+      {
+        entityColumnName: "ready_at",
+        eventType: BatchJobService.Events.READY,
+      },
+    ],
+    [
+      BatchJobStatus.PROCESSING,
+      {
+        entityColumnName: "processing_at",
+        eventType: BatchJobService.Events.PROCESSING,
+      },
+    ],
+    [
+      BatchJobStatus.AWAITING_CONFIRMATION,
+      {
+        entityColumnName: "awaiting_confirmation_at",
+        eventType: BatchJobService.Events.AWAITING_CONFIRMATION,
+      },
+    ],
+    [
+      BatchJobStatus.CONFIRMED,
+      {
+        entityColumnName: "confirmed_at",
+        eventType: BatchJobService.Events.CONFIRMED,
+      },
+    ],
+    [
+      BatchJobStatus.COMPLETED,
+      {
+        entityColumnName: "completed_at",
+        eventType: BatchJobService.Events.COMPLETED,
+      },
+    ],
+    [
+      BatchJobStatus.CANCELED,
+      {
+        entityColumnName: "canceled_at",
+        eventType: BatchJobService.Events.CANCELED,
+      },
+    ],
+    [
+      BatchJobStatus.FAILED,
+      {
+        entityColumnName: "failed_at",
+        eventType: BatchJobService.Events.FAILED,
+      },
+    ],
+  ])
 
   constructor({
     manager,
@@ -87,44 +150,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     )
   }
 
-  async confirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
-    return await this.atomicPhase_(async (manager) => {
-      let batchJob: BatchJob = batchJobOrId as BatchJob
-      if (typeof batchJobOrId === "string") {
-        batchJob = await this.retrieve(batchJobOrId)
-      }
-
-      batchJob.confirmed_at = new Date()
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(BatchJobService.Events.PROCESS_COMPLETE, {
-          id: batchJob.id,
-        })
-
-      return batchJob
-    })
-  }
-
-  async setReady(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
-    return await this.atomicPhase_(async (manager) => {
-      let batchJob: BatchJob = batchJobOrId as BatchJob
-      if (typeof batchJobOrId === "string") {
-        batchJob = await this.retrieve(batchJobOrId)
-      }
-
-      batchJob.ready_at = new Date()
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(BatchJobService.Events.PROCESS_READY, {
-          id: batchJob.id,
-        })
-
-      return batchJob
-    })
-  }
-
   async validateBatchContext(
     type: string,
     context: Record<string, unknown>
@@ -173,7 +198,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         this.batchJobRepository_
       )
 
-      const batchJob = await this.retrieve(batchJobId)
+      let batchJob = await this.retrieve(batchJobId)
 
       const { context, ...rest } = data
       if (context) {
@@ -189,7 +214,74 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
           batchJob[key] = rest[key]
         })
 
-      return await batchJobRepo.save(batchJob)
+      batchJob = await batchJobRepo.save(batchJob)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(BatchJobService.Events.CREATED, {
+          id: batchJob.id,
+        })
+
+      return batchJob
+    })
+  }
+
+  protected async updateStatus(
+    batchJobOrId: BatchJob | string,
+    status: BatchJobStatus
+  ): Promise<BatchJob | never> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        let batchJob: BatchJob = batchJobOrId as BatchJob
+        if (typeof batchJobOrId === "string") {
+          batchJob = await this.retrieve(batchJobOrId)
+        }
+
+        const { entityColumnName, eventType } =
+          this.batchJobStatusMapToProps.get(status) || {}
+
+        if (!entityColumnName || !eventType) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Unable to update the batch job status from ${batchJob.status} to ${status}. The status seams to not be an existing one`
+          )
+        }
+
+        batchJob[entityColumnName] = new Date()
+
+        const batchJobRepo = transactionManager.getCustomRepository(
+          this.batchJobRepository_
+        )
+        batchJob = await batchJobRepo.save(batchJob)
+
+        this.eventBus_.withTransaction(transactionManager).emit(eventType, {
+          id: batchJob.id,
+        })
+
+        return batchJob
+      }
+    )
+  }
+
+  async confirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async () => {
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
+
+      if (!batchJob.dry_run) {
+        return batchJob
+      }
+
+      if (batchJob.status !== BatchJobStatus.AWAITING_CONFIRMATION) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot confirm a batch job that is not awaiting for confirmation"
+        )
+      }
+
+      return await this.updateStatus(batchJob, BatchJobStatus.CONFIRMED)
     })
   }
 
@@ -198,43 +290,28 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
    * to complete the job before it's written to DB
    */
   async complete(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
-    return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
-        this.batchJobRepository_
-      )
-
+    return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
         batchJob = await this.retrieve(batchJobOrId)
       }
 
-      if (batchJob.status !== BatchJobStatus.AWAITING_CONFIRMATION) {
+      if (
+        (batchJob.dry_run && batchJob.status !== BatchJobStatus.CONFIRMED) ||
+        (!batchJob.dry_run && batchJob.status !== BatchJobStatus.PROCESSING)
+      ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Cannot complete a batch job with status "${batchJob.status}"`
+          `Cannot complete a batch job with status "${batchJob.status}". The batch job must be in dry_run and awaiting for confirmation`
         )
       }
 
-      batchJob.completed_at = new Date()
-
-      await batchJobRepo.save(batchJob)
-
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(BatchJobService.Events.COMPLETED, {
-          id: batchJob.id,
-        })
-
-      return batchJob
+      return await this.updateStatus(batchJob, BatchJobStatus.COMPLETED)
     })
   }
 
   async cancel(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
-    return await this.atomicPhase_(async (manager) => {
-      const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
-        this.batchJobRepository_
-      )
-
+    return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
         batchJob = await this.retrieve(batchJobOrId)
@@ -247,16 +324,43 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         )
       }
 
-      batchJob.canceled_at = new Date()
-      await batchJobRepo.save(batchJob)
+      return await this.updateStatus(batchJob, BatchJobStatus.CANCELED)
+    })
+  }
 
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(BatchJobService.Events.CANCELED, {
-          id: batchJob.id,
-        })
+  async ready(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async () => {
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
 
-      return batchJob
+      if (batchJob.status !== BatchJobStatus.CREATED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot mark a batch job as ready if the status is different that created"
+        )
+      }
+
+      return await this.updateStatus(batchJobOrId, BatchJobStatus.READY)
+    })
+  }
+
+  async processing(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async () => {
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
+
+      if (batchJob.status !== BatchJobStatus.READY) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot mark a batch job as processing if the status is different that ready"
+        )
+      }
+
+      return await this.updateStatus(batchJob, BatchJobStatus.PROCESSING)
     })
   }
 }
