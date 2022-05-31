@@ -238,7 +238,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         if (!entityColumnName || !eventType) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Unable to update the batch job status from ${batchJob.status} to ${status}. The status seams to not be an existing one`
+            `Unable to update the batch job status from ${batchJob.status} to ${status}. The status doesn't exist`
           )
         }
 
@@ -297,7 +297,11 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       ) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Cannot complete a batch job with status "${batchJob.status}". The batch job must be in dry_run and awaiting for confirmation`
+          `Cannot complete a batch job with status "${
+            batchJob.status
+          }". The batch job must be ${
+            batchJob.dry_run ? "awaiting confirmation" : "processing"
+          }`
         )
       }
 
