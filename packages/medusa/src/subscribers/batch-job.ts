@@ -52,7 +52,7 @@ class BatchJobSubscriber {
 
     const batchJobStrategy = this.getBatchJobStrategy(batchJob.type)
 
-    batchJobStrategy.completeJob(batchJob.id)
+    await batchJobStrategy.completeJob(batchJob.id)
   }
 
   getBatchJobStrategy(type: string): AbstractBatchJobStrategy<any> {
