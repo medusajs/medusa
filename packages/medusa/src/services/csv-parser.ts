@@ -2,7 +2,6 @@ import { AwilixContainer } from "awilix"
 import Papa from "papaparse"
 import { AbstractParser, ParserOptions } from "../interfaces/abstract-parser"
 import { CsvSchema } from "../interfaces/csv-parser"
-import fs from "fs"
 
 const DEFAULT_PARSE_OPTIONS = {
   dynamicTyping: true,
@@ -68,15 +67,19 @@ class CsvParser<
         )
       }
 
-      if (column.validator) {
-        await column.validator.validate(line[tupleKey], {
-          line,
-          lineNumber,
-          column: tupleKey,
-        })
+      const context = {
+        line,
+        lineNumber,
+        column: tupleKey,
       }
 
-      outputTuple[column.mapTo ?? tupleKey] = line[tupleKey]
+      if (column.validator) {
+        await column.validator.validate(line[tupleKey], context)
+      }
+
+      outputTuple[column.mapTo ?? tupleKey] = column.transformer
+        ? column.transformer(line[tupleKey], context)
+        : line[tupleKey]
     }
 
     return outputTuple

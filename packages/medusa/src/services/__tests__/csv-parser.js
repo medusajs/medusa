@@ -99,5 +99,32 @@ describe("CsvParser", () => {
         ])
       })
     })
+
+    describe("transformer", () => {
+      const csvParser = new CsvParser(createContainer(), {
+        columns: [
+          {
+            name: "title",
+          },
+          {
+            name: "price usd",
+            transformer: (value) => Math.round(parseFloat(value) * 100),
+          },
+        ],
+      })
+
+      it("given a transformer function for a column, when building data, should transform that column's value according to the transformation function", async () => {
+        const content = await csvParser.buildData([
+          { title: "medusa t-shirt", "price usd": "19.99" },
+        ])
+
+        expect(content).toEqual([
+          {
+            title: "medusa t-shirt",
+            "price usd": 1999,
+          },
+        ])
+      })
+    })
   })
 })
