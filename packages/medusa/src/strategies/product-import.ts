@@ -4,6 +4,10 @@ import { AbstractBatchJobStrategy } from "../interfaces"
 import { BatchJob } from "../models"
 
 class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrategy> {
+  static identifier = "product-import"
+
+  static batchType = "product_import"
+
   buildTemplate(): Promise<string> {
     return Promise.resolve("")
   }
