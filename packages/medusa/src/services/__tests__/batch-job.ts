@@ -92,7 +92,7 @@ describe('BatchJobService', () => {
         const err = await batchJobService.complete(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
-        expect(err.message).toBe(`Cannot complete a batch job with status "${BatchJobStatus.READY}". The batch job must be in dry_run and awaiting for confirmation`)
+        expect(err.message).toBe(`Cannot complete a batch job with status "${batchJob.status}". The batch job must be ${batchJob.dry_run ? "awaiting confirmation" : "processing"}`)
         expect(eventBusServiceMock.emit).toHaveBeenCalledTimes(0)
 
         const batchJob2 = batchJobRepositoryMock.create({
@@ -104,7 +104,7 @@ describe('BatchJobService', () => {
         const err2 = await batchJobService.complete(batchJob2)
           .catch(e => e)
         expect(err2).toBeTruthy()
-        expect(err2.message).toBe(`Cannot complete a batch job with status "${BatchJobStatus.READY}". The batch job must be in dry_run and awaiting for confirmation`)
+        expect(err2.message).toBe(`Cannot complete a batch job with status "${batchJob2.status}". The batch job must be ${batchJob2.dry_run ? "awaiting confirmation" : "processing"}`)
         expect(eventBusServiceMock.emit).toHaveBeenCalledTimes(0)
       })
     })
