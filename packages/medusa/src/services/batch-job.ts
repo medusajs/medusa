@@ -25,16 +25,11 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     UPDATED: "batch.updated",
     CANCELED: "batch.canceled",
     COMPLETED: "batch.completed",
-<<<<<<< HEAD
-    PROCESS_READY: "batch-process.ready",
-    PROCESS_COMPLETE: "batch-process.complete",
-=======
     READY: "batch.ready",
     PROCESSING: "batch.processing",
     AWAITING_CONFIRMATION: "batch.awaiting_confirmation",
     CONFIRMED: "batch.confirmed",
     FAILED: "batch.failed",
->>>>>>> feat-batchJobEndPoints
   }
 
   protected manager_: EntityManager
