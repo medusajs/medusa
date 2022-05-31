@@ -78,6 +78,7 @@ class DigitalOceanService extends AbstractFileService {
       Bucket: this.bucket_,
       Body: pass,
       Key: fileKey,
+      contentType: fileData.contentType ?? 'text/csv'
     }
     
     const s3 = new aws.S3()
