@@ -1,7 +1,10 @@
 import { Router } from "express"
 import { BatchJob } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, {
+  getRequestedBatchJob,
+  canAccessBatchJob,
+} from "../../../middlewares"
 
 export default (app) => {
   const route = Router()
@@ -13,6 +16,20 @@ export default (app) => {
     middlewares.normalizeQuery(),
     middlewares.wrap(require("./list-batch-jobs").default)
   )
+  route.post("/", middlewares.wrap(require("./create-batch-job").default))
+
+  const routerOnBatch = Router()
+  route.use("/:id", getRequestedBatchJob, canAccessBatchJob, routerOnBatch)
+  routerOnBatch.get("/", middlewares.wrap(require("./get-batch-job").default))
+  routerOnBatch.post(
+    "/confirm",
+    middlewares.wrap(require("./confirm-batch-job").default)
+  )
+  routerOnBatch.post(
+    "/cancel",
+    middlewares.wrap(require("./cancel-batch-job").default)
+  )
+
   return app
 }
 
@@ -28,7 +45,6 @@ export type AdminBatchJobListRes = PaginatedResponse & {
 
 export const defaultAdminBatchFields = [
   "id",
-  "status",
   "type",
   "context",
   "result",

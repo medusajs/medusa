@@ -8,13 +8,20 @@ import {
 } from "class-validator"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator } from "./common"
+import { BatchJob } from "../models"
 
 export enum BatchJobStatus {
   CREATED = "created",
   PROCESSING = "processing",
   AWAITING_CONFIRMATION = "awaiting_confirmation",
+  CANCELED = "canceled",
   COMPLETED = "completed",
+  CONFIRMED = "confirmed",
+  READY = "ready",
+  FAILED = "failed",
 }
+
+export type BatchJobUpdateProps = Partial<Pick<BatchJob, "context" | "result">>
 
 export class FilterableBatchJobProps {
   @IsOptional()
@@ -44,3 +51,8 @@ export class FilterableBatchJobProps {
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 }
+
+export type BatchJobCreateProps = Pick<
+  BatchJob,
+  "context" | "type" | "created_by" | "dry_run"
+>
