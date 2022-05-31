@@ -67,7 +67,7 @@ export default async ({
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
-      await registerMedusaApi(pluginDetails, container)
+      registerMedusaApi(pluginDetails, container)
       registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
@@ -189,10 +189,11 @@ export function registerStrategies(
           asFunction((cradle) => new module(cradle, pluginDetails.options))
         )
 
-        container.registerAdd(
-          `batchType_${module.batchType}`,
-          asFunction((cradle) => new module(cradle, pluginDetails.options))
-        )
+        container.register({
+          [`batchType_${module.batchType}`]: asFunction(
+            (cradle) => new module(cradle, pluginDetails.options)
+          ).singleton(),
+        })
 
         const name = formatRegistrationName(file)
         container.register({
