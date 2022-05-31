@@ -7,18 +7,24 @@ import {
   IsString,
 } from "class-validator"
 import "reflect-metadata"
-import { FindManyOptions, OrderByCondition } from "typeorm"
+import { FindManyOptions, FindOperator, OrderByCondition } from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
 }
 
-export type Writable<T> = { -readonly [key in keyof T]: T[key] }
+export type Writable<T> = {
+  -readonly [key in keyof T]:
+    | T[key]
+    | FindOperator<T[key][]>
+    | FindOperator<string[]>
+}
 
 export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
   where: Partial<Writable<TEntity>>
   withDeleted?: boolean
+  relations?: string[]
 }
 
 export type Selector<TEntity> = {
@@ -28,6 +34,7 @@ export type Selector<TEntity> = {
     | DateComparisonOperator
     | StringComparisonOperator
     | NumericalComparisonOperator
+    | FindOperator<TEntity[key][] | string[]>
 }
 
 export type TotalField =

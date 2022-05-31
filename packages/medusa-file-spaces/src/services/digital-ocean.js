@@ -90,7 +90,7 @@ class DigitalOceanService extends AbstractFileService {
     }
   }
 
-  async downloadAsStream(fileData) {
+  async getDownloadStream(fileData) {
     this.updateAwsConfig()
 
     const s3 = new aws.S3()

@@ -8,16 +8,18 @@ import {
 } from "typeorm"
 import { PriceList } from "../models/price-list"
 import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
+import { CustomerGroup } from "../models"
+import { FilterablePriceListProps } from "../types/price-list"
 
-type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
+export type PriceListFindOptions = CustomFindOptions<PriceList, "status" | "type">
 
 @EntityRepository(PriceList)
 export class PriceListRepository extends Repository<PriceList> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: PriceListFindOptions = { where: {} },
-    groups?: FindOperator<PriceList>,
-    relations: (keyof PriceList)[] = []
+    groups: FindOperator<string[]>,
+    relations: string[] = []
   ): Promise<[PriceList[], number]> {
     options.where = options.where ?? {}
 
@@ -50,7 +52,7 @@ export class PriceListRepository extends Repository<PriceList> {
   }
 
   public async findWithRelations(
-    relations: (keyof PriceList)[] = [],
+    relations: string[] = [],
     idsOrOptionsWithoutRelations:
       | Omit<FindManyOptions<PriceList>, "relations">
       | string[] = {}
@@ -97,8 +99,8 @@ export class PriceListRepository extends Repository<PriceList> {
   }
 
   async listAndCount(
-    query: ExtendedFindConfig<PriceList>,
-    groups?: FindOperator<PriceList>
+    query: ExtendedFindConfig<FilterablePriceListProps>,
+    groups: FindOperator<string[]>
   ): Promise<[PriceList[], number]> {
     const qb = this.createQueryBuilder("price_list")
       .where(query.where)
