@@ -116,7 +116,7 @@ import { TransactionBaseService } from "medusa-interfaces";
 
 class PostService extends TransactionBaseService {
   constructor({ postRepository, manager }) {
-    super();
+    super({ postRepository, manager });
 
     this.postRepository = postRepository;
     this.manager_ = manager;
