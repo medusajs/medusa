@@ -3,19 +3,27 @@ import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
   extends TransactionBaseService<T> {
-  /*
+  /**
    * Used in the API controller to verify that the `context` param is valid
    */
   validateContext(
     context: Record<string, unknown>
   ): Promise<Record<string, unknown>>
 
-  /*
+  /**
+   * Method for preparing a batch job for processing beyond creating the entity
+   */
+  prepareBatchJobForProcessing(
+    batchJobId: string,
+    req: Express.Request
+  ): Promise<BatchJob>
+
+  /**
    *  Method does the actual processing of the job. Should report back on the progress of the operation.
    */
   processJob(batchJobId: string): Promise<BatchJob>
 
-  /*
+  /**
    *  Method performs the completion of the job. Will not be run if `processJob` has already moved the BatchJob to a `complete` status.
    */
   completeJob(batchJobId: string): Promise<BatchJob>
@@ -51,6 +59,11 @@ export abstract class AbstractBatchJobStrategy<
   public abstract validateFile(fileLocation: string): Promise<boolean>
 
   public abstract buildTemplate(): Promise<string>
+
+  abstract prepareBatchJobForProcessing(
+    batchJobId: string,
+    req: Express.Request
+  ): Promise<BatchJob>
 }
 
 export function isBatchJobStrategy(
