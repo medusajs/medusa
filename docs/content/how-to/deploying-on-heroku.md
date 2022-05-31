@@ -110,6 +110,7 @@ heroku config:set JWT_SECRET=your-super-secret
 heroku config:set COOKIE_SECRET=your-super-secret-pt2
 heroku config:set NPM_CONFIG_PRODUCTION=false
 ```
+
 :::tip
 
 Make sure to use actual secrets in a production environment.
@@ -171,7 +172,7 @@ module.exports = {
         : {},
   },
   plugins,
-};
+}
 ```
 
 #### `package.json`

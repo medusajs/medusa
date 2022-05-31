@@ -141,7 +141,7 @@ export const useAdminDeletePriceListProductPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
-        adminProductKeys.detail(productId)
+        adminProductKeys.detail(productId),
       ],
       options
     )
@@ -166,7 +166,7 @@ export const useAdminDeletePriceListVariantPrices = (
       [
         adminPriceListKeys.detail(id),
         adminPriceListKeys.lists(),
-        adminVariantKeys.detail(variantId)
+        adminVariantKeys.detail(variantId),
       ],
       options
     )

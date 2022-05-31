@@ -154,7 +154,7 @@ Medusa also has a Gatsby storefront that you can use as your ecommerce store. If
 In your `.env.development` file (or the file you’re using for your environment variables) add the following variable with the value set to the Publishable Key:
 
 ```jsx
-GATSBY_STRIPE_KEY=pk_
+GATSBY_STRIPE_KEY = pk_
 ```
 
 :::note
@@ -201,13 +201,13 @@ In this section, you’ll initialize Stripe without Medusa’s checkout workflow
 Create a container component that will hold the payment card component:
 
 ```jsx
-import { useState } from 'react';
+import { useState } from "react"
 
-import {Elements} from '@stripe/react-stripe-js';
-import Form from './Form';
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from "@stripe/react-stripe-js"
+import Form from "./Form"
+import { loadStripe } from "@stripe/stripe-js"
 
-const stripePromise = loadStripe('pk_...');
+const stripePromise = loadStripe("pk_...")
 
 export default function Container() {
   const [clientSecret, setClientSecret] = useState()
@@ -217,15 +217,18 @@ export default function Container() {
   return (
     <div>
       {clientSecret && (
-        <Elements stripe={stripePromise} options={{
-          clientSecret
-        }}>
-        <Form clientSecret={clientSecret} cartId={cartId} />
-      </Elements>
+        <Elements
+          stripe={stripePromise}
+          options={{
+            clientSecret,
+          }}
+        >
+          <Form clientSecret={clientSecret} cartId={cartId} />
+        </Elements>
       )}
     </div>
-  );
-};
+  )
+}
 ```
 
 In this component, you need to use Stripe’s `loadStripe` function outside of the component’s implementation to ensure that Stripe doesn’t re-load with every change. The function accepts the Publishable Key.
@@ -236,18 +239,18 @@ You’ll probably store this Publishable Key in an environment variable dependin
 
 :::
 
-Then, inside the component’s implementation, you add a state variable `clientSecret` which you’ll retrieve in the next section. 
+Then, inside the component’s implementation, you add a state variable `clientSecret` which you’ll retrieve in the next section.
 
 Once the clientSecret is set, the `Elements` Stripe component will wrap a `Form` component you’ll create next. This is necessary because the `Elements` component allows child elements to get access to the card’s inputs and their data using Stripe’s `useElements` hook.
 
 Create a new file for the `Form` component with the following content:
 
 ```jsx
-import {CardElement, useElements, useStripe} from '@stripe/react-stripe-js';
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js"
 
-export default function Form({clientSecret, cartId}) {
-  const stripe = useStripe();
-  const elements = useElements();
+export default function Form({ clientSecret, cartId }) {
+  const stripe = useStripe()
+  const elements = useElements()
 
   async function handlePayment(e) {
     e.preventDefault()
@@ -258,9 +261,9 @@ export default function Form({clientSecret, cartId}) {
     <form>
       <CardElement />
       <button onClick={handlePayment}>Submit</button>
-  </form>
-  );
-};
+    </form>
+  )
+}
 ```
 
 This component shows a CardElement component from Stripe’s React library. You can use `stripe` to be able to confirm the payment later. The `elements` variable will be used to retrieve the entered card details safely.
@@ -287,21 +290,24 @@ In your storefront, you’ll probably be managing the Medusa client through a co
 Then, in the place of the `//TODO` inside the `Container` element, initialize the payment sessions and create a payment session if Stripe is available:
 
 ```jsx
-client.carts.createPaymentSessions(cart.id)
-  .then(({cart}) => {
-    //check if stripe is selected
-    const isStripeAvailable = cart.payment_sessions?.some((session) => session.provider_id === 'stripe');
-    if (!isStripeAvailable) {
-      return;
-    }
+client.carts.createPaymentSessions(cart.id).then(({ cart }) => {
+  //check if stripe is selected
+  const isStripeAvailable = cart.payment_sessions?.some(
+    (session) => session.provider_id === "stripe"
+  )
+  if (!isStripeAvailable) {
+    return
+  }
 
-    //select stripe payment session
-    client.carts.setPaymentSession(cart.id, {
-      provider_id: 'stripe'
-    }).then(({cart}) => {
-      setClientSecret(cart.payment_session.data.client_secret);
-    });
-  })
+  //select stripe payment session
+  client.carts
+    .setPaymentSession(cart.id, {
+      provider_id: "stripe",
+    })
+    .then(({ cart }) => {
+      setClientSecret(cart.payment_session.data.client_secret)
+    })
+})
 ```
 
 :::note
@@ -328,26 +334,28 @@ export default function Form() {
 Then, replace the `//TODO` in the `handlePayment` function with the following content:
 
 ```jsx
-return stripe.confirmCardPayment(clientSecret, {
-  payment_method: {
-    card: elements.getElement(CardElement),
-    billing_details: {
-      name,
-      email,
-      phone,
-      address: {
-        city,
-        country,
-        line1,
-        line2,
-        postal_code,
-      }
-    }
-  }
-}).then(({ error, paymentIntent }) => {
-  //TODO handle errors
-  client.carts.complete(cartId).then(resp => console.log(resp))
-})
+return stripe
+  .confirmCardPayment(clientSecret, {
+    payment_method: {
+      card: elements.getElement(CardElement),
+      billing_details: {
+        name,
+        email,
+        phone,
+        address: {
+          city,
+          country,
+          line1,
+          line2,
+          postal_code,
+        },
+      },
+    },
+  })
+  .then(({ error, paymentIntent }) => {
+    //TODO handle errors
+    client.carts.complete(cartId).then((resp) => console.log(resp))
+  })
 ```
 
 You use the `confirmCardPayment` method in the `stripe` object. You’ll need to pass it the client secret, which you can have access to from the cart object if it’s available through the context.

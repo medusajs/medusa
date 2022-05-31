@@ -40,8 +40,11 @@ You can resolve the SendGrid service to dynamically send emails via sendgrid.
 Example:
 
 ```js
-
 const sendgridService = scope.resolve("sendgridService")
-sendgridService.sendEmail("d-123....", "ACME <acme@mail.com>", "customer@mail.com", { dynamic: "data" })
-
+sendgridService.sendEmail(
+  "d-123....",
+  "ACME <acme@mail.com>",
+  "customer@mail.com",
+  { dynamic: "data" }
+)
 ```

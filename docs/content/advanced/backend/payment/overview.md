@@ -56,7 +56,7 @@ After the checkout process is completed and the Payment Session has been authori
 
 ### How it is Created
 
-After the customer adds products to the cart, proceeds with the checkout flow, and reaches the payment method section, Payment Sessions are created for each Payment Provider available in that region. 
+After the customer adds products to the cart, proceeds with the checkout flow, and reaches the payment method section, Payment Sessions are created for each Payment Provider available in that region.
 
 During the creation of the Payment Session, the Payment Provider can interact with third-party services for any initialization necessary on their side. For example, when a Payment Session for Stripe is being created, a payment intent associated with the customer can be created with Stripe as well.
 
@@ -104,7 +104,7 @@ The `Payment` model belongs to the `Cart` that it was originally created from wh
 
 In case a `Swap` is created for an order, `Payment` will be associated with that swap to handle payment operations related to it.
 
-Similar to `PaymentSession`,  `Payment` has a `data` attribute which is an object that holds any data required to perform further actions with the payment such as capturing the payment.
+Similar to `PaymentSession`, `Payment` has a `data` attribute which is an object that holds any data required to perform further actions with the payment such as capturing the payment.
 
 `Payment` also holds attributes like `amount` which is the amount authorized for payment, and `amount_refunded` which is the amount refunded from the original amount if a refund has been initiated.
 
@@ -116,9 +116,9 @@ An Idempotency Key is a unique key associated with a cart. It is generated at th
 
 That Idempotency Key is then set in the header under the `Idempotency-Key` response header field along with the header field `Access-Control-Expose-Headers` set to `Idempotency-Key`.
 
-If an error occurs or the purchase is interrupted at any step, the client can retry the payment by adding the Idempotency Key of the cart as the `Idempotency-Key` header field in their subsequent requests. 
+If an error occurs or the purchase is interrupted at any step, the client can retry the payment by adding the Idempotency Key of the cart as the `Idempotency-Key` header field in their subsequent requests.
 
-The server wraps each essential part of the checkout completion in its own step and stores the current step of checkout with its associated Idempotency Key. 
+The server wraps each essential part of the checkout completion in its own step and stores the current step of checkout with its associated Idempotency Key.
 
 If then the request is interrupted for any reason or the payment fails, the client can retry completing the check out using the Idempotency Key, and the flow will continue from the last stored step.
 

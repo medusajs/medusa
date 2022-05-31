@@ -121,11 +121,11 @@ In `next.config.js` add the following option in the exported object:
 
 ```jsx
 module.exports = {
-    //other options
-    images: {
+  //other options
+  images: {
     domains: [
-        "127.0.0.1",
-        //any other domains...
+      "127.0.0.1",
+      //any other domains...
     ],
   },
 }

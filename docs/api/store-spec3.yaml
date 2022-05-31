@@ -122,7 +122,7 @@ paths:
                 properties:
                   exists:
                     type: boolean
-  '/carts/{id}/shipping-methods':
+  "/carts/{id}/shipping-methods":
     post:
       operationId: PostCartsCartShippingMethod
       description: Adds a Shipping Method to the Cart.
@@ -144,7 +144,7 @@ paths:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
+                    $ref: "#/components/schemas/cart"
       requestBody:
         content:
           application/json:
@@ -163,7 +163,7 @@ paths:
                     process the fulfillment of the order. Look at the
                     documentation for your installed fulfillment providers to
                     find out what to send.
-  '/carts/{id}/taxes':
+  "/carts/{id}/taxes":
     post:
       summary: Calculate Cart Taxes
       operationId: PostCartsCartTaxes
@@ -180,7 +180,7 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: A cart object with the tax_total field populated
           content:
             application/json:
@@ -189,8 +189,8 @@ paths:
                   - type: object
                     properties:
                       cart:
-                        $ref: '#/components/schemas/cart'
-  '/carts/{id}/complete':
+                        $ref: "#/components/schemas/cart"
+  "/carts/{id}/complete":
     post:
       summary: Complete a Cart
       operationId: PostCartsCartComplete
@@ -211,7 +211,7 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: >-
             If a cart was successfully authorized, but requires further action
             from the user the response body will contain the cart with an
@@ -224,15 +224,15 @@ paths:
                   - type: object
                     properties:
                       order:
-                        $ref: '#/components/schemas/order'
+                        $ref: "#/components/schemas/order"
                   - type: object
                     properties:
                       cart:
-                        $ref: '#/components/schemas/cart'
+                        $ref: "#/components/schemas/cart"
                   - type: object
                     properties:
                       cart:
-                        $ref: '#/components/schemas/swap'
+                        $ref: "#/components/schemas/swap"
   /carts:
     post:
       summary: Create a Cart
@@ -278,15 +278,15 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: Successfully created a new Cart
           content:
             application/json:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
-  '/carts/{id}/line-items':
+                    $ref: "#/components/schemas/cart"
+  "/carts/{id}/line-items":
     post:
       operationId: PostCartsCartLineItems
       summary: Add a Line Item
@@ -310,7 +310,7 @@ paths:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
+                    $ref: "#/components/schemas/cart"
       requestBody:
         content:
           application/json:
@@ -333,7 +333,7 @@ paths:
                   description: >-
                     An optional key-value map with additional details about the
                     Line Item.
-  '/carts/{id}/payment-sessions':
+  "/carts/{id}/payment-sessions":
     post:
       operationId: PostCartsCartPaymentSessions
       summary: Initialize Payment Sessions
@@ -357,8 +357,8 @@ paths:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
-  '/carts/{id}/discounts/{code}':
+                    $ref: "#/components/schemas/cart"
+  "/carts/{id}/discounts/{code}":
     delete:
       operationId: DeleteCartsCartDiscountsDiscount
       description: Removes a Discount from a Cart.
@@ -386,8 +386,8 @@ paths:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
-  '/carts/{id}/line-items/{line_id}':
+                    $ref: "#/components/schemas/cart"
+  "/carts/{id}/line-items/{line_id}":
     delete:
       operationId: DeleteCartsCartLineItemsItem
       summary: Delete a Line Item
@@ -408,14 +408,14 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
+                    $ref: "#/components/schemas/cart"
     post:
       operationId: PostCartsCartLineItemsItem
       summary: Update a Line Item
@@ -436,7 +436,7 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -455,7 +455,7 @@ paths:
                 quantity:
                   type: integer
                   description: The quantity to set the Line Item to.
-  '/carts/{id}/payment-sessions/{provider_id}':
+  "/carts/{id}/payment-sessions/{provider_id}":
     delete:
       operationId: DeleteCartsCartPaymentSessionsSession
       summary: Delete a Payment Session
@@ -480,14 +480,14 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
+                    $ref: "#/components/schemas/cart"
     post:
       operationId: PostCartsCartPaymentSessionUpdate
       summary: Update a Payment Session
@@ -508,14 +508,14 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
+                    $ref: "#/components/schemas/cart"
       requestBody:
         content:
           application/json:
@@ -527,7 +527,7 @@ paths:
                 data:
                   type: object
                   description: The data to update the payment session with.
-  '/carts/{id}':
+  "/carts/{id}":
     get:
       operationId: GetCartsCart
       summary: Retrieve a Cart
@@ -542,15 +542,15 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
-  '/carts/{id}/payment-sessions/{provider_id}/refresh':
+                    $ref: "#/components/schemas/cart"
+  "/carts/{id}/payment-sessions/{provider_id}/refresh":
     post:
       operationId: PostCartsCartPaymentSessionsSession
       summary: Refresh a Payment Session
@@ -575,15 +575,15 @@ paths:
       tags:
         - Cart
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
-  '/carts/{id}/payment-session':
+                    $ref: "#/components/schemas/cart"
+  "/carts/{id}/payment-session":
     post:
       operationId: PostCartsCartPaymentSession
       summary: Select a Payment Session
@@ -619,7 +619,7 @@ paths:
                 provider_id:
                   type: string
                   description: The id of the Payment Provider.
-  '/store/carts/{id}':
+  "/store/carts/{id}":
     post:
       operationId: PostCartsCartPaymentMethodUpdate
       summary: Update a Cart"
@@ -643,7 +643,7 @@ paths:
                   description: The id of the Payment Provider.
                 data:
                   type: object
-                  description: ''
+                  description: ""
       tags:
         - Cart
       responses:
@@ -654,8 +654,8 @@ paths:
               schema:
                 properties:
                   cart:
-                    $ref: '#/components/schemas/cart'
-  '/gift-cards/{code}':
+                    $ref: "#/components/schemas/cart"
+  "/gift-cards/{code}":
     get:
       operationId: GetGiftCardsCode
       summary: Retrieve Gift Card by Code
@@ -670,7 +670,7 @@ paths:
       tags:
         - Gift Card
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -685,8 +685,8 @@ paths:
                   balance:
                     description: The current balanace of the Gift Card
                   region:
-                    $ref: '#/components/schemas/region'
-  '/orders/cart/{cart_id}':
+                    $ref: "#/components/schemas/region"
+  "/orders/cart/{cart_id}":
     get:
       operationId: GetOrdersOrderCartId
       summary: Retrieves Order by Cart id
@@ -710,8 +710,8 @@ paths:
               schema:
                 properties:
                   order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}':
+                    $ref: "#/components/schemas/order"
+  "/orders/{id}":
     get:
       operationId: GetOrdersOrder
       summary: Retrieves an Order
@@ -726,14 +726,14 @@ paths:
       tags:
         - Order
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
   /orders:
     get:
       operationId: GetOrders
@@ -758,15 +758,15 @@ paths:
       tags:
         - Order
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   order:
-                    $ref: '#/components/schemas/order'
-  '/collections/{id}':
+                    $ref: "#/components/schemas/order"
+  "/collections/{id}":
     get:
       operationId: GetCollectionsCollection
       summary: Retrieve a Product Collection
@@ -781,14 +781,14 @@ paths:
       tags:
         - Collection
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   collection:
-                    $ref: '#/components/schemas/product_collection'
+                    $ref: "#/components/schemas/product_collection"
   /collections:
     get:
       operationId: GetCollections
@@ -812,14 +812,14 @@ paths:
       tags:
         - Collection
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   collection:
-                    $ref: '#/components/schemas/product_collection'
+                    $ref: "#/components/schemas/product_collection"
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -836,18 +836,18 @@ paths:
                 address:
                   description: The Address to add to the Customer.
                   anyOf:
-                    - $ref: '#/components/schemas/address'
+                    - $ref: "#/components/schemas/address"
       tags:
         - Customer
       responses:
-        '200':
+        "200":
           description: A successful response
           content:
             application/json:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
   /customers:
     post:
       operationId: PostCustomers
@@ -864,7 +864,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
       requestBody:
         content:
           application/json:
@@ -891,7 +891,7 @@ paths:
                 phone:
                   type: string
                   description: The Customer's phone number.
-  '/customers/me/addresses/{address_id}':
+  "/customers/me/addresses/{address_id}":
     delete:
       operationId: DeleteCustomersCustomerAddressesAddress
       summary: Delete an Address
@@ -914,7 +914,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
     post:
       operationId: PostCustomersCustomerAddressesAddress
       summary: Update a Shipping Address
@@ -935,7 +935,7 @@ paths:
                 address:
                   description: The updated Address.
                   anyOf:
-                    - $ref: '#/components/schemas/address'
+                    - $ref: "#/components/schemas/address"
       tags:
         - Customer
       responses:
@@ -946,7 +946,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
   /customers/me:
     get:
       operationId: GetCustomersCustomer
@@ -958,14 +958,14 @@ paths:
       tags:
         - Customer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
     post:
       operationId: PostCustomersCustomer
       summary: Update Customer details
@@ -985,7 +985,7 @@ paths:
                 billing_address:
                   description: The Address to be used for billing purposes.
                   anyOf:
-                    - $ref: '#/components/schemas/address'
+                    - $ref: "#/components/schemas/address"
                 password:
                   description: The Customer's password.
                   type: string
@@ -1008,7 +1008,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
   /customers/me/payment-methods:
     get:
       operationId: GetCustomersCustomerPaymentMethods
@@ -1021,7 +1021,7 @@ paths:
       tags:
         - Customer
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -1088,12 +1088,12 @@ paths:
                     description: The offset for pagination.
                     type: integer
                   limit:
-                    description: 'The maxmimum number of Orders to return,'
+                    description: "The maxmimum number of Orders to return,"
                     type: integer
                   orders:
                     type: array
                     items:
-                      $ref: '#/components/schemas/order'
+                      $ref: "#/components/schemas/order"
   /customers/password-token:
     post:
       operationId: PostCustomersCustomerPasswordToken
@@ -1106,7 +1106,7 @@ paths:
       tags:
         - Customer
       responses:
-        '204':
+        "204":
           description: OK
       requestBody:
         content:
@@ -1137,7 +1137,7 @@ paths:
               schema:
                 properties:
                   customer:
-                    $ref: '#/components/schemas/customer'
+                    $ref: "#/components/schemas/customer"
       requestBody:
         content:
           application/json:
@@ -1157,7 +1157,7 @@ paths:
                 password:
                   type: string
                   description: The new password to set for the Customer.
-  '/regions/{id}':
+  "/regions/{id}":
     get:
       operationId: GetRegionsRegion
       summary: Retrieves a Region
@@ -1179,7 +1179,7 @@ paths:
               schema:
                 properties:
                   region:
-                    $ref: '#/components/schemas/region'
+                    $ref: "#/components/schemas/region"
   /regions:
     get:
       operationId: GetRegions
@@ -1201,13 +1201,13 @@ paths:
                     description: The offset for pagination.
                     type: integer
                   limit:
-                    description: 'The maxmimum number of regions to return,'
+                    description: "The maxmimum number of regions to return,"
                     type: integer
                   regions:
                     type: array
                     items:
-                      $ref: '#/components/schemas/region'
-  '/products/{id}':
+                      $ref: "#/components/schemas/region"
+  "/products/{id}":
     get:
       operationId: GetProductsProduct
       summary: Retrieves a Product
@@ -1341,8 +1341,8 @@ paths:
                   products:
                     type: array
                     items:
-                      $ref: '#/components/schemas/product'
-  '/return-reasons/{id}':
+                      $ref: "#/components/schemas/product"
+  "/return-reasons/{id}":
     get:
       operationId: GetReturnReasonsReason
       summary: Retrieve a Return Reason
@@ -2052,7 +2052,7 @@ components:
         customers:
           type: array
           items:
-            $ref: '#/components/schemas/customer'
+            $ref: "#/components/schemas/customer"
         created_at:
           type: string
           format: date-time
@@ -3140,7 +3140,7 @@ components:
           description: The Products contained in the Product Collection.
           type: array
           items:
-            $ref: '#/components/schemas/product'
+            $ref: "#/components/schemas/product"
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
