@@ -30,6 +30,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     UPDATED: "batch.updated",
     CANCELED: "batch.canceled",
     COMPLETED: "batch.completed",
+    PROCESS_READY: "batch-process.ready",
     PROCESS_COMPLETE: "batch-process.complete",
   }
 
@@ -98,6 +99,25 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       await this.eventBus_
         .withTransaction(manager)
         .emit(BatchJobService.Events.PROCESS_COMPLETE, {
+          id: batchJob.id,
+        })
+
+      return batchJob
+    })
+  }
+
+  async setReady(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async (manager) => {
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
+
+      batchJob.ready_at = new Date()
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(BatchJobService.Events.PROCESS_READY, {
           id: batchJob.id,
         })
 
