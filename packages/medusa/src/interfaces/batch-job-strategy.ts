@@ -47,6 +47,11 @@ export abstract class AbstractBatchJobStrategy<
   public abstract processJob(batchJobId: string): Promise<void>
 
   public abstract buildTemplate(): Promise<string>
+
+  abstract prepareBatchJobForProcessing(
+    batchJobId: string,
+    req: Express.Request
+  ): Promise<BatchJob>
 }
 
 export function isBatchJobStrategy(
