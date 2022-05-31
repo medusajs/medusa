@@ -4,7 +4,7 @@ import { AwilixContainer } from "awilix"
  * Generic validation interface used to run validation logic on every line or record.
  * All different validation objects should implement this interface
  */
-export interface IValidator<TLine> {
+export interface ICsvValidator<TLine> {
   /**
    *
    * @param value value of column or property
@@ -29,7 +29,9 @@ export type LineContext<TLine> = {
  * Abstract class implementation of the IValidator interface.
  * All validation objects part of the schema should extend this class.
  */
-export abstract class AbstractCsvValidator<TLine> implements IValidator<TLine> {
+export abstract class AbstractCsvValidator<TLine>
+  implements ICsvValidator<TLine>
+{
   constructor(protected readonly container: AwilixContainer) {}
 
   abstract validate(
