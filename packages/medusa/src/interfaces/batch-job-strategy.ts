@@ -60,7 +60,7 @@ export abstract class AbstractBatchJobStrategy<
 
   public abstract buildTemplate(): Promise<string>
 
-  abstract prepareBatchJobForProcessing(
+  public abstract prepareBatchJobForProcessing(
     batchJobId: string,
     req: Express.Request
   ): Promise<BatchJob>
