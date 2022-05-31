@@ -88,7 +88,7 @@ class DigitalOceanService extends AbstractFileService {
     throw new Error("Method not implemented.")
   }
 
-  async downloadAsStream(fileData) {
+  async getDownloadStream(fileData) {
     throw new Error("Method not implemented.")
   }
 
