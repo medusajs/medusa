@@ -1,4 +1,4 @@
-import { IsBoolean, IsJSON, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
 
