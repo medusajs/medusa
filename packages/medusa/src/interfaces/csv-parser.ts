@@ -46,6 +46,9 @@ export type CsvSchema<TLine = unknown> = {
     required?: boolean
     mapTo?: string
     validator?: AbstractCsvValidator<TLine>
-    transformer?: <T>(value: string, context: CsvParserContext<TLine>) => T
+    transformer?: <TValue, TOutput>(
+      value: TValue,
+      context: CsvParserContext<TLine>
+    ) => TOutput
   }[]
 }
