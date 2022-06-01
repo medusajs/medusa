@@ -51,7 +51,7 @@ const setupJobDb = async (dbConnection) => {
   }
 }
 
-describe("/admin/batch", () => {
+describe("/admin/batch-jobs", () => {
   let medusaProcess
   let dbConnection
 
@@ -68,7 +68,7 @@ describe("/admin/batch", () => {
     medusaProcess.kill()
   })
 
-  describe("GET /admin/batch", () => {
+  describe("GET /admin/batch-jobs", () => {
     beforeEach(async () => {
       await setupJobDb(dbConnection)
     })
@@ -80,7 +80,7 @@ describe("/admin/batch", () => {
 
     it("lists batch jobs created by the user", async () => {
       const api = useApi()
-      const response = await api.get("/admin/batch", adminReqConfig)
+      const response = await api.get("/admin/batch-jobs", adminReqConfig)
 
       expect(response.status).toEqual(200)
       expect(response.data.batch_jobs.length).toEqual(3)
@@ -160,7 +160,7 @@ describe("/admin/batch", () => {
       const api = useApi()
 
       const response = await api.post(
-        "/admin/batch",
+        "/admin/batch-jobs",
         {
           type: "batch_1",
           context: JSON.stringify({}),
