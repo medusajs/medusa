@@ -1,11 +1,15 @@
+import { Dictionary, omit, pickBy } from "lodash"
 import { EntityManager } from "typeorm"
 import { AdminGetOrdersParams } from "../../../api"
 import { IFileService } from "../../../interfaces"
 import { AbstractBatchJobStrategy } from "../../../interfaces/batch-job-strategy"
+import logger from "../../../loaders/logger"
 import { BatchJob, Order } from "../../../models"
 import { OrderService, TotalsService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
+import { DateComparisonOperator } from "../../../types/common"
+import { Logger } from "../../../types/global"
 import { validator } from "../../../utils/validator"
 
 class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> {
@@ -76,7 +80,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   async validateContext(
     context: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
-    validator(AdminGetOrdersParams, context.params)
+    await validator(AdminGetOrdersParams, context.params)
     return context
   }
 
@@ -89,6 +93,13 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
   async processJob(batchJobId: string): Promise<BatchJob> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
+
+    const params = await validator(
+      AdminGetOrdersParams,
+      batchJob.context.params
+    )
+
+    const [filter, listConfig] = this.getListParameters(params)
 
     const {
       writeStream,
@@ -104,30 +115,21 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
     let offset = 0
 
-    const [_, count] = await this.orderService_.listAndCount(
-      {},
-      {
-        skip: offset,
-        take: this.BATCH_SIZE,
-        order: { created_at: "DESC" },
-        relations: this.relations,
-      }
-    )
+    const [, count] = await this.orderService_.listAndCount(filter, {
+      ...listConfig,
+      skip: offset,
+      take: this.BATCH_SIZE,
+    })
 
     let context = batchJob.context
     let orders = []
 
     while (offset < count) {
-      orders = await this.orderService_.list(
-        {},
-        {
-          skip: offset,
-          take: this.BATCH_SIZE,
-          order: { created_at: "DESC" },
-          relations: this.relations,
-          select: this.selectConfig,
-        }
-      )
+      orders = await this.orderService_.list(filter, {
+        ...listConfig,
+        skip: offset,
+        take: this.BATCH_SIZE,
+      })
 
       orders.forEach(async (order) => {
         writeStream.write(await this.buildCSVLine(order))
@@ -232,6 +234,42 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         line.currency_code,
       ].join(this.DELIMITER) + this.NEWLINE
     )
+  }
+
+  private getListParameters(
+    context: AdminGetOrdersParams
+  ): [Dictionary<string | number | string[] | DateComparisonOperator>, any] {
+    let includeFields: string[] = []
+
+    if (context.fields) {
+      includeFields = context.fields.split(",")
+      // Ensure created_at is included, since we are sorting on this
+      includeFields.push("created_at")
+    }
+
+    let expandFields: string[] = []
+    if (context.expand) {
+      expandFields = context.expand.split(",")
+    }
+
+    const listConfig = {
+      select: includeFields.length ? includeFields : this.selectConfig,
+      relations: expandFields.length ? expandFields : this.relations,
+      order: { created_at: "DESC" },
+    }
+
+    const filterableFields = omit(context, [
+      "limit",
+      "offset",
+      "expand",
+      "fields",
+      "order",
+    ])
+
+    return [
+      pickBy(filterableFields, (val) => typeof val !== "undefined"),
+      listConfig,
+    ]
   }
 }
 
