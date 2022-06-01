@@ -9,19 +9,20 @@ describe("CsvParser", () => {
     })
 
     let csvContent =
-        'title,subtitle\n"T-shirt","summer tee"\n"Sunglasses","Red sunglasses"',
-      products = [
-        {
-          title: "T-shirt",
-          subtitle: "summer tee",
-        },
-        {
-          title: "Sunglasses",
-          subtitle: "Red sunglasses",
-        },
-      ]
+      'title,subtitle\n"T-shirt","summer tee"\n"Sunglasses","Red sunglasses"'
 
-    beforeEach(() => {
+    let expectedProducts = [
+      {
+        title: "T-shirt",
+        subtitle: "summer tee",
+      },
+      {
+        title: "Sunglasses",
+        subtitle: "Red sunglasses",
+      },
+    ]
+
+    afterEach(() => {
       jest.clearAllMocks()
     })
 
@@ -29,7 +30,7 @@ describe("CsvParser", () => {
       const stream = Readable.from(csvContent)
       const content = await csvParser.parse(stream)
 
-      expect(content).toEqual(products)
+      expect(content).toEqual(expectedProducts)
     })
   })
 
@@ -108,7 +109,7 @@ describe("CsvParser", () => {
           },
           {
             name: "price usd",
-            transformer: (value) => Math.round(parseFloat(value) * 100),
+            transformer: (value) => Math.round(Number(value) * 100),
           },
         ],
       })
