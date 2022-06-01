@@ -163,7 +163,7 @@ describe("/admin/batch-jobs", () => {
         "/admin/batch-jobs",
         {
           type: "batch_1",
-          context: JSON.stringify({}),
+          context: {},
         },
         adminReqConfig
       )
