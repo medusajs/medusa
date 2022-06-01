@@ -42,7 +42,7 @@ export class AdminPostBatchesReq {
   @IsString()
   type: string
 
-  @IsJSON()
+  @IsObject()
   context: Record<string, unknown>
 
   @IsBoolean()
