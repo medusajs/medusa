@@ -3,8 +3,8 @@ import { BatchJobService } from "../../../../services"
 /**
  * @oas [post] /batch/{id}/confirm
  * operationId: "PostBatchBatchComfirm"
- * summary: "Emit an event of type PROCESS_COMPLETE"
- * description: "Emit an event of type PROCESS_COMPLETE"
+ * summary: "Emit an event of type CONFIRMED"
+ * description: "Emit an event of type CONFIRMED"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the batch job.
