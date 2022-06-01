@@ -53,6 +53,7 @@ export default () => {
         break
       default:
         errObj.code = "unknown_error"
+        errObj.message = "An unknown error occurred."
         errObj.type = "unknown_error"
         break
     }
