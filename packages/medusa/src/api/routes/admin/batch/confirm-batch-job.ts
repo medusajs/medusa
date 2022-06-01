@@ -1,8 +1,8 @@
 import { BatchJobService } from "../../../../services"
 
 /**
- * @oas [post] /batch/{id}/confirm
- * operationId: "PostBatchBatchComfirm"
+ * @oas [post] /batch-jobs/{id}/confirm
+ * operationId: "PostBatchJobsBatchJobConfirm"
  * summary: "Emit an event of type CONFIRMED"
  * description: "Emit an event of type CONFIRMED"
  * x-authenticated: true

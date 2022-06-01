@@ -106,7 +106,7 @@ describe("/admin/batch", () => {
     })
   })
 
-  describe("GET /admin/batch/:id", () => {
+  describe("GET /admin/batch-jobs/:id", () => {
     beforeEach(async () => {
       await setupJobDb(dbConnection)
     })
@@ -118,7 +118,7 @@ describe("/admin/batch", () => {
 
     it("return batch job created by the user", async () => {
       const api = useApi()
-      const response = await api.get("/admin/batch/job_1", adminReqConfig)
+      const response = await api.get("/admin/batch-jobs/job_1", adminReqConfig)
 
       expect(response.status).toEqual(200)
       expect(response.data.batch_job).toEqual(expect.objectContaining({
@@ -130,7 +130,7 @@ describe("/admin/batch", () => {
 
     it("should fail on batch job created by other user", async () => {
       const api = useApi()
-      await api.get("/admin/batch/job_4", adminReqConfig)
+      await api.get("/admin/batch-jobs/job_4", adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
@@ -141,7 +141,7 @@ describe("/admin/batch", () => {
     })
   })
 
-  describe("POST /admin/batch/", () => {
+  describe("POST /admin/batch-jobs/", () => {
     beforeEach(async() => {
       try {
         await adminSeeder(dbConnection)
@@ -179,7 +179,7 @@ describe("/admin/batch", () => {
     })
   })
 
-  describe("POST /admin/batch/:id/confirm", () => {
+  describe("POST /admin/batch-jobs/:id/confirm", () => {
     beforeEach(async () => {
       await setupJobDb(dbConnection)
     })
@@ -195,7 +195,7 @@ describe("/admin/batch", () => {
       const jobId = "job_4"
 
       api
-        .post(`/admin/batch/${jobId}/confirm`, {}, adminReqConfig)
+        .post(`/admin/batch-jobs/${jobId}/confirm`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
@@ -206,7 +206,7 @@ describe("/admin/batch", () => {
     })
   })
 
-  describe("POST /admin/batch/:id/cancel", () => {
+  describe("POST /admin/batch-jobs/:id/cancel", () => {
     beforeEach(async () => {
       try {
         await setupJobDb(dbConnection)
@@ -233,7 +233,7 @@ describe("/admin/batch", () => {
       const jobId = "job_1"
 
       const response = await api.post(
-        `/admin/batch/${jobId}/cancel`,
+        `/admin/batch-jobs/${jobId}/cancel`,
         {},
         adminReqConfig
       )
@@ -254,7 +254,7 @@ describe("/admin/batch", () => {
       const jobId = "job_4"
 
       api
-        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
+        .post(`/admin/batch-jobs/${jobId}/cancel`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
@@ -271,7 +271,7 @@ describe("/admin/batch", () => {
       const jobId = "job_complete"
 
       await api
-        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
+        .post(`/admin/batch-jobs/${jobId}/cancel`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
