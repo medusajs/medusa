@@ -374,7 +374,7 @@ describe("/admin/batch-jobs", () => {
       const jobId = "job_4"
 
       api
-        .post(`/admin/batch/${jobId}/confirm`, {}, adminReqConfig)
+        .post(`/admin/batch-jobs/${jobId}/confirm`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
@@ -385,7 +385,7 @@ describe("/admin/batch-jobs", () => {
     })
   })
 
-  describe("POST /admin/batch/:id/cancel", () => {
+  describe("POST /admin/batch-jobs/:id/cancel", () => {
     beforeEach(async () => {
       try {
         await setupJobDb(dbConnection)
@@ -412,7 +412,7 @@ describe("/admin/batch-jobs", () => {
       const jobId = "job_1"
 
       const response = await api.post(
-        `/admin/batch/${jobId}/cancel`,
+        `/admin/batch-jobs/${jobId}/cancel`,
         {},
         adminReqConfig
       )
@@ -433,7 +433,7 @@ describe("/admin/batch-jobs", () => {
       const jobId = "job_4"
 
       api
-        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
+        .post(`/admin/batch-jobs/${jobId}/cancel`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")
@@ -450,7 +450,7 @@ describe("/admin/batch-jobs", () => {
       const jobId = "job_complete"
 
       await api
-        .post(`/admin/batch/${jobId}/cancel`, {}, adminReqConfig)
+        .post(`/admin/batch-jobs/${jobId}/cancel`, {}, adminReqConfig)
         .catch((err) => {
           expect(err.response.status).toEqual(400)
           expect(err.response.data.type).toEqual("not_allowed")

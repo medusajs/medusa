@@ -543,7 +543,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(BatchJobService.Events.CREATED, {
+        .emit(BatchJobService.Events.UPDATED, {
           id: batchJob.id,
         })
 
