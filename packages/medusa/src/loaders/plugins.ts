@@ -17,7 +17,6 @@ import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import {
-  AbstractFileService,
   AbstractTaxService,
   isFileService,
   isTaxCalculationStrategy,
@@ -301,7 +300,7 @@ export async function registerServices(
         !(loaded.prototype instanceof TransactionBaseService)
       ) {
         const logger = container.resolve<Logger>("logger")
-        const message = `File must be a valid service implementation, please check ${fn}`
+        const message = `The class must be a valid service implementation, please check ${fn}`
         logger.error(message)
         throw new Error(message)
       }
