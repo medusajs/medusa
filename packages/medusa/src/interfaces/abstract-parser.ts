@@ -9,7 +9,7 @@ export interface IParser<TResult> {
   /**
    *
    * @param readableStream readable stream to parse
-   * @param options options used for parsing by underlying parsing implementation
+   * @param options options used for parsing by underlying parser implementation
    */
   parse(
     readableStream: NodeJS.ReadableStream,

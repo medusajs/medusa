@@ -7,6 +7,7 @@ const DEFAULT_PARSE_OPTIONS = {
   dynamicTyping: true,
   header: true,
 }
+
 class CsvParser<
   TSchema extends CsvSchema = CsvSchema,
   TParserResult = unknown,
