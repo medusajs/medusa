@@ -1,28 +1,22 @@
 import {
-  Entity,
-  Index,
-  RelationId,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Index,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Order } from "./order"
 import { Swap } from "./swap"
 import { ClaimOrder } from "./claim-order"
 import { ReturnItem } from "./return-item"
 import { ShippingMethod } from "./shipping-method"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ReturnStatus {
   REQUESTED = "requested",
@@ -32,10 +26,7 @@ export enum ReturnStatus {
 }
 
 @Entity()
-export class Return {
-  @PrimaryColumn()
-  id: string
-
+export class Return extends BaseEntity {
   @DbAwareColumn({
     type: "enum",
     enum: ReturnStatus,
@@ -43,21 +34,17 @@ export class Return {
   })
   status: ReturnStatus
 
-  @OneToMany(
-    () => ReturnItem,
-    item => item.return_order,
-    { eager: true, cascade: ["insert"] }
-  )
+  @OneToMany(() => ReturnItem, (item) => item.return_order, {
+    eager: true,
+    cascade: ["insert"],
+  })
   items: ReturnItem[]
 
   @Index()
   @Column({ nullable: true })
   swap_id: string
 
-  @OneToOne(
-    () => Swap,
-    swap => swap.return_order
-  )
+  @OneToOne(() => Swap, (swap) => swap.return_order)
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
@@ -65,10 +52,7 @@ export class Return {
   @Column({ nullable: true })
   claim_order_id: string
 
-  @OneToOne(
-    () => ClaimOrder,
-    co => co.return_order
-  )
+  @OneToOne(() => ClaimOrder, (co) => co.return_order)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
@@ -76,22 +60,17 @@ export class Return {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    o => o.returns
-  )
+  @ManyToOne(() => Order, (o) => o.returns)
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @OneToOne(
-    () => ShippingMethod,
-    method => method.return_order,
-    { cascade: true }
-  )
+  @OneToOne(() => ShippingMethod, (method) => method.return_order, {
+    cascade: true,
+  })
   shipping_method: ShippingMethod
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  shipping_data: any
+  shipping_data: Record<string, unknown>
 
   @Column({ type: "int" })
   refund_amount: number
@@ -99,26 +78,18 @@ export class Return {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   received_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @Column({ type: "boolean", nullable: true })
-  no_notification: Boolean
+  no_notification: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `ret_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "ret")
   }
 }
 

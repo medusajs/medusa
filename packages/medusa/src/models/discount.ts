@@ -1,27 +1,21 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   JoinTable,
   ManyToMany,
   ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { DiscountRule } from "./discount-rule"
 import { Region } from "./region"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Discount {
-  @PrimaryColumn()
-  id: string
-
+export class Discount extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   code: string
@@ -54,10 +48,10 @@ export class Discount {
   starts_at: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  ends_at: Date
+  ends_at: Date | null
 
-  @Column({ nullable: true })
-  valid_duration: string
+  @Column({ type: String, nullable: true })
+  valid_duration: string | null
 
   @ManyToMany(() => Region, { cascade: true })
   @JoinTable({
@@ -73,31 +67,20 @@ export class Discount {
   })
   regions: Region[]
 
-  @Column({ nullable: true })
-  usage_limit: number
+  @Column({ type: Number, nullable: true })
+  usage_limit: number | null
 
   @Column({ default: 0 })
   usage_count: number
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `disc_${id}`
+  private upperCaseCode(): void {
+    if (this.id) return
+
+    this.id = generateEntityId(this.id, "disc")
     this.code = this.code.toUpperCase()
   }
 }

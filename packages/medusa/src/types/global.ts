@@ -1,6 +1,17 @@
 import { AwilixContainer } from "awilix"
 import { Logger as _Logger } from "winston"
 import { LoggerOptions } from "typeorm"
+import { Customer, User } from "../models"
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      user?: User | Customer
+      scope: MedusaContainer
+    }
+  }
+}
 
 export type ClassConstructor<T> = {
   new (...args: unknown[]): T

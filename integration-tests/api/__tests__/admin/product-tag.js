@@ -68,5 +68,38 @@ describe("/admin/product-tags", () => {
         tagMatch,
       ])
     })
+
+    it("returns a list of product tags matching free text search param", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get("/admin/product-tags?q=123", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+
+      const tagMatch = {
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      }
+
+      expect(res.data.product_tags.map((pt) => pt.value)).toEqual([
+        "123",
+        "123",
+        "123",
+      ])
+
+      expect(res.data.product_tags).toMatchSnapshot([
+        tagMatch,
+        tagMatch,
+        tagMatch,
+      ])
+    })
   })
 })

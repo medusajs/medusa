@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[user.ts:36](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L36)
+[services/user.ts:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L36)
 
 ## Properties
 
@@ -36,7 +36,7 @@ BaseService.constructor
 
 #### Defined in
 
-[user.ts:32](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L32)
+[services/user.ts:32](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L32)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[user.ts:33](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L33)
+[services/user.ts:33](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L33)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[user.ts:34](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L34)
+[services/user.ts:34](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L34)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[user.ts:31](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L31)
+[services/user.ts:31](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L31)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 #### Defined in
 
-[user.ts:27](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L27)
+[services/user.ts:27](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L27)
 
 ## Methods
 
@@ -108,7 +108,7 @@ the result of create
 
 #### Defined in
 
-[user.ts:188](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L188)
+[services/user.ts:188](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L188)
 
 ___
 
@@ -132,7 +132,7 @@ the result of the delete operation.
 
 #### Defined in
 
-[user.ts:257](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L257)
+[services/user.ts:257](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L257)
 
 ___
 
@@ -160,7 +160,7 @@ the generated JSON web token
 
 #### Defined in
 
-[user.ts:311](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L311)
+[services/user.ts:311](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L311)
 
 ___
 
@@ -184,7 +184,7 @@ hashed password
 
 #### Defined in
 
-[user.ts:176](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L176)
+[services/user.ts:176](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L176)
 
 ___
 
@@ -207,7 +207,7 @@ the result of the find operation
 
 #### Defined in
 
-[user.ts:88](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L88)
+[services/user.ts:88](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L88)
 
 ___
 
@@ -233,7 +233,7 @@ the user document.
 
 #### Defined in
 
-[user.ts:100](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L100)
+[services/user.ts:100](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L100)
 
 ___
 
@@ -259,7 +259,7 @@ the user document.
 
 #### Defined in
 
-[user.ts:124](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L124)
+[services/user.ts:124](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L124)
 
 ___
 
@@ -285,7 +285,7 @@ the user document.
 
 #### Defined in
 
-[user.ts:152](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L152)
+[services/user.ts:152](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L152)
 
 ___
 
@@ -312,7 +312,7 @@ the result of the update operation
 
 #### Defined in
 
-[user.ts:282](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L282)
+[services/user.ts:282](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L282)
 
 ___
 
@@ -337,7 +337,7 @@ the result of create
 
 #### Defined in
 
-[user.ts:216](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L216)
+[services/user.ts:216](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L216)
 
 ___
 
@@ -361,7 +361,7 @@ the validated email
 
 #### Defined in
 
-[user.ts:70](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L70)
+[services/user.ts:70](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L70)
 
 ___
 
@@ -381,4 +381,4 @@ ___
 
 #### Defined in
 
-[user.ts:49](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/user.ts#L49)
+[services/user.ts:49](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L49)

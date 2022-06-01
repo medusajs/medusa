@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[inventory.js:5](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/inventory.js#L5)
+[services/inventory.js:5](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/inventory.js#L5)
 
 ## Methods
 
@@ -49,7 +49,7 @@ resolves to the update result.
 
 #### Defined in
 
-[inventory.js:36](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/inventory.js#L36)
+[services/inventory.js:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/inventory.js#L36)
 
 ___
 
@@ -76,7 +76,7 @@ true if the inventory covers the quantity
 
 #### Defined in
 
-[inventory.js:62](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/inventory.js#L62)
+[services/inventory.js:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/inventory.js#L62)
 
 ___
 
@@ -96,4 +96,4 @@ ___
 
 #### Defined in
 
-[inventory.js:15](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/inventory.js#L15)
+[services/inventory.js:15](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/inventory.js#L15)

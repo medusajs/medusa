@@ -28,7 +28,7 @@ BaseService.constructor
 
 #### Defined in
 
-[discount.ts:51](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L51)
+[services/discount.ts:59](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L59)
 
 ## Properties
 
@@ -38,7 +38,17 @@ BaseService.constructor
 
 #### Defined in
 
-[discount.ts:45](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L45)
+[services/discount.ts:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L52)
+
+___
+
+### discountConditionService\_
+
+• `Private` **discountConditionService\_**: `DiscountConditionService`
+
+#### Defined in
+
+[services/discount.ts:53](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L53)
 
 ___
 
@@ -48,7 +58,7 @@ ___
 
 #### Defined in
 
-[discount.ts:42](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L42)
+[services/discount.ts:49](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L49)
 
 ___
 
@@ -58,7 +68,7 @@ ___
 
 #### Defined in
 
-[discount.ts:43](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L43)
+[services/discount.ts:50](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L50)
 
 ___
 
@@ -68,7 +78,7 @@ ___
 
 #### Defined in
 
-[discount.ts:49](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L49)
+[services/discount.ts:57](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L57)
 
 ___
 
@@ -78,7 +88,7 @@ ___
 
 #### Defined in
 
-[discount.ts:44](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L44)
+[services/discount.ts:51](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L51)
 
 ___
 
@@ -88,7 +98,7 @@ ___
 
 #### Defined in
 
-[discount.ts:41](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L41)
+[services/discount.ts:48](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L48)
 
 ___
 
@@ -98,7 +108,7 @@ ___
 
 #### Defined in
 
-[discount.ts:47](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L47)
+[services/discount.ts:55](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L55)
 
 ___
 
@@ -108,7 +118,7 @@ ___
 
 #### Defined in
 
-[discount.ts:48](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L48)
+[services/discount.ts:56](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L56)
 
 ___
 
@@ -118,7 +128,7 @@ ___
 
 #### Defined in
 
-[discount.ts:46](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L46)
+[services/discount.ts:54](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L54)
 
 ## Methods
 
@@ -143,7 +153,7 @@ the result of the update operation
 
 #### Defined in
 
-[discount.ts:498](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L498)
+[services/discount.ts:521](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L521)
 
 ___
 
@@ -165,7 +175,7 @@ ___
 
 #### Defined in
 
-[discount.ts:698](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L698)
+[services/discount.ts:624](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L624)
 
 ___
 
@@ -186,7 +196,7 @@ ___
 
 #### Defined in
 
-[discount.ts:832](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L832)
+[services/discount.ts:762](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L762)
 
 ___
 
@@ -211,7 +221,7 @@ the result of the create operation
 
 #### Defined in
 
-[discount.ts:225](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L225)
+[services/discount.ts:220](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L220)
 
 ___
 
@@ -236,7 +246,7 @@ the newly created dynamic code
 
 #### Defined in
 
-[discount.ts:423](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L423)
+[services/discount.ts:446](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L446)
 
 ___
 
@@ -260,7 +270,7 @@ the result of the delete operation
 
 #### Defined in
 
-[discount.ts:560](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L560)
+[services/discount.ts:583](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L583)
 
 ___
 
@@ -285,7 +295,7 @@ the newly created dynamic code
 
 #### Defined in
 
-[discount.ts:475](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L475)
+[services/discount.ts:498](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L498)
 
 ___
 
@@ -305,7 +315,7 @@ ___
 
 #### Defined in
 
-[discount.ts:807](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L807)
+[services/discount.ts:733](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L733)
 
 ___
 
@@ -325,7 +335,7 @@ ___
 
 #### Defined in
 
-[discount.ts:803](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L803)
+[services/discount.ts:729](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L729)
 
 ___
 
@@ -345,7 +355,7 @@ ___
 
 #### Defined in
 
-[discount.ts:797](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L797)
+[services/discount.ts:723](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L723)
 
 ___
 
@@ -365,7 +375,7 @@ ___
 
 #### Defined in
 
-[discount.ts:811](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L811)
+[services/discount.ts:741](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L741)
 
 ___
 
@@ -386,7 +396,7 @@ ___
 
 #### Defined in
 
-[discount.ts:815](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L815)
+[services/discount.ts:745](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L745)
 
 ___
 
@@ -409,7 +419,7 @@ the result of the find operation
 
 #### Defined in
 
-[discount.ts:161](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L161)
+[services/discount.ts:156](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L156)
 
 ___
 
@@ -432,7 +442,7 @@ the result of the find operation
 
 #### Defined in
 
-[discount.ts:178](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L178)
+[services/discount.ts:173](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L173)
 
 ___
 
@@ -457,27 +467,7 @@ the result of the update operation
 
 #### Defined in
 
-[discount.ts:534](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L534)
-
-___
-
-### resolveConditionType\_
-
-▸ **resolveConditionType_**(`data`): `undefined` \| { `resource_ids`: `string`[] ; `type`: `DiscountConditionType`  }
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `data` | `UpsertDiscountConditionInput` |
-
-#### Returns
-
-`undefined` \| { `resource_ids`: `string`[] ; `type`: `DiscountConditionType`  }
-
-#### Defined in
-
-[discount.ts:576](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L576)
+[services/discount.ts:557](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L557)
 
 ___
 
@@ -502,22 +492,22 @@ the discount
 
 #### Defined in
 
-[discount.ts:284](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L284)
+[services/discount.ts:285](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L285)
 
 ___
 
 ### retrieveByCode
 
-▸ **retrieveByCode**(`discountCode`, `relations?`): `Promise`<`Discount`\>
+▸ **retrieveByCode**(`discountCode`, `config?`): `Promise`<`Discount`\>
 
 Gets a discount by discount code.
 
 #### Parameters
 
-| Name | Type | Default value | Description |
-| :------ | :------ | :------ | :------ |
-| `discountCode` | `string` | `undefined` | discount code of discount to retrieve |
-| `relations` | `string`[] | `[]` | list of relations |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountCode` | `string` | discount code of discount to retrieve |
+| `config` | `FindConfig`<`Discount`\> | the config object containing query settings |
 
 #### Returns
 
@@ -527,7 +517,7 @@ the discount document
 
 #### Defined in
 
-[discount.ts:312](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L312)
+[services/discount.ts:313](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L313)
 
 ___
 
@@ -552,28 +542,7 @@ the result of the update operation
 
 #### Defined in
 
-[discount.ts:348](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L348)
-
-___
-
-### upsertDiscountCondition\_
-
-▸ **upsertDiscountCondition_**(`discountId`, `data`): `Promise`<`void`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `discountId` | `string` |
-| `data` | `UpsertDiscountConditionInput` |
-
-#### Returns
-
-`Promise`<`void`\>
-
-#### Defined in
-
-[discount.ts:613](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L613)
+[services/discount.ts:348](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L348)
 
 ___
 
@@ -594,7 +563,7 @@ ___
 
 #### Defined in
 
-[discount.ts:739](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L739)
+[services/discount.ts:665](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L665)
 
 ___
 
@@ -615,31 +584,37 @@ ___
 
 #### Defined in
 
-[discount.ts:673](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L673)
+[services/discount.ts:599](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L599)
 
 ___
 
 ### validateDiscountRule\_
 
-▸ **validateDiscountRule_**(`discountRule`): `DiscountRule`
+▸ **validateDiscountRule_**<`T`\>(`discountRule`): `T`
 
 Creates a discount rule with provided data given that the data is validated.
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `Object` |
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `discountRule` | `any` | the discount rule to create |
+| `discountRule` | `T` | the discount rule to create |
 
 #### Returns
 
-`DiscountRule`
+`T`
 
 the result of the create operation
 
 #### Defined in
 
-[discount.ts:125](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L125)
+[services/discount.ts:138](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L138)
 
 ___
 
@@ -659,4 +634,4 @@ ___
 
 #### Defined in
 
-[discount.ts:96](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/discount.ts#L96)
+[services/discount.ts:108](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L108)

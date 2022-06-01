@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[store.js:10](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L10)
+[services/store.js:10](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L10)
 
 ## Methods
 
@@ -50,7 +50,7 @@ result after update
 
 #### Defined in
 
-[store.js:203](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L203)
+[services/store.js:203](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L203)
 
 ___
 
@@ -68,7 +68,7 @@ the store.
 
 #### Defined in
 
-[store.js:52](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L52)
+[services/store.js:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L52)
 
 ___
 
@@ -94,7 +94,7 @@ return the decorated Store.
 
 #### Defined in
 
-[store.js:266](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L266)
+[services/store.js:266](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L266)
 
 ___
 
@@ -121,7 +121,7 @@ ___
 
 #### Defined in
 
-[store.js:92](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L92)
+[services/store.js:92](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L92)
 
 ___
 
@@ -145,7 +145,7 @@ result after update
 
 #### Defined in
 
-[store.js:242](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L242)
+[services/store.js:242](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L242)
 
 ___
 
@@ -169,7 +169,7 @@ the store
 
 #### Defined in
 
-[store.js:84](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L84)
+[services/store.js:84](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L84)
 
 ___
 
@@ -193,7 +193,7 @@ resolves to the update result.
 
 #### Defined in
 
-[store.js:108](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L108)
+[services/store.js:108](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L108)
 
 ___
 
@@ -213,4 +213,4 @@ ___
 
 #### Defined in
 
-[store.js:31](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/store.js#L31)
+[services/store.js:31](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L31)

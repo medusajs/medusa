@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[claim.js:14](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L14)
+[services/claim.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L14)
 
 ## Properties
 
@@ -34,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[claim.js:36](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L36)
+[services/claim.js:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L36)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[claim.js:37](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L37)
+[services/claim.js:37](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L37)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[claim.js:38](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L38)
+[services/claim.js:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L38)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[claim.js:39](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L39)
+[services/claim.js:39](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L39)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[claim.js:40](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L40)
+[services/claim.js:40](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L40)
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 #### Defined in
 
-[claim.js:41](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L41)
+[services/claim.js:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L41)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[claim.js:42](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L42)
+[services/claim.js:42](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L42)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[claim.js:43](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L43)
+[services/claim.js:43](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L43)
 
 ___
 
@@ -114,7 +114,7 @@ ___
 
 #### Defined in
 
-[claim.js:44](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L44)
+[services/claim.js:44](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L44)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[claim.js:45](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L45)
+[services/claim.js:45](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L45)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 #### Defined in
 
-[claim.js:46](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L46)
+[services/claim.js:46](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L46)
 
 ___
 
@@ -144,7 +144,7 @@ ___
 
 #### Defined in
 
-[claim.js:47](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L47)
+[services/claim.js:47](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L47)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[claim.js:48](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L48)
+[services/claim.js:48](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L48)
 
 ___
 
@@ -164,7 +164,7 @@ ___
 
 #### Defined in
 
-[claim.js:49](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L49)
+[services/claim.js:49](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L49)
 
 ___
 
@@ -185,7 +185,7 @@ ___
 
 #### Defined in
 
-[claim.js:5](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L5)
+[services/claim.js:5](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L5)
 
 ## Methods
 
@@ -205,7 +205,7 @@ ___
 
 #### Defined in
 
-[claim.js:616](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L616)
+[services/claim.js:644](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L644)
 
 ___
 
@@ -225,7 +225,7 @@ ___
 
 #### Defined in
 
-[claim.js:484](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L484)
+[services/claim.js:512](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L512)
 
 ___
 
@@ -251,7 +251,7 @@ created claim
 
 #### Defined in
 
-[claim.js:159](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L159)
+[services/claim.js:159](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L159)
 
 ___
 
@@ -276,7 +276,7 @@ created claim
 
 #### Defined in
 
-[claim.js:350](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L350)
+[services/claim.js:378](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L378)
 
 ___
 
@@ -301,7 +301,7 @@ ___
 
 #### Defined in
 
-[claim.js:549](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L549)
+[services/claim.js:577](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L577)
 
 ___
 
@@ -326,7 +326,7 @@ resolves to the updated result.
 
 #### Defined in
 
-[claim.js:706](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L706)
+[services/claim.js:734](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L734)
 
 ___
 
@@ -349,7 +349,7 @@ the result of the find operation
 
 #### Defined in
 
-[claim.js:668](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L668)
+[services/claim.js:696](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L696)
 
 ___
 
@@ -369,7 +369,7 @@ ___
 
 #### Defined in
 
-[claim.js:507](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L507)
+[services/claim.js:535](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L535)
 
 ___
 
@@ -394,7 +394,7 @@ the order document
 
 #### Defined in
 
-[claim.js:683](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L683)
+[services/claim.js:711](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L711)
 
 ___
 
@@ -415,7 +415,7 @@ ___
 
 #### Defined in
 
-[claim.js:80](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L80)
+[services/claim.js:80](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L80)
 
 ___
 
@@ -435,4 +435,4 @@ ___
 
 #### Defined in
 
-[claim.js:52](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/claim.js#L52)
+[services/claim.js:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L52)

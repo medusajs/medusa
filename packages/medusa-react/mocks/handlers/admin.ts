@@ -1,5 +1,5 @@
-import { fixtures } from "../data"
 import { rest } from "msw"
+import { fixtures } from "../data"
 
 export const adminHandlers = [
   rest.post("/admin/collections/", (req, res, ctx) => {
@@ -249,6 +249,28 @@ export const adminHandlers = [
           ...fixtures.get("price_list"),
           id: req.params.id,
         },
+      })
+    )
+  }),
+
+  rest.delete("/admin/price-lists/:id/products/:product_id/prices", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        ids: [],
+        object: "money-amount",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.delete("/admin/price-lists/:id/variants/:variant_id/prices", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        ids: [],
+        object: "money-amount",
+        deleted: true,
       })
     )
   }),
@@ -761,6 +783,56 @@ export const adminHandlers = [
       })
     )
   }),
+
+  rest.post("/admin/discounts/:id/conditions", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount: {
+          ...fixtures.get("discount"),
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount: {
+          ...fixtures.get("discount"),
+        },
+      })
+    )
+  }),
+
+  rest.get("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount_condition: {
+          ...fixtures
+            .get("discount")
+            .rule.conditions.find(c => c.id === req.params.conditionId),
+        },
+      })
+    )
+  }),
+
+  rest.delete(
+    "/admin/discounts/:id/conditions/:conditionId",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          id: req.params.conditionId,
+          object: "discount-condition",
+          deleted: true,
+          discount: fixtures.get("discount"),
+        })
+      )
+    }
+  ),
 
   rest.get("/admin/draft-orders/", (req, res, ctx) => {
     return res(

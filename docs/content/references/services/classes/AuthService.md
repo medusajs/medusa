@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[auth.ts:12](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/auth.ts#L12)
+[services/auth.ts:12](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L12)
 
 ## Methods
 
@@ -54,7 +54,7 @@ scrypt to match password with hashed value.
 
 #### Defined in
 
-[auth.ts:78](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/auth.ts#L78)
+[services/auth.ts:78](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L78)
 
 ___
 
@@ -80,7 +80,7 @@ Authenticates a given user with an API token
 
 #### Defined in
 
-[auth.ts:41](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/auth.ts#L41)
+[services/auth.ts:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L41)
 
 ___
 
@@ -108,7 +108,7 @@ scrypt to match password with hashed value.
 
 #### Defined in
 
-[auth.ts:123](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/auth.ts#L123)
+[services/auth.ts:123](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L123)
 
 ___
 
@@ -133,4 +133,4 @@ the result of the comparison
 
 #### Defined in
 
-[auth.ts:28](https://github.com/medusajs/medusa/blob/636edb65/packages/medusa/src/services/auth.ts#L28)
+[services/auth.ts:28](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L28)
