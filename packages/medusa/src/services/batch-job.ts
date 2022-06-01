@@ -280,10 +280,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  /*
-   * if job is started with dry_run: true, then it's required
-   * to complete the job before it's written to DB
-   */
   async complete(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
