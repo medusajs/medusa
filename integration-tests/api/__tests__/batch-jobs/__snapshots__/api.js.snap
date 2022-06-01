@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/batch GET /admin/batch lists batch jobs created by the user 1`] = `
+exports[`/admin/batch-jobs GET /admin/batch-jobs lists batch jobs created by the user 1`] = `
 Object {
   "batch_jobs": Array [
     Object {
@@ -46,7 +46,7 @@ Object {
 }
 `;
 
-exports[`/admin/batch POST /admin/batch/ Creates a batch job 1`] = `
+exports[`/admin/batch-jobs POST /admin/batch-jobs/ Creates a batch job 1`] = `
 Object {
   "awaiting_confirmation_at": null,
   "canceled_at": null,
@@ -68,7 +68,7 @@ Object {
 }
 `;
 
-exports[`/admin/batch POST /admin/batch/:id/cancel Cancels batch job created by the user 1`] = `
+exports[`/admin/batch-jobs POST /admin/batch-jobs/:id/cancel Cancels batch job created by the user 1`] = `
 Object {
   "awaiting_confirmation_at": null,
   "canceled_at": Any<String>,
