@@ -3,8 +3,8 @@ import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /batch
- * operationId: "PostBatches"
+ * @oas [post] /batch-jobs
+ * operationId: "PostBatchJobs"
  * summary: "Create a Batch Job"
  * description: "Creates a Batch Job."
  * x-authenticated: true

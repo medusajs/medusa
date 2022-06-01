@@ -15,8 +15,8 @@ import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
 
 /**
- * @oas [get] /batch
- * operationId: "GetBatch"
+ * @oas [get] /batch-jobs
+ * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
  * description: "Retrieve a list of Batch Jobs."
  * x-authenticated: true
