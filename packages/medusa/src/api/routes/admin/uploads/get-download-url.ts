@@ -1,4 +1,5 @@
 import { IFileService } from "../../../../interfaces"
+import { Logger } from "../../../../types/global"
 
 /**
  * [delete] /uploads
@@ -13,9 +14,12 @@ import { IFileService } from "../../../../interfaces"
  *     description: OK
  */
 export default async (req, res) => {
-  const { key } = req.params
+  const { key } = req.body
   try {
     const fileService: IFileService<any> = req.scope.resolve("fileService")
+    const logger_: Logger = req.scope.resolve("logger")
+
+    logger_.info(key)
 
     const preSignedUrl = await fileService.getPresignedDownloadUrl({
       fileKey: key || "test-1653895914252.csv",

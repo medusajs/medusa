@@ -17,7 +17,7 @@ export default (app) => {
   )
 
   route.get(
-    "/download-url/:key",
+    "/download-url",
     middlewares.wrap(require("./get-download-url").default)
   )
 
