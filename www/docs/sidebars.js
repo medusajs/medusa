@@ -392,6 +392,11 @@ module.exports = {
         },
       ],
     },
+    {
+      type: "doc",
+      id: "contribution-guidelines",
+      label: "Contribution Guidelines",
+    },
   ],
   servicesSidebar: [
     {
