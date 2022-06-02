@@ -12,6 +12,12 @@ import { DateComparisonOperator } from "../../../types/common"
 import { Logger } from "../../../types/global"
 import { validator } from "../../../utils/validator"
 
+type PropertiesDescriptor<T> = {
+  fieldName: string
+  title: string
+  accessor: (entity: T) => string
+}
+
 class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> {
   public static identifier = "order-export-strategy"
   public static batchType = "order-export"
@@ -20,119 +26,111 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   private NEWLINE = "\r\n"
   private DELIMITER = ";"
 
-  protected readonly propertiesDescriptorArray = new Map([
-    ["id", { title: "Order_ID", accessor: (order: Order): string => order.id }],
-    [
-      "display_id",
-      {
-        title: "Display_ID",
-        accessor: (order: Order): string => order.display_id.toString(),
-      },
-    ],
-    [
-      "created_at",
-      {
-        title: "Date",
-        accessor: (order: Order): string => order.created_at.toUTCString(),
-      },
-    ],
-    [
-      "customer",
-      {
-        title: [
-          "Customer First name",
-          "Customer Last name",
-          "Customer Email",
-          "Customer ID",
+  protected readonly propertiesDescriptors: PropertiesDescriptor<Order>[] = [
+    {
+      fieldName: "id",
+      title: "Order_ID",
+      accessor: (order: Order): string => order.id,
+    },
+
+    {
+      fieldName: "display_id",
+      title: "Display_ID",
+      accessor: (order: Order): string => order.display_id.toString(),
+    },
+
+    {
+      fieldName: "created_at",
+      title: "Date",
+      accessor: (order: Order): string => order.created_at.toUTCString(),
+    },
+
+    {
+      fieldName: "customer",
+      title: [
+        "Customer First name",
+        "Customer Last name",
+        "Customer Email",
+        "Customer ID",
+      ].join(";"),
+      accessor: (order: Order): string =>
+        [
+          order.customer.first_name,
+          order.customer.last_name,
+          order.customer.email,
+          order.customer.id,
         ].join(";"),
-        accessor: (order: Order): string =>
-          [
-            order.customer.first_name,
-            order.customer.last_name,
-            order.customer.email,
-            order.customer.id,
-          ].join(";"),
-      },
-    ],
-    [
-      "shipping_address",
-      {
-        title: [
-          "Shipping Address 1",
-          "Shipping Address 2",
-          "Shipping Country Code",
-          "Shipping City",
-          "Shipping Postal Code",
-          "Shipping Region ID",
+    },
+
+    {
+      fieldName: "shipping_address",
+      title: [
+        "Shipping Address 1",
+        "Shipping Address 2",
+        "Shipping Country Code",
+        "Shipping City",
+        "Shipping Postal Code",
+        "Shipping Region ID",
+      ].join(";"),
+      accessor: (order: Order): string =>
+        [
+          order.shipping_address.address_1,
+          order.shipping_address.address_2,
+          order.shipping_address.country_code,
+          order.shipping_address.city,
+          order.shipping_address.postal_code,
+          order.region_id,
         ].join(";"),
-        accessor: (order: Order): string =>
-          [
-            order.shipping_address.address_1,
-            order.shipping_address.address_2,
-            order.shipping_address.country_code,
-            order.shipping_address.city,
-            order.shipping_address.postal_code,
-            order.region_id,
-          ].join(";"),
-      },
-    ],
-    [
-      "fulfillment_status",
-      {
-        title: "Fulfillment Status",
-        accessor: (order: Order): string => order.fulfillment_status,
-      },
-    ],
-    [
-      "payment_status",
-      {
-        title: "Payment Status",
-        accessor: (order: Order): string => order.payment_status,
-      },
-    ],
-    [
-      "subtotal",
-      {
-        title: "Subtotal",
-        accessor: (order: Order): string => order.subtotal.toString(),
-      },
-    ],
-    [
-      "shipping_total",
-      {
-        title: "Shipping Total",
-        accessor: (order: Order): string => order.shipping_total.toString(),
-      },
-    ],
-    [
-      "discount_total",
-      {
-        title: "Discount Total",
-        accessor: (order: Order): string => order.discount_total.toString(),
-      },
-    ],
-    [
-      "gift_card_total",
-      {
-        title: "Gift Card Total",
-        accessor: (order: Order): string => order.gift_card_total.toString(),
-      },
-    ],
-    [
-      "total",
-      {
-        title: "Total",
-        accessor: (order: Order): string => order.total.toString(),
-      },
-    ],
-    [
-      "currency_code",
-      {
-        title: "Currency Code",
-        accessor: (order: Order): string => order.currency_code,
-      },
-    ],
-  ])
+    },
+
+    {
+      fieldName: "fulfillment_status",
+      title: "Fulfillment Status",
+      accessor: (order: Order): string => order.fulfillment_status,
+    },
+
+    {
+      fieldName: "payment_status",
+      title: "Payment Status",
+      accessor: (order: Order): string => order.payment_status,
+    },
+
+    {
+      fieldName: "subtotal",
+      title: "Subtotal",
+      accessor: (order: Order): string => order.subtotal.toString(),
+    },
+
+    {
+      fieldName: "shipping_total",
+      title: "Shipping Total",
+      accessor: (order: Order): string => order.shipping_total.toString(),
+    },
+
+    {
+      fieldName: "discount_total",
+      title: "Discount Total",
+      accessor: (order: Order): string => order.discount_total.toString(),
+    },
+
+    {
+      fieldName: "gift_card_total",
+      title: "Gift Card Total",
+      accessor: (order: Order): string => order.gift_card_total.toString(),
+    },
+
+    {
+      fieldName: "total",
+      title: "Total",
+      accessor: (order: Order): string => order.total.toString(),
+    },
+
+    {
+      fieldName: "currency_code",
+      title: "Currency Code",
+      accessor: (order: Order): string => order.currency_code,
+    },
+  ]
 
   private readonly relations = ["customer", "shipping_address"]
   private readonly select = [
@@ -297,17 +295,20 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     return this.buildHeader(this.getLineDescriptor(this.select, this.relations))
   }
 
-  private buildHeader(lineDescriptor): string {
+  private buildHeader(lineDescriptor: PropertiesDescriptor<Order>[]): string {
     return (
-      lineDescriptor.map(([key, { title }]) => title).join(this.DELIMITER) +
+      lineDescriptor.map(({ title }) => title).join(this.DELIMITER) +
       this.NEWLINE
     )
   }
 
-  private async buildCSVLine(order: Order, lineDescriptor): Promise<string> {
+  private async buildCSVLine(
+    order: Order,
+    lineDescriptor: PropertiesDescriptor<Order>[]
+  ): Promise<string> {
     return (
       lineDescriptor
-        .map(([, { accessor }]) => accessor(order))
+        .map(({ accessor }) => accessor(order))
         .join(this.DELIMITER) + this.NEWLINE
     )
   }
@@ -315,9 +316,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   private getLineDescriptor(
     fields: string[],
     relations: string[]
-  ): [string, { title: string; accessor: (order: Order) => string }][] {
-    return [...this.propertiesDescriptorArray].filter(
-      ([key, _]) => fields.indexOf(key) !== -1 || relations.indexOf(key) !== -1
+  ): PropertiesDescriptor<Order>[] {
+    return this.propertiesDescriptors.filter(
+      ({ fieldName }) =>
+        fields.indexOf(fieldName) !== -1 || relations.indexOf(fieldName) !== -1
     )
   }
 
