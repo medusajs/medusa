@@ -9,6 +9,8 @@ export type FileServiceGetUploadStreamResult = {
   writeStream: stream.PassThrough
   promise: Promise<any>
   url: string
+  key: string
+  [x: string]: unknown
 }
 
 export interface IFileService<T extends TransactionBaseService<any>>
