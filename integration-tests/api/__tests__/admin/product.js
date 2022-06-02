@@ -265,7 +265,7 @@ describe("/admin/products", () => {
       const api = useApi()
 
       const response = await api
-        .get("/admin/products?q=t", {
+        .get("/admin/products?q=test+product1", {
           headers: {
             Authorization: "Bearer test_token",
           },
@@ -282,16 +282,10 @@ describe("/admin/products", () => {
       expect(expectedVariantPrices).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: "test-price",
+            id: "test-price4",
           }),
           expect.objectContaining({
-            id: "test-price2",
-          }),
-          expect.objectContaining({
-            id: "test-price1",
-          }),
-          expect.objectContaining({
-            id: "test-price-sale",
+            id: "test-price3",
           }),
         ])
       )
