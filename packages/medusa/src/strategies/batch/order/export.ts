@@ -220,14 +220,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       listConfig.relations
     )
 
-    const {
-      writeStream,
-      url: key,
-      promise,
-    } = await this.fileService_.getUploadStreamDescriptor({
-      name: "order-export",
-      ext: "csv",
-    })
+    const { writeStream, fileKey, promise } =
+      await this.fileService_.getUploadStreamDescriptor({
+        name: "exports/order-export",
+        ext: "csv",
+      })
 
     const header = this.buildHeader(lineDescriptor)
     writeStream.write(header)
@@ -254,15 +251,15 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         writeStream.write(await this.buildCSVLine(order, lineDescriptor))
       })
 
-      offset += this.BATCH_SIZE
-
-      context = { ...context, offset, count, progress: offset / count }
+      context = { ...context, count, progress: offset / count }
       const batch = await this.batchJobService_.update(batchJobId, { context })
+
+      offset += this.BATCH_SIZE
 
       if (batch.status === BatchJobStatus.CANCELED) {
         writeStream.end()
 
-        await this.fileService_.delete({ key: key })
+        await this.fileService_.delete({ key: fileKey })
 
         return batch
       }
@@ -272,7 +269,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
     await promise
 
-    context.fileKey = key
+    context.fileKey = fileKey
+    context.progress = 1
 
     const updatedBatchJob = await this.batchJobService_.update(batchJobId, {
       context,
