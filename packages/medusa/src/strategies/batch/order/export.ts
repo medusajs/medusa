@@ -304,31 +304,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       lineDescriptor.map(([key, { title }]) => title).join(this.DELIMITER) +
       this.NEWLINE
     )
-    // return (
-    //   [
-    //     "Order_ID",
-    //     "Display_ID",
-    //     "Date",
-    //     "Customer First name",
-    //     "Customer Last name",
-    //     "Customer Email",
-    //     "Customer ID",
-    //     "Shipping Address 1",
-    //     "Shipping Address 2",
-    //     "Shipping Country Code",
-    //     "Shipping City",
-    //     "Shipping Postal Code",
-    //     "Shipping Region ID",
-    //     "Fulfillment Status",
-    //     "Payment Status",
-    //     "Subtotal",
-    //     "Shipping Total",
-    //     "Discount Total",
-    //     "Gift Card Total",
-    //     "Total",
-    //     "Currency Code",
-    //   ].join(this.DELIMITER) + this.NEWLINE
-    // )
   }
 
   private async buildCSVLine(order: Order, lineDescriptor): Promise<string> {
@@ -337,31 +312,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         .map(([, { accessor }]) => accessor(order))
         .join(this.DELIMITER) + this.NEWLINE
     )
-    // return (
-    //   [
-    //     order.id,
-    //     order.display_id,
-    //     order.created_at.toUTCString(),
-    //     order.customer.first_name,
-    //     order.customer.last_name,
-    //     order.customer.email,
-    //     order.customer.id,
-    //     order.shipping_address.address_1,
-    //     order.shipping_address.address_2,
-    //     order.shipping_address.country_code,
-    //     order.shipping_address.city,
-    //     order.shipping_address.postal_code,
-    //     order.region_id,
-    //     order.fulfillment_status,
-    //     order.payment_status,
-    //     order.subtotal,
-    //     order.shipping_total,
-    //     order.discount_total,
-    //     order.gift_card_total,
-    //     order.total,
-    //     order.currency_code,
-    //   ].join(this.DELIMITER) + this.NEWLINE
-    // )
   }
 
   private getLineDescriptor(
