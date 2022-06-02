@@ -11,7 +11,7 @@ import {
 import { ProductTag } from ".."
 import { PriceList } from "../models/price-list"
 import { Product } from "../models/product"
-import { WithRequiredProperty } from "../types/utils"
+import { WithRequiredProperty } from "../types/common"
 
 type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
 
