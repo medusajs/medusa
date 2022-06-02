@@ -18,7 +18,7 @@ export default async (req, res) => {
     const fileService: IFileService<any> = req.scope.resolve("fileService")
 
     const preSignedUrl = await fileService.getPresignedDownloadUrl({
-      key: key || "test-1653895914252.csv",
+      fileKey: key || "test-1653895914252.csv",
     })
 
     res.status(200).send({ preSignedUrl })

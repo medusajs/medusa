@@ -11,7 +11,7 @@ export default async (req, res) => {
 
     const result: string[] = []
 
-    const { writeStream, promise, url } =
+    const { writeStream, promise, url, key } =
       await fileService.getUploadStreamDescriptor({
         name: "test",
       })
@@ -22,7 +22,7 @@ export default async (req, res) => {
 
     const resultUrl = await promise
 
-    res.status(200).json({ result, resultUrl, url })
+    res.status(200).json({ result, resultUrl, url, key })
   } catch (err) {
     console.log(err)
     throw err

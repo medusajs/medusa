@@ -30,8 +30,8 @@ export default async (req, res) => {
     logger.info("Downloading file")
 
     const readStream: NodeJS.ReadableStream =
-      await fileService.downloadAsStream({
-        key: "test-1653493436170.csv",
+      await fileService.getDownloadStream({
+        fileKey: "test-1653493436170.csv",
       })
 
     const result = await streamToString(readStream)
