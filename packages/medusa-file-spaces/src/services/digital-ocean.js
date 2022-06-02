@@ -99,7 +99,7 @@ class DigitalOceanService extends AbstractFileService {
 
     var params = {
       Bucket: this.bucket_,
-      Key: `${fileData.key}`,
+      Key: `${fileData.fileKey}`,
     }
 
     return s3.getObject(params).createReadStream()
@@ -114,7 +114,7 @@ class DigitalOceanService extends AbstractFileService {
 
     var params = {
       Bucket: this.bucket_,
-      Key: `${fileData.key}`,
+      Key: `${fileData.fileKey}`,
       Expires: 60, // 60 seconds
     }
 
