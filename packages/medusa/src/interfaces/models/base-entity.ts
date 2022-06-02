@@ -3,8 +3,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../../utils/db-aware-column"
+import { resolveDbType } from "../../utils/db-aware-column"
 
 /**
  * Base abstract entity for all entities

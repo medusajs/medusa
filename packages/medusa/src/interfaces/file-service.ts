@@ -9,6 +9,8 @@ export type FileServiceGetUploadStreamResult = {
   writeStream: stream.PassThrough
   promise: Promise<any>
   url: string
+  fileKey: string
+  [x: string]: unknown
 }
 
 export interface IFileService<T extends TransactionBaseService<any>>
@@ -39,7 +41,7 @@ export interface IFileService<T extends TransactionBaseService<any>>
    * @param fileData file metadata relevant for fileservice to download the file
    * @returns readable stream of the file to download
    * */
-  downloadAsStream(
+  getDownloadStream(
     fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream>
 
@@ -64,7 +66,7 @@ export abstract class AbstractFileService<T extends TransactionBaseService<any>>
     fileData: UploadStreamDescriptorType
   ): Promise<FileServiceGetUploadStreamResult>
 
-  abstract downloadAsStream(
+  abstract getDownloadStream(
     fileData: GetUploadedFileType
   ): Promise<NodeJS.ReadableStream>
 

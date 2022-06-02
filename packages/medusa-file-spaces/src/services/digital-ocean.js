@@ -87,17 +87,18 @@ class DigitalOceanService extends AbstractFileService {
         .upload(params)
         .promise(),
       url: `${this.spacesUrl_}/${fileKey}`,
+      fileKey,
     }
   }
 
-  async downloadAsStream(fileData) {
+  async getDownloadStream(fileData) {
     this.updateAwsConfig()
 
     const s3 = new aws.S3()
 
     var params = {
       Bucket: this.bucket_,
-      Key: `${fileData.key}`,
+      Key: `${fileData.fileKey}`,
     }
 
     return s3.getObject(params).createReadStream()
@@ -112,7 +113,7 @@ class DigitalOceanService extends AbstractFileService {
 
     var params = {
       Bucket: this.bucket_,
-      Key: `${fileData.key}`,
+      Key: `${fileData.fileKey}`,
       Expires: 60, // 60 seconds
     }
 

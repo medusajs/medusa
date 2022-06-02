@@ -1,13 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, FindOperator } from "typeorm"
 import { CustomerGroupService } from "."
-import { Product } from "../models"
-import { CustomerGroup } from "../models/customer-group"
-import { PriceList } from "../models/price-list"
+import { CustomerGroup, PriceList, Product, ProductVariant } from "../models"
 import { MoneyAmountRepository } from "../repositories/money-amount"
-import { PriceListRepository } from "../repositories/price-list"
-import { FindConfig } from "../types/common"
+import {
+  PriceListFindOptions,
+  PriceListRepository,
+} from "../repositories/price-list"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreatePriceListInput,
   FilterablePriceListProps,
@@ -18,12 +18,18 @@ import {
 import { formatException } from "../utils/exception-formatter"
 import ProductService from "./product"
 import RegionService from "./region"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery } from "../utils"
+import { FilterableProductProps } from "../types/product"
+import ProductVariantService from "./product-variant"
+import { FilterableProductVariantProps } from "../types/product-variant"
 
 type PriceListConstructorProps = {
   manager: EntityManager
   customerGroupService: CustomerGroupService
   regionService: RegionService
   productService: ProductService
+  productVariantService: ProductVariantService
   priceListRepository: typeof PriceListRepository
   moneyAmountRepository: typeof MoneyAmountRepository
 }
@@ -32,48 +38,36 @@ type PriceListConstructorProps = {
  * Provides layer to manipulate product tags.
  * @extends BaseService
  */
-class PriceListService extends BaseService {
-  private manager_: EntityManager
-  private customerGroupService_: CustomerGroupService
-  private regionService_: RegionService
-  private productService_: ProductService
-  private priceListRepo_: typeof PriceListRepository
-  private moneyAmountRepo_: typeof MoneyAmountRepository
+class PriceListService extends TransactionBaseService<PriceListService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly customerGroupService_: CustomerGroupService
+  protected readonly regionService_: RegionService
+  protected readonly productService_: ProductService
+  protected readonly variantService_: ProductVariantService
+  protected readonly priceListRepo_: typeof PriceListRepository
+  protected readonly moneyAmountRepo_: typeof MoneyAmountRepository
 
   constructor({
     manager,
     customerGroupService,
     regionService,
     productService,
+    productVariantService,
     priceListRepository,
     moneyAmountRepository,
   }: PriceListConstructorProps) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
+
     this.manager_ = manager
     this.customerGroupService_ = customerGroupService
     this.productService_ = productService
+    this.variantService_ = productVariantService
     this.regionService_ = regionService
     this.priceListRepo_ = priceListRepository
     this.moneyAmountRepo_ = moneyAmountRepository
-  }
-
-  withTransaction(transactionManager: EntityManager): PriceListService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new PriceListService({
-      manager: transactionManager,
-      customerGroupService: this.customerGroupService_,
-      productService: this.productService_,
-      regionService: this.regionService_,
-      priceListRepository: this.priceListRepo_,
-      moneyAmountRepository: this.moneyAmountRepo_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -88,7 +82,7 @@ class PriceListService extends BaseService {
   ): Promise<PriceList> {
     const priceListRepo = this.manager_.getCustomRepository(this.priceListRepo_)
 
-    const query = this.buildQuery_({ id: priceListId }, config)
+    const query = buildQuery({ id: priceListId }, config)
     const priceList = await priceListRepo.findOne(query)
 
     if (!priceList) {
@@ -167,11 +161,9 @@ class PriceListService extends BaseService {
         await this.upsertCustomerGroups_(id, customer_groups)
       }
 
-      const result = await this.retrieve(id, {
+      return await this.retrieve(id, {
         relations: ["prices", "customer_groups"],
       })
-
-      return result
     })
   }
 
@@ -195,11 +187,9 @@ class PriceListService extends BaseService {
       const prices_ = await this.addCurrencyFromRegion(prices)
       await moneyAmountRepo.addPriceListPrices(priceList.id, prices_, replace)
 
-      const result = await this.retrieve(priceList.id, {
+      return await this.retrieve(priceList.id, {
         relations: ["prices"],
       })
-
-      return result
     })
   }
 
@@ -216,8 +206,6 @@ class PriceListService extends BaseService {
       const priceList = await this.retrieve(id, { select: ["id"] })
 
       await moneyAmountRepo.deletePriceListPrices(priceList.id, priceIds)
-
-      return Promise.resolve()
     })
   }
 
@@ -249,14 +237,18 @@ class PriceListService extends BaseService {
    */
   async list(
     selector: FilterablePriceListProps = {},
-    config: FindConfig<PriceList> = { skip: 0, take: 20 }
+    config: FindConfig<FilterablePriceListProps> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
-      const query = this.buildQuery_(selector, config)
+      const { q, ...priceListSelector } = selector
+      const query = buildQuery<FilterablePriceListProps>(
+        priceListSelector,
+        config
+      )
 
-      const groups = query.where.customer_groups
+      const groups = query.where.customer_groups as FindOperator<string[]>
       query.where.customer_groups = undefined
 
       const [priceLists] = await priceListRepo.listAndCount(query, groups)
@@ -273,21 +265,26 @@ class PriceListService extends BaseService {
    */
   async listAndCount(
     selector: FilterablePriceListProps = {},
-    config: FindConfig<PriceList> = { skip: 0, take: 20 }
+    config: FindConfig<FilterablePriceListProps> = {
+      skip: 0,
+      take: 20,
+    }
   ): Promise<[PriceList[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
-      const q = selector.q
-      const { relations, ...query } = this.buildQuery_(selector, config)
+      const { q, ...priceListSelector } = selector
+      const { relations, ...query } = buildQuery<FilterablePriceListProps>(
+        priceListSelector,
+        config
+      )
 
-      const groups = query.where.customer_groups
+      const groups = query.where.customer_groups as FindOperator<string[]>
       delete query.where.customer_groups
 
       if (q) {
-        delete query.where.q
         return await priceListRepo.getFreeTextSearchResultsAndCount(
           q,
-          query,
+          query as PriceListFindOptions,
           groups,
           relations
         )
@@ -296,7 +293,7 @@ class PriceListService extends BaseService {
     })
   }
 
-  async upsertCustomerGroups_(
+  protected async upsertCustomerGroups_(
     priceListId: string,
     customerGroups: { id: string }[]
   ): Promise<void> {
@@ -317,12 +314,13 @@ class PriceListService extends BaseService {
 
   async listProducts(
     priceListId: string,
-    selector = {},
+    selector: FilterableProductProps | Selector<Product> = {},
     config: FindConfig<Product> = {
       relations: [],
       skip: 0,
       take: 20,
-    }
+    },
+    requiresPriceList = false
   ): Promise<[Product[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const [products, count] = await this.productService_.listAndCount(
@@ -340,7 +338,8 @@ class PriceListService extends BaseService {
                 const [prices] =
                   await moneyAmountRepo.findManyForVariantInPriceList(
                     v.id,
-                    priceListId
+                    priceListId,
+                    requiresPriceList
                   )
 
                 return {
@@ -356,6 +355,109 @@ class PriceListService extends BaseService {
       )
 
       return [productsWithPrices, count]
+    })
+  }
+
+  async listVariants(
+    priceListId: string,
+    selector: FilterableProductVariantProps = {},
+    config: FindConfig<ProductVariant> = {
+      relations: [],
+      skip: 0,
+      take: 20,
+    },
+    requiresPriceList = false
+  ): Promise<[ProductVariant[], number]> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const [variants, count] = await this.variantService_.listAndCount(
+        selector,
+        config
+      )
+
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+
+      const variantsWithPrices = await Promise.all(
+        variants.map(async (variant) => {
+          const [prices] = await moneyAmountRepo.findManyForVariantInPriceList(
+            variant.id,
+            priceListId,
+            requiresPriceList
+          )
+
+          variant.prices = prices
+          return variant
+        })
+      )
+
+      return [variantsWithPrices, count]
+    })
+  }
+
+  public async deleteProductPrices(
+    priceListId: string,
+    productIds: string[]
+  ): Promise<[string[], number]> {
+    return await this.atomicPhase_(async () => {
+      const [products, count] = await this.listProducts(
+        priceListId,
+        {
+          id: productIds,
+        },
+        {
+          relations: ["variants"],
+        },
+        true
+      )
+
+      if (count === 0) {
+        return [[], count]
+      }
+
+      const priceIds = products
+        .map(({ variants }) =>
+          variants
+            .map((variant) => variant.prices.map((price) => price.id))
+            .flat()
+        )
+        .flat()
+
+      if (!priceIds.length) {
+        return [[], 0]
+      }
+
+      await this.deletePrices(priceListId, priceIds)
+      return [priceIds, priceIds.length]
+    })
+  }
+
+  public async deleteVariantPrices(
+    priceListId: string,
+    variantIds: string[]
+  ): Promise<[string[], number]> {
+    return await this.atomicPhase_(async () => {
+      const [variants, count] = await this.listVariants(
+        priceListId,
+        {
+          id: variantIds,
+        },
+        {},
+        true
+      )
+
+      if (count === 0) {
+        return [[], count]
+      }
+
+      const priceIds = variants
+        .map((variant) => variant.prices.map((price) => price.id))
+        .flat()
+
+      if (!priceIds.length) {
+        return [[], 0]
+      }
+
+      await this.deletePrices(priceListId, priceIds)
+      return [priceIds, priceIds.length]
     })
   }
 
