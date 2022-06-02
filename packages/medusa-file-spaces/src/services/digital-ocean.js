@@ -87,7 +87,7 @@ class DigitalOceanService extends AbstractFileService {
         .upload(params)
         .promise(),
       url: `${this.spacesUrl_}/${fileKey}`,
-      key: fileKey,
+      fileKey,
     }
   }
 
