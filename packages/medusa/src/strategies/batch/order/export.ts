@@ -38,6 +38,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       title: "Display_ID",
       accessor: (order: Order): string => order.display_id.toString(),
     },
+    {
+      fieldName: "status",
+      title: "Order status",
+      accessor: (order: Order): string => order.status.toString(),
+    },
 
     {
       fieldName: "created_at",
@@ -120,6 +125,16 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     },
 
     {
+      fieldName: "refunded_total",
+      title: "Refunded Total",
+      accessor: (order: Order): string => order.refunded_total.toString(),
+    },
+    {
+      fieldName: "tax_total",
+      title: "Tax Total",
+      accessor: (order: Order): string => order.tax_total.toString(),
+    },
+    {
       fieldName: "total",
       title: "Total",
       accessor: (order: Order): string => order.total.toString(),
@@ -135,31 +150,20 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   private readonly relations = ["customer", "shipping_address"]
   private readonly select = [
     "id",
+    "display_id",
     "status",
+    "created_at",
     "fulfillment_status",
     "payment_status",
-    "display_id",
-    "cart_id",
-    "draft_order_id",
-    "customer_id",
-    "email",
-    "region_id",
-    "currency_code",
-    "tax_rate",
-    "canceled_at",
-    "created_at",
-    "updated_at",
-    "metadata",
+    "subtotal",
     "shipping_total",
     "discount_total",
-    "tax_total",
-    "refunded_total",
     "gift_card_total",
-    "subtotal",
+    "refunded_total",
+    "tax_total",
     "total",
-    "paid_total",
-    "refundable_amount",
-    "no_notification",
+    "currency_code",
+    "region_id",
   ]
 
   protected manager_: EntityManager
@@ -337,6 +341,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     let expandFields: string[] = []
     if (context.expand) {
       expandFields = context.expand.split(",")
+      if (expandFields.indexOf("shipping_address") === -1 && context.fields) {
+        includeFields.push("region_id")
+      }
     }
 
     const listConfig = {
