@@ -9,7 +9,7 @@ export type FileServiceGetUploadStreamResult = {
   writeStream: stream.PassThrough
   promise: Promise<any>
   url: string
-  key: string
+  fileKey: string
   [x: string]: unknown
 }
 
