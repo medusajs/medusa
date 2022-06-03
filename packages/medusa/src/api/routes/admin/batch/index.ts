@@ -27,8 +27,8 @@ export default (app) => {
   route.use("/:id", getRequestedBatchJob, canAccessBatchJob, routerOnBatch)
   routerOnBatch.get("/", middlewares.wrap(require("./get-batch-job").default))
   routerOnBatch.post(
-    "/confirm",
-    middlewares.wrap(require("./confirm-batch-job").default)
+    "/confirm-processing",
+    middlewares.wrap(require("./confirm-processing-batch-job").default)
   )
   routerOnBatch.post(
     "/cancel",
