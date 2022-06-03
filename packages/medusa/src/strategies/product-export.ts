@@ -24,7 +24,7 @@ type InjectedDependencies = {
   productRepository: typeof ProductRepository
 }
 
-type DataGetter = (line: Product) => string
+type Accessor = (line: Product) => string
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy<ProductExportStrategy> {
   public static identifier = "product-export-strategy"
@@ -39,7 +39,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   protected readonly productRepository_: typeof ProductRepository
 
   protected readonly relations_ = [...defaultAdminProductRelations]
-  protected readonly columnDescriptors = new Map<string, DataGetter>([
+  protected readonly columnDescriptors = new Map<string, Accessor>([
     ["Product Handle", (line: Product): string => line.handle],
     ["Product Title", (line: Product): string => line.title],
     ["Product Subtitle", (line: Product): string => line.subtitle],
