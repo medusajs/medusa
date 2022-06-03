@@ -12,12 +12,11 @@ import { BatchJob } from "../models"
 
 export enum BatchJobStatus {
   CREATED = "created",
-  PROCESSING = "processing",
-  AWAITING_CONFIRMATION = "awaiting_confirmation",
-  CANCELED = "canceled",
-  COMPLETED = "completed",
-  CONFIRMED = "confirmed",
+  PRE_PROCESSING = "pre_processing",
   READY = "ready",
+  PROCESSING = "processing",
+  COMPLETED = "completed",
+  CANCELED = "canceled",
   FAILED = "failed",
 }
 
