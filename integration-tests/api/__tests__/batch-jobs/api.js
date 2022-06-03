@@ -179,7 +179,7 @@ describe("/admin/batch-jobs", () => {
     })
   })
 
-  describe("POST /admin/batch-jobs/:id/confirm", () => {
+  describe("POST /admin/batch-jobs/:id/confirm-processing", () => {
     beforeEach(async () => {
       await setupJobDb(dbConnection)
     })

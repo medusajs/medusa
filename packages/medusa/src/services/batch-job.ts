@@ -588,26 +588,36 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     )
   }
 
-  async confirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
-    return await this.atomicPhase_(async () => {
-      let batchJob: BatchJob = batchJobOrId as BatchJob
-      if (typeof batchJobOrId === "string") {
-        batchJob = await this.retrieve(batchJobOrId)
-      }
+  async confirm_processing(
+    batchJobOrId: string | BatchJob
+  ): Promise<BatchJob | never> {
+    return await this.atomicPhase_(
+      async (transactionManager: EntityManager) => {
+        let batchJob: BatchJob = batchJobOrId as BatchJob
+        if (typeof batchJobOrId === "string") {
+          batchJob = await this.retrieve(batchJobOrId)
+        }
 
-      if (!batchJob.dry_run) {
+        if (!batchJob.dry_run) {
+          return batchJob
+        }
+
+        if (batchJob.status !== BatchJobStatus.READY) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_ALLOWED,
+            "Cannot confirm processing for a batch job that is not ready"
+          )
+        }
+
+        this.eventBus_
+          .withTransaction(transactionManager)
+          .emit(BatchJobService.Events.PROCESSING, {
+            id: batchJob.id,
+          })
+
         return batchJob
       }
-
-      if (batchJob.status !== BatchJobStatus.AWAITING_CONFIRMATION) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot confirm a batch job that is not awaiting for confirmation"
-        )
-      }
-
-      return await this.updateStatus(batchJob, BatchJobStatus.CONFIRMED)
-    })
+    )
   }
 
   async complete(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
@@ -617,17 +627,10 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         batchJob = await this.retrieve(batchJobOrId)
       }
 
-      if (
-        (batchJob.dry_run && batchJob.status !== BatchJobStatus.CONFIRMED) ||
-        (!batchJob.dry_run && batchJob.status !== BatchJobStatus.PROCESSING)
-      ) {
+      if (batchJob.status !== BatchJobStatus.PROCESSING) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,
-          `Cannot complete a batch job with status "${
-            batchJob.status
-          }". The batch job must be ${
-            batchJob.dry_run ? "awaiting confirmation" : "processing"
-          }`
+          `Cannot complete a batch job with status "${batchJob.status}". The batch job must be processing`
         )
       }
 
@@ -682,6 +685,26 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot mark a batch job as processing if the status is different that ready"
+        )
+      }
+
+      return await this.updateStatus(batchJob, BatchJobStatus.PROCESSING)
+    })
+  }
+
+  async pre_processing(
+    batchJobOrId: string | BatchJob
+  ): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async () => {
+      let batchJob: BatchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
+
+      if (batchJob.status !== BatchJobStatus.CREATED) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "Cannot mark a batch job as pre_processing if the status is different that created"
         )
       }
 

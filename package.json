@@ -59,7 +59,7 @@
     "publish:next": "lerna publish --canary --preid next --dist-tag next",
     "bootstrap": "lerna bootstrap",
     "build": "lerna run build",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx packages/medusa/*batch-jobs*",
     "jest": "jest",
     "test": "jest",
     "prettier": "prettier",

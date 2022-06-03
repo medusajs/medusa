@@ -40,7 +40,7 @@ describe('BatchJobService', () => {
         const updatedBatchJob = await batchJobService.confirm(batchJob)
         expect(updatedBatchJob.processing_at).not.toBeTruthy()
         expect(eventBusServiceMock.emit)
-          .toHaveBeenCalledWith(BatchJobService.Events.CONFIRMED, { id: batchJobId_1 })
+          .toHaveBeenCalledWith(BatchJobService.Events.PROCESSING, { id: batchJobId_1 })
       })
 
       it('should not be able to confirm a batch job with the wrong status', async () => {
@@ -50,7 +50,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.CREATED
         })
 
-        const err = await batchJobService.confirm(batchJob)
+        const err = await batchJobService.confirm_processing(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
         expect(err.message).toBe("Cannot confirm processing for a batch job that is not pre processed")
