@@ -416,15 +416,6 @@ export async function registerServices(
           ),
           [`fileService`]: aliasTo(name),
         })
-      } else if (isFileService(loaded.prototype)) {
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which file storage provider we need to use
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ),
-          [`fileService`]: aliasTo(name),
-        })
       } else if (loaded.prototype instanceof SearchService) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which search provider we need to use
