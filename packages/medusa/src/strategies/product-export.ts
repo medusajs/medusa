@@ -220,7 +220,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
         return await this.batchJobService_.complete(updatedBatchJob)
       },
-      "READ UNCOMMITTED",
       async (err) => this.handleProcessingErrors(batchJobId, err)
     )
   }
