@@ -220,6 +220,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
         return await this.batchJobService_.complete(updatedBatchJob)
       },
+      "REPEATABLE READ",
       async (err) => this.handleProcessingErrors(batchJobId, err)
     )
   }
