@@ -48,10 +48,8 @@ Object {
 
 exports[`/admin/batch-jobs POST /admin/batch-jobs/ Creates a batch job 1`] = `
 Object {
-  "awaiting_confirmation_at": null,
   "canceled_at": null,
   "completed_at": null,
-  "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,
   "created_by": "admin_user",
@@ -59,6 +57,7 @@ Object {
   "dry_run": false,
   "failed_at": null,
   "id": Any<String>,
+  "pre_processing_at": null,
   "processing_at": null,
   "ready_at": null,
   "result": null,
@@ -70,10 +69,8 @@ Object {
 
 exports[`/admin/batch-jobs POST /admin/batch-jobs/:id/cancel Cancels batch job created by the user 1`] = `
 Object {
-  "awaiting_confirmation_at": null,
   "canceled_at": Any<String>,
   "completed_at": null,
-  "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,
   "created_by": "admin_user",
@@ -81,6 +78,7 @@ Object {
   "dry_run": false,
   "failed_at": null,
   "id": "job_1",
+  "pre_processing_at": null,
   "processing_at": null,
   "ready_at": null,
   "result": null,
