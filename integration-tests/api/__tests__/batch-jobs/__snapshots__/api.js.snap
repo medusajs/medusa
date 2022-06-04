@@ -50,6 +50,7 @@ exports[`/admin/batch-jobs POST /admin/batch-jobs/ Creates a batch job 1`] = `
 Object {
   "canceled_at": null,
   "completed_at": null,
+  "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,
   "created_by": "admin_user",
@@ -71,6 +72,7 @@ exports[`/admin/batch-jobs POST /admin/batch-jobs/:id/cancel Cancels batch job c
 Object {
   "canceled_at": Any<String>,
   "completed_at": null,
+  "confirmed_at": null,
   "context": Object {},
   "created_at": Any<String>,
   "created_by": "admin_user",

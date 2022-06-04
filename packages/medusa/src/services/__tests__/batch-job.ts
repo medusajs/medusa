@@ -2,6 +2,7 @@ import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import BatchJobService from "../batch-job"
 import { EventBusService } from "../index"
 import { BatchJobStatus } from "../../types/batch-job"
+import { BatchJob } from "../../models"
 
 const eventBusServiceMock = {
   emit: jest.fn(),
@@ -11,7 +12,7 @@ const eventBusServiceMock = {
 } as unknown as EventBusService
 const batchJobRepositoryMock = MockRepository({
   create: jest.fn().mockImplementation((data) => {
-    return data
+    return Object.assign(new BatchJob(), data)
   })
 })
 
@@ -28,7 +29,7 @@ describe('BatchJobService', () => {
   })
 
   describe('update status', () => {
-    describe("confirm_processing", () => {
+    describe("confirm", () => {
       it('should be able to confirm_processing a batch job to emit the processing event', async () => {
         const batchJob = batchJobRepositoryMock.create({
           id: batchJobId_1,
@@ -36,10 +37,10 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.READY
         })
 
-        const updatedBatchJob = await batchJobService.confirm_processing(batchJob)
+        const updatedBatchJob = await batchJobService.setConfirm(batchJob)
         expect(updatedBatchJob.processing_at).not.toBeTruthy()
         expect(eventBusServiceMock.emit)
-          .toHaveBeenCalledWith(BatchJobService.Events.PROCESSING, { id: batchJobId_1 })
+          .toHaveBeenCalledWith(BatchJobService.Events.CONFIRMED, { id: batchJobId_1 })
       })
 
       it('should not be able to confirm a batch job with the wrong status', async () => {
@@ -49,7 +50,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.PRE_PROCESSING
         })
 
-        const err = await batchJobService.confirm_processing(batchJob)
+        const err = await batchJobService.setConfirm(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
         expect(err.message).toBe("Cannot confirm processing for a batch job that is not ready")
@@ -65,7 +66,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.PROCESSING
         })
 
-        const updatedBatchJob = await batchJobService.complete(batchJob)
+        const updatedBatchJob = await batchJobService.setComplete(batchJob)
         expect(updatedBatchJob.completed_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.COMPLETED, { id: batchJobId_1 })
@@ -76,7 +77,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.PROCESSING
         })
 
-        const updatedBatchJob2 = await batchJobService.complete(batchJob2)
+        const updatedBatchJob2 = await batchJobService.setComplete(batchJob2)
         expect(updatedBatchJob2.completed_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.COMPLETED, { id: batchJobId_1 })
@@ -89,7 +90,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.READY
         })
 
-        const err = await batchJobService.complete(batchJob)
+        const err = await batchJobService.setComplete(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
         expect(err.message).toBe( `Cannot complete a batch job with status "${batchJob.status}". The batch job must be processing`)
@@ -101,7 +102,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.READY
         })
 
-        const err2 = await batchJobService.complete(batchJob2)
+        const err2 = await batchJobService.setComplete(batchJob2)
           .catch(e => e)
         expect(err2).toBeTruthy()
         expect(err2.message).toBe( `Cannot complete a batch job with status "${batchJob2.status}". The batch job must be processing`)
@@ -110,16 +111,34 @@ describe('BatchJobService', () => {
     })
 
     describe("ready", () => {
-      it('should be able to mark as ready a batch job', async () => {
+      it('should be able to mark as ready a batch job in dry_run', async () => {
         const batchJob = batchJobRepositoryMock.create({
           id: batchJobId_1,
-          status: BatchJobStatus.CREATED
+          dry_run: true,
+          status: BatchJobStatus.PRE_PROCESSING
         })
 
-        const updatedBatchJob = await batchJobService.ready(batchJob)
+        const updatedBatchJob = await batchJobService.setReady(batchJob)
         expect(updatedBatchJob.ready_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.READY, { id: batchJobId_1 })
+      })
+
+      it('should be able to mark as completed a batch job that has been pre processed but not in dry_run', async () => {
+        const batchJob = batchJobRepositoryMock.create({
+          id: batchJobId_1,
+          dry_run: false,
+          status: BatchJobStatus.PRE_PROCESSING
+        })
+
+        const updatedBatchJob = await batchJobService.setReady(batchJob)
+        expect(updatedBatchJob.ready_at).toBeTruthy()
+        expect(updatedBatchJob.confirmed_at).toBeTruthy()
+        expect(eventBusServiceMock.emit).toHaveBeenCalledTimes(2)
+        expect(eventBusServiceMock.emit)
+          .toHaveBeenCalledWith(BatchJobService.Events.READY, { id: batchJobId_1 })
+        expect(eventBusServiceMock.emit)
+          .toHaveBeenLastCalledWith(BatchJobService.Events.CONFIRMED, { id: batchJobId_1 })
       })
 
       it('should not be able to mark as ready a batch job with the wrong status', async () => {
@@ -128,10 +147,10 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.PROCESSING
         })
 
-        const err = await batchJobService.ready(batchJob)
+        const err = await batchJobService.setReady(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
-        expect(err.message).toBe("Cannot mark a batch job as ready if the status is different that created")
+        expect(err.message).toBe("Cannot mark a batch job as ready if the status is different that pre_processing")
         expect(eventBusServiceMock.emit).toHaveBeenCalledTimes(0)
       })
     })
@@ -143,7 +162,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.CREATED
         })
 
-        const updatedBatchJob = await batchJobService.cancel(batchJob)
+        const updatedBatchJob = await batchJobService.setCancel(batchJob)
         expect(updatedBatchJob.canceled_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.CANCELED, { id: batchJobId_1 })
@@ -155,7 +174,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.COMPLETED
         })
 
-        const err = await batchJobService.cancel(batchJob)
+        const err = await batchJobService.setCancel(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
         expect(err.message).toBe("Cannot cancel completed batch job")
@@ -167,10 +186,10 @@ describe('BatchJobService', () => {
       it('should be able to mark as processing a batch job', async () => {
         const batchJob = batchJobRepositoryMock.create({
           id: batchJobId_1,
-          status: BatchJobStatus.READY
+          status: BatchJobStatus.CONFIRMED
         })
 
-        const updatedBatchJob = await batchJobService.processing(batchJob)
+        const updatedBatchJob = await batchJobService.setProcessing(batchJob)
         expect(updatedBatchJob.processing_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.PROCESSING, { id: batchJobId_1 })
@@ -182,10 +201,10 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.COMPLETED
         })
 
-        const err = await batchJobService.processing(batchJob)
+        const err = await batchJobService.setProcessing(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
-        expect(err.message).toBe("Cannot mark a batch job as processing if the status is different that ready")
+        expect(err.message).toBe("Cannot mark a batch job as processing if the status is different that confirmed")
         expect(eventBusServiceMock.emit).toHaveBeenCalledTimes(0)
       })
     })

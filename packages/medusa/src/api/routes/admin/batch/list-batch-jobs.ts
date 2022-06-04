@@ -1,7 +1,6 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -9,7 +8,6 @@ import {
 } from "class-validator"
 import { pickBy } from "lodash"
 import BatchJobService from "../../../../services/batch-job"
-import { BatchJobStatus } from "../../../../types/batch-job"
 import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
@@ -101,7 +99,7 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
 
   @IsOptional()
   @Type(() => DateComparisonOperator)
-  awaiting_confirmation_at?: DateComparisonOperator
+  confirmed_at?: DateComparisonOperator
 
   @IsOptional()
   @Type(() => DateComparisonOperator)
@@ -109,11 +107,19 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
 
   @IsOptional()
   @Type(() => DateComparisonOperator)
-  confirmed_at?: DateComparisonOperator
+  pre_processing_at?: DateComparisonOperator
 
   @IsOptional()
   @Type(() => DateComparisonOperator)
   completed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  failed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  ready_at?: DateComparisonOperator
 
   @IsOptional()
   @Type(() => DateComparisonOperator)

@@ -30,19 +30,19 @@ const setupJobDb = async (dbConnection) => {
     await simpleBatchJobFactory(dbConnection, {
       id: "job_2",
       type: "batch_2",
-      awaiting_confirmation_at: new Date(),
+      ready_at: new Date(),
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_3",
       type: "batch_2",
-      awaiting_confirmation_at: new Date(),
+      ready_at: new Date(),
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_4",
       type: "batch_1",
-      status: "awaiting_confirmation",
+      ready_at: new Date(),
       created_by: "member-user",
     })
   } catch (err) {
@@ -179,7 +179,7 @@ describe("/admin/batch-jobs", () => {
     })
   })
 
-  describe("POST /admin/batch-jobs/:id/confirm-processing", () => {
+  describe("POST /admin/batch-jobs/:id/confirm", () => {
     beforeEach(async () => {
       await setupJobDb(dbConnection)
     })
@@ -217,8 +217,8 @@ describe("/admin/batch-jobs", () => {
           completed_at: new Date(),
         })
       } catch (e) {
-        console.log(err)
-        throw err
+        console.log(e)
+        throw e
       }
     })
 

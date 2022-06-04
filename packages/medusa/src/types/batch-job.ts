@@ -14,6 +14,7 @@ export enum BatchJobStatus {
   CREATED = "created",
   PRE_PROCESSING = "pre_processing",
   READY = "ready",
+  CONFIRMED = "confirmed",
   PROCESSING = "processing",
   COMPLETED = "completed",
   CANCELED = "canceled",
