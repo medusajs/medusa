@@ -146,12 +146,6 @@ class PriceListService extends TransactionBaseService<PriceListService> {
 
       const { prices, customer_groups, ...rest } = update
 
-      for (const [key, value] of Object.entries(rest)) {
-        priceList[key] = value
-      }
-
-      await priceListRepo.save(priceList)
-
       if (prices) {
         const prices_ = await this.addCurrencyFromRegion(prices)
         await moneyAmountRepo.updatePriceListPrices(id, prices_)
@@ -160,6 +154,16 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       if (customer_groups) {
         await this.upsertCustomerGroups_(id, customer_groups)
       }
+
+      for (const [key, value] of Object.entries(rest)) {
+        if (typeof value === "undefined") {
+          continue
+        }
+
+        priceList[key] = value
+      }
+
+      await priceListRepo.save(priceList)
 
       return await this.retrieve(id, {
         relations: ["prices", "customer_groups"],
