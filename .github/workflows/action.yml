@@ -1,5 +1,5 @@
 name: Medusa Pipeline
-on: [pull_request] # allow this workflow to be called from other workflows
+on: [pull_request]
 
 jobs:
   unit-tests:
