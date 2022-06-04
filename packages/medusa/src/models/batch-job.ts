@@ -33,6 +33,9 @@ export class BatchJob extends SoftDeletableEntity {
   processing_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
+  confirmed_at?: Date
+
+  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   completed_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
@@ -48,6 +51,9 @@ export class BatchJob extends SoftDeletableEntity {
     /* Always keep the status order consistent. */
     if (this.pre_processed_at) {
       this.status = BatchJobStatus.PRE_PROCESSED
+    }
+    if (this.confirmed_at) {
+      this.status = BatchJobStatus.CONFIRMED
     }
     if (this.confirmed_at) {
       this.status = BatchJobStatus.CONFIRMED
