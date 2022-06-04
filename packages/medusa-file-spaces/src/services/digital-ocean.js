@@ -1,9 +1,11 @@
 import fs from "fs"
 import aws from "aws-sdk"
 import { parse } from "path"
-import { FileService } from "medusa-interfaces"
+import { AbstractFileService, FileServiceUploadResult } from "@medusajs/medusa"
+import { EntityManager } from "typeorm"
+import stream from "stream"
 
-class DigitalOceanService extends FileService {
+class DigitalOceanService extends AbstractFileService {
   constructor({}, options) {
     super()
 
@@ -16,13 +18,16 @@ class DigitalOceanService extends FileService {
   }
 
   upload(file) {
-    aws.config.setPromisesDependency()
-    aws.config.update({
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
-      endpoint: this.endpoint_,
-    })
+    aws.config.setPromisesDependency(null)
+    aws.config.update(
+      {
+        accessKeyId: this.accessKeyId_,
+        secretAccessKey: this.secretAccessKey_,
+        region: this.region_,
+        endpoint: this.endpoint_,
+      },
+      true
+    )
 
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
@@ -51,13 +56,16 @@ class DigitalOceanService extends FileService {
   }
 
   delete(file) {
-    aws.config.setPromisesDependency()
-    aws.config.update({
-      accessKeyId: this.accessKeyId_,
-      secretAccessKey: this.secretAccessKey_,
-      region: this.region_,
-      endpoint: this.endpoint_,
-    })
+    aws.config.setPromisesDependency(null)
+    aws.config.update(
+      {
+        accessKeyId: this.accessKeyId_,
+        secretAccessKey: this.secretAccessKey_,
+        region: this.region_,
+        endpoint: this.endpoint_,
+      },
+      true
+    )
 
     const s3 = new aws.S3()
     var params = {
@@ -74,6 +82,18 @@ class DigitalOceanService extends FileService {
         resolve(data)
       })
     })
+  }
+
+  async getUploadStreamDescriptor(fileData) {
+    throw new Error("Method not implemented.")
+  }
+
+  async getDownloadStream(fileData) {
+    throw new Error("Method not implemented.")
+  }
+
+  async getPresignedDownloadUrl(fileData) {
+    throw new Error("Method not implemented.")
   }
 }
 
