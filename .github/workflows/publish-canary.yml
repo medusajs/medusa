@@ -3,6 +3,8 @@ name: Publish Canary
 on:
   push:
     branches: [develop]
+  pull_request:
+    branches: [develop]
   workflow_run:
     workflows: ["Medusa Pipeline"]
     types:
@@ -11,7 +13,7 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event.ref == 'refs/heads/develop' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2.3.5
