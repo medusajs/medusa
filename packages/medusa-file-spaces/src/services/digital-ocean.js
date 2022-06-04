@@ -1,8 +1,7 @@
-import fs from "fs"
+import { AbstractFileService } from "@medusajs/medusa"
 import aws from "aws-sdk"
+import fs from "fs"
 import { parse } from "path"
-import { AbstractFileService, FileServiceUploadResult } from "@medusajs/medusa"
-import { EntityManager } from "typeorm"
 import stream from "stream"
 
 class DigitalOceanService extends AbstractFileService {
@@ -18,21 +17,12 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   upload(file) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-      },
-      true
-    )
+    this.updateAwsConfig()
 
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
     const s3 = new aws.S3()
-    var params = {
+    const params = {
       ACL: "public-read",
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
@@ -56,19 +46,10 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   delete(file) {
-    aws.config.setPromisesDependency(null)
-    aws.config.update(
-      {
-        accessKeyId: this.accessKeyId_,
-        secretAccessKey: this.secretAccessKey_,
-        region: this.region_,
-        endpoint: this.endpoint_,
-      },
-      true
-    )
+    this.updateAwsConfig()
 
     const s3 = new aws.S3()
-    var params = {
+    const params = {
       Bucket: this.bucket_,
       Key: `${file}`,
     }
@@ -85,15 +66,68 @@ class DigitalOceanService extends AbstractFileService {
   }
 
   async getUploadStreamDescriptor(fileData) {
-    throw new Error("Method not implemented.")
+    this.updateAwsConfig()
+
+    const pass = new stream.PassThrough()
+
+    const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
+    const params = {
+      ACL: fileData.acl ?? "private",
+      Bucket: this.bucket_,
+      Body: pass,
+      Key: fileKey,
+    }
+
+    const s3 = new aws.S3()
+    return {
+      writeStream: pass,
+      promise: s3.upload(params).promise(),
+      url: `${this.spacesUrl_}/${fileKey}`,
+      fileKey,
+    }
   }
 
   async getDownloadStream(fileData) {
-    throw new Error("Method not implemented.")
+    this.updateAwsConfig()
+
+    const s3 = new aws.S3()
+
+    const params = {
+      Bucket: this.bucket_,
+      Key: `${fileData.fileKey}`,
+    }
+
+    return s3.getObject(params).createReadStream()
   }
 
   async getPresignedDownloadUrl(fileData) {
-    throw new Error("Method not implemented.")
+    this.updateAwsConfig({
+      signatureVersion: "v4",
+    })
+
+    const s3 = new aws.S3()
+
+    const params = {
+      Bucket: this.bucket_,
+      Key: `${fileData.fileKey}`,
+      Expires: 60, // 60 seconds
+    }
+
+    return await s3.getSignedUrlPromise("getObject", params)
+  }
+
+  updateAwsConfig(additionalConfiguration = {}) {
+    aws.config.setPromisesDependency(null)
+    aws.config.update(
+      {
+        accessKeyId: this.accessKeyId_,
+        secretAccessKey: this.secretAccessKey_,
+        region: this.region_,
+        endpoint: this.endpoint_,
+        ...additionalConfiguration,
+      },
+      true
+    )
   }
 }
 
