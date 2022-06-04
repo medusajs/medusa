@@ -49,7 +49,19 @@ const t = async function ({ directory, migrate, seedFile }) {
     const migrationDirs = await getMigrations(directory)
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
-      ...hostConfig,
+      database: configModule.projectConfig.database_database,
+      //url: configModule.projectConfig.database_url,
+      url:configModule.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
+    ...{
+        host:configModule.projectConfig.host,
+        port:configModule.projectConfig.port,
+        database:configModule.projectConfig.database_database,
+        ssl:configModule.projectConfig.ssl,
+        //host:process.env.RDS_HOSTNAME,
+        //port:process.env.RDS_PORT,
+        username:configModule.projectConfig.username,
+        password: await configModule.projectConfig.password,
+    },
       extra: configModule.projectConfig.database_extra || {},
       migrations: migrationDirs,
       logging: true,
