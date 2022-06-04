@@ -33,14 +33,27 @@ export type Logger = _Logger & {
   warn: (msg: string) => void
 }
 
+export type sslInterface =
+{
+  ca:string|undefined
+  rejectUnauthorized:boolean|undefined
+}
+
 export type ConfigModule = {
   projectConfig: {
     redis_url?: string
 
     jwt_secret?: string
     cookie_secret?: string
+    host?:string|undefined
+    port?:number|undefined
+    database?:string|undefined
+    ssl?:sslInterface|undefined,
+    username?:string|undefined,
+    password?: string | (() => string) | (() => Promise<string>),
+    
 
-    database_url?: string
+    database_url?: string|undefined
     database_type: string
     database_database?: string
     database_logging: LoggerOptions
