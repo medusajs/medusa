@@ -1,0 +1,46 @@
+name: Publish Canary
+
+on:
+  push:
+    branches: [develop]
+  workflow_run:
+    workflows: ["Medusa Pipeline"]
+    types:
+      - completed
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event.ref == 'refs/heads/develop' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+          registry-url: "https://registry.npmjs.org"
+      - name: "Get Branch Name"
+        run: |
+          BRANCH_NAME="${GITHUB_HEAD_REF}"
+          echo "BRANCH_NAME=${BRANCH_NAME}" >> $GITHUB_ENV
+      - name: Format Version Name
+        run: |
+          VERSION_NAME=`echo ${{ env.BRANCH_NAME }} | sed "s/[/_]/-/g"`
+          echo "VERSION_NAME=${VERSION_NAME}" >> $GITHUB_ENV
+      - name: Authenticate with NPM
+        run: |
+          echo "@oliverjuhl:registry=http://registry.npmjs.org/" > .npmrc
+          echo "registry=http://registry.npmjs.org/" >> .npmrc
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> .npmrc
+          npm whoami
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish Canary
+        run: lerna publish --yes --canary --preid ${{ env.VERSION_NAME }} --dist-tag ${{ env.VERSION_NAME }} --force-publish="*"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
