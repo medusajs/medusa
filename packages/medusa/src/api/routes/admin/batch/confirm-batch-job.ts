@@ -1,10 +1,10 @@
 import { BatchJobService } from "../../../../services"
 
 /**
- * @oas [post] /batch-jobs/{id}/confirm-processing
+ * @oas [post] /batch-jobs/{id}/confirm
  * operationId: "PostBatchJobsBatchJobConfirmProcessing"
- * summary: "Emit an event of type PROCESSING"
- * description: "Emit an event of type PROCESSING but does not affect the status"
+ * summary: "Confirm a batch job"
+ * description: "Confirms that a previously requested batch job should be executed."
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the batch job.
@@ -25,7 +25,7 @@ export default async (req, res) => {
   let batch_job = req.batch_job
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-  batch_job = await batchJobService.confirm_processing(batch_job)
+  batch_job = await batchJobService.setConfirm(batch_job)
 
   res.json({ batch_job })
 }
