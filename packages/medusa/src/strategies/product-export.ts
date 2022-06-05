@@ -144,11 +144,18 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   }
 
   async processJob(batchJobId: string): Promise<BatchJob> {
+    let offset = 0
+    let advancementCount = 0
+    let productCount = 0
+
     return await this.atomicPhase_(
       async (transactionManager) => {
-        const batchJob = await this.batchJobService_
+        let batchJob = await this.batchJobService_
           .withTransaction(transactionManager)
           .retrieve(batchJobId)
+
+        offset = batchJob.context.offset ?? offset
+        advancementCount = batchJob.context.count ?? advancementCount
 
         const {
           writeStream,
@@ -164,12 +171,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
         const { listConfig, filterableFields } = batchJob.context as Context
 
-        const productCount: number = await this.productService_
+        productCount = await this.productService_
           .withTransaction(transactionManager)
           .count(filterableFields)
-
-        let advancementCount = 0
-        let offset = 0
 
         while (advancementCount < productCount) {
           const [products, count] = await this.productService_
@@ -182,24 +186,21 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
               order: { created_at: "DESC" },
             })
 
-          advancementCount += count
-          offset += count
-
           products.forEach((product) => {
             writeStream.write(this.buildLine(product))
           })
 
-          batchJob.context = {
+          advancementCount += count
+          offset += count
+          batchJob = await this.batchJobService_.update(batchJobId, {
             ...batchJob.context,
+            fileKey: key,
             offset,
             count: productCount,
             progress: advancementCount / productCount,
-          }
-          const batch = await this.batchJobService_.update(batchJobId, {
-            context: batchJob.context,
           })
 
-          if (batch.status === BatchJobStatus.CANCELED) {
+          if (batchJob.status === BatchJobStatus.CANCELED) {
             writeStream.end()
 
             await this.fileService_.delete({ key: key })
@@ -211,17 +212,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         writeStream.end()
 
         await promise
-
-        batchJob.context.fileKey = key
-
-        const updatedBatchJob = await this.batchJobService_.update(batchJobId, {
-          context: batchJob.context,
-        })
-
-        return await this.batchJobService_.complete(updatedBatchJob)
+        return await this.batchJobService_.complete(batchJob)
       },
       "REPEATABLE READ",
-      async (err) => this.handleProcessingErrors(batchJobId, err)
+      async (err) =>
+        this.handleProcessingErrors(batchJobId, err, {
+          offset,
+          count: productCount,
+          progress: advancementCount / productCount,
+        })
     )
   }
 
@@ -435,7 +434,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
   private async handleProcessingErrors(
     batchJobId: string,
-    err: MedusaError | unknown
+    err: unknown,
+    {
+      offset,
+      count,
+      progress,
+    }: { offset: number; count: number; progress: number }
   ): Promise<void> {
     // Before validating that we should settle on defining if the job can be re process or not.
     /* return await this.atomicPhase_(async (transactionManager) => {
@@ -447,12 +451,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         await this.batchJobService_
           .withTransaction(transactionManager)
           .updateStatus(batchJob, BatchJobStatus.FAILED)
-      } else {
+      } else if (batchJob.context.retry_count < batchJob.context.max_retry) {
         await this.batchJobService_
           .withTransaction(transactionManager)
           .update(batchJobId, {
             context: {
               ...batchJob.context,
+              offset,
+              count,
+              progress,
               retry_count: (Number(batchJob.context.retry_count) ?? 0) + 1,
             },
             result: {
