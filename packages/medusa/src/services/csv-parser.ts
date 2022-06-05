@@ -1,6 +1,6 @@
 import { AwilixContainer } from "awilix"
-import Papa from "papaparse"
-import { AbstractParser, ParserOptions } from "../interfaces/abstract-parser"
+import Papa, { ParseConfig } from "papaparse"
+import { AbstractParser } from "../interfaces/abstract-parser"
 import { CsvSchema } from "../interfaces/csv-parser"
 
 const DEFAULT_PARSE_OPTIONS = {
@@ -12,7 +12,7 @@ class CsvParser<
   TSchema extends CsvSchema = CsvSchema,
   TParserResult = unknown,
   TOutputResult = unknown
-> extends AbstractParser<TSchema, TParserResult, TOutputResult> {
+> extends AbstractParser<TSchema, TParserResult, ParseConfig, TOutputResult> {
   protected readonly $$delimiter: string = ";"
 
   constructor(
@@ -28,7 +28,7 @@ class CsvParser<
 
   public async parse(
     readableStream: NodeJS.ReadableStream,
-    options: ParserOptions = DEFAULT_PARSE_OPTIONS
+    options: ParseConfig = DEFAULT_PARSE_OPTIONS
   ): Promise<TParserResult[]> {
     const csvStream = Papa.parse(Papa.NODE_STREAM_INPUT, options)
 

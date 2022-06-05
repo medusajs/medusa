@@ -1,11 +1,7 @@
-import { ParseConfig } from "papaparse"
-
-export type ParserOptions = ParseConfig
-
 /**
  * Generic parsing interface. All different parsing implementations (csv, json, etc.) should implement this interface
  */
-export interface IParser<TResult> {
+export interface IParser<TResult, TParseOptions> {
   /**
    *
    * @param readableStream readable stream to parse
@@ -13,15 +9,19 @@ export interface IParser<TResult> {
    */
   parse(
     readableStream: NodeJS.ReadableStream,
-    options?: ParserOptions
+    options?: TParseOptions
   ): Promise<TResult[]>
 }
 
 /**
  * Abstract class implementation of the IParser interface. All different parsing implementations should extend this class
  */
-export abstract class AbstractParser<TSchema, TParserResult, TOutputResult>
-  implements IParser<TParserResult>
+export abstract class AbstractParser<
+  TSchema,
+  TParserResult,
+  TParseOptions,
+  TOutputResult
+> implements IParser<TParserResult, TParseOptions>
 {
   protected readonly $$schema: TSchema
 
@@ -31,7 +31,7 @@ export abstract class AbstractParser<TSchema, TParserResult, TOutputResult>
 
   public abstract parse(
     readableStream: NodeJS.ReadableStream,
-    options?: ParserOptions
+    options?: TParseOptions
   ): Promise<TParserResult[]>
 
   /**
