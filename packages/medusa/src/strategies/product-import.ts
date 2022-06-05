@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm"
 
-import { AbstractBatchJobStrategy } from "../interfaces"
+import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
 import { BatchJob } from "../models"
 
 import CsvParser from "../services/csv-parser"
@@ -11,6 +11,7 @@ import {
   CsvParserContext,
   CsvSchema,
 } from "../interfaces/csv-parser"
+import IORedis from "ioredis"
 
 type TLine = {
   id: string
@@ -21,6 +22,7 @@ type ProductImportCsvSchema = CsvSchema<TLine>
 
 type Context = {
   progress: number
+  csvFileKey: string
 }
 
 /**
@@ -46,20 +48,22 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   static batchType = "product_import"
 
-  static CSVSchema: ProductImportCsvSchema = [
-    {
-      name: "handle",
-      required: true,
-      validator: class _ extends AbstractCsvValidator<TLine> {
-        validate(
-          value: string,
-          context: CsvParserContext<TLine>
-        ): Promise<boolean> {
-          return Promise.resolve(false)
-        }
+  static CSVSchema: ProductImportCsvSchema = {
+    columns: [
+      {
+        name: "handle",
+        required: true,
+        validator: {
+          validate(
+            value: string,
+            context: CsvParserContext<TLine>
+          ): Promise<boolean> {
+            return Promise.resolve(false)
+          },
+        },
       },
-    },
-  ]
+    ],
+  }
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -67,10 +71,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly csvParser_: CsvParser
   protected readonly batchJobService_: BatchJobService
   protected readonly productService: ProductService
+  protected readonly redisClient_: IORedis.Redis
+
+  protected readonly fileService_: IFileService<any>
 
   constructor({
     batchJobService,
     productService,
+    fileService,
+    redisClient,
     manager,
     // csvParser
   }) {
@@ -82,7 +91,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       arguments[0],
       ProductImportStrategy.CSVSchema
     )
+
     this.manager_ = manager
+    this.redisClient_ = redisClient
+    this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.productService = productService
   }
@@ -95,16 +107,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     batchJobId: string,
     req: any
   ): Promise<BatchJob> {
-    const batchJob = await this.batchJobService_.ready(batchJobId)
+    const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
-    const fileLocation = batchJob.context.fileLocation
+    const csvFileKey = (batchJob.context as Context).csvFileKey
+    const csvStream = await this.fileService_.getDownloadStream({
+      key: csvFileKey,
+    })
 
-    // TODO: use parser to read the CSV file
-    // if it is a dry run, publish the results to redis
-    // MOVE the job to "awaiting_confirmation" or "confirmed" if not a dry run
-    // Publish event
+    const results = await this.csvParser_.parse(csvStream)
+    await this.redisClient_.set(`pij_${batchJobId}`, JSON.stringify(results)) // TODO: do this better
 
-    // return await this.batchJobService_.awaitingConfirmation(batchJobId)
+    return await this.batchJobService_.ready(batchJobId)
   }
 
   processJob(batchJobId: string): Promise<BatchJob> {
