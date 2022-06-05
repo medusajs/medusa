@@ -15,7 +15,7 @@ import { transformDate } from "../utils/validators/date-transform"
  */
 export type WithRequiredProperty<T, K extends keyof T> = T &
   {
-    // ?- removes 'optional' from a property
+    // -? removes 'optional' from a property
     [Property in K]-?: T[Property]
   }
 
