@@ -13,7 +13,7 @@ class CsvParser<
   TParserResult = unknown,
   TOutputResult = unknown
 > extends AbstractParser<TSchema, TParserResult, TOutputResult> {
-  protected $$delimiter = ";"
+  protected readonly $$delimiter: string = ";"
 
   constructor(
     protected readonly container: AwilixContainer,
@@ -44,8 +44,8 @@ class CsvParser<
   async buildData(data: TParserResult[]): Promise<TOutputResult[]> {
     const validatedData = [] as TOutputResult[]
     for (let i = 0; i < data.length; i++) {
-      const result = await this._buildLine(data[i], i + 1)
-      validatedData.push(result)
+      const builtLine = await this._buildLine(data[i], i + 1)
+      validatedData.push(builtLine)
     }
     return validatedData
   }
