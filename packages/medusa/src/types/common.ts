@@ -10,6 +10,15 @@ import "reflect-metadata"
 import { FindManyOptions, FindOperator, OrderByCondition } from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
 
+/**
+ * Utility type used to remove some optional attributes (coming from K) from a type T
+ */
+export type WithRequiredProperty<T, K extends keyof T> = T &
+  {
+    // -? removes 'optional' from a property
+    [Property in K]-?: T[Property]
+  }
+
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
 }
