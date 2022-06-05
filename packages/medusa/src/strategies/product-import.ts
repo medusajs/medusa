@@ -103,6 +103,20 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     throw new Error("Not implemented!")
   }
 
+  async setParsingResultsToRedis(results: any, batchJobId: string) {
+    await this.redisClient_.client.call(
+      "JSON.SET",
+      `pij_${batchJobId}`,
+      "$",
+      JSON.stringify(results) // TODO: check if `stringify` is needed
+    )
+    // TODO: expire
+  }
+
+  async getParsingResultsFromRedis(batchJobId: string) {
+    return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
+  }
+
   async prepareBatchJobForProcessing(
     batchJobId: string,
     req: any
@@ -120,7 +134,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     return await this.batchJobService_.ready(batchJobId)
   }
 
-  processJob(batchJobId: string): Promise<BatchJob> {
+  async processJob(batchJobId: string): Promise<BatchJob> {
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = await this.batchJobService_
         .withTransaction(transactionManager)
