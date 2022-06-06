@@ -1,10 +1,10 @@
+import { Readable } from "stream"
+
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 
 import { User } from "../../models"
 import { BatchJobStatus } from "../../types/batch-job"
 import ProductImportStrategy from "../product-import"
-
-const outputDataStorage: string[] = []
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
@@ -22,18 +22,15 @@ let fakeJob = {
 
 /* ******************** SERVICES MOCK ******************** */
 
+function* generateCSVDataForStream() {
+  yield "Product Title; Product Handle; Product Description"
+  yield "Prod title 1; prod-handle; Very loong desc text"
+}
+
 const fileServiceMock = {
   delete: jest.fn(),
   getDownloadStream: jest.fn().mockImplementation(() => {
-    return Promise.resolve({
-      writeStream: {
-        write: (data: string) => {
-          outputDataStorage.push(data)
-        },
-        end: () => void 0,
-      },
-      promise: Promise.resolve(),
-    })
+    return Promise.resolve(Readable.from(generateCSVDataForStream()))
   }),
 }
 

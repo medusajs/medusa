@@ -48,23 +48,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   static batchType = "product_import"
 
-  static CSVSchema: ProductImportCsvSchema = {
-    columns: [
-      {
-        name: "handle",
-        required: true,
-        validator: {
-          validate(
-            value: string,
-            context: CsvParserContext<TLine>
-          ): Promise<boolean> {
-            return Promise.resolve(false)
-          },
-        },
-      },
-    ],
-  }
-
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -89,7 +72,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.csvParser_ = new CsvParser<ProductImportCsvSchema, unknown, unknown>(
       // eslint-disable-next-line prefer-rest-params
       arguments[0],
-      ProductImportStrategy.CSVSchema
+      CSVSchema
     )
 
     this.manager_ = manager
@@ -169,3 +152,24 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 }
 
 export default ProductImportStrategy
+
+const CSVSchema: ProductImportCsvSchema = {
+  columns: [
+    {
+      name: "Product Handle",
+      mapTo: "handle",
+      required: true,
+      // validator: {
+      //   validate(
+      //     value: string,
+      //     context: CsvParserContext<TLine>
+      //   ): Promise<boolean> {
+      //     return Promise.resolve(false)
+      //   },
+      // },
+    },
+    { name: "Product Title", mapTo: "title", required: true },
+    { name: "Product Subtitle", mapTo: "subtitle", required: true },
+    { name: "Product Description", mapTo: "description", required: true },
+  ],
+}
