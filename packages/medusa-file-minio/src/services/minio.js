@@ -1,5 +1,6 @@
-import fs from "fs"
+import stream from "stream"
 import aws from "aws-sdk"
+import fs from "fs"
 import { AbstractFileService } from '@medusajs/medusa'
 
 class MinioService extends AbstractFileService {
