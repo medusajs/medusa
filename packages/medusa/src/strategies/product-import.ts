@@ -25,6 +25,8 @@ type Context = {
   csvFileKey: string
 }
 
+const BATCH_SIZE = 100
+
 /**
  * THE FLOW
  *
@@ -86,10 +88,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     throw new Error("Not implemented!")
   }
 
-  async setParsingResultsToRedis(
-    results: any,
-    batchJobId: string
-  ): Promise<void> {
+  async setImportDataToRedis(results: any, batchJobId: string): Promise<void> {
     await this.redisClient_.client.call(
       "JSON.SET",
       `pij_${batchJobId}`,
@@ -99,7 +98,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     // TODO: expire
   }
 
-  async getParsingResultsFromRedis(batchJobId: string): Promise<void> {
+  async getImportDataFromRedis(
+    batchJobId: string
+  ): Promise<Record<string, string>[]> {
     return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
   }
 
@@ -122,9 +123,26 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   async processJob(batchJobId: string): Promise<BatchJob> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const batchJob = await this.batchJobService_
+      let batchJob = await this.batchJobService_
         .withTransaction(transactionManager)
         .retrieve(batchJobId)
+
+      const records = await this.getImportDataFromRedis(batchJob.id)
+
+      const total = records.length
+
+      let current = 0
+
+      while (current < total) {
+        //TODO: update create/update products or variants
+
+        current = current + BATCH_SIZE
+
+        batchJob = await this.batchJobService_.update(batchJobId, {
+          ...batchJob.context,
+          progress: current / total,
+        })
+      }
 
       return batchJob
     })
@@ -155,10 +173,10 @@ export default ProductImportStrategy
 
 const CSVSchema: ProductImportCsvSchema = {
   columns: [
+    { name: "Product Id", mapTo: "id", required: true },
     {
       name: "Product Handle",
       mapTo: "handle",
-      required: true,
       // validator: {
       //   validate(
       //     value: string,
@@ -168,8 +186,8 @@ const CSVSchema: ProductImportCsvSchema = {
       //   },
       // },
     },
-    { name: "Product Title", mapTo: "title", required: true },
-    { name: "Product Subtitle", mapTo: "subtitle", required: true },
-    { name: "Product Description", mapTo: "description", required: true },
+    { name: "Product Title", mapTo: "title" },
+    { name: "Product Subtitle", mapTo: "subtitle" },
+    { name: "Product Description", mapTo: "description" },
   ],
 }

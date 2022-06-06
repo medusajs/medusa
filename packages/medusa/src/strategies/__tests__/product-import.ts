@@ -24,8 +24,9 @@ let fakeJob = {
 /* ******************** SERVICES MOCK ******************** */
 
 async function* generateCSVDataForStream() {
-  yield "Product Title; Product Handle; Product Description\n"
-  yield "Prod title 1; prod-handle; Very loong desc text\n"
+  yield "Product Title;Product Handle;Product Description\n"
+  yield "Prod title 1;prod-handle;Very loong desc text\n"
+  yield "Prod 2;prod-handle-2;Another loong desc text\n"
 }
 
 const fileServiceMock = {
