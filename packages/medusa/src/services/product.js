@@ -1,8 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets } from "typeorm"
-import { formatException } from "../utils/exception-formatter"
 import { defaultAdminProductsVariantsRelations } from "../api/routes/admin/products"
+import { formatException } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate products.
@@ -127,13 +126,13 @@ class ProductService extends BaseService {
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
-      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
-      const raw = await qb.getMany()
-      return productRepo.findWithRelations(
-        relations,
-        raw.map((i) => i.id),
-        query.withDeleted ?? false
+      const [products] = await productRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
       )
+
+      return products
     }
 
     const products = productRepo.findWithRelations(relations, query)
@@ -182,22 +181,20 @@ class ProductService extends BaseService {
 
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
+    let products
+    let count
     if (q) {
-      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
-      const [raw, count] = await qb.getManyAndCount()
-
-      const products = await productRepo.findWithRelations(
-        relations,
-        raw.map((i) => i.id),
-        query.withDeleted ?? false
+      ;[products, count] = await productRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
       )
-      return [products, count]
+    } else {
+      ;[products, count] = await productRepo.findWithRelationsAndCount(
+        relations,
+        query
+      )
     }
-
-    const [products, count] = await productRepo.findWithRelationsAndCount(
-      relations,
-      query
-    )
 
     if (priceIndex > -1) {
       const productsWithAdditionalPrices = await this.setAdditionalPrices(
@@ -1005,44 +1002,6 @@ class ProductService extends BaseService {
   }
 
   /**
-   * Creates a QueryBuilder that can fetch products based on free text.
-   * @param {ProductRepository} productRepo - an instance of a ProductRepositry
-   * @param {FindOptions<Product>} query - the query to get products by
-   * @param {string} q - the text to perform free text search from
-   * @return {QueryBuilder<Product>} a query builder that can fetch products
-   */
-  getFreeTextQueryBuilder_(productRepo, query, q) {
-    const where = query.where
-
-    delete where.description
-    delete where.title
-
-    let qb = productRepo
-      .createQueryBuilder("product")
-      .leftJoinAndSelect("product.variants", "variant")
-      .leftJoinAndSelect("product.collection", "collection")
-      .select(["product.id"])
-      .where(where)
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
-        })
-      )
-      .skip(query.skip)
-      .take(query.take)
-
-    if (query.withDeleted) {
-      qb = qb.withDeleted()
-    }
-
-    return qb
-  }
-
-  /**
    * Set additional prices on a list of products.
    * @param {Product[] | Product} products list of products on which to set additional prices
    * @param {string} currency_code currency code to fetch prices for
@@ -1078,25 +1037,22 @@ class ProductService extends BaseService {
 
       const productArray = Array.isArray(products) ? products : [products]
 
-      const priceSelectionStrategy = this.priceSelectionStrategy_.withTransaction(
-        manager
-      )
+      const priceSelectionStrategy =
+        this.priceSelectionStrategy_.withTransaction(manager)
 
       const productsWithPrices = await Promise.all(
         productArray.map(async (p) => {
           if (p.variants?.length) {
             p.variants = await Promise.all(
               p.variants.map(async (v) => {
-                const prices = await priceSelectionStrategy.calculateVariantPrice(
-                  v.id,
-                  {
+                const prices =
+                  await priceSelectionStrategy.calculateVariantPrice(v.id, {
                     region_id: regionId,
                     currency_code: currencyCode,
                     cart_id: cart_id,
                     customer_id: customer_id,
                     include_discount_prices,
-                  }
-                )
+                  })
 
                 return {
                   ...v,

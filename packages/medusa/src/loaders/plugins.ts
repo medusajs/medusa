@@ -17,7 +17,9 @@ import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import {
+  AbstractFileService,
   AbstractTaxService,
+  isFileService,
   isTaxCalculationStrategy,
   TransactionBaseService,
 } from "../interfaces"
@@ -408,6 +410,15 @@ export async function registerServices(
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
       } else if (loaded.prototype instanceof FileService) {
+        // Add the service directly to the container in order to make simple
+        // resolution if we already know which file storage provider we need to use
+        container.register({
+          [name]: asFunction(
+            (cradle) => new loaded(cradle, pluginDetails.options)
+          ),
+          [`fileService`]: aliasTo(name),
+        })
+      } else if (isFileService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({
