@@ -207,68 +207,94 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   }
 
   async processJob(batchJobId: string): Promise<BatchJob> {
-    const batchJob = await this.batchJobService_.retrieve(batchJobId)
-
-    const [filter, listConfig, lineDescriptor] =
-      await this.getExportConfiguration(batchJob)
-
-    const { writeStream, fileKey, promise } =
-      await this.fileService_.getUploadStreamDescriptor({
-        name: "exports/order-export",
-        ext: "csv",
-      })
-
-    const header = this.buildHeader(lineDescriptor)
-    writeStream.write(header)
-
     let offset = 0
+    let orderCount = 0
 
-    const [, count] = await this.orderService_.listAndCount(filter, {
-      ...listConfig,
-      skip: offset,
-      take: this.BATCH_SIZE,
-    })
+    return await this.atomicPhase_(
+      async (transactionManager) => {
+        const batchJob = await this.batchJobService_
+          .withTransaction(transactionManager)
+          .retrieve(batchJobId)
 
-    let context = batchJob.context
-    let orders = []
+        offset = (batchJob.context.offset as number | undefined) ?? offset
 
-    while (offset < count) {
-      orders = await this.orderService_.list(filter, {
-        ...listConfig,
-        skip: offset,
-        take: this.BATCH_SIZE,
-      })
+        const [filter, listConfig, lineDescriptor] =
+          await this.getExportConfiguration(batchJob)
 
-      orders.forEach(async (order) => {
-        writeStream.write(await this.buildCSVLine(order, lineDescriptor))
-      })
+        const { writeStream, fileKey, promise } =
+          await this.fileService_.getUploadStreamDescriptor({
+            name: "exports/order-export",
+            ext: "csv",
+          })
 
-      context = { ...context, count, progress: offset / count }
-      const batch = await this.batchJobService_.update(batchJobId, { context })
+        const header = this.buildHeader(lineDescriptor)
+        writeStream.write(header)
 
-      offset += this.BATCH_SIZE
+        const [, count] = await this.orderService_.listAndCount(filter, {
+          ...listConfig,
+          skip: offset,
+          take: this.BATCH_SIZE,
+        })
 
-      if (batch.status === BatchJobStatus.CANCELED) {
+        orderCount = count
+
+        let context = batchJob.context
+        let orders = []
+
+        while (offset < count) {
+          orders = await this.orderService_
+            .withTransaction(transactionManager)
+            .list(filter, {
+              ...listConfig,
+              skip: offset,
+              take: this.BATCH_SIZE,
+            })
+
+          orders.forEach(async (order) => {
+            writeStream.write(await this.buildCSVLine(order, lineDescriptor))
+          })
+
+          context = { ...context, count, offset, progress: offset / count }
+          const batch = await this.batchJobService_
+            .withTransaction(transactionManager)
+            .update(batchJobId, {
+              context,
+            })
+
+          offset += this.BATCH_SIZE
+
+          if (batch.status === BatchJobStatus.CANCELED) {
+            writeStream.end()
+
+            await this.fileService_
+              .withTransaction(transactionManager)
+              .delete({ key: fileKey })
+
+            return batch
+          }
+        }
+
         writeStream.end()
 
-        await this.fileService_.delete({ key: fileKey })
+        await promise
 
-        return batch
-      }
-    }
+        context.fileKey = fileKey
+        context.progress = 1
 
-    writeStream.end()
+        const updatedBatchJob = await this.batchJobService_.update(batchJobId, {
+          context,
+        })
 
-    await promise
-
-    context.fileKey = fileKey
-    context.progress = 1
-
-    const updatedBatchJob = await this.batchJobService_.update(batchJobId, {
-      context,
-    })
-
-    return await this.batchJobService_.complete(updatedBatchJob)
+        return await this.batchJobService_.complete(updatedBatchJob)
+      },
+      "REPEATABLE READ",
+      async (err) =>
+        this.handleProcessingErrors(batchJobId, err, {
+          offset,
+          count: orderCount,
+          progress: offset / orderCount,
+        })
+    )
   }
 
   public async completeJob(batchJobId: string): Promise<BatchJob> {
@@ -371,6 +397,44 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       listConfig,
       lineDescriptor,
     ]
+  }
+
+  private async handleProcessingErrors(
+    batchJobId: string,
+    err: unknown,
+    {
+      offset,
+      count,
+      progress,
+    }: { offset: number; count: number; progress: number }
+  ): Promise<void> {
+    // Before validating that we should settle on defining if the job can be re process or not.
+    /* return await this.atomicPhase_(async (transactionManager) => {
+      const batchJob = await this.batchJobService_
+        .withTransaction(transactionManager)
+        .retrieve(batchJobId)
+      if (err instanceof MedusaError) {
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .updateStatus(batchJob, BatchJobStatus.FAILED)
+      } else if (batchJob.context.retry_count < batchJob.context.max_retry) {
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            context: {
+              ...batchJob.context,
+              offset,
+              count,
+              progress,
+              retry_count: (Number(batchJob.context.retry_count) ?? 0) + 1,
+            },
+            result: {
+              ...batchJob.result,
+              err,
+            },
+          })
+      }
+    })*/
   }
 }
 
