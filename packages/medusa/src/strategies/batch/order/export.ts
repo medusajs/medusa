@@ -32,7 +32,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       title: "Order_ID",
       accessor: (order: Order): string => order.id,
     },
-
     {
       fieldName: "display_id",
       title: "Display_ID",
@@ -210,17 +209,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   async processJob(batchJobId: string): Promise<BatchJob> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
-    const params = await validator(
-      AdminGetOrdersParams,
-      batchJob.context.params
-    )
-
-    const [filter, listConfig] = this.getListParameters(params)
-
-    const lineDescriptor = this.getLineDescriptor(
-      listConfig.select,
-      listConfig.relations
-    )
+    const [filter, listConfig, lineDescriptor] =
+      await this.getExportConfiguration(batchJob)
 
     const { writeStream, fileKey, promise } =
       await this.fileService_.getUploadStreamDescriptor({
@@ -327,21 +317,32 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     )
   }
 
-  private getListParameters(
-    context: AdminGetOrdersParams
-  ): [Dictionary<string | number | string[] | DateComparisonOperator>, any] {
+  private async getExportConfiguration(
+    batchJob: BatchJob
+  ): Promise<
+    [
+      Dictionary<string | number | string[] | DateComparisonOperator>,
+      any,
+      PropertiesDescriptor<Order>[]
+    ]
+  > {
+    const params = await validator(
+      AdminGetOrdersParams,
+      batchJob.context.params
+    )
+
     let includeFields: string[] = []
 
-    if (context.fields) {
-      includeFields = context.fields.split(",")
+    if (params.fields) {
+      includeFields = params.fields.split(",")
       // Ensure created_at is included, since we are sorting on this
       includeFields.push("created_at")
     }
 
     let expandFields: string[] = []
-    if (context.expand) {
-      expandFields = context.expand.split(",")
-      if (expandFields.indexOf("shipping_address") === -1 && context.fields) {
+    if (params.expand) {
+      expandFields = params.expand.split(",")
+      if (expandFields.indexOf("shipping_address") === -1 && params.fields) {
         includeFields.push("region_id")
       }
     }
@@ -352,7 +353,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       order: { created_at: "DESC" },
     }
 
-    const filterableFields = omit(context, [
+    const filterableFields = omit(params, [
       "limit",
       "offset",
       "expand",
@@ -360,9 +361,15 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       "order",
     ])
 
+    const lineDescriptor = this.getLineDescriptor(
+      listConfig.select,
+      listConfig.relations
+    )
+
     return [
       pickBy(filterableFields, (val) => typeof val !== "undefined"),
       listConfig,
+      lineDescriptor,
     ]
   }
 }
