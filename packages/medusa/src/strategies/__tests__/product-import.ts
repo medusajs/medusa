@@ -1,4 +1,5 @@
 import { Readable } from "stream"
+import FakeRedis from "ioredis-mock"
 
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 
@@ -80,8 +81,13 @@ describe("Product import strategy", () => {
     fileService: fileServiceMock as any,
     batchJobService: batchJobServiceMock as any,
     productService: productServiceMock as any,
+    redisClient: new FakeRedis(),
     productRepository: productRepositoryMock,
   })
 
-  it("should TODO", async () => {})
+  it("`prepareBatchJobForProcessing` should parse CSV from context", async () => {
+    await productImportStrategy.prepareBatchJobForProcessing(fakeJob.id, {})
+
+    expect(batchJobServiceMock.ready).toBeCalled()
+  })
 })

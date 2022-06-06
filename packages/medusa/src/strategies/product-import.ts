@@ -115,6 +115,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     })
 
     const results = await this.csvParser_.parse(csvStream)
+    console.log(results)
     await this.redisClient_.set(`pij_${batchJobId}`, JSON.stringify(results)) // TODO: do this better
 
     return await this.batchJobService_.ready(batchJobId)
