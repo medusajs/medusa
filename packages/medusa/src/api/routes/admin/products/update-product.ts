@@ -320,7 +320,7 @@ class ProductVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @IsOptional()
@@ -424,5 +424,5 @@ export class AdminPostProductsProductReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

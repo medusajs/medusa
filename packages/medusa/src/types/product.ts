@@ -7,6 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { ProductOptionValue, Status } from "../models"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator, StringComparisonOperator } from "./common"
@@ -18,6 +19,9 @@ export enum ProductStatus {
   REJECTED = "rejected",
 }
 
+/**
+ * API Level DTOs + Validation rules
+ */
 export class FilterableProductProps {
   @IsString()
   @IsOptional()
@@ -122,4 +126,110 @@ export class FilterableProductTypeProps {
   @IsString()
   @IsOptional()
   q?: string
+}
+
+/**
+ * Service Level DTOs
+ */
+
+export type CreateProductDTO = {
+  title: string
+  subtitle?: string
+  description?: string
+  is_giftcard?: boolean
+  discountable?: boolean
+  images?: string[]
+  thumbnail?: string
+  handle?: string
+  status?: ProductStatus | Status
+  type?: CreateProductProductTypeDTO
+  collection_id?: string
+  tags?: CreateProductProductTagDTO[]
+  options?: CreateProductProductOption[]
+  variants?: CreateProductProductVariantDTO[]
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  hs_code?: string
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  metadata?: Record<string, unknown>
+}
+
+export type CreateProductProductTagDTO = {
+  id?: string
+  value: string
+}
+
+export type CreateProductProductTypeDTO = {
+  id?: string
+  value: string
+}
+
+export type CreateProductProductVariantDTO = {
+  title: string
+  sku?: string
+  ean?: string
+  upc?: string
+  barcode?: string
+  hs_code?: string
+  inventory_quantity?: number
+  allow_backorder?: boolean
+  manage_inventory?: boolean
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  metadata?: object
+  prices?: CreateProductProductVariantPriceDTO[]
+  options?: { value: string }[]
+}
+
+export type UpdateProductProductVariantDTO = {
+  id?: string
+  title?: string
+  sku?: string
+  ean?: string
+  upc?: string
+  barcode?: string
+  hs_code?: string
+  inventory_quantity?: number
+  allow_backorder?: boolean
+  manage_inventory?: boolean
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  metadata?: object
+  prices?: CreateProductProductVariantPriceDTO[]
+  options?: { value: string; option_id: string }[]
+}
+
+export type CreateProductProductOption = {
+  title: string
+}
+
+export type CreateProductProductVariantPriceDTO = {
+  region_id?: string
+  currency_code?: string
+  amount: number
+  min_quantity?: number
+  max_quantity?: number
+}
+
+export type UpdateProductDTO = Omit<Partial<CreateProductDTO>, "variants"> & {
+  variants?: UpdateProductProductVariantDTO[]
+}
+
+export type ProductOptionDTO = {
+  title: string
+  values: ProductOptionValue[]
 }

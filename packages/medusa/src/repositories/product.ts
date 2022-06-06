@@ -27,7 +27,7 @@ type CustomOptions = {
   withDeleted?: boolean
 }
 
-type FindWithRelationsOptions = CustomOptions
+export type FindWithRelationsOptions = CustomOptions
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
@@ -106,7 +106,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   private getGroupedRelations(
-    relations: Array<keyof Product>
+    relations: string[]
   ): {
     [toplevel: string]: string[]
   } {
@@ -239,7 +239,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findWithRelations(
-    relations: Array<keyof Product> = [],
+    relations: string[] = [],
     idsOrOptionsWithoutRelations: FindWithRelationsOptions | string[] = {},
     withDeleted = false
   ): Promise<Product[]> {
@@ -285,7 +285,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findOneWithRelations(
-    relations: Array<keyof Product> = [],
+    relations: string[] = [],
     optionsWithoutRelations: FindWithRelationsOptions = { where: {} }
   ): Promise<Product> {
     // Limit 1

@@ -31,8 +31,11 @@ export type Writable<T> = {
     | FindOperator<string[]>
 }
 
-export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
-  where: Partial<Writable<TEntity>>
+/**
+ *
+ */
+export type ExtendedFindConfig<TEntity, TWhereKeys> = FindConfig<TEntity> & {
+  where: Partial<Writable<TWhereKeys>>
   withDeleted?: boolean
   relations?: string[]
 }

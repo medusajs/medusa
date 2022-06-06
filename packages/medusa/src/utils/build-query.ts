@@ -7,18 +7,19 @@ import {
 import { FindOperator, In, Raw } from "typeorm"
 
 /**
-* Used to build TypeORM queries.
-* @param selector The selector
-* @param config The config
-* @return The QueryBuilderConfig
-*/
-export function buildQuery<TEntity = unknown>(
-  selector: Selector<TEntity>,
+ * Used to build TypeORM queries.
+ * @param selector The selector
+ * @param config The config
+ * @return The QueryBuilderConfig
+ */
+export function buildQuery<
+  TEntity = unknown,
+  TWhereKeys extends Selector<TEntity> = Selector<TEntity>
+>(
+  selector: TWhereKeys,
   config: FindConfig<TEntity> = {}
-): ExtendedFindConfig<TEntity> {
-  const build = (
-    obj: Selector<TEntity>
-  ): Partial<Writable<TEntity>> => {
+): ExtendedFindConfig<TEntity, TWhereKeys> {
+  const build = (obj: Selector<TEntity>): Partial<Writable<TWhereKeys>> => {
     return Object.entries(obj).reduce((acc, [key, value]: any) => {
       // Undefined values indicate that they have no significance to the query.
       // If the query is looking for rows where a column is not set it should use null instead of undefined
@@ -75,11 +76,11 @@ export function buildQuery<TEntity = unknown>(
       }
 
       return acc
-    }, {} as Partial<Writable<TEntity>>)
+    }, {} as Partial<Writable<TWhereKeys>>)
   }
 
   const query: FindConfig<TEntity> & {
-    where: Partial<Writable<TEntity>>
+    where: Partial<Writable<TWhereKeys>>
     withDeleted?: boolean
   } = {
     where: build(selector),

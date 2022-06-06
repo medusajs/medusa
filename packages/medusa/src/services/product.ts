@@ -1,15 +1,90 @@
+/* eslint-disable @typescript-eslint/no-extra-semi */
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
-import { defaultAdminProductsVariantsRelations } from "../api/routes/admin/products"
+import { EntityManager } from "typeorm"
 import { formatException } from "../utils/exception-formatter"
+import { ProductOptionRepository } from "../repositories/product-option"
+import {
+  FindWithRelationsOptions,
+  ProductRepository,
+} from "../repositories/product"
+import { ProductVariantRepository } from "../repositories/product-variant"
+import ProductVariantService from "./product-variant"
+import ProductCollectionService from "./product-collection"
+import { ProductTypeRepository } from "../repositories/product-type"
+import { ProductTagRepository } from "../repositories/product-tag"
+import { ImageRepository } from "../repositories/image"
+import { CartRepository } from "../repositories/cart"
+import { SearchService } from "."
+import PriceSelectionStrategy from "../strategies/price-selection"
+import EventBusService from "./event-bus"
+import { TransactionBaseService } from "../interfaces"
+import {
+  CreateProductDTO,
+  CreateProductProductTagDTO,
+  CreateProductProductTypeDTO,
+  FilterableProductProps,
+  UpdateProductDTO,
+} from "../types/product"
+import { FindConfig, Selector } from "../types/common"
+import {
+  Image,
+  Product,
+  ProductOption,
+  ProductTag,
+  ProductType,
+  ProductVariant,
+} from "../models"
+import { buildQuery, setMetadata, validateId } from "../utils"
+import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
 
-/**
- * Provides layer to manipulate products.
- * @extends BaseService
- */
-class ProductService extends BaseService {
-  static IndexName = `products`
-  static Events = {
+type InjectedDependencies = {
+  manager: EntityManager
+  productOptionRepository: typeof ProductOptionRepository
+  productRepository: typeof ProductRepository
+  productVariantRepository: typeof ProductVariantRepository
+  productTypeRepository: typeof ProductTypeRepository
+  productTagRepository: typeof ProductTagRepository
+  imageRepository: typeof ImageRepository
+  cartRepository: typeof CartRepository
+  productVariantService: ProductVariantService
+  productCollectionService: ProductCollectionService
+  searchService: SearchService
+  eventBusService: EventBusService
+  priceSelectionStrategy: PriceSelectionStrategy
+}
+
+type PriceListLoadConfig = {
+  include_discount_prices?: boolean
+  customer_id?: string
+  cart_id?: string
+  region_id?: string
+  currency_code?: string
+}
+
+type ListProductConfig = FindConfig<FilterableProductProps> &
+  PriceListLoadConfig
+
+type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
+
+class ProductService extends TransactionBaseService<ProductService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly productOptionRepository_: typeof ProductOptionRepository
+  protected readonly productRepository_: typeof ProductRepository
+  protected readonly productVariantRepository_: typeof ProductVariantRepository
+  protected readonly productTypeRepository_: typeof ProductTypeRepository
+  protected readonly productTagRepository_: typeof ProductTagRepository
+  protected readonly imageRepository_: typeof ImageRepository
+  protected readonly cartRepository_: typeof CartRepository
+  protected readonly productVariantService_: ProductVariantService
+  protected readonly productCollectionService_: ProductCollectionService
+  protected readonly searchService_: SearchService
+  protected readonly eventBus_: EventBusService
+  protected readonly priceSelectionStrategy_: PriceSelectionStrategy
+
+  static readonly IndexName = `products`
+  static readonly Events = {
     UPDATED: "product.updated",
     CREATED: "product.created",
     DELETED: "product.deleted",
@@ -26,82 +101,78 @@ class ProductService extends BaseService {
     productTagRepository,
     imageRepository,
     searchService,
-  }) {
-    super()
-
-    /** @private @const {EntityManager} */
-    this.manager_ = manager
-
-    /** @private @const {ProductOption} */
-    this.productOptionRepository_ = productOptionRepository
-
-    /** @private @const {Product} */
-    this.productRepository_ = productRepository
-
-    /** @private @const {ProductVariant} */
-    this.productVariantRepository_ = productVariantRepository
-
-    /** @private @const {EventBus} */
-    this.eventBus_ = eventBusService
-
-    /** @private @const {ProductVariantService} */
-    this.productVariantService_ = productVariantService
-
-    /** @private @const {ProductCollectionService} */
-    this.productTypeRepository_ = productTypeRepository
-
-    /** @private @const {ProductCollectionService} */
-    this.productTagRepository_ = productTagRepository
-
-    /** @private @const {ImageRepository} */
-    this.imageRepository_ = imageRepository
-
-    /** @private @const {SearchService} */
-    this.searchService_ = searchService
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new ProductService({
-      manager: transactionManager,
-      productRepository: this.productRepository_,
-      productVariantRepository: this.productVariantRepository_,
-      productOptionRepository: this.productOptionRepository_,
-      eventBusService: this.eventBus_,
-      productVariantService: this.productVariantService_,
-      productTagRepository: this.productTagRepository_,
-      productTypeRepository: this.productTypeRepository_,
-      imageRepository: this.imageRepository_,
+    cartRepository,
+    priceSelectionStrategy,
+  }: InjectedDependencies) {
+    super({
+      manager,
+      productRepository,
+      productVariantRepository,
+      productOptionRepository,
+      eventBusService,
+      productVariantService,
+      productCollectionService,
+      productTypeRepository,
+      productTagRepository,
+      imageRepository,
+      searchService,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
-    cloned.transactionManager_ = transactionManager
+    this.manager_ = manager
 
-    return cloned
+    this.productOptionRepository_ = productOptionRepository
+
+    this.productRepository_ = productRepository
+
+    this.productVariantRepository_ = productVariantRepository
+
+    this.eventBus_ = eventBusService
+
+    this.productVariantService_ = productVariantService
+
+    this.productCollectionService_ = productCollectionService
+
+    this.productTypeRepository_ = productTypeRepository
+
+    this.productTagRepository_ = productTagRepository
+
+    this.imageRepository_ = imageRepository
+
+    this.searchService_ = searchService
+
+    this.cartRepository_ = cartRepository
+
+    this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
   /**
    * Lists products based on the provided parameters.
-   * @param {object} selector - an object that defines rules to filter products
+   * @param selector - an object that defines rules to filter products
    *   by
-   * @param {object} config - object that defines the scope for what should be
+   * @param config - object that defines the scope for what should be
    *   returned
-   * @return {Promise<Product[]>} the result of the find operation
+   * @return the result of the find operation
    */
   async list(
-    selector = {},
-    config = {
+    selector: FilterableProductProps = {},
+    config: ListProductConfig = {
       relations: [],
       skip: 0,
       take: 20,
       include_discount_prices: false,
     }
-  ) {
+  ): Promise<Product[]> {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
+
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
+    }
 
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
@@ -115,29 +186,55 @@ class ProductService extends BaseService {
       return products
     }
 
-    return await productRepo.findWithRelations(relations, query)
+    const products = await productRepo.findWithRelations(relations, query)
+
+    return priceIndex > -1
+      ? await this.setAdditionalPrices(products, {
+          cart_id: config.cart_id,
+          currency_code: config.currency_code,
+          customer_id: config.customer_id,
+          include_discount_prices: config.include_discount_prices,
+          region_id: config.region_id,
+        })
+      : products
+  }
+
+  private cleanFindConfigProps(config: ListProductConfig): ListProductConfig {
+    const PRICES_RELATION = "variant.prices"
+    const relationsIncludePrices =
+      config.relations?.includes(PRICES_RELATION) ?? false
+
+    let newRelations = config.relations
+    if (relationsIncludePrices) {
+      newRelations = config.relations?.filter((rel) => rel === PRICES_RELATION)
+    }
+
+    return {
+      ...config,
+      relations: newRelations,
+    }
   }
 
   /**
    * Lists products based on the provided parameters and includes the count of
    * products that match the query.
-   * @param {object} selector - an object that defines rules to filter products
+   * @param selector - an object that defines rules to filter products
    *   by
-   * @param {object} config - object that defines the scope for what should be
+   * @param config - object that defines the scope for what should be
    *   returned
-   * @return {Promise<[Product[], number]>} an array containing the products as
+   * @return an array containing the products as
    *   the first element and the total count of products that matches the query
    *   as the second element.
    */
   async listAndCount(
-    selector = {},
-    config = {
+    selector: FilterableProductProps,
+    config: ListProductConfig = {
       relations: [],
       skip: 0,
       take: 20,
       include_discount_prices: false,
     }
-  ) {
+  ): Promise<[Product[], number]> {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
@@ -152,7 +249,22 @@ class ProductService extends BaseService {
       )
     }
 
-    return await productRepo.findWithRelationsAndCount(relations, query)
+    if (priceIndex > -1) {
+      const productsWithAdditionalPrices = await this.setAdditionalPrices(
+        products,
+        {
+          cart_id: config.cart_id,
+          currency_code: config.currency_code,
+          customer_id: config.customer_id,
+          include_discount_prices: config.include_discount_prices,
+          region_id: config.region_id,
+        }
+      )
+
+      return [productsWithAdditionalPrices, count]
+    } else {
+      return [products, count]
+    }
   }
 
   /**
@@ -160,41 +272,41 @@ class ProductService extends BaseService {
    * @param {object} selector - the selector to choose products by
    * @return {Promise} the result of the count operation
    */
-  count(selector = {}) {
+  count(selector: FilterableProductProps = {}): Promise<number> {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
-    const query = this.buildQuery_(selector)
+    /** revisit */
+    const query = buildQuery<Product>(selector as Selector<Product>)
     return productRepo.count(query)
   }
 
   /**
    * Gets a product by id.
    * Throws in case of DB Error and if product was not found.
-   * @param {string} productId - id of the product to get.
-   * @param {object} config - object that defines what should be included in the
+   * @param productId - id of the product to get.
+   * @param config - object that defines what should be included in the
    *   query response
-   * @return {Promise<Product>} the result of the find one operation.
+   * @return the result of the find one operation.
    */
-  async retrieve(productId, config = { include_discount_prices: false }) {
+  async retrieve(
+    productId: string,
+    config: FindProductConfig = { include_discount_prices: false }
+  ): Promise<Product> {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
-    const validatedId = this.validateId_(productId)
+    const validatedId = validateId(productId)
 
-    const query = { where: { id: validatedId } }
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
     }
 
-    if (config.select && config.select.length > 0) {
-      query.select = config.select
-    }
+    const { relations, ...query } = buildQuery({ id: validatedId }, config)
 
-    const rels = query.relations
-    delete query.relations
-    const product = await productRepo.findOneWithRelations(rels, query)
+    const product = await productRepo.findOneWithRelations(relations, query)
 
     if (!product) {
       throw new MedusaError(
@@ -203,34 +315,44 @@ class ProductService extends BaseService {
       )
     }
 
-    return product
+    return priceIndex > -1
+      ? await this.setAdditionalPrices(product, {
+          cart_id: config.cart_id,
+          currency_code: config.currency_code,
+          customer_id: config.customer_id,
+          include_discount_prices: config.include_discount_prices,
+          region_id: config.region_id,
+        })
+      : product
   }
 
   /**
    * Gets a product by handle.
    * Throws in case of DB Error and if product was not found.
-   * @param {string} productHandle - handle of the product to get.
-   * @param {object} config - details about what to get from the product
-   * @return {Promise<Product>} the result of the find one operation.
+   * @param productHandle - handle of the product to get.
+   * @param config - details about what to get from the product
+   * @return the result of the find one operation.
    */
-  async retrieveByHandle(productHandle, config = {}) {
+  async retrieveByHandle(
+    productHandle: string,
+    config: FindProductConfig = {}
+  ): Promise<Product> {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
 
-    const query = { where: { handle: productHandle } }
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
     }
 
-    if (config.select && config.select.length > 0) {
-      query.select = config.select
-    }
+    const { relations, ...query } = buildQuery(
+      { handle: productHandle },
+      config
+    )
 
-    const rels = query.relations
-    delete query.relations
-    const product = await productRepo.findOneWithRelations(rels, query)
+    const product = await productRepo.findOneWithRelations(relations, query)
 
     if (!product) {
       throw new MedusaError(
@@ -239,34 +361,44 @@ class ProductService extends BaseService {
       )
     }
 
-    return product
+    return priceIndex > -1
+      ? await this.setAdditionalPrices(product, {
+          cart_id: config.cart_id,
+          currency_code: config.currency_code,
+          customer_id: config.customer_id,
+          include_discount_prices: config.include_discount_prices,
+          region_id: config.region_id,
+        })
+      : product
   }
 
   /**
    * Gets a product by external id.
    * Throws in case of DB Error and if product was not found.
-   * @param {string} externalId - handle of the product to get.
-   * @param {object} config - details about what to get from the product
-   * @return {Promise<Product>} the result of the find one operation.
+   * @param externalId - handle of the product to get.
+   * @param config - details about what to get from the product
+   * @return the result of the find one operation.
    */
-  async retrieveByExternalId(externalId, config = {}) {
+  async retrieveByExternalId(
+    externalId: string,
+    config: FindProductConfig = {}
+  ): Promise<Product> {
     const productRepo = this.manager_.getCustomRepository(
       this.productRepository_
     )
 
-    const query = { where: { external_id: externalId } }
-
-    if (config.relations && config.relations.length > 0) {
-      query.relations = config.relations
+    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+    if (priceIndex >= 0 && config.relations) {
+      config.relations = [...config.relations]
+      config.relations.splice(priceIndex, 1)
     }
 
-    if (config.select && config.select.length > 0) {
-      query.select = config.select
-    }
+    const { relations, ...query } = buildQuery(
+      { external_id: externalId },
+      config
+    )
 
-    const rels = query.relations
-    delete query.relations
-    const product = await productRepo.findOneWithRelations(rels, query)
+    const product = await productRepo.findOneWithRelations(relations, query)
 
     if (!product) {
       throw new MedusaError(
@@ -275,28 +407,35 @@ class ProductService extends BaseService {
       )
     }
 
-    return product
+    return priceIndex > -1
+      ? await this.setAdditionalPrices(product, {
+          cart_id: config.cart_id,
+          currency_code: config.currency_code,
+          customer_id: config.customer_id,
+          include_discount_prices: config.include_discount_prices,
+          region_id: config.region_id,
+        })
+      : product
   }
 
   /**
    * Gets all variants belonging to a product.
-   * @param {string} productId - the id of the product to get variants from.
-   * @param {FindConfig<Product>} config - The config to select and configure relations etc...
-   * @return {Promise} an array of variants
+   * @param productId - the id of the product to get variants from.
+   * @param config - The config to select and configure relations etc...
+   * @return an array of variants
    */
   async retrieveVariants(
-    productId,
-    config = {
+    productId: string,
+    config: FindProductConfig = {
       skip: 0,
       take: 50,
-      relations: defaultAdminProductsVariantsRelations,
     }
-  ) {
+  ): Promise<ProductVariant[]> {
     const product = await this.retrieve(productId, config)
     return product.variants
   }
 
-  async listTypes() {
+  async listTypes(): Promise<ProductType[]> {
     const productTypeRepository = this.manager_.getCustomRepository(
       this.productTypeRepository_
     )
@@ -304,25 +443,19 @@ class ProductService extends BaseService {
     return await productTypeRepository.find({})
   }
 
-  async listTagsByUsage(count = 10) {
-    const tags = await this.manager_.query(
-      `
-      SELECT ID, O.USAGE_COUNT, PT.VALUE
-      FROM PRODUCT_TAG PT
-      LEFT JOIN
-        (SELECT COUNT(*) AS USAGE_COUNT,
-          PRODUCT_TAG_ID
-          FROM PRODUCT_TAGS
-          GROUP BY PRODUCT_TAG_ID) O ON O.PRODUCT_TAG_ID = PT.ID
-      ORDER BY O.USAGE_COUNT DESC
-      LIMIT $1`,
-      [count]
+  async listTagsByUsage(count = 10): Promise<ProductTag[]> {
+    const productTagRepo = this.manager_.getCustomRepository(
+      this.productTagRepository_
     )
+
+    const tags = await productTagRepo.listTagsByUsage(count)
 
     return tags
   }
 
-  async upsertProductType_(type) {
+  private async upsertProductType_(
+    type: CreateProductProductTypeDTO
+  ): Promise<string | null> {
     const productTypeRepository = this.manager_.getCustomRepository(
       this.productTypeRepository_
     )
@@ -347,12 +480,14 @@ class ProductService extends BaseService {
     return result.id
   }
 
-  async upsertProductTags_(tags) {
+  private async upsertProductTags_(
+    tags: CreateProductProductTagDTO[]
+  ): Promise<ProductTag[]> {
     const productTagRepository = this.manager_.getCustomRepository(
       this.productTagRepository_
     )
 
-    const newTags = []
+    const newTags: ProductTag[] = []
     for (const tag of tags) {
       const existing = await productTagRepository.findOne({
         where: { value: tag.value },
@@ -372,10 +507,10 @@ class ProductService extends BaseService {
 
   /**
    * Creates a product.
-   * @param {object} productObject - the product to create
-   * @return {Promise} resolves to the creation result.
+   * @param productObject - the product to create
+   * @return resolves to the creation result.
    */
-  async create(productObject) {
+  async create(productObject: CreateProductDTO): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const optionRepo = manager.getCustomRepository(
@@ -411,7 +546,7 @@ class ProductService extends BaseService {
         product = await productRepo.save(product)
 
         product.options = await Promise.all(
-          options.map(async (o) => {
+          (options ?? []).map(async (o) => {
             const res = optionRepo.create({ ...o, product_id: product.id })
             await optionRepo.save(res)
             return res
@@ -434,12 +569,12 @@ class ProductService extends BaseService {
     })
   }
 
-  async upsertImages_(images) {
+  async upsertImages_(images: string[]): Promise<Image[]> {
     const imageRepository = this.manager_.getCustomRepository(
       this.imageRepository_
     )
 
-    const productImages = []
+    const productImages: Image[] = []
     for (const img of images) {
       const existing = await imageRepository.findOne({
         where: { url: img },
@@ -465,7 +600,7 @@ class ProductService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  async update(productId, update) {
+  async update(productId: string, update: UpdateProductDTO): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productVariantRepo = manager.getCustomRepository(
@@ -487,7 +622,7 @@ class ProductService extends BaseService {
       }
 
       if (metadata) {
-        product.metadata = this.setMetadata_(product, metadata)
+        product.metadata = setMetadata(product, metadata)
       }
 
       if (typeof type !== `undefined`) {
@@ -507,9 +642,9 @@ class ProductService extends BaseService {
           }
         }
 
-        const newVariants = []
+        const newVariants: ProductVariant[] = []
         for (const [i, newVariant] of variants.entries()) {
-          newVariant.variant_rank = i
+          const variant_rank = i
 
           if (newVariant.id) {
             const variant = product.variants.find((v) => v.id === newVariant.id)
@@ -523,7 +658,10 @@ class ProductService extends BaseService {
 
             const saved = await this.productVariantService_
               .withTransaction(manager)
-              .update(variant, newVariant)
+              .update(variant, {
+                ...newVariant,
+                variant_rank,
+              })
 
             newVariants.push(saved)
           } else {
@@ -531,7 +669,12 @@ class ProductService extends BaseService {
             // should be created
             const created = await this.productVariantService_
               .withTransaction(manager)
-              .create(product.id, newVariant)
+              .create(product.id, {
+                ...newVariant,
+                variant_rank,
+                options: newVariant.options || [],
+                prices: newVariant.prices || [],
+              })
 
             newVariants.push(created)
           }
@@ -561,11 +704,11 @@ class ProductService extends BaseService {
   /**
    * Deletes a product from a given product id. The product's associated
    * variants will also be deleted.
-   * @param {string} productId - the id of the product to delete. Must be
+   * @param productId - the id of the product to delete. Must be
    *   castable as an ObjectId
-   * @return {Promise} empty promise
+   * @return empty promise
    */
-  async delete(productId) {
+  async delete(productId: string): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
@@ -595,11 +738,11 @@ class ProductService extends BaseService {
    * Adds an option to a product. Options can, for example, be "Size", "Color",
    * etc. Will update all the products variants with a dummy value for the newly
    * created option. The same option cannot be added more than once.
-   * @param {string} productId - the product to apply the new option to
-   * @param {string} optionTitle - the display title of the option, e.g. "Size"
-   * @return {Promise} the result of the model update operation
+   * @param productId - the product to apply the new option to
+   * @param optionTitle - the display title of the option, e.g. "Size"
+   * @return the result of the model update operation
    */
-  async addOption(productId, optionTitle) {
+  async addOption(productId: string, optionTitle: string): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
         this.productOptionRepository_
@@ -638,7 +781,10 @@ class ProductService extends BaseService {
     })
   }
 
-  async reorderVariants(productId, variantOrder) {
+  async reorderVariants(
+    productId: string,
+    variantOrder: string[]
+  ): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
@@ -677,12 +823,15 @@ class ProductService extends BaseService {
    * Changes the order of a product's options. Will throw if the length of
    * optionOrder and the length of the product's options are different. Will
    * throw optionOrder contains an id not associated with the product.
-   * @param {string} productId - the product whose options we are reordering
-   * @param {string[]} optionOrder - the ids of the product's options in the
+   * @param productId - the product whose options we are reordering
+   * @param optionOrder - the ids of the product's options in the
    *    new order
-   * @return {Promise} the result of the update operation
+   * @return the result of the update operation
    */
-  async reorderOptions(productId, optionOrder) {
+  async reorderOptions(
+    productId: string,
+    optionOrder: string[]
+  ): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
@@ -718,12 +867,16 @@ class ProductService extends BaseService {
   /**
    * Updates a product's option. Throws if the call tries to update an option
    * not associated with the product. Throws if the updated title already exists.
-   * @param {string} productId - the product whose option we are updating
-   * @param {string} optionId - the id of the option we are updating
-   * @param {object} data - the data to update the option with
-   * @return {Promise} the updated product
+   * @param productId - the product whose option we are updating
+   * @param optionId - the id of the option we are updating
+   * @param data - the data to update the option with
+   * @return the updated product
    */
-  async updateOption(productId, optionId, data) {
+  async updateOption(
+    productId: string,
+    optionId: string,
+    data: ProductOption
+  ): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
         this.productOptionRepository_
@@ -769,12 +922,15 @@ class ProductService extends BaseService {
 
   /**
    * Delete an option from a product.
-   * @param {string} productId - the product to delete an option from
-   * @param {string} optionId - the option to delete
-   * @return {Promise} the updated product
+   * @param productId - the product to delete an option from
+   * @param optionId - the option to delete
+   * @return the updated product
    */
-  async deleteOption(productId, optionId) {
-    return this.atomicPhase_(async (manager) => {
+  async deleteOption(
+    productId: string,
+    optionId: string
+  ): Promise<Product | void> {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
       const productOptionRepo = manager.getCustomRepository(
         this.productOptionRepository_
       )
@@ -803,12 +959,12 @@ class ProductService extends BaseService {
 
       const valueToMatch = firstVariant.options.find(
         (o) => o.option_id === optionId
-      ).value
+      )?.value
 
       const equalsFirst = await Promise.all(
         product.variants.map(async (v) => {
           const option = v.options.find((o) => o.option_id === optionId)
-          return option.value === valueToMatch
+          return option?.value === valueToMatch
         })
       )
 
@@ -831,14 +987,19 @@ class ProductService extends BaseService {
 
   /**
    * Decorates a product with product variants.
-   * @param {string} productId - the productId to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @param {object} config - retrieve config for price calculation.
-   * @return {Product} return the decorated product.
+   * @param productId - the productId to decorate.
+   * @param fields - the fields to include.
+   * @param expandFields - fields to expand.
+   * @param config - retrieve config for price calculation.
+   * @return return the decorated product.
    */
-  async decorate(productId, fields = [], expandFields = [], config = {}) {
-    const requiredFields = ["id", "metadata"]
+  async decorate(
+    productId: string,
+    fields: (keyof Product)[] = [],
+    expandFields: string[] = [],
+    config: ListProductConfig = {}
+  ): Promise<Product> {
+    const requiredFields: (keyof Product)[] = ["id", "metadata"]
 
     fields = fields.concat(requiredFields)
 
@@ -846,23 +1007,40 @@ class ProductService extends BaseService {
       select: fields,
       relations: expandFields,
     })
+
+    return priceIndex > -1
+      ? await this.setAdditionalPrices(product, {
+          cart_id: config.cart_id,
+          currency_code: config.currency_code,
+          customer_id: config.customer_id,
+          include_discount_prices: config.include_discount_prices,
+          region_id: config.region_id,
+        })
+      : product
   }
 
   /**
    * Creates a query object to be used for list queries.
-   * @param {object} selector - the selector to create the query from
-   * @param {object} config - the config to use for the query
-   * @return {object} an object containing the query, relations and free-text
+   * @param selector - the selector to create the query from
+   * @param config - the config to use for the query
+   * @return an object containing the query, relations and free-text
    *   search param.
    */
-  prepareListQuery_(selector, config) {
+  private prepareListQuery_(
+    selector: FilterableProductProps,
+    config: ListProductConfig
+  ): {
+    q: string
+    relations: (keyof Product)[]
+    query: Omit<FindWithRelationsOptions, "relations">
+  } {
     let q
     if ("q" in selector) {
       q = selector.q
       delete selector.q
     }
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
     if (config.relations && config.relations.length > 0) {
       query.relations = config.relations
@@ -876,10 +1054,93 @@ class ProductService extends BaseService {
     delete query.relations
 
     return {
-      query,
-      relations: rels,
+      query: query as Omit<FindWithRelationsOptions, "relations">,
+      relations: rels as (keyof Product)[],
       q,
     }
+  }
+
+  /**
+   * Set additional prices on a list of products.
+   * @param products list of products on which to set additional prices
+   * @param context price list selection context used when calculating the variant price
+   * @return A list of products with variants decorated with "additional_prices"
+   */
+  async setAdditionalPrices<T extends Product | Product[]>(
+    products: T,
+    context: PriceSelectionContext
+  ): Promise<T> {
+    const {
+      region_id,
+      include_discount_prices,
+      currency_code,
+      cart_id,
+      customer_id,
+    } = context
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
+
+      let regionId = region_id
+      let currencyCode = currency_code
+
+      if (cart_id) {
+        const cart = await cartRepo.findOne({
+          where: { id: cart_id },
+          relations: ["region"],
+        })
+
+        if (!cart) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            `Cart with id: ${cart_id} was not found`
+          )
+        }
+
+        regionId = cart?.region.id
+        currencyCode = cart?.region.currency_code
+      }
+
+      const productArray = Array.isArray(products) ? products : [products]
+
+      const priceSelectionStrategy = this.priceSelectionStrategy_.withTransaction(
+        manager
+      )
+
+      const productsWithPrices = await Promise.all(
+        productArray.map(async (p) => {
+          if (p.variants?.length) {
+            p.variants = await Promise.all(
+              p.variants.map(async (v) => {
+                const prices = await priceSelectionStrategy.calculateVariantPrice(
+                  v.id,
+                  {
+                    region_id: regionId,
+                    currency_code: currencyCode,
+                    cart_id: cart_id,
+                    customer_id: customer_id,
+                    include_discount_prices,
+                  }
+                )
+
+                return {
+                  ...v,
+                  prices: prices.prices,
+                  original_price: prices.originalPrice,
+                  calculated_price: prices.calculatedPrice,
+                  calculated_price_type: prices.calculatedPriceType,
+                }
+              })
+            )
+          }
+
+          return p
+        })
+      )
+
+      return Array.isArray(products)
+        ? productsWithPrices
+        : productsWithPrices[0]
+    })
   }
 }
 

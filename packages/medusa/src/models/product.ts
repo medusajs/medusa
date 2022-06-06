@@ -47,7 +47,7 @@ export class Product extends SoftDeletableEntity {
   is_giftcard: boolean
 
   @DbAwareColumn({ type: "enum", enum: Status, default: "draft" })
-  status: Status
+  status: `${Status}`
 
   @ManyToMany(() => Image, { cascade: ["insert"] })
   @JoinTable({
@@ -66,12 +66,19 @@ export class Product extends SoftDeletableEntity {
   @Column({ nullable: true })
   thumbnail: string
 
-  @OneToMany(() => ProductOption, (productOption) => productOption.product)
+  @OneToMany(
+    () => ProductOption,
+    (productOption) => productOption.product
+  )
   options: ProductOption[]
 
-  @OneToMany(() => ProductVariant, (variant) => variant.product, {
-    cascade: true,
-  })
+  @OneToMany(
+    () => ProductVariant,
+    (variant) => variant.product,
+    {
+      cascade: true,
+    }
+  )
   variants: ProductVariant[]
 
   @Index()
@@ -114,7 +121,7 @@ export class Product extends SoftDeletableEntity {
   collection: ProductCollection
 
   @Column({ nullable: true })
-  type_id: string
+  type_id: string | null
 
   @ManyToOne(() => ProductType)
   @JoinColumn({ name: "type_id" })
