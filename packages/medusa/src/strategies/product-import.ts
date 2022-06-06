@@ -103,7 +103,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     throw new Error("Not implemented!")
   }
 
-  async setParsingResultsToRedis(results: any, batchJobId: string) {
+  async setParsingResultsToRedis(
+    results: any,
+    batchJobId: string
+  ): Promise<void> {
     await this.redisClient_.client.call(
       "JSON.SET",
       `pij_${batchJobId}`,
@@ -113,7 +116,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     // TODO: expire
   }
 
-  async getParsingResultsFromRedis(batchJobId: string) {
+  async getParsingResultsFromRedis(batchJobId: string): Promise<void> {
     return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
   }
 
