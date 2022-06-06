@@ -23,9 +23,9 @@ let fakeJob = {
 
 /* ******************** SERVICES MOCK ******************** */
 
-function* generateCSVDataForStream() {
-  yield "Product Title; Product Handle; Product Description"
-  yield "Prod title 1; prod-handle; Very loong desc text"
+async function* generateCSVDataForStream() {
+  yield "Product Title; Product Handle; Product Description\n"
+  yield "Prod title 1; prod-handle; Very loong desc text\n"
 }
 
 const fileServiceMock = {
@@ -81,8 +81,8 @@ describe("Product import strategy", () => {
     fileService: fileServiceMock as any,
     batchJobService: batchJobServiceMock as any,
     productService: productServiceMock as any,
-    redisClient: new FakeRedis(),
     productRepository: productRepositoryMock,
+    redisClient: new FakeRedis(),
   })
 
   it("`prepareBatchJobForProcessing` should parse CSV from context", async () => {
