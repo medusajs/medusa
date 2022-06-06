@@ -9,7 +9,10 @@ const outputDataStorage: string[] = []
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
   type: "product-import",
-  context: {},
+  context: {
+    progress: undefined,
+    csvFileKey: "csv.key",
+  },
   created_by: IdMap.getId("product-import-creator"),
   created_by_user: {} as User,
   result: {},
@@ -74,7 +77,7 @@ const productRepositoryMock = {
 
 /* ******************** PRODUCT IMPORT STRATEGY TESTS ******************** */
 
-describe("Product export strategy", () => {
+describe("Product import strategy", () => {
   const productImportStrategy = new ProductImportStrategy({
     manager: managerMock,
     fileService: fileServiceMock as any,
