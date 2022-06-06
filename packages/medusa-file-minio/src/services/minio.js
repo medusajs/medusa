@@ -74,15 +74,66 @@ class MinioService extends AbstractFileService {
   }
 
   async getUploadStreamDescriptor(fileData) {
-    throw new Error("Method not implemented.")
+    this.updateAwsConfig()
+
+    const pass = new stream.PassThrough()
+
+    const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
+    const params = {
+      ACL: fileData.acl ?? "private",
+      Bucket: this.bucket_,
+      Body: pass,
+      Key: fileKey,
+    }
+
+    const s3 = new aws.S3()
+    return {
+      writeStream: pass,
+      promise: s3.upload(params).promise(),
+      url: `${this.spacesUrl_}/${fileKey}`,
+      fileKey,
+    }
   }
 
   async getDownloadStream(fileData) {
-    throw new Error("Method not implemented.")
+    this.updateAwsConfig()
+
+    const s3 = new aws.S3()
+
+    const params = {
+      Bucket: this.bucket_,
+      Key: `${fileData.fileKey}`,
+    }
+
+    return s3.getObject(params).createReadStream()
   }
 
   async getPresignedDownloadUrl(fileData) {
-    throw new Error("Method not implemented.")
+    this.updateAwsConfig({
+      signatureVersion: "v4",
+    })
+
+    const s3 = new aws.S3()
+
+    const params = {
+      Bucket: this.bucket_,
+      Key: `${fileData.fileKey}`,
+      Expires: 60, // 60 seconds
+    }
+
+    return await s3.getSignedUrlPromise("getObject", params)
+  }
+
+  updateAwsConfig(additionalConfiguration = {}) {
+    aws.config.setPromisesDependency(null)
+    aws.config.update({
+      accessKeyId: this.accessKeyId_,
+      secretAccessKey: this.secretAccessKey_,
+      endpoint: this.endpoint_,
+      s3ForcePathStyle: this.s3ForcePathStyle_,
+      signatureVersion: this.signatureVersion_,
+      ...additionalConfiguration,
+    }, true)
   }
 }
 
