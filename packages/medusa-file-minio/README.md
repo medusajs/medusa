@@ -12,5 +12,8 @@ Learn more about how you can use this plugin in the [documentation](https://docs
   bucket: "test",
   access_key_id: "YOUR-ACCESS-KEY",
   secret_access_key: "YOUR-SECRET-KEY",
+  private_bucket: 'private-bucket',
+  private_access_key_id: "YOUR-ACCESS-KEY",
+  private_secret_access_key: "YOUR-SECRET-KEY",
 }
 ```
