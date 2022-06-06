@@ -12,19 +12,21 @@ Learn more about how you can use this plugin in the [documentation](https://docs
   bucket: "test",
   access_key_id: "YOUR-ACCESS-KEY",
   secret_access_key: "YOUR-SECRET-KEY",
+
+  // private bucket configuration
   private_bucket: 'private-bucket',
   private_access_key_id: "YOUR-ACCESS-KEY",
   private_secret_access_key: "YOUR-SECRET-KEY",
 }
 ```
 
-## Configuring Minio for exports and imports
+## Configuring a private bucket in Minio
 
-Exporting and importing with minio requires setting up a protected bucket and the plugin will raise an error if operations used for imports and exports invoked without the correct setup.
+Certain operations in Medusa such as data import and export require a separate, protected bucket. The plugin will raise an error if operations used for imports and exports are invoked without the correct setup.
 
-Configuring Minio for import/export requires configuration of one additional option: `private_bucket` which refers to the name given to the protected bucket in Minio.
+Configuring Minio for requires configuration of one additional option: `private_bucket` which refers to the name given to the protected bucket in Minio.
 
-Separate credentials can be used with the private bucket by configuring the following options:
+Separate credentials can, optionally, be used to access the private bucket by configuring the following options:
 
 ```
   private_access_key_id: "YOUR-ACCESS-KEY",
