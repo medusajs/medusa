@@ -34,14 +34,14 @@ export class Product extends SoftDeletableEntity {
   title: string
 
   @Column({ nullable: true })
-  subtitle: string
+  subtitle: string | null
 
   @Column({ nullable: true })
-  description: string
+  description: string | null
 
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column({ nullable: true })
-  handle: string
+  handle: string | null
 
   @Column({ default: false })
   is_giftcard: boolean
@@ -64,7 +64,7 @@ export class Product extends SoftDeletableEntity {
   images: Image[]
 
   @Column({ nullable: true })
-  thumbnail: string
+  thumbnail: string | null
 
   @OneToMany(
     () => ProductOption,
@@ -90,28 +90,28 @@ export class Product extends SoftDeletableEntity {
   profile: ShippingProfile
 
   @Column({ type: "int", nullable: true })
-  weight: number
+  weight: number | null
 
   @Column({ type: "int", nullable: true })
-  length: number
+  length: number | null
 
   @Column({ type: "int", nullable: true })
-  height: number
+  height: number | null
 
   @Column({ type: "int", nullable: true })
-  width: number
+  width: number | null
 
   @Column({ nullable: true })
-  hs_code: string
+  hs_code: string | null
 
   @Column({ nullable: true })
-  origin_country: string
+  origin_country: string | null
 
   @Column({ nullable: true })
-  mid_code: string
+  mid_code: string | null
 
   @Column({ nullable: true })
-  material: string
+  material: string | null
 
   @Column({ nullable: true })
   collection_id: string | null
@@ -145,10 +145,10 @@ export class Product extends SoftDeletableEntity {
   discountable: boolean
 
   @Column({ nullable: true })
-  external_id: string
+  external_id: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: Record<string, unknown>
+  metadata: Record<string, unknown> | null
 
   @BeforeInsert()
   private beforeInsert(): void {
