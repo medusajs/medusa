@@ -171,33 +171,46 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
         const { listConfig, filterableFields } = batchJob.context as Context
 
-        productCount = await this.productService_
+        const productsAndCount = await this.productService_
           .withTransaction(transactionManager)
-          .count(filterableFields)
+          .listAndCount(filterableFields, {
+            relations: this.relations_,
+            ...(listConfig ?? {}),
+          })
+        productCount = productsAndCount[1]
+
+        let products = productsAndCount[0]
 
         while (advancementCount < productCount) {
-          const [products, count] = await this.productService_
-            .withTransaction(transactionManager)
-            .listAndCount(filterableFields, {
-              relations: this.relations_,
-              ...((listConfig as Record<string, unknown>) ?? {}),
-              skip: offset,
-              take: this.BATCH_SIZE,
-              order: { created_at: "DESC" },
-            })
+          if (advancementCount === 0) {
+            products = await this.productService_
+              .withTransaction(transactionManager)
+              .list(filterableFields, {
+                relations: this.relations_,
+                ...((listConfig as Record<string, unknown>) ?? {}),
+                skip: offset,
+                take: this.BATCH_SIZE,
+                order: { created_at: "DESC" },
+              })
+          }
 
           products.forEach((product) => {
             writeStream.write(this.buildLine(product))
           })
 
-          advancementCount += count
-          offset += count
+          advancementCount += products.length
+          offset += products.length
           batchJob = await this.batchJobService_.update(batchJobId, {
-            ...batchJob.context,
-            fileKey: key,
-            offset,
-            count: productCount,
-            progress: advancementCount / productCount,
+            context: {
+              ...batchJob.context,
+              fileKey: key,
+              offset,
+              count: productCount,
+              progress: advancementCount / productCount,
+            },
+            result: {
+              err: undefined,
+            },
           })
 
           if (batchJob.status === BatchJobStatus.CANCELED) {
@@ -441,17 +454,19 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       progress,
     }: { offset: number; count: number; progress: number }
   ): Promise<void> {
-    // Before validating that we should settle on defining if the job can be re process or not.
-    /* return await this.atomicPhase_(async (transactionManager) => {
+    return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = await this.batchJobService_
         .withTransaction(transactionManager)
         .retrieve(batchJobId)
+
+      const retryCount = batchJob.context.retry_count ?? 0
+      const maxRetry = batchJob.context.max_retry ?? 0
 
       if (err instanceof MedusaError) {
         await this.batchJobService_
           .withTransaction(transactionManager)
           .updateStatus(batchJob, BatchJobStatus.FAILED)
-      } else if (batchJob.context.retry_count < batchJob.context.max_retry) {
+      } else if (retryCount < maxRetry) {
         await this.batchJobService_
           .withTransaction(transactionManager)
           .update(batchJobId, {
@@ -460,14 +475,18 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
               offset,
               count,
               progress,
-              retry_count: (Number(batchJob.context.retry_count) ?? 0) + 1,
+              retry_count: retryCount + 1,
             },
             result: {
               ...batchJob.result,
               err,
             },
           })
+      } else {
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .updateStatus(batchJob, BatchJobStatus.FAILED)
       }
-    })*/
+    })
   }
 }
