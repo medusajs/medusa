@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-extra-semi */
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { formatException } from "../utils/exception-formatter"
