@@ -8,6 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Product, Status } from "../../../../models"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FilterableProductProps } from "../../../../types/product"
 import { AdminGetProductsPaginationParams } from "../products"
@@ -66,8 +67,9 @@ export default async (req: Request, res) => {
   const { id } = req.params
   const { offset, limit } = req.validatedQuery
 
-  const priceListService: PriceListService =
-    req.scope.resolve("priceListService")
+  const priceListService: PriceListService = req.scope.resolve(
+    "priceListService"
+  )
 
   const filterableFields: FilterableProductProps = {
     ...req.filterableFields,
@@ -88,13 +90,6 @@ export default async (req: Request, res) => {
   })
 }
 
-enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
 export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsPaginationParams {
   @IsString()
   @IsOptional()
@@ -105,8 +100,8 @@ export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsP
   q?: string
 
   @IsOptional()
-  @IsEnum(ProductStatus, { each: true })
-  status?: ProductStatus[]
+  @IsEnum(Status, { each: true })
+  status?: Status[]
 
   @IsArray()
   @IsOptional()
