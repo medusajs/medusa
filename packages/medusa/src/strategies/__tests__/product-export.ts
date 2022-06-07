@@ -46,6 +46,10 @@ const batchJobServiceMock = {
     }
     return Promise.resolve(fakeJob)
   }),
+  updateStatus: jest.fn().mockImplementation((status) => {
+    fakeJob.status = status
+    return Promise.resolve(fakeJob)
+  }),
   complete: jest.fn().mockImplementation(() => {
     fakeJob.status = BatchJobStatus.COMPLETED
     return Promise.resolve(fakeJob)
