@@ -3,10 +3,27 @@ import ProductService from "../product"
 
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function () {
+  withTransaction: function() {
     return this
   },
 }
+
+const mockUpsertTags = jest.fn().mockImplementation((data) =>
+  Promise.resolve(
+    data.map(({ value, id }) => ({
+      value,
+      id: id || (value === "title" ? "tag-1" : "tag-2"),
+    }))
+  )
+)
+
+const mockUpsertType = jest.fn().mockImplementation((value) => {
+  const productType = {
+    id: "type",
+    value: value,
+  }
+  return Promise.resolve(productType)
+})
 
 describe("ProductService", () => {
   describe("retrieve", () => {
@@ -81,15 +98,17 @@ describe("ProductService", () => {
         }
       },
     })
+    productTagRepository.upsertTags = mockUpsertTags
     const productTypeRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
       create: (data) => {
         return { id: "type", value: "type1" }
       },
     })
+    productTypeRepository.upsertType = mockUpsertType
 
     const productCollectionService = {
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
       retrieve: (id) =>
@@ -148,13 +167,9 @@ describe("ProductService", () => {
         ],
       })
 
-      expect(productTagRepository.findOne).toHaveBeenCalledTimes(2)
-      // We add two tags, that does not exist therefore we make sure
-      // that create is also called
-      expect(productTagRepository.create).toHaveBeenCalledTimes(2)
+      expect(productTagRepository.upsertTags).toHaveBeenCalledTimes(1)
 
-      expect(productTypeRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(productTypeRepository.create).toHaveBeenCalledTimes(1)
+      expect(productTypeRepository.upsertType).toHaveBeenCalledTimes(1)
 
       expect(productRepository.save).toHaveBeenCalledTimes(1)
       expect(productRepository.save).toHaveBeenCalledWith({
@@ -227,11 +242,12 @@ describe("ProductService", () => {
         return { id: "type", value: "type1" }
       },
     })
+    productTypeRepository.upsertType = mockUpsertType
 
     const productVariantRepository = MockRepository()
 
     const productVariantService = {
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
       update: (variant, update) => {
@@ -252,6 +268,7 @@ describe("ProductService", () => {
         }
       },
     })
+    productTagRepository.upsertTags = mockUpsertTags
 
     const cartRepository = MockRepository({
       findOne: (data) => {
@@ -470,7 +487,7 @@ describe("ProductService", () => {
     })
 
     const productVariantService = {
-      withTransaction: function () {
+      withTransaction: function() {
         return this
       },
       addOptionValue: jest.fn(),
