@@ -12,6 +12,8 @@ import {
   CsvSchema,
 } from "../interfaces/csv-parser"
 import IORedis from "ioredis"
+import { ProductRepository } from "../repositories/product"
+import { ProductVariantRepository } from "../repositories/product-variant"
 
 type TLine = {
   id: string
@@ -59,7 +61,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   protected readonly csvParser_: CsvParser
   protected readonly batchJobService_: BatchJobService
-  protected readonly productService: ProductService
+  protected readonly productService_: ProductService
+  protected readonly productVariantService_: ProductService
+  protected readonly productRepo_: ProductRepository
+  protected readonly productVariantRepo_: ProductVariantRepository
   protected readonly redisClient_: IORedis.Redis
 
   protected readonly fileService_: IFileService<any>
@@ -67,6 +72,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   constructor({
     batchJobService,
     productService,
+    productRepository,
+    productVariantService,
+    productVariantRepository,
     fileService,
     redisClient,
     manager,
@@ -85,7 +93,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.redisClient_ = redisClient
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
-    this.productService = productService
+    this.productService_ = productService
+    this.productVariantService_ = productVariantService
+    this.productRepo_ = productRepository
+    this.productVariantRepo_ = productVariantRepository
   }
 
   buildTemplate(): Promise<string> {

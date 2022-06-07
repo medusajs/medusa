@@ -21,13 +21,13 @@ let fakeJob = {
   status: BatchJobStatus.PROCESSING,
 }
 
-/* ******************** SERVICES MOCK ******************** */
-
 async function* generateCSVDataForStream() {
   yield "Product Title;Product Handle;Product Description\n"
   yield "Prod title 1;prod-handle;Very loong desc text\n"
   yield "Prod 2;prod-handle-2;Another loong desc text\n"
 }
+
+/* ******************** SERVICES MOCK ******************** */
 
 const fileServiceMock = {
   delete: jest.fn(),
@@ -67,9 +67,23 @@ const productServiceMock = {
   count: jest.fn().mockImplementation(() => Promise.resolve()),
 }
 
+const productVariantServiceMock = {
+  withTransaction: function () {
+    return this
+  },
+  count: jest.fn().mockImplementation(() => Promise.resolve()),
+}
+
+/* ******************** REPOSITORY MOCK ******************** */
+
 const managerMock = MockManager
 
 const productRepositoryMock = {
+  ...MockRepository(),
+  save: () => {},
+}
+
+const productVariantRepositoryMock = {
   ...MockRepository(),
   save: () => {},
 }
@@ -83,6 +97,8 @@ describe("Product import strategy", () => {
     batchJobService: batchJobServiceMock as any,
     productService: productServiceMock as any,
     productRepository: productRepositoryMock,
+    productVariantService: productVariantServiceMock,
+    productVariantRepository: productVariantRepositoryMock,
     redisClient: new FakeRedis(),
   })
 
