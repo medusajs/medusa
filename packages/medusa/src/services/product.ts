@@ -164,39 +164,39 @@ class ProductService extends TransactionBaseService<ProductService> {
       include_discount_prices: false,
     }
   ): Promise<Product[]> {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
-    if (priceIndex >= 0 && config.relations) {
-      config.relations = [...config.relations]
-      config.relations.splice(priceIndex, 1)
-    }
+      const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+      if (priceIndex >= 0 && config.relations) {
+        config.relations = [...config.relations]
+        config.relations.splice(priceIndex, 1)
+      }
 
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
+      const { q, query, relations } = this.prepareListQuery_(selector, config)
 
-    if (q) {
-      const [products] = await productRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query,
-        relations
-      )
+      if (q) {
+        const [products] = await productRepo.getFreeTextSearchResultsAndCount(
+          q,
+          query,
+          relations
+        )
 
-      return products
-    }
+        return products
+      }
 
-    const products = await productRepo.findWithRelations(relations, query)
+      const products = await productRepo.findWithRelations(relations, query)
 
-    return priceIndex > -1
-      ? await this.setAdditionalPrices(products, {
-          cart_id: config.cart_id,
-          currency_code: config.currency_code,
-          customer_id: config.customer_id,
-          include_discount_prices: config.include_discount_prices,
-          region_id: config.region_id,
-        })
-      : products
+      return priceIndex > -1
+        ? await this.setAdditionalPrices(products, {
+            cart_id: config.cart_id,
+            currency_code: config.currency_code,
+            customer_id: config.customer_id,
+            include_discount_prices: config.include_discount_prices,
+            region_id: config.region_id,
+          })
+        : products
+    })
   }
 
   /**
@@ -219,36 +219,49 @@ class ProductService extends TransactionBaseService<ProductService> {
       include_discount_prices: false,
     }
   ): Promise<[Product[], number]> {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    const { q, query, relations } = this.prepareListQuery_(selector, config)
+      const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+      if (priceIndex >= 0 && config.relations) {
+        config.relations = [...config.relations]
+        config.relations.splice(priceIndex, 1)
+      }
 
-    if (q) {
-      return await productRepo.getFreeTextSearchResultsAndCount(
-        q,
-        query,
-        relations
-      )
-    }
+      const { q, query, relations } = this.prepareListQuery_(selector, config)
 
-    if (priceIndex > -1) {
-      const productsWithAdditionalPrices = await this.setAdditionalPrices(
-        products,
-        {
-          cart_id: config.cart_id,
-          currency_code: config.currency_code,
-          customer_id: config.customer_id,
-          include_discount_prices: config.include_discount_prices,
-          region_id: config.region_id,
-        }
-      )
+      let products
+      let count
+      if (q) {
+        ;[products, count] = await productRepo.getFreeTextSearchResultsAndCount(
+          q,
+          query,
+          relations
+        )
+      } else {
+        ;[products, count] = await productRepo.findWithRelationsAndCount(
+          relations,
+          query
+        )
+      }
 
-      return [productsWithAdditionalPrices, count]
-    } else {
-      return [products, count]
-    }
+      if (priceIndex > -1) {
+        const productsWithAdditionalPrices = await this.setAdditionalPrices(
+          products,
+          {
+            cart_id: config.cart_id,
+            currency_code: config.currency_code,
+            customer_id: config.customer_id,
+            include_discount_prices: config.include_discount_prices,
+            region_id: config.region_id,
+          }
+        )
+
+        return [productsWithAdditionalPrices, count]
+      } else {
+        return [products, count]
+      }
+    })
   }
 
   /**
@@ -256,13 +269,13 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @param {object} selector - the selector to choose products by
    * @return {Promise} the result of the count operation
    */
-  count(selector: FilterableProductProps = {}): Promise<number> {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
-    /** revisit */
-    const query = buildQuery<Product>(selector as Selector<Product>)
-    return productRepo.count(query)
+  async count(selector: Selector<Product> = {}): Promise<number> {
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      /** revisit */
+      const query = buildQuery(selector)
+      return await productRepo.count(query)
+    })
   }
 
   /**
@@ -277,37 +290,37 @@ class ProductService extends TransactionBaseService<ProductService> {
     productId: string,
     config: FindProductConfig = { include_discount_prices: false }
   ): Promise<Product> {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
-    const validatedId = validateId(productId)
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const validatedId = validateId(productId)
 
-    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
-    if (priceIndex >= 0 && config.relations) {
-      config.relations = [...config.relations]
-      config.relations.splice(priceIndex, 1)
-    }
+      const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+      if (priceIndex >= 0 && config.relations) {
+        config.relations = [...config.relations]
+        config.relations.splice(priceIndex, 1)
+      }
 
-    const { relations, ...query } = buildQuery({ id: validatedId }, config)
+      const { relations, ...query } = buildQuery({ id: validatedId }, config)
 
-    const product = await productRepo.findOneWithRelations(relations, query)
+      const product = await productRepo.findOneWithRelations(relations, query)
 
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with id: ${productId} was not found`
-      )
-    }
+      if (!product) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Product with id: ${productId} was not found`
+        )
+      }
 
-    return priceIndex > -1
-      ? await this.setAdditionalPrices(product, {
-          cart_id: config.cart_id,
-          currency_code: config.currency_code,
-          customer_id: config.customer_id,
-          include_discount_prices: config.include_discount_prices,
-          region_id: config.region_id,
-        })
-      : product
+      return priceIndex > -1
+        ? await this.setAdditionalPrices(product, {
+            cart_id: config.cart_id,
+            currency_code: config.currency_code,
+            customer_id: config.customer_id,
+            include_discount_prices: config.include_discount_prices,
+            region_id: config.region_id,
+          })
+        : product
+    })
   }
 
   /**
@@ -321,39 +334,39 @@ class ProductService extends TransactionBaseService<ProductService> {
     productHandle: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
-    if (priceIndex >= 0 && config.relations) {
-      config.relations = [...config.relations]
-      config.relations.splice(priceIndex, 1)
-    }
+      const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+      if (priceIndex >= 0 && config.relations) {
+        config.relations = [...config.relations]
+        config.relations.splice(priceIndex, 1)
+      }
 
-    const { relations, ...query } = buildQuery(
-      { handle: productHandle },
-      config
-    )
-
-    const product = await productRepo.findOneWithRelations(relations, query)
-
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with handle: ${productHandle} was not found`
+      const { relations, ...query } = buildQuery(
+        { handle: productHandle },
+        config
       )
-    }
 
-    return priceIndex > -1
-      ? await this.setAdditionalPrices(product, {
-          cart_id: config.cart_id,
-          currency_code: config.currency_code,
-          customer_id: config.customer_id,
-          include_discount_prices: config.include_discount_prices,
-          region_id: config.region_id,
-        })
-      : product
+      const product = await productRepo.findOneWithRelations(relations, query)
+
+      if (!product) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Product with handle: ${productHandle} was not found`
+        )
+      }
+
+      return priceIndex > -1
+        ? await this.setAdditionalPrices(product, {
+            cart_id: config.cart_id,
+            currency_code: config.currency_code,
+            customer_id: config.customer_id,
+            include_discount_prices: config.include_discount_prices,
+            region_id: config.region_id,
+          })
+        : product
+    })
   }
 
   /**
@@ -367,39 +380,39 @@ class ProductService extends TransactionBaseService<ProductService> {
     externalId: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
-    const productRepo = this.manager_.getCustomRepository(
-      this.productRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
 
-    const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
-    if (priceIndex >= 0 && config.relations) {
-      config.relations = [...config.relations]
-      config.relations.splice(priceIndex, 1)
-    }
+      const priceIndex = config.relations?.indexOf("variants.prices") ?? -1
+      if (priceIndex >= 0 && config.relations) {
+        config.relations = [...config.relations]
+        config.relations.splice(priceIndex, 1)
+      }
 
-    const { relations, ...query } = buildQuery(
-      { external_id: externalId },
-      config
-    )
-
-    const product = await productRepo.findOneWithRelations(relations, query)
-
-    if (!product) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Product with exteral_id: ${externalId} was not found`
+      const { relations, ...query } = buildQuery(
+        { external_id: externalId },
+        config
       )
-    }
 
-    return priceIndex > -1
-      ? await this.setAdditionalPrices(product, {
-          cart_id: config.cart_id,
-          currency_code: config.currency_code,
-          customer_id: config.customer_id,
-          include_discount_prices: config.include_discount_prices,
-          region_id: config.region_id,
-        })
-      : product
+      const product = await productRepo.findOneWithRelations(relations, query)
+
+      if (!product) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Product with exteral_id: ${externalId} was not found`
+        )
+      }
+
+      return priceIndex > -1
+        ? await this.setAdditionalPrices(product, {
+            cart_id: config.cart_id,
+            currency_code: config.currency_code,
+            customer_id: config.customer_id,
+            include_discount_prices: config.include_discount_prices,
+            region_id: config.region_id,
+          })
+        : product
+    })
   }
 
   /**
@@ -420,24 +433,26 @@ class ProductService extends TransactionBaseService<ProductService> {
   }
 
   async listTypes(): Promise<ProductType[]> {
-    const productTypeRepository = this.manager_.getCustomRepository(
-      this.productTypeRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const productTypeRepository = manager.getCustomRepository(
+        this.productTypeRepository_
+      )
 
-    return await productTypeRepository.find({})
+      return await productTypeRepository.find({})
+    })
   }
 
   async listTagsByUsage(count = 10): Promise<ProductTag[]> {
-    const productTagRepo = this.manager_.getCustomRepository(
-      this.productTagRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const productTagRepo = manager.getCustomRepository(
+        this.productTagRepository_
+      )
 
-    const tags = await productTagRepo.listTagsByUsage(count)
-
-    return tags
+      return await productTagRepo.listTagsByUsage(count)
+    })
   }
 
-  private async upsertProductType_(
+  protected async upsertProductType_(
     type: CreateProductProductTypeDTO
   ): Promise<string | null> {
     const productTypeRepository = this.manager_.getCustomRepository(
@@ -464,7 +479,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     return result.id
   }
 
-  private async upsertProductTags_(
+  protected async upsertProductTags_(
     tags: CreateProductProductTagDTO[]
   ): Promise<ProductTag[]> {
     const productTagRepository = this.manager_.getCustomRepository(
@@ -554,25 +569,25 @@ class ProductService extends TransactionBaseService<ProductService> {
   }
 
   async upsertImages_(images: string[]): Promise<Image[]> {
-    const imageRepository = this.manager_.getCustomRepository(
-      this.imageRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const imageRepository = manager.getCustomRepository(this.imageRepository_)
 
-    const productImages: Image[] = []
-    for (const img of images) {
-      const existing = await imageRepository.findOne({
-        where: { url: img },
-      })
+      const productImages: Image[] = []
+      for (const img of images) {
+        const existing = await imageRepository.findOne({
+          where: { url: img },
+        })
 
-      if (existing) {
-        productImages.push(existing)
-      } else {
-        const created = imageRepository.create({ url: img })
-        productImages.push(created)
+        if (existing) {
+          productImages.push(existing)
+        } else {
+          const created = imageRepository.create({ url: img })
+          productImages.push(created)
+        }
       }
-    }
 
-    return productImages
+      return productImages
+    })
   }
 
   /**
@@ -916,7 +931,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     productId: string,
     optionId: string
   ): Promise<Product | void> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
         this.productOptionRepository_
       )
@@ -1012,7 +1027,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return an object containing the query, relations and free-text
    *   search param.
    */
-  private prepareListQuery_(
+  protected prepareListQuery_(
     selector: FilterableProductProps | Selector<Product>,
     config: FindProductConfig
   ): {
@@ -1063,7 +1078,7 @@ class ProductService extends TransactionBaseService<ProductService> {
       cart_id,
       customer_id,
     } = context
-    return await this.atomicPhase_(async (manager: EntityManager) => {
+    return await this.atomicPhase_(async (manager) => {
       const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
 
       let regionId = region_id
