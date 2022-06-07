@@ -455,7 +455,8 @@ class ProductService extends TransactionBaseService<ProductService> {
   protected async upsertProductType_(
     type: CreateProductProductTypeDTO
   ): Promise<string | null> {
-    const productTypeRepository = this.manager_.getCustomRepository(
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const productTypeRepository = transactionManager.getCustomRepository(
       this.productTypeRepository_
     )
 
@@ -482,7 +483,8 @@ class ProductService extends TransactionBaseService<ProductService> {
   protected async upsertProductTags_(
     tags: CreateProductProductTagDTO[]
   ): Promise<ProductTag[]> {
-    const productTagRepository = this.manager_.getCustomRepository(
+    const transactionManager = this.transactionManager_ ?? this.manager_
+    const productTagRepository = transactionManager.getCustomRepository(
       this.productTagRepository_
     )
 
@@ -545,8 +547,8 @@ class ProductService extends TransactionBaseService<ProductService> {
         product = await productRepo.save(product)
 
         product.options = await Promise.all(
-          (options ?? []).map(async (o) => {
-            const res = optionRepo.create({ ...o, product_id: product.id })
+          (options ?? []).map(async (option) => {
+            const res = optionRepo.create({ ...option, product_id: product.id })
             await optionRepo.save(res)
             return res
           })
