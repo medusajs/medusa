@@ -108,15 +108,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await this.redisClient_.client.call(
       "JSON.SET",
       `pij_${batchJobId}`,
-      "$",
-      JSON.stringify(results) // TODO: check if `stringify` is needed
+      "$", // JSONPath start
+      JSON.stringify(results)
     )
     await this.redisClient_.expire(`pij_${batchJobId}`, 60 * 60)
   }
 
   async getImportDataFromRedis(
     batchJobId: string
-  ): Promise<Record<string, string>[]> {
+  ): Promise<Record<string, string[]>> {
     return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
   }
 
@@ -169,11 +169,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       key: csvFileKey,
     })
 
-    const results = await this.csvParser_.parse(csvStream)
+    const data = await this.csvParser_.parse(csvStream)
+    const results = await this.csvParser_.buildData(data)
 
     const ops = this.getImportInstructions(results)
 
-    await this.setImportDataToRedis(`pij_${batchJobId}`, ops)
+    await this.setImportDataToRedis(batchJobId, ops)
 
     return await this.batchJobService_.ready(batchJobId)
   }
@@ -232,6 +233,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
     if (batchJob.status !== BatchJobStatus.COMPLETED) {
+      // TODO: Clear data form Redis
+
       return await this.batchJobService_.complete(batchJob)
     } else {
       return batchJob

@@ -57,7 +57,6 @@ class CsvParser<
     const columnMap = this._buildColumnMap(this.$$schema.columns)
 
     const tupleKeys = Object.keys(line)
-
     for (const tupleKey of tupleKeys) {
       const column = columnMap[tupleKey]
 

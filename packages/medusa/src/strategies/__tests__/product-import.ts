@@ -91,6 +91,14 @@ const productVariantRepositoryMock = {
 /* ******************** PRODUCT IMPORT STRATEGY TESTS ******************** */
 
 describe("Product import strategy", () => {
+  const redisClient = new FakeRedis()
+
+  beforeAll(() => {
+    redisClient.client.call = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve())
+  })
+
   const productImportStrategy = new ProductImportStrategy({
     manager: managerMock,
     fileService: fileServiceMock as any,
@@ -99,11 +107,18 @@ describe("Product import strategy", () => {
     productRepository: productRepositoryMock,
     productVariantService: productVariantServiceMock,
     productVariantRepository: productVariantRepositoryMock,
-    redisClient: new FakeRedis(),
+    redisClient,
   })
 
   it("`prepareBatchJobForProcessing` should parse CSV from context", async () => {
     await productImportStrategy.prepareBatchJobForProcessing(fakeJob.id, {})
+    expect(redisClient.client.call).toBeCalledTimes(1)
+
+    // expect(redisClient.client.call).toBeCalledWith(
+    //   "JSON.SET",
+    //   `pij_${fakeJob.id}`,
+    //   "TODO"
+    // )
 
     expect(batchJobServiceMock.ready).toBeCalled()
   })
