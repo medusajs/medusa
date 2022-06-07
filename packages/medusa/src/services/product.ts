@@ -427,10 +427,13 @@ class ProductService extends TransactionBaseService<ProductService> {
       take: 50,
     }
   ): Promise<ProductVariant[]> {
-    const relations = config.relations ?? []
+    const givenRelations = config.relations ?? []
+    const requiredRelations = ["variants"]
+    const relationsSet = new Set([...givenRelations, ...requiredRelations])
+
     const product = await this.retrieve(productId, {
       ...config,
-      relations: [...relations, "variants"],
+      relations: Array.from(relationsSet),
     })
     return product.variants
   }
