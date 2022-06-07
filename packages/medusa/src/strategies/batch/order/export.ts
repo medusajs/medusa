@@ -170,26 +170,15 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   protected readonly fileService_: IFileService<any>
   protected readonly batchJobService_: BatchJobService
   protected readonly orderService_: OrderService
-  protected readonly totalsService_: TotalsService
-  protected readonly logger_: Logger
 
-  constructor({
-    fileService,
-    batchJobService,
-    orderService,
-    totalsService,
-    manager,
-    logger,
-  }) {
+  constructor({ fileService, batchJobService, orderService, manager }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    this.logger_ = logger
     this.manager_ = manager
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.orderService_ = orderService
-    this.totalsService_ = totalsService
   }
 
   async validateContext(
