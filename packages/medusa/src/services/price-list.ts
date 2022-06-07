@@ -247,10 +247,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
       const { q, ...priceListSelector } = selector
-      const query = buildQuery<FilterablePriceListProps>(
-        priceListSelector,
-        config
-      )
+      const query = buildQuery(priceListSelector, config)
 
       const groups = query.where.customer_groups as FindOperator<string[]>
       query.where.customer_groups = undefined
@@ -277,10 +274,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const { q, ...priceListSelector } = selector
-      const { relations, ...query } = buildQuery<FilterablePriceListProps>(
-        priceListSelector,
-        config
-      )
+      const { relations, ...query } = buildQuery(priceListSelector, config)
 
       const groups = query.where.customer_groups as FindOperator<string[]>
       delete query.where.customer_groups
@@ -337,7 +331,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       const productsWithPrices = await Promise.all(
         products.map(async (p) => {
           if (p.variants?.length) {
-            p.variants = await Promise.all(
+            p.variants = (await Promise.all(
               p.variants.map(async (v) => {
                 const [prices] =
                   await moneyAmountRepo.findManyForVariantInPriceList(
@@ -351,7 +345,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
                   prices,
                 }
               })
-            )
+            )) as ProductVariant[]
           }
 
           return p

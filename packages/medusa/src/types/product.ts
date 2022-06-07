@@ -25,7 +25,7 @@ export enum ProductStatus {
 export class FilterableProductProps {
   @IsString()
   @IsOptional()
-  id?: string
+  id?: string | string[]
 
   @IsString()
   @IsOptional()
@@ -135,6 +135,7 @@ export class FilterableProductTypeProps {
 export type CreateProductDTO = {
   title: string
   subtitle?: string
+  profile_id?: string
   description?: string
   is_giftcard?: boolean
   discountable?: boolean
@@ -231,5 +232,5 @@ export type UpdateProductDTO = Omit<Partial<CreateProductDTO>, "variants"> & {
 
 export type ProductOptionDTO = {
   title: string
-  values: ProductOptionValue[]
+  values?: ProductOptionValue[]
 }

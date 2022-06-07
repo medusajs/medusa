@@ -23,13 +23,13 @@ import {
   CreateProductProductTagDTO,
   CreateProductProductTypeDTO,
   FilterableProductProps,
+  ProductOptionDTO,
   UpdateProductDTO,
 } from "../types/product"
 import { FindConfig, Selector } from "../types/common"
 import {
   Image,
   Product,
-  ProductOption,
   ProductTag,
   ProductType,
   ProductVariant,
@@ -156,8 +156,8 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductProps = {},
-    config: ListProductConfig = {
+    selector: FilterableProductProps | Selector<Product> = {},
+    config: FindProductConfig = {
       relations: [],
       skip: 0,
       take: 20,
@@ -199,22 +199,6 @@ class ProductService extends TransactionBaseService<ProductService> {
       : products
   }
 
-  private cleanFindConfigProps(config: ListProductConfig): ListProductConfig {
-    const PRICES_RELATION = "variant.prices"
-    const relationsIncludePrices =
-      config.relations?.includes(PRICES_RELATION) ?? false
-
-    let newRelations = config.relations
-    if (relationsIncludePrices) {
-      newRelations = config.relations?.filter((rel) => rel === PRICES_RELATION)
-    }
-
-    return {
-      ...config,
-      relations: newRelations,
-    }
-  }
-
   /**
    * Lists products based on the provided parameters and includes the count of
    * products that match the query.
@@ -227,8 +211,8 @@ class ProductService extends TransactionBaseService<ProductService> {
    *   as the second element.
    */
   async listAndCount(
-    selector: FilterableProductProps,
-    config: ListProductConfig = {
+    selector: FilterableProductProps | Selector<Product>,
+    config: FindProductConfig = {
       relations: [],
       skip: 0,
       take: 20,
@@ -875,7 +859,7 @@ class ProductService extends TransactionBaseService<ProductService> {
   async updateOption(
     productId: string,
     optionId: string,
-    data: ProductOption
+    data: ProductOptionDTO
   ): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
@@ -909,7 +893,9 @@ class ProductService extends TransactionBaseService<ProductService> {
       }
 
       productOption.title = title
-      productOption.values = values
+      if (values) {
+        productOption.values = values
+      }
 
       await productOptionRepo.save(productOption)
 
@@ -997,7 +983,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     productId: string,
     fields: (keyof Product)[] = [],
     expandFields: string[] = [],
-    config: ListProductConfig = {}
+    config: FindProductConfig = {}
   ): Promise<Product> {
     const requiredFields: (keyof Product)[] = ["id", "metadata"]
 
@@ -1027,8 +1013,8 @@ class ProductService extends TransactionBaseService<ProductService> {
    *   search param.
    */
   private prepareListQuery_(
-    selector: FilterableProductProps,
-    config: ListProductConfig
+    selector: FilterableProductProps | Selector<Product>,
+    config: FindProductConfig
   ): {
     q: string
     relations: (keyof Product)[]
