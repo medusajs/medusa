@@ -25,6 +25,10 @@ type Context = {
   csvFileKey: string
 }
 
+type ImportOperation = {
+  entityType: "product" | "variant"
+}
+
 const BATCH_SIZE = 100
 
 /**
@@ -88,20 +92,36 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     throw new Error("Not implemented!")
   }
 
-  async setImportDataToRedis(results: any, batchJobId: string): Promise<void> {
+  async setImportDataToRedis(batchJobId: string, results: any): Promise<void> {
     await this.redisClient_.client.call(
       "JSON.SET",
       `pij_${batchJobId}`,
       "$",
       JSON.stringify(results) // TODO: check if `stringify` is needed
     )
-    // TODO: expire
+    await this.redisClient_.expire(`pij_${batchJobId}`, 60 * 60)
   }
 
   async getImportDataFromRedis(
     batchJobId: string
   ): Promise<Record<string, string>[]> {
     return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
+  }
+
+  getImportInstructions(csvData: any[]): ImportOperation[] {
+    const products: Record<string, ImportOperation> = {}
+    const variants: Record<string, ImportOperation> = {}
+
+    csvData.forEach((row) => {
+      // is variant OP
+      if (row.variant_id) {
+        variants[row.variant_id] = { data: row, entityType: "variant" }
+      } else {
+        products[row.product_id] = { data: row, entityType: "product" }
+      }
+    })
+
+    return [...Object.values(products), ...Object.values(variants)]
   }
 
   async prepareBatchJobForProcessing(
@@ -115,8 +135,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       key: csvFileKey,
     })
 
-    const results = await this.csvParser_.parse(csvStream)
-    await this.redisClient_.set(`pij_${batchJobId}`, JSON.stringify(results)) // TODO: do this better
+    let results = await this.csvParser_.parse(csvStream)
+
+    results = this.getImportInstructions(results)
+
+    await this.setImportDataToRedis(`pij_${batchJobId}`, results)
 
     return await this.batchJobService_.ready(batchJobId)
   }
@@ -127,7 +150,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         .withTransaction(transactionManager)
         .retrieve(batchJobId)
 
-      const records = await this.getImportDataFromRedis(batchJob.id)
+      const records = (await this.getImportDataFromRedis(
+        batchJob.id
+      )) as ImportOperation[]
 
       const total = records.length
 
