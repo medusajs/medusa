@@ -33,14 +33,14 @@ export class Product extends SoftDeletableEntity {
   @Column()
   title: string
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   subtitle: string | null
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   description: string | null
 
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   handle: string | null
 
   @Column({ default: false })
@@ -63,7 +63,7 @@ export class Product extends SoftDeletableEntity {
   })
   images: Image[]
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   thumbnail: string | null
 
   @OneToMany(
@@ -101,26 +101,26 @@ export class Product extends SoftDeletableEntity {
   @Column({ type: "int", nullable: true })
   width: number | null
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   hs_code: string | null
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   origin_country: string | null
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   mid_code: string | null
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   material: string | null
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   collection_id: string | null
 
   @ManyToOne(() => ProductCollection)
   @JoinColumn({ name: "collection_id" })
   collection: ProductCollection
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   type_id: string | null
 
   @ManyToOne(() => ProductType)
@@ -144,7 +144,7 @@ export class Product extends SoftDeletableEntity {
   @Column({ default: true })
   discountable: boolean
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   external_id: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
