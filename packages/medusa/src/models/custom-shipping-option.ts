@@ -1,27 +1,21 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
   Unique,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Cart } from "./cart"
 import { ShippingOption } from "./shipping-option"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
 @Unique(["shipping_option_id", "cart_id"])
-export class CustomShippingOption {
-  @PrimaryColumn()
-  id: string
-
+export class CustomShippingOption extends SoftDeletableEntity {
   @Column({ type: "int" })
   price: number
 
@@ -41,23 +35,12 @@ export class CustomShippingOption {
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `cso_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "cso")
   }
 }
 

@@ -98,7 +98,9 @@ const variantWithPrices = {
       id: "price_1",
       currency_code: "usd",
       amount: 100,
-      sale_amount: null,
+      price_list_id: null,
+      min_quantity: 1,
+      max_quantity: 10,
       variant_id: "variant_with_prices",
       region_id: null,
       created_at: "2021-03-16T21:24:13.657Z",
@@ -109,7 +111,9 @@ const variantWithPrices = {
       id: "price_2",
       currency_code: "dk",
       amount: 100,
-      sale_amount: null,
+      price_list_id: null,
+      min_quantity: 1,
+      max_quantity: 10,
       variant_id: "variant_with_prices",
       region_id: null,
       created_at: "2021-03-16T21:24:13.657Z",
@@ -285,14 +289,32 @@ export const ProductVariantServiceMock = {
   }),
   delete: jest.fn().mockReturnValue(Promise.resolve()),
   update: jest.fn().mockReturnValue(Promise.resolve()),
-  setCurrencyPrice: jest.fn().mockReturnValue(Promise.resolve()),
-  setRegionPrice: jest.fn().mockReturnValue(Promise.resolve()),
+  updateVariantPrices: jest.fn().mockImplementation((variantId, prices) => {
+    return Promise.resolve({})
+  }),
+  deleteVariantPrices: jest.fn().mockImplementation((variantId, priceIds) => {
+    return Promise.resolve({})
+  }),
   updateOptionValue: jest.fn().mockReturnValue(Promise.resolve()),
   addOptionValue: jest.fn().mockImplementation((variantId, optionId, value) => {
     return Promise.resolve({})
   }),
   list: jest.fn().mockImplementation(data => {
     return Promise.resolve([testVariant])
+  }),
+  listAndCount: jest.fn().mockImplementation(({ product_id }) => {
+    if (product_id === IdMap.getId("product1")) {
+      return Promise.resolve( [
+          [
+            { id: IdMap.getId("1"), product_id: IdMap.getId("product1") },
+            { id: IdMap.getId("2"), product_id: IdMap.getId("product1") }
+          ],
+          2
+        ],
+      )
+    }
+
+    return []
   }),
   deleteOptionValue: jest.fn().mockImplementation((variantId, optionId) => {
     return Promise.resolve({})

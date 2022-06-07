@@ -1,26 +1,20 @@
 import {
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType } from "../utils/db-aware-column"
 import { Currency } from "./currency"
+import { PriceList } from "./price-list"
 import { ProductVariant } from "./product-variant"
 import { Region } from "./region"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class MoneyAmount {
-  @PrimaryColumn()
-  id: string
-
+export class MoneyAmount extends SoftDeletableEntity {
   @Column()
   currency_code: string
 
@@ -31,8 +25,21 @@ export class MoneyAmount {
   @Column({ type: "int" })
   amount: number
 
-  @Column({ type: "int", nullable: true, default: null })
-  sale_amount?: number
+  @Column({ type: "int", nullable: true })
+  min_quantity: number | null
+
+  @Column({ type: "int", nullable: true })
+  max_quantity: number | null
+
+  @Column({ nullable: true })
+  price_list_id: string | null
+
+  @ManyToOne(() => PriceList, (priceList) => priceList.prices, {
+    cascade: true,
+    onDelete: "CASCADE",
+  })
+  @JoinColumn({ name: "price_list_id" })
+  price_list: PriceList | null
 
   @Index()
   @Column({ nullable: true })
@@ -52,22 +59,9 @@ export class MoneyAmount {
   @JoinColumn({ name: "region_id" })
   region: Region
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @BeforeInsert()
   private beforeInsert(): undefined | void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `ma_${id}`
+    this.id = generateEntityId(this.id, "ma")
   }
 }
 
@@ -86,8 +80,11 @@ export class MoneyAmount {
  *   amount:
  *     description: "The amount in the smallest currecny unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost."
  *     type: integer
- *   sale_amount:
- *     description: "An optional sale amount that the Product Variant will be available for when defined."
+ *   min_quantity:
+ *     description: "The minimum quantity that the Money Amount applies to. If this value is not set, the Money Amount applies to all quantities."
+ *     type: integer
+ *   max_quantity:
+ *     description: "The maximum quantity that the Money Amount applies to. If this value is not set, the Money Amount applies to all quantities."
  *     type: integer
  *   variant_id:
  *     description: "The id of the Product Variant that the Money Amount belongs to."

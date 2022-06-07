@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -11,11 +12,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { defaultAdminDiscountsRelations } from "."
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { AllocationType, DiscountRuleType } from "../../../../models"
+import { Discount } from "../../../../models/discount"
+import { DiscountConditionOperator } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
-import { IsGreaterThan } from "../../../../utils/validators/greater-than"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
+import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
+import { AdminPostDiscountsDiscountParams } from "./update-discount"
 /**
  * @oas [post] /discounts
  * operationId: "PostDiscounts"
@@ -74,15 +81,27 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  *             discount:
  *               $ref: "#/components/schemas/discount"
  */
+
 export default async (req, res) => {
   const validated = await validator(AdminPostDiscountsReq, req.body)
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
-  const created = await discountService.create(validated)
-  const discount = await discountService.retrieve(
-    created.id,
-    defaultAdminDiscountsRelations
+  const validatedParams = await validator(
+    AdminPostDiscountsDiscountParams,
+    req.query
   )
+
+  const discountService: DiscountService = req.scope.resolve("discountService")
+
+  const created = await discountService.create(validated)
+
+  const config = getRetrieveConfig<Discount>(
+    defaultAdminDiscountsFields,
+    defaultAdminDiscountsRelations,
+    validatedParams?.fields?.split(",") as (keyof Discount)[],
+    validatedParams?.expand?.split(",")
+  )
+
+  const discount = await discountService.retrieve(created.id, config)
 
   res.status(200).json({ discount })
 }
@@ -132,7 +151,7 @@ export class AdminPostDiscountsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 export class AdminPostDiscountsDiscountRule {
@@ -140,19 +159,37 @@ export class AdminPostDiscountsDiscountRule {
   @IsOptional()
   description?: string
 
-  @IsString()
-  @IsNotEmpty()
-  type: string
+  @IsEnum(DiscountRuleType, {
+    message: `Invalid rule type, must be one of "fixed", "percentage" or "free_shipping"`,
+  })
+  type: DiscountRuleType
 
   @IsNumber()
   value: number
 
-  @IsString()
-  @IsNotEmpty()
-  allocation: string
+  @IsEnum(AllocationType, {
+    message: `Invalid allocation type, must be one of "total" or "item"`,
+  })
+  allocation: AllocationType
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  valid_for?: string[]
+  @ValidateNested({ each: true })
+  @Type(() => AdminCreateCondition)
+  conditions?: AdminCreateCondition[]
+}
+
+export class AdminCreateCondition extends AdminUpsertConditionsReq {
+  @IsString()
+  operator: DiscountConditionOperator
+}
+
+export class AdminPostDiscountsParams {
+  @IsArray()
+  @IsOptional()
+  expand?: string[]
+
+  @IsArray()
+  @IsOptional()
+  fields?: string[]
 }

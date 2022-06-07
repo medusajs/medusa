@@ -1,26 +1,21 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   Index,
-  PrimaryColumn,
-  OneToMany,
-  ManyToOne,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Customer } from "./customer"
 import { NotificationProvider } from "./notification-provider"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Notification {
-  @PrimaryColumn()
-  id: string
-
+export class Notification extends BaseEntity {
   @Column({ nullable: true })
   event_name: string
 
@@ -44,7 +39,7 @@ export class Notification {
   to: string
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
+  data: Record<string, unknown>
 
   @Column({ nullable: true })
   parent_id: string
@@ -53,10 +48,7 @@ export class Notification {
   @JoinColumn({ name: "parent_id" })
   parent_notification: Notification
 
-  @OneToMany(
-    () => Notification,
-    noti => noti.parent_notification
-  )
+  @OneToMany(() => Notification, (noti) => noti.parent_notification)
   resends: Notification[]
 
   @Column({ nullable: true })
@@ -66,17 +58,9 @@ export class Notification {
   @JoinColumn({ name: "provider_id" })
   provider: NotificationProvider
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `noti_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "noti")
   }
 }
 

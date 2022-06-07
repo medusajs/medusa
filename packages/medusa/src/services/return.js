@@ -558,12 +558,13 @@ class ReturnService extends BaseService {
             "payments",
             "discounts",
             "discounts.rule",
-            "discounts.rule.valid_for",
             "refunds",
             "shipping_methods",
             "region",
             "swaps",
             "swaps.additional_items",
+            "claims",
+            "claims.additional_items",
           ],
         })
 

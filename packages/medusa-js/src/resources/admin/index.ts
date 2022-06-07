@@ -1,6 +1,7 @@
 import BaseResource from "../base"
 import AdminAuthResource from "./auth"
 import AdminCustomersResource from "./customers"
+import AdminCustomerGroupsResource from "./customer-groups"
 import AdminDiscountsResource from "./discounts"
 import CollectionsResource from "./collections"
 import AdminDraftOrdersResource from "./draft-orders"
@@ -23,16 +24,19 @@ import AdminRegionsResource from "./regions"
 import AdminNotificationsResource from "./notifications"
 import AdminUploadsResource from "./uploads"
 import AdminProductTagsResource from "./product-tags"
+import AdminPriceListResource from "./price-lists"
 
 class Admin extends BaseResource {
   public auth = new AdminAuthResource(this.client)
   public customers = new AdminCustomersResource(this.client)
+  public customerGroups = new AdminCustomerGroupsResource(this.client)
   public discounts = new AdminDiscountsResource(this.client)
   public collections = new CollectionsResource(this.client)
   public draftOrders = new AdminDraftOrdersResource(this.client)
   public giftCards = new AdminGiftCardsResource(this.client)
   public invites = new AdminInvitesResource(this.client)
   public notes = new AdminNotesResource(this.client)
+  public priceLists = new AdminPriceListResource(this.client)
   public products = new AdminProductsResource(this.client)
   public productTags = new AdminProductTagsResource(this.client)
   public productTypes = new AdminProductTypesResource(this.client)

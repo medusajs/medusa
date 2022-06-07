@@ -3,9 +3,11 @@ module.exports = {
     title: "Medusa",
     description: "Open-source headless commerce engine",
     author: "Medusa core team",
+    siteUrl: "https://docs.medusajs.com/api"
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-dark-mode`,
     {
       resolve: `gatsby-plugin-anchor-links`,
       options: {
@@ -64,6 +66,12 @@ module.exports = {
         allowList: ["ALGOLIA_API_KEY"],
       },
     },
+    {
+      resolve: `gatsby-plugin-sitemap`,
+      options: {
+        output: '/api/sitemap'
+      }
+    }
     // `gatsby-plugin-preact`,
     // {
     //   resolve: `gatsby-source-openapi-aggregate`,
@@ -72,7 +80,7 @@ module.exports = {
     //       {
     //         name: "admin-spec",
     //         resolve: () =>
-    //           fromJson(
+    //           fromJson(``
     //             path.resolve(__dirname, "../../docs/api/admin-spec3.json")
     //           ),
     //       },

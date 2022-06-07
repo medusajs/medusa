@@ -1,28 +1,21 @@
 import {
-  Entity,
-  Check,
-  Index,
   BeforeInsert,
+  Check,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  RelationId,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
-  ManyToOne,
-  ManyToMany,
+  Entity,
+  Index,
   JoinColumn,
-  JoinTable,
+  ManyToOne,
+  OneToMany,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ShippingProfile } from "./shipping-profile"
 import { Region } from "./region"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { ShippingOptionRequirement } from "./shipping-option-requirement"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ShippingOptionPriceType {
   FLAT_RATE = "flat_rate",
@@ -31,10 +24,7 @@ export enum ShippingOptionPriceType {
 
 @Check(`"amount" >= 0`)
 @Entity()
-export class ShippingOption {
-  @PrimaryColumn()
-  id: string
-
+export class ShippingOption extends SoftDeletableEntity {
   @Column()
   name: string
 
@@ -74,33 +64,20 @@ export class ShippingOption {
   @Column({ default: false })
   admin_only: boolean
 
-  @OneToMany(
-    () => ShippingOptionRequirement,
-    req => req.shipping_option,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => ShippingOptionRequirement, (req) => req.shipping_option, {
+    cascade: ["insert"],
+  })
   requirements: ShippingOptionRequirement[]
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
+  data: Record<string, unknown>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `so_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "so")
   }
 }
 

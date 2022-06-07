@@ -111,7 +111,7 @@ export default {
     `,
 
   sidebarShadow: `
-    inset -1px 0 0 0 #eef0f5
+    inset -1px 0 0 0 var(--theme-ui-colors-separator)
   `,
   topbarShadow: `
     0 2px 5px 0 rgb(59 65 94 / 10%), 0 1px 1px 0 rgb(0 0 0 / 7%)

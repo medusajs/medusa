@@ -1,24 +1,12 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  Index,
-  JoinTable,
-  ManyToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
-import { ulid } from "ulid"
-import { Customer } from ".."
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity, Index, ManyToMany } from "typeorm"
+import { Customer } from "./customer"
+import { PriceList } from "./price-list"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class CustomerGroup {
-  @PrimaryColumn()
-  id: string
-
+export class CustomerGroup extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   name: string
@@ -26,37 +14,18 @@ export class CustomerGroup {
   @ManyToMany(() => Customer, (customer) => customer.groups, {
     onDelete: "CASCADE",
   })
-  @JoinTable({
-    name: "customer_group_customers",
-    joinColumn: {
-      name: "customer_group_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "customer_id",
-      referencedColumnName: "id",
-    },
-  })
   customers: Customer[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
+  @ManyToMany(() => PriceList, (priceList) => priceList.customer_groups, {
+    onDelete: "CASCADE",
+  })
+  price_lists: PriceList[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `cgrp_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "cgrp")
   }
 }

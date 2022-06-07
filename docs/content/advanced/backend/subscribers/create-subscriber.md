@@ -69,7 +69,11 @@ export default OrderNotifierSubscriber;
 
 This subscriber will register the method `handleOrder` as one of the handlers of the `order.placed` event. The method `handleOrder` will be executed every time an order is placed, and it will receive the order ID in the `data` parameter. You can then use the order’s details to perform any kind of task you need.
 
-> The `data` object will not contain other order data. Only the ID of the order. You can retrieve the order information using the `orderService`.
+:::note
+
+The `data` object will not contain other order data. Only the ID of the order. You can retrieve the order information using the `orderService`.
+
+:::
 
 ## Using Services in Subscribers
 
@@ -89,4 +93,5 @@ You can then use `this.productService` anywhere in your subscriber’s methods.
 
 ## What’s Next 🚀
 
+- [View the list of all events](events-list.md)
 - [Learn how to create a service.](/advanced/backend/services/create-service)

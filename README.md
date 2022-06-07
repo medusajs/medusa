@@ -81,7 +81,7 @@ Write-ups for all features will be made available in [Github discussions](https:
 - [ ] Sales Channel API
 - [ ] Multi-warehouse support
 - [ ] GraphQL API
-  
+
 ## Setting up a storefront for your Medusa project
 
 Medusa is a headless commerce engine which means that it can be used for any type of digital commerce experience - you may use it as the backend for an app, a voice application, social commerce experiences or a traditional e-commerce website, you may even want to integrate Medusa into your own software to enable commerce functionality. All of these are use cases that Medusa supports - to learn more read the documentation or reach out.
