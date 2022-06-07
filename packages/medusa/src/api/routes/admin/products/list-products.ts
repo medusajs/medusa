@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { omit } from "lodash"
-import { Product, Status } from "../../../../models/product"
+import { Product, ProductStatus } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
 import {
   allowedAdminProductFields,
@@ -127,8 +127,8 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   q?: string
 
   @IsOptional()
-  @IsEnum(Status, { each: true })
-  status?: Status[]
+  @IsEnum(ProductStatus, { each: true })
+  status?: ProductStatus[]
 
   @IsArray()
   @IsOptional()

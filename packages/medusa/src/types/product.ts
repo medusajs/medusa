@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { ProductOptionValue, Status } from "../models"
+import { ProductOptionValue, ProductStatus } from "../models"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator, StringComparisonOperator } from "./common"
@@ -25,8 +25,8 @@ export class FilterableProductProps {
   q?: string
 
   @IsOptional()
-  @IsEnum(Status, { each: true })
-  status?: Status[]
+  @IsEnum(ProductStatus, { each: true })
+  status?: ProductStatus[]
 
   @IsArray()
   @IsOptional()
@@ -135,7 +135,7 @@ export type CreateProductDTO = {
   images?: string[]
   thumbnail?: string
   handle?: string
-  status?: Status
+  status?: ProductStatus
   type?: CreateProductProductTypeDTO
   collection_id?: string
   tags?: CreateProductProductTagDTO[]

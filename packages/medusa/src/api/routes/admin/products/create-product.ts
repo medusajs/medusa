@@ -17,7 +17,7 @@ import {
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
-import { Status } from "../../../../models"
+import { ProductStatus } from "../../../../models"
 import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
@@ -421,8 +421,8 @@ export class AdminPostProductsReq {
   handle?: string
 
   @IsOptional()
-  @IsEnum(Status)
-  status?: Status = Status.DRAFT
+  @IsEnum(ProductStatus)
+  status?: ProductStatus = ProductStatus.DRAFT
 
   @IsOptional()
   @Type(() => ProductTypeReq)

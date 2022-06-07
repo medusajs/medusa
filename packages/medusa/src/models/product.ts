@@ -21,7 +21,7 @@ import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
-export enum Status {
+export enum ProductStatus {
   DRAFT = "draft",
   PROPOSED = "proposed",
   PUBLISHED = "published",
@@ -46,8 +46,8 @@ export class Product extends SoftDeletableEntity {
   @Column({ default: false })
   is_giftcard: boolean
 
-  @DbAwareColumn({ type: "enum", enum: Status, default: "draft" })
-  status: Status
+  @DbAwareColumn({ type: "enum", enum: ProductStatus, default: "draft" })
+  status: ProductStatus
 
   @ManyToMany(() => Image, { cascade: ["insert"] })
   @JoinTable({

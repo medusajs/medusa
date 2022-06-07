@@ -8,7 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Product, Status } from "../../../../models"
+import { Product, ProductStatus } from "../../../../models"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FilterableProductProps } from "../../../../types/product"
 import { AdminGetProductsPaginationParams } from "../products"
@@ -100,8 +100,8 @@ export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsP
   q?: string
 
   @IsOptional()
-  @IsEnum(Status, { each: true })
-  status?: Status[]
+  @IsEnum(ProductStatus, { each: true })
+  status?: ProductStatus[]
 
   @IsArray()
   @IsOptional()
