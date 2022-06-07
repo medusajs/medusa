@@ -29,6 +29,7 @@ type Context = {
 
 type ImportOperation = {
   entityType: "product" | "variant"
+  opType: "update" | "create"
 }
 
 const BATCH_SIZE = 100
@@ -119,20 +120,42 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
   }
 
-  getImportInstructions(csvData: any[]): ImportOperation[] {
+  getImportInstructions(csvData: any[]) {
     const products: Record<string, ImportOperation> = {}
     const variants: Record<string, ImportOperation> = {}
 
+    // const transactionManager = this.transactionManager_ ?? this.manager_
+    //
+    // const productRepo = transactionManager.getCustomRepository(
+    //   this.productRepo_
+    // )
+    //
+    // const productVariantRepo = transactionManager.getCustomRepository(
+    //   this.productVariantRepo_
+    // )
+
+    // TODO: for now, pretend that every record is op == create
     csvData.forEach((row) => {
       // is variant OP
       if (row.variant_id) {
-        variants[row.variant_id] = { data: row, entityType: "variant" }
+        variants[row.variant_id] = {
+          data: row,
+          entityType: "variant",
+          opType: "create",
+        }
       } else {
-        products[row.product_id] = { data: row, entityType: "product" }
+        products[row.product_id] = {
+          data: row,
+          entityType: "product",
+          opType: "create",
+        }
       }
     })
 
-    return [...Object.values(products), ...Object.values(variants)]
+    return {
+      products: Object.values(products),
+      variants: Object.values(variants),
+    }
   }
 
   async prepareBatchJobForProcessing(
@@ -146,11 +169,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       key: csvFileKey,
     })
 
-    let results = await this.csvParser_.parse(csvStream)
+    const results = await this.csvParser_.parse(csvStream)
 
-    results = this.getImportInstructions(results)
+    const ops = this.getImportInstructions(results)
 
-    await this.setImportDataToRedis(`pij_${batchJobId}`, results)
+    await this.setImportDataToRedis(`pij_${batchJobId}`, ops)
 
     return await this.batchJobService_.ready(batchJobId)
   }
@@ -161,24 +184,45 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         .withTransaction(transactionManager)
         .retrieve(batchJobId)
 
-      const records = (await this.getImportDataFromRedis(
-        batchJob.id
-      )) as ImportOperation[]
+      const productRepo = transactionManager.getCustomRepository(
+        this.productRepo_
+      )
 
-      const total = records.length
+      const productVariantRepo = transactionManager.getCustomRepository(
+        this.productVariantRepo_
+      )
 
-      let current = 0
+      const { products: productOps, variants: variantOps } =
+        (await this.getImportDataFromRedis(batchJob.id)) as {
+          products: ImportOperation[]
+          variants: ImportOperation[]
+        }
 
-      while (current < total) {
-        //TODO: update create/update products or variants
+      const total = productOps.length + variantOps.length
 
-        current = current + BATCH_SIZE
+      //  ========== PRODUCTS CREATE ==========
 
-        batchJob = await this.batchJobService_.update(batchJobId, {
-          ...batchJob.context,
-          progress: current / total,
-        })
-      }
+      await productRepo.save(
+        productOps.map((op) => op.data),
+        { chunk: BATCH_SIZE }
+      )
+
+      batchJob = await this.batchJobService_.update(batchJobId, {
+        ...batchJob.context,
+        progress: productOps.length / total,
+      })
+
+      //  ========== VARIANTS CREATE ==========
+
+      await productVariantRepo.save(
+        variantOps.map((op) => op.data),
+        { chunk: BATCH_SIZE }
+      )
+
+      batchJob = await this.batchJobService_.update(batchJobId, {
+        ...batchJob.context,
+        progress: variantOps.length / total,
+      })
 
       return batchJob
     })
