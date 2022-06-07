@@ -47,7 +47,7 @@ export class Product extends SoftDeletableEntity {
   is_giftcard: boolean
 
   @DbAwareColumn({ type: "enum", enum: Status, default: "draft" })
-  status: `${Status}`
+  status: Status
 
   @ManyToMany(() => Image, { cascade: ["insert"] })
   @JoinTable({

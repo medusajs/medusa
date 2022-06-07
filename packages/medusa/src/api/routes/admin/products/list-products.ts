@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { omit } from "lodash"
-import { Product } from "../../../../models/product"
+import { Product, Status } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
 import {
   allowedAdminProductFields,
@@ -97,13 +97,6 @@ export default async (req, res) => {
   res.json(result)
 }
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
 export class AdminGetProductsPaginationParams {
   @IsNumber()
   @IsOptional()
@@ -134,8 +127,8 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   q?: string
 
   @IsOptional()
-  @IsEnum(ProductStatus, { each: true })
-  status?: ProductStatus[]
+  @IsEnum(Status, { each: true })
+  status?: Status[]
 
   @IsArray()
   @IsOptional()

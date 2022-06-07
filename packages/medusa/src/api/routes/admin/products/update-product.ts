@@ -12,11 +12,8 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-  ProductStatus,
-} from "."
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { Status } from "../../../../models"
 import { ProductService, PricingService } from "../../../../services"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
@@ -364,10 +361,10 @@ export class AdminPostProductsProductReq {
   @IsOptional()
   handle?: string
 
-  @IsEnum(ProductStatus)
+  @IsEnum(Status)
   @NotEquals(null)
   @ValidateIf((object, value) => value !== undefined)
-  status?: ProductStatus
+  status?: Status
 
   @IsOptional()
   @Type(() => ProductTypeReq)

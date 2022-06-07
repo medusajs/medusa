@@ -12,13 +12,6 @@ import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
 import { DateComparisonOperator, StringComparisonOperator } from "./common"
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
 /**
  * API Level DTOs + Validation rules
  */
@@ -32,8 +25,8 @@ export class FilterableProductProps {
   q?: string
 
   @IsOptional()
-  @IsEnum(ProductStatus, { each: true })
-  status?: ProductStatus[]
+  @IsEnum(Status, { each: true })
+  status?: Status[]
 
   @IsArray()
   @IsOptional()
@@ -142,7 +135,7 @@ export type CreateProductDTO = {
   images?: string[]
   thumbnail?: string
   handle?: string
-  status?: ProductStatus | Status
+  status?: Status
   type?: CreateProductProductTypeDTO
   collection_id?: string
   tags?: CreateProductProductTagDTO[]
