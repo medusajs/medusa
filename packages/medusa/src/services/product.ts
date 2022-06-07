@@ -1,40 +1,32 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { formatException } from "../utils/exception-formatter"
-import { ProductOptionRepository } from "../repositories/product-option"
+import { SearchService } from "."
+import { TransactionBaseService } from "../interfaces"
+import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
+import { Product, ProductTag, ProductType, ProductVariant } from "../models"
+import { CartRepository } from "../repositories/cart"
+import { ImageRepository } from "../repositories/image"
 import {
   FindWithRelationsOptions,
   ProductRepository,
 } from "../repositories/product"
-import { ProductVariantRepository } from "../repositories/product-variant"
-import ProductVariantService from "./product-variant"
-import ProductCollectionService from "./product-collection"
-import { ProductTypeRepository } from "../repositories/product-type"
+import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
-import { ImageRepository } from "../repositories/image"
-import { CartRepository } from "../repositories/cart"
-import { SearchService } from "."
+import { ProductTypeRepository } from "../repositories/product-type"
+import { ProductVariantRepository } from "../repositories/product-variant"
 import PriceSelectionStrategy from "../strategies/price-selection"
-import EventBusService from "./event-bus"
-import { TransactionBaseService } from "../interfaces"
+import { FindConfig, Selector } from "../types/common"
 import {
   CreateProductDTO,
-  CreateProductProductTagDTO,
-  CreateProductProductTypeDTO,
   FilterableProductProps,
   ProductOptionDTO,
   UpdateProductDTO,
 } from "../types/product"
-import { FindConfig, Selector } from "../types/common"
-import {
-  Image,
-  Product,
-  ProductTag,
-  ProductType,
-  ProductVariant,
-} from "../models"
 import { buildQuery, setMetadata, validateId } from "../utils"
-import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
+import { formatException } from "../utils/exception-formatter"
+import EventBusService from "./event-bus"
+import ProductCollectionService from "./product-collection"
+import ProductVariantService from "./product-variant"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -59,9 +51,6 @@ type PriceListLoadConfig = {
   region_id?: string
   currency_code?: string
 }
-
-type ListProductConfig = FindConfig<FilterableProductProps> &
-  PriceListLoadConfig
 
 type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
 
@@ -458,60 +447,6 @@ class ProductService extends TransactionBaseService<ProductService> {
     })
   }
 
-  protected async upsertProductType_(
-    type: CreateProductProductTypeDTO
-  ): Promise<string | null> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-    const productTypeRepository = transactionManager.getCustomRepository(
-      this.productTypeRepository_
-    )
-
-    if (type === null) {
-      return null
-    }
-
-    const existing = await productTypeRepository.findOne({
-      where: { value: type.value },
-    })
-
-    if (existing) {
-      return existing.id
-    }
-
-    const created = productTypeRepository.create({
-      value: type.value,
-    })
-    const result = await productTypeRepository.save(created)
-
-    return result.id
-  }
-
-  protected async upsertProductTags_(
-    tags: CreateProductProductTagDTO[]
-  ): Promise<ProductTag[]> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-    const productTagRepository = transactionManager.getCustomRepository(
-      this.productTagRepository_
-    )
-
-    const newTags: ProductTag[] = []
-    for (const tag of tags) {
-      const existing = await productTagRepository.findOne({
-        where: { value: tag.value },
-      })
-
-      if (existing) {
-        newTags.push(existing)
-      } else {
-        const created = productTagRepository.create(tag)
-        const result = await productTagRepository.save(created)
-        newTags.push(result)
-      }
-    }
-
-    return newTags
-  }
-
   /**
    * Creates a product.
    * @param productObject - the product to create
@@ -520,6 +455,13 @@ class ProductService extends TransactionBaseService<ProductService> {
   async create(productObject: CreateProductDTO): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productTagRepo = manager.getCustomRepository(
+        this.productTagRepository_
+      )
+      const productTypeRepo = manager.getCustomRepository(
+        this.productTypeRepository_
+      )
+      const imageRepo = manager.getCustomRepository(this.imageRepository_)
       const optionRepo = manager.getCustomRepository(
         this.productOptionRepository_
       )
@@ -539,15 +481,15 @@ class ProductService extends TransactionBaseService<ProductService> {
         let product = productRepo.create(rest)
 
         if (images) {
-          product.images = await this.upsertImages_(images)
+          product.images = await imageRepo.upsertImages(images)
         }
 
         if (tags) {
-          product.tags = await this.upsertProductTags_(tags)
+          product.tags = await productTagRepo.upsertTags(tags)
         }
 
         if (typeof type !== `undefined`) {
-          product.type_id = await this.upsertProductType_(type)
+          product.type_id = (await productTypeRepo.upsertType(type))?.id || null
         }
 
         product = await productRepo.save(product)
@@ -576,28 +518,6 @@ class ProductService extends TransactionBaseService<ProductService> {
     })
   }
 
-  async upsertImages_(images: string[]): Promise<Image[]> {
-    return await this.atomicPhase_(async (manager) => {
-      const imageRepository = manager.getCustomRepository(this.imageRepository_)
-
-      const productImages: Image[] = []
-      for (const img of images) {
-        const existing = await imageRepository.findOne({
-          where: { url: img },
-        })
-
-        if (existing) {
-          productImages.push(existing)
-        } else {
-          const created = imageRepository.create({ url: img })
-          productImages.push(created)
-        }
-      }
-
-      return productImages
-    })
-  }
-
   /**
    * Updates a product. Product variant updates should use dedicated methods,
    * e.g. `addVariant`, etc. The function will throw errors if metadata or
@@ -613,6 +533,13 @@ class ProductService extends TransactionBaseService<ProductService> {
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepository_
       )
+      const productTagRepo = manager.getCustomRepository(
+        this.productTagRepository_
+      )
+      const productTypeRepo = manager.getCustomRepository(
+        this.productTypeRepository_
+      )
+      const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
       const product = await this.retrieve(productId, {
         relations: ["variants", "tags", "images"],
@@ -625,7 +552,7 @@ class ProductService extends TransactionBaseService<ProductService> {
       }
 
       if (images) {
-        product.images = await this.upsertImages_(images)
+        product.images = await imageRepo.upsertImages(images)
       }
 
       if (metadata) {
@@ -633,11 +560,11 @@ class ProductService extends TransactionBaseService<ProductService> {
       }
 
       if (typeof type !== `undefined`) {
-        product.type_id = await this.upsertProductType_(type)
+        product.type_id = (await productTypeRepo.upsertType(type))?.id || null
       }
 
       if (tags) {
-        product.tags = await this.upsertProductTags_(tags)
+        product.tags = await productTagRepo.upsertTags(tags)
       }
 
       if (variants) {
@@ -668,6 +595,7 @@ class ProductService extends TransactionBaseService<ProductService> {
               .update(variant, {
                 ...newVariant,
                 variant_rank,
+                product_id: variant.product_id,
               })
 
             newVariants.push(saved)

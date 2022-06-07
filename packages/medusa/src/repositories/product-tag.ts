@@ -1,5 +1,9 @@
-import { EntityRepository, Repository } from "typeorm"
+import { EntityRepository, In, Repository } from "typeorm"
 import { ProductTag } from "../models/product-tag"
+
+type UpsertTagsInput = (Partial<ProductTag> & {
+  value: string
+})[]
 
 @EntityRepository(ProductTag)
 export class ProductTagRepository extends Repository<ProductTag> {
@@ -19,5 +23,36 @@ export class ProductTagRepository extends Repository<ProductTag> {
     )
 
     return tags
+  }
+
+  public async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
+    const tagsValues = tags.map((tag) => tag.value)
+    const existingTags = await this.find({
+      where: {
+        value: In(tagsValues),
+      },
+    })
+    const existingTagsMap = this.buildTagsMap_(existingTags)
+
+    const upsertedTags: ProductTag[] = []
+
+    for (const tag of tags) {
+      const aTag = existingTagsMap.get(tag.value)
+      if (aTag) {
+        upsertedTags.push(aTag)
+      } else {
+        const newTag = this.create(tag)
+        const savedTag = await this.save(newTag)
+        upsertedTags.push(savedTag)
+      }
+    }
+
+    return upsertedTags
+  }
+
+  private buildTagsMap_(tags: ProductTag[]): Map<string, ProductTag> {
+    return new Map(
+      tags.map<[string, ProductTag]>((tag) => [tag.value, tag])
+    )
   }
 }
