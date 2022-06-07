@@ -16,8 +16,8 @@ import { DateComparisonOperator, StringComparisonOperator } from "./common"
  * API Level DTOs + Validation rules
  */
 export class FilterableProductProps {
-  @IsString()
   @IsOptional()
+  @IsType([String, [String]])
   id?: string | string[]
 
   @IsString()
