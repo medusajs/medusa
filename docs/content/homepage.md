@@ -68,9 +68,9 @@ Alternatively, you can build your own storefront with any frontend framework of 
 
 As Medusa is an open source platform, contributions to improve it and its documentation are welcome. In the GitHub repository here’s where you’ll find the different components you can contribute to:
 
-- The core of the Medusa server resides in `[packages/medusa](https://github.com/medusajs/medusa/tree/master/packages/medusa)`.
+- The core of the Medusa server resides in [`packages/medusa`](https://github.com/medusajs/medusa/tree/master/packages/medusa).
 - You can also find all existing plugins under [the `packages` directory](https://github.com/medusajs/medusa/tree/master/packages).
-- The documentation content resides in `[docs/content](https://github.com/medusajs/medusa/tree/master/docs/content)`. The code for the documentation website is in `[www/docs](https://github.com/medusajs/medusa/tree/master/www/docs)`.
+- The documentation content resides in [`docs/content`](https://github.com/medusajs/medusa/tree/master/docs/content). The code for the documentation website is in [`www/docs`](https://github.com/medusajs/medusa/tree/master/www/docs).
 
 You can find more details about contributing in [CONTRIBUTING.md](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md).
 
