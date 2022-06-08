@@ -18,26 +18,28 @@ node -v
 
 You can install Node from the [official website](https://nodejs.org/en/).
 
-## Getting started
+## Create a Medusa Server
 
-1. **Install Medusa CLI**
+### 1. Install Medusa CLI
 
    ```bash npm2yarn
    npm install -g @medusajs/medusa-cli
    ```
 
-2. **Create a new Medusa project**
+### 2. Create a new Medusa project
 
    ```bash
    medusa new my-medusa-store --seed
    ```
 
-3. **Start your Medusa engine**
+### 3. Start your Medusa server
 
    ```bash
    cd my-medusa-store
    medusa develop
    ```
+
+### Test Your Server
 
 After these 3 steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
 
@@ -54,6 +56,48 @@ curl localhost:9000/store/products
 ```
 
 :::
+
+## Additional Steps
+
+### File Service Plugin
+
+To upload product images to your Medusa server, you must install and configure one of the following file service plugins:
+
+- [MinIO](../add-plugins/minio.md) (Recommended for local development)
+- [S3](../add-plugins/s3.md)
+- [DigitalOcean Spaces](../add-plugins/spaces.md)
+
+### Environment Variables
+
+Medusa allows you to choose how to load your environment variables. By default, it will only load environment variables on your system.
+
+If you want to load environment variables from a `.env` file add the following at the top of `medusa-config.js`:
+
+```js
+const dotenv = require('dotenv')
+
+ let ENV_FILE_NAME = '';
+ switch (process.env.NODE_ENV) {
+  case 'production':
+    ENV_FILE_NAME = '.env.production';
+    break;
+  case 'staging':
+    ENV_FILE_NAME = '.env.staging';
+    break;
+  case 'test':
+    ENV_FILE_NAME = '.env.test';
+    break;
+  case 'development':
+  default:
+    ENV_FILE_NAME = '.env';
+    break;
+ }
+
+ try {
+  dotenv.config({ path: process.cwd() + '/' + ENV_FILE_NAME });
+ } catch (e) {
+ }
+```
 
 ## What's next :rocket:
 
