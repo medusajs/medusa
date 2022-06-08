@@ -1,12 +1,20 @@
 import { EntityManager } from "typeorm"
 import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
-import { BatchJob, Product } from "../models"
+import {
+  BatchJob,
+  Image,
+  MoneyAmount,
+  Product,
+  ProductOption,
+  ProductVariant,
+} from "../models"
 import { BatchJobService, ProductService } from "../services"
 import { BatchJobStatus } from "../types/batch-job"
 import { defaultAdminProductRelations } from "../api/routes/admin/products"
 import { ProductRepository } from "../repositories/product"
 import { FindConfig } from "../types/common"
 import { MedusaError } from "medusa-core-utils/dist"
+import { ProductVariantOption } from "../types/product-variant"
 
 type Context = {
   listConfig: FindConfig<Product>
@@ -24,7 +32,41 @@ type InjectedDependencies = {
   productRepository: typeof ProductRepository
 }
 
-type Accessor = (line: Product) => string
+type ColumnSchemaEntity =
+  | "product"
+  | "variant"
+  | "option"
+  | "variantOption"
+  | "image"
+  | "moneyAmount"
+
+type ColumnSchema =
+  | (
+      | {
+          accessor: (product: Product) => string
+          entityName: Extract<ColumnSchemaEntity, "product">
+        }
+      | {
+          accessor: (variant: ProductVariant) => string
+          entityName: Extract<ColumnSchemaEntity, "variant">
+        }
+      | {
+          accessor: (option: ProductOption) => string
+          entityName: Extract<ColumnSchemaEntity, "option">
+        }
+      | {
+          accessor: (option: ProductVariantOption) => string
+          entityName: Extract<ColumnSchemaEntity, "variantOption">
+        }
+      | {
+          accessor: (image: Image) => string
+          entityName: Extract<ColumnSchemaEntity, "image">
+        }
+      | {
+          accessor: (moneyAmount: MoneyAmount) => string
+          entityName: Extract<ColumnSchemaEntity, "moneyAmount">
+        }
+    ) & { index?: number }
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy<ProductExportStrategy> {
   public static identifier = "product-export-strategy"
@@ -39,53 +81,280 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   protected readonly productRepository_: typeof ProductRepository
 
   protected readonly relations_ = [...defaultAdminProductRelations]
-  protected readonly columnDescriptors = new Map<string, Accessor>([
-    ["Product Handle", (line: Product): string => line.handle],
-    ["Product Title", (line: Product): string => line.title],
-    ["Product Subtitle", (line: Product): string => line.subtitle],
-    ["Product Description", (line: Product): string => line.description],
-    ["Product Status", (line: Product): string => line.status],
-    ["Product Thumbnail", (line: Product): string => line.thumbnail],
-    ["Product Weight", (line: Product): string => line.weight?.toString()],
-    ["Product Length", (line: Product): string => line.length?.toString()],
-    ["Product Width", (line: Product): string => line.width?.toString()],
-    ["Product Height", (line: Product): string => line.height?.toString()],
-    ["Product HS Code", (line: Product): string => line.hs_code?.toString()],
+  protected readonly columnDescriptors = new Map<string, ColumnSchema>([
+    /*
+     *
+     * The dynamic columns corresponding to the lowest level of relations are built later on.
+     * You can have a look at the buildHeader method that take care of appending the other
+     * column descriptors to this map.
+     *
+     */
+    [
+      "Product Handle",
+      {
+        accessor: (product: Product): string => product?.handle,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Title",
+      {
+        accessor: (product: Product): string => product?.title,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Subtitle",
+      {
+        accessor: (product: Product): string => product?.subtitle,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Description",
+      {
+        accessor: (product: Product): string => product?.description,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Status",
+      {
+        accessor: (product: Product): string => product?.status,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Thumbnail",
+      {
+        accessor: (product: Product): string => product?.thumbnail,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Weight",
+      {
+        accessor: (product: Product): string => product?.weight?.toString(),
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Length",
+      {
+        accessor: (product: Product): string => product?.length?.toString(),
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Width",
+      {
+        accessor: (product: Product): string => product?.width?.toString(),
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Height",
+      {
+        accessor: (product: Product): string => product?.height?.toString(),
+        entityName: "product",
+      },
+    ],
+    [
+      "Product HS Code",
+      {
+        accessor: (product: Product): string => product?.hs_code?.toString(),
+        entityName: "product",
+      },
+    ],
     [
       "Product Origin Country",
-      (line: Product): string => line.origin_country?.toString(),
+      {
+        accessor: (product: Product): string =>
+          product?.origin_country?.toString(),
+        entityName: "product",
+      },
     ],
-    ["Product Mid Code", (line: Product): string => line.mid_code?.toString()],
-    ["Product Material", (line: Product): string => line.material?.toString()],
+    [
+      "Product Mid Code",
+      {
+        accessor: (product: Product): string => product?.mid_code?.toString(),
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Material",
+      {
+        accessor: (product: Product): string => product?.material?.toString(),
+        entityName: "product",
+      },
+    ],
     [
       "Product Collection Title",
-      (line: Product): string => line.collection.title,
+      {
+        accessor: (product: Product): string => product?.collection?.title,
+        entityName: "product",
+      },
     ],
     [
       "Product Collection Handle",
-      (line: Product): string => line.collection.handle,
+      {
+        accessor: (product: Product): string => product?.collection?.handle,
+        entityName: "product",
+      },
     ],
-    ["Product Type", (line: Product): string => line.type.value],
+    [
+      "Product Type",
+      {
+        accessor: (product: Product): string => product?.type?.value,
+        entityName: "product",
+      },
+    ],
     [
       "Product Tags",
-      (line: Product): string =>
-        (line.tags.map((t) => t.value) ?? []).join(","),
+      {
+        accessor: (product: Product): string =>
+          (product.tags.map((t) => t.value) ?? []).join(","),
+        entityName: "product",
+      },
     ],
     [
       "Product Discountable",
-      (line: Product): string => line.discountable?.toString(),
+      {
+        accessor: (product: Product): string =>
+          product?.discountable?.toString(),
+        entityName: "product",
+      },
     ],
-    ["Product External ID", (line: Product): string => line.external_id],
-    ["Product Profile Name", (line: Product): string => line?.profile?.name],
-    ["Product Profile Type", (line: Product): string => line?.profile?.type],
-    /*
-     *
-     * The other columns are dynamically computed via the `buildHeader` method.
-     * This will ensure that all the expected columns based on the
-     * real data and therefore the highest number of value for the different
-     * relation that we are expecting to appear
-     *
-     */
+    [
+      "Product External ID",
+      {
+        accessor: (product: Product): string => product?.external_id,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Profile Name",
+      {
+        accessor: (product: Product): string => product?.profile?.name,
+        entityName: "product",
+      },
+    ],
+    [
+      "Product Profile Type",
+      {
+        accessor: (product: Product): string => product?.profile?.type,
+        entityName: "product",
+      },
+    ],
+    [
+      "Variant Title",
+      {
+        accessor: (variant: ProductVariant): string => variant?.title ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant SKU",
+      {
+        accessor: (variant: ProductVariant): string => variant?.sku ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Barcode",
+      {
+        accessor: (variant: ProductVariant): string => variant?.barcode ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Inventory Quantity",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.inventory_quantity?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Allow backorder",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.allow_backorder?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Manage inventory",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.manage_inventory?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Weight",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.weight?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Length",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.length?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Width",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.width?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Height",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.height?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant HS Code",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.hs_code?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Origin Country",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.origin_country?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Mid Code",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.mid_code?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
+    [
+      "Variant Material",
+      {
+        accessor: (variant: ProductVariant): string =>
+          variant?.material?.toString() ?? "",
+        entityName: "variant",
+      },
+    ],
   ])
 
   private readonly NEWLINE = "\r\n"
@@ -195,7 +464,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           }
 
           products.forEach((product) => {
-            writeStream.write(this.buildLine(product))
+            const productLinesData = this.buildProductLines(product)
+            productLinesData.forEach((line) => writeStream.write(line))
           })
 
           advancementCount += products.length
@@ -264,14 +534,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       this.productRepository_
     )
 
-    const [
-      {
-        maxOptionsCount,
-        maxImagesCount,
-        maxVariantsCount,
-        maxMoneyAmountCount,
-      },
-    ] = await productRepo.query(`
+    const [{ maxOptionsCount, maxImagesCount, maxMoneyAmountCount }] =
+      await productRepo.query(`
         WITH optionsShape AS (
             SELECT count(*) as maxOptionsCount
             from product_option
@@ -284,12 +548,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
             group by product_id
             order by maxImagesCount DESC
             LIMIT 1
-        ), variantsShape AS (
-            SELECT count(*) as maxVariantsCount
-            from product_variant
-            group by product_id
-            order by maxVariantsCount DESC
-            LIMIT 1
         ), moneyAmountShape AS (
             SELECT count(*) as maxMoneyAmountCount
             from money_amount
@@ -300,149 +558,146 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         SELECT 
            maxOptionsCount,
            maxImagesCount,
-           maxVariantsCount,
            maxMoneyAmountCount
         FROM 
            optionsShape,
            imagesShape,
-           variantsShape,
            moneyAmountShape;
       `)
 
-    this.appendProductOptionsDescriptors(maxOptionsCount)
+    this.appendOptionsDescriptors(maxOptionsCount)
+    this.appendMoneyAmountDescriptors(maxMoneyAmountCount)
     this.appendImagesDescriptors(maxImagesCount)
-    this.appendVariantDescriptors(maxVariantsCount, maxMoneyAmountCount)
 
     return [...this.columnDescriptors.keys(), this.NEWLINE].join(
       this.DELIMITED_
     )
   }
 
-  private appendVariantDescriptors(
-    maxVariantsCount: number,
-    maxMoneyAmountCount: number
-  ): void {
-    for (let i = 0; i < maxVariantsCount; ++i) {
-      this.columnDescriptors
-        .set(
-          `Variant Title [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.title ?? ""
-        )
-        .set(
-          `Variant SKU [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.sku ?? ""
-        )
-        .set(
-          `Variant Barcode [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.barcode ?? ""
-        )
-        .set(
-          `Variant Inventory Quantity [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) =>
-            line.variants[i]?.inventory_quantity?.toString() ?? ""
-        )
-        .set(
-          `Variant Allow backorder [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.allow_backorder?.toString()
-        )
-        .set(
-          `Variant Manage inventory [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.manage_inventory?.toString()
-        )
-        .set(
-          `Variant Option Value [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) =>
-            line.variants[i]?.options?.map((o) => o.value)?.toString()
-        )
-        .set(`Variant Weight [${i + 1}-${maxVariantsCount}]`, (line: Product) =>
-          line.variants[i]?.weight?.toString()
-        )
-        .set(`Variant Length [${i + 1}-${maxVariantsCount}]`, (line: Product) =>
-          line.variants[i]?.length?.toString()
-        )
-        .set(`Variant Width [${i + 1}-${maxVariantsCount}]`, (line: Product) =>
-          line.variants[i]?.width?.toString()
-        )
-        .set(`Variant Height [${i + 1}-${maxVariantsCount}]`, (line: Product) =>
-          line.variants[i]?.height?.toString()
-        )
-        .set(
-          `Variant HS Code [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.hs_code?.toString()
-        )
-        .set(
-          `Variant Origin Country [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.origin_country?.toString()
-        )
-        .set(
-          `Variant Mid Code [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.mid_code?.toString()
-        )
-        .set(
-          `Variant Material [${i + 1}-${maxVariantsCount}]`,
-          (line: Product) => line.variants[i]?.material?.toString()
-        )
-
-      for (let y = 0; y < maxMoneyAmountCount; ++y) {
-        this.columnDescriptors
-          .set(
-            `Variant Price Currency Code [${y + 1}-${maxMoneyAmountCount}] [${
-              i + 1
-            }-${maxVariantsCount}]`,
-            (line: Product) => {
-              return line.variants[i]?.prices[y]?.currency_code?.toUpperCase()
-            }
-          )
-          .set(
-            `Variant Price Region Name [${y + 1}-${maxMoneyAmountCount}] [${
-              i + 1
-            }-${maxVariantsCount}]`,
-            (line: Product) => {
-              return line.variants[i]?.prices[y]?.region?.name
-            }
-          )
-          .set(
-            `Variant Price [${y + 1}-${maxMoneyAmountCount}] [${
-              i + 1
-            }-${maxVariantsCount}]`,
-            (line: Product) => {
-              return line.variants[i]?.prices[y]?.amount?.toString()
-            }
-          )
-      }
-    }
-  }
-
   private appendImagesDescriptors(maxImagesCount: number): void {
     for (let i = 0; i < maxImagesCount; ++i) {
-      this.columnDescriptors.set(
-        `Product Image [${i + 1}-${maxImagesCount}]`,
-        (line: Product) => line.images[i]?.url ?? ""
-      )
+      this.columnDescriptors.set(`Product Image ${i + 1}`, {
+        accessor: (image: Image) => image?.url ?? "",
+        entityName: "image",
+        index: i,
+      })
     }
   }
 
-  private appendProductOptionsDescriptors(maxOptionsCount: number): void {
+  private appendOptionsDescriptors(maxOptionsCount: number): void {
     for (let i = 0; i < maxOptionsCount; ++i) {
       this.columnDescriptors
-        .set(
-          `Product Option Name [${i + 1}-${maxOptionsCount}]`,
-          (line: Product) => line.options[i]?.title ?? ""
-        )
-        .set(
-          `Product Option values [${i + 1}-${maxOptionsCount}]`,
-          (line: Product) => line.options[i]?.values?.toString()
-        )
+        .set(`Option ${i + 1} Name`, {
+          accessor: (productOption: ProductOption) =>
+            productOption?.title ?? "",
+          entityName: "option",
+          index: i,
+        })
+        .set(`Option ${i + 1} Value`, {
+          accessor: (variantOption: ProductVariantOption) =>
+            variantOption?.value,
+          entityName: "variantOption",
+          index: i,
+        })
     }
   }
 
-  private buildLine(line: Product): string {
-    const outputLineData: string[] = []
-    for (const [, getter] of this.columnDescriptors.entries()) {
-      outputLineData.push(getter(line))
+  private appendMoneyAmountDescriptors(maxMoneyAmountCount: number): void {
+    for (let i = 0; i < maxMoneyAmountCount; ++i) {
+      this.columnDescriptors
+        .set(`Price ${i + 1} Currency code`, {
+          accessor: (moneyAmount: MoneyAmount) =>
+            moneyAmount?.currency_code?.toLowerCase() ?? "",
+          entityName: "moneyAmount",
+          index: i,
+        })
+        .set(`Price ${i + 1} Region name`, {
+          accessor: (moneyAmount: MoneyAmount) =>
+            moneyAmount?.region?.name?.toLowerCase() ?? "",
+          entityName: "moneyAmount",
+          index: i,
+        })
+        .set(`Price ${i + 1} Amount`, {
+          accessor: (moneyAmount: MoneyAmount) =>
+            moneyAmount?.amount?.toString() ?? "",
+          entityName: "moneyAmount",
+          index: i,
+        })
     }
-    outputLineData.push(this.NEWLINE)
-    return outputLineData.join(this.DELIMITED_)
+  }
+
+  private buildProductLines(product: Product): string[] {
+    const outputLineData: string[] = []
+
+    const productLineData: string[] = []
+    for (const [, columnSchema] of this.columnDescriptors.entries()) {
+      if (columnSchema.entityName === "product") {
+        productLineData.push(columnSchema.accessor(product))
+        continue
+      }
+      if (
+        columnSchema.entityName === "option" &&
+        columnSchema.index !== undefined
+      ) {
+        const option = product?.options[columnSchema.index] ?? {}
+        productLineData.push(columnSchema.accessor(option))
+        continue
+      }
+      if (
+        columnSchema.entityName === "image" &&
+        columnSchema.index !== undefined
+      ) {
+        const image = product?.images[columnSchema.index] ?? {}
+        productLineData.push(columnSchema.accessor(image))
+        continue
+      }
+      productLineData.push("")
+    }
+
+    outputLineData.push(productLineData.join(this.DELIMITED_))
+
+    for (const variant of product.variants) {
+      const variantLineData: string[] = []
+
+      for (const [
+        columnTitle,
+        columnSchema,
+      ] of this.columnDescriptors.entries()) {
+        if (
+          columnTitle === "Product Handle" &&
+          columnSchema.entityName === "product"
+        ) {
+          variantLineData.push(columnSchema.accessor(product))
+          continue
+        }
+
+        if (columnSchema.entityName === "variant") {
+          variantLineData.push(columnSchema.accessor(variant))
+          continue
+        }
+        if (
+          columnSchema.entityName === "variantOption" &&
+          columnSchema.index !== undefined
+        ) {
+          const option = variant?.options[columnSchema.index] ?? {}
+          variantLineData.push(columnSchema.accessor(option))
+          continue
+        }
+        if (
+          columnSchema.entityName === "moneyAmount" &&
+          columnSchema.index !== undefined
+        ) {
+          const moneyAmount = variant?.prices[columnSchema.index] ?? {}
+          variantLineData.push(columnSchema.accessor(moneyAmount))
+          continue
+        }
+        variantLineData.push("")
+      }
+
+      outputLineData.push(variantLineData.join(this.DELIMITED_))
+    }
+
+    return outputLineData
   }
 
   private async handleProcessingErrors(
