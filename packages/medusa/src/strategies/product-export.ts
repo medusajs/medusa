@@ -358,7 +358,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   ])
 
   private readonly NEWLINE = "\r\n"
-  private readonly DELIMITED_ = ";"
+  private readonly DELIMITER_ = ";"
   private readonly BATCH_SIZE = 50
 
   constructor({
@@ -570,7 +570,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     this.appendImagesDescriptors(maxImagesCount)
 
     return [...this.columnDescriptors.keys(), this.NEWLINE].join(
-      this.DELIMITED_
+      this.DELIMITER_
     )
   }
 
@@ -629,6 +629,19 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   private buildProductLines(product: Product): string[] {
     const outputLineData: string[] = []
 
+    const productLine = this.buildProductLineData(product)
+    outputLineData.push(productLine)
+
+    const variantLines = this.buildProductVariantsLineData(
+      product,
+      product.variants
+    )
+    outputLineData.push(...variantLines)
+
+    return outputLineData
+  }
+
+  private buildProductLineData(product: Product): string {
     const productLineData: string[] = []
     for (const [, columnSchema] of this.columnDescriptors.entries()) {
       if (columnSchema.entityName === "product") {
@@ -653,10 +666,16 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       }
       productLineData.push("")
     }
+    return productLineData.join(this.DELIMITER_)
+  }
 
-    outputLineData.push(productLineData.join(this.DELIMITED_))
+  private buildProductVariantsLineData(
+    product: Product,
+    variants: ProductVariant[] = []
+  ): string[] {
+    const outputLineData: string[] = []
 
-    for (const variant of product.variants) {
+    for (const variant of variants) {
       const variantLineData: string[] = []
 
       for (const [
@@ -694,7 +713,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         variantLineData.push("")
       }
 
-      outputLineData.push(variantLineData.join(this.DELIMITED_))
+      outputLineData.push(variantLineData.join(this.DELIMITER_))
     }
 
     return outputLineData
