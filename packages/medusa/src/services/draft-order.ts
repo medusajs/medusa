@@ -1,6 +1,5 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
-import { Brackets, EntityManager } from "typeorm"
+import { Brackets, EntityManager, FindManyOptions, UpdateResult } from "typeorm"
 import { DraftOrderRepository } from "../repositories/draft-order"
 import { PaymentRepository } from "../repositories/payment"
 import EventBusService from "./event-bus"
@@ -9,9 +8,11 @@ import LineItemService from "./line-item"
 import { OrderRepository } from "../repositories/order"
 import ProductVariantService from "./product-variant"
 import ShippingOptionService from "./shipping-option"
-import { DraftOrder, DraftOrderStatus } from "../models/draft-order"
-import { Cart, CartType } from "../models/cart"
-import { AdminPostDraftOrdersReq } from "../api/routes/admin/draft-orders/create-draft-order"
+import { DraftOrder, DraftOrderStatus, Cart, CartType } from "../models"
+import { AdminPostDraftOrdersReq } from "../api/routes/admin/draft-orders"
+import { TransactionBaseService } from "../interfaces"
+import { ExtendedFindConfig, FindConfig } from "../types/common"
+import { buildQuery } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -29,13 +30,15 @@ type InjectedDependencies = {
  * Handles draft orders
  * @implements {BaseService}
  */
-class DraftOrderService extends BaseService {
+class DraftOrderService extends TransactionBaseService<DraftOrderService> {
   static readonly Events = {
     CREATED: "draft_order.created",
     UPDATED: "draft_order.updated",
   }
 
-  protected readonly manager_: EntityManager
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   protected readonly draftOrderRepository_: typeof DraftOrderRepository
   protected readonly paymentRepository_: typeof PaymentRepository
   protected readonly orderRepository_: typeof OrderRepository
@@ -56,7 +59,17 @@ class DraftOrderService extends BaseService {
     productVariantService,
     shippingOptionService,
   }: InjectedDependencies) {
-    super()
+    super({
+      manager,
+      draftOrderRepository,
+      paymentRepository,
+      orderRepository,
+      eventBusService,
+      cartService,
+      lineItemService,
+      productVariantService,
+      shippingOptionService,
+    })
 
     this.manager_ = manager
     this.draftOrderRepository_ = draftOrderRepository
@@ -69,44 +82,23 @@ class DraftOrderService extends BaseService {
     this.eventBus_ = eventBusService
   }
 
-  withTransaction(transactionManager: EntityManager): DraftOrderService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new DraftOrderService({
-      manager: transactionManager,
-      draftOrderRepository: this.draftOrderRepository_,
-      paymentRepository: this.paymentRepository_,
-      orderRepository: this.orderRepository_,
-      lineItemService: this.lineItemService_,
-      cartService: this.cartService_,
-      productVariantService: this.productVariantService_,
-      shippingOptionService: this.shippingOptionService_,
-      eventBusService: this.eventBus_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
-  }
-
   /**
    * Retrieves a draft order with the given id.
-   * @param {string} id - id of the draft order to retrieve
-   * @param {object} config - query object for findOne
-   * @return {Promise<DraftOrder>} the draft order
+   * @param id - id of the draft order to retrieve
+   * @param config - query object for findOne
+   * @return the draft order
    */
-  async retrieve(id: string, config = {}): Promise<DraftOrder | never> {
+  async retrieve(
+    id: string,
+    config: FindConfig<DraftOrder> = {}
+  ): Promise<DraftOrder | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const draftOrderRepo = transactionManager.getCustomRepository(
           this.draftOrderRepository_
         )
 
-        const validatedId = this.validateId_(id)
-
-        const query = this.buildQuery_({ id: validatedId }, config)
+        const query = buildQuery({ id }, config)
         const draftOrder = await draftOrderRepo.findOne(query)
         if (!draftOrder) {
           throw new MedusaError(
@@ -122,13 +114,13 @@ class DraftOrderService extends BaseService {
 
   /**
    * Retrieves a draft order based on its associated cart id
-   * @param {string} cartId - cart id that the draft orders's cart has
-   * @param {object} config - query object for findOne
-   * @return {Promise<DraftOrder>} the draft order
+   * @param cartId - cart id that the draft orders's cart has
+   * @param config - query object for findOne
+   * @return the draft order
    */
   async retrieveByCartId(
     cartId: string,
-    config = {}
+    config: FindConfig<DraftOrder> = {}
   ): Promise<DraftOrder | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
@@ -136,7 +128,7 @@ class DraftOrderService extends BaseService {
           this.draftOrderRepository_
         )
 
-        const query = this.buildQuery_({ cart_id: cartId }, config)
+        const query = buildQuery({ cart_id: cartId }, config)
         const draftOrder = await draftOrderRepo.findOne(query)
         if (!draftOrder) {
           throw new MedusaError(
@@ -175,13 +167,17 @@ class DraftOrderService extends BaseService {
 
   /**
    * Lists draft orders alongside the count
-   * @param {object} selector - query selector to filter draft orders
-   * @param {object} config - query config
-   * @return {Promise<DraftOrder[]>} draft orders
+   * @param selector - query selector to filter draft orders
+   * @param config - query config
+   * @return draft orders
    */
   async listAndCount(
     selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+    config: FindConfig<DraftOrder> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
   ): Promise<[DraftOrder[], number]> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
@@ -190,11 +186,14 @@ class DraftOrderService extends BaseService {
         )
 
         const { q, ...restSelector } = selector
-        const query = this.buildQuery_(restSelector, config)
+        const query = buildQuery(
+          restSelector,
+          config
+        ) as FindManyOptions<DraftOrder> & ExtendedFindConfig<DraftOrder>
 
         if (q) {
           const where = query.where
-          delete where.display_id
+          delete where?.display_id
 
           query.join = {
             alias: "draft_order",
@@ -231,7 +230,11 @@ class DraftOrderService extends BaseService {
    */
   async list(
     selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
+    config: FindConfig<DraftOrder> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
   ): Promise<DraftOrder[]> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
@@ -239,7 +242,7 @@ class DraftOrderService extends BaseService {
           this.draftOrderRepository_
         )
 
-        const query = this.buildQuery_(selector, config)
+        const query = buildQuery(selector, config)
 
         return await draftOrderRepo.find(query)
       }
@@ -249,7 +252,7 @@ class DraftOrderService extends BaseService {
   /**
    * Creates a draft order.
    * @param data - data to create draft order from
-   * @return {Promise<DraftOrder>} the created draft order
+   * @return the created draft order
    */
   async create(data: AdminPostDraftOrdersReq): Promise<DraftOrder> {
     return await this.atomicPhase_(
@@ -353,14 +356,14 @@ class DraftOrderService extends BaseService {
 
   /**
    * Registers a draft order as completed, when an order has been completed.
-   * @param {string} draftOrderId - id of draft order to complete
-   * @param {string} orderId - id of order completed from draft order cart
-   * @return {Promise<DraftOrder>} the created order
+   * @param draftOrderId - id of draft order to complete
+   * @param orderId - id of order completed from draft order cart
+   * @return the created order
    */
   async registerCartCompletion(
     draftOrderId: string,
     orderId: string
-  ): Promise<DraftOrder> {
+  ): Promise<UpdateResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         return await transactionManager.update(
@@ -380,9 +383,9 @@ class DraftOrderService extends BaseService {
 
   /**
    * Updates a draft order with the given data
-   * @param {String} id - id of the draft order
-   * @param {{no_notification_order: boolean}} data - values to update the order with
-   * @return {Promise<DraftOrder>} the updated draft order
+   * @param id - id of the draft order
+   * @param data - values to update the order with
+   * @return the updated draft order
    */
   async update(
     id: string,
