@@ -66,6 +66,7 @@ const productServiceMock = {
   withTransaction: function () {
     return this
   },
+  list: jest.fn().mockImplementation(() => Promise.resolve(productsToExport)),
   count: jest.fn().mockImplementation(() => Promise.resolve(productsToExport.length)),
   listAndCount: jest.fn().mockImplementation(() => Promise.resolve([productsToExport, productsToExport.length])),
 }
