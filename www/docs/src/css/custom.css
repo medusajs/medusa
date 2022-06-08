@@ -204,7 +204,8 @@ a.menu__link.menu__link--active.active {
   padding-left: 16px;
 }
 
-a.menu__link--sublist::after {
+a.menu__link--sublist::after,
+.menu__caret:before {
   background: var(--ifm-menu-link-sublist-icon) 50% / 1rem 2rem;
 }
 
