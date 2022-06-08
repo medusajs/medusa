@@ -1,5 +1,4 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { currencies, Currency } from "../utils/currencies"
 import { EntityManager } from "typeorm"
 import { StoreRepository } from "../repositories/store"
@@ -8,6 +7,8 @@ import EventBusService from "./event-bus"
 import { Store } from "../models"
 import { AdminPostStoreReq } from "../api/routes/admin/store"
 import { FindConfig } from "../types/common"
+import { TransactionBaseService } from "../interfaces"
+import { buildQuery, setMetadata } from "../utils"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -20,9 +21,10 @@ type InjectedDependencies = {
  * Provides layer to manipulate store settings.
  * @extends BaseService
  */
-class StoreService extends BaseService {
+class StoreService extends TransactionBaseService<StoreService> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager
+
   protected readonly storeRepository_: typeof StoreRepository
   protected readonly currencyRepository_: typeof CurrencyRepository
   protected readonly eventBus_: EventBusService
@@ -33,29 +35,17 @@ class StoreService extends BaseService {
     currencyRepository,
     eventBusService,
   }: InjectedDependencies) {
-    super()
+    super({
+      manager,
+      storeRepository,
+      currencyRepository,
+      eventBusService,
+    })
 
     this.manager_ = manager
     this.storeRepository_ = storeRepository
     this.currencyRepository_ = currencyRepository
     this.eventBus_ = eventBusService
-  }
-
-  withTransaction(transactionManager): this | StoreService {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new StoreService({
-      manager: transactionManager,
-      storeRepository: this.storeRepository_,
-      currencyRepository: this.currencyRepository_,
-      eventBusService: this.eventBus_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -72,22 +62,22 @@ class StoreService extends BaseService {
           this.currencyRepository_
         )
 
-        let store = await this.retrieve()
-
-        if (!store) {
-          const newStore = await storeRepository.create()
-          // Add default currency (USD) to store currencies
-          const usd = await currencyRepository.findOne({
-            code: "usd",
-          })
-
-          if (usd) {
-            newStore.currencies = [usd]
-          }
-
-          store = await storeRepository.save(newStore)
+        let store = await this.retrieve().catch(() => void 0)
+        if (store) {
+          return store
         }
 
+        const newStore = await storeRepository.create()
+        // Add default currency (USD) to store currencies
+        const usd = await currencyRepository.findOne({
+          code: "usd",
+        })
+
+        if (usd) {
+          newStore.currencies = [usd]
+        }
+
+        store = await storeRepository.save(newStore)
         return store
       }
     )
@@ -101,11 +91,20 @@ class StoreService extends BaseService {
   async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        const query = this.buildQuery_({}, config)
         const storeRepo = transactionManager.getCustomRepository(
           this.storeRepository_
         )
-        return await storeRepo.findOne(query)
+        const query = buildQuery({}, config)
+        const store = await storeRepo.findOne(query)
+
+        if (!store) {
+          throw new MedusaError(
+            MedusaError.Types.NOT_FOUND,
+            "Unable to add a currency. Store does not exists"
+          )
+        }
+
+        return store
       }
     )
   }
@@ -144,8 +143,9 @@ class StoreService extends BaseService {
         } = data
 
         const store = await this.retrieve({ relations: ["currencies"] })
+
         if (metadata) {
-          store.metadata = this.setMetadata_(store.id, metadata)
+          store.metadata = setMetadata(store, metadata)
         }
 
         if (storeCurrencies) {
@@ -224,7 +224,7 @@ class StoreService extends BaseService {
    * @param code - 3 character ISO currency code
    * @return result after update
    */
-  async addCurrency(code: string): Promise<Store> {
+  async addCurrency(code: string): Promise<Store | never> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const storeRepo = transactionManager.getCustomRepository(
@@ -246,9 +246,11 @@ class StoreService extends BaseService {
         }
 
         const store = await this.retrieve({ relations: ["currencies"] })
-        if (
-          store.currencies.map((c) => c.code).includes(curr.code.toLowerCase())
-        ) {
+
+        const doesStoreInclCurrency = store.currencies
+          .map((c) => c.code.toLowerCase())
+          .includes(curr.code.toLowerCase())
+        if (doesStoreInclCurrency) {
           throw new MedusaError(
             MedusaError.Types.DUPLICATE_ERROR,
             `Currency already added`
@@ -266,19 +268,17 @@ class StoreService extends BaseService {
    * @param code - 3 character ISO currency code
    * @return result after update
    */
-  async removeCurrency(code: string): Promise<Store> {
+  async removeCurrency(code: string): Promise<any> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const storeRepo = transactionManager.getCustomRepository(
           this.storeRepository_
         )
         const store = await this.retrieve({ relations: ["currencies"] })
-
-        const exists = store.currencies.some(
+        const doesCurrencyExists = store.currencies.some(
           (c) => c.code === code.toLowerCase()
         )
-        // If currency does not exist, return early
-        if (!exists) {
+        if (!doesCurrencyExists) {
           return store
         }
 
