@@ -10,15 +10,13 @@ export class ProductTagRepository extends Repository<ProductTag> {
   public async listTagsByUsage(count = 10): Promise<ProductTag[]> {
     const tags = await this.query(
       `
-        SELECT ID, O.USAGE_COUNT, PT.VALUE
-        FROM PRODUCT_TAG PT
-        LEFT JOIN
-          (SELECT COUNT(*) AS USAGE_COUNT,
-            PRODUCT_TAG_ID
-            FROM PRODUCT_TAGS
-            GROUP BY PRODUCT_TAG_ID) O ON O.PRODUCT_TAG_ID = PT.ID
-        ORDER BY O.USAGE_COUNT DESC
-        LIMIT $1`,
+        SELECT id, COUNT(pts.product_tag_id) as usage_count, pt.value
+        FROM product_tag pt
+        LEFT JOIN product_tags pts ON pt.id = pts.product_tag_id
+        GROUP BY id
+        ORDER BY usage_count DESC
+        LIMIT $1
+      `,
       [count]
     )
 
