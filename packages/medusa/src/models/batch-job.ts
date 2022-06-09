@@ -19,14 +19,17 @@ export class BatchJob extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   context: {
-    retry_count?: number;
-    max_retry?: number;
-    count?: number;
-    offset?:number
+    retry_count?: number
+    max_retry?: number
+    offset?: number
   } & Record<string, unknown>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  result: Record<string, unknown>
+  result: {
+    count?: number
+    advancementCount?: number
+    progress?: number
+  } & Record<string, unknown>
 
   @Column({ type: "boolean", nullable: false, default: false })
   dry_run: boolean = false;

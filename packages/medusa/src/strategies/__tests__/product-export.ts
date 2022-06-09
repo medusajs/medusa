@@ -140,7 +140,8 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Price 1 Currency code.*/)
     expect(template).toMatch(/.*Price 1 Region name.*/)
     expect(template).toMatch(/.*Price 1 Amount.*/)
-    expect(template).toMatch(/.*Product Image 1.*/)
+
+    expect(template).toMatch(/.*Image 1 Url.*/)
   })
 
   it('should process the batch job and generate the appropriate output', async () => {
