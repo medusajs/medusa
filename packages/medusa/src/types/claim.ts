@@ -1,16 +1,7 @@
-import { ClaimType, Order } from "../models"
+import { ClaimReason, ClaimType, Order } from "../models"
 import { AddressPayload } from "./common"
 
 export type ClaimTypeValue = `${ClaimType}`
-
-export enum ClaimItemReason {
-  missing_item = "missing_item",
-  wrong_item = "wrong_item",
-  production_failure = "production_failure",
-  other = "other",
-}
-
-export type ClaimItemReasonValue = `${ClaimItemReason}`
 
 /* CREATE INPUT */
 
@@ -40,11 +31,12 @@ type CreateClaimShippingMethodInput = {
   price?: number
 }
 
-type CreateClaimItemInput = {
+export type CreateClaimItemInput = {
   item_id: string
   quantity: number
+  claim_order_id?: string
+  reason: ClaimReason
   note?: string
-  reason?: ClaimItemReasonValue
   tags?: string[]
   images?: string[]
 }
