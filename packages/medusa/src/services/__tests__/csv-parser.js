@@ -9,19 +9,20 @@ describe("CsvParser", () => {
     })
 
     let csvContent =
-        'title,subtitle\n"T-shirt","summer tee"\n"Sunglasses","Red sunglasses"',
-      products = [
-        {
-          title: "T-shirt",
-          subtitle: "summer tee",
-        },
-        {
-          title: "Sunglasses",
-          subtitle: "Red sunglasses",
-        },
-      ]
+      'title,subtitle\n"T-shirt","summer tee"\n"Sunglasses","Red sunglasses"'
 
-    beforeEach(() => {
+    let expectedProducts = [
+      {
+        title: "T-shirt",
+        subtitle: "summer tee",
+      },
+      {
+        title: "Sunglasses",
+        subtitle: "Red sunglasses",
+      },
+    ]
+
+    afterEach(() => {
       jest.clearAllMocks()
     })
 
@@ -29,7 +30,7 @@ describe("CsvParser", () => {
       const stream = Readable.from(csvContent)
       const content = await csvParser.parse(stream)
 
-      expect(content).toEqual(products)
+      expect(content).toEqual(expectedProducts)
     })
   })
 
@@ -47,35 +48,86 @@ describe("CsvParser", () => {
               },
             },
           },
+          {
+            name: "size",
+          },
+          {
+            name: "height",
+          },
         ],
       })
 
       it("given a line containing a column which is not defined in the schema, then validation should fail", async () => {
         try {
-          await csvParser.buildData([{ first_name: "lebron " }])
+          await csvParser.buildData([
+            {
+              title: "sunglasses",
+              size: "M",
+              height: "100",
+              first_name: "lebron",
+            },
+          ])
         } catch (err) {
           expect(err.message).toEqual(
-            "Unable to to treat column first_name from the csv file. No target column found in the provided schema"
+            "Unable to treat column first_name from the csv file. No target column found in the provided schema"
           )
         }
       })
 
       it("given a line containing a column which does not pass a validation constraint, then validation should fail", async () => {
         try {
-          await csvParser.buildData([{ title: "contains a number 1" }])
+          await csvParser.buildData([
+            { title: "contains a number 1", size: "M", height: "100" },
+          ])
         } catch (err) {
           expect(err.message).toEqual("title should not contain a number")
         }
       })
 
       it("given a line which passes all validation constraints, then should returned validated content", async () => {
-        const content = await csvParser.buildData([{ title: "great product" }])
+        const content = await csvParser.buildData([
+          { title: "great product", size: "M", height: "100" },
+        ])
 
         expect(content).toEqual([
           {
             title: "great product",
+            size: "M",
+            height: "100",
           },
         ])
+      })
+
+      it("given a line which does not provide a value for a required column, then should throw an error", async () => {
+        try {
+          await csvParser.buildData([{ size: "S", height: "100" }])
+        } catch (err) {
+          expect(err.message).toEqual(
+            `Missing column(s) "title" from the given csv file`
+          )
+        }
+      })
+
+      it("given a line which does not provide a value for multiple required columns, then should throw an error", async () => {
+        try {
+          await csvParser.buildData([{ size: "S" }])
+        } catch (err) {
+          expect(err.message).toEqual(
+            `Missing column(s) "title", "height" from the given csv file`
+          )
+        }
+      })
+
+      it("given a line which does not provide a value for a required column, then should throw an error", async () => {
+        try {
+          await csvParser.buildData([
+            { title: "t-shirt", height: "100", size: "" },
+          ])
+        } catch (err) {
+          expect(err.message).toEqual(
+            `No value found for target column "size" in line 1 of the given csv file`
+          )
+        }
       })
     })
 
@@ -108,7 +160,7 @@ describe("CsvParser", () => {
           },
           {
             name: "price usd",
-            transformer: (value) => Math.round(parseFloat(value) * 100),
+            transformer: (value) => Math.round(Number(value) * 100),
           },
         ],
       })
@@ -124,6 +176,43 @@ describe("CsvParser", () => {
             "price usd": 1999,
           },
         ])
+      })
+    })
+
+    describe("match", () => {
+      describe("regex", () => {
+        const csvParser = new CsvParser(createContainer(), {
+          columns: [
+            {
+              name: "title",
+            },
+            {
+              name: "variants",
+              match: /.*Variant Price.*/i,
+              transformer: (value) => Math.round(Number(value) * 100),
+            },
+          ],
+        })
+
+        it("given a column with the match property as regex, when building data, should resolve that column for all entries in the line that match the regex", async () => {
+          const content = await csvParser.buildData([
+            {
+              title: "medusa t-shirt",
+              "variant price usd": "19.99",
+              "variant price cad": "26.79",
+              "variant price dkk": "1389",
+            },
+          ])
+
+          expect(content).toEqual([
+            {
+              title: "medusa t-shirt",
+              "variant price usd": 1999,
+              "variant price cad": 2679,
+              "variant price dkk": 138900,
+            },
+          ])
+        })
       })
     })
   })
