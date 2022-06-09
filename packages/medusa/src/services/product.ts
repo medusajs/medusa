@@ -7,7 +7,7 @@ import { Product, ProductTag, ProductType, ProductVariant } from "../models"
 import { CartRepository } from "../repositories/cart"
 import { ImageRepository } from "../repositories/image"
 import {
-  FindWithRelationsOptions,
+  FindWithoutRelationsOptions,
   ProductRepository,
 } from "../repositories/product"
 import { ProductOptionRepository } from "../repositories/product-option"
@@ -969,7 +969,7 @@ class ProductService extends TransactionBaseService<ProductService> {
   ): {
     q: string
     relations: (keyof Product)[]
-    query: Omit<FindWithRelationsOptions, "relations">
+    query: FindWithoutRelationsOptions
   } {
     let q
     if ("q" in selector) {
@@ -991,7 +991,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     delete query.relations
 
     return {
-      query: query as Omit<FindWithRelationsOptions, "relations">,
+      query: query as FindWithoutRelationsOptions,
       relations: rels as (keyof Product)[],
       q,
     }

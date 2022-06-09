@@ -27,7 +27,7 @@ type CustomOptions = {
   withDeleted?: boolean
 }
 
-export type FindWithRelationsOptions = CustomOptions
+export type FindWithoutRelationsOptions = CustomOptions
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
@@ -41,7 +41,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   private async queryProducts(
-    optionsWithoutRelations: FindWithRelationsOptions,
+    optionsWithoutRelations: FindWithoutRelationsOptions,
     shouldCount = false
   ): Promise<[Product[], number]> {
     const tags = optionsWithoutRelations?.where?.tags
@@ -190,7 +190,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findWithRelationsAndCount(
     relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = { where: {} }
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
     let count: number
     let entities: Product[]
@@ -240,7 +240,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findWithRelations(
     relations: string[] = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions | string[] = {},
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {},
     withDeleted = false
   ): Promise<Product[]> {
     let entities: Product[]
@@ -286,7 +286,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async findOneWithRelations(
     relations: string[] = [],
-    optionsWithoutRelations: FindWithRelationsOptions = { where: {} }
+    optionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<Product> {
     // Limit 1
     optionsWithoutRelations.take = 1
