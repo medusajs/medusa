@@ -112,12 +112,12 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-storefront",
-                  label: "Add Endpoint for Storefront"
+                  label: "Create Endpoint for Storefront"
                 },
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-admin",
-                  label: "Add Endpoint for Admin"
+                  label: "Create Endpoint for Admin"
                 },
               ]
             },
@@ -129,7 +129,7 @@ module.exports = {
             {
               type: "category",
               label: 'Subscribers',
-              collapsed: false,
+              collapsed: true,
               items: [
                 {
                   type: "doc",
