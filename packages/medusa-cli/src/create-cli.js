@@ -166,7 +166,7 @@ function buildLocalCommands(cli, isLocalProject) {
     })
     .command({
       command: `migrations [action]`,
-      desc: `Manage the migrations that includes the core migrations as well as you project.`,
+      desc: `Manage migrations from the core and your own project`,
       builder: {
         action: {
           demand: true,
