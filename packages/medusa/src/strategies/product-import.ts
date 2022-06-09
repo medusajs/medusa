@@ -1,5 +1,6 @@
 import { EntityManager } from "typeorm"
 import IORedis from "ioredis"
+import pickBy from "lodash/pickBy"
 
 import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
 import { BatchJob } from "../models"
@@ -7,11 +8,7 @@ import { BatchJob } from "../models"
 import CsvParser from "../services/csv-parser"
 import { BatchJobService, ProductService } from "../services"
 import { BatchJobStatus } from "../types/batch-job"
-import {
-  AbstractCsvValidator,
-  CsvParserContext,
-  CsvSchema,
-} from "../interfaces/csv-parser"
+import { CsvSchema } from "../interfaces/csv-parser"
 import { ProductRepository } from "../repositories/product"
 import { ProductVariantRepository } from "../repositories/product-variant"
 
@@ -28,13 +25,30 @@ type Context = {
   csvFileKey: string
 }
 
-type ImportOperation = {
-  data: Record<string, any>
-  entityType: "product" | "variant"
-  opType: "update" | "create"
+enum OperationType {
+  ProductCreate = "PRODUCT_CREATE",
+  ProductUpdate = "PRODUCT_UPDATE",
+  VariantCreate = "VARIANT_CREATE",
+  VariantUpdate = "VARIANT_UPDATE",
 }
 
 const BATCH_SIZE = 100
+
+function pickProductDataFromRow(
+  data: Record<string, string>
+): Record<string, string> {
+  const productKeysPredicate = (key: string): boolean => /product./.test(key)
+
+  return pickBy(data, productKeysPredicate)
+}
+
+function pickVariantDataFromRow(
+  data: Record<string, string>
+): Record<string, string> {
+  const variantKeyPredicate = (key: string): boolean => /variant./.test(key)
+
+  return pickBy(data, variantKeyPredicate)
+}
 
 /**
  * THE FLOW
@@ -107,26 +121,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     throw new Error("Not implemented!")
   }
 
-  async setImportDataToRedis(batchJobId: string, results: any): Promise<void> {
-    await this.redisClient_.client.call(
-      "JSON.SET",
-      `pij_${batchJobId}`,
-      "$", // JSONPath start
-      JSON.stringify(results)
-    )
-    await this.redisClient_.expire(`pij_${batchJobId}`, 60 * 60)
-  }
-
-  async getImportDataFromRedis(batchJobId: string): Promise<{
-    products: ImportOperation[]
-    variants: ImportOperation[]
-  }> {
-    return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
-  }
-
-  getImportInstructions(csvData: any[]): any {
-    const products: Record<string, ImportOperation> = {}
-    const variants: Record<string, ImportOperation> = {}
+  getImportInstructions(csvData: any[]): Record<OperationType, any[]> {
+    const products: Record<string, any> = {}
+    const variants: Record<string, any> = {}
 
     // const transactionManager = this.transactionManager_ ?? this.manager_
     //
@@ -142,23 +139,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     csvData.forEach((row) => {
       // is variant OP
       if (row.sku) {
-        variants[row.sku] = {
-          data: row,
-          entityType: "variant",
-          opType: "create",
-        }
+        variants[row.sku] = { ...variants[row.sku], ...row }
       } else {
-        products[row.handle] = {
-          data: row,
-          entityType: "product",
-          opType: "create",
-        }
+        products[row.handle] = { ...products[row.handle], ...row }
       }
     })
 
     return {
-      products: Object.values(products),
-      variants: Object.values(variants),
+      [OperationType.ProductCreate]: Object.values(products),
+      [OperationType.VariantCreate]: Object.values(variants),
+      [OperationType.ProductUpdate]: [],
+      [OperationType.VariantUpdate]: [],
     }
   }
 
@@ -175,9 +166,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     const data = await this.csvParser_.parse(csvStream)
     const results = await this.csvParser_.buildData(data)
-    console.log(results)
-    const ops = this.getImportInstructions(results)
 
+    const ops = this.getImportInstructions(results)
     await this.setImportDataToRedis(batchJobId, ops)
 
     await this.batchJobService_.update(batchJobId, {
@@ -204,10 +194,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         this.productVariantRepo_ as any
       )
 
-      const { products: productOps, variants: variantOps } =
-        await this.getImportDataFromRedis(batchJob.id)
-
       const total = batchJob.context.total
+
+      const productOps = await this.getImportDataFromRedis(
+        batchJob.id,
+        OperationType.ProductCreate
+      )
 
       //  ========== PRODUCTS CREATE ==========
 
@@ -222,7 +214,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       // })
 
       for (const productOp of productOps) {
-        await this.productService_.create(productOp.data)
+        await this.productService_.create(
+          pickProductDataFromRow(productOp.data) // TODO: pick keys before saving to Redis
+        )
       }
 
       //  ========== VARIANTS CREATE ==========
@@ -237,8 +231,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       //   progress: variantOps.length / total,
       // })
 
+      const variantOps = await this.getImportDataFromRedis(
+        batchJob.id,
+        OperationType.VariantCreate
+      )
+
       for (const variantOp of variantOps) {
-        await this.productVariantService_.create(variantOp.data)
+        await this.productVariantService_.create(
+          pickVariantDataFromRow(variantOp.data)
+        )
       }
 
       return batchJob
@@ -249,12 +250,43 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
     if (batchJob.status !== BatchJobStatus.COMPLETED) {
-      // TODO: Clear data form Redis
+      await this.clearRedisRecords()
 
       return await this.batchJobService_.complete(batchJob)
     } else {
       return batchJob
     }
+  }
+
+  async setImportDataToRedis(
+    batchJobId: string,
+    results: Record<OperationType, any[]>
+  ): Promise<void> {
+    for (const op in results) {
+      await this.redisClient_.client.call(
+        "JSON.SET",
+        `pij_${batchJobId}`,
+        `$.${op}`, // JSONPath, $ is start
+        JSON.stringify(results[op])
+      )
+    }
+
+    await this.redisClient_.expire(`pij_${batchJobId}`, 60 * 60)
+  }
+
+  async getImportDataFromRedis(
+    batchJobId: string,
+    op: OperationType
+  ): Promise<any[]> {
+    return await this.redisClient_.client.call(
+      "JSON.GET",
+      `pij_${batchJobId}`,
+      `$.${op}`
+    )
+  }
+
+  async clearRedisRecords(batchJobId: string): Promise<void> {
+    return await this.redisClient_.client.call("JSON.DEL", `pij_${batchJobId}`)
   }
 
   validateContext(
@@ -275,7 +307,7 @@ const CSVSchema: ProductImportCsvSchema = {
     // PRODUCT
     {
       name: "Product Handle",
-      mapTo: "handle",
+      mapTo: "product.handle",
       required: true,
       // validator: {
       //   validate(
@@ -301,9 +333,9 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Product Collection Title", mapTo: "product.collection.title" },
     { name: "Product Collection Handle", mapTo: "product.collection.handle" },
     // PRODUCT-TYPE
-    { name: "Product Type", mapTo: "type.value" },
+    { name: "Product Type", mapTo: "product.type.value" },
     // PRODUCT-TAGS
-    { name: "Product Tags", mapTo: "description" },
+    { name: "Product Tags", mapTo: "product.tags" },
     //
     { name: "Product Discountable", mapTo: "product.discountable" },
     { name: "Product External ID", mapTo: "product.external_id" },
@@ -331,7 +363,7 @@ const CSVSchema: ProductImportCsvSchema = {
     // PRODUCT_OPTIONS
     {
       name: "Option Name",
-      match: /Option Name \d+/,
+      match: /Option \d+ Name/,
       mapTo: "product.options.name",
     },
     {
@@ -350,11 +382,15 @@ const CSVSchema: ProductImportCsvSchema = {
       match: /Price \d+ Region name/,
       mapTo: "ma.region.name",
     },
-    { name: "Price Amount", match: /Price \d+ Amount/, mapTo: "ma.amount" },
+    {
+      name: "Price Amount",
+      match: /Price \d+ Amount/,
+      mapTo: "ma.amount",
+    },
     // Images
     {
-      name: "Product Image",
-      match: /Product \d+ Image/,
+      name: "Image Url",
+      match: /Image \d+ Url/,
       mapTo: "product.images.url",
     },
   ],
