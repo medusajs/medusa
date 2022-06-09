@@ -20,8 +20,6 @@ type Context = {
   listConfig: FindConfig<Product>
   filterableFields: Record<string, unknown>
   offset: number
-  count: number
-  progress: number
 }
 
 type InjectedDependencies = {
@@ -40,7 +38,7 @@ type ColumnSchemaEntity =
   | "image"
   | "moneyAmount"
 
-type ColumnSchema =
+type ColumnSchemaDescriptor =
   | (
       | {
           accessor: (product: Product) => string
@@ -81,7 +79,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   protected readonly productRepository_: typeof ProductRepository
 
   protected readonly relations_ = [...defaultAdminProductRelations]
-  protected readonly columnDescriptors = new Map<string, ColumnSchema>([
+  protected readonly columnDescriptors = new Map<
+    string,
+    ColumnSchemaDescriptor
+  >([
     /*
      *
      * The dynamic columns corresponding to the lowest level of relations are built later on.
@@ -424,7 +425,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           .retrieve(batchJobId)
 
         offset = batchJob.context.offset ?? offset
-        advancementCount = batchJob.context.count ?? advancementCount
+        advancementCount = batchJob.result.advancementCount ?? advancementCount
 
         const {
           writeStream,
@@ -440,15 +441,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
         const { listConfig, filterableFields } = batchJob.context as Context
 
-        const productsAndCount = await this.productService_
+        const [productList, count] = await this.productService_
           .withTransaction(transactionManager)
           .listAndCount(filterableFields, {
             relations: this.relations_,
             ...(listConfig ?? {}),
           })
-        productCount = productsAndCount[1]
 
-        let products = productsAndCount[0]
+        productCount = count
+        let products = productList
 
         while (advancementCount < productCount) {
           if (advancementCount === 0) {
@@ -463,7 +464,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
               })
           }
 
-          products.forEach((product) => {
+          products.forEach((product: Product) => {
             const productLinesData = this.buildProductLines(product)
             productLinesData.forEach((line) => writeStream.write(line))
           })
@@ -475,10 +476,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
               ...batchJob.context,
               fileKey: key,
               offset,
-              count: productCount,
-              progress: advancementCount / productCount,
             },
             result: {
+              count: productCount,
+              advancementCount,
+              progress: advancementCount / productCount,
               err: undefined,
             },
           })
@@ -502,12 +504,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         this.handleProcessingErrors(batchJobId, err, {
           offset,
           count: productCount,
+          advancementCount,
           progress: advancementCount / productCount,
         })
     )
   }
 
-  async validateContext(context: Context): Promise<Record<string, unknown>> {
+  async validateContext(
+    context: Record<string, unknown>
+  ): Promise<Record<string, unknown>> {
     // TODO: waiting for #1593
     /*
       const batchJob = this.batchJobService_
@@ -576,7 +581,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
   private appendImagesDescriptors(maxImagesCount: number): void {
     for (let i = 0; i < maxImagesCount; ++i) {
-      this.columnDescriptors.set(`Product Image ${i + 1}`, {
+      this.columnDescriptors.set(`Image ${i + 1} Url`, {
         accessor: (image: Image) => image?.url ?? "",
         entityName: "image",
         index: i,
@@ -666,6 +671,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       }
       productLineData.push("")
     }
+
+    productLineData.push(this.NEWLINE)
     return productLineData.join(this.DELIMITER_)
   }
 
@@ -713,6 +720,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         variantLineData.push("")
       }
 
+      variantLineData.push(this.NEWLINE)
       outputLineData.push(variantLineData.join(this.DELIMITER_))
     }
 
@@ -725,8 +733,14 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     {
       offset,
       count,
+      advancementCount,
       progress,
-    }: { offset: number; count: number; progress: number }
+    }: {
+      offset: number
+      count: number
+      advancementCount: number
+      progress: number
+    }
   ): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = await this.batchJobService_
@@ -746,13 +760,14 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           .update(batchJobId, {
             context: {
               ...batchJob.context,
-              offset,
-              count,
-              progress,
               retry_count: retryCount + 1,
+              offset,
             },
             result: {
               ...batchJob.result,
+              count,
+              advancementCount,
+              progress,
               err,
             },
           })
