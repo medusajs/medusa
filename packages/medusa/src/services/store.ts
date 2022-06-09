@@ -101,7 +101,7 @@ class StoreService extends TransactionBaseService<StoreService> {
         if (!store) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
-            "Unable to add a currency. Store does not exists"
+            "Store does not exist"
           )
         }
 
