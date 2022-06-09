@@ -7,18 +7,16 @@ import {
 import { FindOperator, In, Raw } from "typeorm"
 
 /**
-* Used to build TypeORM queries.
-* @param selector The selector
-* @param config The config
-* @return The QueryBuilderConfig
-*/
+ * Used to build TypeORM queries.
+ * @param selector The selector
+ * @param config The config
+ * @return The QueryBuilderConfig
+ */
 export function buildQuery<TEntity = unknown>(
   selector: Selector<TEntity>,
   config: FindConfig<TEntity> = {}
 ): ExtendedFindConfig<TEntity> {
-  const build = (
-    obj: Selector<TEntity>
-  ): Partial<Writable<TEntity>> => {
+  const build = (obj: Selector<TEntity>): Partial<Writable<TEntity>> => {
     return Object.entries(obj).reduce((acc, [key, value]: any) => {
       // Undefined values indicate that they have no significance to the query.
       // If the query is looking for rows where a column is not set it should use null instead of undefined
