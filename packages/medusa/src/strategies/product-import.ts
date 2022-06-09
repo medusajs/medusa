@@ -250,8 +250,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
     if (batchJob.status !== BatchJobStatus.COMPLETED) {
-      await this.clearRedisRecords()
-
+      await this.clearRedisRecords(batchJob.id)
       return await this.batchJobService_.complete(batchJob)
     } else {
       return batchJob
