@@ -161,7 +161,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/shipping/add-fulfillment-provider",
-                  label: "Add Fulfillment Provider"
+                  label: "Create a Fulfillment Provider"
                 }
               ]
             },
@@ -178,6 +178,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/payment/how-to-create-payment-provider",
+                  label: "Create a Payment Provider"
                 },
               ]
             },
