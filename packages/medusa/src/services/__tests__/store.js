@@ -92,7 +92,7 @@ describe("StoreService", () => {
         storeService.update({
           currencies: ["1cd", "usd"],
         })
-      ).rejects.toThrow("Invalid currency 1cd")
+      ).rejects.toThrow("Currency with code 1cd does not exist")
 
       expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
