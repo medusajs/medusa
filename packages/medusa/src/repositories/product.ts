@@ -189,7 +189,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findWithRelationsAndCount(
-    relations: Array<keyof Product> = [],
+    relations: string[] = [],
     idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
     let count: number
@@ -327,7 +327,7 @@ export class ProductRepository extends Repository<Product> {
   public async getFreeTextSearchResultsAndCount(
     q: string,
     options: CustomOptions = { where: {} },
-    relations: (keyof Product)[] = []
+    relations: string[] = []
   ): Promise<[Product[], number]> {
     const cleanedOptions = this._cleanOptions(options)
 
