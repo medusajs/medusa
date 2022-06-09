@@ -141,7 +141,7 @@ export default class EventBusService {
     if (this.observers_.get(event)?.length) {
       const index = this.observers_.get(event)?.indexOf(subscriber)
       if (index !== -1) {
-        this.observers_[event].splice(index, 1)
+        this.observers_.get(event)?.splice(index as number, 1)
       }
     }
 
