@@ -59,6 +59,12 @@ In the body of the PR, explain clearly what the PR does. If the PR solves an iss
 
 When you add a new page to the documentation, you must add the new page in `www/docs/sidebars.js` under the `tutorialSidebar`. You can learn more about the syntax used [here](https://docusaurus.io/docs/sidebar/items).
 
+### Terminology
+
+When the documentation page is a conceptual or overview documentation, the label in the sidebar should start with a noun.
+
+When the documentation page is a tutorial documentation, the label in the sidebar should start with a verb. An exception of this rule are integration documentations and upgrade guides.
+
 ## Notes and Additional Information
 
 When displaying notes and additional information in a documentation page, use [Admonitions](https://docusaurus.io/docs/markdown-features/admonitions). Make sure the type of admonition used matches the note’s importance to the current document.
