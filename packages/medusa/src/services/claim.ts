@@ -12,16 +12,12 @@ import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
 import { AddressRepository } from "../repositories/address"
 import {
-  AdminPostOrdersOrderClaimsClaimReq,
-  AdminPostOrdersOrderClaimsReq,
-} from "../api/routes/admin/orders"
-import {
   ClaimFulfillmentStatus,
   ClaimOrder,
   ClaimPaymentStatus,
+  ClaimType,
   FulfillmentItem,
   LineItem,
-  Order,
 } from "../models"
 import { ClaimRepository } from "../repositories/claim"
 import { DeepPartial, EntityManager } from "typeorm"
@@ -29,8 +25,9 @@ import { LineItemRepository } from "../repositories/line-item"
 import { MedusaError } from "medusa-core-utils"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
 import { TransactionBaseService } from "../interfaces"
-import { buildQuery, setMetadata, validateId } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { FindConfig } from "../types/common"
+import { CreateClaimInput, UpdateClaimInput } from "../types/claim"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -127,10 +124,7 @@ export default class ClaimService extends TransactionBaseService<
     this.totalsService_ = totalsService
   }
 
-  async update(
-    id: string,
-    data: AdminPostOrdersOrderClaimsClaimReq
-  ): Promise<ClaimOrder> {
+  async update(id: string, data: UpdateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const claimRepo = transactionManager.getCustomRepository(
@@ -217,17 +211,10 @@ export default class ClaimService extends TransactionBaseService<
    * Creates a Claim on an Order. Claims consists of items that are claimed and
    * optionally items to be sent as replacement for the claimed items. The
    * shipping address that the new items will be shipped to
-   * @param {Object} data - the object containing all data required to create a claim
-   * @return {Object} created claim
+   * @param data - the object containing all data required to create a claim
+   * @return created claim
    */
-  async create(
-    data: AdminPostOrdersOrderClaimsReq & {
-      order: Order
-      type?: string
-      claim_order_id?: string
-      shipping_address_id?: string
-    }
-  ): Promise<ClaimOrder> {
+  async create(data: CreateClaimInput): Promise<ClaimOrder> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const claimRepo = transactionManager.getCustomRepository(
@@ -277,14 +264,14 @@ export default class ClaimService extends TransactionBaseService<
           addressId = saved.id
         }
 
-        if (type !== "refund" && type !== "replace") {
+        if (type !== ClaimType.REFUND && type !== ClaimType.REPLACE) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Claim type must be one of "refund" or "replace".`
           )
         }
 
-        if (type === "replace" && !additional_items?.length) {
+        if (type === ClaimType.REPLACE && !additional_items?.length) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Claims with type "replace" must have at least one additional item.`
@@ -298,7 +285,7 @@ export default class ClaimService extends TransactionBaseService<
           )
         }
 
-        if (refund_amount && type !== "refund") {
+        if (refund_amount && type !== ClaimType.REFUND) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Claim has type "${type}" but must be type "refund" to have a refund_amount.`
@@ -306,7 +293,7 @@ export default class ClaimService extends TransactionBaseService<
         }
 
         let toRefund = refund_amount
-        if (type === "refund" && typeof refund_amount === "undefined") {
+        if (type === ClaimType.REFUND && typeof refund_amount === "undefined") {
           const lines = claim_items.map((ci) => {
             const allOrderItems = order.items
 
@@ -378,7 +365,7 @@ export default class ClaimService extends TransactionBaseService<
 
         const created = claimRepo.create({
           shipping_address_id: addressId,
-          payment_status: type === "refund" ? "not_refunded" : "na",
+          payment_status: type === ClaimType.REFUND ? "not_refunded" : "na",
           refund_amount: toRefund,
           type,
           additional_items: newItems,
@@ -815,9 +802,9 @@ export default class ClaimService extends TransactionBaseService<
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the config object containing query settings
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - the config object containing query settings
+   * @return the result of the find operation
    */
   async list(
     selector,
@@ -840,12 +827,12 @@ export default class ClaimService extends TransactionBaseService<
 
   /**
    * Gets an order by id.
-   * @param {string} claimId - id of order to retrieve
-   * @param {Object} config - the config object containing query settings
-   * @return {Promise<Order>} the order document
+   * @param id - id of the claim order to retrieve
+   * @param config - the config object containing query settings
+   * @return the order document
    */
   async retrieve(
-    claimId: string,
+    id: string,
     config: FindConfig<ClaimOrder> = {}
   ): Promise<ClaimOrder> {
     return await this.atomicPhase_(
@@ -854,14 +841,13 @@ export default class ClaimService extends TransactionBaseService<
           this.claimRepository_
         )
 
-        const validatedId = validateId(claimId)
-        const query = buildQuery<ClaimOrder>({ id: validatedId }, config)
+        const query = buildQuery<ClaimOrder>({ id }, config)
         const claim = await claimRepo.findOne(query)
 
         if (!claim) {
           throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
-            `Claim with ${claimId} was not found`
+            `Claim with ${id} was not found`
           )
         }
 
