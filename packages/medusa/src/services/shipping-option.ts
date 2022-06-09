@@ -1,5 +1,4 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { DeepPartial, EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import {
@@ -26,7 +25,6 @@ import RegionService from "./region"
 
 /**
  * Provides layer to manipulate profiles.
- * @extends BaseService
  */
 class ShippingOptionService extends TransactionBaseService<ShippingOptionService> {
   protected readonly providerService_: FulfillmentProviderService
