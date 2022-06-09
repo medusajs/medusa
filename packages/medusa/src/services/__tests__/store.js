@@ -44,7 +44,7 @@ describe("StoreService", () => {
     })
 
     it("successfully retrieve store", async () => {
-      await storeService.retrieve()
+      await storeService.retrieve().catch(() => void 0)
 
       expect(storeRepository.findOne).toHaveBeenCalledTimes(1)
     })
