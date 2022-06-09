@@ -10,39 +10,35 @@ The Notification architecture is made up of 2 main components: the Notification 
 
 ## Notification Provider
 
-### Overview
-
 A Notification Provider is a provider that handles sending and resending of notifications. You can either create and integrate your own provider or install a Notification Provider through a third-party plugin.
 
 An example of a notification provider is SendGrid. When an order is placed, the SendGrid plugin sends an email to the customer.
 
-### How it is Created
+### How Notification Provider is Created
 
-A Notification Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the [`NotificationService`](../../../references/services/classes/NotificationService.md) provided by the `medusa-interfaces` package. It can be created as part of a [Plugin](../../../guides/plugins.md), or it can be created just as a service file in your Medusa server.
+A Notification Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the [`NotificationService`](../../../references/services/classes/NotificationService.md) provided by the `medusa-interfaces` package. It can be created as part of a [Plugin](../../../guides/plugins.md), or it can be created just as a Service file in your Medusa server.
 
 As a developer, you mainly work with the Notification Provider when integrating a third-party service that handles notifications in Medusa.
 
 When you run your Medusa server, the Notification Provider is registered on your server if it isn’t already. This means that it will be inserted into the `notification_provider` table in your database.
 
-### Entity Overview
+### NotificationProvider Entity Overview
 
 The `NotificationProvider` entity only has 2 attributes: `id` and `is_installed`.
 
-`id` is the value of the static property `identifier` defined inside the notification service class.
+`id` is the value of the static property `identifier` defined inside the notification Service class.
 
 `is_installed` indicates whether the Notification Provider is installed or not. When you install a Notification Provider, the value of this attribute is `true`.
 
-If you installed a Notification provider and then removed the service files or plugin that registered the Notification Provider, the Notification Provider remains in your database, but the value of the `is_installed` field changes to `false`.
+If you installed a Notification provider and then removed the Service files or plugin that registered the Notification Provider, the Notification Provider remains in your database, but the value of the `is_installed` field changes to `false`.
 
 ## Notification
-
-### Overview
 
 A notification is a form of an alert sent to the customers or users to inform them of an action that has occurred. For example, if an order is placed, the notification, in this case, can be an email that confirms their order and lists the order details.
 
 Notifications can take on other forms such as an SMS or a Slack message.
 
-### How it is Created
+### How Notification is Created
 
 Notifications are created in the `NotificationService` class in Medusa’s core after the Notification has been handled by the Notification Provider. 
 
@@ -50,11 +46,11 @@ The data and additional details that the Notification Provider returns to the `N
 
 A Notification also represents a resent notification. So, when a notification is resent, a new one is created that references the original Notification as a parent. This Notification is also created by the `NotificationService` class.
 
-### Entity Overview
+### Notification Entity Overview
 
 The 2 most important properties in the `Notification` entity are the `to` and `data` properties. 
 
-The `to` property is a string that represents the receiver of the Notification. For example, if the Notification was sent to an email address, the `to` property holds the email address the Notification was sent to. 
+The `to` property is a string that represents the receiver of the Notification. For example, if the Notification was sent to an email address, the `to` property holds the email address the Notification was sent to.
 
 The `to` property can alternatively be a phone number or a chat username. It depends on the Notification Provider and how it sends the Notification.
 
@@ -86,7 +82,7 @@ An example of a flow that can be implemented using Medusa's Notification API is 
 ## What’s Next 🚀
 
 - Learn how to create your own Notification Provider.
-- [Check out the list of events in Medusa.](../subscribers/events-list.md)
-- [Check the `NotificationService` API reference for more details on how it works.](../../../references/services/classes/NotificationService.md)
-- [Check out the SendGrid Notification plugin.](../../../add-plugins/sendgrid.mdx)
+- Check out the [list of events](../subscribers/events-list.md) in Medusa.
+- Check the [`NotificationService`](../../../references/services/classes/NotificationService.md) API reference for more details on how it works.
+- Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) Notification plugin.
 - Learn more about [Subscribers](../subscribers/create-subscriber.md) and [Services](../services/create-service.md) in Medusa.

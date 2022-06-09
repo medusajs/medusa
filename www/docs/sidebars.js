@@ -189,6 +189,11 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/notification/overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/how-to-create-notification-provider",
+                  label: "Create a Notification Provider"
                 }
               ]
             },
