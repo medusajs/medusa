@@ -40,15 +40,18 @@ export abstract class AbstractCsvValidator<TLine>
   ): Promise<boolean | never>
 }
 
+export type CsvSchemaColumn<TLine> = {
+  name: string
+  match?: RegExp
+  required?: boolean
+  mapTo?: string
+  validator?: AbstractCsvValidator<TLine>
+  transformer?: <TValue, TOutput>(
+    value: TValue,
+    context: CsvParserContext<TLine>
+  ) => TOutput
+}
+
 export type CsvSchema<TLine = unknown> = {
-  columns: {
-    name: string
-    required?: boolean
-    mapTo?: string
-    validator?: AbstractCsvValidator<TLine>
-    transformer?: <TValue, TOutput>(
-      value: TValue,
-      context: CsvParserContext<TLine>
-    ) => TOutput
-  }[]
+  columns: CsvSchemaColumn<TLine>[]
 }
