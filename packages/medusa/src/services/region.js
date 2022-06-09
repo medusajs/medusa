@@ -302,7 +302,7 @@ class RegionService extends BaseService {
   async validateCurrency_(currencyCode) {
     const store = await this.storeService_
       .withTransaction(this.transactionManager_)
-      .retrieve(["currencies"])
+      .retrieve({ relations: ["currencies"] })
 
     const storeCurrencies = store.currencies.map((curr) => curr.code)
 
