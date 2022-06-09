@@ -1,4 +1,5 @@
 import { EntityManager } from "typeorm"
+import IORedis from "ioredis"
 
 import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
 import { BatchJob } from "../models"
@@ -11,7 +12,6 @@ import {
   CsvParserContext,
   CsvSchema,
 } from "../interfaces/csv-parser"
-import IORedis from "ioredis"
 import { ProductRepository } from "../repositories/product"
 import { ProductVariantRepository } from "../repositories/product-variant"
 
@@ -23,11 +23,13 @@ type TLine = {
 type ProductImportCsvSchema = CsvSchema<TLine>
 
 type Context = {
+  total: number
   progress: number
   csvFileKey: string
 }
 
 type ImportOperation = {
+  data: Record<string, any>
   entityType: "product" | "variant"
   opType: "update" | "create"
 }
@@ -84,6 +86,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
+    // @ts-ignore
     this.csvParser_ = new CsvParser<ProductImportCsvSchema, unknown, unknown>(
       // eslint-disable-next-line prefer-rest-params
       arguments[0],
@@ -114,13 +117,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await this.redisClient_.expire(`pij_${batchJobId}`, 60 * 60)
   }
 
-  async getImportDataFromRedis(
-    batchJobId: string
-  ): Promise<Record<string, string[]>> {
+  async getImportDataFromRedis(batchJobId: string): Promise<{
+    products: ImportOperation[]
+    variants: ImportOperation[]
+  }> {
     return await this.redisClient_.client.call("JSON.GET", `pij_${batchJobId}`)
   }
 
-  getImportInstructions(csvData: any[]) {
+  getImportInstructions(csvData: any[]): any {
     const products: Record<string, ImportOperation> = {}
     const variants: Record<string, ImportOperation> = {}
 
@@ -137,14 +141,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     // TODO: for now, pretend that every record is op == create
     csvData.forEach((row) => {
       // is variant OP
-      if (row.variant_id) {
-        variants[row.variant_id] = {
+      if (row.sku) {
+        variants[row.sku] = {
           data: row,
           entityType: "variant",
           opType: "create",
         }
       } else {
-        products[row.product_id] = {
+        products[row.handle] = {
           data: row,
           entityType: "product",
           opType: "create",
@@ -171,10 +175,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     const data = await this.csvParser_.parse(csvStream)
     const results = await this.csvParser_.buildData(data)
-
+    console.log(results)
     const ops = this.getImportInstructions(results)
 
     await this.setImportDataToRedis(batchJobId, ops)
+
+    await this.batchJobService_.update(batchJobId, {
+      context: {
+        ...batchJob.context,
+        total: results.length,
+      },
+    })
 
     return await this.batchJobService_.ready(batchJobId)
   }
@@ -186,44 +197,49 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         .retrieve(batchJobId)
 
       const productRepo = transactionManager.getCustomRepository(
-        this.productRepo_
+        this.productRepo_ as any
       )
 
       const productVariantRepo = transactionManager.getCustomRepository(
-        this.productVariantRepo_
+        this.productVariantRepo_ as any
       )
 
       const { products: productOps, variants: variantOps } =
-        (await this.getImportDataFromRedis(batchJob.id)) as {
-          products: ImportOperation[]
-          variants: ImportOperation[]
-        }
+        await this.getImportDataFromRedis(batchJob.id)
 
-      const total = productOps.length + variantOps.length
+      const total = batchJob.context.total
 
       //  ========== PRODUCTS CREATE ==========
 
-      await productRepo.save(
-        productOps.map((op) => op.data),
-        { chunk: BATCH_SIZE }
-      )
+      // await productRepo.save(
+      //   productOps.map((op) => op.data),
+      //   { chunk: BATCH_SIZE }
+      // )
+      //
+      // batchJob = await this.batchJobService_.update(batchJobId, {
+      //   ...batchJob.context,
+      //   progress: productOps.length / total,
+      // })
 
-      batchJob = await this.batchJobService_.update(batchJobId, {
-        ...batchJob.context,
-        progress: productOps.length / total,
-      })
+      for (const productOp of productOps) {
+        await this.productService_.create(productOp.data)
+      }
 
       //  ========== VARIANTS CREATE ==========
 
-      await productVariantRepo.save(
-        variantOps.map((op) => op.data),
-        { chunk: BATCH_SIZE }
-      )
+      // await productVariantRepo.save(
+      //   variantOps.map((op) => op.data),
+      //   { chunk: BATCH_SIZE }
+      // )
+      //
+      // batchJob = await this.batchJobService_.update(batchJobId, {
+      //   ...batchJob.context,
+      //   progress: variantOps.length / total,
+      // })
 
-      batchJob = await this.batchJobService_.update(batchJobId, {
-        ...batchJob.context,
-        progress: variantOps.length / total,
-      })
+      for (const variantOp of variantOps) {
+        await this.productVariantService_.create(variantOp.data)
+      }
 
       return batchJob
     })
@@ -244,7 +260,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   validateContext(
     context: Record<string, unknown>
   ): Promise<Record<string, unknown>> {
-    return Promise.resolve(undefined)
+    return Promise.resolve({})
   }
 
   validateFile(fileLocation: string): Promise<boolean> {
@@ -256,21 +272,90 @@ export default ProductImportStrategy
 
 const CSVSchema: ProductImportCsvSchema = {
   columns: [
-    { name: "Product Id", mapTo: "id", required: true },
+    // PRODUCT
     {
       name: "Product Handle",
       mapTo: "handle",
+      required: true,
       // validator: {
       //   validate(
       //     value: string,
       //     context: CsvParserContext<TLine>
-      //   ): Promise<boolean> {
-      //     return Promise.resolve(false)
-      //   },
+      //   ): Promise<boolean> {},
       // },
     },
-    { name: "Product Title", mapTo: "title" },
-    { name: "Product Subtitle", mapTo: "subtitle" },
-    { name: "Product Description", mapTo: "description" },
+    { name: "Product Title", mapTo: "product.title" },
+    { name: "Product Subtitle", mapTo: "product.subtitle" },
+    { name: "Product Description", mapTo: "product.description" },
+    { name: "Product Status", mapTo: "product.status" },
+    { name: "Product Thumbnail", mapTo: "product.thumbnail" },
+    { name: "Product Weight", mapTo: "product.weight" },
+    { name: "Product Length", mapTo: "product.length" },
+    { name: "Product Width", mapTo: "product.width" },
+    { name: "Product Height", mapTo: "product.height" },
+    { name: "Product HS Code", mapTo: "product.hs_code" },
+    { name: "Product Origin Country", mapTo: "product.origin_country" },
+    { name: "Product Mid Code", mapTo: "product.mid_code" },
+    { name: "Product Material", mapTo: "product.material" },
+    // PRODUCT-COLLECTION
+    { name: "Product Collection Title", mapTo: "product.collection.title" },
+    { name: "Product Collection Handle", mapTo: "product.collection.handle" },
+    // PRODUCT-TYPE
+    { name: "Product Type", mapTo: "type.value" },
+    // PRODUCT-TAGS
+    { name: "Product Tags", mapTo: "description" },
+    //
+    { name: "Product Discountable", mapTo: "product.discountable" },
+    { name: "Product External ID", mapTo: "product.external_id" },
+    // PRODUCT-SHIPPING_PROFILE
+    { name: "Product Profile Name", mapTo: "product.profile.name" },
+    { name: "Product Profile Type", mapTo: "product.profile.type" },
+    // Variants
+    { name: "Variant Title", mapTo: "variant.title" },
+    { name: "Variant SKU", mapTo: "variant.sku" },
+    { name: "Variant Barcode", mapTo: "variant.barcode" },
+    { name: "Variant Inventory Quantity", mapTo: "variant.inventory_quantity" },
+    { name: "Variant Allow backorder", mapTo: "variant.allow_backorder" },
+    { name: "Variant Manage inventory", mapTo: "variant.manage_inventory" },
+    { name: "Variant Weight", mapTo: "variant.weight" },
+    { name: "Variant Length", mapTo: "variant.length" },
+    { name: "Variant Width", mapTo: "variant.width" },
+    { name: "Variant Height", mapTo: "variant.height" },
+    { name: "Variant HS Code", mapTo: "variant.hs_code" },
+    { name: "Variant Origin Country", mapTo: "variant.origin_country" },
+    { name: "Variant Mid Code", mapTo: "variant.mid_code" },
+    { name: "Variant Material", mapTo: "variant.material" },
+
+    // ==== DYNAMIC FIELDS ====
+
+    // PRODUCT_OPTIONS
+    {
+      name: "Option Name",
+      match: /Option Name \d+/,
+      mapTo: "product.options.name",
+    },
+    {
+      name: "Option Value",
+      match: /Option \d+ Value/,
+      mapTo: "product.options.value",
+    },
+    // Prices
+    {
+      name: "Price Currency code",
+      match: /Price \d+ Currency code/,
+      mapTo: "ma.currency.code",
+    },
+    {
+      name: "Price Region name",
+      match: /Price \d+ Region name/,
+      mapTo: "ma.region.name",
+    },
+    { name: "Price Amount", match: /Price \d+ Amount/, mapTo: "ma.amount" },
+    // Images
+    {
+      name: "Product Image",
+      match: /Product \d+ Image/,
+      mapTo: "product.images.url",
+    },
   ],
 }

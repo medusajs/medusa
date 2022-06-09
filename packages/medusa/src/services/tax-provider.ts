@@ -39,7 +39,7 @@ class TaxProviderService extends BaseService {
   private taxLineRepo_: typeof LineItemTaxLineRepository
   private smTaxLineRepo_: typeof ShippingMethodTaxLineRepository
   private taxProviderRepo_: typeof TaxProviderRepository
-  private redis_: Redis
+  private redis_: Redis.Redis
 
   constructor(container: AwilixContainer) {
     super()
@@ -431,7 +431,7 @@ class TaxProviderService extends BaseService {
     productId: string,
     regionId: string,
     value: TaxServiceRate[]
-  ): Promise<void> {
+  ): Promise<"OK" | null> {
     const cacheKey = this.getCacheKey(productId, regionId)
     return await this.redis_.set(
       cacheKey,
