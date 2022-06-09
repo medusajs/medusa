@@ -173,7 +173,7 @@ class StoreService extends TransactionBaseService<StoreService> {
               if (!currency) {
                 throw new MedusaError(
                   MedusaError.Types.INVALID_DATA,
-                  `Invalid currency ${curr}`
+                  `Currency with code ${curr} does not exist`
                 )
               }
 
