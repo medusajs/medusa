@@ -1,4 +1,4 @@
-import { IsArray, IsOptional, IsString } from "class-validator"
+import { IsArray, IsOptional, IsString, IsObject } from "class-validator"
 import { StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -75,4 +75,8 @@ export class AdminPostStoreReq {
   @IsString({ each: true })
   @IsOptional()
   currencies?: string[]
+
+  @IsObject()
+  @IsOptional()
+  metadata?: Record<string, unknown>
 }
