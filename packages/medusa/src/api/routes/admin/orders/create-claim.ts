@@ -14,6 +14,12 @@ import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import {
+  ClaimItemReason,
+  ClaimItemReasonValue,
+  ClaimTypeValue,
+} from "../../../../types/claim"
+import { ClaimType } from "../../../../models"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -332,26 +338,10 @@ export default async (req, res) => {
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
-enum ClaimTypeEnum {
-  replace = "replace",
-  refund = "refund",
-}
-
-type ClaimType = `${ClaimTypeEnum}`
-
-enum ClaimItemReasonEnum {
-  missing_item = "missing_item",
-  wrong_item = "wrong_item",
-  production_failure = "production_failure",
-  other = "other",
-}
-
-type ClaimItemReasonType = `${ClaimItemReasonEnum}`
-
 export class AdminPostOrdersOrderClaimsReq {
-  @IsEnum(ClaimTypeEnum)
+  @IsEnum(ClaimType)
   @IsNotEmpty()
-  type: ClaimType
+  type: ClaimTypeValue
 
   @IsArray()
   @IsNotEmpty()
@@ -432,9 +422,9 @@ class Item {
   @IsOptional()
   note?: string
 
-  @IsEnum(ClaimItemReasonEnum)
+  @IsEnum(ClaimItemReason)
   @IsOptional()
-  reason?: ClaimItemReasonType
+  reason?: ClaimItemReasonValue
 
   @IsArray()
   @IsOptional()
