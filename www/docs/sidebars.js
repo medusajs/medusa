@@ -27,6 +27,10 @@ module.exports = {
       label: "Quickstart Guide",
     },
     {
+      type: "doc",
+      id: "usage",
+    },
+    {
       type: "category",
       collapsed: false,
       label: "Usage Guides",
