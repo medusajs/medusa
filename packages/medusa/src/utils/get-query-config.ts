@@ -109,7 +109,7 @@ export function prepareListQuery<
     if (queryConfig?.allowedFields?.length && !queryConfig?.allowedFields.includes(orderField)) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        "Order field must be a valid product field"
+        `Order field ${orderField} is not valid`
       )
     }
   }
