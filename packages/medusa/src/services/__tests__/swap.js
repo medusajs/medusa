@@ -974,7 +974,6 @@ describe("SwapService", () => {
 
       const swapService = new SwapService({
         manager: MockManager,
-        eventBusService,
         swapRepository: swapRepo,
         paymentProviderService,
         eventBusService,
