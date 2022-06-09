@@ -9,6 +9,7 @@ import { AdminPostStoreReq } from "../api/routes/admin/store"
 import { FindConfig } from "../types/common"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery, setMetadata } from "../utils"
+import { UpdateStoreInput } from "../types/store"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -125,7 +126,7 @@ class StoreService extends TransactionBaseService<StoreService> {
    * @param data - an object with the update values.
    * @return resolves to the update result.
    */
-  async update(data: AdminPostStoreReq): Promise<Store> {
+  async update(data: UpdateStoreInput): Promise<Store> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const storeRepository = transactionManager.getCustomRepository(
@@ -182,12 +183,10 @@ class StoreService extends TransactionBaseService<StoreService> {
         }
 
         if (default_currency_code) {
-          const storeCurrCodes = store.currencies.map((c) => c.code)
-          const hasDefCurrency = storeCurrCodes.find(
-            (c) => c === default_currency_code.toLowerCase()
+          const hasDefCurrency = store.currencies.find(
+            (c) => c.code.toLowerCase() === default_currency_code.toLowerCase()
           )
 
-          // throw if store currencies does not have default currency
           if (!hasDefCurrency) {
             throw new MedusaError(
               MedusaError.Types.INVALID_DATA,
@@ -195,16 +194,9 @@ class StoreService extends TransactionBaseService<StoreService> {
             )
           }
 
-          const curr = await currencyRepository.findOne({
+          const curr = (await currencyRepository.findOne({
             code: default_currency_code.toLowerCase(),
-          })
-
-          if (!curr) {
-            throw new MedusaError(
-              MedusaError.Types.INVALID_DATA,
-              `Currency ${default_currency_code} not found`
-            )
-          }
+          })) as Currency
 
           store.default_currency = curr
           store.default_currency_code = curr.code
