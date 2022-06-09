@@ -30,45 +30,23 @@ type InjectedDependencies = {
   productRepository: typeof ProductRepository
 }
 
-type ColumnSchemaEntity =
-  | "product"
-  | "variant"
-  | "option"
-  | "variantOption"
-  | "image"
-  | "moneyAmount"
+type ColumnSchemaEntity = "product" | "variant"
 
 type ColumnSchemaDescriptor =
-  | (
-      | {
-          accessor: (product: Product) => string
-          entityName: Extract<ColumnSchemaEntity, "product">
-        }
-      | {
-          accessor: (variant: ProductVariant) => string
-          entityName: Extract<ColumnSchemaEntity, "variant">
-        }
-      | {
-          accessor: (option: ProductOption) => string
-          entityName: Extract<ColumnSchemaEntity, "option">
-        }
-      | {
-          accessor: (option: ProductVariantOption) => string
-          entityName: Extract<ColumnSchemaEntity, "variantOption">
-        }
-      | {
-          accessor: (image: Image) => string
-          entityName: Extract<ColumnSchemaEntity, "image">
-        }
-      | {
-          accessor: (moneyAmount: MoneyAmount) => string
-          entityName: Extract<ColumnSchemaEntity, "moneyAmount">
-        }
-    ) & { index?: number }
+  | {
+      accessor: (product: Product) => string
+      entityName: Extract<ColumnSchemaEntity, "product">
+    }
+  | {
+      accessor: (variant: ProductVariant) => string
+      entityName: Extract<ColumnSchemaEntity, "variant">
+    }
 
 export default class ProductExportStrategy extends AbstractBatchJobStrategy<ProductExportStrategy> {
   public static identifier = "product-export-strategy"
   public static batchType = "product-export"
+
+  public defaultMaxRetry = 3
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -446,21 +424,23 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           .listAndCount(filterableFields, {
             relations: this.relations_,
             ...(listConfig ?? {}),
+            order: listConfig.order ?? { created_at: "DESC" },
+            skip: offset ?? listConfig.skip,
           })
 
         productCount = count
         let products = productList
 
         while (advancementCount < productCount) {
-          if (advancementCount === 0) {
+          if (!products?.length) {
             products = await this.productService_
               .withTransaction(transactionManager)
               .list(filterableFields, {
                 relations: this.relations_,
+                order: { created_at: "DESC" },
                 ...((listConfig as Record<string, unknown>) ?? {}),
                 skip: offset,
                 take: this.BATCH_SIZE,
-                order: { created_at: "DESC" },
               })
           }
 
@@ -471,6 +451,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
           advancementCount += products.length
           offset += products.length
+          products.length = 0
+
           batchJob = await this.batchJobService_.update(batchJobId, {
             context: {
               ...batchJob.context,
@@ -489,7 +471,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
             writeStream.end()
 
             await this.fileService_.delete({ key: key })
-
             return batchJob
           }
         }
@@ -582,9 +563,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   private appendImagesDescriptors(maxImagesCount: number): void {
     for (let i = 0; i < maxImagesCount; ++i) {
       this.columnDescriptors.set(`Image ${i + 1} Url`, {
-        accessor: (image: Image) => image?.url ?? "",
-        entityName: "image",
-        index: i,
+        accessor: (product: Product) => product?.images[i]?.url ?? "",
+        entityName: "product",
       })
     }
   }
@@ -593,16 +573,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     for (let i = 0; i < maxOptionsCount; ++i) {
       this.columnDescriptors
         .set(`Option ${i + 1} Name`, {
-          accessor: (productOption: ProductOption) =>
-            productOption?.title ?? "",
-          entityName: "option",
-          index: i,
+          accessor: (productOption: Product) =>
+            productOption?.options[i]?.title ?? "",
+          entityName: "product",
         })
         .set(`Option ${i + 1} Value`, {
-          accessor: (variantOption: ProductVariantOption) =>
-            variantOption?.value,
-          entityName: "variantOption",
-          index: i,
+          accessor: (variant: ProductVariant) => variant?.options[i]?.value,
+          entityName: "variant",
         })
     }
   }
@@ -611,22 +588,19 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     for (let i = 0; i < maxMoneyAmountCount; ++i) {
       this.columnDescriptors
         .set(`Price ${i + 1} Currency code`, {
-          accessor: (moneyAmount: MoneyAmount) =>
-            moneyAmount?.currency_code?.toLowerCase() ?? "",
-          entityName: "moneyAmount",
-          index: i,
+          accessor: (variant: ProductVariant) =>
+            variant?.prices[i]?.currency_code?.toLowerCase() ?? "",
+          entityName: "variant",
         })
         .set(`Price ${i + 1} Region name`, {
-          accessor: (moneyAmount: MoneyAmount) =>
-            moneyAmount?.region?.name?.toLowerCase() ?? "",
-          entityName: "moneyAmount",
-          index: i,
+          accessor: (variant: ProductVariant) =>
+            variant?.prices[i]?.region?.name?.toLowerCase() ?? "",
+          entityName: "variant",
         })
         .set(`Price ${i + 1} Amount`, {
-          accessor: (moneyAmount: MoneyAmount) =>
-            moneyAmount?.amount?.toString() ?? "",
-          entityName: "moneyAmount",
-          index: i,
+          accessor: (variant: ProductVariant) =>
+            variant?.prices[i]?.amount?.toString() ?? "",
+          entityName: "variant",
         })
     }
   }
@@ -651,22 +625,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     for (const [, columnSchema] of this.columnDescriptors.entries()) {
       if (columnSchema.entityName === "product") {
         productLineData.push(columnSchema.accessor(product))
-        continue
-      }
-      if (
-        columnSchema.entityName === "option" &&
-        columnSchema.index !== undefined
-      ) {
-        const option = product?.options[columnSchema.index] ?? {}
-        productLineData.push(columnSchema.accessor(option))
-        continue
-      }
-      if (
-        columnSchema.entityName === "image" &&
-        columnSchema.index !== undefined
-      ) {
-        const image = product?.images[columnSchema.index] ?? {}
-        productLineData.push(columnSchema.accessor(image))
         continue
       }
       productLineData.push("")
@@ -701,22 +659,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           variantLineData.push(columnSchema.accessor(variant))
           continue
         }
-        if (
-          columnSchema.entityName === "variantOption" &&
-          columnSchema.index !== undefined
-        ) {
-          const option = variant?.options[columnSchema.index] ?? {}
-          variantLineData.push(columnSchema.accessor(option))
-          continue
-        }
-        if (
-          columnSchema.entityName === "moneyAmount" &&
-          columnSchema.index !== undefined
-        ) {
-          const moneyAmount = variant?.prices[columnSchema.index] ?? {}
-          variantLineData.push(columnSchema.accessor(moneyAmount))
-          continue
-        }
         variantLineData.push("")
       }
 
@@ -748,7 +690,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         .retrieve(batchJobId)
 
       const retryCount = batchJob.context.retry_count ?? 0
-      const maxRetry = batchJob.context.max_retry ?? 0
+      const maxRetry = batchJob.context.max_retry ?? this.defaultMaxRetry
 
       if (err instanceof MedusaError) {
         await this.batchJobService_
