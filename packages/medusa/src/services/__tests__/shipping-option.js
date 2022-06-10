@@ -154,9 +154,7 @@ describe("ShippingOptionService", () => {
 
       expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledTimes(1)
       expect(fulfillmentProviderService.canCalculate).toHaveBeenCalledWith({
-        amount: null,
         data: { provider_data: "true" },
-        price_type: "calculated",
         provider_id: "provider",
       })
 

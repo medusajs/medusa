@@ -792,8 +792,8 @@ class ShippingOptionService extends BaseService {
     option: ShippingOption,
     data: object,
     cart: Cart | Order | undefined
-  ): Promise<number | null> {
-    if (option.price_type === "calculated") {
+  ): Promise<number> {
+    if (option.price_type === "calculated" || option.amount === null) {
       return this.providerService_.calculatePrice(option, data, cart)
     }
     return option.amount
