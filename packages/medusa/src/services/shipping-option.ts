@@ -267,6 +267,7 @@ class ShippingOptionService extends BaseService {
   /**
    * Removes a given shipping method
    * @param {ShippingMethod} sm - the shipping method to remove
+   * @return the removed shipping method
    */
   async deleteShippingMethod(sm: ShippingMethod): Promise<ShippingMethod> {
     return this.atomicPhase_(async (manager: EntityManager) => {
