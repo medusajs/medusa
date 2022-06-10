@@ -558,7 +558,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  protected async updateStatus(
+  async updateStatus(
     batchJobOrId: BatchJob | string,
     status: BatchJobStatus
   ): Promise<BatchJob | never> {
@@ -593,17 +593,17 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     return batchJob
   }
 
-  async setConfirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+  async confirm(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
         batchJob = await this.retrieve(batchJobOrId)
       }
 
-      if (batchJob.status !== BatchJobStatus.READY) {
+      if (batchJob.status !== BatchJobStatus.PRE_PROCESSED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Cannot confirm processing for a batch job that is not ready"
+          "Cannot confirm processing for a batch job that is not pre processed"
         )
       }
 
@@ -611,7 +611,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async setComplete(
+  async complete(
     batchJobOrId: string | BatchJob
   ): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
@@ -631,7 +631,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async setCancel(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+  async cancel(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
@@ -649,26 +649,35 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async setReady(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+  async setPreProcessingDone(
+    batchJobOrId: string | BatchJob
+  ): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
         batchJob = await this.retrieve(batchJobOrId)
       }
 
-      if (batchJob.status !== BatchJobStatus.PRE_PROCESSING) {
+      if (batchJob.status === BatchJobStatus.PRE_PROCESSED) {
+        return batchJob
+      }
+
+      if (batchJob.status !== BatchJobStatus.CREATED) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
-          "Cannot mark a batch job as ready if the status is different that pre_processing"
+          "Cannot mark a batch job as pre processed if it is not in created status"
         )
       }
 
-      batchJob = await this.updateStatus(batchJobOrId, BatchJobStatus.READY)
+      batchJob = await this.updateStatus(
+        batchJobOrId,
+        BatchJobStatus.PRE_PROCESSED
+      )
       if (batchJob.dry_run) {
         return batchJob
       }
 
-      return await this.setConfirm(batchJob)
+      return await this.confirm(batchJob)
     })
   }
 
@@ -685,26 +694,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Cannot mark a batch job as processing if the status is different that confirmed"
-        )
-      }
-
-      return await this.updateStatus(batchJob, BatchJobStatus.PROCESSING)
-    })
-  }
-
-  async setPreProcessing(
-    batchJobOrId: string | BatchJob
-  ): Promise<BatchJob | never> {
-    return await this.atomicPhase_(async () => {
-      let batchJob: BatchJob = batchJobOrId as BatchJob
-      if (typeof batchJobOrId === "string") {
-        batchJob = await this.retrieve(batchJobOrId)
-      }
-
-      if (batchJob.status !== BatchJobStatus.CREATED) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_ALLOWED,
-          "Cannot mark a batch job as pre_processing if the status is different that created"
         )
       }
 

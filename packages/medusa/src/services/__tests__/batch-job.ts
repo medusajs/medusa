@@ -50,7 +50,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.CREATED
         })
 
-        const err = await batchJobService.setConfirm(batchJob)
+        const err = await batchJobService.confirm(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
         expect(err.message).toBe("Cannot confirm processing for a batch job that is not pre processed")
@@ -66,7 +66,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.PROCESSING
         })
 
-        const updatedBatchJob = await batchJobService.setComplete(batchJob)
+        const updatedBatchJob = await batchJobService.complete(batchJob)
         expect(updatedBatchJob.completed_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.COMPLETED, { id: batchJobId_1 })
@@ -77,7 +77,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.PROCESSING
         })
 
-        const updatedBatchJob2 = await batchJobService.setComplete(batchJob2)
+        const updatedBatchJob2 = await batchJobService.complete(batchJob2)
         expect(updatedBatchJob2.completed_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.COMPLETED, { id: batchJobId_1 })
@@ -90,7 +90,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.CREATED
         })
 
-        const err = await batchJobService.setComplete(batchJob)
+        const err = await batchJobService.complete(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
         expect(err.message).toBe( `Cannot complete a batch job with status "${batchJob.status}". The batch job must be processing`)
@@ -102,7 +102,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.PRE_PROCESSED
         })
 
-        const err2 = await batchJobService.setComplete(batchJob2)
+        const err2 = await batchJobService.complete(batchJob2)
           .catch(e => e)
         expect(err2).toBeTruthy()
         expect(err2.message).toBe( `Cannot complete a batch job with status "${batchJob2.status}". The batch job must be processing`)
@@ -149,7 +149,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.CREATED
         })
 
-        const updatedBatchJob = await batchJobService.setCancel(batchJob)
+        const updatedBatchJob = await batchJobService.cancel(batchJob)
         expect(updatedBatchJob.canceled_at).toBeTruthy()
         expect(eventBusServiceMock.emit)
           .toHaveBeenCalledWith(BatchJobService.Events.CANCELED, { id: batchJobId_1 })
@@ -161,7 +161,7 @@ describe('BatchJobService', () => {
           status: BatchJobStatus.COMPLETED
         })
 
-        const err = await batchJobService.setCancel(batchJob)
+        const err = await batchJobService.cancel(batchJob)
           .catch(e => e)
         expect(err).toBeTruthy()
         expect(err.message).toBe("Cannot cancel completed batch job")
