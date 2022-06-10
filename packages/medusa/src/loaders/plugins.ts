@@ -189,17 +189,13 @@ export function registerStrategies(
           asFunction((cradle) => new module(cradle, pluginDetails.options))
         )
 
-        container.registerAdd(
-          `batchType_${module.batchType}`,
-          asFunction((cradle) => new module(cradle, pluginDetails.options))
-        )
-
         const name = formatRegistrationName(file)
         container.register({
           [name]: asFunction(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
           [`batch_${module.identifier}`]: aliasTo(name),
+          [`batchType_${module.batchType}`]: aliasTo(name),
         })
         break
       }
@@ -409,16 +405,10 @@ export async function registerServices(
           ).singleton(),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof FileService) {
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which file storage provider we need to use
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ),
-          [`fileService`]: aliasTo(name),
-        })
-      } else if (isFileService(loaded.prototype)) {
+      } else if (
+        loaded.prototype instanceof FileService ||
+        isFileService(loaded.prototype)
+      ) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({
