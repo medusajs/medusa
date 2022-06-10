@@ -705,7 +705,8 @@ class CartService extends TransactionBaseService<CartService> {
           cart.shipping_methods.map(async (shippingMethod) => {
             // if free shipping discount is removed, we adjust the shipping
             // back to its original amount
-            shippingMethod.price = shippingMethod.shipping_option.amount
+            shippingMethod.price = shippingMethod.shipping_option
+              .amount as number
             return shippingMethodRepository.save(shippingMethod)
           })
         )
