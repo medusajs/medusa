@@ -1,13 +1,13 @@
 import { MedusaError } from "medusa-core-utils"
-import { DeepPartial, EntityManager } from "typeorm"
+import { EntityManager } from "typeorm"
 import { TransactionBaseService as BaseService } from "../interfaces"
 import { ClaimImage, ClaimItem, ClaimTag } from "../models"
 import { ClaimImageRepository } from "../repositories/claim-image"
 import { ClaimItemRepository } from "../repositories/claim-item"
 import { ClaimTagRepository } from "../repositories/claim-tag"
-import { CreateClaimInput, CreateClaimItemInput } from "../types/claim"
+import { CreateClaimItemInput } from "../types/claim"
 import { FindConfig, Selector } from "../types/common"
-import { buildQuery, setMetadata, validateId } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import EventBusService from "./event-bus"
 import LineItemService from "./line-item"
 
@@ -24,8 +24,8 @@ class ClaimItemService extends BaseService<ClaimItemService> {
   protected readonly claimTagRepository_: typeof ClaimTagRepository
   protected readonly claimImageRepository_: typeof ClaimImageRepository
 
-  protected readonly manager_: EntityManager
-  protected readonly transactionManager_: EntityManager | undefined
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
 
   constructor({
     manager,
@@ -206,9 +206,6 @@ class ClaimItemService extends BaseService<ClaimItemService> {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  async cancel(id: string): Promise<void> {}
-
   /**
    * @param {Object} selector - the query object for find
    * @param {Object} config - the config object for find
@@ -240,9 +237,7 @@ class ClaimItemService extends BaseService<ClaimItemService> {
     const claimItemRepo = this.manager_.getCustomRepository(
       this.claimItemRepository_
     )
-    const validatedId = validateId(id)
-
-    const query = buildQuery({ id: validatedId }, config)
+    const query = buildQuery({ id }, config)
     const item = await claimItemRepo.findOne(query)
 
     if (!item) {
