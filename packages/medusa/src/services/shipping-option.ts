@@ -234,28 +234,10 @@ class ShippingOptionService extends BaseService {
       const method = await methodRepo.findOne({ where: { id } })
 
       if (method) {
-        if (typeof update.data !== undefined) {
-          method.data = update.data
-        }
-
-        if (typeof update.price !== "undefined") {
-          method.price = update.price
-        }
-
-        if (typeof update.return_id !== "undefined") {
-          method.return_id = update.return_id
-        }
-
-        if (typeof update.swap_id !== "undefined") {
-          method.swap_id = update.swap_id
-        }
-
-        if (typeof update.order_id !== "undefined") {
-          method.order_id = update.order_id
-        }
-
-        if (typeof update.claim_order_id !== "undefined") {
-          method.claim_order_id = update.claim_order_id
+        for (const key of Object.keys(update).filter(
+          (k) => typeof update[k] !== `undefined`
+        )) {
+          method[key] = update[key]
         }
 
         return methodRepo.save(method)
