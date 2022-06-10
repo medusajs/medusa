@@ -25,7 +25,7 @@ export default async (req, res) => {
   let batch_job = req.batch_job
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-  batch_job = await batchJobService.setConfirm(batch_job)
+  batch_job = await batchJobService.confirm(batch_job)
 
   res.json({ batch_job })
 }

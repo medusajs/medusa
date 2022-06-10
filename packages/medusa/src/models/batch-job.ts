@@ -27,7 +27,7 @@ export class BatchJob extends SoftDeletableEntity {
   dry_run: boolean = false;
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  pre_processing_at?: Date
+  pre_processed_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   processing_at?: Date
@@ -42,9 +42,6 @@ export class BatchJob extends SoftDeletableEntity {
   canceled_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  ready_at?: Date
-
-  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   failed_at?: Date
 
   status: BatchJobStatus
@@ -52,11 +49,8 @@ export class BatchJob extends SoftDeletableEntity {
   @AfterLoad()
   loadStatus(): void {
     /* Always keep the status order consistent. */
-    if (this.pre_processing_at) {
-      this.status = BatchJobStatus.PRE_PROCESSING
-    }
-    if (this.ready_at) {
-      this.status = BatchJobStatus.READY
+    if (this.pre_processed_at) {
+      this.status = BatchJobStatus.PRE_PROCESSED
     }
     if (this.confirmed_at) {
       this.status = BatchJobStatus.CONFIRMED
@@ -108,8 +102,7 @@ export class BatchJob extends SoftDeletableEntity {
  *    type: string
  *    enum:
  *      - created
- *      - pre_processing
- *      - ready
+ *      - pre_processed
  *      - processing
  *      - completed
  *      - canceled
@@ -127,12 +120,8 @@ export class BatchJob extends SoftDeletableEntity {
  *  result:
  *    description: "The result of the batch job."
  *    type: object
- *  awaiting_confirmation_at:
- *    description: "The date from which the confirmation is awaited."
- *    type: string
- *    format: date-time
- *  processing_at:
- *    description: "The date from which the processing started."
+ *  pre_processed_at:
+ *    description: "The date from which the job has been pre processed."
  *    type: string
  *    format: date-time
  *  confirmed_at:
