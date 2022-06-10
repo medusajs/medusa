@@ -9,6 +9,7 @@ import {
 import "reflect-metadata"
 import { FindManyOptions, FindOperator, OrderByCondition } from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
+import { BaseEntity } from "../interfaces/models/base-entity"
 
 /**
  * Utility type used to remove some optional attributes (coming from K) from a type T
@@ -73,6 +74,22 @@ export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
   order?: OrderByCondition
   skip?: number
   take?: number
+}
+
+export type QueryConfig<TEntity extends BaseEntity> = {
+  defaultFields?: (keyof TEntity | string)[]
+  defaultRelations?: string[]
+  allowedFields?: string[]
+  defaultLimit?: number
+  isList?: boolean
+}
+
+export type RequestQueryFields = {
+  expand?: string
+  fields?: string
+  offset?: number
+  limit?: number
+  order?: string
 }
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }

@@ -1,7 +1,8 @@
 import { Router } from "express"
 import { BatchJob } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetBatchParams } from "./list-batch-jobs"
 
 export default (app) => {
   const route = Router()
@@ -10,7 +11,10 @@ export default (app) => {
 
   route.get(
     "/",
-    middlewares.normalizeQuery(),
+    transformQuery(AdminGetBatchParams, {
+      defaultFields: defaultAdminBatchFields,
+      isList: true,
+    }),
     middlewares.wrap(require("./list-batch-jobs").default)
   )
   return app
