@@ -1,24 +1,11 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
-  Index,
-} from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BeforeInsert, Column, CreateDateColumn, Entity, Index } from "typeorm"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { UserRoles } from "./user"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Invite {
-  @PrimaryColumn()
-  id: string
-
+export class Invite extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   user_email: string
@@ -40,24 +27,11 @@ export class Invite {
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   expires_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
   private beforeInsert(): void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `invite_${id}`
+    this.id = generateEntityId(this.id, "invite")
   }
 }

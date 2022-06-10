@@ -4,12 +4,13 @@ import {
   EntityTarget,
   In,
   Not,
-  Repository,
+  Repository
 } from "typeorm"
+import { Discount } from "../models"
 import {
   DiscountCondition,
   DiscountConditionOperator,
-  DiscountConditionType,
+  DiscountConditionType
 } from "../models/discount-condition"
 import { DiscountConditionCustomerGroup } from "../models/discount-condition-customer-group"
 import { DiscountConditionProduct } from "../models/discount-condition-product"
@@ -35,6 +36,21 @@ type DiscountConditionResourceType = EntityTarget<
 
 @EntityRepository(DiscountCondition)
 export class DiscountConditionRepository extends Repository<DiscountCondition> {
+  async findOneWithDiscount(
+    conditionId: string,
+    discountId: string
+  ): Promise<(DiscountCondition & { discount: Discount }) | undefined> {
+    return (await this.createQueryBuilder("condition")
+      .leftJoinAndMapOne(
+        "condition.discount",
+        Discount,
+        "discount",
+        `condition.discount_rule_id = discount.rule_id and discount.id = :discId and condition.id = :dcId`,
+        { discId: discountId, dcId: conditionId }
+      )
+      .getOne()) as (DiscountCondition & { discount: Discount }) | undefined
+  }
+
   getJoinTableResourceIdentifiers(type: string): {
     joinTable: string
     resourceKey: string
@@ -266,6 +282,7 @@ export class DiscountConditionRepository extends Repository<DiscountCondition> {
       .where("discon.discount_rule_id = :discountRuleId", {
         discountRuleId,
       })
+      .andWhere("discon.type = :type", { type: DiscountConditionType.CUSTOMER_GROUPS })
       .getMany()
 
     // in case of no discount conditions, we assume that the discount

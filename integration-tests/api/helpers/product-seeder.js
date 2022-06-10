@@ -69,6 +69,13 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(type)
 
+  const type2 = await manager.create(ProductType, {
+    id: "test-type-new",
+    value: "test-type-new",
+  })
+
+  await manager.save(type2)
+
   const image = manager.create(Image, {
     id: "test-image",
     url: "test-image.png",

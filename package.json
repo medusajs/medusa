@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": {
-    "packages":  [
+    "packages": [
       "packages/*"
     ],
     "nohoist": [
@@ -45,6 +45,8 @@
     "prettier": "^2.1.1",
     "resolve-cwd": "^3.0.0",
     "ts-jest": "^26.5.6",
+    "typedoc": "^0.22.15",
+    "typedoc-plugin-markdown": "^3.12.1",
     "typeorm": "^0.2.31"
   },
   "lint-staged": {
@@ -64,7 +66,8 @@
     "test:integration": "jest --config=integration-tests/jest.config.js",
     "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api",
     "test:integration:plugins": "jest --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
-    "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand"
+    "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
+    "generate:services": "typedoc --options typedoc.services.js"
   },
   "dependencies": {
     "global": "^4.4.0",

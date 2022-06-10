@@ -5,14 +5,15 @@ import chokidar from "chokidar"
 
 import Logger from "../loaders/logger"
 
-export default async function({ port, directory }) {
+export default async function ({ port, directory }) {
   const args = process.argv
   args.shift()
   args.shift()
   args.shift()
 
   const babelPath = path.join(directory, "node_modules", ".bin", "babel")
-  execSync(`${babelPath} src -d dist`, {
+
+  execSync(`"${babelPath}" src -d dist`, {
     cwd: directory,
     stdio: ["ignore", process.stdout, process.stderr],
   })
@@ -24,7 +25,7 @@ export default async function({ port, directory }) {
     stdio: ["pipe", process.stdout, process.stderr],
   })
 
-  chokidar.watch(`${directory}/src`).on("change", file => {
+  chokidar.watch(`${directory}/src`).on("change", (file) => {
     const f = file.split("src")[1]
     Logger.info(`${f} changed: restarting...`)
     child.kill("SIGINT")

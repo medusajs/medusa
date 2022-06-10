@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { PriceList } from "../models/price-list"
-import { DateComparisonOperator } from "./common"
+import { DateComparisonOperator, FindConfig } from "./common"
 import { XorConstraint } from "./validators/xor"
 
 export enum PriceListType {
@@ -38,6 +38,10 @@ export class FilterablePriceListProps {
   @IsString()
   @IsOptional()
   name?: string
+
+  @IsOptional()
+  @IsString({ each: true })
+  customer_groups?: string[]
 
   @IsString()
   @IsOptional()

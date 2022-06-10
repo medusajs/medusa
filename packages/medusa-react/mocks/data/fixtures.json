@@ -478,7 +478,14 @@
         "created_at": "2021-03-16T21:24:16.872Z",
         "updated_at": "2021-03-16T21:24:16.872Z",
         "deleted_at": null,
-        "metadata": null
+        "metadata": null,
+        "conditions": [
+          {
+            "id": "cnd_01F0YESMVJXKX8XZ6Q9Z6Q6Z6",
+            "type": "products",
+            "operator": "in"
+          }
+        ]
       },
       "is_disabled": false,
       "parent_discount_id": null,

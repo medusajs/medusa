@@ -11,11 +11,24 @@ export default (app) => {
 
   route.get("/:id", middlewares.wrap(require("./get-price-list").default))
 
-  route.get("/", middlewares.wrap(require("./list-price-lists").default))
+  route.get(
+    "/",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./list-price-lists").default)
+  )
 
   route.get(
     "/:id/products",
     middlewares.wrap(require("./list-price-list-products").default)
+  )
+
+  route.delete(
+    "/:id/products/:product_id/prices",
+    middlewares.wrap(require("./delete-product-prices").default)
+  )
+  route.delete(
+    "/:id/variants/:variant_id/prices",
+    middlewares.wrap(require("./delete-variant-prices").default)
   )
 
   route.post("/", middlewares.wrap(require("./create-price-list").default))
@@ -63,6 +76,9 @@ export type AdminPriceListDeleteBatchRes = {
   deleted: boolean
   object: string
 }
+
+export type AdminPriceListDeleteProductPricesRes = AdminPriceListDeleteBatchRes
+export type AdminPriceListDeleteVariantPricesRes = AdminPriceListDeleteBatchRes
 
 export type AdminPriceListDeleteRes = DeleteResponse
 

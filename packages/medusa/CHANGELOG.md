@@ -3,6 +3,56 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.3.0...@medusajs/medusa@1.3.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **medisa:** Deleting price list should use `remove` ([#1540](https://github.com/medusajs/medusa/issues/1540)) ([f0ecef6](https://github.com/medusajs/medusa/commit/f0ecef6b9ae878e83be0efaf13d6f3fef5d48e3a))
+* **medusa:** `AddressPayload` typing and removes Joi validation from CustomerService ([#1520](https://github.com/medusajs/medusa/issues/1520)) ([8dd27ec](https://github.com/medusajs/medusa/commit/8dd27ecb7e1de70e84ed5332ea329827473c00aa))
+* **medusa:** add `q` param to `listAndCount` product types and product tags ([#1531](https://github.com/medusajs/medusa/issues/1531)) ([46d9e6c](https://github.com/medusajs/medusa/commit/46d9e6c44cea190baf56874f86fe4a5e692b9a44))
+* **medusa:** Allow de-selecting configurations in price lists ([#1596](https://github.com/medusajs/medusa/issues/1596)) ([3f23ede](https://github.com/medusajs/medusa/commit/3f23edea2314da5edd477280eeb93727500f7b84))
+* **medusa:** allow price list `prices` update when `region_id` is provided ([#1472](https://github.com/medusajs/medusa/issues/1472)) ([03c5617](https://github.com/medusajs/medusa/commit/03c5617896d08b354932a470cadd9d36508f9d40))
+* **medusa:** applicableness of discounts with conditions not related to customer groups ([#1534](https://github.com/medusajs/medusa/issues/1534)) ([a10ac19](https://github.com/medusajs/medusa/commit/a10ac19d8e12f8c1c69020ca9e09e7c4739a740c))
+* **medusa:** CartService fix discounts empty array check on update ([#1516](https://github.com/medusajs/medusa/issues/1516)) ([e31fe4a](https://github.com/medusajs/medusa/commit/e31fe4af163ebd94eefaaa61e519607ec04c5622))
+* **medusa:** CartService lost shipping address when using the id ([c442be4](https://github.com/medusajs/medusa/commit/c442be47d4a0b4cf3b46ce604b05e16424544046))
+* **medusa:** discount types across model, service and api ([#1545](https://github.com/medusajs/medusa/issues/1545)) ([2f08167](https://github.com/medusajs/medusa/commit/2f08167480e23f64590d85c098ea6a18ad2d0270))
+* **medusa:** Include adjustments in cart retrieval relations in setPaymentSessions ([#1518](https://github.com/medusajs/medusa/issues/1518)) ([02eab5e](https://github.com/medusajs/medusa/commit/02eab5ee86b92d8dfa6346b09d2353659c064b42))
+* **medusa:** MoneyAmountRepository#findManyForVariantInRegion sql statement for constraint related to price_list ([#1462](https://github.com/medusajs/medusa/issues/1462)) ([3c75a65](https://github.com/medusajs/medusa/commit/3c75a657924938f2aeda8cca7ad84a1971629ee0))
+* **medusa:** PluginLoaders when loading services should only look for js files ([#1473](https://github.com/medusajs/medusa/issues/1473)) ([c67d6be](https://github.com/medusajs/medusa/commit/c67d6bee303ad8e43f320fe16f807b0d22890c5b))
+* **medusa:** Post /admin/discounts/:id not updating condition operator ([#1573](https://github.com/medusajs/medusa/issues/1573)) ([5414148](https://github.com/medusajs/medusa/commit/5414148254de9b54c0c292e9348f524f15334b96))
+* **medusa:** Prevent discount type updates ([#1584](https://github.com/medusajs/medusa/issues/1584)) ([083ab09](https://github.com/medusajs/medusa/commit/083ab09361271e48fd39a7d60f2ca3e172c20b23))
+* **medusa:** Proper fix of the cart service ([f5edaf5](https://github.com/medusajs/medusa/commit/f5edaf51ea2d49d662b00f7a5360449cf827d825))
+* **medusa:** Remove line-item.js file ([#1414](https://github.com/medusajs/medusa/issues/1414)) ([9087029](https://github.com/medusajs/medusa/commit/90870292c62e2e96ca8c9ffc51e32c73493e0c0b))
+* **medusa:** RMA on items from swaps and claims ([#1182](https://github.com/medusajs/medusa/issues/1182)) ([5ae5f15](https://github.com/medusajs/medusa/commit/5ae5f15e9883786eb5759b49b98b858822e72a96))
+* **medusa:** support searching for price lists ([#1407](https://github.com/medusajs/medusa/issues/1407)) ([f71b9b3](https://github.com/medusajs/medusa/commit/f71b9b3a8733fdcfe4298fcf49fd06ae89850fc2))
+* **medusa:** Use boolean on list shipping options params ([#1493](https://github.com/medusajs/medusa/issues/1493)) ([7605963](https://github.com/medusajs/medusa/commit/7605963ded737514e2328bb0d1fb9814c14b84a9))
+* Cascade remove prices + option values on variant and product delete ([#1465](https://github.com/medusajs/medusa/issues/1465)) ([e7cb76a](https://github.com/medusajs/medusa/commit/e7cb76ab6e13fe756e090fd1a0a3ff645c30c69a))
+* Use correct product price when fetching product for pricelist ([#1416](https://github.com/medusajs/medusa/issues/1416)) ([e2d0831](https://github.com/medusajs/medusa/commit/e2d08316dd03946453c5bf39c78a141d9fd57d3c))
+* **medusa-cli:** allow spaces in develop command ([#1430](https://github.com/medusajs/medusa/issues/1430)) ([2260c2d](https://github.com/medusajs/medusa/commit/2260c2d09ec057d62b548c55142273e86eda1ca0))
+
+
+### Features
+
+* **medusa:** Add /admin/products/:id/variants end point ([#1471](https://github.com/medusajs/medusa/issues/1471)) ([edeac8a](https://github.com/medusajs/medusa/commit/edeac8ac720e139216bb8d9fe0b6c3df28dadc75))
+* **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
+* **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
+* **medusa:** Add writable type ([1499bc5](https://github.com/medusajs/medusa/commit/1499bc52e36616ca9d67fd55bf5965478dff390f))
+* **medusa:** Export BaseEntity/SoftDeletableEntity from the core ([#1594](https://github.com/medusajs/medusa/issues/1594)) ([d0c679f](https://github.com/medusajs/medusa/commit/d0c679fc7ef318481bd767d50e91e2523e6f674d))
+* **medusa:** Export transaction related methods to the transactionBaseService ([99146b7](https://github.com/medusajs/medusa/commit/99146b74037b89c6893c97e77e43a1aaf1c2a3d4))
+* **medusa:** Improve base-service ([bfb81b8](https://github.com/medusajs/medusa/commit/bfb81b8b32fbba538010221f1a30fcc31aaa691e))
+* **medusa:** Improve buildQuery as well as refactor the cart service as an example ([b90291b](https://github.com/medusajs/medusa/commit/b90291b18d438e3bb7f5239f4470eec7b3c5ff03))
+* **medusa:** List batch jobs + Introduce composable handler pattern ([#1541](https://github.com/medusajs/medusa/issues/1541)) ([4489b75](https://github.com/medusajs/medusa/commit/4489b75f5ad669b7a53023e9afb07fb11dcb89d3))
+* **medusa:** Move some typings into the common types ([3ad9174](https://github.com/medusajs/medusa/commit/3ad91741b2e729638902d7c62ac99fdfe9a40b91))
+* **medusa:** Rename base-service.spec to transaction-base-service.spec ([f7ef3aa](https://github.com/medusajs/medusa/commit/f7ef3aac36ed3053c8880522cc95bb046c03ebda))
+* **medusa:** Split base service to its related TransactionBaseService and utilities methods when required ([e7e715a](https://github.com/medusajs/medusa/commit/e7e715ac177bd0b883ffa0d72a208580012bfbab))
+* **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
+* **medusa:** Update TransactionBaseService methods visibility ([ff9ff21](https://github.com/medusajs/medusa/commit/ff9ff214873a14b3b0abc419f53838b8d728eea9))
+
+
+
+
+
 # [1.3.0](https://github.com/medusajs/medusa/compare/@medusajs/medusa@1.2.1...@medusajs/medusa@1.3.0) (2022-05-01)
 
 

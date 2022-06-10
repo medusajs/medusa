@@ -1,0 +1,364 @@
+import styles from './development.module.css';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Set up your development environment
+
+This document will guide you to set up your development environment to efficiently and properly use Medusa.
+
+## Prerequisite Background Knowledge
+
+### JavaScript
+
+Medusa is built with JavaScript. If you’re not familiar with JavaScript, it is the language that runs in your browser to create dynamic web applications and has over the past decade gained a lot of traction as a backend language. If you wish to customize or extend Medusa, it is highly recommended that you learn how JavaScript works. 
+
+You can learn more about JavaScript with the [Basic JavaScript course from freeCodeCamp.](https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures/#basic-javascript)
+
+### Express
+
+Medusa uses [Express](https://expressjs.com), a Node.js web application framework, to create your ecommerce server. It facilitates creating REST APIs in Node.js. If you’re interested in customizing Medusa or understanding more about how it works, you should learn more about Express.
+
+You can learn more about Node.js and Express with the [Free 8-hour-long Node.js + Express course from freeCodeCamp](https://www.freecodecamp.org/news/free-8-hour-node-express-course/).
+
+### SQL
+
+SQL is a programming language used to interact with relational databases and store data in your ecommerce server. To understand how different entities relate to each other in Medusa it is helpful to have a good understanding of SQL. 
+
+You can learn more about SQL and relational databases with the [SQL and Databases course from freeCodeCamp.](https://www.freecodecamp.org/news/sql-and-databases-full-course/)
+
+### Command Line Interface (CLI)
+
+To install and use Medusa, you’ll need to be familiar with CLI tools. If you’re not familiar with the command line, it is a text interface for your computer. It is used to run commands such as starting a program, performing a task, or interfacing with the files on your computer.
+
+If you have never used the command line before you can check out [this tutorial](https://www.learnenough.com/command-line-tutorial) to get the basics in place.
+
+### Additional Information
+
+To get a further understanding of what powers Medusa you can lookup these concepts:
+
+- [REST APIs](https://en.wikipedia.org/wiki/Representational_state_transfer)
+- [Dependency Injection](https://en.wikipedia.org/wiki/Dependency_injection)
+- [Idempotency Keys](https://brandur.org/idempotency-keys)
+
+## Installations[](https://docs.medusajs.com/tutorial/set-up-your-development-environment#installations)
+
+To get your development environment ready you need to install the following tools:
+
+- [Node.js](#nodejs)
+- [Git](#git)
+- [Postgresql](#postgresql)
+- [Redis](#redis)
+- [Medusa CLI](#medusa-cli)
+- [Code Editor](#code-editor)
+
+### Node.js
+
+:::info
+
+Node.js is an environment that can execute JavaScript code outside of the browser, making it possible to run on a server. 
+
+Node.js has a bundled package manager called NPM. NPM helps you install "packages" which are small pieces of code that you can leverage in your Node.js applications. Medusa's core is itself a package distributed via NPM and so are all of the plugins that exist around the core.
+
+:::
+
+Node.js is the environment that makes it possible for Medusa to run, so you must install Node.js on your computer to start Medusa development.
+
+:::caution
+
+Medusa supports versions 14 and 16 of Node.js. You can check your Node.js version using the following command:
+
+```bash
+node -v
+```
+
+:::
+
+<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<TabItem value="windows" label="Windows" default>
+
+You can install the executable directly from [the Node.js website](https://nodejs.org/en/#home-downloadhead).
+
+For other approaches, you can check out [Node.js’s guide](https://nodejs.org/en/download/package-manager/#windows-1).
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+You can use the following commands to install Node.js on Ubuntu:
+
+```bash
+#Ubuntu
+sudo apt update
+sudo apt install nodejs
+```
+
+For other Linux distributions, you can check out [Node.js’s guide](https://nodejs.org/en/download/package-manager/).
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+You can use the following commands to install Node.js on macOS:
+
+<Tabs>
+<TabItem value="homebrew" label="Homebrew">
+
+```bash
+brew install node
+```
+
+</TabItem>
+<TabItem value="no-homebrew" label="Without Homebrew">
+
+```bash
+curl "https://nodejs.org/dist/latest/node-${VERSION:-$(wget -qO- https://nodejs.org/dist/latest/ | sed -nE 's|.*>node-(.*)\.pkg</a>.*|\1|p')}.pkg" > "$HOME/Downloads/node-latest.pkg" && sudo installer -store -pkg "$HOME/Downloads/node-latest.pkg" -target "/"
+```
+
+</TabItem>
+</Tabs>
+
+For other approaches, you can check out [Node.js’s guide](https://nodejs.org/en/download/package-manager/#macos).
+
+:::tip
+
+Make sure that you have Xcode command line tools installed; if not,  run the following command to install it: `xcode-select --install`
+
+:::
+</TabItem>
+</Tabs>
+
+### Git
+
+:::info
+
+Git is a version control system that keeps track of files within a project and makes it possible to do things like going back in history if you have made mistakes or collaborate with teammates without overriding each other's work.
+
+:::
+
+Medusa uses Git behind the scenes when you create a new project so you'll have to install it on your computer to get started.
+
+<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<TabItem value="windows" label="Windows" default>
+
+To install Git on Windows, you need to [download the installable package](https://git-scm.com/download/win).
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+For Debian/Ubuntu, you can use the following command:
+
+```bash
+apt-get install git
+```
+
+As for other Linux distributions, please check [git’s guide](https://git-scm.com/download/linux).
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+You should already have Git installed as part of the Xcode command-line tools.
+
+However, if for any reason you need to install it manually, you can install it with Homebrew:
+
+```bash
+brew install git
+```
+
+You can also check out [git’s guide](https://git-scm.com/download/mac) for more installation options.
+
+</TabItem>
+</Tabs>
+
+### PostgreSQL
+
+:::info
+
+PostgreSQL is an open-source relational database system with more than 30 years of active development. It is robust, reliable, and ensures data integrity so there's no need to worry about those when you scale your project.
+
+:::
+
+Although you can use an SQLite database with Medusa which would require no necessary database installations, it is recommended to use a PostgreSQL database for your server.
+
+<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<TabItem value="windows" label="Windows">
+
+You can [download the PostgreSQL Windows installer](https://www.postgresql.org/download/windows/) from their website.
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+If you’re using Ubuntu, you can use the following commands to download and install PostgreSQL:
+
+```bash
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt-get -y install postgresql
+```
+
+For other distributions, you can check out [PostgreSQL’s website for more guides](https://www.postgresql.org/download/linux/).
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+You can download PostgreSQL on your macOS using [the installer on their website](https://www.postgresql.org/download/macosx/).
+
+</TabItem>
+</Tabs>
+
+### Redis
+
+:::info
+
+Redis is an open-source in-memory data structure store. It can be used for distributing and emitting messages and caching, among other purposes.
+
+:::
+
+Medusa uses Redis as the event queue in the server. If you want to use subscribers to handle events such as when an order is placed and perform actions based on the events, then you need to install and configure Redis.
+
+If you don’t install and configure Redis with your Medusa server, then it will work without any events-related features.
+
+<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<TabItem value="windows" label="Windows">
+
+To use Redis on Windows, you must have [Windows Subsystem for Linux (WSL2) enabled](https://docs.microsoft.com/en-us/windows/wsl/install). This lets you run Linux binaries on Windows.
+
+After installing and enabling WSL2, if you use an Ubuntu distribution you can run the following commands to install Redis:
+
+```bash
+sudo apt-add-repository ppa:redislabs/redis
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install redis-server
+
+## Start Redis server
+sudo service redis-server start
+```
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+If you use Ubuntu you can use the following commands to install Redis:
+
+```bash
+curl -fsSL https://packages.redis.io/gpg | sudo gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/redis.list
+
+sudo apt-get update
+sudo apt-get install redis
+
+## Start Redis server
+sudo service redis-server start
+```
+
+For other distributions, you can check out [Redis’ guide on this](https://redis.io/docs/getting-started/installation/install-redis-on-linux/).
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+You can install Redis on macOS using Homebrew with the following command:
+
+```bash
+brew install redis
+
+## Start Redis server
+brew services start redis
+```
+
+To install Redis without Homebrew you can check out [Redis’s guide on installing it from source](https://redis.io/docs/getting-started/installation/install-redis-from-source/).
+
+</TabItem>
+</Tabs>
+
+### Medusa CLI
+
+The final installation required to get started with Medusa is the Medusa CLI. It is an NPM package you can install globally on your machine to get instant access to commands that help you manage and run your Medusa project.
+
+You can install Medusa’s CLI with the following command:
+
+```bash npm2yarn
+npm install @medusajs/medusa-cli -g
+```
+
+### Code editor
+
+If you don't already have a code editor of choice, we recommend using [VSCode](https://code.visualstudio.com/) as it is a widely used IDE (Integrated Development Environment) by developers.
+
+Here are some other options:
+
+- [Atom](https://atom.io/)
+- [Neovim](https://neovim.io/) (if you are super old school there's also plain [Vim](https://www.vim.org/))
+
+It is not important which editor you use as long as you feel comfortable working with it.
+
+## Configuring Your Server
+
+After installing all the requirements mentioned above and following along with our [quickstart guide](../quickstart/quick-start.md), you need to configure some information on your server to connect it to some of the requirements you installed.
+
+### PostgreSQL
+
+After creating a new database schema in PostgreSQL, you need to add the URL to connect to it on your Medusa server.
+
+To do that, add the following environment variable to the `.env` file on the root of your Medusa server:
+
+```bash
+DATABASE_URL=postgres://<USER>:<PASSWORD>@<HOST>:<PORT>/<DB_NAME>
+```
+
+Notice that there are some details in the URL above you need to fill in yourself:
+
+- `<USER>`: the username of the user that has access to the database schema you created.
+- `<PASSWORD>`: the password of the user that has access to the database schema you created.
+- `<HOST>`: the hostname where the PostgreSQL database is hosted. In local development, you can use `localhost`.
+- `<PORT>`: the port where the PostgreSQL database can be contacted on the host. By default, it’s 5432**.**
+- `<DB_NAME>`: the name of the database schema you created.
+
+Then, in `medusa-config.js`, change the following properties in the object `projecConfig`:
+
+```jsx
+module.exports = {
+  projectConfig: {
+    ...,
+    database_url: DATABASE_URL,
+    database_type: "postgres",
+    // comment out or remove these lines:
+    // database_database: "./medusa-db.sql",
+    // database_type: "sqlite",
+  },
+  plugins,
+};
+```
+
+The last recommended step is running the following command to migrate Medusa’s database schema into your database and seed the database with dummy data:
+
+```bash npm2yarn
+npm run seed
+```
+
+### Redis
+
+After installing Redis and running the Redis server, you must configure Medusa to use it.
+
+In `.env` add a new environment variable:
+
+```bash
+REDIS_URL=redis://localhost:6379
+```
+
+This is the default Redis URL to connect to, especially in development. However, if you’re deploying your server, have configured your Redis installation differently, or just need to check the format of the connection URL, you can check [this guide](https://github.com/lettuce-io/lettuce-core/wiki/Redis-URI-and-connection-details) for more details.
+
+:::tip
+
+If you use the default connection string mentioned here then you can skip over adding the environment variable.
+
+:::
+
+Then, in `medusa-config.js`, comment out the following line in the object `projectConfig`:
+
+```jsx
+redis_url: REDIS_URL,
+```
+
+## What’s Next 🚀
+
+- Learn how to install a storefront with [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](./../starters/gatsby-medusa-starter.md).
+- Learn how to install the [Medusa Admin](../admin/quickstart.md).

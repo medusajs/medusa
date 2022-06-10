@@ -22,7 +22,7 @@ export const simpleCustomerGroupFactory = async (
     data.id || `simple-customer-group-${Math.random() * 1000}`
   const c = manager.create(CustomerGroup, {
     id: customerGroupId,
-    name: data.name,
+    name: data.name || faker.company.companyName(),
   })
 
   const group = await manager.save(c)

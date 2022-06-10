@@ -1,9 +1,11 @@
 import {
   AdminDiscountsDeleteRes,
   AdminDiscountsRes,
+  AdminPostDiscountsDiscountConditions,
+  AdminPostDiscountsDiscountConditionsCondition,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
-  AdminPostDiscountsReq,
+  AdminPostDiscountsReq
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -113,5 +115,53 @@ export const useAdminDeleteDynamicDiscountCode = (
       [adminDiscountKeys.lists(), adminDiscountKeys.detail(id)],
       options
     )
+  )
+}
+
+export const useAdminDiscountCreateCondition = (
+  discountId: string,
+  options?: UseMutationOptions<
+    Response<AdminDiscountsRes>,
+    Error,
+    AdminPostDiscountsDiscountConditions
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostDiscountsDiscountConditions) =>
+      client.admin.discounts.createCondition(discountId, payload),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+  )
+}
+
+export const useAdminDiscountUpdateCondition = (
+  discountId: string,
+  conditionId: string,
+  options?: UseMutationOptions<
+    Response<AdminDiscountsRes>,
+    Error,
+    AdminPostDiscountsDiscountConditionsCondition
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostDiscountsDiscountConditionsCondition) =>
+      client.admin.discounts.updateCondition(discountId, conditionId, payload),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
+  )
+}
+
+export const useAdminDiscountRemoveCondition = (
+  discountId: string,
+  options?: UseMutationOptions<Response<AdminDiscountsDeleteRes>, Error, string>
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (conditionId: string) =>
+      client.admin.discounts.deleteCondition(discountId, conditionId),
+    buildOptions(queryClient, adminDiscountKeys.detail(discountId), options)
   )
 }

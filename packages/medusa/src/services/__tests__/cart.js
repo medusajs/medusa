@@ -204,7 +204,21 @@ describe("CartService", () => {
       },
     }
 
-    const addressRepository = MockRepository({ create: (c) => c })
+    const addressRepository = MockRepository({
+      create: (c) => c,
+      findOne: (id) => {
+        return {
+          id,
+          first_name: "LeBron",
+          last_name: "James",
+          address_1: "Dunk St",
+          city: "Dunkville",
+          province: "CA",
+          postal_code: "12345",
+          country_code: "us",
+        }
+      }
+    })
     const cartRepository = MockRepository()
     const customerService = {
       retrieveByEmail: jest.fn().mockReturnValue(
@@ -262,7 +276,7 @@ describe("CartService", () => {
       expect(cartRepository.save).toHaveBeenCalledTimes(1)
     })
 
-    it("creates a cart with a prefilled shipping address", async () => {
+    it("should throw shipping country not in region", async () => {
       const res = cartService.create({
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
@@ -279,7 +293,7 @@ describe("CartService", () => {
       await expect(res).rejects.toThrow("Shipping country not in region")
     })
 
-    it("creates a cart with a prefilled shipping address", async () => {
+    it("a cart with a prefilled shipping address", async () => {
       await cartService.create({
         region_id: IdMap.getId("testRegion"),
         shipping_address: {
@@ -2121,6 +2135,41 @@ describe("CartService", () => {
             ends_at: expect.any(Date),
           },
         ],
+      })
+    })
+
+    it("successfully remove all discounts that have been applied", async () => {
+      await cartService.update(IdMap.getId("with-d"), {
+        discounts: [],
+      })
+      expect(eventBusService.emit).toHaveBeenCalledTimes(1)
+      expect(eventBusService.emit).toHaveBeenCalledWith(
+        "cart.updated",
+        expect.any(Object)
+      )
+
+      expect(cartRepository.save).toHaveBeenCalledTimes(1)
+      expect(cartRepository.save).toHaveBeenCalledWith({
+        id: IdMap.getId("cart"),
+        region_id: IdMap.getId("good"),
+        discount_total: 0,
+        shipping_total: 0,
+        subtotal: 0,
+        tax_total: 0,
+        total: 0,
+        items: [
+          {
+            id: "li1",
+            quantity: 2,
+            unit_price: 1000,
+          },
+          {
+            id: "li2",
+            quantity: 1,
+            unit_price: 500,
+          },
+        ],
+        discounts: [],
       })
     })
   })

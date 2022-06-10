@@ -1,7 +1,7 @@
 import { Type } from "class-transformer"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import { identity, omit, pickBy } from "lodash"
 import { MedusaError } from "medusa-core-utils"
-import { IsNumber, IsString, IsOptional, ValidateNested } from "class-validator"
-import { omit, pickBy, identity } from "lodash"
 import {
   allowedAdminProductTypeFields,
   defaultAdminProductTypeFields,
@@ -10,9 +10,9 @@ import {
 import { ProductType } from "../../../../models/product-type"
 import ProductTypeService from "../../../../services/product-type"
 import {
-  StringComparisonOperator,
   DateComparisonOperator,
   FindConfig,
+  StringComparisonOperator,
 } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
@@ -101,12 +101,14 @@ export class AdminGetProductTypesPaginationParams {
 }
 
 export class AdminGetProductTypesParams extends AdminGetProductTypesPaginationParams {
-  @ValidateNested()
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   id?: string | string[] | StringComparisonOperator
 
-  @ValidateNested()
+  @IsString()
+  @IsOptional()
+  q?: string
+
   @IsType([String, [String], StringComparisonOperator])
   @IsOptional()
   value?: string | string[] | StringComparisonOperator

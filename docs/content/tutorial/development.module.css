@@ -1,0 +1,10 @@
+.osTabs {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 6.4px;
+  color: #000;
+}
+
+.osTabs li:not([aria-selected=true]) {
+  color: #000;
+}

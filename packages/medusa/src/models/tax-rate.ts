@@ -1,28 +1,23 @@
 import {
-  Entity,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
-  PrimaryColumn,
-  ManyToOne,
-  ManyToMany,
+  Entity,
   JoinColumn,
   JoinTable,
+  ManyToMany,
+  ManyToOne,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Region } from "./region"
 import { Product } from "./product"
 import { ProductType } from "./product-type"
 import { ShippingOption } from "./shipping-option"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class TaxRate {
-  @PrimaryColumn()
-  id: string
-
+export class TaxRate extends BaseEntity {
   @Column({ type: "real", nullable: true })
   rate: number | null
 
@@ -39,14 +34,8 @@ export class TaxRate {
   @JoinColumn({ name: "region_id" })
   region: Region
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @ManyToMany(() => Product)
   @JoinTable({
@@ -96,10 +85,8 @@ export class TaxRate {
   shipping_option_count?: number
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `txr_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "txr")
   }
 }
 

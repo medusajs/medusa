@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.39](https://github.com/medusajs/medusa/compare/medusa-payment-stripe@1.1.38...medusa-payment-stripe@1.1.39) (2022-05-31)
+
+
+### Features
+
+* **medusa-payment-stripe:** Ability to add payment description and improve status resolution ([#1404](https://github.com/medusajs/medusa/issues/1404)) ([327614e](https://github.com/medusajs/medusa/commit/327614e126d57b1c53ca95b2298c8e4ec1dd34fb))
+
+
+
+
+
 ## [1.1.38](https://github.com/medusajs/medusa/compare/medusa-payment-stripe@1.1.37...medusa-payment-stripe@1.1.38) (2022-01-11)
 
 **Note:** Version bump only for package medusa-payment-stripe
