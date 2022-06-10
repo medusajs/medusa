@@ -12,8 +12,7 @@ import { BatchJob } from "../models"
 
 export enum BatchJobStatus {
   CREATED = "created",
-  PRE_PROCESSING = "pre_processing",
-  READY = "ready",
+  PRE_PROCESSED = "pre_processed",
   CONFIRMED = "confirmed",
   PROCESSING = "processing",
   COMPLETED = "completed",
