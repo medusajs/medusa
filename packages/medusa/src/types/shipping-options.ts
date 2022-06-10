@@ -20,16 +20,6 @@ export type ShippingMethodUpdate = {
   claim_order_id?: string | null
 }
 
-export type ShippingOptionUpdate = {
-  metadata?: object
-  price_type?: ShippingOptionPriceType
-  amount?: number
-  name?: string
-  admin_only?: boolean
-  is_return?: boolean
-  requirements?: ShippingOptionRequirement[]
-}
-
 export type CreateShippingMethod = {
   data?: any
   shipping_option_id?: string
@@ -45,4 +35,32 @@ export type CreateShippingMethod = {
 export type CreateShippingMethodDto = CreateShippingMethod & {
   cart?: Cart
   order?: Order
+}
+
+export type CreateShippingOptionProps = {
+  price_type: ShippingOptionPriceType
+  name: string
+  region_id: string
+  profile_id: string
+  provider_id: string
+  data: Record<string, unknown>
+
+  amount?: number
+  is_return?: boolean
+  admin_only?: boolean
+  metadata?: Record<string, unknown>
+  requirements?: ShippingOptionRequirement[]
+}
+
+export type UpdateShippingOptionProps = {
+  metadata?: Record<string, unknown>
+  price_type?: ShippingOptionPriceType
+  amount?: number
+  name?: string
+  admin_only?: boolean
+  is_return?: boolean
+  requirements?: ShippingOptionRequirement[]
+  region_id?: string
+  provider_id?: string
+  data?: string
 }
