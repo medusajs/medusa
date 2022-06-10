@@ -2,7 +2,7 @@ import glob from "glob"
 import { Express } from "express"
 import { EntitySchema } from "typeorm"
 import {
-  BaseService,
+  BaseService as LegacyBaseService,
   PaymentService,
   FulfillmentService,
   NotificationService,
@@ -10,7 +10,7 @@ import {
   OauthService,
   SearchService,
 } from "medusa-interfaces"
-import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
+import { createRequireFromPath } from "medusa-core-utils"
 import _ from "lodash"
 import path from "path"
 import fs from "fs"
@@ -20,7 +20,7 @@ import {
   AbstractTaxService,
   isFileService,
   isTaxCalculationStrategy,
-  TransactionBaseService,
+  TransactionBaseService as BaseService,
 } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
 import {
@@ -296,8 +296,8 @@ export async function registerServices(
       const name = formatRegistrationName(fn)
 
       if (
-        !(loaded.prototype instanceof BaseService) &&
-        !(loaded.prototype instanceof TransactionBaseService)
+        !(loaded.prototype instanceof LegacyBaseService) &&
+        !(loaded.prototype instanceof BaseService)
       ) {
         const logger = container.resolve<Logger>("logger")
         const message = `The class must be a valid service implementation, please check ${fn}`
