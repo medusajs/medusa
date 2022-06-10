@@ -14,12 +14,8 @@ import { MedusaError } from "medusa-core-utils"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
-import {
-  ClaimItemReason,
-  ClaimItemReasonValue,
-  ClaimTypeValue,
-} from "../../../../types/claim"
-import { ClaimType } from "../../../../models"
+import { ClaimTypeValue } from "../../../../types/claim"
+import { ClaimType, ClaimReason } from "../../../../models"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -422,9 +418,9 @@ class Item {
   @IsOptional()
   note?: string
 
-  @IsEnum(ClaimItemReason)
+  @IsEnum(ClaimReason)
   @IsOptional()
-  reason?: ClaimItemReasonValue
+  reason?: ClaimReason
 
   @IsArray()
   @IsOptional()
