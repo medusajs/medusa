@@ -45,7 +45,7 @@ Medusa is an open-source headless commerce engine that enables developers to cre
    ```bash
    npm install -g @medusajs/medusa-cli
    ```
-2. **Create a new Medusa project**
+2. **Create a new Medusa project shh**
    ```
    medusa new my-medusa-store --seed
    ```
