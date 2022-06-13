@@ -1,4 +1,11 @@
-export const countries = [
+export type Country = {
+  alpha2: string
+  name: string
+  alpha3: string
+  numeric: string
+}
+
+export const countries: Country[] = [
   { alpha2: "AF", name: "Afghanistan", alpha3: "AFG", numeric: "004" },
   { alpha2: "AL", name: "Albania", alpha3: "ALB", numeric: "008" },
   { alpha2: "DZ", name: "Algeria", alpha3: "DZA", numeric: "012" },

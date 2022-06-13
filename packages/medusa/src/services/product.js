@@ -1,8 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
-import { Brackets } from "typeorm"
-import { formatException } from "../utils/exception-formatter"
 import { defaultAdminProductsVariantsRelations } from "../api/routes/admin/products"
+import { formatException } from "../utils/exception-formatter"
 
 /**
  * Provides layer to manipulate products.
@@ -107,13 +106,13 @@ class ProductService extends BaseService {
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
-      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
-      const raw = await qb.getMany()
-      return productRepo.findWithRelations(
-        relations,
-        raw.map((i) => i.id),
-        query.withDeleted ?? false
+      const [products] = await productRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
       )
+
+      return products
     }
 
     return await productRepo.findWithRelations(relations, query)
@@ -145,16 +144,19 @@ class ProductService extends BaseService {
 
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
+    let products
+    let count
     if (q) {
-      const qb = this.getFreeTextQueryBuilder_(productRepo, query, q)
-      const [raw, count] = await qb.getManyAndCount()
-
-      const products = await productRepo.findWithRelations(
-        relations,
-        raw.map((i) => i.id),
-        query.withDeleted ?? false
+      ;[products, count] = await productRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query,
+        relations
       )
-      return [products, count]
+    } else {
+      ;[products, count] = await productRepo.findWithRelationsAndCount(
+        relations,
+        query
+      )
     }
 
     return await productRepo.findWithRelationsAndCount(relations, query)

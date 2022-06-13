@@ -1,5 +1,9 @@
-import { defaultAdminDiscountsRelations } from "."
+import { IsOptional, IsString } from "class-validator"
+import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { Discount } from "../../../../models"
 import DiscountService from "../../../../services/discount"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
+import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts/code/{code}
  * operationId: "GetDiscountsDiscountCode"
@@ -23,11 +27,30 @@ import DiscountService from "../../../../services/discount"
 export default async (req, res) => {
   const { code } = req.params
 
-  const discountService: DiscountService = req.scope.resolve("discountService")
-  const discount = await discountService.retrieveByCode(
-    code,
-    defaultAdminDiscountsRelations
+  const validated = await validator(
+    AdminGetDiscountsDiscountCodeParams,
+    req.query
   )
 
+  const config = getRetrieveConfig<Discount>(
+    defaultAdminDiscountsFields,
+    defaultAdminDiscountsRelations,
+    validated?.fields?.split(",") as (keyof Discount)[],
+    validated?.expand?.split(",")
+  )
+
+  const discountService: DiscountService = req.scope.resolve("discountService")
+  const discount = await discountService.retrieveByCode(code, config)
+
   res.status(200).json({ discount })
+}
+
+export class AdminGetDiscountsDiscountCodeParams {
+  @IsOptional()
+  @IsString()
+  expand?: string
+
+  @IsOptional()
+  @IsString()
+  fields?: string
 }

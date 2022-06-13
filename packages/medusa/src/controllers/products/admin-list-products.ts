@@ -24,6 +24,7 @@ const listAndCount = async (
   body?: object,
   context: ListContext = { limit: 50, offset: 0 }
 ): Promise<AdminProductsListRes> => {
+  const productService: ProductService = scope.resolve("productService")
   const { limit, offset, allowedFields, defaultFields, defaultRelations } =
     context
 

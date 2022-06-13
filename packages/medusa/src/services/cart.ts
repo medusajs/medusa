@@ -705,7 +705,14 @@ class CartService extends TransactionBaseService<CartService> {
           cart.shipping_methods.map(async (shippingMethod) => {
             // if free shipping discount is removed, we adjust the shipping
             // back to its original amount
-            shippingMethod.price = shippingMethod.shipping_option.amount
+            // if shipping option amount is null, we assume the option is calculated
+            shippingMethod.price =
+              shippingMethod.shipping_option.amount ??
+              (await this.shippingOptionService_.getPrice_(
+                shippingMethod.shipping_option,
+                shippingMethod.data,
+                cart
+              ))
             return shippingMethodRepository.save(shippingMethod)
           })
         )
@@ -1046,7 +1053,7 @@ class CartService extends TransactionBaseService<CartService> {
       async (transactionManager: EntityManager) => {
         const discount = await this.discountService_
           .withTransaction(transactionManager)
-          .retrieveByCode(discountCode, ["rule", "regions"])
+          .retrieveByCode(discountCode, { relations: ["rule", "regions"] })
 
         await this.discountService_
           .withTransaction(transactionManager)

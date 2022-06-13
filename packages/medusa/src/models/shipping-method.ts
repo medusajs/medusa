@@ -44,7 +44,7 @@ export class ShippingMethod {
 
   @Index()
   @Column({ nullable: true })
-  claim_order_id: string
+  claim_order_id: string | null
 
   @ManyToOne(() => ClaimOrder)
   @JoinColumn({ name: "claim_order_id" })

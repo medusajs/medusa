@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.1](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.2.0...medusa-plugin-algolia@0.2.1) (2022-05-31)
+
+**Note:** Version bump only for package medusa-plugin-algolia
+
+
+
+
+
 # [0.2.0](https://github.com/medusajs/medusa/compare/medusa-plugin-algolia@0.1.1...medusa-plugin-algolia@0.2.0) (2022-05-01)
 
 **Note:** Version bump only for package medusa-plugin-algolia
