@@ -56,7 +56,7 @@ export class ShippingOption extends SoftDeletableEntity {
   price_type: ShippingOptionPriceType
 
   @Column({ type: "int", nullable: true })
-  amount: number
+  amount: number | null
 
   @Column({ default: false })
   is_return: boolean
