@@ -9,6 +9,20 @@ export type FileServiceGetUploadStreamResult = {
   writeStream: stream.PassThrough
   promise: Promise<any>
   url: string
+  fileKey: string
+  [x: string]: unknown
+}
+
+export type GetUploadedFileType = {
+  fileKey: string
+  [x: string]: unknown
+}
+
+export type UploadStreamDescriptorType = {
+  name: string
+  ext?: string
+  acl?: string
+  [x: string]: unknown
 }
 
 export interface IFileService<T extends TransactionBaseService<any>>
@@ -71,18 +85,6 @@ export abstract class AbstractFileService<T extends TransactionBaseService<any>>
   abstract getPresignedDownloadUrl(
     fileData: GetUploadedFileType
   ): Promise<string>
-}
-
-export type GetUploadedFileType = {
-  key: string
-  [x: string]: unknown
-}
-
-export type UploadStreamDescriptorType = {
-  name: string
-  ext?: string
-  acl?: string
-  [x: string]: unknown
 }
 
 export const isFileService = (object: unknown): boolean => {

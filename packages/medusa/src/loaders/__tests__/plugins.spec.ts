@@ -151,7 +151,7 @@ describe("plugins loader", () => {
           getFolderTestTargetDirectoryPath("strategies"),
           "test-batch-1.js"
         ),
-        buildBatchJobStrategyTemplate("test", "type-1")
+        buildBatchJobStrategyTemplate("testBatch1", "type-1")
       )
       writeFileSync(
         resolve(
@@ -165,14 +165,14 @@ describe("plugins loader", () => {
           getFolderTestTargetDirectoryPath("strategies"),
           "test-batch-2.js"
         ),
-        buildBatchJobStrategyTemplate("test2", "type-1")
+        buildBatchJobStrategyTemplate("testBatch2", "type-1")
       )
       writeFileSync(
         resolve(
           getFolderTestTargetDirectoryPath("strategies"),
           "test-batch-3.js"
         ),
-        buildBatchJobStrategyTemplate("test3", "type-2")
+        buildBatchJobStrategyTemplate("testBatch3", "type-2")
       )
       writeFileSync(
         resolve(getFolderTestTargetDirectoryPath("strategies"), "test-tax.js"),
@@ -223,23 +223,26 @@ describe("plugins loader", () => {
       expect(batchJobStrategies.length).toBe(3)
     })
 
-    it("registers batch job strategies in arrays according to type", () => {
-      const batchJobStrategies: (...args: unknown[]) => any =
+    it("registers batch job strategies by type and only keep the last", () => {
+      const batchJobStrategy: (...args: unknown[]) => any =
         container.resolve("batchType_type-1")
 
-      expect(batchJobStrategies).toBeTruthy()
-      expect(Array.isArray(batchJobStrategies)).toBeTruthy()
-      expect(batchJobStrategies.length).toBe(2)
+      expect(batchJobStrategy).toBeTruthy()
+      expect(batchJobStrategy.constructor.name).toBe("testBatch2BatchStrategy")
+      expect((batchJobStrategy.constructor as any).batchType).toBe("type-1")
+      expect((batchJobStrategy.constructor as any).identifier).toBe(
+        "testBatch2-identifier"
+      )
     })
 
     it("registers batch job strategies by identifier", () => {
       const batchJobStrategy: (...args: unknown[]) => any = container.resolve(
-        "batch_test3-identifier"
+        "batch_testBatch3-identifier"
       )
 
       expect(batchJobStrategy).toBeTruthy()
       expect(Array.isArray(batchJobStrategy)).toBeFalsy()
-      expect(batchJobStrategy.constructor.name).toBe("test3BatchStrategy")
+      expect(batchJobStrategy.constructor.name).toBe("testBatch3BatchStrategy")
     })
   })
 
