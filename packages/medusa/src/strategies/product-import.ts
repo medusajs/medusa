@@ -196,9 +196,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const data = await this.csvParser_.parse(csvStream)
     const results = await this.csvParser_.buildData(data)
 
-    const ops = this.getImportInstructions(results)
+    const ops = await this.getImportInstructions(results)
 
-    console.log(ops)
     await this.setImportDataToRedis(batchJobId, ops)
 
     await this.batchJobService_.update(batchJobId, {
