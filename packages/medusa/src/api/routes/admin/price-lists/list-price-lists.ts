@@ -6,6 +6,7 @@ import PriceListService from "../../../../services/price-list"
 import { FindConfig } from "../../../../types/common"
 import { FilterablePriceListProps } from "../../../../types/price-list"
 import { validator } from "../../../../utils/validator"
+import { Request } from "express"
 /**
  * @oas [get] /price-lists
  * operationId: "GetPriceLists"
@@ -35,46 +36,15 @@ import { validator } from "../../../../utils/validator"
  *               description: The limit of the Price List query.
  *               type: integer
  */
-export default async (req, res) => {
-  const validated = await validator(
-    AdminGetPriceListPaginationParams,
-    req.query
-  )
+export default async (req: Request, res) => {
+  const validated = req.validatedQuery
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const listConfig: FindConfig<FilterablePriceListProps> = {
-    relations: expandFields,
-    skip: validated.offset,
-    take: validated.limit,
-    order: { created_at: "DESC" } as { [k: string]: "DESC" },
-  }
-
-  if (typeof validated.order !== "undefined") {
-    if (validated.order.startsWith("-")) {
-      const [, field] = validated.order.split("-")
-      listConfig.order = { [field]: "DESC" }
-    } else {
-      listConfig.order = { [validated.order]: "ASC" }
-    }
-  }
-
-  const filterableFields: FilterablePriceListProps = omit(validated, [
-    "limit",
-    "offset",
-    "expand",
-    "order",
-  ])
-
   const [price_lists, count] = await priceListService.listAndCount(
-    filterableFields,
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
   res.json({
