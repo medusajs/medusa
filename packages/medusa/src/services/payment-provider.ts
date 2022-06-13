@@ -489,7 +489,7 @@ export default class PaymentProviderService extends TransactionBaseService<
     payObjs: Payment[],
     amount: number,
     reason: string,
-    note: string
+    note?: string
   ): Promise<Refund> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
