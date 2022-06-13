@@ -1,4 +1,3 @@
-import { string } from "joi"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
