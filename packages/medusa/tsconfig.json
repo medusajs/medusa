@@ -20,12 +20,7 @@
     "allowJs": true,
     "skipLibCheck": true,
     "downlevelIteration": true, // to use ES5 specific tooling
-    "baseUrl": ".",
-    "paths": {
-      "@models/*": [
-        "./src/models/*"
-      ]
-    }
+    "baseUrl": "."
   },
   "include": [
     "./src/**/*",

@@ -246,11 +246,11 @@ class KlarnaProviderService extends AbstractPaymentService {
 
   /**
    * Status for Klarna order.
-   * @param {PaymentSessionData} paymentSessionsData - payment session data from cart
+   * @param {PaymentSessionData} paymentSessionData - payment session data from cart
    * @returns {Promise<PaymentSessionStatus>} the status of the Klarna order
    */
-  async getStatus(paymentSessionsData) {
-    const { order_id } = paymentSessionsData
+  async getStatus(paymentSessionData) {
+    const { order_id } = paymentSessionData
     const { data: order } = await this.klarna_.get(
       `${this.klarnaOrderUrl_}/${order_id}`
     )

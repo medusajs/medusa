@@ -7,7 +7,7 @@ import { PaymentRepository } from "../repositories/payment"
 import { RefundRepository } from "../repositories/refund"
 import { PaymentProviderRepository } from "../repositories/payment-provider"
 import { PaymentProvider } from "@models/payment-provider"
-import { buildQuery, validateId } from "../utils"
+import { buildQuery } from "../utils"
 import { Payment } from "@models/payment"
 import { FindConfig, Selector } from "../types/common"
 import { PaymentSession, PaymentSessionStatus } from "@models/payment-session"
@@ -90,10 +90,8 @@ export default class PaymentProviderService extends TransactionBaseService<
         const paymentRepo = transactionManager.getCustomRepository(
           this.paymentRepository_
         )
-        const validatedId = validateId(id)
-
         const query = {
-          where: { id: validatedId },
+          where: { id },
           relations: [] as string[],
         }
 
@@ -143,10 +141,9 @@ export default class PaymentProviderService extends TransactionBaseService<
         const sessionRepo = transactionManager.getCustomRepository(
           this.paymentSessionRepository_
         )
-        const validatedId = validateId(id)
 
         const query = {
-          where: { id: validatedId },
+          where: { id },
           relations: [] as string[],
         }
 

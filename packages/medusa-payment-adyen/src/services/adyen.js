@@ -1,10 +1,10 @@
 import axios from "axios"
 import _ from "lodash"
 import { hmacValidator } from "@adyen/api-library"
-import { TransactionBaseService, PaymentSessionStatus } from "@medusajs/medusa"
+import { AbstractPaymentService, PaymentSessionStatus } from "@medusajs/medusa"
 import { Client, Config, CheckoutAPI } from "@adyen/api-library"
 
-class AdyenService extends TransactionBaseService {
+class AdyenService extends AbstractPaymentService {
   constructor({ cartService }, options) {
     super({ cartService }, options)
 
