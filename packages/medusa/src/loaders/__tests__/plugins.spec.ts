@@ -13,6 +13,12 @@ const buildServiceTemplate = (name: string) => {
     export default class ${name}Service extends BaseService {}
   `
 }
+const buildTransactionBaseServiceServiceTemplate = (name: string) => {
+  return `
+    import { TransactionBaseService } from "${resolve(__dirname, "../../interfaces")}"
+    export default class ${name}Service extends TransactionBaseService {}
+  `
+}
 
 describe('plugins loader', () => {
   const container = createContainer() as MedusaContainer
@@ -30,6 +36,7 @@ describe('plugins loader', () => {
       mkdirSync(servicesTestTargetDirectoryPath, { mode: "777", recursive: true })
       writeFileSync(resolve(servicesTestTargetDirectoryPath, "test.js"), buildServiceTemplate("test"))
       writeFileSync(resolve(servicesTestTargetDirectoryPath, "test2.js"), buildServiceTemplate("test2"))
+      writeFileSync(resolve(servicesTestTargetDirectoryPath, "test3.js"), buildTransactionBaseServiceServiceTemplate("test3"))
       writeFileSync(resolve(servicesTestTargetDirectoryPath, "test2.js.map"), "map:file")
       writeFileSync(resolve(servicesTestTargetDirectoryPath, "test2.d.ts"), "export interface Test {}")
     })
@@ -51,11 +58,14 @@ describe('plugins loader', () => {
 
       const testService: (...args: unknown[]) => any = container.resolve("testService")
       const test2Service: (...args: unknown[]) => any = container.resolve("test2Service")
+      const test3Service: (...args: unknown[]) => any = container.resolve("test3Service")
 
       expect(testService).toBeTruthy()
       expect(testService.constructor.name).toBe("testService")
       expect(test2Service).toBeTruthy()
       expect(test2Service.constructor.name).toBe("test2Service")
+      expect(test3Service).toBeTruthy()
+      expect(test3Service.constructor.name).toBe("test3Service")
     })
   })
 })
