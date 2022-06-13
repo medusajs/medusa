@@ -1,16 +1,29 @@
 import jwt from "jsonwebtoken"
 import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import Scrypt from "scrypt-kdf"
-import { Brackets, ILike } from "typeorm"
+import { EntityManager } from "typeorm"
+import { StorePostCustomersCustomerAddressesAddressReq } from "../api"
+import { TransactionBaseService } from "../interfaces"
+import { Address, Customer } from "../models"
+import { AddressRepository } from "../repositories/address"
+import { CustomerRepository } from "../repositories/customer"
+import { AddressCreatePayload, FindConfig, Selector } from "../types/common"
+import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
+import EventBusService from "./event-bus"
 
 /**
  * Provides layer to manipulate customers.
- * @implements {BaseService}
  */
-class CustomerService extends BaseService {
+class CustomerService extends TransactionBaseService<CustomerService> {
+  protected readonly customerRepository_: typeof CustomerRepository
+  protected readonly addressRepository_: typeof AddressRepository
+  protected readonly eventBusService_: EventBusService
+
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
   static Events = {
     PASSWORD_RESET: "customer.password_reset",
     CREATED: "customer.created",
@@ -22,37 +35,16 @@ class CustomerService extends BaseService {
     customerRepository,
     eventBusService,
     addressRepository,
+    logger,
   }) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
 
-    /** @private @const {CustomerRepository} */
     this.customerRepository_ = customerRepository
-
-    /** @private @const {EventBus} */
-    this.eventBus_ = eventBusService
-
-    /** @private @const {AddressRepository} */
+    this.eventBusService_ = eventBusService
     this.addressRepository_ = addressRepository
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new CustomerService({
-      manager: transactionManager,
-      customerRepository: this.customerRepository_,
-      eventBusService: this.eventBus_,
-      addressRepository: this.addressRepository_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   /**
@@ -64,7 +56,7 @@ class CustomerService extends BaseService {
    * @param {string} customerId - the customer to reset the password for
    * @return {string} the generated JSON web token
    */
-  async generateResetPasswordToken(customerId) {
+  async generateResetPasswordToken(customerId: string): Promise<string> {
     const customer = await this.retrieve(customerId, {
       select: [
         "id",
@@ -88,7 +80,7 @@ class CustomerService extends BaseService {
     const payload = { customer_id: customer.id, exp: expiry }
     const token = jwt.sign(payload, secret)
     // Notify subscribers
-    this.eventBus_.emit(CustomerService.Events.PASSWORD_RESET, {
+    this.eventBusService_.emit(CustomerService.Events.PASSWORD_RESET, {
       id: customerId,
       email: customer.email,
       first_name: customer.first_name,
@@ -103,7 +95,10 @@ class CustomerService extends BaseService {
    * @param {Object} config - the config object containing query settings
    * @return {Promise} the result of the find operation
    */
-  async list(selector = {}, config = { relations: [], skip: 0, take: 50 }) {
+  async list(
+    selector: Selector<Customer> & { q?: string } = {},
+    config: FindConfig<Customer> = { relations: [], skip: 0, take: 50 }
+  ): Promise<Customer[]> {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
@@ -114,29 +109,10 @@ class CustomerService extends BaseService {
       delete selector.q
     }
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
-    if (q) {
-      const where = query.where
-
-      delete where.email
-      delete where.first_name
-      delete where.last_name
-
-      query.where = (qb) => {
-        qb.where(where)
-
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where({ email: ILike(`%${q}%`) })
-              .orWhere({ first_name: ILike(`%${q}%`) })
-              .orWhere({ last_name: ILike(`%${q}%`) })
-          })
-        )
-      }
-    }
-
-    return customerRepo.find(query)
+    const [customers] = await customerRepo.listAndCount(query, q)
+    return customers
   }
 
   /**
@@ -146,8 +122,13 @@ class CustomerService extends BaseService {
    */
   async listAndCount(
     selector,
-    config = { relations: [], skip: 0, take: 50, order: { created_at: "DESC" } }
-  ) {
+    config: FindConfig<Customer> = {
+      relations: [],
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<[Customer[], number]> {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
@@ -158,42 +139,20 @@ class CustomerService extends BaseService {
       delete selector.q
     }
 
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
 
-    const groups = query.where.groups
-    delete query.where.groups
-
-    if (q) {
-      const where = query.where
-
-      delete where.email
-      delete where.first_name
-      delete where.last_name
-
-      query.where = (qb) => {
-        qb.where(where)
-        qb.andWhere(
-          new Brackets((qb) => {
-            qb.where({ email: ILike(`%${q}%`) })
-              .orWhere({ first_name: ILike(`%${q}%`) })
-              .orWhere({ last_name: ILike(`%${q}%`) })
-          })
-        )
-      }
-    }
-
-    return await customerRepo.listAndCount(query, groups)
+    return await customerRepo.listAndCount(query, q)
   }
 
   /**
    * Return the total number of documents in database
    * @return {Promise} the result of the count operation
    */
-  count() {
+  async count(): Promise<number> {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
-    return customerRepo.count({})
+    return await customerRepo.count({})
   }
 
   /**
@@ -202,13 +161,12 @@ class CustomerService extends BaseService {
    * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieve(customerId, config = {}) {
+  async retrieve(customerId, config = {}): Promise<Customer> {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
 
-    const validatedId = this.validateId_(customerId)
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const query = buildQuery({ id: customerId }, config)
 
     const customer = await customerRepo.findOne(query)
     if (!customer) {
@@ -227,12 +185,12 @@ class CustomerService extends BaseService {
    * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieveByEmail(email, config = {}) {
+  async retrieveByEmail(email, config = {}): Promise<Customer> {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
 
-    const query = this.buildQuery_({ email: email.toLowerCase() }, config)
+    const query = buildQuery({ email: email.toLowerCase() }, config)
     const customer = await customerRepo.findOne(query)
 
     if (!customer) {
@@ -251,12 +209,12 @@ class CustomerService extends BaseService {
    * @param {Object} config - the config object containing query settings
    * @return {Promise<Customer>} the customer document.
    */
-  async retrieveByPhone(phone, config = {}) {
+  async retrieveByPhone(phone, config = {}): Promise<Customer> {
     const customerRepo = this.manager_.getCustomRepository(
       this.customerRepository_
     )
 
-    const query = this.buildQuery_({ phone }, config)
+    const query = buildQuery({ phone }, config)
     const customer = await customerRepo.findOne(query)
 
     if (!customer) {
@@ -274,7 +232,7 @@ class CustomerService extends BaseService {
    * @param {string} password - the value to hash
    * @return {Promise<string>} hashed password
    */
-  async hashPassword_(password) {
+  async hashPassword_(password): Promise<string> {
     const buf = await Scrypt.kdf(password, { logN: 1, r: 1, p: 1 })
     return buf.toString("base64")
   }
@@ -287,7 +245,7 @@ class CustomerService extends BaseService {
    * @param {object} customer - the customer to create
    * @return {Promise} the result of create
    */
-  async create(customer) {
+  async create(customer): Promise<Customer> {
     return this.atomicPhase_(async (manager) => {
       const customerRepository = manager.getCustomRepository(
         this.customerRepository_
@@ -314,7 +272,7 @@ class CustomerService extends BaseService {
 
         const toUpdate = { ...existing, ...customer }
         const updated = await customerRepository.save(toUpdate)
-        await this.eventBus_
+        await this.eventBusService_
           .withTransaction(manager)
           .emit(CustomerService.Events.UPDATED, updated)
         return updated
@@ -328,7 +286,7 @@ class CustomerService extends BaseService {
 
         const created = await customerRepository.create(customer)
         const result = await customerRepository.save(created)
-        await this.eventBus_
+        await this.eventBusService_
           .withTransaction(manager)
           .emit(CustomerService.Events.CREATED, result)
         return result
@@ -343,7 +301,7 @@ class CustomerService extends BaseService {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  async update(customerId, update) {
+  async update(customerId, update): Promise<Customer> {
     return this.atomicPhase_(
       async (manager) => {
         const customerRepository = manager.getCustomRepository(
@@ -363,7 +321,7 @@ class CustomerService extends BaseService {
         } = update
 
         if (metadata) {
-          customer.metadata = this.setMetadata_(customer, metadata)
+          customer.metadata = setMetadata(customer, metadata)
         }
 
         if ("billing_address_id" in update || "billing_address" in update) {
@@ -387,7 +345,7 @@ class CustomerService extends BaseService {
 
         const updated = await customerRepository.save(customer)
 
-        await this.eventBus_
+        await this.eventBusService_
           .withTransaction(manager)
           .emit(CustomerService.Events.UPDATED, updated)
         return updated
@@ -405,7 +363,7 @@ class CustomerService extends BaseService {
    * @param {Object} addrRepo - address repository
    * @return {Promise} the result of the update operation
    */
-  async updateBillingAddress_(customer, addressOrId, addrRepo) {
+  async updateBillingAddress_(customer, addressOrId, addrRepo): Promise<void> {
     if (addressOrId === null) {
       customer.billing_address_id = null
       return
@@ -438,26 +396,35 @@ class CustomerService extends BaseService {
     }
   }
 
-  async updateAddress(customerId, addressId, address) {
+  async updateAddress(
+    customerId,
+    addressId,
+    address: StorePostCustomersCustomerAddressesAddressReq
+  ): Promise<Address> {
     return this.atomicPhase_(async (manager) => {
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
-      address.country_code = address.country_code.toLowerCase()
+      address.country_code = address.country_code?.toLowerCase()
 
       const toUpdate = await addressRepo.findOne({
         where: { id: addressId, customer_id: customerId },
       })
 
+      if (!toUpdate) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Could not find address for customer"
+        )
+      }
       for (const [key, value] of Object.entries(address)) {
         toUpdate[key] = value
       }
 
-      const result = addressRepo.save(toUpdate)
-      return result
+      return addressRepo.save(toUpdate)
     })
   }
 
-  async removeAddress(customerId, addressId) {
+  async removeAddress(customerId, addressId): Promise<void> {
     return this.atomicPhase_(async (manager) => {
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
@@ -476,13 +443,16 @@ class CustomerService extends BaseService {
     })
   }
 
-  async addAddress(customerId, address) {
+  async addAddress(
+    customerId,
+    address: AddressCreatePayload
+  ): Promise<Customer | Address> {
     return this.atomicPhase_(async (manager) => {
       const addressRepository = manager.getCustomRepository(
         this.addressRepository_
       )
 
-      address.country_code = address.country_code.toLowerCase()
+      address.country_code = address.country_code.toLowerCase() ?? null
 
       const customer = await this.retrieve(customerId, {
         relations: ["shipping_addresses"],
@@ -490,7 +460,8 @@ class CustomerService extends BaseService {
 
       const shouldAdd = !customer.shipping_addresses.find(
         (a) =>
-          a.country_code.toLowerCase() === address.country_code.toLowerCase() &&
+          a.country_code?.toLowerCase() ===
+            address.country_code.toLowerCase() &&
           a.address_1 === address.address_1 &&
           a.address_2 === address.address_2 &&
           a.city === address.city &&
@@ -503,8 +474,8 @@ class CustomerService extends BaseService {
 
       if (shouldAdd) {
         const created = await addressRepository.create({
-          customer_id: customerId,
           ...address,
+          customer_id: customerId,
         })
         const result = await addressRepository.save(created)
         return result
@@ -520,7 +491,7 @@ class CustomerService extends BaseService {
    *   castable as an ObjectId
    * @return {Promise} the result of the delete operation.
    */
-  async delete(customerId) {
+  async delete(customerId): Promise<unknown> {
     return this.atomicPhase_(async (manager) => {
       const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
@@ -531,25 +502,8 @@ class CustomerService extends BaseService {
         return Promise.resolve()
       }
 
-      await customerRepo.softRemove(customer)
-
-      return Promise.resolve()
+      return await customerRepo.softRemove(customer)
     })
-  }
-
-  /**
-   * Decorates a customer.
-   * @param {Customer} customer - the cart to decorate.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {Customer} return the decorated customer.
-   */
-  async decorate(customer, fields = [], expandFields = []) {
-    const requiredFields = ["_id", "metadata"]
-    const decorated = _.pick(customer, fields.concat(requiredFields))
-
-    const final = await this.runDecorators_(decorated)
-    return final
   }
 }
 
