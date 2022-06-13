@@ -534,10 +534,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       const { context, ...rest } = data
       if (context) {
-        batchJob.context = await this.validateBatchContext(
-          batchJob.type,
-          context
-        )
+        batchJob.context = { ...batchJob.context, ...context }
       }
 
       Object.keys(rest)
@@ -611,9 +608,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async complete(
-    batchJobOrId: string | BatchJob
-  ): Promise<BatchJob | never> {
+  async complete(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
