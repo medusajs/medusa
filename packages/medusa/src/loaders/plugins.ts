@@ -353,7 +353,7 @@ export async function registerServices(
 
       if (
         loaded.prototype instanceof AbstractPaymentService ||
-        loaded.prototype instanceof BasePaymentService
+        loaded.prototype instanceof PaymentService
       ) {
         // Register our payment providers to paymentProviders
         container.registerAdd(
