@@ -43,6 +43,6 @@ export class CustomerRepository extends Repository<Customer> {
       })
     }
 
-    return qb.getManyAndCount()
+    return await qb.getManyAndCount()
   }
 }
