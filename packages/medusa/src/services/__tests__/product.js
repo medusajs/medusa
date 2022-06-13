@@ -61,7 +61,7 @@ describe("ProductService", () => {
       const result = await productService.retrieve(IdMap.getId("ironman"))
 
       expect(productRepo.findOneWithRelations).toHaveBeenCalledTimes(1)
-      expect(productRepo.findOneWithRelations).toHaveBeenCalledWith(undefined, {
+      expect(productRepo.findOneWithRelations).toHaveBeenCalledWith([], {
         where: { id: IdMap.getId("ironman") },
       })
 
