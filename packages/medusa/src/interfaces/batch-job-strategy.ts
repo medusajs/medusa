@@ -6,9 +6,9 @@ export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
    * Method for preparing a batch job for processing
    */
   prepareBatchJobForProcessing(
-    batchJobEntity: object,
+    batchJobEntity: AdminPostBatchesReq,
     req: Express.Request
-  ): Promise<object>
+  ): Promise<BatchJobCreateProps>
 
   /**
    * Method for pre-processing a batch job
