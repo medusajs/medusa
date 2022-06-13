@@ -122,34 +122,31 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   }
 
   getImportInstructions(csvData: any[]): Record<OperationType, any[]> {
-    const products: Record<string, any> = {}
-    const variants: Record<string, any> = {}
+    const productsCreate: Record<string, any> = {}
 
-    // const transactionManager = this.transactionManager_ ?? this.manager_
-    //
-    // const productRepo = transactionManager.getCustomRepository(
-    //   this.productRepo_
-    // )
-    //
-    // const productVariantRepo = transactionManager.getCustomRepository(
-    //   this.productVariantRepo_
-    // )
+    const variantsCreate = []
+    const variantsUpdate = []
 
-    // TODO: for now, pretend that every record is op == create
     csvData.forEach((row) => {
       // is variant OP
-      if (row.sku) {
-        variants[row.sku] = { ...variants[row.sku], ...row }
+      if (row.variantId || row.sku) {
+        variantsUpdate.push(row)
       } else {
-        products[row.handle] = { ...products[row.handle], ...row }
+        variantsCreate.push(row)
+      }
+
+      // save only first occurrence
+      if (!productsCreate[row.handle]) {
+        productsCreate[row.handle] = row
+        // TODO: is it update or crete
       }
     })
 
     return {
-      [OperationType.ProductCreate]: Object.values(products),
-      [OperationType.VariantCreate]: Object.values(variants),
+      [OperationType.ProductCreate]: Object.values(productsCreate),
+      [OperationType.VariantCreate]: variantsCreate,
       [OperationType.ProductUpdate]: [],
-      [OperationType.VariantUpdate]: [],
+      [OperationType.VariantUpdate]: variantsUpdate,
     }
   }
 

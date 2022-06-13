@@ -115,7 +115,8 @@ describe("Product import strategy", () => {
 
   it("`prepareBatchJobForProcessing` should parse CSV from context", async () => {
     await productImportStrategy.prepareBatchJobForProcessing(fakeJob.id, {})
-    expect(redisClient.client.call).toBeCalledTimes(1)
+
+    expect(redisClient.client.call).toBeCalledTimes(4)
 
     // expect(redisClient.client.call).toBeCalledWith(
     //   "JSON.SET",
