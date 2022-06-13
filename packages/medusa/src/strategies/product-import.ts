@@ -144,31 +144,40 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     throw new Error("Not implemented!")
   }
 
-  getImportInstructions(csvData: any[]): Record<OperationType, any[]> {
-    const productsCreate: Record<string, any> = {}
+  async getImportInstructions(
+    csvData: any[]
+  ): Promise<Record<OperationType, any[]>> {
+    const productRepo = this.manager_.getCustomRepository(this.productRepo_)
+
+    const seenProducts = {}
+
+    const productsCreate = []
+    const productsUpdate = []
 
     const variantsCreate = []
     const variantsUpdate = []
 
-    csvData.forEach((row) => {
-      // is variant OP
-      if (row.variantId || row.sku) {
+    for (const row of csvData) {
+      if (row.variantId) {
         variantsUpdate.push(row)
       } else {
         variantsCreate.push(row)
       }
 
       // save only first occurrence
-      if (!productsCreate[row.handle]) {
-        productsCreate[row.handle] = row
-        // TODO: is it update or crete
+      if (!seenProducts[row.handle]) {
+        const exists = await productRepo.productWithHandleExists(row.handle)
+
+        ;(exists ? productsUpdate : productsCreate).push(row)
+
+        seenProducts[row.handle] = true
       }
-    })
+    }
 
     return {
-      [OperationType.ProductCreate]: Object.values(productsCreate),
+      [OperationType.ProductCreate]: productsCreate,
       [OperationType.VariantCreate]: variantsCreate,
-      [OperationType.ProductUpdate]: [],
+      [OperationType.ProductUpdate]: productsUpdate,
       [OperationType.VariantUpdate]: variantsUpdate,
     }
   }
