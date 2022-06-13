@@ -279,10 +279,7 @@ class DraftOrderService extends TransactionBaseService<DraftOrderService> {
           data
 
         if (rawCart.discounts) {
-          const discounts = [...rawCart.discounts]
-          rawCart.discounts.length = 0
-
-          for (const { code } of discounts) {
+          for (const { code } of rawCart.discounts) {
             await this.cartService_
               .withTransaction(transactionManager)
               .applyDiscount(rawCart as Cart, code)
@@ -366,8 +363,10 @@ class DraftOrderService extends TransactionBaseService<DraftOrderService> {
   ): Promise<UpdateResult> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
-        return await transactionManager.update(
-          DraftOrder,
+        const draftOrderRepo = transactionManager.getCustomRepository(
+          this.draftOrderRepository_
+        )
+        return await draftOrderRepo.update(
           {
             id: draftOrderId,
           },
