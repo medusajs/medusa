@@ -84,6 +84,7 @@ const managerMock = MockManager
 const productRepositoryMock = {
   ...MockRepository(),
   save: () => {},
+  productWithHandleExists: () => false,
 }
 
 const productVariantRepositoryMock = {
