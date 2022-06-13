@@ -1,19 +1,13 @@
 import {
-  Entity,
   BeforeInsert,
   Column,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  PrimaryColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
-  JoinTable,
-  JoinColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
 import { TaxRate } from "./tax-rate"
@@ -21,12 +15,12 @@ import { Country } from "./country"
 import { PaymentProvider } from "./payment-provider"
 import { FulfillmentProvider } from "./fulfillment-provider"
 import { TaxProvider } from "./tax-provider"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Region {
-  @PrimaryColumn()
-  id: string
-
+export class Region extends SoftDeletableEntity {
   @Column()
   name: string
 
@@ -96,23 +90,12 @@ export class Region {
   })
   fulfillment_providers: FulfillmentProvider[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `reg_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "reg")
   }
 }
 

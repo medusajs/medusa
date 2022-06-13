@@ -12,8 +12,8 @@ export default function TabsWrapper(props) {
   }, [])
 
   return (
-    <>
+    <div className={`tabs-wrapper ${props.wrapperClassName}`}>
       <Tabs {...props} />
-    </>
+    </div>
   );
 }

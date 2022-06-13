@@ -149,6 +149,37 @@ Object {
 }
 `;
 
+exports[`/admin/price-lists POST /admin/price-lists/:id updates price list prices (inser a new MA for a specific region) 1`] = `
+Array [
+  Object {
+    "amount": 101,
+    "created_at": Any<String>,
+    "currency_code": "eur",
+    "deleted_at": null,
+    "id": Any<String>,
+    "max_quantity": null,
+    "min_quantity": null,
+    "price_list_id": "pl_with_some_ma",
+    "region_id": "region-pl",
+    "updated_at": Any<String>,
+    "variant_id": "test-variant",
+  },
+  Object {
+    "amount": 1001,
+    "created_at": Any<String>,
+    "currency_code": "usd",
+    "deleted_at": null,
+    "id": "ma_test_4",
+    "max_quantity": null,
+    "min_quantity": null,
+    "price_list_id": "pl_with_some_ma",
+    "region_id": null,
+    "updated_at": Any<String>,
+    "variant_id": "test-variant",
+  },
+]
+`;
+
 exports[`/admin/price-lists POST /admin/price-lists/:id updates the amount and currency of a price in the price list 1`] = `
 Object {
   "amount": 250,
@@ -285,6 +316,50 @@ Array [
     "max_quantity": 4000,
     "min_quantity": 3001,
     "price_list_id": "pl_no_customer_groups",
+    "region_id": null,
+    "updated_at": Any<String>,
+    "variant_id": "test-variant",
+  },
+]
+`;
+
+exports[`/admin/price-lists POST /admin/price-lists/:id/prices/batch Adds a batch of new prices where a MA record have a \`region_id\` instead of \`currency_code\` 1`] = `
+Array [
+  Object {
+    "amount": 70,
+    "created_at": Any<String>,
+    "currency_code": "usd",
+    "deleted_at": null,
+    "id": "ma_test_4",
+    "max_quantity": null,
+    "min_quantity": null,
+    "price_list_id": "pl_with_some_ma",
+    "region_id": null,
+    "updated_at": Any<String>,
+    "variant_id": "test-variant",
+  },
+  Object {
+    "amount": 100,
+    "created_at": Any<String>,
+    "currency_code": "eur",
+    "deleted_at": null,
+    "id": Any<String>,
+    "max_quantity": null,
+    "min_quantity": null,
+    "price_list_id": "pl_with_some_ma",
+    "region_id": "region-pl",
+    "updated_at": Any<String>,
+    "variant_id": "test-variant",
+  },
+  Object {
+    "amount": 200,
+    "created_at": Any<String>,
+    "currency_code": "usd",
+    "deleted_at": null,
+    "id": Any<String>,
+    "max_quantity": null,
+    "min_quantity": null,
+    "price_list_id": "pl_with_some_ma",
     "region_id": null,
     "updated_at": Any<String>,
     "variant_id": "test-variant",

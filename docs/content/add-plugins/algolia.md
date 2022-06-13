@@ -57,7 +57,7 @@ And that's all! You've now enabled Algolia for your Medusa store engine. The plu
 
 **Usage**
 
-This article will not go too much into depth about how the search functionality works under the hood when querying the API. We refer to the [previous article on MeiliSearch](https://www.medusajs.com/post/meilisearch-and-medusa) if this is of your interest. In there, you will find a quick showcase using Postman as well as a thorough walkthrough of how you can display the results in your storefront using ReactJS (GatsbyJS).
+This article will not go too much into depth about how the search functionality works under the hood when querying the API. We refer to the [previous article on MeiliSearch](https://medusajs.com/blog/meilisearch-medusa) if this is of your interest. In there, you will find a quick showcase using Postman as well as a thorough walkthrough of how you can display the results in your storefront using ReactJS (GatsbyJS).
 
 Instead, to illustrate the power of our Search API and search engine plugins, we'll switch out a MeiliSearch plugin with our new Algolia plugin in a store with existing products. Upon restarting the server with the new configuration, your products will automatically be fed into Algolia and the search functionality in your frontend will remain unchanged.
 

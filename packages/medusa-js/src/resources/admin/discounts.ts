@@ -1,9 +1,14 @@
 import {
+  AdminDiscountConditionsRes,
   AdminDiscountsDeleteRes,
   AdminDiscountsListRes,
   AdminDiscountsRes,
-  AdminGetDiscountParams,
+  AdminGetDiscountsDiscountConditionsConditionParams,
   AdminGetDiscountsParams,
+  AdminPostDiscountsDiscountConditions,
+  AdminPostDiscountsDiscountConditionsCondition,
+  AdminPostDiscountsDiscountConditionsConditionParams,
+  AdminPostDiscountsDiscountConditionsParams,
   AdminPostDiscountsDiscountDynamicCodesReq,
   AdminPostDiscountsDiscountReq,
   AdminPostDiscountsReq,
@@ -132,6 +137,76 @@ class AdminDiscountsResource extends BaseResource {
   ): ResponsePromise<AdminDiscountsRes> {
     const path = `/admin/discounts/${id}/regions/${regionId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * @description creates a discount condition
+   */
+  createCondition(
+    discountId: string,
+    payload: AdminPostDiscountsDiscountConditions,
+    query: AdminPostDiscountsDiscountConditionsParams = {},
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
+    let path = `/admin/discounts/${discountId}/conditions`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/discounts/${discountId}/conditions?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Updates a discount condition
+   */
+  updateCondition(
+    discountId: string,
+    conditionId: string,
+    payload: AdminPostDiscountsDiscountConditionsCondition,
+    query: AdminPostDiscountsDiscountConditionsConditionParams = {},
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsRes> {
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
+    }
+
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * @description Removes a condition from a discount
+   */
+  deleteCondition(
+    discountId: string,
+    conditionId: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountsDeleteRes> {
+    const path = `/admin/discounts/${discountId}/conditions/${conditionId}`
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * @description Gets a condition from a discount
+   */
+  getCondition(
+    discountId: string,
+    conditionId: string,
+    query?: AdminGetDiscountsDiscountConditionsConditionParams,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDiscountConditionsRes> {
+    let path = `/admin/discounts/${discountId}/conditions/${conditionId}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/discounts/${discountId}/conditions/${conditionId}?${queryString}`
+    }
+
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }
 

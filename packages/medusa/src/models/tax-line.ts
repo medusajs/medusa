@@ -1,15 +1,8 @@
-import {
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-  PrimaryColumn,
-} from "typeorm"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { Column } from "typeorm"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
-export class TaxLine {
-  @PrimaryColumn()
-  id: string
-
+export class TaxLine extends BaseEntity {
   @Column({ type: "real" })
   rate: number
 
@@ -19,14 +12,8 @@ export class TaxLine {
   @Column({ type: "varchar", nullable: true })
   code: string | null
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 }
 
 /**

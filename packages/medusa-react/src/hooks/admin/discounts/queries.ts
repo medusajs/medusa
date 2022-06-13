@@ -1,7 +1,9 @@
 import {
+  AdminDiscountConditionsRes,
   AdminDiscountsListRes,
   AdminDiscountsRes,
   AdminGetDiscountParams,
+  AdminGetDiscountsDiscountConditionsConditionParams,
   AdminGetDiscountsParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -12,7 +14,16 @@ import { queryKeysFactory } from "../../utils/index"
 
 const ADMIN_DISCOUNTS_QUERY_KEY = `admin_discounts` as const
 
-export const adminDiscountKeys = queryKeysFactory(ADMIN_DISCOUNTS_QUERY_KEY)
+export const adminDiscountKeys = {
+  ...queryKeysFactory(ADMIN_DISCOUNTS_QUERY_KEY),
+  detailCondition(id: string, query?: any) {
+    return [
+      ...this.detail(id),
+      "condition" as const,
+      { ...(query || {}) },
+    ] as const
+  },
+}
 
 type DiscountQueryKeys = typeof adminDiscountKeys
 
@@ -63,6 +74,25 @@ export const useAdminGetDiscountByCode = (
   const { data, ...rest } = useQuery(
     adminDiscountKeys.detail(code),
     () => client.admin.discounts.retrieveByCode(code),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+
+export const useAdminGetDiscountCondition = (
+  id: string,
+  conditionId: string,
+  query?: AdminGetDiscountsDiscountConditionsConditionParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminDiscountConditionsRes>,
+    Error,
+    ReturnType<DiscountQueryKeys["detailCondition"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminDiscountKeys.detailCondition(conditionId),
+    () => client.admin.discounts.getCondition(id, conditionId, query),
     options
   )
   return { ...data, ...rest } as const

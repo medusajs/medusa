@@ -17,8 +17,8 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import EventBusService from "../services/event-bus"
-import RegionService from "../services/region"
+import EventBusService from "./event-bus"
+import RegionService from "./region"
 import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,
@@ -751,7 +751,7 @@ class ProductVariantService extends BaseService {
 
       const variant = await variantRepo.findOne({
         where: { id: variantId },
-        relations: ["prices"],
+        relations: ["prices", "options"],
       })
 
       if (!variant) {

@@ -222,6 +222,92 @@ describe("/admin/orders", () => {
       }),
     ])
   })
+
+  test("receives a return with a claimed line item", async () => {
+    await adminSeeder(dbConnection)
+
+    const order = await createReturnableOrder(dbConnection, { shipped: true })
+    const option = await simpleShippingOptionFactory(dbConnection, {
+      region_id: "test-region",
+    })
+    const api = useApi()
+
+    const createRes = await api.post(
+      `/admin/orders/${order.id}/claims`,
+      {
+        type: "replace",
+        shipping_methods: [
+          {
+            option_id: option.id,
+            price: 0,
+          },
+        ],
+        additional_items: [{ variant_id: "test-variant", quantity: 1 }],
+        claim_items: [
+          {
+            item_id: "test-item",
+            reason: "missing_item",
+            quantity: 1,
+          },
+        ],
+      },
+      { headers: { authorization: "Bearer test_token" } }
+    )
+
+    const claimId = createRes.data.order.claims[0].id
+    const claimLineItem = createRes.data.order.claims[0].additional_items[0]
+
+    const claimFulfillmentCreatedResponse = await api.post(
+      `/admin/orders/${order.id}/claims/${claimId}/fulfillments`,
+      {},
+      { headers: { authorization: "Bearer test_token" } }
+    )
+
+    const fulfillmentId =
+      claimFulfillmentCreatedResponse.data.order.claims[0].fulfillments[0].id
+    await api.post(
+      `/admin/orders/${order.id}/claims/${claimId}/shipments`,
+      { fulfillment_id: fulfillmentId },
+      { headers: { authorization: "Bearer test_token" } }
+    )
+
+    const returnCreatedResponse = await api.post(
+      `/admin/orders/${order.id}/return`,
+      {
+        items: [
+          {
+            item_id: claimLineItem.id,
+            quantity: 1,
+            note: "TOO SMALL",
+          },
+        ],
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    const returnOrder = returnCreatedResponse.data.order.returns[0]
+    const returnId = returnOrder.id
+    const returnReceivedResponse = await api.post(
+      `/admin/returns/${returnId}/receive`,
+      {
+        items: returnOrder.items.map((i) => ({
+          item_id: i.item_id,
+          quantity: i.quantity,
+        })),
+      },
+      {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      }
+    )
+
+    expect(returnReceivedResponse.status).toEqual(200)
+  })
 })
 
 const createReturnableOrder = async (dbConnection, options) => {
@@ -258,6 +344,8 @@ const createReturnableOrder = async (dbConnection, options) => {
         id: "test-item",
         variant_id: "test-variant",
         quantity: 2,
+        fulfilled_quantity: options.shipped ? 2 : undefined,
+        shipped_quantity: options.shipped ? 2 : undefined,
         unit_price: 1000,
         adjustments: [
           {

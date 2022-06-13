@@ -1,4 +1,4 @@
-const { PriceList, MoneyAmount } = require("@medusajs/medusa")
+const { Region, PriceList, MoneyAmount } = require("@medusajs/medusa")
 
 module.exports = async (connection, data = {}) => {
   const manager = connection.manager
@@ -14,6 +14,13 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(priceListNoCustomerGroups)
+
+  await manager.insert(Region, {
+    id: "region-pl",
+    name: "Test Region",
+    currency_code: "eur",
+    tax_rate: 0,
+  })
 
   const moneyAmount1 = await manager.create(MoneyAmount, {
     id: "ma_test_1",
@@ -50,4 +57,27 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(moneyAmount3)
+
+  const moneyAmount4 = await manager.create(MoneyAmount, {
+    id: "ma_test_4",
+    amount: 70,
+    currency_code: "usd",
+    variant_id: "test-variant",
+  })
+
+  await manager.save(moneyAmount4)
+
+  const priceListWithMA = await manager.create(PriceList, {
+    id: "pl_with_some_ma",
+    name: "Weeken sale",
+    description: "Desc. of the list",
+    type: "sale",
+    status: "active",
+    starts_at: "2022-07-01T00:00:00.000Z",
+    ends_at: "2022-07-31T00:00:00.000Z",
+  })
+
+  priceListWithMA.prices = [moneyAmount4]
+
+  await manager.save(priceListWithMA)
 }

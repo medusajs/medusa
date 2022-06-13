@@ -1,6 +1,5 @@
 import {
   Entity,
-  DeleteDateColumn,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
@@ -36,7 +35,7 @@ export class ProductTaxRate {
   updated_at: Date
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 }
 
 /**

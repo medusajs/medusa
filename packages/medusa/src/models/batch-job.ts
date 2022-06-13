@@ -1,21 +1,11 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
-import { ulid } from "ulid"
+import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
 import { BatchJobStatus } from "../types/batch-job"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class BatchJob {
-  @PrimaryColumn()
-  id: string
-
+export class BatchJob extends SoftDeletableEntity {
   @DbAwareColumn({ type: "text" })
   type: string
 
@@ -31,20 +21,9 @@ export class BatchJob {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   result: Record<string, unknown>
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date | null
-
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `batch_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "batch")
   }
 }
 
