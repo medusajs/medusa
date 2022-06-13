@@ -137,32 +137,13 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     )
   }
 
-  async validateBatchContext(
-    type: string,
-    context: Record<string, unknown>
-  ): Promise<Record<string, unknown>> {
-    // TODO validate context with batch job strategy corresponding to the given type
-
-    return context
-  }
-
   async create(data: BatchJobCreateProps): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
       const batchJobRepo: BatchJobRepository = manager.getCustomRepository(
         this.batchJobRepository_
       )
 
-      const validatedContext = await this.validateBatchContext(
-        data.type,
-        data.context
-      )
-
-      const toCreate = {
-        ...data,
-        context: validatedContext,
-      } as DeepPartial<BatchJob>
-
-      const batchJob = batchJobRepo.create(toCreate)
+      const batchJob = batchJobRepo.create(data)
       const result = await batchJobRepo.save(batchJob)
 
       await this.eventBus_
@@ -188,10 +169,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
       const { context, ...rest } = data
       if (context) {
-        batchJob.context = await this.validateBatchContext(
-          batchJob.type,
-          context
-        )
+        batchJob.context = { ...batchJob.context, ...context }
       }
 
       Object.keys(rest)
@@ -265,9 +243,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async complete(
-    batchJobOrId: string | BatchJob
-  ): Promise<BatchJob | never> {
+  async complete(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob: BatchJob = batchJobOrId as BatchJob
       if (typeof batchJobOrId === "string") {
