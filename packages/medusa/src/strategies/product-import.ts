@@ -34,20 +34,43 @@ enum OperationType {
 
 const BATCH_SIZE = 100
 
-function pickProductDataFromRow(
-  data: Record<string, string>
-): Record<string, string> {
-  const productKeysPredicate = (key: string): boolean => /product./.test(key)
+/* ********** UTILS ********** */
 
-  return pickBy(data, productKeysPredicate)
-}
-
-function pickVariantDataFromRow(
-  data: Record<string, string>
+function pickObjectPropsByRegex(
+  data: Record<string, string>,
+  regex: RegExp
 ): Record<string, string> {
-  const variantKeyPredicate = (key: string): boolean => /variant./.test(key)
+  const variantKeyPredicate = (key: string): boolean => regex.test(key)
 
   return pickBy(data, variantKeyPredicate)
+}
+
+function transformProductData(
+  data: Record<string, string>
+): Record<string, string> {
+  const ret = {}
+  const productData = pickObjectPropsByRegex(data, /product./)
+
+  Object.keys(productData).forEach((k) => {
+    const key = k.split("product.")[1]
+    ret[key] = productData[k]
+  })
+
+  return ret
+}
+
+function transformVariantData(
+  data: Record<string, string>
+): Record<string, string> {
+  const ret = {}
+  const productData = pickObjectPropsByRegex(data, /variant./)
+
+  Object.keys(productData).forEach((k) => {
+    const key = k.split("variant.")[1]
+    ret[key] = productData[k]
+  })
+
+  return ret
 }
 
 /**
@@ -165,6 +188,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const results = await this.csvParser_.buildData(data)
 
     const ops = this.getImportInstructions(results)
+
+    console.log(ops)
     await this.setImportDataToRedis(batchJobId, ops)
 
     await this.batchJobService_.update(batchJobId, {
@@ -179,67 +204,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   async processJob(batchJobId: string): Promise<BatchJob> {
     return await this.atomicPhase_(async (transactionManager) => {
-      let batchJob = await this.batchJobService_
+      await this.createProducts(batchJobId, transactionManager)
+
+      await this.createVariants(batchJobId, transactionManager)
+
+      return await this.batchJobService_
         .withTransaction(transactionManager)
         .retrieve(batchJobId)
-
-      const productRepo = transactionManager.getCustomRepository(
-        this.productRepo_ as any
-      )
-
-      const productVariantRepo = transactionManager.getCustomRepository(
-        this.productVariantRepo_ as any
-      )
-
-      const total = batchJob.context.total
-
-      const productOps = await this.getImportDataFromRedis(
-        batchJob.id,
-        OperationType.ProductCreate
-      )
-
-      //  ========== PRODUCTS CREATE ==========
-
-      // await productRepo.save(
-      //   productOps.map((op) => op.data),
-      //   { chunk: BATCH_SIZE }
-      // )
-      //
-      // batchJob = await this.batchJobService_.update(batchJobId, {
-      //   ...batchJob.context,
-      //   progress: productOps.length / total,
-      // })
-
-      for (const productOp of productOps) {
-        await this.productService_.create(
-          pickProductDataFromRow(productOp.data) // TODO: pick keys before saving to Redis
-        )
-      }
-
-      //  ========== VARIANTS CREATE ==========
-
-      // await productVariantRepo.save(
-      //   variantOps.map((op) => op.data),
-      //   { chunk: BATCH_SIZE }
-      // )
-      //
-      // batchJob = await this.batchJobService_.update(batchJobId, {
-      //   ...batchJob.context,
-      //   progress: variantOps.length / total,
-      // })
-
-      const variantOps = await this.getImportDataFromRedis(
-        batchJob.id,
-        OperationType.VariantCreate
-      )
-
-      for (const variantOp of variantOps) {
-        await this.productVariantService_.create(
-          pickVariantDataFromRow(variantOp.data)
-        )
-      }
-
-      return batchJob
     })
   }
 
@@ -252,6 +223,56 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     } else {
       return batchJob
     }
+  }
+
+  private async createProducts(
+    batchJobId: string,
+    transactionManager: EntityManager
+  ): Promise<void> {
+    const productOps = await this.getImportDataFromRedis(
+      batchJobId,
+      OperationType.ProductCreate
+    )
+
+    for (const productOp of productOps) {
+      await this.productService_.create(
+        transformProductData(productOp.data) // TODO: pick keys before saving to Redis
+      )
+    }
+  }
+
+  private async createVariants(
+    batchJobId: string,
+    transactionManager: EntityManager
+  ): Promise<void> {
+    const variantOps = await this.getImportDataFromRedis(
+      batchJobId,
+      OperationType.VariantCreate
+    )
+
+    for (const variantOp of variantOps) {
+      await this.productVariantService_.create(
+        transformVariantData(variantOp.data)
+      )
+    }
+  }
+
+  private async updateProgress(
+    processedRowsCount: number,
+    batchJobId: string,
+    transactionManager: EntityManager
+  ): Promise<void> {
+    const batchJob = await this.batchJobService_
+      .withTransaction(transactionManager)
+      .retrieve(batchJobId)
+
+    const progress = batchJob.context.progress + processedRowsCount
+
+    await this.batchJobService_
+      .withTransaction(transactionManager)
+      .update(batchJobId, {
+        context: { progress },
+      })
   }
 
   async setImportDataToRedis(
