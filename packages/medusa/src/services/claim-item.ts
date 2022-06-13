@@ -1,12 +1,31 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
+import { EntityManager } from "typeorm"
+import { TransactionBaseService as BaseService } from "../interfaces"
+import { ClaimImage, ClaimItem, ClaimTag } from "../models"
+import { ClaimImageRepository } from "../repositories/claim-image"
+import { ClaimItemRepository } from "../repositories/claim-item"
+import { ClaimTagRepository } from "../repositories/claim-tag"
+import { CreateClaimItemInput } from "../types/claim"
+import { FindConfig, Selector } from "../types/common"
+import { buildQuery, setMetadata } from "../utils"
+import EventBusService from "./event-bus"
+import LineItemService from "./line-item"
 
-class ClaimItemService extends BaseService {
+class ClaimItemService extends BaseService<ClaimItemService> {
   static Events = {
     CREATED: "claim_item.created",
     UPDATED: "claim_item.updated",
     CANCELED: "claim_item.canceled",
   }
+
+  protected readonly lineItemService_: LineItemService
+  protected readonly eventBus_: EventBusService
+  protected readonly claimItemRepository_: typeof ClaimItemRepository
+  protected readonly claimTagRepository_: typeof ClaimTagRepository
+  protected readonly claimImageRepository_: typeof ClaimImageRepository
+
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
 
   constructor({
     manager,
@@ -16,45 +35,22 @@ class ClaimItemService extends BaseService {
     lineItemService,
     eventBusService,
   }) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    /** @private @constant {EntityManager} */
     this.manager_ = manager
-
-    /** @private @constant {ClaimRepository} */
     this.claimItemRepository_ = claimItemRepository
     this.claimTagRepository_ = claimTagRepository
     this.claimImageRepository_ = claimImageRepository
-
-    /** @private @constant {LineItemService} */
     this.lineItemService_ = lineItemService
-
-    /** @private @constant {EventBus} */
     this.eventBus_ = eventBusService
   }
 
-  withTransaction(manager) {
-    if (!manager) {
-      return this
-    }
-
-    const cloned = new ClaimItemService({
-      manager,
-      claimItemRepository: this.claimItemRepository_,
-      claimTagRepository: this.claimTagRepository_,
-      claimImageRepository: this.claimImageRepository_,
-      lineItemService: this.lineItemService_,
-      eventBusService: this.eventBus_,
-    })
-
-    cloned.transactionManager_ = manager
-
-    return cloned
-  }
-
-  create(data) {
-    return this.atomicPhase_(async (manager) => {
-      const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
+  async create(data: CreateClaimItemInput): Promise<ClaimItem> {
+    return await this.atomicPhase_(async (manager) => {
+      const ciRepo: ClaimItemRepository = manager.getCustomRepository(
+        this.claimItemRepository_
+      )
 
       const { item_id, reason, quantity, tags, images, ...rest } = data
 
@@ -81,7 +77,7 @@ class ClaimItemService extends BaseService {
         )
       }
 
-      let tagsToAdd = []
+      let tagsToAdd: ClaimTag[] = []
       if (tags && tags.length) {
         const claimTagRepo = manager.getCustomRepository(
           this.claimTagRepository_
@@ -100,7 +96,7 @@ class ClaimItemService extends BaseService {
         )
       }
 
-      let imagesToAdd = []
+      let imagesToAdd: ClaimImage[] = []
       if (images && images.length) {
         const claimImgRepo = manager.getCustomRepository(
           this.claimImageRepository_
@@ -110,7 +106,7 @@ class ClaimItemService extends BaseService {
         })
       }
 
-      const created = ciRepo.create({
+      const toCreate: Partial<ClaimItem> = {
         ...rest,
         variant_id: lineItem.variant_id,
         tags: tagsToAdd,
@@ -118,7 +114,8 @@ class ClaimItemService extends BaseService {
         item_id,
         reason,
         quantity,
-      })
+      }
+      const created = ciRepo.create(toCreate)
 
       const result = await ciRepo.save(created)
 
@@ -132,7 +129,7 @@ class ClaimItemService extends BaseService {
     })
   }
 
-  update(id, data) {
+  async update(id, data): Promise<ClaimItem> {
     return this.atomicPhase_(async (manager) => {
       const ciRepo = manager.getCustomRepository(this.claimItemRepository_)
       const item = await this.retrieve(id, { relations: ["images", "tags"] })
@@ -148,7 +145,7 @@ class ClaimItemService extends BaseService {
       }
 
       if (metadata) {
-        item.metadata = this.setMetadata_(item, metadata)
+        item.metadata = setMetadata(item, metadata)
       }
 
       if (tags) {
@@ -209,19 +206,21 @@ class ClaimItemService extends BaseService {
     })
   }
 
-  async cancel(id) {}
-
   /**
    * @param {Object} selector - the query object for find
    * @param {Object} config - the config object for find
    * @return {Promise} the result of the find operation
    */
   async list(
-    selector,
-    config = { skip: 0, take: 50, order: { created_at: "DESC" } }
-  ) {
+    selector: Selector<ClaimItem>,
+    config: FindConfig<ClaimItem> = {
+      skip: 0,
+      take: 50,
+      order: { created_at: "DESC" },
+    }
+  ): Promise<ClaimItem[]> {
     const ciRepo = this.manager_.getCustomRepository(this.claimItemRepository_)
-    const query = this.buildQuery_(selector, config)
+    const query = buildQuery(selector, config)
     return ciRepo.find(query)
   }
 
@@ -231,13 +230,14 @@ class ClaimItemService extends BaseService {
    * @param {Object} config - configuration for the find operation
    * @return {Promise<Order>} the ClaimItem
    */
-  async retrieve(id, config = {}) {
+  async retrieve(
+    id: string,
+    config: FindConfig<ClaimItem> = {}
+  ): Promise<ClaimItem> {
     const claimItemRepo = this.manager_.getCustomRepository(
       this.claimItemRepository_
     )
-    const validatedId = this.validateId_(id)
-
-    const query = this.buildQuery_({ id: validatedId }, config)
+    const query = buildQuery({ id }, config)
     const item = await claimItemRepo.findOne(query)
 
     if (!item) {
@@ -248,30 +248,6 @@ class ClaimItemService extends BaseService {
     }
 
     return item
-  }
-
-  /**
-   * Dedicated method to delete metadata for an order.
-   * @param {string} orderId - the order to delete metadata from.
-   * @param {string} key - key for metadata field
-   * @return {Promise} resolves to the updated result.
-   */
-  async deleteMetadata(orderId, key) {
-    const validatedId = this.validateId_(orderId)
-
-    if (typeof key !== "string") {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "Key type is invalid. Metadata keys must be strings"
-      )
-    }
-
-    const keyPath = `metadata.${key}`
-    return this.orderModel_
-      .updateOne({ _id: validatedId }, { $unset: { [keyPath]: "" } })
-      .catch((err) => {
-        throw new MedusaError(MedusaError.Types.DB_ERROR, err.message)
-      })
   }
 }
 

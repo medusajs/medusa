@@ -18,7 +18,7 @@ export class BatchJob extends SoftDeletableEntity {
   created_by_user: User
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  context: Record<string, unknown>
+  context: { retry_count?: number; max_retry?: number } & Record<string, unknown>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   result: Record<string, unknown>
@@ -27,7 +27,7 @@ export class BatchJob extends SoftDeletableEntity {
   dry_run: boolean = false;
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  awaiting_confirmation_at?: Date
+  pre_processed_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   processing_at?: Date
@@ -42,9 +42,6 @@ export class BatchJob extends SoftDeletableEntity {
   canceled_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  ready_at?: Date
-
-  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   failed_at?: Date
 
   status: BatchJobStatus
@@ -52,17 +49,14 @@ export class BatchJob extends SoftDeletableEntity {
   @AfterLoad()
   loadStatus(): void {
     /* Always keep the status order consistent. */
-    if (this.ready_at) {
-      this.status = BatchJobStatus.READY
-    }
-    if (this.processing_at) {
-      this.status = BatchJobStatus.PROCESSING
-    }
-    if (this.awaiting_confirmation_at) {
-      this.status = BatchJobStatus.AWAITING_CONFIRMATION
+    if (this.pre_processed_at) {
+      this.status = BatchJobStatus.PRE_PROCESSED
     }
     if (this.confirmed_at) {
       this.status = BatchJobStatus.CONFIRMED
+    }
+    if (this.processing_at) {
+      this.status = BatchJobStatus.PROCESSING
     }
     if (this.completed_at) {
       this.status = BatchJobStatus.COMPLETED
@@ -108,10 +102,8 @@ export class BatchJob extends SoftDeletableEntity {
  *    type: string
  *    enum:
  *      - created
- *      - ready
+ *      - pre_processed
  *      - processing
- *      - awaiting_confirmation
- *      - confirmed
  *      - completed
  *      - canceled
  *      - failed
@@ -128,12 +120,8 @@ export class BatchJob extends SoftDeletableEntity {
  *  result:
  *    description: "The result of the batch job."
  *    type: object
- *  awaiting_confirmation_at:
- *    description: "The date from which the confirmation is awaited."
- *    type: string
- *    format: date-time
- *  processing_at:
- *    description: "The date from which the processing started."
+ *  pre_processed_at:
+ *    description: "The date from which the job has been pre processed."
  *    type: string
  *    format: date-time
  *  confirmed_at:

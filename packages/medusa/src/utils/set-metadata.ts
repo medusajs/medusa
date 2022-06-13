@@ -1,11 +1,11 @@
 import { MedusaError } from "medusa-core-utils/dist"
 
 /**
-* Dedicated method to set metadata.
-* @param obj - the entity to apply metadata to.
-* @param metadata - the metadata to set
-* @return resolves to the updated result.
-*/
+ * Dedicated method to set metadata.
+ * @param obj - the entity to apply metadata to.
+ * @param metadata - the metadata to set
+ * @return resolves to the updated result.
+ */
 export function setMetadata(
   obj: { metadata: Record<string, unknown> },
   metadata: Record<string, unknown>

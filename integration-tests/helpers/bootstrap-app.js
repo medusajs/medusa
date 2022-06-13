@@ -5,26 +5,30 @@ const importFrom = require("import-from")
 
 module.exports = {
   bootstrapApp: async ({ cwd } = {}) => {
-    const app = express()
+    try {
+      const app = express()
 
-    const loaders = importFrom(
-      cwd || process.cwd(),
-      "@medusajs/medusa/dist/loaders"
-    ).default
+      const loaders = importFrom(
+        cwd || process.cwd(),
+        "@medusajs/medusa/dist/loaders"
+      ).default
 
-    const { container, dbConnection } = await loaders({
-      directory: path.resolve(cwd || process.cwd()),
-      expressApp: app,
-      isTest: false,
-    })
+      const { container, dbConnection } = await loaders({
+        directory: path.resolve(cwd || process.cwd()),
+        expressApp: app,
+        isTest: false,
+      })
 
-    const PORT = await getPort()
+      const PORT = await getPort()
 
-    return {
-      container,
-      db: dbConnection,
-      app,
-      port: PORT,
+      return {
+        container,
+        db: dbConnection,
+        app,
+        port: PORT,
+      }
+    } catch (e) {
+      console.log(e)
     }
   },
 }
