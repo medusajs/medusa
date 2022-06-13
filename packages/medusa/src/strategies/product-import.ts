@@ -16,6 +16,8 @@ import { CsvSchema } from "../interfaces/csv-parser"
 import { ProductRepository } from "../repositories/product"
 import { ProductVariantRepository } from "../repositories/product-variant"
 
+/* ******************** TYPES ******************** */
+
 type TLine = {
   id: string
   name: string
@@ -29,6 +31,9 @@ type Context = {
   csvFileKey: string
 }
 
+/**
+ * Supported batch job ops.
+ */
 enum OperationType {
   ProductCreate = "PRODUCT_CREATE",
   ProductUpdate = "PRODUCT_UPDATE",
@@ -36,9 +41,12 @@ enum OperationType {
   VariantUpdate = "VARIANT_UPDATE",
 }
 
+/**
+ * Process this many variant rows before reporting progress.
+ */
 const BATCH_SIZE = 100
 
-/* ********** UTILS ********** */
+/* ******************** UTILS ******************** */
 
 function pickObjectPropsByRegex(
   data: Record<string, string>,
@@ -89,8 +97,9 @@ function transformVariantData(
  *
  * ======== PROCESS BATCH JOB ========
  *
- * 5. Read from Redis
- * 6. In a loop insert batch by batch (of size N)
+ * 5. Read from Redis for each op type
+ * 6. In a loop insert/update one by one through the service methods
+ *      - notify about progress after BATCH_SIZE of records has been processed
  * 7. Set as complete
  *
  */
