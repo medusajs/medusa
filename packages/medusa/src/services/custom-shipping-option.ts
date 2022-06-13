@@ -1,3 +1,4 @@
+import { string } from "joi"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -82,7 +83,7 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
    */
   async create(
     data: CreateCustomShippingOptionInput,
-    config = { metadata: {} }
+    config: { metadata: Record<string, unknown> } = { metadata: {} }
   ): Promise<CustomShippingOption> {
     const { metadata } = config
     const { cart_id, shipping_option_id, price } = data
@@ -98,9 +99,7 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
         price,
         metadata,
       })
-      const result = await customShippingOptionRepo.save(customShippingOption)
-
-      return result
+      return await customShippingOptionRepo.save(customShippingOption)
     })
   }
 }
