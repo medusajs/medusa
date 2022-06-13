@@ -6,7 +6,11 @@ import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
 import { BatchJob } from "../models"
 
 import CsvParser from "../services/csv-parser"
-import { BatchJobService, ProductService } from "../services"
+import {
+  BatchJobService,
+  ProductService,
+  ProductVariantService,
+} from "../services"
 import { BatchJobStatus } from "../types/batch-job"
 import { CsvSchema } from "../interfaces/csv-parser"
 import { ProductRepository } from "../repositories/product"
@@ -102,7 +106,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly csvParser_: CsvParser
   protected readonly batchJobService_: BatchJobService
   protected readonly productService_: ProductService
-  protected readonly productVariantService_: ProductService
+  protected readonly productVariantService_: ProductVariantService
   protected readonly productRepo_: ProductRepository
   protected readonly productVariantRepo_: ProductVariantRepository
   protected readonly redisClient_: IORedis.Redis
@@ -166,9 +170,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
       // save only first occurrence
       if (!seenProducts[row.handle]) {
-        const exists = await productRepo.productWithHandleExists(row.handle)
+        const existingId = await productRepo.find({
+          where: { handle: row.handle },
+          select: ["id"],
+        })
 
-        ;(exists ? productsUpdate : productsCreate).push(row)
+        row.product_id = existingId
+        ;(existingId ? productsUpdate : productsCreate).push(row)
 
         seenProducts[row.handle] = true
       }
@@ -213,8 +221,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async processJob(batchJobId: string): Promise<BatchJob> {
     return await this.atomicPhase_(async (transactionManager) => {
       await this.createProducts(batchJobId, transactionManager)
+      await this.updateProducts(batchJobId, transactionManager)
 
       await this.createVariants(batchJobId, transactionManager)
+      await this.updateVariants(batchJobId, transactionManager)
 
       return await this.batchJobService_
         .withTransaction(transactionManager)
@@ -249,17 +259,64 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
+  private async updateProducts(
+    batchJobId: string,
+    transactionManager: EntityManager
+  ): Promise<void> {
+    const productOps = await this.getImportDataFromRedis(
+      batchJobId,
+      OperationType.ProductUpdate
+    )
+
+    for (const productOp of productOps) {
+      await this.productService_.update(
+        productOp.data.product_id,
+        transformProductData(productOp.data)
+      )
+    }
+  }
+
   private async createVariants(
     batchJobId: string,
     transactionManager: EntityManager
   ): Promise<void> {
+    const productRepo = this.manager_.getCustomRepository(this.productRepo_)
+
     const variantOps = await this.getImportDataFromRedis(
       batchJobId,
       OperationType.VariantCreate
     )
 
     for (const variantOp of variantOps) {
+      let productId = variantOp.data.product_id
+
+      // product created in the meantime
+      if (!productId) {
+        productId = await productRepo.find({
+          where: { handle: variantOp.data.handle },
+          select: ["id"],
+        })
+      }
+
       await this.productVariantService_.create(
+        productId,
+        transformVariantData(variantOp.data)
+      )
+    }
+  }
+
+  private async updateVariants(
+    batchJobId: string,
+    transactionManager: EntityManager
+  ): Promise<void> {
+    const variantOps = await this.getImportDataFromRedis(
+      batchJobId,
+      OperationType.VariantUpdate
+    )
+
+    for (const variantOp of variantOps) {
+      await this.productVariantService_.update(
+        variantOp.data.variant.id,
         transformVariantData(variantOp.data)
       )
     }

@@ -314,10 +314,4 @@ export class ProductRepository extends Repository<Product> {
 
     return this.findByIds(productIds)
   }
-
-  public async productWithHandleExists(handle: string) {
-    const id = await this.find({ where: { handle }, select: ["id"] })
-
-    return !!id
-  }
 }
