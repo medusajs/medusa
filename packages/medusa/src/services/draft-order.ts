@@ -279,7 +279,10 @@ class DraftOrderService extends TransactionBaseService<DraftOrderService> {
           data
 
         if (rawCart.discounts) {
-          for (const { code } of rawCart.discounts) {
+          const { discounts } = rawCart
+          rawCart.discounts = []
+
+          for (const { code } of discounts) {
             await this.cartService_
               .withTransaction(transactionManager)
               .applyDiscount(rawCart as Cart, code)
