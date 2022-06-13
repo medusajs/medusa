@@ -37,12 +37,11 @@ export type ConfigModule = {
 
     jwt_secret?: string
     cookie_secret?: string
-    host?:string|undefined
-    port?:number|undefined
-    database?:string|undefined
-    ssl?:sslInterface|undefined,
-    username?:string|undefined,
-    password?: string | (() => string) | (() => Promise<string>),
+    database_host?:string|undefined
+    database_port?:number|undefined
+    database_ssl?:sslInterface|undefined,
+    database_username?:string|undefined,
+    database_password?: string | (() => string) | (() => Promise<string>),
     
 
     database_url?: string|undefined
