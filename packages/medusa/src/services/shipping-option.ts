@@ -16,10 +16,10 @@ import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateShippingMethodDto,
   ShippingMethodUpdate,
-  UpdateShippingOptionProps,
-  CreateShippingOptionProps,
+  UpdateShippingOptionInput,
+  CreateShippingOptionInput,
 } from "../types/shipping-options"
-import { buildQuery, setMetadata, validateId } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import FulfillmentProviderService from "./fulfillment-provider"
 import RegionService from "./region"
 
@@ -65,58 +65,61 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     requirement: ShippingOptionRequirement,
     optionId: string | undefined = undefined
   ): Promise<ShippingOptionRequirement> {
-    if (!requirement.type) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "A Shipping Requirement must have a type field"
-      )
-    }
+    return await this.atomicPhase_(async (manager) => {
+      if (!requirement.type) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "A Shipping Requirement must have a type field"
+        )
+      }
 
-    if (
-      requirement.type !== "min_subtotal" &&
-      requirement.type !== "max_subtotal"
-    ) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Requirement type must be one of min_subtotal, max_subtotal"
-      )
-    }
+      if (
+        requirement.type !== "min_subtotal" &&
+        requirement.type !== "max_subtotal"
+      ) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Requirement type must be one of min_subtotal, max_subtotal"
+        )
+      }
 
-    const reqRepo = this.manager_.getCustomRepository(
-      this.requirementRepository_
-    )
+      const reqRepo = manager.getCustomRepository(this.requirementRepository_)
 
-    const existingReq = await reqRepo.findOne({
-      where: { id: requirement.id },
+      const existingReq = await reqRepo.findOne({
+        where: { id: requirement.id },
+      })
+
+      if (!existingReq && requirement.id) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "ID does not exist"
+        )
+      }
+
+      // If no option id is provided, we are currently in the process of creating
+      // a new shipping option. Therefore, simply return the requirement, such
+      // that the cascading will take care of the creation of the requirement.
+      if (!optionId) {
+        return requirement
+      }
+
+      let req
+      if (existingReq) {
+        req = await reqRepo.save({
+          ...existingReq,
+          ...requirement,
+        })
+      } else {
+        const created = reqRepo.create({
+          ...requirement,
+          shipping_option_id: optionId,
+        })
+
+        req = await reqRepo.save(created)
+      }
+
+      return req
     })
-
-    if (!existingReq && requirement.id) {
-      throw new MedusaError(MedusaError.Types.INVALID_DATA, "ID does not exist")
-    }
-
-    // If no option id is provided, we are currently in the process of creating
-    // a new shipping option. Therefore, simply return the requirement, such
-    // that the cascading will take care of the creation of the requirement.
-    if (!optionId) {
-      return requirement
-    }
-
-    let req
-    if (existingReq) {
-      req = await reqRepo.save({
-        ...existingReq,
-        ...requirement,
-      })
-    } else {
-      const created = reqRepo.create({
-        ...requirement,
-        shipping_option_id: optionId,
-      })
-
-      req = await reqRepo.save(created)
-    }
-
-    return req
   }
 
   /**
@@ -378,7 +381,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    * @param {ShippingOption} data - the data to create shipping options
    * @return {Promise<ShippingOption>} the result of the create operation
    */
-  async create(data: CreateShippingOptionProps): Promise<ShippingOption> {
+  async create(data: CreateShippingOptionInput): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const optionRepo = manager.getCustomRepository(this.optionRepository_)
       const option = await optionRepo.create(
@@ -494,7 +497,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    */
   async update(
     optionId: string,
-    update: UpdateShippingOptionProps
+    update: UpdateShippingOptionInput
   ): Promise<ShippingOption> {
     return this.atomicPhase_(async (manager) => {
       const option = await this.retrieve(optionId, {
@@ -600,18 +603,18 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    * @return {Promise} the result of the delete operation.
    */
   async delete(optionId: string): Promise<ShippingOption | void> {
-    try {
-      const option = await this.retrieve(optionId)
+    return await this.atomicPhase_(async (manager) => {
+      try {
+        const option = await this.retrieve(optionId)
 
-      const optionRepo = this.manager_.getCustomRepository(
-        this.optionRepository_
-      )
+        const optionRepo = manager.getCustomRepository(this.optionRepository_)
 
-      return optionRepo.softRemove(option)
-    } catch (error) {
-      // Delete is idempotent, but we return a promise to allow then-chaining
-      return Promise.resolve()
-    }
+        return optionRepo.softRemove(option)
+      } catch (error) {
+        // Delete is idempotent, but we return a promise to allow then-chaining
+        return
+      }
+    })
   }
 
   /**
@@ -666,28 +669,6 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
       }
 
       return await reqRepo.softRemove(requirement)
-    })
-  }
-
-  /**
-   * Decorates a shipping option.
-   * @param {ShippingOption} optionId - the shipping option to decorate using optionId.
-   * @param {string[]} fields - the fields to include.
-   * @param {string[]} expandFields - fields to expand.
-   * @return {ShippingOption} the decorated ShippingOption.
-   */
-  async decorate(
-    optionId: string,
-    fields: (keyof ShippingOption)[] = [],
-    expandFields: (keyof ShippingOption)[] = []
-  ): Promise<ShippingOption> {
-    const requiredFields: (keyof ShippingOption)[] = ["id", "metadata"]
-
-    fields = fields.concat(requiredFields)
-
-    return await this.retrieve(optionId, {
-      select: fields,
-      relations: expandFields,
     })
   }
 

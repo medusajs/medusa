@@ -37,7 +37,7 @@ export type CreateShippingMethodDto = CreateShippingMethod & {
   order?: Order
 }
 
-export type CreateShippingOptionProps = {
+export type CreateShippingOptionInput = {
   price_type: ShippingOptionPriceType
   name: string
   region_id: string
@@ -52,7 +52,7 @@ export type CreateShippingOptionProps = {
   requirements?: ShippingOptionRequirement[]
 }
 
-export type UpdateShippingOptionProps = {
+export type UpdateShippingOptionInput = {
   metadata?: Record<string, unknown>
   price_type?: ShippingOptionPriceType
   amount?: number
