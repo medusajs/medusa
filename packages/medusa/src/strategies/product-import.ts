@@ -253,7 +253,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const productOp of productOps) {
-      await this.productService_.create(
+      await this.productService_.withTransaction(transactionManager).create(
         transformProductData(productOp.data) // TODO: pick keys before saving to Redis
       )
     }
@@ -269,10 +269,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const productOp of productOps) {
-      await this.productService_.update(
-        productOp.data.product_id,
-        transformProductData(productOp.data)
-      )
+      await this.productService_
+        .withTransaction(transactionManager)
+        .update(productOp.data.product_id, transformProductData(productOp.data))
     }
   }
 
@@ -298,10 +297,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         })
       }
 
-      await this.productVariantService_.create(
-        productId,
-        transformVariantData(variantOp.data)
-      )
+      await this.productVariantService_
+        .withTransaction(transactionManager)
+        .create(productId, transformVariantData(variantOp.data))
     }
   }
 
@@ -315,10 +313,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const variantOp of variantOps) {
-      await this.productVariantService_.update(
-        variantOp.data.variant.id,
-        transformVariantData(variantOp.data)
-      )
+      await this.productVariantService_
+        .withTransaction(transactionManager)
+        .update(variantOp.data.variant.id, transformVariantData(variantOp.data))
     }
   }
 
