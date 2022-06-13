@@ -15,12 +15,7 @@ import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
-import {
-  CartCreateProps,
-  CartUpdateProps,
-  FilterableCartProps,
-  LineItemUpdate,
-} from "../types/cart"
+import { CartCreateProps, CartUpdateProps, FilterableCartProps, LineItemUpdate } from "../types/cart"
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
@@ -38,6 +33,7 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { DiscountRuleType } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -1071,7 +1067,7 @@ class CartService extends TransactionBaseService<CartService> {
         let sawNotShipping = false
         const newDiscounts = toParse.map((discountToParse) => {
           switch (discountToParse.rule?.type) {
-            case "free_shipping":
+            case DiscountRuleType.FREE_SHIPPING:
               if (discountToParse.rule.type === rule.type) {
                 return discount
               }
