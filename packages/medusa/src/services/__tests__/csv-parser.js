@@ -202,6 +202,12 @@ describe("CsvParser", () => {
               "variant price cad": "26.79",
               "variant price dkk": "1389",
             },
+            {
+              title: "medusa sunglasses",
+              "variant price usd": "9.99",
+              "variant price cad": "16.79",
+              "variant price dkk": "389",
+            },
           ])
 
           expect(content).toEqual([
@@ -210,6 +216,12 @@ describe("CsvParser", () => {
               "variant price usd": 1999,
               "variant price cad": 2679,
               "variant price dkk": 138900,
+            },
+            {
+              title: "medusa sunglasses",
+              "variant price usd": 999,
+              "variant price cad": 1679,
+              "variant price dkk": 38900,
             },
           ])
         })
