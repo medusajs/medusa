@@ -35,7 +35,6 @@ class CustomerService extends TransactionBaseService<CustomerService> {
     customerRepository,
     eventBusService,
     addressRepository,
-    logger,
   }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -99,20 +98,20 @@ class CustomerService extends TransactionBaseService<CustomerService> {
     selector: Selector<Customer> & { q?: string } = {},
     config: FindConfig<Customer> = { relations: [], skip: 0, take: 50 }
   ): Promise<Customer[]> {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
+      let q
+      if ("q" in selector) {
+        q = selector.q
+        delete selector.q
+      }
 
-    const query = buildQuery(selector, config)
+      const query = buildQuery(selector, config)
 
-    const [customers] = await customerRepo.listAndCount(query, q)
-    return customers
+      const [customers] = await customerRepo.listAndCount(query, q)
+      return customers
+    })
   }
 
   /**
@@ -129,19 +128,19 @@ class CustomerService extends TransactionBaseService<CustomerService> {
       order: { created_at: "DESC" },
     }
   ): Promise<[Customer[], number]> {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
-    let q
-    if ("q" in selector) {
-      q = selector.q
-      delete selector.q
-    }
+      let q
+      if ("q" in selector) {
+        q = selector.q
+        delete selector.q
+      }
 
-    const query = buildQuery(selector, config)
+      const query = buildQuery(selector, config)
 
-    return await customerRepo.listAndCount(query, q)
+      return await customerRepo.listAndCount(query, q)
+    })
   }
 
   /**
@@ -149,10 +148,10 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @return {Promise} the result of the count operation
    */
   async count(): Promise<number> {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
-    return await customerRepo.count({})
+    return await this.atomicPhase_(async (manager) => {
+      const customerRepo = manager.getCustomRepository(this.customerRepository_)
+      return await customerRepo.count({})
+    })
   }
 
   /**
@@ -162,21 +161,21 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @return {Promise<Customer>} the customer document.
    */
   async retrieve(customerId, config = {}): Promise<Customer> {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
-    const query = buildQuery({ id: customerId }, config)
+      const query = buildQuery({ id: customerId }, config)
 
-    const customer = await customerRepo.findOne(query)
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with ${customerId} was not found`
-      )
-    }
+      const customer = await customerRepo.findOne(query)
+      if (!customer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Customer with ${customerId} was not found`
+        )
+      }
 
-    return customer
+      return customer
+    })
   }
 
   /**
@@ -186,21 +185,21 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @return {Promise<Customer>} the customer document.
    */
   async retrieveByEmail(email, config = {}): Promise<Customer> {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
-    const query = buildQuery({ email: email.toLowerCase() }, config)
-    const customer = await customerRepo.findOne(query)
+      const query = buildQuery({ email: email.toLowerCase() }, config)
+      const customer = await customerRepo.findOne(query)
 
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with email ${email} was not found`
-      )
-    }
+      if (!customer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Customer with email ${email} was not found`
+        )
+      }
 
-    return customer
+      return customer
+    })
   }
 
   /**
@@ -210,21 +209,21 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @return {Promise<Customer>} the customer document.
    */
   async retrieveByPhone(phone, config = {}): Promise<Customer> {
-    const customerRepo = this.manager_.getCustomRepository(
-      this.customerRepository_
-    )
+    return await this.atomicPhase_(async (manager) => {
+      const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
-    const query = buildQuery({ phone }, config)
-    const customer = await customerRepo.findOne(query)
+      const query = buildQuery({ phone }, config)
+      const customer = await customerRepo.findOne(query)
 
-    if (!customer) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Customer with phone ${phone} was not found`
-      )
-    }
+      if (!customer) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Customer with phone ${phone} was not found`
+        )
+      }
 
-    return customer
+      return customer
+    })
   }
 
   /**
@@ -246,7 +245,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @return {Promise} the result of create
    */
   async create(customer): Promise<Customer> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const customerRepository = manager.getCustomRepository(
         this.customerRepository_
       )
@@ -302,12 +301,11 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @return {Promise} resolves to the update result.
    */
   async update(customerId, update): Promise<Customer> {
-    return this.atomicPhase_(
+    return await this.atomicPhase_(
       async (manager) => {
         const customerRepository = manager.getCustomRepository(
           this.customerRepository_
         )
-        const addrRepo = manager.getCustomRepository(this.addressRepository_)
 
         const customer = await this.retrieve(customerId)
 
@@ -327,7 +325,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
         if ("billing_address_id" in update || "billing_address" in update) {
           const address = billing_address_id || billing_address
           if (typeof address !== "undefined") {
-            await this.updateBillingAddress_(customer, address, addrRepo)
+            await this.updateBillingAddress_(customer, address)
           }
         }
 
@@ -363,37 +361,41 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @param {Object} addrRepo - address repository
    * @return {Promise} the result of the update operation
    */
-  async updateBillingAddress_(customer, addressOrId, addrRepo): Promise<void> {
-    if (addressOrId === null) {
-      customer.billing_address_id = null
-      return
-    }
+  async updateBillingAddress_(customer, addressOrId): Promise<void> {
+    return await this.atomicPhase_(async (manager) => {
+      const addrRepo = manager.getCustomRepository(this.addressRepository_)
 
-    if (typeof addressOrId === `string`) {
-      addressOrId = await addrRepo.findOne({
-        where: { id: addressOrId },
-      })
-    }
-
-    addressOrId.country_code = addressOrId.country_code.toLowerCase()
-
-    if (addressOrId.id) {
-      customer.billing_address_id = addressOrId.id
-    } else {
-      if (customer.billing_address_id) {
-        const addr = await addrRepo.findOne({
-          where: { id: customer.billing_address_id },
-        })
-
-        await addrRepo.save({ ...addr, ...addressOrId })
-      } else {
-        const created = addrRepo.create({
-          ...addressOrId,
-        })
-        const saved = await addrRepo.save(created)
-        customer.billing_address = saved
+      if (addressOrId === null) {
+        customer.billing_address_id = null
+        return
       }
-    }
+
+      if (typeof addressOrId === `string`) {
+        addressOrId = await addrRepo.findOne({
+          where: { id: addressOrId },
+        })
+      }
+
+      addressOrId.country_code = addressOrId.country_code.toLowerCase()
+
+      if (addressOrId.id) {
+        customer.billing_address_id = addressOrId.id
+      } else {
+        if (customer.billing_address_id) {
+          const addr = await addrRepo.findOne({
+            where: { id: customer.billing_address_id },
+          })
+
+          await addrRepo.save({ ...addr, ...addressOrId })
+        } else {
+          const created = addrRepo.create({
+            ...addressOrId,
+          })
+          const saved = await addrRepo.save(created)
+          customer.billing_address = saved
+        }
+      }
+    })
   }
 
   async updateAddress(
@@ -401,7 +403,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
     addressId,
     address: StorePostCustomersCustomerAddressesAddressReq
   ): Promise<Address> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
       address.country_code = address.country_code?.toLowerCase()
@@ -425,7 +427,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
   }
 
   async removeAddress(customerId, addressId): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const addressRepo = manager.getCustomRepository(this.addressRepository_)
 
       // Should not fail, if user does not exist, since delete is idempotent
@@ -447,7 +449,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
     customerId,
     address: AddressCreatePayload
   ): Promise<Customer | Address> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const addressRepository = manager.getCustomRepository(
         this.addressRepository_
       )
@@ -492,7 +494,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @return {Promise} the result of the delete operation.
    */
   async delete(customerId): Promise<unknown> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
       // Should not fail, if user does not exist, since delete is idempotent
