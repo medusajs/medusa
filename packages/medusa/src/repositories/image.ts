@@ -9,7 +9,9 @@ export class ImageRepository extends Repository<Image> {
         url: In(imageUrls),
       },
     })
-    const existingImagesMap = this.buildImagesMap_(existingImages)
+    const existingImagesMap = new Map(
+      existingImages.map<[string, Image]>((img) => [img.url, img])
+    )
 
     const upsertedImgs: Image[] = []
 
@@ -25,11 +27,5 @@ export class ImageRepository extends Repository<Image> {
     }
 
     return upsertedImgs
-  }
-
-  private buildImagesMap_(images: Image[]): Map<string, Image> {
-    return new Map(
-      images.map<[string, Image]>((img) => [img.url, img])
-    )
   }
 }

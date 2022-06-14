@@ -8,7 +8,7 @@ type UpsertTagsInput = (Partial<ProductTag> & {
 @EntityRepository(ProductTag)
 export class ProductTagRepository extends Repository<ProductTag> {
   public async listTagsByUsage(count = 10): Promise<ProductTag[]> {
-    const tags = await this.query(
+    return await this.query(
       `
         SELECT id, COUNT(pts.product_tag_id) as usage_count, pt.value
         FROM product_tag pt
@@ -19,8 +19,6 @@ export class ProductTagRepository extends Repository<ProductTag> {
       `,
       [count]
     )
-
-    return tags
   }
 
   public async upsertTags(tags: UpsertTagsInput): Promise<ProductTag[]> {
@@ -30,7 +28,9 @@ export class ProductTagRepository extends Repository<ProductTag> {
         value: In(tagsValues),
       },
     })
-    const existingTagsMap = this.buildTagsMap_(existingTags)
+    const existingTagsMap = new Map(
+      existingTags.map<[string, ProductTag]>((tag) => [tag.value, tag])
+    )
 
     const upsertedTags: ProductTag[] = []
 
@@ -46,11 +46,5 @@ export class ProductTagRepository extends Repository<ProductTag> {
     }
 
     return upsertedTags
-  }
-
-  private buildTagsMap_(tags: ProductTag[]): Map<string, ProductTag> {
-    return new Map(
-      tags.map<[string, ProductTag]>((tag) => [tag.value, tag])
-    )
   }
 }
