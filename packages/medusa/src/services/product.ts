@@ -17,10 +17,10 @@ import { ProductVariantRepository } from "../repositories/product-variant"
 import PriceSelectionStrategy from "../strategies/price-selection"
 import { FindConfig, Selector } from "../types/common"
 import {
-  CreateProductDTO,
+  CreateProductInput,
   FilterableProductProps,
-  ProductOptionDTO,
-  UpdateProductDTO,
+  ProductOptionInput,
+  UpdateProductInput,
 } from "../types/product"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import { formatException } from "../utils/exception-formatter"
@@ -478,7 +478,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @param productObject - the product to create
    * @return resolves to the creation result.
    */
-  async create(productObject: CreateProductDTO): Promise<Product> {
+  async create(productObject: CreateProductInput): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productTagRepo = manager.getCustomRepository(
@@ -553,7 +553,10 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
-  async update(productId: string, update: UpdateProductDTO): Promise<Product> {
+  async update(
+    productId: string,
+    update: UpdateProductInput
+  ): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productVariantRepo = manager.getCustomRepository(
@@ -836,7 +839,7 @@ class ProductService extends TransactionBaseService<ProductService> {
   async updateOption(
     productId: string,
     optionId: string,
-    data: ProductOptionDTO
+    data: ProductOptionInput
   ): Promise<Product> {
     return this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(

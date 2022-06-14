@@ -125,7 +125,7 @@ export class FilterableProductTypeProps {
  * Service Level DTOs
  */
 
-export type CreateProductDTO = {
+export type CreateProductInput = {
   title: string
   subtitle?: string
   profile_id?: string
@@ -136,11 +136,11 @@ export type CreateProductDTO = {
   thumbnail?: string
   handle?: string
   status?: ProductStatus
-  type?: CreateProductProductTypeDTO
+  type?: CreateProductProductTypeInput
   collection_id?: string
-  tags?: CreateProductProductTagDTO[]
+  tags?: CreateProductProductTagInput[]
   options?: CreateProductProductOption[]
-  variants?: CreateProductProductVariantDTO[]
+  variants?: CreateProductProductVariantInput[]
   weight?: number
   length?: number
   height?: number
@@ -152,17 +152,17 @@ export type CreateProductDTO = {
   metadata?: Record<string, unknown>
 }
 
-export type CreateProductProductTagDTO = {
+export type CreateProductProductTagInput = {
   id?: string
   value: string
 }
 
-export type CreateProductProductTypeDTO = {
+export type CreateProductProductTypeInput = {
   id?: string
   value: string
 }
 
-export type CreateProductProductVariantDTO = {
+export type CreateProductProductVariantInput = {
   title: string
   sku?: string
   ean?: string
@@ -180,7 +180,7 @@ export type CreateProductProductVariantDTO = {
   mid_code?: string
   material?: string
   metadata?: object
-  prices?: CreateProductProductVariantPriceDTO[]
+  prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string }[]
 }
 
@@ -203,7 +203,7 @@ export type UpdateProductProductVariantDTO = {
   mid_code?: string
   material?: string
   metadata?: object
-  prices?: CreateProductProductVariantPriceDTO[]
+  prices?: CreateProductProductVariantPriceInput[]
   options?: { value: string; option_id: string }[]
 }
 
@@ -211,7 +211,7 @@ export type CreateProductProductOption = {
   title: string
 }
 
-export type CreateProductProductVariantPriceDTO = {
+export type CreateProductProductVariantPriceInput = {
   region_id?: string
   currency_code?: string
   amount: number
@@ -219,11 +219,14 @@ export type CreateProductProductVariantPriceDTO = {
   max_quantity?: number
 }
 
-export type UpdateProductDTO = Omit<Partial<CreateProductDTO>, "variants"> & {
+export type UpdateProductInput = Omit<
+  Partial<CreateProductInput>,
+  "variants"
+> & {
   variants?: UpdateProductProductVariantDTO[]
 }
 
-export type ProductOptionDTO = {
+export type ProductOptionInput = {
   title: string
   values?: ProductOptionValue[]
 }
