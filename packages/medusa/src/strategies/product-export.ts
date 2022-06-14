@@ -617,7 +617,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     const outputLineData: string[] = []
 
     for (const variant of product.variants) {
-      const variantLineData = []
+      const variantLineData: string[] = []
       for (const [, columnSchema] of this.columnDescriptors.entries()) {
         if (columnSchema.entityName === "product") {
           variantLineData.push(columnSchema.accessor(product))
