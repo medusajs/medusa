@@ -2,19 +2,18 @@ import { EntityManager } from "typeorm"
 import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
 import {
   BatchJob,
-  Image,
-  MoneyAmount,
   Product,
-  ProductOption,
   ProductVariant,
 } from "../models"
 import { BatchJobService, ProductService } from "../services"
 import { BatchJobStatus } from "../types/batch-job"
 import { defaultAdminProductRelations } from "../api/routes/admin/products"
 import { ProductRepository } from "../repositories/product"
-import { FindConfig } from "../types/common"
+import { FindConfig, RequestQueryFields } from "../types/common"
 import { MedusaError } from "medusa-core-utils/dist"
-import { ProductVariantOption } from "../types/product-variant"
+import { transformQuery } from "../api/middlewares"
+import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
+import { ClassConstructor } from "../types/global"
 
 type Context = {
   listConfig: FindConfig<Product>
@@ -71,77 +70,77 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     [
       "Product Handle",
       {
-        accessor: (product: Product): string => product?.handle,
+        accessor: (product: Product): string => product?.handle ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Title",
       {
-        accessor: (product: Product): string => product?.title,
+        accessor: (product: Product): string => product?.title ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Subtitle",
       {
-        accessor: (product: Product): string => product?.subtitle,
+        accessor: (product: Product): string => product?.subtitle ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Description",
       {
-        accessor: (product: Product): string => product?.description,
+        accessor: (product: Product): string => product?.description ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Status",
       {
-        accessor: (product: Product): string => product?.status,
+        accessor: (product: Product): string => product?.status ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Thumbnail",
       {
-        accessor: (product: Product): string => product?.thumbnail,
+        accessor: (product: Product): string => product?.thumbnail ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Weight",
       {
-        accessor: (product: Product): string => product?.weight?.toString(),
+        accessor: (product: Product): string => product?.weight?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Length",
       {
-        accessor: (product: Product): string => product?.length?.toString(),
+        accessor: (product: Product): string => product?.length?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Width",
       {
-        accessor: (product: Product): string => product?.width?.toString(),
+        accessor: (product: Product): string => product?.width?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Height",
       {
-        accessor: (product: Product): string => product?.height?.toString(),
+        accessor: (product: Product): string => product?.height?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product HS Code",
       {
-        accessor: (product: Product): string => product?.hs_code?.toString(),
+        accessor: (product: Product): string => product?.hs_code?.toString() ?? "",
         entityName: "product",
       },
     ],
@@ -149,42 +148,42 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       "Product Origin Country",
       {
         accessor: (product: Product): string =>
-          product?.origin_country?.toString(),
+          product?.origin_country?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Mid Code",
       {
-        accessor: (product: Product): string => product?.mid_code?.toString(),
+        accessor: (product: Product): string => product?.mid_code?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Material",
       {
-        accessor: (product: Product): string => product?.material?.toString(),
+        accessor: (product: Product): string => product?.material?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Collection Title",
       {
-        accessor: (product: Product): string => product?.collection?.title,
+        accessor: (product: Product): string => product?.collection?.title ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Collection Handle",
       {
-        accessor: (product: Product): string => product?.collection?.handle,
+        accessor: (product: Product): string => product?.collection?.handle ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Type",
       {
-        accessor: (product: Product): string => product?.type?.value,
+        accessor: (product: Product): string => product?.type?.value ?? "",
         entityName: "product",
       },
     ],
@@ -200,28 +199,28 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       "Product Discountable",
       {
         accessor: (product: Product): string =>
-          product?.discountable?.toString(),
+          product?.discountable?.toString() ?? "",
         entityName: "product",
       },
     ],
     [
       "Product External ID",
       {
-        accessor: (product: Product): string => product?.external_id,
+        accessor: (product: Product): string => product?.external_id ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Profile Name",
       {
-        accessor: (product: Product): string => product?.profile?.name,
+        accessor: (product: Product): string => product?.profile?.name ?? "",
         entityName: "product",
       },
     ],
     [
       "Product Profile Type",
       {
-        accessor: (product: Product): string => product?.profile?.type,
+        accessor: (product: Product): string => product?.profile?.type ?? "",
         entityName: "product",
       },
     ],
@@ -366,29 +365,36 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     return this.buildHeader()
   }
 
-  async completeJob(batchJobId: string): Promise<BatchJob> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const batchJob = await this.batchJobService_
-        .withTransaction(transactionManager)
-        .retrieve(batchJobId)
-
-      if (batchJob.status === BatchJobStatus.COMPLETED) {
-        return batchJob
-      }
-
-      return await this.batchJobService_.complete(batchJob)
-    })
-  }
-
   async prepareBatchJobForProcessing(
     batchJobId: string,
     req: Express.Request
   ): Promise<BatchJob> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      return await this.batchJobService_
+    return await this.atomicPhase_(async (transactionManager: EntityManager) => {
+      const batchJob = await this.batchJobService_
         .withTransaction(transactionManager)
-        .ready(batchJobId /* batchJob after the above todo */)
+        .retrieve(batchJobId)
+
+      await transformQuery(
+        AdminPostBatchesReq as ClassConstructor<RequestQueryFields>,
+        {
+          defaultRelations: this.relations_,
+          isList: true
+        }
+      )(req, {} as any, (err) => throw err)
+      const { listConfig, filterableFields } = req
+
+      const context = {
+        ...(batchJob.context ?? {}),
+        listConfig,
+        filterableFields
+      }
+
+      return await this.batchJobService_.update(batchJobId, { context })
     })
+  }
+
+  preProcessBatchJob(batchJobId: string): Promise<BatchJob> {
+    return Promise.resolve(undefined);
   }
 
   async processJob(batchJobId: string): Promise<BatchJob> {
@@ -491,29 +497,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     )
   }
 
-  async validateContext(
-    context: Record<string, unknown>
-  ): Promise<Record<string, unknown>> {
-    // TODO: waiting for #1593
-    /*
-      const batchJob = this.batchJobService_
-        .withTransaction(transactionManager)
-        .retrieve(batchJobId)
-
-      const { listConfig, filterableFields } = transformQuery({ defaultRelations: relations_ ,isList: true})(req, {} as any, (err) => throw err)
-      const context = {
-        ...(batchJob.context ?? {}),
-        listConfig,
-        filterableFields
-      }
-    */
-    return context
-  }
-
-  validateFile(fileLocation: string): Promise<boolean> {
-    throw new Error("Method not implemented")
-  }
-
   private async buildHeader(): Promise<string> {
     const transactionManager = this.transactionManager_ ?? this.manager_
     const productRepo = transactionManager.getCustomRepository(
@@ -578,7 +561,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           entityName: "product",
         })
         .set(`Option ${i + 1} Value`, {
-          accessor: (variant: ProductVariant) => variant?.options[i]?.value,
+          accessor: (variant: ProductVariant) => variant?.options[i]?.value ?? "",
           entityName: "variant",
         })
     }
