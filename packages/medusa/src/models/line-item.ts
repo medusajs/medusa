@@ -92,7 +92,7 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true })
   description: string
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   thumbnail: string | null
 
   @Column({ default: false })
