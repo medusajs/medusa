@@ -1,6 +1,5 @@
 import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
 import { BatchJob } from "../models/batch-job"
-import { BatchJobCreateProps } from "../types/batch-job"
 import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
@@ -11,7 +10,7 @@ export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
   prepareBatchJobForProcessing(
     batchJobEntity: AdminPostBatchesReq,
     req: Express.Request
-  ): Promise<BatchJobCreateProps>
+  ): Promise<AdminPostBatchesReq>
 
   /**
    * Method for pre-processing a batch job
@@ -38,10 +37,12 @@ export abstract class AbstractBatchJobStrategy<
   static identifier: string
   static batchType: string
 
-  abstract prepareBatchJobForProcessing(
+  async prepareBatchJobForProcessing(
     batchJob: AdminPostBatchesReq,
     req: Express.Request
-  ): Promise<BatchJobCreateProps>
+  ): Promise<AdminPostBatchesReq> {
+    return batchJob
+  }
 
   public abstract preProcessBatchJob(batchJobId: string): Promise<BatchJob>
 
