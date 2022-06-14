@@ -144,18 +144,11 @@ class ProductService extends BaseService {
 
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
-    let products
-    let count
     if (q) {
-      ;[products, count] = await productRepo.getFreeTextSearchResultsAndCount(
+      return await productRepo.getFreeTextSearchResultsAndCount(
         q,
         query,
         relations
-      )
-    } else {
-      ;[products, count] = await productRepo.findWithRelationsAndCount(
-        relations,
-        query
       )
     }
 
