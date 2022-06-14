@@ -1,11 +1,27 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { ShippingProfileService } from "."
+import { TransactionBaseService } from "../interfaces"
+import { FulfillmentRepository } from "../repositories/fulfillment"
+import { TrackingLinkRepository } from "../repositories/tracking-link"
+import FulfillmentProviderService from "./fulfillment-provider"
+import LineItemService from "./line-item"
+import TotalsService from "./totals"
 
 /**
  * Handles Fulfillments
- * @extends BaseService
  */
-class FulfillmentService extends BaseService {
+class FulfillmentService extends TransactionBaseService<FulfillmentService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly totalsService_: TotalsService
+  protected readonly lineItemService_: LineItemService
+  protected readonly shippingProfileService_: ShippingProfileService
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly fulfillmentRepository_: typeof FulfillmentRepository
+  protected readonly trackingLinkRepository_: typeof TrackingLinkRepository
+
   constructor({
     manager,
     totalsService,
@@ -15,7 +31,8 @@ class FulfillmentService extends BaseService {
     lineItemService,
     fulfillmentProviderService,
   }) {
-    super()
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
     /** @private @const {EntityManager} */
     this.manager_ = manager
@@ -37,26 +54,6 @@ class FulfillmentService extends BaseService {
 
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
-  }
-
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new FulfillmentService({
-      manager: transactionManager,
-      totalsService: this.totalsService_,
-      trackingLinkRepository: this.trackingLinkRepository_,
-      fulfillmentRepository: this.fulfillmentRepository_,
-      shippingProfileService: this.shippingProfileService_,
-      lineItemService: this.lineItemService_,
-      fulfillmentProviderService: this.fulfillmentProviderService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
   }
 
   partitionItems_(shippingMethods, items) {
