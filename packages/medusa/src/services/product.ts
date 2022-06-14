@@ -761,51 +761,6 @@ class ProductService extends TransactionBaseService<ProductService> {
   }
 
   /**
-   * Changes the order of a product's options. Will throw if the length of
-   * optionOrder and the length of the product's options are different. Will
-   * throw optionOrder contains an id not associated with the product.
-   * @param productId - the product whose options we are reordering
-   * @param optionOrder - the ids of the product's options in the
-   *    new order
-   * @return the result of the update operation
-   */
-  async reorderOptions(
-    productId: string,
-    optionOrder: string[]
-  ): Promise<Product> {
-    return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
-
-      const product = await this.retrieve(productId, { relations: ["options"] })
-
-      if (product.options.length !== optionOrder.length) {
-        throw new MedusaError(
-          MedusaError.Types.INVALID_DATA,
-          `Product options and new options order differ in length.`
-        )
-      }
-
-      product.options = optionOrder.map((oId) => {
-        const option = product.options.find((o) => o.id === oId)
-        if (!option) {
-          throw new MedusaError(
-            MedusaError.Types.INVALID_DATA,
-            `Product has no option with id: ${oId}`
-          )
-        }
-
-        return option
-      })
-
-      const result = productRepo.save(product)
-      await this.eventBus_
-        .withTransaction(manager)
-        .emit(ProductService.Events.UPDATED, result)
-      return result
-    })
-  }
-
-  /**
    * Updates a product's option. Throws if the call tries to update an option
    * not associated with the product. Throws if the updated title already exists.
    * @param productId - the product whose option we are updating
