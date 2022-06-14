@@ -22,9 +22,9 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
 
   /**
    * Retrieves a specific shipping option.
-   * @param {string} id - the id of the custom shipping option to retrieve.
-   * @param {*} config - any options needed to query for the result.
-   * @return {Promise<CustomShippingOption>} which resolves to the requested custom shipping option.
+   * @param id - the id of the custom shipping option to retrieve.
+   * @param config - any options needed to query for the result.
+   * @return the requested custom shipping option.
    */
   async retrieve(
     id: string,
@@ -50,10 +50,10 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
     })
   }
 
-  /** Fetches all custom shipping options related to the given selector
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
-   * @return {Promise<CustomShippingOption[]>} custom shipping options matching the query
+  /** Fetches all custom shipping options based on the given selector
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return custom shipping options matching the query
    */
   async list(
     selector: Selector<CustomShippingOption>,
@@ -75,17 +75,15 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
   }
 
   /**
-   * Creates a custom shipping option associated with a given author
-   * @param {object} data - the custom shipping option to create
-   * @param {*} config - any configurations if needed, including meta data
-   * @return {Promise<CustomShippingOption>} resolves to the creation result
+   * Creates a custom shipping option
+   * @param data - the custom shipping option to create
+   * @param config - any configurations if needed, including meta data
+   * @return resolves to the creation result
    */
   async create(
-    data: CreateCustomShippingOptionInput,
-    config: { metadata: Record<string, unknown> } = { metadata: {} }
+    data: CreateCustomShippingOptionInput
   ): Promise<CustomShippingOption> {
-    const { metadata } = config
-    const { cart_id, shipping_option_id, price } = data
+    const { cart_id, shipping_option_id, price, metadata } = data
 
     return this.atomicPhase_(async (manager) => {
       const customShippingOptionRepo = manager.getCustomRepository(
