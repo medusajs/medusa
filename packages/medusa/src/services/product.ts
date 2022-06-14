@@ -110,29 +110,17 @@ class ProductService extends TransactionBaseService<ProductService> {
     })
 
     this.manager_ = manager
-
     this.productOptionRepository_ = productOptionRepository
-
     this.productRepository_ = productRepository
-
     this.productVariantRepository_ = productVariantRepository
-
     this.eventBus_ = eventBusService
-
     this.productVariantService_ = productVariantService
-
     this.productCollectionService_ = productCollectionService
-
     this.productTypeRepository_ = productTypeRepository
-
     this.productTagRepository_ = productTagRepository
-
     this.imageRepository_ = imageRepository
-
     this.searchService_ = searchService
-
     this.cartRepository_ = cartRepository
-
     this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
@@ -163,20 +151,16 @@ class ProductService extends TransactionBaseService<ProductService> {
         shouldLoadStrategyPrices,
       ] = this.omitPriceRelationIfExists_(relations)
 
+      let products
       if (q) {
-        const [products] = await productRepo.getFreeTextSearchResultsAndCount(
+        ;[products] = await productRepo.getFreeTextSearchResultsAndCount(
           q,
           query,
           filteredRelations
         )
-
-        return products
+      } else {
+        products = await productRepo.findWithRelations(filteredRelations, query)
       }
-
-      const products = await productRepo.findWithRelations(
-        filteredRelations,
-        query
-      )
 
       return shouldLoadStrategyPrices
         ? await this.setAdditionalPrices(products, {
@@ -442,15 +426,17 @@ class ProductService extends TransactionBaseService<ProductService> {
       take: 50,
     }
   ): Promise<ProductVariant[]> {
-    const givenRelations = config.relations ?? []
-    const requiredRelations = ["variants"]
-    const relationsSet = new Set([...givenRelations, ...requiredRelations])
+    return await this.atomicPhase_(async (manager) => {
+      const givenRelations = config.relations ?? []
+      const requiredRelations = ["variants"]
+      const relationsSet = new Set([...givenRelations, ...requiredRelations])
 
-    const product = await this.retrieve(productId, {
-      ...config,
-      relations: Array.from(relationsSet),
+      const product = await this.retrieve(productId, {
+        ...config,
+        relations: Array.from(relationsSet),
+      })
+      return product.variants
     })
-    return product.variants
   }
 
   async listTypes(): Promise<ProductType[]> {
@@ -479,7 +465,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return resolves to the creation result.
    */
   async create(productObject: CreateProductInput): Promise<Product> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productTagRepo = manager.getCustomRepository(
         this.productTagRepository_
@@ -557,7 +543,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     productId: string,
     update: UpdateProductInput
   ): Promise<Product> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepository_
@@ -673,7 +659,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return empty promise
    */
   async delete(productId: string): Promise<void> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       // Should not fail, if product does not exist, since delete is idempotent
@@ -707,7 +693,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return the result of the model update operation
    */
   async addOption(productId: string, optionTitle: string): Promise<Product> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
         this.productOptionRepository_
       )
@@ -749,7 +735,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     productId: string,
     variantOrder: string[]
   ): Promise<Product> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       const product = await this.retrieve(productId, {
@@ -796,7 +782,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     productId: string,
     optionOrder: string[]
   ): Promise<Product> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       const product = await this.retrieve(productId, { relations: ["options"] })
@@ -841,7 +827,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     optionId: string,
     data: ProductOptionInput
   ): Promise<Product> {
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const productOptionRepo = manager.getCustomRepository(
         this.productOptionRepository_
       )
