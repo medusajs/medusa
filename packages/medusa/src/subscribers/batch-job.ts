@@ -1,58 +1,53 @@
-import { AwilixContainer } from "awilix"
 import { MedusaError } from "medusa-core-utils"
-import { AbstractBatchJobStrategy } from "../interfaces/batch-job-strategy"
+import { AbstractBatchJobStrategy } from "../interfaces"
 import BatchJobService from "../services/batch-job"
 import EventBusService from "../services/event-bus"
+
+type InjectedDependencies = {
+  eventBusService: EventBusService
+  batchJobService: BatchJobService
+}
 
 class BatchJobSubscriber {
   private readonly eventBusService_: EventBusService
   private readonly batchJobService_: BatchJobService
-  private readonly container_: AwilixContainer
+  private readonly container_: InjectedDependencies
 
-  constructor(container: AwilixContainer) {
-    this.eventBusService_ = container["eventBusService"]
-    this.batchJobService_ = container["batchJobService"]
+  constructor(container: InjectedDependencies) {
+    this.eventBusService_ = container.eventBusService
+    this.batchJobService_ = container.batchJobService
     this.container_ = container
 
-    // this.eventBusService_.subscribe(
-    //   BatchJobService.Events.CREATED,
-    //   this.setReady
-    // )
     this.eventBusService_.subscribe(
-      BatchJobService.Events.READY,
-      this.processBatchJob
+      BatchJobService.Events.CREATED,
+      this.preProcessBatchJob
     )
     this.eventBusService_.subscribe(
       BatchJobService.Events.CONFIRMED,
-      this.completeBatchJob
+      this.processBatchJob
     )
   }
 
-  // setReady = async (data): Promise<void> => {
-  //   const batchJob = await this.batchJobService_.retrieve(data.id)
+  preProcessBatchJob = async (data): Promise<void> => {
+    const batchJob = await this.batchJobService_.retrieve(data.id)
 
-  //   const batchJobStrategy = this.getBatchJobStrategy(batchJob.type)
+    const batchJobStrategy = this.getBatchJobStrategy(batchJob.type)
 
-  //   // ts-ignore
-  //   await batchJobStrategy.prepareBatchJobForProcessing(data.id, {})
-  // }
+    await batchJobStrategy.preProcessBatchJob(batchJob.id)
+
+    await this.batchJobService_.setPreProcessingDone(batchJob)
+  }
 
   processBatchJob = async (data): Promise<void> => {
     const batchJob = await this.batchJobService_.retrieve(data.id)
 
     const batchJobStrategy = this.getBatchJobStrategy(batchJob.type)
 
-    await this.batchJobService_.processing(batchJob)
+    await this.batchJobService_.setProcessing(batchJob)
 
     await batchJobStrategy.processJob(batchJob.id)
-  }
 
-  completeBatchJob = async (data): Promise<void> => {
-    const batchJob = await this.batchJobService_.retrieve(data.id)
-
-    const batchJobStrategy = this.getBatchJobStrategy(batchJob.type)
-
-    batchJobStrategy.completeJob(batchJob.id)
+    await this.batchJobService_.complete(batchJob)
   }
 
   getBatchJobStrategy(type: string): AbstractBatchJobStrategy<any> {
