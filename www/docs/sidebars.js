@@ -44,17 +44,12 @@ module.exports = {
             {
               type: "doc",
               id: "starters/gatsby-medusa-starter",
-              label: "Quickstart: Gatsby",
+              label: "Gatsby Storefront Quickstart",
             },
             {
               type: "doc",
               id: "starters/nextjs-medusa-starter",
-              label: "Quickstart: Next.js",
-            },
-            {
-              type: "doc",
-              id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
-              label: "Set Up a Next.js Storefront for your Medusa Project"
+              label: "Next.js Storefront Quickstart",
             },
           ],
         },
