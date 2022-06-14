@@ -509,9 +509,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
         writeStream.end()
 
-        await promise
-        await this.batchJobService_.complete(batchJob)
-        return
+        return await promise
       },
       "REPEATABLE READ",
       async (err) =>
