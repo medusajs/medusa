@@ -1,3 +1,4 @@
+import { Request, Response } from "express"
 import { EntityManager } from "typeorm"
 import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
 import {
@@ -9,11 +10,10 @@ import { BatchJobService, ProductService } from "../services"
 import { BatchJobStatus } from "../types/batch-job"
 import { defaultAdminProductRelations } from "../api/routes/admin/products"
 import { ProductRepository } from "../repositories/product"
-import { FindConfig, RequestQueryFields } from "../types/common"
+import { FindConfig } from "../types/common"
 import { MedusaError } from "medusa-core-utils/dist"
 import { transformQuery } from "../api/middlewares"
 import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
-import { ClassConstructor } from "../types/global"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
 
@@ -369,63 +369,61 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
   async prepareBatchJobForProcessing(
     batchJob: AdminPostBatchesReq,
-    req: Express.Request
-  ): Promise<BatchJob> {
-    return await this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const { limit, offset, order, fields, expand } = batchJob.context
+    req: Request
+  ): Promise<AdminPostBatchesReq> {
+    const { limit, offset, order, fields, expand } = batchJob.context
 
-      const toValidate = class ToValidate extends AdminPostBatchesReq {
-        @IsNumber()
-        @IsOptional()
-        @Type(() => Number)
-        offset?: number = 0
+    class ToValidate extends AdminPostBatchesReq {
+      @IsNumber()
+      @IsOptional()
+      @Type(() => Number)
+      offset?: number = 0
 
-        @IsNumber()
-        @IsOptional()
-        @Type(() => Number)
-        limit?: number = 50
+      @IsNumber()
+      @IsOptional()
+      @Type(() => Number)
+      limit?: number = 50
 
-        @IsString()
-        @IsOptional()
-        expand?: string
+      @IsString()
+      @IsOptional()
+      expand?: string
 
-        @IsString()
-        @IsOptional()
-        fields?: string
+      @IsString()
+      @IsOptional()
+      fields?: string
 
-        @IsString()
-        @IsOptional()
-        order?: string
+      @IsString()
+      @IsOptional()
+      order?: string
 
-        constructor() {
-          super()
-          this.limit = limit as number
-          this.offset = offset  as number
-          this.order = order as string
-          this.fields = fields as string
-          this.expand = expand as string
-        }
+      constructor() {
+        super()
+        this.limit = limit as number
+        this.offset = offset  as number
+        this.order = order as string
+        this.fields = fields as string
+        this.expand = expand as string
       }
+    }
 
-      await transformQuery(
-        toValidate,
-        {
-          defaultRelations: this.relations_,
-          isList: true
-        }
-      )(req, {} as any, (err) => throw err)
-      const { listConfig, filterableFields } = req
-
-      batchJob.context = {
-        ...(batchJob.context ?? {}),
-        listConfig,
-        filterableFields
+    await transformQuery(
+      ToValidate,
+      {
+        defaultRelations: this.relations_,
+        isList: true
       }
-      return batchJob
-    })
+    )(req, {} as any, (err: unknown) => { throw err })
+    const { listConfig, filterableFields } = req
+
+    batchJob.context = {
+      ...(batchJob.context ?? {}),
+      listConfig,
+      filterableFields
+    }
+    return batchJob
   }
 
-  async processJob(batchJobId: string): Promise<BatchJob> {
+  async processJob(batchJobId: string): Promise<void> {
     let offset = 0
     let advancementCount = 0
     let productCount = 0
@@ -505,14 +503,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
             writeStream.end()
 
             await this.fileService_.delete({ key: key })
-            return batchJob
+            return
           }
         }
 
         writeStream.end()
 
         await promise
-        return await this.batchJobService_.complete(batchJob)
+        await this.batchJobService_.complete(batchJob)
+        return
       },
       "REPEATABLE READ",
       async (err) =>
