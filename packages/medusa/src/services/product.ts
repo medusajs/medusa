@@ -19,6 +19,7 @@ import { FindConfig, Selector } from "../types/common"
 import {
   CreateProductInput,
   FilterableProductProps,
+  FindProductConfig,
   ProductOptionInput,
   UpdateProductInput,
 } from "../types/product"
@@ -44,16 +45,6 @@ type InjectedDependencies = {
   eventBusService: EventBusService
   priceSelectionStrategy: PriceSelectionStrategy
 }
-
-type PriceListLoadConfig = {
-  include_discount_prices?: boolean
-  customer_id?: string
-  cart_id?: string
-  region_id?: string
-  currency_code?: string
-}
-
-type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
 
 class ProductService extends TransactionBaseService<ProductService> {
   protected manager_: EntityManager

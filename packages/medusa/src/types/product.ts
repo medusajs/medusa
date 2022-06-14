@@ -7,10 +7,15 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { ProductOptionValue, ProductStatus } from "../models"
+import { Product, ProductOptionValue, ProductStatus } from "../models"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
-import { DateComparisonOperator, StringComparisonOperator } from "./common"
+import {
+  DateComparisonOperator,
+  FindConfig,
+  StringComparisonOperator,
+} from "./common"
+import { PriceListLoadConfig } from "./price-list"
 
 /**
  * API Level DTOs + Validation rules
@@ -230,3 +235,5 @@ export type ProductOptionInput = {
   title: string
   values?: ProductOptionValue[]
 }
+
+export type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
