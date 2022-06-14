@@ -881,44 +881,6 @@ class ProductService extends BaseService {
       q,
     }
   }
-
-  /**
-   * Creates a QueryBuilder that can fetch products based on free text.
-   * @param {ProductRepository} productRepo - an instance of a ProductRepositry
-   * @param {FindOptions<Product>} query - the query to get products by
-   * @param {string} q - the text to perform free text search from
-   * @return {QueryBuilder<Product>} a query builder that can fetch products
-   */
-  getFreeTextQueryBuilder_(productRepo, query, q) {
-    const where = query.where
-
-    delete where.description
-    delete where.title
-
-    let qb = productRepo
-      .createQueryBuilder("product")
-      .leftJoinAndSelect("product.variants", "variant")
-      .leftJoinAndSelect("product.collection", "collection")
-      .select(["product.id"])
-      .where(where)
-      .andWhere(
-        new Brackets((qb) => {
-          qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
-            .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
-        })
-      )
-      .skip(query.skip)
-      .take(query.take)
-
-    if (query.withDeleted) {
-      qb = qb.withDeleted()
-    }
-
-    return qb
-  }
 }
 
 export default ProductService
