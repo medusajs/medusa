@@ -82,5 +82,5 @@ export class AdminPostGiftCardsReq {
   region_id?: string
 
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

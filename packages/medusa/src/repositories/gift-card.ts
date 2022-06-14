@@ -6,10 +6,9 @@ import { GiftCard } from "../models/gift-card"
 export class GiftCardRepository extends Repository<GiftCard> {
   public async findWithRelations(
     relations: Array<keyof GiftCard> = [],
-    idsOrOptionsWithoutRelations: Omit<
-      FindManyOptions<GiftCard>,
-      "relations"
-    > = {}
+    idsOrOptionsWithoutRelations:
+      | Omit<FindManyOptions<GiftCard>, "relations">
+      | string[] = {}
   ): Promise<GiftCard[]> {
     let entities
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
@@ -40,7 +39,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, entityAndRelations =>
+    return map(entitiesAndRelationsById, (entityAndRelations) =>
       merge({}, ...entityAndRelations)
     )
   }
