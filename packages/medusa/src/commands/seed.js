@@ -27,10 +27,14 @@ const t = async function({ directory, migrate, seedFile }) {
     }
   }
 
-  const { configModule } = getConfigFile(directory, `medusa-config`)
+  let configFile =getConfigFile(directory, `medusa-config`)
+  let configuration = await Promise.resolve( configFile)
+   let configModule= await Promise.resolve(configuration.configModule)
+   let connection =undefined
+ 
   const dbType = configModule.projectConfig.database_type
   if (migrate && dbType !== "sqlite") {
-    const migrationDirs = getMigrations(directory)
+    const migrationDirs = await Promise.resolve(getMigrations(directory))
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
       database: configModule.projectConfig.database_database,

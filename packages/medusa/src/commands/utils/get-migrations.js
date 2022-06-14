@@ -1,9 +1,9 @@
 import path from "path"
 import fs from "fs"
-import { isString } from "lodash"
+import _, { isString } from "lodash"
 import { sync as existsSync } from "fs-exists-cached"
 import { getConfigFile, createRequireFromPath } from "medusa-core-utils"
-import Logger from "../loaders/logger"
+import Logger from "../../loaders/logger"
 
 function createFileContentHash(path, files) {
   return path + files
@@ -87,9 +87,13 @@ function resolvePlugin(pluginName) {
   }
 }
 
-export default directory => {
-  const { configModule } = getConfigFile(directory, `medusa-config`)
-  const { plugins } = configModule
+export default async directory  =>  {
+  const configFile = getConfigFile(directory, `medusa-config`)
+  const  configModulePromise  = await Promise.resolve(configFile)
+  const migrationDirs = []
+  let configModule = await Promise.resolve(configModulePromise.configModule)
+    /*return value*/ 
+  const  plugins  = configModule?.plugins
 
   const resolved = plugins?.map(plugin => {
     if (isString(plugin)) {
@@ -115,7 +119,7 @@ export default directory => {
     version: createFileContentHash(process.cwd(), `**`),
   })
 
-  const migrationDirs = []
+ 
   const coreMigrations = path.resolve(
     path.join(__dirname, "..", "..", "migrations")
   )
