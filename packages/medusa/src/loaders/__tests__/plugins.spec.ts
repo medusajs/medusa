@@ -204,8 +204,8 @@ describe("plugins loader", () => {
     })
 
     it("registers price selection strategy", () => {
-      const priceSelectionStrategy: (...args: unknown[]) => any =
-        container.resolve("priceSelectionStrategy")
+      const priceSelectionStrategy =
+        container.resolve("priceSelectionStrategy") as (...args: unknown[]) => any
 
       expect(priceSelectionStrategy).toBeTruthy()
       expect(priceSelectionStrategy.constructor.name).toBe(
@@ -214,8 +214,8 @@ describe("plugins loader", () => {
     })
 
     it("registers tax calculation strategy", () => {
-      const taxCalculationStrategy: (...args: unknown[]) => any =
-        container.resolve("taxCalculationStrategy")
+      const taxCalculationStrategy =
+        container.resolve("taxCalculationStrategy") as (...args: unknown[]) => any
 
       expect(taxCalculationStrategy).toBeTruthy()
       expect(taxCalculationStrategy.constructor.name).toBe(
@@ -224,8 +224,8 @@ describe("plugins loader", () => {
     })
 
     it("registers batch job strategies as single array", () => {
-      const batchJobStrategies: (...args: unknown[]) => any =
-        container.resolve("batchJobStrategies")
+      const batchJobStrategies =
+        container.resolve("batchJobStrategies") as (...args: unknown[]) => any
 
       expect(batchJobStrategies).toBeTruthy()
       expect(Array.isArray(batchJobStrategies)).toBeTruthy()
@@ -233,8 +233,8 @@ describe("plugins loader", () => {
     })
 
     it("registers batch job strategies by type and only keep the last", () => {
-      const batchJobStrategy: (...args: unknown[]) => any =
-        container.resolve("batchType_type-1")
+      const batchJobStrategy =
+        container.resolve("batchType_type-1") as (...args: unknown[]) => any
 
       expect(batchJobStrategy).toBeTruthy()
       expect(batchJobStrategy.constructor.name).toBe("testBatch2BatchStrategy")
@@ -245,9 +245,9 @@ describe("plugins loader", () => {
     })
 
     it("registers batch job strategies by identifier", () => {
-      const batchJobStrategy: (...args: unknown[]) => any = container.resolve(
+      const batchJobStrategy = container.resolve(
         "batch_testBatch3-identifier"
-      )
+      ) as (...args: unknown[]) => any
 
       expect(batchJobStrategy).toBeTruthy()
       expect(Array.isArray(batchJobStrategy)).toBeFalsy()
