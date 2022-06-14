@@ -57,7 +57,7 @@ curl localhost:9000/store/products
 
 ## What's next :rocket:
 
-- Install our [Next.js](https://docs.medusajs.com/starters/nextjs-medusa-starter/) or [Gatsby](https://docs.medusajs.com/starters/gatsby-medusa-starter/) storefronts to set up your e-commerce storefront quickly.
+- Install our [Next.js](https://docs.medusajs.com/starters/nextjs-medusa-starter/) or [Gatsby](https://docs.medusajs.com/starters/gatsby-medusa-starter/) storefronts to set up your ecommerce storefront quickly.
 - Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
 - Check our the [API reference](https://docs.medusajs.com/api) to learn more about available endpoints available on your Medusa server.
 - Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.
