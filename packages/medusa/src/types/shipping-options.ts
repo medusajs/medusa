@@ -53,10 +53,10 @@ export type CreateShippingOptionInput = {
 }
 
 export type CreateCustomShippingOptionInput = {
-  shipping_option_id: string
-  cart_id: string
   price: number
-  metadata: Record<string, unknown>
+  shipping_option_id: string
+  cart_id?: string
+  metadata?: Record<string, unknown>
 }
 
 export type UpdateShippingOptionInput = {
