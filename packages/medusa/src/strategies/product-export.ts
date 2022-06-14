@@ -375,7 +375,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   ): Promise<AdminPostBatchesReq> {
     const { limit, offset, order, fields, expand, ...context } = batchJob.context
 
-    const { select: filterableFields, ...listConfig } = prepareListQuery(
+    const { select: filterableFields, skip, take, ...listConfig } = prepareListQuery(
       {
         context: batchJob.context,
         type: batchJob.type,
@@ -396,7 +396,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       ...(context ?? {}),
       listConfig,
       filterableFields,
-      offset: listConfig.skip,
+      offset: skip,
     }
 
     return batchJob
