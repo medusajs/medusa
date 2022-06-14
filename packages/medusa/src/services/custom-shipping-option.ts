@@ -87,7 +87,7 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
     const { metadata } = config
     const { cart_id, shipping_option_id, price } = data
 
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const customShippingOptionRepo = manager.getCustomRepository(
         this.customShippingOptionRepository_
       )
