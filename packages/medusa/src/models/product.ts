@@ -33,14 +33,14 @@ export class Product extends SoftDeletableEntity {
   @Column()
   title: string
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   subtitle: string | null
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   description: string | null
 
   @Index({ unique: true, where: "deleted_at IS NULL" })
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   handle: string | null
 
   @Column({ default: false })
@@ -63,7 +63,7 @@ export class Product extends SoftDeletableEntity {
   })
   images: Image[]
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   thumbnail: string | null
 
   @OneToMany(
@@ -101,26 +101,26 @@ export class Product extends SoftDeletableEntity {
   @Column({ type: "int", nullable: true })
   width: number | null
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   hs_code: string | null
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   origin_country: string | null
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   mid_code: string | null
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   material: string | null
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   collection_id: string | null
 
   @ManyToOne(() => ProductCollection)
   @JoinColumn({ name: "collection_id" })
   collection: ProductCollection
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   type_id: string | null
 
   @ManyToOne(() => ProductType)
@@ -144,7 +144,7 @@ export class Product extends SoftDeletableEntity {
   @Column({ default: true })
   discountable: boolean
 
-  @Column({ type: "varchar", nullable: true })
+  @Column({ type: "text", nullable: true })
   external_id: string | null
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
