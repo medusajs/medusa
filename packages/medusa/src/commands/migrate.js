@@ -40,12 +40,12 @@ const t = async function ({ directory }) {
     await connection?.close()
     Logger.info("Migrations completed.")
     process.exit()
-  } else if (args[0] === "revert") {
+  } else if (args[0] === "revert" && connection) {
     await connection.undoLastMigration({ transaction: "all" })
     await connection.close()
     Logger.info("Migrations reverted.")
     process.exit()
-  } else if (args[0] === "show") {
+  } else if (args[0] === "show" && connection) {
     const unapplied = await connection.showMigrations()
     await connection.close()
     process.exit(unapplied ? 1 : 0)

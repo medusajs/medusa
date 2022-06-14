@@ -63,12 +63,12 @@ export default async (rootDirectory: string): Promise<ConfigModule> => {
     )
   }
 
-  return {
+  return Promise.resolve({
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
     },
     plugins: configModule?.plugins ?? [],
-  }
+  })
 }
