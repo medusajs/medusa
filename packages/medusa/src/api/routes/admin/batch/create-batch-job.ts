@@ -43,7 +43,7 @@ export class AdminPostBatchesReq {
   type: string
 
   @IsObject()
-  context: Record<string, unknown>
+  context: Record<string, unknown> = {}
 
   @IsBoolean()
   @IsOptional()

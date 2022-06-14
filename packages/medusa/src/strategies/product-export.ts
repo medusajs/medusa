@@ -16,6 +16,8 @@ import { transformQuery } from "../api/middlewares"
 import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { Type } from "class-transformer"
+import { prepareListQuery } from "../utils/get-query-config"
+import list from "../api/routes/admin/apps/list"
 
 type Context = {
   listConfig: FindConfig<Product>
@@ -371,55 +373,32 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     batchJob: AdminPostBatchesReq,
     req: Request
   ): Promise<AdminPostBatchesReq> {
-    const { limit, offset, order, fields, expand } = batchJob.context
+    const { limit, offset, order, fields, expand, ...context } = batchJob.context
 
-    class ToValidate extends AdminPostBatchesReq {
-      @IsNumber()
-      @IsOptional()
-      @Type(() => Number)
-      offset?: number = 0
-
-      @IsNumber()
-      @IsOptional()
-      @Type(() => Number)
-      limit?: number = 50
-
-      @IsString()
-      @IsOptional()
-      expand?: string
-
-      @IsString()
-      @IsOptional()
-      fields?: string
-
-      @IsString()
-      @IsOptional()
-      order?: string
-
-      constructor() {
-        super()
-        this.limit = limit as number
-        this.offset = offset  as number
-        this.order = order as string
-        this.fields = fields as string
-        this.expand = expand as string
-      }
-    }
-
-    await transformQuery(
-      ToValidate,
+    const { select: filterableFields, ...listConfig } = prepareListQuery(
       {
-        defaultRelations: this.relations_,
-        isList: true
-      }
-    )(req, {} as any, (err: unknown) => { throw err })
-    const { listConfig, filterableFields } = req
+        context: batchJob.context,
+        type: batchJob.type,
+        dry_run: batchJob.dry_run,
+        limit: limit as number,
+        offset: offset  as number,
+        order: order as string,
+        fields: fields as string,
+        expand: expand as string,
+      },
+      {
+        isList: true,
+        defaultRelations: this.relations_
+      },
+    )
 
     batchJob.context = {
-      ...(batchJob.context ?? {}),
+      ...(context ?? {}),
       listConfig,
-      filterableFields
+      filterableFields,
+      offset: listConfig.skip,
     }
+
     return batchJob
   }
 
@@ -434,9 +413,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           .withTransaction(transactionManager)
           .retrieve(batchJobId)
 
-        offset = batchJob.context.offset ?? offset
-        advancementCount = batchJob.result.advancementCount ?? advancementCount
-
         const {
           writeStream,
           url: key,
@@ -449,15 +425,16 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         const header = await this.buildHeader()
         writeStream.write(header)
 
+        offset = batchJob.context.offset ?? offset
+        advancementCount = batchJob.result.advancementCount ?? advancementCount
         const { listConfig, filterableFields } = batchJob.context as Context
 
         const [productList, count] = await this.productService_
           .withTransaction(transactionManager)
           .listAndCount(filterableFields, {
-            relations: this.relations_,
             ...(listConfig ?? {}),
-            order: listConfig.order ?? { created_at: "DESC" },
-            skip: offset ?? listConfig.skip,
+            skip: offset,
+            take: this.BATCH_SIZE,
           })
 
         productCount = count
@@ -468,9 +445,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
             products = await this.productService_
               .withTransaction(transactionManager)
               .list(filterableFields, {
-                relations: this.relations_,
-                order: { created_at: "DESC" },
-                ...((listConfig as Record<string, unknown>) ?? {}),
+                ...(listConfig ?? {}),
                 skip: offset,
                 take: this.BATCH_SIZE,
               })

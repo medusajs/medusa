@@ -51,7 +51,26 @@ Object {
   "canceled_at": null,
   "completed_at": null,
   "confirmed_at": null,
-  "context": Object {},
+  "context": Object {
+    "listConfig": Object {
+      "order": Object {
+        "created_at": "DESC",
+      },
+      "relations": Array [
+        "variants",
+        "variants.prices",
+        "variants.options",
+        "images",
+        "options",
+        "tags",
+        "type",
+        "collection",
+      ],
+      "skip": 0,
+      "take": 50,
+    },
+    "offset": 0,
+  },
   "created_at": Any<String>,
   "created_by": "admin_user",
   "deleted_at": null,
