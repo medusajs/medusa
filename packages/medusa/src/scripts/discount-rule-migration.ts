@@ -1,5 +1,7 @@
+
 import dotenv from "dotenv"
 import { createConnection } from "typeorm"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 import Logger from "../loaders/logger"
 import {
   DiscountCondition,
@@ -8,6 +10,7 @@ import {
 } from "../models/discount-condition"
 import { DiscountConditionProduct } from "../models/discount-condition-product"
 import { DiscountRule } from "../models/discount-rule"
+import { DiscountConditionRepository } from "../repositories/discount-condition"
 dotenv.config()
 
 const typeormConfig = {
@@ -48,18 +51,18 @@ const migrate = async function ({ typeormConfig }): Promise<void> {
         .offset(offset)
         .getRawMany()
 
+      const discountConditionRepo = manager
+        .getCustomRepository(DiscountConditionRepository)
       await manager
         .createQueryBuilder()
         .insert()
         .into(DiscountCondition)
         .values(
-          discountRules.map((dr) =>
-            Object.assign(new DiscountCondition(), {
-              type: DiscountConditionType.PRODUCTS,
-              operator: DiscountConditionOperator.IN,
-              discount_rule_id: dr.dr_id,
-            })
-          )
+          discountRules.map((dr) => discountConditionRepo.create({
+            type: DiscountConditionType.PRODUCTS,
+            operator: DiscountConditionOperator.IN,
+            discount_rule_id: dr.dr_id,
+          }) as QueryDeepPartialEntity<DiscountCondition>)
         )
         .orIgnore()
         .execute()

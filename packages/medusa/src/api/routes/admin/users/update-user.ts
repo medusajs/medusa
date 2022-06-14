@@ -56,5 +56,5 @@ export class AdminUpdateUserRequest {
 
   @IsObject()
   @IsOptional()
-  metadata?: JSON
+  metadata?: Record<string, unknown>
 }

@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-algolia",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Search support for algolia",
   "main": "index.js",
   "repository": {

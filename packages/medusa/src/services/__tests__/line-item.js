@@ -3,7 +3,9 @@ import LineItemService from "../line-item"
 
 describe("LineItemService", () => {
   describe("create", () => {
-    const lineItemRepository = MockRepository({})
+    const lineItemRepository = MockRepository({
+      create: (data) => data
+    })
 
     const cartRepository = MockRepository({
       findOne: () =>
@@ -105,9 +107,10 @@ describe("LineItemService", () => {
     })
 
     it("successfully create a line item giftcard", async () => {
-      const line = await await lineItemService.generate(
+      const line = await lineItemService.generate(
         IdMap.getId("test-giftcard"),
-        IdMap.getId("test-region")
+        IdMap.getId("test-region"),
+        1
       )
 
       await lineItemService.create({
@@ -115,8 +118,8 @@ describe("LineItemService", () => {
         cart_id: IdMap.getId("test-cart"),
       })
 
-      expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
-      expect(lineItemRepository.create).toHaveBeenCalledWith({
+      expect(lineItemRepository.create).toHaveBeenCalledTimes(2)
+      expect(lineItemRepository.create).toHaveBeenNthCalledWith(2, expect.objectContaining({
         allow_discounts: false,
         variant_id: IdMap.getId("test-giftcard"),
         cart_id: IdMap.getId("test-cart"),
@@ -128,7 +131,7 @@ describe("LineItemService", () => {
         is_giftcard: true,
         should_merge: true,
         metadata: {},
-      })
+      }))
     })
   })
 

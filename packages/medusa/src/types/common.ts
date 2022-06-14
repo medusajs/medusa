@@ -1,10 +1,40 @@
 import { Transform, Type } from "class-transformer"
-import { IsDate, IsNumber, IsOptional, IsString } from "class-validator"
+import {
+  IsDate,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import "reflect-metadata"
+import { FindManyOptions, FindOperator, OrderByCondition } from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
 
 export type PartialPick<T, K extends keyof T> = {
   [P in K]?: T[P]
+}
+
+export type Writable<T> = {
+  -readonly [key in keyof T]:
+    | T[key]
+    | FindOperator<T[key][]>
+    | FindOperator<string[]>
+}
+
+export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
+  where: Partial<Writable<TEntity>>
+  withDeleted?: boolean
+  relations?: string[]
+}
+
+export type Selector<TEntity> = {
+  [key in keyof TEntity]?:
+    | TEntity[key]
+    | TEntity[key][]
+    | DateComparisonOperator
+    | StringComparisonOperator
+    | NumericalComparisonOperator
+    | FindOperator<TEntity[key][] | string[]>
 }
 
 export type TotalField =
@@ -23,6 +53,17 @@ export interface FindConfig<Entity> {
   take?: number
   relations?: string[]
   order?: Record<string, "ASC" | "DESC">
+}
+
+export interface CustomFindOptions<TModel, InKeys extends keyof TModel> {
+  select?: FindManyOptions<TModel>["select"]
+  where?: FindManyOptions<TModel>["where"] &
+    {
+      [P in InKeys]?: TModel[P][]
+    }
+  order?: OrderByCondition
+  skip?: number
+  take?: number
 }
 
 export type PaginatedResponse = { limit: number; offset: number; count: number }
@@ -98,73 +139,84 @@ export class NumericalComparisonOperator {
 export class AddressPayload {
   @IsOptional()
   @IsString()
-  first_name: string
+  first_name?: string
 
   @IsOptional()
   @IsString()
-  last_name: string
+  last_name?: string
 
   @IsOptional()
   @IsString()
-  phone: string
+  phone?: string
 
   @IsOptional()
-  metadata: object
-
-  @IsOptional()
-  @IsString()
-  company: string
+  @IsObject()
+  metadata?: Record<string, unknown>
 
   @IsOptional()
   @IsString()
-  address_1: string
+  company?: string
 
   @IsOptional()
   @IsString()
-  address_2: string
+  address_1?: string
 
   @IsOptional()
   @IsString()
-  city: string
+  address_2?: string
 
   @IsOptional()
   @IsString()
-  country_code: string
+  city?: string
 
   @IsOptional()
   @IsString()
-  province: string
+  country_code?: string
 
   @IsOptional()
   @IsString()
-  postal_code: string
+  province?: string
+
+  @IsOptional()
+  @IsString()
+  postal_code?: string
 }
 
 export class AddressCreatePayload {
   @IsString()
   first_name: string
+
   @IsString()
   last_name: string
+
   @IsOptional()
   @IsString()
   phone: string
+
   @IsOptional()
   metadata: object
+
   @IsOptional()
   @IsString()
   company: string
+
   @IsString()
   address_1: string
+
   @IsOptional()
   @IsString()
   address_2: string
+
   @IsString()
   city: string
+
   @IsString()
   country_code: string
+
   @IsOptional()
   @IsString()
   province: string
+
   @IsString()
   postal_code: string
 }

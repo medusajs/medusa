@@ -20,8 +20,9 @@ const createCustomNode = ({ name, node, createNode }) => {
         let requestBodyValues = undefined
 
         if (values.requestBody && values.requestBody.content) {
-          requestBodyValues =
-            values.requestBody.content["application/json"].schema
+          requestBodyValues = values.requestBody.content.hasOwnProperty("application/json") ?
+            values.requestBody.content["application/json"].schema :
+            values.requestBody.content["multipart/form-data"].schema
         }
 
         return {

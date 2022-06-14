@@ -1,24 +1,12 @@
-import {
-  BeforeInsert,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  Index,
-  ManyToMany,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from "typeorm"
-import { ulid } from "ulid"
-import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity, Index, ManyToMany } from "typeorm"
 import { Customer } from "./customer"
 import { PriceList } from "./price-list"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class CustomerGroup {
-  @PrimaryColumn()
-  id: string
-
+export class CustomerGroup extends SoftDeletableEntity {
   @Index({ unique: true, where: "deleted_at IS NULL" })
   @Column()
   name: string
@@ -33,24 +21,11 @@ export class CustomerGroup {
   })
   price_lists: PriceList[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `cgrp_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "cgrp")
   }
 }

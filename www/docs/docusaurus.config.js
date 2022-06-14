@@ -53,8 +53,14 @@ module.exports = {
       },
       items: [
         {
-          href: "https://docs.medusajs.com",
-          label: "Introduction",
+          type: "docSidebar",
+          sidebarId: "tutorialSidebar",
+          label: "Docs"
+        },
+        {
+          type: "docSidebar",
+          sidebarId: "servicesSidebar",
+          label: "Services Reference",
         },
         {
           href: `https://docs.medusajs.com/api/store`,
@@ -127,12 +133,12 @@ module.exports = {
       {
         docs: {
           sidebarPath: require.resolve("./sidebars.js"),
-          editUrl: "https://github.com/medusajs/medusa/edit/master/www/",
+          editUrl: "https://github.com/medusajs/medusa/edit/master/docs/content",
           path: docsPath,
           routeBasePath: "/",
           remarkPlugins: [
             [require('@docusaurus/remark-plugin-npm2yarn'), {sync: true}],
-          ],
+          ]
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),

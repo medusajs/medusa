@@ -1,3 +1,4 @@
+const { PriceList, CustomerGroup } = require("@medusajs/medusa")
 const path = require("path")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -8,6 +9,9 @@ const {
   simpleProductFactory,
   simplePriceListFactory,
 } = require("../../factories")
+const {
+  simpleCustomerGroupFactory,
+} = require("../../factories/simple-customer-group-factory")
 const adminSeeder = require("../../helpers/admin-seeder")
 const customerSeeder = require("../../helpers/customer-seeder")
 const priceListSeeder = require("../../helpers/price-list-seeder")
@@ -211,6 +215,159 @@ describe("/admin/price-lists", () => {
         ])
       )
     })
+
+    it("given a search query, returns matching results by name", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=winter", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
+
+    it("given a search query, returns matching results by description", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=25%", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+            description:
+              "Winter sale for VIP customers. 25% off selected items.",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
+
+    it("given a search query, returns empty list when does not exist", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=blablabla", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual([])
+      expect(response.data.count).toEqual(0)
+    })
+
+    it("given a search query and a status filter not matching any price list, returns an empty set", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=draft", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual([])
+      expect(response.data.count).toEqual(0)
+    })
+
+    it("given a search query and a status filter matching a price list, returns a price list", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get("/admin/price-lists?q=vip&status[]=active", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "VIP winter sale",
+            status: "active",
+          }),
+        ])
+      )
+      expect(response.data.count).toEqual(1)
+    })
+
+    it("lists only price lists with customer_group", async () => {
+      await customerSeeder(dbConnection)
+
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-cgroup-1",
+        customer_groups: ["customer-group-1"],
+      })
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-cgroup-2",
+        customer_groups: ["customer-group-2"],
+      })
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-cgroup-3",
+        customer_groups: ["customer-group-3"],
+      })
+      await simplePriceListFactory(dbConnection, {
+        id: "test-list-no-cgroup",
+      })
+
+      const api = useApi()
+
+      const response = await api
+        .get(
+          `/admin/price-lists?customer_groups[]=customer-group-1,customer-group-2`,
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.price_lists.length).toEqual(2)
+      expect(response.data.price_lists).toEqual([
+        expect.objectContaining({ id: "test-list-cgroup-1" }),
+        expect.objectContaining({ id: "test-list-cgroup-2" }),
+      ])
+    })
   })
 
   describe("POST /admin/price-lists/:id", () => {
@@ -229,6 +386,41 @@ describe("/admin/price-lists", () => {
     afterEach(async () => {
       const db = useDb()
       await db.teardown()
+    })
+
+    it("removes configuration with update", async () => {
+      const priceList = await simplePriceListFactory(dbConnection, {
+        ends_at: new Date(),
+        starts_at: new Date(),
+        customer_groups: ["customer-group-1"],
+      })
+
+      const api = useApi()
+      const getResult = await api.get(`/admin/price-lists/${priceList.id}`, {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(getResult.status).toEqual(200)
+      expect(getResult.data.price_list.starts_at).toBeTruthy()
+      expect(getResult.data.price_list.ends_at).toBeTruthy()
+      expect(getResult.data.price_list.customer_groups.length).toEqual(1)
+
+      const updateResult = await api.post(
+        `/admin/price-lists/${priceList.id}`,
+        { ends_at: null, starts_at: null, customer_groups: [] },
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(updateResult.status).toEqual(200)
+      expect(updateResult.data.price_list.starts_at).toBeFalsy()
+      expect(updateResult.data.price_list.ends_at).toBeFalsy()
+      expect(updateResult.data.price_list.customer_groups.length).toEqual(0)
     })
 
     it("updates a price list", async () => {
@@ -398,6 +590,68 @@ describe("/admin/price-lists", () => {
         updated_at: expect.any(String),
       })
     })
+
+    it("updates price list prices (inser a new MA for a specific region)", async () => {
+      const api = useApi()
+
+      const payload = {
+        prices: [
+          // update MA
+          {
+            id: "ma_test_4",
+            amount: 1001,
+            currency_code: "usd",
+            variant_id: "test-variant",
+          },
+          // create MA
+          {
+            amount: 101,
+            variant_id: "test-variant",
+            region_id: "region-pl",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/price-lists/pl_with_some_ma", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.price_list.prices.length).toEqual(2)
+      expect(response.data.price_list.prices).toMatchSnapshot([
+        {
+          id: expect.any(String),
+          currency_code: "eur",
+          amount: 101,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: "region-pl",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: "ma_test_4",
+          currency_code: "usd",
+          amount: 1001,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+      ])
+    })
   })
 
   describe("POST /admin/price-lists/:id/prices/batch", () => {
@@ -462,7 +716,9 @@ describe("/admin/price-lists", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.price_list.prices.length).toEqual(6)
-      expect(response.data.price_list.prices).toMatchSnapshot([
+      expect(
+        response.data.price_list.prices.sort((a, b) => b.amount - a.amount)
+      ).toMatchSnapshot([
         {
           id: expect.any(String),
           price_list_id: "pl_no_customer_groups",
@@ -614,6 +870,78 @@ describe("/admin/price-lists", () => {
         },
       ])
     })
+
+    it("Adds a batch of new prices where a MA record have a `region_id` instead of `currency_code`", async () => {
+      const api = useApi()
+
+      const payload = {
+        prices: [
+          {
+            amount: 100,
+            variant_id: "test-variant",
+            region_id: "region-pl",
+          },
+          {
+            amount: 200,
+            variant_id: "test-variant",
+            currency_code: "usd",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/price-lists/pl_with_some_ma/prices/batch", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+
+      expect(response.data.price_list.prices.length).toEqual(3) // initially this PL has 1 MA record
+      expect(response.data.price_list.prices).toMatchSnapshot([
+        {
+          id: "ma_test_4",
+          currency_code: "usd",
+          amount: 70,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: expect.any(String),
+          currency_code: "eur",
+          amount: 100,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: "region-pl",
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+        {
+          id: expect.any(String),
+          currency_code: "usd",
+          amount: 200,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: "pl_with_some_ma",
+          variant_id: "test-variant",
+          region_id: null,
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          deleted_at: null,
+        },
+      ])
+    })
   })
 
   describe("DELETE /admin/price-lists/:id", () => {
@@ -652,6 +980,19 @@ describe("/admin/price-lists", () => {
         object: "price-list",
         deleted: true,
       })
+
+      try {
+        await api.get("/admin/price-lists/pl_no_customer_groups", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+      } catch (error) {
+        expect(error.response.status).toBe(404)
+        expect(error.response.data.message).toEqual(
+          "Price list with id: pl_no_customer_groups was not found"
+        )
+      }
     })
   })
 
@@ -794,9 +1135,17 @@ describe("/admin/price-lists", () => {
 
         await simplePriceListFactory(dbConnection, {
           id: "test-list",
+          customer_groups: ["test-group"],
           prices: [
-            { variant_id: "test-variant-1", currency_code: "usd", amount: 100 },
-            { variant_id: "test-variant-4", currency_code: "usd", amount: 100 },
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 150 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 150 },
+          ],
+        })
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list-2",
+          prices: [
+            { variant_id: "test-variant-1", currency_code: "usd", amount: 200 },
+            { variant_id: "test-variant-4", currency_code: "usd", amount: 200 },
           ],
         })
       } catch (err) {
@@ -810,7 +1159,7 @@ describe("/admin/price-lists", () => {
       await db.teardown()
     })
 
-    it("lists only product 1, 2", async () => {
+    it("lists only product 1, 2 with price list prices", async () => {
       const api = useApi()
 
       const response = await api
@@ -826,8 +1175,50 @@ describe("/admin/price-lists", () => {
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
       expect(response.data.products).toEqual([
-        expect.objectContaining({ id: "test-prod-1" }),
-        expect.objectContaining({ id: "test-prod-2" }),
+        expect.objectContaining({
+          id: "test-prod-1",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-1",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-2",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          id: "test-prod-2",
+          variants: [
+            expect.objectContaining({
+              id: "test-variant-3",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+              ],
+            }),
+            expect.objectContaining({
+              id: "test-variant-4",
+              prices: [
+                expect.objectContaining({ currency_code: "usd", amount: 100 }),
+                expect.objectContaining({
+                  currency_code: "usd",
+                  amount: 150,
+                  price_list_id: "test-list",
+                }),
+              ],
+            }),
+          ],
+        }),
       ])
     })
 
@@ -849,6 +1240,157 @@ describe("/admin/price-lists", () => {
       expect(response.data.products).toEqual([
         expect.objectContaining({ id: "test-prod-2" }),
       ])
+    })
+  })
+
+  describe("delete prices from price list related to the specified product or variant", () => {
+    let product1
+    let product2
+
+    function getCustomPriceIdFromVariant(variantId, index) {
+      return "ma_" + index + "_" + variantId
+    }
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        product1 = await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-1",
+            title: "some product",
+            variants: [
+              {
+                id: `simple-test-variant-${Math.random() * 1000}`,
+                title: "Test",
+                prices: [{ currency: "usd", amount: 100 }],
+              },
+              {
+                id: `simple-test-variant-${Math.random() * 1000}`,
+                title: "Test 2",
+                prices: [{ currency: "usd", amount: 200 }],
+              },
+            ],
+          },
+          1
+        )
+
+        product2 = await simpleProductFactory(
+          dbConnection,
+          {
+            id: "test-prod-2",
+            title: "some product 2",
+          },
+          2
+        )
+
+        await simplePriceListFactory(dbConnection, {
+          id: "test-list",
+          customer_groups: ["test-group"],
+          prices: [
+            ...product1.variants.map((variant, i) => ({
+              id: getCustomPriceIdFromVariant(variant.id, i),
+              variant_id: variant.id,
+              currency_code: "usd",
+              amount: (i + 1) * 150,
+            })),
+            ...product2.variants.map((variant, i) => ({
+              id: getCustomPriceIdFromVariant(variant.id, i),
+              variant_id: variant.id,
+              currency_code: "usd",
+              amount: (i + 1) * 150,
+            })),
+          ],
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should delete all the prices that are part of the price list for the specified product", async () => {
+      const api = useApi()
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(3)
+
+      let response = await api.delete(
+        `/admin/price-lists/test-list/products/${product1.id}/prices`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data).toEqual({
+        ids: product1.variants.map((variant, i) => {
+          return getCustomPriceIdFromVariant(variant.id, i)
+        }),
+        object: "money-amount",
+        deleted: true,
+      })
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(1)
+    })
+
+    it("should delete all the prices that are part of the price list for the specified variant", async () => {
+      const api = useApi()
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(3)
+
+      const variant = product2.variants[0]
+      let response = await api.delete(
+        `/admin/price-lists/test-list/variants/${variant.id}/prices`,
+        {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        }
+      )
+
+      expect(response.status).toBe(200)
+      expect(response.data).toEqual({
+        ids: [getCustomPriceIdFromVariant(variant.id, 0)],
+        object: "money-amount",
+        deleted: true,
+      })
+
+      response = await api.get("/admin/price-lists/test-list", {
+        headers: {
+          Authorization: "Bearer test_token",
+        },
+      })
+
+      expect(response.status).toBe(200)
+      expect(response.data.price_list.prices.length).toBe(2)
     })
   })
 })

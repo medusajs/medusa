@@ -1,18 +1,14 @@
 import {
-  Entity,
-  OneToMany,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
   Check,
-  Index,
   Column,
-  PrimaryColumn,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { LineItemTaxLine } from "./line-item-tax-line"
 import { Swap } from "./swap"
@@ -21,16 +17,15 @@ import { Order } from "./order"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
 import { LineItemAdjustment } from "./line-item-adjustment"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
 @Check(`"returned_quantity" <= "quantity"`)
 @Check(`"quantity" > 0`)
 @Entity()
-export class LineItem {
-  @PrimaryColumn()
-  id: string
-
+export class LineItem extends BaseEntity {
   @Index()
   @Column({ nullable: true })
   cart_id: string
@@ -66,7 +61,9 @@ export class LineItem {
   @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
   tax_lines: LineItemTaxLine[]
 
-  @OneToMany(() => LineItemAdjustment, (lia) => lia.item, { cascade: ["insert"] })
+  @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
+    cascade: ["insert"],
+  })
   adjustments: LineItemAdjustment[]
 
   @Column()
@@ -116,22 +113,14 @@ export class LineItem {
   @Column({ nullable: true, type: "int" })
   shipped_quantity: number
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   refundable: number | null
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `item_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "item")
   }
 }
 
