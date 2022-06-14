@@ -2,13 +2,19 @@ import { AwilixContainer } from "awilix"
 import { Logger as _Logger } from "winston"
 import { LoggerOptions } from "typeorm"
 import { Customer, User } from "../models"
+import { FindConfig, RequestQueryFields } from "./common"
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
-      user?: User | Customer
+      user?: (User | Customer) & { userId?: string }
       scope: MedusaContainer
+      validatedQuery: RequestQueryFields & Record<string, unknown>
+      validatedBody: unknown
+      listConfig: FindConfig<unknown>
+      retrieveConfig: FindConfig<unknown>
+      filterableFields: Record<string, unknown>
     }
   }
 }
@@ -23,6 +29,8 @@ export type MedusaContainer = AwilixContainer & {
 
 export type Logger = _Logger & {
   progress: (activityId: string, msg: string) => void
+  info: (msg: string) => void
+  warn: (msg: string) => void
 }
 
 export type ConfigModule = {

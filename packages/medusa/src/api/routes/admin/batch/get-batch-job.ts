@@ -1,5 +1,5 @@
 /**
- * @oas [get] /batch/{id}
+ * @oas [get] /batch-jobs/{id}
  * operationId: "GetBatchJobsBatchJob"
  * summary: "Retrieve a Batch Job"
  * description: "Retrieves a Batch Job."

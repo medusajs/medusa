@@ -9,10 +9,11 @@ import {
 import PriceListService from "../../../../services/price-list"
 import {
   AdminPriceListPricesCreateReq,
+  CreatePriceListInput,
   PriceListStatus,
   PriceListType,
 } from "../../../../types/price-list"
-import { validator } from "../../../../utils/validator"
+import { Request } from "express"
 
 /**
  * @oas [post] /price_lists
@@ -85,13 +86,13 @@ import { validator } from "../../../../utils/validator"
  *             product:
  *               $ref: "#/components/schemas/price_list"
  */
-export default async (req, res) => {
-  const validated = await validator(AdminPostPriceListsPriceListReq, req.body)
-
+export default async (req: Request, res) => {
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  const priceList = await priceListService.create(validated)
+  const priceList = await priceListService.create(
+    req.validatedBody as CreatePriceListInput
+  )
 
   res.json({ price_list: priceList })
 }

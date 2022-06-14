@@ -17,8 +17,8 @@ import {
   FindWithRelationsOptions,
   ProductVariantRepository,
 } from "../repositories/product-variant"
-import EventBusService from "../services/event-bus"
-import RegionService from "../services/region"
+import EventBusService from "./event-bus"
+import RegionService from "./region"
 import { FindConfig } from "../types/common"
 import {
   CreateProductVariantInput,

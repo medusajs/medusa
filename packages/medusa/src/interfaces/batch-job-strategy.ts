@@ -1,37 +1,27 @@
+import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
 import { BatchJob } from "../models/batch-job"
+import { BatchJobCreateProps } from "../types/batch-job"
 import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
   extends TransactionBaseService<T> {
   /**
-   * Used in the API controller to verify that the `context` param is valid
-   */
-  validateContext(
-    context: Record<string, unknown>
-  ): Promise<Record<string, unknown>>
-
-  /**
-   * Method for preparing a batch job for processing beyond creating the entity
+   * Method for preparing a batch job for processing
    */
   prepareBatchJobForProcessing(
-    batchJobId: string,
+    batchJobEntity: AdminPostBatchesReq,
     req: Express.Request
-  ): Promise<BatchJob>
+  ): Promise<BatchJobCreateProps>
+
+  /**
+   * Method for pre-processing a batch job
+   */
+  preProcessBatchJob(batchJobId: string): Promise<BatchJob>
 
   /**
    *  Method does the actual processing of the job. Should report back on the progress of the operation.
    */
   processJob(batchJobId: string): Promise<BatchJob>
-
-  /**
-   *  Method performs the completion of the job. Will not be run if `processJob` has already moved the BatchJob to a `complete` status.
-   */
-  completeJob(batchJobId: string): Promise<BatchJob>
-
-  /**
-   * Validates that the file can be used for processJob
-   */
-  validateFile(fileLocation: string)
 
   /**
    * Builds and returns a template file that can be downloaded and filled in
@@ -48,22 +38,16 @@ export abstract class AbstractBatchJobStrategy<
   static identifier: string
   static batchType: string
 
-  public abstract validateContext(
-    context: Record<string, unknown>
-  ): Promise<Record<string, unknown>>
+  abstract prepareBatchJobForProcessing(
+    batchJob: AdminPostBatchesReq,
+    req: Express.Request
+  ): Promise<BatchJobCreateProps>
+
+  public abstract preProcessBatchJob(batchJobId: string): Promise<BatchJob>
 
   public abstract processJob(batchJobId: string): Promise<BatchJob>
 
-  public abstract completeJob(batchJobId: string): Promise<BatchJob>
-
-  public abstract validateFile(fileLocation: string): Promise<boolean>
-
   public abstract buildTemplate(): Promise<string>
-
-  public abstract prepareBatchJobForProcessing(
-    batchJobId: string,
-    req: Express.Request
-  ): Promise<BatchJob>
 }
 
 export function isBatchJobStrategy(

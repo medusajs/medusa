@@ -14,7 +14,7 @@ export type FileServiceGetUploadStreamResult = {
 }
 
 export type GetUploadedFileType = {
-  key: string
+  fileKey: string
   [x: string]: unknown
 }
 
