@@ -14,6 +14,8 @@ import { MedusaError } from "medusa-core-utils/dist"
 import { transformQuery } from "../api/middlewares"
 import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
 import { ClassConstructor } from "../types/global"
+import { IsNumber, IsOptional, IsString } from "class-validator"
+import { Type } from "class-transformer"
 
 type Context = {
   listConfig: FindConfig<Product>
@@ -366,16 +368,47 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   }
 
   async prepareBatchJobForProcessing(
-    batchJobId: string,
+    batchJob: AdminPostBatchesReq,
     req: Express.Request
   ): Promise<BatchJob> {
     return await this.atomicPhase_(async (transactionManager: EntityManager) => {
-      const batchJob = await this.batchJobService_
-        .withTransaction(transactionManager)
-        .retrieve(batchJobId)
+      const { limit, offset, order, fields, expand } = batchJob.context
+
+      const toValidate = class ToValidate extends AdminPostBatchesReq {
+        @IsNumber()
+        @IsOptional()
+        @Type(() => Number)
+        offset?: number = 0
+
+        @IsNumber()
+        @IsOptional()
+        @Type(() => Number)
+        limit?: number = 50
+
+        @IsString()
+        @IsOptional()
+        expand?: string
+
+        @IsString()
+        @IsOptional()
+        fields?: string
+
+        @IsString()
+        @IsOptional()
+        order?: string
+
+        constructor() {
+          super()
+          this.limit = limit as number
+          this.offset = offset  as number
+          this.order = order as string
+          this.fields = fields as string
+          this.expand = expand as string
+        }
+      }
 
       await transformQuery(
-        AdminPostBatchesReq as ClassConstructor<RequestQueryFields>,
+        toValidate,
         {
           defaultRelations: this.relations_,
           isList: true
@@ -383,18 +416,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       )(req, {} as any, (err) => throw err)
       const { listConfig, filterableFields } = req
 
-      const context = {
+      batchJob.context = {
         ...(batchJob.context ?? {}),
         listConfig,
         filterableFields
       }
-
-      return await this.batchJobService_.update(batchJobId, { context })
+      return batchJob
     })
-  }
-
-  preProcessBatchJob(batchJobId: string): Promise<BatchJob> {
-    return Promise.resolve(undefined);
   }
 
   async processJob(batchJobId: string): Promise<BatchJob> {
