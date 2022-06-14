@@ -85,7 +85,7 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
   ): Promise<CustomShippingOption> {
     const { cart_id, shipping_option_id, price, metadata } = data
 
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const customShippingOptionRepo = manager.getCustomRepository(
         this.customShippingOptionRepository_
       )
