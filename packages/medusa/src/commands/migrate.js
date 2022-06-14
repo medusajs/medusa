@@ -16,45 +16,40 @@ const t = async function ({ directory }) {
     url: configModule.projectConfig.database_url,
   }
 
-  if (configModule.projectConfig.database_host) {
-    hostConfig = {
-      host: configModule.projectConfig.database_host,
-      port: configModule.projectConfig.database_port,
-      database: configModule.projectConfig.database_database,
-      ssl: configModule.projectConfig.database_ssl,
-      username: configModule.projectConfig.database_username,
-      password: configModule.projectConfig.database_password,
-    }
-  }
-
-  const connection = await createConnection({
-    type: configModule.projectConfig.database_type,
+  let configFile =getConfigFile(directory, `medusa-config`)
+  let configuration = await Promise.resolve( configFile)
+  let migrationDirs = await Promise.resolve(getMigrations(directory))
+  let configModule= await Promise.resolve(configuration.configModule)
+   let connection =undefined
+  if(configModule)
+  connection= await createConnection({
+    type: configModule?.projectConfig.database_type,
     //url: configModule.projectConfig.database_url,
-    url:configModule.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
+    url:configModule?.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
     ...{
-      host:configModule.projectConfig.database_host??"",
-      port:configModule.projectConfig.database_port??"",
-      database:configModule.projectConfig.database_database??"",
-      ssl:configModule.projectConfig.database_ssl??{},
-      username:configModule.projectConfig.database_username??"",
-      password: configModule.projectConfig.database_password??"",
+      host:configModule?.projectConfig.database_host??"",
+      port:configModule?.projectConfig.database_port??"",
+      database:configModule?.projectConfig.database_database??"",
+      ssl:configModule?.projectConfig.database_ssl??{},
+      username:configModule?.projectConfig.database_username??"",
+      password: configModule?.projectConfig.database_password??"",
   },
-    extra: configModule.projectConfig.database_extra || {},
+    extra: configModule?.projectConfig.database_extra || {},
     migrations: migrationDirs,
     logging: true,
   })
 
-  if (args[0] === "run") {
+  if (args[0] === "run" && connection) {
     await connection?.runMigrations()
     await connection?.close()
     Logger.info("Migrations completed.")
     process.exit()
-  } else if (args[0] === "revert") {
+  } else if (args[0] === "revert" && connection) {
     await connection.undoLastMigration({ transaction: "all" })
     await connection.close()
     Logger.info("Migrations reverted.")
     process.exit()
-  } else if (args[0] === "show") {
+  } else if (args[0] === "show" && connection) {
     const unapplied = await connection.showMigrations()
     await connection.close()
     process.exit(unapplied ? 1 : 0)

@@ -9,23 +9,22 @@ const errorHandler = isProduction
     }
   : console.log
 
-export default async (rootDirectory: string): Promise<ConfigModule> => {
-  const configuration = getConfigFile(rootDirectory, `medusa-config`) as {
-    configModule: ConfigModule
-    configFilePath: string
-  }
-  const resolveConfigProperties = async (obj): Promise<ConfigModule> => {
-    for (const key of Object.keys(obj)) {
-      if (typeof obj[key] === "object" && obj[key] !== null) {
-        await resolveConfigProperties(obj[key])
-      }
-      if (typeof obj[key] === "function") {
-        obj[key] = await obj[key]()
-      }
+export default  async (rootDirectory: string): Promise<ConfigModule> => {
+
+  /*let configFile =getConfigFile(directory, `medusa-config`)
+  let configuration = await Promise.resolve( configFile)
+  let migrationDirs = await Promise.resolve(getMigrations(directory))*/
+  //let configModule= await Promise.resolve(configuration.configModule)
+  
+
+
+  const { configModule } = (await (async () => {
+    return Promise.resolve(getConfigFile(rootDirectory, `medusa-config`) as {
+      configModule: ConfigModule
     }
-    return obj
-  }
-  const configModule = await resolveConfigProperties(configuration.configModule)
+    )
+  })())
+
   if (!configModule?.projectConfig?.redis_url) {
     console.log(
       `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
@@ -62,12 +61,12 @@ export default async (rootDirectory: string): Promise<ConfigModule> => {
     )
   }
 
-  return {
+  return Promise.resolve({
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
     },
     plugins: configModule?.plugins ?? [],
-  }
+  })
 }
