@@ -337,7 +337,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     ],
   ])
 
-  private readonly NEWLINE = "\r\n"
+  private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
   private readonly BATCH_SIZE = 50
 
@@ -477,8 +477,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           }
 
           products.forEach((product: Product) => {
-            const productLinesData = this.buildProductLines(product)
-            productLinesData.forEach((line) => writeStream.write(line))
+            const lines = this.buildProductVariantLines(product)
+            lines.forEach(line => writeStream.write(line))
           })
 
           advancementCount += products.length
@@ -563,7 +563,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     this.appendMoneyAmountDescriptors(maxMoneyAmountCount)
     this.appendImagesDescriptors(maxImagesCount)
 
-    return [...this.columnDescriptors.keys(), this.NEWLINE].join(
+    return [...this.columnDescriptors.keys(), this.NEWLINE_].join(
       this.DELIMITER_
     )
   }
@@ -613,64 +613,20 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     }
   }
 
-  private buildProductLines(product: Product): string[] {
+  private buildProductVariantLines(product: Product): string[] {
     const outputLineData: string[] = []
 
-    const productLine = this.buildProductLineData(product)
-    outputLineData.push(productLine)
-
-    const variantLines = this.buildProductVariantsLineData(
-      product,
-      product.variants
-    )
-    outputLineData.push(...variantLines)
-
-    return outputLineData
-  }
-
-  private buildProductLineData(product: Product): string {
-    const productLineData: string[] = []
-    for (const [, columnSchema] of this.columnDescriptors.entries()) {
-      if (columnSchema.entityName === "product") {
-        productLineData.push(columnSchema.accessor(product))
-        continue
-      }
-      productLineData.push("")
-    }
-
-    productLineData.push(this.NEWLINE)
-    return productLineData.join(this.DELIMITER_)
-  }
-
-  private buildProductVariantsLineData(
-    product: Product,
-    variants: ProductVariant[] = []
-  ): string[] {
-    const outputLineData: string[] = []
-
-    for (const variant of variants) {
-      const variantLineData: string[] = []
-
-      for (const [
-        columnTitle,
-        columnSchema,
-      ] of this.columnDescriptors.entries()) {
-        if (
-          columnTitle === "Product Handle" &&
-          columnSchema.entityName === "product"
-        ) {
+    for (const variant of product.variants) {
+      const variantLineData = []
+      for (const [, columnSchema] of this.columnDescriptors.entries()) {
+        if (columnSchema.entityName === "product") {
           variantLineData.push(columnSchema.accessor(product))
-          continue
         }
-
         if (columnSchema.entityName === "variant") {
           variantLineData.push(columnSchema.accessor(variant))
-          continue
         }
-        variantLineData.push("")
       }
-
-      variantLineData.push(this.NEWLINE)
+      variantLineData.push(this.NEWLINE_)
       outputLineData.push(variantLineData.join(this.DELIMITER_))
     }
 

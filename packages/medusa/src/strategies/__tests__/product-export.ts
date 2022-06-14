@@ -17,7 +17,7 @@ let fakeJob = {
   created_by_user: {} as User,
   result: {},
   dry_run: false,
-  status: BatchJobStatus.PROCESSING
+  status: BatchJobStatus.PROCESSING as BatchJobStatus
 }
 
 const fileServiceMock = {
