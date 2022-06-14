@@ -14,6 +14,7 @@ function getConfigFile(rootDir, configName) {
     configFilePath = require.resolve(configPath)
     configModule = require(configFilePath)
   } catch (err) {
+    console.errror(err)
     return {}
   }
 
