@@ -47,13 +47,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: test
+        run: ls -la scripts/testing
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
           node-version: "16"
           cache: "yarn"
 
-      - name: Build
+      - name: install
         run: yarn
 
       - name: Build Packages
