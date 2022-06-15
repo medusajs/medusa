@@ -19,7 +19,8 @@ const t = async function({ directory }) {
   if(configModule)
   connection= await createConnection({
     type: configModule.projectConfig.database_type,
-    //url: configModule.projectConfig.database_url,
+    /** we can use either url or individual components to define database access
+    in thcase of dynamic passwords, you will have to use the individual component approach */
     url:configModule.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
     ...{
       host:configModule.projectConfig.database_host,
