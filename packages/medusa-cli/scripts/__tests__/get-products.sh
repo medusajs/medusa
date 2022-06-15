@@ -1,7 +1,6 @@
 #!/bin/bash
 
-seedFile="/data/seed.json"
-seedJson=$(pwd)/$1$seedFile
+seedJson=$(pwd)/$1
 
 res=$(curl -s 'http://localhost:9000/store/products' | \
 python3 -c "

@@ -115,7 +115,7 @@ jobs:
         #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
 
       - name: GetProducts
-        run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh "/cli-test"
+        run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh "cli-test/data/seed.json"
 
         # "curl -X GET http://localhost:9000/store/products"
 
