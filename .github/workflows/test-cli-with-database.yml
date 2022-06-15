@@ -1,0 +1,150 @@
+name: test cli
+on:
+  push
+  # schedule:
+  #   - cron: "0 0 */1 * *"
+
+# on develop nightly
+
+jobs:
+  test-cli-with-database:
+    env:
+      REDIS_URL: redis://redis:6379
+
+    # services:
+    # redis:
+    #   image: redis
+    #   # Set health checks to wait until redis has started
+    #   options: >-
+    #     --health-cmd "redis-cli ping"
+    #     --health-interval 10s
+    #     --health-timeout 5s
+    #     --health-retries 5
+
+    # postgres:
+    #   image: postgres
+    #   env:
+    #     # POSTGRES_PASSWORD: postgres
+    #     # POSTGRES_USER: postgres
+    #     POSTGRES_DB: cli-test
+    #   options: >-
+    #     --health-cmd pg_isready
+    #     --health-interval 10s
+    #     --health-timeout 5s
+    #     --health-retries 5
+    #   ports:
+    #     - 5432:5432
+
+    runs-on: ubuntu-latest
+    steps:
+      # - name: Cancel Previous Runs
+      #   uses: styfle/cancel-workflow-action@0.9.1
+      #   with:
+      #     access_token: ${{ github.token }}
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "16"
+          cache: "yarn"
+
+      - name: Install Medusa cli
+        run: yarn global add -g medusa-cli
+
+      ################################################################################
+      ################################ refactor ######################################
+      ################################################################################
+      - name: Create Medusa project
+        run: |
+          medusa new cli-test
+          -db-user postgres
+          -db-database cli-test
+          -db-port 6379
+          -db-host localhost
+        # -db-pass postgres
+
+      - name: Install dependencies
+        run: yarn
+        working-directory: ./cli-test
+
+      - name: Run migrations
+        run: medusa migrations run
+        working-directory: ./cli-test
+
+      - name: Seed db
+        run: yarn seed
+        working-directory: ./cli-test
+
+      - name: Create admin user
+        run: medusa user -e test@test.com -p password -i admin_123
+        working-directory: ./cli-test
+
+      ################################################################################
+
+      - name: Run development server
+        run: medusa develop > /dev/null 2>&1 &
+        working-directory: ./cli-test
+
+      ################################################################################
+      ################################ refactor ######################################
+      ################################################################################
+
+      - name: Log in with user
+        id: login-user
+        run: 'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
+
+      - name: GetProducts
+        id: get-products
+        run: "curl -X GET http://localhost:9000/store/products"
+
+      - name: Kill server
+        run: kill -9 $(lsof -t -i :9000)
+
+      ################################################################################
+
+      - name: Run development server
+        run: medusa start > /dev/null 2>&1 &
+        working-directory: ./cli-test
+
+      ################################################################################
+      ################################ refactor ######################################
+      ################################################################################
+
+      - name: Log in with user
+        id: login-user
+        run: 'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
+
+      - name: GetProducts
+        id: get-products
+        run: "curl -X GET http://localhost:9000/store/products"
+
+      - name: Kill server
+        run: kill -9 $(lsof -t -i :9000)
+
+      ################################################################################
+# create singular workflow for:
+
+# new
+# try with db-database to set db provider
+# create medusa instance with entire db setup in arguments
+
+# (yarn it up)
+
+# migrations
+# postgres
+# sqlite
+
+# seed
+# postgres
+# sqlite
+
+# user (for admin)
+# test creation
+
+# develop  `medusa develop > /dev/null 2>&1 &`
+# log in with user
+# test with curl get command for store/products (validate with seed)
+
+# start `medusa start > /dev/null 2>&1 &`
+# log in with user
+# test with curl get command for store/products (validate with seed)

@@ -1,0 +1,10 @@
+on:
+  workflow_call:
+    inputs:
+      username:
+        required: true
+        type: string
+
+jobs:
+  test-cli:
+    runs-on: ubuntu-latest
