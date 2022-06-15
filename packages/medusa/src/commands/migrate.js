@@ -18,16 +18,16 @@ const t = async function({ directory }) {
    let connection =undefined
   if(configModule)
   connection= await createConnection({
-    type: configModule?.projectConfig.database_type,
+    type: configModule.projectConfig.database_type,
     //url: configModule.projectConfig.database_url,
-    url:configModule?.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
+    url:configModule.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
     ...{
-      host:configModule?.projectConfig.database_host??"",
-      port:configModule?.projectConfig.database_port??"",
-      database:configModule?.projectConfig.database_database??"",
-      ssl:configModule?.projectConfig.database_ssl??{},
-      username:configModule?.projectConfig.database_username??"",
-      password: configModule?.projectConfig.database_password??"",
+      host:configModule.projectConfig.database_host,
+      port:configModule.projectConfig.database_port,
+      database:configModule.projectConfig.database_database,
+      ssl:configModule.projectConfig.database_ssl,
+      username:configModule.projectConfig.database_username,
+      password: configModule.projectConfig.database_password,
   },
     extra: configModule?.projectConfig.database_extra || {},
     migrations: migrationDirs,
