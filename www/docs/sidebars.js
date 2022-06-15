@@ -215,6 +215,10 @@ module.exports = {
               type: "category",
               label: 'Upgrade Guides',
               collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'advanced/backend/upgrade-guides/index'
+              },
               items: [
                 {
                   type: "doc",
