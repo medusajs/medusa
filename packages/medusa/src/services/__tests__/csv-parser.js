@@ -1,6 +1,8 @@
 import { createContainer } from "awilix"
 import { Readable } from "stream"
+import { AbstractCsvValidator } from "../../interfaces/csv-parser"
 import CsvParser from "../csv-parser"
+import { currencies } from "../../utils/currencies"
 
 describe("CsvParser", () => {
   describe("parse", () => {
@@ -36,17 +38,20 @@ describe("CsvParser", () => {
 
   describe("buildData", () => {
     describe("schema validation", () => {
-      const csvParser = new CsvParser(createContainer(), {
+      class TitleValidator extends AbstractCsvValidator {
+        async validate(builtLine) {
+          if (/\d/.test(builtLine["title"])) {
+            throw new Error("title should not contain a number")
+          }
+          return true
+        }
+      }
+
+      const schema = {
         columns: [
           {
             name: "title",
-            validator: {
-              validate: async (value) => {
-                if (/\d/.test(value)) {
-                  throw new Error("title should not contain a number")
-                }
-              },
-            },
+            validator: new TitleValidator(createContainer()),
           },
           {
             name: "size",
@@ -55,7 +60,9 @@ describe("CsvParser", () => {
             name: "height",
           },
         ],
-      })
+      }
+
+      const csvParser = new CsvParser(createContainer(), schema)
 
       it("given a line containing a column which is not defined in the schema, then validation should fail", async () => {
         try {
@@ -160,7 +167,7 @@ describe("CsvParser", () => {
           },
           {
             name: "price usd",
-            transformer: (value) => Math.round(Number(value) * 100),
+            transform: (value) => Math.round(Number(value) * 100),
           },
         ],
       })
@@ -187,14 +194,14 @@ describe("CsvParser", () => {
               name: "title",
             },
             {
-              name: "variants",
+              name: "prices",
               match: /.*Variant Price.*/i,
-              transformer: (value) => Math.round(Number(value) * 100),
+              transform: (value) => Math.round(Number(value) * 100),
             },
           ],
         })
 
-        it("given a column with the match property as regex, when building data, should resolve that column for all entries in the line that match the regex", async () => {
+        it("given a column with the match property as regex and a transformer, when building data, should resolve that column for all entries in the line that match the regex", async () => {
           const content = await csvParser.buildData([
             {
               title: "medusa t-shirt",
@@ -224,6 +231,171 @@ describe("CsvParser", () => {
               "variant price dkk": 38900,
             },
           ])
+        })
+      })
+
+      describe("reducer", () => {
+        const schema = {
+          columns: [
+            {
+              name: "title",
+            },
+            {
+              name: "prices",
+              match: /.*Variant Price ([a-z]+).*/i,
+              reducer: (builtLine, key, value) => {
+                const [, currency_code] = key.match(
+                  /.*Variant Price ([a-z]+).*/i
+                )
+                const existingPrices = builtLine.prices ?? []
+                const price = {
+                  amount: Math.round(Number(value) * 100),
+                  currency_code,
+                }
+                return {
+                  ...builtLine,
+                  prices: [...existingPrices, price],
+                }
+              },
+              validator: {
+                validate: (builtLine) => {
+                  const unexistingCurrency = builtLine.prices?.find(
+                    (price) => !currencies[price.currency_code.toUpperCase()]
+                  )
+                  if (unexistingCurrency) {
+                    throw new Error(
+                      `wrong currency: ${unexistingCurrency.currency_code}`
+                    )
+                  }
+                  return true
+                },
+              },
+            },
+          ],
+        }
+        const csvParser = new CsvParser(createContainer(), schema)
+
+        it("given a column with match and reducer properties, when building data, should return the result of the reducer function", async () => {
+          const content = await csvParser.buildData([
+            {
+              title: "medusa t-shirt",
+              "variant price usd": "19.99",
+              "variant price cad": "26.79",
+              "variant price dkk": "1389",
+            },
+            {
+              title: "medusa sunglasses",
+              "variant price usd": "9.99",
+              "variant price cad": "16.79",
+              "variant price dkk": "389",
+            },
+          ])
+
+          expect(content).toEqual([
+            {
+              title: "medusa t-shirt",
+              prices: [
+                {
+                  currency_code: "usd",
+                  amount: 1999,
+                },
+                {
+                  currency_code: "cad",
+                  amount: 2679,
+                },
+                {
+                  currency_code: "dkk",
+                  amount: 138900,
+                },
+              ],
+            },
+            {
+              title: "medusa sunglasses",
+              prices: [
+                {
+                  currency_code: "usd",
+                  amount: 999,
+                },
+                {
+                  currency_code: "cad",
+                  amount: 1679,
+                },
+                {
+                  currency_code: "dkk",
+                  amount: 38900,
+                },
+              ],
+            },
+          ])
+        })
+
+        it("given a column with match and reducer properties, when building data, should run validation on the built data", async () => {
+          try {
+            await csvParser.buildData([
+              {
+                title: "medusa t-shirt",
+                "variant price usd": "19.99",
+                "variant price cad": "26.79",
+                "variant price grp": "1389",
+              },
+              {
+                title: "medusa sunglasses",
+                "variant price usd": "9.99",
+                "variant price cad": "16.79",
+                "variant price grp": "389",
+              },
+            ])
+          } catch (err) {
+            expect(err.message).toEqual("wrong currency: grp")
+          }
+        })
+
+        describe("invalid column properties", () => {
+          const schema = {
+            columns: [
+              {
+                name: "title",
+              },
+              {
+                name: "variants",
+                match: /.*Variant Price ([a-z]+).*/i,
+                mapTo: "prices",
+              },
+            ],
+          }
+          const csvParser = new CsvParser(createContainer(), schema)
+
+          it("given a column with match and mapTo property, when building data, then the mapTo property should be ignored", async () => {
+            const content = await csvParser.buildData([
+              {
+                title: "medusa t-shirt",
+                "variant price usd": "19.99",
+                "variant price cad": "26.79",
+                "variant price dkk": "1389",
+              },
+              {
+                title: "medusa sunglasses",
+                "variant price usd": "9.99",
+                "variant price cad": "16.79",
+                "variant price dkk": "389",
+              },
+            ])
+
+            expect(content).toEqual([
+              {
+                title: "medusa t-shirt",
+                "variant price usd": "19.99",
+                "variant price cad": "26.79",
+                "variant price dkk": "1389",
+              },
+              {
+                title: "medusa sunglasses",
+                "variant price usd": "9.99",
+                "variant price cad": "16.79",
+                "variant price dkk": "389",
+              },
+            ])
+          })
         })
       })
     })

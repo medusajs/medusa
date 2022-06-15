@@ -2,7 +2,7 @@ import { AwilixContainer } from "awilix"
 import { difference } from "lodash"
 import Papa, { ParseConfig } from "papaparse"
 import { AbstractParser } from "../interfaces/abstract-parser"
-import { CsvSchema } from "../interfaces/csv-parser"
+import { CsvParserContext, CsvSchema } from "../interfaces/csv-parser"
 
 const DEFAULT_PARSE_OPTIONS = {
   dynamicTyping: true,
@@ -10,7 +10,7 @@ const DEFAULT_PARSE_OPTIONS = {
 }
 
 class CsvParser<
-  TSchema extends CsvSchema = CsvSchema,
+  TSchema extends CsvSchema<TParserResult, TOutputResult> = CsvSchema,
   TParserResult = unknown,
   TOutputResult = unknown
 > extends AbstractParser<TSchema, TParserResult, ParseConfig, TOutputResult> {
@@ -55,8 +55,8 @@ class CsvParser<
     line: TParserResult,
     lineNumber: number
   ): Promise<TOutputResult> {
-    const outputTuple = {} as TOutputResult
-    const columnMap = this._buildColumnMap(this.$$schema.columns)
+    let outputTuple = {} as TOutputResult
+    const columnMap = this.buildColumnMap_(this.$$schema.columns)
 
     const tupleKeys = Object.keys(line)
 
@@ -66,7 +66,7 @@ class CsvParser<
      */
     const processedColumns = {}
     for (const tupleKey of tupleKeys) {
-      const column = this._resolveColumn(tupleKey, columnMap)
+      const column = this.resolveColumn_(tupleKey, columnMap)
 
       /**
        * if the tupleKey does not correspond to any column defined in the schema
@@ -76,6 +76,8 @@ class CsvParser<
           `Unable to treat column ${tupleKey} from the csv file. No target column found in the provided schema`
         )
       }
+
+      processedColumns[column.name] = true
 
       /**
        * if the value corresponding to the tupleKey is empty and the column is required in the schema
@@ -89,18 +91,11 @@ class CsvParser<
       const context = {
         line,
         lineNumber,
-        column: tupleKey,
+        column: column.name,
+        tupleKey,
       }
 
-      if (column.validator) {
-        await column.validator.validate(line[tupleKey], context)
-      }
-
-      outputTuple[column.mapTo ?? tupleKey] = column.transformer
-        ? column.transformer(line[tupleKey], context)
-        : line[tupleKey]
-
-      processedColumns[column.name] = true
+      outputTuple = this.resolveTuple_(outputTuple, column, context)
     }
 
     /**
@@ -119,10 +114,47 @@ class CsvParser<
       )
     }
 
+    for (const column of this.$$schema.columns) {
+      const context = {
+        line,
+        lineNumber,
+        column: column.name,
+      }
+
+      if (column.validator) {
+        await column.validator.validate(outputTuple, context)
+      }
+    }
+
     return outputTuple
   }
 
-  private _buildColumnMap(
+  private resolveTuple_(
+    tuple: TOutputResult,
+    column: TSchema["columns"][number],
+    context: CsvParserContext<TParserResult> & { tupleKey: string }
+  ): TOutputResult {
+    const outputTuple = { ...tuple }
+    const { tupleKey, ...csvContext } = context
+    const { line } = csvContext
+
+    let resolvedKey = tupleKey
+    if ("match" in column && column.reducer) {
+      return column.reducer(outputTuple, tupleKey, line[tupleKey], csvContext)
+    } else if (!("match" in column) && "mapTo" in column && column.mapTo) {
+      resolvedKey = column.mapTo
+    }
+
+    const resolvedValue = column.transform
+      ? column.transform(line[tupleKey], csvContext)
+      : line[tupleKey]
+
+    outputTuple[resolvedKey] = resolvedValue
+
+    return outputTuple
+  }
+
+  private buildColumnMap_(
     columns: TSchema["columns"]
   ): Record<string, TSchema["columns"][number]> {
     return columns.reduce((map, column) => {
@@ -133,7 +165,7 @@ class CsvParser<
     }, {})
   }
 
-  private _resolveColumn(
+  private resolveColumn_(
     tupleKey: string,
     columnMap: Record<string, TSchema["columns"][number]>
   ): TSchema["columns"][number] | undefined {
@@ -142,7 +174,9 @@ class CsvParser<
     }
 
     const matchedColumn = this.$$schema.columns.find((column) =>
-      typeof column.match === "object" && column.match instanceof RegExp
+      "match" in column &&
+      typeof column.match === "object" &&
+      column.match instanceof RegExp
         ? column.match.test(tupleKey)
         : false
     )
