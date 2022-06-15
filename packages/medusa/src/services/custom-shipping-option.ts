@@ -77,7 +77,7 @@ class CustomShippingOptionService extends TransactionBaseService<CustomShippingO
 
       const query = buildQuery(selector, config)
 
-      return customShippingOptionRepo.find(query)
+      return await customShippingOptionRepo.find(query)
     })
   }
 
