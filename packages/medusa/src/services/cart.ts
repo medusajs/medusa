@@ -15,7 +15,12 @@ import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { CartCreateProps, CartUpdateProps, FilterableCartProps, LineItemUpdate } from "../types/cart"
+import {
+  CartCreateProps,
+  CartUpdateProps,
+  FilterableCartProps,
+  LineItemUpdate,
+} from "../types/cart"
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
