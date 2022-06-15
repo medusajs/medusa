@@ -30,13 +30,11 @@ const setupJobDb = async (dbConnection) => {
     await simpleBatchJobFactory(dbConnection, {
       id: "job_2",
       type: "product-export",
-      awaiting_confirmation_at: new Date(),
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_3",
       type: "product-export",
-      awaiting_confirmation_at: new Date(),
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
