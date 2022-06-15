@@ -18,20 +18,24 @@ export default  async (rootDirectory: string): Promise<ConfigModule> => {
   
 
 
-  const { configModule } = (await (async () => {
+  let { configModule } = (await (async () => {
     return Promise.resolve(getConfigFile(rootDirectory, `medusa-config`) as {
       configModule: ConfigModule
     }
     )
   })())
 
+   configModule  = await Promise.resolve(configModule)
   if (!configModule?.projectConfig?.redis_url) {
     console.log(
       `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
     )
   }
+  else{
+    configModule.projectConfig.redis_url = await Promise.resolve(configModule?.projectConfig?.redis_url)
+  }
 
-  const jwt_secret =
+  let jwt_secret =
     configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
   if (!jwt_secret) {
     errorHandler(
@@ -42,8 +46,11 @@ export default  async (rootDirectory: string): Promise<ConfigModule> => {
       }`
     )
   }
+  else{
+    jwt_secret = await Promise.resolve(jwt_secret)
+  }
 
-  const cookie_secret =
+  let cookie_secret =
     configModule?.projectConfig?.cookie_secret ?? process.env.COOKIE_SECRET
   if (!cookie_secret) {
     errorHandler(
@@ -53,6 +60,9 @@ export default  async (rootDirectory: string): Promise<ConfigModule> => {
           : " fallback to either cookie_secret or default 'supersecret'."
       }`
     )
+  }
+  else{
+    cookie_secret = await Promise.resolve(cookie_secret)
   }
 
   if (!configModule?.projectConfig?.database_type) {
