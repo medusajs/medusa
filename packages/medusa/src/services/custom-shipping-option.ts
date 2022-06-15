@@ -7,12 +7,19 @@ import { FindConfig, Selector } from "../types/common"
 import { CreateCustomShippingOptionInput } from "../types/shipping-options"
 import { buildQuery } from "../utils"
 
+type InjectedDependencies = {
+  manager: EntityManager
+  customShippingOptionRepository: typeof CustomShippingOptionRepository
+}
 class CustomShippingOptionService extends TransactionBaseService<CustomShippingOptionService> {
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
   protected customShippingOptionRepository_: typeof CustomShippingOptionRepository
 
-  constructor({ manager, customShippingOptionRepository }) {
+  constructor({
+    manager,
+    customShippingOptionRepository,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
