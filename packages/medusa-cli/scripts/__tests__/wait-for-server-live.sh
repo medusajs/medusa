@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {1..3}
+for i in {1..6}
 do
   echo $i
   status_code=$(curl \
@@ -13,7 +13,7 @@ echo $status_code
     echo "exiting"
     exit 0
   else
-    sleep 3
+    sleep 5
   fi
 done
 
