@@ -1,4 +1,3 @@
-// import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
 import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
