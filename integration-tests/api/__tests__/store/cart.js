@@ -42,7 +42,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: true })
     } catch (error) {
       console.log(error)
     }
@@ -486,7 +486,8 @@ describe("/store/carts", () => {
         regions: ["test-region"],
       }
 
-      let discountCart, discount
+      let discountCart
+      let discount
       beforeEach(async () => {
         try {
           discount = await simpleDiscountFactory(
@@ -1484,6 +1485,25 @@ describe("/store/carts", () => {
       expect(variantRes.data.variant.inventory_quantity).toEqual(0)
     })
 
+    it("calculates correct payment totals on cart completion taking into account line item adjustments", async () => {
+      const api = useApi()
+
+      await api.post("/store/carts/test-cart-3", {
+        discounts: [{ code: "CREATED" }],
+      })
+
+      const createdOrder = await api.post(
+        `/store/carts/test-cart-3/complete-cart`
+      )
+
+      console.log(createdOrder.data.data.payments)
+      console.log(createdOrder.data.data.total)
+      console.log(createdOrder.data.data.discount_total)
+
+      expect(createdOrder.data.type).toEqual("order")
+      expect(createdOrder.status).toEqual(200)
+    })
+
     it("returns early, if cart is already completed", async () => {
       const manager = dbConnection.manager
       const api = useApi()
@@ -1739,7 +1759,9 @@ describe("/store/carts", () => {
         .catch((err) => console.log(err))
 
       // Ensure that the discount is only applied to the standard item
-      const itemId = cartWithGiftcard.data.cart.items.find(item => !item.is_giftcard).id
+      const itemId = cartWithGiftcard.data.cart.items.find(
+        (item) => !item.is_giftcard
+      ).id
       expect(cartWithGiftcard.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

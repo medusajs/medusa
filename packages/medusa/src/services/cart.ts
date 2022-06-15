@@ -3,6 +3,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
+import { DiscountRuleType } from "../models"
 import { Address } from "../models/address"
 import { Cart } from "../models/cart"
 import { CustomShippingOption } from "../models/custom-shipping-option"
@@ -183,6 +184,7 @@ class CartService extends TransactionBaseService<CartService> {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("items.tax_lines")
+      relationSet.add("items.adjustments")
       relationSet.add("gift_cards")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
