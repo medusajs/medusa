@@ -9,18 +9,33 @@ const errorHandler = isProduction
     }
   : console.log
 
-export default (rootDirectory: string): ConfigModule => {
-  const { configModule } = getConfigFile(rootDirectory, `medusa-config`) as {
-    configModule: ConfigModule
-  }
+export default  async (rootDirectory: string): Promise<ConfigModule> => {
 
+  /*let configFile =getConfigFile(directory, `medusa-config`)
+  let configuration = await Promise.resolve( configFile)
+  let migrationDirs = await Promise.resolve(getMigrations(directory))*/
+  //let configModule= await Promise.resolve(configuration.configModule)
+  
+
+
+  let { configModule } = (await (async () => {
+    return Promise.resolve(getConfigFile(rootDirectory, `medusa-config`) as {
+      configModule: ConfigModule
+    }
+    )
+  })())
+
+   configModule  = await Promise.resolve(configModule)
   if (!configModule?.projectConfig?.redis_url) {
     console.log(
       `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
     )
   }
+  else{
+    configModule.projectConfig.redis_url = await Promise.resolve(configModule?.projectConfig?.redis_url)
+  }
 
-  const jwt_secret =
+  let jwt_secret =
     configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
   if (!jwt_secret) {
     errorHandler(
@@ -31,8 +46,11 @@ export default (rootDirectory: string): ConfigModule => {
       }`
     )
   }
+  else{
+    jwt_secret = await Promise.resolve(jwt_secret)
+  }
 
-  const cookie_secret =
+  let cookie_secret =
     configModule?.projectConfig?.cookie_secret ?? process.env.COOKIE_SECRET
   if (!cookie_secret) {
     errorHandler(
@@ -43,6 +61,9 @@ export default (rootDirectory: string): ConfigModule => {
       }`
     )
   }
+  else{
+    cookie_secret = await Promise.resolve(cookie_secret)
+  }
 
   if (!configModule?.projectConfig?.database_type) {
     console.log(
@@ -50,12 +71,12 @@ export default (rootDirectory: string): ConfigModule => {
     )
   }
 
-  return {
+  return Promise.resolve({
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
       ...configModule?.projectConfig,
     },
     plugins: configModule?.plugins ?? [],
-  }
+  })
 }
