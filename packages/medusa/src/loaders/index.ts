@@ -35,7 +35,7 @@ export default async (
     isTest
   }: Options
 ): Promise<{ container: MedusaContainer; dbConnection: Connection; app: Express }> => {
-  const configModule = loadConfig(rootDirectory)
+  const configModule = await loadConfig(rootDirectory)
 
   const container = createContainer() as MedusaContainer
   container.register('configModule', asValue(configModule))
