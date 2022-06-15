@@ -53,6 +53,9 @@ jobs:
           node-version: "16"
           cache: "yarn"
 
+      - name: Build
+        run: yarn
+
       - name: Build Packages
         run: yarn build
 
