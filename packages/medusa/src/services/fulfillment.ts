@@ -22,8 +22,8 @@ type InjectedDependencies = {
   totalsService: TotalsService
   fulfillmentRepository: typeof FulfillmentRepository
   trackingLinkRepository: typeof TrackingLinkRepository
-  shippingProfileService: ShippingProfileService
-  lineItemService: LineItemService
+  shippingProfileService: ShippingProfileService  
+  lineItemService : LineItemService
   fulfillmentProviderService: FulfillmentProviderService
 }
 
