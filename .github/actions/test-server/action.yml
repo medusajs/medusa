@@ -19,15 +19,19 @@ runs:
   using: "composite"
   steps:
     - name: Wait for live server response
+      shell: "bash"
       run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
 
     - name: Log in with user
+      shell: "bash"
       run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh ${{ inputs.email }} ${{ inputs.password }}
       #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
 
     - name: GetProducts
+      shell: "bash"
       run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh ${{ inputs.pathToSeedData }}
       # "curl -X GET http://localhost:9000/store/products"
 
     - name: Kill server
+      shell: "bash"
       run: kill -9 $(lsof -t -i :9000)
