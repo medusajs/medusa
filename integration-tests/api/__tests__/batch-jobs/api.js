@@ -164,7 +164,7 @@ describe("/admin/batch-jobs", () => {
           context: {},
         },
         adminReqConfig
-      ).catch(e => console.log("error", e))
+      )
 
       expect(response.status).toEqual(201)
       expect(response.data.batch_job).toMatchSnapshot({
