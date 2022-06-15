@@ -23,14 +23,12 @@ import ProductCollectionService from "../../../../services/product-collection"
 export default async (req, res) => {
   const { id } = req.params
 
-  const retrieveConfig = {
-    relations: defaultAdminCollectionsRelations,
-  }
-
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
 
-  const collection = await productCollectionService.retrieve(id, retrieveConfig)
+  const collection = await productCollectionService.retrieve(id, {
+    relations: defaultAdminCollectionsRelations,
+  })
   res.status(200).json({ collection })
 }
