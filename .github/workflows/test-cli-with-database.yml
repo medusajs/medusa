@@ -42,11 +42,25 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-      # - name: Setup Node.js environment
-      #   uses: actions/setup-node@v2.4.1
-      #   with:
-      #     node-version: "16"
-      #     cache: "yarn"
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "16"
+          cache: "yarn"
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Install dev cli
+        run: yarn global add medusa-dev-cli
+
+      - name: Set path to medusa repo
+        run: medusa-dev --set-path-to-repo `pwd`
 
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
