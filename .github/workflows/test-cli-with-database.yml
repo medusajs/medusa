@@ -62,12 +62,6 @@ jobs:
       - name: Build Packages
         run: yarn build
 
-      - name: Install dev cli
-        run: yarn global add medusa-dev-cli
-
-      - name: Set path to medusa repo
-        run: medusa-dev --set-path-to-repo `pwd`
-
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
 
@@ -134,11 +128,18 @@ jobs:
       ################################ refactor ######################################
       ################################################################################
 
+      - name: Wait for live server response
+        run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
+
       - name: Log in with user
-        run: 'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
+        run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh test@test.com password
+
+        #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
 
       - name: GetProducts
-        run: "curl -X GET http://localhost:9000/store/products"
+        run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh "/cli-test"
+
+        # "curl -X GET http://localhost:9000/store/products"
 
       - name: Kill server
         run: kill -9 $(lsof -t -i :9000)
