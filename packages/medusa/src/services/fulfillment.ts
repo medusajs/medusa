@@ -17,6 +17,16 @@ import FulfillmentProviderService from "./fulfillment-provider"
 import LineItemService from "./line-item"
 import TotalsService from "./totals"
 
+type InjectedDependencies = {
+  manager: EntityManager
+  totalsService: TotalsService
+  fulfillmentRepository: typeof FulfillmentRepository
+  trackingLinkRepository: typeof TrackingLinkRepository
+  shippingProfileService: ShippingProfileService
+  lineItemService: LineItemService
+  fulfillmentProviderService: FulfillmentProviderService
+}
+
 /**
  * Handles Fulfillments
  */
@@ -39,7 +49,7 @@ class FulfillmentService extends TransactionBaseService<FulfillmentService> {
     shippingProfileService,
     lineItemService,
     fulfillmentProviderService,
-  }) {
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
