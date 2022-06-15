@@ -22,7 +22,7 @@ export default (app) => {
   return app
 }
 
-export const defaultAdminGiftCardFields = [
+export const defaultAdminGiftCardFields: Array<keyof GiftCard> = [
   "id",
   "code",
   "value",

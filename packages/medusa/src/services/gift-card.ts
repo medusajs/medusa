@@ -10,6 +10,7 @@ import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateGiftCardInput,
   CreateGiftCardTransactionInput,
+  UpdateGiftCardInput,
 } from "../types/gift-card"
 import { buildQuery, setMetadata } from "../utils"
 import RegionService from "./region"
@@ -246,7 +247,10 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
    * @param update - the data to update the giftCard with
    * @return the result of the update operation
    */
-  async update(giftCardId, update): Promise<GiftCard> {
+  async update(
+    giftCardId: string,
+    update: UpdateGiftCardInput
+  ): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
