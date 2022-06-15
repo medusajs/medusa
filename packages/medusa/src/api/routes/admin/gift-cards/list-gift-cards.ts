@@ -39,7 +39,7 @@ export default async (req, res) => {
     select: defaultAdminGiftCardFields,
     relations: defaultAdminGiftCardRelations,
     order: { created_at: "DESC" },
-    limit: validated.limit,
+    take: validated.limit,
     skip: validated.offset,
   })
 
