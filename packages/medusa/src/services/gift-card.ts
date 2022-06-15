@@ -6,7 +6,7 @@ import { TransactionBaseService } from "../interfaces"
 import { GiftCard } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
+import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateGiftCardInput,
   CreateGiftCardTransactionInput,
@@ -40,19 +40,11 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
 
-    /** @private @const {GiftCardRepository} */
     this.giftCardRepository_ = giftCardRepository
-
-    /** @private @const {GiftCardRepository} */
     this.giftCardTransactionRepo_ = giftCardTransactionRepository
-
-    /** @private @const {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @const {EventBus} */
     this.eventBus_ = eventBusService
   }
 
@@ -72,9 +64,9 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
   }
 
   /**
-   * @param {Object} selector - the query object for find
-   * @param {Object} config - the configuration used to find the objects. contains relations, skip, and take.
-   * @return {Promise} the result of the find operation
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
    */
   async list(
     selector: QuerySelector<GiftCard> = {},
@@ -134,8 +126,8 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
 
   /**
    * Creates a gift card with provided data given that the data is validated.
-   * @param {GiftCard} giftCard - the gift card data to create
-   * @return {Promise<GiftCard>} the result of the create operation
+   * @param giftCard - the gift card data to create
+   * @return the result of the create operation
    */
   async create(giftCard: CreateGiftCardInput): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
@@ -174,9 +166,9 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
 
   /**
    * Gets a gift card by id.
-   * @param {string} giftCardId - id of gift card to retrieve
-   * @param {object} config - optional values to include with gift card query
-   * @return {Promise<GiftCard>} the gift card
+   * @param giftCardId - id of gift card to retrieve
+   * @param config - optional values to include with gift card query
+   * @return the gift card
    */
   async retrieve(
     giftCardId: string,
@@ -250,9 +242,9 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
 
   /**
    * Updates a giftCard.
-   * @param {string} giftCardId - giftCard id of giftCard to update
-   * @param {GiftCard} update - the data to update the giftCard with
-   * @return {Promise} the result of the update operation
+   * @param giftCardId - giftCard id of giftCard to update
+   * @param update - the data to update the giftCard with
+   * @return the result of the update operation
    */
   async update(giftCardId, update): Promise<GiftCard> {
     return await this.atomicPhase_(async (manager) => {
@@ -291,8 +283,8 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
 
   /**
    * Deletes a gift card idempotently
-   * @param {string} giftCardId - id of gift card to delete
-   * @return {Promise} the result of the delete operation
+   * @param giftCardId - id of gift card to delete
+   * @return the result of the delete operation
    */
   async delete(giftCardId: string): Promise<void> {
     return await this.atomicPhase_(async (manager) => {
