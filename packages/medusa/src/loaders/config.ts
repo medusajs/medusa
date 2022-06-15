@@ -11,11 +11,7 @@ const errorHandler = isProduction
 
 export default  async (rootDirectory: string): Promise<ConfigModule> => {
 
-  /*let configFile =getConfigFile(directory, `medusa-config`)
-  let configuration = await Promise.resolve( configFile)
-  let migrationDirs = await Promise.resolve(getMigrations(directory))*/
-  //let configModule= await Promise.resolve(configuration.configModule)
-  
+  /**we promisify the configuration to support both synchronouse and asynchronous loading.  */
 
 
   let { configModule } = (await (async () => {

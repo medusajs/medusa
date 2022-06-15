@@ -12,6 +12,7 @@ const t = async function({ directory }) {
   args.shift()
 
   let configFile =getConfigFile(directory, `medusa-config`)
+  /**we promisify the configuration to support both synchronouse and asynchronous loading.  */
   let configuration = await Promise.resolve( configFile)
   let migrationDirs = await Promise.resolve(getMigrations(directory))
   let configModule= await Promise.resolve(configuration.configModule)
@@ -19,7 +20,8 @@ const t = async function({ directory }) {
   if(configModule)
   connection= await createConnection({
     type: configModule.projectConfig.database_type,
-    //url: configModule.projectConfig.database_url,
+    /**this gives the option of either using a url or using individual components. 
+    For dynamic passowords one needs to use the individual database url components */
     url:configModule.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
     ...{
       host:configModule.projectConfig.database_host,
