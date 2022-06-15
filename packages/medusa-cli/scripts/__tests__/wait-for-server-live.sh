@@ -1,7 +1,8 @@
 #!/bin/bash
 
-for i in 1..3
+for i in {1..3}
 do
+  echo $i
   status_code=$(curl \
     -X GET \
     --write-out %{http_code} \
@@ -10,7 +11,7 @@ do
   if [[ "$status_code" -ne 000 ]] ; then
     exit 0
   else
-    sleep 3s
+    sleep 3
   fi
 done
 
