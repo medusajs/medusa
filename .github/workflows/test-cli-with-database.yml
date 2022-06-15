@@ -42,11 +42,11 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: "16"
-          cache: "yarn"
+      # - name: Setup Node.js environment
+      #   uses: actions/setup-node@v2.4.1
+      #   with:
+      #     node-version: "16"
+      #     cache: "yarn"
 
       - name: Install Medusa cli
         run: yarn global add -g medusa-cli
