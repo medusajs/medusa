@@ -26,7 +26,6 @@ export default async (rootDirectory: string): Promise<ConfigModule> => {
     return obj
   }
   const configModule = await resolveConfigProperties(configuration.configModule)
-
   if (!configModule?.projectConfig?.redis_url) {
     console.log(
       `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
