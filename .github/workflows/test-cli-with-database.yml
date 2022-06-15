@@ -49,7 +49,7 @@ jobs:
       #     cache: "yarn"
 
       - name: Install Medusa cli
-        run: yarn global add -g medusa-cli
+        run: yarn global add medusa-cli
 
       ################################################################################
       ################################ refactor ######################################
