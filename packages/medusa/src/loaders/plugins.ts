@@ -30,6 +30,9 @@ import {
   MedusaContainer,
 } from "../types/global"
 import { MiddlewareService } from "../services"
+import { isBatchJobStrategy } from "../interfaces/batch-job-strategy"
+import { isPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
+import logger from "./logger"
 
 type Options = {
   rootDirectory: string
@@ -63,7 +66,7 @@ export default async ({
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
-      registerMedusaApi(pluginDetails, container)
+      await registerMedusaApi(pluginDetails, container)
       registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
@@ -144,42 +147,81 @@ async function runLoaders(
   )
 }
 
-function registerMedusaApi(
+async function registerMedusaApi(
   pluginDetails: PluginDetails,
   container: MedusaContainer
-): void {
+): Promise<void> {
   registerMedusaMiddleware(pluginDetails, container)
   registerStrategies(pluginDetails, container)
 }
 
-function registerStrategies(
+export function registerStrategies(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): void {
-  let module
-  try {
-    const path = `${pluginDetails.resolve}/strategies/tax-calculation`
-    if (existsSync(path)) {
-      module = require(path).default
-    } else {
-      return
-    }
-  } catch (err) {
-    return
-  }
+  const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*.js`, {})
+  const registeredServices = {}
 
-  if (isTaxCalculationStrategy(module.prototype)) {
-    container.register({
-      taxCalculationStrategy: asFunction(
-        (cradle) => new module(cradle, pluginDetails.options)
-      ).singleton(),
-    })
-  } else {
-    const logger = container.resolve<Logger>("logger")
-    logger.warn(
-      `${pluginDetails.resolve}/strategies/tax-calculation did not export a class that implements ITaxCalculationStrategy. Your Medusa server will still work, but if you have written custom tax calculation logic it will not be used. Make sure to implement the ITaxCalculationStrategy interface.`
-    )
-  }
+  files.map((file) => {
+    const module = require(file).default
+
+    switch (true) {
+      case isTaxCalculationStrategy(module.prototype): {
+        if (!("taxCalculationStrategy" in registeredServices)) {
+          container.register({
+            taxCalculationStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
+          registeredServices["taxCalculationStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A tax calculation strategy is already registered`
+          )
+        }
+        break
+      }
+
+      case isBatchJobStrategy(module.prototype): {
+        container.registerAdd(
+          "batchJobStrategies",
+          asFunction((cradle) => new module(cradle, pluginDetails.options))
+        )
+
+        const name = formatRegistrationName(file)
+        container.register({
+          [name]: asFunction(
+            (cradle) => new module(cradle, pluginDetails.options)
+          ).singleton(),
+          [`batch_${module.identifier}`]: aliasTo(name),
+          [`batchType_${module.batchType}`]: aliasTo(name),
+        })
+        break
+      }
+
+      case isPriceSelectionStrategy(module.prototype): {
+        if (!("priceSelectionStrategy" in registeredServices)) {
+          container.register({
+            priceSelectionStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
+
+          registeredServices["priceSelectionStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A price selection strategy is already registered`
+          )
+        }
+        break
+      }
+
+      default:
+        logger.warn(
+          `${file} did not export a class that implements a strategy interface. Your Medusa server will still work, but if you have written custom strategy logic it will not be used. Make sure to implement the proper interface.`
+        )
+    }
+  })
 }
 
 function registerMedusaMiddleware(
@@ -362,16 +404,10 @@ export async function registerServices(
           ).singleton(),
           [`noti_${loaded.identifier}`]: aliasTo(name),
         })
-      } else if (loaded.prototype instanceof FileService) {
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which file storage provider we need to use
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ),
-          [`fileService`]: aliasTo(name),
-        })
-      } else if (isFileService(loaded.prototype)) {
+      } else if (
+        loaded.prototype instanceof FileService ||
+        isFileService(loaded.prototype)
+      ) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({
