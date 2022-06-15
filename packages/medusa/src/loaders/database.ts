@@ -16,6 +16,8 @@ export default async ({ container, configModule }: Options): Promise<Connection>
 
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
+    /**this gives the option of either using a url or using individual components. 
+    For dynamic passowords one needs to use the individual database url components */
       url:configModule.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
     ...{
         host:configModule.projectConfig.database_host,
