@@ -42,7 +42,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: true })
+      medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
     }
@@ -1496,11 +1496,17 @@ describe("/store/carts", () => {
         `/store/carts/test-cart-3/complete-cart`
       )
 
-      console.log(createdOrder.data.data.payments)
-      console.log(createdOrder.data.data.total)
-      console.log(createdOrder.data.data.discount_total)
-
       expect(createdOrder.data.type).toEqual("order")
+      expect(createdOrder.data.data.discount_total).toEqual(10000)
+      expect(createdOrder.data.data.total).toEqual(6000)
+      expect(createdOrder.data.data.payments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 6000,
+          }),
+        ])
+      )
+
       expect(createdOrder.status).toEqual(200)
     })
 

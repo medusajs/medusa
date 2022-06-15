@@ -184,7 +184,6 @@ class CartService extends TransactionBaseService<CartService> {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("items.tax_lines")
-      relationSet.add("items.adjustments")
       relationSet.add("gift_cards")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
@@ -1223,7 +1222,7 @@ class CartService extends TransactionBaseService<CartService> {
 
         const freshCart = await this.retrieve(cart.id, {
           select: ["total"],
-          relations: ["payment_sessions"],
+          relations: ["payment_sessions", "items", "items.adjustments"],
         })
 
         if (session.status === "authorized") {
