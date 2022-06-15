@@ -15,6 +15,13 @@ import {
 import { buildQuery, setMetadata } from "../utils"
 import RegionService from "./region"
 
+type InjectedDependencies = {
+  manager: EntityManager
+  giftCardRepository: typeof GiftCardRepository
+  giftCardTransactionRepository: typeof GiftCardTransactionRepository
+  regionService: RegionService
+  eventBusService: EventBusService
+}
 /**
  * Provides layer to manipulate gift cards.
  */
@@ -37,7 +44,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     giftCardTransactionRepository,
     regionService,
     eventBusService,
-  }) {
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
