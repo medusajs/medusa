@@ -24,8 +24,8 @@ jobs:
       postgres:
         image: postgres
         env:
-          # POSTGRES_PASSWORD: postgres
-          # POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
           POSTGRES_DB: cli-test
         options: >-
           --health-cmd pg_isready
