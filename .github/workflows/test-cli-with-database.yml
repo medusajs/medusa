@@ -65,25 +65,25 @@ jobs:
 
       - name: Install dependencies
         run: yarn
-        working-directory: ./cli-test
+        working-directory: cli-test
 
       - name: Run migrations
         run: medusa migrations run
-        working-directory: ./cli-test
+        working-directory: cli-test
 
       - name: Seed db
         run: yarn seed
-        working-directory: ./cli-test
+        working-directory: cli-test
 
       - name: Create admin user
         run: medusa user -e test@test.com -p password -i admin_123
-        working-directory: ./cli-test
+        working-directory: cli-test
 
       ################################################################################
 
       - name: Run development server
         run: medusa develop > /dev/null 2>&1 &
-        working-directory: ./cli-test
+        working-directory: cli-test
 
       ################################################################################
       ################################ refactor ######################################
@@ -102,7 +102,7 @@ jobs:
 
       - name: Run development server
         run: medusa start > /dev/null 2>&1 &
-        working-directory: ./cli-test
+        working-directory: cli-test
 
       ################################################################################
       ################################ refactor ######################################
