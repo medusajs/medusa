@@ -124,7 +124,7 @@ jobs:
 
       ################################################################################
 
-      - name: Run development server
+      - name: Starting medusa
         run: medusa start > /dev/null 2>&1 &
         working-directory: cli-test
 
@@ -132,8 +132,11 @@ jobs:
       ################################ refactor ######################################
       ################################################################################
 
-      - name: Bootstrap packages
+      - name: Testing server
         uses: ./.github/actions/test-server
+        with:
+          password: "test" #TODO remove
+
 
       # - name: Wait for live server response
       #   run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
