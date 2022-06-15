@@ -56,11 +56,11 @@ jobs:
       ################################################################################
       - name: Create Medusa project
         run: |
-          medusa new cli-test\
-          --db-database cli-test\
-          --db-port 5432\
-          --db-host localhost\
-          --db-pass postgres\
+          medusa new cli-test \
+          --db-database cli-test \
+          --db-port 5432 \
+          --db-host localhost \
+          --db-pass postgres \
           --db-user postgres
 
       - name: Install dependencies
