@@ -9,12 +9,19 @@ do
     http://localhost:9000/store/products)
 
   if [[ "$status_code" -ne 000 ]] ; then
+    echo "exiting"
     exit 0
   else
     sleep 3
   fi
 done
 
-echo "Site status changed to $status_code" 
-exit 1
+echo $status_code
+
+if [[ "$status_code" =  000 ]] ; then 
+  echo "Site status changed to $status_code" 
+  exit 1
+else 
+  exit 0
+fi
   
