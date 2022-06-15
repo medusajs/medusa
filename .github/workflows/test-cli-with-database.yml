@@ -11,36 +11,36 @@ jobs:
     env:
       REDIS_URL: redis://redis:6379
 
-    # services:
-    # redis:
-    #   image: redis
-    #   # Set health checks to wait until redis has started
-    #   options: >-
-    #     --health-cmd "redis-cli ping"
-    #     --health-interval 10s
-    #     --health-timeout 5s
-    #     --health-retries 5
+    services:
+      redis:
+        image: redis
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-    # postgres:
-    #   image: postgres
-    #   env:
-    #     # POSTGRES_PASSWORD: postgres
-    #     # POSTGRES_USER: postgres
-    #     POSTGRES_DB: cli-test
-    #   options: >-
-    #     --health-cmd pg_isready
-    #     --health-interval 10s
-    #     --health-timeout 5s
-    #     --health-retries 5
-    #   ports:
-    #     - 5432:5432
+      postgres:
+        image: postgres
+        env:
+          # POSTGRES_PASSWORD: postgres
+          # POSTGRES_USER: postgres
+          POSTGRES_DB: cli-test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     runs-on: ubuntu-latest
     steps:
-      # - name: Cancel Previous Runs
-      #   uses: styfle/cancel-workflow-action@0.9.1
-      #   with:
-      #     access_token: ${{ github.token }}
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
@@ -57,11 +57,11 @@ jobs:
       - name: Create Medusa project
         run: |
           medusa new cli-test
-          -db-user postgres
-          -db-database cli-test
-          -db-port 6379
-          -db-host localhost
-        # -db-pass postgres
+          --db-user postgres
+          --db-database cli-test
+          --db-port 5432
+          --db-host localhost
+          --db-pass postgres
 
       - name: Install dependencies
         run: yarn
