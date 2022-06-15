@@ -77,6 +77,10 @@ jobs:
           --db-pass postgres \
           --db-user postgres
 
+      - name: list medusa-config
+        run: cat medusa-config.js
+        working-directory: cli-test
+
       - name: Install dependencies
         run: yarn
         working-directory: cli-test
