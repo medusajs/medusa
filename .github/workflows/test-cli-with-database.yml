@@ -90,11 +90,9 @@ jobs:
       ################################################################################
 
       - name: Log in with user
-        id: login-user
         run: 'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
 
       - name: GetProducts
-        id: get-products
         run: "curl -X GET http://localhost:9000/store/products"
 
       - name: Kill server
@@ -111,11 +109,9 @@ jobs:
       ################################################################################
 
       - name: Log in with user
-        id: login-user
         run: 'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
 
       - name: GetProducts
-        id: get-products
         run: "curl -X GET http://localhost:9000/store/products"
 
       - name: Kill server
