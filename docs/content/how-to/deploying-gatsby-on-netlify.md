@@ -56,7 +56,7 @@ Finally to deploy the storefront, commit and push your changes to the repository
 
 ```bash
 git add .
-git commit -m "Deploy Medusa Admin on Netlify"
+git commit -m "Deploy Gatsby starter on Netlify"
 git push origin main
 ```
 
