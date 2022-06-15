@@ -102,12 +102,15 @@ jobs:
       ################################################################################
       ################################ refactor ######################################
       ################################################################################
-
       - name: Log in with user
-        run: 'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
+        run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh
+
+        #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
 
       - name: GetProducts
-        run: "curl -X GET http://localhost:9000/store/products"
+        run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh
+
+        # "curl -X GET http://localhost:9000/store/products"
 
       - name: Kill server
         run: kill -9 $(lsof -t -i :9000)
