@@ -125,7 +125,7 @@ jobs:
         working-directory: ../cli-test
 
       - name: Testing development server
-        uses: ./.github/workflows/test-server
+        uses: ./.github/actions/test-server
 
       ################################################################################
       ###########################  Test medusa start  ################################
