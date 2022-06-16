@@ -157,26 +157,20 @@ export async function onCreateNode({
   cache,
   createNodeId,
   node,
-  store,
-  reporter,
 }: {
   actions: { createNode: any; createNodeField: any }
   cache: GatsbyCache
   createNodeId: any
   node: Node
-  store: Store
-  reporter: Reporter
 }): Promise<void> {
   if (node.internal.type === `MedusaProducts`) {
     if (node.thumbnail !== null) {
       const thumbnailNode: Node | null = await createRemoteFileNode({
         url: `${node.thumbnail}`,
-        parentNodeId: node.id,
+        parentNodeId: node.id as string,
         createNode,
         createNodeId,
         cache,
-        store,
-        reporter,
       })
 
       if (thumbnailNode) {
@@ -192,12 +186,10 @@ export async function onCreateNode({
   if (node.internal.type === `MedusaImages`) {
     const imageNode: Node | null = await createRemoteFileNode({
       url: `${node.url}`,
-      parentNodeId: node.id,
+      parentNodeId: node.id as string,
       createNode,
       createNodeId,
       cache,
-      store,
-      reporter,
     })
 
     if (imageNode) {
