@@ -2281,11 +2281,14 @@ describe("/admin/products", () => {
         })
 
       expect(res.status).toEqual(200)
-      expect(res.data.tags).toEqual([
-        { id: "tag1", usage_count: "2", value: "123" },
-        { id: "tag3", usage_count: "2", value: "1235" },
-        { id: "tag4", usage_count: "1", value: "1234" },
-      ])
+      expect(res.data.tags.length).toEqual(3)
+      expect(res.data.tags).toEqual(
+        expect.arrayContaining([
+          { id: "tag1", usage_count: "2", value: "123" },
+          { id: "tag3", usage_count: "2", value: "1235" },
+          { id: "tag4", usage_count: "1", value: "1234" },
+        ])
+      )
     })
   })
 })
