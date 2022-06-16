@@ -1,4 +1,4 @@
-import { Connection, createConnection, LoggerOptions } from "typeorm"
+import { Connection, createConnection } from "typeorm"
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
 import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"

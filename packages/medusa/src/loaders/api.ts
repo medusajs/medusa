@@ -1,4 +1,4 @@
-import { Express } from 'express'
+import { Express } from "express"
 import bodyParser from "body-parser"
 import routes from "../api"
 import { AwilixContainer } from "awilix"
@@ -12,7 +12,7 @@ type Options = {
 
 export default async ({ app, container, configModule }: Options) => {
   app.use(bodyParser.json())
-  app.use("/", routes(container, await Promise.resolve(configModule.projectConfig)))
+  app.use("/", routes(container, configModule.projectConfig))
 
   return app
 }
