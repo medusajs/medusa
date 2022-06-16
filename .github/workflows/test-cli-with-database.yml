@@ -58,13 +58,15 @@ jobs:
         uses: actions/setup-node@v2.4.1
         with:
           node-version: "16"
-          cache: "yarn"
+        # cache: "yarn"
 
       - name: install
         run: yarn
+        working-directory: core
 
       - name: Build Packages
         run: yarn build
+        working-directory: core
 
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
