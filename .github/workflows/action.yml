@@ -74,6 +74,9 @@ jobs:
       #   with:
       #     extension: integration-tests
 
+      - name: Install Dependencies
+        run: yarn
+
       - name: Build Packages
         run: yarn build
 
@@ -134,6 +137,9 @@ jobs:
       #   uses: ./.github/actions/cache-bootstrap
       #   with:
       #     extension: integration-tests
+
+      - name: Install Dependencies
+        run: yarn
 
       - name: Build Packages
         run: yarn build
