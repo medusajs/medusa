@@ -10,6 +10,7 @@ jobs:
   test-cli-with-database:
     env:
       REDIS_URL: redis://redis:6379
+      DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
 
     strategy:
       matrix:
@@ -79,12 +80,7 @@ jobs:
       ################################################################################
       - name: Create Medusa project
         run: |
-          medusa new cli-test \
-          --db-database postgres \
-          --db-port 5432 \
-          --db-host localhost \
-          --db-pass postgres \
-          --db-user postgres
+          medusa new cli-test
         working-directory: ..
 
       - name: Install postgres config
