@@ -74,8 +74,11 @@ jobs:
         with:
           extension: integration-tests
 
+      - name: install
+        run: yarn
+
       - name: Build Packages
-        run: lerna run build
+        run: yarn build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
