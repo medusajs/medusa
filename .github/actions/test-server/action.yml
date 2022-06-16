@@ -33,6 +33,7 @@ runs:
     - name: Wait for live server response
       shell: "bash"
       run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
+      # run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
 
       #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
     - name: Log in with user
