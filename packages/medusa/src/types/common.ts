@@ -7,7 +7,12 @@ import {
   IsString,
 } from "class-validator"
 import "reflect-metadata"
-import { FindManyOptions, FindOperator, OrderByCondition } from "typeorm"
+import {
+  FindManyOptions,
+  FindOneOptions,
+  FindOperator,
+  OrderByCondition,
+} from "typeorm"
 import { transformDate } from "../utils/validators/date-transform"
 import { BaseEntity } from "../interfaces/models/base-entity"
 
@@ -31,11 +36,12 @@ export type Writable<T> = {
     | FindOperator<string[]>
 }
 
-export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> & {
-  where: Partial<Writable<TEntity>>
-  withDeleted?: boolean
-  relations?: string[]
-}
+export type ExtendedFindConfig<TEntity> = FindConfig<TEntity> &
+  (FindOneOptions<TEntity> | FindManyOptions<TEntity>) & {
+    where: Partial<Writable<TEntity>>
+    withDeleted?: boolean
+    relations?: string[]
+  }
 
 export type Selector<TEntity> = {
   [key in keyof TEntity]?:
