@@ -80,9 +80,9 @@ jobs:
           --db-pass postgres \
           --db-user postgres
 
-      - name: run medusa dev
-        run: medusa-dev --force-install
-        working-directory: cli-test
+      # - name: run medusa dev
+      #   run: medusa-dev --force-install
+      #   working-directory: cli-test
 
       - name: list medusa-config
         run: cat medusa-config.js
