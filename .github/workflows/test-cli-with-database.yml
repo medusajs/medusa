@@ -46,9 +46,13 @@ jobs:
         uses: actions/checkout@v2.3.5
         with:
           fetch-depth: 0
+          path: core
 
       - name: test
-        run: ls -la scripts/testing
+        run: ls -la
+
+      - name: test
+        run: ls -la core/scripts/testing
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
@@ -71,7 +75,7 @@ jobs:
       - name: Create Medusa project
         run: |
           medusa new cli-test \
-          --db-database cli-test \
+          --db-database postgres \
           --db-port 5432 \
           --db-host localhost \
           --db-pass postgres \
