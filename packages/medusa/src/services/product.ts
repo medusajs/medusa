@@ -20,7 +20,7 @@ import {
   ProductOptionInput,
   UpdateProductInput,
 } from "../types/product"
-import { buildQuery, setMetadata, validateId } from "../utils"
+import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 import ProductVariantService from "./product-variant"
@@ -196,9 +196,7 @@ class ProductService extends TransactionBaseService<ProductService> {
     }
   ): Promise<Product> {
     return await this.atomicPhase_(async () => {
-      const validatedId = validateId(productId)
-
-      return await this.retrieve_({ id: validatedId }, config)
+      return await this.retrieve_({ id: productId }, config)
     })
   }
 
