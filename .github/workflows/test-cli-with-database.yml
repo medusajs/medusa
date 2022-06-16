@@ -1,5 +1,5 @@
 name: test cli
-on: [push, pull_request]
+on: [pull_request]
 
 jobs:
   test-cli-with-database:
