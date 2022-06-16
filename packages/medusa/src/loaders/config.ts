@@ -9,26 +9,32 @@ const errorHandler = isProduction
     }
   : console.log
 
-export default  async (rootDirectory: string): Promise<ConfigModule> => {
+export default async (rootDirectory: string): Promise<ConfigModule> => {
+  /** we promisify the configuration to support both synchronouse and asynchronous loading.  */
 
-  /**we promisify the configuration to support both synchronouse and asynchronous loading.  */
-
-
-  let { configModule } = (await (async () => {
-    return Promise.resolve(getConfigFile(rootDirectory, `medusa-config`) as {
-      configModule: ConfigModule
+  const configuration = getConfigFile(rootDirectory, `medusa-config`)
+  const resolveConfigProperties = async (obj): Promise<ConfigModule> => {
+    for (const key of Object.keys(obj)) {
+      if (typeof obj[key] === "object" && obj[key] !== null) {
+        await resolveConfigProperties(obj[key])
+      }
+      if (typeof obj[key] === "function") {
+        obj[key] = await obj[key]()
+      }
     }
-    )
-  })())
+    return obj
+  }
+  let configModule = await resolveConfigProperties(configuration)
 
-   configModule  = await Promise.resolve(configModule)
+  configModule = await Promise.resolve(configModule)
   if (!configModule?.projectConfig?.redis_url) {
     console.log(
       `[medusa-config] ⚠️ redis_url not found. A fake redis instance will be used.`
     )
-  }
-  else{
-    configModule.projectConfig.redis_url = await Promise.resolve(configModule?.projectConfig?.redis_url)
+  } else {
+    configModule.projectConfig.redis_url = await Promise.resolve(
+      configModule?.projectConfig?.redis_url
+    )
   }
 
   let jwt_secret =
@@ -41,8 +47,7 @@ export default  async (rootDirectory: string): Promise<ConfigModule> => {
           : " fallback to either cookie_secret or default 'supersecret'."
       }`
     )
-  }
-  else{
+  } else {
     jwt_secret = await Promise.resolve(jwt_secret)
   }
 
@@ -56,8 +61,7 @@ export default  async (rootDirectory: string): Promise<ConfigModule> => {
           : " fallback to either cookie_secret or default 'supersecret'."
       }`
     )
-  }
-  else{
+  } else {
     cookie_secret = await Promise.resolve(cookie_secret)
   }
 

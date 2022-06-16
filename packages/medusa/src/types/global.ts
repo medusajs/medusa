@@ -33,11 +33,24 @@ export type Logger = _Logger & {
   warn: (msg: string) => void
 }
 
-export type sslInterface =
-{
-  ca:string|undefined
-  rejectUnauthorized:boolean|undefined
+export type TlsOptions = {
+  ca: string | undefined
+  rejectUnauthorized: boolean | undefined
 }
+
+export type HostConfig =
+  | {
+      database?: string
+      password?: string | (() => string) | (() => Promise<string>)
+      port?: number
+      host?: string
+      ssl?: boolean | TlsOptions
+      username?: string
+    }
+  | {
+      database?: string
+      url?: string
+    }
 
 export type ConfigModule = {
   projectConfig: {
@@ -45,14 +58,13 @@ export type ConfigModule = {
 
     jwt_secret?: string
     cookie_secret?: string
-    database_host?:string|undefined
-    database_port?:number|undefined
-    database_ssl?:sslInterface|undefined,
-    database_username?:string|undefined,
-    database_password?: string | (() => string) | (() => Promise<string>),
-    
+    database_host?: string
+    database_port?: number
+    database_ssl?: TlsOptions
+    database_username?: string
+    database_password?: string | (() => string) | (() => Promise<string>)
 
-    database_url?: string|undefined
+    database_url?: string
     database_type: string
     database_database?: string
     database_logging: LoggerOptions
