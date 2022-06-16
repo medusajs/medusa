@@ -15,12 +15,13 @@ import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
 import PriceSelectionStrategy from "../strategies/price-selection"
-import { FindConfig, Selector } from "../types/common"
+import { Selector } from "../types/common"
 import {
   CreateProductInput,
   FilterableProductProps,
   FindProductConfig,
   ProductOptionInput,
+  ProductSelector,
   UpdateProductInput,
 } from "../types/product"
 import { buildQuery, setMetadata, validateId } from "../utils"
@@ -124,7 +125,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductProps | Selector<Product> = {},
+    selector: FilterableProductProps | ProductSelector = {},
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -136,7 +137,6 @@ class ProductService extends TransactionBaseService<ProductService> {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       const { q, query, relations } = this.prepareListQuery_(selector, config)
-
       const [
         filteredRelations,
         shouldLoadStrategyPrices,
@@ -193,7 +193,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    *   as the second element.
    */
   async listAndCount(
-    selector: FilterableProductProps | Selector<Product>,
+    selector: FilterableProductProps | ProductSelector,
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -273,38 +273,10 @@ class ProductService extends TransactionBaseService<ProductService> {
       include_discount_prices: false,
     }
   ): Promise<Product> {
-    return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
+    return await this.atomicPhase_(async () => {
       const validatedId = validateId(productId)
 
-      const { relations, ...query } = buildQuery({ id: validatedId }, config)
-
-      const [
-        filteredRelations,
-        shouldLoadStrategyPrices,
-      ] = this.omitPriceRelationIfExists_(relations)
-
-      const product = await productRepo.findOneWithRelations(
-        filteredRelations,
-        query
-      )
-
-      if (!product) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Product with id: ${productId} was not found`
-        )
-      }
-
-      return shouldLoadStrategyPrices
-        ? await this.setAdditionalPrices(product, {
-            cart_id: config.cart_id,
-            currency_code: config.currency_code,
-            customer_id: config.customer_id,
-            include_discount_prices: config.include_discount_prices,
-            region_id: config.region_id,
-          })
-        : product
+      return await this.retrieve_({ id: validatedId }, config)
     })
   }
 
@@ -319,40 +291,8 @@ class ProductService extends TransactionBaseService<ProductService> {
     productHandle: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
-    return await this.atomicPhase_(async (manager) => {
-      const productRepo = manager.getCustomRepository(this.productRepository_)
-
-      const { relations, ...query } = buildQuery(
-        { handle: productHandle },
-        config
-      )
-
-      const [
-        filteredRelations,
-        shouldLoadStrategyPrices,
-      ] = this.omitPriceRelationIfExists_(relations)
-
-      const product = await productRepo.findOneWithRelations(
-        filteredRelations,
-        query
-      )
-
-      if (!product) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Product with handle: ${productHandle} was not found`
-        )
-      }
-
-      return shouldLoadStrategyPrices
-        ? await this.setAdditionalPrices(product, {
-            cart_id: config.cart_id,
-            currency_code: config.currency_code,
-            customer_id: config.customer_id,
-            include_discount_prices: config.include_discount_prices,
-            region_id: config.region_id,
-          })
-        : product
+    return await this.atomicPhase_(async () => {
+      return await this.retrieve_({ handle: productHandle }, config)
     })
   }
 
@@ -367,13 +307,29 @@ class ProductService extends TransactionBaseService<ProductService> {
     externalId: string,
     config: FindProductConfig = {}
   ): Promise<Product> {
+    return await this.atomicPhase_(async () => {
+      return await this.retrieve_({ external_id: externalId }, config)
+    })
+  }
+
+  /**
+   * Gets a product by selector.
+   * Throws in case of DB Error and if product was not found.
+   * @param selector - selector object
+   * @param config - object that defines what should be included in the
+   *   query response
+   * @return the result of the find one operation.
+   */
+  async retrieve_(
+    selector: ProductSelector,
+    config: FindProductConfig = {
+      include_discount_prices: false,
+    }
+  ): Promise<Product> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
-      const { relations, ...query } = buildQuery(
-        { external_id: externalId },
-        config
-      )
+      const { relations, ...query } = buildQuery(selector, config)
 
       const [
         filteredRelations,
@@ -386,9 +342,13 @@ class ProductService extends TransactionBaseService<ProductService> {
       )
 
       if (!product) {
+        const selectorConstraints = Object.entries(selector)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join(", ")
+
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Product with exteral_id: ${externalId} was not found`
+          `Product with ${selectorConstraints} was not found`
         )
       }
 
@@ -557,7 +517,7 @@ class ProductService extends TransactionBaseService<ProductService> {
         product.thumbnail = images[0]
       }
 
-      if (images?.length) {
+      if (images) {
         product.images = await imageRepo.upsertImages(images)
       }
 
@@ -569,7 +529,7 @@ class ProductService extends TransactionBaseService<ProductService> {
         product.type_id = (await productTypeRepo.upsertType(type))?.id || null
       }
 
-      if (tags?.length) {
+      if (tags) {
         product.tags = await productTagRepo.upsertTags(tags)
       }
 

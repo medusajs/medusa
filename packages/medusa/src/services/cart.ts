@@ -262,7 +262,7 @@ class CartService extends TransactionBaseService<CartService> {
           this.cartRepository_
         )
 
-        const query = buildQuery<Cart>(selector, config)
+        const query = buildQuery(selector, config)
         return await cartRepo.find(query)
       }
     )
@@ -290,7 +290,7 @@ class CartService extends TransactionBaseService<CartService> {
         const { select, relations, totalsToSelect } =
           this.transformQueryForTotals_(options)
 
-        const query = buildQuery<Cart>(
+        const query = buildQuery(
           { id: validatedId },
           { ...options, select, relations }
         )

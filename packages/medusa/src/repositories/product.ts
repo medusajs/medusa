@@ -2,32 +2,25 @@ import { flatten, groupBy, map, merge } from "lodash"
 import {
   Brackets,
   EntityRepository,
-  FindManyOptions,
   FindOperator,
   In,
-  OrderByCondition,
   Repository,
 } from "typeorm"
-import { ProductTag } from ".."
 import { PriceList } from "../models/price-list"
 import { Product } from "../models/product"
-import { WithRequiredProperty } from "../types/common"
+import { ExtendedFindConfig, WithRequiredProperty } from "../types/common"
+import { ProductSelector } from "../types/product"
 
-type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
+type DefaultWithoutRelations = Omit<
+  ExtendedFindConfig<Product, ProductSelector>,
+  "relations"
+>
 
-type CustomOptions = {
-  select?: DefaultWithoutRelations["select"]
-  where?: DefaultWithoutRelations["where"] & {
-    tags?: FindOperator<ProductTag>
+export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
+  where: DefaultWithoutRelations["where"] & {
     price_list_id?: FindOperator<PriceList>
   }
-  order?: OrderByCondition
-  skip?: number
-  take?: number
-  withDeleted?: boolean
 }
-
-export type FindWithoutRelationsOptions = CustomOptions
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
@@ -240,7 +233,9 @@ export class ProductRepository extends Repository<Product> {
 
   public async findWithRelations(
     relations: string[] = [],
-    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {},
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {
+      where: {},
+    },
     withDeleted = false
   ): Promise<Product[]> {
     let entities: Product[]
@@ -326,7 +321,7 @@ export class ProductRepository extends Repository<Product> {
 
   public async getFreeTextSearchResultsAndCount(
     q: string,
-    options: CustomOptions = { where: {} },
+    options: FindWithoutRelationsOptions = { where: {} },
     relations: string[] = []
   ): Promise<[Product[], number]> {
     const cleanedOptions = this._cleanOptions(options)
@@ -364,8 +359,8 @@ export class ProductRepository extends Repository<Product> {
   }
 
   private _cleanOptions(
-    options: CustomOptions
-  ): WithRequiredProperty<CustomOptions, "where"> {
+    options: FindWithoutRelationsOptions
+  ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {
     const where = options.where ?? {}
     if ("description" in where) {
       delete where.description

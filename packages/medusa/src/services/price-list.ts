@@ -20,7 +20,7 @@ import ProductService from "./product"
 import RegionService from "./region"
 import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
-import { FilterableProductProps } from "../types/product"
+import { FilterableProductProps, ProductSelector } from "../types/product"
 import ProductVariantService from "./product-variant"
 import { FilterableProductVariantProps } from "../types/product-variant"
 import { ProductVariantRepository } from "../repositories/product-variant"
@@ -317,7 +317,7 @@ class PriceListService extends TransactionBaseService<PriceListService> {
 
   async listProducts(
     priceListId: string,
-    selector: FilterableProductProps | Selector<Product> = {},
+    selector: FilterableProductProps | ProductSelector = {},
     config: FindConfig<Product> = {
       relations: [],
       skip: 0,
