@@ -40,31 +40,36 @@ jobs:
       - name: Setup environment
         uses: ./.github/actions/setup-server
 
-      # - name: Cancel Previous Runs
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
 
-      #   uses: styfle/cancel-workflow-action@0.9.1
-      #   with:
-      #     access_token: ${{ github.token }}
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
 
-      # - name: Checkout
-      #   uses: actions/checkout@v2.3.5
-      #   with:
-      #     fetch-depth: 0
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "16"
+          cache: "yarn"
 
-      # - name: Setup Node.js environment
-      #   uses: actions/setup-node@v2.4.1
-      #   with:
-      #     node-version: "16"
-      #     cache: "yarn"
+      - name: install
+        run: yarn
 
-      # - name: install
-      #   run: yarn
+      - name: Build Packages
+        run: yarn build
 
-      # - name: Build Packages
-      #   run: yarn build
+      - name: Install Medusa cli
+        run: yarn global add @medusajs/medusa-cli
 
-      # - name: Install Medusa cli
-      #   run: yarn global add @medusajs/medusa-cli
+      - name: Install dev cli
+        run: yarn global add medusa-dev-cli
+
+      - name: Set path to medusa repo
+        run: medusa-dev --set-path-to-repo $(pwd)
 
       ################################################################################
       ################################ refactor ######################################

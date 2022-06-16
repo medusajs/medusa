@@ -26,6 +26,7 @@ runs:
       shell: "bash"
       run: ls ./node_modules/@medusajs
       working-directory: ${{ inputs.workingDirectory }}
+
     - name: ls
       shell: "bash"
       run: ls ./node_modules/@medusajs/medusa-cli
