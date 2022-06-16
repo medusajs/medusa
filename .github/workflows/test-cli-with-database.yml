@@ -68,12 +68,6 @@ jobs:
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
 
-      - name: dir up
-        run: cd ..
-
-      - name: test
-        run: pwd
-
       ################################################################################
       ################################ refactor ######################################
       ################################################################################
@@ -85,6 +79,10 @@ jobs:
           --db-host localhost \
           --db-pass postgres \
           --db-user postgres
+
+      # - name: run medusa dev
+      #   run: medusa-dev --force-install
+      #   working-directory: cli-test
 
       - name: list medusa-config
         run: cat medusa-config.js

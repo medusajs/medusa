@@ -1,0 +1,37 @@
+name: "Setup test env"
+description: "Setup test environment for actions"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cancel Previous Runs
+      uses: styfle/cancel-workflow-action@0.9.1
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Checkout
+      uses: actions/checkout@v2.3.5
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.4.1
+      with:
+        node-version: "14"
+        cache: "yarn"
+
+    - name: install
+      shell: "bash"
+      run: yarn
+
+    - name: Build Packages
+      shell: "bash"
+      run: yarn build
+
+    - name: Install dev cli
+      shell: "bash"
+      run: sudo npm i -g medusa-dev-cli
+
+    - name: Set path to medusa repo
+      shell: "bash"
+      run: medusa-dev --set-path-to-repo $(pwd)
