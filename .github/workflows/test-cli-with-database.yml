@@ -62,11 +62,11 @@ jobs:
 
       - name: install
         run: yarn
-        working-directory: cli-test
+        working-directory: core
 
       - name: Build Packages
         run: yarn build
-        working-directory: cli-test
+        working-directory: core
 
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
@@ -93,11 +93,11 @@ jobs:
 
       - name: Run migrations
         run: medusa migrations run
-        working-directory: cli-test
+        working-directory: core
 
       - name: Seed db
         run: yarn seed
-        working-directory: cli-test
+        working-directory: core
 
       - name: Create admin user
         run: medusa user -e test@test.com -p password -i admin_123

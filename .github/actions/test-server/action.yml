@@ -17,13 +17,26 @@ inputs:
   workingDirectory:
     description: "working directory"
     required: false
-    default: "cli-test"
+    default: "core"
+
 runs:
   using: "composite"
   steps:
     - name: ls
       shell: "bash"
       run: ls
+      working-directory: ${{ inputs.workingDirectory }}
+    - name: ls
+      shell: "bash"
+      run: ls node_modules
+      working-directory: ${{ inputs.workingDirectory }}
+    - name: ls
+      shell: "bash"
+      run: ls /node_modules/@medusajs/
+      working-directory: ${{ inputs.workingDirectory }}
+    - name: ls
+      shell: "bash"
+      run: ls /node_modules/@medusajs/medusa-cli/
       working-directory: ${{ inputs.workingDirectory }}
 
     - name: Wait for live server response
