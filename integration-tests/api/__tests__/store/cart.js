@@ -719,15 +719,17 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-3",
-          unit_price: 8000,
-          variant_id: "test-variant-sale-cg",
-          quantity: 3,
-          adjustments: [],
-        }),
-      ])
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-3",
+            unit_price: 8000,
+            variant_id: "test-variant-sale-cg",
+            quantity: 3,
+            adjustments: [],
+          }),
+        ])
+      )
     })
 
     it("updates line item of a cart containing a total fixed discount", async () => {
