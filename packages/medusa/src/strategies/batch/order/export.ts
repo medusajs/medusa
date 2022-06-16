@@ -467,7 +467,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       }
     })
   }
-  }
 }
 
 export default OrderExportStrategy
