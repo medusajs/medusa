@@ -38,13 +38,13 @@ runs:
       #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
     - name: Log in with user
       shell: "bash"
-      run: /scripts/testing/login.sh ${{ inputs.email }} ${{ inputs.password }}
+      run: ./scripts/testing/login.sh ${{ inputs.email }} ${{ inputs.password }}
       # run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh ${{ inputs.email }} ${{ inputs.password }}
 
       # "curl -X GET http://localhost:9000/store/products"
     - name: GetProducts
       shell: "bash"
-      run: /scripts/testing/get-products.sh ${{ inputs.pathToSeedData }}
+      run: ./scripts/testing/get-products.sh ${{ inputs.pathToSeedData }}
       # run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh ${{ inputs.pathToSeedData }}
 
     - name: Kill server

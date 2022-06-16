@@ -69,14 +69,6 @@ jobs:
         run: medusa-dev --force-install
         working-directory: ../cli-test
 
-      - name: list medusa-config
-        run: cat medusa-config.js
-        working-directory: ../cli-test
-
-      - name: Install dependencies
-        run: yarn
-        working-directory: ../cli-test
-
       - name: Run migrations
         run: medusa migrations run
         working-directory: ../cli-test
