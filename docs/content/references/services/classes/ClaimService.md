@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,7 +36,7 @@ BaseService.constructor
 
 [services/claim.js:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L36)
 
----
+___
 
 ### claimItemService\_
 
@@ -46,7 +46,7 @@ BaseService.constructor
 
 [services/claim.js:37](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L37)
 
----
+___
 
 ### claimRepository\_
 
@@ -56,7 +56,7 @@ BaseService.constructor
 
 [services/claim.js:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L38)
 
----
+___
 
 ### eventBus\_
 
@@ -66,7 +66,7 @@ BaseService.constructor
 
 [services/claim.js:39](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L39)
 
----
+___
 
 ### fulfillmentProviderService\_
 
@@ -76,7 +76,7 @@ BaseService.constructor
 
 [services/claim.js:40](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L40)
 
----
+___
 
 ### fulfillmentService\_
 
@@ -86,7 +86,7 @@ BaseService.constructor
 
 [services/claim.js:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L41)
 
----
+___
 
 ### inventoryService\_
 
@@ -96,7 +96,7 @@ BaseService.constructor
 
 [services/claim.js:42](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L42)
 
----
+___
 
 ### lineItemService\_
 
@@ -106,7 +106,7 @@ BaseService.constructor
 
 [services/claim.js:43](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L43)
 
----
+___
 
 ### paymentProviderService\_
 
@@ -116,7 +116,7 @@ BaseService.constructor
 
 [services/claim.js:44](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L44)
 
----
+___
 
 ### regionService\_
 
@@ -126,7 +126,7 @@ BaseService.constructor
 
 [services/claim.js:45](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L45)
 
----
+___
 
 ### returnService\_
 
@@ -136,7 +136,7 @@ BaseService.constructor
 
 [services/claim.js:46](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L46)
 
----
+___
 
 ### shippingOptionService\_
 
@@ -146,7 +146,7 @@ BaseService.constructor
 
 [services/claim.js:47](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L47)
 
----
+___
 
 ### taxProviderService\_
 
@@ -156,7 +156,7 @@ BaseService.constructor
 
 [services/claim.js:48](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L48)
 
----
+___
 
 ### totalsService\_
 
@@ -166,7 +166,7 @@ BaseService.constructor
 
 [services/claim.js:49](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L49)
 
----
+___
 
 ### Events
 
@@ -174,14 +174,14 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name                  | Type     |
-| :-------------------- | :------- |
-| `CANCELED`            | `string` |
-| `CREATED`             | `string` |
+| Name | Type |
+| :------ | :------ |
+| `CANCELED` | `string` |
+| `CREATED` | `string` |
 | `FULFILLMENT_CREATED` | `string` |
-| `REFUND_PROCESSED`    | `string` |
-| `SHIPMENT_CREATED`    | `string` |
-| `UPDATED`             | `string` |
+| `REFUND_PROCESSED` | `string` |
+| `SHIPMENT_CREATED` | `string` |
+| `UPDATED` | `string` |
 
 #### Defined in
 
@@ -195,8 +195,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `id` | `any` |
 
 #### Returns
@@ -207,7 +207,7 @@ BaseService.constructor
 
 [services/claim.js:644](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L644)
 
----
+___
 
 ### cancelFulfillment
 
@@ -215,8 +215,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name            | Type  |
-| :-------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `fulfillmentId` | `any` |
 
 #### Returns
@@ -227,7 +227,7 @@ BaseService.constructor
 
 [services/claim.js:512](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L512)
 
----
+___
 
 ### create
 
@@ -239,8 +239,8 @@ shipping address that the new items will be shipped to
 
 #### Parameters
 
-| Name   | Type  | Description                                               |
-| :----- | :---- | :-------------------------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `data` | `any` | the object containing all data required to create a claim |
 
 #### Returns
@@ -253,7 +253,7 @@ created claim
 
 [services/claim.js:159](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L159)
 
----
+___
 
 ### createFulfillment
 
@@ -261,12 +261,12 @@ created claim
 
 #### Parameters
 
-| Name                     | Type                     | Description                                               |
-| :----------------------- | :----------------------- | :-------------------------------------------------------- |
-| `id`                     | `string`                 | the object containing all data required to create a claim |
-| `config`                 | `Object`                 | config object                                             |
-| `config.metadata`        | `any`                    | config metadata                                           |
-| `config.no_notification` | `undefined` \| `boolean` | config no notification                                    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the object containing all data required to create a claim |
+| `config` | `Object` | config object |
+| `config.metadata` | `any` | config metadata |
+| `config.no_notification` | `undefined` \| `boolean` | config no notification |
 
 #### Returns
 
@@ -278,7 +278,7 @@ created claim
 
 [services/claim.js:378](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L378)
 
----
+___
 
 ### createShipment
 
@@ -286,14 +286,14 @@ created claim
 
 #### Parameters
 
-| Name                     | Type        | Default value |
-| :----------------------- | :---------- | :------------ |
-| `id`                     | `any`       | `undefined`   |
-| `fulfillmentId`          | `any`       | `undefined`   |
-| `trackingLinks`          | `any`       | `undefined`   |
-| `config`                 | `Object`    | `undefined`   |
-| `config.metadata`        | `Object`    | `{}`          |
-| `config.no_notification` | `undefined` | `undefined`   |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `id` | `any` | `undefined` |
+| `fulfillmentId` | `any` | `undefined` |
+| `trackingLinks` | `any` | `undefined` |
+| `config` | `Object` | `undefined` |
+| `config.metadata` | `Object` | `{}` |
+| `config.no_notification` | `undefined` | `undefined` |
 
 #### Returns
 
@@ -303,7 +303,7 @@ created claim
 
 [services/claim.js:577](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L577)
 
----
+___
 
 ### deleteMetadata
 
@@ -313,10 +313,10 @@ Dedicated method to delete metadata for an order.
 
 #### Parameters
 
-| Name      | Type     | Description                        |
-| :-------- | :------- | :--------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `orderId` | `string` | the order to delete metadata from. |
-| `key`     | `string` | key for metadata field             |
+| `key` | `string` | key for metadata field |
 
 #### Returns
 
@@ -328,7 +328,7 @@ resolves to the updated result.
 
 [services/claim.js:734](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L734)
 
----
+___
 
 ### list
 
@@ -336,10 +336,10 @@ resolves to the updated result.
 
 #### Parameters
 
-| Name       | Type  | Description                                 |
-| :--------- | :---- | :------------------------------------------ |
-| `selector` | `any` | the query object for find                   |
-| `config`   | `any` | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the config object containing query settings |
 
 #### Returns
 
@@ -351,7 +351,7 @@ the result of the find operation
 
 [services/claim.js:696](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L696)
 
----
+___
 
 ### processRefund
 
@@ -359,8 +359,8 @@ the result of the find operation
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `id` | `any` |
 
 #### Returns
@@ -371,7 +371,7 @@ the result of the find operation
 
 [services/claim.js:535](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L535)
 
----
+___
 
 ### retrieve
 
@@ -381,10 +381,10 @@ Gets an order by id.
 
 #### Parameters
 
-| Name      | Type     | Description                                 |
-| :-------- | :------- | :------------------------------------------ |
-| `claimId` | `string` | id of order to retrieve                     |
-| `config`  | `any`    | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `claimId` | `string` | id of order to retrieve |
+| `config` | `any` | the config object containing query settings |
 
 #### Returns
 
@@ -396,7 +396,7 @@ the order document
 
 [services/claim.js:711](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L711)
 
----
+___
 
 ### update
 
@@ -404,9 +404,9 @@ the order document
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
-| `id`   | `any` |
+| Name | Type |
+| :------ | :------ |
+| `id` | `any` |
 | `data` | `any` |
 
 #### Returns
@@ -417,7 +417,7 @@ the order document
 
 [services/claim.js:80](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L80)
 
----
+___
 
 ### withTransaction
 
@@ -425,8 +425,8 @@ the order document
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `manager` | `any` |
 
 #### Returns

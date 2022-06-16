@@ -16,8 +16,8 @@ Provides layer to manipulate product variants.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -38,7 +38,7 @@ BaseService.constructor
 
 [services/product-variant.ts:50](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L50)
 
----
+___
 
 ### eventBus\_
 
@@ -48,7 +48,7 @@ BaseService.constructor
 
 [services/product-variant.ts:45](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L45)
 
----
+___
 
 ### manager\_
 
@@ -58,7 +58,7 @@ BaseService.constructor
 
 [services/product-variant.ts:42](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L42)
 
----
+___
 
 ### moneyAmountRepository\_
 
@@ -68,7 +68,7 @@ BaseService.constructor
 
 [services/product-variant.ts:48](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L48)
 
----
+___
 
 ### priceSelectionStrategy\_
 
@@ -78,7 +78,7 @@ BaseService.constructor
 
 [services/product-variant.ts:47](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L47)
 
----
+___
 
 ### productOptionValueRepository\_
 
@@ -88,7 +88,7 @@ BaseService.constructor
 
 [services/product-variant.ts:49](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L49)
 
----
+___
 
 ### productRepository\_
 
@@ -98,7 +98,7 @@ BaseService.constructor
 
 [services/product-variant.ts:44](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L44)
 
----
+___
 
 ### productVariantRepository\_
 
@@ -108,7 +108,7 @@ BaseService.constructor
 
 [services/product-variant.ts:43](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L43)
 
----
+___
 
 ### regionService\_
 
@@ -118,7 +118,7 @@ BaseService.constructor
 
 [services/product-variant.ts:46](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L46)
 
----
+___
 
 ### Events
 
@@ -126,8 +126,8 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name      | Type     |
-| :-------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `CREATED` | `string` |
 | `DELETED` | `string` |
 | `UPDATED` | `string` |
@@ -150,11 +150,11 @@ Option value must be of type string or number.
 
 #### Parameters
 
-| Name          | Type     | Description              |
-| :------------ | :------- | :----------------------- |
-| `variantId`   | `string` | the variant to decorate. |
-| `optionId`    | `string` | the option from product. |
-| `optionValue` | `string` | option value to add.     |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the variant to decorate. |
+| `optionId` | `string` | the option from product. |
+| `optionValue` | `string` | option value to add. |
 
 #### Returns
 
@@ -166,7 +166,7 @@ the result of the update operation.
 
 [services/product-variant.ts:553](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L553)
 
----
+___
 
 ### create
 
@@ -177,10 +177,10 @@ to ensure that the variant can in fact be created.
 
 #### Parameters
 
-| Name                 | Type                        | Description                              |
-| :------------------- | :-------------------------- | :--------------------------------------- |
-| `productOrProductId` | `string` \| `Product`       | the product the variant will be added to |
-| `variant`            | `CreateProductVariantInput` | the variant to create                    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productOrProductId` | `string` \| `Product` | the product the variant will be added to |
+| `variant` | `CreateProductVariantInput` | the variant to create |
 
 #### Returns
 
@@ -192,7 +192,7 @@ resolves to the creation result.
 
 [services/product-variant.ts:207](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L207)
 
----
+___
 
 ### delete
 
@@ -203,9 +203,9 @@ Will never fail due to delete being idempotent.
 
 #### Parameters
 
-| Name        | Type     | Description                                                      |
-| :---------- | :------- | :--------------------------------------------------------------- |
-| `variantId` | `string` | the id of the variant to delete. Must be castable as an ObjectId |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of the variant to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
@@ -217,7 +217,7 @@ empty promise
 
 [services/product-variant.ts:746](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L746)
 
----
+___
 
 ### deleteOptionValue
 
@@ -228,10 +228,10 @@ Will never fail due to delete being idempotent.
 
 #### Parameters
 
-| Name        | Type     | Description              |
-| :---------- | :------- | :----------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `variantId` | `string` | the variant to decorate. |
-| `optionId`  | `string` | the option from product. |
+| `optionId` | `string` | the option from product. |
 
 #### Returns
 
@@ -243,35 +243,35 @@ empty promise
 
 [services/product-variant.ts:580](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L580)
 
----
+___
 
 ### getFreeTextQueryBuilder\_
 
-▸ **getFreeTextQueryBuilder\_**(`variantRepo`, `query`, `q?`): `SelectQueryBuilder`<`ProductVariant`\>
+▸ **getFreeTextQueryBuilder_**(`variantRepo`, `query`, `q?`): `SelectQueryBuilder`<`ProductVariant`\>
 
 Lists variants based on the provided parameters and includes the count of
 variants that match the query.
 
 #### Parameters
 
-| Name          | Type                       | Description                                               |
-| :------------ | :------------------------- | :-------------------------------------------------------- |
-| `variantRepo` | `ProductVariantRepository` | the variant repository                                    |
-| `query`       | `FindWithRelationsOptions` | object that defines the scope for what should be returned |
-| `q?`          | `string`                   | free text query                                           |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantRepo` | `ProductVariantRepository` | the variant repository |
+| `query` | `FindWithRelationsOptions` | object that defines the scope for what should be returned |
+| `q?` | `string` | free text query |
 
 #### Returns
 
 `SelectQueryBuilder`<`ProductVariant`\>
 
 an array containing the products as the first element and the total
-count of products that matches the query as the second element.
+  count of products that matches the query as the second element.
 
 #### Defined in
 
 [services/product-variant.ts:852](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L852)
 
----
+___
 
 ### getRegionPrice
 
@@ -283,10 +283,10 @@ currency price exists the function will throw an error.
 
 #### Parameters
 
-| Name        | Type                    | Description                             |
-| :---------- | :---------------------- | :-------------------------------------- |
-| `variantId` | `string`                | the id of the variant to get price from |
-| `context`   | `GetRegionPriceContext` | context for getting region price        |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of the variant to get price from |
+| `context` | `GetRegionPriceContext` | context for getting region price |
 
 #### Returns
 
@@ -298,7 +298,7 @@ the price specific to the region
 
 [services/product-variant.ts:428](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L428)
 
----
+___
 
 ### list
 
@@ -306,10 +306,10 @@ the price specific to the region
 
 #### Parameters
 
-| Name       | Type                                                      | Description                               |
-| :--------- | :-------------------------------------------------------- | :---------------------------------------- |
-| `selector` | `FilterableProductVariantProps`                           | the query object for find                 |
-| `config`   | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableProductVariantProps` | the query object for find |
+| `config` | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval |
 
 #### Returns
 
@@ -321,7 +321,7 @@ the result of the find operation
 
 [services/product-variant.ts:677](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L677)
 
----
+___
 
 ### listAndCount
 
@@ -329,10 +329,10 @@ the result of the find operation
 
 #### Parameters
 
-| Name       | Type                                                      | Description                               |
-| :--------- | :-------------------------------------------------------- | :---------------------------------------- |
-| `selector` | `FilterableProductVariantProps`                           | the query object for find                 |
-| `config`   | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableProductVariantProps` | the query object for find |
+| `config` | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval |
 
 #### Returns
 
@@ -344,39 +344,39 @@ the result of the find operation
 
 [services/product-variant.ts:607](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L607)
 
----
+___
 
 ### prepareListQuery\_
 
-▸ **prepareListQuery\_**(`selector`, `config`): `Object`
+▸ **prepareListQuery_**(`selector`, `config`): `Object`
 
 Creates a query object to be used for list queries.
 
 #### Parameters
 
-| Name       | Type                            | Description                           |
-| :--------- | :------------------------------ | :------------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `FilterableProductVariantProps` | the selector to create the query from |
-| `config`   | `FindConfig`<`ProductVariant`\> | the config to use for the query       |
+| `config` | `FindConfig`<`ProductVariant`\> | the config to use for the query |
 
 #### Returns
 
 `Object`
 
 an object containing the query, relations and free-text
-search param.
+  search param.
 
-| Name        | Type                       |
-| :---------- | :------------------------- |
-| `q?`        | `string`                   |
-| `query`     | `FindWithRelationsOptions` |
-| `relations` | `string`[]                 |
+| Name | Type |
+| :------ | :------ |
+| `q?` | `string` |
+| `query` | `FindWithRelationsOptions` |
+| `relations` | `string`[] |
 
 #### Defined in
 
 [services/product-variant.ts:813](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L813)
 
----
+___
 
 ### retrieve
 
@@ -386,10 +386,10 @@ Gets a product variant by id.
 
 #### Parameters
 
-| Name        | Type                                                      | Description                                |
-| :---------- | :-------------------------------------------------------- | :----------------------------------------- |
-| `variantId` | `string`                                                  | the id of the product to get.              |
-| `config`    | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of the product to get. |
+| `config` | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval. |
 
 #### Returns
 
@@ -401,7 +401,7 @@ the product document.
 
 [services/product-variant.ts:117](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L117)
 
----
+___
 
 ### retrieveBySKU
 
@@ -411,10 +411,10 @@ Gets a product variant by id.
 
 #### Parameters
 
-| Name     | Type                                                      | Description                                                         |
-| :------- | :-------------------------------------------------------- | :------------------------------------------------------------------ |
-| `sku`    | `string`                                                  | The unique stock keeping unit used to identify the product variant. |
-| `config` | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval.                          |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `sku` | `string` | The unique stock keeping unit used to identify the product variant. |
+| `config` | `FindConfig`<`ProductVariant`\> & `PriceSelectionContext` | query config object for variant retrieval. |
 
 #### Returns
 
@@ -426,7 +426,7 @@ the product document.
 
 [services/product-variant.ts:162](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L162)
 
----
+___
 
 ### setAdditionalPrices
 
@@ -436,14 +436,14 @@ Set additional prices on a list of variants.
 
 #### Parameters
 
-| Name                      | Type      | Default value | Description                                                                              |
-| :------------------------ | :-------- | :------------ | :--------------------------------------------------------------------------------------- |
-| `variant`                 | `any`     | `undefined`   | variant on which to set additional prices                                                |
-| `currency_code`           | `any`     | `undefined`   | currency code to fetch prices for                                                        |
-| `region_id`               | `any`     | `undefined`   | region to fetch prices for                                                               |
-| `cart_id`                 | `any`     | `undefined`   | string of cart to use as a basis for getting currency and region                         |
-| `customer_id`             | `any`     | `undefined`   | id of potentially logged in customer, used to get prices valid for their customer groups |
-| `include_discount_prices` | `boolean` | `false`       | should result include discount pricing                                                   |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `variant` | `any` | `undefined` | variant on which to set additional prices |
+| `currency_code` | `any` | `undefined` | currency code to fetch prices for |
+| `region_id` | `any` | `undefined` | region to fetch prices for |
+| `cart_id` | `any` | `undefined` | string of cart to use as a basis for getting currency and region |
+| `customer_id` | `any` | `undefined` | id of potentially logged in customer, used to get prices valid for their customer groups |
+| `include_discount_prices` | `boolean` | `false` | should result include discount pricing |
 
 #### Returns
 
@@ -455,7 +455,7 @@ A list of variants with variants decorated with "additional_prices"
 
 [services/product-variant.ts:897](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L897)
 
----
+___
 
 ### setCurrencyPrice
 
@@ -465,10 +465,10 @@ Sets the default price for the given currency.
 
 #### Parameters
 
-| Name        | Type                  | Description                             |
-| :---------- | :-------------------- | :-------------------------------------- |
-| `variantId` | `string`              | the id of the variant to set prices for |
-| `price`     | `ProductVariantPrice` | the price for the variant               |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of the variant to set prices for |
+| `price` | `ProductVariantPrice` | the price for the variant |
 
 #### Returns
 
@@ -480,20 +480,20 @@ the result of the update operation
 
 [services/product-variant.ts:494](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L494)
 
----
+___
 
 ### setMetadata\_
 
-▸ **setMetadata\_**(`variant`, `metadata`): `Record`<`string`, `unknown`\>
+▸ **setMetadata_**(`variant`, `metadata`): `Record`<`string`, `unknown`\>
 
 Dedicated method to set metadata for a variant.
 
 #### Parameters
 
-| Name       | Type             | Description                      |
-| :--------- | :--------------- | :------------------------------- |
-| `variant`  | `ProductVariant` | the variant to set metadata for. |
-| `metadata` | `object`         | the metadata to set              |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variant` | `ProductVariant` | the variant to set metadata for. |
+| `metadata` | `object` | the metadata to set |
 
 #### Returns
 
@@ -505,7 +505,7 @@ updated metadata object
 
 [services/product-variant.ts:781](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L781)
 
----
+___
 
 ### setRegionPrice
 
@@ -515,10 +515,10 @@ Sets the default price of a specific region
 
 #### Parameters
 
-| Name        | Type                  | Description                     |
-| :---------- | :-------------------- | :------------------------------ |
-| `variantId` | `string`              | the id of the variant to update |
-| `price`     | `ProductVariantPrice` | the price for the variant.      |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of the variant to update |
+| `price` | `ProductVariantPrice` | the price for the variant. |
 
 #### Returns
 
@@ -530,7 +530,7 @@ the result of the update operation
 
 [services/product-variant.ts:457](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L457)
 
----
+___
 
 ### update
 
@@ -542,10 +542,10 @@ The function will throw, if price updates are attempted.
 
 #### Parameters
 
-| Name                 | Type                                     | Description                       |
-| :------------------- | :--------------------------------------- | :-------------------------------- |
-| `variantOrVariantId` | `string` \| `Partial`<`ProductVariant`\> | variant or id of a variant.       |
-| `update`             | `UpdateProductVariantInput`              | an object with the update values. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantOrVariantId` | `string` \| `Partial`<`ProductVariant`\> | variant or id of a variant. |
+| `update` | `UpdateProductVariantInput` | an object with the update values. |
 
 #### Returns
 
@@ -557,7 +557,7 @@ resolves to the update result.
 
 [services/product-variant.ts:312](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L312)
 
----
+___
 
 ### updateOptionValue
 
@@ -568,11 +568,11 @@ Option value must be of type string or number.
 
 #### Parameters
 
-| Name          | Type     | Description              |
-| :------------ | :------- | :----------------------- |
-| `variantId`   | `string` | the variant to decorate. |
-| `optionId`    | `string` | the option from product. |
-| `optionValue` | `string` | option value to add.     |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the variant to decorate. |
+| `optionId` | `string` | the option from product. |
+| `optionValue` | `string` | option value to add. |
 
 #### Returns
 
@@ -584,7 +584,7 @@ the result of the update operation.
 
 [services/product-variant.ts:515](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L515)
 
----
+___
 
 ### updateVariantPrices
 
@@ -595,10 +595,10 @@ Deletes any prices that are not in the update object, and is not associated with
 
 #### Parameters
 
-| Name        | Type                    | Description               |
-| :---------- | :---------------------- | :------------------------ |
-| `variantId` | `string`                | the id of variant variant |
-| `prices`    | `ProductVariantPrice`[] | the update prices         |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of variant variant |
+| `prices` | `ProductVariantPrice`[] | the update prices |
 
 #### Returns
 
@@ -610,7 +610,7 @@ empty promise
 
 [services/product-variant.ts:390](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-variant.ts#L390)
 
----
+___
 
 ### withTransaction
 
@@ -618,8 +618,8 @@ empty promise
 
 #### Parameters
 
-| Name                 | Type            |
-| :------------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `EntityManager` |
 
 #### Returns

@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,7 +36,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:21](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L21)
 
----
+___
 
 ### productService\_
 
@@ -46,7 +46,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:22](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L22)
 
----
+___
 
 ### productTypeService\_
 
@@ -56,7 +56,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:23](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L23)
 
----
+___
 
 ### shippingOptionService\_
 
@@ -66,7 +66,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:24](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L24)
 
----
+___
 
 ### taxRateRepository\_
 
@@ -84,11 +84,11 @@ BaseService.constructor
 
 #### Parameters
 
-| Name         | Type                   | Default value |
-| :----------- | :--------------------- | :------------ |
-| `id`         | `string`               | `undefined`   |
-| `productIds` | `string` \| `string`[] | `undefined`   |
-| `replace`    | `boolean`              | `false`       |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `id` | `string` | `undefined` |
+| `productIds` | `string` \| `string`[] | `undefined` |
+| `replace` | `boolean` | `false` |
 
 #### Returns
 
@@ -98,7 +98,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:197](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L197)
 
----
+___
 
 ### addToProductType
 
@@ -106,11 +106,11 @@ BaseService.constructor
 
 #### Parameters
 
-| Name             | Type                   | Default value |
-| :--------------- | :--------------------- | :------------ |
-| `id`             | `string`               | `undefined`   |
-| `productTypeIds` | `string` \| `string`[] | `undefined`   |
-| `replace`        | `boolean`              | `false`       |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `id` | `string` | `undefined` |
+| `productTypeIds` | `string` \| `string`[] | `undefined` |
+| `replace` | `boolean` | `false` |
 
 #### Returns
 
@@ -120,7 +120,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:233](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L233)
 
----
+___
 
 ### addToShippingOption
 
@@ -128,11 +128,11 @@ BaseService.constructor
 
 #### Parameters
 
-| Name        | Type                   | Default value |
-| :---------- | :--------------------- | :------------ |
-| `id`        | `string`               | `undefined`   |
-| `optionIds` | `string` \| `string`[] | `undefined`   |
-| `replace`   | `boolean`              | `false`       |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `id` | `string` | `undefined` |
+| `optionIds` | `string` \| `string`[] | `undefined` |
+| `replace` | `boolean` | `false` |
 
 #### Returns
 
@@ -142,7 +142,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:273](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L273)
 
----
+___
 
 ### create
 
@@ -150,8 +150,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name   | Type                 |
-| :----- | :------------------- |
+| Name | Type |
+| :------ | :------ |
 | `data` | `CreateTaxRateInput` |
 
 #### Returns
@@ -162,7 +162,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:104](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L104)
 
----
+___
 
 ### delete
 
@@ -170,8 +170,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type                   |
-| :--- | :--------------------- |
+| Name | Type |
+| :------ | :------ |
 | `id` | `string` \| `string`[] |
 
 #### Returns
@@ -182,7 +182,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:135](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L135)
 
----
+___
 
 ### list
 
@@ -190,10 +190,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name       | Type                     |
-| :--------- | :----------------------- |
+| Name | Type |
+| :------ | :------ |
 | `selector` | `FilterableTaxRateProps` |
-| `config`   | `FindConfig`<`TaxRate`\> |
+| `config` | `FindConfig`<`TaxRate`\> |
 
 #### Returns
 
@@ -203,7 +203,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L62)
 
----
+___
 
 ### listAndCount
 
@@ -211,10 +211,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name       | Type                     |
-| :--------- | :----------------------- |
+| Name | Type |
+| :------ | :------ |
 | `selector` | `FilterableTaxRateProps` |
-| `config`   | `FindConfig`<`TaxRate`\> |
+| `config` | `FindConfig`<`TaxRate`\> |
 
 #### Returns
 
@@ -224,7 +224,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:73](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L73)
 
----
+___
 
 ### listByProduct
 
@@ -232,10 +232,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name        | Type                  |
-| :---------- | :-------------------- |
-| `productId` | `string`              |
-| `config`    | `TaxRateListByConfig` |
+| Name | Type |
+| :------ | :------ |
+| `productId` | `string` |
+| `config` | `TaxRateListByConfig` |
 
 #### Returns
 
@@ -245,7 +245,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:321](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L321)
 
----
+___
 
 ### listByShippingOption
 
@@ -253,10 +253,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name               | Type                  |
-| :----------------- | :-------------------- |
-| `shippingOptionId` | `string`              |
-| `config`           | `TaxRateListByConfig` |
+| Name | Type |
+| :------ | :------ |
+| `shippingOptionId` | `string` |
+| `config` | `TaxRateListByConfig` |
 
 #### Returns
 
@@ -266,7 +266,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:332](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L332)
 
----
+___
 
 ### removeFromProduct
 
@@ -274,9 +274,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name         | Type                   |
-| :----------- | :--------------------- |
-| `id`         | `string`               |
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
 | `productIds` | `string` \| `string`[] |
 
 #### Returns
@@ -287,7 +287,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:143](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L143)
 
----
+___
 
 ### removeFromProductType
 
@@ -295,9 +295,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name      | Type                   |
-| :-------- | :--------------------- |
-| `id`      | `string`               |
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
 | `typeIds` | `string` \| `string`[] |
 
 #### Returns
@@ -308,7 +308,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:161](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L161)
 
----
+___
 
 ### removeFromShippingOption
 
@@ -316,9 +316,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name        | Type                   |
-| :---------- | :--------------------- |
-| `id`        | `string`               |
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
 | `optionIds` | `string` \| `string`[] |
 
 #### Returns
@@ -329,7 +329,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:179](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L179)
 
----
+___
 
 ### retrieve
 
@@ -337,9 +337,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name     | Type                     |
-| :------- | :----------------------- |
-| `id`     | `string`                 |
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
 | `config` | `FindConfig`<`TaxRate`\> |
 
 #### Returns
@@ -350,7 +350,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:84](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L84)
 
----
+___
 
 ### update
 
@@ -358,9 +358,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name   | Type                 |
-| :----- | :------------------- |
-| `id`   | `string`             |
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
 | `data` | `UpdateTaxRateInput` |
 
 #### Returns
@@ -371,7 +371,7 @@ BaseService.constructor
 
 [services/tax-rate.ts:120](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/tax-rate.ts#L120)
 
----
+___
 
 ### withTransaction
 
@@ -379,8 +379,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name                 | Type            |
-| :------------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `EntityManager` |
 
 #### Returns

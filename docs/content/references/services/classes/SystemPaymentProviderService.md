@@ -14,9 +14,9 @@
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Overrides
 
@@ -44,9 +44,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -56,7 +56,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:22](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L22)
 
----
+___
 
 ### cancelPayment
 
@@ -64,9 +64,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -76,7 +76,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:46](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L46)
 
----
+___
 
 ### capturePayment
 
@@ -84,9 +84,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -96,7 +96,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L38)
 
----
+___
 
 ### createPayment
 
@@ -104,9 +104,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -116,7 +116,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:10](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L10)
 
----
+___
 
 ### deletePayment
 
@@ -124,9 +124,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -136,7 +136,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:34](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L34)
 
----
+___
 
 ### getPaymentData
 
@@ -144,9 +144,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -156,7 +156,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:18](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L18)
 
----
+___
 
 ### getStatus
 
@@ -164,9 +164,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -176,7 +176,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L14)
 
----
+___
 
 ### refundPayment
 
@@ -184,9 +184,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -196,7 +196,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:42](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L42)
 
----
+___
 
 ### updatePayment
 
@@ -204,9 +204,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 
@@ -216,7 +216,7 @@ BaseService.constructor
 
 [services/system-payment-provider.js:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/system-payment-provider.js#L30)
 
----
+___
 
 ### updatePaymentData
 
@@ -224,9 +224,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
-| `_`  | `any` |
+| Name | Type |
+| :------ | :------ |
+| `_` | `any` |
 
 #### Returns
 

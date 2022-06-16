@@ -16,8 +16,8 @@ Provides layer to manipulate line items.
 
 #### Parameters
 
-| Name                | Type                   |
-| :------------------ | :--------------------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
@@ -38,7 +38,7 @@ BaseService.constructor
 
 [services/line-item.ts:32](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L32)
 
----
+___
 
 ### itemTaxLineRepo\_
 
@@ -48,7 +48,7 @@ BaseService.constructor
 
 [services/line-item.ts:31](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L31)
 
----
+___
 
 ### lineItemAdjustmentService\_
 
@@ -58,7 +58,7 @@ BaseService.constructor
 
 [services/line-item.ts:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L36)
 
----
+___
 
 ### lineItemRepository\_
 
@@ -68,7 +68,7 @@ BaseService.constructor
 
 [services/line-item.ts:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L30)
 
----
+___
 
 ### manager\_
 
@@ -78,7 +78,7 @@ BaseService.constructor
 
 [services/line-item.ts:29](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L29)
 
----
+___
 
 ### productService\_
 
@@ -88,7 +88,7 @@ BaseService.constructor
 
 [services/line-item.ts:34](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L34)
 
----
+___
 
 ### productVariantService\_
 
@@ -98,7 +98,7 @@ BaseService.constructor
 
 [services/line-item.ts:33](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L33)
 
----
+___
 
 ### regionService\_
 
@@ -118,8 +118,8 @@ Create a line item
 
 #### Parameters
 
-| Name   | Type                   | Description                    |
-| :----- | :--------------------- | :----------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `data` | `Partial`<`LineItem`\> | the line item object to create |
 
 #### Returns
@@ -132,7 +132,7 @@ the created line item
 
 [services/line-item.ts:261](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L261)
 
----
+___
 
 ### createReturnLines
 
@@ -143,10 +143,10 @@ return.
 
 #### Parameters
 
-| Name       | Type     | Description                                  |
-| :--------- | :------- | :------------------------------------------- |
-| `returnId` | `string` | the id to generate return items from.        |
-| `cartId`   | `string` | the cart to assign the return line items to. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `returnId` | `string` | the id to generate return items from. |
+| `cartId` | `string` | the cart to assign the return line items to. |
 
 #### Returns
 
@@ -158,7 +158,7 @@ the created line items
 
 [services/line-item.ts:133](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L133)
 
----
+___
 
 ### delete
 
@@ -168,8 +168,8 @@ Deletes a line item.
 
 #### Parameters
 
-| Name | Type     | Description                       |
-| :--- | :------- | :-------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `id` | `string` | the id of the line item to delete |
 
 #### Returns
@@ -182,7 +182,7 @@ the result of the delete operation
 
 [services/line-item.ts:309](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L309)
 
----
+___
 
 ### generate
 
@@ -190,16 +190,16 @@ the result of the delete operation
 
 #### Parameters
 
-| Name                   | Type                           |
-| :--------------------- | :----------------------------- |
-| `variantId`            | `string`                       |
-| `regionId`             | `string`                       |
-| `quantity`             | `number`                       |
-| `context`              | `Object`                       |
-| `context.cart?`        | `Cart`                         |
-| `context.customer_id?` | `string`                       |
-| `context.metadata?`    | `Record`<`string`, `unknown`\> |
-| `context.unit_price?`  | `number`                       |
+| Name | Type |
+| :------ | :------ |
+| `variantId` | `string` |
+| `regionId` | `string` |
+| `quantity` | `number` |
+| `context` | `Object` |
+| `context.cart?` | `Cart` |
+| `context.customer_id?` | `string` |
+| `context.metadata?` | `Record`<`string`, `unknown`\> |
+| `context.unit_price?` | `number` |
 
 #### Returns
 
@@ -209,7 +209,7 @@ the result of the delete operation
 
 [services/line-item.ts:186](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L186)
 
----
+___
 
 ### list
 
@@ -217,14 +217,14 @@ the result of the delete operation
 
 #### Parameters
 
-| Name                      | Type     | Default value |
-| :------------------------ | :------- | :------------ |
-| `selector`                | `any`    | `undefined`   |
-| `config`                  | `Object` | `undefined`   |
-| `config.order`            | `Object` | `undefined`   |
-| `config.order.created_at` | `string` | `"DESC"`      |
-| `config.skip`             | `number` | `0`           |
-| `config.take`             | `number` | `50`          |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `selector` | `any` | `undefined` |
+| `config` | `Object` | `undefined` |
+| `config.order` | `Object` | `undefined` |
+| `config.order.created_at` | `string` | `"DESC"` |
+| `config.skip` | `number` | `0` |
+| `config.take` | `number` | `50` |
 
 #### Returns
 
@@ -234,7 +234,7 @@ the result of the delete operation
 
 [services/line-item.ts:81](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L81)
 
----
+___
 
 ### retrieve
 
@@ -244,9 +244,9 @@ Retrieves a line item by its id.
 
 #### Parameters
 
-| Name     | Type     | Description                             |
-| :------- | :------- | :-------------------------------------- |
-| `id`     | `string` | the id of the line item to retrieve     |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the line item to retrieve |
 | `config` | `Object` | the config to be used at query building |
 
 #### Returns
@@ -259,7 +259,7 @@ the line item
 
 [services/line-item.ts:102](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L102)
 
----
+___
 
 ### update
 
@@ -269,9 +269,9 @@ Updates a line item
 
 #### Parameters
 
-| Name   | Type                   | Description                           |
-| :----- | :--------------------- | :------------------------------------ |
-| `id`   | `string`               | the id of the line item to update     |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the line item to update |
 | `data` | `Partial`<`LineItem`\> | the properties to update on line item |
 
 #### Returns
@@ -284,7 +284,7 @@ the update line item
 
 [services/line-item.ts:280](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L280)
 
----
+___
 
 ### withTransaction
 
@@ -292,8 +292,8 @@ the update line item
 
 #### Parameters
 
-| Name                 | Type            |
-| :------------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `EntityManager` |
 
 #### Returns

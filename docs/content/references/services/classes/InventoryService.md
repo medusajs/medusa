@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,9 +36,9 @@ Updates the inventory of a variant based on a given adjustment.
 
 #### Parameters
 
-| Name         | Type     | Description                                    |
-| :----------- | :------- | :--------------------------------------------- |
-| `variantId`  | `string` | the id of the variant to update                |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of the variant to update |
 | `adjustment` | `number` | the number to adjust the inventory quantity by |
 
 #### Returns
@@ -51,7 +51,7 @@ resolves to the update result.
 
 [services/inventory.js:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/inventory.js#L36)
 
----
+___
 
 ### confirmInventory
 
@@ -63,10 +63,10 @@ allows backorders or if the inventory quantity is greater than `quantity`.
 
 #### Parameters
 
-| Name        | Type     | Description                                   |
-| :---------- | :------- | :-------------------------------------------- |
-| `variantId` | `string` | the id of the variant to check                |
-| `quantity`  | `number` | the number of units to check availability for |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `variantId` | `string` | the id of the variant to check |
+| `quantity` | `number` | the number of units to check availability for |
 
 #### Returns
 
@@ -78,7 +78,7 @@ true if the inventory covers the quantity
 
 [services/inventory.js:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/inventory.js#L62)
 
----
+___
 
 ### withTransaction
 
@@ -86,8 +86,8 @@ true if the inventory covers the quantity
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

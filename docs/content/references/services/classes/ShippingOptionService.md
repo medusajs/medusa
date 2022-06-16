@@ -16,8 +16,8 @@ Provides layer to manipulate profiles.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -39,10 +39,10 @@ is allowed.
 
 #### Parameters
 
-| Name          | Type                  | Description                           |
-| :------------ | :-------------------- | :------------------------------------ |
-| `optionId`    | `string`              | the option to add the requirement to. |
-| `requirement` | `ShippingRequirement` | the requirement for the option.       |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `optionId` | `string` | the option to add the requirement to. |
+| `requirement` | `ShippingRequirement` | the requirement for the option. |
 
 #### Returns
 
@@ -54,7 +54,7 @@ the result of update
 
 [services/shipping-option.js:594](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L594)
 
----
+___
 
 ### create
 
@@ -66,8 +66,8 @@ defaults to false.
 
 #### Parameters
 
-| Name   | Type             | Description                         |
-| :----- | :--------------- | :---------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `data` | `ShippingOption` | the data to create shipping options |
 
 #### Returns
@@ -80,7 +80,7 @@ the result of the create operation
 
 [services/shipping-option.js:350](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L350)
 
----
+___
 
 ### createShippingMethod
 
@@ -90,11 +90,11 @@ Creates a shipping method for a given cart.
 
 #### Parameters
 
-| Name       | Type     | Description                                 |
-| :--------- | :------- | :------------------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `optionId` | `string` | the id of the option to use for the method. |
-| `data`     | `any`    | the optional provider data to use.          |
-| `config`   | `any`    | the cart to create the shipping method for. |
+| `data` | `any` | the optional provider data to use. |
+| `config` | `any` | the cart to create the shipping method for. |
 
 #### Returns
 
@@ -106,7 +106,7 @@ the resulting shipping method.
 
 [services/shipping-option.js:231](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L231)
 
----
+___
 
 ### decorate
 
@@ -116,11 +116,11 @@ Decorates a shipping option.
 
 #### Parameters
 
-| Name           | Type             | Default value | Description                                     |
-| :------------- | :--------------- | :------------ | :---------------------------------------------- |
-| `optionId`     | `ShippingOption` | `undefined`   | the shipping option to decorate using optionId. |
-| `fields`       | `string`[]       | `[]`          | the fields to include.                          |
-| `expandFields` | `string`[]       | `[]`          | fields to expand.                               |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `optionId` | `ShippingOption` | `undefined` | the shipping option to decorate using optionId. |
+| `fields` | `string`[] | `[]` | the fields to include. |
+| `expandFields` | `string`[] | `[]` | fields to expand. |
 
 #### Returns
 
@@ -132,7 +132,7 @@ the decorated ShippingOption.
 
 [services/shipping-option.js:645](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L645)
 
----
+___
 
 ### delete
 
@@ -142,9 +142,9 @@ Deletes a profile with a given profile id.
 
 #### Parameters
 
-| Name       | Type     | Description                                                      |
-| :--------- | :------- | :--------------------------------------------------------------- |
-| `optionId` | `string` | the id of the profile to delete. Must be castable as an ObjectId |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `optionId` | `string` | the id of the profile to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
@@ -156,7 +156,7 @@ the result of the delete operation.
 
 [services/shipping-option.js:566](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L566)
 
----
+___
 
 ### deleteShippingMethods
 
@@ -166,8 +166,8 @@ Removes a given shipping method
 
 #### Parameters
 
-| Name              | Type  | Description                   |
-| :---------------- | :---- | :---------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `shippingMethods` | `any` | the shipping method to remove |
 
 #### Returns
@@ -178,11 +178,11 @@ Removes a given shipping method
 
 [services/shipping-option.js:213](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L213)
 
----
+___
 
 ### getPrice\_
 
-▸ **getPrice\_**(`option`, `data`, `cart`): `Promise`<`number`\>
+▸ **getPrice_**(`option`, `data`, `cart`): `Promise`<`number`\>
 
 Returns the amount to be paid for a shipping method. Will ask the
 fulfillment provider to calculate the price if the shipping option has the
@@ -190,11 +190,11 @@ price type "calculated".
 
 #### Parameters
 
-| Name     | Type             | Description                                         |
-| :------- | :--------------- | :-------------------------------------------------- |
-| `option` | `ShippingOption` | the shipping option to retrieve the price for.      |
-| `data`   | `ShippingData`   | the shipping data to retrieve the price.            |
-| `cart`   | `any`            | the context in which the price should be retrieved. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `option` | `ShippingOption` | the shipping option to retrieve the price   for. |
+| `data` | `ShippingData` | the shipping data to retrieve the price. |
+| `cart` | `any` | the context in which the price should be   retrieved. |
 
 #### Returns
 
@@ -206,7 +206,7 @@ the price of the shipping option.
 
 [services/shipping-option.js:697](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L697)
 
----
+___
 
 ### list
 
@@ -214,10 +214,10 @@ the price of the shipping option.
 
 #### Parameters
 
-| Name       | Type  | Description               |
-| :--------- | :---- | :------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `any` | the query object for find |
-| `config`   | `any` | config object             |
+| `config` | `any` | config object |
 
 #### Returns
 
@@ -229,7 +229,7 @@ the result of the find operation
 
 [services/shipping-option.js:123](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L123)
 
----
+___
 
 ### listAndCount
 
@@ -237,10 +237,10 @@ the result of the find operation
 
 #### Parameters
 
-| Name       | Type  | Description               |
-| :--------- | :---- | :------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `any` | the query object for find |
-| `config`   | `any` | config object             |
+| `config` | `any` | config object |
 
 #### Returns
 
@@ -252,7 +252,7 @@ the result of the find operation
 
 [services/shipping-option.js:135](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L135)
 
----
+___
 
 ### removeRequirement
 
@@ -262,8 +262,8 @@ Removes a requirement from a shipping option
 
 #### Parameters
 
-| Name            | Type     | Description                         |
-| :-------------- | :------- | :---------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `requirementId` | `string` | the id of the requirement to remove |
 
 #### Returns
@@ -276,7 +276,7 @@ the result of update
 
 [services/shipping-option.js:620](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L620)
 
----
+___
 
 ### retrieve
 
@@ -287,10 +287,10 @@ Throws in case of DB Error and if profile was not found.
 
 #### Parameters
 
-| Name       | Type     | Description                   |
-| :--------- | :------- | :---------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `optionId` | `string` | the id of the profile to get. |
-| `options`  | `any`    | the options to get a profile  |
+| `options` | `any` | the options to get a profile |
 
 #### Returns
 
@@ -302,20 +302,20 @@ the profile document.
 
 [services/shipping-option.js:149](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L149)
 
----
+___
 
 ### setMetadata\_
 
-▸ **setMetadata\_**(`option`, `metadata`): `Promise`<`any`\>
+▸ **setMetadata_**(`option`, `metadata`): `Promise`<`any`\>
 
 Dedicated method to set metadata for a shipping option.
 
 #### Parameters
 
-| Name       | Type  | Description                     |
-| :--------- | :---- | :------------------------------ |
-| `option`   | `any` | the option to set metadata for. |
-| `metadata` | `any` | object for metadata field       |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `option` | `any` | the option to set metadata for. |
+| `metadata` | `any` | object for metadata field |
 
 #### Returns
 
@@ -327,7 +327,7 @@ resolves to the updated result.
 
 [services/shipping-option.js:664](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L664)
 
----
+___
 
 ### update
 
@@ -339,10 +339,10 @@ will throw errors if metadata or product updates are attempted.
 
 #### Parameters
 
-| Name       | Type     | Description                                                              |
-| :--------- | :------- | :----------------------------------------------------------------------- |
-| `optionId` | `string` | the id of the option. Must be a string that can be casted to an ObjectId |
-| `update`   | `any`    | an object with the update values.                                        |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `optionId` | `string` | the id of the option. Must be a string that   can be casted to an ObjectId |
+| `update` | `any` | an object with the update values. |
 
 #### Returns
 
@@ -354,7 +354,7 @@ resolves to the update result.
 
 [services/shipping-option.js:464](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L464)
 
----
+___
 
 ### updateShippingMethod
 
@@ -365,10 +365,10 @@ and its methods should be copied to an order/swap entity.
 
 #### Parameters
 
-| Name     | Type     | Description                             |
-| :------- | :------- | :-------------------------------------- |
-| `id`     | `string` | the id of the shipping method to update |
-| `update` | `any`    | the values to update the method with    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the shipping method to update |
+| `update` | `any` | the values to update the method with |
 
 #### Returns
 
@@ -380,7 +380,7 @@ the resulting shipping method
 
 [services/shipping-option.js:184](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L184)
 
----
+___
 
 ### validateCartOption
 
@@ -392,10 +392,10 @@ match, or when the shipping option requirements are not satisfied.
 
 #### Parameters
 
-| Name     | Type   | Description                      |
-| :------- | :----- | :------------------------------- |
-| `option` | `any`  | the option object to check       |
-| `cart`   | `Cart` | the cart object to check against |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `option` | `any` | the option object to check |
+| `cart` | `Cart` | the cart object to check against |
 
 #### Returns
 
@@ -407,20 +407,20 @@ the validated shipping option
 
 [services/shipping-option.js:309](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L309)
 
----
+___
 
 ### validatePriceType\_
 
-▸ **validatePriceType\_**(`priceType`, `option`): `Promise`<`ShippingOptionPrice`\>
+▸ **validatePriceType_**(`priceType`, `option`): `Promise`<`ShippingOptionPrice`\>
 
 Validates a shipping option price
 
 #### Parameters
 
-| Name        | Type                  | Description                    |
-| :---------- | :-------------------- | :----------------------------- |
-| `priceType` | `ShippingOptionPrice` | the price to validate          |
-| `option`    | `ShippingOption`      | the option to validate against |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `priceType` | `ShippingOptionPrice` | the price to validate |
+| `option` | `ShippingOption` | the option to validate against |
 
 #### Returns
 
@@ -432,20 +432,20 @@ the validated price
 
 [services/shipping-option.js:431](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L431)
 
----
+___
 
 ### validateRequirement\_
 
-▸ **validateRequirement\_**(`requirement`, `optionId`): `ShippingRequirement`
+▸ **validateRequirement_**(`requirement`, `optionId`): `ShippingRequirement`
 
 Validates a requirement
 
 #### Parameters
 
-| Name          | Type                  | Description                        |
-| :------------ | :-------------------- | :--------------------------------- |
-| `requirement` | `ShippingRequirement` | the requirement to validate        |
-| `optionId`    | `string`              | the id to validate the requirement |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `requirement` | `ShippingRequirement` | the requirement to validate |
+| `optionId` | `string` | the id to validate the requirement |
 
 #### Returns
 
@@ -457,7 +457,7 @@ a validated shipping requirement
 
 [services/shipping-option.js:63](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L63)
 
----
+___
 
 ### withTransaction
 
@@ -465,8 +465,8 @@ a validated shipping requirement
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

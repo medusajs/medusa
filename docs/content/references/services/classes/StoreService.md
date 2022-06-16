@@ -16,8 +16,8 @@ Provides layer to manipulate store settings.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -38,8 +38,8 @@ Add a currency to the store
 
 #### Parameters
 
-| Name   | Type     | Description                   |
-| :----- | :------- | :---------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `code` | `string` | 3 character ISO currency code |
 
 #### Returns
@@ -52,7 +52,7 @@ result after update
 
 [services/store.js:203](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L203)
 
----
+___
 
 ### create
 
@@ -70,7 +70,7 @@ the store.
 
 [services/store.js:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L52)
 
----
+___
 
 ### decorate
 
@@ -80,11 +80,11 @@ Decorates a store object.
 
 #### Parameters
 
-| Name           | Type       | Default value | Description            |
-| :------------- | :--------- | :------------ | :--------------------- |
-| `store`        | `Store`    | `undefined`   | the store to decorate. |
-| `fields`       | `string`[] | `undefined`   | the fields to include. |
-| `expandFields` | `string`[] | `[]`          | fields to expand.      |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `store` | `Store` | `undefined` | the store to decorate. |
+| `fields` | `string`[] | `undefined` | the fields to include. |
+| `expandFields` | `string`[] | `[]` | fields to expand. |
 
 #### Returns
 
@@ -96,34 +96,34 @@ return the decorated Store.
 
 [services/store.js:266](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L266)
 
----
+___
 
 ### getDefaultCurrency\_
 
-▸ **getDefaultCurrency\_**(`code`): `Object`
+▸ **getDefaultCurrency_**(`code`): `Object`
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `code` | `any` |
 
 #### Returns
 
 `Object`
 
-| Name            | Type  |
-| :-------------- | :---- |
-| `code`          | `any` |
-| `name`          | `any` |
-| `symbol`        | `any` |
+| Name | Type |
+| :------ | :------ |
+| `code` | `any` |
+| `name` | `any` |
+| `symbol` | `any` |
 | `symbol_native` | `any` |
 
 #### Defined in
 
 [services/store.js:92](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L92)
 
----
+___
 
 ### removeCurrency
 
@@ -133,8 +133,8 @@ Removes a currency from the store
 
 #### Parameters
 
-| Name   | Type     | Description                   |
-| :----- | :------- | :---------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `code` | `string` | 3 character ISO currency code |
 
 #### Returns
@@ -147,7 +147,7 @@ result after update
 
 [services/store.js:242](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L242)
 
----
+___
 
 ### retrieve
 
@@ -157,9 +157,9 @@ Retrieve the store settings. There is always a maximum of one store.
 
 #### Parameters
 
-| Name        | Type       | Default value | Description                   |
-| :---------- | :--------- | :------------ | :---------------------------- |
-| `relations` | `string`[] | `[]`          | relations to fetch with store |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `relations` | `string`[] | `[]` | relations to fetch with store |
 
 #### Returns
 
@@ -171,7 +171,7 @@ the store
 
 [services/store.js:84](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L84)
 
----
+___
 
 ### update
 
@@ -181,8 +181,8 @@ Updates a store
 
 #### Parameters
 
-| Name     | Type  | Description                       |
-| :------- | :---- | :-------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `update` | `any` | an object with the update values. |
 
 #### Returns
@@ -195,7 +195,7 @@ resolves to the update result.
 
 [services/store.js:108](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/store.js#L108)
 
----
+___
 
 ### withTransaction
 
@@ -203,8 +203,8 @@ resolves to the update result.
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

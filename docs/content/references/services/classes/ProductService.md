@@ -16,8 +16,8 @@ Provides layer to manipulate products.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,8 +36,8 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name      | Type     |
-| :-------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `CREATED` | `string` |
 | `DELETED` | `string` |
 | `UPDATED` | `string` |
@@ -46,7 +46,7 @@ BaseService.constructor
 
 [services/product.js:13](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L13)
 
----
+___
 
 ### IndexName
 
@@ -68,9 +68,9 @@ created option. The same option cannot be added more than once.
 
 #### Parameters
 
-| Name          | Type     | Description                                  |
-| :------------ | :------- | :------------------------------------------- |
-| `productId`   | `string` | the product to apply the new option to       |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productId` | `string` | the product to apply the new option to |
 | `optionTitle` | `string` | the display title of the option, e.g. "Size" |
 
 #### Returns
@@ -83,7 +83,7 @@ the result of the model update operation
 
 [services/product.js:707](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L707)
 
----
+___
 
 ### count
 
@@ -93,8 +93,8 @@ Return the total number of documents in database
 
 #### Parameters
 
-| Name       | Type  | Description                        |
-| :--------- | :---- | :--------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `any` | the selector to choose products by |
 
 #### Returns
@@ -107,7 +107,7 @@ the result of the count operation
 
 [services/product.js:223](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L223)
 
----
+___
 
 ### create
 
@@ -117,8 +117,8 @@ Creates a product.
 
 #### Parameters
 
-| Name            | Type  | Description           |
-| :-------------- | :---- | :-------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `productObject` | `any` | the product to create |
 
 #### Returns
@@ -131,7 +131,7 @@ resolves to the creation result.
 
 [services/product.js:483](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L483)
 
----
+___
 
 ### decorate
 
@@ -141,12 +141,12 @@ Decorates a product with product variants.
 
 #### Parameters
 
-| Name           | Type       | Default value | Description                            |
-| :------------- | :--------- | :------------ | :------------------------------------- |
-| `productId`    | `string`   | `undefined`   | the productId to decorate.             |
-| `fields`       | `string`[] | `[]`          | the fields to include.                 |
-| `expandFields` | `string`[] | `[]`          | fields to expand.                      |
-| `config`       | `any`      | `{}`          | retrieve config for price calculation. |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `productId` | `string` | `undefined` | the productId to decorate. |
+| `fields` | `string`[] | `[]` | the fields to include. |
+| `expandFields` | `string`[] | `[]` | fields to expand. |
+| `config` | `any` | `{}` | retrieve config for price calculation. |
 
 #### Returns
 
@@ -158,7 +158,7 @@ return the decorated product.
 
 [services/product.js:945](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L945)
 
----
+___
 
 ### delete
 
@@ -169,9 +169,9 @@ variants will also be deleted.
 
 #### Parameters
 
-| Name        | Type     | Description                                                      |
-| :---------- | :------- | :--------------------------------------------------------------- |
-| `productId` | `string` | the id of the product to delete. Must be castable as an ObjectId |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productId` | `string` | the id of the product to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
@@ -183,7 +183,7 @@ empty promise
 
 [services/product.js:673](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L673)
 
----
+___
 
 ### deleteOption
 
@@ -193,10 +193,10 @@ Delete an option from a product.
 
 #### Parameters
 
-| Name        | Type     | Description                          |
-| :---------- | :------- | :----------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `productId` | `string` | the product to delete an option from |
-| `optionId`  | `string` | the option to delete                 |
+| `optionId` | `string` | the option to delete |
 
 #### Returns
 
@@ -208,21 +208,21 @@ the updated product
 
 [services/product.js:881](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L881)
 
----
+___
 
 ### getFreeTextQueryBuilder\_
 
-▸ **getFreeTextQueryBuilder\_**(`productRepo`, `query`, `q`): `QueryBuilder`<`Product`\>
+▸ **getFreeTextQueryBuilder_**(`productRepo`, `query`, `q`): `QueryBuilder`<`Product`\>
 
 Creates a QueryBuilder that can fetch products based on free text.
 
 #### Parameters
 
-| Name          | Type                      | Description                               |
-| :------------ | :------------------------ | :---------------------------------------- |
-| `productRepo` | `ProductRepository`       | an instance of a ProductRepositry         |
-| `query`       | `FindOptions`<`Product`\> | the query to get products by              |
-| `q`           | `string`                  | the text to perform free text search from |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productRepo` | `ProductRepository` | an instance of a ProductRepositry |
+| `query` | `FindOptions`<`Product`\> | the query to get products by |
+| `q` | `string` | the text to perform free text search from |
 
 #### Returns
 
@@ -234,7 +234,7 @@ a query builder that can fetch products
 
 [services/product.js:1014](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L1014)
 
----
+___
 
 ### list
 
@@ -244,10 +244,10 @@ Lists products based on the provided parameters.
 
 #### Parameters
 
-| Name       | Type  | Description                                               |
-| :--------- | :---- | :-------------------------------------------------------- |
-| `selector` | `any` | an object that defines rules to filter products by        |
-| `config`   | `any` | object that defines the scope for what should be returned |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | an object that defines rules to filter products   by |
+| `config` | `any` | object that defines the scope for what should be   returned |
 
 #### Returns
 
@@ -259,7 +259,7 @@ the result of the find operation
 
 [services/product.js:109](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L109)
 
----
+___
 
 ### listAndCount
 
@@ -270,24 +270,24 @@ products that match the query.
 
 #### Parameters
 
-| Name       | Type  | Description                                               |
-| :--------- | :---- | :-------------------------------------------------------- |
-| `selector` | `any` | an object that defines rules to filter products by        |
-| `config`   | `any` | object that defines the scope for what should be returned |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | an object that defines rules to filter products   by |
+| `config` | `any` | object that defines the scope for what should be   returned |
 
 #### Returns
 
 `Promise`<[`Product`[], `number`]\>
 
 an array containing the products as
-the first element and the total count of products that matches the query
-as the second element.
+  the first element and the total count of products that matches the query
+  as the second element.
 
 #### Defined in
 
 [services/product.js:164](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L164)
 
----
+___
 
 ### listTagsByUsage
 
@@ -295,9 +295,9 @@ as the second element.
 
 #### Parameters
 
-| Name    | Type     | Default value |
-| :------ | :------- | :------------ |
-| `count` | `number` | `10`          |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `count` | `number` | `10` |
 
 #### Returns
 
@@ -307,7 +307,7 @@ as the second element.
 
 [services/product.js:412](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L412)
 
----
+___
 
 ### listTypes
 
@@ -321,33 +321,33 @@ as the second element.
 
 [services/product.js:404](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L404)
 
----
+___
 
 ### prepareListQuery\_
 
-▸ **prepareListQuery\_**(`selector`, `config`): `any`
+▸ **prepareListQuery_**(`selector`, `config`): `any`
 
 Creates a query object to be used for list queries.
 
 #### Parameters
 
-| Name       | Type  | Description                           |
-| :--------- | :---- | :------------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `any` | the selector to create the query from |
-| `config`   | `any` | the config to use for the query       |
+| `config` | `any` | the config to use for the query |
 
 #### Returns
 
 `any`
 
 an object containing the query, relations and free-text
-search param.
+  search param.
 
 #### Defined in
 
 [services/product.js:980](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L980)
 
----
+___
 
 ### reorderOptions
 
@@ -359,10 +359,10 @@ throw optionOrder contains an id not associated with the product.
 
 #### Parameters
 
-| Name          | Type       | Description                                       |
-| :------------ | :--------- | :------------------------------------------------ |
-| `productId`   | `string`   | the product whose options we are reordering       |
-| `optionOrder` | `string`[] | the ids of the product's options in the new order |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productId` | `string` | the product whose options we are reordering |
+| `optionOrder` | `string`[] | the ids of the product's options in the    new order |
 
 #### Returns
 
@@ -374,7 +374,7 @@ the result of the update operation
 
 [services/product.js:790](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L790)
 
----
+___
 
 ### reorderVariants
 
@@ -382,9 +382,9 @@ the result of the update operation
 
 #### Parameters
 
-| Name           | Type  |
-| :------------- | :---- |
-| `productId`    | `any` |
+| Name | Type |
+| :------ | :------ |
+| `productId` | `any` |
 | `variantOrder` | `any` |
 
 #### Returns
@@ -395,7 +395,7 @@ the result of the update operation
 
 [services/product.js:746](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L746)
 
----
+___
 
 ### retrieve
 
@@ -406,10 +406,10 @@ Throws in case of DB Error and if product was not found.
 
 #### Parameters
 
-| Name        | Type     | Description                                                       |
-| :---------- | :------- | :---------------------------------------------------------------- |
-| `productId` | `string` | id of the product to get.                                         |
-| `config`    | `any`    | object that defines what should be included in the query response |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productId` | `string` | id of the product to get. |
+| `config` | `any` | object that defines what should be included in the   query response |
 
 #### Returns
 
@@ -421,7 +421,7 @@ the result of the find one operation.
 
 [services/product.js:239](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L239)
 
----
+___
 
 ### retrieveByExternalId
 
@@ -432,10 +432,10 @@ Throws in case of DB Error and if product was not found.
 
 #### Parameters
 
-| Name         | Type     | Description                                |
-| :----------- | :------- | :----------------------------------------- |
-| `externalId` | `string` | handle of the product to get.              |
-| `config`     | `any`    | details about what to get from the product |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `externalId` | `string` | handle of the product to get. |
+| `config` | `any` | details about what to get from the product |
 
 #### Returns
 
@@ -447,7 +447,7 @@ the result of the find one operation.
 
 [services/product.js:342](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L342)
 
----
+___
 
 ### retrieveByHandle
 
@@ -458,10 +458,10 @@ Throws in case of DB Error and if product was not found.
 
 #### Parameters
 
-| Name            | Type     | Description                                |
-| :-------------- | :------- | :----------------------------------------- |
-| `productHandle` | `string` | handle of the product to get.              |
-| `config`        | `any`    | details about what to get from the product |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productHandle` | `string` | handle of the product to get. |
+| `config` | `any` | details about what to get from the product |
 
 #### Returns
 
@@ -473,7 +473,7 @@ the result of the find one operation.
 
 [services/product.js:291](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L291)
 
----
+___
 
 ### retrieveVariants
 
@@ -483,10 +483,10 @@ Gets all variants belonging to a product.
 
 #### Parameters
 
-| Name        | Type                     | Description                                         |
-| :---------- | :----------------------- | :-------------------------------------------------- |
-| `productId` | `string`                 | the id of the product to get variants from.         |
-| `config`    | `FindConfig`<`Product`\> | The config to select and configure relations etc... |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productId` | `string` | the id of the product to get variants from. |
+| `config` | `FindConfig`<`Product`\> | The config to select and configure relations etc... |
 
 #### Returns
 
@@ -498,7 +498,7 @@ an array of variants
 
 [services/product.js:392](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L392)
 
----
+___
 
 ### setAdditionalPrices
 
@@ -508,14 +508,14 @@ Set additional prices on a list of products.
 
 #### Parameters
 
-| Name                      | Type      | Default value | Description                                                                              |
-| :------------------------ | :-------- | :------------ | :--------------------------------------------------------------------------------------- |
-| `products`                | `any`     | `undefined`   | list of products on which to set additional prices                                       |
-| `currency_code`           | `string`  | `undefined`   | currency code to fetch prices for                                                        |
-| `region_id`               | `string`  | `undefined`   | region to fetch prices for                                                               |
-| `cart_id`                 | `string`  | `undefined`   | string of cart to use as a basis for getting currency and region                         |
-| `customer_id`             | `string`  | `undefined`   | id of potentially logged in customer, used to get prices valid for their customer groups |
-| `include_discount_prices` | `boolean` | `false`       | indication wether or not to include sales prices in result                               |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `products` | `any` | `undefined` | list of products on which to set additional prices |
+| `currency_code` | `string` | `undefined` | currency code to fetch prices for |
+| `region_id` | `string` | `undefined` | region to fetch prices for |
+| `cart_id` | `string` | `undefined` | string of cart to use as a basis for getting currency and region |
+| `customer_id` | `string` | `undefined` | id of potentially logged in customer, used to get prices valid for their customer groups |
+| `include_discount_prices` | `boolean` | `false` | indication wether or not to include sales prices in result |
 
 #### Returns
 
@@ -527,7 +527,7 @@ A list of products with variants decorated with "additional_prices"
 
 [services/product.js:1055](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L1055)
 
----
+___
 
 ### update
 
@@ -539,10 +539,10 @@ product variant updates are attempted.
 
 #### Parameters
 
-| Name        | Type     | Description                                                               |
-| :---------- | :------- | :------------------------------------------------------------------------ |
-| `productId` | `string` | the id of the product. Must be a string that can be casted to an ObjectId |
-| `update`    | `any`    | an object with the update values.                                         |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `productId` | `string` | the id of the product. Must be a string that   can be casted to an ObjectId |
+| `update` | `any` | an object with the update values. |
 
 #### Returns
 
@@ -554,7 +554,7 @@ resolves to the update result.
 
 [services/product.js:573](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L573)
 
----
+___
 
 ### updateOption
 
@@ -565,11 +565,11 @@ not associated with the product. Throws if the updated title already exists.
 
 #### Parameters
 
-| Name        | Type     | Description                              |
-| :---------- | :------- | :--------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `productId` | `string` | the product whose option we are updating |
-| `optionId`  | `string` | the id of the option we are updating     |
-| `data`      | `any`    | the data to update the option with       |
+| `optionId` | `string` | the id of the option we are updating |
+| `data` | `any` | the data to update the option with |
 
 #### Returns
 
@@ -581,16 +581,16 @@ the updated product
 
 [services/product.js:831](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L831)
 
----
+___
 
 ### upsertImages\_
 
-▸ **upsertImages\_**(`images`): `Promise`<`any`[]\>
+▸ **upsertImages_**(`images`): `Promise`<`any`[]\>
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `images` | `any` |
 
 #### Returns
@@ -601,16 +601,16 @@ the updated product
 
 [services/product.js:542](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L542)
 
----
+___
 
 ### upsertProductTags\_
 
-▸ **upsertProductTags\_**(`tags`): `Promise`<`any`[]\>
+▸ **upsertProductTags_**(`tags`): `Promise`<`any`[]\>
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `tags` | `any` |
 
 #### Returns
@@ -621,16 +621,16 @@ the updated product
 
 [services/product.js:455](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L455)
 
----
+___
 
 ### upsertProductType\_
 
-▸ **upsertProductType\_**(`type`): `Promise`<`any`\>
+▸ **upsertProductType_**(`type`): `Promise`<`any`\>
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `type` | `any` |
 
 #### Returns
@@ -641,7 +641,7 @@ the updated product
 
 [services/product.js:430](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L430)
 
----
+___
 
 ### withTransaction
 
@@ -649,8 +649,8 @@ the updated product
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

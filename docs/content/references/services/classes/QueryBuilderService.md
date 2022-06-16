@@ -24,8 +24,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `filters` | `any` |
 
 #### Returns
@@ -36,7 +36,7 @@ BaseService.constructor
 
 [services/query-builder.js:25](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/query-builder.js#L25)
 
----
+___
 
 ### buildQuery
 
@@ -44,9 +44,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
-| `params`     | `any` |
+| Name | Type |
+| :------ | :------ |
+| `params` | `any` |
 | `properties` | `any` |
 
 #### Returns
@@ -57,7 +57,7 @@ BaseService.constructor
 
 [services/query-builder.js:5](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/query-builder.js#L5)
 
----
+___
 
 ### buildTextSearchQuery
 
@@ -65,9 +65,9 @@ BaseService.constructor
 
 #### Parameters
 
-| Name               | Type  |
-| :----------------- | :---- |
-| `search`           | `any` |
+| Name | Type |
+| :------ | :------ |
+| `search` | `any` |
 | `searchProperties` | `any` |
 
 #### Returns

@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -38,8 +38,8 @@ identifier.
 
 #### Parameters
 
-| Name      | Type  | Description                                      |
-| :-------- | :---- | :----------------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `payload` | `any` | payload of request to create idempotency key for |
 
 #### Returns
@@ -52,7 +52,7 @@ the created idempotency key
 
 [services/idempotency-key.js:55](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L55)
 
----
+___
 
 ### initializeRequest
 
@@ -62,12 +62,12 @@ Execute the initial steps in a idempotent request.
 
 #### Parameters
 
-| Name        | Type     | Description                           |
-| :---------- | :------- | :------------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `headerKey` | `string` | potential idempotency key from header |
-| `reqMethod` | `string` | method of request                     |
-| `reqParams` | `string` | params of request                     |
-| `reqPath`   | `string` | path of request                       |
+| `reqMethod` | `string` | method of request |
+| `reqParams` | `string` | params of request |
+| `reqPath` | `string` | path of request |
 
 #### Returns
 
@@ -79,7 +79,7 @@ the existing or created idempotency key
 
 [services/idempotency-key.js:29](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L29)
 
----
+___
 
 ### lock
 
@@ -89,8 +89,8 @@ Locks an idempotency.
 
 #### Parameters
 
-| Name             | Type     | Description |
-| :--------------- | :------- | :---------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `idempotencyKey` | `string` | key to lock |
 
 #### Returns
@@ -103,7 +103,7 @@ result of the update operation
 
 [services/idempotency-key.js:94](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L94)
 
----
+___
 
 ### retrieve
 
@@ -113,8 +113,8 @@ Retrieves an idempotency key
 
 #### Parameters
 
-| Name             | Type     | Description     |
-| :--------------- | :------- | :-------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `idempotencyKey` | `string` | key to retrieve |
 
 #### Returns
@@ -127,7 +127,7 @@ idempotency key
 
 [services/idempotency-key.js:76](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L76)
 
----
+___
 
 ### update
 
@@ -137,10 +137,10 @@ Locks an idempotency.
 
 #### Parameters
 
-| Name             | Type     | Description   |
-| :--------------- | :------- | :------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `idempotencyKey` | `string` | key to update |
-| `update`         | `any`    | update object |
+| `update` | `any` | update object |
 
 #### Returns
 
@@ -152,7 +152,7 @@ result of the update operation
 
 [services/idempotency-key.js:121](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L121)
 
----
+___
 
 ### workStage
 
@@ -166,10 +166,10 @@ always consist of 2 or more of these phases. The required phases are
 
 #### Parameters
 
-| Name             | Type       | Description                               |
-| :--------------- | :--------- | :---------------------------------------- |
-| `idempotencyKey` | `string`   | current idempotency key                   |
-| `func`           | `Function` | functionality to execute within the phase |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `idempotencyKey` | `string` | current idempotency key |
+| `func` | `Function` | functionality to execute within the phase |
 
 #### Returns
 

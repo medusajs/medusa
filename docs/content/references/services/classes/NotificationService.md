@@ -16,8 +16,8 @@ Provides layer to manipulate orchestrate notifications.
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `container` | `any` |
 
 #### Overrides
@@ -38,7 +38,7 @@ BaseService.constructor
 
 [services/notification.js:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L30)
 
----
+___
 
 ### container\_
 
@@ -48,7 +48,7 @@ BaseService.constructor
 
 [services/notification.js:19](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L19)
 
----
+___
 
 ### logger\_
 
@@ -58,7 +58,7 @@ BaseService.constructor
 
 [services/notification.js:23](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L23)
 
----
+___
 
 ### notificationProviderRepository\_
 
@@ -68,7 +68,7 @@ BaseService.constructor
 
 [services/notification.js:27](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L27)
 
----
+___
 
 ### subscribers\_
 
@@ -90,10 +90,10 @@ order to allow for resends. Will log any errors that are encountered.
 
 #### Parameters
 
-| Name        | Type     | Description                      |
-| :---------- | :------- | :------------------------------- |
-| `eventName` | `string` | the event to handle              |
-| `data`      | `any`    | the data the event was sent with |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `eventName` | `string` | the event to handle |
+| `data` | `any` | the data the event was sent with |
 
 #### Returns
 
@@ -105,7 +105,7 @@ order to allow for resends. Will log any errors that are encountered.
 
 [services/notification.js:166](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L166)
 
----
+___
 
 ### list
 
@@ -115,10 +115,10 @@ Retrieves a list of notifications.
 
 #### Parameters
 
-| Name       | Type  | Description                                |
-| :--------- | :---- | :----------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `any` | the params to select the notifications by. |
-| `config`   | `any` | the configuration to apply to the query    |
+| `config` | `any` | the configuration to apply to the query |
 
 #### Returns
 
@@ -130,7 +130,7 @@ the notifications that satisfy the query.
 
 [services/notification.js:84](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L84)
 
----
+___
 
 ### registerAttachmentGenerator
 
@@ -141,8 +141,8 @@ used to generate on demand invoices or other documents.
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `service` | `any` |
 
 #### Returns
@@ -153,7 +153,7 @@ used to generate on demand invoices or other documents.
 
 [services/notification.js:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L38)
 
----
+___
 
 ### registerInstalledProviders
 
@@ -163,8 +163,8 @@ Takes a list of notification provider ids and persists them in the database.
 
 #### Parameters
 
-| Name        | Type       | Description            |
-| :---------- | :--------- | :--------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `providers` | `string`[] | a list of provider ids |
 
 #### Returns
@@ -175,7 +175,7 @@ Takes a list of notification provider ids and persists them in the database.
 
 [services/notification.js:68](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L68)
 
----
+___
 
 ### resend
 
@@ -186,10 +186,10 @@ underlying provider's resendNotification method.
 
 #### Parameters
 
-| Name     | Type     | Description                                             |
-| :------- | :------- | :------------------------------------------------------ |
-| `id`     | `string` | the id of the notification                              |
-| `config` | `any`    | any configuration that might override the previous send |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the notification |
+| `config` | `any` | any configuration that might override the previous  send |
 
 #### Returns
 
@@ -201,7 +201,7 @@ the newly created notification
 
 [services/notification.js:237](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L237)
 
----
+___
 
 ### retrieve
 
@@ -211,10 +211,10 @@ Retrieves a notification with a given id
 
 #### Parameters
 
-| Name     | Type     | Description                             |
-| :------- | :------- | :-------------------------------------- |
-| `id`     | `string` | the id of the notification              |
-| `config` | `any`    | the configuration to apply to the query |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the notification |
+| `config` | `any` | the configuration to apply to the query |
 
 #### Returns
 
@@ -226,19 +226,19 @@ the notification
 
 [services/notification.js:101](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L101)
 
----
+___
 
 ### retrieveProvider\_
 
-▸ **retrieveProvider\_**(`id`): `NotificationProvider`
+▸ **retrieveProvider_**(`id`): `NotificationProvider`
 
 Finds a provider with a given id. Will throw a NOT_FOUND error if the
 resolution fails.
 
 #### Parameters
 
-| Name | Type     | Description            |
-| :--- | :------- | :--------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `id` | `string` | the id of the provider |
 
 #### Returns
@@ -251,7 +251,7 @@ the notification provider
 
 [services/notification.js:147](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L147)
 
----
+___
 
 ### send
 
@@ -262,10 +262,10 @@ method. Persists the Notification in the database.
 
 #### Parameters
 
-| Name         | Type     | Description                               |
-| :----------- | :------- | :---------------------------------------- |
-| `event`      | `string` | the name of the event                     |
-| `eventData`  | `any`    | the data the event was sent with          |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `event` | `string` | the name of the event |
+| `eventData` | `any` | the data the event was sent with |
 | `providerId` | `string` | the provider that should hande the event. |
 
 #### Returns
@@ -278,7 +278,7 @@ the created notification
 
 [services/notification.js:195](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L195)
 
----
+___
 
 ### subscribe
 
@@ -288,9 +288,9 @@ Subscribes a given provider to an event.
 
 #### Parameters
 
-| Name         | Type     | Description                                 |
-| :----------- | :------- | :------------------------------------------ |
-| `eventName`  | `string` | the event to subscribe to                   |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `eventName` | `string` | the event to subscribe to |
 | `providerId` | `string` | the provider that the event will be sent to |
 
 #### Returns
@@ -301,7 +301,7 @@ Subscribes a given provider to an event.
 
 [services/notification.js:126](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L126)
 
----
+___
 
 ### withTransaction
 
@@ -311,8 +311,8 @@ Sets the service's manager to a given transaction manager.
 
 #### Parameters
 
-| Name                 | Type            | Description        |
-| :------------------- | :-------------- | :----------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `transactionManager` | `EntityManager` | the manager to use |
 
 #### Returns

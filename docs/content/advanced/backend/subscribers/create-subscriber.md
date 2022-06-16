@@ -1,5 +1,7 @@
 ---
+
 title: Create a Subscriber
+
 ---
 
 # Create a Subscriber
@@ -8,13 +10,13 @@ In this document, you’ll learn how you create a subscriber in your Medusa serv
 
 ## Overview
 
-In Medusa, there are events that are emitted when a certain action occurs. For example, if a customer places an order, the `order.placed` event is emitted with the order data.
+In Medusa, there are events that are emitted when a certain action occurs. For example, if a customer places an order, the `order.placed` event is emitted with the order data. 
 
 The purpose of these events is to allow other parts of the platform, or third-party integrations, to listen to those events and perform a certain action. That is done by creating subscribers.
 
 Subscribers register handlers for an events and allows you to perform an action when that event occurs. For example, if you want to send your customer an email when they place an order, then you can listen to the `order.placed` event and send the email when the event is emitted.
 
-Natively in Medusa there are subscribers to handle different events. However, you can also create your own custom subscribers.
+Natively in Medusa there are subscribers to handle different events. However, you can also create your own custom subscribers. 
 
 Custom subscribers reside in your project's `src/subscribers` directory. Files here should export classes, which will be treated as subscribers by Medusa. By convention, the class name should end with `Subscriber` and the file name should be the camel-case version of the class name without `Subscriber`. For example, the `WelcomeSubscriber` class is in the file `src/subscribers/welcome.js`.
 
@@ -45,7 +47,7 @@ After that, you are able to listen to events on your server.
 
 ## Implementation
 
-After creating the file under `src/subscribers`, in the constructor of your subscriber, you should listen to events using `eventBusService.subscribe` , where `eventBusService` is a service injected into your subscriber’s constructor.
+After creating the file under `src/subscribers`, in the constructor of your subscriber, you should listen to events using `eventBusService.subscribe` , where `eventBusService` is a service injected into your subscriber’s constructor. 
 
 The `eventBusService.subscribe` method receives the name of the event as a first parameter and as a second parameter a method in your subscriber that will handle this event.
 
@@ -54,15 +56,15 @@ For example, here is the `OrderNotifierSubscriber` class which is created in `sr
 ```jsx
 class OrderNotifierSubscriber {
   constructor({ eventBusService }) {
-    eventBusService.subscribe("order.placed", this.handleOrder)
+    eventBusService.subscribe("order.placed", this.handleOrder);
   }
 
   handleOrder = async (data) => {
     console.log("New Order: " + data.id)
-  }
+  };
 }
 
-export default OrderNotifierSubscriber
+export default OrderNotifierSubscriber;
 ```
 
 This subscriber will register the method `handleOrder` as one of the handlers of the `order.placed` event. The method `handleOrder` will be executed every time an order is placed, and it will receive the order ID in the `data` parameter. You can then use the order’s details to perform any kind of task you need.
@@ -75,7 +77,7 @@ The `data` object will not contain other order data. Only the ID of the order. Y
 
 ## Using Services in Subscribers
 
-You can access any service through the dependencies injected to your subscriber’s constructor.
+You can access any service through the dependencies injected to your subscriber’s constructor. 
 
 For example:
 

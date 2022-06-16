@@ -16,8 +16,8 @@ Provides layer to manipulate product collections.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,10 +36,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name           | Type  |
-| :------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `collectionId` | `any` |
-| `productIds`   | `any` |
+| `productIds` | `any` |
 
 #### Returns
 
@@ -49,7 +49,7 @@ BaseService.constructor
 
 [services/product-collection.js:170](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L170)
 
----
+___
 
 ### create
 
@@ -59,8 +59,8 @@ Creates a product collection
 
 #### Parameters
 
-| Name         | Type  | Description              |
-| :----------- | :---- | :----------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `collection` | `any` | the collection to create |
 
 #### Returns
@@ -73,7 +73,7 @@ created collection
 
 [services/product-collection.js:104](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L104)
 
----
+___
 
 ### delete
 
@@ -83,8 +83,8 @@ Deletes a product collection idempotently
 
 #### Parameters
 
-| Name           | Type     | Description                |
-| :------------- | :------- | :------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `collectionId` | `string` | id of collection to delete |
 
 #### Returns
@@ -97,7 +97,7 @@ empty promise
 
 [services/product-collection.js:152](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L152)
 
----
+___
 
 ### list
 
@@ -107,10 +107,10 @@ Lists product collections
 
 #### Parameters
 
-| Name       | Type  | Description                    |
-| :--------- | :---- | :----------------------------- |
-| `selector` | `any` | the query object for find      |
-| `config`   | `any` | the config to be used for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the config to be used for find |
 
 #### Returns
 
@@ -122,7 +122,7 @@ the result of the find operation
 
 [services/product-collection.js:206](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L206)
 
----
+___
 
 ### listAndCount
 
@@ -132,10 +132,10 @@ Lists product collections and add count.
 
 #### Parameters
 
-| Name       | Type  | Description                    |
-| :--------- | :---- | :----------------------------- |
-| `selector` | `any` | the query object for find      |
-| `config`   | `any` | the config to be used for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the config to be used for find |
 
 #### Returns
 
@@ -147,7 +147,7 @@ the result of the find operation
 
 [services/product-collection.js:221](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L221)
 
----
+___
 
 ### removeProducts
 
@@ -155,10 +155,10 @@ the result of the find operation
 
 #### Parameters
 
-| Name           | Type  |
-| :------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `collectionId` | `any` |
-| `productIds`   | `any` |
+| `productIds` | `any` |
 
 #### Returns
 
@@ -168,7 +168,7 @@ the result of the find operation
 
 [services/product-collection.js:188](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L188)
 
----
+___
 
 ### retrieve
 
@@ -178,10 +178,10 @@ Retrieves a product collection by id.
 
 #### Parameters
 
-| Name           | Type     | Description                               |
-| :------------- | :------- | :---------------------------------------- |
-| `collectionId` | `string` | the id of the collection to retrieve.     |
-| `config`       | `any`    | the config of the collection to retrieve. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `collectionId` | `string` | the id of the collection to retrieve. |
+| `config` | `any` | the config of the collection to retrieve. |
 
 #### Returns
 
@@ -193,7 +193,7 @@ the collection.
 
 [services/product-collection.js:55](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L55)
 
----
+___
 
 ### retrieveByHandle
 
@@ -203,10 +203,10 @@ Retrieves a product collection by id.
 
 #### Parameters
 
-| Name               | Type     | Description                               |
-| :----------------- | :------- | :---------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `collectionHandle` | `string` | the handle of the collection to retrieve. |
-| `config`           | `any`    | query config for request                  |
+| `config` | `any` | query config for request |
 
 #### Returns
 
@@ -218,7 +218,7 @@ the collection.
 
 [services/product-collection.js:81](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L81)
 
----
+___
 
 ### update
 
@@ -228,10 +228,10 @@ Updates a product collection
 
 #### Parameters
 
-| Name           | Type     | Description                |
-| :------------- | :------- | :------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `collectionId` | `string` | id of collection to update |
-| `update`       | `any`    | update object              |
+| `update` | `any` | update object |
 
 #### Returns
 
@@ -243,7 +243,7 @@ update collection
 
 [services/product-collection.js:125](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-collection.js#L125)
 
----
+___
 
 ### withTransaction
 
@@ -251,8 +251,8 @@ update collection
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

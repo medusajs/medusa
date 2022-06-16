@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -34,8 +34,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `data` | `any` |
 
 #### Returns
@@ -46,7 +46,7 @@ BaseService.constructor
 
 [services/return-reason.js:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/return-reason.js#L30)
 
----
+___
 
 ### delete
 
@@ -54,8 +54,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name             | Type  |
-| :--------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `returnReasonId` | `any` |
 
 #### Returns
@@ -66,7 +66,7 @@ BaseService.constructor
 
 [services/return-reason.js:114](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/return-reason.js#L114)
 
----
+___
 
 ### list
 
@@ -74,10 +74,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name       | Type  | Description               |
-| :--------- | :---- | :------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `any` | the query object for find |
-| `config`   | `any` | config object             |
+| `config` | `any` | config object |
 
 #### Returns
 
@@ -89,7 +89,7 @@ the result of the find operation
 
 [services/return-reason.js:82](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/return-reason.js#L82)
 
----
+___
 
 ### retrieve
 
@@ -99,10 +99,10 @@ Gets an order by id.
 
 #### Parameters
 
-| Name     | Type     | Description             |
-| :------- | :------- | :---------------------- |
-| `id`     | `string` | id of order to retrieve |
-| `config` | `any`    | config object           |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | id of order to retrieve |
+| `config` | `any` | config object |
 
 #### Returns
 
@@ -114,7 +114,7 @@ the order document
 
 [services/return-reason.js:97](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/return-reason.js#L97)
 
----
+___
 
 ### update
 
@@ -122,9 +122,9 @@ the order document
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
-| `id`   | `any` |
+| Name | Type |
+| :------ | :------ |
+| `id` | `any` |
 | `data` | `any` |
 
 #### Returns
@@ -135,7 +135,7 @@ the order document
 
 [services/return-reason.js:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/return-reason.js#L52)
 
----
+___
 
 ### withTransaction
 
@@ -143,8 +143,8 @@ the order document
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `manager` | `any` |
 
 #### Returns

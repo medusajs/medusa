@@ -16,8 +16,8 @@ Handles swaps
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,17 +36,17 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name                     | Type     |
-| :----------------------- | :------- |
-| `CREATED`                | `string` |
-| `FULFILLMENT_CREATED`    | `string` |
-| `PAYMENT_CAPTURED`       | `string` |
+| Name | Type |
+| :------ | :------ |
+| `CREATED` | `string` |
+| `FULFILLMENT_CREATED` | `string` |
+| `PAYMENT_CAPTURED` | `string` |
 | `PAYMENT_CAPTURE_FAILED` | `string` |
-| `PAYMENT_COMPLETED`      | `string` |
-| `PROCESS_REFUND_FAILED`  | `string` |
-| `RECEIVED`               | `string` |
-| `REFUND_PROCESSED`       | `string` |
-| `SHIPMENT_CREATED`       | `string` |
+| `PAYMENT_COMPLETED` | `string` |
+| `PROCESS_REFUND_FAILED` | `string` |
+| `RECEIVED` | `string` |
+| `REFUND_PROCESSED` | `string` |
+| `SHIPMENT_CREATED` | `string` |
 
 #### Defined in
 
@@ -64,8 +64,8 @@ is associated with a refund, it cannot be canceled.
 
 #### Parameters
 
-| Name     | Type     | Description                   |
-| :------- | :------- | :---------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `swapId` | `string` | the id of the swap to cancel. |
 
 #### Returns
@@ -78,7 +78,7 @@ the canceled swap.
 
 [services/swap.js:790](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L790)
 
----
+___
 
 ### cancelFulfillment
 
@@ -88,8 +88,8 @@ Cancels a fulfillment (if related to a swap)
 
 #### Parameters
 
-| Name            | Type     | Description                         |
-| :-------------- | :------- | :---------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `fulfillmentId` | `string` | the ID of the fulfillment to cancel |
 
 #### Returns
@@ -102,7 +102,7 @@ updated swap
 
 [services/swap.js:983](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L983)
 
----
+___
 
 ### create
 
@@ -113,13 +113,13 @@ and an optional return shipping method.
 
 #### Parameters
 
-| Name              | Type                                   | Description                                                                                                                                                                                            |
-| :---------------- | :------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `order`           | `Order`                                | the order to base the swap off.                                                                                                                                                                        |
-| `returnItems`     | `ReturnItem`[]                         | the items to return in the swap.                                                                                                                                                                       |
-| `additionalItems` | `undefined` \| `PreliminaryLineItem`[] | the items to send to the customer.                                                                                                                                                                     |
-| `returnShipping`  | `any`                                  | an optional shipping method for returning the returnItems.                                                                                                                                             |
-| `custom`          | `any`                                  | contains relevant custom information. This object may include no_notification which will disable sending notification when creating swap. If set, it overrules the attribute inherited from the order. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `order` | `Order` | the order to base the swap off. |
+| `returnItems` | `ReturnItem`[] | the items to return in the swap. |
+| `additionalItems` | `undefined` \| `PreliminaryLineItem`[] | the items to send to  the customer. |
+| `returnShipping` | `any` | an optional shipping method for  returning the returnItems. |
+| `custom` | `any` | contains relevant custom information. This object may  include no_notification which will disable sending notification when creating  swap. If set, it overrules the attribute inherited from the order. |
 
 #### Returns
 
@@ -131,7 +131,7 @@ the newly created swap.
 
 [services/swap.js:313](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L313)
 
----
+___
 
 ### createCart
 
@@ -144,23 +144,23 @@ swap.
 
 #### Parameters
 
-| Name                    | Type     | Default value | Description                                |
-| :---------------------- | :------- | :------------ | :----------------------------------------- |
-| `swapId`                | `string` | `undefined`   | the id of the swap to create the cart from |
-| `customShippingOptions` | `any`[]  | `[]`          | the shipping options                       |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `swapId` | `string` | `undefined` | the id of the swap to create the cart from |
+| `customShippingOptions` | `any`[] | `[]` | the shipping options |
 
 #### Returns
 
 `Promise`<`Swap`\>
 
 the swap with its cart_id prop set to the id of
-the new cart.
+  the new cart.
 
 #### Defined in
 
 [services/swap.js:544](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L544)
 
----
+___
 
 ### createFulfillment
 
@@ -171,10 +171,10 @@ fulfillment providers associated with the shipping methods.
 
 #### Parameters
 
-| Name     | Type     | Description                                                                                                |
-| :------- | :------- | :--------------------------------------------------------------------------------------------------------- |
-| `swapId` | `string` | the id of the swap to fulfill,                                                                             |
-| `config` | `any`    | optional configurations, includes optional metadata to attach to the shipment, and a no_notification flag. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `swapId` | `string` | the id of the swap to fulfill, |
+| `config` | `any` | optional configurations, includes optional metadata to attach to the shipment, and a no_notification flag. |
 
 #### Returns
 
@@ -186,7 +186,7 @@ the updated swap with new status and fulfillments.
 
 [services/swap.js:848](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L848)
 
----
+___
 
 ### createShipment
 
@@ -196,12 +196,12 @@ Marks a fulfillment as shipped and attaches tracking numbers.
 
 #### Parameters
 
-| Name            | Type                            | Description                                                                                               |
-| :-------------- | :------------------------------ | :-------------------------------------------------------------------------------------------------------- |
-| `swapId`        | `string`                        | the id of the swap that has been shipped.                                                                 |
-| `fulfillmentId` | `string`                        | the id of the specific fulfillment that has been shipped                                                  |
-| `trackingLinks` | `undefined` \| `TrackingLink`[] | the tracking numbers associated with the shipment                                                         |
-| `config`        | `any`                           | optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `swapId` | `string` | the id of the swap that has been shipped. |
+| `fulfillmentId` | `string` | the id of the specific fulfillment that   has been shipped |
+| `trackingLinks` | `undefined` \| `TrackingLink`[] | the tracking numbers associated   with the shipment |
+| `config` | `any` | optional configurations, includes optional metadata to attach to the shipment, and a noNotification flag. |
 
 #### Returns
 
@@ -213,7 +213,7 @@ the updated swap with new fulfillments and status.
 
 [services/swap.js:1016](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L1016)
 
----
+___
 
 ### deleteMetadata
 
@@ -223,10 +223,10 @@ Dedicated method to delete metadata for a swap.
 
 #### Parameters
 
-| Name     | Type     | Description                        |
-| :------- | :------- | :--------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `swapId` | `string` | the order to delete metadata from. |
-| `key`    | `string` | key for metadata field             |
+| `key` | `string` | key for metadata field |
 
 #### Returns
 
@@ -238,7 +238,7 @@ resolves to the updated result.
 
 [services/swap.js:1089](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L1089)
 
----
+___
 
 ### list
 
@@ -246,10 +246,10 @@ resolves to the updated result.
 
 #### Parameters
 
-| Name       | Type  | Description                                                                     |
-| :--------- | :---- | :------------------------------------------------------------------------------ |
-| `selector` | `any` | the query object for find                                                       |
-| `config`   | `any` | the configuration used to find the objects. contains relations, skip, and take. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the configuration used to find the objects. contains relations, skip, and take. |
 
 #### Returns
 
@@ -261,7 +261,7 @@ the result of the find operation
 
 [services/swap.js:238](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L238)
 
----
+___
 
 ### processDifference
 
@@ -269,8 +269,8 @@ the result of the find operation
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `swapId` | `any` |
 
 #### Returns
@@ -281,7 +281,7 @@ the result of the find operation
 
 [services/swap.js:395](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L395)
 
----
+___
 
 ### registerCartCompletion
 
@@ -289,8 +289,8 @@ the result of the find operation
 
 #### Parameters
 
-| Name     | Type     | Description        |
-| :------- | :------- | :----------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `swapId` | `string` | The id of the swap |
 
 #### Returns
@@ -301,7 +301,7 @@ the result of the find operation
 
 [services/swap.js:659](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L659)
 
----
+___
 
 ### registerReceived
 
@@ -312,8 +312,8 @@ as a part of other swaps/returns.
 
 #### Parameters
 
-| Name | Type     | Description                        |
-| :--- | :------- | :--------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `id` | `string` | the id of the order with the swap. |
 
 #### Returns
@@ -326,7 +326,7 @@ the resulting order
 
 [services/swap.js:1114](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L1114)
 
----
+___
 
 ### retrieve
 
@@ -336,10 +336,10 @@ Retrieves a swap with the given id.
 
 #### Parameters
 
-| Name     | Type     | Description                            |
-| :------- | :------- | :------------------------------------- |
-| `id`     | `string` | the id of the swap to retrieve         |
-| `config` | `any`    | the configuration to retrieve the swap |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the swap to retrieve |
+| `config` | `any` | the configuration to retrieve the swap |
 
 #### Returns
 
@@ -351,7 +351,7 @@ the swap
 
 [services/swap.js:181](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L181)
 
----
+___
 
 ### retrieveByCartId
 
@@ -361,10 +361,10 @@ Retrieves a swap based on its associated cart id
 
 #### Parameters
 
-| Name        | Type       | Default value | Description                          |
-| :---------- | :--------- | :------------ | :----------------------------------- |
-| `cartId`    | `string`   | `undefined`   | the cart id that the swap's cart has |
-| `relations` | `string`[] | `[]`          | the relations to retrieve swap       |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `cartId` | `string` | `undefined` | the cart id that the swap's cart has |
+| `relations` | `string`[] | `[]` | the relations to retrieve swap |
 
 #### Returns
 
@@ -376,16 +376,16 @@ the swap
 
 [services/swap.js:216](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L216)
 
----
+___
 
 ### transformQueryForCart\_
 
-▸ **transformQueryForCart\_**(`config`): `any`
+▸ **transformQueryForCart_**(`config`): `any`
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `config` | `any` |
 
 #### Returns
@@ -396,7 +396,7 @@ the swap
 
 [services/swap.js:114](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L114)
 
----
+___
 
 ### update
 
@@ -404,8 +404,8 @@ the swap
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `swapId` | `any` |
 | `update` | `any` |
 
@@ -417,11 +417,11 @@ the swap
 
 [services/swap.js:511](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L511)
 
----
+___
 
 ### validateReturnItems\_
 
-▸ **validateReturnItems\_**(`order`, `returnItems`): `ReturnItems`[]
+▸ **validateReturnItems_**(`order`, `returnItems`): `ReturnItems`[]
 
 Goes through a list of return items to ensure that they exist on the
 original order. If the item exists it is verified that the quantity to
@@ -429,10 +429,10 @@ return is not higher than the original quantity ordered.
 
 #### Parameters
 
-| Name          | Type           | Description              |
-| :------------ | :------------- | :----------------------- |
-| `order`       | `OrderLike`    | the order to return from |
-| `returnItems` | `ReturnItem`[] | the items to return      |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `order` | `OrderLike` | the order to return from |
+| `returnItems` | `ReturnItem`[] | the items to return |
 
 #### Returns
 
@@ -444,7 +444,7 @@ the validated returnItems
 
 [services/swap.js:269](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L269)
 
----
+___
 
 ### withTransaction
 
@@ -452,8 +452,8 @@ the validated returnItems
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

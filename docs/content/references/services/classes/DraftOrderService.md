@@ -18,8 +18,8 @@ Handles draft orders
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -38,8 +38,8 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name      | Type     |
-| :-------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `CREATED` | `string` |
 | `UPDATED` | `string` |
 
@@ -57,8 +57,8 @@ Creates a draft order.
 
 #### Parameters
 
-| Name   | Type  | Description                     |
-| :----- | :---- | :------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `data` | `any` | data to create draft order from |
 
 #### Returns
@@ -71,7 +71,7 @@ the created draft order
 
 [services/draft-order.js:233](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L233)
 
----
+___
 
 ### delete
 
@@ -81,8 +81,8 @@ Deletes draft order idempotently.
 
 #### Parameters
 
-| Name           | Type     | Description                 |
-| :------------- | :------- | :-------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `draftOrderId` | `string` | id of draft order to delete |
 
 #### Returns
@@ -95,7 +95,7 @@ empty promise
 
 [services/draft-order.js:135](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L135)
 
----
+___
 
 ### list
 
@@ -105,10 +105,10 @@ Lists draft orders
 
 #### Parameters
 
-| Name       | Type  | Description                      |
-| :--------- | :---- | :------------------------------- |
-| `selector` | `any` | query object for find            |
-| `config`   | `any` | configurable attributes for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | query object for find |
+| `config` | `any` | configurable attributes for find |
 
 #### Returns
 
@@ -120,7 +120,7 @@ list of draft orders
 
 [services/draft-order.js:215](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L215)
 
----
+___
 
 ### listAndCount
 
@@ -130,10 +130,10 @@ Lists draft orders alongside the count
 
 #### Parameters
 
-| Name       | Type  | Description                           |
-| :--------- | :---- | :------------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `selector` | `any` | query selector to filter draft orders |
-| `config`   | `any` | query config                          |
+| `config` | `any` | query config |
 
 #### Returns
 
@@ -145,7 +145,7 @@ draft orders
 
 [services/draft-order.js:161](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L161)
 
----
+___
 
 ### registerCartCompletion
 
@@ -155,9 +155,9 @@ Registers a draft order as completed, when an order has been completed.
 
 #### Parameters
 
-| Name      | Type     | Description                                 |
-| :-------- | :------- | :------------------------------------------ |
-| `doId`    | `string` | id of draft order to complete               |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `doId` | `string` | id of draft order to complete |
 | `orderId` | `string` | id of order completed from draft order cart |
 
 #### Returns
@@ -170,7 +170,7 @@ the created order
 
 [services/draft-order.js:336](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L336)
 
----
+___
 
 ### retrieve
 
@@ -180,10 +180,10 @@ Retrieves a draft order with the given id.
 
 #### Parameters
 
-| Name     | Type     | Description                       |
-| :------- | :------- | :-------------------------------- |
-| `id`     | `string` | id of the draft order to retrieve |
-| `config` | `any`    | query object for findOne          |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | id of the draft order to retrieve |
+| `config` | `any` | query object for findOne |
 
 #### Returns
 
@@ -195,7 +195,7 @@ the draft order
 
 [services/draft-order.js:84](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L84)
 
----
+___
 
 ### retrieveByCartId
 
@@ -205,10 +205,10 @@ Retrieves a draft order based on its associated cart id
 
 #### Parameters
 
-| Name     | Type     | Description                              |
-| :------- | :------- | :--------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `cartId` | `string` | cart id that the draft orders's cart has |
-| `config` | `any`    | query object for findOne                 |
+| `config` | `any` | query object for findOne |
 
 #### Returns
 
@@ -220,7 +220,7 @@ the draft order
 
 [services/draft-order.js:111](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L111)
 
----
+___
 
 ### update
 
@@ -230,9 +230,9 @@ Updates a draft order with the given data
 
 #### Parameters
 
-| Name   | Type         | Description                     |
-| :----- | :----------- | :------------------------------ |
-| `doId` | `string`     | id of the draft order           |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `doId` | `string` | id of the draft order |
 | `data` | `DraftOrder` | values to update the order with |
 
 #### Returns
@@ -245,7 +245,7 @@ the updated draft order
 
 [services/draft-order.js:357](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L357)
 
----
+___
 
 ### withTransaction
 
@@ -253,8 +253,8 @@ the updated draft order
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

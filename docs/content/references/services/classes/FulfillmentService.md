@@ -16,8 +16,8 @@ Handles Fulfillments
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -40,8 +40,8 @@ Throws if the fulfillment has already been shipped.
 
 #### Parameters
 
-| Name              | Type  | Description                   |
-| :---------------- | :---- | :---------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `fulfillmentOrId` | `any` | the fulfillment object or id. |
 
 #### Returns
@@ -54,7 +54,7 @@ the result of the save operation
 
 [services/fulfillment.js:223](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L223)
 
----
+___
 
 ### createFulfillment
 
@@ -67,11 +67,11 @@ those partitions.
 
 #### Parameters
 
-| Name             | Type                                             | Description                     |
-| :--------------- | :----------------------------------------------- | :------------------------------ |
-| `order`          | `Order`                                          | order to create fulfillment for |
-| `itemsToFulfill` | { `item_id`: `string` ; `quantity`: `number` }[] | -                               |
-| `custom`         | `any`                                            | potential custom values to add  |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `order` | `Order` | order to create fulfillment for |
+| `itemsToFulfill` | { `item_id`: `string` ; `quantity`: `number`  }[] | - |
+| `custom` | `any` | potential custom values to add |
 
 #### Returns
 
@@ -83,7 +83,7 @@ the created fulfillments
 
 [services/fulfillment.js:171](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L171)
 
----
+___
 
 ### createShipment
 
@@ -94,11 +94,11 @@ tracking links and potentially more metadata.
 
 #### Parameters
 
-| Name            | Type             | Description                                                            |
-| :-------------- | :--------------- | :--------------------------------------------------------------------- |
-| `fulfillmentId` | `Order`          | the fulfillment to ship                                                |
-| `trackingLinks` | `TrackingLink`[] | tracking links for the shipment                                        |
-| `config`        | `any`            | potential configuration settings, such as no_notification and metadata |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `fulfillmentId` | `Order` | the fulfillment to ship |
+| `trackingLinks` | `TrackingLink`[] | tracking links for the shipment |
+| `config` | `any` | potential configuration settings, such as no_notification and metadata |
 
 #### Returns
 
@@ -110,23 +110,23 @@ the shipped fulfillment
 
 [services/fulfillment.js:270](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L270)
 
----
+___
 
 ### getFulfillmentItems\_
 
-▸ **getFulfillmentItems\_**(`order`, `items`, `transformer`): `Promise`<`LineItem`[]\>
+▸ **getFulfillmentItems_**(`order`, `items`, `transformer`): `Promise`<`LineItem`[]\>
 
 Retrieves the order line items, given an array of items.
 
 #### Parameters
 
-| Name             | Type       | Description                                                                                                                                                                                         |
-| :--------------- | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `order`          | `Order`    | the order to get line items from                                                                                                                                                                    |
-| `items`          | `Object`   | the items to get                                                                                                                                                                                    |
-| `items.item_id`  | `string`   | -                                                                                                                                                                                                   |
-| `items.quantity` | `number`   | -                                                                                                                                                                                                   |
-| `transformer`    | `Function` | a function to apply to each of the items retrieved from the order, should return a line item. If the transformer returns an undefined value the line item will be filtered from the returned array. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `order` | `Order` | the order to get line items from |
+| `items` | `Object` | the items to get |
+| `items.item_id` | `string` | - |
+| `items.quantity` | `number` | - |
+| `transformer` | `Function` | a function to apply to each of the items    retrieved from the order, should return a line item. If the transformer    returns an undefined value the line item will be filtered from the    returned array. |
 
 #### Returns
 
@@ -138,18 +138,18 @@ the line items generated by the transformer.
 
 [services/fulfillment.js:94](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L94)
 
----
+___
 
 ### partitionItems\_
 
-▸ **partitionItems\_**(`shippingMethods`, `items`): { `shipping_method`: `any` = method }[]
+▸ **partitionItems_**(`shippingMethods`, `items`): { `shipping_method`: `any` = method }[]
 
 #### Parameters
 
-| Name              | Type  |
-| :---------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `shippingMethods` | `any` |
-| `items`           | `any` |
+| `items` | `any` |
 
 #### Returns
 
@@ -159,7 +159,7 @@ the line items generated by the transformer.
 
 [services/fulfillment.js:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L62)
 
----
+___
 
 ### retrieve
 
@@ -169,10 +169,10 @@ Retrieves a fulfillment by its id.
 
 #### Parameters
 
-| Name     | Type     | Description                                                 |
-| :------- | :------- | :---------------------------------------------------------- |
-| `id`     | `string` | the id of the fulfillment to retrieve                       |
-| `config` | `any`    | optional values to include with fulfillmentRepository query |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the fulfillment to retrieve |
+| `config` | `any` | optional values to include with fulfillmentRepository query |
 
 #### Returns
 
@@ -184,11 +184,11 @@ the fulfillment
 
 [services/fulfillment.js:142](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L142)
 
----
+___
 
 ### validateFulfillmentLineItem\_
 
-▸ **validateFulfillmentLineItem\_**(`item`, `quantity`): `LineItem`
+▸ **validateFulfillmentLineItem_**(`item`, `quantity`): `LineItem`
 
 Checks that a given quantity of a line item can be fulfilled. Fails if the
 fulfillable quantity is lower than the requested fulfillment quantity.
@@ -197,23 +197,23 @@ quantity from the quantity that was originally purchased.
 
 #### Parameters
 
-| Name       | Type       | Description                                                 |
-| :--------- | :--------- | :---------------------------------------------------------- |
-| `item`     | `LineItem` | the line item to check has sufficient fulfillable quantity. |
-| `quantity` | `number`   | the quantity that is requested to be fulfilled.             |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `item` | `LineItem` | the line item to check has sufficient fulfillable   quantity. |
+| `quantity` | `number` | the quantity that is requested to be fulfilled. |
 
 #### Returns
 
 `LineItem`
 
 a line item that has the requested fulfillment quantity
-set.
+  set.
 
 #### Defined in
 
 [services/fulfillment.js:116](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L116)
 
----
+___
 
 ### withTransaction
 
@@ -221,8 +221,8 @@ set.
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

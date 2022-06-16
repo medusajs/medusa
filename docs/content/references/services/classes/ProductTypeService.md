@@ -16,8 +16,8 @@ Provides layer to manipulate products.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -38,7 +38,7 @@ BaseService.constructor
 
 [services/product-type.ts:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-type.ts#L14)
 
----
+___
 
 ### typeRepository\_
 
@@ -58,10 +58,10 @@ Lists product types
 
 #### Parameters
 
-| Name       | Type                         | Description                    |
-| :--------- | :--------------------------- | :----------------------------- |
-| `selector` | `FilterableProductTypeProps` | the query object for find      |
-| `config`   | `FindConfig`<`ProductType`\> | the config to be used for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableProductTypeProps` | the query object for find |
+| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
 
 #### Returns
 
@@ -73,7 +73,7 @@ the result of the find operation
 
 [services/product-type.ts:72](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-type.ts#L72)
 
----
+___
 
 ### listAndCount
 
@@ -83,10 +83,10 @@ Lists product tags and adds count.
 
 #### Parameters
 
-| Name       | Type                         | Description                    |
-| :--------- | :--------------------------- | :----------------------------- |
-| `selector` | `FilterableProductTypeProps` | the query object for find      |
-| `config`   | `FindConfig`<`ProductType`\> | the config to be used for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableProductTypeProps` | the query object for find |
+| `config` | `FindConfig`<`ProductType`\> | the config to be used for find |
 
 #### Returns
 
@@ -98,7 +98,7 @@ the result of the find operation
 
 [services/product-type.ts:88](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-type.ts#L88)
 
----
+___
 
 ### retrieve
 
@@ -109,10 +109,10 @@ Throws in case of DB Error and if product was not found.
 
 #### Parameters
 
-| Name     | Type                         | Description                                                       |
-| :------- | :--------------------------- | :---------------------------------------------------------------- |
-| `id`     | `string`                     | id of the product to get.                                         |
-| `config` | `FindConfig`<`ProductType`\> | object that defines what should be included in the query response |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | id of the product to get. |
+| `config` | `FindConfig`<`ProductType`\> | object that defines what should be included in the   query response |
 
 #### Returns
 
@@ -124,7 +124,7 @@ the result of the find one operation.
 
 [services/product-type.ts:47](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product-type.ts#L47)
 
----
+___
 
 ### withTransaction
 
@@ -132,8 +132,8 @@ the result of the find one operation.
 
 #### Parameters
 
-| Name                 | Type            |
-| :------------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `EntityManager` |
 
 #### Returns

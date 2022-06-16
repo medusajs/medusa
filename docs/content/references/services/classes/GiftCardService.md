@@ -16,8 +16,8 @@ Provides layer to manipulate gift cards.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,8 +36,8 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name      | Type     |
-| :-------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `CREATED` | `string` |
 
 #### Defined in
@@ -54,8 +54,8 @@ Creates a gift card with provided data given that the data is validated.
 
 #### Parameters
 
-| Name       | Type       | Description                  |
-| :--------- | :--------- | :--------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `giftCard` | `GiftCard` | the gift card data to create |
 
 #### Returns
@@ -68,7 +68,7 @@ the result of the create operation
 
 [services/gift-card.js:134](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L134)
 
----
+___
 
 ### createTransaction
 
@@ -76,8 +76,8 @@ the result of the create operation
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `data` | `any` |
 
 #### Returns
@@ -88,7 +88,7 @@ the result of the create operation
 
 [services/gift-card.js:120](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L120)
 
----
+___
 
 ### delete
 
@@ -98,8 +98,8 @@ Deletes a gift card idempotently
 
 #### Parameters
 
-| Name         | Type     | Description               |
-| :----------- | :------- | :------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `giftCardId` | `string` | id of gift card to delete |
 
 #### Returns
@@ -112,11 +112,11 @@ the result of the delete operation
 
 [services/gift-card.js:288](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L288)
 
----
+___
 
 ### generateCode\_
 
-▸ **generateCode\_**(): `string`
+▸ **generateCode_**(): `string`
 
 Generates a 16 character gift card code
 
@@ -130,7 +130,7 @@ the generated gift card code
 
 [services/gift-card.js:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L62)
 
----
+___
 
 ### list
 
@@ -138,10 +138,10 @@ the generated gift card code
 
 #### Parameters
 
-| Name       | Type  | Description                                                                     |
-| :--------- | :---- | :------------------------------------------------------------------------------ |
-| `selector` | `any` | the query object for find                                                       |
-| `config`   | `any` | the configuration used to find the objects. contains relations, skip, and take. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the configuration used to find the objects. contains relations, skip, and take. |
 
 #### Returns
 
@@ -153,7 +153,7 @@ the result of the find operation
 
 [services/gift-card.js:78](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L78)
 
----
+___
 
 ### retrieve
 
@@ -163,10 +163,10 @@ Gets a gift card by id.
 
 #### Parameters
 
-| Name         | Type     | Description                                     |
-| :----------- | :------- | :---------------------------------------------- |
-| `giftCardId` | `string` | id of gift card to retrieve                     |
-| `config`     | `any`    | optional values to include with gift card query |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `giftCardId` | `string` | id of gift card to retrieve |
+| `config` | `any` | optional values to include with gift card query |
 
 #### Returns
 
@@ -178,7 +178,7 @@ the gift card
 
 [services/gift-card.js:175](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L175)
 
----
+___
 
 ### retrieveByCode
 
@@ -186,9 +186,9 @@ the gift card
 
 #### Parameters
 
-| Name     | Type     |
-| :------- | :------- |
-| `code`   | `any`    |
+| Name | Type |
+| :------ | :------ |
+| `code` | `any` |
 | `config` | `Object` |
 
 #### Returns
@@ -199,7 +199,7 @@ the gift card
 
 [services/gift-card.js:209](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L209)
 
----
+___
 
 ### update
 
@@ -209,10 +209,10 @@ Updates a giftCard.
 
 #### Parameters
 
-| Name         | Type       | Description                          |
-| :----------- | :--------- | :----------------------------------- |
-| `giftCardId` | `string`   | giftCard id of giftCard to update    |
-| `update`     | `GiftCard` | the data to update the giftCard with |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `giftCardId` | `string` | giftCard id of giftCard to update |
+| `update` | `GiftCard` | the data to update the giftCard with |
 
 #### Returns
 
@@ -224,7 +224,7 @@ the result of the update operation
 
 [services/gift-card.js:247](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L247)
 
----
+___
 
 ### withTransaction
 
@@ -232,8 +232,8 @@ the result of the update operation
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

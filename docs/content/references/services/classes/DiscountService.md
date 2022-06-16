@@ -18,8 +18,8 @@ Provides layer to manipulate discounts.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -40,7 +40,7 @@ BaseService.constructor
 
 [services/discount.ts:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L52)
 
----
+___
 
 ### discountConditionService\_
 
@@ -50,7 +50,7 @@ BaseService.constructor
 
 [services/discount.ts:53](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L53)
 
----
+___
 
 ### discountRepository\_
 
@@ -60,7 +60,7 @@ BaseService.constructor
 
 [services/discount.ts:49](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L49)
 
----
+___
 
 ### discountRuleRepository\_
 
@@ -70,7 +70,7 @@ BaseService.constructor
 
 [services/discount.ts:50](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L50)
 
----
+___
 
 ### eventBus\_
 
@@ -80,7 +80,7 @@ BaseService.constructor
 
 [services/discount.ts:57](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L57)
 
----
+___
 
 ### giftCardRepository\_
 
@@ -90,7 +90,7 @@ BaseService.constructor
 
 [services/discount.ts:51](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L51)
 
----
+___
 
 ### manager\_
 
@@ -100,7 +100,7 @@ BaseService.constructor
 
 [services/discount.ts:48](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L48)
 
----
+___
 
 ### productService\_
 
@@ -110,7 +110,7 @@ BaseService.constructor
 
 [services/discount.ts:55](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L55)
 
----
+___
 
 ### regionService\_
 
@@ -120,7 +120,7 @@ BaseService.constructor
 
 [services/discount.ts:56](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L56)
 
----
+___
 
 ### totalsService\_
 
@@ -140,10 +140,10 @@ Adds a region to the discount regions array.
 
 #### Parameters
 
-| Name         | Type     | Description         |
-| :----------- | :------- | :------------------ |
-| `discountId` | `string` | id of discount      |
-| `regionId`   | `string` | id of region to add |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountId` | `string` | id of discount |
+| `regionId` | `string` | id of region to add |
 
 #### Returns
 
@@ -155,7 +155,7 @@ the result of the update operation
 
 [services/discount.ts:521](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L521)
 
----
+___
 
 ### calculateDiscountForLineItem
 
@@ -163,11 +163,11 @@ the result of the update operation
 
 #### Parameters
 
-| Name         | Type       |
-| :----------- | :--------- |
-| `discountId` | `string`   |
-| `lineItem`   | `LineItem` |
-| `cart`       | `Cart`     |
+| Name | Type |
+| :------ | :------ |
+| `discountId` | `string` |
+| `lineItem` | `LineItem` |
+| `cart` | `Cart` |
 
 #### Returns
 
@@ -177,7 +177,7 @@ the result of the update operation
 
 [services/discount.ts:624](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L624)
 
----
+___
 
 ### canApplyForCustomer
 
@@ -185,10 +185,10 @@ the result of the update operation
 
 #### Parameters
 
-| Name             | Type                    |
-| :--------------- | :---------------------- |
-| `discountRuleId` | `string`                |
-| `customerId`     | `undefined` \| `string` |
+| Name | Type |
+| :------ | :------ |
+| `discountRuleId` | `string` |
+| `customerId` | `undefined` \| `string` |
 
 #### Returns
 
@@ -198,7 +198,7 @@ the result of the update operation
 
 [services/discount.ts:762](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L762)
 
----
+___
 
 ### create
 
@@ -209,8 +209,8 @@ Normalizes discount code to uppercase.
 
 #### Parameters
 
-| Name       | Type                  | Description                 |
-| :--------- | :-------------------- | :-------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `discount` | `CreateDiscountInput` | the discount data to create |
 
 #### Returns
@@ -223,7 +223,7 @@ the result of the create operation
 
 [services/discount.ts:220](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L220)
 
----
+___
 
 ### createDynamicCode
 
@@ -233,10 +233,10 @@ Creates a dynamic code for a discount id.
 
 #### Parameters
 
-| Name         | Type                         | Description                                              |
-| :----------- | :--------------------------- | :------------------------------------------------------- |
-| `discountId` | `string`                     | the id of the discount to create a code for              |
-| `data`       | `CreateDynamicDiscountInput` | the object containing a code to identify the discount by |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountId` | `string` | the id of the discount to create a code for |
+| `data` | `CreateDynamicDiscountInput` | the object containing a code to identify the discount by |
 
 #### Returns
 
@@ -248,7 +248,7 @@ the newly created dynamic code
 
 [services/discount.ts:446](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L446)
 
----
+___
 
 ### delete
 
@@ -258,8 +258,8 @@ Deletes a discount idempotently
 
 #### Parameters
 
-| Name         | Type     | Description              |
-| :----------- | :------- | :----------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `discountId` | `string` | id of discount to delete |
 
 #### Returns
@@ -272,7 +272,7 @@ the result of the delete operation
 
 [services/discount.ts:583](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L583)
 
----
+___
 
 ### deleteDynamicCode
 
@@ -282,10 +282,10 @@ Deletes a dynamic code for a discount id.
 
 #### Parameters
 
-| Name         | Type     | Description                                 |
-| :----------- | :------- | :------------------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `discountId` | `string` | the id of the discount to create a code for |
-| `code`       | `string` | the code to identify the discount by        |
+| `code` | `string` | the code to identify the discount by |
 
 #### Returns
 
@@ -297,7 +297,7 @@ the newly created dynamic code
 
 [services/discount.ts:498](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L498)
 
----
+___
 
 ### hasExpired
 
@@ -305,8 +305,8 @@ the newly created dynamic code
 
 #### Parameters
 
-| Name       | Type       |
-| :--------- | :--------- |
+| Name | Type |
+| :------ | :------ |
 | `discount` | `Discount` |
 
 #### Returns
@@ -317,7 +317,7 @@ the newly created dynamic code
 
 [services/discount.ts:733](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L733)
 
----
+___
 
 ### hasNotStarted
 
@@ -325,8 +325,8 @@ the newly created dynamic code
 
 #### Parameters
 
-| Name       | Type       |
-| :--------- | :--------- |
+| Name | Type |
+| :------ | :------ |
 | `discount` | `Discount` |
 
 #### Returns
@@ -337,7 +337,7 @@ the newly created dynamic code
 
 [services/discount.ts:729](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L729)
 
----
+___
 
 ### hasReachedLimit
 
@@ -345,8 +345,8 @@ the newly created dynamic code
 
 #### Parameters
 
-| Name       | Type       |
-| :--------- | :--------- |
+| Name | Type |
+| :------ | :------ |
 | `discount` | `Discount` |
 
 #### Returns
@@ -357,7 +357,7 @@ the newly created dynamic code
 
 [services/discount.ts:723](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L723)
 
----
+___
 
 ### isDisabled
 
@@ -365,8 +365,8 @@ the newly created dynamic code
 
 #### Parameters
 
-| Name       | Type       |
-| :--------- | :--------- |
+| Name | Type |
+| :------ | :------ |
 | `discount` | `Discount` |
 
 #### Returns
@@ -377,7 +377,7 @@ the newly created dynamic code
 
 [services/discount.ts:741](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L741)
 
----
+___
 
 ### isValidForRegion
 
@@ -385,10 +385,10 @@ the newly created dynamic code
 
 #### Parameters
 
-| Name        | Type       |
-| :---------- | :--------- |
-| `discount`  | `Discount` |
-| `region_id` | `string`   |
+| Name | Type |
+| :------ | :------ |
+| `discount` | `Discount` |
+| `region_id` | `string` |
 
 #### Returns
 
@@ -398,7 +398,7 @@ the newly created dynamic code
 
 [services/discount.ts:745](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L745)
 
----
+___
 
 ### list
 
@@ -406,10 +406,10 @@ the newly created dynamic code
 
 #### Parameters
 
-| Name       | Type                      | Description                                 |
-| :--------- | :------------------------ | :------------------------------------------ |
-| `selector` | `FilterableDiscountProps` | the query object for find                   |
-| `config`   | `FindConfig`<`Discount`\> | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableDiscountProps` | the query object for find |
+| `config` | `FindConfig`<`Discount`\> | the config object containing query settings |
 
 #### Returns
 
@@ -421,7 +421,7 @@ the result of the find operation
 
 [services/discount.ts:156](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L156)
 
----
+___
 
 ### listAndCount
 
@@ -429,10 +429,10 @@ the result of the find operation
 
 #### Parameters
 
-| Name       | Type                      | Description                                 |
-| :--------- | :------------------------ | :------------------------------------------ |
-| `selector` | `FilterableDiscountProps` | the query object for find                   |
-| `config`   | `FindConfig`<`Discount`\> | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableDiscountProps` | the query object for find |
+| `config` | `FindConfig`<`Discount`\> | the config object containing query settings |
 
 #### Returns
 
@@ -444,7 +444,7 @@ the result of the find operation
 
 [services/discount.ts:173](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L173)
 
----
+___
 
 ### removeRegion
 
@@ -454,10 +454,10 @@ Removes a region from the discount regions array.
 
 #### Parameters
 
-| Name         | Type     | Description            |
-| :----------- | :------- | :--------------------- |
-| `discountId` | `string` | id of discount         |
-| `regionId`   | `string` | id of region to remove |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountId` | `string` | id of discount |
+| `regionId` | `string` | id of region to remove |
 
 #### Returns
 
@@ -469,7 +469,7 @@ the result of the update operation
 
 [services/discount.ts:557](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L557)
 
----
+___
 
 ### retrieve
 
@@ -479,10 +479,10 @@ Gets a discount by id.
 
 #### Parameters
 
-| Name         | Type                      | Description                                 |
-| :----------- | :------------------------ | :------------------------------------------ |
-| `discountId` | `string`                  | id of discount to retrieve                  |
-| `config`     | `FindConfig`<`Discount`\> | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountId` | `string` | id of discount to retrieve |
+| `config` | `FindConfig`<`Discount`\> | the config object containing query settings |
 
 #### Returns
 
@@ -494,7 +494,7 @@ the discount
 
 [services/discount.ts:285](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L285)
 
----
+___
 
 ### retrieveByCode
 
@@ -504,10 +504,10 @@ Gets a discount by discount code.
 
 #### Parameters
 
-| Name           | Type                      | Description                                 |
-| :------------- | :------------------------ | :------------------------------------------ |
-| `discountCode` | `string`                  | discount code of discount to retrieve       |
-| `config`       | `FindConfig`<`Discount`\> | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountCode` | `string` | discount code of discount to retrieve |
+| `config` | `FindConfig`<`Discount`\> | the config object containing query settings |
 
 #### Returns
 
@@ -519,7 +519,7 @@ the discount document
 
 [services/discount.ts:313](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L313)
 
----
+___
 
 ### update
 
@@ -529,10 +529,10 @@ Updates a discount.
 
 #### Parameters
 
-| Name         | Type                  | Description                          |
-| :----------- | :-------------------- | :----------------------------------- |
-| `discountId` | `string`              | discount id of discount to update    |
-| `update`     | `UpdateDiscountInput` | the data to update the discount with |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountId` | `string` | discount id of discount to update |
+| `update` | `UpdateDiscountInput` | the data to update the discount with |
 
 #### Returns
 
@@ -544,7 +544,7 @@ the result of the update operation
 
 [services/discount.ts:348](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L348)
 
----
+___
 
 ### validateDiscountForCartOrThrow
 
@@ -552,9 +552,9 @@ the result of the update operation
 
 #### Parameters
 
-| Name       | Type       |
-| :--------- | :--------- |
-| `cart`     | `Cart`     |
+| Name | Type |
+| :------ | :------ |
+| `cart` | `Cart` |
 | `discount` | `Discount` |
 
 #### Returns
@@ -565,7 +565,7 @@ the result of the update operation
 
 [services/discount.ts:665](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L665)
 
----
+___
 
 ### validateDiscountForProduct
 
@@ -573,10 +573,10 @@ the result of the update operation
 
 #### Parameters
 
-| Name             | Type                    |
-| :--------------- | :---------------------- |
-| `discountRuleId` | `string`                |
-| `productId`      | `undefined` \| `string` |
+| Name | Type |
+| :------ | :------ |
+| `discountRuleId` | `string` |
+| `productId` | `undefined` \| `string` |
 
 #### Returns
 
@@ -586,25 +586,25 @@ the result of the update operation
 
 [services/discount.ts:599](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L599)
 
----
+___
 
 ### validateDiscountRule\_
 
-▸ **validateDiscountRule\_**<`T`\>(`discountRule`): `T`
+▸ **validateDiscountRule_**<`T`\>(`discountRule`): `T`
 
 Creates a discount rule with provided data given that the data is validated.
 
 #### Type parameters
 
-| Name | Type             |
-| :--- | :--------------- |
-| `T`  | extends `Object` |
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `Object` |
 
 #### Parameters
 
-| Name           | Type | Description                 |
-| :------------- | :--- | :-------------------------- |
-| `discountRule` | `T`  | the discount rule to create |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discountRule` | `T` | the discount rule to create |
 
 #### Returns
 
@@ -616,7 +616,7 @@ the result of the create operation
 
 [services/discount.ts:138](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/discount.ts#L138)
 
----
+___
 
 ### withTransaction
 
@@ -624,8 +624,8 @@ the result of the create operation
 
 #### Parameters
 
-| Name                 | Type            |
-| :------------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `EntityManager` |
 
 #### Returns

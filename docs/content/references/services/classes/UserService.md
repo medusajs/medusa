@@ -16,8 +16,8 @@ Provides layer to manipulate users.
 
 #### Parameters
 
-| Name                | Type               |
-| :------------------ | :----------------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `UserServiceProps` |
 
 #### Overrides
@@ -38,7 +38,7 @@ BaseService.constructor
 
 [services/user.ts:32](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L32)
 
----
+___
 
 ### manager\_
 
@@ -48,7 +48,7 @@ BaseService.constructor
 
 [services/user.ts:33](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L33)
 
----
+___
 
 ### transactionManager\_
 
@@ -58,7 +58,7 @@ BaseService.constructor
 
 [services/user.ts:34](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L34)
 
----
+___
 
 ### userRepository\_
 
@@ -68,7 +68,7 @@ BaseService.constructor
 
 [services/user.ts:31](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L31)
 
----
+___
 
 ### Events
 
@@ -76,8 +76,8 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name             | Type     |
-| :--------------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `PASSWORD_RESET` | `string` |
 
 #### Defined in
@@ -95,10 +95,10 @@ Fails if email is not a valid format.
 
 #### Parameters
 
-| Name       | Type              | Description             |
-| :--------- | :---------------- | :---------------------- |
-| `user`     | `CreateUserInput` | the user to create      |
-| `password` | `string`          | user's password to hash |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `user` | `CreateUserInput` | the user to create |
+| `password` | `string` | user's password to hash |
 
 #### Returns
 
@@ -110,23 +110,23 @@ the result of create
 
 [services/user.ts:188](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L188)
 
----
+___
 
 ### delete
 
-▸ **delete**(`userId`): `Promise`<`null`\>
+▸ **delete**(`userId`): `Promise`<``null``\>
 
 Deletes a user from a given user id.
 
 #### Parameters
 
-| Name     | Type     | Description                                                   |
-| :------- | :------- | :------------------------------------------------------------ |
-| `userId` | `string` | the id of the user to delete. Must be castable as an ObjectId |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `userId` | `string` | the id of the user to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
-`Promise`<`null`\>
+`Promise`<``null``\>
 
 the result of the delete operation.
 
@@ -134,7 +134,7 @@ the result of the delete operation.
 
 [services/user.ts:257](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L257)
 
----
+___
 
 ### generateResetPasswordToken
 
@@ -148,8 +148,8 @@ is always 15 minutes.
 
 #### Parameters
 
-| Name     | Type     | Description                              |
-| :------- | :------- | :--------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `userId` | `string` | the id of the user to reset password for |
 
 #### Returns
@@ -162,18 +162,18 @@ the generated JSON web token
 
 [services/user.ts:311](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L311)
 
----
+___
 
 ### hashPassword\_
 
-▸ **hashPassword\_**(`password`): `Promise`<`string`\>
+▸ **hashPassword_**(`password`): `Promise`<`string`\>
 
 Hashes a password
 
 #### Parameters
 
-| Name       | Type     | Description       |
-| :--------- | :------- | :---------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `password` | `string` | the value to hash |
 
 #### Returns
@@ -186,7 +186,7 @@ hashed password
 
 [services/user.ts:176](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L176)
 
----
+___
 
 ### list
 
@@ -194,10 +194,10 @@ hashed password
 
 #### Parameters
 
-| Name       | Type                  | Description                            |
-| :--------- | :-------------------- | :------------------------------------- |
-| `selector` | `FilterableUserProps` | the query object for find              |
-| `config`   | `Object`              | the configuration object for the query |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableUserProps` | the query object for find |
+| `config` | `Object` | the configuration object for the query |
 
 #### Returns
 
@@ -209,7 +209,7 @@ the result of the find operation
 
 [services/user.ts:88](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L88)
 
----
+___
 
 ### retrieve
 
@@ -220,10 +220,10 @@ Throws in case of DB Error and if user was not found.
 
 #### Parameters
 
-| Name     | Type                  | Description                |
-| :------- | :-------------------- | :------------------------- |
-| `userId` | `string`              | the id of the user to get. |
-| `config` | `FindConfig`<`User`\> | query configs              |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `userId` | `string` | the id of the user to get. |
+| `config` | `FindConfig`<`User`\> | query configs |
 
 #### Returns
 
@@ -235,7 +235,7 @@ the user document.
 
 [services/user.ts:100](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L100)
 
----
+___
 
 ### retrieveByApiToken
 
@@ -246,10 +246,10 @@ Throws in case of DB Error and if user was not found.
 
 #### Parameters
 
-| Name        | Type       | Default value | Description                        |
-| :---------- | :--------- | :------------ | :--------------------------------- |
-| `apiToken`  | `string`   | `undefined`   | the token of the user to get.      |
-| `relations` | `string`[] | `[]`          | relations to include with the user |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `apiToken` | `string` | `undefined` | the token of the user to get. |
+| `relations` | `string`[] | `[]` | relations to include with the user |
 
 #### Returns
 
@@ -261,7 +261,7 @@ the user document.
 
 [services/user.ts:124](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L124)
 
----
+___
 
 ### retrieveByEmail
 
@@ -272,10 +272,10 @@ Throws in case of DB Error and if user was not found.
 
 #### Parameters
 
-| Name     | Type                  | Description                   |
-| :------- | :-------------------- | :---------------------------- |
-| `email`  | `string`              | the email of the user to get. |
-| `config` | `FindConfig`<`User`\> | query config                  |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `email` | `string` | the email of the user to get. |
+| `config` | `FindConfig`<`User`\> | query config |
 
 #### Returns
 
@@ -287,11 +287,11 @@ the user document.
 
 [services/user.ts:152](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L152)
 
----
+___
 
 ### setPassword\_
 
-▸ **setPassword\_**(`userId`, `password`): `Promise`<`User`\>
+▸ **setPassword_**(`userId`, `password`): `Promise`<`User`\>
 
 Sets a password for a user
 Fails if no user exists with userId and if the hashing of the new
@@ -299,10 +299,10 @@ password does not work.
 
 #### Parameters
 
-| Name       | Type     | Description                    |
-| :--------- | :------- | :----------------------------- |
-| `userId`   | `string` | the userId to set password for |
-| `password` | `string` | the old password to set        |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `userId` | `string` | the userId to set password for |
+| `password` | `string` | the old password to set |
 
 #### Returns
 
@@ -314,7 +314,7 @@ the result of the update operation
 
 [services/user.ts:282](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L282)
 
----
+___
 
 ### update
 
@@ -324,9 +324,9 @@ Updates a user.
 
 #### Parameters
 
-| Name     | Type              | Description                          |
-| :------- | :---------------- | :----------------------------------- |
-| `userId` | `string`          | id of the user to update             |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `userId` | `string` | id of the user to update |
 | `update` | `UpdateUserInput` | the values to be updated on the user |
 
 #### Returns
@@ -339,18 +339,18 @@ the result of create
 
 [services/user.ts:216](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L216)
 
----
+___
 
 ### validateEmail\_
 
-▸ **validateEmail\_**(`email`): `string`
+▸ **validateEmail_**(`email`): `string`
 
 Used to validate user email.
 
 #### Parameters
 
-| Name    | Type     | Description       |
-| :------ | :------- | :---------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `email` | `string` | email to validate |
 
 #### Returns
@@ -363,7 +363,7 @@ the validated email
 
 [services/user.ts:70](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/user.ts#L70)
 
----
+___
 
 ### withTransaction
 
@@ -371,8 +371,8 @@ the validated email
 
 #### Parameters
 
-| Name                 | Type            |
-| :------------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `EntityManager` |
 
 #### Returns
