@@ -6,8 +6,6 @@ status_code=$(curl \
   -d '{"email":"'$1'", "password":"'$2'"}'\
   --write-out %{http_code}\
   http://localhost:9000/admin/auth)
-  # --silent\
-  # --output /dev/null\
 
 if [[ "$status_code" -ne 200 ]] ; then
   echo "Site status changed to $status_code" 
