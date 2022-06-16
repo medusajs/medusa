@@ -239,7 +239,3 @@ export type ProductOptionInput = {
 }
 
 export type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
-
-export type ProductSelector = Omit<Selector<Product>, "tags"> & {
-  tags?: FindOperator<string[]>
-}

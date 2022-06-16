@@ -18,7 +18,6 @@ import {
   FilterableProductProps,
   FindProductConfig,
   ProductOptionInput,
-  ProductSelector,
   UpdateProductInput,
 } from "../types/product"
 import { buildQuery, setMetadata, validateId } from "../utils"
@@ -106,7 +105,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return the result of the find operation
    */
   async list(
-    selector: FilterableProductProps | ProductSelector = {},
+    selector: FilterableProductProps | Selector<Product> = {},
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -143,7 +142,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    *   as the second element.
    */
   async listAndCount(
-    selector: FilterableProductProps | ProductSelector,
+    selector: FilterableProductProps | Selector<Product>,
     config: FindProductConfig = {
       relations: [],
       skip: 0,
@@ -244,7 +243,7 @@ class ProductService extends TransactionBaseService<ProductService> {
    * @return the result of the find one operation.
    */
   async retrieve_(
-    selector: ProductSelector,
+    selector: Selector<Product>,
     config: FindProductConfig = {
       include_discount_prices: false,
     }

@@ -8,13 +8,18 @@ import {
 } from "typeorm"
 import { PriceList } from "../models/price-list"
 import { Product } from "../models/product"
-import { ExtendedFindConfig, WithRequiredProperty } from "../types/common"
-import { ProductSelector } from "../types/product"
+import {
+  ExtendedFindConfig,
+  Selector,
+  WithRequiredProperty,
+} from "../types/common"
 
-type DefaultWithoutRelations = Omit<
-  ExtendedFindConfig<Product, ProductSelector>,
-  "relations"
+export type FindProductConfigRepo = ExtendedFindConfig<
+  Product,
+  Selector<Product>
 >
+
+type DefaultWithoutRelations = Omit<FindProductConfigRepo, "relations">
 
 export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   where: DefaultWithoutRelations["where"] & {
@@ -67,7 +72,7 @@ export class ProductRepository extends Repository<Product> {
       qb.orderBy(parsed)
     }
 
-    if (tags) {
+    if (tags && tags instanceof FindOperator) {
       qb.leftJoin("product.tags", "tags").andWhere(`tags.id IN (:...tag_ids)`, {
         tag_ids: tags.value,
       })
