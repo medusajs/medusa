@@ -9,7 +9,7 @@ on:
 jobs:
   test-cli-with-database:
     env:
-      REDIS_URL: redis://redis:6379
+      REDIS_URL: redis://localhost:6379
       DATABASE_URL: "postgres://postgres:postgres@localhost/cli-test"
 
     strategy:
@@ -25,6 +25,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 6379:6379
 
       postgres:
         image: postgres
