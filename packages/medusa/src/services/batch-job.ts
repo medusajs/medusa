@@ -331,7 +331,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async failed(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+  async setFailed(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       return await this.updateStatus(batchJobOrId, BatchJobStatus.FAILED)
     })
