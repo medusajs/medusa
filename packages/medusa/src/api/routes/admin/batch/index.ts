@@ -23,14 +23,18 @@ export default (app) => {
   )
   route.post("/", middlewares.wrap(require("./create-batch-job").default))
 
-  const routerOnBatch = Router()
-  route.use("/:id", getRequestedBatchJob, canAccessBatchJob, routerOnBatch)
-  routerOnBatch.get("/", middlewares.wrap(require("./get-batch-job").default))
-  routerOnBatch.post(
+  const batchJobRouter = Router({ mergeParams: true })
+
+  route.use("/:id", getRequestedBatchJob, canAccessBatchJob, batchJobRouter)
+
+  batchJobRouter.get("/", middlewares.wrap(require("./get-batch-job").default))
+
+  batchJobRouter.post(
     "/confirm",
     middlewares.wrap(require("./confirm-batch-job").default)
   )
-  routerOnBatch.post(
+
+  batchJobRouter.post(
     "/cancel",
     middlewares.wrap(require("./cancel-batch-job").default)
   )

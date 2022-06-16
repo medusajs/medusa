@@ -38,6 +38,7 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { DiscountRuleType } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -1071,7 +1072,7 @@ class CartService extends TransactionBaseService<CartService> {
         let sawNotShipping = false
         const newDiscounts = toParse.map((discountToParse) => {
           switch (discountToParse.rule?.type) {
-            case "free_shipping":
+            case DiscountRuleType.FREE_SHIPPING:
               if (discountToParse.rule.type === rule.type) {
                 return discount
               }

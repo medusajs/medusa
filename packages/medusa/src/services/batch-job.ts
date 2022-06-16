@@ -190,7 +190,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async updateStatus(
+  protected async updateStatus(
     batchJobOrId: BatchJob | string,
     status: BatchJobStatus
   ): Promise<BatchJob | never> {
@@ -239,7 +239,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         )
       }
 
-      return this.updateStatus(batchJob, BatchJobStatus.CONFIRMED)
+      return await this.updateStatus(batchJob, BatchJobStatus.CONFIRMED)
     })
   }
 
@@ -328,6 +328,12 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       }
 
       return await this.updateStatus(batchJob, BatchJobStatus.PROCESSING)
+    })
+  }
+
+  async setFailed(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+    return await this.atomicPhase_(async () => {
+      return await this.updateStatus(batchJobOrId, BatchJobStatus.FAILED)
     })
   }
 }

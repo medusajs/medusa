@@ -1,5 +1,5 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
-import { AbstractBatchJobStrategy } from "../../../../interfaces/batch-job-strategy"
+import { AbstractBatchJobStrategy } from "../../../../interfaces"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
 

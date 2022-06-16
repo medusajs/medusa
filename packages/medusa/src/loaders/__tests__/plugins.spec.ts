@@ -19,6 +19,15 @@ const buildServiceTemplate = (name: string): string => {
     export default class ${name}Service extends BaseService {}
   `
 }
+const buildTransactionBaseServiceServiceTemplate = (name: string) => {
+  return `
+    import { TransactionBaseService } from "${resolve(
+      __dirname,
+      "../../interfaces"
+    )}"
+    export default class ${name}Service extends TransactionBaseService {}
+  `
+}
 
 const buildBatchJobStrategyTemplate = (name: string, type: string): string => {
   return `
@@ -248,6 +257,7 @@ describe("plugins loader", () => {
 
   describe("registerServices", function () {
     beforeAll(() => {
+      container.register("logger", asValue(Logger))
       mkdirSync(getFolderTestTargetDirectoryPath("services"), {
         mode: "777",
         recursive: true,
@@ -259,6 +269,10 @@ describe("plugins loader", () => {
       writeFileSync(
         resolve(getFolderTestTargetDirectoryPath("services"), "test2.js"),
         buildServiceTemplate("test2")
+      )
+      writeFileSync(
+        resolve(getFolderTestTargetDirectoryPath("services"), "test3.js"),
+        buildTransactionBaseServiceServiceTemplate("test3")
       )
       writeFileSync(
         resolve(getFolderTestTargetDirectoryPath("services"), "test2.js.map"),
@@ -288,11 +302,15 @@ describe("plugins loader", () => {
         container.resolve("testService")
       const test2Service: (...args: unknown[]) => any =
         container.resolve("test2Service")
+      const test3Service: (...args: unknown[]) => any =
+        container.resolve("test3Service")
 
       expect(testService).toBeTruthy()
       expect(testService.constructor.name).toBe("testService")
       expect(test2Service).toBeTruthy()
       expect(test2Service.constructor.name).toBe("test2Service")
+      expect(test3Service).toBeTruthy()
+      expect(test3Service.constructor.name).toBe("test3Service")
     })
   })
 })

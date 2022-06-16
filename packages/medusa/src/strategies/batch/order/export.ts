@@ -1,6 +1,7 @@
 import { Dictionary, indexOf, omit, pickBy } from "lodash"
 import { EntityManager } from "typeorm"
 import { AdminGetOrdersParams } from "../../../api"
+import { AdminPostBatchesReq } from "../../../api/routes/admin/batch/create-batch-job"
 import { IFileService } from "../../../interfaces"
 import { AbstractBatchJobStrategy } from "../../../interfaces/batch-job-strategy"
 import logger from "../../../loaders/logger"
@@ -10,6 +11,7 @@ import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
 import { DateComparisonOperator } from "../../../types/common"
 import { Logger } from "../../../types/global"
+import { prepareListQuery } from "../../../utils/get-query-config"
 import { validator } from "../../../utils/validator"
 
 type PropertiesDescriptor<T> = {
@@ -189,13 +191,45 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   }
 
   async prepareBatchJobForProcessing(
-    batchJobId: string,
-    req: any
-  ): Promise<BatchJob> {
-    return await this.batchJobService_.ready(batchJobId)
+    batchJob: AdminPostBatchesReq,
+    req: Express.Request
+  ): Promise<AdminPostBatchesReq> {
+    const { limit, offset, order, fields, expand, ...context } =
+      batchJob.context
+
+    const {
+      select: filterableFields,
+      skip,
+      take,
+      ...listConfig
+    } = prepareListQuery(
+      {
+        context: batchJob.context,
+        type: batchJob.type,
+        dry_run: batchJob.dry_run,
+        limit: limit as number,
+        offset: offset as number,
+        order: order as string,
+        fields: fields as string,
+        expand: expand as string,
+      },
+      {
+        isList: true,
+        defaultRelations: this.relations,
+      }
+    )
+
+    batchJob.context = {
+      ...(context ?? {}),
+      listConfig,
+      filterableFields: filterableFields || this.select,
+      offset: skip,
+    }
+
+    return batchJob
   }
 
-  async processJob(batchJobId: string): Promise<BatchJob> {
+  async processJob(batchJobId: string): Promise<void> {
     let offset = 0
     let orderCount = 0
 
@@ -259,7 +293,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
               .withTransaction(transactionManager)
               .delete({ key: fileKey })
 
-            return batch
+            return
           }
         }
 
@@ -274,7 +308,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           context,
         })
 
-        return await this.batchJobService_.complete(updatedBatchJob)
+        await this.batchJobService_.complete(updatedBatchJob)
       },
       "REPEATABLE READ",
       async (err) =>

@@ -119,7 +119,15 @@ module.exports = async (connection, data = {}) => {
     type: "percentage",
   })
 
-  const d = manager.create(Discount, {
+  await manager.insert(DiscountRule, {
+    id: "free-shipping-rule",
+    description: "Free shipping rule",
+    type: "free_shipping",
+    value: 100,
+    allocation: "total",
+  })
+
+  const testDiscount = manager.create(Discount, {
     id: "test-discount",
     code: "TEST",
     is_dynamic: false,
@@ -127,7 +135,15 @@ module.exports = async (connection, data = {}) => {
     rule_id: "discount_rule_id",
   })
 
-  d.regions = [
+  const freeShippingDiscount = manager.create(Discount, {
+    id: "free-shipping-discount",
+    code: "free-shipping",
+    is_dynamic: false,
+    is_disabled: false,
+    rule_id: "free-shipping-rule",
+  })
+
+  testDiscount.regions = [
     {
       id: "test-region",
       name: "Test Region",
@@ -136,7 +152,17 @@ module.exports = async (connection, data = {}) => {
     },
   ]
 
-  await manager.save(d)
+  freeShippingDiscount.regions = [
+    {
+      id: "test-region",
+      name: "Test Region",
+      currency_code: "usd",
+      tax_rate: 0,
+    },
+  ]
+
+  await manager.save(testDiscount)
+  await manager.save(freeShippingDiscount)
 
   await manager.query(
     `UPDATE "country" SET region_id='test-region' WHERE iso_2 = 'us'`

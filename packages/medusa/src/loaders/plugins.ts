@@ -2,7 +2,7 @@ import glob from "glob"
 import { Express } from "express"
 import { EntitySchema } from "typeorm"
 import {
-  BaseService,
+  BaseService as LegacyBaseService,
   PaymentService,
   FulfillmentService,
   NotificationService,
@@ -17,11 +17,10 @@ import fs from "fs"
 import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import {
-  AbstractFileService,
   AbstractTaxService,
   isFileService,
   isTaxCalculationStrategy,
-  TransactionBaseService,
+  TransactionBaseService as BaseService,
 } from "../interfaces"
 import formatRegistrationName from "../utils/format-registration-name"
 import {
@@ -67,7 +66,7 @@ export default async ({
     resolved.map(async (pluginDetails) => {
       registerRepositories(pluginDetails, container)
       await registerServices(pluginDetails, container)
-      registerMedusaApi(pluginDetails, container)
+      await registerMedusaApi(pluginDetails, container)
       registerApi(pluginDetails, app, rootDirectory, container, activityId)
       registerCoreRouters(pluginDetails, container)
       registerSubscribers(pluginDetails, container)
@@ -148,10 +147,10 @@ async function runLoaders(
   )
 }
 
-function registerMedusaApi(
+async function registerMedusaApi(
   pluginDetails: PluginDetails,
   container: MedusaContainer
-): void {
+): Promise<void> {
   registerMedusaMiddleware(pluginDetails, container)
   registerStrategies(pluginDetails, container)
 }
@@ -339,11 +338,11 @@ export async function registerServices(
       const name = formatRegistrationName(fn)
 
       if (
-        !(loaded.prototype instanceof BaseService) &&
-        !(loaded.prototype instanceof TransactionBaseService)
+        !(loaded.prototype instanceof LegacyBaseService) &&
+        !(loaded.prototype instanceof BaseService)
       ) {
         const logger = container.resolve<Logger>("logger")
-        const message = `File must be a valid service implementation, please check ${fn}`
+        const message = `The class must be a valid service implementation, please check ${fn}`
         logger.error(message)
         throw new Error(message)
       }
@@ -409,15 +408,6 @@ export async function registerServices(
         loaded.prototype instanceof FileService ||
         isFileService(loaded.prototype)
       ) {
-        // Add the service directly to the container in order to make simple
-        // resolution if we already know which file storage provider we need to use
-        container.register({
-          [name]: asFunction(
-            (cradle) => new loaded(cradle, pluginDetails.options)
-          ),
-          [`fileService`]: aliasTo(name),
-        })
-      } else if (isFileService(loaded.prototype)) {
         // Add the service directly to the container in order to make simple
         // resolution if we already know which file storage provider we need to use
         container.register({

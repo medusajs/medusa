@@ -3,7 +3,12 @@ import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { LineItemRepository } from "../repositories/line-item"
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
-import { ProductService, RegionService, ProductVariantService } from "./index"
+import {
+  PricingService,
+  ProductService,
+  RegionService,
+  ProductVariantService,
+} from "./index"
 import { CartRepository } from "../repositories/cart"
 import { LineItem } from "../models/line-item"
 import LineItemAdjustmentService from "./line-item-adjustment"
@@ -17,6 +22,7 @@ type InjectedDependencies = {
   cartRepository: typeof CartRepository
   productVariantService: ProductVariantService
   productService: ProductService
+  pricingService: PricingService
   regionService: RegionService
   lineItemAdjustmentService: LineItemAdjustmentService
 }
@@ -41,6 +47,7 @@ class LineItemService extends BaseService {
     lineItemTaxLineRepository,
     productVariantService,
     productService,
+    pricingService,
     regionService,
     cartRepository,
     lineItemAdjustmentService,
@@ -52,6 +59,7 @@ class LineItemService extends BaseService {
     this.itemTaxLineRepo_ = lineItemTaxLineRepository
     this.productVariantService_ = productVariantService
     this.productService_ = productService
+    this.pricingService_ = pricingService
     this.regionService_ = regionService
     this.cartRepository_ = cartRepository
     this.lineItemAdjustmentService_ = lineItemAdjustmentService
@@ -68,6 +76,7 @@ class LineItemService extends BaseService {
       lineItemTaxLineRepository: this.itemTaxLineRepo_,
       productVariantService: this.productVariantService_,
       productService: this.productService_,
+      pricingService: this.pricingService_,
       regionService: this.regionService_,
       cartRepository: this.cartRepository_,
       lineItemAdjustmentService: this.lineItemAdjustmentService_,
@@ -201,7 +210,6 @@ class LineItemService extends BaseService {
             .withTransaction(transactionManager)
             .retrieve(variantId, {
               relations: ["product"],
-              include_discount_prices: true,
             }),
           this.regionService_
             .withTransaction(transactionManager)
@@ -213,18 +221,19 @@ class LineItemService extends BaseService {
 
         if (context.unit_price === undefined || context.unit_price === null) {
           shouldMerge = true
-          unit_price = await this.productVariantService_
+          const variantPricing = await this.pricingService_
             .withTransaction(transactionManager)
-            .getRegionPrice(variant.id, {
-              regionId: region.id,
+            .getProductVariantPricingById(variant.id, {
+              region_id: region.id,
               quantity: quantity,
               customer_id: context?.customer_id,
               include_discount_prices: true,
             })
+          unit_price = variantPricing.calculated_price
         }
 
         const rawLineItem: Partial<LineItem> = {
-          unit_price: unit_price as number,
+          unit_price: unit_price,
           title: variant.product.title,
           description: variant.title,
           thumbnail: variant.product.thumbnail,

@@ -353,6 +353,84 @@ describe("/admin/draft-orders", () => {
       )
     })
 
+    it("creates a draft order with discount and free shipping along the line item", async () => {
+      const api = useApi()
+
+      const payload = {
+        email: "oli@test.dk",
+        shipping_address: "oli-shipping",
+        discounts: [{ code: "TEST" }, { code: "free-shipping"}],
+        items: [
+          {
+            variant_id: "test-variant",
+            quantity: 2,
+            metadata: {},
+          },
+        ],
+        region_id: "test-region",
+        customer_id: "oli-test",
+        shipping_methods: [
+          {
+            option_id: "test-option",
+          },
+        ],
+      }
+
+      const response = await api
+        .post("/admin/draft-orders", payload, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const created = await api
+        .get(`/admin/draft-orders/${response.data.draft_order.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const draftOrder = created.data.draft_order
+      const lineItemId = draftOrder.cart.items[0].id
+
+      expect(response.status).toEqual(200)
+      expect(draftOrder.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant",
+            unit_price: 8000,
+            quantity: 2,
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                item_id: lineItemId,
+                amount: 1600,
+                description: "discount",
+                discount_id: "test-discount",
+              }),
+            ]),
+          }),
+        ])
+      )
+
+      // Check that discounts are applied
+      expect(draftOrder.cart.discounts).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            code: "TEST",
+          }),
+          expect.objectContaining({
+            code: "free-shipping",
+          })
+        ])
+      )
+    })
+
     it("creates a draft order with created shipping address", async () => {
       const api = useApi()
 
