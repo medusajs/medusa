@@ -44,42 +44,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Testing development server
+      - name: Setup development server
         uses: ./.github/actions/setup-server
         with:
           cache-extension: "cli-test"
 
-      # - name: Cancel Previous Runs
-      #   uses: styfle/cancel-workflow-action@0.9.1
-      #   with:
-      #     access_token: ${{ github.token }}
-
-      # - name: Setup Node.js environment
-      #   uses: actions/setup-node@v2.4.1
-      #   with:
-      #     node-version: "14"
-      #     cache: "yarn"
-
-      # - name: Bootstrap packages
-      #   uses: ./.github/actions/cache-bootstrap
-      #   with:
-      #     extension: cli-tests
-
-      # - name: Build Packages
-      #   run: yarn build
-
-      # - name: Install dev cli
-      #   run: sudo npm i -g medusa-dev-cli
-
-      # - name: Set path to medusa repo
-      #   run: medusa-dev --set-path-to-repo `pwd`
-
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
 
-      ################################################################################
-      ################################ refactor ######################################
-      ################################################################################
       - name: Create Medusa project
         run: |
           medusa new cli-test
@@ -114,12 +86,10 @@ jobs:
         working-directory: ../cli-test
 
       - name: Create admin user
-        run: medusa user -e test@test.com -p password123 -i admin_123
+        run: medusa user -e test@test.com -p password -i admin_123
         working-directory: ../cli-test
 
-      ################################################################################
       ##########################  Test medusa develop  ###############################
-      ################################################################################
 
       - name: Run development server
         run: medusa develop  > /dev/null 2>&1 &
@@ -128,9 +98,7 @@ jobs:
       - name: Testing development server
         uses: ./.github/actions/test-server
 
-      ################################################################################
       ###########################  Test medusa start  ################################
-      ################################################################################
 
       - name: Starting medusa
         run: medusa start > /dev/null 2>&1 &
@@ -138,4 +106,3 @@ jobs:
 
       - name: Testing server
         uses: ./.github/actions/test-server
-# curl https://raw.githubusercontent.com/medusajs/medusa-starter-default/feat/postgres-config/medusa-config.js --output medusa-config.js
