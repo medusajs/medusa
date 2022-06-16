@@ -1480,6 +1480,7 @@ describe("/store/carts", () => {
       const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`)
 
       expect(getRes.status).toEqual(200)
+      expect(getRes.data.type).toEqual("order")
 
       const variantRes = await api.get("/store/variants/test-variant")
       expect(variantRes.data.variant.inventory_quantity).toEqual(0)
@@ -1498,6 +1499,7 @@ describe("/store/carts", () => {
 
       expect(createdOrder.data.type).toEqual("order")
       expect(createdOrder.data.data.discount_total).toEqual(10000)
+      expect(createdOrder.data.data.subtotal).toEqual(16000)
       expect(createdOrder.data.data.total).toEqual(6000)
       expect(createdOrder.data.data.payments).toEqual(
         expect.arrayContaining([
