@@ -6,6 +6,8 @@ do
   status_code=$(curl \
     -X GET \
     --write-out %{http_code} \
+    --silent\
+    --output /dev/null\
     http://localhost:9000/store/products)
 
 echo $status_code
