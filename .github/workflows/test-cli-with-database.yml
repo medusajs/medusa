@@ -114,7 +114,7 @@ jobs:
         working-directory: ../cli-test
 
       - name: Create admin user
-        run: medusa user -e test@test.com -p password -i admin_123
+        run: medusa user -e test@test.com -p password123 -i admin_123
         working-directory: ../cli-test
 
       ################################################################################
