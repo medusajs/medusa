@@ -11,11 +11,9 @@ assignees: ''
 Thank you for submitting an issue!
 
 Please make sure your issue is understandable and reproducible.
-To make your issue readable make sure you use valid Markdown syntax.
+To make your issue readable make sure you use valid Markdown syntax: https://guides.github.com/features/mastering-markdown/
 
-https://guides.github.com/features/mastering-markdown/
-
-Please ensure you have also read and understood [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md)
+Please ensure you have also read and understood our contribution guide: https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md
 -->
 
 ## Bug report
