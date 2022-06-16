@@ -73,12 +73,15 @@ jobs:
       ################################################################################
       - name: Create Medusa project
         run: |
-          medusa new cli-test https://github.com/medusajs/medusa-starter-defualt branch postfix \
+          medusa new cli-test \
           --db-database postgres \
           --db-port 5432 \
           --db-host localhost \
           --db-pass postgres \
           --db-user postgres
+
+      - name: test
+        run: ls
 
       - name: run medusa dev
         run: medusa-dev --force-install
