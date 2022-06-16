@@ -80,9 +80,9 @@ jobs:
           --db-pass postgres \
           --db-user postgres
 
-      # - name: run medusa dev
-      #   run: medusa-dev --force-install
-      #   working-directory: cli-test
+      - name: run medusa dev
+        run: medusa-dev --force-install
+        working-directory: cli-test
 
       - name: list medusa-config
         run: cat medusa-config.js
@@ -105,86 +105,23 @@ jobs:
         working-directory: cli-test
 
       ################################################################################
+      ##########################  Test medusa develop  ###############################
+      ################################################################################
 
       - name: Run development server
         run: medusa develop  > /dev/null 2>&1 &
         working-directory: cli-test
 
-      ################################################################################
-      ################################ refactor ######################################
-      ################################################################################
       - name: Testing development server
         uses: ./.github/actions/test-server
 
-      # - name: Wait for live server response
-      #   run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
-
-      # - name: Log in with user
-      #   run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh test@test.com password
-
-      #   #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
-
-      # - name: GetProducts
-      #   run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh "cli-test/data/seed.json"
-
-      #   # "curl -X GET http://localhost:9000/store/products"
-
-      # - name: Kill server
-      #   run: kill -9 $(lsof -t -i :9000)
-
+      ################################################################################
+      ###########################  Test medusa start  ################################
       ################################################################################
 
       - name: Starting medusa
         run: medusa start > /dev/null 2>&1 &
         working-directory: cli-test
 
-      ################################################################################
-      ################################ refactor ######################################
-      ################################################################################
-
       - name: Testing server
         uses: ./.github/actions/test-server
-
-      # - name: Wait for live server response
-      #   run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
-
-      # - name: Log in with user
-      #   run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh test@test.com password
-
-      #   #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
-
-      # - name: GetProducts
-      #   run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh "/cli-test"
-
-      #   # "curl -X GET http://localhost:9000/store/products"
-
-      # - name: Kill server
-      #   run: kill -9 $(lsof -t -i :9000)
-
-      ################################################################################
-# create singular workflow for:
-
-# new
-# try with db-database to set db provider
-# create medusa instance with entire db setup in arguments
-
-# (yarn it up)
-
-# migrations
-# postgres
-# sqlite
-
-# seed
-# postgres
-# sqlite
-
-# user (for admin)
-# test creation
-
-# develop  `medusa develop > /dev/null 2>&1 &`
-# log in with user
-# test with curl get command for store/products (validate with seed)
-
-# start `medusa start > /dev/null 2>&1 &`
-# log in with user
-# test with curl get command for store/products (validate with seed)
