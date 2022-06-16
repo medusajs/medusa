@@ -1,6 +1,15 @@
 name: "Setup test env"
 description: "Setup test environment for actions"
 
+inputs:
+  node-version:
+    description: "Node version"
+    required: false
+    default: "14"
+  cache-extension:
+    description: "Extension for fetching cached dependencies"
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -9,20 +18,16 @@ runs:
       with:
         access_token: ${{ github.token }}
 
-    - name: Checkout
-      uses: actions/checkout@v2.3.5
-      with:
-        fetch-depth: 0
-
     - name: Setup Node.js environment
       uses: actions/setup-node@v2.4.1
       with:
-        node-version: "14"
+        node-version: ${{ inputs.node-version }}
         cache: "yarn"
 
-    - name: install
-      shell: "bash"
-      run: yarn
+    - name: Bootstrap packages
+      uses: ./.github/actions/cache-bootstrap
+      with:
+        extension: ${{ inputs.cache-extension }}
 
     - name: Build Packages
       shell: "bash"

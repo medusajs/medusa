@@ -1,10 +1,5 @@
 name: test cli
-on:
-  push
-  # schedule:
-  #   - cron: "0 0 */1 * *"
-
-# on develop nightly
+on: [push, pull_request]
 
 jobs:
   test-cli-with-database:
@@ -44,38 +39,43 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
         uses: actions/checkout@v2.3.5
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
+      - name: Testing development server
+        uses: ./.github/actions/setup-server
         with:
-          node-version: "14"
-          cache: "yarn"
+          cache-extension: "cli-test"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
-        with:
-          extension: integration-tests
+      # - name: Cancel Previous Runs
+      #   uses: styfle/cancel-workflow-action@0.9.1
+      #   with:
+      #     access_token: ${{ github.token }}
 
-      - name: Build Packages
-        run: yarn build
+      # - name: Setup Node.js environment
+      #   uses: actions/setup-node@v2.4.1
+      #   with:
+      #     node-version: "14"
+      #     cache: "yarn"
+
+      # - name: Bootstrap packages
+      #   uses: ./.github/actions/cache-bootstrap
+      #   with:
+      #     extension: cli-tests
+
+      # - name: Build Packages
+      #   run: yarn build
+
+      # - name: Install dev cli
+      #   run: sudo npm i -g medusa-dev-cli
+
+      # - name: Set path to medusa repo
+      #   run: medusa-dev --set-path-to-repo `pwd`
 
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
-
-      - name: Install dev cli
-        run: sudo npm i -g medusa-dev-cli
-
-      - name: Set path to medusa repo
-        run: medusa-dev --set-path-to-repo `pwd`
 
       ################################################################################
       ################################ refactor ######################################
