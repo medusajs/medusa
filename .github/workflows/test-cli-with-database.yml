@@ -50,11 +50,16 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v2.4.1
         with:
-          node-version: "16"
+          node-version: "14"
           cache: "yarn"
 
-      - name: install
-        run: yarn
+      # - name: install
+      #   run: yarn
+
+      - name: Bootstrap packages
+        uses: ./.github/actions/cache-bootstrap
+        with:
+          extension: integration-tests
 
       - name: Build Packages
         run: yarn build
@@ -66,7 +71,7 @@ jobs:
         run: sudo npm i -g medusa-dev-cli
 
       - name: Set path to medusa repo
-        run: medusa-dev --set-path-to-repo $(pwd)
+        run: medusa-dev --set-path-to-repo `pwd`
 
       ################################################################################
       ################################ refactor ######################################
@@ -79,33 +84,37 @@ jobs:
           --db-host localhost \
           --db-pass postgres \
           --db-user postgres
+        working-directory: ..
 
       - name: test
         run: ls
 
+      - name: test
+        run: ls ..
+
       - name: run medusa dev
         run: medusa-dev --force-install
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       - name: list medusa-config
         run: cat medusa-config.js
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       - name: Install dependencies
         run: yarn
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       - name: Run migrations
         run: medusa migrations run
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       - name: Seed db
         run: yarn seed
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       - name: Create admin user
         run: medusa user -e test@test.com -p password -i admin_123
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       ################################################################################
       ##########################  Test medusa develop  ###############################
@@ -113,7 +122,7 @@ jobs:
 
       - name: Run development server
         run: medusa develop  > /dev/null 2>&1 &
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       - name: Testing development server
         uses: ./.github/actions/test-server
@@ -124,7 +133,7 @@ jobs:
 
       - name: Starting medusa
         run: medusa start > /dev/null 2>&1 &
-        working-directory: cli-test
+        working-directory: ../cli-test
 
       - name: Testing server
         uses: ./.github/actions/test-server
