@@ -1,16 +1,15 @@
-import { Dictionary, indexOf, omit, pickBy } from "lodash"
+import { Dictionary, omit, pickBy } from "lodash"
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { AdminGetOrdersParams } from "../../../api"
 import { AdminPostBatchesReq } from "../../../api/routes/admin/batch/create-batch-job"
 import { IFileService } from "../../../interfaces"
 import { AbstractBatchJobStrategy } from "../../../interfaces/batch-job-strategy"
-import logger from "../../../loaders/logger"
 import { BatchJob, Order } from "../../../models"
-import { OrderService, TotalsService } from "../../../services"
+import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
 import { DateComparisonOperator } from "../../../types/common"
-import { Logger } from "../../../types/global"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import { validator } from "../../../utils/validator"
 
@@ -24,9 +23,36 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   public static identifier = "order-export-strategy"
   public static batchType = "order-export"
 
-  private BATCH_SIZE = 100
-  private NEWLINE = "\r\n"
-  private DELIMITER = ";"
+  public defaultMaxRetry = 3
+
+  protected readonly BATCH_SIZE = 100
+  protected readonly NEWLINE = "\r\n"
+  protected readonly DELIMITER = ";"
+
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+  protected readonly fileService_: IFileService<any>
+  protected readonly batchJobService_: BatchJobService
+  protected readonly orderService_: OrderService
+
+  protected readonly relations = ["customer", "shipping_address"]
+  protected readonly select = [
+    "id",
+    "display_id",
+    "status",
+    "created_at",
+    "fulfillment_status",
+    "payment_status",
+    "subtotal",
+    "shipping_total",
+    "discount_total",
+    "gift_card_total",
+    "refunded_total",
+    "tax_total",
+    "total",
+    "currency_code",
+    "region_id",
+  ]
 
   protected readonly propertiesDescriptors: PropertiesDescriptor<Order>[] = [
     {
@@ -147,31 +173,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       accessor: (order: Order): string => order.currency_code,
     },
   ]
-
-  private readonly relations = ["customer", "shipping_address"]
-  private readonly select = [
-    "id",
-    "display_id",
-    "status",
-    "created_at",
-    "fulfillment_status",
-    "payment_status",
-    "subtotal",
-    "shipping_total",
-    "discount_total",
-    "gift_card_total",
-    "refunded_total",
-    "tax_total",
-    "total",
-    "currency_code",
-    "region_id",
-  ]
-
-  protected manager_: EntityManager
-  protected transactionManager_: EntityManager | undefined
-  protected readonly fileService_: IFileService<any>
-  protected readonly batchJobService_: BatchJobService
-  protected readonly orderService_: OrderService
 
   constructor({ fileService, batchJobService, orderService, manager }) {
     // eslint-disable-next-line prefer-rest-params
@@ -431,33 +432,41 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       progress,
     }: { offset: number; count: number; progress: number }
   ): Promise<void> {
-    // Before validating that we should settle on defining if the job can be re process or not.
-    /* return await this.atomicPhase_(async (transactionManager) => {
+    return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = await this.batchJobService_
         .withTransaction(transactionManager)
         .retrieve(batchJobId)
+
+      const retryCount = batchJob.context.retry_count ?? 0
+      const maxRetry = batchJob.context.max_retry ?? this.defaultMaxRetry
+
       if (err instanceof MedusaError) {
         await this.batchJobService_
           .withTransaction(transactionManager)
-          .updateStatus(batchJob, BatchJobStatus.FAILED)
-      } else if (batchJob.context.retry_count < batchJob.context.max_retry) {
+          .setFailed(batchJob)
+      } else if (retryCount < maxRetry) {
         await this.batchJobService_
           .withTransaction(transactionManager)
           .update(batchJobId, {
             context: {
               ...batchJob.context,
+              retry_count: retryCount + 1,
               offset,
-              count,
-              progress,
-              retry_count: (Number(batchJob.context.retry_count) ?? 0) + 1,
             },
             result: {
               ...batchJob.result,
+              count,
+              progress,
               err,
             },
           })
+      } else {
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .setFailed(batchJob)
       }
-    })*/
+    })
+  }
   }
 }
 
