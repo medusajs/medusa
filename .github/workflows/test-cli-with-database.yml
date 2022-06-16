@@ -37,9 +37,6 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Setup environment
-        uses: ./.github/actions/setup-server
-
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
         with:
