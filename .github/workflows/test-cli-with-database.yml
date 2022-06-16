@@ -37,30 +37,33 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.1
-        with:
-          access_token: ${{ github.token }}
+      - name: Setup environment
+        uses: ./.github/actions/test-server
 
-      - name: Checkout
-        uses: actions/checkout@v2.3.5
-        with:
-          fetch-depth: 0
+      # - name: Cancel Previous Runs
+      #   uses: styfle/cancel-workflow-action@0.9.1
+      #   with:
+      #     access_token: ${{ github.token }}
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: "16"
-          cache: "yarn"
+      # - name: Checkout
+      #   uses: actions/checkout@v2.3.5
+      #   with:
+      #     fetch-depth: 0
 
-      - name: install
-        run: yarn
+      # - name: Setup Node.js environment
+      #   uses: actions/setup-node@v2.4.1
+      #   with:
+      #     node-version: "16"
+      #     cache: "yarn"
 
-      - name: Build Packages
-        run: yarn build
+      # - name: install
+      #   run: yarn
 
-      - name: Install Medusa cli
-        run: yarn global add @medusajs/medusa-cli
+      # - name: Build Packages
+      #   run: yarn build
+
+      # - name: Install Medusa cli
+      #   run: yarn global add @medusajs/medusa-cli
 
       ################################################################################
       ################################ refactor ######################################
