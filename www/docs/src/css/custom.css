@@ -302,3 +302,19 @@ details summary {
 .DocSearch-Container {
   z-index: 1001 !important;
 }
+
+.reference-table th:nth-child(2),
+.reference-table td:nth-child(2) {
+  width: 40%;
+}
+
+.reference-table th:nth-child(3),
+.reference-table td:nth-child(3) {
+  width: 50%;
+}
+
+.reference-table .theme-code-block span {
+  max-width: 100%;
+  word-break: break-word;
+  white-space: break-spaces;
+}
