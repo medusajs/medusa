@@ -125,7 +125,7 @@ jobs:
         working-directory: ../cli-test
 
       - name: Testing development server
-        uses: ./.github/actions/test-server
+        uses: ./.github/workflows/test-server
 
       ################################################################################
       ###########################  Test medusa start  ################################
@@ -137,3 +137,4 @@ jobs:
 
       - name: Testing server
         uses: ./.github/actions/test-server
+# curl https://raw.githubusercontent.com/medusajs/medusa-starter-default/feat/postgres-config/medusa-config.js --output medusa-config.js
