@@ -3,15 +3,15 @@ import fs from "fs"
 import express from "express"
 import { createConnection } from "typeorm"
 import { sync as existsSync } from "fs-exists-cached"
-import { getConfigFile } from "medusa-core-utils"
 import { track } from "medusa-telemetry"
 
+import configLoader from "../loaders/config"
 import Logger from "../loaders/logger"
 import loaders from "../loaders"
 
 import getMigrations from "./utils/get-migrations"
 
-const t = async function({ directory, migrate, seedFile }) {
+const t = async function ({ directory, migrate, seedFile }) {
   track("CLI_SEED")
   let resolvedPath = seedFile
 
@@ -26,27 +26,30 @@ const t = async function({ directory, migrate, seedFile }) {
       process.exit(1)
     }
   }
+  const configModule = await configLoader(directory)
 
-  let configFile =getConfigFile(directory, `medusa-config`)
-  let configuration = await Promise.resolve( configFile)
-   let configModule= await Promise.resolve(configuration.configModule)
-   let connection =undefined
- 
+  let hostConfig = {
+    database: configModule.projectConfig.database_database,
+    url: configModule.projectConfig.database_url,
+  }
+
+  if (configModule.projectConfig.database_host) {
+    hostConfig = {
+      host: configModule.projectConfig.database_host,
+      port: configModule.projectConfig.database_port,
+      database: configModule.projectConfig.database_database,
+      ssl: configModule.projectConfig.database_ssl,
+      username: configModule.projectConfig.database_username,
+      password: configModule.projectConfig.database_password,
+    }
+  }
+
   const dbType = configModule.projectConfig.database_type
   if (migrate && dbType !== "sqlite") {
     const migrationDirs = await Promise.resolve(getMigrations(directory))
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
-      database: configModule.projectConfig.database_database,
-      url:configModule.projectConfig.database_url?configModule.projectConfig.database_url:undefined,
-      ...{
-        host:configModule.projectConfig.database_host??"",
-        port:configModule.projectConfig.database_port??"",
-        database:configModule.projectConfig.database_database??"",
-        ssl:configModule.projectConfig.database_ssl??{},
-        username:configModule.projectConfig.database_username??"",
-        password: configModule.projectConfig.database_password??"",
-    },
+      ...hostConfig,
       extra: configModule.projectConfig.database_extra || {},
       migrations: migrationDirs,
       logging: true,
@@ -73,7 +76,7 @@ const t = async function({ directory, migrate, seedFile }) {
   const shippingOptionService = container.resolve("shippingOptionService")
   const shippingProfileService = container.resolve("shippingProfileService")
 
-  await manager.transaction(async tx => {
+  await manager.transaction(async (tx) => {
     const { store, regions, products, shipping_options, users } = JSON.parse(
       fs.readFileSync(resolvedPath, `utf-8`)
     )
@@ -86,14 +89,14 @@ const t = async function({ directory, migrate, seedFile }) {
     }
 
     for (const u of users) {
-      let pass = u.password
+      const pass = u.password
       if (pass) {
         delete u.password
       }
       await userService.withTransaction(tx).create(u, pass)
     }
 
-    let regionIds = {}
+    const regionIds = {}
     for (const r of regions) {
       let dummyId
       if (!r.id || !r.id.startsWith("reg_")) {
@@ -138,7 +141,7 @@ const t = async function({ directory, migrate, seedFile }) {
 
       if (variants && variants.length) {
         const optionIds = p.options.map(
-          o => newProd.options.find(newO => newO.title === o.title).id
+          (o) => newProd.options.find((newO) => newO.title === o.title).id
         )
 
         for (const v of variants) {
