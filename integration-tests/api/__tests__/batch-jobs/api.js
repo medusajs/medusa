@@ -140,16 +140,11 @@ describe("/admin/batch-jobs", () => {
   })
 
   describe("POST /admin/batch-jobs/", () => {
-    beforeEach(async() => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+    beforeEach(async () => {
+      await setupJobDb(dbConnection)
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       const db = useDb()
       await db.teardown()
     })
@@ -169,8 +164,9 @@ describe("/admin/batch-jobs", () => {
       expect(response.status).toEqual(201)
       expect(response.data.batch_job).toMatchSnapshot({
         created_by: "admin_user",
-        status: "created",
+        status: "confirmed",
         id: expect.any(String),
+        confirmed_at: expect.any(String),
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
@@ -220,7 +216,7 @@ describe("/admin/batch-jobs", () => {
       }
     })
 
-    afterEach(async () => {
+    afterEach(async() => {
       const db = useDb()
       await db.teardown()
     })

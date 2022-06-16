@@ -642,7 +642,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       if (err instanceof MedusaError) {
         await this.batchJobService_
           .withTransaction(transactionManager)
-          .updateStatus(batchJob, BatchJobStatus.FAILED)
+          .setFailed(batchJob)
       } else if (retryCount < maxRetry) {
         await this.batchJobService_
           .withTransaction(transactionManager)
@@ -663,7 +663,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       } else {
         await this.batchJobService_
           .withTransaction(transactionManager)
-          .updateStatus(batchJob, BatchJobStatus.FAILED)
+          .setFailed(batchJob)
       }
     })
   }
