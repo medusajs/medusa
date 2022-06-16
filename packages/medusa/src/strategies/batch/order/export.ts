@@ -35,8 +35,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   protected readonly batchJobService_: BatchJobService
   protected readonly orderService_: OrderService
 
-  protected readonly relations = ["customer", "shipping_address"]
-  protected readonly select = [
+  protected readonly defaultRelations_ = ["customer", "shipping_address"]
+  protected readonly defaultFields_ = [
     "id",
     "display_id",
     "status",
@@ -54,125 +54,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     "region_id",
   ]
 
-  protected readonly propertiesDescriptors: PropertiesDescriptor<Order>[] = [
-    {
-      fieldName: "id",
-      title: "Order_ID",
-      accessor: (order: Order): string => order.id,
-    },
-    {
-      fieldName: "display_id",
-      title: "Display_ID",
-      accessor: (order: Order): string => order.display_id.toString(),
-    },
-    {
-      fieldName: "status",
-      title: "Order status",
-      accessor: (order: Order): string => order.status.toString(),
-    },
-
-    {
-      fieldName: "created_at",
-      title: "Date",
-      accessor: (order: Order): string => order.created_at.toUTCString(),
-    },
-
-    {
-      fieldName: "customer",
-      title: [
-        "Customer First name",
-        "Customer Last name",
-        "Customer Email",
-        "Customer ID",
-      ].join(";"),
-      accessor: (order: Order): string =>
-        [
-          order.customer.first_name,
-          order.customer.last_name,
-          order.customer.email,
-          order.customer.id,
-        ].join(";"),
-    },
-
-    {
-      fieldName: "shipping_address",
-      title: [
-        "Shipping Address 1",
-        "Shipping Address 2",
-        "Shipping Country Code",
-        "Shipping City",
-        "Shipping Postal Code",
-        "Shipping Region ID",
-      ].join(";"),
-      accessor: (order: Order): string =>
-        [
-          order.shipping_address.address_1,
-          order.shipping_address.address_2,
-          order.shipping_address.country_code,
-          order.shipping_address.city,
-          order.shipping_address.postal_code,
-          order.region_id,
-        ].join(";"),
-    },
-
-    {
-      fieldName: "fulfillment_status",
-      title: "Fulfillment Status",
-      accessor: (order: Order): string => order.fulfillment_status,
-    },
-
-    {
-      fieldName: "payment_status",
-      title: "Payment Status",
-      accessor: (order: Order): string => order.payment_status,
-    },
-
-    {
-      fieldName: "subtotal",
-      title: "Subtotal",
-      accessor: (order: Order): string => order.subtotal.toString(),
-    },
-
-    {
-      fieldName: "shipping_total",
-      title: "Shipping Total",
-      accessor: (order: Order): string => order.shipping_total.toString(),
-    },
-
-    {
-      fieldName: "discount_total",
-      title: "Discount Total",
-      accessor: (order: Order): string => order.discount_total.toString(),
-    },
-
-    {
-      fieldName: "gift_card_total",
-      title: "Gift Card Total",
-      accessor: (order: Order): string => order.gift_card_total.toString(),
-    },
-
-    {
-      fieldName: "refunded_total",
-      title: "Refunded Total",
-      accessor: (order: Order): string => order.refunded_total.toString(),
-    },
-    {
-      fieldName: "tax_total",
-      title: "Tax Total",
-      accessor: (order: Order): string => order.tax_total.toString(),
-    },
-    {
-      fieldName: "total",
-      title: "Total",
-      accessor: (order: Order): string => order.total.toString(),
-    },
-
-    {
-      fieldName: "currency_code",
-      title: "Currency Code",
-      accessor: (order: Order): string => order.currency_code,
-    },
-  ]
+  protected readonly propertiesDescriptors: PropertiesDescriptor<Order>[] =
+    propertiesDescriptor
 
   constructor({ fileService, batchJobService, orderService, manager }) {
     // eslint-disable-next-line prefer-rest-params
@@ -182,13 +65,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.orderService_ = orderService
-  }
-
-  async validateContext(
-    context: Record<string, unknown>
-  ): Promise<Record<string, unknown>> {
-    await validator(AdminGetOrdersParams, context.params)
-    return context
   }
 
   async prepareBatchJobForProcessing(
@@ -216,14 +92,14 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       },
       {
         isList: true,
-        defaultRelations: this.relations,
+        defaultRelations: this.defaultRelations_,
       }
     )
 
     batchJob.context = {
       ...(context ?? {}),
       listConfig,
-      filterableFields: filterableFields || this.select,
+      filterableFields: filterableFields || this.defaultFields_,
       offset: skip,
     }
 
@@ -336,7 +212,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   }
 
   public async buildTemplate(): Promise<string> {
-    return this.buildHeader(this.getLineDescriptor(this.select, this.relations))
+    return this.buildHeader(
+      this.getLineDescriptor(this.defaultFields_, this.defaultRelations_)
+    )
   }
 
   private buildHeader(lineDescriptor: PropertiesDescriptor<Order>[]): string {
@@ -398,8 +276,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     }
 
     const listConfig = {
-      select: includeFields.length ? includeFields : this.select,
-      relations: expandFields.length ? expandFields : this.relations,
+      select: includeFields.length ? includeFields : this.defaultFields_,
+      relations: expandFields.length ? expandFields : this.defaultRelations_,
       order: { created_at: "DESC" },
     }
 
@@ -468,5 +346,125 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     })
   }
 }
+
+const propertiesDescriptor = [
+  {
+    fieldName: "id",
+    title: "Order_ID",
+    accessor: (order: Order): string => order.id,
+  },
+  {
+    fieldName: "display_id",
+    title: "Display_ID",
+    accessor: (order: Order): string => order.display_id.toString(),
+  },
+  {
+    fieldName: "status",
+    title: "Order status",
+    accessor: (order: Order): string => order.status.toString(),
+  },
+
+  {
+    fieldName: "created_at",
+    title: "Date",
+    accessor: (order: Order): string => order.created_at.toUTCString(),
+  },
+
+  {
+    fieldName: "customer",
+    title: [
+      "Customer First name",
+      "Customer Last name",
+      "Customer Email",
+      "Customer ID",
+    ].join(";"),
+    accessor: (order: Order): string =>
+      [
+        order.customer.first_name,
+        order.customer.last_name,
+        order.customer.email,
+        order.customer.id,
+      ].join(";"),
+  },
+
+  {
+    fieldName: "shipping_address",
+    title: [
+      "Shipping Address 1",
+      "Shipping Address 2",
+      "Shipping Country Code",
+      "Shipping City",
+      "Shipping Postal Code",
+      "Shipping Region ID",
+    ].join(";"),
+    accessor: (order: Order): string =>
+      [
+        order.shipping_address.address_1,
+        order.shipping_address.address_2,
+        order.shipping_address.country_code,
+        order.shipping_address.city,
+        order.shipping_address.postal_code,
+        order.region_id,
+      ].join(";"),
+  },
+
+  {
+    fieldName: "fulfillment_status",
+    title: "Fulfillment Status",
+    accessor: (order: Order): string => order.fulfillment_status,
+  },
+
+  {
+    fieldName: "payment_status",
+    title: "Payment Status",
+    accessor: (order: Order): string => order.payment_status,
+  },
+
+  {
+    fieldName: "subtotal",
+    title: "Subtotal",
+    accessor: (order: Order): string => order.subtotal.toString(),
+  },
+
+  {
+    fieldName: "shipping_total",
+    title: "Shipping Total",
+    accessor: (order: Order): string => order.shipping_total.toString(),
+  },
+
+  {
+    fieldName: "discount_total",
+    title: "Discount Total",
+    accessor: (order: Order): string => order.discount_total.toString(),
+  },
+
+  {
+    fieldName: "gift_card_total",
+    title: "Gift Card Total",
+    accessor: (order: Order): string => order.gift_card_total.toString(),
+  },
+
+  {
+    fieldName: "refunded_total",
+    title: "Refunded Total",
+    accessor: (order: Order): string => order.refunded_total.toString(),
+  },
+  {
+    fieldName: "tax_total",
+    title: "Tax Total",
+    accessor: (order: Order): string => order.tax_total.toString(),
+  },
+  {
+    fieldName: "total",
+    title: "Total",
+    accessor: (order: Order): string => order.total.toString(),
+  },
+
+  {
+    fieldName: "currency_code",
+    title: "Currency Code",
+    accessor: (order: Order): string => order.currency_code,
+  },
+]
 
 export default OrderExportStrategy
