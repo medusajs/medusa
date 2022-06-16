@@ -11,6 +11,10 @@ jobs:
     env:
       REDIS_URL: redis://redis:6379
 
+    strategy:
+      matrix:
+        db: [sqlite, postgres]
+
     services:
       redis:
         image: redis
@@ -53,9 +57,6 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      # - name: install
-      #   run: yarn
-
       - name: Bootstrap packages
         uses: ./.github/actions/cache-bootstrap
         with:
@@ -86,11 +87,13 @@ jobs:
           --db-user postgres
         working-directory: ..
 
-      - name: test
-        run: ls
-
-      - name: test
-        run: ls ..
+      - name: Install postgres config
+        if: ${{ matrix.db == "postgres" }}
+        run: |
+          curl \
+          https://raw.githubusercontent.com/medusajs/medusa-starter-default/feat/postgres-config/medusa-config.js \
+          --output medusa-config.js
+        working-directory: ../cli-test
 
       - name: run medusa dev
         run: medusa-dev --force-install
