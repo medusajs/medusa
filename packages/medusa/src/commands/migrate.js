@@ -5,7 +5,7 @@ import Logger from "../loaders/logger"
 
 import getMigrations from "./utils/get-migrations"
 
-const t = async function ({ directory }) {
+const t = async function({ directory }) {
   const args = process.argv
   args.shift()
   args.shift()
@@ -21,8 +21,6 @@ const t = async function ({ directory }) {
     migrations: migrationDirs,
     logging: true,
   })
-
-  process.exit(1)
 
   if (args[0] === "run") {
     await connection.runMigrations()
