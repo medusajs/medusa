@@ -2,9 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import { SearchService } from "."
 import { TransactionBaseService } from "../interfaces"
-import { PriceSelectionContext } from "../interfaces/price-selection-strategy"
 import { Product, ProductTag, ProductType, ProductVariant } from "../models"
-import { CartRepository } from "../repositories/cart"
 import { ImageRepository } from "../repositories/image"
 import {
   FindWithoutRelationsOptions,
@@ -14,7 +12,6 @@ import { ProductOptionRepository } from "../repositories/product-option"
 import { ProductTagRepository } from "../repositories/product-tag"
 import { ProductTypeRepository } from "../repositories/product-type"
 import { ProductVariantRepository } from "../repositories/product-variant"
-import PriceSelectionStrategy from "../strategies/price-selection"
 import { Selector } from "../types/common"
 import {
   CreateProductInput,
@@ -26,9 +23,7 @@ import {
 } from "../types/product"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import { formatException } from "../utils/exception-formatter"
-import { omitRelationIfExists } from "../utils/omit-relation-if-exists"
 import EventBusService from "./event-bus"
-import ProductCollectionService from "./product-collection"
 import ProductVariantService from "./product-variant"
 
 type InjectedDependencies = {
@@ -39,12 +34,9 @@ type InjectedDependencies = {
   productTypeRepository: typeof ProductTypeRepository
   productTagRepository: typeof ProductTagRepository
   imageRepository: typeof ImageRepository
-  cartRepository: typeof CartRepository
   productVariantService: ProductVariantService
-  productCollectionService: ProductCollectionService
   searchService: SearchService
   eventBusService: EventBusService
-  priceSelectionStrategy: PriceSelectionStrategy
 }
 
 class ProductService extends TransactionBaseService<ProductService> {
@@ -57,12 +49,9 @@ class ProductService extends TransactionBaseService<ProductService> {
   protected readonly productTypeRepository_: typeof ProductTypeRepository
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
-  protected readonly cartRepository_: typeof CartRepository
   protected readonly productVariantService_: ProductVariantService
-  protected readonly productCollectionService_: ProductCollectionService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
-  protected readonly priceSelectionStrategy_: PriceSelectionStrategy
 
   static readonly IndexName = `products`
   static readonly Events = {
@@ -82,8 +71,6 @@ class ProductService extends TransactionBaseService<ProductService> {
     productTagRepository,
     imageRepository,
     searchService,
-    cartRepository,
-    priceSelectionStrategy,
   }: InjectedDependencies) {
     super({
       manager,
@@ -92,13 +79,10 @@ class ProductService extends TransactionBaseService<ProductService> {
       productOptionRepository,
       eventBusService,
       productVariantService,
-      productCollectionService,
       productTypeRepository,
       productTagRepository,
       imageRepository,
       searchService,
-      cartRepository,
-      priceSelectionStrategy,
     })
 
     this.manager_ = manager
@@ -107,13 +91,10 @@ class ProductService extends TransactionBaseService<ProductService> {
     this.productVariantRepository_ = productVariantRepository
     this.eventBus_ = eventBusService
     this.productVariantService_ = productVariantService
-    this.productCollectionService_ = productCollectionService
     this.productTypeRepository_ = productTypeRepository
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
-    this.cartRepository_ = cartRepository
-    this.priceSelectionStrategy_ = priceSelectionStrategy
   }
 
   /**
@@ -137,48 +118,17 @@ class ProductService extends TransactionBaseService<ProductService> {
       const productRepo = manager.getCustomRepository(this.productRepository_)
 
       const { q, query, relations } = this.prepareListQuery_(selector, config)
-      const [
-        filteredRelations,
-        shouldLoadStrategyPrices,
-      ] = this.omitPriceRelationIfExists_(relations)
-
-      let products
       if (q) {
-        ;[products] = await productRepo.getFreeTextSearchResultsAndCount(
+        const [products] = await productRepo.getFreeTextSearchResultsAndCount(
           q,
           query,
-          filteredRelations
+          relations
         )
-      } else {
-        products = await productRepo.findWithRelations(filteredRelations, query)
+        return products
       }
 
-      return shouldLoadStrategyPrices
-        ? await this.setAdditionalPrices(products, {
-            cart_id: config.cart_id,
-            currency_code: config.currency_code,
-            customer_id: config.customer_id,
-            include_discount_prices: config.include_discount_prices,
-            region_id: config.region_id,
-          })
-        : products
+      return await productRepo.findWithRelations(relations, query)
     })
-  }
-
-  /**
-   * Removes the price relation from a relations array
-   * @param relations relations array from which the prices relation should be removed
-   * @returns a tuple containing the new relations and a boolean indicating whether the price relation was found or not
-   */
-  private omitPriceRelationIfExists_(
-    relations?: string[]
-  ): [string[], boolean] {
-    if (!relations || !relations.length) {
-      return [[], false]
-    }
-    const PRICES_RELATION = "variants.prices"
-
-    return omitRelationIfExists(relations, PRICES_RELATION)
   }
 
   /**
@@ -206,42 +156,15 @@ class ProductService extends TransactionBaseService<ProductService> {
 
       const { q, query, relations } = this.prepareListQuery_(selector, config)
 
-      const [
-        filteredRelations,
-        shouldLoadStrategyPrices,
-      ] = this.omitPriceRelationIfExists_(relations)
-
-      let products
-      let count
       if (q) {
-        ;[products, count] = await productRepo.getFreeTextSearchResultsAndCount(
+        return await productRepo.getFreeTextSearchResultsAndCount(
           q,
           query,
-          filteredRelations
-        )
-      } else {
-        ;[products, count] = await productRepo.findWithRelationsAndCount(
-          filteredRelations,
-          query
+          relations
         )
       }
 
-      if (shouldLoadStrategyPrices) {
-        const productsWithAdditionalPrices = await this.setAdditionalPrices(
-          products,
-          {
-            cart_id: config.cart_id,
-            currency_code: config.currency_code,
-            customer_id: config.customer_id,
-            include_discount_prices: config.include_discount_prices,
-            region_id: config.region_id,
-          }
-        )
-
-        return [productsWithAdditionalPrices, count]
-      } else {
-        return [products, count]
-      }
+      return await productRepo.findWithRelationsAndCount(relations, query)
     })
   }
 
@@ -331,15 +254,7 @@ class ProductService extends TransactionBaseService<ProductService> {
 
       const { relations, ...query } = buildQuery(selector, config)
 
-      const [
-        filteredRelations,
-        shouldLoadStrategyPrices,
-      ] = this.omitPriceRelationIfExists_(relations)
-
-      const product = await productRepo.findOneWithRelations(
-        filteredRelations,
-        query
-      )
+      const product = await productRepo.findOneWithRelations(relations, query)
 
       if (!product) {
         const selectorConstraints = Object.entries(selector)
@@ -352,15 +267,7 @@ class ProductService extends TransactionBaseService<ProductService> {
         )
       }
 
-      return shouldLoadStrategyPrices
-        ? await this.setAdditionalPrices(product, {
-            cart_id: config.cart_id,
-            currency_code: config.currency_code,
-            customer_id: config.customer_id,
-            include_discount_prices: config.include_discount_prices,
-            region_id: config.region_id,
-          })
-        : product
+      return product
     })
   }
 
@@ -882,89 +789,6 @@ class ProductService extends TransactionBaseService<ProductService> {
       relations: rels as (keyof Product)[],
       q,
     }
-  }
-
-  /**
-   * Set additional prices on a list of products.
-   * @param products list of products on which to set additional prices
-   * @param context price list selection context used when calculating the variant price
-   * @return A list of products with variants decorated with "additional_prices"
-   */
-  async setAdditionalPrices<T extends Product | Product[]>(
-    products: T,
-    context: PriceSelectionContext
-  ): Promise<T> {
-    const {
-      region_id,
-      include_discount_prices,
-      currency_code,
-      cart_id,
-      customer_id,
-    } = context
-    return await this.atomicPhase_(async (manager) => {
-      const cartRepo = this.manager_.getCustomRepository(this.cartRepository_)
-
-      let regionId = region_id
-      let currencyCode = currency_code
-
-      if (cart_id) {
-        const cart = await cartRepo.findOne({
-          where: { id: cart_id },
-          relations: ["region"],
-        })
-
-        if (!cart) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Cart with id: ${cart_id} was not found`
-          )
-        }
-
-        regionId = cart?.region.id
-        currencyCode = cart?.region.currency_code
-      }
-
-      const productArray = Array.isArray(products) ? products : [products]
-
-      const priceSelectionStrategy = this.priceSelectionStrategy_.withTransaction(
-        manager
-      )
-
-      const productsWithPrices = await Promise.all(
-        productArray.map(async (p) => {
-          if (p.variants?.length) {
-            p.variants = await Promise.all(
-              p.variants.map(async (v) => {
-                const prices = await priceSelectionStrategy.calculateVariantPrice(
-                  v.id,
-                  {
-                    region_id: regionId,
-                    currency_code: currencyCode,
-                    cart_id: cart_id,
-                    customer_id: customer_id,
-                    include_discount_prices,
-                  }
-                )
-
-                return {
-                  ...v,
-                  prices: prices.prices,
-                  original_price: prices.originalPrice,
-                  calculated_price: prices.calculatedPrice,
-                  calculated_price_type: prices.calculatedPriceType,
-                }
-              })
-            )
-          }
-
-          return p
-        })
-      )
-
-      return Array.isArray(products)
-        ? productsWithPrices
-        : productsWithPrices[0]
-    })
   }
 }
 

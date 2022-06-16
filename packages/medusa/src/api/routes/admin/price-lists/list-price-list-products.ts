@@ -8,7 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Product, ProductStatus } from "../../../../models"
+import { ProductStatus } from "../../../../models"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FilterableProductProps } from "../../../../types/product"
 import { AdminGetProductsPaginationParams } from "../products"
@@ -67,9 +67,8 @@ export default async (req: Request, res) => {
   const { id } = req.params
   const { offset, limit } = req.validatedQuery
 
-  const priceListService: PriceListService = req.scope.resolve(
-    "priceListService"
-  )
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
 
   const filterableFields: FilterableProductProps = {
     ...req.filterableFields,
