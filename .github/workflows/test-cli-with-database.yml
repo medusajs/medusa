@@ -62,27 +62,27 @@ jobs:
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
 
-      # - name: Install dev cli
-      #   run: sudo npm i -g medusa-dev-cli
+      - name: Install dev cli
+        run: sudo npm i -g medusa-dev-cli
 
-      # - name: Set path to medusa repo
-      #   run: medusa-dev --set-path-to-repo $(pwd)
+      - name: Set path to medusa repo
+        run: medusa-dev --set-path-to-repo $(pwd)
 
       ################################################################################
       ################################ refactor ######################################
       ################################################################################
       - name: Create Medusa project
         run: |
-          medusa new cli-test \
+          medusa new cli-test https://github.com/medusajs/medusa-starter-defualt branch postfix \
           --db-database postgres \
           --db-port 5432 \
           --db-host localhost \
           --db-pass postgres \
           --db-user postgres
 
-      # - name: run medusa dev
-      #   run: medusa-dev --force-install
-      #   working-directory: cli-test
+      - name: run medusa dev
+        run: medusa-dev --force-install
+        working-directory: cli-test
 
       - name: list medusa-config
         run: cat medusa-config.js

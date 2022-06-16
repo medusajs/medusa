@@ -22,32 +22,22 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: ls
-      shell: "bash"
-      run: ls ./node_modules/@medusajs
-      working-directory: ${{ inputs.workingDirectory }}
-
-    - name: ls
-      shell: "bash"
-      run: ls ./node_modules/@medusajs/medusa-cli
-      working-directory: ${{ inputs.workingDirectory }}
-
     - name: Wait for live server response
       shell: "bash"
       working-directory: ${{ inputs.workingDirectory }}
       run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
 
+      #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
     - name: Log in with user
       shell: "bash"
       working-directory: ${{ inputs.workingDirectory }}
       run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh ${{ inputs.email }} ${{ inputs.password }}
-      #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
 
+      # "curl -X GET http://localhost:9000/store/products"
     - name: GetProducts
       shell: "bash"
       working-directory: ${{ inputs.workingDirectory }}
       run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh ${{ inputs.pathToSeedData }}
-      # "curl -X GET http://localhost:9000/store/products"
 
     - name: Kill server
       shell: "bash"
