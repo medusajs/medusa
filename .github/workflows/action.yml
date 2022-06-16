@@ -74,6 +74,9 @@ jobs:
       #   with:
       #     extension: integration-tests
 
+      - name: install
+        run: yarn
+
       - name: Build Packages
         run: yarn build
 
