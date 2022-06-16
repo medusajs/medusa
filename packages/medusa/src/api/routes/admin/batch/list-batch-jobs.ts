@@ -119,10 +119,6 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
 
   @IsOptional()
   @Type(() => DateComparisonOperator)
-  failed_at?: DateComparisonOperator
-
-  @IsOptional()
-  @Type(() => DateComparisonOperator)
   canceled_at?: DateComparisonOperator
 
   @IsType([DateComparisonOperator])

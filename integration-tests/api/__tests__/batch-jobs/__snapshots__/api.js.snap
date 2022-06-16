@@ -50,7 +50,7 @@ exports[`/admin/batch-jobs POST /admin/batch-jobs/ Creates a batch job 1`] = `
 Object {
   "canceled_at": null,
   "completed_at": null,
-  "confirmed_at": null,
+  "confirmed_at": Any<String>,
   "context": Object {
     "listConfig": Object {
       "order": Object {
@@ -78,7 +78,7 @@ Object {
   "pre_processed_at": null,
   "processing_at": null,
   "result": null,
-  "status": "created",
+  "status": "confirmed",
   "type": "product-export",
   "updated_at": Any<String>,
 }

@@ -45,12 +45,6 @@ export default async (req, res) => {
     created_by: userId,
   })
 
-  const batchStrategy: AbstractBatchJobStrategy<any> = req.scope.resolve(
-    `batchType_${validated.type}`
-  )
-
-  batchStrategy.prepareBatchJobForProcessing(batch_job.id, req)
-
   res.status(201).json({ batch_job })
 }
 

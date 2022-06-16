@@ -87,18 +87,6 @@ export abstract class AbstractFileService<T extends TransactionBaseService<any>>
   ): Promise<string>
 }
 
-export type GetUploadedFileType = {
-  key: string
-  [x: string]: unknown
-}
-
-export type UploadStreamDescriptorType = {
-  name: string
-  ext?: string
-  acl?: string
-  [x: string]: unknown
-}
-
 export const isFileService = (object: unknown): boolean => {
   return object instanceof AbstractFileService
 }
