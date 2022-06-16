@@ -194,7 +194,7 @@ export function registerStrategies(
             (cradle) => new module(cradle, pluginDetails.options)
           ).singleton(),
           [`batch_${module.identifier}`]: aliasTo(name),
-          [`batchType_${module.batchType}`]: aliasTo(name)
+          [`batchType_${module.batchType}`]: aliasTo(name),
         })
         break
       }

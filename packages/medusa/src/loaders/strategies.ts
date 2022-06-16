@@ -23,6 +23,7 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
   const corePath = useMock
     ? "../strategies/__mocks__/[!__]*.js"
     : "../strategies/**/[!__]*.js"
+
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, {

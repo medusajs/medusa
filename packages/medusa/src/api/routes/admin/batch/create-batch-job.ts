@@ -1,6 +1,7 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
+import { AbstractBatchJobStrategy } from "../../../../interfaces"
 
 /**
  * @oas [post] /batch-jobs
@@ -27,11 +28,20 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostBatchesReq, req.body)
 
+  const batchStrategy: AbstractBatchJobStrategy<any> = req.scope.resolve(
+    `batchType_${validated.type}`
+  )
+
+  const toCreate = await batchStrategy.prepareBatchJobForProcessing(
+    validated,
+    req
+  )
+
   const userId = req.user.id ?? req.user.userId
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
   const batch_job = await batchJobService.create({
-    ...validated,
+    ...toCreate,
     created_by: userId,
   })
 
@@ -43,7 +53,7 @@ export class AdminPostBatchesReq {
   type: string
 
   @IsObject()
-  context: Record<string, unknown> = {}
+  context: Record<string, unknown>
 
   @IsBoolean()
   @IsOptional()
