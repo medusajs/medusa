@@ -20,19 +20,19 @@ runs:
   steps:
     - name: Wait for live server response
       shell: "bash"
-      run: ./scripts/testing/wait-for-server-live.sh
+      run: ./integration-tests/scripts/cli/wait-for-server-live.sh
       # run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/wait-for-server-live.sh
 
       #'curl -X POST http://localhost:9000/admin/auth -H "Content-Type: application/json" -d ''{"email":"test@test.com", "password":"password"}'''
     - name: Log in with user
       shell: "bash"
-      run: ./scripts/testing/login.sh ${{ inputs.email }} ${{ inputs.password }}
+      run: ./integration-tests/scripts/cli/login.sh ${{ inputs.email }} ${{ inputs.password }}
       # run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/login.sh ${{ inputs.email }} ${{ inputs.password }}
 
       # "curl -X GET http://localhost:9000/store/products"
     - name: GetProducts
       shell: "bash"
-      run: ./scripts/testing/get-products.sh ${{ inputs.pathToSeedData }}
+      run: ./integration-tests/scripts/cli/get-products.sh ${{ inputs.pathToSeedData }}
       # run: ./node_modules/@medusajs/medusa-cli/scripts/__tests__/get-products.sh ${{ inputs.pathToSeedData }}
 
     - name: Kill server
