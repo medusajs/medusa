@@ -1,8 +1,8 @@
 name: Generate References
-on:
+on: 
   push:
     branches:
-      - "master"
+      - 'master'
     paths:
       - packages/medusa/src/services/**
 jobs:
@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
-
+        
       - name: Bootstrap packages
         uses: ./.github/actions/cache-bootstrap
         with:
@@ -37,7 +37,7 @@ jobs:
         run: yarn generate:services
 
       - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
+        with: 
           commit_message: Automatically Generated Services Reference
           file_pattern: docs/content/*
           skip_dirty_check: false
