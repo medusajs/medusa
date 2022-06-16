@@ -1,7 +1,6 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
@@ -9,14 +8,13 @@ import {
 } from "class-validator"
 import { pickBy } from "lodash"
 import BatchJobService from "../../../../services/batch-job"
-import { BatchJobStatus } from "../../../../types/batch-job"
 import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
 
 /**
- * @oas [get] /batch
- * operationId: "GetBatch"
+ * @oas [get] /batch-jobs
+ * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
  * description: "Retrieve a list of Batch Jobs."
  * x-authenticated: true
@@ -24,7 +22,11 @@ import { Request } from "express"
  *   - (query) limit {string} The number of collections to return.
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) type {string | string[]} Filter by the batch type
- *   - (query) status {string} Filter by the status of the batch operation
+ *   - (query) confirmed_at {DateComparisonOperator} Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+ *   - (query) pre_processed_at {DateComparisonOperator} Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+ *   - (query) completed_at {DateComparisonOperator} Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+ *   - (query) failed_at {DateComparisonOperator} Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+ *   - (query) canceled_at {DateComparisonOperator} Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
  *   - (query) order {string} Order used when retrieving batch jobs
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
@@ -95,18 +97,32 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @IsType([String, [String]])
   id?: string | string[]
 
-  @IsOptional()
-  @IsArray()
-  @IsEnum(BatchJobStatus, { each: true })
-  status?: BatchJobStatus[]
-
   @IsArray()
   @IsOptional()
   type?: string[]
 
   @IsOptional()
-  @ValidateNested()
   @Type(() => DateComparisonOperator)
+  confirmed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  pre_processed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  completed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  failed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  canceled_at?: DateComparisonOperator
+
+  @IsType([DateComparisonOperator])
+  @IsOptional()
   created_at?: DateComparisonOperator
 
   @IsOptional()

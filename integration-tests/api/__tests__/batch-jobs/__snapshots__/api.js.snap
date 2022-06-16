@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/admin/batch GET /admin/batch lists batch jobs created by the user 1`] = `
+exports[`/admin/batch-jobs GET /admin/batch-jobs lists batch jobs created by the user 1`] = `
 Object {
   "batch_jobs": Array [
     Object {
@@ -8,6 +8,7 @@ Object {
       "created_at": Any<String>,
       "created_by": "admin_user",
       "deleted_at": null,
+      "dry_run": false,
       "id": "job_3",
       "result": null,
       "status": "created",
@@ -19,6 +20,7 @@ Object {
       "created_at": Any<String>,
       "created_by": "admin_user",
       "deleted_at": null,
+      "dry_run": false,
       "id": "job_2",
       "result": null,
       "status": "created",
@@ -30,6 +32,7 @@ Object {
       "created_at": Any<String>,
       "created_by": "admin_user",
       "deleted_at": null,
+      "dry_run": false,
       "id": "job_1",
       "result": null,
       "status": "created",
@@ -40,5 +43,47 @@ Object {
   "count": 3,
   "limit": 10,
   "offset": 0,
+}
+`;
+
+exports[`/admin/batch-jobs POST /admin/batch-jobs/ Creates a batch job 1`] = `
+Object {
+  "canceled_at": null,
+  "completed_at": null,
+  "confirmed_at": null,
+  "context": Object {},
+  "created_at": Any<String>,
+  "created_by": "admin_user",
+  "deleted_at": null,
+  "dry_run": false,
+  "failed_at": null,
+  "id": Any<String>,
+  "pre_processed_at": null,
+  "processing_at": null,
+  "result": null,
+  "status": "created",
+  "type": "batch_1",
+  "updated_at": Any<String>,
+}
+`;
+
+exports[`/admin/batch-jobs POST /admin/batch-jobs/:id/cancel Cancels batch job created by the user 1`] = `
+Object {
+  "canceled_at": Any<String>,
+  "completed_at": null,
+  "confirmed_at": null,
+  "context": Object {},
+  "created_at": Any<String>,
+  "created_by": "admin_user",
+  "deleted_at": null,
+  "dry_run": false,
+  "failed_at": null,
+  "id": "job_1",
+  "pre_processed_at": null,
+  "processing_at": null,
+  "result": null,
+  "status": "canceled",
+  "type": "batch_1",
+  "updated_at": Any<String>,
 }
 `;
