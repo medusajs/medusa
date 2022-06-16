@@ -1364,7 +1364,14 @@ describe("/store/carts", () => {
         .catch((error) => console.log(error))
 
       expect(response.status).toEqual(200)
-      expect(response.data.cart.items[0].unit_price).toEqual(500)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant-sale-cg",
+            unit_price: 500,
+          }),
+        ])
+      )
     })
 
     it("updates prices when cart region id is updated", async () => {
