@@ -116,6 +116,6 @@ To learn more about Medusa, go through our docs to get some inspiration and guid
 
 - [Find out how to set up a Medusa project with Gatsby and Contentful](https://docs.medusajs.com/how-to/headless-ecommerce-store-with-gatsby-contentful-medusa)
 - [Move your Medusa setup to the next level with some custom functionality](https://docs.medusajs.com/tutorial/adding-custom-functionality)
-- [Create your own Medusa plugin](https://docs.medusajs.com/guides/plugins)
+- [Create your own Medusa plugin](../advanced/backend/payment/overview.md)
 
 If you have any follow-up questions or want to chat directly with our engineering team, we are always happy to meet you at our [Discord](https://discord.gg/DSHySyMu).
