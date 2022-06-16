@@ -18,8 +18,8 @@ A service that calculates total and subtotals for orders, carts etc..
 
 #### Parameters
 
-| Name                | Type                 |
-| :------------------ | :------------------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `TotalsServiceProps` |
 
 #### Overrides
@@ -40,7 +40,7 @@ BaseService.constructor
 
 [services/totals.ts:88](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L88)
 
----
+___
 
 ### taxProviderService\_
 
@@ -54,18 +54,18 @@ BaseService.constructor
 
 ### calculateDiscount\_
 
-▸ **calculateDiscount\_**(`lineItem`, `variant`, `variantPrice`, `value`, `discountType`): `LineDiscount`
+▸ **calculateDiscount_**(`lineItem`, `variant`, `variantPrice`, `value`, `discountType`): `LineDiscount`
 
 Calculates either fixed or percentage discount of a variant
 
 #### Parameters
 
-| Name           | Type               | Description                                |
-| :------------- | :----------------- | :----------------------------------------- |
-| `lineItem`     | `LineItem`         | id of line item                            |
-| `variant`      | `string`           | id of variant in line item                 |
-| `variantPrice` | `number`           | price of the variant based on region       |
-| `value`        | `number`           | discount value                             |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `lineItem` | `LineItem` | id of line item |
+| `variant` | `string` | id of variant in line item |
+| `variantPrice` | `number` | price of the variant based on region |
+| `value` | `number` | discount value |
 | `discountType` | `DiscountRuleType` | the type of discount (fixed or percentage) |
 
 #### Returns
@@ -78,7 +78,7 @@ triples of lineitem, variant and applied discount
 
 [services/totals.ts:545](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L545)
 
----
+___
 
 ### getAllocationItemDiscounts
 
@@ -92,10 +92,10 @@ alongside the variant on which the discount was applied.
 
 #### Parameters
 
-| Name       | Type              | Description                                 |
-| :--------- | :---------------- | :------------------------------------------ |
-| `discount` | `Discount`        | the discount to which we do the calculation |
-| `cart`     | `Cart` \| `Order` | the cart to calculate discounts for         |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `discount` | `Discount` | the discount to which we do the calculation |
+| `cart` | `Cart` \| `Order` | the cart to calculate discounts for |
 
 #### Returns
 
@@ -107,7 +107,7 @@ array of triples of lineitem, variant and applied discount
 
 [services/totals.ts:587](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L587)
 
----
+___
 
 ### getAllocationMap
 
@@ -119,10 +119,10 @@ applies to a specific line item.
 
 #### Parameters
 
-| Name          | Type                   | Description                                        |
-| :------------ | :--------------------- | :------------------------------------------------- |
-| `orderOrCart` | `Cart` \| `Order`      | the order or cart to get an allocation map for     |
-| `options`     | `AllocationMapOptions` | controls what should be included in allocation map |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `orderOrCart` | `Cart` \| `Order` | the order or cart to get an allocation map for |
+| `options` | `AllocationMapOptions` | controls what should be included in allocation map |
 
 #### Returns
 
@@ -134,7 +134,7 @@ the allocation map for the line items in the cart or order.
 
 [services/totals.ts:368](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L368)
 
----
+___
 
 ### getCalculationContext
 
@@ -144,10 +144,10 @@ Prepares the calculation context for a tax total calculation.
 
 #### Parameters
 
-| Name          | Type                        | Description                                          |
-| :------------ | :-------------------------- | :--------------------------------------------------- |
-| `cartOrOrder` | `Cart` \| `Order`           | the cart or order to get the calculation context for |
-| `options`     | `CalculationContextOptions` | options to gather context by                         |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `cartOrOrder` | `Cart` \| `Order` | the cart or order to get the calculation context for |
+| `options` | `CalculationContextOptions` | options to gather context by |
 
 #### Returns
 
@@ -159,7 +159,7 @@ the tax calculation context
 
 [services/totals.ts:892](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L892)
 
----
+___
 
 ### getDiscountTotal
 
@@ -170,8 +170,8 @@ discount types. If discounts aren't present or invalid returns 0.
 
 #### Parameters
 
-| Name          | Type              | Description                                  |
-| :------------ | :---------------- | :------------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `cartOrOrder` | `Cart` \| `Order` | the cart or order to calculate discounts for |
 
 #### Returns
@@ -184,7 +184,7 @@ the total discounts amount
 
 [services/totals.ts:858](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L858)
 
----
+___
 
 ### getGiftCardTotal
 
@@ -194,8 +194,8 @@ Gets the gift card amount on a cart or order.
 
 #### Parameters
 
-| Name          | Type              | Description                                   |
-| :------------ | :---------------- | :-------------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `cartOrOrder` | `Cart` \| `Order` | the cart or order to get gift card amount for |
 
 #### Returns
@@ -208,7 +208,7 @@ the gift card amount applied to the cart or order
 
 [services/totals.ts:830](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L830)
 
----
+___
 
 ### getLineDiscounts
 
@@ -218,23 +218,23 @@ Returns the discount amount allocated to the line items of an order.
 
 #### Parameters
 
-| Name          | Type              | Description                                            |
-| :------------ | :---------------- | :----------------------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `cartOrOrder` | `Cart` \| `Order` | the cart or order to get line discount allocations for |
-| `discount`    | `Discount`        | the discount to use as context for the calculation     |
+| `discount` | `Discount` | the discount to use as context for the calculation |
 
 #### Returns
 
 `LineDiscountAmount`[]
 
 the allocations that the discount has on the items in the cart or
-order
+  order
 
 #### Defined in
 
 [services/totals.ts:638](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L638)
 
----
+___
 
 ### getLineItemAdjustmentsTotal
 
@@ -242,8 +242,8 @@ order
 
 #### Parameters
 
-| Name          | Type              |
-| :------------ | :---------------- |
+| Name | Type |
+| :------ | :------ |
 | `cartOrOrder` | `Cart` \| `Order` |
 
 #### Returns
@@ -254,7 +254,7 @@ order
 
 [services/totals.ts:615](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L615)
 
----
+___
 
 ### getLineItemDiscountAdjustment
 
@@ -262,8 +262,8 @@ order
 
 #### Parameters
 
-| Name       | Type       |
-| :--------- | :--------- |
+| Name | Type |
+| :------ | :------ |
 | `lineItem` | `LineItem` |
 | `discount` | `Discount` |
 
@@ -275,7 +275,7 @@ order
 
 [services/totals.ts:600](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L600)
 
----
+___
 
 ### getLineItemRefund
 
@@ -285,9 +285,9 @@ The amount that can be refunded for a given line item.
 
 #### Parameters
 
-| Name       | Type       | Description                                       |
-| :--------- | :--------- | :------------------------------------------------ |
-| `order`    | `Order`    | order to use as context for the calculation       |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `order` | `Order` | order to use as context for the calculation |
 | `lineItem` | `LineItem` | the line item to calculate the refund amount for. |
 
 #### Returns
@@ -300,7 +300,7 @@ the line item refund amount.
 
 [services/totals.ts:460](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L460)
 
----
+___
 
 ### getLineItemTotal
 
@@ -311,11 +311,11 @@ taxes into account. This can be controlled through the options.
 
 #### Parameters
 
-| Name          | Type                      | Description                                             |
-| :------------ | :------------------------ | :------------------------------------------------------ |
-| `lineItem`    | `LineItem`                | the line item to calculate a total for                  |
-| `cartOrOrder` | `Cart` \| `Order`         | the cart or order to use as context for the calculation |
-| `options`     | `GetLineItemTotalOptions` | the options to use for the calculation                  |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `lineItem` | `LineItem` | the line item to calculate a total for |
+| `cartOrOrder` | `Cart` \| `Order` | the cart or order to use as context for the calculation |
+| `options` | `GetLineItemTotalOptions` | the options to use for the calculation |
 
 #### Returns
 
@@ -327,7 +327,7 @@ the line item total
 
 [services/totals.ts:800](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L800)
 
----
+___
 
 ### getLineItemTotals
 
@@ -339,11 +339,11 @@ applied to a line item and the amount of tax applied to a line item.
 
 #### Parameters
 
-| Name          | Type                    | Description                                             |
-| :------------ | :---------------------- | :------------------------------------------------------ |
-| `lineItem`    | `LineItem`              | the line item to calculate totals for                   |
-| `cartOrOrder` | `Cart` \| `Order`       | the cart or order to use as context for the calculation |
-| `options`     | `LineItemTotalsOptions` | the options to evaluate the line item totals for        |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `lineItem` | `LineItem` | the line item to calculate totals for |
+| `cartOrOrder` | `Cart` \| `Order` | the cart or order to use as context for the calculation |
+| `options` | `LineItemTotalsOptions` | the options to evaluate the line item totals for |
 
 #### Returns
 
@@ -355,7 +355,7 @@ the breakdown of the line item totals
 
 [services/totals.ts:684](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L684)
 
----
+___
 
 ### getPaidTotal
 
@@ -365,8 +365,8 @@ Gets the total payments made on an order
 
 #### Parameters
 
-| Name    | Type    | Description                            |
-| :------ | :------ | :------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `order` | `Order` | the order to calculate paid amount for |
 
 #### Returns
@@ -379,7 +379,7 @@ the total paid amount
 
 [services/totals.ts:125](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L125)
 
----
+___
 
 ### getRefundTotal
 
@@ -391,9 +391,9 @@ apply the discount again before refunding them.
 
 #### Parameters
 
-| Name        | Type         | Description                                  |
-| :---------- | :----------- | :------------------------------------------- |
-| `order`     | `Order`      | cart or order to calculate subtotal for      |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `order` | `Order` | cart or order to calculate subtotal for |
 | `lineItems` | `LineItem`[] | the line items to calculate refund total for |
 
 #### Returns
@@ -406,7 +406,7 @@ the calculated subtotal
 
 [services/totals.ts:504](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L504)
 
----
+___
 
 ### getRefundedTotal
 
@@ -416,8 +416,8 @@ Gets the total refund amount for an order.
 
 #### Parameters
 
-| Name    | Type    | Description                               |
-| :------ | :------ | :---------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `order` | `Order` | the order to get total refund amount for. |
 
 #### Returns
@@ -430,7 +430,7 @@ the total refunded amount for an order.
 
 [services/totals.ts:445](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L445)
 
----
+___
 
 ### getShippingMethodTotals
 
@@ -441,11 +441,11 @@ already provided.
 
 #### Parameters
 
-| Name             | Type                             | Description                                           |
-| :--------------- | :------------------------------- | :---------------------------------------------------- |
-| `shippingMethod` | `ShippingMethod`                 | the shipping method to get totals breakdown for.      |
-| `cartOrOrder`    | `Cart` \| `Order`                | the cart or order to use as context for the breakdown |
-| `opts`           | `GetShippingMethodTotalsOptions` | options for what should be included                   |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `shippingMethod` | `ShippingMethod` | the shipping method to get totals breakdown for. |
+| `cartOrOrder` | `Cart` \| `Order` | the cart or order to use as context for the breakdown |
+| `opts` | `GetShippingMethodTotalsOptions` | options for what should be included |
 
 #### Returns
 
@@ -457,7 +457,7 @@ An object that breaks down the totals for the shipping method
 
 [services/totals.ts:159](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L159)
 
----
+___
 
 ### getShippingTotal
 
@@ -467,8 +467,8 @@ Calculates shipping total
 
 #### Parameters
 
-| Name          | Type              | Description                             |
-| :------------ | :---------------- | :-------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `cartOrOrder` | `Cart` \| `Order` | cart or order to calculate subtotal for |
 
 #### Returns
@@ -481,7 +481,7 @@ shipping total
 
 [services/totals.ts:267](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L267)
 
----
+___
 
 ### getSubtotal
 
@@ -491,10 +491,10 @@ Calculates subtotal of a given cart or order.
 
 #### Parameters
 
-| Name          | Type              | Description                             |
-| :------------ | :---------------- | :-------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `cartOrOrder` | `Cart` \| `Order` | cart or order to calculate subtotal for |
-| `opts`        | `SubtotalOptions` | options                                 |
+| `opts` | `SubtotalOptions` | options |
 
 #### Returns
 
@@ -506,7 +506,7 @@ the calculated subtotal
 
 [services/totals.ts:243](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L243)
 
----
+___
 
 ### getSwapTotal
 
@@ -517,8 +517,8 @@ difference.
 
 #### Parameters
 
-| Name    | Type    | Description                           |
-| :------ | :------ | :------------------------------------ |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `order` | `Order` | the order to calculate swap total for |
 
 #### Returns
@@ -531,25 +531,25 @@ the swap total
 
 [services/totals.ts:140](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L140)
 
----
+___
 
 ### getTaxTotal
 
-▸ **getTaxTotal**(`cartOrOrder`, `forceTaxes?`): `Promise`<`null` \| `number`\>
+▸ **getTaxTotal**(`cartOrOrder`, `forceTaxes?`): `Promise`<``null`` \| `number`\>
 
 Calculates tax total
 Currently based on the Danish tax system
 
 #### Parameters
 
-| Name          | Type              | Default value | Description                                                      |
-| :------------ | :---------------- | :------------ | :--------------------------------------------------------------- |
-| `cartOrOrder` | `Cart` \| `Order` | `undefined`   | cart or order to calculate tax total for                         |
-| `forceTaxes`  | `boolean`         | `false`       | whether taxes should be calculated regardless of region settings |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `cartOrOrder` | `Cart` \| `Order` | `undefined` | cart or order to calculate tax total for |
+| `forceTaxes` | `boolean` | `false` | whether taxes should be calculated regardless   of region settings |
 
 #### Returns
 
-`Promise`<`null` \| `number`\>
+`Promise`<``null`` \| `number`\>
 
 tax total
 
@@ -557,7 +557,7 @@ tax total
 
 [services/totals.ts:282](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L282)
 
----
+___
 
 ### getTotal
 
@@ -567,10 +567,10 @@ Calculates subtotal of a given cart or order.
 
 #### Parameters
 
-| Name          | Type               | Description                   |
-| :------------ | :----------------- | :---------------------------- |
-| `cartOrOrder` | `Cart` \| `Order`  | object to calculate total for |
-| `options`     | `GetTotalsOptions` | options to calculate by       |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `cartOrOrder` | `Cart` \| `Order` | object to calculate total for |
+| `options` | `GetTotalsOptions` | options to calculate by |
 
 #### Returns
 
@@ -582,7 +582,7 @@ the calculated subtotal
 
 [services/totals.ts:106](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/totals.ts#L106)
 
----
+___
 
 ### rounded
 
@@ -592,8 +592,8 @@ Rounds a number using Math.round.
 
 #### Parameters
 
-| Name    | Type     | Description        |
-| :------ | :------- | :----------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `value` | `number` | the value to round |
 
 #### Returns

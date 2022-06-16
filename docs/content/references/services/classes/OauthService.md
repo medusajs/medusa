@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `cradle` | `any` |
 
 #### Overrides
@@ -36,7 +36,7 @@ OauthService.constructor
 
 [services/oauth.js:15](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L15)
 
----
+___
 
 ### eventBus\_
 
@@ -46,7 +46,7 @@ OauthService.constructor
 
 [services/oauth.js:17](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L17)
 
----
+___
 
 ### manager
 
@@ -56,7 +56,7 @@ OauthService.constructor
 
 [services/oauth.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L14)
 
----
+___
 
 ### oauthRepository\_
 
@@ -66,7 +66,7 @@ OauthService.constructor
 
 [services/oauth.js:16](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L16)
 
----
+___
 
 ### Events
 
@@ -74,8 +74,8 @@ OauthService.constructor
 
 #### Type declaration
 
-| Name              | Type     |
-| :---------------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `TOKEN_GENERATED` | `string` |
 | `TOKEN_REFRESHED` | `string` |
 
@@ -91,8 +91,8 @@ OauthService.constructor
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `data` | `any` |
 
 #### Returns
@@ -103,7 +103,7 @@ OauthService.constructor
 
 [services/oauth.js:32](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L32)
 
----
+___
 
 ### generateToken
 
@@ -111,11 +111,11 @@ OauthService.constructor
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `appName` | `any` |
-| `code`    | `any` |
-| `state`   | `any` |
+| `code` | `any` |
+| `state` | `any` |
 
 #### Returns
 
@@ -125,7 +125,7 @@ OauthService.constructor
 
 [services/oauth.js:66](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L66)
 
----
+___
 
 ### list
 
@@ -133,8 +133,8 @@ OauthService.constructor
 
 #### Parameters
 
-| Name       | Type  |
-| :--------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `selector` | `any` |
 
 #### Returns
@@ -145,7 +145,7 @@ OauthService.constructor
 
 [services/oauth.js:27](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L27)
 
----
+___
 
 ### refreshToken
 
@@ -153,8 +153,8 @@ OauthService.constructor
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `appName` | `any` |
 
 #### Returns
@@ -165,7 +165,7 @@ OauthService.constructor
 
 [services/oauth.js:96](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L96)
 
----
+___
 
 ### registerOauthApp
 
@@ -173,8 +173,8 @@ OauthService.constructor
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `appDetails` | `any` |
 
 #### Returns
@@ -185,7 +185,7 @@ OauthService.constructor
 
 [services/oauth.js:56](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L56)
 
----
+___
 
 ### retrieveByName
 
@@ -193,8 +193,8 @@ OauthService.constructor
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `appName` | `any` |
 
 #### Returns
@@ -205,7 +205,7 @@ OauthService.constructor
 
 [services/oauth.js:20](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/oauth.js#L20)
 
----
+___
 
 ### update
 
@@ -213,9 +213,9 @@ OauthService.constructor
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
-| `id`     | `any` |
+| Name | Type |
+| :------ | :------ |
+| `id` | `any` |
 | `update` | `any` |
 
 #### Returns

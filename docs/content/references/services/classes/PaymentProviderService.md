@@ -16,8 +16,8 @@ Helps retrive payment providers
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `container` | `any` |
 
 #### Overrides
@@ -38,7 +38,7 @@ BaseService.constructor
 
 [services/payment-provider.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L14)
 
----
+___
 
 ### paymentRepository\_
 
@@ -48,7 +48,7 @@ BaseService.constructor
 
 [services/payment-provider.js:18](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L18)
 
----
+___
 
 ### paymentSessionRepository\_
 
@@ -58,7 +58,7 @@ BaseService.constructor
 
 [services/payment-provider.js:16](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L16)
 
----
+___
 
 ### refundRepository\_
 
@@ -76,10 +76,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name             | Type  |
-| :--------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `paymentSession` | `any` |
-| `context`        | `any` |
+| `context` | `any` |
 
 #### Returns
 
@@ -89,7 +89,7 @@ BaseService.constructor
 
 [services/payment-provider.js:283](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L283)
 
----
+___
 
 ### cancelPayment
 
@@ -97,8 +97,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `paymentObj` | `any` |
 
 #### Returns
@@ -109,7 +109,7 @@ BaseService.constructor
 
 [services/payment-provider.js:324](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L324)
 
----
+___
 
 ### capturePayment
 
@@ -117,8 +117,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `paymentObj` | `any` |
 
 #### Returns
@@ -129,7 +129,7 @@ BaseService.constructor
 
 [services/payment-provider.js:343](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L343)
 
----
+___
 
 ### createPayment
 
@@ -137,8 +137,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `cart` | `any` |
 
 #### Returns
@@ -149,7 +149,7 @@ BaseService.constructor
 
 [services/payment-provider.js:246](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L246)
 
----
+___
 
 ### createSession
 
@@ -159,10 +159,10 @@ Creates a payment session with the given provider.
 
 #### Parameters
 
-| Name         | Type     | Description                                           |
-| :----------- | :------- | :---------------------------------------------------- |
-| `providerId` | `string` | the id of the provider to create payment with         |
-| `cart`       | `Cart`   | a cart object used to calculate the amount, etc. from |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `providerId` | `string` | the id of the provider to create payment with |
+| `cart` | `Cart` | a cart object used to calculate the amount, etc. from |
 
 #### Returns
 
@@ -174,7 +174,7 @@ the payment session
 
 [services/payment-provider.js:121](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L121)
 
----
+___
 
 ### deleteSession
 
@@ -182,8 +182,8 @@ the payment session
 
 #### Parameters
 
-| Name             | Type  |
-| :--------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `paymentSession` | `any` |
 
 #### Returns
@@ -194,7 +194,7 @@ the payment session
 
 [services/payment-provider.js:202](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L202)
 
----
+___
 
 ### getStatus
 
@@ -202,8 +202,8 @@ the payment session
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `payment` | `any` |
 
 #### Returns
@@ -214,7 +214,7 @@ the payment session
 
 [services/payment-provider.js:338](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L338)
 
----
+___
 
 ### list
 
@@ -228,7 +228,7 @@ the payment session
 
 [services/payment-provider.js:47](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L47)
 
----
+___
 
 ### listPayments
 
@@ -236,14 +236,14 @@ the payment session
 
 #### Parameters
 
-| Name                      | Type     | Default value |
-| :------------------------ | :------- | :------------ |
-| `selector`                | `any`    | `undefined`   |
-| `config`                  | `Object` | `undefined`   |
-| `config.order`            | `Object` | `undefined`   |
-| `config.order.created_at` | `string` | `"DESC"`      |
-| `config.skip`             | `number` | `0`           |
-| `config.take`             | `number` | `50`          |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `selector` | `any` | `undefined` |
+| `config` | `Object` | `undefined` |
+| `config.order` | `Object` | `undefined` |
+| `config.order.created_at` | `string` | `"DESC"` |
+| `config.skip` | `number` | `0` |
+| `config.take` | `number` | `50` |
 
 #### Returns
 
@@ -253,7 +253,7 @@ the payment session
 
 [services/payment-provider.js:80](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L80)
 
----
+___
 
 ### refreshSession
 
@@ -264,10 +264,10 @@ This means, that we delete the current one and create a new.
 
 #### Parameters
 
-| Name             | Type             | Description                                           |
-| :--------------- | :--------------- | :---------------------------------------------------- |
-| `paymentSession` | `PaymentSession` | the payment session object to update                  |
-| `cart`           | `Cart`           | a cart object used to calculate the amount, etc. from |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentSession` | `PaymentSession` | the payment session object to    update |
+| `cart` | `Cart` | a cart object used to calculate the amount, etc. from |
 
 #### Returns
 
@@ -279,7 +279,7 @@ the payment session
 
 [services/payment-provider.js:152](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L152)
 
----
+___
 
 ### refundPayment
 
@@ -287,12 +287,12 @@ the payment session
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `payObjs` | `any` |
-| `amount`  | `any` |
-| `reason`  | `any` |
-| `note`    | `any` |
+| `amount` | `any` |
+| `reason` | `any` |
+| `note` | `any` |
 
 #### Returns
 
@@ -302,7 +302,7 @@ the payment session
 
 [services/payment-provider.js:358](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L358)
 
----
+___
 
 ### registerInstalledProviders
 
@@ -310,8 +310,8 @@ the payment session
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `providers` | `any` |
 
 #### Returns
@@ -322,7 +322,7 @@ the payment session
 
 [services/payment-provider.js:35](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L35)
 
----
+___
 
 ### retrievePayment
 
@@ -330,10 +330,10 @@ the payment session
 
 #### Parameters
 
-| Name        | Type    | Default value |
-| :---------- | :------ | :------------ |
-| `id`        | `any`   | `undefined`   |
-| `relations` | `any`[] | `[]`          |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `id` | `any` | `undefined` |
+| `relations` | `any`[] | `[]` |
 
 #### Returns
 
@@ -343,7 +343,7 @@ the payment session
 
 [services/payment-provider.js:54](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L54)
 
----
+___
 
 ### retrieveProvider
 
@@ -353,8 +353,8 @@ Finds a provider given an id
 
 #### Parameters
 
-| Name         | Type     | Description                   |
-| :----------- | :------- | :---------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `providerId` | `string` | the id of the provider to get |
 
 #### Returns
@@ -367,7 +367,7 @@ the payment provider
 
 [services/payment-provider.js:228](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L228)
 
----
+___
 
 ### retrieveRefund
 
@@ -375,9 +375,9 @@ the payment provider
 
 #### Parameters
 
-| Name     | Type     |
-| :------- | :------- |
-| `id`     | `any`    |
+| Name | Type |
+| :------ | :------ |
+| `id` | `any` |
 | `config` | `Object` |
 
 #### Returns
@@ -388,7 +388,7 @@ the payment provider
 
 [services/payment-provider.js:422](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L422)
 
----
+___
 
 ### retrieveSession
 
@@ -396,10 +396,10 @@ the payment provider
 
 #### Parameters
 
-| Name        | Type    | Default value |
-| :---------- | :------ | :------------ |
-| `id`        | `any`   | `undefined`   |
-| `relations` | `any`[] | `[]`          |
+| Name | Type | Default value |
+| :------ | :------ | :------ |
+| `id` | `any` | `undefined` |
+| `relations` | `any`[] | `[]` |
 
 #### Returns
 
@@ -409,7 +409,7 @@ the payment provider
 
 [services/payment-provider.js:89](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L89)
 
----
+___
 
 ### updatePayment
 
@@ -417,10 +417,10 @@ the payment provider
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `paymentId` | `any` |
-| `update`    | `any` |
+| `update` | `any` |
 
 #### Returns
 
@@ -430,7 +430,7 @@ the payment provider
 
 [services/payment-provider.js:266](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L266)
 
----
+___
 
 ### updateSession
 
@@ -440,10 +440,10 @@ Updates an existing payment session.
 
 #### Parameters
 
-| Name             | Type             | Description                          |
-| :--------------- | :--------------- | :----------------------------------- |
-| `paymentSession` | `PaymentSession` | the payment session object to update |
-| `cart`           | `Cart`           | the cart object to update for        |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `paymentSession` | `PaymentSession` | the payment session object to    update |
+| `cart` | `Cart` | the cart object to update for |
 
 #### Returns
 
@@ -455,7 +455,7 @@ the updated payment session
 
 [services/payment-provider.js:188](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L188)
 
----
+___
 
 ### updateSessionData
 
@@ -463,10 +463,10 @@ the updated payment session
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `paySession` | `any` |
-| `update`     | `any` |
+| `update` | `any` |
 
 #### Returns
 
@@ -476,7 +476,7 @@ the updated payment session
 
 [services/payment-provider.js:308](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/payment-provider.js#L308)
 
----
+___
 
 ### withTransaction
 
@@ -484,8 +484,8 @@ the updated payment session
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `manager` | `any` |
 
 #### Returns

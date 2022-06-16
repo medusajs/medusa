@@ -16,8 +16,8 @@ Provides layer to manipulate regions.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,8 +36,8 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name      | Type     |
-| :-------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `CREATED` | `string` |
 | `DELETED` | `string` |
 | `UPDATED` | `string` |
@@ -56,10 +56,10 @@ Adds a country to the region.
 
 #### Parameters
 
-| Name       | Type     | Description                              |
-| :--------- | :------- | :--------------------------------------- |
-| `regionId` | `string` | the region to add a country to           |
-| `code`     | `string` | a 2 digit alphanumeric ISO country code. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `regionId` | `string` | the region to add a country to |
+| `code` | `string` | a 2 digit alphanumeric ISO country code. |
 
 #### Returns
 
@@ -71,7 +71,7 @@ the result of the update operation
 
 [services/region.js:460](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L460)
 
----
+___
 
 ### addFulfillmentProvider
 
@@ -82,9 +82,9 @@ provider doesn't exist.
 
 #### Parameters
 
-| Name         | Type     | Description                       |
-| :----------- | :------- | :-------------------------------- |
-| `regionId`   | `string` | the region to add the provider to |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `regionId` | `string` | the region to add the provider to |
 | `providerId` | `string` | the provider to add to the region |
 
 #### Returns
@@ -97,7 +97,7 @@ the result of the update operation
 
 [services/region.js:580](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L580)
 
----
+___
 
 ### addPaymentProvider
 
@@ -108,9 +108,9 @@ provider doesn't exist.
 
 #### Parameters
 
-| Name         | Type     | Description                       |
-| :----------- | :------- | :-------------------------------- |
-| `regionId`   | `string` | the region to add the provider to |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `regionId` | `string` | the region to add the provider to |
 | `providerId` | `string` | the provider to add to the region |
 
 #### Returns
@@ -123,7 +123,7 @@ the result of the update operation
 
 [services/region.js:533](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L533)
 
----
+___
 
 ### create
 
@@ -133,8 +133,8 @@ Creates a region.
 
 #### Parameters
 
-| Name           | Type     | Description            |
-| :------------- | :------- | :--------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `regionObject` | `Region` | the unvalidated region |
 
 #### Returns
@@ -147,7 +147,7 @@ the newly created region
 
 [services/region.js:95](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L95)
 
----
+___
 
 ### delete
 
@@ -157,8 +157,8 @@ Deletes a region.
 
 #### Parameters
 
-| Name       | Type     | Description          |
-| :--------- | :------- | :------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `regionId` | `string` | the region to delete |
 
 #### Returns
@@ -171,7 +171,7 @@ the result of the delete operation
 
 [services/region.js:430](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L430)
 
----
+___
 
 ### list
 
@@ -181,10 +181,10 @@ Lists all regions based on a query
 
 #### Parameters
 
-| Name       | Type  | Description            |
-| :--------- | :---- | :--------------------- |
-| `selector` | `any` | query object for find  |
-| `config`   | `any` | configuration settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | query object for find |
+| `config` | `any` | configuration settings |
 
 #### Returns
 
@@ -196,7 +196,7 @@ result of the find operation
 
 [services/region.js:418](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L418)
 
----
+___
 
 ### removeCountry
 
@@ -206,10 +206,10 @@ Removes a country from a Region
 
 #### Parameters
 
-| Name       | Type     | Description                                       |
-| :--------- | :------- | :------------------------------------------------ |
-| `regionId` | `string` | the region to remove from                         |
-| `code`     | `string` | a 2 digit alphanumeric ISO country code to remove |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `regionId` | `string` | the region to remove from |
+| `code` | `string` | a 2 digit alphanumeric ISO country code to remove |
 
 #### Returns
 
@@ -221,7 +221,7 @@ the result of the update operation
 
 [services/region.js:497](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L497)
 
----
+___
 
 ### removeFulfillmentProvider
 
@@ -231,9 +231,9 @@ Removes a fulfillment provider from a region. Is idempotent.
 
 #### Parameters
 
-| Name         | Type     | Description                            |
-| :----------- | :------- | :------------------------------------- |
-| `regionId`   | `string` | the region to remove the provider from |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `regionId` | `string` | the region to remove the provider from |
 | `providerId` | `string` | the provider to remove from the region |
 
 #### Returns
@@ -246,7 +246,7 @@ the result of the update operation
 
 [services/region.js:658](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L658)
 
----
+___
 
 ### removePaymentProvider
 
@@ -256,9 +256,9 @@ Removes a payment provider from a region. Is idempotent.
 
 #### Parameters
 
-| Name         | Type     | Description                            |
-| :----------- | :------- | :------------------------------------- |
-| `regionId`   | `string` | the region to remove the provider from |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `regionId` | `string` | the region to remove the provider from |
 | `providerId` | `string` | the provider to remove from the region |
 
 #### Returns
@@ -271,7 +271,7 @@ the result of the update operation
 
 [services/region.js:624](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L624)
 
----
+___
 
 ### retrieve
 
@@ -281,10 +281,10 @@ Retrieves a region by its id.
 
 #### Parameters
 
-| Name       | Type     | Description                      |
-| :--------- | :------- | :------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `regionId` | `string` | the id of the region to retrieve |
-| `config`   | `any`    | configuration settings           |
+| `config` | `any` | configuration settings |
 
 #### Returns
 
@@ -296,7 +296,7 @@ the region
 
 [services/region.js:394](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L394)
 
----
+___
 
 ### retrieveByCountryCode
 
@@ -304,9 +304,9 @@ the region
 
 #### Parameters
 
-| Name     | Type     |
-| :------- | :------- |
-| `code`   | `any`    |
+| Name | Type |
+| :------ | :------ |
+| `code` | `any` |
 | `config` | `Object` |
 
 #### Returns
@@ -317,7 +317,7 @@ the region
 
 [services/region.js:360](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L360)
 
----
+___
 
 ### update
 
@@ -327,10 +327,10 @@ Updates a region
 
 #### Parameters
 
-| Name       | Type     | Description                        |
-| :--------- | :------- | :--------------------------------- |
-| `regionId` | `string` | the region to update               |
-| `update`   | `any`    | the data to update the region with |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `regionId` | `string` | the region to update |
+| `update` | `any` | the data to update the region with |
 
 #### Returns
 
@@ -342,20 +342,20 @@ the result of the update operation
 
 [services/region.js:153](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L153)
 
----
+___
 
 ### validateCountry\_
 
-▸ **validateCountry\_**(`code`, `regionId`): `Promise`<`any`\>
+▸ **validateCountry_**(`code`, `regionId`): `Promise`<`any`\>
 
 Validates a country code. Will normalize the code before checking for
 existence.
 
 #### Parameters
 
-| Name       | Type     | Description                                   |
-| :--------- | :------- | :-------------------------------------------- |
-| `code`     | `string` | a 2 digit alphanumeric ISO country code       |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `code` | `string` | a 2 digit alphanumeric ISO country code |
 | `regionId` | `string` | the id of the current region to check against |
 
 #### Returns
@@ -366,18 +366,18 @@ existence.
 
 [services/region.js:323](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L323)
 
----
+___
 
 ### validateCurrency\_
 
-▸ **validateCurrency\_**(`currencyCode`): `Promise`<`void`\>
+▸ **validateCurrency_**(`currencyCode`): `Promise`<`void`\>
 
 Validates a currency code. Will throw if the currency code doesn't exist.
 
 #### Parameters
 
-| Name           | Type     | Description          |
-| :------------- | :------- | :------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `currencyCode` | `string` | an ISO currency code |
 
 #### Returns
@@ -388,21 +388,21 @@ Validates a currency code. Will throw if the currency code doesn't exist.
 
 [services/region.js:302](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L302)
 
----
+___
 
 ### validateFields\_
 
-▸ **validateFields\_**(`region`, `id?`): `any`
+▸ **validateFields_**(`region`, `id?`): `any`
 
 Validates fields for creation and updates. If the region already exisits
 the id can be passed to check that country updates are allowed.
 
 #### Parameters
 
-| Name     | Type               | Default value | Description                                |
-| :------- | :----------------- | :------------ | :----------------------------------------- |
-| `region` | `any`              | `undefined`   | the region data to validate                |
-| `id`     | `null` \| `string` | `undefined`   | optional id of the region to check against |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `region` | `any` | `undefined` | the region data to validate |
+| `id` | ``null`` \| `string` | `undefined` | optional id of the region to check against |
 
 #### Returns
 
@@ -414,18 +414,18 @@ the validated region data
 
 [services/region.js:213](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L213)
 
----
+___
 
 ### validateTaxRate\_
 
-▸ **validateTaxRate\_**(`taxRate`): `void`
+▸ **validateTaxRate_**(`taxRate`): `void`
 
 Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
 
 #### Parameters
 
-| Name      | Type     | Description                                      |
-| :-------- | :------- | :----------------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `taxRate` | `number` | a number representing the tax rate of the region |
 
 #### Returns
@@ -436,7 +436,7 @@ Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
 
 [services/region.js:289](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L289)
 
----
+___
 
 ### withTransaction
 
@@ -444,8 +444,8 @@ Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

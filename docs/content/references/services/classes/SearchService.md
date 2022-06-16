@@ -16,8 +16,8 @@ Default class that implements SearchService but provides stuv implementation for
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `container` | `any` |
 
 #### Overrides
@@ -38,7 +38,7 @@ SearchService.constructor
 
 [services/search.js:11](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L11)
 
----
+___
 
 ### logger\_
 
@@ -56,11 +56,11 @@ SearchService.constructor
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `indexName` | `any` |
 | `documents` | `any` |
-| `type`      | `any` |
+| `type` | `any` |
 
 #### Returns
 
@@ -70,7 +70,7 @@ SearchService.constructor
 
 [services/search.js:28](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L28)
 
----
+___
 
 ### createIndex
 
@@ -78,10 +78,10 @@ SearchService.constructor
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `indexName` | `any` |
-| `options`   | `any` |
+| `options` | `any` |
 
 #### Returns
 
@@ -91,7 +91,7 @@ SearchService.constructor
 
 [services/search.js:16](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L16)
 
----
+___
 
 ### deleteAllDocuments
 
@@ -99,8 +99,8 @@ SearchService.constructor
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `indexName` | `any` |
 
 #### Returns
@@ -111,7 +111,7 @@ SearchService.constructor
 
 [services/search.js:46](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L46)
 
----
+___
 
 ### deleteDocument
 
@@ -119,9 +119,9 @@ SearchService.constructor
 
 #### Parameters
 
-| Name          | Type  |
-| :------------ | :---- |
-| `indexName`   | `any` |
+| Name | Type |
+| :------ | :------ |
+| `indexName` | `any` |
 | `document_id` | `any` |
 
 #### Returns
@@ -132,7 +132,7 @@ SearchService.constructor
 
 [services/search.js:40](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L40)
 
----
+___
 
 ### getIndex
 
@@ -140,8 +140,8 @@ SearchService.constructor
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `indexName` | `any` |
 
 #### Returns
@@ -152,7 +152,7 @@ SearchService.constructor
 
 [services/search.js:22](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L22)
 
----
+___
 
 ### replaceDocuments
 
@@ -160,11 +160,11 @@ SearchService.constructor
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `indexName` | `any` |
 | `documents` | `any` |
-| `type`      | `any` |
+| `type` | `any` |
 
 #### Returns
 
@@ -174,7 +174,7 @@ SearchService.constructor
 
 [services/search.js:34](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L34)
 
----
+___
 
 ### search
 
@@ -182,25 +182,25 @@ SearchService.constructor
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `indexName` | `any` |
-| `query`     | `any` |
-| `options`   | `any` |
+| `query` | `any` |
+| `options` | `any` |
 
 #### Returns
 
 `Object`
 
-| Name   | Type      |
-| :----- | :-------- |
+| Name | Type |
+| :------ | :------ |
 | `hits` | `never`[] |
 
 #### Defined in
 
 [services/search.js:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/search.js#L52)
 
----
+___
 
 ### updateSettings
 
@@ -208,10 +208,10 @@ SearchService.constructor
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `indexName` | `any` |
-| `settings`  | `any` |
+| `settings` | `any` |
 
 #### Returns
 

@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -36,7 +36,7 @@ BaseService.constructor
 
 [services/claim-item.js:27](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L27)
 
----
+___
 
 ### claimTagRepository\_
 
@@ -46,7 +46,7 @@ BaseService.constructor
 
 [services/claim-item.js:26](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L26)
 
----
+___
 
 ### Events
 
@@ -54,11 +54,11 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name       | Type     |
-| :--------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `CANCELED` | `string` |
-| `CREATED`  | `string` |
-| `UPDATED`  | `string` |
+| `CREATED` | `string` |
+| `UPDATED` | `string` |
 
 #### Defined in
 
@@ -72,8 +72,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name | Type  |
-| :--- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `id` | `any` |
 
 #### Returns
@@ -84,7 +84,7 @@ BaseService.constructor
 
 [services/claim-item.js:212](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L212)
 
----
+___
 
 ### create
 
@@ -92,8 +92,8 @@ BaseService.constructor
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `data` | `any` |
 
 #### Returns
@@ -104,7 +104,7 @@ BaseService.constructor
 
 [services/claim-item.js:55](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L55)
 
----
+___
 
 ### deleteMetadata
 
@@ -114,10 +114,10 @@ Dedicated method to delete metadata for an order.
 
 #### Parameters
 
-| Name      | Type     | Description                        |
-| :-------- | :------- | :--------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `orderId` | `string` | the order to delete metadata from. |
-| `key`     | `string` | key for metadata field             |
+| `key` | `string` | key for metadata field |
 
 #### Returns
 
@@ -129,7 +129,7 @@ resolves to the updated result.
 
 [services/claim-item.js:259](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L259)
 
----
+___
 
 ### list
 
@@ -137,10 +137,10 @@ resolves to the updated result.
 
 #### Parameters
 
-| Name       | Type  | Description                |
-| :--------- | :---- | :------------------------- |
-| `selector` | `any` | the query object for find  |
-| `config`   | `any` | the config object for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the config object for find |
 
 #### Returns
 
@@ -152,7 +152,7 @@ the result of the find operation
 
 [services/claim-item.js:219](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L219)
 
----
+___
 
 ### retrieve
 
@@ -162,10 +162,10 @@ Gets a claim item by id.
 
 #### Parameters
 
-| Name     | Type     | Description                          |
-| :------- | :------- | :----------------------------------- |
-| `id`     | `string` | id of ClaimItem to retrieve          |
-| `config` | `any`    | configuration for the find operation |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | id of ClaimItem to retrieve |
+| `config` | `any` | configuration for the find operation |
 
 #### Returns
 
@@ -177,7 +177,7 @@ the ClaimItem
 
 [services/claim-item.js:234](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L234)
 
----
+___
 
 ### update
 
@@ -185,9 +185,9 @@ the ClaimItem
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
-| `id`   | `any` |
+| Name | Type |
+| :------ | :------ |
+| `id` | `any` |
 | `data` | `any` |
 
 #### Returns
@@ -198,7 +198,7 @@ the ClaimItem
 
 [services/claim-item.js:135](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim-item.js#L135)
 
----
+___
 
 ### withTransaction
 
@@ -206,8 +206,8 @@ the ClaimItem
 
 #### Parameters
 
-| Name      | Type  |
-| :-------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `manager` | `any` |
 
 #### Returns

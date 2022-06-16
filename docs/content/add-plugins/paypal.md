@@ -58,10 +58,10 @@ const plugins = [
       sandbox: process.env.PAYPAL_SANDBOX,
       client_id: process.env.PAYPAL_CLIENT_ID,
       client_secret: process.env.PAYPAL_CLIENT_SECRET,
-      auth_webhook_id: process.env.PAYPAL_AUTH_WEBHOOK_ID,
-    },
-  },
-]
+      auth_webhook_id: process.env.PAYPAL_AUTH_WEBHOOK_ID
+    }
+  }
+];
 ```
 
 That’s all you need to install PayPal on your Medusa server!
@@ -126,34 +126,34 @@ npm install @paypal/react-paypal-js
 Next, create a new file `components/checkout/paypal.jsx` with the following content:
 
 ```jsx
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
-import React, { useContext, useState } from "react"
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import React, { useContext, useState } from "react";
 
-import { BiLeftArrowAlt } from "react-icons/bi"
-import DisplayContext from "../../context/display-context"
-import StoreContext from "../../context/store-context"
+import { BiLeftArrowAlt } from "react-icons/bi";
+import DisplayContext from "../../context/display-context";
+import StoreContext from "../../context/store-context";
 import { createClient } from "../../utils/client"
-import styles from "../../styles/injectable-payment-card.module.css"
-import { useRouter } from "next/router"
+import styles from "../../styles/injectable-payment-card.module.css";
+import { useRouter } from "next/router";
 
 const paypalClientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || ""
 
 const Paypal = () => {
-  const [error, setError] = useState(null)
-  const [processing, setProcessing] = useState("")
-  const { cart, setPaymentSession } = useContext(StoreContext)
-  const { updateCheckoutStep } = useContext(DisplayContext)
+  const [error, setError] = useState(null);
+  const [processing, setProcessing] = useState("");
+  const { cart, setPaymentSession } = useContext(StoreContext);
+  const { updateCheckoutStep } = useContext(DisplayContext);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const client = createClient()
 
   const handleSubmit = async (data, actions) => {
     actions.order.authorize().then(async (authorization) => {
-      if (authorization.status !== "COMPLETED") {
-        setError(`An error occurred, status: ${authorization.status}`)
-        setProcessing(false)
-        return
+      if (authorization.status !== 'COMPLETED') {
+        setError(`An error occurred, status: ${authorization.status}`);
+        setProcessing(false);
+        return;
       }
 
       const { cart } = await setPaymentSession("paypal")
@@ -166,36 +166,39 @@ const Paypal = () => {
       await client.carts.updatePaymentSession(cart.id, "paypal", {
         data: {
           data: {
-            ...authorization,
-          },
-        },
-      })
+            ...authorization
+          }
+        }
+      });
 
-      setError(null)
-      setProcessing(false)
-      router.push(`/payment`)
+      setError(null);
+      setProcessing(false);
+      router.push(`/payment`);
     })
-  }
+  };
 
   return (
     <>
-      <PayPalScriptProvider
-        options={{
-          "client-id": paypalClientId,
-          currency: cart.region.currency_code.toUpperCase(),
-          intent: "authorize",
-        }}
-      >
-        {error && <span className="text-rose-500 mt-4">{error}</span>}
-        <PayPalButtons
-          style={{ layout: "horizontal" }}
-          onApprove={handleSubmit}
-          disabled={processing}
-        />
+      <PayPalScriptProvider options={{ 
+        "client-id": paypalClientId,
+        "currency": cart.region.currency_code.toUpperCase(),
+        "intent": "authorize"
+      }}>
+          {error && (
+            <span className="text-rose-500 mt-4">{error}</span>
+          )}
+          <PayPalButtons 
+            style={{ layout: "horizontal" }}
+            onApprove={handleSubmit}
+            disabled={processing}
+          />
       </PayPalScriptProvider>
-      <button className={styles.stepBack} onClick={() => updateCheckoutStep(2)}>
-        <BiLeftArrowAlt /> Back to shipping method
-      </button>
+      <button
+          className={styles.stepBack}
+          onClick={() => updateCheckoutStep(2)}
+        >
+          <BiLeftArrowAlt /> Back to shipping method
+        </button>
     </>
   )
 }
@@ -218,9 +221,9 @@ In `src/checkout/payment-step.jsx` you’ll find in the return statement a switc
 ```jsx
 switch (ps.provider_id) {
   case "stripe":
-  //..
+    //..
   case "manual":
-  //...
+    //...
   case "paypal":
     return (
       <div key="paypal">
@@ -229,14 +232,14 @@ switch (ps.provider_id) {
       </div>
     )
   default:
-    return null
+    return null;
 }
 ```
 
 Make sure to also import the `Paypal` component at the top of the file:
 
 ```jsx
-import Paypal from "./paypal"
+import Paypal from "./paypal";
 ```
 
 That’s all you need to integrate PayPal into the Next.js storefront.
@@ -266,17 +269,17 @@ npm install @paypal/react-paypal-js
 Next, create a new file `src/components/payment/paypal-payment/index.jsx` with the following content:
 
 ```jsx
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
-import React, { useMemo, useState } from "react"
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import React, { useMemo, useState } from "react";
 
 import { navigate } from "gatsby"
 import { useCart } from "../../../hooks/use-cart"
-import { useMedusa } from "../../../hooks/use-medusa"
+import { useMedusa } from "../../../hooks/use-medusa";
 
 const paypalClientId = process.env.GATSBY_PAYPAL_CLIENT_ID || ""
 
 const PaypalPayment = () => {
-  const {
+  const { 
     cart,
     actions: { completeCart, setPaymentSession },
   } = useCart()
@@ -287,7 +290,7 @@ const PaypalPayment = () => {
 
   const paypalSession = useMemo(() => {
     if (cart.payment_sessions) {
-      return cart.payment_sessions.find((s) => s.provider_id === "paypal")
+      return cart.payment_sessions.find(s => s.provider_id === "paypal")
     }
 
     return null
@@ -308,10 +311,10 @@ const PaypalPayment = () => {
     await client.carts.updatePaymentSession(cart.id, "paypal", {
       data: {
         data: {
-          ...authorizationOrder,
-        },
-      },
-    })
+          ...authorizationOrder
+        }
+      }
+    });
 
     const order = await completeCart(cart.id)
 
@@ -326,10 +329,10 @@ const PaypalPayment = () => {
 
   const handlePayment = (data, actions) => {
     actions.order.authorize().then((authorization) => {
-      if (authorization.status !== "COMPLETED") {
-        setErrorMessage(`An error occurred, status: ${authorization.status}`)
-        setProcessing(false)
-        return
+      if (authorization.status !== 'COMPLETED') {
+        setErrorMessage(`An error occurred, status: ${authorization.status}`);
+        setProcessing(false);
+        return;
       }
 
       completeOrder(authorization)
@@ -337,26 +340,24 @@ const PaypalPayment = () => {
   }
 
   return (
-    <PayPalScriptProvider
-      options={{
-        "client-id": paypalClientId,
-        currency: cart.region.currency_code.toUpperCase(),
-        intent: "authorize",
-      }}
-    >
-      {errorMessage && (
-        <span className="text-rose-500 mt-4">{errorMessage}</span>
-      )}
-      <PayPalButtons
-        style={{ layout: "horizontal" }}
-        onApprove={handlePayment}
-        disabled={processing}
-      />
+    <PayPalScriptProvider options={{ 
+      "client-id": paypalClientId,
+      "currency": cart.region.currency_code.toUpperCase(),
+      "intent": "authorize"
+    }}>
+        {errorMessage && (
+          <span className="text-rose-500 mt-4">{errorMessage}</span>
+        )}
+        <PayPalButtons 
+          style={{ layout: "horizontal" }}
+          onApprove={handlePayment}
+          disabled={processing}
+        />
     </PayPalScriptProvider>
   )
 }
 
-export default PaypalPayment
+export default PaypalPayment;
 ```
 
 Here’s briefly what this code snippet does:
@@ -374,9 +375,9 @@ In `src/components/payment/index.js` you’ll find in the return statement a swi
 ```jsx
 switch (ps.provider_id) {
   case "stripe":
-  //...
+    //...
   case "manual":
-  //...
+    //...
   case "paypal":
     return <PaypalPayment />
   default:
@@ -455,7 +456,7 @@ function Paypal() {
         setProcessing(false)
         return
       }
-
+      
       //order successful
       alert("success")
     })
@@ -464,7 +465,7 @@ function Paypal() {
   return (
     <div style={{marginTop: "10px", marginLeft: "10px"}}>
       {cart !== undefined && (
-        <PayPalScriptProvider options={{
+        <PayPalScriptProvider options={{ 
           "client-id": <CLIENT_ID>,
           "currency": "EUR",
           "intent": "authorize"
@@ -472,7 +473,7 @@ function Paypal() {
             {errorMessage && (
               <span className="text-rose-500 mt-4">{errorMessage}</span>
             )}
-            <PayPalButtons
+            <PayPalButtons 
               style={{ layout: "horizontal" }}
               onApprove={handlePayment}
               disabled={processing}

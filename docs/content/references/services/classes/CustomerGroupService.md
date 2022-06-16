@@ -18,8 +18,8 @@ Provides layer to manipulate discounts.
 
 #### Parameters
 
-| Name                | Type                            |
-| :------------------ | :------------------------------ |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `CustomerGroupConstructorProps` |
 
 #### Overrides
@@ -40,7 +40,7 @@ BaseService.constructor
 
 [services/customer-group.ts:27](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L27)
 
----
+___
 
 ### customerService\_
 
@@ -50,7 +50,7 @@ BaseService.constructor
 
 [services/customer-group.ts:29](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L29)
 
----
+___
 
 ### manager\_
 
@@ -70,10 +70,10 @@ Add a batch of customers to a customer group at once
 
 #### Parameters
 
-| Name          | Type                   | Description                                  |
-| :------------ | :--------------------- | :------------------------------------------- |
-| `id`          | `string`               | id of the customer group to add customers to |
-| `customerIds` | `string` \| `string`[] | customer id's to add to the group            |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | id of the customer group to add customers to |
+| `customerIds` | `string` \| `string`[] | customer id's to add to the group |
 
 #### Returns
 
@@ -85,7 +85,7 @@ the customer group after insertion
 
 [services/customer-group.ts:113](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L113)
 
----
+___
 
 ### create
 
@@ -95,8 +95,8 @@ Creates a customer group with the provided data.
 
 #### Parameters
 
-| Name    | Type                            | Description                  |
-| :------ | :------------------------------ | :--------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `group` | `DeepPartial`<`CustomerGroup`\> | the customer group to create |
 
 #### Returns
@@ -109,7 +109,7 @@ the result of the create operation
 
 [services/customer-group.ts:86](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L86)
 
----
+___
 
 ### delete
 
@@ -119,8 +119,8 @@ Remove customer group
 
 #### Parameters
 
-| Name      | Type     | Description                        |
-| :-------- | :------- | :--------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `groupId` | `string` | id of the customer group to delete |
 
 #### Returns
@@ -133,7 +133,7 @@ a promise
 
 [services/customer-group.ts:194](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L194)
 
----
+___
 
 ### list
 
@@ -143,10 +143,10 @@ List customer groups.
 
 #### Parameters
 
-| Name       | Type                           | Description                    |
-| :--------- | :----------------------------- | :----------------------------- |
-| `selector` | `FilterableCustomerGroupProps` | the query object for find      |
-| `config`   | `FindConfig`<`CustomerGroup`\> | the config to be used for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableCustomerGroupProps` | the query object for find |
+| `config` | `FindConfig`<`CustomerGroup`\> | the config to be used for find |
 
 #### Returns
 
@@ -158,7 +158,7 @@ the result of the find operation
 
 [services/customer-group.ts:217](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L217)
 
----
+___
 
 ### listAndCount
 
@@ -168,10 +168,10 @@ Retrieve a list of customer groups and total count of records that match the que
 
 #### Parameters
 
-| Name       | Type                           | Description                    |
-| :--------- | :----------------------------- | :----------------------------- |
-| `selector` | `FilterableCustomerGroupProps` | the query object for find      |
-| `config`   | `FindConfig`<`CustomerGroup`\> | the config to be used for find |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `FilterableCustomerGroupProps` | the query object for find |
+| `config` | `FindConfig`<`CustomerGroup`\> | the config to be used for find |
 
 #### Returns
 
@@ -183,7 +183,7 @@ the result of the find operation
 
 [services/customer-group.ts:236](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L236)
 
----
+___
 
 ### removeCustomer
 
@@ -193,10 +193,10 @@ Remove list of customers from a customergroup
 
 #### Parameters
 
-| Name          | Type                   | Description                                                   |
-| :------------ | :--------------------- | :------------------------------------------------------------ |
-| `id`          | `string`               | id of the customer group from which the customers are removed |
-| `customerIds` | `string` \| `string`[] | id's of the customer to remove from group                     |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | id of the customer group from which the customers are removed |
+| `customerIds` | `string` \| `string`[] | id's of the customer to remove from group |
 
 #### Returns
 
@@ -208,7 +208,7 @@ the customergroup with the provided id
 
 [services/customer-group.ts:271](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L271)
 
----
+___
 
 ### retrieve
 
@@ -216,9 +216,9 @@ the customergroup with the provided id
 
 #### Parameters
 
-| Name     | Type     |
-| :------- | :------- |
-| `id`     | `string` |
+| Name | Type |
+| :------ | :------ |
+| `id` | `string` |
 | `config` | `Object` |
 
 #### Returns
@@ -229,7 +229,7 @@ the customergroup with the provided id
 
 [services/customer-group.ts:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L62)
 
----
+___
 
 ### update
 
@@ -239,10 +239,10 @@ Update a customer group.
 
 #### Parameters
 
-| Name              | Type                  | Description                 |
-| :---------------- | :-------------------- | :-------------------------- |
-| `customerGroupId` | `string`              | id of the customer group    |
-| `update`          | `CustomerGroupUpdate` | customer group partial data |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `customerGroupId` | `string` | id of the customer group |
+| `update` | `CustomerGroupUpdate` | customer group partial data |
 
 #### Returns
 
@@ -254,7 +254,7 @@ resulting customer group
 
 [services/customer-group.ts:162](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer-group.ts#L162)
 
----
+___
 
 ### withTransaction
 
@@ -262,8 +262,8 @@ resulting customer group
 
 #### Parameters
 
-| Name                 | Type            |
-| :------------------- | :-------------- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `EntityManager` |
 
 #### Returns

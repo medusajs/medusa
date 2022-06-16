@@ -14,8 +14,8 @@
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -34,8 +34,8 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name      | Type     |
-| :-------- | :------- |
+| Name | Type |
+| :------ | :------ |
 | `CREATED` | `string` |
 | `DELETED` | `string` |
 | `UPDATED` | `string` |
@@ -54,10 +54,10 @@ Creates a note associated with a given author
 
 #### Parameters
 
-| Name     | Type              | Description                                       |
-| :------- | :---------------- | :------------------------------------------------ |
-| `data`   | `CreateNoteInput` | the note to create                                |
-| `config` | `any`             | any configurations if needed, including meta data |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `CreateNoteInput` | the note to create |
+| `config` | `any` | any configurations if needed, including meta data |
 
 #### Returns
 
@@ -69,7 +69,7 @@ resolves to the creation result
 
 [services/note.js:98](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L98)
 
----
+___
 
 ### delete
 
@@ -79,8 +79,8 @@ Deletes a given note
 
 #### Parameters
 
-| Name     | Type  | Description              |
-| :------- | :---- | :----------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `noteId` | `any` | id of the note to delete |
 
 #### Returns
@@ -91,7 +91,7 @@ Deletes a given note
 
 [services/note.js:154](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L154)
 
----
+___
 
 ### list
 
@@ -101,13 +101,13 @@ Fetches all notes related to the given selector
 
 #### Parameters
 
-| Name               | Type       | Description                                                                     |
-| :----------------- | :--------- | :------------------------------------------------------------------------------ |
-| `selector`         | `any`      | the query object for find                                                       |
-| `config`           | `Object`   | the configuration used to find the objects. contains relations, skip, and take. |
-| `config.relations` | `string`[] | Which relations to include in the resulting list of Notes.                      |
-| `config.skip`      | `number`   | How many Notes to skip in the resulting list of Notes.                          |
-| `config.take`      | `number`   | How many Notes to take in the resulting list of Notes.                          |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `Object` | the configuration used to find the objects. contains relations, skip, and take. |
+| `config.relations` | `string`[] | Which relations to include in the resulting list of Notes. |
+| `config.skip` | `number` | How many Notes to skip in the resulting list of Notes. |
+| `config.take` | `number` | How many Notes to take in the resulting list of Notes. |
 
 #### Returns
 
@@ -119,7 +119,7 @@ notes related to the given search.
 
 [services/note.js:77](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L77)
 
----
+___
 
 ### retrieve
 
@@ -129,10 +129,10 @@ Retrieves a specific note.
 
 #### Parameters
 
-| Name     | Type     | Description                                 |
-| :------- | :------- | :------------------------------------------ |
-| `id`     | `string` | the id of the note to retrieve.             |
-| `config` | `any`    | any options needed to query for the result. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | the id of the note to retrieve. |
+| `config` | `any` | any options needed to query for the result. |
 
 #### Returns
 
@@ -144,7 +144,7 @@ which resolves to the requested note.
 
 [services/note.js:51](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L51)
 
----
+___
 
 ### update
 
@@ -154,10 +154,10 @@ Updates a given note with a new value
 
 #### Parameters
 
-| Name     | Type  | Description                  |
-| :------- | :---- | :--------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `noteId` | `any` | the id of the note to update |
-| `value`  | `any` | the new value                |
+| `value` | `any` | the new value |
 
 #### Returns
 
@@ -169,7 +169,7 @@ resolves to the updated element
 
 [services/note.js:131](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L131)
 
----
+___
 
 ### withTransaction
 
@@ -179,8 +179,8 @@ Sets the service's manager to a given transaction manager
 
 #### Parameters
 
-| Name                 | Type            | Description        |
-| :------------------- | :-------------- | :----------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `transactionManager` | `EntityManager` | the manager to use |
 
 #### Returns

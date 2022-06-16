@@ -16,8 +16,8 @@ Can authenticate a user based on email password combination
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -39,24 +39,24 @@ scrypt to match password with hashed value.
 
 #### Parameters
 
-| Name       | Type     | Description              |
-| :--------- | :------- | :----------------------- |
-| `email`    | `string` | the email of the user    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `email` | `string` | the email of the user |
 | `password` | `string` | the password of the user |
 
 #### Returns
 
 `Promise`<`AuthenticateResult`\>
 
-success: whether authentication succeeded
-user: the user document if authentication succeded
-error: a string with the error message
+   success: whether authentication succeeded
+   user: the user document if authentication succeded
+   error: a string with the error message
 
 #### Defined in
 
 [services/auth.ts:78](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L78)
 
----
+___
 
 ### authenticateAPIToken
 
@@ -66,23 +66,23 @@ Authenticates a given user with an API token
 
 #### Parameters
 
-| Name    | Type     | Description                               |
-| :------ | :------- | :---------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `token` | `string` | the api_token of the user to authenticate |
 
 #### Returns
 
 `Promise`<`AuthenticateResult`\>
 
-success: whether authentication succeeded
-user: the user document if authentication succeded
-error: a string with the error message
+   success: whether authentication succeeded
+   user: the user document if authentication succeded
+   error: a string with the error message
 
 #### Defined in
 
 [services/auth.ts:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L41)
 
----
+___
 
 ### authenticateCustomer
 
@@ -93,37 +93,37 @@ scrypt to match password with hashed value.
 
 #### Parameters
 
-| Name       | Type     | Description              |
-| :--------- | :------- | :----------------------- |
-| `email`    | `string` | the email of the user    |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `email` | `string` | the email of the user |
 | `password` | `string` | the password of the user |
 
 #### Returns
 
 `Promise`<`AuthenticateResult`\>
 
-success: whether authentication succeeded
-user: the user document if authentication succeded
-error: a string with the error message
+   success: whether authentication succeeded
+   user: the user document if authentication succeded
+   error: a string with the error message
 
 #### Defined in
 
 [services/auth.ts:123](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L123)
 
----
+___
 
 ### comparePassword\_
 
-▸ **comparePassword\_**(`password`, `hash`): `Promise`<`boolean`\>
+▸ **comparePassword_**(`password`, `hash`): `Promise`<`boolean`\>
 
 Verifies if a password is valid given the provided password hash
 
 #### Parameters
 
-| Name       | Type     | Description                 |
-| :--------- | :------- | :-------------------------- |
-| `password` | `string` | the raw password to check   |
-| `hash`     | `string` | the hash to compare against |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `password` | `string` | the raw password to check |
+| `hash` | `string` | the hash to compare against |
 
 #### Returns
 

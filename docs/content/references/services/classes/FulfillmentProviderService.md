@@ -10,8 +10,8 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `container` | `any` |
 
 #### Defined in
@@ -26,11 +26,11 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `option` | `any` |
-| `data`   | `any` |
-| `cart`   | `any` |
+| `data` | `any` |
+| `cart` | `any` |
 
 #### Returns
 
@@ -40,7 +40,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:79](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L79)
 
----
+___
 
 ### canCalculate
 
@@ -48,8 +48,8 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `option` | `any` |
 
 #### Returns
@@ -60,7 +60,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:64](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L64)
 
----
+___
 
 ### cancelFulfillment
 
@@ -68,8 +68,8 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name          | Type  |
-| :------------ | :---- |
+| Name | Type |
+| :------ | :------ |
 | `fulfillment` | `any` |
 
 #### Returns
@@ -80,7 +80,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:74](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L74)
 
----
+___
 
 ### createFulfillment
 
@@ -88,11 +88,11 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name          | Type  |
-| :------------ | :---- |
-| `method`      | `any` |
-| `items`       | `any` |
-| `order`       | `any` |
+| Name | Type |
+| :------ | :------ |
+| `method` | `any` |
+| `items` | `any` |
+| `order` | `any` |
 | `fulfillment` | `any` |
 
 #### Returns
@@ -103,7 +103,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:59](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L59)
 
----
+___
 
 ### createReturn
 
@@ -111,8 +111,8 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name          | Type  |
-| :------------ | :---- |
+| Name | Type |
+| :------ | :------ |
 | `returnOrder` | `any` |
 
 #### Returns
@@ -123,7 +123,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:89](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L89)
 
----
+___
 
 ### list
 
@@ -137,7 +137,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:23](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L23)
 
----
+___
 
 ### listFulfillmentOptions
 
@@ -145,8 +145,8 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `providers` | `any` |
 
 #### Returns
@@ -157,7 +157,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L30)
 
----
+___
 
 ### registerInstalledProviders
 
@@ -165,8 +165,8 @@ Helps retrive fulfillment providers
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `providers` | `any` |
 
 #### Returns
@@ -177,7 +177,7 @@ Helps retrive fulfillment providers
 
 [services/fulfillment-provider.js:12](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L12)
 
----
+___
 
 ### retrieveDocuments
 
@@ -187,11 +187,11 @@ Fetches documents from the fulfillment provider
 
 #### Parameters
 
-| Name              | Type                     | Description                          |
-| :---------------- | :----------------------- | :----------------------------------- |
-| `providerId`      | `string`                 | the id of the provider               |
-| `fulfillmentData` | `any`                    | the data relating to the fulfillment |
-| `documentType`    | `"invoice"` \| `"label"` | the typ of document to fetch         |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `providerId` | `string` | the id of the provider |
+| `fulfillmentData` | `any` | the data relating to the fulfillment |
+| `documentType` | ``"invoice"`` \| ``"label"`` | the typ of  document to fetch |
 
 #### Returns
 
@@ -201,7 +201,7 @@ Fetches documents from the fulfillment provider
 
 [services/fulfillment-provider.js:102](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L102)
 
----
+___
 
 ### retrieveProvider
 
@@ -209,8 +209,8 @@ Fetches documents from the fulfillment provider
 
 #### Parameters
 
-| Name          | Type     | Description     |
-| :------------ | :------- | :-------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `provider_id` | `string` | the provider id |
 
 #### Returns
@@ -223,7 +223,7 @@ the payment fulfillment provider
 
 [services/fulfillment-provider.js:48](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L48)
 
----
+___
 
 ### validateFulfillmentData
 
@@ -231,11 +231,11 @@ the payment fulfillment provider
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `option` | `any` |
-| `data`   | `any` |
-| `cart`   | `any` |
+| `data` | `any` |
+| `cart` | `any` |
 
 #### Returns
 
@@ -245,7 +245,7 @@ the payment fulfillment provider
 
 [services/fulfillment-provider.js:69](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment-provider.js#L69)
 
----
+___
 
 ### validateOption
 
@@ -253,8 +253,8 @@ the payment fulfillment provider
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `option` | `any` |
 
 #### Returns

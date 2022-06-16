@@ -18,8 +18,8 @@ Provides layer to manipulate customers.
 
 #### Parameters
 
-| Name                | Type     |
-| :------------------ | :------- |
+| Name | Type |
+| :------ | :------ |
 | `__namedParameters` | `Object` |
 
 #### Overrides
@@ -38,11 +38,11 @@ BaseService.constructor
 
 #### Type declaration
 
-| Name             | Type     |
-| :--------------- | :------- |
-| `CREATED`        | `string` |
+| Name | Type |
+| :------ | :------ |
+| `CREATED` | `string` |
 | `PASSWORD_RESET` | `string` |
-| `UPDATED`        | `string` |
+| `UPDATED` | `string` |
 
 #### Defined in
 
@@ -56,10 +56,10 @@ BaseService.constructor
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `customerId` | `any` |
-| `address`    | `any` |
+| `address` | `any` |
 
 #### Returns
 
@@ -69,7 +69,7 @@ BaseService.constructor
 
 [services/customer.js:479](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L479)
 
----
+___
 
 ### count
 
@@ -87,7 +87,7 @@ the result of the count operation
 
 [services/customer.js:192](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L192)
 
----
+___
 
 ### create
 
@@ -100,8 +100,8 @@ used to hold details of customers.
 
 #### Parameters
 
-| Name       | Type  | Description            |
-| :--------- | :---- | :--------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `customer` | `any` | the customer to create |
 
 #### Returns
@@ -114,7 +114,7 @@ the result of create
 
 [services/customer.js:290](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L290)
 
----
+___
 
 ### decorate
 
@@ -124,11 +124,11 @@ Decorates a customer.
 
 #### Parameters
 
-| Name           | Type       | Default value | Description            |
-| :------------- | :--------- | :------------ | :--------------------- |
-| `customer`     | `Customer` | `undefined`   | the cart to decorate.  |
-| `fields`       | `string`[] | `[]`          | the fields to include. |
-| `expandFields` | `string`[] | `[]`          | fields to expand.      |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `customer` | `Customer` | `undefined` | the cart to decorate. |
+| `fields` | `string`[] | `[]` | the fields to include. |
+| `expandFields` | `string`[] | `[]` | fields to expand. |
 
 #### Returns
 
@@ -140,7 +140,7 @@ return the decorated customer.
 
 [services/customer.js:547](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L547)
 
----
+___
 
 ### delete
 
@@ -150,9 +150,9 @@ Deletes a customer from a given customer id.
 
 #### Parameters
 
-| Name         | Type     | Description                                                       |
-| :----------- | :------- | :---------------------------------------------------------------- |
-| `customerId` | `string` | the id of the customer to delete. Must be castable as an ObjectId |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `customerId` | `string` | the id of the customer to delete. Must be   castable as an ObjectId |
 
 #### Returns
 
@@ -164,7 +164,7 @@ the result of the delete operation.
 
 [services/customer.js:523](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L523)
 
----
+___
 
 ### generateResetPasswordToken
 
@@ -178,8 +178,8 @@ which is always 15 minutes.
 
 #### Parameters
 
-| Name         | Type     | Description                            |
-| :----------- | :------- | :------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `customerId` | `string` | the customer to reset the password for |
 
 #### Returns
@@ -192,18 +192,18 @@ the generated JSON web token
 
 [services/customer.js:67](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L67)
 
----
+___
 
 ### hashPassword\_
 
-▸ **hashPassword\_**(`password`): `Promise`<`string`\>
+▸ **hashPassword_**(`password`): `Promise`<`string`\>
 
 Hashes a password
 
 #### Parameters
 
-| Name       | Type     | Description       |
-| :--------- | :------- | :---------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `password` | `string` | the value to hash |
 
 #### Returns
@@ -216,7 +216,7 @@ hashed password
 
 [services/customer.js:277](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L277)
 
----
+___
 
 ### list
 
@@ -224,10 +224,10 @@ hashed password
 
 #### Parameters
 
-| Name       | Type  | Description                                 |
-| :--------- | :---- | :------------------------------------------ |
-| `selector` | `any` | the query object for find                   |
-| `config`   | `any` | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `any` | the config object containing query settings |
 
 #### Returns
 
@@ -239,7 +239,7 @@ the result of the find operation
 
 [services/customer.js:106](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L106)
 
----
+___
 
 ### listAndCount
 
@@ -247,10 +247,10 @@ the result of the find operation
 
 #### Parameters
 
-| Name       | Type                      | Description                                 |
-| :--------- | :------------------------ | :------------------------------------------ |
-| `selector` | `any`                     | the query object for find                   |
-| `config`   | `FindConfig`<`Customer`\> | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `selector` | `any` | the query object for find |
+| `config` | `FindConfig`<`Customer`\> | the config object containing query settings |
 
 #### Returns
 
@@ -262,7 +262,7 @@ the result of the find operation
 
 [services/customer.js:147](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L147)
 
----
+___
 
 ### removeAddress
 
@@ -270,10 +270,10 @@ the result of the find operation
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `customerId` | `any` |
-| `addressId`  | `any` |
+| `addressId` | `any` |
 
 #### Returns
 
@@ -283,7 +283,7 @@ the result of the find operation
 
 [services/customer.js:460](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L460)
 
----
+___
 
 ### retrieve
 
@@ -293,10 +293,10 @@ Gets a customer by id.
 
 #### Parameters
 
-| Name         | Type     | Description                                 |
-| :----------- | :------- | :------------------------------------------ |
-| `customerId` | `string` | the id of the customer to get.              |
-| `config`     | `any`    | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `customerId` | `string` | the id of the customer to get. |
+| `config` | `any` | the config object containing query settings |
 
 #### Returns
 
@@ -308,7 +308,7 @@ the customer document.
 
 [services/customer.js:205](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L205)
 
----
+___
 
 ### retrieveByEmail
 
@@ -318,10 +318,10 @@ Gets a customer by email.
 
 #### Parameters
 
-| Name     | Type     | Description                                 |
-| :------- | :------- | :------------------------------------------ |
-| `email`  | `string` | the email of the customer to get.           |
-| `config` | `any`    | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `email` | `string` | the email of the customer to get. |
+| `config` | `any` | the config object containing query settings |
 
 #### Returns
 
@@ -333,7 +333,7 @@ the customer document.
 
 [services/customer.js:230](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L230)
 
----
+___
 
 ### retrieveByPhone
 
@@ -343,10 +343,10 @@ Gets a customer by phone.
 
 #### Parameters
 
-| Name     | Type     | Description                                 |
-| :------- | :------- | :------------------------------------------ |
-| `phone`  | `string` | the phone of the customer to get.           |
-| `config` | `any`    | the config object containing query settings |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `phone` | `string` | the phone of the customer to get. |
+| `config` | `any` | the config object containing query settings |
 
 #### Returns
 
@@ -358,7 +358,7 @@ the customer document.
 
 [services/customer.js:254](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L254)
 
----
+___
 
 ### update
 
@@ -368,10 +368,10 @@ Updates a customer.
 
 #### Parameters
 
-| Name         | Type     | Description                                                               |
-| :----------- | :------- | :------------------------------------------------------------------------ |
-| `customerId` | `string` | the id of the variant. Must be a string that can be casted to an ObjectId |
-| `update`     | `any`    | an object with the update values.                                         |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `customerId` | `string` | the id of the variant. Must be a string that   can be casted to an ObjectId |
+| `update` | `any` | an object with the update values. |
 
 #### Returns
 
@@ -383,7 +383,7 @@ resolves to the update result.
 
 [services/customer.js:346](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L346)
 
----
+___
 
 ### updateAddress
 
@@ -391,11 +391,11 @@ resolves to the update result.
 
 #### Parameters
 
-| Name         | Type  |
-| :----------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `customerId` | `any` |
-| `addressId`  | `any` |
-| `address`    | `any` |
+| `addressId` | `any` |
+| `address` | `any` |
 
 #### Returns
 
@@ -405,21 +405,21 @@ resolves to the update result.
 
 [services/customer.js:441](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L441)
 
----
+___
 
 ### updateBillingAddress\_
 
-▸ **updateBillingAddress\_**(`customer`, `addressOrId`, `addrRepo`): `Promise`<`any`\>
+▸ **updateBillingAddress_**(`customer`, `addressOrId`, `addrRepo`): `Promise`<`any`\>
 
 Updates the customers' billing address.
 
 #### Parameters
 
-| Name          | Type       | Description                             |
-| :------------ | :--------- | :-------------------------------------- |
-| `customer`    | `Customer` | the Customer to update                  |
-| `addressOrId` | `any`      | the value to set the billing address to |
-| `addrRepo`    | `any`      | address repository                      |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `customer` | `Customer` | the Customer to update |
+| `addressOrId` | `any` | the value to set the billing address to |
+| `addrRepo` | `any` | address repository |
 
 #### Returns
 
@@ -431,7 +431,7 @@ the result of the update operation
 
 [services/customer.js:408](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L408)
 
----
+___
 
 ### withTransaction
 
@@ -439,8 +439,8 @@ the result of the update operation
 
 #### Parameters
 
-| Name                 | Type  |
-| :------------------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `transactionManager` | `any` |
 
 #### Returns

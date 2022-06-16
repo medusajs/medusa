@@ -10,8 +10,8 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 #### Parameters
 
-| Name        | Type  |
-| :---------- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `container` | `any` |
 
 #### Defined in
@@ -28,7 +28,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 [services/middleware.js:8](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L8)
 
----
+___
 
 ### preAuthentication\_
 
@@ -38,7 +38,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 [services/middleware.js:9](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L9)
 
----
+___
 
 ### preCartCreation\_
 
@@ -48,7 +48,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 [services/middleware.js:10](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L10)
 
----
+___
 
 ### routers
 
@@ -68,10 +68,10 @@ Adds a middleware function to be called after authentication is completed.
 
 #### Parameters
 
-| Name         | Type       | Description                                                   |
-| :----------- | :--------- | :------------------------------------------------------------ |
-| `middleware` | `Function` | the middleware function. Should return a middleware function. |
-| `options`    | `any`      | the arguments that will be passed to the middleware           |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `middleware` | `Function` | the middleware function. Should return a   middleware function. |
+| `options` | `any` | the arguments that will be passed to the   middleware |
 
 #### Returns
 
@@ -81,7 +81,7 @@ Adds a middleware function to be called after authentication is completed.
 
 [services/middleware.js:45](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L45)
 
----
+___
 
 ### addPreAuthentication
 
@@ -91,10 +91,10 @@ Adds a middleware function to be called before authentication is completed.
 
 #### Parameters
 
-| Name         | Type       | Description                                                   |
-| :----------- | :--------- | :------------------------------------------------------------ |
-| `middleware` | `Function` | the middleware function. Should return a middleware function. |
-| `options`    | `any`      | the arguments that will be passed to the middleware           |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `middleware` | `Function` | the middleware function. Should return a   middleware function. |
+| `options` | `any` | the arguments that will be passed to the   middleware |
 
 #### Returns
 
@@ -104,7 +104,7 @@ Adds a middleware function to be called before authentication is completed.
 
 [services/middleware.js:61](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L61)
 
----
+___
 
 ### addPreCartCreation
 
@@ -114,9 +114,9 @@ Adds a middleware function to be called before cart creation
 
 #### Parameters
 
-| Name         | Type       | Description                                                   |
-| :----------- | :--------- | :------------------------------------------------------------ |
-| `middleware` | `Function` | the middleware function. Should return a middleware function. |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `middleware` | `Function` | the middleware function. Should return a   middleware function. |
 
 #### Returns
 
@@ -126,7 +126,7 @@ Adds a middleware function to be called before cart creation
 
 [services/middleware.js:75](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L75)
 
----
+___
 
 ### addRouter
 
@@ -134,9 +134,9 @@ Adds a middleware function to be called before cart creation
 
 #### Parameters
 
-| Name     | Type  |
-| :------- | :---- |
-| `path`   | `any` |
+| Name | Type |
+| :------ | :------ |
+| `path` | `any` |
 | `router` | `any` |
 
 #### Returns
@@ -147,7 +147,7 @@ Adds a middleware function to be called before cart creation
 
 [services/middleware.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L14)
 
----
+___
 
 ### getRouters
 
@@ -155,8 +155,8 @@ Adds a middleware function to be called before cart creation
 
 #### Parameters
 
-| Name   | Type  |
-| :----- | :---- |
+| Name | Type |
+| :------ | :------ |
 | `path` | `any` |
 
 #### Returns
@@ -167,7 +167,7 @@ Adds a middleware function to be called before cart creation
 
 [services/middleware.js:19](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L19)
 
----
+___
 
 ### usePostAuthentication
 
@@ -177,8 +177,8 @@ Adds post authentication middleware to an express app.
 
 #### Parameters
 
-| Name  | Type         | Description                              |
-| :---- | :----------- | :--------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `app` | `ExpressApp` | the express app to add the middleware to |
 
 #### Returns
@@ -189,7 +189,7 @@ Adds post authentication middleware to an express app.
 
 [services/middleware.js:85](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L85)
 
----
+___
 
 ### usePreAuthentication
 
@@ -199,8 +199,8 @@ Adds pre authentication middleware to an express app.
 
 #### Parameters
 
-| Name  | Type         | Description                              |
-| :---- | :----------- | :--------------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `app` | `ExpressApp` | the express app to add the middleware to |
 
 #### Returns
@@ -211,7 +211,7 @@ Adds pre authentication middleware to an express app.
 
 [services/middleware.js:96](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L96)
 
----
+___
 
 ### usePreCartCreation
 
@@ -225,18 +225,18 @@ Adds pre authentication middleware to an express app.
 
 [services/middleware.js:102](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L102)
 
----
+___
 
 ### validateMiddleware\_
 
-▸ **validateMiddleware\_**(`fn`): `void`
+▸ **validateMiddleware_**(`fn`): `void`
 
 Validates a middleware function, throws if fn is not of type function.
 
 #### Parameters
 
-| Name | Type       | Description                          |
-| :--- | :--------- | :----------------------------------- |
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `fn` | `Function` | the middleware function to validate. |
 
 #### Returns
