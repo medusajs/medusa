@@ -69,13 +69,13 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
-        with:
-          extension: integration-tests
+      # - name: Bootstrap packages
+      #   uses: ./.github/actions/cache-bootstrap
+      #   with:
+      #     extension: integration-tests
 
       - name: Build Packages
-        run: lerna run build
+        run: yarn build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
@@ -130,13 +130,13 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
-        with:
-          extension: integration-tests
+      # - name: Bootstrap packages
+      #   uses: ./.github/actions/cache-bootstrap
+      #   with:
+      #     extension: integration-tests
 
       - name: Build Packages
-        run: lerna run build
+        run: yarn build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
