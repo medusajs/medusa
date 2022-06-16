@@ -54,19 +54,19 @@ jobs:
       - name: test
         run: ls -la core/scripts/testing
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v2.4.1
-        with:
-          node-version: "16"
-        # cache: "yarn"
+      # - name: Setup Node.js environment
+      #   uses: actions/setup-node@v2.4.1
+      #   with:
+      #     node-version: "16"
+      # cache: "yarn"
 
       - name: install
         run: yarn
-        working-directory: core
+        working-directory: cli-test
 
       - name: Build Packages
         run: yarn build
-        working-directory: core
+        working-directory: cli-test
 
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli

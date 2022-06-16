@@ -21,6 +21,11 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: ls
+      shell: "bash"
+      run: ls
+      working-directory: ${{ inputs.workingDirectory }}
+
     - name: Wait for live server response
       shell: "bash"
       working-directory: ${{ inputs.workingDirectory }}
