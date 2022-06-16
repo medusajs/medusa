@@ -114,6 +114,9 @@ class CsvParser<
       )
     }
 
+    /**
+     * Runs the validation defined in the schema columns
+     */
     for (const column of this.$$schema.columns) {
       const context = {
         line,
@@ -125,31 +128,6 @@ class CsvParser<
         await column.validator.validate(outputTuple, context)
       }
     }
-
-    return outputTuple
-  }
-
-  private resolveTuple_(
-    tuple: TOutputResult,
-    column: TSchema["columns"][number],
-    context: CsvParserContext<TParserResult> & { tupleKey: string }
-  ): TOutputResult {
-    const outputTuple = { ...tuple }
-    const { tupleKey, ...csvContext } = context
-    const { line } = csvContext
-
-    let resolvedKey = tupleKey
-    if ("match" in column && column.reducer) {
-      return column.reducer(outputTuple, tupleKey, line[tupleKey], csvContext)
-    } else if (!("match" in column) && "mapTo" in column && column.mapTo) {
-      resolvedKey = column.mapTo
-    }
-
-    const resolvedValue = column.transform
-      ? column.transform(line[tupleKey], csvContext)
-      : line[tupleKey]
-
-    outputTuple[resolvedKey] = resolvedValue
 
     return outputTuple
   }
@@ -182,6 +160,35 @@ class CsvParser<
     )
 
     return matchedColumn
+  }
+
+  private resolveTuple_(
+    tuple: TOutputResult,
+    column: TSchema["columns"][number],
+    context: CsvParserContext<TParserResult> & { tupleKey: string }
+  ): TOutputResult {
+    const outputTuple = { ...tuple }
+    const { tupleKey, ...csvContext } = context
+    const { line } = csvContext
+
+    let resolvedKey = tupleKey
+    /**
+     * if match is provided, then we should call the reducer if it's defined
+     * otherwise, before using the mapTo property, we should make sure match was not provided
+     */
+    if ("match" in column && column.reducer) {
+      return column.reducer(outputTuple, tupleKey, line[tupleKey], csvContext)
+    } else if (!("match" in column) && "mapTo" in column && column.mapTo) {
+      resolvedKey = column.mapTo
+    }
+
+    const resolvedValue = column.transform
+      ? column.transform(line[tupleKey], csvContext)
+      : line[tupleKey]
+
+    outputTuple[resolvedKey] = resolvedValue
+
+    return outputTuple
   }
 }
 
