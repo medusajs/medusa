@@ -182,8 +182,20 @@ module.exports = {
               ]
             },
             {
-              type: "doc",
-              id: "how-to/notification-api",
+              type: "category",
+              label: "Notification",
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/how-to-create-notification-provider",
+                  label: "Create a Notification Provider"
+                }
+              ]
             },
             {
               type: "doc",
