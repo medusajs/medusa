@@ -46,30 +46,30 @@ jobs:
         uses: actions/checkout@v2.3.5
         with:
           fetch-depth: 0
-          path: core
 
       - name: test
-        run: ls -la
+        run: pwd
 
       - name: test
-        run: ls -la core/scripts/testing
+        run: ls -la ./scripts/testing
 
-      # - name: Setup Node.js environment
-      #   uses: actions/setup-node@v2.4.1
-      #   with:
-      #     node-version: "16"
-      # cache: "yarn"
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "16"
+          cache: "yarn"
 
       - name: install
         run: yarn
-        working-directory: core
 
       - name: Build Packages
         run: yarn build
-        working-directory: core
 
       - name: Install Medusa cli
         run: yarn global add @medusajs/medusa-cli
+
+      - name: dir up
+        run: cd ..
 
       ################################################################################
       ################################ refactor ######################################
@@ -93,11 +93,11 @@ jobs:
 
       - name: Run migrations
         run: medusa migrations run
-        working-directory: core
+        working-directory: cli-test
 
       - name: Seed db
         run: yarn seed
-        working-directory: core
+        working-directory: cli-test
 
       - name: Create admin user
         run: medusa user -e test@test.com -p password -i admin_123
