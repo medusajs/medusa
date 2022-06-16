@@ -1,4 +1,4 @@
-name: test cli
+name: CLI Pipeline
 on: [pull_request]
 
 jobs:
