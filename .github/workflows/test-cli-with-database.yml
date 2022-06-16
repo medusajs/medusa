@@ -63,7 +63,7 @@ jobs:
         run: yarn global add @medusajs/medusa-cli
 
       - name: Install dev cli
-        run: yarn global add medusa-dev-cli
+        run: sudo npm i -g medusa-dev-cli
 
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo $(pwd)
