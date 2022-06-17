@@ -177,6 +177,12 @@ PostgreSQL is an open-source relational database system with more than 30 years 
 
 Although you can use an SQLite database with Medusa which would require no necessary database installations, it is recommended to use a PostgreSQL database for your server.
 
+:::tip
+
+After installing PostgreSQL, check out the [Configure your Server documentation](../usage/configurations.md#postgresql-configurations) to learn how to configure PostgreSQL to work with Medusa.
+
+:::
+
 <Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
 <TabItem value="windows" label="Windows">
 
@@ -215,6 +221,12 @@ Redis is an open-source in-memory data structure store. It can be used for distr
 Medusa uses Redis as the event queue in the server. If you want to use subscribers to handle events such as when an order is placed and perform actions based on the events, then you need to install and configure Redis.
 
 If you don’t install and configure Redis with your Medusa server, then it will work without any events-related features.
+
+:::tip
+
+After installing Redis, check out the [Configure your Server documentation](../usage/configurations.md#redis) to learn how to configure Redis to work with Medusa.
+
+:::
 
 <Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
 <TabItem value="windows" label="Windows">
@@ -290,75 +302,8 @@ Here are some other options:
 
 It is not important which editor you use as long as you feel comfortable working with it.
 
-## Configuring Your Server
-
-After installing all the requirements mentioned above and following along with our [quickstart guide](../quickstart/quick-start.md), you need to configure some information on your server to connect it to some of the requirements you installed.
-
-### PostgreSQL
-
-After creating a new database schema in PostgreSQL, you need to add the URL to connect to it on your Medusa server.
-
-To do that, add the following environment variable to the `.env` file on the root of your Medusa server:
-
-```bash
-DATABASE_URL=postgres://<USER>:<PASSWORD>@<HOST>:<PORT>/<DB_NAME>
-```
-
-Notice that there are some details in the URL above you need to fill in yourself:
-
-- `<USER>`: the username of the user that has access to the database schema you created.
-- `<PASSWORD>`: the password of the user that has access to the database schema you created.
-- `<HOST>`: the hostname where the PostgreSQL database is hosted. In local development, you can use `localhost`.
-- `<PORT>`: the port where the PostgreSQL database can be contacted on the host. By default, it’s 5432**.**
-- `<DB_NAME>`: the name of the database schema you created.
-
-Then, in `medusa-config.js`, change the following properties in the object `projecConfig`:
-
-```jsx
-module.exports = {
-  projectConfig: {
-    ...,
-    database_url: DATABASE_URL,
-    database_type: "postgres",
-    // comment out or remove these lines:
-    // database_database: "./medusa-db.sql",
-    // database_type: "sqlite",
-  },
-  plugins,
-};
-```
-
-The last recommended step is running the following command to migrate Medusa’s database schema into your database and seed the database with dummy data:
-
-```bash npm2yarn
-npm run seed
-```
-
-### Redis
-
-After installing Redis and running the Redis server, you must configure Medusa to use it.
-
-In `.env` add a new environment variable:
-
-```bash
-REDIS_URL=redis://localhost:6379
-```
-
-This is the default Redis URL to connect to, especially in development. However, if you’re deploying your server, have configured your Redis installation differently, or just need to check the format of the connection URL, you can check [this guide](https://github.com/lettuce-io/lettuce-core/wiki/Redis-URI-and-connection-details) for more details.
-
-:::tip
-
-If you use the default connection string mentioned here then you can skip over adding the environment variable.
-
-:::
-
-Then, in `medusa-config.js`, comment out the following line in the object `projectConfig`:
-
-```jsx
-redis_url: REDIS_URL,
-```
-
 ## What’s Next 🚀
 
+- Learn how to [configure your Medusa server](../usage/configurations.md).
 - Learn how to install a storefront with [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](./../starters/gatsby-medusa-starter.md).
 - Learn how to install the [Medusa Admin](../admin/quickstart.md).

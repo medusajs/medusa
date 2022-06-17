@@ -69,6 +69,12 @@ Then, on your server, update the environment variable `STORE_CORS` to the URL wi
 STORE_CORS=http://localhost:<PORT>
 ```
 
+:::info
+
+For more details about the Store CORS configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
+
+:::
+
 ### Development Resources
 
 If you’re not familiar with Gatsby, you can learn more about it through the following resources:
