@@ -251,7 +251,10 @@ class ProductService extends TransactionBaseService<ProductService> {
 
       const { relations, ...query } = buildQuery(selector, config)
 
-      const product = await productRepo.findOneWithRelations(relations, query)
+      const product = await productRepo.findOneWithRelations(
+        relations,
+        query as FindWithoutRelationsOptions
+      )
 
       if (!product) {
         const selectorConstraints = Object.entries(selector)

@@ -14,12 +14,14 @@ import {
   WithRequiredProperty,
 } from "../types/common"
 
-export type FindProductConfigRepo = ExtendedFindConfig<
-  Product,
-  Selector<Product>
->
+export type ProductSelector = Omit<Selector<Product>, "tags"> & {
+  tags: FindOperator<string[]>
+}
 
-type DefaultWithoutRelations = Omit<FindProductConfigRepo, "relations">
+export type DefaultWithoutRelations = Omit<
+  ExtendedFindConfig<Product, ProductSelector>,
+  "relations"
+>
 
 export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   where: DefaultWithoutRelations["where"] & {
@@ -72,7 +74,7 @@ export class ProductRepository extends Repository<Product> {
       qb.orderBy(parsed)
     }
 
-    if (tags && tags instanceof FindOperator) {
+    if (tags) {
       qb.leftJoin("product.tags", "tags").andWhere(`tags.id IN (:...tag_ids)`, {
         tag_ids: tags.value,
       })
