@@ -41,6 +41,11 @@ module.exports = {
           label: "Set Up your Development Environment"
         },
         {
+          type: "doc",
+          id: "usage/configurations",
+          label: "Configure your Server"
+        },
+        {
           type: "category",
           collapsed: true,
           label: "Storefront Quickstart",

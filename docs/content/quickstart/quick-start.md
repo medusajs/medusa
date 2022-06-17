@@ -67,37 +67,11 @@ To upload product images to your Medusa server, you must install and configure o
 - [S3](../add-plugins/s3.md)
 - [DigitalOcean Spaces](../add-plugins/spaces.md)
 
-### Environment Variables
+### Server Configurations
 
-Medusa allows you to choose how to load your environment variables. By default, it will only load environment variables on your system.
+It's important to configure your Medusa server properly and learn how environment variables are loaded.
 
-If you want to load environment variables from a `.env` file add the following at the top of `medusa-config.js`:
-
-```js
-const dotenv = require('dotenv')
-
- let ENV_FILE_NAME = '';
- switch (process.env.NODE_ENV) {
-  case 'production':
-    ENV_FILE_NAME = '.env.production';
-    break;
-  case 'staging':
-    ENV_FILE_NAME = '.env.staging';
-    break;
-  case 'test':
-    ENV_FILE_NAME = '.env.test';
-    break;
-  case 'development':
-  default:
-    ENV_FILE_NAME = '.env';
-    break;
- }
-
- try {
-  dotenv.config({ path: process.cwd() + '/' + ENV_FILE_NAME });
- } catch (e) {
- }
-```
+You can learn more about configuring your server and loading environment variables in the [Configure your Server documentation](../usage/configurations.md).
 
 ## What's next :rocket:
 
