@@ -203,8 +203,20 @@ module.exports = {
               ]
             },
             {
-              type: "doc",
-              id: "guides/plugins",
+              type: "category",
+              label: "Plugins",
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/plugins/overview",
+                  label: "Overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/plugins/create",
+                }
+              ]
             },
             {
               type: "doc",

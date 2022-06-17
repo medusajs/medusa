@@ -78,7 +78,7 @@ Additionally, if you’re creating your Notification Provider as an external plu
 
 :::info
 
-You can learn more about plugins and how to create them in the [Plugins](../../../guides/plugins.md) documentation.
+You can learn more about plugins and how to create them in the [Plugins](../plugins/overview.md) documentation.
 
 :::
 
@@ -268,5 +268,5 @@ This request returns the same notification object as the List Notifications endp
 
 - Check out the [list of events](../subscribers/events-list.md) you can listen to.
 - Check out the [SendGrid](../../../add-plugins/sendgrid.mdx) plugin for easy integration of email notifications.
-- Learn how to [create your own plugin](../../../guides/plugins.md).
+- Learn how to [create your own plugin](../plugins/create.md).
 - Learn more about [Subscribers](../subscribers/create-subscriber.md) and [Services](../services/create-service.md).

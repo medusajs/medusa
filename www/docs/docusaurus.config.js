@@ -26,7 +26,7 @@ module.exports = {
     [
       "docusaurus-plugin-segment",
       {
-        apiKey: process.env.SEGMENT_API_KEY
+        apiKey: process.env.SEGMENT_API_KEY || "temp"
       }
     ]
   ],
