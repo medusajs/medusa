@@ -1,8 +1,10 @@
-import ProductExportStrategy from "../product-export"
+import ProductExportStrategy from "../batch-jobs/product/export"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import { User } from "../../models"
 import { BatchJobStatus } from "../../types/batch-job"
 import { productsToExport } from "../__fixtures__/product-export-data"
+import { AdminPostBatchesReq } from "../../api/routes/admin/batch/create-batch-job"
+import { defaultAdminProductRelations } from "../../api/routes/admin/products"
 
 const outputDataStorage: string[] = []
 
@@ -10,8 +12,8 @@ let fakeJob = {
   id: IdMap.getId("product-export-job"),
   type: 'product-export',
   context: {
-    listConfig: {},
-    filterableFields: {},
+    list_config: {},
+    filterable_fields: {},
   },
   created_by: IdMap.getId("product-export-job-creator"),
   created_by_user: {} as User,
@@ -147,5 +149,58 @@ describe("Product export strategy", () => {
   it('should process the batch job and generate the appropriate output', async () => {
     await productExportStrategy.processJob(fakeJob.id)
     expect(outputDataStorage).toMatchSnapshot()
+  })
+
+  it('should prepare the job to be pre proccessed', async () => {
+    const fakeJob1: AdminPostBatchesReq = {
+      type: 'product-export',
+      context: {
+        limit: 10,
+        offset: 10,
+        expand: "variants",
+        fields: "title",
+        order: "-title",
+        filterable_fields: { title: "test" }
+      },
+      dry_run: false
+    }
+
+    const output1 = await productExportStrategy.prepareBatchJobForProcessing(
+      fakeJob1,
+      {} as Express.Request
+    )
+
+    expect(output1.context).toEqual(expect.objectContaining({
+      list_config: {
+        select: ["title", "created_at", "id"],
+        order: { title: "DESC" },
+        relations: ["variants"],
+        skip: 10,
+        take: 10,
+      },
+      filterable_fields: { title: "test" }
+    }))
+
+    const fakeJob2: AdminPostBatchesReq = {
+      type: 'product-export',
+      context: {},
+      dry_run: false
+    }
+
+    const output2 = await productExportStrategy.prepareBatchJobForProcessing(
+      fakeJob2,
+      {} as Express.Request
+    )
+
+    expect(output2.context).toEqual(expect.objectContaining({
+      list_config: {
+        select: undefined,
+        order: { created_at: "DESC" },
+        relations: defaultAdminProductRelations,
+        skip: 0,
+        take: 50,
+      },
+      filterable_fields: undefined
+    }))
   })
 })

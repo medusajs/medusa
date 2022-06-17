@@ -164,9 +164,8 @@ describe("/admin/batch-jobs", () => {
       expect(response.status).toEqual(201)
       expect(response.data.batch_job).toMatchSnapshot({
         created_by: "admin_user",
-        status: "confirmed",
+        status: "created",
         id: expect.any(String),
-        confirmed_at: expect.any(String),
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })

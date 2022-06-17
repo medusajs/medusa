@@ -1,5 +1,4 @@
 import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
-import { BatchJob } from "../models/batch-job"
 import { TransactionBaseService } from "./transaction-base-service"
 
 export interface IBatchJobStrategy<T extends TransactionBaseService<any>>
@@ -39,11 +38,13 @@ export abstract class AbstractBatchJobStrategy<
 
   async prepareBatchJobForProcessing(
     batchJob: AdminPostBatchesReq,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     req: Express.Request
   ): Promise<AdminPostBatchesReq> {
     return batchJob
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   public async preProcessBatchJob(batchJobId: string): Promise<void> {
     return
   }

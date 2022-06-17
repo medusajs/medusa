@@ -18,14 +18,9 @@ class BatchJobSubscriber {
     this.batchJobService_ = container.batchJobService
     this.container_ = container
 
-    this.eventBusService_.subscribe(
-      BatchJobService.Events.CREATED,
-      this.preProcessBatchJob
-    )
-    this.eventBusService_.subscribe(
-      BatchJobService.Events.CONFIRMED,
-      this.processBatchJob
-    )
+    this.eventBusService_
+      .subscribe(BatchJobService.Events.CREATED, this.preProcessBatchJob)
+      .subscribe(BatchJobService.Events.CONFIRMED, this.processBatchJob)
   }
 
   preProcessBatchJob = async (data): Promise<void> => {
@@ -50,7 +45,9 @@ class BatchJobSubscriber {
     await this.batchJobService_.complete(batchJob)
   }
 
-  getBatchJobStrategy(type: string): AbstractBatchJobStrategy<any> {
+  getBatchJobStrategy(
+    type: string
+  ): AbstractBatchJobStrategy<AbstractBatchJobStrategy<never>> {
     const batchJobStrategy = this.container_[`batchType_${type}`]
 
     if (!batchJobStrategy) {

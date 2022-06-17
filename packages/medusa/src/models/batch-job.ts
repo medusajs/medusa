@@ -4,7 +4,7 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { User } from "./user"
-import { RequestQueryFields } from "../types/common"
+import { RequestQueryFields, Selector } from "../types/common"
 
 @Entity()
 export class BatchJob extends SoftDeletableEntity {
@@ -22,12 +22,26 @@ export class BatchJob extends SoftDeletableEntity {
   context: {
     retry_count?: number
     max_retry?: number
-  } & RequestQueryFields & Record<string, unknown>
+    offset?: number
+    limit?: number
+    order?: string
+    fields?: string
+    expand?: string
+    file_key?: string
+    list_config?: {
+      select?: string[]
+      relations?: string[]
+      skip?: number
+      take?: number
+      order?: Record<string, "ASC" | "DESC">
+    }
+    filterable_fields?: Selector<unknown>
+  } & Record<string, unknown>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   result: {
     count?: number
-    advancementCount?: number
+    advancement_count?: number
     progress?: number
   } & Record<string, unknown>
 
