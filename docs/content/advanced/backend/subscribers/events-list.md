@@ -167,7 +167,7 @@ Triggered when a cart and data associated with it (payment sessions, shipping me
 </td>
 <td>
 
-The entire cart as an object. You can refer to the [Cart model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/cart.ts) for an idea of what fields to expect.
+The entire cart as an object. You can refer to the [Cart entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/cart.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -476,7 +476,7 @@ Triggered when a customer is created.
 </td>
 <td>
 
-The entire customer passed as an object. You can refer to the [Customer model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
+The entire customer passed as an object. You can refer to the [Customer entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -494,7 +494,7 @@ Triggered when a customer is updated including their information or password, or
 </td>
 <td>
 
-The entire customer passed as an object. You can refer to the [Customer model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
+The entire customer passed as an object. You can refer to the [Customer entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1338,7 +1338,7 @@ Triggered when a product and data associated with it (options, variant orders, e
 </td>
 <td>
 
-The entire product passed as an object. You can refer to the [Product model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/product.ts) for an idea of what fields to expect.
+The entire product passed as an object. You can refer to the [Product entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/product.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1862,4 +1862,4 @@ Object of the following format:
 ## What’s Next 🚀
 
 - Learn how you can [use services in subscribers](create-subscriber.md#using-services-in-subscribers).
-- Learn how to [create notifications](../../../how-to/notification-api.md) in Medusa.
+- Learn how to [create notifications](../notification/overview.md) in Medusa.

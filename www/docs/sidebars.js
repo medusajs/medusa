@@ -27,6 +27,10 @@ module.exports = {
       label: "Quickstart Guide",
     },
     {
+      type: "doc",
+      id: "usage",
+    },
+    {
       type: "category",
       collapsed: false,
       label: "Usage Guides",
@@ -112,12 +116,12 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-storefront",
-                  label: "Add Endpoint for Storefront"
+                  label: "Create Endpoint for Storefront"
                 },
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-admin",
-                  label: "Add Endpoint for Admin"
+                  label: "Create Endpoint for Admin"
                 },
               ]
             },
@@ -129,7 +133,7 @@ module.exports = {
             {
               type: "category",
               label: 'Subscribers',
-              collapsed: false,
+              collapsed: true,
               items: [
                 {
                   type: "doc",
@@ -144,6 +148,11 @@ module.exports = {
               ]
             },
             {
+              type: "doc",
+              id: "advanced/backend/entities",
+              label: "Entities"
+            },
+            {
               type: "category",
               label: 'Shipping',
               collapsed: true,
@@ -156,7 +165,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/shipping/add-fulfillment-provider",
-                  label: "Add Fulfillment Provider"
+                  label: "Create a Fulfillment Provider"
                 }
               ]
             },
@@ -173,16 +182,25 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/payment/how-to-create-payment-provider",
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/payment/frontend-payment-flow-in-checkout",
+                  label: "Create a Payment Provider"
                 },
               ]
             },
             {
-              type: "doc",
-              id: "how-to/notification-api",
+              type: "category",
+              label: "Notification",
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/how-to-create-notification-provider",
+                  label: "Create a Notification Provider"
+                }
+              ]
             },
             {
               type: "category",
@@ -213,6 +231,10 @@ module.exports = {
               type: "category",
               label: 'Upgrade Guides',
               collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'advanced/backend/upgrade-guides/index'
+              },
               items: [
                 {
                   type: "doc",
@@ -220,6 +242,17 @@ module.exports = {
                   label: "v1.3.0"
                 },
               ]
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Storefront",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "advanced/storefront/how-to-implement-checkout-flow",
             },
           ]
         }
@@ -398,6 +431,11 @@ module.exports = {
           label: "Documentation Error",
         },
       ],
+    },
+    {
+      type: "doc",
+      id: "contribution-guidelines",
+      label: "Contribution Guidelines",
     },
   ],
   servicesSidebar: [
