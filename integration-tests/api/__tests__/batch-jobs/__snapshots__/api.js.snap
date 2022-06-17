@@ -52,7 +52,7 @@ Object {
   "completed_at": null,
   "confirmed_at": null,
   "context": Object {
-    "listConfig": Object {
+    "list_config": Object {
       "order": Object {
         "created_at": "DESC",
       },
@@ -66,8 +66,9 @@ Object {
         "type",
         "collection",
       ],
+      "skip": 0,
+      "take": 50,
     },
-    "offset": 0,
   },
   "created_at": Any<String>,
   "created_by": "admin_user",
