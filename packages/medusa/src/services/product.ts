@@ -281,14 +281,14 @@ class ProductService extends TransactionBaseService<ProductService> {
       take: 50,
     }
   ): Promise<ProductVariant[]> {
-    return await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async () => {
       const givenRelations = config.relations ?? []
       const requiredRelations = ["variants"]
       const relationsSet = new Set([...givenRelations, ...requiredRelations])
 
       const product = await this.retrieve(productId, {
         ...config,
-        relations: Array.from(relationsSet),
+        relations: [...relationsSet],
       })
       return product.variants
     })
