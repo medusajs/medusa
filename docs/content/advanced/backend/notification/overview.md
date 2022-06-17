@@ -16,7 +16,7 @@ An example of a notification provider is SendGrid. When an order is placed, the 
 
 ### How Notification Provider is Created
 
-A Notification Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the [`NotificationService`](../../../references/services/classes/NotificationService.md) provided by the `medusa-interfaces` package. It can be created as part of a [Plugin](../../../guides/plugins.md), or it can be created just as a Service file in your Medusa server.
+A Notification Provider is essentially a Medusa [Service](../services/create-service.md) with a unique identifier, and it extends the [`NotificationService`](../../../references/services/classes/NotificationService.md) provided by the `medusa-interfaces` package. It can be created as part of a [Plugin](../plugins/overview.md), or it can be created just as a Service file in your Medusa server.
 
 As a developer, you mainly work with the Notification Provider when integrating a third-party service that handles notifications in Medusa.
 
