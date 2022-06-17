@@ -70,7 +70,7 @@ Following the naming convention of Services, the name of the file should be the 
 
 As mentioned in the overview, Payment Providers should have a static `identifier` property.
 
-The `PaymentProvider` model has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
+The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
 
 The value of this property will also be used to reference the Payment Provider throughout the Medusa server. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/cart/select-a-payment-session).
 

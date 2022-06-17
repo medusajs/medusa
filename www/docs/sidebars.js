@@ -112,12 +112,12 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-storefront",
-                  label: "Add Endpoint for Storefront"
+                  label: "Create Endpoint for Storefront"
                 },
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-admin",
-                  label: "Add Endpoint for Admin"
+                  label: "Create Endpoint for Admin"
                 },
               ]
             },
@@ -129,7 +129,7 @@ module.exports = {
             {
               type: "category",
               label: 'Subscribers',
-              collapsed: false,
+              collapsed: true,
               items: [
                 {
                   type: "doc",
@@ -161,7 +161,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/shipping/add-fulfillment-provider",
-                  label: "Add Fulfillment Provider"
+                  label: "Create a Fulfillment Provider"
                 }
               ]
             },
@@ -178,6 +178,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/payment/how-to-create-payment-provider",
+                  label: "Create a Payment Provider"
                 },
               ]
             },
