@@ -39,6 +39,8 @@ Medusa is an open-source headless commerce engine that enables developers to cre
   </a>
 </p>
 
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/medusajs/medusa)
+
 ## Quickstart
 
 1. **Install Medusa CLI**
