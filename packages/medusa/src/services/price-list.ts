@@ -279,7 +279,10 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
       const { q, ...priceListSelector } = selector
-      const { relations, ...query } = buildQuery(priceListSelector, config)
+      const { relations, ...query } = buildQuery<
+        FilterablePriceListProps,
+        FilterablePriceListProps
+      >(priceListSelector, config)
 
       const groups = query.where.customer_groups as FindOperator<string[]>
       delete query.where.customer_groups
