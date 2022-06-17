@@ -18,6 +18,7 @@ import { asValue, asClass, asFunction, aliasTo } from "awilix"
 import { sync as existsSync } from "fs-exists-cached"
 import {
   AbstractTaxService,
+  isFeatureFlagStrategy,
   isFileService,
   isTaxCalculationStrategy,
   TransactionBaseService as BaseService,
@@ -208,6 +209,23 @@ export function registerStrategies(
           })
 
           registeredServices["priceSelectionStrategy"] = file
+        } else {
+          logger.warn(
+            `Cannot register ${file}. A price selection strategy is already registered`
+          )
+        }
+        break
+      }
+
+      case isFeatureFlagStrategy(module.prototype): {
+        if (!("featureFlagStrategy" in registeredServices)) {
+          container.register({
+            featureFlagStrategy: asFunction(
+              (cradle) => new module(cradle, pluginDetails.options)
+            ).singleton(),
+          })
+
+          registeredServices["featureFlagStrategy"] = file
         } else {
           logger.warn(
             `Cannot register ${file}. A price selection strategy is already registered`

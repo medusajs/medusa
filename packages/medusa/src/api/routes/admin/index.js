@@ -62,9 +62,12 @@ export default (app, container, config) => {
   // Calls all middleware that has been registered to run after authentication.
   middlewareService.usePostAuthentication(app)
 
+  const featureFlagService = container.resolve("featureFlagStrategy")
+
   appRoutes(route)
   productRoutes(route)
   batchRoutes(route)
+  // batchRoutes(route)
   userRoutes(route)
   regionRoutes(route)
   shippingOptionRoutes(route)

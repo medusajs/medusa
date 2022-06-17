@@ -8,6 +8,7 @@ const adminSeeder = require("../../helpers/admin-seeder")
 const userSeeder = require("../../helpers/user-seeder")
 
 const { simpleBatchJobFactory } = require("../../factories")
+const setFeatureFlag = require("../../helpers/set-feature-flag")
 
 jest.setTimeout(50000)
 
@@ -58,7 +59,8 @@ describe("/admin/batch-jobs", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: false })
+    medusaProcess = await setupServer({ cwd, verbose: true })
+    setFeatureFlag({ "medusa:batchJob": true })
   })
 
   afterAll(async () => {
@@ -89,17 +91,17 @@ describe("/admin/batch-jobs", () => {
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
         ],
       })
@@ -121,28 +123,29 @@ describe("/admin/batch-jobs", () => {
       const response = await api.get("/admin/batch-jobs/job_1", adminReqConfig)
 
       expect(response.status).toEqual(200)
-      expect(response.data.batch_job).toEqual(expect.objectContaining({
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        created_by: "admin_user"
-      }))
+      expect(response.data.batch_job).toEqual(
+        expect.objectContaining({
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          created_by: "admin_user",
+        })
+      )
     })
 
     it("should fail on batch job created by other user", async () => {
       const api = useApi()
-      await api.get("/admin/batch-jobs/job_4", adminReqConfig)
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.type).toEqual("not_allowed")
-          expect(err.response.data.message).toEqual(
-            "Cannot access a batch job that does not belong to the logged in user"
-          )
-        })
+      await api.get("/admin/batch-jobs/job_4", adminReqConfig).catch((err) => {
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.type).toEqual("not_allowed")
+        expect(err.response.data.message).toEqual(
+          "Cannot access a batch job that does not belong to the logged in user"
+        )
+      })
     })
   })
 
   describe("POST /admin/batch-jobs/", () => {
-    beforeEach(async() => {
+    beforeEach(async () => {
       try {
         await adminSeeder(dbConnection)
       } catch (err) {
@@ -151,12 +154,12 @@ describe("/admin/batch-jobs", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       const db = useDb()
       await db.teardown()
     })
 
-    it("Creates a batch job", async() => {
+    it("Creates a batch job", async () => {
       const api = useApi()
 
       const response = await api.post(

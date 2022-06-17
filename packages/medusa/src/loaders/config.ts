@@ -57,5 +57,6 @@ export default (rootDirectory: string): ConfigModule => {
       ...configModule?.projectConfig,
     },
     plugins: configModule?.plugins ?? [],
+    featureFlags: configModule.featureFlags ?? {},
   }
 }

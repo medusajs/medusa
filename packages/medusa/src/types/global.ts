@@ -58,4 +58,5 @@ export type ConfigModule = {
       }
     | string
   )[]
+  featureFlags: Record<string, boolean>
 }

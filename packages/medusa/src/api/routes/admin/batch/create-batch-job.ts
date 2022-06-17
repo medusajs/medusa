@@ -1,5 +1,6 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 import BatchJobService from "../../../../services/batch-job"
+import FeatureFlagStrategy from "../../../../strategies/feature-flag"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -29,13 +30,20 @@ export default async (req, res) => {
 
   const userId = req.user.id ?? req.user.userId
 
-  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
-  const batch_job = await batchJobService.create({
-    ...validated,
-    created_by: userId,
-  })
+  const featureFlagService: FeatureFlagStrategy = req.scope.resolve(
+    "featureFlagStrategy"
+  )
 
-  res.status(201).json({ batch_job })
+  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
+
+  if (featureFlagService.isSet("medusa:batchJob")) {
+    const batch_job = await batchJobService.create({
+      ...validated,
+      created_by: userId,
+    })
+
+    res.status(201).json({ batch_job })
+  }
 }
 
 export class AdminPostBatchesReq {
