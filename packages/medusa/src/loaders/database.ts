@@ -2,7 +2,7 @@ import { Connection, createConnection } from "typeorm"
 import { ShortenedNamingStrategy } from "../utils/naming-strategy"
 import { AwilixContainer } from "awilix"
 import { ConnectionOptions } from "typeorm/connection/ConnectionOptions"
-import { ConfigModule, HostConfig } from "../types/global"
+import { ConfigModule, DatabaseHostConfig } from "../types/global"
 
 type Options = {
   configModule: ConfigModule
@@ -17,7 +17,7 @@ export default async ({
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"
 
-  let hostConfig: HostConfig = {
+  let hostConfig: DatabaseHostConfig = {
     database: configModule.projectConfig.database_database,
     url: configModule.projectConfig.database_url,
   }
