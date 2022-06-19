@@ -12,7 +12,10 @@ const errorHandler = isProduction
 export default async (rootDirectory: string): Promise<ConfigModule> => {
   /** we promisify the configuration to support both synchronouse and asynchronous loading.  */
 
-  const configuration = getConfigFile(rootDirectory, `medusa-config`)
+  const configuration = getConfigFile(rootDirectory, `medusa-config`) as {
+    configModule: ConfigModule
+    configFilePath: string
+  }
   const resolveConfigProperties = async (obj): Promise<ConfigModule> => {
     for (const key of Object.keys(obj)) {
       if (typeof obj[key] === "object" && obj[key] !== null) {
@@ -24,7 +27,7 @@ export default async (rootDirectory: string): Promise<ConfigModule> => {
     }
     return obj
   }
-  const configModule = await resolveConfigProperties(configuration)
+  const configModule = await resolveConfigProperties(configuration.configModule)
 
   if (!configModule?.projectConfig?.redis_url) {
     console.log(

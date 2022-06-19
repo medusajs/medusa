@@ -27,18 +27,15 @@ const t = async function ({ directory }) {
     }
   }
 
-  let connection = undefined
-  if (configModule) {
-    connection = await createConnection({
-      type: configModule.projectConfig.database_type,
-      /** this gives the option of either using a url or using individual components. 
+  const connection = await createConnection({
+    type: configModule.projectConfig.database_type,
+    /** this gives the option of either using a url or using individual components. 
     For dynamic passowords one needs to use the individual database url components */
-      ...hostConfig,
-      extra: configModule?.projectConfig.database_extra || {},
-      migrations: migrationDirs,
-      logging: true,
-    })
-  }
+    ...hostConfig,
+    extra: configModule?.projectConfig.database_extra || {},
+    migrations: migrationDirs,
+    logging: true,
+  })
 
   if (args[0] === "run" && connection) {
     await connection?.runMigrations()
