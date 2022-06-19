@@ -175,7 +175,6 @@ class ProductService extends TransactionBaseService<ProductService> {
   async count(selector: Selector<Product> = {}): Promise<number> {
     return await this.atomicPhase_(async (manager) => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
-      /** revisit */
       const query = buildQuery(selector)
       return await productRepo.count(query)
     })
