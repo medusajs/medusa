@@ -46,7 +46,7 @@ const t = async function ({ directory, migrate, seedFile }) {
 
   const dbType = configModule.projectConfig.database_type
   if (migrate && dbType !== "sqlite") {
-    const migrationDirs = await Promise.resolve(getMigrations(directory))
+    const migrationDirs = await getMigrations(directory)
     const connection = await createConnection({
       type: configModule.projectConfig.database_type,
       ...hostConfig,
