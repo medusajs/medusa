@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-twilio-sms",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "main": "index.js",
   "repository": {
     "type": "git",
