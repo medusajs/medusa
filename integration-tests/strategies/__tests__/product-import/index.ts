@@ -1,3 +1,6 @@
+const Redis = require("ioredis")
+import { GenericContainer } from "testcontainers"
+
 const path = require("path")
 
 const { bootstrapApp } = require("../../../helpers/bootstrap-app")
@@ -13,6 +16,10 @@ describe("Product import strategy", () => {
   let dbConnection
   let express
 
+  // TODO: only for testing now -> refactor to `useRedis`
+  let container
+  let redisClient
+
   const doAfterEach = async () => {
     const db = useDb()
     return await db.teardown()
@@ -22,6 +29,19 @@ describe("Product import strategy", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
+
+      container = await new GenericContainer("redis")
+        // exposes the internal Docker port to the host machine
+        .withExposedPorts(6379)
+        .start()
+
+      redisClient = new Redis({
+        host: container.getHost(),
+        // retrieves the port on the host machine which maps
+        // to the exposed port in the Docker container
+        port: container.getMappedPort(6379),
+      })
+
       const { container, app, port } = await bootstrapApp({ cwd })
       appContainer = container
 
@@ -38,6 +58,10 @@ describe("Product import strategy", () => {
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
+
+    redisClient && (await redisClient.quit())
+    container && (await container.stop())
+
     express.close()
     // medusaProcess.kill()
   })
