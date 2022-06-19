@@ -13,6 +13,7 @@
     "medusa-fulfillment-webshipper": "1.2.1",
     "medusa-interfaces": "1.2.1",
     "medusa-plugin-sendgrid": "1.2.1",
+    "testcontainers": "^8.10.1",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
