@@ -2,19 +2,19 @@ import { EntityManager } from "typeorm"
 import IORedis from "ioredis"
 import pickBy from "lodash/pickBy"
 
-import { AbstractBatchJobStrategy, IFileService } from "../interfaces"
-import { BatchJob } from "../models"
+import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
+import { BatchJob } from "../../models"
 
-import CsvParser from "../services/csv-parser"
+import CsvParser from "../../services/csv-parser"
 import {
   BatchJobService,
   ProductService,
   ProductVariantService,
-} from "../services"
-import { BatchJobStatus } from "../types/batch-job"
-import { CsvSchema } from "../interfaces/csv-parser"
-import { ProductRepository } from "../repositories/product"
-import { ProductVariantRepository } from "../repositories/product-variant"
+} from "../../services"
+import { BatchJobStatus } from "../../types/batch-job"
+import { CsvSchema } from "../../interfaces/csv-parser"
+import { ProductRepository } from "../../repositories/product"
+import { ProductVariantRepository } from "../../repositories/product-variant"
 
 /* ******************** TYPES ******************** */
 
