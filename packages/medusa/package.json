@@ -79,6 +79,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.2",
     "node-schedule": "^2.1.0",
+    "papaparse": "^5.3.2",
     "passport": "^0.4.0",
     "passport-http-bearer": "^1.0.1",
     "passport-jwt": "^4.0.0",
