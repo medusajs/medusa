@@ -8,7 +8,7 @@ const adminSeeder = require("../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-describe("medusa-plugin-sendgrid", () => {
+describe("Product import strategy", () => {
   let appContainer
   let dbConnection
   let express
