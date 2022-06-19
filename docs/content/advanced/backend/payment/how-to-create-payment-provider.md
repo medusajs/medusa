@@ -70,7 +70,7 @@ Following the naming convention of Services, the name of the file should be the 
 
 As mentioned in the overview, Payment Providers should have a static `identifier` property.
 
-The `PaymentProvider` model has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
+The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
 
 The value of this property will also be used to reference the Payment Provider throughout the Medusa server. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/cart/select-a-payment-session).
 
@@ -384,4 +384,4 @@ async retrieveSavedMethods(customer) {
 ## What’s Next 🚀
 
 - Check out the Payment Providers for [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) for implementation examples.
-- Learn more about the [frontend checkout flow](./frontend-payment-flow-in-checkout.md).
+- Learn more about the [frontend checkout flow](./../../storefront/how-to-implement-checkout-flow.mdx).

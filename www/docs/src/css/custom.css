@@ -259,7 +259,7 @@ html:not([data-theme="dark"]) footer {
 /* Cards */
 
 html:not([data-theme=dark]) .card {
-  border: 1px solid #1f1f1f;
+  border: 1px solid #cbcbcb;
   border-radius: 8px;
 }
 
