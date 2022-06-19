@@ -10,7 +10,7 @@ const t = async function ({ directory }) {
   args.shift()
   args.shift()
   const configModule = await configLoader(directory)
-  const migrationDirs = await Promise.resolve(getMigrations(directory))
+  const migrationDirs = await getMigrations(directory)
   let hostConfig = {
     database: configModule.projectConfig.database_database,
     url: configModule.projectConfig.database_url,
