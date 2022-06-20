@@ -116,7 +116,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly batchJobService_: BatchJobService
   protected readonly productService_: ProductService
   protected readonly productVariantService_: ProductVariantService
-  protected readonly productRepo_: ProductRepository
+  protected readonly productRepo_: typeof ProductRepository
   protected readonly productVariantRepo_: ProductVariantRepository
   protected readonly redisClient_: IORedis.Redis
 
@@ -164,11 +164,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     const seenProducts = {}
 
-    const productsCreate = []
-    const productsUpdate = []
+    const productsCreate: any[] = []
+    const productsUpdate: any[] = []
 
-    const variantsCreate = []
-    const variantsUpdate = []
+    const variantsCreate: any[] = []
+    const variantsUpdate: any[] = []
 
     for (const row of csvData) {
       if (row.variantId) {
@@ -199,15 +199,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
-  async prepareBatchJobForProcessing(
-    batchJobId: string,
-    req: any
-  ): Promise<BatchJob> {
+  async preProcessBatchJob(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
     const csvFileKey = (batchJob.context as Context).csvFileKey
     const csvStream = await this.fileService_.getDownloadStream({
-      key: csvFileKey,
+      fileKey: csvFileKey,
     })
 
     const data = await this.csvParser_.parse(csvStream)
@@ -224,20 +221,20 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       },
     })
 
-    return await this.batchJobService_.ready(batchJobId)
+    await this.batchJobService_.setPreProcessingDone(batchJobId)
   }
 
-  async processJob(batchJobId: string): Promise<BatchJob> {
+  async processJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
+      await this.batchJobService_.setProcessing(batchJobId)
+
       await this.createProducts(batchJobId, transactionManager)
       await this.updateProducts(batchJobId, transactionManager)
 
       await this.createVariants(batchJobId, transactionManager)
       await this.updateVariants(batchJobId, transactionManager)
 
-      return await this.batchJobService_
-        .withTransaction(transactionManager)
-        .retrieve(batchJobId)
+      await this.batchJobService_.complete(batchJobId)
     })
   }
 
@@ -308,7 +305,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
       await this.productVariantService_
         .withTransaction(transactionManager)
-        .create(productId, transformVariantData(variantOp.data))
+        .create(productId, transformVariantData(variantOp.data) as any)
     }
   }
 
@@ -324,7 +321,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const variantOp of variantOps) {
       await this.productVariantService_
         .withTransaction(transactionManager)
-        .update(variantOp.data.variant.id, transformVariantData(variantOp.data))
+        .update(
+          variantOp.data.variant.id,
+          transformVariantData(variantOp.data) as any
+        )
     }
   }
 
@@ -337,6 +337,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       .withTransaction(transactionManager)
       .retrieve(batchJobId)
 
+    // @ts-ignore
     const progress = batchJob.context.progress + processedRowsCount
 
     await this.batchJobService_

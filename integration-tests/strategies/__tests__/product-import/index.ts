@@ -73,8 +73,8 @@ describe("Product import strategy", () => {
   test("strategy test", async () => {
     const eventBus = appContainer.resolve("eventBusService")
 
-    eventBus.console.log(eventBus, redisClient, redisContainer)
+    const productImportStrategy = appContainer.resolve("batchJobStrategies")
 
-    // const productImportStrategy = appContainer.resolve("productImport")
+    console.log(productImportStrategy)
   })
 })
