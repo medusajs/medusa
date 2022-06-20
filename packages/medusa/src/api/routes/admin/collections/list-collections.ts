@@ -3,6 +3,7 @@ import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import _, { identity } from "lodash"
 import ProductCollectionService from "../../../../services/product-collection"
 import { DateComparisonOperator } from "../../../../types/common"
+import { Request } from "express"
 
 /**
  * @oas [get] /collections
@@ -30,7 +31,7 @@ import { DateComparisonOperator } from "../../../../types/common"
  *            collection:
  *              $ref: "#/components/schemas/product_collection"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
