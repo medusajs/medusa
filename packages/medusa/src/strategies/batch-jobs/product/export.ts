@@ -12,6 +12,7 @@ import {
   ProductExportColumnSchemaDescriptor,
   productExportSchemaDescriptors,
 } from "./index"
+import { FindProductConfig } from "../../../types/product"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -148,7 +149,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
             ...list_config,
             skip: offset,
             take: limit,
-          })
+          } as FindProductConfig)
 
         productCount = count
         let products: Product[] = productList
@@ -161,7 +162,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
                 ...list_config,
                 skip: offset,
                 take: limit,
-              })
+              } as FindProductConfig)
           }
 
           products.forEach((product: Product) => {
