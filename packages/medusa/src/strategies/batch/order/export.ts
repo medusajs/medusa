@@ -57,6 +57,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
   async prepareBatchJobForProcessing(
     batchJob: AdminPostBatchesReq,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     req: Express.Request
   ): Promise<AdminPostBatchesReq> {
     const {
@@ -132,10 +133,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         orderCount = count
 
-        let context = batchJob.context
+        const context = batchJob.context
         let orders = []
 
-        while (offset < count) {
+        while (offset < orderCount) {
           orders = await this.orderService_
             .withTransaction(transactionManager)
             .list(filterable_fields, {
@@ -148,11 +149,24 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             writeStream.write(await this.buildCSVLine(order, lineDescriptor))
           })
 
-          context = { ...context, count, offset, progress: offset / count }
+          // context = { ...context, count, offset, progress: offset / count }
           const batch = await this.batchJobService_
             .withTransaction(transactionManager)
             .update(batchJobId, {
-              context,
+              context: {
+                ...batchJob.context,
+                file_key: fileKey,
+                list_config: {
+                  ...list_config,
+                  skip: offset,
+                },
+              },
+              result: {
+                count,
+                advancement_count: offset,
+                progress: offset / count,
+                err: undefined,
+              },
             })
 
           offset += this.BATCH_SIZE
@@ -172,14 +186,17 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         await promise
 
-        context.fileKey = fileKey
-        context.progress = 1
+        context.file_key = fileKey
 
-        const updatedBatchJob = await this.batchJobService_.update(batchJobId, {
+        await this.batchJobService_.update(batchJobId, {
           context,
+          result: {
+            count,
+            advancement_count: count,
+            progress: 1,
+            err: undefined,
+          },
         })
-
-        await this.batchJobService_.complete(updatedBatchJob)
       },
       "REPEATABLE READ",
       async (err) =>
@@ -261,7 +278,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       if (err instanceof MedusaError) {
         await this.batchJobService_
           .withTransaction(transactionManager)
-          .setFailed(batchJob)
+          .setFailed(batchJob, errMessage)
       } else if (retryCount < maxRetry) {
         await this.batchJobService_
           .withTransaction(transactionManager)
@@ -281,7 +298,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       } else {
         await this.batchJobService_
           .withTransaction(transactionManager)
-          .setFailed(batchJob)
+          .setFailed(batchJob, errMessage)
       }
     })
   }
