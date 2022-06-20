@@ -69,19 +69,18 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     batchJob: AdminPostBatchesReq,
     req: Express.Request
   ): Promise<AdminPostBatchesReq> {
-    const { limit, offset, order, fields, expand, ...context } =
-      batchJob.context
-
     const {
-      select: filterableFields,
-      skip,
-      take,
-      ...listConfig
-    } = prepareListQuery(
+      limit,
+      offset,
+      order,
+      fields,
+      expand,
+      filterable_fields,
+      ...context
+    } = batchJob.context
+
+    const listConfig = prepareListQuery(
       {
-        context: batchJob.context,
-        type: batchJob.type,
-        dry_run: batchJob.dry_run,
         limit: limit as number,
         offset: offset as number,
         order: order as string,
@@ -94,11 +93,32 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       }
     )
 
+    // const {
+    //   select: filterableFields,
+    //   skip,
+    //   take,
+    //   ...listConfig
+    // } = prepareListQuery(
+    //   {
+    //     context: batchJob.context,
+    //     type: batchJob.type,
+    //     dry_run: batchJob.dry_run,
+    //     limit: limit as number,
+    //     offset: offset as number,
+    //     order: order as string,
+    //     fields: fields as string,
+    //     expand: expand as string,
+    //   },
+    //   {
+    //     isList: true,
+    //     defaultRelations: this.defaultRelations_,
+    //   }
+    // )
+
     batchJob.context = {
       ...(context ?? {}),
-      listConfig,
-      filterableFields: filterableFields || this.defaultFields_,
-      offset: skip,
+      list_config: listConfig,
+      filterable_fields,
     }
 
     return batchJob
@@ -128,11 +148,15 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         const header = this.buildHeader(lineDescriptor)
         writeStream.write(header)
 
-        const [, count] = await this.orderService_.listAndCount(filter, {
-          ...listConfig,
-          skip: offset,
-          take: this.BATCH_SIZE,
-        })
+        const { list_config = {}, filterable_fields = {} } = batchJob.context
+        const [, count] = await this.orderService_.listAndCount(
+          filterable_fields,
+          {
+            ...list_config,
+            skip: offset,
+            take: this.BATCH_SIZE,
+          }
+        )
 
         orderCount = count
 
