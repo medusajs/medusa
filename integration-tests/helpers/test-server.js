@@ -1,7 +1,25 @@
+import redisLoader from "@medusajs/medusa/dist/loaders/redis"
+import path from "path"
+
 const { bootstrapApp } = require("./bootstrap-app")
 
 const setup = async () => {
-  const { app, port } = await bootstrapApp()
+  const cwd = path.resolve(path.join(__dirname, "..", ".."))
+
+  const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+  const config = require(configPath)
+
+  const { app, container, port } = await bootstrapApp()
+
+  if (process.env.REDIS_URL) {
+    // after we know where the redis container is running, try connecting once more
+    config.projectConfig.redis_url = process.env.REDIS_URL
+    await redisLoader({
+      container,
+      configModule: config,
+      logger: {},
+    })
+  }
 
   app.listen(port, (err) => {
     process.send(port)
