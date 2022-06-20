@@ -55,9 +55,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     "region_id",
   ]
 
-  // protected readonly propertiesDescriptors: PropertiesDescriptor<Order>[] =
-  //   propertiesDescriptor
-
   constructor({ fileService, batchJobService, orderService, manager }) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
