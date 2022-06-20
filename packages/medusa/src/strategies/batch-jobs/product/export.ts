@@ -128,14 +128,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           .withTransaction(transactionManager)
           .retrieve(batchJobId)
 
-        const {
-          writeStream,
-          url: key,
-          promise,
-        } = await this.fileService_.getUploadStreamDescriptor({
-          name: "product-export",
-          ext: "csv",
-        })
+        const { writeStream, fileKey, promise } =
+          await this.fileService_.getUploadStreamDescriptor({
+            name: "product-export",
+            ext: "csv",
+          })
 
         const header = await this.buildHeader()
         writeStream.write(header)
@@ -179,7 +176,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           batchJob = await this.batchJobService_.update(batchJobId, {
             context: {
               ...batchJob.context,
-              file_key: key,
+              file_key: fileKey,
               list_config: {
                 ...list_config,
                 skip: offset,
@@ -196,7 +193,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           if (batchJob.status === BatchJobStatus.CANCELED) {
             writeStream.end()
 
-            await this.fileService_.delete({ key: key })
+            await this.fileService_.delete({ key: fileKey })
             return
           }
         }
@@ -351,10 +348,14 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       const retryCount = batchJob.context.retry_count ?? 0
       const maxRetry = batchJob.context.max_retry ?? this.defaultMaxRetry
 
+      const errMessage =
+        (err as any).message ??
+        `Something went wrong with the batchJob ${batchJob.id}`
+
       if (err instanceof MedusaError) {
         await this.batchJobService_
           .withTransaction(transactionManager)
-          .setFailed(batchJob)
+          .setFailed(batchJob, errMessage)
       } else if (retryCount < maxRetry) {
         await this.batchJobService_
           .withTransaction(transactionManager)
@@ -372,13 +373,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
               count,
               advancement_count: advancementCount,
               progress,
-              err,
+              errors: [...(batchJob?.result?.errors ?? []), errMessage],
             },
           })
       } else {
         await this.batchJobService_
           .withTransaction(transactionManager)
-          .setFailed(batchJob)
+          .setFailed(batchJob, errMessage)
       }
     })
   }

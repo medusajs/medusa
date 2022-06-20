@@ -43,6 +43,7 @@ export class BatchJob extends SoftDeletableEntity {
     count?: number
     advancement_count?: number
     progress?: number
+    errors?: string[]
   } & Record<string, unknown>
 
   @Column({ type: "boolean", nullable: false, default: false })
