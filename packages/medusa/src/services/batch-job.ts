@@ -106,7 +106,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
           this.batchJobRepository_
         )
 
-        const query = buildQuery<BatchJob>({ id: batchJobId }, config)
+        const query = buildQuery({ id: batchJobId }, config)
         const batchJob = await batchJobRepo.findOne(query)
 
         if (!batchJob) {
@@ -157,7 +157,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   }
 
   async update(
-    batchJobId: string,
+    batchJobOrId: BatchJob | string,
     data: BatchJobUpdateProps
   ): Promise<BatchJob> {
     return await this.atomicPhase_(async (manager) => {
@@ -165,7 +165,10 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         this.batchJobRepository_
       )
 
-      let batchJob = await this.retrieve(batchJobId)
+      let batchJob = batchJobOrId as BatchJob
+      if (typeof batchJobOrId === "string") {
+        batchJob = await this.retrieve(batchJobOrId)
+      }
 
       const { context, ...rest } = data
       if (context) {
@@ -218,7 +221,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     batchJob = await batchJobRepo.save(batchJob)
     batchJob.loadStatus()
 
-    this.eventBus_.withTransaction(transactionManager).emit(eventType, {
+    await this.eventBus_.withTransaction(transactionManager).emit(eventType, {
       id: batchJob.id,
     })
 
@@ -331,9 +334,29 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     })
   }
 
-  async setFailed(batchJobOrId: string | BatchJob): Promise<BatchJob | never> {
+  async setFailed(
+    batchJobOrId: string | BatchJob,
+    reason?: string
+  ): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
-      return await this.updateStatus(batchJobOrId, BatchJobStatus.FAILED)
+      let batchJob = batchJobOrId as BatchJob
+
+      if (reason) {
+        if (typeof batchJobOrId === "string") {
+          batchJob = await this.retrieve(batchJobOrId)
+        }
+
+        const result = batchJob.result ?? {}
+
+        await this.update(batchJob, {
+          result: {
+            ...result,
+            errors: [...(result?.errors ?? []), reason],
+          },
+        })
+      }
+
+      return await this.updateStatus(batchJob, BatchJobStatus.FAILED)
     })
   }
 }

@@ -11,7 +11,7 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { User } from "./user"
-import { Selector } from "../types/common"
+import { RequestQueryFields, Selector } from "../types/common"
 
 @Entity()
 export class BatchJob extends SoftDeletableEntity {
@@ -50,6 +50,7 @@ export class BatchJob extends SoftDeletableEntity {
     count?: number
     advancement_count?: number
     progress?: number
+    errors?: string[]
   } & Record<string, unknown>
 
   @Column({ type: "boolean", nullable: false, default: false })
