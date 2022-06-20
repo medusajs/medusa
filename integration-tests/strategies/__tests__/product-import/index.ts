@@ -17,7 +17,7 @@ describe("Product import strategy", () => {
   let express
 
   // TODO: only for testing now -> refactor to `useRedis`
-  let container
+  let redisContainer
   let redisClient
 
   const doAfterEach = async () => {
@@ -30,16 +30,16 @@ describe("Product import strategy", () => {
     try {
       dbConnection = await initDb({ cwd })
 
-      container = await new GenericContainer("redis")
+      redisContainer = await new GenericContainer("redis")
         // exposes the internal Docker port to the host machine
         .withExposedPorts(6379)
         .start()
 
       redisClient = new Redis({
-        host: container.getHost(),
+        host: redisContainer.getHost(),
         // retrieves the port on the host machine which maps
         // to the exposed port in the Docker container
-        port: container.getMappedPort(6379),
+        port: redisContainer.getMappedPort(6379),
       })
 
       const { container, app, port } = await bootstrapApp({ cwd })
@@ -60,7 +60,7 @@ describe("Product import strategy", () => {
     await db.shutdown()
 
     redisClient && (await redisClient.quit())
-    container && (await container.stop())
+    redisContainer && (await redisContainer.stop())
 
     express.close()
     // medusaProcess.kill()
@@ -73,6 +73,8 @@ describe("Product import strategy", () => {
   test("strategy test", async () => {
     const eventBus = appContainer.resolve("eventBusService")
 
-    const productImportStrategy = appContainer.resolve("productImportStrategy")
+    eventBus.console.log(eventBus, redisClient, redisContainer)
+
+    // const productImportStrategy = appContainer.resolve("productImport")
   })
 })
