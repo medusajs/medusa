@@ -2250,4 +2250,45 @@ describe("/admin/products", () => {
       )
     })
   })
+
+  describe("GET /admin/products/tag-usage", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully gets the tags usage", async () => {
+      const api = useApi()
+
+      const res = await api
+        .get("/admin/products/tag-usage", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(res.status).toEqual(200)
+      expect(res.data.tags.length).toEqual(3)
+      expect(res.data.tags).toEqual(
+        expect.arrayContaining([
+          { id: "tag1", usage_count: "2", value: "123" },
+          { id: "tag3", usage_count: "2", value: "1235" },
+          { id: "tag4", usage_count: "1", value: "1234" },
+        ])
+      )
+    })
+  })
 })

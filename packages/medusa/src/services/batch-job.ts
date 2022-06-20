@@ -106,7 +106,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
           this.batchJobRepository_
         )
 
-        const query = buildQuery<BatchJob>({ id: batchJobId }, config)
+        const query = buildQuery({ id: batchJobId }, config)
         const batchJob = await batchJobRepo.findOne(query)
 
         if (!batchJob) {

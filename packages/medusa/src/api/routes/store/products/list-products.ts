@@ -20,6 +20,7 @@ import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { Product } from "../../../../models"
 
 /**
  * @oas [get] /products
@@ -85,9 +86,9 @@ export default async (req, res) => {
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
 
-  let includeFields: string[] = []
+  let includeFields: (keyof Product)[] = []
   if (validated.fields) {
-    const set = new Set(validated.fields.split(","))
+    const set = new Set(validated.fields.split(",")) as Set<keyof Product>
     set.add("id")
     includeFields = [...set]
   }
