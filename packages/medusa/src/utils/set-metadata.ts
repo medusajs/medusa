@@ -7,7 +7,7 @@ import { MedusaError } from "medusa-core-utils/dist"
  * @return resolves to the updated result.
  */
 export function setMetadata(
-  obj: { metadata: Record<string, unknown> },
+  obj: { metadata: Record<string, unknown> | null },
   metadata: Record<string, unknown>
 ): Record<string, unknown> {
   const existing = obj.metadata || {}

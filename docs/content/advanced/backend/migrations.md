@@ -57,12 +57,12 @@ In this section, you’ll learn how to create your own migrations using [Typeorm
 To create a migration that makes changes to your Medusa schema, run the following command:
 
 ```bash
-npx typeorm migration:create -n UserChanged --dir src/path
+npx typeorm migration:create -n UserChanged --dir src/migrations
 ```
 
 :::tip
 
-The migration file should be inside the src directory to make sure it is built when the build command is run next.
+The migration file must be inside the `src/migrations` directory. When the build command is run, it will be transpiled into the directory `dist/migrations`. The `migrations run` command can only pick up migrations under the `dist/migrations` directory.
 
 :::
 
