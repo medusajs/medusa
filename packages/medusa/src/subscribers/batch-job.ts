@@ -35,7 +35,7 @@ class BatchJobSubscriber {
 
     await batchJobStrategy.preProcessBatchJob(batchJob.id)
 
-    await this.batchJobService_.setPreProcessingDone(batchJob)
+    await this.batchJobService_.setPreProcessingDone(batchJob.id)
   }
 
   processBatchJob = async (data): Promise<void> => {
@@ -47,7 +47,7 @@ class BatchJobSubscriber {
 
     await batchJobStrategy.processJob(batchJob.id)
 
-    await this.batchJobService_.complete(batchJob)
+    await this.batchJobService_.complete(batchJob.id)
   }
 
   getBatchJobStrategy(type: string): AbstractBatchJobStrategy<any> {

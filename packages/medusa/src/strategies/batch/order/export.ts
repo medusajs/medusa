@@ -10,6 +10,13 @@ import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
 import { prepareListQuery } from "../../../utils/get-query-config"
 
+type InjectedDependencies = {
+  fileService: IFileService<any>
+  orderService: OrderService
+  batchJobService: BatchJobService
+  manager: EntityManager
+}
+
 class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> {
   public static identifier = "order-export-strategy"
   public static batchType = "order-export"
@@ -45,7 +52,12 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     "region_id",
   ]
 
-  constructor({ fileService, batchJobService, orderService, manager }) {
+  constructor({
+    fileService,
+    batchJobService,
+    orderService,
+    manager,
+  }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
 
@@ -134,6 +146,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         orderCount = count
 
         const context = batchJob.context
+        const result = batchJob.result
         let orders = []
 
         while (offset < orderCount) {
@@ -154,7 +167,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             .withTransaction(transactionManager)
             .update(batchJobId, {
               context: {
-                ...batchJob.context,
+                ...context,
                 file_key: fileKey,
                 list_config: {
                   ...list_config,
@@ -162,10 +175,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
                 },
               },
               result: {
+                ...result,
                 count,
                 advancement_count: offset,
                 progress: offset / count,
-                err: undefined,
               },
             })
 
@@ -188,23 +201,26 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         context.file_key = fileKey
 
-        await this.batchJobService_.update(batchJobId, {
-          context,
-          result: {
-            count,
-            advancement_count: count,
-            progress: 1,
-            err: undefined,
-          },
-        })
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            context: { ...context, file_key: fileKey },
+            result: {
+              ...result,
+              count,
+              advancement_count: count,
+              progress: 1,
+            },
+          })
       },
       "REPEATABLE READ",
-      async (err) =>
+      async (err: Error) => {
         this.handleProcessingErrors(batchJobId, err, {
           offset,
           count: orderCount,
           progress: offset / orderCount,
         })
+      }
     )
   }
 
