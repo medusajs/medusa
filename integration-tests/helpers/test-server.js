@@ -1,10 +1,10 @@
-import redisLoader from "@medusajs/medusa/dist/loaders/redis"
-import path from "path"
+const redisLoader = require("@medusajs/medusa/dist/loaders/redis").default
+const path = require("path")
 
 const { bootstrapApp } = require("./bootstrap-app")
 
 const setup = async () => {
-  const cwd = path.resolve(path.join(__dirname, "..", ".."))
+  const cwd = path.resolve(path.join(__dirname, "..", "./api"))
 
   const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
   const config = require(configPath)
