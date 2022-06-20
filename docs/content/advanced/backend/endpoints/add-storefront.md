@@ -1,8 +1,4 @@
----
-title: Add Endpoint for Storefront
----
-
-# Add Endpoint for Storefront
+# Create Endpoint for Storefront
 
 In this document, you’ll learn how to add a custom endpoint in the Backend that you can use from the Storefront.
 

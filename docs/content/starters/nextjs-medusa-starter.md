@@ -67,6 +67,12 @@ Then, on your server, update the environment variable `STORE_CORS` to the URL 
 STORE_CORS=http://localhost:<PORT>
 ```
 
+:::info
+
+For more details about the Store CORS configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
+
+:::
+
 ### Development Resources
 
 You can learn more about development with Next.js through [their documentation](https://nextjs.org/docs/getting-started).

@@ -1229,7 +1229,7 @@ class CartService extends TransactionBaseService<CartService> {
 
         const freshCart = await this.retrieve(cart.id, {
           select: ["total"],
-          relations: ["payment_sessions"],
+          relations: ["payment_sessions", "items", "items.adjustments"],
         })
 
         if (session.status === "authorized") {
