@@ -438,7 +438,7 @@ class TaxProviderService extends TransactionBaseService {
     productId: string,
     regionId: string,
     value: TaxServiceRate[]
-  ): Promise<void> {
+  ): Promise<null | string> {
     const cacheKey = this.getCacheKey(productId, regionId)
     return await this.redis_.set(
       cacheKey,
