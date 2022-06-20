@@ -120,7 +120,7 @@ class DiscountService extends TransactionBaseService<DiscountService> {
         this.discountRepository_
       )
 
-      const query = buildQuery<Discount>(selector as Selector<Discount>, config)
+      const query = buildQuery(selector as Selector<Discount>, config)
       return await discountRepo.find(query)
     })
   }
@@ -149,7 +149,7 @@ class DiscountService extends TransactionBaseService<DiscountService> {
         delete selector.q
       }
 
-      const query = buildQuery<Discount>(selector as Selector<Discount>, config)
+      const query = buildQuery(selector as Selector<Discount>, config)
 
       if (q) {
         const where = query.where
