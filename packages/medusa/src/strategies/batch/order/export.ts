@@ -1,8 +1,6 @@
-import { Dictionary, omit, pickBy } from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { orderExportPropertiesDescriptors } from "."
-import { AdminGetOrdersParams } from "../../../api"
+import { OrderDescriptor, orderExportPropertiesDescriptors } from "."
 import { AdminPostBatchesReq } from "../../../api/routes/admin/batch/create-batch-job"
 import { IFileService } from "../../../interfaces"
 import { AbstractBatchJobStrategy } from "../../../interfaces/batch-job-strategy"
@@ -10,15 +8,7 @@ import { BatchJob, Order } from "../../../models"
 import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
-import { DateComparisonOperator } from "../../../types/common"
 import { prepareListQuery } from "../../../utils/get-query-config"
-import { validator } from "../../../utils/validator"
-
-type PropertiesDescriptor<T> = {
-  fieldName: string
-  title: string
-  accessor: (entity: T) => string
-}
 
 class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> {
   public static identifier = "order-export-strategy"
@@ -90,30 +80,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       {
         isList: true,
         defaultRelations: this.defaultRelations_,
+        defaultFields: this.defaultFields_,
       }
     )
-
-    // const {
-    //   select: filterableFields,
-    //   skip,
-    //   take,
-    //   ...listConfig
-    // } = prepareListQuery(
-    //   {
-    //     context: batchJob.context,
-    //     type: batchJob.type,
-    //     dry_run: batchJob.dry_run,
-    //     limit: limit as number,
-    //     offset: offset as number,
-    //     order: order as string,
-    //     fields: fields as string,
-    //     expand: expand as string,
-    //   },
-    //   {
-    //     isList: true,
-    //     defaultRelations: this.defaultRelations_,
-    //   }
-    // )
 
     batchJob.context = {
       ...(context ?? {}),
@@ -136,17 +105,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         offset = (batchJob.context.offset as number | undefined) ?? offset
 
-        const [filter, listConfig, lineDescriptor] =
-          await this.getExportConfiguration(batchJob)
-
         const { writeStream, fileKey, promise } =
           await this.fileService_.getUploadStreamDescriptor({
             name: "exports/order-export",
             ext: "csv",
           })
-
-        const header = this.buildHeader(lineDescriptor)
-        writeStream.write(header)
 
         const { list_config = {}, filterable_fields = {} } = batchJob.context
         const [, count] = await this.orderService_.listAndCount(
@@ -159,6 +122,14 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           }
         )
 
+        const lineDescriptor = this.getLineDescriptor(
+          list_config.select as string[],
+          list_config.relations as string[]
+        )
+
+        const header = this.buildHeader(lineDescriptor)
+        writeStream.write(header)
+
         orderCount = count
 
         let context = batchJob.context
@@ -167,8 +138,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         while (offset < count) {
           orders = await this.orderService_
             .withTransaction(transactionManager)
-            .list(filter, {
-              ...listConfig,
+            .list(filterable_fields, {
+              ...list_config,
               skip: offset,
               take: this.BATCH_SIZE,
             })
@@ -237,7 +208,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   }
 
   private buildHeader(
-    lineDescriptor: PropertiesDescriptor<Order>[] = orderExportPropertiesDescriptors
+    lineDescriptor: OrderDescriptor[] = orderExportPropertiesDescriptors
   ): string {
     return (
       lineDescriptor.map(({ title }) => title).join(this.DELIMITER) +
@@ -247,7 +218,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
   private async buildCSVLine(
     order: Order,
-    lineDescriptor: PropertiesDescriptor<Order>[]
+    lineDescriptor: OrderDescriptor[]
   ): Promise<string> {
     return (
       lineDescriptor
@@ -259,67 +230,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   private getLineDescriptor(
     fields: string[],
     relations: string[]
-  ): PropertiesDescriptor<Order>[] {
+  ): OrderDescriptor[] {
     return orderExportPropertiesDescriptors.filter(
       ({ fieldName }) =>
         fields.indexOf(fieldName) !== -1 || relations.indexOf(fieldName) !== -1
     )
-  }
-
-  private async getExportConfiguration(
-    batchJob: BatchJob
-  ): Promise<
-    [
-      Dictionary<string | number | string[] | DateComparisonOperator>,
-      any,
-      PropertiesDescriptor<Order>[]
-    ]
-  > {
-    const params = await validator(
-      AdminGetOrdersParams,
-      batchJob.context.params
-    )
-
-    let includeFields: string[] = []
-
-    if (params.fields) {
-      includeFields = params.fields.split(",")
-      // Ensure created_at is included, since we are sorting on this
-      includeFields.push("created_at")
-    }
-
-    let expandFields: string[] = []
-    if (params.expand) {
-      expandFields = params.expand.split(",")
-      if (expandFields.indexOf("shipping_address") === -1 && params.fields) {
-        includeFields.push("region_id")
-      }
-    }
-
-    const listConfig = {
-      select: includeFields.length ? includeFields : this.defaultFields_,
-      relations: expandFields.length ? expandFields : this.defaultRelations_,
-      order: { created_at: "DESC" },
-    }
-
-    const filterableFields = omit(params, [
-      "limit",
-      "offset",
-      "expand",
-      "fields",
-      "order",
-    ])
-
-    const lineDescriptor = this.getLineDescriptor(
-      listConfig.select,
-      listConfig.relations
-    )
-
-    return [
-      pickBy(filterableFields, (val) => typeof val !== "undefined"),
-      listConfig,
-      lineDescriptor,
-    ]
   }
 
   private async handleProcessingErrors(

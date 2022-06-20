@@ -1,6 +1,12 @@
 import { Order } from "../../../models"
 
-export const orderExportPropertiesDescriptors = [
+export type OrderDescriptor = {
+  fieldName: string
+  title: string
+  accessor: (entity: Order) => string
+}
+
+export const orderExportPropertiesDescriptors: OrderDescriptor[] = [
   {
     fieldName: "id",
     title: "Order_ID",
