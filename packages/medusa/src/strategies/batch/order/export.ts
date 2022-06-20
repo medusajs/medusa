@@ -254,6 +254,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       const retryCount = batchJob.context.retry_count ?? 0
       const maxRetry = batchJob.context.max_retry ?? this.defaultMaxRetry
 
+      const errMessage =
+        (err as any).message ??
+        `Something went wrong with the batchJob ${batchJob.id}`
+
       if (err instanceof MedusaError) {
         await this.batchJobService_
           .withTransaction(transactionManager)

@@ -1,4 +1,4 @@
-import { DeepPartial, EntityManager } from "typeorm"
+import { EntityManager } from "typeorm"
 import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import {
