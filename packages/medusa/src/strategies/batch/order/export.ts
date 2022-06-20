@@ -153,6 +153,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           filterable_fields,
           {
             ...list_config,
+            order: { created_at: "DESC" },
             skip: offset,
             take: this.BATCH_SIZE,
           }
