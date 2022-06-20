@@ -11,6 +11,7 @@ import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { User } from "./user"
+import { RequestQueryFields, Selector } from "../types/common"
 
 @Entity()
 export class BatchJob extends SoftDeletableEntity {
@@ -28,18 +29,34 @@ export class BatchJob extends SoftDeletableEntity {
   context: {
     retry_count?: number
     max_retry?: number
-    count?: number
     offset?: number
+    limit?: number
+    order?: string
+    fields?: string
+    expand?: string
+    file_key?: string
+    list_config?: {
+      select?: string[]
+      relations?: string[]
+      skip?: number
+      take?: number
+      order?: Record<string, "ASC" | "DESC">
+    }
+    filterable_fields?: Selector<unknown>
   } & Record<string, unknown>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  result: Record<string, unknown>
+  result: {
+    count?: number
+    advancement_count?: number
+    progress?: number
+  } & Record<string, unknown>
 
   @Column({ type: "boolean", nullable: false, default: false })
   dry_run = false
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  awaiting_confirmation_at?: Date
+  pre_processed_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   processing_at?: Date
@@ -54,9 +71,6 @@ export class BatchJob extends SoftDeletableEntity {
   canceled_at?: Date
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  ready_at?: Date
-
-  @Column({ type: resolveDbType("timestamptz"), nullable: true })
   failed_at?: Date
 
   status: BatchJobStatus
@@ -64,17 +78,14 @@ export class BatchJob extends SoftDeletableEntity {
   @AfterLoad()
   loadStatus(): void {
     /* Always keep the status order consistent. */
-    if (this.ready_at) {
-      this.status = BatchJobStatus.READY
-    }
-    if (this.processing_at) {
-      this.status = BatchJobStatus.PROCESSING
-    }
-    if (this.awaiting_confirmation_at) {
-      this.status = BatchJobStatus.AWAITING_CONFIRMATION
+    if (this.pre_processed_at) {
+      this.status = BatchJobStatus.PRE_PROCESSED
     }
     if (this.confirmed_at) {
       this.status = BatchJobStatus.CONFIRMED
+    }
+    if (this.processing_at) {
+      this.status = BatchJobStatus.PROCESSING
     }
     if (this.completed_at) {
       this.status = BatchJobStatus.COMPLETED
@@ -120,10 +131,8 @@ export class BatchJob extends SoftDeletableEntity {
  *    type: string
  *    enum:
  *      - created
- *      - ready
+ *      - pre_processed
  *      - processing
- *      - awaiting_confirmation
- *      - confirmed
  *      - completed
  *      - canceled
  *      - failed
@@ -140,12 +149,8 @@ export class BatchJob extends SoftDeletableEntity {
  *  result:
  *    description: "The result of the batch job."
  *    type: object
- *  awaiting_confirmation_at:
- *    description: "The date from which the confirmation is awaited."
- *    type: string
- *    format: date-time
- *  processing_at:
- *    description: "The date from which the processing started."
+ *  pre_processed_at:
+ *    description: "The date from which the job has been pre processed."
  *    type: string
  *    format: date-time
  *  confirmed_at:
