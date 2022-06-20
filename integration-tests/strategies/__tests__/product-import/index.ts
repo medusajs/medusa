@@ -1,10 +1,11 @@
-const Redis = require("ioredis")
-import { GenericContainer } from "testcontainers"
+import ProductImportStrategy from "@medusajs/medusa/dist/strategies/product-import"
+import redisLoader from "@medusajs/medusa/dist/loaders/redis"
 
 const path = require("path")
 
 const { bootstrapApp } = require("../../../helpers/bootstrap-app")
 const { initDb, useDb } = require("../../../helpers/use-db")
+const { initRedis, useRedis } = require("../../../helpers/use-redis")
 const { setPort, useApi } = require("../../../helpers/use-api")
 
 const adminSeeder = require("../../helpers/admin-seeder")
@@ -16,33 +17,34 @@ describe("Product import strategy", () => {
   let dbConnection
   let express
 
-  // TODO: only for testing now -> refactor to `useRedis`
-  let redisContainer
   let redisClient
 
   const doAfterEach = async () => {
     const db = useDb()
+    const redis = useRedis()
+
+    await redis.teardown()
     return await db.teardown()
   }
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
+      const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+      const config = require(configPath)
+
       dbConnection = await initDb({ cwd })
-
-      redisContainer = await new GenericContainer("redis")
-        // exposes the internal Docker port to the host machine
-        .withExposedPorts(6379)
-        .start()
-
-      redisClient = new Redis({
-        host: redisContainer.getHost(),
-        // retrieves the port on the host machine which maps
-        // to the exposed port in the Docker container
-        port: redisContainer.getMappedPort(6379),
-      })
+      redisClient = await initRedis({ cwd })
 
       const { container, app, port } = await bootstrapApp({ cwd })
+
+      config.projectConfig.redis_url = {
+        host: redisClient.options.host,
+        port: redisClient.options.port,
+        db: redisClient.options.db,
+      }
+
+      await redisLoader({ container, configModule: config, logger: {} })
       appContainer = container
 
       setPort(port)
@@ -59,8 +61,8 @@ describe("Product import strategy", () => {
     const db = useDb()
     await db.shutdown()
 
-    redisClient && (await redisClient.quit())
-    redisContainer && (await redisContainer.stop())
+    const redis = useRedis()
+    await redis.shutdown()
 
     express.close()
     // medusaProcess.kill()
@@ -73,7 +75,9 @@ describe("Product import strategy", () => {
   test("strategy test", async () => {
     const eventBus = appContainer.resolve("eventBusService")
 
-    const productImportStrategy = appContainer.resolve("batchJobStrategies")
+    const productImportStrategy: ProductImportStrategy = appContainer.resolve(
+      "batchType_product_import"
+    )
 
     console.log(productImportStrategy)
   })

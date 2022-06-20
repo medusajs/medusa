@@ -18,38 +18,41 @@ const DbTestUtil = {
   },
 
   clear: async function () {
-    // this.db_.synchronize(true)
+    /* noop */
   },
 
-  teardown: async function ({}) {},
+  teardown: async function () {
+    /* noop */
+  },
 
-  shutdown: async function () {},
+  shutdown: async function () {
+    /* noop */
+    // TODO: stop container
+  },
 }
 
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd }) {
-    const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
-    const { projectConfig } = require(configPath)
+  initRedis: async function ({ cwd }) {
+    // const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    // const { projectConfig } = require(configPath)
 
     const container = await new GenericContainer("redis")
-      // exposes the internal Docker port to the host machine
       .withExposedPorts(6379)
       .start()
 
     const redisClient = new Redis({
       host: container.getHost(),
       port: container.getMappedPort(6379),
+      db: workerId,
     })
 
-    instance.setDb(dbConnection)
+    instance.setDb(redisClient)
 
-    instance.setDb(redisClient.condition)
-
-    return redisClient.condition
+    return redisClient
   },
-  useDb: function () {
+  useRedis: function () {
     return instance
   },
 }
