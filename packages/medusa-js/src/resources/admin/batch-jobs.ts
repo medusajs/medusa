@@ -8,7 +8,7 @@ import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
-class AdminBatchJobResource extends BaseResource {
+class AdminBatchJobsResource extends BaseResource {
   create(
     payload: AdminPostBatchesReq,
     customHeaders: Record<string, any> = {}
@@ -56,4 +56,4 @@ class AdminBatchJobResource extends BaseResource {
   }
 }
 
-export default AdminBatchJobResource
+export default AdminBatchJobsResource
