@@ -16,8 +16,12 @@ export default (app) => {
     middlewares.wrap(require("./create-upload").default)
   )
 
-  // removed on purpose
-  // route.post("/delete", middlewares.wrap(require("./delete-upload").default))
+  route.delete("/", middlewares.wrap(require("./delete-upload").default))
+
+  route.get(
+    "/download-url",
+    middlewares.wrap(require("./get-download-url").default)
+  )
 
   return app
 }
@@ -29,4 +33,5 @@ export type AdminUploadRes = {
 export type AdminDeleteUploadRes = DeleteResponse
 
 export * from "./create-upload"
-// export * from "./delete-upload"
+export * from "./delete-upload"
+export * from "./get-download-url"
