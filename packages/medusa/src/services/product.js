@@ -373,7 +373,7 @@ class ProductService extends BaseService {
    * @return {Promise} resolves to the update result.
    */
   async update(productId, update) {
-    return this.atomicPhase_(async (manager) => {
+    return this.atomicPhase_(async manager => {
       const productRepo = manager.getCustomRepository(this.productRepository_)
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepository_
