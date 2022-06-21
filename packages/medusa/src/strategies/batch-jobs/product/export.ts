@@ -129,8 +129,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           .withTransaction(transactionManager)
           .retrieve(batchJobId)
 
-        const { writeStream, fileKey, promise } =
-          await this.fileService_.getUploadStreamDescriptor({
+        const { writeStream, fileKey, promise } = await this.fileService_
+          .withTransaction(transactionManager)
+          .getUploadStreamDescriptor({
             name: "product-export",
             ext: "csv",
           })
@@ -138,9 +139,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
         const header = await this.buildHeader()
         writeStream.write(header)
 
-        offset = batchJob.context.list_config?.skip ?? offset
-        limit = batchJob.context.list_config?.take ?? this.BATCH_SIZE
-        advancementCount = batchJob.result.advancement_count ?? advancementCount
+        offset = batchJob.context?.list_config?.skip ?? offset
+        limit = batchJob.context?.list_config?.take ?? this.BATCH_SIZE
+        advancementCount =
+          batchJob.result?.advancement_count ?? advancementCount
 
         const { list_config = {}, filterable_fields = {} } = batchJob.context
         const [productList, count] = await this.productService_
@@ -174,27 +176,31 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           offset += products.length
           products.length = 0
 
-          batchJob = await this.batchJobService_.update(batchJobId, {
-            context: {
-              ...batchJob.context,
-              file_key: fileKey,
-              list_config: {
-                ...list_config,
-                skip: offset,
+          batchJob = await this.batchJobService_
+            .withTransaction(transactionManager)
+            .update(batchJobId, {
+              context: {
+                ...batchJob.context,
+                file_key: fileKey,
+                list_config: {
+                  ...list_config,
+                  skip: offset,
+                },
               },
-            },
-            result: {
-              count: productCount,
-              advancement_count: advancementCount,
-              progress: advancementCount / productCount,
-              err: undefined,
-            },
-          })
+              result: {
+                count: productCount,
+                advancement_count: advancementCount,
+                progress: advancementCount / productCount,
+                err: undefined,
+              },
+            })
 
           if (batchJob.status === BatchJobStatus.CANCELED) {
             writeStream.end()
 
-            await this.fileService_.delete({ key: fileKey })
+            await this.fileService_
+              .withTransaction(transactionManager)
+              .delete({ key: fileKey })
             return
           }
         }
@@ -222,38 +228,38 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
     const [{ maxOptionsCount, maxImagesCount, maxMoneyAmountCount }] =
       await productRepo.query(`
-        WITH optionsShape AS (
-            SELECT count(*) as maxOptionsCount
+        WITH "optionsShape" AS (
+            SELECT count(*) as "maxOptionsCount"
             from product_option
             group by product_id
-            order by maxOptionsCount DESC
+            order by "maxOptionsCount" DESC
             LIMIT 1
-        ), imagesShape AS (
-            SELECT count(*) as maxImagesCount
+        ), "imagesShape" AS (
+            SELECT count(*) as "maxImagesCount"
             from product_images
             group by product_id
-            order by maxImagesCount DESC
+            order by "maxImagesCount" DESC
             LIMIT 1
-        ), moneyAmountShape AS (
-            SELECT count(*) as maxMoneyAmountCount
+        ), "moneyAmountShape" AS (
+            SELECT count(*) as "maxMoneyAmountCount"
             from money_amount
             group by variant_id
-            order by maxMoneyAmountCount DESC
+            order by "maxMoneyAmountCount" DESC
             LIMIT 1
         )
         SELECT 
-           maxOptionsCount,
-           maxImagesCount,
-           maxMoneyAmountCount
+           "maxOptionsCount",
+           "maxImagesCount",
+           "maxMoneyAmountCount"
         FROM 
-           optionsShape,
-           imagesShape,
-           moneyAmountShape;
+           "optionsShape",
+           "imagesShape",
+           "moneyAmountShape";
       `)
 
-    this.appendOptionsDescriptors(maxOptionsCount)
-    this.appendMoneyAmountDescriptors(maxMoneyAmountCount)
-    this.appendImagesDescriptors(maxImagesCount)
+    this.appendOptionsDescriptors(Number(maxOptionsCount ?? 0))
+    this.appendMoneyAmountDescriptors(Number(maxMoneyAmountCount ?? 0))
+    this.appendImagesDescriptors(Number(maxImagesCount ?? 0))
 
     return [...this.columnDescriptors.keys(), this.NEWLINE_].join(
       this.DELIMITER_

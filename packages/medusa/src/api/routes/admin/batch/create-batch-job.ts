@@ -36,7 +36,7 @@ export default async (req, res) => {
   } catch (e) {
     throw new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Unable to find the batchJob strategy ${validated.type}`
+      `Unable to find the batchJob strategy with type ${validated.type}`
     )
   }
 
