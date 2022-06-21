@@ -1,5 +1,5 @@
 import { EntityManager } from "typeorm"
-import IORedis from "ioredis"
+import * as IORedis from "ioredis"
 import pickBy from "lodash/pickBy"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
@@ -28,7 +28,7 @@ type ProductImportCsvSchema = CsvSchema<TLine>
 type Context = {
   total: number
   progress: number
-  csvFileKey: string
+  fileKey: string
 }
 
 /**
@@ -202,7 +202,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
-    const csvFileKey = (batchJob.context as Context).csvFileKey
+    const csvFileKey = (batchJob.context as Context).fileKey
     const csvStream = await this.fileService_.getDownloadStream({
       fileKey: csvFileKey,
     })
@@ -216,7 +216,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     await this.batchJobService_.update(batchJobId, {
       context: {
-        ...batchJob.context,
         total: results.length,
       },
     })
@@ -226,8 +225,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   async processJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      await this.batchJobService_.setProcessing(batchJobId)
-
       await this.createProducts(batchJobId, transactionManager)
       await this.updateProducts(batchJobId, transactionManager)
 
@@ -352,25 +349,27 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     results: Record<OperationType, any[]>
   ): Promise<void> {
     for (const op in results) {
-      await this.redisClient_.client.call(
+      // @ts-ignore
+      await this.redisClient_.call(
         "JSON.SET",
-        `pij_${batchJobId}`,
-        `$.${op}`, // JSONPath, $ is start
+        `pij_${batchJobId}:${op}`,
+        "$", // JSONPath, $ is start
         JSON.stringify(results[op])
       )
-    }
 
-    await this.redisClient_.expire(`pij_${batchJobId}`, 60 * 60)
+      await this.redisClient_.expire(`pij_${batchJobId}:${op}`, 60 * 60)
+    }
   }
 
   async getImportDataFromRedis(
     batchJobId: string,
     op: OperationType
   ): Promise<any[]> {
-    return await this.redisClient_.client.call(
+    // @ts-ignore
+    return await this.redisClient_.call(
       "JSON.GET",
-      `pij_${batchJobId}`,
-      `$.${op}`
+      `pij_${batchJobId}:${op}`,
+      "$"
     )
   }
 

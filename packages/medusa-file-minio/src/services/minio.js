@@ -1,21 +1,15 @@
-import stream from "stream"
+import { AbstractFileService } from '@medusajs/medusa'
 import aws from "aws-sdk"
 import fs from "fs"
-import { AbstractFileService } from "@medusajs/medusa"
-import { MedusaError } from "medusa-core-utils"
 
 class MinioService extends AbstractFileService {
+  
   constructor({}, options) {
     super({}, options)
 
     this.bucket_ = options.bucket
     this.accessKeyId_ = options.access_key_id
     this.secretAccessKey_ = options.secret_access_key
-    this.private_bucket_ = options.private_bucket
-    this.private_access_key_id_ =
-      options.private_access_key_id ?? this.accessKeyId_
-    this.private_secret_access_key_ =
-      options.private_secret_access_key ?? this.secretAccessKey_
     this.endpoint_ = options.endpoint
     this.s3ForcePathStyle_ = true
     this.signatureVersion_ = "v4"
@@ -44,7 +38,7 @@ class MinioService extends AbstractFileService {
           return
         }
 
-        resolve({ url: data.Location })
+        resolve({ url: data.Location, key: data.Key })
       })
     })
   }
@@ -74,7 +68,7 @@ class MinioService extends AbstractFileService {
           resolve(data)
         })
       ]
-    ) 
+    )
   }
 
   async getUploadStreamDescriptor({ usePrivateBucket = true, ...fileData }) {
