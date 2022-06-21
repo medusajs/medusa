@@ -325,6 +325,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         batchJobOrId,
         BatchJobStatus.PRE_PROCESSED
       )
+
       if (batchJob.dry_run) {
         return batchJob
       }
