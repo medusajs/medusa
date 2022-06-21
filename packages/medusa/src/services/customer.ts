@@ -460,12 +460,10 @@ class CustomerService extends TransactionBaseService<CustomerService> {
       })
 
       if (!address) {
-        return Promise.resolve()
+        return
       }
 
       await addressRepo.softRemove(address)
-
-      return Promise.resolve()
     })
   }
 
@@ -525,7 +523,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
       const customer = await customerRepo.findOne({ where: { id: customerId } })
 
       if (!customer) {
-        return Promise.resolve()
+        return
       }
 
       return await customerRepo.softRemove(customer)
