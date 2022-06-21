@@ -15,13 +15,17 @@ import { validator } from "../../../../utils/validator"
  */
 export default async (req, res) => {
   try {
-    const validated = await validator(AdminDeleteUploadReq, req.body)
+    const validated = await validator(AdminDeleteUploadReq, req.body, {
+      forbidUnknownValues: false,
+    })
 
     const fileService = req.scope.resolve("fileService")
 
-    await fileService.delete(validated.fileKey)
+    await fileService.delete(validated)
 
-    res.status(200).send({ id: "", object: "file", deleted: true })
+    res
+      .status(200)
+      .send({ id: validated.fileKey, object: "file", deleted: true })
   } catch (err) {
     console.log(err)
     throw err

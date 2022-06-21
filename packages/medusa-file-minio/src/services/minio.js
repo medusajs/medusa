@@ -3,11 +3,13 @@ import aws from "aws-sdk"
 import fs from "fs"
 import { AbstractFileService } from "@medusajs/medusa"
 import { MedusaError } from "medusa-core-utils"
+import { parse } from "path"
 
 class MinioService extends AbstractFileService {
-  constructor({}, options) {
+  constructor({ logger }, options) {
     super()
 
+    this.logger_ = logger
     this.bucket_ = options.bucket
     this.accessKeyId_ = options.access_key_id
     this.secretAccessKey_ = options.secret_access_key
@@ -24,17 +26,18 @@ class MinioService extends AbstractFileService {
   upload(file) {
     this.updateAwsConfig()
 
+    const parsedFilename = parse(file.originalname)
+    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
     const s3 = new aws.S3()
     const params = {
       ACL: "public-read",
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
-      Key: `${file.originalname}`,
+      Key: fileKey,
     }
 
     return new Promise((resolve, reject) => {
       s3.upload(params, (err, data) => {
-        console.log(data, err)
         if (err) {
           reject(err)
           return
@@ -45,24 +48,29 @@ class MinioService extends AbstractFileService {
     })
   }
 
-  delete(file) {
+  async delete(file) {
     this.updateAwsConfig()
 
     const s3 = new aws.S3()
     const params = {
-      Bucket: this.bucket_,
-      Key: `${file}`,
+      Key: `${file.fileKey}`,
     }
 
-    return new Promise((resolve, reject) => {
-      s3.deleteObject(params, (err, data) => {
+    return await Promise.all([
+      s3.deleteObject({ ...params, Bucket: this.bucket_ }, (err, data) => {
         if (err) {
-          reject(err)
-          return
+          throw err
         }
-        resolve(data)
-      })
-    })
+      }),
+      s3.deleteObject(
+        { ...params, Bucket: this.private_bucket_ },
+        (err, data) => {
+          if (err) {
+            throw err
+          }
+        }
+      ),
+    ])
   }
 
   async getUploadStreamDescriptor({ usePrivateBucket = true, ...fileData }) {
