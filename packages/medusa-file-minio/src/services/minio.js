@@ -24,12 +24,14 @@ class MinioService extends AbstractFileService {
   upload(file) {
     this.updateAwsConfig()
 
+    const parsedFilename = parse(file.originalname)
+    const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
     const s3 = new aws.S3()
     const params = {
       ACL: "public-read",
       Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
-      Key: `${file.originalname}`,
+      Key: fileKey,
     }
 
     return new Promise((resolve, reject) => {
@@ -45,24 +47,32 @@ class MinioService extends AbstractFileService {
     })
   }
 
-  delete(file) {
+  async delete(file) {
     this.updateAwsConfig()
 
     const s3 = new aws.S3()
     const params = {
-      Bucket: this.bucket_,
       Key: `${file}`,
     }
 
-    return new Promise((resolve, reject) => {
-      s3.deleteObject(params, (err, data) => {
-        if (err) {
-          reject(err)
-          return
-        }
-        resolve(data)
-      })
-    })
+    return await Promise.all(
+      [
+        s3.deleteObject({...params, Bucket: this.bucket_}, (err, data) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(data)
+        }),
+        s3.deleteObject({...params, Bucket: this.private_bucket_}, (err, data) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(data)
+        })
+      ]
+    ) 
   }
 
   async getUploadStreamDescriptor({ usePrivateBucket = true, ...fileData }) {

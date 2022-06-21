@@ -37,7 +37,7 @@ export interface IFileService<T extends TransactionBaseService<any>>
    * remove file from fileservice
    * @param fileData Remove file described by record
    * */
-  delete(fileData: Record<string, any>): void
+  delete(fileData: Record<string, any>): Promise<void>
 
   /**
    * upload file to fileservice from stream
@@ -72,7 +72,7 @@ export abstract class AbstractFileService<T extends TransactionBaseService<any>>
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult>
 
-  abstract delete(fileData: Record<string, any>): void
+  abstract delete(fileData: Record<string, any>): Promise<void>
 
   abstract getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType
