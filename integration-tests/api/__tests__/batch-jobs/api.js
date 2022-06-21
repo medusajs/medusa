@@ -314,4 +314,37 @@ describe("/admin/batch-jobs", () => {
         })
     })
   })
+
+  describe("Product Import Strategy", () => {
+    beforeEach(async () => {
+      try {
+        await setupJobDb(dbConnection)
+      } catch (e) {
+        console.log(e)
+        throw e
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should preprocess the csv file", async () => {
+      const api = useApi()
+
+      const response = await api.post(
+        "/admin/batch-jobs",
+        {
+          type: "batchType_product_import",
+          context: {
+            fileKey: "pi-file-key",
+          },
+        },
+        adminReqConfig
+      )
+
+      console.log(response.data, redisClient)
+    })
+  })
 })
