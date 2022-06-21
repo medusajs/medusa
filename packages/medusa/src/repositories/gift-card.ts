@@ -1,6 +1,12 @@
-import { flatten, groupBy, map, merge } from "lodash"
-import { EntityRepository, FindManyOptions, Repository } from "typeorm"
+import { flatten, groupBy, merge } from "lodash"
+import {
+  Brackets,
+  EntityRepository,
+  FindManyOptions,
+  Repository,
+} from "typeorm"
 import { GiftCard } from "../models/gift-card"
+import { ExtendedFindConfig, Writable } from "../types/common"
 
 @EntityRepository(GiftCard)
 export class GiftCardRepository extends Repository<GiftCard> {
@@ -39,9 +45,45 @@ export class GiftCardRepository extends Repository<GiftCard> {
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return map(entitiesAndRelationsById, (entityAndRelations) =>
-      merge({}, ...entityAndRelations)
+    return Object.values(entitiesAndRelationsById).map((v) => merge({}, ...v))
+  }
+
+  protected async queryGiftCards(
+    q: string,
+    where: Partial<Writable<GiftCard>>,
+    rels: (keyof GiftCard)[]
+  ): Promise<GiftCard[]> {
+    const raw = await this.createQueryBuilder("gift_card")
+      .leftJoinAndSelect("gift_card.order", "order")
+      .select(["gift_card.id"])
+      .where(where)
+      .andWhere(
+        new Brackets((qb) => {
+          return qb
+            .where(`gift_card.code ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
+        })
+      )
+      .getMany()
+
+    return this.findWithRelations(
+      rels,
+      raw.map((i) => i.id)
     )
+  }
+
+  public async listGiftCards(
+    query: ExtendedFindConfig<GiftCard>,
+    rels: (keyof GiftCard)[],
+    q?: string
+  ): Promise<GiftCard[]> {
+    if (q) {
+      const where = query.where
+      delete where.id
+
+      return await this.queryGiftCards(q, where, rels)
+    }
+    return this.findWithRelations(rels, query)
   }
 
   public async findOneWithRelations(
