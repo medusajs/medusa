@@ -50,6 +50,13 @@ export const productExportSchemaDescriptors = new Map<
   ProductExportColumnSchemaDescriptor
 >([
   [
+    "Product id",
+    {
+      accessor: (product: Product): string => product?.id ?? "",
+      entityName: "product",
+    },
+  ],
+  [
     "Product Handle",
     {
       accessor: (product: Product): string => product?.handle ?? "",
@@ -207,6 +214,13 @@ export const productExportSchemaDescriptors = new Map<
     {
       accessor: (product: Product): string => product?.profile?.type ?? "",
       entityName: "product",
+    },
+  ],
+  [
+    "Variant id",
+    {
+      accessor: (variant: ProductVariant): string => variant?.id ?? "",
+      entityName: "variant",
     },
   ],
   [

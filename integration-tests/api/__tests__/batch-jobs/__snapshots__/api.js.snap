@@ -65,7 +65,7 @@ Object {
         "tags",
         "type",
         "collection",
-        "variants.prices.regions",
+        "variants.prices.region",
       ],
       "skip": 0,
       "take": 50,

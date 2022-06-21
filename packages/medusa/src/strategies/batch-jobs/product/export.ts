@@ -131,7 +131,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
                 pricesData.add(
                   JSON.stringify({
                     currency_code:
-                      price.currency_code ?? price.region?.currency_code,
+                      price.currency_code ?? price?.region?.currency_code,
                     region: price.region
                       ? { name: price.region.name, id: price.region.id }
                       : undefined,
@@ -305,8 +305,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     this.appendOptionsDescriptors(dynamicOptionColumnCount)
     this.appendImagesDescriptors(dynamicImageColumnCount)
 
-    return [...this.columnDescriptors.keys(), this.NEWLINE_].join(
-      this.DELIMITER_
+    return (
+      [...this.columnDescriptors.keys()].join(this.DELIMITER_) + this.NEWLINE_
     )
   }
 
@@ -341,18 +341,27 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     for (const priceData of pricesData) {
       if (priceData.currency_code) {
         this.columnDescriptors.set(
-          `Price ${priceData.currency_code?.toUpperCase()}`,
+          `Price ${priceData.currency_code?.toUpperCase()} ${
+            priceData.region?.id ? "(" + priceData.region?.id + ")" : ""
+          }`,
           {
             accessor: (variant: ProductVariant) => {
               const price = variant.prices.find((variantPrice) => {
-                return (
-                  variantPrice.currency_code?.toLowerCase() ===
-                    priceData.currency_code?.toLowerCase() ||
-                  (variantPrice?.region?.currency_code.toLowerCase() ===
-                    priceData.currency_code?.toLowerCase() &&
+                let shouldReturnPrice = false
+                if (variantPrice.currency_code) {
+                  shouldReturnPrice =
+                    !priceData.region &&
+                    variantPrice.currency_code?.toLowerCase() ===
+                      priceData.currency_code?.toLowerCase()
+                }
+                if (variantPrice.region) {
+                  shouldReturnPrice =
+                    variantPrice.region?.name?.toLowerCase() ===
+                      priceData.region?.name?.toLowerCase() &&
                     variantPrice.region?.id?.toLowerCase() ===
-                      priceData.region?.id?.toLowerCase())
-                )
+                      priceData.region?.id?.toLowerCase()
+                }
+                return shouldReturnPrice
               })
               return price?.amount?.toString() ?? ""
             },
@@ -363,7 +372,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
       if (priceData.region) {
         this.columnDescriptors.set(
-          `Price ${priceData.region.name.toLowerCase()}`,
+          `Price ${priceData.region.name.toLowerCase()} ${
+            priceData.region?.id ? "(" + priceData.region?.id + ")" : ""
+          }`,
           {
             accessor: (variant: ProductVariant) => {
               const price = variant.prices.find((variantPrice) => {

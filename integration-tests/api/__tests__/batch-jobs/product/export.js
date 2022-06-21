@@ -97,7 +97,10 @@ describe("Batch job of product-export type", () => {
         },
       ],
     }
-    await api.post("/admin/products", productPayload, adminReqConfig)
+    const createProductRes =
+      await api.post("/admin/products", productPayload, adminReqConfig)
+    const productId = createProductRes.data.product.id
+    const variantId = createProductRes.data.product.variants[0].id
 
     const batchPayload = {
       type: "product-export",
@@ -135,9 +138,11 @@ describe("Batch job of product-export type", () => {
 
     const lineColumn = lines[0].split(";")
 
-    expect(lineColumn[1]).toBe(productPayload.title)
-    expect(lineColumn[3]).toBe(productPayload.description)
-    expect(lineColumn[22]).toBe(productPayload.variants[0].title)
-    expect(lineColumn[23]).toBe(productPayload.variants[0].sku)
+    expect(lineColumn[0]).toBe(productId)
+    expect(lineColumn[2]).toBe(productPayload.title)
+    expect(lineColumn[4]).toBe(productPayload.description)
+    expect(lineColumn[23]).toBe(variantId)
+    expect(lineColumn[24]).toBe(productPayload.variants[0].title)
+    expect(lineColumn[25]).toBe(productPayload.variants[0].sku)
   })
 })
