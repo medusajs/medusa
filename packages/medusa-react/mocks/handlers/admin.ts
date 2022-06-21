@@ -2,6 +2,55 @@ import { rest } from "msw"
 import { fixtures } from "../data"
 
 export const adminHandlers = [
+  rest.post("/admin/batch-jobs/", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: {
+          ...fixtures.get("batch_job"),
+          ...body,
+        },
+      })
+    )
+  }),
+
+  rest.get("/admin/batch-jobs/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_jobs: fixtures.list("batch_job"),
+      })
+    )
+  }),
+
+  rest.get("/admin/batch-jobs/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: fixtures.get("batch_job"),
+      })
+    )
+  }),
+
+  rest.post("/admin/batch-jobs/:id/confirm", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: fixtures.get("batch_job"),
+      })
+    )
+  }),
+
+  rest.post("/admin/batch-jobs/:id/cancel", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: fixtures.get("batch_job"),
+      })
+    )
+  }),
+
   rest.post("/admin/collections/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
@@ -253,27 +302,33 @@ export const adminHandlers = [
     )
   }),
 
-  rest.delete("/admin/price-lists/:id/products/:product_id/prices", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        ids: [],
-        object: "money-amount",
-        deleted: true,
-      })
-    )
-  }),
+  rest.delete(
+    "/admin/price-lists/:id/products/:product_id/prices",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          ids: [],
+          object: "money-amount",
+          deleted: true,
+        })
+      )
+    }
+  ),
 
-  rest.delete("/admin/price-lists/:id/variants/:variant_id/prices", (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json({
-        ids: [],
-        object: "money-amount",
-        deleted: true,
-      })
-    )
-  }),
+  rest.delete(
+    "/admin/price-lists/:id/variants/:variant_id/prices",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          ids: [],
+          object: "money-amount",
+          deleted: true,
+        })
+      )
+    }
+  ),
 
   rest.post("/admin/return-reasons/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
