@@ -77,7 +77,7 @@ export abstract class AbstractFileService<T extends TransactionBaseService<any>>
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult>
 
-  abstract delete(fileData: Record<string, any>): void
+  abstract delete(fileData: DeleteFileType): Promise<void>
 
   abstract getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType
