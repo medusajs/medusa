@@ -32,11 +32,15 @@ describe("Batch job of product-export type", () => {
     })
   })
 
+  const exportFilePath = path.resolve(__dirname, "product-export.csv")
+
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
 
     medusaProcess.kill()
+
+    await fs.unlink(exportFilePath)
   })
 
   beforeEach(async () => {
@@ -119,12 +123,11 @@ describe("Batch job of product-export type", () => {
       shouldContinuePulling = !(batchJob.status === "completed")
     }
 
-    const expectedFilePath = path.resolve(__dirname, "product-export.csv")
-    const isFileExists = (await fs.stat(expectedFilePath)).isFile()
+    const isFileExists = (await fs.stat(exportFilePath)).isFile()
 
     expect(isFileExists).toBeTruthy()
 
-    const data = (await fs.readFile(expectedFilePath)).toString()
+    const data = (await fs.readFile(exportFilePath)).toString()
     const [, ...lines] = data.split("\r\n").filter(l => l)
 
     expect(lines.length).toBe(1)

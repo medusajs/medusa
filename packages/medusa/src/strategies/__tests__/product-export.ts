@@ -35,7 +35,10 @@ const fileServiceMock = {
       promise: Promise.resolve(),
       url: 'product-export.csv'
     })
-  })
+  }),
+  withTransaction: function () {
+    return this
+  }
 }
 const batchJobServiceMock = {
   withTransaction: function () {
