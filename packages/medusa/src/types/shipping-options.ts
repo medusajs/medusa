@@ -52,6 +52,13 @@ export type CreateShippingOptionInput = {
   requirements?: ShippingOptionRequirement[]
 }
 
+export type CreateCustomShippingOptionInput = {
+  price: number
+  shipping_option_id: string
+  cart_id?: string
+  metadata?: Record<string, unknown>
+}
+
 export type UpdateShippingOptionInput = {
   metadata?: Record<string, unknown>
   price_type?: ShippingOptionPriceType
