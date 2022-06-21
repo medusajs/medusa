@@ -1,6 +1,5 @@
 import { EntityManager } from "typeorm"
 import * as IORedis from "ioredis"
-import pickBy from "lodash/pickBy"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
 import { BatchJob } from "../../models"
@@ -10,6 +9,7 @@ import {
   BatchJobService,
   ProductService,
   ProductVariantService,
+  ShippingProfileService,
 } from "../../services"
 import { BatchJobStatus } from "../../types/batch-job"
 import { CsvSchema } from "../../interfaces/csv-parser"
@@ -54,14 +54,22 @@ function pickObjectPropsByRegex(
 ): Record<string, string> {
   const variantKeyPredicate = (key: string): boolean => regex.test(key)
 
-  return pickBy(data, variantKeyPredicate)
+  const ret = {}
+
+  for (const k in data) {
+    if (variantKeyPredicate(k)) {
+      ret[k] = data[k]
+    }
+  }
+
+  return ret
 }
 
 function transformProductData(
   data: Record<string, string>
 ): Record<string, string> {
   const ret = {}
-  const productData = pickObjectPropsByRegex(data, /product./)
+  const productData = pickObjectPropsByRegex(data, /product\./)
 
   Object.keys(productData).forEach((k) => {
     const key = k.split("product.")[1]
@@ -75,7 +83,7 @@ function transformVariantData(
   data: Record<string, string>
 ): Record<string, string> {
   const ret = {}
-  const productData = pickObjectPropsByRegex(data, /variant./)
+  const productData = pickObjectPropsByRegex(data, /variant\./)
 
   Object.keys(productData).forEach((k) => {
     const key = k.split("variant.")[1]
@@ -114,6 +122,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   protected readonly csvParser_: CsvParser
   protected readonly batchJobService_: BatchJobService
+  protected readonly shippingProfileService_: typeof ShippingProfileService
   protected readonly productService_: ProductService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productRepo_: typeof ProductRepository
@@ -128,6 +137,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     productRepository,
     productVariantService,
     productVariantRepository,
+    shippingProfileService,
     fileService,
     redisClient,
     manager,
@@ -149,6 +159,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.batchJobService_ = batchJobService
     this.productService_ = productService
     this.productVariantService_ = productVariantService
+    this.shippingProfileService_ = shippingProfileService
     this.productRepo_ = productRepository
     this.productVariantRepo_ = productVariantRepository
   }
@@ -162,6 +173,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   ): Promise<Record<OperationType, any[]>> {
     const productRepo = this.manager_.getCustomRepository(this.productRepo_)
 
+    const shippingProfile = await this.shippingProfileService_.retrieveDefault()
+
     const seenProducts = {}
 
     const productsCreate: any[] = []
@@ -171,23 +184,25 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const variantsUpdate: any[] = []
 
     for (const row of csvData) {
-      if (row.variantId) {
+      if (row["variant.id"]) {
+        // TODO: check weather SKU exists
         variantsUpdate.push(row)
       } else {
         variantsCreate.push(row)
       }
 
       // save only first occurrence
-      if (!seenProducts[row.handle]) {
-        const existingId = await productRepo.find({
-          where: { handle: row.handle },
+      if (!seenProducts[row["product.handle"]]) {
+        const existingId = await productRepo.findOne({
+          where: { handle: row["product.handle"] },
           select: ["id"],
         })
 
         row.product_id = existingId
+        row["product.profile_id"] = shippingProfile
         ;(existingId ? productsUpdate : productsCreate).push(row)
 
-        seenProducts[row.handle] = true
+        seenProducts[row["product.handle"]] = true
       }
     }
 
@@ -219,19 +234,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         total: results.length,
       },
     })
-
-    await this.batchJobService_.setPreProcessingDone(batchJobId)
   }
 
   async processJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
       await this.createProducts(batchJobId, transactionManager)
       await this.updateProducts(batchJobId, transactionManager)
-
       await this.createVariants(batchJobId, transactionManager)
       await this.updateVariants(batchJobId, transactionManager)
-
-      await this.batchJobService_.complete(batchJobId)
     })
   }
 
@@ -257,7 +267,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     for (const productOp of productOps) {
       await this.productService_.withTransaction(transactionManager).create(
-        transformProductData(productOp.data) // TODO: pick keys before saving to Redis
+        transformProductData(productOp) // TODO: pick keys before saving to Redis
       )
     }
   }
@@ -274,7 +284,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const productOp of productOps) {
       await this.productService_
         .withTransaction(transactionManager)
-        .update(productOp.data.product_id, transformProductData(productOp.data))
+        .update(productOp.data.product_id, transformProductData(productOp))
     }
   }
 
@@ -290,19 +300,19 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const variantOp of variantOps) {
-      let productId = variantOp.data.product_id
+      let productId = variantOp.product_id
 
       // product created in the meantime
       if (!productId) {
         productId = await productRepo.find({
-          where: { handle: variantOp.data.handle },
+          where: { handle: variantOp.handle },
           select: ["id"],
         })
       }
 
       await this.productVariantService_
         .withTransaction(transactionManager)
-        .create(productId, transformVariantData(variantOp.data) as any)
+        .create(productId, transformVariantData(variantOp) as any)
     }
   }
 
@@ -318,10 +328,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const variantOp of variantOps) {
       await this.productVariantService_
         .withTransaction(transactionManager)
-        .update(
-          variantOp.data.variant.id,
-          transformVariantData(variantOp.data) as any
-        )
+        .update(variantOp.variant.id, transformVariantData(variantOp) as any)
     }
   }
 
@@ -349,15 +356,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     results: Record<OperationType, any[]>
   ): Promise<void> {
     for (const op in results) {
-      // @ts-ignore
-      await this.redisClient_.call(
-        "JSON.SET",
-        `pij_${batchJobId}:${op}`,
-        "$", // JSONPath, $ is start
-        JSON.stringify(results[op])
-      )
+      if (results[op]?.length) {
+        // @ts-ignore
+        await this.redisClient_.call(
+          "JSON.SET",
+          `pij_${batchJobId}:${op}`,
+          "$", // JSONPath, $ is start
+          JSON.stringify(results[op])
+        )
 
-      await this.redisClient_.expire(`pij_${batchJobId}:${op}`, 60 * 60)
+        await this.redisClient_.expire(`pij_${batchJobId}:${op}`, 60 * 60)
+      }
     }
   }
 
@@ -365,16 +374,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     batchJobId: string,
     op: OperationType
   ): Promise<any[]> {
-    // @ts-ignore
-    return await this.redisClient_.call(
-      "JSON.GET",
-      `pij_${batchJobId}:${op}`,
-      "$"
-    )
+    return JSON.parse(
+      // @ts-ignore
+      await this.redisClient_.call("JSON.GET", `pij_${batchJobId}:${op}`, "$")
+    )[0] // JSONPath always returns an array of results that matched a query
   }
 
   async clearRedisRecords(batchJobId: string): Promise<void> {
-    return await this.redisClient_.client.call("JSON.DEL", `pij_${batchJobId}`)
+    // @ts-ignore
+    return await this.redisClient_.call("JSON.DEL", `pij_${batchJobId}:*`)
   }
 
   validateContext(
@@ -423,7 +431,11 @@ const CSVSchema: ProductImportCsvSchema = {
     // PRODUCT-TYPE
     { name: "Product Type", mapTo: "product.type.value" },
     // PRODUCT-TAGS
-    { name: "Product Tags", mapTo: "product.tags" },
+    {
+      name: "Product Tags",
+      mapTo: "product.tags",
+      transform: (value) => `${value}`.split(",").map((v) => ({ value: v })),
+    },
     //
     { name: "Product Discountable", mapTo: "product.discountable" },
     { name: "Product External ID", mapTo: "product.external_id" },
