@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`/admin/discounts DELETE /admin/discounts/:id/conditions/:condition_id should fail if discount does not exist: Discount with id not-exist was not found 1`] = `"Cannot read property 'delete' of null"`;
+
 exports[`/admin/discounts GET /admin/discounts/:id/conditions/:condition_id should get condition 1`] = `
 Object {
   "created_at": Any<String>,

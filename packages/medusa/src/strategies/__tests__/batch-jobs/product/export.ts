@@ -6,23 +6,16 @@ import { productsToExport } from "../../../__fixtures__/product-export-data"
 import { AdminPostBatchesReq } from "../../../../api/routes/admin/batch/create-batch-job"
 import { defaultAdminProductRelations } from "../../../../api/routes/admin/products"
 import { ProductExportBatchJob } from "../../../batch-jobs/product"
+import { Request } from "express"
 
 const outputDataStorage: string[] = []
 
 let fakeJob = {
   id: IdMap.getId("product-export-job"),
   type: 'product-export',
-  context: {
-    list_config: {},
-    filterable_fields: {},
-    shape: {
-      dynamicImageColumnCount: 1,
-      dynamicMoneyAmountColumnCount: 1,
-      dynamicOptionColumnCount: 2
-    }
-  },
   created_by: IdMap.getId("product-export-job-creator"),
   created_by_user: {} as User,
+  context: {},
   result: {},
   dry_run: false,
   status: BatchJobStatus.PROCESSING as BatchJobStatus
@@ -50,10 +43,12 @@ const batchJobServiceMock = {
   withTransaction: function () {
     return this
   },
-  update: jest.fn().mockImplementation(data => {
+  update: jest.fn().mockImplementation((job, data) => {
     fakeJob = {
       ...fakeJob,
-      ...data
+      ...data,
+      context: { ...fakeJob?.context, ...data?.context },
+      result: { ...fakeJob?.result, ...data?.result }
     }
     return Promise.resolve(fakeJob)
   }),
@@ -67,6 +62,9 @@ const batchJobServiceMock = {
   }),
   retrieve: jest.fn().mockImplementation(() => {
     return Promise.resolve(fakeJob)
+  }),
+  setFailed: jest.fn().mockImplementation((...args) => {
+    console.error(...args)
   })
 }
 const productServiceMock = {
@@ -75,19 +73,11 @@ const productServiceMock = {
   },
   list: jest.fn().mockImplementation(() => Promise.resolve(productsToExport)),
   count: jest.fn().mockImplementation(() => Promise.resolve(productsToExport.length)),
-  listAndCount: jest.fn().mockImplementation(() => Promise.resolve([productsToExport, productsToExport.length])),
+  listAndCount: jest.fn().mockImplementation(() => {
+    return Promise.resolve([productsToExport, productsToExport.length])
+  }),
 }
-const managerMock = {
-  ...MockManager,
-  query: jest.fn().mockImplementation(() => {
-    return Promise.resolve([{
-      maxOptionsCount: Math.max(...productsToExport.map(p => p.options.length)),
-      maxImagesCount: Math.max(...productsToExport.map(p => p.images.length)),
-      maxVariantsCount: Math.max(...productsToExport.map(p => p.variants.length)),
-      maxMoneyAmountCount: Math.max(...productsToExport.map(p => p.variants.map(v => v.prices.length)).flat()),
-    }])
-  })
-}
+const managerMock = MockManager
 
 describe("Product export strategy", () => {
   const productExportStrategy = new ProductExportStrategy({
@@ -98,6 +88,8 @@ describe("Product export strategy", () => {
   })
 
   it('should generate the appropriate template', async () => {
+    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+    await productExportStrategy.preProcessBatchJob(fakeJob.id)
     const template = await productExportStrategy.buildHeader(fakeJob)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
@@ -142,14 +134,16 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Option 2 Name.*/)
     expect(template).toMatch(/.*Option 2 Value.*/)
 
-    expect(template).toMatch(/.*Price 1 Currency code.*/)
-    expect(template).toMatch(/.*Price 1 Region name.*/)
-    expect(template).toMatch(/.*Price 1 Amount.*/)
+    expect(template).toMatch(/.*Price USD.*/)
+    expect(template).toMatch(/.*Price france.*/)
+    expect(template).toMatch(/.*Price denmark.*/)
 
     expect(template).toMatch(/.*Image 1 Url.*/)
   })
 
   it('should process the batch job and generate the appropriate output', async () => {
+    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+    await productExportStrategy.preProcessBatchJob(fakeJob.id)
     await productExportStrategy.processJob(fakeJob.id)
     expect(outputDataStorage).toMatchSnapshot()
   })
@@ -199,7 +193,10 @@ describe("Product export strategy", () => {
       list_config: {
         select: undefined,
         order: { created_at: "DESC" },
-        relations: defaultAdminProductRelations,
+        relations: [
+          ...defaultAdminProductRelations,
+          "variants.prices.region"
+        ],
         skip: 0,
         take: 50,
       },

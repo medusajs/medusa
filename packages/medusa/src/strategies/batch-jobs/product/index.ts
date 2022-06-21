@@ -10,9 +10,9 @@ export type ProductExportBatchJobContext = {
   fields?: string
   expand?: string
   shape: {
-    dynamicImageColumnCount: number
+    prices: ProductExportPriceData[]
     dynamicOptionColumnCount: number
-    dynamicMoneyAmountColumnCount: number
+    dynamicImageColumnCount: number
   }
   list_config?: {
     select?: string[]
@@ -22,6 +22,11 @@ export type ProductExportBatchJobContext = {
     order?: Record<string, "ASC" | "DESC">
   }
   filterable_fields?: Selector<unknown>
+}
+
+export type ProductExportPriceData = {
+  currency_code?: string
+  region?: { name: string; id: string }
 }
 
 export type ProductExportBatchJob = BatchJob & {

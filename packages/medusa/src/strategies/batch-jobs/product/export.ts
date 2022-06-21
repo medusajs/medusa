@@ -9,6 +9,7 @@ import {
   ProductExportBatchJob,
   ProductExportBatchJobContext,
   ProductExportColumnSchemaDescriptor,
+  ProductExportPriceData,
   productExportSchemaDescriptors,
 } from "./index"
 import { FindProductConfig } from "../../../types/product"
@@ -34,7 +35,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
   protected readonly productService_: ProductService
   protected readonly fileService_: IFileService<never>
 
-  protected readonly defaultRelations_ = [...defaultAdminProductRelations]
+  protected readonly defaultRelations_ = [
+    ...defaultAdminProductRelations,
+    "variants.prices.region",
+  ]
   /*
    *
    * The dynamic columns corresponding to the lowest level of relations are built later on.
@@ -86,18 +90,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
       const { list_config = {}, filterable_fields = {} } = batchJob.context
       const [productList, count] = await this.productService_
         .withTransaction(transactionManager)
-        .listAndCount(filterable_fields, {
-          ...list_config,
-          skip: offset,
-          take: limit,
-        } as FindProductConfig)
+        .listAndCount(filterable_fields, list_config as FindProductConfig)
 
       const productCount = count
       let products: Product[] = productList
 
       let dynamicOptionColumnCount = 0
       let dynamicImageColumnCount = 0
-      let dynamicMoneyAmountColumnCount = 0
+
+      const pricesData = new Set<string>()
 
       while (offset < productCount) {
         if (!products?.length) {
@@ -109,9 +110,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
               take: limit,
             } as FindProductConfig)
         }
-
-        offset += products.length
-        products.length = 0
 
         // Retrieve the highest count of each object to build the dynamic columns later
         for (const product of products) {
@@ -127,15 +125,25 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             imageCount
           )
 
-          const moneyAmounts = product?.variants?.map((variant) => {
-            return variant.prices?.length
-          }) ?? [0]
-          const moneyAmountCount = Math.max(...moneyAmounts)
-          dynamicMoneyAmountColumnCount = Math.max(
-            dynamicMoneyAmountColumnCount,
-            moneyAmountCount
-          )
+          for (const variant of product.variants) {
+            if (variant.prices?.length) {
+              variant.prices.forEach((price) => {
+                pricesData.add(
+                  JSON.stringify({
+                    currency_code:
+                      price.currency_code ?? price.region?.currency_code,
+                    region: price.region
+                      ? { name: price.region.name, id: price.region.id }
+                      : undefined,
+                  })
+                )
+              })
+            }
+          }
         }
+
+        offset += products.length
+        products = []
       }
 
       await this.batchJobService_
@@ -145,7 +153,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             shape: {
               dynamicImageColumnCount,
               dynamicOptionColumnCount,
-              dynamicMoneyAmountColumnCount,
+              prices: [...pricesData].map((stringifyData) =>
+                JSON.parse(stringifyData)
+              ),
             },
           },
         })
@@ -165,7 +175,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
       expand,
       filterable_fields,
       ...context
-    } = batchJob.context as ProductExportBatchJobContext
+    } = (batchJob?.context ?? {}) as ProductExportBatchJobContext
 
     const listConfig = prepareListQuery(
       {
@@ -247,7 +257,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
           advancementCount += products.length
           offset += products.length
-          products.length = 0
+          products = []
 
           batchJob = (await this.batchJobService_
             .withTransaction(transactionManager)
@@ -286,13 +296,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
   public async buildHeader(batchJob: ProductExportBatchJob): Promise<string> {
     const {
+      prices = [],
       dynamicImageColumnCount,
-      dynamicMoneyAmountColumnCount,
       dynamicOptionColumnCount,
-    } = batchJob.context.shape
+    } = batchJob?.context?.shape ?? {}
 
+    this.appendMoneyAmountDescriptors(prices)
     this.appendOptionsDescriptors(dynamicOptionColumnCount)
-    this.appendMoneyAmountDescriptors(dynamicMoneyAmountColumnCount)
     this.appendImagesDescriptors(dynamicImageColumnCount)
 
     return [...this.columnDescriptors.keys(), this.NEWLINE_].join(
@@ -325,24 +335,51 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     }
   }
 
-  private appendMoneyAmountDescriptors(maxMoneyAmountCount: number): void {
-    for (let i = 0; i < maxMoneyAmountCount; ++i) {
-      this.columnDescriptors
-        .set(`Price ${i + 1} Currency code`, {
-          accessor: (variant: ProductVariant) =>
-            variant?.prices[i]?.currency_code?.toLowerCase() ?? "",
-          entityName: "variant",
-        })
-        .set(`Price ${i + 1} Region name`, {
-          accessor: (variant: ProductVariant) =>
-            variant?.prices[i]?.region?.name?.toLowerCase() ?? "",
-          entityName: "variant",
-        })
-        .set(`Price ${i + 1} Amount`, {
-          accessor: (variant: ProductVariant) =>
-            variant?.prices[i]?.amount?.toString() ?? "",
-          entityName: "variant",
-        })
+  private appendMoneyAmountDescriptors(
+    pricesData: ProductExportPriceData[]
+  ): void {
+    for (const priceData of pricesData) {
+      if (priceData.currency_code) {
+        this.columnDescriptors.set(
+          `Price ${priceData.currency_code?.toUpperCase()}`,
+          {
+            accessor: (variant: ProductVariant) => {
+              const price = variant.prices.find((variantPrice) => {
+                return (
+                  variantPrice.currency_code?.toLowerCase() ===
+                    priceData.currency_code?.toLowerCase() ||
+                  (variantPrice?.region?.currency_code.toLowerCase() ===
+                    priceData.currency_code?.toLowerCase() &&
+                    variantPrice.region?.id?.toLowerCase() ===
+                      priceData.region?.id?.toLowerCase())
+                )
+              })
+              return price?.amount?.toString() ?? ""
+            },
+            entityName: "variant",
+          }
+        )
+      }
+
+      if (priceData.region) {
+        this.columnDescriptors.set(
+          `Price ${priceData.region.name.toLowerCase()}`,
+          {
+            accessor: (variant: ProductVariant) => {
+              const price = variant.prices.find((variantPrice) => {
+                return (
+                  variantPrice.region?.name?.toLowerCase() ===
+                    priceData.region?.name?.toLowerCase() &&
+                  variantPrice.region?.id?.toLowerCase() ===
+                    priceData.region?.id?.toLowerCase()
+                )
+              })
+              return price?.amount?.toString() ?? ""
+            },
+            entityName: "variant",
+          }
+        )
+      }
     }
   }
 
