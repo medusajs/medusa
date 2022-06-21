@@ -442,7 +442,7 @@ class DiscountService extends TransactionBaseService<DiscountService> {
         )
         toCreate.ends_at = lastValidDate
       }
-      const created: Discount = await discountRepo.create(toCreate)
+      const created: Discount = discountRepo.create(toCreate)
       return await discountRepo.save(created)
     })
   }
