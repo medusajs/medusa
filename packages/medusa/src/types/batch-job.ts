@@ -22,6 +22,18 @@ export enum BatchJobStatus {
 
 export type BatchJobUpdateProps = Partial<Pick<BatchJob, "context" | "result">>
 
+export type CreateBatchJobInput = {
+  type: string
+  context: BatchJob["context"]
+  dry_run: boolean
+}
+
+export type BatchJobResultError = {
+  message: string
+  code: string | number
+  [key: string]: unknown
+}
+
 export class FilterableBatchJobProps {
   @IsOptional()
   @IsType([String, [String]])

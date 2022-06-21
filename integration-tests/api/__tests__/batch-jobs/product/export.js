@@ -39,8 +39,6 @@ describe("Batch job of product-export type", () => {
     await db.shutdown()
 
     medusaProcess.kill()
-
-    await fs.unlink(exportFilePath)
   })
 
   beforeEach(async () => {
@@ -57,6 +55,11 @@ describe("Batch job of product-export type", () => {
   afterEach(async() => {
     const db = useDb()
     await db.teardown()
+
+    const isFileExists = (await fs.stat(exportFilePath)).isFile()
+    if (isFileExists) {
+      await fs.unlink(exportFilePath)
+    }
   })
 
   it('should export a csv file containing the expected products', async () => {

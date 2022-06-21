@@ -1,10 +1,11 @@
-import ProductExportStrategy from "../batch-jobs/product/export"
-import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { User } from "../../models"
-import { BatchJobStatus } from "../../types/batch-job"
-import { productsToExport } from "../__fixtures__/product-export-data"
-import { AdminPostBatchesReq } from "../../api/routes/admin/batch/create-batch-job"
-import { defaultAdminProductRelations } from "../../api/routes/admin/products"
+import ProductExportStrategy from "../../../batch-jobs/product/export"
+import { IdMap, MockManager } from "medusa-test-utils"
+import { User } from "../../../../models"
+import { BatchJobStatus } from "../../../../types/batch-job"
+import { productsToExport } from "../../../__fixtures__/product-export-data"
+import { AdminPostBatchesReq } from "../../../../api/routes/admin/batch/create-batch-job"
+import { defaultAdminProductRelations } from "../../../../api/routes/admin/products"
+import { ProductExportBatchJob } from "../../../batch-jobs/product"
 
 const outputDataStorage: string[] = []
 
@@ -14,13 +15,18 @@ let fakeJob = {
   context: {
     list_config: {},
     filterable_fields: {},
+    shape: {
+      dynamicImageColumnCount: 1,
+      dynamicMoneyAmountColumnCount: 1,
+      dynamicOptionColumnCount: 2
+    }
   },
   created_by: IdMap.getId("product-export-job-creator"),
   created_by_user: {} as User,
   result: {},
   dry_run: false,
   status: BatchJobStatus.PROCESSING as BatchJobStatus
-}
+} as ProductExportBatchJob
 
 const fileServiceMock = {
   delete: jest.fn(),
@@ -71,9 +77,8 @@ const productServiceMock = {
   count: jest.fn().mockImplementation(() => Promise.resolve(productsToExport.length)),
   listAndCount: jest.fn().mockImplementation(() => Promise.resolve([productsToExport, productsToExport.length])),
 }
-const managerMock = MockManager
-const productRepositoryMock = {
-  ...MockRepository(),
+const managerMock = {
+  ...MockManager,
   query: jest.fn().mockImplementation(() => {
     return Promise.resolve([{
       maxOptionsCount: Math.max(...productsToExport.map(p => p.options.length)),
@@ -90,11 +95,10 @@ describe("Product export strategy", () => {
     fileService: fileServiceMock as any,
     batchJobService: batchJobServiceMock as any,
     productService: productServiceMock as any,
-    productRepository: productRepositoryMock
   })
 
   it('should generate the appropriate template', async () => {
-    const template = await productExportStrategy.buildTemplate()
+    const template = await productExportStrategy.buildHeader(fakeJob)
     expect(template).toMatch(/.*Product Handle.*/)
     expect(template).toMatch(/.*Product Title.*/)
     expect(template).toMatch(/.*Product Subtitle.*/)

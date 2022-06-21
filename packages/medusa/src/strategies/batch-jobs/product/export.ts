@@ -2,13 +2,12 @@ import { EntityManager } from "typeorm"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
 import { Product, ProductVariant } from "../../../models"
 import { BatchJobService, ProductService } from "../../../services"
-import { BatchJobStatus } from "../../../types/batch-job"
+import { BatchJobStatus, CreateBatchJobInput } from "../../../types/batch-job"
 import { defaultAdminProductRelations } from "../../../api/routes/admin/products"
-import { ProductRepository } from "../../../repositories/product"
-import { MedusaError } from "medusa-core-utils/dist"
-import { AdminPostBatchesReq } from "../../../api/routes/admin/batch/create-batch-job"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import {
+  ProductExportBatchJob,
+  ProductExportBatchJobContext,
   ProductExportColumnSchemaDescriptor,
   productExportSchemaDescriptors,
 } from "./index"
@@ -19,14 +18,14 @@ type InjectedDependencies = {
   batchJobService: BatchJobService
   productService: ProductService
   fileService: IFileService<never>
-  productRepository: typeof ProductRepository
 }
 
-export default class ProductExportStrategy extends AbstractBatchJobStrategy<ProductExportStrategy> {
+export default class ProductExportStrategy extends AbstractBatchJobStrategy<
+  ProductExportStrategy,
+  InjectedDependencies
+> {
   public static identifier = "product-export-strategy"
   public static batchType = "product-export"
-
-  public defaultMaxRetry = 3
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -34,7 +33,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
   protected readonly batchJobService_: BatchJobService
   protected readonly productService_: ProductService
   protected readonly fileService_: IFileService<never>
-  protected readonly productRepository_: typeof ProductRepository
 
   protected readonly defaultRelations_ = [...defaultAdminProductRelations]
   /*
@@ -58,32 +56,84 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
     batchJobService,
     productService,
     fileService,
-    productRepository,
   }: InjectedDependencies) {
     super({
       manager,
       batchJobService,
       productService,
       fileService,
-      productRepository,
     })
 
     this.manager_ = manager
     this.batchJobService_ = batchJobService
     this.productService_ = productService
     this.fileService_ = fileService
-    this.productRepository_ = productRepository
   }
 
   async buildTemplate(): Promise<string> {
-    return this.buildHeader()
+    return ""
+  }
+
+  async preProcessBatchJob(batchJobId: string): Promise<void> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const batchJob = (await this.batchJobService_
+        .withTransaction(transactionManager)
+        .retrieve(batchJobId)) as ProductExportBatchJob
+
+      const { list_config = {}, filterable_fields = {} } = batchJob.context
+
+      const [productList] = await this.productService_
+        .withTransaction(transactionManager)
+        .listAndCount(filterable_fields, {
+          ...list_config,
+          skip: undefined,
+          take: undefined,
+        } as FindProductConfig)
+
+      let dynamicOptionColumnCount = 0
+      let dynamicImageColumnCount = 0
+      let dynamicMoneyAmountColumnCount = 0
+
+      // Retrieve the highest count of each object to build the dynamic columns later
+      for (const product of productList) {
+        const optionsCount = product?.options?.length ?? 0
+        dynamicOptionColumnCount = Math.max(
+          dynamicOptionColumnCount,
+          optionsCount
+        )
+
+        const imageCount = product?.images?.length ?? 0
+        dynamicImageColumnCount = Math.max(dynamicImageColumnCount, imageCount)
+
+        const moneyAmounts = product?.variants?.map((variant) => {
+          return variant.prices?.length
+        }) ?? [0]
+        const moneyAmountCount = Math.max(...moneyAmounts)
+        dynamicMoneyAmountColumnCount = Math.max(
+          dynamicMoneyAmountColumnCount,
+          moneyAmountCount
+        )
+      }
+
+      await this.batchJobService_
+        .withTransaction(transactionManager)
+        .update(batchJob, {
+          context: {
+            shape: {
+              dynamicImageColumnCount,
+              dynamicOptionColumnCount,
+              dynamicMoneyAmountColumnCount,
+            },
+          },
+        })
+    })
   }
 
   async prepareBatchJobForProcessing(
-    batchJob: AdminPostBatchesReq,
+    batchJob: CreateBatchJobInput,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     req: Express.Request
-  ): Promise<AdminPostBatchesReq> {
+  ): Promise<CreateBatchJobInput> {
     const {
       limit,
       offset,
@@ -92,7 +142,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       expand,
       filterable_fields,
       ...context
-    } = batchJob.context
+    } = batchJob.context as ProductExportBatchJobContext
 
     const listConfig = prepareListQuery(
       {
@@ -125,9 +175,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
 
     return await this.atomicPhase_(
       async (transactionManager) => {
-        let batchJob = await this.batchJobService_
+        let batchJob = (await this.batchJobService_
           .withTransaction(transactionManager)
-          .retrieve(batchJobId)
+          .retrieve(batchJobId)) as ProductExportBatchJob
 
         const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
@@ -136,13 +186,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
             ext: "csv",
           })
 
-        const header = await this.buildHeader()
+        const header = await this.buildHeader(batchJob)
         writeStream.write(header)
 
-        offset = batchJob.context?.list_config?.skip ?? offset
-        limit = batchJob.context?.list_config?.take ?? this.BATCH_SIZE
         advancementCount =
           batchJob.result?.advancement_count ?? advancementCount
+        offset = (batchJob.context?.list_config?.skip ?? 0) + advancementCount
+        limit = batchJob.context?.list_config?.take ?? this.BATCH_SIZE
 
         const { list_config = {}, filterable_fields = {} } = batchJob.context
         const [productList, count] = await this.productService_
@@ -176,24 +226,16 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           offset += products.length
           products.length = 0
 
-          batchJob = await this.batchJobService_
+          batchJob = (await this.batchJobService_
             .withTransaction(transactionManager)
             .update(batchJobId, {
-              context: {
-                ...batchJob.context,
-                file_key: fileKey,
-                list_config: {
-                  ...list_config,
-                  skip: offset,
-                },
-              },
               result: {
+                file_key: fileKey,
                 count: productCount,
                 advancement_count: advancementCount,
                 progress: advancementCount / productCount,
-                err: undefined,
               },
-            })
+            })) as ProductExportBatchJob
 
           if (batchJob.status === BatchJobStatus.CANCELED) {
             writeStream.end()
@@ -211,55 +253,24 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
       },
       "REPEATABLE READ",
       async (err) =>
-        this.handleProcessingErrors(batchJobId, err, {
-          offset,
+        this.handleProcessingError(batchJobId, err, {
           count: productCount,
-          advancementCount,
+          advancement_count: advancementCount,
           progress: advancementCount / productCount,
         })
     )
   }
 
-  private async buildHeader(): Promise<string> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-    const productRepo = transactionManager.getCustomRepository(
-      this.productRepository_
-    )
+  public async buildHeader(batchJob: ProductExportBatchJob): Promise<string> {
+    const {
+      dynamicImageColumnCount,
+      dynamicMoneyAmountColumnCount,
+      dynamicOptionColumnCount,
+    } = batchJob.context.shape
 
-    const [{ maxOptionsCount, maxImagesCount, maxMoneyAmountCount }] =
-      await productRepo.query(`
-        WITH "optionsShape" AS (
-            SELECT count(*) as "maxOptionsCount"
-            from product_option
-            group by product_id
-            order by "maxOptionsCount" DESC
-            LIMIT 1
-        ), "imagesShape" AS (
-            SELECT count(*) as "maxImagesCount"
-            from product_images
-            group by product_id
-            order by "maxImagesCount" DESC
-            LIMIT 1
-        ), "moneyAmountShape" AS (
-            SELECT count(*) as "maxMoneyAmountCount"
-            from money_amount
-            group by variant_id
-            order by "maxMoneyAmountCount" DESC
-            LIMIT 1
-        )
-        SELECT 
-           "maxOptionsCount",
-           "maxImagesCount",
-           "maxMoneyAmountCount"
-        FROM 
-           "optionsShape",
-           "imagesShape",
-           "moneyAmountShape";
-      `)
-
-    this.appendOptionsDescriptors(Number(maxOptionsCount ?? 0))
-    this.appendMoneyAmountDescriptors(Number(maxMoneyAmountCount ?? 0))
-    this.appendImagesDescriptors(Number(maxImagesCount ?? 0))
+    this.appendOptionsDescriptors(dynamicOptionColumnCount)
+    this.appendMoneyAmountDescriptors(dynamicMoneyAmountColumnCount)
+    this.appendImagesDescriptors(dynamicImageColumnCount)
 
     return [...this.columnDescriptors.keys(), this.NEWLINE_].join(
       this.DELIMITER_
@@ -325,69 +336,9 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<Prod
           variantLineData.push(columnSchema.accessor(variant))
         }
       }
-      variantLineData.push(this.NEWLINE_)
-      outputLineData.push(variantLineData.join(this.DELIMITER_))
+      outputLineData.push(variantLineData.join(this.DELIMITER_) + this.NEWLINE_)
     }
 
     return outputLineData
-  }
-
-  private async handleProcessingErrors(
-    batchJobId: string,
-    err: unknown,
-    {
-      offset,
-      count,
-      advancementCount,
-      progress,
-    }: {
-      offset: number
-      count: number
-      advancementCount: number
-      progress: number
-    }
-  ): Promise<void> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const batchJob = await this.batchJobService_
-        .withTransaction(transactionManager)
-        .retrieve(batchJobId)
-
-      const retryCount = batchJob.context.retry_count ?? 0
-      const maxRetry = batchJob.context.max_retry ?? this.defaultMaxRetry
-
-      const errMessage =
-        (err as any).message ??
-        `Something went wrong with the batchJob ${batchJob.id}`
-
-      if (err instanceof MedusaError) {
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .setFailed(batchJob, errMessage)
-      } else if (retryCount < maxRetry) {
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .update(batchJobId, {
-            context: {
-              ...batchJob.context,
-              retry_count: retryCount + 1,
-              list_config: {
-                ...batchJob.context.list_config,
-                skip: offset,
-              },
-            },
-            result: {
-              ...batchJob.result,
-              count,
-              advancement_count: advancementCount,
-              progress,
-              errors: [...(batchJob?.result?.errors ?? []), errMessage],
-            },
-          })
-      } else {
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .setFailed(batchJob, errMessage)
-      }
-    })
   }
 }

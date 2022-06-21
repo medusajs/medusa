@@ -1,9 +1,7 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
-import { AbstractBatchJobStrategy } from "../../../../interfaces"
 import { BatchJob } from "../../../../models"
-import { MedusaError } from "medusa-core-utils/dist"
 
 /**
  * @oas [post] /batch-jobs
@@ -30,24 +28,14 @@ import { MedusaError } from "medusa-core-utils/dist"
 export default async (req, res) => {
   const validated = await validator(AdminPostBatchesReq, req.body)
 
-  let batchStrategy: AbstractBatchJobStrategy<never>
-  try {
-    batchStrategy = req.scope.resolve(`batchType_${validated.type}`)
-  } catch (e) {
-    throw new MedusaError(
-      MedusaError.Types.NOT_FOUND,
-      `Unable to find the batchJob strategy with type ${validated.type}`
-    )
-  }
-
-  const toCreate = await batchStrategy.prepareBatchJobForProcessing(
+  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
+  const toCreate = await batchJobService.prepareBatchJobForProcessing(
     validated,
     req
   )
 
   const userId = req.user.id ?? req.user.userId
 
-  const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
   const batch_job = await batchJobService.create({
     ...toCreate,
     created_by: userId,

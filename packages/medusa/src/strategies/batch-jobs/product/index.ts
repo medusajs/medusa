@@ -1,4 +1,32 @@
-import { Product, ProductVariant } from "../../../models"
+import { BatchJob, Product, ProductVariant } from "../../../models"
+import { Selector } from "../../../types/common"
+
+export type ProductExportBatchJobContext = {
+  retry_count?: number
+  max_retry?: number
+  offset?: number
+  limit?: number
+  order?: string
+  fields?: string
+  expand?: string
+  shape: {
+    dynamicImageColumnCount: number
+    dynamicOptionColumnCount: number
+    dynamicMoneyAmountColumnCount: number
+  }
+  list_config?: {
+    select?: string[]
+    relations?: string[]
+    skip?: number
+    take?: number
+    order?: Record<string, "ASC" | "DESC">
+  }
+  filterable_fields?: Selector<unknown>
+}
+
+export type ProductExportBatchJob = BatchJob & {
+  context: ProductExportBatchJobContext
+}
 
 export type ProductExportColumnSchemaEntity = "product" | "variant"
 
