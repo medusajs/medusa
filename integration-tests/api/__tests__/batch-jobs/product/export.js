@@ -109,7 +109,6 @@ describe("Batch job of product-export type", () => {
 
     // Pull to check the status until it is completed
     let shouldContinuePulling = true
-    const status = new Set()
     while (shouldContinuePulling) {
       const res = await api
       .get(`/admin/batch-jobs/${batchJobId}`, adminReqConfig)
@@ -119,7 +118,6 @@ describe("Batch job of product-export type", () => {
       })
 
       const batchJob = res.data.batch_job
-      status.add(batchJob.status)
       shouldContinuePulling = !(batchJob.status === "completed")
     }
 
