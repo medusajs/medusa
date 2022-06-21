@@ -11,7 +11,7 @@ export class AdminListCustomerSelector {
   groups?: string[]
 }
 
-export type CreateCustomerGroupInput = {
+export type CreateCustomerInput = {
   email: string
   password?: string
   password_hash?: string
