@@ -80,39 +80,62 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         .withTransaction(transactionManager)
         .retrieve(batchJobId)) as ProductExportBatchJob
 
-      const { list_config = {}, filterable_fields = {} } = batchJob.context
+      let offset = batchJob.context?.list_config?.skip ?? 0
+      const limit = this.BATCH_SIZE
 
-      const [productList] = await this.productService_
+      const { list_config = {}, filterable_fields = {} } = batchJob.context
+      const [productList, count] = await this.productService_
         .withTransaction(transactionManager)
         .listAndCount(filterable_fields, {
           ...list_config,
-          skip: undefined,
-          take: undefined,
+          skip: offset,
+          take: limit,
         } as FindProductConfig)
+
+      const productCount = count
+      let products: Product[] = productList
 
       let dynamicOptionColumnCount = 0
       let dynamicImageColumnCount = 0
       let dynamicMoneyAmountColumnCount = 0
 
-      // Retrieve the highest count of each object to build the dynamic columns later
-      for (const product of productList) {
-        const optionsCount = product?.options?.length ?? 0
-        dynamicOptionColumnCount = Math.max(
-          dynamicOptionColumnCount,
-          optionsCount
-        )
+      while (offset < productCount) {
+        if (!products?.length) {
+          products = await this.productService_
+            .withTransaction(transactionManager)
+            .list(filterable_fields, {
+              ...list_config,
+              skip: offset,
+              take: limit,
+            } as FindProductConfig)
+        }
 
-        const imageCount = product?.images?.length ?? 0
-        dynamicImageColumnCount = Math.max(dynamicImageColumnCount, imageCount)
+        offset += products.length
+        products.length = 0
 
-        const moneyAmounts = product?.variants?.map((variant) => {
-          return variant.prices?.length
-        }) ?? [0]
-        const moneyAmountCount = Math.max(...moneyAmounts)
-        dynamicMoneyAmountColumnCount = Math.max(
-          dynamicMoneyAmountColumnCount,
-          moneyAmountCount
-        )
+        // Retrieve the highest count of each object to build the dynamic columns later
+        for (const product of products) {
+          const optionsCount = product?.options?.length ?? 0
+          dynamicOptionColumnCount = Math.max(
+            dynamicOptionColumnCount,
+            optionsCount
+          )
+
+          const imageCount = product?.images?.length ?? 0
+          dynamicImageColumnCount = Math.max(
+            dynamicImageColumnCount,
+            imageCount
+          )
+
+          const moneyAmounts = product?.variants?.map((variant) => {
+            return variant.prices?.length
+          }) ?? [0]
+          const moneyAmountCount = Math.max(...moneyAmounts)
+          dynamicMoneyAmountColumnCount = Math.max(
+            dynamicMoneyAmountColumnCount,
+            moneyAmountCount
+          )
+        }
       }
 
       await this.batchJobService_

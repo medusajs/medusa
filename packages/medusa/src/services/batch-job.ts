@@ -380,18 +380,11 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
   async prepareBatchJobForProcessing(
     data: CreateBatchJobInput,
     req: Request
-  ): Promise<CreateBatchJobInput> {
+  ): Promise<CreateBatchJobInput | never> {
     return await this.atomicPhase_(async () => {
-      let batchStrategy: AbstractBatchJobStrategy<never>
-      try {
-        batchStrategy = this.strategyResolver_.resolveBatchJobByType(data.type)
-      } catch (e) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Unable to find a BatchJob strategy with the type ${data.type}`
-        )
-      }
-
+      const batchStrategy = this.strategyResolver_.resolveBatchJobByType(
+        data.type
+      )
       return await batchStrategy.prepareBatchJobForProcessing(data, req)
     })
   }
