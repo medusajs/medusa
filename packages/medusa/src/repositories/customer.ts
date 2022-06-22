@@ -1,11 +1,11 @@
 import { Brackets, EntityRepository, ILike, Repository } from "typeorm"
 import { Customer } from "../models/customer"
-import { ExtendedFindConfig } from "../types/common"
+import { ExtendedFindConfig, Selector } from "../types/common"
 
 @EntityRepository(Customer)
 export class CustomerRepository extends Repository<Customer> {
   async listAndCount(
-    query: ExtendedFindConfig<Customer>,
+    query: ExtendedFindConfig<Customer, Selector<Customer>>,
     q: string | undefined = undefined
   ): Promise<[Customer[], number]> {
     const groups = query.where.groups as { value: string[] }

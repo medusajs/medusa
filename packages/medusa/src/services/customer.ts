@@ -118,7 +118,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
         delete selector.q
       }
 
-      const query = buildQuery(selector, config)
+      const query = buildQuery<Selector<Customer>, Customer>(selector, config)
 
       const [customers] = await customerRepo.listAndCount(query, q)
       return customers
@@ -148,7 +148,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
         delete selector.q
       }
 
-      const query = buildQuery(selector, config)
+      const query = buildQuery<Selector<Customer>, Customer>(selector, config)
 
       return await customerRepo.listAndCount(query, q)
     })
