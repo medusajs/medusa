@@ -6,7 +6,12 @@ import { TransactionBaseService } from "../interfaces"
 import { GiftCard } from "../models"
 import { GiftCardRepository } from "../repositories/gift-card"
 import { GiftCardTransactionRepository } from "../repositories/gift-card-transaction"
-import { FindConfig, QuerySelector, Selector } from "../types/common"
+import {
+  ExtendedFindConfig,
+  FindConfig,
+  QuerySelector,
+  Selector,
+} from "../types/common"
 import {
   CreateGiftCardInput,
   CreateGiftCardTransactionInput,
@@ -89,9 +94,12 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
         delete selector.q
       }
 
-      const query = buildQuery<GiftCard>(selector as Selector<GiftCard>, config)
+      const query: ExtendedFindConfig<GiftCard> = buildQuery<GiftCard>(
+        selector,
+        config
+      )
 
-      const rels = query.relations as (keyof GiftCard)[]
+      const rels = query.relations
       delete query.relations
 
       return await giftCardRepo.listGiftCards(query, rels, q)

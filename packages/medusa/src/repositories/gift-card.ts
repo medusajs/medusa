@@ -11,7 +11,7 @@ import { ExtendedFindConfig, Writable } from "../types/common"
 @EntityRepository(GiftCard)
 export class GiftCardRepository extends Repository<GiftCard> {
   public async findWithRelations(
-    relations: Array<keyof GiftCard> = [],
+    relations: (keyof GiftCard | string)[] = [],
     idsOrOptionsWithoutRelations:
       | Omit<FindManyOptions<GiftCard>, "relations">
       | string[] = {}
@@ -51,7 +51,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
   protected async queryGiftCards(
     q: string,
     where: Partial<Writable<GiftCard>>,
-    rels: (keyof GiftCard)[]
+    rels: (keyof GiftCard | string)[]
   ): Promise<GiftCard[]> {
     const raw = await this.createQueryBuilder("gift_card")
       .leftJoinAndSelect("gift_card.order", "order")
@@ -74,7 +74,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
 
   public async listGiftCards(
     query: ExtendedFindConfig<GiftCard>,
-    rels: (keyof GiftCard)[],
+    rels: (keyof GiftCard | string)[],
     q?: string
   ): Promise<GiftCard[]> {
     if (q) {
