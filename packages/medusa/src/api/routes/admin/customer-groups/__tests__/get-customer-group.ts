@@ -28,7 +28,6 @@ describe("GET /customer-groups", () => {
     expect(CustomerGroupServiceMock.retrieve).toHaveBeenCalledTimes(1)
     expect(CustomerGroupServiceMock.retrieve).toHaveBeenCalledWith(id, {
       relations: ["customers"],
-      select: ["id"]
     })
   })
 })
