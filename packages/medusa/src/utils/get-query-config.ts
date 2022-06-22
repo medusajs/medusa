@@ -1,10 +1,7 @@
 import { pick } from "lodash"
-import { FindConfig } from "../types/common"
-
-type BaseEntity = {
-  id: string
-  created_at: Date
-}
+import { FindConfig, QueryConfig, RequestQueryFields } from "../types/common"
+import { MedusaError } from "medusa-core-utils/dist"
+import { BaseEntity } from "../interfaces/models/base-entity"
 
 export function pickByConfig<TModel extends BaseEntity>(
   obj: TModel | TModel[],
@@ -80,4 +77,74 @@ export function getListConfig<TModel extends BaseEntity>(
     take: limit,
     order: orderBy,
   }
+}
+
+export function prepareListQuery<
+  T extends RequestQueryFields,
+  TEntity extends BaseEntity
+>(validated: T, queryConfig?: QueryConfig<TEntity>) {
+  const { order, fields, expand, limit, offset } = validated
+
+  let expandRelations: string[] | undefined = undefined
+  if (expand) {
+    expandRelations = expand.split(",")
+  }
+
+  let expandFields: (keyof TEntity)[] | undefined = undefined
+  if (fields) {
+    expandFields = fields.split(",") as (keyof TEntity)[]
+  }
+
+  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
+  if (typeof order !== "undefined") {
+    let orderField = order
+    if (order.startsWith("-")) {
+      const [, field] = order.split("-")
+      orderField = field
+      orderBy = { [field]: "DESC" }
+    } else {
+      orderBy = { [order]: "ASC" }
+    }
+
+    if (queryConfig?.allowedFields?.length && !queryConfig?.allowedFields.includes(orderField)) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `Order field ${orderField} is not valid`
+      )
+    }
+  }
+
+  return getListConfig<TEntity>(
+    queryConfig?.defaultFields as (keyof TEntity)[],
+    (queryConfig?.defaultRelations ?? []) as string[],
+    expandFields,
+    expandRelations,
+    limit ?? queryConfig?.defaultLimit,
+    offset ?? 0,
+    orderBy
+  )
+}
+
+export function prepareRetrieveQuery<
+  T extends RequestQueryFields,
+  TEntity extends BaseEntity
+>(validated: T, queryConfig?: QueryConfig<TEntity>) {
+  const { fields, expand } = validated
+
+  let expandRelations: string[] = []
+  if (expand) {
+    expandRelations = expand.split(",")
+  }
+
+  let expandFields: (keyof TEntity)[] = []
+  if (fields) {
+    expandFields = fields.split(",") as (keyof TEntity)[]
+  }
+
+  return getRetrieveConfig<TEntity>(
+    queryConfig?.defaultFields as (keyof TEntity)[],
+    (queryConfig?.defaultRelations ?? []) as string[],
+    expandFields,
+    expandRelations
+  )
 }

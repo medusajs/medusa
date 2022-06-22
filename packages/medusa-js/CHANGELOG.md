@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/medusajs/medusa/compare/@medusajs/medusa-js@1.2.0...@medusajs/medusa-js@1.2.2) (2022-06-19)
+
+
+### Bug Fixes
+
+* **medusa-js:** Updated URLs for JS Client ([#1435](https://github.com/medusajs/medusa/issues/1435)) ([98f5c4e](https://github.com/medusajs/medusa/commit/98f5c4ec8bc9809de44223e90a36dfdfd6835503))
+
+
+### Features
+
+* **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
+* **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
+* **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
+
+
+
+
+
 ## [1.2.1](https://github.com/medusajs/medusa/compare/@medusajs/medusa-js@1.2.0...@medusajs/medusa-js@1.2.1) (2022-05-31)
 
 

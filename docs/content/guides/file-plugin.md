@@ -4,7 +4,7 @@ title: Create a file plugin
 
 # File Plugin
 
-This guide will give an introduction about the File Service and steps required to create a custom file uploader plugin for Medusa. It build on article about [creating custom plugins](https://docs.medusajs.com/guides/plugins). 
+This guide will give an introduction about the File Service and steps required to create a custom file uploader plugin for Medusa. It build on article about [creating custom plugins](../advanced/backend/payment/overview.md). 
 
 As an example, we will create a File plugin that uploads the product images to Cloudinary. 
 

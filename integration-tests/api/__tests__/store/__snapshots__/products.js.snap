@@ -131,6 +131,8 @@ Object {
         "allow_backorder": false,
         "barcode": "test-barcode",
         "calculated_price": null,
+        "calculated_price_incl_tax": null,
+        "calculated_tax": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean",
@@ -157,6 +159,8 @@ Object {
         ],
         "origin_country": null,
         "original_price": null,
+        "original_price_incl_tax": null,
+        "original_tax": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -200,6 +204,7 @@ Object {
         ],
         "product_id": "test-product",
         "sku": "test-sku",
+        "tax_rates": null,
         "title": "Test variant",
         "upc": "test-upc",
         "updated_at": Any<String>,
@@ -210,6 +215,8 @@ Object {
         "allow_backorder": false,
         "barcode": null,
         "calculated_price": null,
+        "calculated_price_incl_tax": null,
+        "calculated_tax": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean2",
@@ -236,6 +243,8 @@ Object {
         ],
         "origin_country": null,
         "original_price": null,
+        "original_price_incl_tax": null,
+        "original_tax": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -279,6 +288,7 @@ Object {
         ],
         "product_id": "test-product",
         "sku": "test-sku2",
+        "tax_rates": null,
         "title": "Test variant rank (2)",
         "upc": "test-upc2",
         "updated_at": Any<String>,
@@ -289,6 +299,8 @@ Object {
         "allow_backorder": false,
         "barcode": "test-barcode 1",
         "calculated_price": null,
+        "calculated_price_incl_tax": null,
+        "calculated_tax": null,
         "created_at": Any<String>,
         "deleted_at": null,
         "ean": "test-ean1",
@@ -315,6 +327,8 @@ Object {
         ],
         "origin_country": null,
         "original_price": null,
+        "original_price_incl_tax": null,
+        "original_tax": null,
         "prices": Array [
           Object {
             "amount": 100,
@@ -358,6 +372,7 @@ Object {
         ],
         "product_id": "test-product",
         "sku": "test-sku1",
+        "tax_rates": null,
         "title": "Test variant rank (1)",
         "upc": "test-upc1",
         "updated_at": Any<String>,
@@ -385,6 +400,8 @@ Object {
           "allow_backorder": false,
           "barcode": null,
           "calculated_price": null,
+          "calculated_price_incl_tax": null,
+          "calculated_tax": null,
           "created_at": Any<String>,
           "deleted_at": null,
           "ean": null,
@@ -399,6 +416,8 @@ Object {
           "mid_code": null,
           "origin_country": null,
           "original_price": null,
+          "original_price_incl_tax": null,
+          "original_tax": null,
           "prices": Array [
             Object {
               "amount": 100,
@@ -417,6 +436,7 @@ Object {
           ],
           "product_id": Any<String>,
           "sku": null,
+          "tax_rates": null,
           "title": "test-variant",
           "upc": null,
           "updated_at": Any<String>,

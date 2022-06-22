@@ -1,26 +1,20 @@
-import { MedusaError } from "medusa-core-utils"
 import { Type } from "class-transformer"
 import {
   IsArray,
-  IsEnum,
   IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
 } from "class-validator"
-import { pickBy, omit, identity } from "lodash"
-import { defaultAdminBatchFields } from "."
+import { pickBy } from "lodash"
 import BatchJobService from "../../../../services/batch-job"
-import { BatchJob } from "../../../../models"
-import { BatchJobStatus } from "../../../../types/batch-job"
 import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
-import { getListConfig } from "../../../../utils/get-query-config"
-import { validator } from "../../../../utils/validator"
+import { Request } from "express"
 
 /**
- * @oas [get] /batch
- * operationId: "GetBatch"
+ * @oas [get] /batch-jobs
+ * operationId: "GetBatchJobs"
  * summary: "List Batch Jobs"
  * description: "Retrieve a list of Batch Jobs."
  * x-authenticated: true
@@ -28,7 +22,11 @@ import { validator } from "../../../../utils/validator"
  *   - (query) limit {string} The number of collections to return.
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) type {string | string[]} Filter by the batch type
- *   - (query) status {string} Filter by the status of the batch operation
+ *   - (query) confirmed_at {DateComparisonOperator} Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+ *   - (query) pre_processed_at {DateComparisonOperator} Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+ *   - (query) completed_at {DateComparisonOperator} Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+ *   - (query) failed_at {DateComparisonOperator} Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+ *   - (query) canceled_at {DateComparisonOperator} Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
  *   - (query) order {string} Order used when retrieving batch jobs
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
@@ -47,47 +45,25 @@ import { validator } from "../../../../utils/validator"
  *            batch_job:
  *              $ref: "#/components/schemas/batch_job"
  */
-export default async (req, res) => {
-  const { fields, expand, order, limit, offset, ...filterableFields } =
-    await validator(AdminGetBatchParams, req.query)
-
+export default async (req: Request, res) => {
   const batchService: BatchJobService = req.scope.resolve("batchJobService")
 
-  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
-  if (typeof order !== "undefined") {
-    if (order.startsWith("-")) {
-      const [, field] = order.split("-")
-      orderBy = { [field]: "DESC" }
-    } else {
-      orderBy = { [order]: "ASC" }
-    }
-  }
-
-  const listConfig = getListConfig<BatchJob>(
-    defaultAdminBatchFields as (keyof BatchJob)[],
-    [],
-    fields?.split(",") as (keyof BatchJob)[],
-    expand?.split(","),
-    limit,
-    offset,
-    orderBy
-  )
-
-  const created_by: string = req.user.id || req.user.userId
+  const created_by = req.user?.id || req.user?.userId
 
   const [jobs, count] = await batchService.listAndCount(
     pickBy(
-      { created_by, ...filterableFields },
+      { created_by, ...(req.filterableFields ?? {}) },
       (val) => typeof val !== "undefined"
     ),
-    listConfig
+    req.listConfig
   )
 
+  const { limit, offset } = req.validatedQuery
   res.status(200).json({
     batch_jobs: jobs,
     count,
-    offset: offset,
-    limit: limit,
+    offset,
+    limit,
   })
 }
 
@@ -121,18 +97,32 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   @IsType([String, [String]])
   id?: string | string[]
 
-  @IsOptional()
-  @IsArray()
-  @IsEnum(BatchJobStatus, { each: true })
-  status?: BatchJobStatus[]
-
   @IsArray()
   @IsOptional()
   type?: string[]
 
   @IsOptional()
-  @ValidateNested()
   @Type(() => DateComparisonOperator)
+  confirmed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  pre_processed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  completed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  failed_at?: DateComparisonOperator
+
+  @IsOptional()
+  @Type(() => DateComparisonOperator)
+  canceled_at?: DateComparisonOperator
+
+  @IsType([DateComparisonOperator])
+  @IsOptional()
   created_at?: DateComparisonOperator
 
   @IsOptional()

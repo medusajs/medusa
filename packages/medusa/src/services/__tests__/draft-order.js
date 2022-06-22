@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { MockRepository, MockManager } from "medusa-test-utils"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
 import DraftOrderService from "../draft-order"

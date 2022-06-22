@@ -101,6 +101,12 @@ ADMIN_CORS=<YOUR_ADMIN_URL>
 
 Make sure to replace `<YOUR_ADMIN_URL>` with your URL.
 
+:::info
+
+For more details about the Admin CORS configuration, check out the [Configure your Server documentation](../usage/configurations.md#admin-cors).
+
+:::
+
 ## Admin Features Overview
 
 ### Order Management
