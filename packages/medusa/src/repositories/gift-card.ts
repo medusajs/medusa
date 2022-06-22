@@ -74,7 +74,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
 
   public async listGiftCards(
     query: ExtendedFindConfig<GiftCard>,
-    rels: (keyof GiftCard | string)[],
+    rels: (keyof GiftCard | string)[] = [],
     q?: string
   ): Promise<GiftCard[]> {
     if (q) {
