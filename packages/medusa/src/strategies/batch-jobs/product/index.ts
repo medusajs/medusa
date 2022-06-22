@@ -6,6 +6,7 @@ export type ProductExportBatchJobContext = {
   max_retry?: number
   offset?: number
   limit?: number
+  batch_size?: number
   order?: string
   fields?: string
   expand?: string

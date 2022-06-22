@@ -32,7 +32,7 @@ describe("Batch job of product-export type", () => {
     })
   })
 
-  const exportFilePath = path.resolve(__dirname, "product-export.csv")
+  let exportFilePath = ""
 
   afterAll(async () => {
     const db = useDb()
@@ -109,11 +109,12 @@ describe("Batch job of product-export type", () => {
       },
     }
     const batchJobRes = await api.post("/admin/batch-jobs", batchPayload, adminReqConfig)
-    const batchJobId = batchJobRes?.data?.batch_job?.id
+    const batchJobId = batchJobRes.data.batch_job.id
 
     expect(batchJobId).toBeTruthy()
 
     // Pull to check the status until it is completed
+    let batchJob;
     let shouldContinuePulling = true
     while (shouldContinuePulling) {
       const res = await api
@@ -123,10 +124,11 @@ describe("Batch job of product-export type", () => {
         setTimeout(resolve, 1000)
       })
 
-      const batchJob = res.data.batch_job
+      batchJob = res.data.batch_job
       shouldContinuePulling = !(batchJob.status === "completed")
     }
 
+    exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
     const isFileExists = (await fs.stat(exportFilePath)).isFile()
 
     expect(isFileExists).toBeTruthy()

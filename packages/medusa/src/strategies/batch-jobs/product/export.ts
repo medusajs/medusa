@@ -53,7 +53,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
   private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
-  private readonly BATCH_SIZE = 50
+  private readonly DEFAULT_LIMIT = 50
 
   constructor({
     manager,
@@ -85,14 +85,17 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         .retrieve(batchJobId)) as ProductExportBatchJob
 
       let offset = batchJob.context?.list_config?.skip ?? 0
-      const limit = this.BATCH_SIZE
+      const limit = batchJob.context?.list_config?.take ?? this.DEFAULT_LIMIT
 
       const { list_config = {}, filterable_fields = {} } = batchJob.context
       const [productList, count] = await this.productService_
         .withTransaction(transactionManager)
-        .listAndCount(filterable_fields, list_config as FindProductConfig)
+        .listAndCount(filterable_fields, {
+          ...(list_config ?? {}),
+          take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
+        } as FindProductConfig)
 
-      const productCount = count
+      const productCount = batchJob.context?.batch_size ?? count
       let products: Product[] = productList
 
       let dynamicOptionColumnCount = 0
@@ -107,7 +110,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             .list(filterable_fields, {
               ...list_config,
               skip: offset,
-              take: limit,
+              take: Math.min(productCount - offset, limit),
             } as FindProductConfig)
         }
 
@@ -214,7 +217,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
   async processJob(batchJobId: string): Promise<void> {
     let offset = 0
-    let limit = this.BATCH_SIZE
+    let limit = this.DEFAULT_LIMIT
     let advancementCount = 0
     let productCount = 0
 
@@ -227,7 +230,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: "product-export",
+            name: `product-export-${Date.now()}`,
             ext: "csv",
           })
 
@@ -237,7 +240,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         advancementCount =
           batchJob.result?.advancement_count ?? advancementCount
         offset = (batchJob.context?.list_config?.skip ?? 0) + advancementCount
-        limit = batchJob.context?.list_config?.take ?? this.BATCH_SIZE
+        limit = batchJob.context?.list_config?.take ?? limit
 
         const { list_config = {}, filterable_fields = {} } = batchJob.context
         const [productList, count] = await this.productService_
@@ -245,10 +248,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
           .listAndCount(filterable_fields, {
             ...list_config,
             skip: offset,
-            take: limit,
+            take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
           } as FindProductConfig)
 
-        productCount = count
+        productCount = batchJob.context?.batch_size ?? count
         let products: Product[] = productList
 
         while (offset < productCount) {
@@ -258,7 +261,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
               .list(filterable_fields, {
                 ...list_config,
                 skip: offset,
-                take: limit,
+                take: Math.min(productCount - offset, limit),
               } as FindProductConfig)
           }
 
