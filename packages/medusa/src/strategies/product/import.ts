@@ -129,7 +129,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly productService_: ProductService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productRepo_: typeof ProductRepository
-  protected readonly productVariantRepo_: ProductVariantRepository
+  protected readonly productVariantRepo_: typeof ProductVariantRepository
   protected readonly redisClient_: IORedis.Redis
 
   protected readonly fileService_: IFileService<any>
@@ -175,6 +175,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     csvData: any[]
   ): Promise<Record<OperationType, any[]>> {
     const productRepo = this.manager_.getCustomRepository(this.productRepo_)
+    const productVariantRepo = this.manager_.getCustomRepository(
+      this.productVariantRepo_
+    )
 
     const shippingProfile = await this.shippingProfileService_.retrieveDefault()
 
@@ -187,7 +190,24 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const variantsUpdate: any[] = []
 
     for (const row of csvData) {
+      let variant
+
       if (row["variant.id"]) {
+        variant = await productVariantRepo.findOne({
+          where: { id: row["variant.id"] },
+        })
+      }
+
+      if (!variant && row["variant.sku"]) {
+        variant = await productVariantRepo.findOne({
+          where: { sku: row["variant.sku"] },
+          select: ["id"],
+        })
+
+        row["variant.id"] = variant?.id
+      }
+
+      if (variant) {
         variantsUpdate.push(row)
       } else {
         variantsCreate.push(row)
@@ -200,7 +220,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
           select: ["id"],
         })
 
-        row.product_id = existingId
+        row.product_id = existingId?.id
         row["product.profile_id"] = shippingProfile
         ;(existingId ? productsUpdate : productsCreate).push(row)
 
@@ -286,7 +306,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const productOp of productOps) {
       await this.productService_
         .withTransaction(transactionManager)
-        .update(productOp.data.product_id, transformProductData(productOp))
+        .update(productOp.product_id, transformProductData(productOp))
     }
   }
 
@@ -345,7 +365,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const variantOp of variantOps) {
       await this.productVariantService_
         .withTransaction(transactionManager)
-        .update(variantOp.variant.id, transformVariantData(variantOp) as any)
+        .update(variantOp["variant.id"], transformVariantData(variantOp) as any)
     }
   }
 
