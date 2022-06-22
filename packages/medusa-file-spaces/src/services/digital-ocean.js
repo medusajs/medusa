@@ -45,7 +45,7 @@ class DigitalOceanService extends AbstractFileService {
     })
   }
 
-  delete(file) {
+  async delete(file) {
     this.updateAwsConfig()
 
     const s3 = new aws.S3()
