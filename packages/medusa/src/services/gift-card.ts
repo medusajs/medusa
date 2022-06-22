@@ -89,7 +89,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
         delete selector.q
       }
 
-      const query = buildQuery<GiftCard>(selector, config)
+      const query = buildQuery<GiftCard>(selector as Selector<GiftCard>, config)
 
       const rels = query.relations as (keyof GiftCard)[]
       delete query.relations
