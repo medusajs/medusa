@@ -82,7 +82,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
    * @return the result of the find operation
    */
   async list(
-    selector: QuerySelector<GiftCard> = {},
+    selector: Selector<GiftCard> & { q?: string } = {},
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
   ): Promise<GiftCard[]> {
     return await this.atomicPhase_(async (manager) => {
@@ -95,7 +95,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
       }
 
       const query: ExtendedFindConfig<GiftCard> = buildQuery<GiftCard>(
-        selector,
+        selector as Selector<GiftCard>,
         config
       )
 
