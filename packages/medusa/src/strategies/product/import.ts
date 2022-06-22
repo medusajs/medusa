@@ -1,5 +1,6 @@
 import { EntityManager } from "typeorm"
 import * as IORedis from "ioredis"
+import set from "lodash/set"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
 import { BatchJob } from "../../models"
@@ -53,7 +54,6 @@ function pickObjectPropsByRegex(
   regex: RegExp
 ): Record<string, string> {
   const variantKeyPredicate = (key: string): boolean => regex.test(key)
-
   const ret = {}
 
   for (const k in data) {
@@ -464,7 +464,25 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Name",
       match: /Option \d+ Name/,
-      mapTo: "product.options.name",
+      // mapTo: "product.options.name",
+      reducer: (builtLine: any, key, value, context) => {
+        const optionIndex = key.split(" ")[1]
+
+        builtLine["product.options"] = builtLine["product.options"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+
+        builtLine["product.options"].push({
+          title: value,
+          values: context.line[`Option ${optionIndex} Value`]
+            .split(",")
+            .map((v) => ({ value: v })),
+        })
+
+        return builtLine
+      },
     },
     {
       name: "Option Value",
