@@ -1,9 +1,5 @@
-import { IsEmail, IsNotEmpty } from "class-validator"
-import jwt from "jsonwebtoken"
-import AuthService from "../../../../services/auth"
-import CustomerService from "../../../../services/customer"
-import { validator } from "../../../../utils/validator"
-import { EntityManager } from "typeorm"
+import { StrategyResolverService } from "../../../../services"
+import { Request, Response } from "express"
 
 /**
  * @oas [post] /auth
@@ -59,46 +55,14 @@ import { EntityManager } from "typeorm"
  *  "500":
  *    $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
-  const validated = await validator(StorePostAuthReq, req.body)
+export default async (req: Request, res: Response) => {
+  const strategyResolver = req.scope.resolve(
+    "strategyResolverService"
+  ) as StrategyResolverService
 
-  const authService: AuthService = req.scope.resolve("authService")
-  const manager: EntityManager = req.scope.resolve("manager")
-  const result = await manager.transaction(async (transactionManager) => {
-    return await authService
-      .withTransaction(transactionManager)
-      .authenticateCustomer(validated.email, validated.password)
-  })
+  const authStrategyType = (req.headers["X-medusa-auth-strategy"] ??
+    "core-store-default-auth") as string
 
-  if (!result.success) {
-    res.sendStatus(401)
-    return
-  }
-
-  // Add JWT to cookie
-  const {
-    projectConfig: { jwt_secret },
-  } = req.scope.resolve("configModule")
-  req.session.jwt = jwt.sign(
-    { customer_id: result.customer?.id },
-    jwt_secret!,
-    {
-      expiresIn: "30d",
-    }
-  )
-
-  const customerService: CustomerService = req.scope.resolve("customerService")
-  const customer = await customerService.retrieve(result.customer?.id || "", {
-    relations: ["orders", "orders.items"],
-  })
-
-  res.json({ customer })
-}
-
-export class StorePostAuthReq {
-  @IsEmail()
-  email: string
-
-  @IsNotEmpty()
-  password: string
+  const authStrategy = strategyResolver.resolveAuthByType(authStrategyType)
+  await authStrategy.authenticate(req, res)
 }

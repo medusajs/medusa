@@ -17,6 +17,7 @@ declare global {
       retrieveConfig: FindConfig<unknown>
       filterableFields: Record<string, unknown>
       errors: string[]
+      session: any
     }
   }
 }

@@ -1,3 +1,6 @@
+import { StrategyResolverService } from "../../../../services"
+import { Request, Response } from "express"
+
 /**
  * @oas [delete] /auth
  * operationId: "DeleteAuth"
@@ -30,7 +33,14 @@
  *  "500":
  *    $ref: "#/components/responses/500_error"
  */
-export default async (req, res) => {
-  req.session.jwt = {}
-  res.json({})
+export default async (req: Request, res: Response) => {
+  const strategyResolver = req.scope.resolve(
+    "strategyResolverService"
+  ) as StrategyResolverService
+
+  const authStrategyType = (req.headers["X-medusa-auth-strategy"] ??
+    "core-store-default-auth") as string
+
+  const authStrategy = strategyResolver.resolveAuthByType(authStrategyType)
+  await authStrategy.unAuthenticate(req, res)
 }
