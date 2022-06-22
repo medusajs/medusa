@@ -6,7 +6,7 @@ import {
   Repository,
 } from "typeorm"
 import { GiftCard } from "../models/gift-card"
-import { ExtendedFindConfig, Writable } from "../types/common"
+import { ExtendedFindConfig, QuerySelector, Writable } from "../types/common"
 
 @EntityRepository(GiftCard)
 export class GiftCardRepository extends Repository<GiftCard> {
@@ -50,7 +50,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
 
   protected async queryGiftCards(
     q: string,
-    where: Partial<Writable<GiftCard>>,
+    where: Partial<Writable<QuerySelector<GiftCard>>>,
     rels: (keyof GiftCard | string)[]
   ): Promise<GiftCard[]> {
     const raw = await this.createQueryBuilder("gift_card")
@@ -73,7 +73,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
   }
 
   public async listGiftCards(
-    query: ExtendedFindConfig<GiftCard>,
+    query: ExtendedFindConfig<GiftCard, QuerySelector<GiftCard>>,
     rels: (keyof GiftCard | string)[] = [],
     q?: string
   ): Promise<GiftCard[]> {
