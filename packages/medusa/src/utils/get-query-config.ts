@@ -136,7 +136,7 @@ export function prepareRetrieveQuery<
     expandRelations = expand.split(",")
   }
 
-  let expandFields: (keyof TEntity)[] = []
+  let expandFields: (keyof TEntity)[] | undefined = undefined
   if (fields) {
     expandFields = fields.split(",") as (keyof TEntity)[]
   }

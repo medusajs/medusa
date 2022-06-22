@@ -42,7 +42,7 @@ export default (app) => {
     middlewares.wrap(require("./get-customer-group-customers").default)
   )
   customerGroupRouter.post(
-    "customers/batch",
+    "/customers/batch",
     middlewares.wrap(require("./add-customers-batch").default)
   )
   customerGroupRouter.delete(
