@@ -34,6 +34,12 @@ export type BatchJobResultError = {
   [key: string]: unknown
 }
 
+export type BatchJobResultStatDescriptor = {
+  key: string
+  name: string
+  message: string
+}
+
 export class FilterableBatchJobProps {
   @IsOptional()
   @IsType([String, [String]])

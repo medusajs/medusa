@@ -1,5 +1,5 @@
 import { AfterLoad, BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
-import { BatchJobResultError, BatchJobStatus } from "../types/batch-job"
+import { BatchJobResultError, BatchJobResultStatDescriptor, BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
@@ -27,6 +27,7 @@ export class BatchJob extends SoftDeletableEntity {
     advancement_count?: number
     progress?: number
     errors?: BatchJobResultError[]
+    statDescriptors?: BatchJobResultStatDescriptor[]
     file_key?: string
   } & Record<string, unknown>
 

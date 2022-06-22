@@ -26,7 +26,7 @@ export type ProductExportBatchJobContext = {
 
 export type ProductExportPriceData = {
   currency_code?: string
-  region?: { name: string; id: string }
+  region?: { name: string; currency_code: string; id: string }
 }
 
 export type ProductExportBatchJob = BatchJob & {

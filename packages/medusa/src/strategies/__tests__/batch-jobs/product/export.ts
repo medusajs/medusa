@@ -135,8 +135,9 @@ describe("Product export strategy", () => {
     expect(template).toMatch(/.*Option 2 Value.*/)
 
     expect(template).toMatch(/.*Price USD.*/)
-    expect(template).toMatch(/.*Price france.*/)
-    expect(template).toMatch(/.*Price denmark.*/)
+    expect(template).toMatch(/.*Price france \[USD\].*/)
+    expect(template).toMatch(/.*Price denmark \[DKK\].*/)
+    expect(template).toMatch(/.*Price Denmark \[DKK\].*/)
 
     expect(template).toMatch(/.*Image 1 Url.*/)
   })
