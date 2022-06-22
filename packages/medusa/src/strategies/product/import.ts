@@ -81,7 +81,7 @@ function transformProductData(
 
 function transformVariantData(
   data: Record<string, string>
-): Record<string, string> {
+): Record<string, string | any[]> {
   const ret = {}
   const productData = pickObjectPropsByRegex(data, /variant\./)
 
@@ -89,6 +89,9 @@ function transformVariantData(
     const key = k.split("variant.")[1]
     ret[key] = productData[k]
   })
+
+  // include product handle to keep track of associated product
+  ret["product.handle"] = productData["product.handle"]
 
   return ret
 }
@@ -185,7 +188,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     for (const row of csvData) {
       if (row["variant.id"]) {
-        // TODO: check weather SKU exists
         variantsUpdate.push(row)
       } else {
         variantsCreate.push(row)
@@ -292,7 +294,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     batchJobId: string,
     transactionManager: EntityManager
   ): Promise<void> {
-    const productRepo = this.manager_.getCustomRepository(this.productRepo_)
+    const productRepo = transactionManager.getCustomRepository(
+      this.productRepo_
+    )
 
     const variantOps = await this.getImportDataFromRedis(
       batchJobId,
@@ -300,19 +304,32 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const variantOp of variantOps) {
-      let productId = variantOp.product_id
+      const variant = transformVariantData(variantOp)
 
-      // product created in the meantime
-      if (!productId) {
-        productId = await productRepo.find({
-          where: { handle: variantOp.handle },
-          select: ["id"],
-        })
-      }
+      const product = await productRepo.findOne({
+        where: { handle: variantOp["product.handle"] },
+        relations: ["variants", "variants.options", "options"],
+      })
+
+      const optionIds =
+        variantOp["product.options"]?.map(
+          (variantOption) =>
+            // @ts-ignore
+            product.options?.find(
+              (createdProductOption) =>
+                createdProductOption.title === variantOption.title
+            ).id
+        ) || []
+
+      variant.options =
+        (variant.options as object[])?.map((o, index) => ({
+          ...o,
+          option_id: optionIds[index],
+        })) || []
 
       await this.productVariantService_
         .withTransaction(transactionManager)
-        .create(productId, transformVariantData(variantOp) as any)
+        .create(product!, variant as any)
     }
   }
 
@@ -374,10 +391,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     batchJobId: string,
     op: OperationType
   ): Promise<any[]> {
-    return JSON.parse(
-      // @ts-ignore
-      await this.redisClient_.call("JSON.GET", `pij_${batchJobId}:${op}`, "$")
-    )[0] // JSONPath always returns an array of results that matched a query
+    return (
+      JSON.parse(
+        // @ts-ignore
+        await this.redisClient_.call("JSON.GET", `pij_${batchJobId}:${op}`, "$")
+      )?.[0] || []
+    ) // JSONPath always returns an array of results that matched a query
   }
 
   async clearRedisRecords(batchJobId: string): Promise<void> {
@@ -402,15 +421,14 @@ const CSVSchema: ProductImportCsvSchema = {
   columns: [
     // PRODUCT
     {
+      name: "Product id",
+      mapTo: "todo.product.id",
+      required: true,
+    },
+    {
       name: "Product Handle",
       mapTo: "product.handle",
       required: true,
-      // validator: {
-      //   validate(
-      //     value: string,
-      //     context: CsvParserContext<TLine>
-      //   ): Promise<boolean> {},
-      // },
     },
     { name: "Product Title", mapTo: "product.title" },
     { name: "Product Subtitle", mapTo: "product.subtitle" },
@@ -443,6 +461,11 @@ const CSVSchema: ProductImportCsvSchema = {
     { name: "Product Profile Name", mapTo: "product.profile.name" },
     { name: "Product Profile Type", mapTo: "product.profile.type" },
     // Variants
+    {
+      name: "Variant id",
+      mapTo: "todo.variant.id",
+      required: true,
+    },
     { name: "Variant Title", mapTo: "variant.title" },
     { name: "Variant SKU", mapTo: "variant.sku" },
     { name: "Variant Barcode", mapTo: "variant.barcode" },
@@ -464,22 +487,14 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Name",
       match: /Option \d+ Name/,
-      // mapTo: "product.options.name",
       reducer: (builtLine: any, key, value, context) => {
-        const optionIndex = key.split(" ")[1]
-
         builtLine["product.options"] = builtLine["product.options"] || []
 
         if (typeof value === "undefined" || value === null) {
           return builtLine
         }
 
-        builtLine["product.options"].push({
-          title: value,
-          values: context.line[`Option ${optionIndex} Value`]
-            .split(",")
-            .map((v) => ({ value: v })),
-        })
+        builtLine["product.options"].push({ title: value })
 
         return builtLine
       },
@@ -487,23 +502,28 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Value",
       match: /Option \d+ Value/,
-      mapTo: "product.options.value",
+      reducer: (builtLine: any, key, value, context) => {
+        builtLine["variant.options"] = builtLine["variant.options"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+
+        builtLine["variant.options"].push({ value })
+
+        return builtLine
+      },
     },
     // Prices
     {
-      name: "Price Currency code",
-      match: /Price \d+ Currency code/,
-      mapTo: "ma.currency.code",
+      name: "Price Region",
+      match: /Price .* \[([A-Z]{2,4})\]/,
+      mapTo: "todo.ma.currency",
     },
     {
-      name: "Price Region name",
-      match: /Price \d+ Region name/,
-      mapTo: "ma.region.name",
-    },
-    {
-      name: "Price Amount",
-      match: /Price \d+ Amount/,
-      mapTo: "ma.amount",
+      name: "Price Currency",
+      match: /Price [A-Z]{2,4}/,
+      mapTo: "todo.ma.region",
     },
     // Images
     {
