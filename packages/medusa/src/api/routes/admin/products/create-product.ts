@@ -173,7 +173,7 @@ import { validator } from "../../../../utils/validator"
  *                         description: The value to give for the Product Option at the same index in the Product's `options` field.
  *                         type: string
  *           weight:
- *             description: The wieght of the Product.
+ *             description: The weight of the Product.
  *             type: string
  *           length:
  *             description: The length of the Product.
