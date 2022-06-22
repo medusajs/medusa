@@ -9,12 +9,18 @@ import {
 } from "class-validator"
 import { omit, pickBy } from "lodash"
 import { defaultStoreProductsRelations } from "."
-import { ProductService } from "../../../../services"
+import {
+  ProductService,
+  RegionService,
+  CartService,
+} from "../../../../services"
+import PricingService from "../../../../services/pricing"
 import { DateComparisonOperator } from "../../../../types/common"
 import { PriceSelectionParams } from "../../../../types/price-selection"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { Product } from "../../../../models"
 
 /**
  * @oas [get] /products
@@ -61,6 +67,9 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  */
 export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+  const cartService: CartService = req.scope.resolve("cartService")
+  const regionService: RegionService = req.scope.resolve("regionService")
 
   const validated = await validator(StoreGetProductsParams, req.query)
 
@@ -77,9 +86,9 @@ export default async (req, res) => {
   // get only published products for store endpoint
   filterableFields["status"] = ["published"]
 
-  let includeFields: string[] = []
+  let includeFields: (keyof Product)[] = []
   if (validated.fields) {
-    const set = new Set(validated.fields.split(","))
+    const set = new Set(validated.fields.split(",")) as Set<keyof Product>
     set.add("id")
     includeFields = [...set]
   }
@@ -96,17 +105,33 @@ export default async (req, res) => {
       : defaultStoreProductsRelations,
     skip: validated.offset,
     take: validated.limit,
-    cart_id: validated.cart_id,
-    region_id: validated.region_id,
-    currency_code: validated.currency_code,
-    customer_id: req.user?.customer_id,
-    include_discount_prices: true,
   }
 
-  const [products, count] = await productService.listAndCount(
+  const [rawProducts, count] = await productService.listAndCount(
     pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
+
+  let regionId = validated.region_id
+  let currencyCode = validated.currency_code
+  if (validated.cart_id) {
+    const cart = await cartService.retrieve(validated.cart_id, {
+      select: ["id", "region_id"],
+    })
+    const region = await regionService.retrieve(cart.region_id, {
+      select: ["id", "currency_code"],
+    })
+    regionId = region.id
+    currencyCode = region.currency_code
+  }
+
+  const products = await pricingService.setProductPrices(rawProducts, {
+    cart_id: validated.cart_id,
+    region_id: regionId,
+    currency_code: currencyCode,
+    customer_id: req.user?.customer_id,
+    include_discount_prices: true,
+  })
 
   res.json({
     products,

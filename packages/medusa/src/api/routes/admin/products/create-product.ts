@@ -13,10 +13,11 @@ import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   ProductService,
+  PricingService,
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
-import { ProductStatus } from "../../../../types/product"
+import { ProductStatus } from "../../../../models"
 import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
@@ -211,6 +212,7 @@ export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
 
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
@@ -270,10 +272,12 @@ export default async (req, res) => {
     }
   })
 
-  const product = await productService.retrieve(newProduct.id, {
+  const rawProduct = await productService.retrieve(newProduct.id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }
@@ -372,7 +376,7 @@ class ProductVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -481,5 +485,5 @@ export class AdminPostProductsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

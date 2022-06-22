@@ -8,7 +8,8 @@ import {
 } from "class-validator"
 import PriceListService from "../../../../services/price-list"
 import {
-  AdminPriceListPricesCreateReq, CreatePriceListInput,
+  AdminPriceListPricesCreateReq,
+  CreatePriceListInput,
   PriceListStatus,
   PriceListType,
 } from "../../../../types/price-list"

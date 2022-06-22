@@ -8,7 +8,7 @@ import { scheduleJob } from "node-schedule"
 import loaders from "../loaders"
 import Logger from "../loaders/logger"
 
-const EVERY_SIXTH_HOUR = "* */6 * * *"
+const EVERY_SIXTH_HOUR = "0 */6 * * *"
 const CRON_SCHEDULE = EVERY_SIXTH_HOUR
 
 export default async function ({ port, directory }) {

@@ -125,12 +125,6 @@ class ProductVariantService extends BaseService {
     )
     const validatedId = this.validateId_(variantId)
 
-    const priceIndex = config.relations?.indexOf("prices") ?? -1
-    if (priceIndex >= 0 && config.relations) {
-      config.relations = [...config.relations]
-      config.relations.splice(priceIndex, 1)
-    }
-
     const query = this.buildQuery_({ id: validatedId }, config)
     const variant = await variantRepo.findOne(query)
 
@@ -141,16 +135,7 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    return priceIndex >= 0
-      ? ((await this.setAdditionalPrices(
-          variant,
-          config.currency_code,
-          config.region_id,
-          config.cart_id,
-          config.customer_id,
-          config.include_discount_prices
-        )) as ProductVariant)
-      : variant
+    return variant
   }
 
   /**
@@ -185,16 +170,7 @@ class ProductVariantService extends BaseService {
       )
     }
 
-    return priceIndex >= 0
-      ? ((await this.setAdditionalPrices(
-          variant,
-          config.currency_code,
-          config.region_id,
-          config.cart_id,
-          config.customer_id,
-          config.include_discount_prices
-        )) as ProductVariant)
-      : variant
+    return variant
   }
 
   /**
@@ -617,12 +593,6 @@ class ProductVariantService extends BaseService {
       this.productVariantRepository_
     )
 
-    const priceIndex = config.relations?.indexOf("prices") ?? -1
-    if (priceIndex >= 0 && config.relations) {
-      config.relations = [...config.relations]
-      config.relations.splice(priceIndex, 1)
-    }
-
     const { q, query, relations } = this.prepareListQuery_(selector, config)
 
     if (q) {
@@ -634,17 +604,6 @@ class ProductVariantService extends BaseService {
         raw.map((i) => i.id),
         query.withDeleted ?? false
       )
-      if (priceIndex >= 0) {
-        const res = await this.setAdditionalPrices(
-          variants,
-          config.currency_code,
-          config.region_id,
-          config.cart_id,
-          config.customer_id,
-          config.include_discount_prices
-        )
-        return [res as ProductVariant[], count]
-      }
 
       return [variants, count]
     }
@@ -653,18 +612,6 @@ class ProductVariantService extends BaseService {
       relations,
       query
     )
-
-    if (priceIndex >= 0) {
-      const res = await this.setAdditionalPrices(
-        variants,
-        config.currency_code,
-        config.region_id,
-        config.cart_id,
-        config.customer_id,
-        config.include_discount_prices
-      )
-      return [res as ProductVariant[], count]
-    }
 
     return [variants, count]
   }
@@ -722,18 +669,7 @@ class ProductVariantService extends BaseService {
       }
     }
 
-    const variants = await productVariantRepo.find(query)
-
-    return priceIndex >= 0
-      ? ((await this.setAdditionalPrices(
-          variants,
-          config.currency_code,
-          config.region_id,
-          config.cart_id,
-          config.customer_id,
-          config.include_discount_prices
-        )) as ProductVariant[])
-      : variants
+    return await productVariantRepo.find(query)
   }
 
   /**
@@ -882,72 +818,6 @@ class ProductVariantService extends BaseService {
     }
 
     return qb
-  }
-
-  /**
-   * Set additional prices on a list of variants.
-   * @param {ProductVariant | ProductVariant[] } variant variant on which to set additional prices
-   * @param {string} currency_code currency code to fetch prices for
-   * @param {string} region_id region to fetch prices for
-   * @param {string} cart_id string of cart to use as a basis for getting currency and region
-   * @param {string} customer_id id of potentially logged in customer, used to get prices valid for their customer groups
-   * @param {boolean} include_discount_prices should result include discount pricing
-   * @return {Promise<ProductVariant | ProductVariant[]>} A list of variants with variants decorated with "additional_prices"
-   */
-  async setAdditionalPrices(
-    variant,
-    currency_code,
-    region_id,
-    cart_id,
-    customer_id,
-    include_discount_prices = false
-  ): Promise<ProductVariant | ProductVariant[]> {
-    return this.atomicPhase_(async (manager) => {
-      const cartRepo = manager.getCustomRepository(this.cartRepository_)
-
-      let regionId = region_id
-      let currencyCode = currency_code
-
-      if (cart_id) {
-        const cart = await cartRepo.findOne({
-          where: { id: cart_id },
-          relations: ["region"],
-        })
-
-        regionId = cart.region.id
-        currencyCode = cart.region.currency_code
-      }
-
-      const variantArray = Array.isArray(variant) ? variant : [variant]
-
-      const priceSelectionStrategy =
-        this.priceSelectionStrategy_.withTransaction(manager)
-
-      const variantsWithPrices = await Promise.all(
-        variantArray.map(async (v) => {
-          const prices = await priceSelectionStrategy.calculateVariantPrice(
-            v.id,
-            {
-              region_id: regionId,
-              currency_code: currencyCode,
-              cart_id: cart_id,
-              customer_id: customer_id,
-              include_discount_prices: include_discount_prices,
-            }
-          )
-
-          return {
-            ...v,
-            prices: prices.prices,
-            original_price: prices.originalPrice,
-            calculated_price: prices.calculatedPrice,
-            calculated_price_type: prices.calculatedPriceType,
-          }
-        })
-      )
-
-      return Array.isArray(variant) ? variantsWithPrices : variantsWithPrices[0]
-    })
   }
 }
 

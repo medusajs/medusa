@@ -1,5 +1,6 @@
 import { Router } from "express"
 import "reflect-metadata"
+import { PricedProduct } from "../../../../types/pricing"
 import { Product, ProductTag, ProductType } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
@@ -74,7 +75,7 @@ export const defaultAdminProductRelations = [
   "collection",
 ]
 
-export const defaultAdminProductFields = [
+export const defaultAdminProductFields: (keyof Product)[] = [
   "id",
   "title",
   "subtitle",
@@ -102,10 +103,7 @@ export const defaultAdminProductFields = [
   "metadata",
 ]
 
-export const defaultAdminGetProductsVariantsFields = [
-  "id",
-  "product_id"
-]
+export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 
 export const allowedAdminProductFields = [
   "id",
@@ -166,7 +164,7 @@ export type AdminProductsDeleteRes = {
 }
 
 export type AdminProductsListRes = PaginatedResponse & {
-  products: Product[]
+  products: (PricedProduct | Product)[]
 }
 
 export type AdminProductsListTypesRes = {

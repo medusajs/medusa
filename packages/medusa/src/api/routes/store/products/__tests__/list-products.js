@@ -23,10 +23,6 @@ describe("GET /store/products", () => {
           relations: defaultStoreProductsRelations,
           skip: 0,
           take: 100,
-          cart_id: undefined,
-          currency_code: undefined,
-          region_id: undefined,
-          include_discount_prices: true,
         }
       )
     })
@@ -54,10 +50,6 @@ describe("GET /store/products", () => {
           relations: defaultStoreProductsRelations,
           skip: 0,
           take: 100,
-          cart_id: undefined,
-          currency_code: undefined,
-          region_id: undefined,
-          include_discount_prices: true,
         }
       )
     })

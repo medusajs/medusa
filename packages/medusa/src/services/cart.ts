@@ -38,6 +38,7 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
+import { DiscountRuleType } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -261,7 +262,7 @@ class CartService extends TransactionBaseService<CartService> {
           this.cartRepository_
         )
 
-        const query = buildQuery<Cart>(selector, config)
+        const query = buildQuery(selector, config)
         return await cartRepo.find(query)
       }
     )
@@ -289,7 +290,7 @@ class CartService extends TransactionBaseService<CartService> {
         const { select, relations, totalsToSelect } =
           this.transformQueryForTotals_(options)
 
-        const query = buildQuery<Cart>(
+        const query = buildQuery(
           { id: validatedId },
           { ...options, select, relations }
         )
@@ -1071,7 +1072,7 @@ class CartService extends TransactionBaseService<CartService> {
         let sawNotShipping = false
         const newDiscounts = toParse.map((discountToParse) => {
           switch (discountToParse.rule?.type) {
-            case "free_shipping":
+            case DiscountRuleType.FREE_SHIPPING:
               if (discountToParse.rule.type === rule.type) {
                 return discount
               }
@@ -1228,7 +1229,7 @@ class CartService extends TransactionBaseService<CartService> {
 
         const freshCart = await this.retrieve(cart.id, {
           select: ["total"],
-          relations: ["payment_sessions"],
+          relations: ["payment_sessions", "items", "items.adjustments"],
         })
 
         if (session.status === "authorized") {

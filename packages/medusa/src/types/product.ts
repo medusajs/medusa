@@ -7,21 +7,25 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { FindOperator } from "typeorm"
+import { Product, ProductOptionValue, ProductStatus } from "../models"
 import { optionalBooleanMapper } from "../utils/validators/is-boolean"
 import { IsType } from "../utils/validators/is-type"
-import { DateComparisonOperator, StringComparisonOperator } from "./common"
+import {
+  DateComparisonOperator,
+  FindConfig,
+  Selector,
+  StringComparisonOperator,
+} from "./common"
+import { PriceListLoadConfig } from "./price-list"
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
+/**
+ * API Level DTOs + Validation rules
+ */
 export class FilterableProductProps {
-  @IsString()
   @IsOptional()
-  id?: string
+  @IsType([String, [String]])
+  id?: string | string[]
 
   @IsString()
   @IsOptional()
@@ -123,3 +127,115 @@ export class FilterableProductTypeProps {
   @IsOptional()
   q?: string
 }
+
+/**
+ * Service Level DTOs
+ */
+
+export type CreateProductInput = {
+  title: string
+  subtitle?: string
+  profile_id?: string
+  description?: string
+  is_giftcard?: boolean
+  discountable?: boolean
+  images?: string[]
+  thumbnail?: string
+  handle?: string
+  status?: ProductStatus
+  type?: CreateProductProductTypeInput
+  collection_id?: string
+  tags?: CreateProductProductTagInput[]
+  options?: CreateProductProductOption[]
+  variants?: CreateProductProductVariantInput[]
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  hs_code?: string
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  metadata?: Record<string, unknown>
+}
+
+export type CreateProductProductTagInput = {
+  id?: string
+  value: string
+}
+
+export type CreateProductProductTypeInput = {
+  id?: string
+  value: string
+}
+
+export type CreateProductProductVariantInput = {
+  title: string
+  sku?: string
+  ean?: string
+  upc?: string
+  barcode?: string
+  hs_code?: string
+  inventory_quantity?: number
+  allow_backorder?: boolean
+  manage_inventory?: boolean
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  metadata?: object
+  prices?: CreateProductProductVariantPriceInput[]
+  options?: { value: string }[]
+}
+
+export type UpdateProductProductVariantDTO = {
+  id?: string
+  title?: string
+  sku?: string
+  ean?: string
+  upc?: string
+  barcode?: string
+  hs_code?: string
+  inventory_quantity?: number
+  allow_backorder?: boolean
+  manage_inventory?: boolean
+  weight?: number
+  length?: number
+  height?: number
+  width?: number
+  origin_country?: string
+  mid_code?: string
+  material?: string
+  metadata?: object
+  prices?: CreateProductProductVariantPriceInput[]
+  options?: { value: string; option_id: string }[]
+}
+
+export type CreateProductProductOption = {
+  title: string
+}
+
+export type CreateProductProductVariantPriceInput = {
+  region_id?: string
+  currency_code?: string
+  amount: number
+  min_quantity?: number
+  max_quantity?: number
+}
+
+export type UpdateProductInput = Omit<
+  Partial<CreateProductInput>,
+  "variants"
+> & {
+  variants?: UpdateProductProductVariantDTO[]
+}
+
+export type ProductOptionInput = {
+  title: string
+  values?: ProductOptionValue[]
+}
+
+export type FindProductConfig = FindConfig<Product> & PriceListLoadConfig
