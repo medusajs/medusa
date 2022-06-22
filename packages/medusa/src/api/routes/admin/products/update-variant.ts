@@ -60,7 +60,7 @@ import { validator } from "../../../../utils/validator"
  *             description: Whether Medusa should keep track of the inventory for this Product Variant.
  *             type: boolean
  *           weight:
- *             description: The wieght of the Product Variant.
+ *             description: The weight of the Product Variant.
  *             type: string
  *           length:
  *             description: The length of the Product Variant.
