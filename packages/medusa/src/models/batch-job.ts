@@ -27,7 +27,7 @@ export class BatchJob extends SoftDeletableEntity {
     advancement_count?: number
     progress?: number
     errors?: BatchJobResultError[]
-    statDescriptors?: BatchJobResultStatDescriptor[]
+    stat_descriptors?: BatchJobResultStatDescriptor[]
     file_key?: string
   } & Record<string, unknown>
 

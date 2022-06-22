@@ -162,7 +162,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             },
           },
           result: {
-            statDescriptors: [
+            stat_descriptors: [
               {
                 key: "product-export-count",
                 name: "Product count to export",
