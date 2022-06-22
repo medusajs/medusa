@@ -169,24 +169,24 @@ class CustomerService extends TransactionBaseService<CustomerService> {
     selector: Selector<Customer>,
     config: FindConfig<Customer> = {}
   ): Promise<Customer | never> {
-    return await this.atomicPhase_(async (manager) => {
-      const customerRepo = manager.getCustomRepository(this.customerRepository_)
+    const manager = this.transactionManager_ ?? this.manager_
 
-      const query = buildQuery(selector, config)
-      const customer = await customerRepo.findOne(query)
+    const customerRepo = manager.getCustomRepository(this.customerRepository_)
 
-      if (!customer) {
-        const selectorConstraints = Object.entries(selector)
-          .map((key, value) => `${key}: ${value}`)
-          .join(", ")
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Customer with ${selectorConstraints} was not found`
-        )
-      }
+    const query = buildQuery(selector, config)
+    const customer = await customerRepo.findOne(query)
 
-      return customer
-    })
+    if (!customer) {
+      const selectorConstraints = Object.entries(selector)
+        .map((key, value) => `${key}: ${value}`)
+        .join(", ")
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Customer with ${selectorConstraints} was not found`
+      )
+    }
+
+    return customer
   }
 
   /**
