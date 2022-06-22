@@ -1,8 +1,4 @@
----
-title: Add Endpoint for Admin
----
-
-# Add Endpoint for Admin
+# Create Endpoint for Admin
 
 In this document, you’ll learn how to add a custom endpoint in the Backend that you can use from the Admin.
 

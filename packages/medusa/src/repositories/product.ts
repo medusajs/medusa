@@ -2,32 +2,32 @@ import { flatten, groupBy, map, merge } from "lodash"
 import {
   Brackets,
   EntityRepository,
-  FindManyOptions,
   FindOperator,
   In,
-  OrderByCondition,
   Repository,
 } from "typeorm"
-import { ProductTag } from ".."
 import { PriceList } from "../models/price-list"
 import { Product } from "../models/product"
-import { WithRequiredProperty } from "../types/common"
+import {
+  ExtendedFindConfig,
+  Selector,
+  WithRequiredProperty,
+} from "../types/common"
 
-type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
-
-type CustomOptions = {
-  select?: DefaultWithoutRelations["select"]
-  where?: DefaultWithoutRelations["where"] & {
-    tags?: FindOperator<ProductTag>
-    price_list_id?: FindOperator<PriceList>
-  }
-  order?: OrderByCondition
-  skip?: number
-  take?: number
-  withDeleted?: boolean
+export type ProductSelector = Omit<Selector<Product>, "tags"> & {
+  tags: FindOperator<string[]>
 }
 
-type FindWithRelationsOptions = CustomOptions
+export type DefaultWithoutRelations = Omit<
+  ExtendedFindConfig<Product, ProductSelector>,
+  "relations"
+>
+
+export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
+  where: DefaultWithoutRelations["where"] & {
+    price_list_id?: FindOperator<PriceList>
+  }
+}
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
@@ -41,7 +41,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   private async queryProducts(
-    optionsWithoutRelations: FindWithRelationsOptions,
+    optionsWithoutRelations: FindWithoutRelationsOptions,
     shouldCount = false
   ): Promise<[Product[], number]> {
     const tags = optionsWithoutRelations?.where?.tags
@@ -106,7 +106,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   private getGroupedRelations(
-    relations: Array<keyof Product>
+    relations: string[]
   ): {
     [toplevel: string]: string[]
   } {
@@ -189,8 +189,8 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findWithRelationsAndCount(
-    relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = { where: {} }
+    relations: string[] = [],
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
     let count: number
     let entities: Product[]
@@ -239,8 +239,10 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findWithRelations(
-    relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions | string[] = {},
+    relations: string[] = [],
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {
+      where: {},
+    },
     withDeleted = false
   ): Promise<Product[]> {
     let entities: Product[]
@@ -285,8 +287,8 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findOneWithRelations(
-    relations: Array<keyof Product> = [],
-    optionsWithoutRelations: FindWithRelationsOptions = { where: {} }
+    relations: string[] = [],
+    optionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<Product> {
     // Limit 1
     optionsWithoutRelations.take = 1
@@ -326,8 +328,8 @@ export class ProductRepository extends Repository<Product> {
 
   public async getFreeTextSearchResultsAndCount(
     q: string,
-    options: CustomOptions = { where: {} },
-    relations: (keyof Product)[] = []
+    options: FindWithoutRelationsOptions = { where: {} },
+    relations: string[] = []
   ): Promise<[Product[], number]> {
     const cleanedOptions = this._cleanOptions(options)
 
@@ -364,8 +366,8 @@ export class ProductRepository extends Repository<Product> {
   }
 
   private _cleanOptions(
-    options: CustomOptions
-  ): WithRequiredProperty<CustomOptions, "where"> {
+    options: FindWithoutRelationsOptions
+  ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {
     const where = options.where ?? {}
     if ("description" in where) {
       delete where.description

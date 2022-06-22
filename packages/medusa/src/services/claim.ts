@@ -819,7 +819,7 @@ export default class ClaimService extends TransactionBaseService<
         const claimRepo = transactionManager.getCustomRepository(
           this.claimRepository_
         )
-        const query = buildQuery<ClaimOrder>(selector, config)
+        const query = buildQuery(selector, config)
         return await claimRepo.find(query)
       }
     )
@@ -841,7 +841,7 @@ export default class ClaimService extends TransactionBaseService<
           this.claimRepository_
         )
 
-        const query = buildQuery<ClaimOrder>({ id }, config)
+        const query = buildQuery({ id }, config)
         const claim = await claimRepo.findOne(query)
 
         if (!claim) {

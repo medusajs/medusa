@@ -15,7 +15,12 @@ import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
 import { PaymentSessionRepository } from "../repositories/payment-session"
 import { ShippingMethodRepository } from "../repositories/shipping-method"
-import { CartCreateProps, CartUpdateProps, FilterableCartProps, LineItemUpdate } from "../types/cart"
+import {
+  CartCreateProps,
+  CartUpdateProps,
+  FilterableCartProps,
+  LineItemUpdate,
+} from "../types/cart"
 import { AddressPayload, FindConfig, TotalField } from "../types/common"
 import { buildQuery, setMetadata, validateId } from "../utils"
 import CustomShippingOptionService from "./custom-shipping-option"
@@ -257,7 +262,7 @@ class CartService extends TransactionBaseService<CartService> {
           this.cartRepository_
         )
 
-        const query = buildQuery<Cart>(selector, config)
+        const query = buildQuery(selector, config)
         return await cartRepo.find(query)
       }
     )
@@ -285,7 +290,7 @@ class CartService extends TransactionBaseService<CartService> {
         const { select, relations, totalsToSelect } =
           this.transformQueryForTotals_(options)
 
-        const query = buildQuery<Cart>(
+        const query = buildQuery(
           { id: validatedId },
           { ...options, select, relations }
         )
@@ -1224,7 +1229,7 @@ class CartService extends TransactionBaseService<CartService> {
 
         const freshCart = await this.retrieve(cart.id, {
           select: ["total"],
-          relations: ["payment_sessions"],
+          relations: ["payment_sessions", "items", "items.adjustments"],
         })
 
         if (session.status === "authorized") {

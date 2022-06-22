@@ -93,4 +93,5 @@ You can then use `this.productService` anywhere in your subscriber’s methods.
 
 ## What’s Next 🚀
 
+- [View the list of all events](events-list.md)
 - [Learn how to create a service.](/advanced/backend/services/create-service)

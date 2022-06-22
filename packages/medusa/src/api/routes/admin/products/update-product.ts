@@ -12,11 +12,8 @@ import {
   ValidateIf,
   ValidateNested,
 } from "class-validator"
-import {
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-  ProductStatus,
-} from "."
+import { defaultAdminProductFields, defaultAdminProductRelations } from "."
+import { ProductStatus } from "../../../../models"
 import { ProductService, PricingService } from "../../../../services"
 import { ProductVariantPricesUpdateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
@@ -320,7 +317,7 @@ class ProductVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @IsOptional()
@@ -424,5 +421,5 @@ export class AdminPostProductsProductReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
