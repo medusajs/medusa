@@ -12,7 +12,7 @@ Object {
       "id": "job_3",
       "result": null,
       "status": "created",
-      "type": "batch_2",
+      "type": "product-export",
       "updated_at": Any<String>,
     },
     Object {
@@ -24,7 +24,7 @@ Object {
       "id": "job_2",
       "result": null,
       "status": "created",
-      "type": "batch_2",
+      "type": "product-export",
       "updated_at": Any<String>,
     },
     Object {
@@ -36,7 +36,7 @@ Object {
       "id": "job_1",
       "result": null,
       "status": "created",
-      "type": "batch_1",
+      "type": "product-export",
       "updated_at": Any<String>,
     },
   ],
@@ -51,7 +51,26 @@ Object {
   "canceled_at": null,
   "completed_at": null,
   "confirmed_at": null,
-  "context": Object {},
+  "context": Object {
+    "list_config": Object {
+      "order": Object {
+        "created_at": "DESC",
+      },
+      "relations": Array [
+        "variants",
+        "variants.prices",
+        "variants.options",
+        "images",
+        "options",
+        "tags",
+        "type",
+        "collection",
+        "variants.prices.region",
+      ],
+      "skip": 0,
+      "take": 50,
+    },
+  },
   "created_at": Any<String>,
   "created_by": "admin_user",
   "deleted_at": null,
@@ -62,7 +81,7 @@ Object {
   "processing_at": null,
   "result": null,
   "status": "created",
-  "type": "batch_1",
+  "type": "product-export",
   "updated_at": Any<String>,
 }
 `;
@@ -83,7 +102,7 @@ Object {
   "processing_at": null,
   "result": null,
   "status": "canceled",
-  "type": "batch_1",
+  "type": "product-export",
   "updated_at": Any<String>,
 }
 `;

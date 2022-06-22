@@ -159,7 +159,9 @@ export function registerStrategies(
   pluginDetails: PluginDetails,
   container: MedusaContainer
 ): void {
-  const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*.js`, {})
+  const files = glob.sync(`${pluginDetails.resolve}/strategies/[!__]*.js`, {
+    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
+  })
   const registeredServices = {}
 
   files.map((file) => {
