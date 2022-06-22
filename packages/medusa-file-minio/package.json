@@ -42,5 +42,9 @@
     "medusa-core-utils": "^1.1.31",
     "medusa-test-utils": "^1.1.37"
   },
-  "gitHead": "3bbd1e8507e00bc471de6ae3c30207999a4a4011"
+  "gitHead": "3bbd1e8507e00bc471de6ae3c30207999a4a4011",
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-file"
+  ]
 }
