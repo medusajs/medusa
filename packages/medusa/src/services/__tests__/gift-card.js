@@ -5,23 +5,23 @@ import GiftCardService from "../gift-card"
 describe("GiftCardService", () => {
   const eventBusService = {
     emit: jest.fn(),
-    withTransaction: function() {
+    withTransaction: function () {
       return this
     },
   }
 
   describe("create", () => {
     const giftCardRepo = MockRepository({
-      create: s => {
+      create: (s) => {
         return Promise.resolve(s)
       },
-      save: s => {
+      save: (s) => {
         return Promise.resolve(s)
       },
     })
 
     const regionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -58,18 +58,6 @@ describe("GiftCardService", () => {
         is_disabled: true,
         code: expect.any(String),
       })
-    })
-
-    it("fails to create giftcard if no region is provided", async () => {
-      const card = {
-        ...giftCard,
-      }
-
-      card.region_id = undefined
-
-      await expect(giftCardService.create(card)).rejects.toThrow(
-        "Gift card is missing region_id"
-      )
     })
   })
 
@@ -152,16 +140,16 @@ describe("GiftCardService", () => {
     }
 
     const giftCardRepo = MockRepository({
-      findOneWithRelations: s => {
+      findOneWithRelations: (s) => {
         return Promise.resolve(giftCard)
       },
-      save: s => {
+      save: (s) => {
         return Promise.resolve(s)
       },
     })
 
     const regionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -198,7 +186,7 @@ describe("GiftCardService", () => {
 
     it.each([[-100], [6000]])(
       "fails to update balance with illegal input '%s'",
-      async input => {
+      async (input) => {
         await expect(
           giftCardService.update(IdMap.getId("giftcard-id"), {
             balance: input,
@@ -215,7 +203,7 @@ describe("GiftCardService", () => {
     }
 
     const giftCardRepo = MockRepository({
-      findOne: s => {
+      findOne: (s) => {
         switch (s.where.id) {
           case IdMap.getId("gift-card"):
             return Promise.resolve(giftCard)
@@ -223,7 +211,7 @@ describe("GiftCardService", () => {
             return Promise.resolve()
         }
       },
-      softRemove: s => {
+      softRemove: (s) => {
         return Promise.resolve()
       },
     })
