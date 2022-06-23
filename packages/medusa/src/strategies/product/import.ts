@@ -477,16 +477,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     // @ts-ignore
     return await this.redisClient_.call("JSON.DEL", `pij_${batchJobId}:*`)
   }
-
-  validateContext(
-    context: Record<string, unknown>
-  ): Promise<Record<string, unknown>> {
-    return Promise.resolve({})
-  }
-
-  validateFile(fileLocation: string): Promise<boolean> {
-    return Promise.resolve(false)
-  }
 }
 
 export default ProductImportStrategy
@@ -496,8 +486,7 @@ const CSVSchema: ProductImportCsvSchema = {
     // PRODUCT
     {
       name: "Product id",
-      mapTo: "todo.product.id",
-      required: true,
+      mapTo: "product.id",
     },
     {
       name: "Product Handle",
@@ -617,7 +606,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Currency",
       match: /Price [A-Z]{2,4}/,
-      reducer: (builtLine: any, key, value, context) => {
+      reducer: (builtLine: any, key, value) => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -638,7 +627,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Image Url",
       match: /Image \d+ Url/,
-      reducer: (builtLine: any, key, value, context) => {
+      reducer: (builtLine: any, key, value) => {
         builtLine["product.images"] = builtLine["product.images"] || []
 
         if (typeof value === "undefined" || value === null) {
