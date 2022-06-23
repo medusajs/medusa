@@ -17,25 +17,18 @@ import { validator } from "../../../../utils/validator"
  *     description: OK
  */
 export default async (req, res) => {
-  try {
-    const validated = await validator(
-      AdminGetUploadsFileDownloadUrlReq,
-      req.body
-    )
+  const validated = await validator(AdminGetUploadsFileDownloadUrlReq, req.body)
 
-    const fileService: AbstractFileService<any> =
-      req.scope.resolve("fileService")
+  const fileService: AbstractFileService<any> = req.scope.resolve("fileService")
 
-    const url = await fileService.getPresignedDownloadUrl({ ...validated })
+  const url = await fileService.getPresignedDownloadUrl({
+    fileKey: validated.file_key,
+  })
 
-    res.status(200).send({ downloadUrl: url })
-  } catch (err) {
-    console.log(err)
-    throw err
-  }
+  res.status(200).send({ download_url: url })
 }
 
 class AdminGetUploadsFileDownloadUrlReq {
   @IsString()
-  fileKey: string
+  file_key: string
 }
