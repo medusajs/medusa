@@ -289,7 +289,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     for (const productOp of productOps) {
       await this.productService_.withTransaction(transactionManager).create(
-        transformProductData(productOp) // TODO: pick keys before saving to Redis
+        transformProductData(productOp) as any // TODO: pick keys before saving to Redis
       )
     }
   }
