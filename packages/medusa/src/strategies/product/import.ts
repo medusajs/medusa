@@ -288,17 +288,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     })
   }
 
-  public async completeJob(batchJobId: string): Promise<BatchJob> {
-    const batchJob = await this.batchJobService_.retrieve(batchJobId)
-
-    if (batchJob.status !== BatchJobStatus.COMPLETED) {
-      await this.clearRedisRecords(batchJob.id)
-      return await this.batchJobService_.complete(batchJob)
-    } else {
-      return batchJob
-    }
-  }
-
   private async createProducts(
     batchJobId: string,
     transactionManager: EntityManager
