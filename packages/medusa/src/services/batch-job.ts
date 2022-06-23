@@ -235,7 +235,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     const batchJobRepo = transactionManager.getCustomRepository(
       this.batchJobRepository_
     )
-
     batchJob = await batchJobRepo.save(batchJob)
     batchJob.loadStatus()
 
