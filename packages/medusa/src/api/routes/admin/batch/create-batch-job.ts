@@ -1,6 +1,4 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { AbstractBatchJobStrategy } from "../../../../interfaces"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
 import { BatchJob } from "../../../../models"

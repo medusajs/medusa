@@ -1,4 +1,3 @@
-import { AdminPostBatchesReq } from "../api/routes/admin/batch/create-batch-job"
 import { TransactionBaseService } from "./transaction-base-service"
 import { BatchJobResultError, CreateBatchJobInput } from "../types/batch-job"
 import { ProductExportBatchJob } from "../strategies/batch-jobs/product"
