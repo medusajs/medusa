@@ -126,13 +126,6 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     return await this.atomicPhase_(async (manager) => {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
-      if (!giftCard.region_id) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Gift card is missing region_id`
-        )
-      }
-
       // Will throw if region does not exist
       const region = await this.regionService_.retrieve(giftCard.region_id)
 
@@ -140,11 +133,11 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
 
       const toCreate = {
         code,
-        region_id: region.id,
         ...giftCard,
+        region_id: region.id,
       }
 
-      const created = await giftCardRepo.create(toCreate)
+      const created = giftCardRepo.create(toCreate)
       const result = await giftCardRepo.save(created)
 
       await this.eventBus_
@@ -233,7 +226,7 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
       }
 
       if (metadata) {
-        giftCard.metadata = await setMetadata(giftCard, metadata)
+        giftCard.metadata = setMetadata(giftCard, metadata)
       }
 
       if (typeof balance !== "undefined") {
@@ -260,19 +253,17 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
    * @param giftCardId - id of gift card to delete
    * @return the result of the delete operation
    */
-  async delete(giftCardId: string): Promise<void> {
+  async delete(giftCardId: string): Promise<GiftCard | void> {
     return await this.atomicPhase_(async (manager) => {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
       const giftCard = await giftCardRepo.findOne({ where: { id: giftCardId } })
 
       if (!giftCard) {
-        return Promise.resolve()
+        return
       }
 
-      await giftCardRepo.softRemove(giftCard)
-
-      return Promise.resolve()
+      return await giftCardRepo.softRemove(giftCard)
     })
   }
 }

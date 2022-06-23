@@ -3,7 +3,7 @@ export type CreateGiftCardInput = {
   balance?: number
   ends_at?: Date
   is_disabled?: boolean
-  region_id?: string
+  region_id: string
   metadata?: Record<string, unknown>
 }
 

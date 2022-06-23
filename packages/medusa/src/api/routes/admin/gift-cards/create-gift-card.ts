@@ -77,9 +77,8 @@ export class AdminPostGiftCardsReq {
   @IsBoolean()
   is_disabled?: boolean
 
-  @IsOptional()
   @IsString()
-  region_id?: string
+  region_id: string
 
   @IsOptional()
   metadata?: Record<string, unknown>
