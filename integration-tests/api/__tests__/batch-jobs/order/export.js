@@ -1,5 +1,6 @@
 const path = require("path")
 const fs = require("fs/promises")
+import { sep, resolve } from "path"
 
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
@@ -21,6 +22,7 @@ describe("Batchjob with type order-export", () => {
   let medusaProcess
   let dbConnection
   let exportFilePath = ""
+  let topDir = ""
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -29,11 +31,15 @@ describe("Batchjob with type order-export", () => {
       cwd,
       redisUrl: "redis://127.0.0.1:6379",
       uploadDir: __dirname,
-      verbose: false,
+      verbose: true,
     })
   })
 
   afterAll(async () => {
+    if (topDir !== "") {
+      await fs.rmdir(resolve(__dirname, topDir), { recursive: true })
+    }
+
     const db = useDb()
     await db.shutdown()
 
@@ -56,7 +62,14 @@ describe("Batchjob with type order-export", () => {
     await db.teardown()
 
     const isFileExists = (await fs.stat(exportFilePath))?.isFile()
+
     if (isFileExists) {
+      const [, relativeRoot] = exportFilePath.replace(__dirname, "").split(sep)
+
+      if ((await fs.stat(resolve(__dirname, relativeRoot)))?.isDirectory()) {
+        topDir = relativeRoot
+      }
+
       await fs.unlink(exportFilePath)
     }
   })
@@ -215,7 +228,6 @@ describe("Batchjob with type order-export", () => {
 
     expect(lines.length).toBe(1)
 
-    console.log(lines[0])
     const csvLine = lines[0].split(";")
 
     expect(csvLine[0]).toBe("test-order")
