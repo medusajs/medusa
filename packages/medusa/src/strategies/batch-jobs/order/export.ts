@@ -154,7 +154,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         orderCount = batchJob.context?.batch_size ?? count
 
-        const context = batchJob.context
         const result = batchJob.result
         let orders = []
 
