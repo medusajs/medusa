@@ -181,6 +181,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     throw new Error("Not implemented!")
   }
 
+  /**
+   * Generate instructions for update/create of products/variants from parsed CSV rows.
+   *
+   * @param csvData - An array of parsed CSV rows.
+   */
   async getImportInstructions(
     csvData: any[]
   ): Promise<Record<OperationType, any[]>> {
@@ -257,6 +262,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     row["variant.prices"] = prices
   }
 
+  /**
+   * A worker method called after a batch job has been created.
+   * The method parses a CSV file, generates sets of instructions
+   * for processing and stores these instructions to Redis.
+   *
+   * @param batchJobId . An id of a job that is being preprocessed.
+   */
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
@@ -279,6 +291,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     })
   }
 
+  /**
+   * The main processing method called after a batch job
+   * is ready/confirmed for processing.
+   *
+   * @param batchJobId - An id of a batch job that is being processed.
+   */
   async processJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
       await this.createProducts(batchJobId, transactionManager)
@@ -288,6 +306,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     })
   }
 
+  /**
+   * Method creates products using ProductService and parsed data from a CSV row.
+   *
+   * @param batchJobId
+   * @param transactionManager
+   */
   private async createProducts(
     batchJobId: string,
     transactionManager: EntityManager
@@ -304,6 +328,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
+  /**
+   * Method updates existing products in the DB using a CSV row data.
+   *
+   * @param batchJobId
+   * @param transactionManager
+   * @private
+   */
   private async updateProducts(
     batchJobId: string,
     transactionManager: EntityManager
@@ -320,6 +351,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
+  /**
+   * Method creates product variants from CSV data.
+   * Method also handles processing of variant options.
+   *
+   * @param batchJobId
+   * @param transactionManager
+   * @private
+   */
   private async createVariants(
     batchJobId: string,
     transactionManager: EntityManager
