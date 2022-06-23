@@ -17,6 +17,7 @@ import { ProductRepository } from "../../repositories/product"
 import { ProductVariantRepository } from "../../repositories/product-variant"
 import { ProductOptionRepository } from "../../repositories/product-option"
 import { RegionRepository } from "../../repositories/region"
+import { MedusaError } from "medusa-core-utils"
 
 /* ******************** TYPES ******************** */
 
@@ -231,8 +232,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             })
 
             if (!region) {
-              // TODO: throw error because the user is setting a price for non existing region, (or do we create region for the user ? )
-              continue // TODO: for now
+              throw new MedusaError(
+                MedusaError.Types.INVALID_DATA,
+                `Trying to set a price for a region ${p.regionName} that doesn't exist`
+              )
             }
 
             record.region_id = region!.id
