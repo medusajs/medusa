@@ -16,6 +16,7 @@ import { CsvSchema } from "../../interfaces/csv-parser"
 import { ProductRepository } from "../../repositories/product"
 import { ProductVariantRepository } from "../../repositories/product-variant"
 import { ProductOptionRepository } from "../../repositories/product-option"
+import { RegionRepository } from "../../repositories/region"
 
 /* ******************** TYPES ******************** */
 
@@ -132,6 +133,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly productRepo_: typeof ProductRepository
   protected readonly productOptionRepo_: typeof ProductOptionRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
+  protected readonly regionRepo_: typeof RegionRepository
   protected readonly redisClient_: IORedis.Redis
 
   protected readonly fileService_: IFileService<any>
@@ -144,6 +146,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     productVariantService,
     productVariantRepository,
     shippingProfileService,
+    regionRepository,
     fileService,
     redisClient,
     manager,
@@ -169,6 +172,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.productRepo_ = productRepository
     this.productOptionRepo_ = productOptionRepository
     this.productVariantRepo_ = productVariantRepository
+    this.regionRepo_ = regionRepository
   }
 
   buildTemplate(): Promise<string> {
@@ -179,6 +183,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     csvData: any[]
   ): Promise<Record<OperationType, any[]>> {
     const productRepo = this.manager_.getCustomRepository(this.productRepo_)
+    const regionRepo = this.manager_.getCustomRepository(this.regionRepo_)
     const productVariantRepo = this.manager_.getCustomRepository(
       this.productVariantRepo_
     )
@@ -209,6 +214,34 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         })
 
         row["variant.id"] = variant?.id
+      }
+
+      if (row["variant.prices"].length) {
+        const prices: Record<string, any>[] = []
+
+        for (const p of row["variant.prices"]) {
+          const record: Record<string, any> = {
+            amount: p.amount,
+            currency_code: p.currency_code,
+          }
+
+          if (p.regionName) {
+            const region = await regionRepo.findOne({
+              where: { name: p.regionName },
+            })
+
+            if (!region) {
+              // TODO: throw error because the user is setting a price for non existing region, (or do we create region for the user ? )
+              continue // TODO: for now
+            }
+
+            record.region_id = region!.id
+          }
+
+          prices.push(record)
+        }
+
+        row["variant.prices"] = prices
       }
 
       if (variant) {
@@ -373,7 +406,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const variantOp of variantOps) {
       const productOptions = variantOp["variant.options"] || []
 
-      console.log(variantOp["variant.prices"])
       for (const o of productOptions) {
         const { id } = (await productOptionRepo.findOne({
           where: { title: o._title },
