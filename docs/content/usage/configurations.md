@@ -283,4 +283,4 @@ const plugins = [
 
 - Check out our [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
 - Install the [Medusa admin](../admin/quickstart.md).
-- Learn about [deploying the Medusa server on Heroku](../how-to/deploying-on-heroku.md).
+- Learn about [deploying the Medusa server on Heroku](../how-to/deploying-on-heroku.mdx).
