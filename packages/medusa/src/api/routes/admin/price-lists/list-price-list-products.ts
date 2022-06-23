@@ -8,6 +8,7 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { ProductStatus } from "../../../../models"
 import { DateComparisonOperator } from "../../../../types/common"
 import { FilterableProductProps } from "../../../../types/product"
 import { AdminGetProductsPaginationParams } from "../products"
@@ -86,13 +87,6 @@ export default async (req: Request, res) => {
     offset,
     limit,
   })
-}
-
-enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
 }
 
 export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsPaginationParams {

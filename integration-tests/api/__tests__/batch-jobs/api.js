@@ -24,25 +24,23 @@ const setupJobDb = async (dbConnection) => {
 
     await simpleBatchJobFactory(dbConnection, {
       id: "job_1",
-      type: "batch_1",
+      type: "product-export",
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_2",
-      type: "batch_2",
-      ready_at: new Date(),
+      type: "product-export",
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_3",
-      type: "batch_2",
-      ready_at: new Date(),
+      type: "product-export",
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_4",
-      type: "batch_1",
-      ready_at: new Date(),
+      type: "product-export",
+      status: "awaiting_confirmation",
       created_by: "member-user",
     })
   } catch (err) {
@@ -144,12 +142,7 @@ describe("/admin/batch-jobs", () => {
 
   describe("POST /admin/batch-jobs/", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await setupJobDb(dbConnection)
     })
 
     afterEach(async () => {
@@ -160,16 +153,14 @@ describe("/admin/batch-jobs", () => {
     it("Creates a batch job", async () => {
       const api = useApi()
 
-      const response = await api
-        .post(
-          "/admin/batch-jobs",
-          {
-            type: "order-export",
-            context: {},
-          },
-          adminReqConfig
-        )
-        .catch((err) => console.log(err))
+      const response = await api.post(
+        "/admin/batch-jobs",
+        {
+          type: "product-export",
+          context: {},
+        },
+        adminReqConfig
+      )
 
       expect(response.status).toEqual(201)
       expect(response.data.batch_job).toMatchSnapshot({
@@ -215,7 +206,7 @@ describe("/admin/batch-jobs", () => {
         await setupJobDb(dbConnection)
         await simpleBatchJobFactory(dbConnection, {
           id: "job_complete",
-          type: "batch_1",
+          type: "product-export",
           created_by: "admin_user",
           completed_at: new Date(),
         })
@@ -225,7 +216,7 @@ describe("/admin/batch-jobs", () => {
       }
     })
 
-    afterEach(async () => {
+    afterEach(async() => {
       const db = useDb()
       await db.teardown()
     })

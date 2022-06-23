@@ -1,37 +1,38 @@
-import { MedusaError } from "medusa-core-utils"
-import { AbstractBatchJobStrategy } from "../interfaces"
 import BatchJobService from "../services/batch-job"
 import EventBusService from "../services/event-bus"
+import { StrategyResolverService } from "../services"
 
 type InjectedDependencies = {
   eventBusService: EventBusService
   batchJobService: BatchJobService
+  strategyResolverService: StrategyResolverService
 }
 
 class BatchJobSubscriber {
   private readonly eventBusService_: EventBusService
   private readonly batchJobService_: BatchJobService
-  private readonly container_: InjectedDependencies
+  private readonly strategyResolver_: StrategyResolverService
 
-  constructor(container: InjectedDependencies) {
-    this.eventBusService_ = container.eventBusService
-    this.batchJobService_ = container.batchJobService
-    this.container_ = container
+  constructor({
+    eventBusService,
+    batchJobService,
+    strategyResolverService,
+  }: InjectedDependencies) {
+    this.eventBusService_ = eventBusService
+    this.batchJobService_ = batchJobService
+    this.strategyResolver_ = strategyResolverService
 
-    this.eventBusService_.subscribe(
-      BatchJobService.Events.CREATED,
-      this.preProcessBatchJob
-    )
-    this.eventBusService_.subscribe(
-      BatchJobService.Events.CONFIRMED,
-      this.processBatchJob
-    )
+    this.eventBusService_
+      .subscribe(BatchJobService.Events.CREATED, this.preProcessBatchJob)
+      .subscribe(BatchJobService.Events.CONFIRMED, this.processBatchJob)
   }
 
   preProcessBatchJob = async (data): Promise<void> => {
     const batchJob = await this.batchJobService_.retrieve(data.id)
 
-    const batchJobStrategy = this.getBatchJobStrategy(batchJob.type)
+    const batchJobStrategy = this.strategyResolver_.resolveBatchJobByType(
+      batchJob.type
+    )
 
     await batchJobStrategy.preProcessBatchJob(batchJob.id)
 
@@ -41,26 +42,15 @@ class BatchJobSubscriber {
   processBatchJob = async (data): Promise<void> => {
     const batchJob = await this.batchJobService_.retrieve(data.id)
 
-    const batchJobStrategy = this.getBatchJobStrategy(batchJob.type)
+    const batchJobStrategy = this.strategyResolver_.resolveBatchJobByType(
+      batchJob.type
+    )
 
-    await this.batchJobService_.setProcessing(batchJob)
+    await this.batchJobService_.setProcessing(batchJob.id)
 
     await batchJobStrategy.processJob(batchJob.id)
 
     await this.batchJobService_.complete(batchJob.id)
-  }
-
-  getBatchJobStrategy(type: string): AbstractBatchJobStrategy<any> {
-    const batchJobStrategy = this.container_[`batchType_${type}`]
-
-    if (!batchJobStrategy) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        `No batch job strategy found for type ${type}`
-      )
-    }
-
-    return batchJobStrategy
   }
 }
 

@@ -3,20 +3,24 @@ import { BatchJob } from "../models"
 import { BatchJobRepository } from "../repositories/batch-job"
 import {
   BatchJobCreateProps,
+  BatchJobResultError,
   BatchJobStatus,
   BatchJobUpdateProps,
+  CreateBatchJobInput,
   FilterableBatchJobProps,
 } from "../types/batch-job"
 import { FindConfig } from "../types/common"
-import { TransactionBaseService } from "../interfaces"
+import { AbstractBatchJobStrategy, TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
-import { EventBusService } from "./index"
+import { EventBusService, StrategyResolverService } from "./index"
+import { Request } from "express"
 
 type InjectedDependencies = {
   manager: EntityManager
   eventBusService: EventBusService
   batchJobRepository: typeof BatchJobRepository
+  strategyResolverService: StrategyResolverService
 }
 
 class BatchJobService extends TransactionBaseService<BatchJobService> {
@@ -31,10 +35,12 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     FAILED: "batch.failed",
   }
 
-  protected readonly manager_: EntityManager
+  protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
+
   protected readonly batchJobRepository_: typeof BatchJobRepository
   protected readonly eventBus_: EventBusService
+  protected readonly strategyResolver_: StrategyResolverService
 
   protected batchJobStatusMapToProps = new Map<
     BatchJobStatus,
@@ -88,12 +94,19 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
     manager,
     batchJobRepository,
     eventBusService,
+    strategyResolverService,
   }: InjectedDependencies) {
-    super({ manager, batchJobRepository, eventBusService })
+    super({
+      manager,
+      batchJobRepository,
+      eventBusService,
+      strategyResolverService,
+    })
 
     this.manager_ = manager
     this.batchJobRepository_ = batchJobRepository
     this.eventBus_ = eventBusService
+    this.strategyResolver_ = strategyResolverService
   }
 
   async retrieve(
@@ -170,7 +183,7 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         batchJob = await this.retrieve(batchJobOrId)
       }
 
-      const { context, result } = data
+      const { context, result, ...rest } = data
       if (context) {
         batchJob.context = { ...batchJob.context, ...context }
       }
@@ -178,6 +191,12 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
       if (result) {
         batchJob.result = { ...batchJob.result, ...result }
       }
+
+      Object.keys(rest)
+        .filter((key) => typeof rest[key] !== `undefined`)
+        .forEach((key) => {
+          batchJob[key] = rest[key]
+        })
 
       batchJob = await batchJobRepo.save(batchJob)
 
@@ -335,12 +354,12 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
 
   async setFailed(
     batchJobOrId: string | BatchJob,
-    reason?: string
+    error?: BatchJobResultError
   ): Promise<BatchJob | never> {
     return await this.atomicPhase_(async () => {
       let batchJob = batchJobOrId as BatchJob
 
-      if (reason) {
+      if (error) {
         if (typeof batchJobOrId === "string") {
           batchJob = await this.retrieve(batchJobOrId)
         }
@@ -350,12 +369,24 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
         await this.update(batchJob, {
           result: {
             ...result,
-            errors: [...(result?.errors ?? []), reason],
+            errors: [...(result?.errors ?? []), error],
           },
         })
       }
 
       return await this.updateStatus(batchJob, BatchJobStatus.FAILED)
+    })
+  }
+
+  async prepareBatchJobForProcessing(
+    data: CreateBatchJobInput,
+    req: Request
+  ): Promise<CreateBatchJobInput | never> {
+    return await this.atomicPhase_(async () => {
+      const batchStrategy = this.strategyResolver_.resolveBatchJobByType(
+        data.type
+      )
+      return await batchStrategy.prepareBatchJobForProcessing(data, req)
     })
   }
 }
