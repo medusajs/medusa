@@ -373,6 +373,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const variantOp of variantOps) {
       const productOptions = variantOp["variant.options"] || []
 
+      console.log(variantOp["variant.prices"])
       for (const o of productOptions) {
         const { id } = (await productOptionRepo.findOne({
           where: { title: o._title },
@@ -559,18 +560,60 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Region",
       match: /Price .* \[([A-Z]{2,4})\]/,
-      mapTo: "todo.ma.currency",
+      reducer: (builtLine: any, key, value, context) => {
+        builtLine["variant.prices"] = builtLine["variant.prices"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+
+        const regionName = key.split(" ")[1]
+        const currency = key.split(" ")[2].slice(1, -1)
+
+        builtLine["variant.prices"].push({
+          amount: value,
+          regionName,
+          currency_code: currency,
+        })
+
+        return builtLine
+      },
     },
     {
       name: "Price Currency",
       match: /Price [A-Z]{2,4}/,
-      mapTo: "todo.ma.region",
+      reducer: (builtLine: any, key, value, context) => {
+        builtLine["variant.prices"] = builtLine["variant.prices"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+
+        const currency = key.split(" ")[1]
+
+        builtLine["variant.prices"].push({
+          amount: value,
+          currency_code: currency,
+        })
+
+        return builtLine
+      },
     },
     // Images
     {
       name: "Image Url",
       match: /Image \d+ Url/,
-      mapTo: "product.images.url",
+      reducer: (builtLine: any, key, value, context) => {
+        builtLine["product.images"] = builtLine["product.images"] || []
+
+        if (typeof value === "undefined" || value === null) {
+          return builtLine
+        }
+
+        builtLine["product.images"].push(value)
+
+        return builtLine
+      },
     },
   ],
 }
