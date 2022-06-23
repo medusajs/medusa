@@ -1,4 +1,3 @@
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
   OrderDescriptor,
@@ -9,7 +8,7 @@ import {
 import { AdminPostBatchesReq } from "../../../api/routes/admin/batch/create-batch-job"
 import { IFileService } from "../../../interfaces"
 import { AbstractBatchJobStrategy } from "../../../interfaces/batch-job-strategy"
-import { BatchJob, Order } from "../../../models"
+import { Order } from "../../../models"
 import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
@@ -125,7 +124,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         const { writeStream, fileKey, promise } =
           await this.fileService_.getUploadStreamDescriptor({
-            name: "exports/order-export",
+            name: "order-export",
             ext: "csv",
           })
 
@@ -153,7 +152,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         const header = this.buildHeader(lineDescriptor)
         writeStream.write(header)
 
-        orderCount = count
+        orderCount = batchJob.context?.batch_size ?? count
 
         const context = batchJob.context
         const result = batchJob.result
@@ -165,7 +164,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             .list(filterable_fields, {
               ...list_config,
               skip: offset,
-              take: this.BATCH_SIZE,
+              take: Math.min(orderCount - offset, limit),
             })
 
           orders.forEach(async (order) => {
