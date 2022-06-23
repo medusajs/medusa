@@ -135,6 +135,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly productOptionRepo_: typeof ProductOptionRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
   protected readonly regionRepo_: typeof RegionRepository
+
   protected readonly redisClient_: IORedis.Redis
 
   protected readonly fileService_: IFileService<any>
@@ -183,11 +184,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async getImportInstructions(
     csvData: any[]
   ): Promise<Record<OperationType, any[]>> {
-    const productRepo = this.manager_.getCustomRepository(this.productRepo_)
     const regionRepo = this.manager_.getCustomRepository(this.regionRepo_)
-    const productVariantRepo = this.manager_.getCustomRepository(
-      this.productVariantRepo_
-    )
 
     const shippingProfile = await this.shippingProfileService_.retrieveDefault()
 
@@ -200,54 +197,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const variantsUpdate: any[] = []
 
     for (const row of csvData) {
-      let variant
+      if (row["variant.prices"].length) {
+        await this.handleVariantPrices(row, regionRepo)
+      }
 
       if (row["variant.id"]) {
-        variant = await productVariantRepo.findOne({
-          where: { id: row["variant.id"] },
-        })
-      }
-
-      if (!variant && row["variant.sku"]) {
-        variant = await productVariantRepo.findOne({
-          where: { sku: row["variant.sku"] },
-          select: ["id"],
-        })
-
-        row["variant.id"] = variant?.id
-      }
-
-      if (row["variant.prices"].length) {
-        const prices: Record<string, any>[] = []
-
-        for (const p of row["variant.prices"]) {
-          const record: Record<string, any> = {
-            amount: p.amount,
-            currency_code: p.currency_code,
-          }
-
-          if (p.regionName) {
-            const region = await regionRepo.findOne({
-              where: { name: p.regionName },
-            })
-
-            if (!region) {
-              throw new MedusaError(
-                MedusaError.Types.INVALID_DATA,
-                `Trying to set a price for a region ${p.regionName} that doesn't exist`
-              )
-            }
-
-            record.region_id = region!.id
-          }
-
-          prices.push(record)
-        }
-
-        row["variant.prices"] = prices
-      }
-
-      if (variant) {
         variantsUpdate.push(row)
       } else {
         variantsCreate.push(row)
@@ -255,14 +209,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
       // save only first occurrence
       if (!seenProducts[row["product.handle"]]) {
-        const existingId = await productRepo.findOne({
-          where: { handle: row["product.handle"] },
-          select: ["id"],
-        })
-
-        row.product_id = existingId?.id
         row["product.profile_id"] = shippingProfile
-        ;(existingId ? productsUpdate : productsCreate).push(row)
+        ;(row["product.product.id"] ? productsUpdate : productsCreate).push(row)
 
         seenProducts[row["product.handle"]] = true
       }
@@ -274,6 +222,39 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       [OperationType.ProductUpdate]: productsUpdate,
       [OperationType.VariantUpdate]: variantsUpdate,
     }
+  }
+
+  protected async handleVariantPrices(
+    row,
+    regionRepo: RegionRepository
+  ): Promise<void> {
+    const prices: Record<string, any>[] = []
+
+    for (const p of row["variant.prices"]) {
+      const record: Record<string, any> = {
+        amount: p.amount,
+        currency_code: p.currency_code,
+      }
+
+      if (p.regionName) {
+        const region = await regionRepo.findOne({
+          where: { name: p.regionName },
+        })
+
+        if (!region) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            `Trying to set a price for a region ${p.regionName} that doesn't exist`
+          )
+        }
+
+        record.region_id = region!.id
+      }
+
+      prices.push(record)
+    }
+
+    row["variant.prices"] = prices
   }
 
   async preProcessBatchJob(batchJobId: string): Promise<void> {
@@ -346,7 +327,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const productOp of productOps) {
       await this.productService_
         .withTransaction(transactionManager)
-        .update(productOp.product_id, transformProductData(productOp))
+        .update(productOp["product.id"], transformProductData(productOp))
     }
   }
 
@@ -407,15 +388,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const variantOp of variantOps) {
-      const productOptions = variantOp["variant.options"] || []
-
-      for (const o of productOptions) {
-        const { id } = (await productOptionRepo.findOne({
-          where: { title: o._title },
-        })) as ProductOption
-
-        o.option_id = id
-      }
+      await this.prepareVariantOptions(variantOp, productOptionRepo)
 
       await this.productVariantService_
         .withTransaction(transactionManager)
@@ -423,23 +396,19 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
-  private async updateProgress(
-    processedRowsCount: number,
-    batchJobId: string,
-    transactionManager: EntityManager
+  protected async prepareVariantOptions(
+    variantOp,
+    productOptionRepo: ProductOptionRepository
   ): Promise<void> {
-    const batchJob = await this.batchJobService_
-      .withTransaction(transactionManager)
-      .retrieve(batchJobId)
+    const productOptions = variantOp["variant.options"] || []
 
-    // @ts-ignore
-    const progress = batchJob.context.progress + processedRowsCount
+    for (const o of productOptions) {
+      const { id } = (await productOptionRepo.findOne({
+        where: { title: o._title },
+      })) as ProductOption
 
-    await this.batchJobService_
-      .withTransaction(transactionManager)
-      .update(batchJobId, {
-        context: { progress },
-      })
+      o.option_id = id
+    }
   }
 
   async setImportDataToRedis(
@@ -476,6 +445,25 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async clearRedisRecords(batchJobId: string): Promise<void> {
     // @ts-ignore
     return await this.redisClient_.call("JSON.DEL", `pij_${batchJobId}:*`)
+  }
+
+  private async updateProgress(
+    processedRowsCount: number,
+    batchJobId: string,
+    transactionManager: EntityManager
+  ): Promise<void> {
+    const batchJob = await this.batchJobService_
+      .withTransaction(transactionManager)
+      .retrieve(batchJobId)
+
+    // @ts-ignore
+    const progress = batchJob.context.progress + processedRowsCount
+
+    await this.batchJobService_
+      .withTransaction(transactionManager)
+      .update(batchJobId, {
+        context: { progress },
+      })
   }
 }
 
@@ -526,8 +514,7 @@ const CSVSchema: ProductImportCsvSchema = {
     // Variants
     {
       name: "Variant id",
-      mapTo: "todo.variant.id",
-      required: true,
+      mapTo: "variant.id",
     },
     { name: "Variant Title", mapTo: "variant.title" },
     { name: "Variant SKU", mapTo: "variant.sku" },
