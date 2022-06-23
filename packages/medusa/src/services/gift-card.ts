@@ -127,7 +127,9 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
       // Will throw if region does not exist
-      const region = await this.regionService_.retrieve(giftCard.region_id)
+      const region = await this.regionService_
+        .withTransaction(manager)
+        .retrieve(giftCard.region_id)
 
       const code = GiftCardService.generateCode()
 
