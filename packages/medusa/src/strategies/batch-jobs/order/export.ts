@@ -231,8 +231,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   private buildHeader(
     lineDescriptor: OrderDescriptor[] = orderExportPropertiesDescriptors
   ): string {
-    return [...lineDescriptor.map(({ title }) => title), this.NEWLINE].join(
-      this.DELIMITER
+    return (
+      [...lineDescriptor.map(({ title }) => title)].join(this.DELIMITER) +
+      this.NEWLINE
     )
   }
 
@@ -240,10 +241,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     order: Order,
     lineDescriptor: OrderDescriptor[]
   ): Promise<string> {
-    return [
-      ...lineDescriptor.map(({ accessor }) => accessor(order)),
-      this.NEWLINE,
-    ].join(this.DELIMITER)
+    return (
+      [...lineDescriptor.map(({ accessor }) => accessor(order))].join(
+        this.DELIMITER
+      ) + this.NEWLINE
+    )
   }
 
   private getLineDescriptor(
