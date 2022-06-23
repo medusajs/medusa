@@ -42,5 +42,9 @@
     "eslint": "^6.8.0",
     "jest": "^25.5.2"
   },
-  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
+  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e",
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-search"
+  ]
 }
