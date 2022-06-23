@@ -230,7 +230,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: `product-export-${Date.now()}`,
+            name: `product-export`,
             ext: "csv",
           })
 

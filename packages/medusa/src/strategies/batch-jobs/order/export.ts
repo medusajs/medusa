@@ -1,6 +1,11 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { OrderDescriptor, orderExportPropertiesDescriptors } from "."
+import {
+  OrderDescriptor,
+  OrderExportBatchJob,
+  OrderExportBatchJobContext,
+  orderExportPropertiesDescriptors,
+} from "."
 import { AdminPostBatchesReq } from "../../../api/routes/admin/batch/create-batch-job"
 import { IFileService } from "../../../interfaces"
 import { AbstractBatchJobStrategy } from "../../../interfaces/batch-job-strategy"
@@ -80,15 +85,15 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       expand,
       filterable_fields,
       ...context
-    } = batchJob.context
+    } = batchJob.context as OrderExportBatchJobContext
 
     const listConfig = prepareListQuery(
       {
-        limit: limit as number,
-        offset: offset as number,
-        order: order as string,
-        fields: fields as string,
-        expand: expand as string,
+        limit,
+        offset,
+        order,
+        fields,
+        expand,
       },
       {
         isList: true,
@@ -108,21 +113,26 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
   async processJob(batchJobId: string): Promise<void> {
     let offset = 0
+    let limit = this.BATCH_SIZE
+    let advancementCount = 0
     let orderCount = 0
 
     return await this.atomicPhase_(
       async (transactionManager) => {
-        const batchJob = await this.batchJobService_
+        let batchJob = (await this.batchJobService_
           .withTransaction(transactionManager)
-          .retrieve(batchJobId)
-
-        offset = (batchJob.context.offset as number | undefined) ?? offset
+          .retrieve(batchJobId)) as OrderExportBatchJob
 
         const { writeStream, fileKey, promise } =
           await this.fileService_.getUploadStreamDescriptor({
             name: "exports/order-export",
             ext: "csv",
           })
+
+        advancementCount =
+          batchJob.result?.advancement_count ?? advancementCount
+        offset = (batchJob.context?.list_config?.skip ?? 0) + advancementCount
+        limit = batchJob.context?.list_config?.take ?? limit
 
         const { list_config = {}, filterable_fields = {} } = batchJob.context
         const [, count] = await this.orderService_.listAndCount(
@@ -131,7 +141,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             ...list_config,
             order: { created_at: "DESC" },
             skip: offset,
-            take: this.BATCH_SIZE,
+            take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
           }
         )
 
@@ -163,12 +173,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           })
 
           // context = { ...context, count, offset, progress: offset / count }
-          const batch = await this.batchJobService_
+          batchJob = (await this.batchJobService_
             .withTransaction(transactionManager)
             .update(batchJobId, {
               context: {
                 ...context,
-                file_key: fileKey,
                 list_config: {
                   ...list_config,
                   skip: offset,
@@ -176,15 +185,17 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
               },
               result: {
                 ...result,
-                count,
-                advancement_count: offset,
-                progress: offset / count,
+                file_key: fileKey,
+                count: orderCount,
+                advancement_count: advancementCount,
+                progress: advancementCount / orderCount,
               },
-            })
+            })) as OrderExportBatchJob
 
-          offset += this.BATCH_SIZE
+          advancementCount += orders.length
+          offset += orders.length
 
-          if (batch.status === BatchJobStatus.CANCELED) {
+          if (batchJob.status === BatchJobStatus.CANCELED) {
             writeStream.end()
 
             await this.fileService_
@@ -199,12 +210,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         await promise
 
-        context.file_key = fileKey
-
         await this.batchJobService_
           .withTransaction(transactionManager)
           .update(batchJobId, {
-            context: { ...context, file_key: fileKey },
             result: {
               ...result,
               count,
@@ -215,23 +223,13 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       },
       "REPEATABLE READ",
       async (err: Error) => {
-        this.handleProcessingErrors(batchJobId, err, {
+        this.handleProcessingError(batchJobId, err, {
           offset,
           count: orderCount,
           progress: offset / orderCount,
         })
       }
     )
-  }
-
-  public async completeJob(batchJobId: string): Promise<BatchJob> {
-    const batchJob = await this.batchJobService_.retrieve(batchJobId)
-
-    if (batchJob.status !== BatchJobStatus.COMPLETED) {
-      return await this.batchJobService_.complete(batchJob)
-    } else {
-      return batchJob
-    }
   }
 
   public async buildTemplate(): Promise<string> {
@@ -243,9 +241,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   private buildHeader(
     lineDescriptor: OrderDescriptor[] = orderExportPropertiesDescriptors
   ): string {
-    return (
-      lineDescriptor.map(({ title }) => title).join(this.DELIMITER) +
-      this.NEWLINE
+    return [...lineDescriptor.map(({ title }) => title), this.NEWLINE].join(
+      this.DELIMITER
     )
   }
 
@@ -253,11 +250,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     order: Order,
     lineDescriptor: OrderDescriptor[]
   ): Promise<string> {
-    return (
-      lineDescriptor
-        .map(({ accessor }) => accessor(order))
-        .join(this.DELIMITER) + this.NEWLINE
-    )
+    return [
+      ...lineDescriptor.map(({ accessor }) => accessor(order)),
+      this.NEWLINE,
+    ].join(this.DELIMITER)
   }
 
   private getLineDescriptor(
@@ -268,55 +264,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
       ({ fieldName }) =>
         fields.indexOf(fieldName) !== -1 || relations.indexOf(fieldName) !== -1
     )
-  }
-
-  private async handleProcessingErrors(
-    batchJobId: string,
-    err: unknown,
-    {
-      offset,
-      count,
-      progress,
-    }: { offset: number; count: number; progress: number }
-  ): Promise<void> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const batchJob = await this.batchJobService_
-        .withTransaction(transactionManager)
-        .retrieve(batchJobId)
-
-      const retryCount = batchJob.context.retry_count ?? 0
-      const maxRetry = batchJob.context.max_retry ?? this.defaultMaxRetry
-
-      const errMessage =
-        (err as any).message ??
-        `Something went wrong with the batchJob ${batchJob.id}`
-
-      if (err instanceof MedusaError) {
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .setFailed(batchJob, errMessage)
-      } else if (retryCount < maxRetry) {
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .update(batchJobId, {
-            context: {
-              ...batchJob.context,
-              retry_count: retryCount + 1,
-              offset,
-            },
-            result: {
-              ...batchJob.result,
-              count,
-              progress,
-              err,
-            },
-          })
-      } else {
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .setFailed(batchJob, errMessage)
-      }
-    })
   }
 }
 
