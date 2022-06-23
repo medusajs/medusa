@@ -171,17 +171,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             writeStream.write(await this.buildCSVLine(order, lineDescriptor))
           })
 
-          // context = { ...context, count, offset, progress: offset / count }
           batchJob = (await this.batchJobService_
             .withTransaction(transactionManager)
             .update(batchJobId, {
-              context: {
-                ...context,
-                list_config: {
-                  ...list_config,
-                  skip: offset,
-                },
-              },
               result: {
                 ...result,
                 file_key: fileKey,
