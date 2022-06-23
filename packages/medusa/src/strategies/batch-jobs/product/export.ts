@@ -128,7 +128,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             imageCount
           )
 
-          for (const variant of product.variants) {
+          for (const variant of product?.variants ?? []) {
             if (variant.prices?.length) {
               variant.prices.forEach((price) => {
                 pricesData.add(
