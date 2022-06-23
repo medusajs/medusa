@@ -1,9 +1,8 @@
 import { EntityManager } from "typeorm"
 import * as IORedis from "ioredis"
-import set from "lodash/set"
 
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
-import { BatchJob } from "../../models"
+import { BatchJob, ProductOption } from "../../models"
 
 import CsvParser from "../../services/csv-parser"
 import {
@@ -16,6 +15,7 @@ import { BatchJobStatus } from "../../types/batch-job"
 import { CsvSchema } from "../../interfaces/csv-parser"
 import { ProductRepository } from "../../repositories/product"
 import { ProductVariantRepository } from "../../repositories/product-variant"
+import { ProductOptionRepository } from "../../repositories/product-option"
 
 /* ******************** TYPES ******************** */
 
@@ -91,7 +91,8 @@ function transformVariantData(
   })
 
   // include product handle to keep track of associated product
-  ret["product.handle"] = productData["product.handle"]
+  ret["product.handle"] = data["product.handle"]
+  ret["product.options"] = data["product.options"]
 
   return ret
 }
@@ -129,6 +130,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly productService_: ProductService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productRepo_: typeof ProductRepository
+  protected readonly productOptionRepo_: typeof ProductOptionRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
   protected readonly redisClient_: IORedis.Redis
 
@@ -138,6 +140,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     batchJobService,
     productService,
     productRepository,
+    productOptionRepository,
     productVariantService,
     productVariantRepository,
     shippingProfileService,
@@ -164,6 +167,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
     this.productRepo_ = productRepository
+    this.productOptionRepo_ = productOptionRepository
     this.productVariantRepo_ = productVariantRepository
   }
 
@@ -357,12 +361,26 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     batchJobId: string,
     transactionManager: EntityManager
   ): Promise<void> {
+    const productOptionRepo = this.manager_.getCustomRepository(
+      this.productOptionRepo_
+    )
+
     const variantOps = await this.getImportDataFromRedis(
       batchJobId,
       OperationType.VariantUpdate
     )
 
     for (const variantOp of variantOps) {
+      const productOptions = variantOp["variant.options"] || []
+
+      for (const o of productOptions) {
+        const { id } = (await productOptionRepo.findOne({
+          where: { title: o._title },
+        })) as ProductOption
+
+        o.option_id = id
+      }
+
       await this.productVariantService_
         .withTransaction(transactionManager)
         .update(variantOp["variant.id"], transformVariantData(variantOp) as any)
@@ -529,7 +547,10 @@ const CSVSchema: ProductImportCsvSchema = {
           return builtLine
         }
 
-        builtLine["variant.options"].push({ value })
+        builtLine["variant.options"].push({
+          value,
+          _title: context.line[key.slice(0, -6) + " Name"],
+        })
 
         return builtLine
       },
