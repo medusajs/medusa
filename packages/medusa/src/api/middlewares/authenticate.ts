@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from "express"
-import { StrategyResolverService } from "../../services"
+import { AuthService } from "../../services"
 
 export default (): RequestHandler => {
   return async (
@@ -7,14 +7,11 @@ export default (): RequestHandler => {
     res: Response,
     next: NextFunction
   ): Promise<void> => {
-    const strategyResolver = req.scope.resolve(
-      "strategyResolverService"
-    ) as StrategyResolverService
-
-    const authStrategyType = (req.headers["X-medusa-auth-strategy"] ??
-      "core-admin-default-auth") as string
-
-    const authStrategy = strategyResolver.resolveAuthByType(authStrategyType)
+    const authService = req.scope.resolve("authService") as AuthService
+    const authStrategy = await authService.retrieveAuthenticationStrategyToUse(
+      req,
+      "admin"
+    )
     await authStrategy.validate(req, res, next)
   }
 }

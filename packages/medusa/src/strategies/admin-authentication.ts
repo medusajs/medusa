@@ -13,6 +13,8 @@ import { AuthService } from "../services"
 import { ConfigModule } from "../types/global"
 import { validator } from "../utils/validator"
 import { IsEmail, IsNotEmpty, IsString } from "class-validator"
+import { ParamsDictionary } from "express-serve-static-core"
+import { ParsedQs } from "qs"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -35,6 +37,11 @@ export default class AdminDefaultAuthenticationStrategy extends AbstractAuthStra
     super({ manager, authService }, configModule)
     this.configModule_ = configModule
     this.authService_ = authService
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async shouldUseStrategy(req: Request): Promise<boolean> {
+    return true
   }
 
   async afterInit(app: Express): Promise<void> {

@@ -36,6 +36,11 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
     this.authService_ = authService
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async shouldUseStrategy(req: Request): Promise<boolean> {
+    return true
+  }
+
   async afterInit(app: Express): Promise<void> {
     // For good old email password authentication
     passport.use(

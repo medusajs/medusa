@@ -1,4 +1,4 @@
-import { StrategyResolverService } from "../../../../services"
+import { AuthService } from "../../../../services"
 import { Request, Response } from "express"
 
 /**
@@ -34,13 +34,10 @@ import { Request, Response } from "express"
  *    $ref: "#/components/responses/500_error"
  */
 export default async (req: Request, res: Response) => {
-  const strategyResolver = req.scope.resolve(
-    "strategyResolverService"
-  ) as StrategyResolverService
-
-  const authStrategyType = (req.headers["X-medusa-auth-strategy"] ??
-    "core-store-default-auth") as string
-
-  const authStrategy = strategyResolver.resolveAuthByType(authStrategyType)
+  const authService = req.scope.resolve("authService") as AuthService
+  const authStrategy = await authService.retrieveAuthenticationStrategyToUse(
+    req,
+    "store"
+  )
   await authStrategy.unAuthenticate(req, res)
 }
