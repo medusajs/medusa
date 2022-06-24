@@ -445,15 +445,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   ): Promise<void> {
     for (const op in results) {
       if (results[op]?.length) {
-        // @ts-ignore
-        await this.redisClient_.call(
-          "JSON.SET",
+        await this.redisClient_.set(
           `pij_${batchJobId}:${op}`,
-          "$", // JSONPath, $ is start
-          JSON.stringify(results[op])
+          JSON.stringify(results[op]),
+          "EX",
+          60 * 60
         )
-
-        await this.redisClient_.expire(`pij_${batchJobId}:${op}`, 60 * 60)
       }
     }
   }
@@ -462,17 +459,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     batchJobId: string,
     op: OperationType
   ): Promise<any[]> {
-    return (
-      JSON.parse(
-        // @ts-ignore
-        await this.redisClient_.call("JSON.GET", `pij_${batchJobId}:${op}`, "$")
-      )?.[0] || []
-    ) // JSONPath always returns an array of results that matched a query
+    return JSON.parse(
+      (await this.redisClient_.get(`pij_${batchJobId}:${op}`)) || "[]"
+    )
   }
 
-  async clearRedisRecords(batchJobId: string): Promise<void> {
-    // @ts-ignore
-    return await this.redisClient_.call("JSON.DEL", `pij_${batchJobId}:*`)
+  async clearRedisRecords(batchJobId: string): Promise<number> {
+    return await this.redisClient_.del(`pij_${batchJobId}:*`)
   }
 
   private async updateProgress(
