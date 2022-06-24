@@ -8,7 +8,7 @@ export default (): RequestHandler => {
     next: NextFunction
   ): Promise<void> => {
     const authService = req.scope.resolve("authService") as AuthService
-    const authStrategy = await authService.retrieveAuthenticationStrategyToUse(
+    const authStrategy = await authService.retrieveAuthenticationStrategy(
       req,
       "admin"
     )

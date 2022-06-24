@@ -37,8 +37,11 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async shouldUseStrategy(req: Request): Promise<boolean> {
-    return true
+  async shouldUseStrategy(
+    req: Request,
+    scope: "admin" | "store"
+  ): Promise<boolean> {
+    return scope === "store"
   }
 
   async afterInit(app: Express): Promise<void> {

@@ -43,7 +43,7 @@ import { Request, Response } from "express"
  */
 export default async (req: Request, res: Response) => {
   const authService = req.scope.resolve("authService") as AuthService
-  const authStrategy = await authService.retrieveAuthenticationStrategyToUse(
+  const authStrategy = await authService.retrieveAuthenticationStrategy(
     req,
     "admin"
   )

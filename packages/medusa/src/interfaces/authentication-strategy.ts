@@ -8,7 +8,7 @@ export interface IAuthenticationStrategy<
   authenticate(req: Request, res: Response): Promise<void>
   unAuthenticate(req: Request, res: Response): Promise<void>
   validate(req: Request, res: Response, next: NextFunction): Promise<void>
-  shouldUseStrategy(req: Request): Promise<boolean>
+  shouldUseStrategy(req: Request, scope: "admin" | "store"): Promise<boolean>
 }
 
 export default abstract class AbstractAuthStrategy<
@@ -24,7 +24,10 @@ export default abstract class AbstractAuthStrategy<
     return Promise.resolve()
   }
 
-  abstract shouldUseStrategy(req: Request): Promise<boolean>
+  abstract shouldUseStrategy(
+    req: Request,
+    scope: "admin" | "store"
+  ): Promise<boolean>
 
   abstract authenticate(req: Request, res: Response): Promise<void>
 
