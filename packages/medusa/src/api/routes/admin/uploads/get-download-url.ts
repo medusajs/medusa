@@ -8,7 +8,16 @@ import { validator } from "../../../../utils/validator"
  * summary: "Gets a presigned download url for a file"
  * description: "Gets a presigned download url for a file"
  * x-authenticated: true
- * parameters:
+ * requestBody:
+ *   content:
+ *     application/json:
+ *       schema:
+ *         required:
+ *           - file_key
+ *         properties:
+ *           file_key:
+ *             description: "key of the file to obtain the download link for"
+ *             type: string
  *   - (path) fileKey=* {string} key of the file to obtain the download link for.
  * tags:
  *   - Uploads
