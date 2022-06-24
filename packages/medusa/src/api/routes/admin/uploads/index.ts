@@ -18,7 +18,7 @@ export default (app) => {
 
   route.delete("/", middlewares.wrap(require("./delete-upload").default))
 
-  route.get(
+  route.post(
     "/download-url",
     middlewares.wrap(require("./get-download-url").default)
   )
@@ -32,7 +32,7 @@ export type AdminUploadRes = {
 
 export type AdminDeleteUploadRes = DeleteResponse
 
-export type AdminGetUploadsFileDownloadUrlRes = {
+export type AdminCreateUploadsFileDownloadUrlRes = {
   download_url: string
 }
 

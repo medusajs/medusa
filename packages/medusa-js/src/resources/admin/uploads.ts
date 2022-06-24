@@ -1,8 +1,8 @@
 import {
   AdminDeleteUploadReq,
   AdminDeleteUploadRes,
-  AdminGetUploadsFileDownloadUrlReq,
-  AdminGetUploadsFileDownloadUrlRes,
+  AdminCreateUploadsFileDownloadUrlReq,
+  AdminCreateUploadsFileDownloadUrlRes,
   AdminUploadRes,
   IAdminPostUploadsFile,
 } from "@medusajs/medusa"
@@ -34,12 +34,12 @@ class AdminUploadsResource extends BaseResource {
   }
 
   getPresignedDownloadUrl(
-    payload: AdminGetUploadsFileDownloadUrlReq,
+    payload: AdminCreateUploadsFileDownloadUrlReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminGetUploadsFileDownloadUrlRes> {
+  ): ResponsePromise<AdminCreateUploadsFileDownloadUrlRes> {
     const path = `/admin/uploads/download-url`
 
-    return this.client.request("GET", path, payload, {}, customHeaders)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 

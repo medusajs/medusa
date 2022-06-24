@@ -3,10 +3,10 @@ import { AbstractFileService } from "../../../../interfaces"
 import { validator } from "../../../../utils/validator"
 
 /**
- * [get] /uploads/download-url
- * operationId: "GetUploadsFileDownloadUrl"
- * summary: "Gets a presigned download url for a file"
- * description: "Gets a presigned download url for a file"
+ * [post] /uploads/download-url
+ * operationId: "CreateUploadsFileDownloadUrl"
+ * summary: "Creates a presigned download url for a file"
+ * description: "Creates a presigned download url for a file"
  * x-authenticated: true
  * requestBody:
  *   content:
@@ -26,7 +26,10 @@ import { validator } from "../../../../utils/validator"
  *     description: OK
  */
 export default async (req, res) => {
-  const validated = await validator(AdminGetUploadsFileDownloadUrlReq, req.body)
+  const validated = await validator(
+    AdminCreateUploadsFileDownloadUrlReq,
+    req.body
+  )
 
   const fileService: AbstractFileService<any> = req.scope.resolve("fileService")
 
@@ -37,7 +40,7 @@ export default async (req, res) => {
   res.status(200).send({ download_url: url })
 }
 
-export class AdminGetUploadsFileDownloadUrlReq {
+export class AdminCreateUploadsFileDownloadUrlReq {
   @IsString()
   file_key: string
 }
