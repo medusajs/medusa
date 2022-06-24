@@ -1,23 +1,21 @@
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import * as IORedis from "ioredis"
 
+import { ProductVariantRepository } from "../../repositories/product-variant"
+import { ProductOptionRepository } from "../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
-import { BatchJob, ProductOption } from "../../models"
-
+import { ProductRepository } from "../../repositories/product"
+import { RegionRepository } from "../../repositories/region"
+import { CsvSchema } from "../../interfaces/csv-parser"
 import CsvParser from "../../services/csv-parser"
+import { ProductOption } from "../../models"
 import {
   BatchJobService,
   ProductService,
   ProductVariantService,
   ShippingProfileService,
 } from "../../services"
-import { BatchJobStatus } from "../../types/batch-job"
-import { CsvSchema } from "../../interfaces/csv-parser"
-import { ProductRepository } from "../../repositories/product"
-import { ProductVariantRepository } from "../../repositories/product-variant"
-import { ProductOptionRepository } from "../../repositories/product-option"
-import { RegionRepository } from "../../repositories/region"
-import { MedusaError } from "medusa-core-utils"
 
 /* ******************** TYPES ******************** */
 
@@ -47,7 +45,7 @@ enum OperationType {
 /**
  * Process this many variant rows before reporting progress.
  */
-const BATCH_SIZE = 100
+const BATCH_SIZE = 1
 
 /* ******************** UTILS ******************** */
 
@@ -122,6 +120,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   static identifier = "product-import"
 
   static batchType = "product_import"
+
+  private processedCounter = 0
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -286,7 +286,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     await this.batchJobService_.update(batchJobId, {
       context: {
-        total: results.length,
+        // number of update/create operations to execute
+        total: Object.keys(ops).reduce((acc, k) => acc + ops[k].length, 0),
       },
     })
   }
@@ -303,6 +304,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       await this.updateProducts(batchJobId, transactionManager)
       await this.createVariants(batchJobId, transactionManager)
       await this.updateVariants(batchJobId, transactionManager)
+
+      this.finalize(batchJobId)
     })
   }
 
@@ -322,9 +325,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const productOp of productOps) {
-      await this.productService_.withTransaction(transactionManager).create(
-        transformProductData(productOp) as any // TODO: pick keys before saving to Redis
-      )
+      await this.productService_
+        .withTransaction(transactionManager)
+        .create(transformProductData(productOp) as any)
+
+      this.updateProgress(batchJobId)
     }
   }
 
@@ -348,6 +353,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       await this.productService_
         .withTransaction(transactionManager)
         .update(productOp["product.id"], transformProductData(productOp))
+
+      this.updateProgress(batchJobId)
     }
   }
 
@@ -399,6 +406,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       await this.productVariantService_
         .withTransaction(transactionManager)
         .create(product!, variant as any)
+
+      this.updateProgress(batchJobId)
     }
   }
 
@@ -421,6 +430,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       await this.productVariantService_
         .withTransaction(transactionManager)
         .update(variantOp["variant.id"], transformVariantData(variantOp) as any)
+
+      this.updateProgress(batchJobId)
     }
   }
 
@@ -468,23 +479,24 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     return await this.redisClient_.del(`pij_${batchJobId}:*`)
   }
 
-  private async updateProgress(
-    processedRowsCount: number,
-    batchJobId: string,
-    transactionManager: EntityManager
-  ): Promise<void> {
-    const batchJob = await this.batchJobService_
-      .withTransaction(transactionManager)
-      .retrieve(batchJobId)
+  private async finalize(batchJobId: string): Promise<void> {
+    const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
-    // @ts-ignore
-    const progress = batchJob.context.progress + processedRowsCount
+    await this.batchJobService_.update(batchJobId, {
+      context: { progress: batchJob.context.total },
+    })
+  }
 
-    await this.batchJobService_
-      .withTransaction(transactionManager)
-      .update(batchJobId, {
-        context: { progress },
-      })
+  private async updateProgress(batchJobId: string): Promise<void> {
+    this.processedCounter += 1
+
+    if (this.processedCounter % BATCH_SIZE !== 0) {
+      return
+    }
+
+    await this.batchJobService_.update(batchJobId, {
+      context: { progress: this.processedCounter },
+    })
   }
 }
 
@@ -558,7 +570,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Name",
       match: /Option \d+ Name/,
-      reducer: (builtLine: any, key, value, context) => {
+      reducer: (builtLine: any, key, value) => {
         builtLine["product.options"] = builtLine["product.options"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -592,7 +604,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Region",
       match: /Price .* \[([A-Z]{2,4})\]/,
-      reducer: (builtLine: any, key, value, context) => {
+      reducer: (builtLine: any, key, value) => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
         if (typeof value === "undefined" || value === null) {
