@@ -1,5 +1,7 @@
+/* eslint-disable valid-jsdoc */
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { FileService } from "medusa-interfaces"
 import * as IORedis from "ioredis"
 
 import { ProductVariantRepository } from "../../repositories/product-variant"
@@ -16,17 +18,22 @@ import {
   ProductVariantService,
   ShippingProfileService,
 } from "../../services"
+import { CreateProductInput } from "../../types/product"
+import { UpdateProductVariantInput } from "../../types/product-variant"
 
 /* ******************** TYPES ******************** */
 
-type TLine = {
-  id: string
-  name: string
-}
+type ProductImportCsvSchema = CsvSchema<
+  Record<string, string>,
+  Record<string, string>
+>
 
-type ProductImportCsvSchema = CsvSchema<TLine>
+type TParsedRowData = Record<
+  string,
+  string | number | (string | number | object)[]
+>
 
-type Context = {
+type ImportJobContext = {
   total: number
   progress: number
   fileKey: string
@@ -45,14 +52,14 @@ enum OperationType {
 /**
  * Process this many variant rows before reporting progress.
  */
-const BATCH_SIZE = 1
+const BATCH_SIZE = 100
 
 /* ******************** UTILS ******************** */
 
 function pickObjectPropsByRegex(
-  data: Record<string, string>,
+  data: TParsedRowData,
   regex: RegExp
-): Record<string, string> {
+): TParsedRowData {
   const variantKeyPredicate = (key: string): boolean => regex.test(key)
   const ret = {}
 
@@ -65,9 +72,7 @@ function pickObjectPropsByRegex(
   return ret
 }
 
-function transformProductData(
-  data: Record<string, string>
-): Record<string, string> {
+function transformProductData(data: TParsedRowData): TParsedRowData {
   const ret = {}
   const productData = pickObjectPropsByRegex(data, /product\./)
 
@@ -79,9 +84,7 @@ function transformProductData(
   return ret
 }
 
-function transformVariantData(
-  data: Record<string, string>
-): Record<string, string | any[]> {
+function transformVariantData(data: TParsedRowData): TParsedRowData {
   const ret = {}
   const productData = pickObjectPropsByRegex(data, /variant\./)
 
@@ -116,6 +119,9 @@ function transformVariantData(
  *
  */
 
+/**
+ * Default strategy class used for a batch import of products/variants.
+ */
 class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrategy> {
   static identifier = "product-import"
 
@@ -123,46 +129,47 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   private processedCounter = 0
 
+  protected readonly redisClient_: IORedis.Redis
+
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly csvParser_: CsvParser
-  protected readonly batchJobService_: BatchJobService
-  protected readonly shippingProfileService_: typeof ShippingProfileService
+  protected readonly fileService_: IFileService<typeof FileService>
+
   protected readonly productService_: ProductService
+  protected readonly batchJobService_: BatchJobService
   protected readonly productVariantService_: ProductVariantService
+  protected readonly shippingProfileService_: typeof ShippingProfileService
+
+  protected readonly regionRepo_: typeof RegionRepository
   protected readonly productRepo_: typeof ProductRepository
   protected readonly productOptionRepo_: typeof ProductOptionRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
-  protected readonly regionRepo_: typeof RegionRepository
 
-  protected readonly redisClient_: IORedis.Redis
+  protected readonly csvParser_: CsvParser<
+    ProductImportCsvSchema,
+    Record<string, string>,
+    Record<string, string>
+  >
 
-  protected readonly fileService_: IFileService<any>
+  constructor(container) {
+    super(container)
 
-  constructor({
-    batchJobService,
-    productService,
-    productRepository,
-    productOptionRepository,
-    productVariantService,
-    productVariantRepository,
-    shippingProfileService,
-    regionRepository,
-    fileService,
-    redisClient,
-    manager,
-    // csvParser
-  }) {
-    // eslint-disable-next-line prefer-rest-params
-    super(arguments[0])
+    const {
+      batchJobService,
+      productService,
+      productRepository,
+      productOptionRepository,
+      productVariantService,
+      productVariantRepository,
+      shippingProfileService,
+      regionRepository,
+      fileService,
+      redisClient,
+      manager,
+    } = container
 
-    // @ts-ignore
-    this.csvParser_ = new CsvParser<ProductImportCsvSchema, unknown, unknown>(
-      // eslint-disable-next-line prefer-rest-params
-      arguments[0],
-      CSVSchema
-    )
+    this.csvParser_ = new CsvParser(container, CSVSchema)
 
     this.manager_ = manager
     this.redisClient_ = redisClient
@@ -187,22 +194,22 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * @param csvData - An array of parsed CSV rows.
    */
   async getImportInstructions(
-    csvData: any[]
-  ): Promise<Record<OperationType, any[]>> {
+    csvData: TParsedRowData[]
+  ): Promise<Record<OperationType, TParsedRowData[]>> {
     const regionRepo = this.manager_.getCustomRepository(this.regionRepo_)
 
     const shippingProfile = await this.shippingProfileService_.retrieveDefault()
 
     const seenProducts = {}
 
-    const productsCreate: any[] = []
-    const productsUpdate: any[] = []
+    const productsCreate: TParsedRowData[] = []
+    const productsUpdate: TParsedRowData[] = []
 
-    const variantsCreate: any[] = []
-    const variantsUpdate: any[] = []
+    const variantsCreate: TParsedRowData[] = []
+    const variantsUpdate: TParsedRowData[] = []
 
     for (const row of csvData) {
-      if (row["variant.prices"].length) {
+      if ((row["variant.prices"] as object[]).length) {
         await this.handleVariantPrices(row, regionRepo)
       }
 
@@ -213,11 +220,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       }
 
       // save only first occurrence
-      if (!seenProducts[row["product.handle"]]) {
+      if (!seenProducts[row["product.handle"] as string]) {
         row["product.profile_id"] = shippingProfile
         ;(row["product.product.id"] ? productsUpdate : productsCreate).push(row)
 
-        seenProducts[row["product.handle"]] = true
+        seenProducts[row["product.handle"] as string] = true
       }
     }
 
@@ -233,10 +240,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     row,
     regionRepo: RegionRepository
   ): Promise<void> {
-    const prices: Record<string, any>[] = []
+    const prices: Record<string, string | number>[] = []
 
     for (const p of row["variant.prices"]) {
-      const record: Record<string, any> = {
+      const record: Record<string, string | number> = {
         amount: p.amount,
         currency_code: p.currency_code,
       }
@@ -272,7 +279,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
-    const csvFileKey = (batchJob.context as Context).fileKey
+    const csvFileKey = (batchJob.context as ImportJobContext).fileKey
     const csvStream = await this.fileService_.getDownloadStream({
       fileKey: csvFileKey,
     })
@@ -327,7 +334,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const productOp of productOps) {
       await this.productService_
         .withTransaction(transactionManager)
-        .create(transformProductData(productOp) as any)
+        .create(
+          transformProductData(productOp) as unknown as CreateProductInput
+        )
 
       this.updateProgress(batchJobId)
     }
@@ -352,7 +361,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const productOp of productOps) {
       await this.productService_
         .withTransaction(transactionManager)
-        .update(productOp["product.id"], transformProductData(productOp))
+        .update(
+          productOp["product.id"] as string,
+          transformProductData(productOp)
+        )
 
       this.updateProgress(batchJobId)
     }
@@ -388,13 +400,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       })
 
       const optionIds =
-        variantOp["product.options"]?.map(
+        (variantOp["product.options"] as Record<string, string>[])?.map(
           (variantOption) =>
-            // @ts-ignore
-            product.options?.find(
+            product!.options.find(
               (createdProductOption) =>
                 createdProductOption.title === variantOption.title
-            ).id
+            )!.id
         ) || []
 
       variant.options =
@@ -429,7 +440,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
       await this.productVariantService_
         .withTransaction(transactionManager)
-        .update(variantOp["variant.id"], transformVariantData(variantOp) as any)
+        .update(
+          variantOp["variant.id"] as string,
+          transformVariantData(variantOp) as UpdateProductVariantInput
+        )
 
       this.updateProgress(batchJobId)
     }
@@ -452,7 +466,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   async setImportDataToRedis(
     batchJobId: string,
-    results: Record<OperationType, any[]>
+    results: Record<OperationType, TParsedRowData[]>
   ): Promise<void> {
     for (const op in results) {
       if (results[op]?.length) {
@@ -469,7 +483,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async getImportDataFromRedis(
     batchJobId: string,
     op: OperationType
-  ): Promise<any[]> {
+  ): Promise<TParsedRowData[]> {
     return JSON.parse(
       (await this.redisClient_.get(`pij_${batchJobId}:${op}`)) || "[]"
     )
@@ -536,7 +550,8 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Product Tags",
       mapTo: "product.tags",
-      transform: (value) => `${value}`.split(",").map((v) => ({ value: v })),
+      transform: (value: string) =>
+        `${value}`.split(",").map((v) => ({ value: v })),
     },
     //
     { name: "Product Discountable", mapTo: "product.discountable" },
@@ -570,7 +585,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Name",
       match: /Option \d+ Name/,
-      reducer: (builtLine: any, key, value) => {
+      reducer: (builtLine: TParsedRowData, key: string, value: string) => {
         builtLine["product.options"] = builtLine["product.options"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -585,7 +600,12 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Value",
       match: /Option \d+ Value/,
-      reducer: (builtLine: any, key, value, context) => {
+      reducer: (
+        builtLine: TParsedRowData,
+        key: string,
+        value: string,
+        context: any
+      ) => {
         builtLine["variant.options"] = builtLine["variant.options"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -604,7 +624,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Region",
       match: /Price .* \[([A-Z]{2,4})\]/,
-      reducer: (builtLine: any, key, value) => {
+      reducer: (builtLine: TParsedRowData, key, value) => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -614,7 +634,9 @@ const CSVSchema: ProductImportCsvSchema = {
         const regionName = key.split(" ")[1]
         const currency = key.split(" ")[2].slice(1, -1)
 
-        builtLine["variant.prices"].push({
+        ;(
+          builtLine["variant.prices"] as Record<string, string | number>[]
+        ).push({
           amount: value,
           regionName,
           currency_code: currency,
@@ -626,7 +648,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Currency",
       match: /Price [A-Z]{2,4}/,
-      reducer: (builtLine: any, key, value) => {
+      reducer: (builtLine: TParsedRowData, key, value) => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -635,7 +657,9 @@ const CSVSchema: ProductImportCsvSchema = {
 
         const currency = key.split(" ")[1]
 
-        builtLine["variant.prices"].push({
+        ;(
+          builtLine["variant.prices"] as Record<string, string | number>[]
+        ).push({
           amount: value,
           currency_code: currency,
         })
