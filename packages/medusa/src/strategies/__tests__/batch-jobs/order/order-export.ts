@@ -41,6 +41,9 @@ let fakeJob = {
 
 const fileServiceMock = {
   delete: jest.fn(),
+  withTransaction: function () {
+    return this
+  },
   getUploadStreamDescriptor: jest.fn().mockImplementation(() => {
     return Promise.resolve({
       writeStream: {
