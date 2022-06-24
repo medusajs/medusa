@@ -18,6 +18,11 @@ export type GetUploadedFileType = {
   [x: string]: unknown
 }
 
+export type DeleteFileType = {
+  fileKey: string
+  [x: string]: unknown
+}
+
 export type UploadStreamDescriptorType = {
   name: string
   ext?: string
@@ -37,7 +42,7 @@ export interface IFileService<T extends TransactionBaseService<any>>
    * remove file from fileservice
    * @param fileData Remove file described by record
    * */
-  delete(fileData: Record<string, any>): void
+  delete(fileData: DeleteFileType): Promise<void>
 
   /**
    * upload file to fileservice from stream
@@ -72,7 +77,7 @@ export abstract class AbstractFileService<T extends TransactionBaseService<any>>
     fileData: Express.Multer.File
   ): Promise<FileServiceUploadResult>
 
-  abstract delete(fileData: Record<string, any>): void
+  abstract delete(fileData: DeleteFileType): Promise<void>
 
   abstract getUploadStreamDescriptor(
     fileData: UploadStreamDescriptorType

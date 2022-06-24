@@ -15,7 +15,7 @@ class DefaultFileService extends AbstractFileService<any> {
       "Please add a file service plugin in order to manipulate files in Medusa"
     )
   }
-  delete(fileData: Record<string, any>): void {
+  delete(fileData: Record<string, any>): Promise<void> {
     throw new MedusaError(
       MedusaError.Types.UNEXPECTED_STATE,
       "Please add a file service plugin in order to manipulate files in Medusa"
