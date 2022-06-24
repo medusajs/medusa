@@ -1,6 +1,4 @@
 import {
-  IAdminPostUploadsFile,
-  AdminUploadRes,
   AdminDeleteUploadRes,
   AdminDeleteUploadReq,
   AdminCreateUploadsFileDownloadUrlReq,
@@ -11,21 +9,23 @@ import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 
-export const useAdminUploadFile = (
-  options?: UseMutationOptions<
-    Response<AdminUploadRes>,
-    Error,
-    IAdminPostUploadsFile
-  >
-) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
+// export const useAdminUploadFile = (
+//   options?: UseMutationOptions<
+//     Response<AdminUploadRes>,
+//     Error,
+//     IAdminPostUploadsFile
+//   >
+// ) => {
+//   const { client } = useMedusa()
+//   const queryClient = useQueryClient()
 
-  return useMutation(
-    (payload: IAdminPostUploadsFile) => client.admin.uploads.create(payload),
-    buildOptions(queryClient, [], options)
-  )
-}
+//   return useMutation(
+//     (payload: IAdminPostUploadsFile) => {
+//       return client.admin.uploads.create(payload)
+//     },
+//     buildOptions(queryClient, [], options)
+//   )
+// }
 
 export const useAdminCreatePresignedDownloadUrl = (
   options?: UseMutationOptions<
