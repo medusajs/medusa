@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import AbstractAuthStrategy from "../../../../interfaces/authentication-strategy"
 import { MedusaError } from "medusa-core-utils"
 import { AuthService, StrategyResolverService } from "../../../../services"
+import { IsEmail, IsNotEmpty, IsString } from "class-validator"
 
 /**
  * @oas [post] /auth
@@ -80,5 +81,15 @@ export default async (req: Request, res: Response) => {
     "admin"
   )
   await authStrategy.authenticate(req, res)
+}
+
+export class AdminPostAuthReq {
+  @IsEmail()
+  @IsNotEmpty()
+  email: string
+
+  @IsString()
+  @IsNotEmpty()
+  password: string
 }
 

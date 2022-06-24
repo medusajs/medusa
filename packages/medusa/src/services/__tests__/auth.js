@@ -2,6 +2,7 @@ import AuthService from "../auth"
 import { MockManager } from "medusa-test-utils"
 import { users, UserServiceMock } from "../__mocks__/user"
 import { CustomerServiceMock } from "../__mocks__/customer"
+import { default as strategyResolverServiceMock } from "../__mocks__/strategy-resolver"
 
 const managerMock = MockManager
 
@@ -9,7 +10,8 @@ describe("AuthService", () => {
   const authService = new AuthService({
     manager: managerMock,
     userService: UserServiceMock,
-    customerService: CustomerServiceMock
+    customerService: CustomerServiceMock,
+    strategyResolverService: strategyResolverServiceMock
   })
 
   describe("authenticate", () => {

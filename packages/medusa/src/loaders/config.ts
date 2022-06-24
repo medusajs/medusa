@@ -22,6 +22,8 @@ export default (rootDirectory: string): ConfigModule => {
 
   const jwt_secret =
     configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
+
+  // Must be kept for invite verification / reset password system
   if (!jwt_secret) {
     errorHandler(
       `[medusa-config] ⚠️ jwt_secret not found.${

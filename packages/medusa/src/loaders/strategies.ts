@@ -6,9 +6,7 @@ import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"
 import { MedusaContainer } from "../types/global"
 import { isDefined } from "../utils"
-import AbstractAuthStrategy, {
-  isAuthStrategy,
-} from "../interfaces/authentication-strategy"
+import { isAuthStrategy } from "../interfaces/authentication-strategy"
 import { Express } from "express"
 
 type LoaderOptions = {
@@ -74,7 +72,6 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
 type AuthLoaderOptions = {
   container: MedusaContainer
   configModule: object
-  isTest?: boolean
   app: Express
 }
 
@@ -85,21 +82,20 @@ type AuthLoaderOptions = {
 export async function authStrategies({
   container,
   configModule,
-  isTest,
   app,
 }: AuthLoaderOptions): Promise<void> {
-  const useMock =
-    typeof isTest !== "undefined" ? isTest : process.env.NODE_ENV === "test"
-
-  const corePath = useMock
-    ? "../strategies/__mocks__/[!__]*.js"
-    : "../strategies/**/[!__]*.js"
+  const corePath = "../strategies/**/[!__]*.{j,t}s"
 
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: ["**/__fixtures__/**", "index.js", "index.ts"],
+    ignore: [
+      "**/__fixtures__/**",
+      "**/__tests__/**",
+      "**/index.js",
+      "**/index.ts",
+    ],
   })
 
   for (const fn of core) {
@@ -108,6 +104,10 @@ export async function authStrategies({
     const name = formatRegistrationName(fn)
 
     if (isAuthStrategy(loaded.prototype)) {
+      if (loaded.beforeInit) {
+        await loaded.beforeInit(app, container, configModule)
+      }
+
       container.registerAdd(
         "authenticationStrategies",
         asFunction((cradle) => new loaded(cradle, configModule))
@@ -119,14 +119,6 @@ export async function authStrategies({
         ).singleton(),
         [`auth_${loaded.identifier}`]: aliasTo(name),
       })
-
-      const strategy: AbstractAuthStrategy<never> = container.resolve(
-        `auth_${loaded.identifier}`
-      )
-
-      if (strategy.afterInit) {
-        await strategy.afterInit(app)
-      }
     }
   }
 }

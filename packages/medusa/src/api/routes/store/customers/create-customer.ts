@@ -6,6 +6,7 @@ import CustomerService from "../../../../services/customer"
 import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
+import { AuthService } from "../../../../services"
 
 /**
  * @oas [post] /customers
@@ -129,6 +130,13 @@ export default async (req, res) => {
     relations: defaultStoreCustomersRelations,
     select: defaultStoreCustomersFields,
   })
+
+  const authService: AuthService = req.scope.resolve("authService")
+  const authStrategy = await authService.retrieveAuthenticationStrategy(
+    req,
+    "store"
+  )
+  await authStrategy.authenticate(req, res)
 
   res.status(200).json({ customer })
 }

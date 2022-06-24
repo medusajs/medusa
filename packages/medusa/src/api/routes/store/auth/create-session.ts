@@ -1,5 +1,6 @@
 import { AuthService } from "../../../../services"
 import { Request, Response } from "express"
+import { IsEmail, IsNotEmpty } from "class-validator"
 
 /**
  * @oas [post] /auth
@@ -62,4 +63,12 @@ export default async (req: Request, res: Response) => {
     "store"
   )
   await authStrategy.authenticate(req, res)
+}
+
+export class StorePostAuthReq {
+  @IsEmail()
+  email: string
+
+  @IsNotEmpty()
+  password: string
 }

@@ -16,7 +16,6 @@ type InjectedDependencies = {
   userService: UserService
   customerService: CustomerService
   strategyResolverService: StrategyResolverService
-  authenticationStrategies: AbstractAuthStrategy<never>[]
 }
 
 /**
@@ -29,28 +28,24 @@ class AuthService extends TransactionBaseService {
   protected readonly userService_: UserService
   protected readonly customerService_: CustomerService
   protected readonly strategyResolverService_: StrategyResolverService
-  protected readonly authenticationStrategies_: AbstractAuthStrategy<never>[]
 
   constructor({
     manager,
     userService,
     customerService,
     strategyResolverService,
-    authenticationStrategies,
   }: InjectedDependencies) {
     super({
       manager,
       userService,
       customerService,
       strategyResolverService,
-      authenticationStrategies,
     })
 
     this.manager_ = manager
     this.userService_ = userService
     this.customerService_ = customerService
     this.strategyResolverService_ = strategyResolverService
-    this.authenticationStrategies_ = authenticationStrategies
   }
 
   /**
@@ -211,7 +206,10 @@ class AuthService extends TransactionBaseService {
   ): Promise<AbstractAuthStrategy<never>> {
     let authStrategy: AbstractAuthStrategy<never> | undefined
 
-    const userStrategies = this.authenticationStrategies_.filter((strategy) => {
+    const authenticationStrategies = req.scope.resolve(
+      "authenticationStrategies"
+    ) as AbstractAuthStrategy<never>[]
+    const userStrategies = authenticationStrategies.filter((strategy) => {
       return (
         (strategy.constructor as any).identifier !==
           AdminDefaultAuthenticationStrategy.identifier &&
@@ -235,7 +233,7 @@ class AuthService extends TransactionBaseService {
               "core-admin-default-auth"
             )
           : this.strategyResolverService_.resolveAuthByType(
-              "store-admin-default-auth"
+              "core-store-default-auth"
             )
     }
 

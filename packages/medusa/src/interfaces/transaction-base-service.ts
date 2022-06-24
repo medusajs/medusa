@@ -4,6 +4,8 @@ import { IsolationLevel } from "typeorm/driver/types/IsolationLevel"
 export abstract class TransactionBaseService {
   protected abstract manager_: EntityManager
   protected abstract transactionManager_: EntityManager | undefined
+  protected readonly container: any
+  protected readonly configModule?: Record<string, unknown>
 
   protected constructor(
     protected readonly __container__: any,

@@ -8,14 +8,14 @@ import jwt from "jsonwebtoken"
 
 import AbstractAuthStrategy from "../interfaces/authentication-strategy"
 import { AuthService } from "../services"
-import { ConfigModule } from "../types/global"
+import { ConfigModule, MedusaContainer } from "../types/global"
 import { validator } from "../utils/validator"
-import { IsEmail, IsNotEmpty } from "class-validator"
 import CustomerService from "../services/customer"
+import { StorePostAuthReq } from "../api/routes/store/auth"
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "../api/routes/store/customers"
 
 type InjectedDependencies = {
   manager: EntityManager
-  authService: AuthService
 }
 
 export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStrategy<StoreDefaultAuthenticationStrategy> {
@@ -24,27 +24,24 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
-  protected readonly authService_: AuthService
   protected readonly configModule_: ConfigModule
 
-  constructor(
-    { manager, authService }: InjectedDependencies,
-    configModule: ConfigModule
-  ) {
-    super({ manager, authService }, configModule)
+  constructor({ manager }: InjectedDependencies, configModule: ConfigModule) {
+    super({ manager }, configModule)
     this.configModule_ = configModule
-    this.authService_ = authService
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async shouldUseStrategy(
-    req: Request,
-    scope: "admin" | "store"
-  ): Promise<boolean> {
-    return scope === "store"
-  }
+  static async beforeInit(
+    app: Express,
+    container: MedusaContainer,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    options?: Record<string, unknown>
+  ): Promise<void> {
+    const authService = container.resolve("authService") as AuthService
+    const configModule = container.resolve("configModule") as ConfigModule
 
-  async afterInit(app: Express): Promise<void> {
+    this.validateConfig(configModule)
+
     // For good old email password authentication
     passport.use(
       new LocalStrategy(
@@ -54,7 +51,7 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
         },
         async (email, password, done) => {
           try {
-            const { success, user } = await this.authService_.authenticate(
+            const { success, user } = await authService.authenticate(
               email,
               password
             )
@@ -72,7 +69,7 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
 
     // After a user has authenticated a JWT will be placed on a cookie, all
     // calls will be authenticated based on the JWT
-    const { jwt_secret } = this.configModule_.projectConfig
+    const { jwt_secret } = configModule.projectConfig
     passport.use(
       new JWTStrategy(
         {
@@ -88,7 +85,7 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
     // Alternatively use bearer token to authenticate to the admin api
     passport.use(
       new BearerStrategy(async (token, done) => {
-        const auth = await this.authService_.authenticateAPIToken(token)
+        const auth = await authService.authenticateAPIToken(token)
         if (auth.success) {
           done(null, auth.user)
         } else {
@@ -99,6 +96,14 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
 
     app.use(passport.initialize())
     app.use(passport.session())
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async shouldUseStrategy(
+    req: Request,
+    scope: "admin" | "store"
+  ): Promise<boolean> {
+    return scope === "store"
   }
 
   async authenticate(req: Request, res: Response): Promise<void> {
@@ -128,9 +133,13 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
 
     const customerService: CustomerService =
       req.scope.resolve("customerService")
-    const customer = await customerService.retrieve(result.customer?.id || "", {
-      relations: ["orders", "orders.items"],
-    })
+    const customer = await customerService.retrieve(
+      result.customer?.id || "",
+      req.retrieveConfig ?? {
+        relations: defaultStoreCustomersRelations,
+        select: defaultStoreCustomersFields,
+      }
+    )
 
     res.json({ customer })
   }
@@ -157,12 +166,27 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
       }
     )(req, res, next)
   }
-}
 
-export class StorePostAuthReq {
-  @IsEmail()
-  email: string
+  private static validateConfig(configModule: ConfigModule): void | never {
+    const isProduction = ["production", "prod"].includes(
+      process.env.NODE_ENV || ""
+    )
+    const errorHandler = isProduction
+      ? (msg: string): never => {
+          throw new Error(msg)
+        }
+      : console.log
 
-  @IsNotEmpty()
-  password: string
+    const jwt_secret =
+      configModule?.projectConfig?.jwt_secret ?? process.env.JWT_SECRET
+    if (!jwt_secret) {
+      errorHandler(
+        `[medusa-config] ⚠️ jwt_secret not found.${
+          isProduction
+            ? ""
+            : " fallback to either cookie_secret or default 'supersecret'."
+        }`
+      )
+    }
+  }
 }

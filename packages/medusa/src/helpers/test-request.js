@@ -10,7 +10,11 @@ import passportLoader from "../loaders/passport"
 import featureFlagLoader, { featureFlagRouter } from "../loaders/feature-flags"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
-import logger from "../loaders/logger";
+import logger from "../loaders/logger"
+import featureFlagLoader from "../loaders/feature-flags"
+import servicesLoader from "../loaders/services"
+import strategiesLoader, { authStrategies } from "../loaders/strategies"
+import { asArray } from "../loaders"
 
 const adminSessionOpts = {
   cookieName: "session",
@@ -33,48 +37,75 @@ const config = {
   },
 }
 
-const testApp = express()
+let supertestRequest
+const loadSupertest = async () => {
+  const testApp = express()
 
-const container = createContainer()
+  const container = createContainer()
 
-container.register("featureFlagRouter", asValue(featureFlagRouter))
-container.register("configModule", asValue(config))
-container.register({
-  logger: asValue({
-    error: () => {},
-  }),
-  manager: asValue(MockManager),
-})
+  const featureFlagRouter = featureFlagLoader(config)
 
-testApp.set("trust proxy", 1)
-testApp.use((req, res, next) => {
-  req.session = {}
-  const data = req.get("Cookie")
-  if (data) {
-    req.session = {
-      ...req.session,
-      ...JSON.parse(data),
+  container.register("featureFlagRouter", asValue(featureFlagRouter))
+  container.register("configModule", asValue(config))
+  container.register({
+    logger: asValue({
+      error: () => {},
+    }),
+    manager: asValue(MockManager),
+  })
+  container.registerAdd = (name, registration) => {
+    const storeKey = name + "_STORE"
+
+    if (container.registrations[storeKey] === undefined) {
+      container.register(storeKey, asValue([]))
     }
+    const store = container.resolve(storeKey)
+
+    if (container.registrations[name] === undefined) {
+      container.register(name, asArray(store))
+    }
+    store.unshift(registration)
+
+    return container
   }
-  next()
-})
 
-featureFlagLoader(config)
-servicesLoader({ container, configModule: config })
-strategiesLoader({ container, configModule: config })
-passportLoader({ app: testApp, container, configModule: config })
+  testApp.set("trust proxy", 1)
+  testApp.use((req, res, next) => {
+    req.session = {}
+    const data = req.get("Cookie")
+    if (data) {
+      req.session = {
+        ...req.session,
+        ...JSON.parse(data),
+      }
+    }
+    next()
+  })
 
-testApp.use((req, res, next) => {
-  req.scope = container.createScope()
-  next()
-})
+  servicesLoader({ container, configModule: config })
+  strategiesLoader({ container, configModule: config })
+  await authStrategies({
+    container,
+    configModule: config,
+    app: testApp,
+  })
 
-apiLoader({ container, app: testApp, configModule: config })
+  testApp.use((req, res, next) => {
+    req.scope = container.createScope()
+    next()
+  })
 
-const supertestRequest = supertest(testApp)
+  await apiLoader({ container, app: testApp, configModule: config })
+
+  return supertest(testApp)
+}
 
 export async function request(method, url, opts = {}) {
   const { payload, query, headers = {}, flags = [] } = opts
+
+  if (!supertestRequest) {
+    supertestRequest = await loadSupertest()
+  }
 
   flags.forEach((flag) => {
     featureFlagRouter.setFlag(flag.key, true)
