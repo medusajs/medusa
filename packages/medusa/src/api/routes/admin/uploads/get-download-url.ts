@@ -3,7 +3,7 @@ import { AbstractFileService } from "../../../../interfaces"
 import { validator } from "../../../../utils/validator"
 
 /**
- * [get] /uploads
+ * [get] /uploads/download-url
  * operationId: "GetUploadsFileDownloadUrl"
  * summary: "Gets a presigned download url for a file"
  * description: "Gets a presigned download url for a file"
@@ -37,7 +37,7 @@ export default async (req, res) => {
   res.status(200).send({ download_url: url })
 }
 
-class AdminGetUploadsFileDownloadUrlReq {
+export class AdminGetUploadsFileDownloadUrlReq {
   @IsString()
   file_key: string
 }

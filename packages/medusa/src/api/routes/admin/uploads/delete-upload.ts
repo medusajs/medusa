@@ -27,7 +27,7 @@ export default async (req, res) => {
     .send({ id: validated.file_key, object: "file", deleted: true })
 }
 
-class AdminDeleteUploadReq {
+export class AdminDeleteUploadReq {
   @IsString()
   file_key: string
 }

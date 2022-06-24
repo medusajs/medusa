@@ -32,6 +32,10 @@ export type AdminUploadRes = {
 
 export type AdminDeleteUploadRes = DeleteResponse
 
+export type AdminGetUploadsFileDownloadUrlRes = {
+  download_url: string
+}
+
 export * from "./create-upload"
 export * from "./delete-upload"
 export * from "./get-download-url"
