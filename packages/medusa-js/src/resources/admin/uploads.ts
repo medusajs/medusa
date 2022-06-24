@@ -1,4 +1,11 @@
-import { AdminUploadRes, IAdminPostUploadsFile } from "@medusajs/medusa"
+import {
+  AdminDeleteUploadReq,
+  AdminDeleteUploadRes,
+  AdminGetUploadsFileDownloadUrlReq,
+  AdminGetUploadsFileDownloadUrlRes,
+  AdminUploadRes,
+  IAdminPostUploadsFile,
+} from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 import FormData from "form-data"
@@ -15,6 +22,24 @@ class AdminUploadsResource extends BaseResource {
     payload.append("files", file)
 
     return this.client.request("POST", path, payload, {}, this.headers)
+  }
+
+  delete(
+    payload: AdminDeleteUploadReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminDeleteUploadRes> {
+    const path = `/admin/uploads`
+
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
+  }
+
+  getPresignedDownloadUrl(
+    payload: AdminGetUploadsFileDownloadUrlReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminGetUploadsFileDownloadUrlRes> {
+    const path = `/admin/uploads/download-url`
+
+    return this.client.request("GET", path, payload, {}, customHeaders)
   }
 }
 
