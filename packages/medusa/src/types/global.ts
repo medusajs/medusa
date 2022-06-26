@@ -51,6 +51,7 @@ export type ConfigModule = {
     store_cors?: string
     admin_cors?: string
   }
+  featureFlags: Record<string, boolean | string>
   plugins: (
     | {
         resolve: string
