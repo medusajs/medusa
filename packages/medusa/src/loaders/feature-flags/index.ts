@@ -55,8 +55,8 @@ export default (
 
   return {
     flags: flagConfig,
-    featureIsEnabled: (key: string): boolean => {
-      return flagConfig[key]
+    featureIsEnabled: function (key: string): boolean {
+      return this.flags[key]
     },
   }
 }
