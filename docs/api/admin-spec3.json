@@ -90,6 +90,7 @@
                   "state",
                   "code"
                 ],
+                "type": "object",
                 "properties": {
                   "application_name": {
                     "type": "string",
@@ -117,6 +118,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "apps": {
                       "$ref": "#/components/schemas/OAuth"
@@ -142,6 +144,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/OAuth"
@@ -170,6 +173,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "customer_group": {
                       "$ref": "#/components/schemas/customer_group"
@@ -230,6 +234,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -274,6 +279,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "customer_group": {
                       "$ref": "#/components/schemas/customer_group"
@@ -334,6 +340,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "customer_group": {
                       "$ref": "#/components/schemas/customer_group"
@@ -381,6 +388,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -426,6 +434,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -473,6 +482,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -518,6 +528,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -544,6 +555,7 @@
                   "code",
                   "rule"
                 ],
+                "type": "object",
                 "properties": {
                   "code": {
                     "type": "string",
@@ -604,6 +616,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -679,6 +692,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -717,6 +731,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -777,6 +792,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -821,6 +837,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -852,6 +869,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "code": {
                     "type": "string",
@@ -908,6 +926,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -955,6 +974,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -993,6 +1013,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "discount": {
                       "$ref": "#/components/schemas/discount"
@@ -1026,11 +1047,13 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "product_ids": {
                     "description": "An array of Product IDs to add to the Product Collection.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The ID of a Product to add to the Product Collection.",
@@ -1073,11 +1096,13 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "product_ids": {
                     "description": "An array of Product IDs to remove from the Product Collection.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The ID of a Product to remove from the Product Collection.",
@@ -1114,6 +1139,7 @@
                 "required": [
                   "title"
                 ],
+                "type": "object",
                 "properties": {
                   "title": {
                     "type": "string",
@@ -1141,6 +1167,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/product_collection"
@@ -1224,6 +1251,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/product_collection"
@@ -1262,6 +1290,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -1306,6 +1335,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/product_collection"
@@ -1337,6 +1367,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "title": {
                     "type": "string",
@@ -1364,6 +1395,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/product_collection"
@@ -1392,6 +1424,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
@@ -1440,6 +1473,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
@@ -1468,6 +1502,7 @@
                   "region_id",
                   "shipping_methods"
                 ],
+                "type": "object",
                 "properties": {
                   "status": {
                     "description": "The status of the draft order",
@@ -1497,6 +1532,7 @@
                     "description": "The Line Items that have been received.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "variant_id": {
                           "description": "The id of the Product Variant to generate the Line Item from.",
@@ -1529,6 +1565,7 @@
                     "description": "The discounts to add on the draft order",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "code": {
                           "description": "The code of the discount to apply",
@@ -1549,6 +1586,7 @@
                     "description": "The shipping methods for the draft order",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "option_id": {
                           "description": "The id of the shipping option in use",
@@ -1583,6 +1621,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -1608,6 +1647,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -1644,6 +1684,7 @@
                 "required": [
                   "quantity"
                 ],
+                "type": "object",
                 "properties": {
                   "variant_id": {
                     "description": "The id of the Product Variant to generate the Line Item from.",
@@ -1679,6 +1720,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -1717,6 +1759,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -1761,6 +1804,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -1808,6 +1852,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -1848,6 +1893,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "unit_price": {
                     "description": "The potential custom price of the item.",
@@ -1879,6 +1925,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -1917,6 +1964,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -1950,6 +1998,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "region_id": {
                     "type": "string",
@@ -1979,6 +2028,7 @@
                     "description": "An array of Discount codes to add to the Draft Order.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "code": {
                           "description": "The code that a Discount is identifed by.",
@@ -2009,6 +2059,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
@@ -2037,6 +2088,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
@@ -2098,6 +2150,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
@@ -2136,6 +2189,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
@@ -2179,6 +2233,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "email": {
                     "type": "string",
@@ -2206,6 +2261,7 @@
                       "required": [
                         "id"
                       ],
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The id of a customer group",
@@ -2233,6 +2289,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
@@ -2255,6 +2312,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "value": {
                     "type": "integer",
@@ -2294,6 +2352,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "gift_card": {
                       "$ref": "#/components/schemas/gift_card"
@@ -2319,6 +2378,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "gift_cards": {
                       "type": "array",
@@ -2360,6 +2420,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -2404,6 +2465,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "gift_card": {
                       "$ref": "#/components/schemas/gift_card"
@@ -2435,6 +2497,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "balance": {
                     "type": "integer",
@@ -2474,6 +2537,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "gift_card": {
                       "$ref": "#/components/schemas/gift_card"
@@ -2499,6 +2563,7 @@
                   "token",
                   "user"
                 ],
+                "type": "object",
                 "properties": {
                   "token": {
                     "description": "The invite token provided by the admin.",
@@ -2556,6 +2621,7 @@
                   "user",
                   "role"
                 ],
+                "type": "object",
                 "properties": {
                   "user": {
                     "description": "The email for the user to be created.",
@@ -2593,6 +2659,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "invites": {
                       "type": "array",
@@ -2672,6 +2739,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "resource_id": {
                     "type": "string",
@@ -2699,6 +2767,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "note": {
                       "$ref": "#/components/schemas/note"
@@ -2756,6 +2825,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "notes": {
                       "type": "array",
@@ -2797,6 +2867,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -2838,6 +2909,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "note": {
                       "$ref": "#/components/schemas/note"
@@ -2872,6 +2944,7 @@
                 "required": [
                   "value"
                 ],
+                "type": "object",
                 "properties": {
                   "value": {
                     "type": "string",
@@ -2891,6 +2964,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "note": {
                       "$ref": "#/components/schemas/note"
@@ -2990,6 +3064,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "notifications": {
                       "type": "array",
@@ -3026,6 +3101,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "to": {
                     "description": "The address or user identifier that the Notification was sent to",
@@ -3045,6 +3121,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "notification": {
                       "$ref": "#/components/schemas/notification"
@@ -3122,6 +3199,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tags": {
                       "$ref": "#/components/schemas/product_tag"
@@ -3160,6 +3238,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3226,6 +3305,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3273,6 +3353,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/claim_order"
@@ -3329,6 +3410,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "fulfillment": {
                       "$ref": "#/components/schemas/fulfillment"
@@ -3385,6 +3467,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "fulfillment": {
                       "$ref": "#/components/schemas/fulfillment"
@@ -3432,6 +3515,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "fulfillment": {
                       "$ref": "#/components/schemas/fulfillment"
@@ -3470,6 +3554,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3517,6 +3602,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/swap"
@@ -3555,6 +3641,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3593,6 +3680,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3638,6 +3726,7 @@
                 "required": [
                   "fulfillment_id"
                 ],
+                "type": "object",
                 "properties": {
                   "fulfillment_id": {
                     "description": "The id of the Fulfillment.",
@@ -3664,6 +3753,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3701,6 +3791,7 @@
                   "type",
                   "claim_items"
                 ],
+                "type": "object",
                 "properties": {
                   "type": {
                     "description": "The type of the Claim. This will determine how the Claim is treated: `replace` Claims will result in a Fulfillment with new items being created, while a `refund` Claim will refund the amount paid for the claimed items.",
@@ -3714,6 +3805,7 @@
                     "description": "The Claim Items that the Claim will consist of.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item that will be claimed.",
@@ -3771,6 +3863,7 @@
                     "description": "The new items to send to the Customer when the Claim type is Replace.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "variant_id": {
                           "description": "The id of the Product Variant to ship.",
@@ -3787,6 +3880,7 @@
                     "description": "The Shipping Methods to send the additional Line Items with.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The id of an existing Shipping Method",
@@ -3833,6 +3927,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3869,11 +3964,13 @@
                 "required": [
                   "items"
                 ],
+                "type": "object",
                 "properties": {
                   "items": {
                     "description": "The Line Items to include in the Fulfillment.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "item_id": {
                           "description": "The id of Line Item to fulfill.",
@@ -3908,6 +4005,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -3940,6 +4038,7 @@
                   "payment_method",
                   "shipping_method"
                 ],
+                "type": "object",
                 "properties": {
                   "status": {
                     "description": "status of the order",
@@ -4056,6 +4155,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4240,6 +4340,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "orders": {
                       "type": "array",
@@ -4279,6 +4380,7 @@
                 "required": [
                   "fulfillment_id"
                 ],
+                "type": "object",
                 "properties": {
                   "fulfillment_id": {
                     "description": "The id of the Fulfillment.",
@@ -4309,6 +4411,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4354,6 +4457,7 @@
                 "required": [
                   "fulfillment_id"
                 ],
+                "type": "object",
                 "properties": {
                   "fulfillment_id": {
                     "description": "The id of the Fulfillment.",
@@ -4384,6 +4488,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4420,6 +4525,7 @@
                 "required": [
                   "return_items"
                 ],
+                "type": "object",
                 "properties": {
                   "return_items": {
                     "description": "The Line Items to return as part of the Swap.",
@@ -4429,6 +4535,7 @@
                         "item_id",
                         "quantity"
                       ],
+                      "type": "object",
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item that will be claimed.",
@@ -4463,6 +4570,7 @@
                         "variant_id",
                         "quantity"
                       ],
+                      "type": "object",
                       "properties": {
                         "variant_id": {
                           "description": "The id of the Product Variant to ship.",
@@ -4483,6 +4591,7 @@
                         "option_id",
                         "price"
                       ],
+                      "type": "object",
                       "properties": {
                         "option_id": {
                           "description": "The id of the Shipping Option to override with a custom price.",
@@ -4517,6 +4626,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4564,6 +4674,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4606,6 +4717,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "metadata": {
                     "description": "An optional set of key-value pairs to hold additional information.",
@@ -4629,6 +4741,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4671,6 +4784,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "metadata": {
                     "description": "An optional set of key-value pairs to hold additional information.",
@@ -4694,6 +4808,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4732,6 +4847,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4763,6 +4879,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "email": {
                     "description": "the email for the order",
@@ -4867,6 +4984,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4914,6 +5032,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -4951,6 +5070,7 @@
                   "amount",
                   "reason"
                 ],
+                "type": "object",
                 "properties": {
                   "amount": {
                     "description": "The amount to refund.",
@@ -4982,6 +5102,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -5018,11 +5139,13 @@
                 "required": [
                   "items"
                 ],
+                "type": "object",
                 "properties": {
                   "items": {
                     "description": "The Line Items that will be returned.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item.",
@@ -5083,6 +5206,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -5125,11 +5249,13 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "claim_items": {
                     "description": "The Claim Items that the Claim will consist of.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The id of the Claim Item.",
@@ -5177,6 +5303,7 @@
                     "description": "The Shipping Methods to send the additional Line Items with.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The id of an existing Shipping Method",
@@ -5215,6 +5342,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "order": {
                       "$ref": "#/components/schemas/order"
@@ -5292,6 +5420,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "types": {
                       "$ref": "#/components/schemas/product_tag"
@@ -5328,6 +5457,7 @@
                 "required": [
                   "title"
                 ],
+                "type": "object",
                 "properties": {
                   "title": {
                     "description": "The title the Product Option will be identified by i.e. \"Size\"",
@@ -5347,6 +5477,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -5374,6 +5505,7 @@
                   "subtitle",
                   "description"
                 ],
+                "type": "object",
                 "properties": {
                   "title": {
                     "description": "The title of the Product",
@@ -5428,6 +5560,7 @@
                     "description": "Tags to associate the Product with.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The id of an existing Tag.",
@@ -5444,6 +5577,7 @@
                     "description": "The Options that the Product should have. These define on which properties the Product's Product Variants will differ.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "title": {
                           "description": "The title to identify the Product Option by.",
@@ -5456,6 +5590,7 @@
                     "description": "A list of Product Variants to create with the Product.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "title": {
                           "description": "The title to identify the Product Variant by.",
@@ -5528,6 +5663,7 @@
                         "prices": {
                           "type": "array",
                           "items": {
+                            "type": "object",
                             "properties": {
                               "region_id": {
                                 "description": "The id of the Region for which the price is used.",
@@ -5551,6 +5687,7 @@
                         "options": {
                           "type": "array",
                           "items": {
+                            "type": "object",
                             "properties": {
                               "value": {
                                 "description": "The value to give for the Product Option at the same index in the Product's `options` field.",
@@ -5608,6 +5745,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -5794,6 +5932,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "count": {
                       "description": "The number of Products.",
@@ -5847,6 +5986,7 @@
                   "prices",
                   "options"
                 ],
+                "type": "object",
                 "properties": {
                   "title": {
                     "description": "The title to identify the Product Variant by.",
@@ -5919,6 +6059,7 @@
                   "prices": {
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "region_id": {
                           "description": "The id of the Region for which the price is used.",
@@ -5942,6 +6083,7 @@
                   "options": {
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "option_id": {
                           "description": "The id of the Product Option to set the value for.",
@@ -5968,6 +6110,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -6004,6 +6147,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "variants": {
                       "type": "array",
@@ -6054,6 +6198,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -6108,6 +6253,7 @@
                 "required": [
                   "title"
                 ],
+                "type": "object",
                 "properties": {
                   "title": {
                     "description": "The title of the Product Option",
@@ -6127,6 +6273,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -6165,6 +6312,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -6209,6 +6357,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -6240,6 +6389,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "title": {
                     "description": "The title of the Product",
@@ -6294,6 +6444,7 @@
                     "description": "Tags to associate the Product with.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "id": {
                           "description": "The id of an existing Tag.",
@@ -6310,6 +6461,7 @@
                     "description": "The Options that the Product should have. These define on which properties the Product's Product Variants will differ.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "title": {
                           "description": "The title to identify the Product Option by.",
@@ -6322,6 +6474,7 @@
                     "description": "A list of Product Variants to create with the Product.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "title": {
                           "description": "The title to identify the Product Variant by.",
@@ -6394,6 +6547,7 @@
                         "prices": {
                           "type": "array",
                           "items": {
+                            "type": "object",
                             "properties": {
                               "region_id": {
                                 "description": "The id of the Region for which the price is used.",
@@ -6417,6 +6571,7 @@
                         "options": {
                           "type": "array",
                           "items": {
+                            "type": "object",
                             "properties": {
                               "value": {
                                 "description": "The value to give for the Product Option at the same index in the Product's `options` field.",
@@ -6474,6 +6629,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -6521,6 +6677,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -6569,6 +6726,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "title": {
                     "description": "The title to identify the Product Variant by.",
@@ -6641,6 +6799,7 @@
                   "prices": {
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "region_id": {
                           "description": "The id of the Region for which the price is used.",
@@ -6664,6 +6823,7 @@
                   "options": {
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "option_id": {
                           "description": "The id of the Product Option to set the value for.",
@@ -6690,6 +6850,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -6717,6 +6878,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "types": {
                       "type": "array",
@@ -6757,6 +6919,7 @@
                   "key",
                   "value"
                 ],
+                "type": "object",
                 "properties": {
                   "key": {
                     "description": "The metadata key",
@@ -6780,6 +6943,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "product": {
                       "$ref": "#/components/schemas/product"
@@ -6816,6 +6980,7 @@
                 "required": [
                   "country_code"
                 ],
+                "type": "object",
                 "properties": {
                   "country_code": {
                     "description": "The 2 character ISO code for the Country.",
@@ -6835,6 +7000,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -6871,6 +7037,7 @@
                 "required": [
                   "provider_id"
                 ],
+                "type": "object",
                 "properties": {
                   "provider_id": {
                     "description": "The id of the Fulfillment Provider to add.",
@@ -6890,6 +7057,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -6926,6 +7094,7 @@
                 "required": [
                   "provider_id"
                 ],
+                "type": "object",
                 "properties": {
                   "provider_id": {
                     "description": "The id of the Payment Provider to add.",
@@ -6945,6 +7114,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -6972,6 +7142,7 @@
                   "currency_code",
                   "tax_rate"
                 ],
+                "type": "object",
                 "properties": {
                   "name": {
                     "description": "The name of the Region",
@@ -7024,6 +7195,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7096,6 +7268,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "regions": {
                       "type": "array",
@@ -7146,6 +7319,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7184,6 +7358,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -7228,6 +7403,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7259,6 +7435,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "name": {
                     "description": "The name of the Region",
@@ -7323,6 +7500,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7361,10 +7539,12 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "fulfillment_options": {
                       "type": "array",
                       "items": {
+                        "type": "object",
                         "properties": {
                           "provider_id": {
                             "type": "string",
@@ -7420,6 +7600,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7467,6 +7648,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7514,6 +7696,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7552,6 +7735,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "region": {
                       "$ref": "#/components/schemas/region"
@@ -7601,6 +7785,7 @@
                   "label",
                   "value"
                 ],
+                "type": "object",
                 "properties": {
                   "label": {
                     "description": "The label to display to the Customer.",
@@ -7636,6 +7821,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "return_reason": {
                       "$ref": "#/components/schemas/return_reason"
@@ -7661,6 +7847,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "return_reasons": {
                       "type": "array",
@@ -7702,6 +7889,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -7746,6 +7934,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "return_reason": {
                       "$ref": "#/components/schemas/return_reason"
@@ -7777,6 +7966,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "label": {
                     "description": "The label to display to the Customer.",
@@ -7804,6 +7994,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "return_reason": {
                       "$ref": "#/components/schemas/return_reason"
@@ -7841,6 +8032,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "return": {
                       "$ref": "#/components/schemas/order"
@@ -7887,6 +8079,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "returns": {
                       "type": "array",
@@ -7925,11 +8118,13 @@
                 "required": [
                   "items"
                 ],
+                "type": "object",
                 "properties": {
                   "items": {
                     "description": "The Line Items that have been received.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "item_id": {
                           "description": "The id of the Line Item.",
@@ -7960,6 +8155,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "return": {
                       "$ref": "#/components/schemas/return"
@@ -7982,6 +8178,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "name": {
                     "description": "The name of the Shipping Option",
@@ -8019,6 +8216,7 @@
                     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "type": {
                           "description": "The type of the requirement",
@@ -8061,6 +8259,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_option": {
                       "$ref": "#/components/schemas/shipping_option"
@@ -8112,6 +8311,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_options": {
                       "type": "array",
@@ -8153,6 +8353,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -8197,6 +8398,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_option": {
                       "$ref": "#/components/schemas/shipping_option"
@@ -8228,6 +8430,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "name": {
                     "description": "The name of the Shipping Option",
@@ -8249,6 +8452,7 @@
                     "description": "The requirements that must be satisfied for the Shipping Option to be available.",
                     "type": "array",
                     "items": {
+                      "type": "object",
                       "properties": {
                         "type": {
                           "description": "The type of the requirement",
@@ -8279,6 +8483,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_option": {
                       "$ref": "#/components/schemas/shipping_option"
@@ -8304,6 +8509,7 @@
                 "required": [
                   "name"
                 ],
+                "type": "object",
                 "properties": {
                   "name": {
                     "description": "The name of the Shipping Profile",
@@ -8323,6 +8529,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_profile": {
                       "$ref": "#/components/schemas/shipping_profile"
@@ -8348,6 +8555,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_profiles": {
                       "type": "array",
@@ -8389,6 +8597,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -8433,6 +8642,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_profile": {
                       "$ref": "#/components/schemas/shipping_profile"
@@ -8463,6 +8673,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "name": {
                     "description": "The name of the Shipping Profile",
@@ -8482,6 +8693,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "shipping_profiles": {
                       "$ref": "#/components/schemas/shipping_profile"
@@ -8520,6 +8732,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "store": {
                       "$ref": "#/components/schemas/store"
@@ -8556,6 +8769,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "store": {
                       "$ref": "#/components/schemas/store"
@@ -8583,6 +8797,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "store": {
                       "$ref": "#/components/schemas/store"
@@ -8603,6 +8818,7 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
                 "properties": {
                   "name": {
                     "description": "The name of the Store",
@@ -8638,6 +8854,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "store": {
                       "$ref": "#/components/schemas/store"
@@ -8665,6 +8882,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "payment_providers": {
                       "type": "array",
@@ -8695,6 +8913,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_providers": {
                       "type": "array",
@@ -8736,6 +8955,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "swap": {
                       "$ref": "#/components/schemas/swap"
@@ -8763,6 +8983,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "swaps": {
                       "type": "array",
@@ -8793,6 +9014,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -8821,6 +9043,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -8851,6 +9074,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -8879,6 +9103,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -8909,6 +9134,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -8937,6 +9163,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -8967,6 +9194,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -9077,6 +9305,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "orders": {
                       "type": "array",
@@ -9118,6 +9347,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -9153,6 +9383,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -9181,6 +9412,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "tax_rate": {
                       "type": "array",
@@ -9229,6 +9461,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "uploads": {
                       "type": "array",
@@ -9258,6 +9491,7 @@
                   "email",
                   "password"
                 ],
+                "type": "object",
                 "properties": {
                   "email": {
                     "description": "The Users email.",
@@ -9293,6 +9527,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
@@ -9318,6 +9553,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "users": {
                       "type": "array",
@@ -9359,6 +9595,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "id": {
                       "type": "string",
@@ -9403,6 +9640,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
@@ -9474,6 +9712,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
@@ -9501,6 +9740,7 @@
                   "token",
                   "password"
                 ],
+                "type": "object",
                 "properties": {
                   "email": {
                     "description": "The Users email.",
@@ -9528,6 +9768,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
@@ -9581,6 +9822,7 @@
             "content": {
               "application/json": {
                 "schema": {
+                  "type": "object",
                   "properties": {
                     "variants": {
                       "type": "array",
@@ -9603,6 +9845,7 @@
         "title": "Address",
         "description": "An address.",
         "x-resourceId": "address",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -9640,6 +9883,7 @@
         "title": "Cart",
         "description": "Represents a user cart",
         "x-resourceId": "cart",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -9758,6 +10002,7 @@
         "title": "Claim Image",
         "description": "Represents photo documentation of a claim.",
         "x-resourceId": "claim_image",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -9789,6 +10034,7 @@
         "title": "Claim Item",
         "description": "Represents a claimed item along with information about the reasons for the claim.",
         "x-resourceId": "claim_item",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -9862,6 +10108,7 @@
         "title": "Claim Order",
         "description": "Claim Orders represent a group of faulty or missing items. Each claim order consists of a subset of items associated with an original order, and can contain additional information about fulfillments and returns.",
         "x-resourceId": "claim_order",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -9973,6 +10220,7 @@
         "title": "Claim Tag",
         "description": "Claim Tags are user defined tags that can be assigned to claim items for easy filtering and grouping.",
         "x-resourceId": "claim_tag",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the claim tag. Will be prefixed by `ctag_`.",
@@ -10007,6 +10255,7 @@
         "title": "Country",
         "description": "Country details",
         "x-resourceId": "country",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The database id of the country",
@@ -10038,6 +10287,7 @@
         "title": "Currency",
         "description": "Currency",
         "x-resourceId": "currency",
+        "type": "object",
         "properties": {
           "code": {
             "description": "The 3 character ISO code for the currency.",
@@ -10061,6 +10311,7 @@
         "title": "Custom Shipping Option",
         "description": "Custom Shipping Options are 'overriden' Shipping Options. Store managers can attach a Custom Shipping Option to a cart in order to set a custom price for a particular Shipping Option",
         "x-resourceId": "custom_shipping_option",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Custom Shipping Option. This value will be prefixed with `cso_`.",
@@ -10111,6 +10362,7 @@
         "title": "Customer Group",
         "description": "Represents a customer group",
         "x-resourceId": "customer_group",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -10145,6 +10397,7 @@
         "title": "Customer",
         "description": "Represents a customer",
         "x-resourceId": "customer",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -10202,6 +10455,7 @@
         "title": "Discount Rule",
         "description": "Holds the rules that governs how a Discount is calculated when applied to a Cart.",
         "x-resourceId": "discount_rule",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Discount Rule. Will be prefixed by `dru_`.",
@@ -10264,6 +10518,7 @@
         "title": "Discount",
         "description": "Represents a discount that can be applied to a cart for promotional purposes.",
         "x-resourceId": "discount",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Discount. Will be prefixed by `disc_`.",
@@ -10343,6 +10598,7 @@
         "title": "DraftOrder",
         "description": "Represents a draft order",
         "x-resourceId": "draft-order",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -10412,6 +10668,7 @@
         "title": "Fulfillment Item",
         "description": "Correlates a Line Item with a Fulfillment, keeping track of the quantity of the Line Item.",
         "x-resourceId": "fulfillment_item",
+        "type": "object",
         "properties": {
           "fulfillment_id": {
             "description": "The id of the Fulfillment that the Fulfillment Item belongs to.",
@@ -10439,6 +10696,7 @@
         "title": "Fulfillment Provider",
         "description": "Represents a fulfillment provider plugin and holds its installation status.",
         "x-resourceId": "fulfillment_provider",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the fulfillment provider as given by the plugin.",
@@ -10454,6 +10712,7 @@
         "title": "Fulfillment",
         "description": "Fulfillments are created once store operators can prepare the purchased goods. Fulfillments will eventually be shipped and hold information about how to track shipments. Fulfillments are created through a provider, which is typically an external shipping aggregator, shipping partner og 3PL, most plugins will have asynchronous communications with these providers through webhooks in order to automatically update and synchronize the state of Fulfillments.",
         "x-resourceId": "fulfillment",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Fulfillment. This value will be prefixed by `ful_`.",
@@ -10531,6 +10790,7 @@
         "title": "Gift Card Transaction",
         "description": "Gift Card Transactions are created once a Customer uses a Gift Card to pay for their Order",
         "x-resourceId": "gift_card_transaction",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Gift Card Transaction. This value will be prefixed by `gct_`.",
@@ -10567,6 +10827,7 @@
         "title": "Gift Card",
         "description": "Gift Cards are redeemable and represent a value that can be used towards the payment of an Order.",
         "x-resourceId": "gift_card",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Gift Card. This value will be prefixed by `gift_`.",
@@ -10634,6 +10895,7 @@
         "title": "Image",
         "description": "Images holds a reference to a URL at which the image file can be found.",
         "x-resourceId": "image",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Image. This value will be prefixed by `img_`.",
@@ -10668,6 +10930,7 @@
         "title": "Invite",
         "description": "Represents an invite",
         "x-resourceId": "invite",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -10714,6 +10977,7 @@
         "title": "Line Item",
         "description": "Line Items represent purchasable units that can be added to a Cart for checkout. When Line Items are purchased they will get copied to the resulting order and can eventually be referenced in Fulfillments and Returns. Line Items may also be created when processing Swaps and Claims.",
         "x-resourceId": "line_item",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Line Item. This value will be prefixed by `item_`.",
@@ -10815,6 +11079,7 @@
         "title": "Money Amount",
         "description": "Money Amounts represents an amount that a given Product Variant can be purcased for. Each Money Amount either has a Currency or Region associated with it to indicate the pricing in a given Currency or, for fully region-based pricing, the given price in a specific Region. If region-based pricing is used the amount will be in the currency defined for the Reigon.",
         "x-resourceId": "money_amount",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Money Amount. This value will be prefixed by `ma_`.",
@@ -10869,6 +11134,7 @@
         "title": "Note",
         "description": "Notes are elements which we can use in association with different resources to allow users to describe additional information in relation to these.",
         "x-resourceId": "note",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Note. This value will be prefixed by `note_`.",
@@ -10919,6 +11185,7 @@
         "title": "Notification Provider",
         "description": "Represents a notification provider plugin and holds its installation status.",
         "x-resourceId": "notification_provider",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the notification provider as given by the plugin.",
@@ -10934,6 +11201,7 @@
         "title": "Notification",
         "description": "Notifications a communications sent via Notification Providers as a reaction to internal events such as `order.placed`. Notifications can be used to show a chronological timeline for communications sent to a Customer regarding an Order, and enables resends.",
         "x-resourceId": "notification",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Notification. This value will be prefixed by `noti_`.",
@@ -11002,6 +11270,7 @@
         "title": "Notification Resend",
         "description": "A resend of a Notification.",
         "x-resourceId": "notification_resend",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Notification. This value will be prefixed by `noti_`.",
@@ -11051,6 +11320,7 @@
         "title": "OAuth",
         "description": "Represent an OAuth app",
         "x-resourceId": "OAuth",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -11076,6 +11346,7 @@
         "title": "Order",
         "description": "Represents an order",
         "x-resourceId": "order",
+        "type": "object",
         "properties": {
           "id": {
             "type": "string"
@@ -11300,6 +11571,7 @@
         "title": "Payment Provider",
         "description": "Represents a Payment Provider plugin and holds its installation status.",
         "x-resourceId": "payment_provider",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the payment provider as given by the plugin.",
@@ -11315,6 +11587,7 @@
         "title": "Payment Session",
         "description": "Payment Sessions are created when a Customer initilizes the checkout flow, and can be used to hold the state of a payment flow. Each Payment Session is controlled by a Payment Provider, who is responsible for the communication with external payment services. Authorized Payment Sessions will eventually get promoted to Payments to indicate that they are authorized for capture/refunds/etc.",
         "x-resourceId": "payment_session",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Payment Session. This value will be prefixed with `ps_`.",
@@ -11363,6 +11636,7 @@
         "title": "Payment",
         "description": "Payments represent an amount authorized with a given payment method, Payments can be captured, canceled or refunded.",
         "x-resourceId": "payment",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Payment. This value will be prefixed with `pay_`.",
@@ -11430,6 +11704,7 @@
         "title": "Product Collection",
         "description": "Product Collections represents a group of Products that are related.",
         "x-resourceId": "product_collection",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Product Collection. This value will be prefixed with `pcol_`.",
@@ -11475,6 +11750,7 @@
         "title": "Product Option Value",
         "description": "A value given to a Product Variant's option set. Product Variant have a Product Option Value for each of the Product Options defined on the Product.",
         "x-resourceId": "product_option_value",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Product Option Value. This value will be prefixed with `optval_`.",
@@ -11517,6 +11793,7 @@
         "title": "Product Option",
         "description": "Product Options define properties that may vary between different variants of a Product. Common Product Options are \"Size\" and \"Color\", but Medusa doesn't limit what Product Options that can be defined.",
         "x-resourceId": "product_option",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Product Option. This value will be prefixed with `opt_`.",
@@ -11562,6 +11839,7 @@
         "title": "Product Tag",
         "description": "Product Tags can be added to Products for easy filtering and grouping.",
         "x-resourceId": "product_tag",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Product Tag. This value will be prefixed with `ptag_`.",
@@ -11596,6 +11874,7 @@
         "title": "Product Tax Rate",
         "description": "Associates a tax rate with a product to indicate that the product is taxed in a certain way",
         "x-resourceId": "product_tax_rate",
+        "type": "object",
         "properties": {
           "product_id": {
             "description": "The id of the Product",
@@ -11630,6 +11909,7 @@
         "title": "Product Type Tax Rate",
         "description": "Associates a tax rate with a product type to indicate that the product type is taxed in a certain way",
         "x-resourceId": "product_type_tax_rate",
+        "type": "object",
         "properties": {
           "product_type_id": {
             "description": "The id of the Product type",
@@ -11664,6 +11944,7 @@
         "title": "Product Type",
         "description": "Product Type can be added to Products for filtering and reporting purposes.",
         "x-resourceId": "product_type",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Product Type. This value will be prefixed with `ptyp_`.",
@@ -11698,6 +11979,7 @@
         "title": "Product Variant",
         "description": "Product Variants represent a Product with a specific set of Product Option configurations. The maximum number of Product Variants that a Product can have is given by the number of available Product Option combinations.",
         "x-resourceId": "product_variant",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Product Variant. This value will be prefixed with `variant_`.",
@@ -11810,6 +12092,7 @@
         "title": "Product",
         "description": "Products are a grouping of Product Variants that have common properties such as images and descriptions. Products can have multiple options which define the properties that Product Variants differ by.",
         "x-resourceId": "product",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Product. This value will be prefixed with `prod_`.",
@@ -11948,6 +12231,7 @@
         "title": "Refund",
         "description": "Refund represent an amount of money transfered back to the Customer for a given reason. Refunds may occur in relation to Returns, Swaps and Claims, but can also be initiated by a store operator.",
         "x-resourceId": "refund",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Refund. This value will be prefixed with `ref_`.",
@@ -11996,6 +12280,7 @@
         "title": "Region",
         "description": "Regions hold settings for how Customers in a given geographical location shop. The is, for example, where currencies and tax rates are defined. A Region can consist of multiple countries to accomodate common shopping settings across countries.",
         "x-resourceId": "region",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Region. This value will be prefixed with `reg_`.",
@@ -12063,6 +12348,7 @@
         "title": "Return Item",
         "description": "Correlates a Line Item with a Return, keeping track of the quantity of the Line Item that will be returned.",
         "x-resourceId": "return_item",
+        "type": "object",
         "properties": {
           "return_id": {
             "description": "The id of the Return that the Return Item belongs to.",
@@ -12118,6 +12404,7 @@
         "title": "Return Reason",
         "description": "A Reason for why a given product is returned. A Return Reason can be used on Return Items in order to indicate why a Line Item was returned.",
         "x-resourceId": "return_reason",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Return Reason will start with `rr_`.",
@@ -12160,6 +12447,7 @@
         "title": "Return",
         "description": "Return orders hold information about Line Items that a Customer wishes to send back, along with how the items will be returned. Returns can be used as part of a Swap.",
         "x-resourceId": "return",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Return. This value will be prefixed with `ret_`.",
@@ -12234,6 +12522,7 @@
         "title": "Shipping Method",
         "description": "Shipping Methods represent a way in which an Order or Return can be shipped. Shipping Methods are built from a Shipping Option, but may contain additional details, that can be necessary for the Fulfillment Provider to handle the shipment.",
         "x-resourceId": "shipping_method",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Shipping Method. This value will be prefixed with `sm_`.",
@@ -12285,6 +12574,7 @@
         "title": "Shipping Option Requirement",
         "description": "A requirement that a Cart must satisfy for the Shipping Option to be available to the Cart.",
         "x-resourceId": "shipping_option_requirement",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Shipping Option Requirement. This value will be prefixed with `sor_`.",
@@ -12312,6 +12602,7 @@
         "title": "Shipping Option",
         "description": "Shipping Options represent a way in which an Order or Return can be shipped. Shipping Options have an associated Fulfillment Provider that will be used when the fulfillment of an Order is initiated. Shipping Options themselves cannot be added to Carts, but serve as a template for Shipping Methods. This distinction makes it possible to customize individual Shipping Methods with additional information.",
         "x-resourceId": "shipping_option",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Shipping Option. This value will be prefixed with `so_`.",
@@ -12393,6 +12684,7 @@
         "title": "Shipping Profile",
         "description": "Shipping Profiles have a set of defined Shipping Options that can be used to fulfill a given set of Products.",
         "x-resourceId": "shipping_profile",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Shipping Profile. This value will be prefixed with `sp_`.",
@@ -12454,6 +12746,7 @@
         "title": "Shipping Tax Rate",
         "description": "Associates a tax rate with a shipping option to indicate that the shipping option is taxed in a certain way",
         "x-resourceId": "shipping_tax_rate",
+        "type": "object",
         "properties": {
           "shipping_option_id": {
             "description": "The id of the Shipping Option",
@@ -12488,6 +12781,7 @@
         "title": "Store",
         "description": "Holds settings for the Store, such as name, currencies, etc.",
         "x-resourceId": "store",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Store. This value will be prefixed with `store_`.",
@@ -12532,6 +12826,7 @@
         "title": "Swap",
         "description": "Swaps can be created when a Customer wishes to exchange Products that they have purchased to different Products. Swaps consist of a Return of previously purchased Products and a Fulfillment of new Products, the amount paid for the Products being returned will be used towards payment for the new Products. In the case where the amount paid for the the Products being returned exceed the amount to be paid for the new Products, a Refund will be issued for the difference.",
         "x-resourceId": "swap",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Swap. This value will be prefixed with `swap_`.",
@@ -12659,6 +12954,7 @@
         "title": "Tax Line",
         "description": "Line item that specifies an amount of tax to add to a line item.",
         "x-resourceId": "tax_line",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Tax Line. This value will be prefixed by `tl_`.",
@@ -12696,6 +12992,7 @@
         "title": "Tax Provider",
         "description": "The tax service used to calculate taxes",
         "x-resourceId": "tax_provider",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the tax provider as given by the plugin.",
@@ -12711,6 +13008,7 @@
         "title": "Tax Rate",
         "description": "A Tax Rate can be used to associate a certain rate to charge on products within a given Region",
         "x-resourceId": "line_item",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Tax Rate. This value will be prefixed by `txr_`.",
@@ -12756,6 +13054,7 @@
         "title": "Tracking Link",
         "description": "Tracking Link holds information about tracking numbers for a Fulfillment. Tracking Links can optionally contain a URL that can be visited to see the status of the shipment.",
         "x-resourceId": "tracking_link",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The id of the Tracking Link. This value will be prefixed with `tlink_`.",
@@ -12798,6 +13097,7 @@
         "title": "User",
         "description": "Represents a User who can manage store settings.",
         "x-resourceId": "user",
+        "type": "object",
         "properties": {
           "id": {
             "description": "The unique id of the User. This will be prefixed with `usr_`",
