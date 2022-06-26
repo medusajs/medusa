@@ -82,11 +82,11 @@ export default async ({
     next()
   })
 
-  const featureFlags = featureFlagsLoader(configModule)
+  const featureFlagRouter = featureFlagsLoader(configModule)
 
   container.register({
     logger: asValue(Logger),
-    featureFlags: asValue(featureFlags),
+    featureFlagRouter: asValue(featureFlagRouter),
   })
 
   await redisLoader({ container, configModule, logger: Logger })
