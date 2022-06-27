@@ -101,6 +101,8 @@ function transformVariantData(data: TParsedRowData): TParsedRowData {
 }
 
 /**
+ * Default strategy class used for a batch import of products/variants.
+ *
  * THE FLOW
  *
  * ======== PREPARE BATCH JOB ========
@@ -117,10 +119,6 @@ function transformVariantData(data: TParsedRowData): TParsedRowData {
  *      - notify about progress after BATCH_SIZE of records has been processed
  * 7. Set as complete
  *
- */
-
-/**
- * Default strategy class used for a batch import of products/variants.
  */
 class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrategy> {
   static identifier = "product-import"
@@ -332,11 +330,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const productOp of productOps) {
-      await this.productService_
-        .withTransaction(transactionManager)
-        .create(
-          transformProductData(productOp) as unknown as CreateProductInput
-        )
+      try {
+        await this.productService_
+          .withTransaction(transactionManager)
+          .create(
+            transformProductData(productOp) as unknown as CreateProductInput
+          )
+      } catch (e) {
+        this.handleImportError(productOp)
+      }
 
       this.updateProgress(batchJobId)
     }
@@ -359,12 +361,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const productOp of productOps) {
-      await this.productService_
-        .withTransaction(transactionManager)
-        .update(
-          productOp["product.id"] as string,
-          transformProductData(productOp)
-        )
+      try {
+        await this.productService_
+          .withTransaction(transactionManager)
+          .update(
+            productOp["product.id"] as string,
+            transformProductData(productOp)
+          )
+      } catch (e) {
+        this.handleImportError(productOp)
+      }
 
       this.updateProgress(batchJobId)
     }
@@ -392,33 +398,37 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const variantOp of variantOps) {
-      const variant = transformVariantData(variantOp)
+      try {
+        const variant = transformVariantData(variantOp)
 
-      const product = await productRepo.findOne({
-        where: { handle: variantOp["product.handle"] },
-        relations: ["variants", "variants.options", "options"],
-      })
+        const product = await productRepo.findOne({
+          where: { handle: variantOp["product.handle"] },
+          relations: ["variants", "variants.options", "options"],
+        })
 
-      const optionIds =
-        (variantOp["product.options"] as Record<string, string>[])?.map(
-          (variantOption) =>
-            product!.options.find(
-              (createdProductOption) =>
-                createdProductOption.title === variantOption.title
-            )!.id
-        ) || []
+        const optionIds =
+          (variantOp["product.options"] as Record<string, string>[])?.map(
+            (variantOption) =>
+              product!.options.find(
+                (createdProductOption) =>
+                  createdProductOption.title === variantOption.title
+              )!.id
+          ) || []
 
-      variant.options =
-        (variant.options as object[])?.map((o, index) => ({
-          ...o,
-          option_id: optionIds[index],
-        })) || []
+        variant.options =
+          (variant.options as object[])?.map((o, index) => ({
+            ...o,
+            option_id: optionIds[index],
+          })) || []
 
-      await this.productVariantService_
-        .withTransaction(transactionManager)
-        .create(product!, variant as any)
+        await this.productVariantService_
+          .withTransaction(transactionManager)
+          .create(product!, variant as any)
 
-      this.updateProgress(batchJobId)
+        this.updateProgress(batchJobId)
+      } catch (e) {
+        this.handleImportError(variantOp)
+      }
     }
   }
 
@@ -436,14 +446,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
 
     for (const variantOp of variantOps) {
-      await this.prepareVariantOptions(variantOp, productOptionRepo)
+      try {
+        await this.prepareVariantOptions(variantOp, productOptionRepo)
 
-      await this.productVariantService_
-        .withTransaction(transactionManager)
-        .update(
-          variantOp["variant.id"] as string,
-          transformVariantData(variantOp) as UpdateProductVariantInput
-        )
+        await this.productVariantService_
+          .withTransaction(transactionManager)
+          .update(
+            variantOp["variant.id"] as string,
+            transformVariantData(variantOp) as UpdateProductVariantInput
+          )
+      } catch (e) {
+        this.handleImportError(variantOp)
+      }
 
       this.updateProgress(batchJobId)
     }
@@ -511,6 +525,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await this.batchJobService_.update(batchJobId, {
       context: { progress: this.processedCounter },
     })
+  }
+
+  private handleImportError(row: TParsedRowData): unknown {
+    const message = `Error while processing row with:
+      product id: ${row["product.id"]},
+      product handle: ${row["product.handle"]},
+      variant id: ${row["variant.id"]}
+      variant sku: ${row["variant.sku"]}`
+
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
   }
 }
 
@@ -585,14 +609,16 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Name",
       match: /Option \d+ Name/,
+      // @ts-ignore
       reducer: (builtLine: TParsedRowData, key: string, value: string) => {
         builtLine["product.options"] = builtLine["product.options"] || []
 
         if (typeof value === "undefined" || value === null) {
           return builtLine
         }
-
-        builtLine["product.options"].push({ title: value })
+        ;(
+          builtLine["product.options"] as Record<string, string | number>[]
+        ).push({ title: value })
 
         return builtLine
       },
@@ -600,6 +626,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Value",
       match: /Option \d+ Value/,
+      // @ts-ignore
       reducer: (
         builtLine: TParsedRowData,
         key: string,
@@ -612,7 +639,9 @@ const CSVSchema: ProductImportCsvSchema = {
           return builtLine
         }
 
-        builtLine["variant.options"].push({
+        ;(
+          builtLine["variant.options"] as Record<string, string | number>[]
+        ).push({
           value,
           _title: context.line[key.slice(0, -6) + " Name"],
         })
@@ -624,6 +653,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Region",
       match: /Price .* \[([A-Z]{2,4})\]/,
+      // @ts-ignore
       reducer: (builtLine: TParsedRowData, key, value) => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
@@ -648,6 +678,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Currency",
       match: /Price [A-Z]{2,4}/,
+      // @ts-ignore
       reducer: (builtLine: TParsedRowData, key, value) => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
@@ -671,6 +702,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Image Url",
       match: /Image \d+ Url/,
+      // @ts-ignore
       reducer: (builtLine: any, key, value) => {
         builtLine["product.images"] = builtLine["product.images"] || []
 
