@@ -256,9 +256,12 @@ class ProductVariantService extends BaseService {
       if (prices) {
         for (const price of prices) {
           if (price.region_id) {
+            const region = await this.regionService_.retrieve(price.region_id)
+
             await this.setRegionPrice(result.id, {
               amount: price.amount,
               region_id: price.region_id,
+              currency_code: region.currency_code,
             })
           } else {
             await this.setCurrencyPrice(result.id, price)
@@ -381,7 +384,10 @@ class ProductVariantService extends BaseService {
 
       for (const price of prices) {
         if (price.region_id) {
+          const region = await this.regionService_.retrieve(price.region_id)
+
           await this.setRegionPrice(variantId, {
+            currency_code: region.currency_code,
             region_id: price.region_id,
             amount: price.amount,
           })

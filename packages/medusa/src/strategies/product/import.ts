@@ -19,7 +19,10 @@ import {
   ShippingProfileService,
 } from "../../services"
 import { CreateProductInput } from "../../types/product"
-import { UpdateProductVariantInput } from "../../types/product-variant"
+import {
+  CreateProductVariantInput,
+  UpdateProductVariantInput,
+} from "../../types/product-variant"
 
 /* ******************** TYPES ******************** */
 
@@ -243,7 +246,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     for (const p of row["variant.prices"]) {
       const record: Record<string, string | number> = {
         amount: p.amount,
-        currency_code: p.currency_code,
       }
 
       if (p.regionName) {
@@ -259,6 +261,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         }
 
         record.region_id = region!.id
+      } else {
+        record.currency_code = p.currency_code
       }
 
       prices.push(record)
@@ -337,6 +341,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp) as unknown as CreateProductInput
           )
       } catch (e) {
+        throw e
         this.handleImportError(productOp)
       }
 
@@ -369,6 +374,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp)
           )
       } catch (e) {
+        throw e
         this.handleImportError(productOp)
       }
 
@@ -423,10 +429,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
         await this.productVariantService_
           .withTransaction(transactionManager)
-          .create(product!, variant as any)
+          .create(product!, variant as unknown as CreateProductVariantInput)
 
         this.updateProgress(batchJobId)
       } catch (e) {
+        throw e
         this.handleImportError(variantOp)
       }
     }
@@ -456,6 +463,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformVariantData(variantOp) as UpdateProductVariantInput
           )
       } catch (e) {
+        throw e
         this.handleImportError(variantOp)
       }
 
@@ -662,14 +670,12 @@ const CSVSchema: ProductImportCsvSchema = {
         }
 
         const regionName = key.split(" ")[1]
-        const currency = key.split(" ")[2].slice(1, -1)
 
         ;(
           builtLine["variant.prices"] as Record<string, string | number>[]
         ).push({
           amount: value,
           regionName,
-          currency_code: currency,
         })
 
         return builtLine
