@@ -1,4 +1,4 @@
-import _ from "lodash"
+import { isEmpty, isEqual } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -246,7 +246,7 @@ class CartService extends TransactionBaseService<CartService> {
 
     let cartWithTotals = Object.assign(cart, totals)
 
-    if (cart.items && cart.region) {
+    if (!isEmpty(totals) && cart.items && cart.region) {
       const items = await Promise.all(
         cart.items.map(async (item) => {
           const itemTotals = await this.totalsService_.getLineItemTotals(
@@ -564,7 +564,7 @@ class CartService extends TransactionBaseService<CartService> {
         if (lineItem.should_merge) {
           currentItem = cart.items.find((item) => {
             if (item.should_merge && item.variant_id === lineItem.variant_id) {
-              return _.isEqual(item.metadata, lineItem.metadata)
+              return isEqual(item.metadata, lineItem.metadata)
             }
             return false
           })
@@ -1804,7 +1804,7 @@ class CartService extends TransactionBaseService<CartService> {
       let updated = { ...shippingAddress }
 
       // If the country code of a shipping address is set we need to clear it
-      if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
+      if (!isEmpty(shippingAddress) && shippingAddress.country_code) {
         updated = {
           ...updated,
           country_code: null,
