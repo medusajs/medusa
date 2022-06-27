@@ -91,7 +91,7 @@ describe("Product import batch job", () => {
 
       batchJob = res.data.batch_job
 
-      console.log({ batchJob })
+      // TODO: check, sometime the job is randomly stuck in a state (mostly "created" but sometimes in "processing" also)
       shouldContinuePulling = !(
         batchJob.status === "completed" || batchJob.status === "failed"
       )
@@ -99,8 +99,9 @@ describe("Product import batch job", () => {
 
     expect(batchJob.status).toBe("completed")
 
-    // const productsResponse = await api.get("/admin/products", adminReqConfig)
-    //
-    // console.log({ productsResponse })
+    const productsResponse = await api.get("/admin/products", adminReqConfig)
+
+    expect(productsResponse.data.count).toBe(2)
+    expect(productsResponse.data.products).toMatchSnapshot()
   })
 })
