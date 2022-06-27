@@ -433,6 +433,11 @@ module.exports = {
     },
     {
       type: "doc",
+      id: "cli/reference",
+      label: "CLI Reference",
+    },
+    {
+      type: "doc",
       id: "contribution-guidelines",
       label: "Contribution Guidelines",
     },
