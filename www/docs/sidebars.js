@@ -68,7 +68,7 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "how-to/create-medusa-app",
+          id: "usage/create-medusa-app",
         },
         {
           type: "category",

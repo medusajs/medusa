@@ -8,7 +8,7 @@ This is a guide for deploying Medusa Admin on Netlify. Netlify is a platform tha
 
 :::note
 
-At this point, you should have a running instance of Medusa Admin. If not, check out [these steps](https://github.com/medusajs/admin#-setting-up-admin) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+At this point, you should have a running instance of Medusa Admin. If not, check out [these steps](https://github.com/medusajs/admin#-setting-up-admin) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](../usage/create-medusa-app.mdx) for a small walkthrough.
 
 :::
 

@@ -1,0 +1,121 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Use create-medusa-app
+
+In this document, you’ll learn how to use `create-medusa-app` to create a Medusa project with the 3 main components of Medusa.
+
+## Overview
+
+As explained in the [Introduction guide](../introduction.md), Medusa is composed of 3 different components: the headless server, the storefront, and the admin dashboard.
+
+Medusa provides the necessary tools and resources to set up the 3 components separately. This ensures that developers have full freedom to choose their tech stack, as they can choose any framework for the storefront and admin dashboard.
+
+However, if you’re interested in using Medusa’s starters for the 3 components, you can easily make use of the `create-medusa-app` command instead of creating each separately.
+
+When you run the `create-medusa-app` command, you’ll install a Medusa server, a Medusa admin, and optionally a storefront at the same time.
+
+## How to Create a Medusa Project
+
+In your terminal, run the following command:
+
+<Tabs groupId="npxyarn">
+  <TabItem value="npx" label="NPX" default>
+
+  ```bash
+  npx create-medusa-app
+  ```
+
+  </TabItem>
+  <TabItem value="yarn" label="Yarn">
+
+  ```bash
+  yarn create medusa-app
+  ```
+
+  </TabItem>
+</Tabs>
+
+### Project Directory Name
+
+You’ll then be asked to enter the name of the directory you want the project to be installed in. You can either leave the default value `my-medusa-store` or enter a new name.
+
+### Choose Medusa Starter
+
+Next, you’ll be asked to choose the Medusa starter used to install the Medusa server. You can either pick the default Medusa starter, the Contentful starter or enter a starter URL by choosing `Other`:
+
+```bash
+? Which Medusa starter would you like to install? …
+❯ medusa-starter-default
+  medusa-starter-contentful
+  Other
+```
+
+The server will be installed under the `backend` directory under the project directory. An SQLite database will be created inside that directory as well with demo data seeded into it.
+
+:::tip
+
+You can learn more about the Contentful starter in the [Contentful Integration documentation](../add-plugins/contentful.md).
+
+:::
+
+### Choose Storefront Starter
+
+After choosing the Medusa starter, you’ll be asked to choose the storefront starter. You can choose one of the starters in the list included or choose `None` to skip installing a storefront:
+
+```bash
+? Which storefront starter would you like to install?
+❯ Gatsby Starter
+Next.js Starter
+medusa.express (Next.js)
+medusa.express (Gatsby)
+Gatsby Starter (Simple)
+None
+```
+
+If you choose an option other than `None`, a storefront will be installed under the `storefront` directory.
+
+:::tip
+
+Learn more about the [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
+
+:::
+
+### Dependency Installation
+
+After choosing the above starters, the installation of each component will begin along with its dependencies. Once the installation is done, you’ll see instructions related to how to start each component.
+
+```bash
+Your project is ready 🚀. The available commands are:
+
+Medusa API
+cd my-medusa-store/backend
+yarn start
+
+Admin
+cd my-medusa-store/admin
+yarn start
+
+Storefront
+cd my-medusa-store/storefront
+yarn start
+```
+
+The commands will differ based on your choices in previous prompts.
+
+## Project Directory Structure
+
+Inside the root project directory which was specified at the beginning of the installation process you’ll find the following directory structure:
+
+```bash
+/my-medusa-store
+  /storefront // Medusa storefront starter
+  /backend // Medusa starter as a backend option 
+  /admin // Medusa admin panel
+```
+
+## What’s Next 🚀
+
+- Learn how to [deploy the Medusa server on Heroku](../how-to/deploying-on-heroku.mdx).
+- Learn how to [deploy the Medusa admin on Netlify](../how-to/deploying-admin-on-netlify.md).
+- Learn how to [deploy the Gatsby storefront on Netlify](../how-to/deploying-gatsby-on-netlify.md).

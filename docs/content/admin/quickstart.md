@@ -154,4 +154,4 @@ In the Medusa admin, you can manage your store’s overall settings. These inclu
 ## What’s Next 🚀
 
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefront starters.
-- [Learn how you can use `create-medusa-app` to install all of Medusa’s 3 components.](../how-to/create-medusa-app.md)
+- [Learn how you can use `create-medusa-app` to install all of Medusa’s 3 components.](../usage/create-medusa-app.mdx)
