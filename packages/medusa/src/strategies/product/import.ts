@@ -59,6 +59,11 @@ const BATCH_SIZE = 100
 
 /* ******************** UTILS ******************** */
 
+/**
+ * Pick keys for a new object by regex.
+ * @param data - Initial data object
+ * @param regex - A regex used to pick which keys are going to be copied in the new object
+ */
 function pickObjectPropsByRegex(
   data: TParsedRowData,
   regex: RegExp
@@ -75,6 +80,9 @@ function pickObjectPropsByRegex(
   return ret
 }
 
+/**
+ * Pick data from parsed CSV object relevant for product create/update and remove prefixes from keys.
+ */
 function transformProductData(data: TParsedRowData): TParsedRowData {
   const ret = {}
   const productData = pickObjectPropsByRegex(data, /product\./)
@@ -87,6 +95,9 @@ function transformProductData(data: TParsedRowData): TParsedRowData {
   return ret
 }
 
+/**
+ * Pick data from parsed CSV object relevant for variant create/update and remove prefixes from keys.
+ */
 function transformVariantData(data: TParsedRowData): TParsedRowData {
   const ret = {}
   const productData = pickObjectPropsByRegex(data, /variant\./)
@@ -105,23 +116,6 @@ function transformVariantData(data: TParsedRowData): TParsedRowData {
 
 /**
  * Default strategy class used for a batch import of products/variants.
- *
- * THE FLOW
- *
- * ======== PREPARE BATCH JOB ========
- *
- * 1. (Upload) read a file
- * 2. Pipe the file to the CSV Parser
- * 3. Validate the results and pass them to Redis
- * 4. Dispatch an event (READY)
- *
- * ======== PROCESS BATCH JOB ========
- *
- * 5. Read from Redis for each op type
- * 6. In a loop insert/update one by one through the service methods
- *      - notify about progress after BATCH_SIZE of records has been processed
- * 7. Set as complete
- *
  */
 class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrategy> {
   static identifier = "product-import"
@@ -237,6 +231,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
+  /**
+   * Prepare prices records for insert - find and append region ids to records that contain a region name.
+   *
+   * @param row - An object containing parsed row data.
+   * @param regionRepo - Region repository.
+   */
   protected async handleVariantPrices(
     row,
     regionRepo: RegionRepository
@@ -314,15 +314,15 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       await this.createVariants(batchJobId, transactionManager)
       await this.updateVariants(batchJobId, transactionManager)
 
-      this.finalize(batchJobId)
+      this.finalize_(batchJobId)
     })
   }
 
   /**
-   * Method creates products using ProductService and parsed data from a CSV row.
+   * Method creates products using `ProductService` and parsed data from a CSV row.
    *
-   * @param batchJobId
-   * @param transactionManager
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param transactionManager - Transaction manager responsible for current batch import.
    */
   private async createProducts(
     batchJobId: string,
@@ -341,19 +341,18 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp) as unknown as CreateProductInput
           )
       } catch (e) {
-        this.handleImportError(productOp)
+        this.handleImportError_(productOp)
       }
 
-      this.updateProgress(batchJobId)
+      this.updateProgress_(batchJobId)
     }
   }
 
   /**
    * Method updates existing products in the DB using a CSV row data.
    *
-   * @param batchJobId
-   * @param transactionManager
-   * @private
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param transactionManager - Transaction manager responsible for current batch import.
    */
   private async updateProducts(
     batchJobId: string,
@@ -373,20 +372,19 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp)
           )
       } catch (e) {
-        this.handleImportError(productOp)
+        this.handleImportError_(productOp)
       }
 
-      this.updateProgress(batchJobId)
+      this.updateProgress_(batchJobId)
     }
   }
 
   /**
-   * Method creates product variants from CSV data.
+   * Method creates product variants from a CSV data.
    * Method also handles processing of variant options.
    *
-   * @param batchJobId
-   * @param transactionManager
-   * @private
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param transactionManager - Transaction manager responsible for current batch import.
    */
   private async createVariants(
     batchJobId: string,
@@ -429,13 +427,19 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
           .withTransaction(transactionManager)
           .create(product!, variant as unknown as CreateProductVariantInput)
 
-        this.updateProgress(batchJobId)
+        this.updateProgress_(batchJobId)
       } catch (e) {
-        this.handleImportError(variantOp)
+        this.handleImportError_(variantOp)
       }
     }
   }
 
+  /**
+   * Method updates product variants from a CSV data.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param transactionManager - Transaction manager responsible for current batch import.
+   */
   private async updateVariants(
     batchJobId: string,
     transactionManager: EntityManager
@@ -460,13 +464,19 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformVariantData(variantOp) as UpdateProductVariantInput
           )
       } catch (e) {
-        this.handleImportError(variantOp)
+        this.handleImportError_(variantOp)
       }
 
-      this.updateProgress(batchJobId)
+      this.updateProgress_(batchJobId)
     }
   }
 
+  /**
+   * Extend records used for creating variant options with corresponding product option ids.
+   *
+   * @param variantOp Parsed row data form CSV
+   * @param productOptionRepo ProductOption repository
+   */
   protected async prepareVariantOptions(
     variantOp,
     productOptionRepo: ProductOptionRepository
@@ -482,6 +492,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
+  /**
+   * Store import ops JSON to Redis.
+   * Data will expire after an hour.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param results - An object containing parsed CSV data.
+   */
   async setImportDataToRedis(
     batchJobId: string,
     results: Record<OperationType, TParsedRowData[]>
@@ -498,6 +515,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
+  /**
+   * Retrieve parsed CSV data from Redis.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param op - Type of import operation.
+   */
   async getImportDataFromRedis(
     batchJobId: string,
     op: OperationType
@@ -511,7 +534,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     return await this.redisClient_.del(`pij_${batchJobId}:*`)
   }
 
-  private async finalize(batchJobId: string): Promise<void> {
+  /**
+   * Update count of processed data in the batch job context.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   */
+  private async finalize_(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
     await this.batchJobService_.update(batchJobId, {
@@ -519,7 +547,14 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     })
   }
 
-  private async updateProgress(batchJobId: string): Promise<void> {
+  /**
+   * Store the progress in the batch job context.
+   * Method is called after every update/create operation,
+   * but after every `BATCH_SIZE`processed rows info is written to the DB.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   */
+  private async updateProgress_(batchJobId: string): Promise<void> {
     this.processedCounter += 1
 
     if (this.processedCounter % BATCH_SIZE !== 0) {
@@ -531,7 +566,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     })
   }
 
-  private handleImportError(row: TParsedRowData): unknown {
+  /**
+   * Create a description of a row on which an error occurred and throw a Medusa error.
+   *
+   * @param row - Parsed CSV row data-
+   */
+  private handleImportError_(row: TParsedRowData): unknown {
     const message = `Error while processing row with:
       product id: ${row["product.id"]},
       product handle: ${row["product.handle"]},
@@ -544,6 +584,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
 export default ProductImportStrategy
 
+/**
+ * Schema definition for the CSV parser.
+ */
 const CSVSchema: ProductImportCsvSchema = {
   columns: [
     // PRODUCT
