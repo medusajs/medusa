@@ -4,13 +4,13 @@ const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { useDb, initDb } = require("../../../helpers/use-db")
 const {
+  simpleDiscountFactory,
   simpleRegionFactory,
   simpleProductFactory,
   simpleProductTaxRateFactory,
 } = require("../../factories")
 
 const adminSeeder = require("../../helpers/admin-seeder")
-const promotionsSeeder = require("../../helpers/price-selection-seeder")
 
 jest.setTimeout(30000)
 
@@ -21,7 +21,7 @@ describe("Cart Totals Calculations", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: false })
   })
 
   afterAll(async () => {
@@ -34,7 +34,6 @@ describe("Cart Totals Calculations", () => {
   beforeEach(async () => {
     try {
       await adminSeeder(dbConnection)
-      await promotionsSeeder(dbConnection)
     } catch (err) {
       console.log(err)
       throw err
@@ -80,6 +79,57 @@ describe("Cart Totals Calculations", () => {
     expect(res.data.cart.items[0].original_total).toEqual(110)
     expect(res.data.cart.items[0].original_tax_total).toEqual(10)
     expect(res.data.cart.items[0].discount_total).toEqual(0)
+    expect(res.data.cart.items[0].gift_card_total).toEqual(0)
+  })
+
+  it("sets correct line item totals for a cart with item of price 100; tax rate 10; discount 10", async () => {
+    const api = useApi()
+
+    const region = await simpleRegionFactory(dbConnection)
+    const product = await simpleProductFactory(dbConnection)
+    const discount = await simpleDiscountFactory(dbConnection, {
+      regions: [region.id],
+      type: "percentage",
+      value: 10,
+    })
+
+    await simpleProductTaxRateFactory(dbConnection, {
+      product_id: product.id,
+      rate: {
+        region_id: region.id,
+        rate: 10,
+      },
+    })
+
+    // create cart
+    const { cart } = await api
+      .post("/store/carts", {
+        region_id: region.id,
+      })
+      .then((res) => res.data)
+
+    // add product to cart
+    await api.post(`/store/carts/${cart.id}/line-items`, {
+      variant_id: product.variants[0].id,
+      quantity: 1,
+    })
+
+    const res = await api.post(`/store/carts/${cart.id}`, {
+      discounts: [
+        {
+          code: discount.code,
+        },
+      ],
+    })
+
+    expect(res.data.cart.items[0].unit_price).toEqual(100)
+    expect(res.data.cart.items[0].quantity).toEqual(1)
+    expect(res.data.cart.items[0].subtotal).toEqual(100)
+    expect(res.data.cart.items[0].tax_total).toEqual(9)
+    expect(res.data.cart.items[0].total).toEqual(99)
+    expect(res.data.cart.items[0].original_total).toEqual(110)
+    expect(res.data.cart.items[0].original_tax_total).toEqual(10)
+    expect(res.data.cart.items[0].discount_total).toEqual(10)
     expect(res.data.cart.items[0].gift_card_total).toEqual(0)
   })
 })
