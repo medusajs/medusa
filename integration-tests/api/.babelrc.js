@@ -9,8 +9,5 @@ if (process.env.NODE_ENV !== `test`) {
 module.exports = {
   sourceMaps: true,
   presets: ["babel-preset-medusa-package"],
-  plugins: ["transform-class-properties"],
   ignore,
 }
-
-// babel-plugin-transform-class-properties
