@@ -167,7 +167,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: "order-export",
+            name: "export/order-export",
             ext: "csv",
           })
 
