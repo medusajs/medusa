@@ -1,13 +1,13 @@
 # Signing in to Medusa Admin
 
-If you've created a new Medusa project with the `--seed` option or used the `seed` script or command, the default credentials are:
+If you've created a new Medusa server with the `--seed` option or used the `seed` script or command, the default credentials are:
 
 ```bash
 email: admin@medusa-test.com
 password: supersecret
 ```
 
-Alternatively, you can create your own users using our CLI tool:
+Alternatively, you can create your own users using the Medusa CLI tool:
 
 ```bash
 medusa user -e some@email.com -p somepassword

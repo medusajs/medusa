@@ -1,6 +1,6 @@
 # Redis not emitting events
 
-When you create a new Medusa project, Redis is disabled by default. Instead, a fake Redis server is used that allows you to start your project but does not actually emit any events.
+When you create a new Medusa server, Redis is disabled by default. Instead, a fake Redis server is used that allows you to start your project but does not actually emit any events.
 
 To enable a real Redis server, you need to install Redis on your machine and configure it with Medusa.
 
