@@ -65,6 +65,7 @@ export default async (req, res) => {
             const cart = await cartService.withTransaction(manager).retrieve(
               id,
               {
+                relations: ["items", "items.adjustments"],
                 select: [
                   "total",
                   "subtotal",
@@ -77,7 +78,9 @@ export default async (req, res) => {
               { force_taxes: true }
             )
 
-            const data = await decorateLineItems(cart, req)
+            const data = await decorateLineItems(cart, req, {
+              force_taxes: true,
+            })
 
             return {
               response_code: 200,

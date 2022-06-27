@@ -4,7 +4,8 @@ import { Cart, LineItem } from "../../../../models"
 
 export const decorateLineItems = async (
   cart: Cart,
-  req: Request
+  req: Request,
+  options: { force_taxes: boolean } = { force_taxes: false }
 ): Promise<Cart> => {
   const totalsService: TotalsService = req.scope.resolve("totalsService")
 
@@ -12,7 +13,7 @@ export const decorateLineItems = async (
     const items = await Promise.all(
       cart.items.map(async (item: LineItem) => {
         const itemTotals = await totalsService.getLineItemTotals(item, cart, {
-          include_tax: cart.region.automatic_taxes,
+          include_tax: options.force_taxes || cart.region.automatic_taxes,
         })
 
         return Object.assign(item, itemTotals)
