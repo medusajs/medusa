@@ -1,5 +1,4 @@
 import { Router } from "express"
-import "reflect-metadata"
 import { User } from "../../../.."
 import middlewares from "../../../middlewares"
 

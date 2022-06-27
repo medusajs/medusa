@@ -12,6 +12,7 @@ import { Order } from "../../../models"
 import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
+import { FindConfig } from "../../../types/common"
 import { prepareListQuery } from "../../../utils/get-query-config"
 
 type InjectedDependencies = {
@@ -27,7 +28,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
   public defaultMaxRetry = 3
 
-  protected readonly BATCH_SIZE = 100
+  protected readonly DEFAULT_LIMIT = 100
   protected readonly NEWLINE = "\r\n"
   protected readonly DELIMITER = ";"
 
@@ -110,9 +111,50 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     return batchJob
   }
 
+  async preProcessBatchJob(batchJobId: string): Promise<void> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const batchJob = (await this.batchJobService_
+        .withTransaction(transactionManager)
+        .retrieve(batchJobId)) as OrderExportBatchJob
+
+      const offset = batchJob.context?.list_config?.skip ?? 0
+      const limit = batchJob.context?.list_config?.take ?? this.DEFAULT_LIMIT
+
+      const { list_config = {}, filterable_fields = {} } = batchJob.context
+
+      let count = batchJob.context?.batch_size
+
+      if (!count) {
+        const [, orderCount] = await this.orderService_
+          .withTransaction(transactionManager)
+          .listAndCount(filterable_fields, {
+            ...(list_config ?? {}),
+            skip: offset as number,
+            order: { created_at: "DESC" },
+            take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
+          })
+        count = orderCount
+      }
+
+      await this.batchJobService_
+        .withTransaction(transactionManager)
+        .update(batchJob, {
+          result: {
+            stat_descriptors: [
+              {
+                key: "order-export-count",
+                name: "Order count to export",
+                message: `There will be ${count} orders exported by this action`,
+              },
+            ],
+          },
+        })
+    })
+  }
+
   async processJob(batchJobId: string): Promise<void> {
     let offset = 0
-    let limit = this.BATCH_SIZE
+    let limit = this.DEFAULT_LIMIT
     let advancementCount = 0
     let orderCount = 0
 
@@ -175,7 +217,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             .withTransaction(transactionManager)
             .update(batchJobId, {
               result: {
-                ...result,
                 file_key: fileKey,
                 count: orderCount,
                 advancement_count: advancementCount,
