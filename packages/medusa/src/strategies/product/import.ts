@@ -550,7 +550,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   /**
    * Store the progress in the batch job context.
    * Method is called after every update/create operation,
-   * but after every `BATCH_SIZE`processed rows info is written to the DB.
+   * but after every `BATCH_SIZE` processed rows info is written to the DB.
    *
    * @param batchJobId - An id of the current batch job being processed.
    */
