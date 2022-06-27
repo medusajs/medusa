@@ -57,6 +57,13 @@ export const defaultAdminBatchFields = [
   "created_at",
   "updated_at",
   "deleted_at",
+  "confirmed_at",
+  "pre_processed_at",
+  "confirmed_at",
+  "processing_at",
+  "completed_at",
+  "canceled_at",
+  "failed_at",
 ]
 
 export * from "./cancel-batch-job"
