@@ -12,7 +12,7 @@ export const decorateLineItems = async (
     const items = await Promise.all(
       cart.items.map(async (item: LineItem) => {
         const itemTotals = await totalsService.getLineItemTotals(item, cart, {
-          include_tax: true,
+          include_tax: cart.region.automatic_taxes,
         })
 
         return Object.assign(item, itemTotals)
