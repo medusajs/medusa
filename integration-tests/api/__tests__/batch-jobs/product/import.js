@@ -70,8 +70,6 @@ describe("Product import batch job", () => {
       adminReqConfig
     )
 
-    console.log(response.data)
-
     const batchJobId = response.data.batch_job.id
 
     expect(batchJobId).toBeTruthy()
