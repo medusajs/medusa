@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/gift-card.js:15](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L15)
+[services/gift-card.js:15](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L15)
 
 ## Properties
 
@@ -42,7 +42,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/gift-card.js:11](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L11)
+[services/gift-card.js:11](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L11)
 
 ## Methods
 
@@ -66,7 +66,7 @@ the result of the create operation
 
 #### Defined in
 
-[services/gift-card.js:134](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L134)
+[services/gift-card.js:134](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L134)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[services/gift-card.js:120](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L120)
+[services/gift-card.js:120](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L120)
 
 ___
 
@@ -110,7 +110,7 @@ the result of the delete operation
 
 #### Defined in
 
-[services/gift-card.js:288](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L288)
+[services/gift-card.js:288](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L288)
 
 ___
 
@@ -128,7 +128,7 @@ the generated gift card code
 
 #### Defined in
 
-[services/gift-card.js:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L62)
+[services/gift-card.js:62](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L62)
 
 ___
 
@@ -151,7 +151,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/gift-card.js:78](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L78)
+[services/gift-card.js:78](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L78)
 
 ___
 
@@ -176,7 +176,7 @@ the gift card
 
 #### Defined in
 
-[services/gift-card.js:175](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L175)
+[services/gift-card.js:175](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L175)
 
 ___
 
@@ -197,7 +197,7 @@ ___
 
 #### Defined in
 
-[services/gift-card.js:209](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L209)
+[services/gift-card.js:209](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L209)
 
 ___
 
@@ -222,7 +222,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/gift-card.js:247](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L247)
+[services/gift-card.js:247](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L247)
 
 ___
 
@@ -242,4 +242,4 @@ ___
 
 #### Defined in
 
-[services/gift-card.js:40](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/gift-card.js#L40)
+[services/gift-card.js:40](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/gift-card.js#L40)

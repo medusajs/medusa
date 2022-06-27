@@ -18,7 +18,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/transaction.js:5](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/transaction.js#L5)
+[services/transaction.js:5](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/transaction.js#L5)
 
 ## Methods
 
@@ -32,4 +32,4 @@ BaseService.constructor
 
 #### Defined in
 
-[services/transaction.js:9](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/transaction.js#L9)
+[services/transaction.js:9](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/transaction.js#L9)

@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/line-item.ts:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L38)
+[services/line-item.ts:38](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L38)
 
 ## Properties
 
@@ -36,7 +36,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/line-item.ts:32](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L32)
+[services/line-item.ts:32](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L32)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:31](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L31)
+[services/line-item.ts:31](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L31)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L36)
+[services/line-item.ts:36](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L36)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L30)
+[services/line-item.ts:30](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L30)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:29](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L29)
+[services/line-item.ts:29](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L29)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:34](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L34)
+[services/line-item.ts:34](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L34)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:33](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L33)
+[services/line-item.ts:33](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L33)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:35](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L35)
+[services/line-item.ts:35](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L35)
 
 ## Methods
 
@@ -130,7 +130,7 @@ the created line item
 
 #### Defined in
 
-[services/line-item.ts:261](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L261)
+[services/line-item.ts:261](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L261)
 
 ___
 
@@ -156,7 +156,7 @@ the created line items
 
 #### Defined in
 
-[services/line-item.ts:133](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L133)
+[services/line-item.ts:133](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L133)
 
 ___
 
@@ -180,7 +180,7 @@ the result of the delete operation
 
 #### Defined in
 
-[services/line-item.ts:309](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L309)
+[services/line-item.ts:309](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L309)
 
 ___
 
@@ -207,7 +207,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:186](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L186)
+[services/line-item.ts:186](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L186)
 
 ___
 
@@ -232,7 +232,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:81](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L81)
+[services/line-item.ts:81](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L81)
 
 ___
 
@@ -257,7 +257,7 @@ the line item
 
 #### Defined in
 
-[services/line-item.ts:102](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L102)
+[services/line-item.ts:102](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L102)
 
 ___
 
@@ -282,7 +282,7 @@ the update line item
 
 #### Defined in
 
-[services/line-item.ts:280](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L280)
+[services/line-item.ts:280](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L280)
 
 ___
 
@@ -302,4 +302,4 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:60](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/line-item.ts#L60)
+[services/line-item.ts:60](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/line-item.ts#L60)

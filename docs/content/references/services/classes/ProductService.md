@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product.js:19](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L19)
+[services/product.js:19](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L19)
 
 ## Properties
 
@@ -44,7 +44,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/product.js:13](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L13)
+[services/product.js:13](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L13)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/product.js:12](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L12)
+[services/product.js:12](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L12)
 
 ## Methods
 
@@ -81,7 +81,7 @@ the result of the model update operation
 
 #### Defined in
 
-[services/product.js:707](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L707)
+[services/product.js:707](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L707)
 
 ___
 
@@ -105,7 +105,7 @@ the result of the count operation
 
 #### Defined in
 
-[services/product.js:223](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L223)
+[services/product.js:223](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L223)
 
 ___
 
@@ -129,7 +129,7 @@ resolves to the creation result.
 
 #### Defined in
 
-[services/product.js:483](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L483)
+[services/product.js:483](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L483)
 
 ___
 
@@ -156,7 +156,7 @@ return the decorated product.
 
 #### Defined in
 
-[services/product.js:945](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L945)
+[services/product.js:945](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L945)
 
 ___
 
@@ -181,7 +181,7 @@ empty promise
 
 #### Defined in
 
-[services/product.js:673](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L673)
+[services/product.js:673](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L673)
 
 ___
 
@@ -206,7 +206,7 @@ the updated product
 
 #### Defined in
 
-[services/product.js:881](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L881)
+[services/product.js:881](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L881)
 
 ___
 
@@ -232,7 +232,7 @@ a query builder that can fetch products
 
 #### Defined in
 
-[services/product.js:1014](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L1014)
+[services/product.js:1014](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L1014)
 
 ___
 
@@ -257,7 +257,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/product.js:109](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L109)
+[services/product.js:109](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L109)
 
 ___
 
@@ -285,7 +285,7 @@ an array containing the products as
 
 #### Defined in
 
-[services/product.js:164](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L164)
+[services/product.js:164](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L164)
 
 ___
 
@@ -305,7 +305,7 @@ ___
 
 #### Defined in
 
-[services/product.js:412](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L412)
+[services/product.js:412](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L412)
 
 ___
 
@@ -319,7 +319,7 @@ ___
 
 #### Defined in
 
-[services/product.js:404](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L404)
+[services/product.js:404](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L404)
 
 ___
 
@@ -345,7 +345,7 @@ an object containing the query, relations and free-text
 
 #### Defined in
 
-[services/product.js:980](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L980)
+[services/product.js:980](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L980)
 
 ___
 
@@ -372,7 +372,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/product.js:790](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L790)
+[services/product.js:790](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L790)
 
 ___
 
@@ -393,7 +393,7 @@ ___
 
 #### Defined in
 
-[services/product.js:746](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L746)
+[services/product.js:746](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L746)
 
 ___
 
@@ -419,7 +419,7 @@ the result of the find one operation.
 
 #### Defined in
 
-[services/product.js:239](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L239)
+[services/product.js:239](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L239)
 
 ___
 
@@ -445,7 +445,7 @@ the result of the find one operation.
 
 #### Defined in
 
-[services/product.js:342](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L342)
+[services/product.js:342](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L342)
 
 ___
 
@@ -471,7 +471,7 @@ the result of the find one operation.
 
 #### Defined in
 
-[services/product.js:291](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L291)
+[services/product.js:291](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L291)
 
 ___
 
@@ -496,7 +496,7 @@ an array of variants
 
 #### Defined in
 
-[services/product.js:392](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L392)
+[services/product.js:392](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L392)
 
 ___
 
@@ -525,7 +525,7 @@ A list of products with variants decorated with "additional_prices"
 
 #### Defined in
 
-[services/product.js:1055](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L1055)
+[services/product.js:1055](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L1055)
 
 ___
 
@@ -552,7 +552,7 @@ resolves to the update result.
 
 #### Defined in
 
-[services/product.js:573](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L573)
+[services/product.js:573](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L573)
 
 ___
 
@@ -579,7 +579,7 @@ the updated product
 
 #### Defined in
 
-[services/product.js:831](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L831)
+[services/product.js:831](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L831)
 
 ___
 
@@ -599,7 +599,7 @@ ___
 
 #### Defined in
 
-[services/product.js:542](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L542)
+[services/product.js:542](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L542)
 
 ___
 
@@ -619,7 +619,7 @@ ___
 
 #### Defined in
 
-[services/product.js:455](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L455)
+[services/product.js:455](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L455)
 
 ___
 
@@ -639,7 +639,7 @@ ___
 
 #### Defined in
 
-[services/product.js:430](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L430)
+[services/product.js:430](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L430)
 
 ___
 
@@ -659,4 +659,4 @@ ___
 
 #### Defined in
 
-[services/product.js:76](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/product.js#L76)
+[services/product.js:76](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/product.js#L76)

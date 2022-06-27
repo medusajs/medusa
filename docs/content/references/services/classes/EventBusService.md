@@ -19,7 +19,7 @@ subscribers when events happen. Events will run asynchronously.
 
 #### Defined in
 
-[services/event-bus.js:10](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L10)
+[services/event-bus.js:10](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L10)
 
 ## Properties
 
@@ -29,7 +29,7 @@ subscribers when events happen. Events will run asynchronously.
 
 #### Defined in
 
-[services/event-bus.js:31](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L31)
+[services/event-bus.js:31](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L31)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:182](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L182)
+[services/event-bus.js:182](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L182)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:183](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L183)
+[services/event-bus.js:183](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L183)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:51](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L51)
+[services/event-bus.js:51](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L51)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L52)
+[services/event-bus.js:52](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L52)
 
 ___
 
@@ -79,7 +79,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:39](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L39)
+[services/event-bus.js:39](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L39)
 
 ## Methods
 
@@ -104,7 +104,7 @@ Registers a cron job.
 
 #### Defined in
 
-[services/event-bus.js:280](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L280)
+[services/event-bus.js:280](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L280)
 
 ___
 
@@ -128,7 +128,7 @@ resolves to the results of the subscriber calls.
 
 #### Defined in
 
-[services/event-bus.js:255](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L255)
+[services/event-bus.js:255](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L255)
 
 ___
 
@@ -154,7 +154,7 @@ Calls all subscribers when an event occurs.
 
 #### Defined in
 
-[services/event-bus.js:154](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L154)
+[services/event-bus.js:154](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L154)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:191](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L191)
+[services/event-bus.js:191](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L191)
 
 ___
 
@@ -191,7 +191,7 @@ Adds a function to a list of event subscribers.
 
 #### Defined in
 
-[services/event-bus.js:135](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L135)
+[services/event-bus.js:135](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L135)
 
 ___
 
@@ -211,7 +211,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:175](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L175)
+[services/event-bus.js:175](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L175)
 
 ___
 
@@ -225,7 +225,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:181](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L181)
+[services/event-bus.js:181](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L181)
 
 ___
 
@@ -239,7 +239,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:186](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L186)
+[services/event-bus.js:186](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L186)
 
 ___
 
@@ -262,7 +262,7 @@ Adds a function to a list of event subscribers.
 
 #### Defined in
 
-[services/event-bus.js:98](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L98)
+[services/event-bus.js:98](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L98)
 
 ___
 
@@ -285,7 +285,7 @@ Adds a function to a list of event subscribers.
 
 #### Defined in
 
-[services/event-bus.js:116](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L116)
+[services/event-bus.js:116](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L116)
 
 ___
 
@@ -305,7 +305,7 @@ ___
 
 #### Defined in
 
-[services/event-bus.js:69](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L69)
+[services/event-bus.js:69](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L69)
 
 ___
 
@@ -329,4 +329,4 @@ resolves to the results of the subscriber calls.
 
 #### Defined in
 
-[services/event-bus.js:226](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/event-bus.js#L226)
+[services/event-bus.js:226](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/event-bus.js#L226)

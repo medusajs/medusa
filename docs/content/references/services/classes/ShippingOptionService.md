@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/shipping-option.js:9](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L9)
+[services/shipping-option.js:9](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L9)
 
 ## Methods
 
@@ -52,7 +52,7 @@ the result of update
 
 #### Defined in
 
-[services/shipping-option.js:594](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L594)
+[services/shipping-option.js:594](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L594)
 
 ___
 
@@ -78,7 +78,7 @@ the result of the create operation
 
 #### Defined in
 
-[services/shipping-option.js:350](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L350)
+[services/shipping-option.js:350](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L350)
 
 ___
 
@@ -104,7 +104,7 @@ the resulting shipping method.
 
 #### Defined in
 
-[services/shipping-option.js:231](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L231)
+[services/shipping-option.js:231](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L231)
 
 ___
 
@@ -130,7 +130,7 @@ the decorated ShippingOption.
 
 #### Defined in
 
-[services/shipping-option.js:645](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L645)
+[services/shipping-option.js:645](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L645)
 
 ___
 
@@ -154,7 +154,7 @@ the result of the delete operation.
 
 #### Defined in
 
-[services/shipping-option.js:566](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L566)
+[services/shipping-option.js:566](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L566)
 
 ___
 
@@ -176,7 +176,7 @@ Removes a given shipping method
 
 #### Defined in
 
-[services/shipping-option.js:213](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L213)
+[services/shipping-option.js:213](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L213)
 
 ___
 
@@ -204,7 +204,7 @@ the price of the shipping option.
 
 #### Defined in
 
-[services/shipping-option.js:697](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L697)
+[services/shipping-option.js:697](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L697)
 
 ___
 
@@ -227,7 +227,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/shipping-option.js:123](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L123)
+[services/shipping-option.js:123](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L123)
 
 ___
 
@@ -250,7 +250,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/shipping-option.js:135](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L135)
+[services/shipping-option.js:135](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L135)
 
 ___
 
@@ -274,7 +274,7 @@ the result of update
 
 #### Defined in
 
-[services/shipping-option.js:620](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L620)
+[services/shipping-option.js:620](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L620)
 
 ___
 
@@ -300,7 +300,7 @@ the profile document.
 
 #### Defined in
 
-[services/shipping-option.js:149](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L149)
+[services/shipping-option.js:149](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L149)
 
 ___
 
@@ -325,7 +325,7 @@ resolves to the updated result.
 
 #### Defined in
 
-[services/shipping-option.js:664](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L664)
+[services/shipping-option.js:664](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L664)
 
 ___
 
@@ -352,7 +352,7 @@ resolves to the update result.
 
 #### Defined in
 
-[services/shipping-option.js:464](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L464)
+[services/shipping-option.js:464](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L464)
 
 ___
 
@@ -378,7 +378,7 @@ the resulting shipping method
 
 #### Defined in
 
-[services/shipping-option.js:184](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L184)
+[services/shipping-option.js:184](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L184)
 
 ___
 
@@ -405,7 +405,7 @@ the validated shipping option
 
 #### Defined in
 
-[services/shipping-option.js:309](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L309)
+[services/shipping-option.js:309](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L309)
 
 ___
 
@@ -430,7 +430,7 @@ the validated price
 
 #### Defined in
 
-[services/shipping-option.js:431](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L431)
+[services/shipping-option.js:431](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L431)
 
 ___
 
@@ -455,7 +455,7 @@ a validated shipping requirement
 
 #### Defined in
 
-[services/shipping-option.js:63](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L63)
+[services/shipping-option.js:63](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L63)
 
 ___
 
@@ -475,4 +475,4 @@ ___
 
 #### Defined in
 
-[services/shipping-option.js:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/shipping-option.js#L38)
+[services/shipping-option.js:38](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/shipping-option.js#L38)

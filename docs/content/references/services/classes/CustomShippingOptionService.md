@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/custom-shipping-option.js:5](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L5)
+[services/custom-shipping-option.js:5](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/custom-shipping-option.js#L5)
 
 ## Methods
 
@@ -49,7 +49,7 @@ resolves to the creation result
 
 #### Defined in
 
-[services/custom-shipping-option.js:88](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L88)
+[services/custom-shipping-option.js:88](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/custom-shipping-option.js#L88)
 
 ___
 
@@ -74,7 +74,7 @@ custom shipping options matching the query
 
 #### Defined in
 
-[services/custom-shipping-option.js:65](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L65)
+[services/custom-shipping-option.js:65](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/custom-shipping-option.js#L65)
 
 ___
 
@@ -99,7 +99,7 @@ which resolves to the requested custom shipping option.
 
 #### Defined in
 
-[services/custom-shipping-option.js:40](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L40)
+[services/custom-shipping-option.js:40](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/custom-shipping-option.js#L40)
 
 ___
 
@@ -123,4 +123,4 @@ a cloned CustomShippingOption service
 
 #### Defined in
 
-[services/custom-shipping-option.js:20](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L20)
+[services/custom-shipping-option.js:20](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/custom-shipping-option.js#L20)

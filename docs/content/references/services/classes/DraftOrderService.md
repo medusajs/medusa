@@ -28,7 +28,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/draft-order.js:15](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L15)
+[services/draft-order.js:15](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L15)
 
 ## Properties
 
@@ -45,7 +45,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/draft-order.js:10](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L10)
+[services/draft-order.js:10](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L10)
 
 ## Methods
 
@@ -69,7 +69,7 @@ the created draft order
 
 #### Defined in
 
-[services/draft-order.js:233](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L233)
+[services/draft-order.js:233](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L233)
 
 ___
 
@@ -93,7 +93,7 @@ empty promise
 
 #### Defined in
 
-[services/draft-order.js:135](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L135)
+[services/draft-order.js:135](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L135)
 
 ___
 
@@ -118,7 +118,7 @@ list of draft orders
 
 #### Defined in
 
-[services/draft-order.js:215](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L215)
+[services/draft-order.js:215](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L215)
 
 ___
 
@@ -143,7 +143,7 @@ draft orders
 
 #### Defined in
 
-[services/draft-order.js:161](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L161)
+[services/draft-order.js:161](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L161)
 
 ___
 
@@ -168,7 +168,7 @@ the created order
 
 #### Defined in
 
-[services/draft-order.js:336](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L336)
+[services/draft-order.js:336](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L336)
 
 ___
 
@@ -193,7 +193,7 @@ the draft order
 
 #### Defined in
 
-[services/draft-order.js:84](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L84)
+[services/draft-order.js:84](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L84)
 
 ___
 
@@ -218,7 +218,7 @@ the draft order
 
 #### Defined in
 
-[services/draft-order.js:111](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L111)
+[services/draft-order.js:111](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L111)
 
 ___
 
@@ -243,7 +243,7 @@ the updated draft order
 
 #### Defined in
 
-[services/draft-order.js:357](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L357)
+[services/draft-order.js:357](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L357)
 
 ___
 
@@ -263,4 +263,4 @@ ___
 
 #### Defined in
 
-[services/draft-order.js:56](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/draft-order.js#L56)
+[services/draft-order.js:56](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/draft-order.js#L56)

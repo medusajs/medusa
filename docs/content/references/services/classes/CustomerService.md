@@ -28,7 +28,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/customer.js:20](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L20)
+[services/customer.js:20](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L20)
 
 ## Properties
 
@@ -46,7 +46,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/customer.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L14)
+[services/customer.js:14](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L14)
 
 ## Methods
 
@@ -67,7 +67,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/customer.js:479](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L479)
+[services/customer.js:479](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L479)
 
 ___
 
@@ -85,7 +85,7 @@ the result of the count operation
 
 #### Defined in
 
-[services/customer.js:192](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L192)
+[services/customer.js:192](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L192)
 
 ___
 
@@ -112,7 +112,7 @@ the result of create
 
 #### Defined in
 
-[services/customer.js:290](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L290)
+[services/customer.js:290](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L290)
 
 ___
 
@@ -138,7 +138,7 @@ return the decorated customer.
 
 #### Defined in
 
-[services/customer.js:547](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L547)
+[services/customer.js:547](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L547)
 
 ___
 
@@ -162,7 +162,7 @@ the result of the delete operation.
 
 #### Defined in
 
-[services/customer.js:523](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L523)
+[services/customer.js:523](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L523)
 
 ___
 
@@ -190,7 +190,7 @@ the generated JSON web token
 
 #### Defined in
 
-[services/customer.js:67](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L67)
+[services/customer.js:67](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L67)
 
 ___
 
@@ -214,7 +214,7 @@ hashed password
 
 #### Defined in
 
-[services/customer.js:277](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L277)
+[services/customer.js:277](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L277)
 
 ___
 
@@ -237,7 +237,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/customer.js:106](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L106)
+[services/customer.js:106](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L106)
 
 ___
 
@@ -260,7 +260,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/customer.js:147](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L147)
+[services/customer.js:147](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L147)
 
 ___
 
@@ -281,7 +281,7 @@ ___
 
 #### Defined in
 
-[services/customer.js:460](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L460)
+[services/customer.js:460](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L460)
 
 ___
 
@@ -306,7 +306,7 @@ the customer document.
 
 #### Defined in
 
-[services/customer.js:205](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L205)
+[services/customer.js:205](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L205)
 
 ___
 
@@ -331,7 +331,7 @@ the customer document.
 
 #### Defined in
 
-[services/customer.js:230](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L230)
+[services/customer.js:230](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L230)
 
 ___
 
@@ -356,7 +356,7 @@ the customer document.
 
 #### Defined in
 
-[services/customer.js:254](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L254)
+[services/customer.js:254](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L254)
 
 ___
 
@@ -381,7 +381,7 @@ resolves to the update result.
 
 #### Defined in
 
-[services/customer.js:346](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L346)
+[services/customer.js:346](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L346)
 
 ___
 
@@ -403,7 +403,7 @@ ___
 
 #### Defined in
 
-[services/customer.js:441](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L441)
+[services/customer.js:441](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L441)
 
 ___
 
@@ -429,7 +429,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/customer.js:408](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L408)
+[services/customer.js:408](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L408)
 
 ___
 
@@ -449,4 +449,4 @@ ___
 
 #### Defined in
 
-[services/customer.js:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/customer.js#L41)
+[services/customer.js:41](https://github.com/edihasaj/medusa/blob/1cc4f9ac/packages/medusa/src/services/customer.js#L41)
