@@ -37,7 +37,7 @@ describe("Batch job of product-export type", () => {
 
   afterAll(async () => {
     if (topDir !== "") {
-      await fs.rmdir(resolve(__dirname, topDir), { recursive: true })
+      await fs.rm(resolve(__dirname, topDir), { recursive: true })
     }
 
     const db = useDb()

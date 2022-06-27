@@ -37,7 +37,7 @@ describe("Batchjob with type order-export", () => {
 
   afterAll(async () => {
     if (topDir !== "") {
-      await fs.rmdir(resolve(__dirname, topDir), { recursive: true })
+      await fs.rm(resolve(__dirname, topDir), { recursive: true })
     }
 
     const db = useDb()

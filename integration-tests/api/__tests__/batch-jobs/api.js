@@ -216,7 +216,7 @@ describe("/admin/batch-jobs", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       const db = useDb()
       await db.teardown()
     })
