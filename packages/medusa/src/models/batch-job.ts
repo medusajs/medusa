@@ -29,6 +29,7 @@ export class BatchJob extends SoftDeletableEntity {
     errors?: BatchJobResultError[]
     stat_descriptors?: BatchJobResultStatDescriptor[]
     file_key?: string
+    file_size?: number
   } & Record<string, unknown>
 
   @Column({ type: "boolean", nullable: false, default: false })
