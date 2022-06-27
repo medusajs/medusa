@@ -3,6 +3,7 @@ import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { decorateLineItems } from "./decorate-line-items"
 
 /**
  * @oas [post] /carts/{id}/shipping-methods
@@ -59,7 +60,9 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  res.status(200).json({ cart: updatedCart })
+  const data = await decorateLineItems(updatedCart, req)
+
+  res.status(200).json({ cart: data })
 }
 
 export class StorePostCartsCartShippingMethodReq {

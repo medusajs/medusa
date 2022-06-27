@@ -244,25 +244,7 @@ class CartService extends TransactionBaseService<CartService> {
       }
     }
 
-    let cartWithTotals = Object.assign(cart, totals)
-
-    if (!isEmpty(totals) && cart.items && cart.region) {
-      const items = await Promise.all(
-        cart.items.map(async (item) => {
-          const itemTotals = await this.totalsService_.getLineItemTotals(
-            item,
-            cart,
-            { include_tax: true }
-          )
-
-          return Object.assign(item, itemTotals)
-        })
-      )
-
-      cartWithTotals = Object.assign(cartWithTotals, { items })
-    }
-
-    return cartWithTotals
+    return Object.assign(cart, totals)
   }
 
   /**
@@ -1956,6 +1938,7 @@ class CartService extends TransactionBaseService<CartService> {
             "region.tax_rates",
           ],
         })
+
         const calculationContext = this.totalsService_
           .withTransaction(transactionManager)
           .getCalculationContext(cart)
