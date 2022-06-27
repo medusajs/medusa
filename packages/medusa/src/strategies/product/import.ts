@@ -341,7 +341,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp) as unknown as CreateProductInput
           )
       } catch (e) {
-        throw e
         this.handleImportError(productOp)
       }
 
@@ -374,7 +373,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp)
           )
       } catch (e) {
-        throw e
         this.handleImportError(productOp)
       }
 
@@ -433,7 +431,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
         this.updateProgress(batchJobId)
       } catch (e) {
-        throw e
         this.handleImportError(variantOp)
       }
     }
@@ -463,7 +460,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformVariantData(variantOp) as UpdateProductVariantInput
           )
       } catch (e) {
-        throw e
         this.handleImportError(variantOp)
       }
 
