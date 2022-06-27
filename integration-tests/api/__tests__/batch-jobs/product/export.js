@@ -1,5 +1,6 @@
 const path = require("path")
 const fs = require("fs/promises")
+import { sep, resolve } from "path"
 
 const setupServer = require("../../../../helpers/setup-server")
 const { useApi } = require("../../../../helpers/use-api")
@@ -20,6 +21,8 @@ jest.setTimeout(1000000)
 describe("Batch job of product-export type", () => {
   let medusaProcess
   let dbConnection
+  let exportFilePath = ""
+  let topDir = ""
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", "..", ".."))
@@ -32,9 +35,11 @@ describe("Batch job of product-export type", () => {
     })
   })
 
-  let exportFilePath = ""
-
   afterAll(async () => {
+    if (topDir !== "") {
+      await fs.rmdir(resolve(__dirname, topDir), { recursive: true })
+    }
+
     const db = useDb()
     await db.shutdown()
 
@@ -57,7 +62,14 @@ describe("Batch job of product-export type", () => {
     await db.teardown()
 
     const isFileExists = (await fs.stat(exportFilePath))?.isFile()
+
     if (isFileExists) {
+      const [, relativeRoot] = exportFilePath.replace(__dirname, "").split(sep)
+
+      if ((await fs.stat(resolve(__dirname, relativeRoot)))?.isDirectory()) {
+        topDir = relativeRoot
+      }
+
       await fs.unlink(exportFilePath)
     }
   })
