@@ -20,7 +20,12 @@ import { LineItemAdjustment } from "./line-item-adjustment"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 
-export class LineItemBase extends BaseEntity {
+@Check(`"fulfilled_quantity" <= "quantity"`)
+@Check(`"shipped_quantity" <= "fulfilled_quantity"`)
+@Check(`"returned_quantity" <= "quantity"`)
+@Check(`"quantity" > 0`)
+@Entity()
+export class LineItem extends BaseEntity {
   @Index()
   @Column({ nullable: true })
   cart_id: string
@@ -119,14 +124,7 @@ export class LineItemBase extends BaseEntity {
   original_tax_total?: number | null
   discount_total?: number | null
   gift_card_total?: number | null
-}
 
-@Check(`"fulfilled_quantity" <= "quantity"`)
-@Check(`"shipped_quantity" <= "fulfilled_quantity"`)
-@Check(`"returned_quantity" <= "quantity"`)
-@Check(`"quantity" > 0`)
-@Entity()
-export class LineItem extends LineItemBase {
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "item")

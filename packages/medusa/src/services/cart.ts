@@ -253,10 +253,8 @@ class CartService extends TransactionBaseService<CartService> {
             cart,
             { include_tax: true }
           )
-          return {
-            ...item,
-            ...itemTotals,
-          }
+
+          return Object.assign(item, itemTotals)
         })
       )
     }

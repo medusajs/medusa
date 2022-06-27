@@ -100,7 +100,7 @@ import { Address } from "./address"
 import { Customer } from "./customer"
 import { Discount } from "./discount"
 import { GiftCard } from "./gift-card"
-import { LineItem, LineItemBase } from "./line-item"
+import { LineItem } from "./line-item"
 import { Payment } from "./payment"
 import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
@@ -146,7 +146,7 @@ export class Cart extends SoftDeletableEntity {
   @OneToMany(() => LineItem, (lineItem) => lineItem.cart, {
     cascade: ["insert", "remove"],
   })
-  items: LineItemBase[]
+  items: LineItem[]
 
   @Index()
   @Column()
