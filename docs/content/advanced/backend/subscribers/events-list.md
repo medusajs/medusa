@@ -167,7 +167,7 @@ Triggered when a cart and data associated with it (payment sessions, shipping me
 </td>
 <td>
 
-The entire cart as an object. You can refer to the [Cart model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/cart.ts) for an idea of what fields to expect.
+The entire cart as an object. You can refer to the [Cart entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/cart.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -213,7 +213,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -238,7 +238,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -263,7 +263,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -288,8 +288,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of claim
-  fulfillment_id, //string ID of the fulfillment created
-  no_notification //boolean indicating whether a notification should be sent or not
+    fulfillment_id, //string ID of the fulfillment created
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -314,8 +314,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of claim
-  fulfillment_id, //string ID of the fulfillment created
-  no_notification //boolean indicating whether a notification should be sent or not
+    fulfillment_id, //string ID of the fulfillment created
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -340,7 +340,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of claim
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -476,7 +476,7 @@ Triggered when a customer is created.
 </td>
 <td>
 
-The entire customer passed as an object. You can refer to the [Customer model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
+The entire customer passed as an object. You can refer to the [Customer entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -494,7 +494,7 @@ Triggered when a customer is updated including their information or password, or
 </td>
 <td>
 
-The entire customer passed as an object. You can refer to the [Customer model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
+The entire customer passed as an object. You can refer to the [Customer entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/customer.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -517,10 +517,10 @@ Object of the following format:
 ```js
 {
   id, //string ID of customer
-  email, //string email of the customer
-  first_name, //string first name of the customer
-  last_name, //string last name of the customer
-  token //string reset password token
+    email, //string email of the customer
+    first_name, //string first name of the customer
+    last_name, //string last name of the customer
+    token //string reset password token
 }
 ```
 
@@ -685,7 +685,7 @@ Object of the following format:
 {
   id //string ID of invite
   token, //string token generated to validate the invited user
-  user_email //string email of invited user
+    user_email //string email of invited user
 }
 ```
 
@@ -849,7 +849,6 @@ The returned data from the method `refreshToken` in the auth handler service of 
 </td>
 </tr>
 
-
 </tbody>
 </table>
 
@@ -890,7 +889,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -915,7 +914,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -940,7 +939,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -965,7 +964,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1014,7 +1013,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1039,9 +1038,9 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  payment_id, //string ID of Payment
-  error, //string error message
-  no_notification //boolean indicating whether a notification should be sent or not
+    payment_id, //string ID of Payment
+    error, //string error message
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1066,8 +1065,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+    fulfillment_id, //string ID of fulfillment
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1092,8 +1091,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+    fulfillment_id, //string ID of fulfillment
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1118,8 +1117,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+    fulfillment_id, //string ID of fulfillment
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1144,8 +1143,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  return_id, //string ID of return
-  no_notification //boolean indicating whether a notification should be sent or not
+    return_id, //string ID of return
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1170,8 +1169,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  return_id, //string ID of return
-  no_notification //boolean indicating whether a notification should be sent or not
+    return_id, //string ID of return
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1196,8 +1195,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  return_id, //string ID of return
-  no_notification //boolean indicating whether a notification should be sent or not
+    return_id, //string ID of return
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1222,8 +1221,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of order
-  refund_id, //string ID of refund
-  no_notification //boolean indicating whether a notification should be sent or not
+    refund_id, //string ID of refund
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1338,7 +1337,7 @@ Triggered when a product and data associated with it (options, variant orders, e
 </td>
 <td>
 
-The entire product passed as an object. You can refer to the [Product model](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/product.ts) for an idea of what fields to expect.
+The entire product passed as an object. You can refer to the [Product entity](https://github.com/medusajs/medusa/blob/master/packages/medusa/src/models/product.ts) for an idea of what fields to expect.
 
 </td>
 </tr>
@@ -1407,7 +1406,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of variant
-  product_id //string ID of product
+    product_id //string ID of product
 }
 ```
 
@@ -1432,8 +1431,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of variant
-  product_id, //string ID of product
-  fields //array of names of updated fields
+    product_id, //string ID of product
+    fields //array of names of updated fields
 }
 ```
 
@@ -1458,8 +1457,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of variant
-  product_id, //string ID of product
-  metadata //object of additional data
+    product_id, //string ID of product
+    metadata //object of additional data
 }
 ```
 
@@ -1530,7 +1529,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of region
-  fields //array of names of updated fields
+    fields //array of names of updated fields
 }
 ```
 
@@ -1600,7 +1599,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1625,8 +1624,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  order_id, //string ID of order
-  no_notification //boolean indicating whether a notification should be sent or not
+    order_id, //string ID of order
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1651,8 +1650,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+    fulfillment_id, //string ID of fulfillment
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1677,8 +1676,8 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  fulfillment_id, //string ID of fulfillment
-  no_notification //boolean indicating whether a notification should be sent or not
+    fulfillment_id, //string ID of fulfillment
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1703,7 +1702,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1728,7 +1727,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1753,7 +1752,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1778,7 +1777,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1803,7 +1802,7 @@ Object of the following format:
 ```js
 {
   id, //string ID of swap
-  no_notification //boolean indicating whether a notification should be sent or not
+    no_notification //boolean indicating whether a notification should be sent or not
 }
 ```
 
@@ -1850,7 +1849,7 @@ Object of the following format:
 ```js
 {
   email, //string email of user requesting to reset their password
-  token //token create to reset the password
+    token //token create to reset the password
 }
 ```
 
@@ -1862,4 +1861,4 @@ Object of the following format:
 ## What’s Next 🚀
 
 - Learn how you can [use services in subscribers](create-subscriber.md#using-services-in-subscribers).
-- Learn how to [create notifications](../../../how-to/notification-api.md) in Medusa.
+- Learn how to [create notifications](../notification/overview.md) in Medusa.

@@ -2,6 +2,7 @@ import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
 import BatchJobService from "../../../../services/batch-job"
 import FeatureFlagStrategy from "../../../../strategies/feature-flag"
 import { validator } from "../../../../utils/validator"
+import { BatchJob } from "../../../../models"
 
 /**
  * @oas [post] /batch-jobs
@@ -28,13 +29,22 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostBatchesReq, req.body)
 
-  const userId = req.user.id ?? req.user.userId
-
   const featureFlagService: FeatureFlagStrategy = req.scope.resolve(
     "featureFlagStrategy"
   )
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
+  const toCreate = await batchJobService.prepareBatchJobForProcessing(
+    validated,
+    req
+  )
+
+  const userId = req.user.id ?? req.user.userId
+
+  const batch_job = await batchJobService.create({
+    ...toCreate,
+    created_by: userId,
+  })
 
   if (featureFlagService.isSet("medusa:batchJob")) {
     const batch_job = await batchJobService.create({
@@ -51,7 +61,7 @@ export class AdminPostBatchesReq {
   type: string
 
   @IsObject()
-  context: Record<string, unknown>
+  context: BatchJob["context"]
 
   @IsBoolean()
   @IsOptional()

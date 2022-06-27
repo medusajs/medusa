@@ -6,6 +6,7 @@ import { Product } from "../../models/product"
 import { ProductService, PricingService } from "../../services"
 import { getListConfig } from "../../utils/get-query-config"
 import { FilterableProductProps } from "../../types/product"
+import { PricedProduct } from "../../types/pricing"
 
 type ListContext = {
   limit: number
@@ -73,7 +74,7 @@ const listAndCount = async (
     listConfig
   )
 
-  let products = rawProducts
+  let products: (Product | PricedProduct)[] = rawProducts
 
   const includesPricing = ["variants", "variants.prices"].every((relation) =>
     listConfig?.relations?.includes(relation)

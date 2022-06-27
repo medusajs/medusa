@@ -76,7 +76,7 @@ You will not be able to access the Secret Key after closing the pop-up. So, make
 
 In the directory of your Medusa server, run the following command to install the MinIO plugin:
 
-```bash
+```bash npm2yarn
 npm install medusa-file-minio
 ```
 
@@ -121,11 +121,11 @@ In `next.config.js` add the following option in the exported object:
 
 ```jsx
 module.exports = {
-    //other options
-    images: {
+  //other options
+  images: {
     domains: [
-        "127.0.0.1",
-        //any other domains...
+      "127.0.0.1",
+      //any other domains...
     ],
   },
 }

@@ -33,7 +33,7 @@ Medusa's event system works by pushing data into a queue that is based on [Redis
 
 As the Slack plugin will listen to the `order.placed` event to know when to send notifications, you'll need to have Redis installed and configured with your Medusa server.
 
-You can read the [Set up your development enviornment guideline](https://docs.medusajs.com/tutorial/set-up-your-development-environment) to learn more about how you can install and setup Redis.
+You can read the [Set up your development enviornment guideline](../tutorial/0-set-up-your-development-environment.mdx#redis) to learn more about how you can install and setup Redis.
 
 ## Create Slack App
 
@@ -90,7 +90,7 @@ const plugins = [
 ```
 
 - Make sure to change `<WEBHOOK_URL>` with the Webhook URL you copied after creating the Slack app.
-- The `show_discount_code` option enables or disables showing the discount code in the notification sent to Slack. 
+- The `show_discount_code` option enables or disables showing the discount code in the notification sent to Slack.
 - The `admin_orders_url` is the prefix of the URL of the order detail pages on your admin panel. If you’re using Medusa’s Admin locally, it should be `http://localhost:7001/a/orders`. This will result in a URL like `http://localhost:7001/a/orders/order_01FYP7DM7PS43H9VQ1PK59ZR5G`.
 
 That’s all you need to do to integrate Slack into Medusa!

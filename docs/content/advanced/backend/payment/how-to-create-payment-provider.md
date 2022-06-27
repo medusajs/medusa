@@ -27,7 +27,7 @@ The Payment Provider service is also required to implement the following methods
 5. `updatePaymentData`: Used to update the `data` field of Payment Sessions. Specifically called when a request is sent to the [Update Payment Session](https://docs.medusajs.com/api/store/cart/update-a-payment-session) endpoint.
 6. `deletePayment`: Used to perform any action necessary before a Payment Session is deleted.
 7. `authorizePayment`: Used to authorize the payment amount of the cart before the order or swap is created.
-8. `getPaymentData`: Used to retrieve the data that should be stored in the `data` field of a new  Payment instance after the payment amount has been authorized.
+8. `getPaymentData`: Used to retrieve the data that should be stored in the `data` field of a new Payment instance after the payment amount has been authorized.
 9. `capturePayment`: Used to capture the payment amount of an order or swap.
 10. `refundPayment`: Used to refund a payment amount of an order or swap.
 11. `cancelPayment`: Used to perform any necessary action with the third-party payment provider when an order or swap is canceled.
@@ -49,11 +49,9 @@ The first step to create a payment provider is to create a file in `src/services
 ```jsx
 import { PaymentService } from "medusa-interfaces"
 
-class MyPaymentService extends PaymentService {
+class MyPaymentService extends PaymentService {}
 
-}
-
-export default MyPaymentService;
+export default MyPaymentService
 ```
 
 Where `MyPaymentService` is the name of your Payment Provider service. For example, Stripe’s Payment Provider Service is called `StripeProviderService`.
@@ -70,7 +68,7 @@ Following the naming convention of Services, the name of the file should be the 
 
 As mentioned in the overview, Payment Providers should have a static `identifier` property.
 
-The `PaymentProvider` model has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
+The `PaymentProvider` entity has 2 properties: `identifier` and `is_installed`. The value of the `identifier` property in the class will be used when the Payment Provider is created in the database.
 
 The value of this property will also be used to reference the Payment Provider throughout the Medusa server. For example, the identifier is used when a [Payment Session in a cart is selected on checkout](https://docs.medusajs.com/api/store/cart/select-a-payment-session).
 
@@ -100,7 +98,7 @@ An example of a minimal implementation of `createPayment` that does not interact
 
 ```jsx
 async createPayment(cart) {
-  return { 
+  return {
     id: 'test-payment',
     status: 'pending'
    };
@@ -125,7 +123,7 @@ async retrievePayment(cart) {
 
 ### getStatus
 
-This method is used to get the status of a Payment or a Payment Session. 
+This method is used to get the status of a Payment or a Payment Session.
 
 Its main usage is in the place order workflow. If the status returned is not `authorized`, then the payment is considered failed, an error will be thrown, and the order will not be placed.
 
@@ -384,4 +382,4 @@ async retrieveSavedMethods(customer) {
 ## What’s Next 🚀
 
 - Check out the Payment Providers for [Stripe](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-stripe) and [PayPal](https://github.com/medusajs/medusa/tree/2e6622ec5d0ae19d1782e583e099000f0a93b051/packages/medusa-payment-paypal) for implementation examples.
-- Learn more about the [frontend checkout flow](./frontend-payment-flow-in-checkout.md).
+- Learn more about the [frontend checkout flow](./../../storefront/how-to-implement-checkout-flow.mdx).

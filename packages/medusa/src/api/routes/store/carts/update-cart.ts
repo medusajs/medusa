@@ -8,10 +8,10 @@ import {
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { AddressPayload } from "../../../../types/common"
 import { CartUpdateProps } from "../../../../types/cart"
-import { IsType } from "../../../../utils/validators/is-type"
+import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -90,7 +90,7 @@ export default async (req, res) => {
   // Update the cart
   const { shipping_address, billing_address, ...rest } = validated
 
-  const cartDataToUpdate: CartUpdateProps = { ...rest };
+  const cartDataToUpdate: CartUpdateProps = { ...rest }
   if (typeof shipping_address === "string") {
     cartDataToUpdate.shipping_address_id = shipping_address
   } else {

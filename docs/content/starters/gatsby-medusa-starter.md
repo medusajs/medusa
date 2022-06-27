@@ -69,6 +69,12 @@ Then, on your server, update the environment variable `STORE_CORS` to the URL wi
 STORE_CORS=http://localhost:<PORT>
 ```
 
+:::info
+
+For more details about the Store CORS configuration, check out the [Configure your Server documentation](../usage/configurations.md#storefront-cors).
+
+:::
+
 ### Development Resources
 
 If you’re not familiar with Gatsby, you can learn more about it through the following resources:
@@ -83,16 +89,19 @@ The Gatsby storefront comes with a lot of features out of the box including:
 
 - View all products and manage your cart.
 
-    ![Products Page](https://i.imgur.com/P0Mpvxh.png)
+  ![Products Page](https://i.imgur.com/P0Mpvxh.png)
+
 - Customer authentication.
 
-    ![Sign In Page](https://i.imgur.com/0sVcZeS.png)
+  ![Sign In Page](https://i.imgur.com/0sVcZeS.png)
+
 - Full checkout workflow.
 
-    ![One-Page Checkout](https://i.imgur.com/5wSs3yZ.png)
+  ![One-Page Checkout](https://i.imgur.com/5wSs3yZ.png)
+
 - Request swaps and returns using a customer’s order ID and Email.
 
-    ![Request Return for Order](https://i.imgur.com/mAChp3f.png)
+  ![Request Return for Order](https://i.imgur.com/mAChp3f.png)
 
 ## What’s Next 🚀
 

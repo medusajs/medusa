@@ -1,14 +1,14 @@
-import { EntityManager } from "typeorm"
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
+import { EntityManager } from "typeorm"
+import { Cart } from "../models/cart"
+import { LineItem } from "../models/line-item"
+import { LineItemAdjustment } from "../models/line-item-adjustment"
+import { ProductVariant } from "../models/product-variant"
 import { LineItemAdjustmentRepository } from "../repositories/line-item-adjustment"
 import { FindConfig } from "../types/common"
-import { LineItemAdjustment } from "../models/line-item-adjustment"
 import { FilterableLineItemAdjustmentProps } from "../types/line-item-adjustment"
-import { LineItem } from "../models/line-item"
-import { Cart } from "../models/cart"
 import DiscountService from "./discount"
-import { ProductVariant } from "../models/product-variant"
 
 type LineItemAdjustmentServiceProps = {
   manager: EntityManager
@@ -96,7 +96,7 @@ class LineItemAdjustmentService extends BaseService {
       const lineItemAdjustmentRepo: LineItemAdjustmentRepository =
         manager.getCustomRepository(this.lineItemAdjustmentRepo_)
 
-      const lineItemAdjustment = await lineItemAdjustmentRepo.create(data)
+      const lineItemAdjustment = lineItemAdjustmentRepo.create(data)
 
       return await lineItemAdjustmentRepo.save(lineItemAdjustment)
     })

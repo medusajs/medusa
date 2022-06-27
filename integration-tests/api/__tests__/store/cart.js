@@ -486,7 +486,8 @@ describe("/store/carts", () => {
         regions: ["test-region"],
       }
 
-      let discountCart, discount
+      let discountCart
+      let discount
       beforeEach(async () => {
         try {
           discount = await simpleDiscountFactory(
@@ -718,15 +719,17 @@ describe("/store/carts", () => {
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
-        expect.objectContaining({
-          cart_id: "test-cart-3",
-          unit_price: 8000,
-          variant_id: "test-variant-sale-cg",
-          quantity: 3,
-          adjustments: [],
-        }),
-      ])
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            cart_id: "test-cart-3",
+            unit_price: 8000,
+            variant_id: "test-variant-sale-cg",
+            quantity: 3,
+            adjustments: [],
+          }),
+        ])
+      )
     })
 
     it("updates line item of a cart containing a total fixed discount", async () => {
@@ -1363,7 +1366,14 @@ describe("/store/carts", () => {
         .catch((error) => console.log(error))
 
       expect(response.status).toEqual(200)
-      expect(response.data.cart.items[0].unit_price).toEqual(500)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant-sale-cg",
+            unit_price: 500,
+          }),
+        ])
+      )
     })
 
     it("updates prices when cart region id is updated", async () => {
@@ -1479,9 +1489,36 @@ describe("/store/carts", () => {
       const getRes = await api.post(`/store/carts/test-cart-2/complete-cart`)
 
       expect(getRes.status).toEqual(200)
+      expect(getRes.data.type).toEqual("order")
 
       const variantRes = await api.get("/store/variants/test-variant")
       expect(variantRes.data.variant.inventory_quantity).toEqual(0)
+    })
+
+    it("calculates correct payment totals on cart completion taking into account line item adjustments", async () => {
+      const api = useApi()
+
+      await api.post("/store/carts/test-cart-3", {
+        discounts: [{ code: "CREATED" }],
+      })
+
+      const createdOrder = await api.post(
+        `/store/carts/test-cart-3/complete-cart`
+      )
+
+      expect(createdOrder.data.type).toEqual("order")
+      expect(createdOrder.data.data.discount_total).toEqual(10000)
+      expect(createdOrder.data.data.subtotal).toEqual(16000)
+      expect(createdOrder.data.data.total).toEqual(6000)
+      expect(createdOrder.data.data.payments).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 6000,
+          }),
+        ])
+      )
+
+      expect(createdOrder.status).toEqual(200)
     })
 
     it("returns early, if cart is already completed", async () => {
@@ -1739,7 +1776,9 @@ describe("/store/carts", () => {
         .catch((err) => console.log(err))
 
       // Ensure that the discount is only applied to the standard item
-      const itemId = cartWithGiftcard.data.cart.items.find(item => !item.is_giftcard).id
+      const itemId = cartWithGiftcard.data.cart.items.find(
+        (item) => !item.is_giftcard
+      ).id
       expect(cartWithGiftcard.data.cart.items).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

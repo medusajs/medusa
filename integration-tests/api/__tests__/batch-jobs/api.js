@@ -25,25 +25,23 @@ const setupJobDb = async (dbConnection) => {
 
     await simpleBatchJobFactory(dbConnection, {
       id: "job_1",
-      type: "batch_1",
+      type: "product-export",
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_2",
-      type: "batch_2",
-      ready_at: new Date(),
+      type: "product-export",
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_3",
-      type: "batch_2",
-      ready_at: new Date(),
+      type: "product-export",
       created_by: "admin_user",
     })
     await simpleBatchJobFactory(dbConnection, {
       id: "job_4",
-      type: "batch_1",
-      ready_at: new Date(),
+      type: "product-export",
+      status: "awaiting_confirmation",
       created_by: "member-user",
     })
   } catch (err) {
@@ -146,12 +144,7 @@ describe("/admin/batch-jobs", () => {
 
   describe("POST /admin/batch-jobs/", () => {
     beforeEach(async () => {
-      try {
-        await adminSeeder(dbConnection)
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+      await setupJobDb(dbConnection)
     })
 
     afterEach(async () => {
@@ -165,7 +158,7 @@ describe("/admin/batch-jobs", () => {
       const response = await api.post(
         "/admin/batch-jobs",
         {
-          type: "batch_1",
+          type: "product-export",
           context: {},
         },
         adminReqConfig
@@ -215,7 +208,7 @@ describe("/admin/batch-jobs", () => {
         await setupJobDb(dbConnection)
         await simpleBatchJobFactory(dbConnection, {
           id: "job_complete",
-          type: "batch_1",
+          type: "product-export",
           created_by: "admin_user",
           completed_at: new Date(),
         })

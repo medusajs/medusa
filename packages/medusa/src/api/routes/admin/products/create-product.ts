@@ -17,7 +17,7 @@ import {
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
-import { ProductStatus } from "../../../../types/product"
+import { ProductStatus } from "../../../../models"
 import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
@@ -376,7 +376,7 @@ class ProductVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -485,5 +485,5 @@ export class AdminPostProductsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

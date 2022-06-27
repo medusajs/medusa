@@ -92,10 +92,10 @@ Here’s an example of sending additional data with the subscription:
 
 ```json
 {
-    "email": "example@gmail.com",
-    "data": {
-        "tags": ["customer"]
-    }
+  "email": "example@gmail.com",
+  "data": {
+    "tags": ["customer"]
+  }
 }
 ```
 
@@ -135,36 +135,43 @@ npm install axios
 Then, in the component you want to add the subscription form add the following code:
 
 ```jsx
-import axios from 'axios'
-import { useState } from "react";
+import axios from "axios"
+import { useState } from "react"
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState("")
 
   function subscribe(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (!email) {
-      return;
+      return
     }
 
-    axios.post('http://localhost:9000/mailchimp/subscribe', {
-      email
-    })
+    axios
+      .post("http://localhost:9000/mailchimp/subscribe", {
+        email,
+      })
       .then((e) => {
         alert("Subscribed sucessfully!")
         setEmail("")
       })
       .catch((e) => {
-        console.error(e);
-        alert("An error occurred");
+        console.error(e)
+        alert("An error occurred")
       })
   }
 
   return (
     <form onSubmit={subscribe}>
       <h2>Sign Up for our newsletter</h2>
-      <input type="email" name="email" id="email" placeholder="example@gmail.com"
-        value={email} onChange={(e) => setEmail(e.target.value)} />
+      <input
+        type="email"
+        name="email"
+        id="email"
+        placeholder="example@gmail.com"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
       <button type="submit">Subscribe</button>
     </form>
   )
@@ -180,4 +187,4 @@ If you try entering an email and clicking Subscribe, the email will be subscribe
 ## What’s Next 🚀
 
 - Check out SendGrid plugin for more Email functionalities.
-- [Learn more about plugins.](https://docs.medusajs.com/guides/plugins)
+- [Learn more about plugins.](../advanced/backend/plugins/overview.md)

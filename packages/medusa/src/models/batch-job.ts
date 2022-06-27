@@ -1,9 +1,10 @@
 import { AfterLoad, BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
-import { BatchJobStatus } from "../types/batch-job"
+import { BatchJobResultError, BatchJobResultStatDescriptor, BatchJobStatus } from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
 import { User } from "./user"
+import { RequestQueryFields, Selector } from "../types/common"
 
 @Entity()
 export class BatchJob extends SoftDeletableEntity {
@@ -18,10 +19,17 @@ export class BatchJob extends SoftDeletableEntity {
   created_by_user: User
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  context: { retry_count?: number; max_retry?: number } & Record<string, unknown>
+  context: Record<string, unknown>
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  result: Record<string, unknown>
+  result: {
+    count?: number
+    advancement_count?: number
+    progress?: number
+    errors?: BatchJobResultError[]
+    stat_descriptors?: BatchJobResultStatDescriptor[]
+    file_key?: string
+  } & Record<string, unknown>
 
   @Column({ type: "boolean", nullable: false, default: false })
   dry_run: boolean = false;

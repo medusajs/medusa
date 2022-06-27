@@ -1,6 +1,6 @@
 # How to Add a Fulfillment Provider
 
-In this document, you’ll learn how to add a fulfillment provider to a Medusa server. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](https://docs.medusajs.com/advanced/backend/shipping/overview/).
+In this document, you’ll learn how to add a fulfillment provider to a Medusa server. If you’re unfamiliar with the Shipping architecture in Medusa, make sure to [check out the overview first](overview.md).
 
 ## Overview
 
@@ -26,11 +26,9 @@ The first step is to create the file that will hold the fulfillment provider cla
 ```jsx
 import { FulfillmentService } from "medusa-interfaces"
 
-class MyFulfillmentService extends FulfillmentService {
+class MyFulfillmentService extends FulfillmentService {}
 
-}
-
-export default MyFulfillmentService;
+export default MyFulfillmentService
 ```
 
 Fulfillment provider services should extend `FulfillmentService` imported from `medusa-interfaces`.
@@ -45,7 +43,7 @@ Following the naming convention of Services, the name of the file should be the 
 
 As mentioned in the overview, fulfillment providers should have a static `identifier` property.
 
-The `FulfillmentProvider` model has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class will be used when the fulfillment provider is created in the database.
+The `FulfillmentProvider` entity has 2 properties: `identifier` and `is_installed`. The `identifier` property in the class will be used when the fulfillment provider is created in the database.
 
 The value of this property will also be used to reference the fulfillment provider throughout Medusa. For example, it is used to [add a fulfillment provider](https://docs.medusajs.com/api/admin/region/add-fulfillment-provider) to a region.
 
@@ -53,10 +51,10 @@ The value of this property will also be used to reference the fulfillment provid
 import { FulfillmentService } from "medusa-interfaces"
 
 class MyFulfillmentService extends FulfillmentService {
-  static identifier = 'my-fulfillment';
+  static identifier = "my-fulfillment"
 }
 
-export default MyFulfillmentService;
+export default MyFulfillmentService
 ```
 
 ### constructor
@@ -252,7 +250,7 @@ createReturn(returnOrder) {
 
 #### cancelFulfillment
 
-This method is called when a fulfillment is cancelled by the admin. This fulfillment can be for an order, a claim, or a swap. 
+This method is called when a fulfillment is cancelled by the admin. This fulfillment can be for an order, a claim, or a swap.
 
 It gives you access to the fulfillment being canceled in case you need to perform any additional actions with your third-party provider.
 
