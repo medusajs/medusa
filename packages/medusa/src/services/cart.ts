@@ -244,7 +244,24 @@ class CartService extends TransactionBaseService<CartService> {
       }
     }
 
-    return Object.assign(cart, totals)
+    let items = cart.items || []
+    if (cart.items && cart.region) {
+      items = await Promise.all(
+        cart.items.map(async (item) => {
+          const itemTotals = await this.totalsService_.getLineItemTotals(
+            item,
+            cart,
+            { include_tax: true }
+          )
+          return {
+            ...item,
+            ...itemTotals,
+          }
+        })
+      )
+    }
+
+    return Object.assign(cart, totals, { items })
   }
 
   /**

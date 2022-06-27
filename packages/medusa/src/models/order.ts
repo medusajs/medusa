@@ -28,7 +28,7 @@ import { DraftOrder } from "./draft-order"
 import { Fulfillment } from "./fulfillment"
 import { GiftCard } from "./gift-card"
 import { GiftCardTransaction } from "./gift-card-transaction"
-import { LineItem } from "./line-item"
+import { LineItem, LineItemBase } from "./line-item"
 import { Payment } from "./payment"
 import { Refund } from "./refund"
 import { Region } from "./region"
@@ -205,7 +205,7 @@ export class Order extends BaseEntity {
   @OneToMany(() => LineItem, (lineItem) => lineItem.order, {
     cascade: ["insert"],
   })
-  items: LineItem[]
+  items: LineItemBase[]
 
   @OneToMany(() => GiftCardTransaction, (gc) => gc.order)
   gift_card_transactions: GiftCardTransaction[]
