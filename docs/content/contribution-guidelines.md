@@ -87,11 +87,11 @@ If you’re adding code blocks that use NPM and Yarn, you must use the [npm2yarn
 
 For example:
 
-````md
+~~~md
 ```bash npm2yarn
 npm run start
 ```
-````
+~~~
 
 The code snippet must be written using NPM, and the `npm2yarn` plugin will automatically transform it to Yarn.
 

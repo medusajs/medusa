@@ -26,9 +26,11 @@ The first step is to create the file that will hold the fulfillment provider cla
 ```jsx
 import { FulfillmentService } from "medusa-interfaces"
 
-class MyFulfillmentService extends FulfillmentService {}
+class MyFulfillmentService extends FulfillmentService {
 
-export default MyFulfillmentService
+}
+
+export default MyFulfillmentService;
 ```
 
 Fulfillment provider services should extend `FulfillmentService` imported from `medusa-interfaces`.
@@ -51,10 +53,10 @@ The value of this property will also be used to reference the fulfillment provid
 import { FulfillmentService } from "medusa-interfaces"
 
 class MyFulfillmentService extends FulfillmentService {
-  static identifier = "my-fulfillment"
+  static identifier = 'my-fulfillment';
 }
 
-export default MyFulfillmentService
+export default MyFulfillmentService;
 ```
 
 ### constructor
@@ -250,7 +252,7 @@ createReturn(returnOrder) {
 
 #### cancelFulfillment
 
-This method is called when a fulfillment is cancelled by the admin. This fulfillment can be for an order, a claim, or a swap.
+This method is called when a fulfillment is cancelled by the admin. This fulfillment can be for an order, a claim, or a swap. 
 
 It gives you access to the fulfillment being canceled in case you need to perform any additional actions with your third-party provider.
 

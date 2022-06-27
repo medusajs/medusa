@@ -1,7 +1,7 @@
 ---
 id: homepage
 title: Overview
-description: "What is Medusa?"
+description: 'What is Medusa?'
 slug: /
 hide_table_of_contents: true
 ---

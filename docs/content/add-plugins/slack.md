@@ -90,7 +90,7 @@ const plugins = [
 ```
 
 - Make sure to change `<WEBHOOK_URL>` with the Webhook URL you copied after creating the Slack app.
-- The `show_discount_code` option enables or disables showing the discount code in the notification sent to Slack.
+- The `show_discount_code` option enables or disables showing the discount code in the notification sent to Slack. 
 - The `admin_orders_url` is the prefix of the URL of the order detail pages on your admin panel. If you’re using Medusa’s Admin locally, it should be `http://localhost:7001/a/orders`. This will result in a URL like `http://localhost:7001/a/orders/order_01FYP7DM7PS43H9VQ1PK59ZR5G`.
 
 That’s all you need to do to integrate Slack into Medusa!

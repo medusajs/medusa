@@ -107,7 +107,7 @@ The `data` attribute does not have any specific format. It’s up to you to choo
 
 ## Shipping Method
 
-Unlike the previous two components, a shipping method is not created by the admin. It’s created when a `POST` request is sent to `/store/carts/:id/shipping-methods` after the customer chooses a shipping option.
+Unlike the previous two components, a shipping method is not created by the admin. It’s created when a `POST` request is sent to `/store/carts/:id/shipping-methods` after the customer chooses a shipping option. 
 
 The shipping method will be created based on the chosen shipping option and it’ll be associated with the customer’s cart. Then, when the order is placed, the shipping method is associated with the order.
 

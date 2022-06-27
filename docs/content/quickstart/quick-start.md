@@ -22,22 +22,22 @@ You can install Node from the [official website](https://nodejs.org/en/).
 
 ### 1. Install Medusa CLI
 
-```bash npm2yarn
-npm install -g @medusajs/medusa-cli
-```
+   ```bash npm2yarn
+   npm install -g @medusajs/medusa-cli
+   ```
 
 ### 2. Create a new Medusa project
 
-```bash
-medusa new my-medusa-store --seed
-```
+   ```bash
+   medusa new my-medusa-store --seed
+   ```
 
 ### 3. Start your Medusa server
 
-```bash
-cd my-medusa-store
-medusa develop
-```
+   ```bash
+   cd my-medusa-store
+   medusa develop
+   ```
 
 ### Test Your Server
 

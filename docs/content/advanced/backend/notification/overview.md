@@ -40,7 +40,7 @@ Notifications can take on other forms such as an SMS or a Slack message.
 
 ### How Notification is Created
 
-Notifications are created in the `NotificationService` class in Medusa’s core after the Notification has been handled by the Notification Provider.
+Notifications are created in the `NotificationService` class in Medusa’s core after the Notification has been handled by the Notification Provider. 
 
 The data and additional details that the Notification Provider returns to the `NotificationService` is used to fill some of the attributes of the Notification in the database.
 
@@ -48,7 +48,7 @@ A Notification also represents a resent notification. So, when a notification is
 
 ### Notification Entity Overview
 
-The 2 most important properties in the `Notification` entity are the `to` and `data` properties.
+The 2 most important properties in the `Notification` entity are the `to` and `data` properties. 
 
 The `to` property is a string that represents the receiver of the Notification. For example, if the Notification was sent to an email address, the `to` property holds the email address the Notification was sent to.
 
@@ -70,7 +70,7 @@ The `Notification` entity also includes properties related to the receiver of th
 
 ## Automating Flows with Notifications
 
-With Medusa you can create notifications as a reaction to a wide spectrum of events, allowing you to automate communication and processes.
+With Medusa you can create notifications as a reaction to a wide spectrum of events, allowing you to automate communication and processes. 
 
 An example of a flow that can be implemented using Medusa's Notification API is automated return flows:
 

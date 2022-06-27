@@ -35,11 +35,13 @@ You also need to install and configure Redis. You can check out the documentatio
 The first step to creating a Notification Provider is to create a file in `src/services` with the following content:
 
 ```jsx
-import { NotificationService } from "medusa-interfaces"
+import { NotificationService } from "medusa-interfaces";
 
-class EmailSenderService extends NotificationService {}
+class EmailSenderService extends NotificationService {
 
-export default EmailSenderService
+}
+
+export default EmailSenderService;
 ```
 
 Where `EmailSenderService` is the name of your Notification Provider Service.
@@ -209,11 +211,11 @@ Following the previous example, to make sure the `email-sender` Notification Pro
 ```jsx
 class NotificationSubscriber {
   constructor({ notificationService }) {
-    notificationService.subscribe("order.placed", "email-sender")
+    notificationService.subscribe('order.placed', 'email-sender');
   }
 }
 
-export default NotificationSubscriber
+export default NotificationSubscriber;
 ```
 
 This subscriber accesses the `notificationService` using dependency injection. The `notificationService` contains a `subscribe` method that accepts 2 parameters. The first one is the name of the event to subscribe to, and the second is the identifier of the Notification Provider that is subscribing to that event.

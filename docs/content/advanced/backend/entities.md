@@ -35,14 +35,14 @@ This will remove any errors that show up in your IDE related to experimental dec
 To create an entity, create a TypeScript file in `src/models`. For example, here’s a `Post` entity defined in the file `src/models/post.ts`:
 
 ```tsx
-import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm"
-import { BaseEntity } from "@medusajs/medusa"
+import { BeforeInsert, Column, Entity, PrimaryColumn } from "typeorm";
+import { BaseEntity} from "@medusajs/medusa";
 import { generateEntityId } from "@medusajs/medusa/dist/utils"
 
 @Entity()
 export class Post extends BaseEntity {
-  @Column({ type: "varchar" })
-  title: string | null
+  @Column({type: 'varchar'})
+  title: string | null;
 
   @BeforeInsert()
   private beforeInsert(): void {
@@ -60,7 +60,7 @@ To generate an ID for your entity that matches the IDs generated for Medusa’s 
 If you want the entity to also be soft deletable then it should extend `SoftDeletableEntity` instead:
 
 ```tsx
-import { SoftDeletableEntity } from "@medusajs/medusa"
+import { SoftDeletableEntity } from "@medusajs/medusa";
 
 @Entity()
 export class Post extends SoftDeletableEntity {
@@ -86,7 +86,7 @@ import { EntityRepository, Repository } from "typeorm"
 import { Post } from "../models/post"
 
 @EntityRepository(Post)
-export class PostRepository extends Repository<Post> {}
+export class PostRepository extends Repository<Post> { }
 ```
 
 This repository is created for the `Post` and that is indicated using the decorator `@EntityRepository`.
@@ -112,25 +112,23 @@ npm run build
 You can access your custom entity data in the database in services or subscribers using the repository. For example, here’s a service that lists all posts:
 
 ```tsx
-import { TransactionBaseService } from "medusa-interfaces"
+import { TransactionBaseService } from "medusa-interfaces";
 
 class PostService extends TransactionBaseService {
   constructor({ postRepository, manager }) {
-    super({ postRepository, manager })
+    super({ postRepository, manager });
 
-    this.postRepository = postRepository
-    this.manager_ = manager
+    this.postRepository = postRepository;
+    this.manager_ = manager;
   }
 
   async list() {
-    const postRepository = this.manager_.getCustomRepository(
-      this.postRepository
-    )
-    return await postRepository.find()
+    const postRepository = this.manager_.getCustomRepository(this.postRepository);
+    return await postRepository.find();
   }
 }
 
-export default PostService
+export default PostService;
 ```
 
 In the constructor, you can use dependency injection to get access to instances of services and repositories. Here, you initialize class fields `postRepository` and `manager`. The `manager` is a [Typeorm Entity Manager](https://typeorm.io/working-with-entity-manager).
@@ -152,7 +150,7 @@ This same usage of repositories can be done in subscribers as well.
 To delete soft-deletable entities that extend the `SoftDeletableEntity` class, you can use the repository method `softDelete` method:
 
 ```tsx
-await postRepository.softDelete(post.id)
+await postRepository.softDelete(post.id);
 ```
 
 ## What’s Next 🚀

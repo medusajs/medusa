@@ -1,5 +1,7 @@
 ---
+
 title: Medusa Admin Quickstart
+
 ---
 
 # Admin Quickstart

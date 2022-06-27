@@ -8,7 +8,7 @@ At Medusa, we strive to provide the best experience for developers using our pla
 
 ## Purpose
 
-As an open source solution, we work closely and constantly interact with our community to ensure that we provide the best experience for everyone using Medusa.
+As an open source solution, we work closely and constantly interact with our community to ensure that we provide the best experience for everyone using Medusa. 
 
 We are capable of getting a general understanding of how developers use Medusa and what general issues they run into through different means such as our Discord server, GitHub issues and discussions, and occasional one-on-one sessions.
 

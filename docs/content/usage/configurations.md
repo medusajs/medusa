@@ -31,30 +31,30 @@ A common way to use environment variables during development or in production is
 To load environment variables from a `.env` file, add the following at the top of `medusa-config.js`:
 
 ```jsx
-const dotenv = require("dotenv")
+const dotenv = require('dotenv')
 
-let ENV_FILE_NAME = ""
-switch (process.env.NODE_ENV) {
-  case "production":
-    ENV_FILE_NAME = ".env.production"
-    break
-  case "staging":
-    ENV_FILE_NAME = ".env.staging"
-    break
-  case "test":
-    ENV_FILE_NAME = ".env.test"
-    break
-  case "development":
+ let ENV_FILE_NAME = '';
+ switch (process.env.NODE_ENV) {
+  case 'production':
+    ENV_FILE_NAME = '.env.production';
+    break;
+  case 'staging':
+    ENV_FILE_NAME = '.env.staging';
+    break;
+  case 'test':
+    ENV_FILE_NAME = '.env.test';
+    break;
+  case 'development':
   default:
-    ENV_FILE_NAME = ".env"
-    break
-}
+    ENV_FILE_NAME = '.env';
+    break;
+ }
 
-try {
-  dotenv.config({ path: process.cwd() + "/" + ENV_FILE_NAME })
-} catch (e) {
+ try {
+  dotenv.config({ path: process.cwd() + '/' + ENV_FILE_NAME });
+ } catch (e) {
   //handle error
-}
+ }
 ```
 
 This code snippet uses the [dotenv](https://www.npmjs.com/package/dotenv) library to load environment variables from a local file. The file chosen to be loaded will be loaded based on the current environment.
@@ -90,7 +90,7 @@ module.exports = {
     database_type: "sqlite",
     database_database: "./medusa-db.sql",
   },
-}
+};
 ```
 
 Where `database_type` is `sqlite` and `database_database` is the location you want the SQLite database to be created in.
@@ -106,7 +106,7 @@ module.exports = {
     database_type: "postgres",
     database_url: DATABASE_URL,
   },
-}
+};
 ```
 
 Where `database_type` is `postgres` and `DATABASE_URL` is the URL connection string to your PostgreSQL database. You can check out how to format it in [PostgreSQL’s documentation](https://www.postgresql.org/docs/current/libpq-connect.html).
@@ -125,9 +125,9 @@ module.exports = {
   projectConfig: {
     //...other configurations
     database_logging: true,
-    database_extra: {},
+    database_extra: {}
   },
-}
+};
 ```
 
 ## Redis
@@ -138,9 +138,9 @@ Medusa uses Redis to handle the event queue, among other usages. You need to set
 module.exports = {
   projectConfig: {
     //...other configurations
-    redis_url: REDIS_URL,
+    redis_url: REDIS_URL
   },
-}
+};
 ```
 
 Where `REDIS_URL` is the URL used to connect to Redis. The format of the connection string is `redis[s]://[[username][:password]@][host][:port][/db-number]`.
@@ -169,7 +169,7 @@ module.exports = {
     //...other configurations
     jwt_secret: "very secure string",
   },
-}
+};
 ```
 
 Where `jwt_secret` is the secret used to create the tokens. The more secure it is the better.
@@ -190,7 +190,7 @@ module.exports = {
     //...other configurations
     cookie_secret: "very secure string",
   },
-}
+};
 ```
 
 Where `cookie_secret` is the secret used to create the tokens. The more secure it is the better.
@@ -211,7 +211,7 @@ module.exports = {
     //...other configurations
     admin_cors: ADMIN_CORS,
   },
-}
+};
 ```
 
 Where `ADMIN_CORS` is the URL of your admin dashboard. By default, it’s `http://localhost:7000,http://localhost:7001`.
@@ -226,7 +226,7 @@ module.exports = {
     //...other configurations
     store_cors: STORE_CORS,
   },
-}
+};
 ```
 
 Where `STORE_CORS` is the URL of your storefront. By default, it’s `http://localhost:8000`.
@@ -249,7 +249,7 @@ module.exports = {
     //previous configurations mentioned...
   },
   plugins,
-}
+};
 ```
 
 ### Add a Plugin Without Configuration
@@ -260,7 +260,7 @@ To add a plugin that doesn’t need any configurations, you can simply add its n
 const plugins = [
   //other plugins...
   `medusa-my-plugin`,
-]
+];
 ```
 
 ### Add a Plugin With Configuration
@@ -273,10 +273,10 @@ const plugins = [
   {
     resolve: `medusa-my-plugin`,
     options: {
-      apiKey: `test`,
-    },
-  },
-]
+      apiKey: `test`
+    }
+  }
+];
 ```
 
 ## What’s Next 🚀
