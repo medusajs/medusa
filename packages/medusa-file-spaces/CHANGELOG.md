@@ -5,31 +5,57 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ## [1.2.2](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.0...medusa-file-spaces@1.2.2) (2022-06-19)
 
+
 ### Bug Fixes
 
-- **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
+* **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
+
+
+
+
 
 ## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.0...medusa-file-spaces@1.2.1) (2022-05-31)
 
+
 ### Bug Fixes
 
-- **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
+* **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
+
+
+
+
 
 # [1.2.0](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.37...medusa-file-spaces@1.2.0) (2022-05-01)
 
 **Note:** Version bump only for package medusa-file-spaces
 
+
+
+
+
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.36...medusa-file-spaces@1.1.37) (2022-01-11)
 
 **Note:** Version bump only for package medusa-file-spaces
+
+
+
+
 
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.35...medusa-file-spaces@1.1.36) (2021-12-29)
 
 **Note:** Version bump only for package medusa-file-spaces
 
+
+
+
+
 ## [1.1.35](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.34...medusa-file-spaces@1.1.35) (2021-12-17)
 
 **Note:** Version bump only for package medusa-file-spaces
+
+
+
+
 
 ## [1.1.34](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.33...medusa-file-spaces@1.1.34) (2021-12-08)
 
