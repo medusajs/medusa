@@ -22,11 +22,7 @@ export default class LocalFileService extends AbstractFileService {
     )
 
     if (!fs.existsSync(uploadPath)) {
-      fs.mkdir(uploadPath, { recursive: true }, (err) => {
-        if (err) {
-          throw err
-        }
-      })
+      fs.mkdirSync(uploadPath, { recursive: true })
     }
 
     const filePath = path.resolve(this.upload_dir_, file.originalname)
@@ -38,7 +34,7 @@ export default class LocalFileService extends AbstractFileService {
     return { url: filePath }
   }
 
-  delete({ name }) {
+  async delete({ name }) {
     return new Promise((resolve, _) => {
       const path = resolve(this.upload_dir_, name)
       fs.unlink(path, (err) => {
