@@ -12,7 +12,6 @@ import { Order } from "../../../models"
 import { OrderService } from "../../../services"
 import BatchJobService from "../../../services/batch-job"
 import { BatchJobStatus } from "../../../types/batch-job"
-import { FindConfig } from "../../../types/common"
 import { prepareListQuery } from "../../../utils/get-query-config"
 
 type InjectedDependencies = {
