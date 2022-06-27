@@ -128,7 +128,7 @@ export class LineItemBase extends BaseEntity {
 @Entity()
 export class LineItem extends LineItemBase {
   @BeforeInsert()
-  private beforeInsert?(): void {
+  private beforeInsert(): void {
     this.id = generateEntityId(this.id, "item")
   }
 }
