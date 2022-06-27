@@ -290,7 +290,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
             await this.fileService_
               .withTransaction(transactionManager)
-              .delete({ key: fileKey })
+              .delete({ fileKey })
             return
           }
         }

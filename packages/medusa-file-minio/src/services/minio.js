@@ -1,11 +1,11 @@
-import fs from "fs"
-import aws from "aws-sdk"
 import { AbstractFileService } from '@medusajs/medusa'
+import aws from "aws-sdk"
+import fs from "fs"
 
 class MinioService extends AbstractFileService {
   
   constructor({}, options) {
-    super()
+    super({}, options)
 
     this.bucket_ = options.bucket
     this.accessKeyId_ = options.access_key_id
