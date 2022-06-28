@@ -187,12 +187,12 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           }
         )
 
-        const lineDescriptor = this.getLineDescriptor_(
+        const lineDescriptor = this.getLineDescriptor(
           list_config.select as string[],
           list_config.relations as string[]
         )
 
-        const header = this.buildHeader_(lineDescriptor)
+        const header = this.buildHeader(lineDescriptor)
         approximateFileSize += Buffer.from(header).byteLength
         writeStream.write(header)
 
@@ -209,7 +209,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             })
 
           orders.forEach((order) => {
-            const line = this.buildCSVLine_(order, lineDescriptor)
+            const line = this.buildCSVLine(order, lineDescriptor)
             approximateFileSize += Buffer.from(line).byteLength
             writeStream.write(line)
           })
@@ -256,12 +256,12 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   }
 
   public async buildTemplate(): Promise<string> {
-    return this.buildHeader_(
-      this.getLineDescriptor_(this.defaultFields_, this.defaultRelations_)
+    return this.buildHeader(
+      this.getLineDescriptor(this.defaultFields_, this.defaultRelations_)
     )
   }
 
-  private buildHeader_(
+  private buildHeader(
     lineDescriptor: OrderDescriptor[] = orderExportPropertiesDescriptors
   ): string {
     return (
@@ -270,7 +270,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     )
   }
 
-  private buildCSVLine_(
+  private buildCSVLine(
     order: Order,
     lineDescriptor: OrderDescriptor[]
   ): string {
@@ -281,7 +281,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     )
   }
 
-  private getLineDescriptor_(
+  private getLineDescriptor(
     fields: string[],
     relations: string[]
   ): OrderDescriptor[] {
