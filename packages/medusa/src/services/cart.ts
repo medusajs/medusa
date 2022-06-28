@@ -1,4 +1,4 @@
-import _ from "lodash"
+import { isEmpty, isEqual } from "lodash"
 import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
@@ -546,7 +546,7 @@ class CartService extends TransactionBaseService<CartService> {
         if (lineItem.should_merge) {
           currentItem = cart.items.find((item) => {
             if (item.should_merge && item.variant_id === lineItem.variant_id) {
-              return _.isEqual(item.metadata, lineItem.metadata)
+              return isEqual(item.metadata, lineItem.metadata)
             }
             return false
           })
@@ -1786,7 +1786,7 @@ class CartService extends TransactionBaseService<CartService> {
       let updated = { ...shippingAddress }
 
       // If the country code of a shipping address is set we need to clear it
-      if (!_.isEmpty(shippingAddress) && shippingAddress.country_code) {
+      if (!isEmpty(shippingAddress) && shippingAddress.country_code) {
         updated = {
           ...updated,
           country_code: null,
@@ -1938,6 +1938,7 @@ class CartService extends TransactionBaseService<CartService> {
             "region.tax_rates",
           ],
         })
+
         const calculationContext = this.totalsService_
           .withTransaction(transactionManager)
           .getCalculationContext(cart)

@@ -12,6 +12,7 @@ import { CartUpdateProps } from "../../../../types/cart"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -118,8 +119,9 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+  const data = await decorateLineItemsWithTotals(cart, req)
 
-  res.json({ cart })
+  res.json({ cart: data })
 }
 
 class GiftCard {

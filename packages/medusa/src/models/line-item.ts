@@ -30,10 +30,7 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true })
   cart_id: string
 
-  @ManyToOne(
-    () => Cart,
-    (cart) => cart.items
-  )
+  @ManyToOne(() => Cart, (cart) => cart.items)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
@@ -41,10 +38,7 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    (order) => order.items
-  )
+  @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: "order_id" })
   order: Order
 
@@ -52,10 +46,7 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true })
   swap_id: string
 
-  @ManyToOne(
-    () => Swap,
-    (swap) => swap.additional_items
-  )
+  @ManyToOne(() => Swap, (swap) => swap.additional_items)
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
@@ -63,27 +54,16 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true })
   claim_order_id: string
 
-  @ManyToOne(
-    () => ClaimOrder,
-    (co) => co.additional_items
-  )
+  @ManyToOne(() => ClaimOrder, (co) => co.additional_items)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
-  @OneToMany(
-    () => LineItemTaxLine,
-    (tl) => tl.item,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
   tax_lines: LineItemTaxLine[]
 
-  @OneToMany(
-    () => LineItemAdjustment,
-    (lia) => lia.item,
-    {
-      cascade: ["insert"],
-    }
-  )
+  @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
+    cascade: ["insert"],
+  })
   adjustments: LineItemAdjustment[]
 
   @Column()
@@ -136,7 +116,14 @@ export class LineItem extends BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  refundable: number | null
+  refundable?: number | null
+  subtotal?: number | null
+  tax_total?: number | null
+  total?: number | null
+  original_total?: number | null
+  original_tax_total?: number | null
+  discount_total?: number | null
+  gift_card_total?: number | null
 
   @BeforeInsert()
   private beforeInsert(): void {
