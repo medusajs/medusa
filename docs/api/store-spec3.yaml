@@ -3136,6 +3136,14 @@ components:
             A unique string that identifies the Product Collection - can for
             example be used in slug structures.
           type: string
+        images:
+          description: Images of the Product Collection
+          type: array
+          items:
+            $ref: "#/components/schemas/image"
+        thumbnail:
+          description: A URL to an image file that can be used to identify the Product Collection.
+          type: string
         products:
           description: The Products contained in the Product Collection.
           type: array
