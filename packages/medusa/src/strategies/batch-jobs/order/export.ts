@@ -216,6 +216,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             writeStream.write(line)
           })
 
+          advancementCount += orders.length
+          offset += orders.length
+
           batchJob = (await this.batchJobService_
             .withTransaction(transactionManager)
             .update(batchJobId, {
@@ -227,9 +230,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
                 progress: advancementCount / orderCount,
               },
             })) as OrderExportBatchJob
-
-          advancementCount += orders.length
-          offset += orders.length
 
           if (batchJob.status === BatchJobStatus.CANCELED) {
             writeStream.end()
@@ -245,19 +245,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         writeStream.end()
 
         await promise
-
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .update(batchJobId, {
-            result: {
-              ...result,
-              file_key: fileKey,
-              file_size: approximateFileSize,
-              count,
-              advancement_count: count,
-              progress: 1,
-            },
-          })
       },
       "REPEATABLE READ",
       async (err: Error) => {
