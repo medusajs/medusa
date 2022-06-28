@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { CartService, IdempotencyKeyService } from "../../../../services"
-import { decorateLineItems } from "./decorate-line-items-with-totals"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts/{id}/taxes

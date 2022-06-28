@@ -1,5 +1,5 @@
 import { CartService } from "../../../../services"
-import { decorateLineItems } from "./decorate-line-items-with-totals"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions/{provider_id}/refresh
