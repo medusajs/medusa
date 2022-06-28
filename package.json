@@ -41,6 +41,12 @@
     "lerna": "^3.22.1",
     "lint-staged": "^11.2.3",
     "microbundle": "^0.13.3",
+<<<<<<< HEAD
+=======
+    "mongoose": "^5.10.15",
+    "openapi-typescript": "^5.2.0",
+    "orval": "^6.6.4",
+>>>>>>> cbfad8549 (chore: fix oas comments (#1440))
     "pg-god": "^1.0.11",
     "prettier": "^2.1.1",
     "qs": "^6.10.3",
