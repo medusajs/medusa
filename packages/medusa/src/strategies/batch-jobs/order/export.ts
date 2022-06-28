@@ -156,6 +156,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     let limit = this.DEFAULT_LIMIT
     let advancementCount = 0
     let orderCount = 0
+    let approximateFileSize = 0
 
     return await this.atomicPhase_(
       async (transactionManager) => {
@@ -192,6 +193,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
         )
 
         const header = this.buildHeader(lineDescriptor)
+        approximateFileSize += Buffer.from(header).byteLength
         writeStream.write(header)
 
         orderCount = batchJob.context?.batch_size ?? count
@@ -209,7 +211,9 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             })
 
           orders.forEach(async (order) => {
-            writeStream.write(await this.buildCSVLine(order, lineDescriptor))
+            const line = await this.buildCSVLine(order, lineDescriptor)
+            approximateFileSize += Buffer.from(line).byteLength
+            writeStream.write(line)
           })
 
           batchJob = (await this.batchJobService_
@@ -217,6 +221,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             .update(batchJobId, {
               result: {
                 file_key: fileKey,
+                file_size: approximateFileSize,
                 count: orderCount,
                 advancement_count: advancementCount,
                 progress: advancementCount / orderCount,
@@ -246,6 +251,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           .update(batchJobId, {
             result: {
               ...result,
+              file_key: fileKey,
+              file_size: approximateFileSize,
               count,
               advancement_count: count,
               progress: 1,
