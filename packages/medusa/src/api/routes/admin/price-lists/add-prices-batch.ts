@@ -16,41 +16,41 @@ import { validator } from "../../../../utils/validator"
  *   - (path) id=* {string} The id of the Price List to update prices for.
  * requestBody:
  *  content:
- *   application/json:
- *   schema:
- *     properties:
- *       prices:
- *         description: The prices to update or add.
- *         type: array
- *         items:
- *           properties:
- *             id:
- *               description: The id of the price.
- *               type: string
- *             status:
- *               description: The status of the Price List.
- *               type: string
- *               enum:
- *                 - active
- *                 - draft
- *            region_id:
- *              description: The id of the Region for which the price is used.
- *              type: string
- *            currency_code:
- *              description: The 3 character ISO currency code for which the price will be used.
- *              type: string
- *            amount:
- *              description: The amount of the price.
- *              type: number
- *            min_quantity:
- *              description: The minimum quantity for which the price will be used.
- *              type: number
- *            max_quantity:
- *             description: The maximum quantity for which the price will be used.
- *             type: number
- *       override:
- *         description: "If true the prices will replace all existing prices associated with the Price List."
- *         type: boolean
+ *    application/json:
+ *      schema:
+ *        properties:
+ *          prices:
+ *            description: The prices to update or add.
+ *            type: array
+ *            items:
+ *              properties:
+ *                id:
+ *                  description: The id of the price.
+ *                  type: string
+ *                status:
+ *                  description: The status of the Price List.
+ *                  type: string
+ *                  enum:
+ *                    - active
+ *                    - draft
+ *                region_id:
+ *                  description: The id of the Region for which the price is used.
+ *                  type: string
+ *                currency_code:
+ *                  description: The 3 character ISO currency code for which the price will be used.
+ *                  type: string
+ *                amount:
+ *                  description: The amount of the price.
+ *                  type: number
+ *                min_quantity:
+ *                  description: The minimum quantity for which the price will be used.
+ *                  type: number
+ *                max_quantity:
+ *                 description: The maximum quantity for which the price will be used.
+ *                 type: number
+ *          override:
+ *            description: "If true the prices will replace all existing prices associated with the Price List."
+ *            type: boolean
  * tags:
  *   - Price List
  * responses:

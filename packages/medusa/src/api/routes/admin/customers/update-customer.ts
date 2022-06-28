@@ -21,6 +21,14 @@ import { FindParams } from "../../../../types/common"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Customer.
+ *   - in: query
+ *     name: expand
+ *     style: form
+ *     explode: false
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
  * requestBody:
  *   content:
  *     application/json:
@@ -43,7 +51,6 @@ import { FindParams } from "../../../../types/common"
  *             description: The Customer's password.
  *           groups:
  *             type: array
- *             description: A list of customer groups to which the customer belongs.
  *             items:
  *               required:
  *                 - id
@@ -51,6 +58,7 @@ import { FindParams } from "../../../../types/common"
  *                 id:
  *                   description: The id of a customer group
  *                   type: string
+ *             description: A list of customer groups to which the customer belongs.
  *           metadata:
  *             type: object
  *             description: Metadata for the customer.

@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsNumber,
@@ -6,11 +5,13 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { pickBy } from "lodash"
+
 import BatchJobService from "../../../../services/batch-job"
 import { DateComparisonOperator } from "../../../../types/common"
 import { IsType } from "../../../../utils/validators/is-type"
 import { Request } from "express"
+import { Type } from "class-transformer"
+import { pickBy } from "lodash"
 
 /**
  * @oas [get] /batch-jobs
@@ -21,18 +22,26 @@ import { Request } from "express"
  * parameters:
  *   - (query) limit {string} The number of collections to return.
  *   - (query) offset {string} The offset of collections to return.
- *   - (query) type {string | string[]} Filter by the batch type
- *   - (query) confirmed_at {DateComparisonOperator} Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
- *   - (query) pre_processed_at {DateComparisonOperator} Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
- *   - (query) completed_at {DateComparisonOperator} Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
- *   - (query) failed_at {DateComparisonOperator} Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
- *   - (query) canceled_at {DateComparisonOperator} Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: type
+ *     style: form
+ *     explode: false
+ *     description: Filter by the batch type
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) confirmed_at {object} Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+ *   - (query) pre_processed_at {object} Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+ *   - (query) completed_at {object} Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+ *   - (query) failed_at {object} Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+ *   - (query) canceled_at {object} Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
  *   - (query) order {string} Order used when retrieving batch jobs
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
- *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *   - (query) deleted_at {object} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
+ *   - (query) created_at {object} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {object} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
  * tags:
  *   - Batch Job
  * responses:

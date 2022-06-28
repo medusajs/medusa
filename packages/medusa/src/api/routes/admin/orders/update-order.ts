@@ -33,25 +33,29 @@ import { validator } from "../../../../utils/validator"
  *           billing_address:
  *             description: Billing address
  *             anyOf:
- *               - $ref: "#/components/schemas/address
+ *               - $ref: "#/components/schemas/address"
  *           shipping_address:
  *             description: Shipping address
  *             anyOf:
- *               - $ref: "#/components/schemas/address
+ *               - $ref: "#/components/schemas/address"
  *           items:
  *             description: The Line Items for the order
  *             type: array
+ *             items:
+ *               $ref: "#/components/schemas/line_item"
  *           region:
  *             description: Region where the order belongs
  *             type: string
  *           discounts:
  *             description: Discounts applied to the order
  *             type: array
+ *             items:
+ *               $ref: "#/components/schemas/line_item"
  *           customer_id:
  *             description: id of the customer
  *             type: string
  *           payment_method:
- *             description:
+ *             description: payment method chosen for the order
  *             type: object
  *             properties:
  *               provider_id:
@@ -78,6 +82,8 @@ import { validator } from "../../../../utils/validator"
  *                 description: Data relevant to the specific shipping method.
  *               items:
  *                 type: array
+ *                 items:
+ *                   $ref: "#/components/schemas/line_item"
  *                 description: Items to ship
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the updated order.

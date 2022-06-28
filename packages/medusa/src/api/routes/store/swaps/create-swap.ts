@@ -71,10 +71,6 @@ import { EntityManager } from "typeorm"
  *                 quantity:
  *                   description: The quantity to send of the variant.
  *                   type: integer
- *         required:
- *          - order_id
- *          - return_items
- *          - additional_items
  * tags:
  *   - Swap
  * responses:

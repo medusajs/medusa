@@ -15,9 +15,17 @@ import { Type } from "class-transformer"
  * parameters:
  *   - (query) q {string} Query used for searching orders.
  *   - (query) id {string} Id of the order to search for.
- *   - (query) status {string[]} Status to search for.
- *   - (query) fulfillment_status {string[]} Fulfillment status to search for.
- *   - (query) payment_status {string[]} Payment status to search for.
+ *   - in: query
+ *     name: status
+ *     style: form
+ *     explode: false
+ *     description: Status to search for
+ *     schema:
+ *       type: array
+ *       items:
+ *         type: string
+ *   - (query) fulfillment_status {string} Fulfillment status to search for.
+ *   - (query) payment_status {string} Payment status to search for.
  *   - (query) display_id {string} Display id to search for.
  *   - (query) cart_id {string} to search for.
  *   - (query) customer_id {string} to search for.
@@ -25,9 +33,9 @@ import { Type } from "class-transformer"
  *   - (query) region_id {string} to search for.
  *   - (query) currency_code {string} to search for.
  *   - (query) tax_rate {string} to search for.
- *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
+ *   - (query) cancelled_at {object} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
+ *   - (query) created_at {object} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {object} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
  *   - (query) offset {string} How many orders to skip in the result.
  *   - (query) limit {string} Limit the number of orders returned.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.

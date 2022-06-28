@@ -32,10 +32,10 @@ import { AdminPostDiscountsDiscountParams } from "./update-discount"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - code
- *         - rule
  *       schema:
+ *         required:
+ *           - code
+ *           - rule
  *         properties:
  *           code:
  *             type: string

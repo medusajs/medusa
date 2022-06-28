@@ -1,4 +1,5 @@
 import { BeforeInsert, Column, Entity, Index, PrimaryColumn } from "typeorm"
+
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils/generate-entity-id"
 
@@ -28,3 +29,23 @@ export class Oauth {
     this.id = generateEntityId(this.id, "oauth")
   }
 }
+
+/**
+ * @schema OAuth
+ * title: "OAuth"
+ * description: "Represent an OAuth app"
+ * x-resourceId: OAuth
+ * properties:
+ *   id:
+ *     type: string
+ *   display_name:
+ *     type: string
+ *   application_name:
+ *     type: string
+ *   install_url:
+ *     type: string
+ *   uninstall_url:
+ *     type: integer
+ *   data:
+ *     type: object
+ */

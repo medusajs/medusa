@@ -21,14 +21,14 @@ import PriceListService from "../../../../services/price-list"
  *              ids:
  *               type: number
  *               description: The price ids that have been deleted.
- *             count:
- *               type: number
- *               description: The number of prices that have been deleted.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *             deleted:
- *               type: boolean
+ *              count:
+ *                type: number
+ *                description: The number of prices that have been deleted.
+ *              object:
+ *                type: string
+ *                description: The type of the object that was deleted.
+ *              deleted:
+ *                type: boolean
  */
 export default async (req, res) => {
   const { id, variant_id } = req.params

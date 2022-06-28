@@ -200,89 +200,6 @@
         }
       }
     },
-    "/collections/{id}": {
-      "get": {
-        "operationId": "GetCollectionsCollection",
-        "summary": "Retrieve a Product Collection",
-        "description": "Retrieves a Product Collection.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product Collection",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections": {
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The number of collections to skip before starting to collect the collections set",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",
@@ -1009,7 +926,7 @@
     },
     "/store/carts/{id}": {
       "post": {
-        "operationId": "PostCartsCartPaymentMethodUpdate",
+        "operationId": "PostCartsCart",
         "summary": "Update a Cart\"",
         "description": "Updates a Cart.",
         "parameters": [
@@ -1027,17 +944,72 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": [
-                  "provider_id"
-                ],
                 "properties": {
-                  "provider_id": {
+                  "region_id": {
                     "type": "string",
-                    "description": "The id of the Payment Provider."
+                    "description": "The id of the Region to create the Cart in."
                   },
-                  "data": {
-                    "type": "object",
-                    "description": ""
+                  "country_code": {
+                    "type": "string",
+                    "description": "The 2 character ISO country code to create the Cart in."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "An email to be used on the Cart."
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "The Address to be used for shipping.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "gift_cards": {
+                    "description": "An array of Gift Card codes to add to the Cart.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Gift Card is identified by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "discounts": {
+                    "description": "An array of Discount codes to add to the Cart.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Discount is identifed by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "customer_id": {
+                    "description": "The id of the Customer to associate the Cart with.",
+                    "type": "string"
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart.",
+                    "type": "object"
                   }
                 }
               }
@@ -1056,6 +1028,89 @@
                   "properties": {
                     "cart": {
                       "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{id}": {
+      "get": {
+        "operationId": "GetCollectionsCollection",
+        "summary": "Retrieve a Product Collection",
+        "description": "Retrieves a Product Collection.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections": {
+      "get": {
+        "operationId": "GetCollections",
+        "summary": "List Product Collections",
+        "description": "Retrieve a list of Product Collection.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of collections to skip before starting to collect the collections set",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
                     }
                   }
                 }
@@ -2527,6 +2582,89 @@
           }
         }
       },
+      "batch_job": {
+        "title": "Batch Job",
+        "description": "A Batch Job.",
+        "x-resourceId": "batch_job",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the batch job.",
+            "type": "string"
+          },
+          "type": {
+            "description": "The type of batch job.",
+            "type": "string",
+            "enum": [
+              "product_import",
+              "product_export"
+            ]
+          },
+          "status": {
+            "description": "The status of the batch job.",
+            "type": "string",
+            "enum": [
+              "created",
+              "pre_processed",
+              "processing",
+              "completed",
+              "canceled",
+              "failed"
+            ]
+          },
+          "created_by": {
+            "description": "The unique identifier of the user that created the batch job.",
+            "type": "string"
+          },
+          "context": {
+            "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
+            "type": "object"
+          },
+          "dry_run": {
+            "description": "Specify if the job must apply the modifications or not.",
+            "type": "boolean",
+            "default": false
+          },
+          "result": {
+            "description": "The result of the batch job.",
+            "type": "object"
+          },
+          "pre_processed_at": {
+            "description": "The date from which the job has been pre processed.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "confirmed_at": {
+            "description": "The date when the confirmation has been done.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "description": "The date of the completion.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "canceled_at": {
+            "description": "The date of the concellation.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "cart": {
         "title": "Cart",
         "description": "Represents a user cart",
@@ -3089,6 +3227,217 @@
           }
         }
       },
+      "discount_condition_customer_group": {
+        "title": "Product Tag Discount Condition",
+        "description": "Associates a discount condition with a customer group",
+        "x-resourceId": "discount_condition_customer_group",
+        "properties": {
+          "customer_group_id": {
+            "description": "The id of the Product Tag",
+            "type": "string"
+          },
+          "condition_id": {
+            "description": "The id of the Discount Condition",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "discount_condition_product_collection": {
+        "title": "Product Collection Discount Condition",
+        "description": "Associates a discount condition with a product collection",
+        "x-resourceId": "discount_condition_product_collection",
+        "properties": {
+          "product_collection_id": {
+            "description": "The id of the Product Collection",
+            "type": "string"
+          },
+          "condition_id": {
+            "description": "The id of the Discount Condition",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "discount_condition_product_tag": {
+        "title": "Product Tag Discount Condition",
+        "description": "Associates a discount condition with a product tag",
+        "x-resourceId": "discount_condition_product_tag",
+        "properties": {
+          "product_tag_id": {
+            "description": "The id of the Product Tag",
+            "type": "string"
+          },
+          "condition_id": {
+            "description": "The id of the Discount Condition",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "discount_condition_product_type": {
+        "title": "Product Type Discount Condition",
+        "description": "Associates a discount condition with a product type",
+        "x-resourceId": "discount_condition_product",
+        "properties": {
+          "product_type_id": {
+            "description": "The id of the Product Type",
+            "type": "string"
+          },
+          "condition_id": {
+            "description": "The id of the Discount Condition",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "discount_condition_product": {
+        "title": "Product Discount Condition",
+        "description": "Associates a discount condition with a product",
+        "x-resourceId": "discount_condition_product",
+        "properties": {
+          "product_id": {
+            "description": "The id of the Product",
+            "type": "string"
+          },
+          "condition_id": {
+            "description": "The id of the Discount Condition",
+            "type": "string"
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
+      "discount_condition": {
+        "title": "Discount Condition",
+        "description": "Holds rule conditions for when a discount is applicable",
+        "x-resourceId": "discount_condition",
+        "properties": {
+          "id": {
+            "description": "The id of the Discount Condition. Will be prefixed by `discon_`.",
+            "type": "string"
+          },
+          "type": {
+            "description": "The type of the Condition",
+            "type": "string",
+            "enum": [
+              "products",
+              "product_types",
+              "product_collections",
+              "product_tags",
+              "customer_groups"
+            ]
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "update_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "metadata": {
+            "description": "An optional key-value map with additional information.",
+            "type": "object"
+          }
+        }
+      },
       "discount_rule": {
         "title": "Discount Rule",
         "description": "Holds the rules that governs how a Discount is calculated when applied to a Cart.",
@@ -3123,11 +3472,11 @@
               "item"
             ]
           },
-          "valid_for": {
-            "description": "A set of Products that the discount can be used for.",
+          "conditions": {
+            "description": "A set of conditions that can be used to limit when  the discount can be used",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/product"
+              "$ref": "#/components/schemas/discount_condition"
             }
           },
           "created_at": {
@@ -3719,8 +4068,12 @@
             "description": "The amount in the smallest currecny unit (e.g. cents 100 cents to charge $1) that the Product Variant will cost.",
             "type": "integer"
           },
-          "sale_amount": {
-            "description": "An optional sale amount that the Product Variant will be available for when defined.",
+          "min_quantity": {
+            "description": "The minimum quantity that the Money Amount applies to. If this value is not set, the Money Amount applies to all quantities.",
+            "type": "integer"
+          },
+          "max_quantity": {
+            "description": "The maximum quantity that the Money Amount applies to. If this value is not set, the Money Amount applies to all quantities.",
             "type": "integer"
           },
           "variant_id": {
@@ -4314,6 +4667,57 @@
           "metadata": {
             "description": "An optional key-value map with additional information.",
             "type": "object"
+          }
+        }
+      },
+      "price_list": {
+        "title": "Price List",
+        "description": "Price Lists represents a set of prices that overrides the default price for one or more product variants.",
+        "x-resourceId": "price_list",
+        "properties": {
+          "id": {
+            "description": "The id of the Price List. This value will be prefixed by `pl_`.",
+            "type": "string"
+          },
+          "type": {
+            "description": "The type of Price List. This can be one of either `sale` or `override`.",
+            "type": "string",
+            "enum": [
+              "sale",
+              "override"
+            ]
+          },
+          "starts_at": {
+            "description": "The date with timezone that the Price List starts being valid.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "ends_at": {
+            "description": "The date with timezone that the Price List stops being valid.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "customer_groups": {
+            "description": "The Customer Groups that the Price List applies to.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/customer_group"
+            }
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
           }
         }
       },

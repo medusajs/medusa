@@ -19,9 +19,9 @@ import { validator } from "../../../../utils/validator"
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) title {string} The title of collections to return.
  *   - (query) handle {string} The handle of collections to return.
- *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *   - (query) deleted_at {object} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
+ *   - (query) created_at {object} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {object} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
  * tags:
  *   - Collection
  * responses:

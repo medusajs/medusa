@@ -41,37 +41,37 @@ import { validator } from "../../../../utils/validator"
  *             enum:
  *              - sale
  *              - override
- *          status:
- *            description: The status of the Price List.
- *            type: string
- *            enum:
- *             - active
- *             - draft
- *          prices:
- *            description: The prices of the Price List.
- *            type: array
- *            items:
- *              properties:
- *                id:
- *                  description: The id of the price.
- *                  type: string
- *                region_id:
- *                  description: The id of the Region for which the price is used.
- *                  type: string
- *                currency_code:
- *                  description: The 3 character ISO currency code for which the price will be used.
- *                  type: string
- *                amount:
- *                  description: The amount to charge for the Product Variant.
- *                  type: integer
- *                min_quantity:
- *                  description: The minimum quantity for which the price will be used.
- *                  type: integer
- *                max_quantity:
- *                  description: The maximum quantity for which the price will be used.
- *                  type: integer
- *          customer_groups:
- *            type: array
+ *           status:
+ *             description: The status of the Price List.
+ *             type: string
+ *             enum:
+ *              - active
+ *              - draft
+ *           prices:
+ *             description: The prices of the Price List.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 id:
+ *                   description: The id of the price.
+ *                   type: string
+ *                 region_id:
+ *                   description: The id of the Region for which the price is used.
+ *                   type: string
+ *                 currency_code:
+ *                   description: The 3 character ISO currency code for which the price will be used.
+ *                   type: string
+ *                 amount:
+ *                   description: The amount to charge for the Product Variant.
+ *                   type: integer
+ *                 min_quantity:
+ *                   description: The minimum quantity for which the price will be used.
+ *                   type: integer
+ *                 max_quantity:
+ *                   description: The maximum quantity for which the price will be used.
+ *                   type: integer
+ *           customer_groups:
+ *             type: array
  *             description: A list of customer groups that the Price List applies to.
  *             items:
  *               required:
