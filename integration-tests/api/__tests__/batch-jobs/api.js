@@ -47,7 +47,7 @@ const setupJobDb = async (dbConnection) => {
       id: "job_5",
       type: "product-export",
       status: "completed",
-      completed_at: "2022-06-28",
+      completed_at: "2022-06-27T22:00:00.000Z",
       created_by: "admin_user",
     })
   } catch (err) {
