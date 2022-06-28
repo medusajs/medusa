@@ -9221,7 +9221,7 @@ agent-base@4, agent-base@^4.3.0:
   dependencies:
     es6-promisify "^5.0.0"
 
-agent-base@6, agent-base@^6.0.2:
+agent-base@6, agent-base@^6.0.0, agent-base@^6.0.2:
   version "6.0.2"
   resolved "https://registry.npmjs.org/agent-base/-/agent-base-6.0.2.tgz"
   integrity sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ==
@@ -13205,6 +13205,11 @@ denque@^1.4.1:
   resolved "https://registry.npmjs.org/denque/-/denque-1.5.0.tgz"
   integrity sha512-CYiCSgIF1p6EUByQPlGkKnP1M9g0ZV3qMIrqMqZqdwazygIA/YP2vrbcyl1h/WppKJTdl1F85cXIle+394iDAQ==
 
+depd@2.0.0, depd@~2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/depd/-/depd-2.0.0.tgz#b696163cc757560d09cf22cc8fad1571b79e76df"
+  integrity sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
+
 depd@^1.1.2, depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.npmjs.org/depd/-/depd-1.1.2.tgz"
@@ -15615,16 +15620,6 @@ fsevents@^2.1.2, fsevents@^2.3.2, fsevents@~2.3.2:
   resolved "https://registry.npmjs.org/fsevents/-/fsevents-2.3.2.tgz"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
 
-fstream@^1.0.0, fstream@^1.0.12:
-  version "1.0.12"
-  resolved "https://registry.npmjs.org/fstream/-/fstream-1.0.12.tgz"
-  integrity sha512-WvJ193OHa0GHPEL+AycEJgxvBEwyfRkN1vhjca23OaPVMCaLCXTd5qAu82AjTcgP1UJmytkOKb63Ypde7raDIg==
-  dependencies:
-    graceful-fs "^4.1.2"
-    inherits "~2.0.0"
-    mkdirp ">=0.5 0"
-    rimraf "2"
-
 ftp@^0.3.10:
   version "0.3.10"
   resolved "https://registry.yarnpkg.com/ftp/-/ftp-0.3.10.tgz#9197d861ad8142f3e63d5a83bfe4c59f7330885d"
@@ -17343,7 +17338,7 @@ ibm-openapi-validator@^0.57.4:
     validator "^13.7.0"
     yaml-js "^0.2.3"
 
-iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4:
+iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
   resolved "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz"
   integrity sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
@@ -19937,6 +19932,11 @@ jsonc-parser@^3.0.0:
   resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-3.0.0.tgz#abdd785701c7e7eaca8a9ec8cf070ca51a745a22"
   integrity sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==
 
+jsonc-parser@~2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/jsonc-parser/-/jsonc-parser-2.2.1.tgz#db73cd59d78cce28723199466b2a03d1be1df2bc"
+  integrity sha512-o6/yDBYccGvTz1+QFevz6l6OBZ2+fMVu2JZ9CIhzsYRX4mjaK5IyX9eldUdCmga16zlgQxyrj5pt9kzuj2C02w==
+
 jsonfile@^2.1.0:
   version "2.4.0"
   resolved "https://registry.npmjs.org/jsonfile/-/jsonfile-2.4.0.tgz"
@@ -22179,13 +22179,6 @@ node-fetch@^2.6.6:
   version "2.6.6"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.6.tgz"
   integrity sha512-Z8/6vRlTUChSdIgMa51jxQ4lrw/Jy5SOW10ObaA47/RElsAN2c5Pn8bTgFGWn/ibwzXTE8qwr1Yzx28vsecXEA==
-  dependencies:
-    whatwg-url "^5.0.0"
-
-node-fetch@^2.6.7:
-  version "2.6.7"
-  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
-  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
   dependencies:
     whatwg-url "^5.0.0"
 
@@ -26779,17 +26772,17 @@ signal-exit@^3.0.5, signal-exit@^3.0.6:
   resolved "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.6.tgz"
   integrity sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==
 
+signal-exit@^3.0.7:
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
+  integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
+
 simple-eval@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/simple-eval/-/simple-eval-1.0.0.tgz#7ba8e6049840690b2d4e356ed01f13209e03aad1"
   integrity sha512-kpKJR+bqTscgC0xuAl2xHN6bB12lHjC2DCUfqjAx19bQyO3R2EVLOurm3H9AUltv/uFVcSCVNc6faegR+8NYLw==
   dependencies:
     jsep "^1.1.2"
-
-signal-exit@^3.0.7:
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
-  integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
 simple-swizzle@^0.2.2:
   version "0.2.2"
@@ -26998,7 +26991,7 @@ socks-proxy-agent@^6.0.0:
     debug "^4.3.3"
     socks "^2.6.2"
 
-socks@^2.6.2:
+socks@^2.3.3, socks@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.2.tgz#ec042d7960073d40d94268ff3bb727dc685f111a"
   integrity sha512-zDZhHhZRY9PxRruRMR7kMhnf3I8hDs4S3f9RecfnGxvcBHQcKcIH/oUcEWffsfl1XxdYlA7nnlGbbTvPz9D8gA==

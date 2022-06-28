@@ -200,164 +200,6 @@
         }
       }
     },
-    "/collections/{id}": {
-      "get": {
-        "operationId": "GetCollectionsCollection",
-        "summary": "Retrieve a Product Collection",
-        "description": "Retrieves a Product Collection.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product Collection",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections": {
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The number of collections to skip before starting to collect the collections set",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/me/addresses": {
-      "post": {
-        "operationId": "PostCustomersCustomerAddresses",
-        "summary": "Add a Shipping Address",
-        "description": "Adds a Shipping Address to a Customer's saved addresses.",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "address"
-                ],
-                "properties": {
-                  "address": {
-                    "description": "The Address to add to the Customer.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections": {
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The number of collections to skip before starting to collect the collections set",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",
@@ -1084,7 +926,7 @@
     },
     "/store/carts/{id}": {
       "post": {
-        "operationId": "PostCartsCartPaymentMethodUpdate",
+        "operationId": "PostCartsCart",
         "summary": "Update a Cart\"",
         "description": "Updates a Cart.",
         "parameters": [
@@ -1102,17 +944,72 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": [
-                  "provider_id"
-                ],
                 "properties": {
-                  "provider_id": {
+                  "region_id": {
                     "type": "string",
-                    "description": "The id of the Payment Provider."
+                    "description": "The id of the Region to create the Cart in."
                   },
-                  "data": {
-                    "type": "object",
-                    "description": ""
+                  "country_code": {
+                    "type": "string",
+                    "description": "The 2 character ISO country code to create the Cart in."
+                  },
+                  "email": {
+                    "type": "string",
+                    "description": "An email to be used on the Cart."
+                  },
+                  "billing_address": {
+                    "description": "The Address to be used for billing purposes.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "shipping_address": {
+                    "description": "The Address to be used for shipping.",
+                    "anyOf": [
+                      {
+                        "$ref": "#/components/schemas/address"
+                      }
+                    ]
+                  },
+                  "gift_cards": {
+                    "description": "An array of Gift Card codes to add to the Cart.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Gift Card is identified by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "discounts": {
+                    "description": "An array of Discount codes to add to the Cart.",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "code"
+                      ],
+                      "properties": {
+                        "code": {
+                          "description": "The code that a Discount is identifed by.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "customer_id": {
+                    "description": "The id of the Customer to associate the Cart with.",
+                    "type": "string"
+                  },
+                  "context": {
+                    "description": "An optional object to provide context to the Cart.",
+                    "type": "object"
                   }
                 }
               }
@@ -1131,6 +1028,89 @@
                   "properties": {
                     "cart": {
                       "$ref": "#/components/schemas/cart"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{id}": {
+      "get": {
+        "operationId": "GetCollectionsCollection",
+        "summary": "Retrieve a Product Collection",
+        "description": "Retrieves a Product Collection.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections": {
+      "get": {
+        "operationId": "GetCollections",
+        "summary": "List Product Collections",
+        "description": "Retrieve a list of Product Collection.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of collections to skip before starting to collect the collections set",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
                     }
                   }
                 }
@@ -1683,183 +1663,6 @@
                   "password": {
                     "type": "string",
                     "description": "The new password to set for the Customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/store/carts/{id}": {
-      "post": {
-        "operationId": "PostCartsCart",
-        "summary": "Update a Cart\"",
-        "description": "Updates a Cart.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "cart_id",
-            "required": true,
-            "description": "The id of Cart.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "region_id": {
-                    "type": "string",
-                    "description": "The id of the Region to create the Cart in."
-                  },
-                  "country_code": {
-                    "type": "string",
-                    "description": "The 2 character ISO country code to create the Cart in."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "An email to be used on the Cart."
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "gift_cards": {
-                    "description": "An array of Gift Card codes to add to the Cart.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "code"
-                      ],
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Gift Card is identified by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "discounts": {
-                    "description": "An array of Discount codes to add to the Cart.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "code"
-                      ],
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Discount is identifed by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "customer_id": {
-                    "description": "The id of the Customer to associate the Cart with.",
-                    "type": "string"
-                  },
-                  "context": {
-                    "description": "An optional object to provide context to the Cart.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders/{id}": {
-      "get": {
-        "operationId": "GetOrdersOrder",
-        "summary": "Retrieves an Order",
-        "description": "Retrieves an Order",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Order.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/orders": {
-      "get": {
-        "operationId": "GetOrders",
-        "summary": "Look Up an Order",
-        "description": "Looks for an Order with a given `display_id`, `email` pair. The `display_id`, `email` pair must match in order for the Order to be returned.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "display_id",
-            "required": true,
-            "description": "The display id given to the Order.",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "in": "query",
-            "name": "email",
-            "required": true,
-            "description": "The email of the Order with the given display_id.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Order"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "order": {
-                      "$ref": "#/components/schemas/order"
-                    }
                   }
                 }
               }
@@ -2801,9 +2604,11 @@
             "type": "string",
             "enum": [
               "created",
+              "pre_processed",
               "processing",
-              "awaiting_confirmation",
-              "completed"
+              "completed",
+              "canceled",
+              "failed"
             ]
           },
           "created_by": {
@@ -2814,9 +2619,34 @@
             "description": "The context of the batch job, the type of the batch job determines what the context should contain.",
             "type": "object"
           },
+          "dry_run": {
+            "description": "Specify if the job must apply the modifications or not.",
+            "type": "boolean",
+            "default": false
+          },
           "result": {
             "description": "The result of the batch job.",
             "type": "object"
+          },
+          "pre_processed_at": {
+            "description": "The date from which the job has been pre processed.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "confirmed_at": {
+            "description": "The date when the confirmation has been done.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "completed_at": {
+            "description": "The date of the completion.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "canceled_at": {
+            "description": "The date of the concellation.",
+            "type": "string",
+            "format": "date-time"
           },
           "created_at": {
             "description": "The date with timezone at which the resource was created.",
