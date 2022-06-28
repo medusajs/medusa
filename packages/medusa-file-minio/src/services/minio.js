@@ -82,7 +82,7 @@ class MinioService extends AbstractFileService {
 
     const pass = new stream.PassThrough()
 
-    const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
+    const fileKey = `${fileData.name}.${fileData.ext}`
     const params = {
       Bucket: usePrivateBucket ? this.private_bucket_ : this.bucket_,
       Body: pass,
