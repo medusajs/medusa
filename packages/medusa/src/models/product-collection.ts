@@ -23,7 +23,7 @@ export class ProductCollection extends SoftDeletableEntity {
   @JoinTable({
     name: "product_collection_images",
     joinColumn: {
-      name: "collection_id",
+      name: "product_collection_id",
       referencedColumnName: "id",
     },
     inverseJoinColumn: {
