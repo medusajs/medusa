@@ -220,6 +220,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     let limit = this.DEFAULT_LIMIT
     let advancementCount = 0
     let productCount = 0
+    let approximateFileSize = 0
 
     return await this.atomicPhase_(
       async (transactionManager) => {
@@ -235,6 +236,8 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
           })
 
         const header = await this.buildHeader(batchJob)
+
+        approximateFileSize += Buffer.from(header).byteLength
         writeStream.write(header)
 
         advancementCount =
@@ -267,7 +270,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
           products.forEach((product: Product) => {
             const lines = this.buildProductVariantLines(product)
-            lines.forEach((line) => writeStream.write(line))
+            lines.forEach((line) => {
+              approximateFileSize += Buffer.from(line).byteLength
+              writeStream.write(line)
+            })
           })
 
           advancementCount += products.length
@@ -279,6 +285,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             .update(batchJobId, {
               result: {
                 file_key: fileKey,
+                file_size: approximateFileSize,
                 count: productCount,
                 advancement_count: advancementCount,
                 progress: advancementCount / productCount,
