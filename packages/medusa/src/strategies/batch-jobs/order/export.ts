@@ -187,18 +187,16 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           }
         )
 
-        const lineDescriptor = this.getLineDescriptor(
+        const lineDescriptor = this.getLineDescriptor_(
           list_config.select as string[],
           list_config.relations as string[]
         )
 
-        const header = this.buildHeader(lineDescriptor)
+        const header = this.buildHeader_(lineDescriptor)
         approximateFileSize += Buffer.from(header).byteLength
         writeStream.write(header)
 
         orderCount = batchJob.context?.batch_size ?? count
-
-        const result = batchJob.result
         let orders = []
 
         while (offset < orderCount) {
@@ -210,8 +208,8 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
               take: Math.min(orderCount - offset, limit),
             })
 
-          orders.forEach(async (order) => {
-            const line = await this.buildCSVLine(order, lineDescriptor)
+          orders.forEach((order) => {
+            const line = this.buildCSVLine_(order, lineDescriptor)
             approximateFileSize += Buffer.from(line).byteLength
             writeStream.write(line)
           })
@@ -258,12 +256,12 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
   }
 
   public async buildTemplate(): Promise<string> {
-    return this.buildHeader(
-      this.getLineDescriptor(this.defaultFields_, this.defaultRelations_)
+    return this.buildHeader_(
+      this.getLineDescriptor_(this.defaultFields_, this.defaultRelations_)
     )
   }
 
-  private buildHeader(
+  private buildHeader_(
     lineDescriptor: OrderDescriptor[] = orderExportPropertiesDescriptors
   ): string {
     return (
@@ -272,10 +270,10 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     )
   }
 
-  private async buildCSVLine(
+  private buildCSVLine_(
     order: Order,
     lineDescriptor: OrderDescriptor[]
-  ): Promise<string> {
+  ): string {
     return (
       [...lineDescriptor.map(({ accessor }) => accessor(order))].join(
         this.DELIMITER
@@ -283,7 +281,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
     )
   }
 
-  private getLineDescriptor(
+  private getLineDescriptor_(
     fields: string[],
     relations: string[]
   ): OrderDescriptor[] {
