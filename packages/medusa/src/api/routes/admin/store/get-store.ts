@@ -3,6 +3,7 @@ import {
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
+import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
 
 /**
  * @oas [get] /store
@@ -30,7 +31,12 @@ export default async (req, res) => {
   const fulfillmentProviderService: FulfillmentProviderService =
     req.scope.resolve("fulfillmentProviderService")
 
-  const data = await storeService.retrieve(["currencies", "default_currency"])
+  const data = (await storeService.retrieve({
+    relations: ["currencies", "default_currency"],
+  })) as Store & {
+    payment_providers: PaymentProvider[]
+    fulfillment_providers: FulfillmentProvider[]
+  }
 
   const paymentProviders = await paymentProviderService.list()
   const fulfillmentProviders = await fulfillmentProviderService.list()

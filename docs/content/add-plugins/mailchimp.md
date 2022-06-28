@@ -180,4 +180,4 @@ If you try entering an email and clicking Subscribe, the email will be subscribe
 ## What’s Next 🚀
 
 - Check out SendGrid plugin for more Email functionalities.
-- [Learn more about plugins.](https://docs.medusajs.com/guides/plugins)
+- [Learn more about plugins.](../advanced/backend/plugins/overview.md)

@@ -39,11 +39,14 @@ update the line item.
 Deleting line items happens with `DELETE /cart/line-items/[line-id]`. Endpoint 
 removes the line item with the given line id by calling `removeLineItem`.
 
-> ### Custom add to cart
-> It is possible to make custom endpoints to add to cart. For example if you are
-> creating a gift card plugin you may want to create a custom endpoint that
-> accepts values like `amount` which can be set by the customer. As long as the
-> controller compiles a valid `LineItem` it can safely call `addLineItem`
+:::note Custom add to cart
+
+It is possible to make custom endpoints to add to cart. For example if you are
+creating a gift card plugin you may want to create a custom endpoint that
+accepts values like `amount` which can be set by the customer. As long as the
+controller compiles a valid `LineItem` it can safely call `addLineItem`
+
+:::
 
 ## Checking out
 

@@ -86,8 +86,6 @@ import {
   AfterLoad,
   BeforeInsert,
   Column,
-  CreateDateColumn,
-  DeleteDateColumn,
   Entity,
   Index,
   JoinColumn,
@@ -96,10 +94,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
-  PrimaryColumn,
-  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { Address } from "./address"
 import { Customer } from "./customer"
@@ -110,6 +105,8 @@ import { Payment } from "./payment"
 import { PaymentSession } from "./payment-session"
 import { Region } from "./region"
 import { ShippingMethod } from "./shipping-method"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum CartType {
   DEFAULT = "default",
@@ -120,10 +117,7 @@ export enum CartType {
 }
 
 @Entity()
-export class Cart {
-  @PrimaryColumn()
-  id: string
-
+export class Cart extends SoftDeletableEntity {
   readonly object = "cart"
 
   @Column({ nullable: true })
@@ -227,23 +221,14 @@ export class Cart {
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   payment_authorized_at: Date
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
-  @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
-
   @Column({ nullable: true })
   idempotency_key: string
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  context: any
+  context: Record<string, unknown>
+
+  @DbAwareColumn({ type: "jsonb", nullable: true })
+  metadata: Record<string, unknown>
 
   shipping_total?: number
   discount_total?: number
@@ -254,19 +239,15 @@ export class Cart {
   refundable_amount?: number
   gift_card_total?: number
 
-  @BeforeInsert()
-  private beforeInsert(): undefined | void {
-    if (this.id) {
-      return
-    }
-    const id = ulid()
-    this.id = `cart_${id}`
-  }
-
   @AfterLoad()
   private afterLoad(): void {
     if (this.payment_sessions) {
       this.payment_session = this.payment_sessions.find((p) => p.is_selected)!
     }
+  }
+
+  @BeforeInsert()
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "cart")
   }
 }

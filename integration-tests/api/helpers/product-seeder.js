@@ -50,14 +50,14 @@ module.exports = async (connection, data = {}) => {
 
   const tag3 = await manager.create(ProductTag, {
     id: "tag3",
-    value: "123",
+    value: "1235",
   })
 
   await manager.save(tag3)
 
   const tag4 = await manager.create(ProductTag, {
     id: "tag4",
-    value: "123",
+    value: "1234",
   })
 
   await manager.save(tag4)
@@ -68,6 +68,13 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(type)
+
+  const type2 = await manager.create(ProductType, {
+    id: "test-type-new",
+    value: "test-type-new",
+  })
+
+  await manager.save(type2)
 
   const image = manager.create(Image, {
     id: "test-image",

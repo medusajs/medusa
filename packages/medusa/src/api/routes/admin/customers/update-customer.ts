@@ -137,7 +137,7 @@ export class AdminPostCustomersCustomerReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @IsOptional()

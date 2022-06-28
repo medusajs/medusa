@@ -27,6 +27,10 @@ module.exports = {
       label: "Quickstart Guide",
     },
     {
+      type: "doc",
+      id: "usage",
+    },
+    {
       type: "category",
       collapsed: false,
       label: "Usage Guides",
@@ -38,8 +42,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "tutorial/creating-your-medusa-server",
-          label: "Create your Medusa Server"
+          id: "usage/configurations",
+          label: "Configure your Server"
         },
         {
           type: "category",
@@ -49,17 +53,12 @@ module.exports = {
             {
               type: "doc",
               id: "starters/gatsby-medusa-starter",
-              label: "Quickstart: Gatsby",
+              label: "Gatsby Storefront Quickstart",
             },
             {
               type: "doc",
               id: "starters/nextjs-medusa-starter",
-              label: "Quickstart: Next.js",
-            },
-            {
-              type: "doc",
-              id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
-              label: "Set Up a Next.js Storefront for your Medusa Project"
+              label: "Next.js Storefront Quickstart",
             },
           ],
         },
@@ -122,38 +121,41 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-storefront",
-                  label: "Add Endpoint for Storefront"
+                  label: "Create Endpoint for Storefront"
                 },
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-admin",
-                  label: "Add Endpoint for Admin"
+                  label: "Create Endpoint for Admin"
                 },
               ]
             },
             {
-              type: "category",
-              label: 'Services',
-              collapsed: false,
-              items: [
-                {
-                  type: "doc",
-                  id: "advanced/backend/services/create-service",
-                  label: "Create a Service"
-                },
-              ]
+              type: "doc",
+              id: "advanced/backend/services/create-service",
+              label: "Create a Service"
             },
             {
               type: "category",
               label: 'Subscribers',
-              collapsed: false,
+              collapsed: true,
               items: [
                 {
                   type: "doc",
                   id: "advanced/backend/subscribers/create-subscriber",
                   label: "Create a Subscriber"
                 },
+                {
+                  type: "doc",
+                  id: "advanced/backend/subscribers/events-list",
+                  label: "List of Events"
+                },
               ]
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/entities",
+              label: "Entities"
             },
             {
               type: "category",
@@ -168,7 +170,7 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/shipping/add-fulfillment-provider",
-                  label: "Add Fulfillment Provider"
+                  label: "Create a Fulfillment Provider"
                 }
               ]
             },
@@ -185,33 +187,77 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/payment/how-to-create-payment-provider",
-                },
-                {
-                  type: "doc",
-                  id: "advanced/backend/payment/frontend-payment-flow-in-checkout",
+                  label: "Create a Payment Provider"
                 },
               ]
             },
             {
-              type: "doc",
-              id: "tutorial/adding-custom-functionality",
-              label: "Add Custom Functionality"
+              type: "category",
+              label: "Notification",
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/how-to-create-notification-provider",
+                  label: "Create a Notification Provider"
+                }
+              ]
             },
             {
-              type: "doc",
-              id: "how-to/notification-api",
-            },
-            {
-              type: "doc",
-              id: "guides/fulfillment-api",
-            },
-            {
-              type: "doc",
-              id: "guides/plugins",
+              type: "category",
+              label: "Plugins",
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/plugins/overview",
+                  label: "Overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/plugins/create",
+                }
+              ]
             },
             {
               type: "doc",
               id: "guides/carts-in-medusa",
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/migrations",
+              label: "Migrations"
+            },
+            {
+              type: "category",
+              label: 'Upgrade Guides',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'advanced/backend/upgrade-guides/index'
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/upgrade-guides/1-3-0",
+                  label: "v1.3.0"
+                },
+              ]
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Storefront",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "advanced/storefront/how-to-implement-checkout-flow",
             },
           ]
         }
@@ -391,5 +437,16 @@ module.exports = {
         },
       ],
     },
+    {
+      type: "doc",
+      id: "contribution-guidelines",
+      label: "Contribution Guidelines",
+    },
   ],
+  servicesSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: 'references/services/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)
+    },
+  ]
 }

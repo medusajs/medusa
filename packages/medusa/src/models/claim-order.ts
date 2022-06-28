@@ -1,19 +1,17 @@
 import {
-  Entity,
   BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
-  PrimaryColumn,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
   Index,
-  OneToOne,
+  JoinColumn,
   ManyToOne,
   OneToMany,
-  JoinColumn,
+  OneToOne,
+  UpdateDateColumn,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 
 import { Fulfillment } from "./fulfillment"
 import { LineItem } from "./line-item"
@@ -22,6 +20,8 @@ import { Order } from "./order"
 import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
 import { Address } from "./address"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ClaimType {
   REFUND = "refund",
@@ -47,10 +47,7 @@ export enum ClaimFulfillmentStatus {
 }
 
 @Entity()
-export class ClaimOrder {
-  @PrimaryColumn()
-  id: string
-
+export class ClaimOrder extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
     enum: ClaimPaymentStatus,
@@ -65,17 +62,10 @@ export class ClaimOrder {
   })
   fulfillment_status: ClaimFulfillmentStatus
 
-  @OneToMany(
-    () => ClaimItem,
-    ci => ci.claim_order
-  )
+  @OneToMany(() => ClaimItem, (ci) => ci.claim_order)
   claim_items: ClaimItem[]
 
-  @OneToMany(
-    () => LineItem,
-    li => li.claim_order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => LineItem, (li) => li.claim_order, { cascade: ["insert"] })
   additional_items: LineItem[]
 
   @DbAwareColumn({ type: "enum", enum: ClaimType })
@@ -85,17 +75,11 @@ export class ClaimOrder {
   @Column()
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    o => o.claims
-  )
+  @ManyToOne(() => Order, (o) => o.claims)
   @JoinColumn({ name: "order_id" })
   order: Order
 
-  @OneToOne(
-    () => Return,
-    ret => ret.claim_order
-  )
+  @OneToOne(() => Return, (ret) => ret.claim_order)
   return_order: Return
 
   @Index()
@@ -106,18 +90,14 @@ export class ClaimOrder {
   @JoinColumn({ name: "shipping_address_id" })
   shipping_address: Address
 
-  @OneToMany(
-    () => ShippingMethod,
-    method => method.claim_order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => ShippingMethod, (method) => method.claim_order, {
+    cascade: ["insert"],
+  })
   shipping_methods: ShippingMethod[]
 
-  @OneToMany(
-    () => Fulfillment,
-    fulfillment => fulfillment.claim_order,
-    { cascade: ["insert"] }
-  )
+  @OneToMany(() => Fulfillment, (fulfillment) => fulfillment.claim_order, {
+    cascade: ["insert"],
+  })
   fulfillments: Fulfillment[]
 
   @Column({ type: "int", nullable: true })
@@ -136,19 +116,17 @@ export class ClaimOrder {
   deleted_at: Date
 
   @Column({ type: "boolean", nullable: true })
-  no_notification: Boolean
+  no_notification: boolean
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `claim_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "claim")
   }
 }
 

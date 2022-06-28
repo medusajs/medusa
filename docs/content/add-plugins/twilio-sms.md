@@ -66,7 +66,7 @@ In this example, you’ll create a subscriber that listens to the `order.placed`
 
 :::tip
 
-For this example to work, you’ll need to install and configure Redis on your server. You can refer to the [development guide](../tutorial/0-set-up-your-development-environment.md#redis) to learn how to do that.
+For this example to work, you’ll need to install and configure Redis on your server. You can refer to the [development guide](/tutorial/set-up-your-development-environment#redis) to learn how to do that.
 
 :::
 
@@ -124,5 +124,5 @@ If you’re on a Twilio trial make sure that the phone number you entered on che
 
 ## What’s Next 🚀
 
-- Learn more about how [Notifications work in Medusa](../how-to/notification-api).
+- Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
 - Install the [Medusa admin](../admin/quickstart.md) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.

@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { omit } from "lodash"
+import { pickBy } from "lodash"
 import {
   IsArray,
   IsBoolean,
@@ -8,17 +8,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Product } from "../../../../models/product"
+import { ProductStatus } from "../../../../models"
 import { DateComparisonOperator } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { FilterableProductProps } from "../../../../types/product"
-import {
-  AdminGetProductsPaginationParams,
-  allowedAdminProductFields,
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-} from "../products"
-import listAndCount from "../../../../controllers/products/admin-list-products"
+import { AdminGetProductsPaginationParams } from "../products"
+import PriceListService from "../../../../services/price-list"
+import { Request } from "express"
 
 /**
  * @oas [get] /price-lists/:id/products
@@ -92,48 +87,30 @@ import listAndCount from "../../../../controllers/products/admin-list-products"
  *               items:
  *                 $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
+  const { offset, limit } = req.validatedQuery
 
-  const validatedParams = await validator(
-    AdminGetPriceListsPriceListProductsParams,
-    req.query
+  const priceListService: PriceListService =
+    req.scope.resolve("priceListService")
+
+  const filterableFields: FilterableProductProps = {
+    ...req.filterableFields,
+    price_list_id: [id],
+  }
+
+  const [products, count] = await priceListService.listProducts(
+    id,
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    req.listConfig
   )
 
-  req.query.price_list_id = [id]
-
-  const filterableFields: FilterableProductProps = omit(req.query, [
-    "limit",
-    "offset",
-    "expand",
-    "fields",
-    "order",
-  ])
-
-  const result = await listAndCount(
-    req.scope,
-    filterableFields,
-    {},
-    {
-      limit: validatedParams.limit ?? 50,
-      offset: validatedParams.offset ?? 0,
-      expand: validatedParams.expand,
-      fields: validatedParams.fields,
-      order: validatedParams.order,
-      allowedFields: allowedAdminProductFields,
-      defaultFields: defaultAdminProductFields as (keyof Product)[],
-      defaultRelations: defaultAdminProductRelations,
-    }
-  )
-
-  res.json(result)
-}
-
-enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
+  res.json({
+    products,
+    count,
+    offset,
+    limit,
+  })
 }
 
 export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsPaginationParams {

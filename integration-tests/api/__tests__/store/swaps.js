@@ -1,18 +1,7 @@
 const path = require("path")
 const {
-  Region,
-  Order,
-  Customer,
   ShippingProfile,
-  Product,
-  ProductVariant,
-  MoneyAmount,
-  LineItem,
-  Payment,
-  Cart,
-  ShippingMethod,
   ShippingOption,
-  Swap,
 } = require("@medusajs/medusa")
 
 const setupServer = require("../../../helpers/setup-server")
@@ -137,7 +126,7 @@ describe("/store/carts", () => {
             type: "swap",
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            shipping_address_id: expect.stringMatching(/^addr_*/),
+            shipping_address_id: "test-shipping-address",
             metadata: {
               swap_id: expect.stringMatching(/^swap_*/),
             },
@@ -221,7 +210,7 @@ describe("/store/carts", () => {
           cart: {
             id: expect.stringMatching(/^cart_*/),
             billing_address_id: "test-billing-address",
-            shipping_address_id: expect.stringMatching(/^addr_*/),
+            shipping_address_id: "test-shipping-address",
             type: "swap",
             created_at: expect.any(String),
             updated_at: expect.any(String),

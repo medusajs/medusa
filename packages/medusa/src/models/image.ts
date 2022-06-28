@@ -1,40 +1,19 @@
-import {
-  Entity,
-  BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Column,
-  PrimaryColumn,
-} from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity } from "typeorm"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Image {
-  @PrimaryColumn()
-  id: string
-
+export class Image extends SoftDeletableEntity {
   @Column()
   url: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `img_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "img")
   }
 }
 

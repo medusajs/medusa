@@ -1,6 +1,5 @@
 const path = require("path")
 const {
-  Region,
   DiscountRule,
   Discount,
   Customer,
@@ -12,7 +11,6 @@ const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
 const discountSeeder = require("../../helpers/discount-seeder")
-const { exportAllDeclaration } = require("@babel/types")
 const { simpleProductFactory } = require("../../factories")
 const {
   simpleDiscountFactory,
@@ -636,12 +634,12 @@ describe("/admin/discounts", () => {
           {
             rule: {
               id: createdRule.id,
-              type: createdRule.type,
               value: createdRule.value,
               allocation: createdRule.allocation,
               conditions: [
                 {
                   id: condsToUpdate.id,
+                  operator: "not_in",
                   products: [product.id, anotherProduct.id],
                 },
               ],
@@ -658,24 +656,26 @@ describe("/admin/discounts", () => {
         })
 
       expect(updated.status).toEqual(200)
-      expect(updated.data.discount.rule.conditions).toEqual([
-        expect.objectContaining({
-          type: "products",
-          operator: "in",
-          products: expect.arrayContaining([
-            expect.objectContaining({
-              id: product.id,
-            }),
-            expect.objectContaining({
-              id: anotherProduct.id,
-            }),
-          ]),
-        }),
-        expect.objectContaining({
-          type: "product_types",
-          operator: "not_in",
-        }),
-      ])
+      expect(updated.data.discount.rule.conditions).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            type: "products",
+            operator: "not_in",
+            products: expect.arrayContaining([
+              expect.objectContaining({
+                id: product.id,
+              }),
+              expect.objectContaining({
+                id: anotherProduct.id,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            type: "product_types",
+            operator: "not_in",
+          }),
+        ])
+      )
     })
 
     it("fails to add condition on rule with existing comb. of type and operator", async () => {
@@ -729,9 +729,7 @@ describe("/admin/discounts", () => {
             {
               rule: {
                 id: createdRule.id,
-                type: createdRule.type,
                 value: createdRule.value,
-                allocation: createdRule.allocation,
                 conditions: [
                   {
                     products: [anotherProduct.id],
@@ -842,7 +840,6 @@ describe("/admin/discounts", () => {
             {
               rule: {
                 id: createdRule.id,
-                type: createdRule.type,
                 value: createdRule.value,
                 allocation: createdRule.allocation,
                 conditions: [
@@ -921,6 +918,121 @@ describe("/admin/discounts", () => {
           usage_limit: 20,
         })
       )
+    })
+
+    it("creates a discount and fails to update it because attempting type update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+        })
+      )
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            rule: {
+              id: response.data.discount.rule.id,
+              type: "free_shipping",
+            },
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            "property type should not exist"
+          )
+        })
+    })
+
+    it("creates a discount and fails to update it because attempting is_dynamic update", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/admin/discounts",
+          {
+            code: "HELLOWORLD",
+            is_dynamic: true,
+            rule: {
+              description: "test",
+              type: "percentage",
+              value: 10,
+              allocation: "total",
+            },
+            usage_limit: 10,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.discount).toEqual(
+        expect.objectContaining({
+          code: "HELLOWORLD",
+          usage_limit: 10,
+          is_dynamic: true,
+        })
+      )
+
+      await api
+        .post(
+          `/admin/discounts/${response.data.discount.id}`,
+          {
+            usage_limit: 20,
+            is_dynamic: false,
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          expect(err.response.status).toEqual(400)
+          expect(err.response.data.message).toEqual(
+            "property is_dynamic should not exist"
+          )
+        })
     })
 
     it("automatically sets the code to an uppercase string on update", async () => {
@@ -1329,7 +1441,7 @@ describe("/admin/discounts", () => {
       expect.assertions(2)
       const api = useApi()
 
-      const response = await api
+      await api
         .post(
           "/admin/discounts",
           {
@@ -1468,41 +1580,37 @@ describe("/admin/discounts", () => {
   describe("POST /admin/discounts/:discount_id/dynamic-codes", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      try {
-        await adminSeeder(dbConnection)
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule",
-          description: "Dynamic rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount",
-          code: "DYNAMIC",
-          is_dynamic: true,
-          is_disabled: false,
-          rule_id: "test-discount-rule",
-          valid_duration: "P2Y",
-        })
-        await manager.insert(DiscountRule, {
-          id: "test-discount-rule1",
-          description: "Dynamic rule",
-          type: "percentage",
-          value: 10,
-          allocation: "total",
-        })
-        await manager.insert(Discount, {
-          id: "test-discount1",
-          code: "DYNAMICCode",
-          is_dynamic: true,
-          is_disabled: false,
-          rule_id: "test-discount-rule1",
-        })
-      } catch (err) {
-        console.log(err)
-        throw err
-      }
+
+      await adminSeeder(dbConnection)
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule",
+        description: "Dynamic rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount",
+        code: "DYNAMIC",
+        is_dynamic: true,
+        is_disabled: false,
+        rule_id: "test-discount-rule",
+        valid_duration: "P2Y",
+      })
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule1",
+        description: "Dynamic rule",
+        type: "percentage",
+        value: 10,
+        allocation: "total",
+      })
+      await manager.insert(Discount, {
+        id: "test-discount1",
+        code: "DYNAMICCode",
+        is_dynamic: true,
+        is_disabled: false,
+        rule_id: "test-discount-rule1",
+      })
     })
 
     afterEach(async () => {
@@ -1554,7 +1662,7 @@ describe("/admin/discounts", () => {
           }
         )
         .catch((err) => {
-          // console.log(err)
+          console.log(err)
         })
 
       expect(response.status).toEqual(200)
@@ -1564,6 +1672,631 @@ describe("/admin/discounts", () => {
           ends_at: null,
         })
       )
+    })
+  })
+
+  describe("DELETE /admin/discounts/:id/conditions/:condition_id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              type: "products",
+              operator: "in",
+              products: [prod.id],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should delete condition", async () => {
+      const api = useApi()
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition",
+              type: "customer_groups",
+              operator: "in",
+              customer_groups: ["customer-group-1"],
+            },
+          ],
+        },
+      })
+
+      const response = await api
+        .delete("/admin/discounts/test-discount/conditions/test-condition", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data
+
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-condition",
+          deleted: true,
+          object: "discount-condition",
+        })
+      )
+    })
+
+    it("should not fail if condition does not exist", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete("/admin/discounts/test-discount/conditions/test-condition", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data
+
+      expect(response.status).toEqual(200)
+      expect(disc).toEqual(
+        expect.objectContaining({
+          id: "test-condition",
+          deleted: true,
+          object: "discount-condition",
+        })
+      )
+    })
+
+    it("should fail if discount does not exist", async () => {
+      const api = useApi()
+
+      try {
+        await api.delete(
+          "/admin/discounts/not-exist/conditions/test-condition",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Discount with id not-exist was not found"
+        )
+      }
+    })
+  })
+
+  describe("POST /admin/discounts/:id/conditions", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should create a condition", async () => {
+      const api = useApi()
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      const response = await api
+        .post(
+          "/admin/discounts/test-discount/conditions",
+          {
+            operator: "in",
+            products: [prod.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+
+      expect(response.status).toEqual(200)
+      expect(disc).toMatchSnapshot({
+        id: "test-discount",
+        code: "TEST",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        rule_id: expect.any(String),
+        starts_at: expect.any(String),
+        rule: {
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          conditions: [
+            {
+              id: expect.any(String),
+              discount_rule_id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            },
+          ],
+        },
+      })
+    })
+
+    it("fails if more than one condition type is provided", async () => {
+      const api = useApi()
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      const group = await dbConnection.manager.insert(CustomerGroup, {
+        id: "customer-group-1",
+        name: "vip-customers",
+      })
+
+      await dbConnection.manager.insert(Customer, {
+        id: "cus_1234",
+        email: "oli@email.com",
+        groups: [group],
+      })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount/conditions",
+          {
+            operator: "in",
+            products: [prod.id],
+            customer_groups: ["customer-group-1"],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Only one of products, customer_groups is allowed, Only one of customer_groups, products is allowed"
+        )
+      }
+    })
+
+    it("throws if discount does not exist", async () => {
+      expect.assertions(1)
+
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/does-not-exist/conditions/test-condition",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Discount with id does-not-exist was not found"
+        )
+      }
+    })
+  })
+
+  describe("POST /admin/discounts/:id/conditions/:condition_id", () => {
+    beforeEach(async () => {
+      const manager = dbConnection.manager
+      await adminSeeder(dbConnection)
+
+      await manager.insert(DiscountRule, {
+        id: "test-discount-rule-fixed",
+        description: "Test discount rule",
+        type: "fixed",
+        value: 10,
+        allocation: "total",
+      })
+
+      const prod = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition",
+              type: "products",
+              operator: "in",
+              products: [prod.id],
+            },
+          ],
+        },
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount-2",
+        code: "TEST2",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should update a condition", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, {
+        id: "test-product",
+        type: "pants",
+      })
+
+      const discount = await api
+        .get("/admin/discounts/test-discount", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const cond = discount.data.discount.rule.conditions[0]
+
+      const response = await api
+        .post(
+          `/admin/discounts/test-discount/conditions/${cond.id}?expand=rule,rule.conditions,rule.conditions.products`,
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const disc = response.data.discount
+
+      expect(response.status).toEqual(200)
+      expect(disc).toMatchSnapshot({
+        id: "test-discount",
+        code: "TEST",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        rule_id: expect.any(String),
+        starts_at: expect.any(String),
+        rule: {
+          id: expect.any(String),
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          conditions: [
+            {
+              id: expect.any(String),
+              discount_rule_id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+              products: [
+                {
+                  created_at: expect.any(String),
+                  updated_at: expect.any(String),
+                  profile_id: expect.any(String),
+                  type_id: expect.any(String),
+                  id: "test-product",
+                },
+              ],
+            },
+          ],
+        },
+      })
+    })
+
+    it("throws if condition does not exist", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount/conditions/does-not-exist",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "DiscountCondition with id does-not-exist was not found for Discount test-discount"
+        )
+      }
+    })
+
+    it("throws if discount does not exist", async () => {
+      expect.assertions(1)
+
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/does-not-exist/conditions/test-condition",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "Discount with id does-not-exist was not found"
+        )
+      }
+    })
+
+    it("throws if condition does not belong to discount", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount-2/conditions/test-condition",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "DiscountCondition with id test-condition was not found for Discount test-discount-2"
+        )
+      }
+    })
+  })
+
+  describe("GET /admin/discounts/:id/conditions/:condition_id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+      }
+
+      const prod = await simpleProductFactory(dbConnection, {
+        type: "pants",
+        id: "test-product",
+      })
+
+      await simpleDiscountFactory(dbConnection, {
+        id: "test-discount",
+        code: "TEST",
+        rule: {
+          type: "percentage",
+          value: "10",
+          allocation: "total",
+          conditions: [
+            {
+              id: "test-condition",
+              type: "products",
+              operator: "in",
+              products: [prod.id],
+            },
+          ],
+        },
+      })
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should get condition", async () => {
+      const api = useApi()
+
+      const discountCondition = await api
+        .get("/admin/discounts/test-discount/conditions/test-condition", {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const cond = discountCondition.data.discount_condition
+
+      expect(discountCondition.status).toEqual(200)
+      expect(cond).toMatchSnapshot({
+        id: "test-condition",
+        type: "products",
+        operator: "in",
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+        discount_rule_id: expect.any(String),
+        discount_rule: {
+          id: expect.any(String),
+          updated_at: expect.any(String),
+          created_at: expect.any(String),
+        },
+      })
+    })
+
+    it("should get condition with expand + fields", async () => {
+      const api = useApi()
+
+      const discountCondition = await api
+        .get(
+          "/admin/discounts/test-discount/conditions/test-condition?expand=products&fields=id,type",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      const cond = discountCondition.data.discount_condition
+      console.log(cond.products)
+
+      expect(discountCondition.status).toEqual(200)
+      expect(cond).toMatchSnapshot({
+        id: "test-condition",
+        type: "products",
+        products: [
+          {
+            id: "test-product",
+            profile_id: expect.any(String),
+            type_id: expect.any(String),
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ],
+      })
+    })
+
+    it("throws if condition does not exist", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount/conditions/does-not-exist",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "DiscountCondition with id test-condition was not found"
+        )
+      }
+    })
+
+    it("throws if condition does not belong to discount", async () => {
+      const api = useApi()
+
+      const prod2 = await simpleProductFactory(dbConnection, { type: "pants" })
+
+      try {
+        await api.post(
+          "/admin/discounts/test-discount-2/conditions/test-condition",
+          {
+            products: [prod2.id],
+          },
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+      } catch (error) {
+        expect(error.message).toMatchSnapshot(
+          "DiscountCondition with id test-condition was not found for Discount test-discount-2"
+        )
+      }
     })
   })
 })

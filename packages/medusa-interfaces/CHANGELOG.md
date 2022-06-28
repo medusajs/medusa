@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.2.1...medusa-interfaces@1.3.0) (2022-05-01)
+
+
+### Bug Fixes
+
+* ensures no duplicate tax lines when completing cart ([#1262](https://github.com/medusajs/medusa/issues/1262)) ([607a382](https://github.com/medusajs/medusa/commit/607a382b4ee190c25eafa345674b55b74a7d6349))
+
+
+
+
+
 ## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-interfaces@1.1.34...medusa-interfaces@1.2.1) (2022-02-28)
 
 

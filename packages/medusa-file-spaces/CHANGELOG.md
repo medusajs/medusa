@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.0...medusa-file-spaces@1.2.2) (2022-06-19)
+
+
+### Bug Fixes
+
+* **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
+
+
+
+
+
+## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.0...medusa-file-spaces@1.2.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **medusa-file-spaces:** Allow duplicate filenames ([#1474](https://github.com/medusajs/medusa/issues/1474)) ([525910f](https://github.com/medusajs/medusa/commit/525910f72aa76355c29dd153f28ea08221956f3e))
+
+
+
+
+
+# [1.2.0](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.37...medusa-file-spaces@1.2.0) (2022-05-01)
+
+**Note:** Version bump only for package medusa-file-spaces
+
+
+
+
+
 ## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.1.36...medusa-file-spaces@1.1.37) (2022-01-11)
 
 **Note:** Version bump only for package medusa-file-spaces

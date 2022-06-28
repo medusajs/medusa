@@ -1,19 +1,21 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
-  IsOptional,
-  ValidateNested,
   IsBoolean,
-  IsObject,
-  IsString,
+  IsEnum,
   IsInt,
   IsNotEmpty,
-  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { ClaimTypeValue } from "../../../../types/claim"
+import { ClaimType, ClaimReason } from "../../../../models"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -177,6 +179,12 @@ export default async (req, res) => {
                   "items.tax_lines",
                   "discounts",
                   "discounts.rule",
+                  "claims",
+                  "claims.additional_items",
+                  "claims.additional_items.tax_lines",
+                  "swaps",
+                  "swaps.additional_items",
+                  "swaps.additional_items.tax_lines",
                 ],
               })
 
@@ -326,26 +334,10 @@ export default async (req, res) => {
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
-enum ClaimTypeEnum {
-  replace = "replace",
-  refund = "refund",
-}
-
-type ClaimType = `${ClaimTypeEnum}`
-
-enum ClaimItemReasonEnum {
-  missing_item = "missing_item",
-  wrong_item = "wrong_item",
-  production_failure = "production_failure",
-  other = "other",
-}
-
-type ClaimItemReasonType = `${ClaimItemReasonEnum}`
-
 export class AdminPostOrdersOrderClaimsReq {
-  @IsEnum(ClaimTypeEnum)
+  @IsEnum(ClaimType)
   @IsNotEmpty()
-  type: ClaimType
+  type: ClaimTypeValue
 
   @IsArray()
   @IsNotEmpty()
@@ -426,9 +418,9 @@ class Item {
   @IsOptional()
   note?: string
 
-  @IsEnum(ClaimItemReasonEnum)
+  @IsEnum(ClaimReason)
   @IsOptional()
-  reason?: ClaimItemReasonType
+  reason?: ClaimReason
 
   @IsArray()
   @IsOptional()

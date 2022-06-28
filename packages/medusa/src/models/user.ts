@@ -1,15 +1,7 @@
-import {
-  Entity,
-  BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
-  Column,
-  PrimaryColumn,
-} from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BeforeInsert, Column, Entity, Index } from "typeorm"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum UserRoles {
   ADMIN = "admin",
@@ -18,10 +10,7 @@ export enum UserRoles {
 }
 
 @Entity()
-export class User {
-  @PrimaryColumn()
-  id: string
-
+export class User extends SoftDeletableEntity {
   @DbAwareColumn({
     type: "enum",
     enum: UserRoles,
@@ -46,23 +35,12 @@ export class User {
   @Column({ nullable: true })
   api_token: string
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `usr_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "usr")
   }
 }
 

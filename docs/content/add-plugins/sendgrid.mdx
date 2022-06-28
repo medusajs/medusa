@@ -24,7 +24,7 @@ By integrating SendGrid with Medusa, you’ll be sending email notifications to 
 
 Before going further with this guide make sure you have a Medusa server set up. You can follow our [Quickstart guide](../quickstart/quick-start.md).
 
-You also must have [Redis configured on your Medusa server](../tutorial/0-set-up-your-development-environment.md). Sending emails is done through Subscribers, which uses Redis as the event queue. If you don’t set up Redis, the plugin will not send emails.
+You also must have [Redis configured on your Medusa server](/tutorial/set-up-your-development-environment#redis). Sending emails is done through Subscribers, which uses Redis as the event queue. If you don’t set up Redis, the plugin will not send emails.
 
 ## Create a SendGrid Account
 
@@ -297,7 +297,7 @@ You don’t have to create a template for every type in the reference. You can s
   ```
 </details>
 
-### Order Cancelled
+### Order Canceled
 
 **Key in plugin options:** `order_canceled_template`
 
@@ -3963,5 +3963,5 @@ You can also track analytics related to emails sent from the SendGrid dashboard.
 
 ## What’s Next 🚀
 
-- Learn more about how [Notifications work in Medusa](../how-to/notification-api.md).
+- Learn more about how [Notifications work in Medusa](../advanced/backend/notification/overview.md).
 - Install the [Medusa admin](https://github.com/medusajs/admin#-setting-up-admin) for functionalities like Gift Cards creation, swaps, claims, order return requests, and more.
