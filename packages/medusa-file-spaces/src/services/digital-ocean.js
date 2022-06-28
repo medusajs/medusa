@@ -6,7 +6,7 @@ import stream from "stream"
 
 class DigitalOceanService extends AbstractFileService {
   constructor({}, options) {
-    super()
+    super({}, options)
 
     this.bucket_ = options.bucket
     this.spacesUrl_ = options.spaces_url?.replace(/\/$/, "")

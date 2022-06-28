@@ -17,15 +17,14 @@ export const simpleBatchJobFactory = async (
 ): Promise<BatchJob> => {
   const manager = connection.manager
 
-  const job = manager.create(BatchJob, {
+  const job = manager.create<BatchJob>(BatchJob, {
     id: data.id,
     status: data.status ?? BatchJobStatus.CREATED,
-    awaiting_confirmation_at: data.awaiting_confirmation_at ?? null,
     completed_at: data.completed_at ?? null,
     type: data.type ?? "test-job",
     created_by: data.created_by ?? null,
     context: data.context ?? {},
   })
 
-  return await manager.save(job)
+  return await manager.save<BatchJob>(job)
 }

@@ -6,7 +6,7 @@ import { MedusaError } from "medusa-core-utils"
 
 class MinioService extends AbstractFileService {
   constructor({}, options) {
-    super()
+    super({}, options)
 
     this.bucket_ = options.bucket
     this.accessKeyId_ = options.access_key_id
