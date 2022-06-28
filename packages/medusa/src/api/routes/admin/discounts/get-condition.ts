@@ -1,14 +1,16 @@
 import { IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import {
   defaultAdminDiscountConditionFields,
   defaultAdminDiscountConditionRelations,
 } from "."
+
 import { DiscountCondition } from "../../../../models"
-import { DiscountService } from "../../../../services"
 import DiscountConditionService from "../../../../services/discount-condition"
+import { DiscountService } from "../../../../services"
+import { MedusaError } from "medusa-core-utils"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /discounts/{discount_id}/conditions/{condition_id}
  * operationId: "GetDiscountsDiscountConditionsCondition"
@@ -17,9 +19,8 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) discount_id=* {string} The id of the Discount.
  *   - (path) condition_id=* {string} The id of the DiscountCondition.
- * query:
- *  - (query) expand {string} Comma separated list of relations to include in the results.
- *  - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * description: "Gets a DiscountCondition"
  
  * tags:

@@ -1,9 +1,10 @@
 import { IsOptional, IsString } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
-import { Discount } from "../../../../models/discount"
-import { DiscountService } from "../../../../services"
-import DiscountConditionService from "../../../../services/discount-condition"
+
 import { AdminUpsertConditionsReq } from "../../../../types/discount"
+import { Discount } from "../../../../models/discount"
+import DiscountConditionService from "../../../../services/discount-condition"
+import { DiscountService } from "../../../../services"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 /**
@@ -19,9 +20,9 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - id
  *       schema:
+ *         required:
+ *           - id
  *         properties:
  *           items:
  *              properties:

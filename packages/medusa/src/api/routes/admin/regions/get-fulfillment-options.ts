@@ -22,7 +22,13 @@ import { FulfillmentOption } from "."
  *             fulfillment_options:
  *               type: array
  *               items:
- *                 type: object
+ *                 properties:
+ *                   provider_id:
+ *                     type: string
+ *                     description: id of the fulfillment provider
+ *                   options:
+ *                     type: object
+ *                     description: fulfillment provider options
  */
 export default async (req, res) => {
   const { region_id } = req.params

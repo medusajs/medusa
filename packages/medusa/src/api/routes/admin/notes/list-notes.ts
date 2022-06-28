@@ -9,7 +9,7 @@ import { Type } from "class-transformer"
  * summary: "List Notes"
  * x-authenticated: true
  * description: "Retrieves a list of notes"
- *  * parameters:
+ * parameters:
  *   - (path) limit= {number} The number of notes to get
  *   - (path) offset= {number} The offset at which to get notes
  *   - (path) resource_id= {string} The id which the notes belongs to

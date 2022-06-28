@@ -196,7 +196,7 @@ paths:
       x-authenticated: true
       parameters: []
       tags:
-        - Batch Job
+        - Customer
       responses:
         '201':
           description: OK
@@ -256,54 +256,39 @@ paths:
               type: string
         - in: query
           name: confirmed_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was confirmed, i.e.
             less than, greater than etc.
           schema:
             type: object
-            nullable: true
         - in: query
           name: pre_processed_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was pre processed,
             i.e. less than, greater than etc.
           schema:
             type: object
-            nullable: true
         - in: query
           name: completed_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was completed, i.e.
             less than, greater than etc.
           schema:
             type: object
-            nullable: true
         - in: query
           name: failed_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was failed, i.e. less
             than, greater than etc.
           schema:
             type: object
-            nullable: true
         - in: query
           name: canceled_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was canceled, i.e.
             less than, greater than etc.
           schema:
             type: object
-            nullable: true
         - in: query
           name: order
           description: Order used when retrieving batch jobs
@@ -311,34 +296,25 @@ paths:
             type: string
         - in: query
           name: deleted_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was deleted, i.e.
             less than, greater than etc.
           schema:
             type: object
-            nullable: true
         - in: query
           name: created_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was created, i.e.
             less than, greater than etc.
           schema:
             type: object
-            nullable: true
         - in: query
           name: updated_at
-          style: form
-          explode: false
           description: >-
             Date comparison for when resulting collections was updated, i.e.
             less than, greater than etc.
           schema:
             type: object
-            nullable: true
       tags:
         - Batch Job
       responses:
@@ -914,155 +890,6 @@ paths:
                 properties:
                   customer:
                     $ref: '#/components/schemas/customer'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          style: form
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: >-
-                    The Customer's email. Only providable if user not
-                    registered.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The id of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -1554,23 +1381,37 @@ paths:
                   discount:
                     $ref: '#/components/schemas/discount'
     post:
-      operationId: PostDiscountsDiscount
-      summary: Update a Discount
-      description: >-
-        Updates a Discount with a given set of rules that define how the
-        Discount behaves.
+      operationId: PostDiscountsDiscountConditionsCondition
+      summary: Updates a DiscountCondition
       x-authenticated: true
       parameters:
         - in: path
-          name: id
+          name: discount_id
           required: true
-          description: The id of the Discount.
+          description: The id of the Product.
           schema:
             type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each product of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each product of
+            the result.
+          schema:
+            type: string
+      description: Updates a DiscountCondition
       requestBody:
         content:
           application/json:
             schema:
+              required:
+                - id
               properties:
                 code:
                   type: string
@@ -1669,6 +1510,155 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
+      x-authenticated: true
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: >-
+                    The Customer's email. Only providable if user not
+                    registered.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   /draft-orders:
     post:
       operationId: PostDraftOrders

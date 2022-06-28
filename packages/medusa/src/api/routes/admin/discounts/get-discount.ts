@@ -12,9 +12,8 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the Discount
- * query:
- *  - (query) expand {string} Comma separated list of relations to include in the results.
- *  - (query) fields {string} Comma separated list of fields to include in the results.
+ *   - (query) expand {string} Comma separated list of relations to include in the results.
+ *   - (query) fields {string} Comma separated list of fields to include in the results.
  * tags:
  *   - Discount
  * responses:

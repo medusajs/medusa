@@ -15,9 +15,9 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - title
  *       schema:
+ *         required:
+ *           - title
  *         properties:
  *           title:
  *             description: "The title of the Product Option"
