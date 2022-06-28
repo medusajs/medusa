@@ -4,7 +4,7 @@ import {
   Selector,
   Writable,
 } from "../types/common"
-import { FindOperator, In, Raw } from "typeorm"
+import { FindOperator, In, IsNull, Raw } from "typeorm"
 
 /**
  * Used to build TypeORM queries.
@@ -21,6 +21,11 @@ export function buildQuery<TWhereKeys, TEntity = unknown>(
       // Undefined values indicate that they have no significance to the query.
       // If the query is looking for rows where a column is not set it should use null instead of undefined
       if (typeof value === "undefined") {
+        return acc
+      }
+
+      if (value === null) {
+        acc[key] = IsNull()
         return acc
       }
 
