@@ -16,11 +16,10 @@ import { BatchJobService } from "../../../../services"
  *    content:
  *      application/json:
  *        schema:
- *          properties:x
+ *          properties:
  *            batch_job:
  *              $ref: "#/components/schemas/batch_job"
  */
-
 export default async (req, res) => {
   let batch_job = req.batch_job
 

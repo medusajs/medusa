@@ -30,13 +30,11 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - title
- *         - subtitle
- *         - description
  *       schema:
  *         required:
  *           - title
+ *           - subtitle
+ *           - description
  *         properties:
  *           title:
  *             description: "The title of the Product"

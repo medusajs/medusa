@@ -47,17 +47,19 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  *             type: boolean
  *             description: Whether the Discount code is disabled on creation. You will have to enable it later to make it available to Customers.
  *           starts_at:
- *             type: Date
+ *             type: string
+ *             format: date-time
  *             description: The time at which the Discount should be available.
  *           ends_at:
- *             type: Date
+ *             type: string
+ *             format: date-time
  *             description: The time at which the Discount should no longer be available.
  *           regions:
  *             description: A list of Region ids representing the Regions in which the Discount can be used.
  *             type: array
  *             items:
  *               type: string
- *            metadata:
+ *           metadata:
  *              description: An object containing metadata of the discount
  *              type: object
  * tags:

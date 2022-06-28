@@ -8,6 +8,17 @@ import fs from "fs"
  * x-authenticated: true
  * tags:
  *   - Uploads
+ * requestBody:
+ *   content:
+ *     multipart/form-data:
+ *       schema:
+ *         type: object
+ *         properties:
+ *           files:
+ *             type: array
+ *             items:
+ *               type: string
+ *               format: binary
  * responses:
  *   200:
  *     description: OK
@@ -15,7 +26,10 @@ import fs from "fs"
  *       application/json:
  *         schema:
  *           properties:
- *             uploads
+ *             uploads:
+ *               type: array
+ *               items:
+ *                 type: string
  */
 export default async (req, res) => {
   try {

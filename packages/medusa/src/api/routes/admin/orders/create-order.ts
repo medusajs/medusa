@@ -22,16 +22,16 @@ import { validator } from "../../../../utils/validator"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - email
- *         - billing_address
- *         - shipping_address
- *         - items
- *         - region
- *         - customer_id
- *         - payment_method
- *         - shipping_method
  *       schema:
+ *         required:
+ *           - email
+ *           - billing_address
+ *           - shipping_address
+ *           - items
+ *           - region
+ *           - customer_id
+ *           - payment_method
+ *           - shipping_method
  *         properties:
  *           status:
  *             description: status of the order
@@ -42,20 +42,24 @@ import { validator } from "../../../../utils/validator"
  *           billing_address:
  *             description: Billing address
  *             anyOf:
- *               - $ref: "#/components/schemas/address
+ *               - $ref: "#/components/schemas/address"
  *           shipping_address:
  *             description: Shipping address
  *             anyOf:
- *               - $ref: "#/components/schemas/address
+ *               - $ref: "#/components/schemas/address"
  *           items:
  *             description: The Line Items for the order
  *             type: array
+ *             items:
+ *               $ref: "#/components/schemas/line_item"
  *           region:
  *             description: Region where the order belongs
  *             type: string
  *           discounts:
  *             description: Discounts applied to the order
  *             type: array
+ *             items:
+ *               $ref: "#/components/schemas/line_item"
  *           customer_id:
  *             description: id of the customer
  *             type: string
@@ -93,6 +97,8 @@ import { validator } from "../../../../utils/validator"
  *                 description: Data relevant to the specific shipping method.
  *               items:
  *                 type: array
+ *                 items:
+ *                   $ref: "#/components/schemas/line_item"
  *                 description: Items to ship
  *           no_notification:
  *             description: A flag to indicate if no notifications should be emitted related to the updated order.

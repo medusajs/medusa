@@ -18,12 +18,14 @@ import { validator } from "../../../../utils/validator"
  * summary: "Create a Line Item for Draft Order"
  * description: "Creates a Line Item for the Draft Order"
  * x-authenticated: true
+ * parameters:
+ *   - (path) id=* {string} The id of the Draft Order.
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - quantity
  *       schema:
+ *         required:
+ *           - quantity
  *         properties:
  *           variant_id:
  *             description: The id of the Product Variant to generate the Line Item from.

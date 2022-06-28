@@ -15,9 +15,9 @@ import RegionService from "../../../../services/region"
  * requestBody:
  *   content:
  *     application/json:
- *       required:
- *         - provider_id
  *       schema:
+ *         required:
+ *           - provider_id
  *         properties:
  *           provider_id:
  *             description: "The id of the Payment Provider to add."

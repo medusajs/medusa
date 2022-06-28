@@ -70,7 +70,7 @@ import { ClaimType, ClaimReason } from "../../../../models"
  *                   description: A list of image URL's that will be associated with the Claim
  *                   items:
  *                     type: string
- *            return_shipping:
+ *           return_shipping:
  *              description: Optional details for the Return Shipping Method, if the items are to be sent back.
  *              type: object
  *              properties:
@@ -80,7 +80,7 @@ import { ClaimType, ClaimReason } from "../../../../models"
  *                price:
  *                  type: integer
  *                  description: The price to charge for the Shipping Method.
- *            additional_items:
+ *           additional_items:
  *              description: The new items to send to the Customer when the Claim type is Replace.
  *              type: array
  *              items:
@@ -91,7 +91,7 @@ import { ClaimType, ClaimReason } from "../../../../models"
  *                  quantity:
  *                    description: The quantity of the Product Variant to ship.
  *                    type: integer
- *            shipping_methods:
+ *           shipping_methods:
  *              description: The Shipping Methods to send the additional Line Items with.
  *              type: array
  *              items:
@@ -105,16 +105,16 @@ import { ClaimType, ClaimReason } from "../../../../models"
  *                   price:
  *                     description: The price to charge for the Shipping Method
  *                     type: integer
- *            shipping_address:
+ *           shipping_address:
  *              type: object
  *              description: "An optional shipping address to send the claim to. Defaults to the parent order's shipping address"
- *            refund_amount:
+ *           refund_amount:
  *              description: The amount to refund the Customer when the Claim type is `refund`.
  *              type: integer
- *            no_notification:
+ *           no_notification:
  *              description: If set to true no notification will be send related to this Claim.
  *              type: boolean
- *            metadata:
+ *           metadata:
  *              description: An optional set of key-value pairs to hold additional information.
  *              type: object
  * tags:

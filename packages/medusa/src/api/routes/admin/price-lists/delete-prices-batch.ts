@@ -11,15 +11,15 @@ import { validator } from "../../../../utils/validator"
  * parameters:
  *   - (path) id=* {string} The id of the Price List that the Money Amounts that will be deleted belongs to.
  * requestBody:
- *  content:
- *   application/json:
- *   schema:
- *    properties:
- *      price_ids:
- *        description: The price id's of the Money Amounts to delete.
- *        type: array
- *        items:
- *          type: string
+ *   content:
+ *     application/json:
+ *       schema:
+ *         properties:
+ *           price_ids:
+ *             description: The price id's of the Money Amounts to delete.
+ *             type: array
+ *             items:
+ *               type: string
  * tags:
  *   - Price List
  * responses:
