@@ -21,16 +21,16 @@ class MinioService extends AbstractFileService {
     this.signatureVersion_ = "v4"
   }
 
-  upload(file, config = { usePrivateBucket: false} ) {
-    this.validatePrivateBucketConfiguration_(usePrivateBucket)
-    this.updateAwsConfig_(config.usePrivateBucket)
+  upload(file) {
+    this.updateAwsConfig_()
 
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
+
     const s3 = new aws.S3()
     const params = {
       ACL: "public-read",
-      Bucket: config.usePrivateBucket ? this.private_bucket_ : this.bucket_,
+      Bucket: this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
     }
