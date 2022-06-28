@@ -2,7 +2,7 @@ import { Request } from "express"
 import { TotalsService } from "../../../../services"
 import { Cart, LineItem } from "../../../../models"
 
-export const decorateLineItems = async (
+export const decorateLineItemsWithTotals = async (
   cart: Cart,
   req: Request,
   options: { force_taxes: boolean } = { force_taxes: false }
