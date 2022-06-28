@@ -1,5 +1,5 @@
 import { CartService } from "../../../../services"
-import { decorateLineItems } from "./decorate-line-items"
+import { decorateLineItems } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions/{provider_id}/refresh
@@ -45,6 +45,6 @@ export default async (req, res) => {
     ],
   })
 
-  const data = await decorateLineItems(cart, req)
+  const data = await decorateLineItemsWithTotals(cart, req)
   res.status(200).json({ cart: data })
 }

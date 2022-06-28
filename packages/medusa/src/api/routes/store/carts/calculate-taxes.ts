@@ -1,7 +1,7 @@
 import { EntityManager } from "typeorm"
 import { IdempotencyKey } from "../../../../models/idempotency-key"
 import { CartService, IdempotencyKeyService } from "../../../../services"
-import { decorateLineItems } from "./decorate-line-items"
+import { decorateLineItems } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts/{id}/taxes
@@ -78,7 +78,7 @@ export default async (req, res) => {
               { force_taxes: true }
             )
 
-            const data = await decorateLineItems(cart, req, {
+            const data = await decorateLineItemsWithTotals(cart, req, {
               force_taxes: true,
             })
 

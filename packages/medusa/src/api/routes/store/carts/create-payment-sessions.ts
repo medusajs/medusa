@@ -1,6 +1,6 @@
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { decorateLineItems } from "./decorate-line-items"
+import { decorateLineItems } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts/{id}/payment-sessions
@@ -33,6 +33,6 @@ export default async (req, res) => {
     relations: defaultStoreCartRelations,
   })
 
-  const data = await decorateLineItems(cart, req)
+  const data = await decorateLineItemsWithTotals(cart, req)
   res.status(200).json({ cart: data })
 }
