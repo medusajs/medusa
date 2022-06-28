@@ -184,7 +184,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   }
 
   /**
-   * Create a description of a row on which an error occurred and throw a Medusa error.
+   * Create a description of a row on which the error occurred and throw a Medusa error.
    *
    * @param row - Parsed CSV row data
    */
@@ -550,7 +550,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   }
 
   /**
-   * Update count of processed data in the batch job context.
+   * Update count of processed data in the batch job context
+   * and cleanup Redis data.
    *
    * @param batchJobId - An id of the current batch job being processed.
    */
@@ -560,6 +561,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await this.batchJobService_.update(batchJobId, {
       context: { progress: batchJob.context.total },
     })
+
+    await this.clearRedisRecords(batchJobId)
   }
 
   /**
