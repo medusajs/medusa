@@ -4,7 +4,7 @@ import { validator } from "../../../../utils/validator"
 
 /**
  * [post] /uploads/download-url
- * operationId: "CreateUploadsFileDownloadUrl"
+ * operationId: "CreateUploadsDownloadUrl"
  * summary: "Creates a presigned download url for a file"
  * description: "Creates a presigned download url for a file"
  * x-authenticated: true
@@ -26,15 +26,11 @@ import { validator } from "../../../../utils/validator"
  *     description: OK
  */
 export default async (req, res) => {
-  const validated = await validator(
-    AdminCreateUploadsFileDownloadUrlReq,
-    req.body
-  )
-
   const fileService: AbstractFileService<any> = req.scope.resolve("fileService")
 
   const url = await fileService.getPresignedDownloadUrl({
-    fileKey: validated.file_key,
+    fileKey: (req.validatedBody as AdminCreateUploadsFileDownloadUrlReq)
+      .file_key,
   })
 
   res.status(200).send({ download_url: url })

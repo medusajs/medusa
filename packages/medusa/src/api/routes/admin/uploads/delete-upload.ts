@@ -1,5 +1,4 @@
 import { IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
 
 /**
  * [delete] /uploads
@@ -14,9 +13,7 @@ import { validator } from "../../../../utils/validator"
  *     description: OK
  */
 export default async (req, res) => {
-  const validated = await validator(AdminDeleteUploadReq, req.body, {
-    forbidUnknownValues: false,
-  })
+  const validated = req.validatedBody as AdminDeleteUploadReq
 
   const fileService = req.scope.resolve("fileService")
 

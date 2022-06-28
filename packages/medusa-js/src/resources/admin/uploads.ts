@@ -12,14 +12,14 @@ class AdminUploadsResource extends BaseResource {
     "Content-Type": "multipart/form-data",
   }
 
-  // create(file: IAdminPostUploadsFile): ResponsePromise<AdminUploadRes> {
-  //   const path = `/admin/uploads`
+  create(file: IAdminPostUploadsFile): ResponsePromise<AdminUploadRes> {
+    const path = `/admin/uploads`
 
-  //   const payload = new FormData()
-  //   payload.append("files", file)
+    const payload = new FormData()
+    payload.append("files", file)
 
-  //   return this.client.request("POST", path, payload, {}, this.headers)
-  // }
+    return this.client.request("POST", path, payload, {}, this.headers)
+  }
 
   delete(
     payload: AdminDeleteUploadReq,

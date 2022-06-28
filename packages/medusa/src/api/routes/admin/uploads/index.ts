@@ -2,7 +2,9 @@ import { Router } from "express"
 import multer from "multer"
 import { DeleteResponse } from "../../../../types/common"
 
-import middlewares from "../../../middlewares"
+import middlewares, { transformBody } from "../../../middlewares"
+import { AdminDeleteUploadReq } from "./delete-upload"
+import { AdminCreateUploadsFileDownloadUrlReq } from "./get-download-url"
 
 const route = Router()
 const upload = multer({ dest: "uploads/" })
@@ -16,10 +18,15 @@ export default (app) => {
     middlewares.wrap(require("./create-upload").default)
   )
 
-  route.delete("/", middlewares.wrap(require("./delete-upload").default))
+  route.delete(
+    "/",
+    transformBody(AdminDeleteUploadReq),
+    middlewares.wrap(require("./delete-upload").default)
+  )
 
   route.post(
     "/download-url",
+    transformBody(AdminCreateUploadsFileDownloadUrlReq),
     middlewares.wrap(require("./get-download-url").default)
   )
 
