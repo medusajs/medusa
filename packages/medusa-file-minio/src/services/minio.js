@@ -21,15 +21,16 @@ class MinioService extends AbstractFileService {
     this.signatureVersion_ = "v4"
   }
 
-  upload(file) {
-    this.updateAwsConfig()
+  upload(file, config = { usePrivateBucket: false} ) {
+    this.validatePrivateBucketConfiguration_(usePrivateBucket)
+    this.updateAwsConfig_(config.usePrivateBucket)
 
     const parsedFilename = parse(file.originalname)
     const fileKey = `${parsedFilename.name}-${Date.now()}${parsedFilename.ext}`
     const s3 = new aws.S3()
     const params = {
       ACL: "public-read",
-      Bucket: this.bucket_,
+      Bucket: config.usePrivateBucket ? this.private_bucket_ : this.bucket_,
       Body: fs.createReadStream(file.path),
       Key: fileKey,
     }
@@ -48,7 +49,7 @@ class MinioService extends AbstractFileService {
   }
 
   async delete(file) {
-    this.updateAwsConfig()
+    this.updateAwsConfig_()
 
     const s3 = new aws.S3()
     const params = {
@@ -76,8 +77,8 @@ class MinioService extends AbstractFileService {
   }
 
   async getUploadStreamDescriptor({ usePrivateBucket = true, ...fileData }) {
-    this.validatePrivateBucketConfiguration(usePrivateBucket)
-    this.updateAwsConfig(usePrivateBucket)
+    this.validatePrivateBucketConfiguration_(usePrivateBucket)
+    this.updateAwsConfig_(usePrivateBucket)
 
     const pass = new stream.PassThrough()
 
@@ -98,8 +99,8 @@ class MinioService extends AbstractFileService {
   }
 
   async getDownloadStream({ usePrivateBucket = true, ...fileData }) {
-    this.validatePrivateBucketConfiguration(usePrivateBucket)
-    this.updateAwsConfig(usePrivateBucket)
+    this.validatePrivateBucketConfiguration_(usePrivateBucket)
+    this.updateAwsConfig_(usePrivateBucket)
 
     const s3 = new aws.S3()
 
@@ -112,8 +113,8 @@ class MinioService extends AbstractFileService {
   }
 
   async getPresignedDownloadUrl({ usePrivateBucket = true, ...fileData }) {
-    this.validatePrivateBucketConfiguration(usePrivateBucket)
-    this.updateAwsConfig(usePrivateBucket, {
+    this.validatePrivateBucketConfiguration_(usePrivateBucket)
+    this.updateAwsConfig_(usePrivateBucket, {
       signatureVersion: "v4",
     })
 
@@ -128,7 +129,7 @@ class MinioService extends AbstractFileService {
     return await s3.getSignedUrlPromise("getObject", params)
   }
 
-  validatePrivateBucketConfiguration(usePrivateBucket) {
+  validatePrivateBucketConfiguration_(usePrivateBucket) {
     if (usePrivateBucket && !this.private_bucket_) {
       throw new MedusaError(
         MedusaError.Types.INVALID_CONFIGURATION,
@@ -137,7 +138,7 @@ class MinioService extends AbstractFileService {
     }
   }
 
-  updateAwsConfig(usePrivateBucket = false, additionalConfiguration = {}) {
+  updateAwsConfig_(usePrivateBucket = false, additionalConfiguration = {}) {
     aws.config.setPromisesDependency(null)
     aws.config.update(
       {
