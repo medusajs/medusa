@@ -1,3 +1,4 @@
+# Inspired from https://github.com/Shopify/quilt/blob/main/.github/workflows/snapit.yml
 name: Snapshot This
 
 on:
