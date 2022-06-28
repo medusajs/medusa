@@ -10,8 +10,6 @@ const errorHandler = isProduction
   : console.log
 
 export default async (rootDirectory: string): Promise<ConfigModule> => {
-  /** we promisify the configuration to support both synchronouse and asynchronous loading.  */
-
   const configuration = getConfigFile(rootDirectory, `medusa-config`) as {
     configModule: ConfigModule
     configFilePath: string
