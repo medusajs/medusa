@@ -33,7 +33,7 @@ export type Logger = _Logger & {
   warn: (msg: string) => void
 }
 
-export type TlsOptions = {
+export type DatabaseTlsOptions = {
   ca: string | undefined
   rejectUnauthorized: boolean | undefined
 }
@@ -44,7 +44,7 @@ export type DatabaseHostConfig =
       password?: string | (() => string) | (() => Promise<string>)
       port?: number
       host?: string
-      ssl?: boolean | TlsOptions
+      ssl?: boolean | DatabaseTlsOptions
       username?: string
     }
   | {
@@ -60,7 +60,7 @@ export type ConfigModule = {
     cookie_secret?: string
     database_host?: string
     database_port?: number
-    database_ssl?: TlsOptions
+    database_ssl?: DatabaseTlsOptions
     database_username?: string
     database_password?: string | (() => string) | (() => Promise<string>)
 
