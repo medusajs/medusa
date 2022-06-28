@@ -184,6 +184,21 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   }
 
   /**
+   * Create a description of a row on which an error occurred and throw a Medusa error.
+   *
+   * @param row - Parsed CSV row data
+   */
+  protected static throwDescriptiveError(row: TParsedRowData): never {
+    const message = `Error while processing row with:
+      product id: ${row["product.id"]},
+      product handle: ${row["product.handle"]},
+      variant id: ${row["variant.id"]}
+      variant sku: ${row["variant.sku"]}`
+
+    throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
+  }
+
+  /**
    * Generate instructions for update/create of products/variants from parsed CSV rows.
    *
    * @param csvData - An array of parsed CSV rows.
@@ -341,7 +356,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp) as unknown as CreateProductInput
           )
       } catch (e) {
-        this.handleImportError_(productOp)
+        ProductImportStrategy.throwDescriptiveError(productOp)
       }
 
       this.updateProgress_(batchJobId)
@@ -372,7 +387,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformProductData(productOp)
           )
       } catch (e) {
-        this.handleImportError_(productOp)
+        ProductImportStrategy.throwDescriptiveError(productOp)
       }
 
       this.updateProgress_(batchJobId)
@@ -429,7 +444,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
         this.updateProgress_(batchJobId)
       } catch (e) {
-        this.handleImportError_(variantOp)
+        ProductImportStrategy.throwDescriptiveError(variantOp)
       }
     }
   }
@@ -464,7 +479,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
             transformVariantData(variantOp) as UpdateProductVariantInput
           )
       } catch (e) {
-        this.handleImportError_(variantOp)
+        ProductImportStrategy.throwDescriptiveError(variantOp)
       }
 
       this.updateProgress_(batchJobId)
@@ -564,21 +579,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await this.batchJobService_.update(batchJobId, {
       context: { progress: this.processedCounter },
     })
-  }
-
-  /**
-   * Create a description of a row on which an error occurred and throw a Medusa error.
-   *
-   * @param row - Parsed CSV row data-
-   */
-  private handleImportError_(row: TParsedRowData): unknown {
-    const message = `Error while processing row with:
-      product id: ${row["product.id"]},
-      product handle: ${row["product.handle"]},
-      variant id: ${row["variant.id"]}
-      variant sku: ${row["variant.sku"]}`
-
-    throw new MedusaError(MedusaError.Types.INVALID_DATA, message)
   }
 }
 
