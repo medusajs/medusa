@@ -9,7 +9,7 @@ method = "squash"
 delete_branch_on_merge = true
 optimistic_updates = false
 prioritize_ready_to_merge = true
-notify_on_conflict = false
+notify_on_conflict = true
 
 [merge.message]
 title = "pull_request_title"
