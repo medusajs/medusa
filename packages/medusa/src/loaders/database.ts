@@ -35,8 +35,6 @@ export default async ({
 
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
-    /** this gives the option of either using a url or using individual components. 
-    For dynamic passowords one needs to use the individual database url components */
     ...hostConfig,
     extra: configModule.projectConfig.database_extra || {},
     entities,
