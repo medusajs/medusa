@@ -30,8 +30,8 @@ import { Request } from "express"
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
  *   - (query) deleted_at {DateComparisonOperator | null} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {DateComparisonOperator | null} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
- *   - (query) updated_at {DateComparisonOperator | null} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+ *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
  * tags:
  *   - Batch Job
  * responses:
@@ -126,12 +126,10 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   canceled_at?: DateComparisonOperator | null
 
   @IsType([DateComparisonOperator])
-  @Transform(({ value }) => (value === "null" ? null : value))
   @IsOptional()
-  created_at?: DateComparisonOperator | null
+  created_at?: DateComparisonOperator
 
   @IsOptional()
-  @Transform(({ value }) => (value === "null" ? null : value))
   @Type(() => DateComparisonOperator)
-  updated_at?: DateComparisonOperator | null
+  updated_at?: DateComparisonOperator
 }
