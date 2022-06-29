@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
-import { Request } from "express"
+import { Request, Response } from "express"
 
 /**
  * @oas [post] /collections
@@ -36,7 +36,7 @@ import { Request } from "express"
  *            collection:
  *              $ref: "#/components/schemas/product_collection"
  */
-export default async (req: Request, res) => {
+export default async (req: Request, res: Response) => {
   const { validatedBody } = req
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(

@@ -2,6 +2,7 @@ import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
 import { CustomerGroupService } from "../../../../services"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
+import { Request, Response } from "express"
 
 /**
  * @oas [get] /customer-groups
@@ -32,7 +33,7 @@ import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
  *             customerGroup:
  *               $ref: "#/components/schemas/customer_group"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )

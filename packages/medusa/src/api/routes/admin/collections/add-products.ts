@@ -1,6 +1,6 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
-import { Request } from "express"
+import { Request, Response } from "express"
 
 /**
  * @oas [post] /collections/{id}/products/batch
@@ -29,7 +29,7 @@ import { Request } from "express"
  *  "200":
  *    description: OK
  */
-export default async (req: Request, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
   const { validatedBody } = req as { validatedBody: AdminPostProductsToCollectionReq }
 

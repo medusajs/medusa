@@ -1,5 +1,6 @@
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
+import { Request, Response } from "express"
 
 /**
  * @oas [get] /customer-groups/{id}
@@ -21,7 +22,7 @@ import { FindParams } from "../../../../types/common"
  *             customer_group:
  *               $ref: "#/components/schemas/customer_group"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
