@@ -89,7 +89,6 @@ describe("Product import batch job", () => {
 
       batchJob = res.data.batch_job
 
-      // TODO: check, sometime the job is randomly stuck in a state (mostly "created" but sometimes in "processing" also)
       shouldContinuePulling = !(
         batchJob.status === "completed" || batchJob.status === "failed"
       )

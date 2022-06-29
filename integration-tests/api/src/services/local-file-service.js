@@ -71,7 +71,7 @@ export default class LocalFileService extends AbstractFileService {
     const dir = (this.upload_dir_ =
       process.env.UPLOAD_DIR ?? options.upload_dir ?? "uploads/images")
 
-    const path = resolve(dir, fileData.fileKey)
-    return fs.createReadStream(path)
+    const filePath = path.resolve(dir, fileData.fileKey)
+    return fs.createReadStream(filePath)
   }
 }
