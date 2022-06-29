@@ -8,7 +8,7 @@ const { initDb, useDb } = require("../../../../helpers/use-db")
 
 const adminSeeder = require("../../../helpers/admin-seeder")
 const userSeeder = require("../../../helpers/user-seeder")
-const productSeeder = require("../../../helpers/product-seeder")
+const orderSeeder = require("../../../helpers/order-seeder")
 
 const adminReqConfig = {
   headers: {
@@ -18,7 +18,7 @@ const adminReqConfig = {
 
 jest.setTimeout(1000000)
 
-describe("Batch job of product-export type", () => {
+describe("Batchjob with type order-export", () => {
   let medusaProcess
   let dbConnection
   let exportFilePath = ""
@@ -48,9 +48,9 @@ describe("Batch job of product-export type", () => {
 
   beforeEach(async () => {
     try {
-      await productSeeder(dbConnection)
       await adminSeeder(dbConnection)
       await userSeeder(dbConnection)
+      await orderSeeder(dbConnection)
     } catch (e) {
       console.log(e)
       throw e
@@ -74,57 +74,15 @@ describe("Batch job of product-export type", () => {
     }
   })
 
-  it("should export a csv file containing the expected products", async () => {
+  it("Should export a file containing all orders", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
 
-    const productPayload = {
-      title: "Test export product",
-      description: "test-product-description",
-      type: { value: "test-type" },
-      images: ["test-image.png", "test-image-2.png"],
-      collection_id: "test-collection",
-      tags: [{ value: "123" }, { value: "456" }],
-      options: [{ title: "size" }, { title: "color" }],
-      variants: [
-        {
-          title: "Test variant",
-          inventory_quantity: 10,
-          sku: "test-variant-sku-product-export",
-          prices: [
-            {
-              currency_code: "usd",
-              amount: 100,
-            },
-            {
-              currency_code: "eur",
-              amount: 45,
-            },
-            {
-              currency_code: "dkk",
-              amount: 30,
-            },
-          ],
-          options: [{ value: "large" }, { value: "green" }],
-        },
-      ],
-    }
-    const createProductRes = await api.post(
-      "/admin/products",
-      productPayload,
-      adminReqConfig
-    )
-    const productId = createProductRes.data.product.id
-    const variantId = createProductRes.data.product.variants[0].id
-
     const batchPayload = {
-      type: "product-export",
-      context: {
-        filterable_fields: {
-          title: "Test export product",
-        },
-      },
+      type: "order-export",
+      context: {},
     }
+
     const batchJobRes = await api.post(
       "/admin/batch-jobs",
       batchPayload,
@@ -137,21 +95,26 @@ describe("Batch job of product-export type", () => {
     // Pull to check the status until it is completed
     let batchJob
     let shouldContinuePulling = true
+
     while (shouldContinuePulling) {
       const res = await api.get(
         `/admin/batch-jobs/${batchJobId}`,
         adminReqConfig
       )
 
-      await new Promise((resolve, _) => {
-        setTimeout(resolve, 1000)
-      })
-
       batchJob = res.data.batch_job
       shouldContinuePulling = !(
         batchJob.status === "completed" || batchJob.status === "failed"
       )
+
+      if (shouldContinuePulling) {
+        await new Promise((resolve, _) => {
+          setTimeout(resolve, 1000)
+        })
+      }
     }
+
+    expect(batchJob.status).toBe("completed")
 
     expect(batchJob.status).toBe("completed")
 
@@ -166,29 +129,24 @@ describe("Batch job of product-export type", () => {
     const data = (await fs.readFile(exportFilePath)).toString()
     const [, ...lines] = data.split("\r\n").filter((l) => l)
 
-    expect(lines.length).toBe(1)
+    expect(lines.length).toBe(6)
 
-    const lineColumn = lines[0].split(";")
+    const csvLine = lines[0].split(";")
 
-    expect(lineColumn[0]).toBe(productId)
-    expect(lineColumn[2]).toBe(productPayload.title)
-    expect(lineColumn[4]).toBe(productPayload.description)
-    expect(lineColumn[23]).toBe(variantId)
-    expect(lineColumn[24]).toBe(productPayload.variants[0].title)
-    expect(lineColumn[25]).toBe(productPayload.variants[0].sku)
+    expect(csvLine[0]).toBe("discount-order")
+    expect(csvLine[1]).toBe("6")
+    expect(csvLine[14]).toBe("fulfilled")
+    expect(csvLine[15]).toBe("captured")
+    expect(csvLine[16]).toBe("8000")
   })
 
-  it("should export a csv file containing a limited number of products", async () => {
+  it("Should export a file containing a limited number of orders", async () => {
     jest.setTimeout(1000000)
     const api = useApi()
 
     const batchPayload = {
-      type: "product-export",
-      context: {
-        batch_size: 1,
-        filterable_fields: { collection_id: "test-collection" },
-        order: "created_at",
-      },
+      type: "order-export",
+      context: { batch_size: 3 },
     }
 
     const batchJobRes = await api.post(
@@ -203,20 +161,74 @@ describe("Batch job of product-export type", () => {
     // Pull to check the status until it is completed
     let batchJob
     let shouldContinuePulling = true
+
     while (shouldContinuePulling) {
       const res = await api.get(
         `/admin/batch-jobs/${batchJobId}`,
         adminReqConfig
       )
 
-      await new Promise((resolve, _) => {
-        setTimeout(resolve, 1000)
-      })
+      batchJob = res.data.batch_job
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
+
+      if (shouldContinuePulling) {
+        await new Promise((resolve, _) => {
+          setTimeout(resolve, 1000)
+        })
+      }
+    }
+
+    exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
+    const isFileExists = (await fs.stat(exportFilePath)).isFile()
+
+    expect(isFileExists).toBeTruthy()
+
+    const data = (await fs.readFile(exportFilePath)).toString()
+    const [, ...lines] = data.split("\r\n").filter((l) => l)
+
+    expect(lines.length).toBe(3)
+  })
+
+  it("Should export a file with orders from a single customer", async () => {
+    jest.setTimeout(1000000)
+    const api = useApi()
+
+    const batchPayload = {
+      type: "order-export",
+      context: { filterable_fields: { email: "test@email.com" } },
+    }
+
+    const batchJobRes = await api.post(
+      "/admin/batch-jobs",
+      batchPayload,
+      adminReqConfig
+    )
+    const batchJobId = batchJobRes.data.batch_job.id
+
+    expect(batchJobId).toBeTruthy()
+
+    // Pull to check the status until it is completed
+    let batchJob
+    let shouldContinuePulling = true
+
+    while (shouldContinuePulling) {
+      const res = await api.get(
+        `/admin/batch-jobs/${batchJobId}`,
+        adminReqConfig
+      )
 
       batchJob = res.data.batch_job
       shouldContinuePulling = !(
         batchJob.status === "completed" || batchJob.status === "failed"
       )
+
+      if (shouldContinuePulling) {
+        await new Promise((resolve, _) => {
+          setTimeout(resolve, 1000)
+        })
+      }
     }
 
     expect(batchJob.status).toBe("completed")
@@ -229,9 +241,11 @@ describe("Batch job of product-export type", () => {
     const data = (await fs.readFile(exportFilePath)).toString()
     const [, ...lines] = data.split("\r\n").filter((l) => l)
 
-    expect(lines.length).toBe(4)
+    expect(lines.length).toBe(1)
 
     const csvLine = lines[0].split(";")
-    expect(csvLine[0]).toBe("test-product")
+
+    expect(csvLine[0]).toBe("test-order")
+    expect(csvLine[6]).toBe("test@email.com")
   })
 })

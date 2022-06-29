@@ -70,7 +70,7 @@ class DigitalOceanService extends AbstractFileService {
 
     const pass = new stream.PassThrough()
 
-    const fileKey = `${fileData.name}-${Date.now()}.${fileData.ext}`
+    const fileKey = `${fileData.name}.${fileData.ext}`
     const params = {
       ACL: fileData.acl ?? "private",
       Bucket: this.bucket_,

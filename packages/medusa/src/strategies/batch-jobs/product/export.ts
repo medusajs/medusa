@@ -78,6 +78,44 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     return ""
   }
 
+  async prepareBatchJobForProcessing(
+    batchJob: CreateBatchJobInput,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    req: Express.Request
+  ): Promise<CreateBatchJobInput> {
+    const {
+      limit,
+      offset,
+      order,
+      fields,
+      expand,
+      filterable_fields,
+      ...context
+    } = (batchJob?.context ?? {}) as ProductExportBatchJobContext
+
+    const listConfig = prepareListQuery(
+      {
+        limit,
+        offset,
+        order,
+        fields,
+        expand,
+      },
+      {
+        isList: true,
+        defaultRelations: this.defaultRelations_,
+      }
+    )
+
+    batchJob.context = {
+      ...(context ?? {}),
+      list_config: listConfig,
+      filterable_fields,
+    }
+
+    return batchJob
+  }
+
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = (await this.batchJobService_
@@ -177,44 +215,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     })
   }
 
-  async prepareBatchJobForProcessing(
-    batchJob: CreateBatchJobInput,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    req: Express.Request
-  ): Promise<CreateBatchJobInput> {
-    const {
-      limit,
-      offset,
-      order,
-      fields,
-      expand,
-      filterable_fields,
-      ...context
-    } = (batchJob?.context ?? {}) as ProductExportBatchJobContext
-
-    const listConfig = prepareListQuery(
-      {
-        limit,
-        offset,
-        order,
-        fields,
-        expand,
-      },
-      {
-        isList: true,
-        defaultRelations: this.defaultRelations_,
-      }
-    )
-
-    batchJob.context = {
-      ...(context ?? {}),
-      list_config: listConfig,
-      filterable_fields,
-    }
-
-    return batchJob
-  }
-
   async processJob(batchJobId: string): Promise<void> {
     let offset = 0
     let limit = this.DEFAULT_LIMIT
@@ -231,7 +231,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: `product-export-${Date.now()}`,
+            name: `exports/products/product-export-${Date.now()}`,
             ext: "csv",
           })
 
