@@ -20,6 +20,8 @@ Learn more about how you can use this plugin in the [documentation](https://docs
 }
 ```
 
+Optionally a `download_url_duration` option can be specified to change the valid duration of presigned download links. The duration is configured in seconds. (Default = 60 seconds)
+
 ## Configuring a private bucket in Minio
 
 Certain operations in Medusa such as data import and export require a separate, protected bucket. The plugin will raise an error if operations used for imports and exports are invoked without the correct setup.
