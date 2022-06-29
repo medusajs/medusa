@@ -1,10 +1,9 @@
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested,
 } from "class-validator"
 import { pickBy } from "lodash"
 import BatchJobService from "../../../../services/batch-job"
@@ -22,15 +21,15 @@ import { Request } from "express"
  *   - (query) limit {string} The number of collections to return.
  *   - (query) offset {string} The offset of collections to return.
  *   - (query) type {string | string[]} Filter by the batch type
- *   - (query) confirmed_at {DateComparisonOperator} Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
- *   - (query) pre_processed_at {DateComparisonOperator} Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
- *   - (query) completed_at {DateComparisonOperator} Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
- *   - (query) failed_at {DateComparisonOperator} Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
- *   - (query) canceled_at {DateComparisonOperator} Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
+ *   - (query) confirmed_at {DateComparisonOperator | null} Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+ *   - (query) pre_processed_at {DateComparisonOperator | null} Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+ *   - (query) completed_at {DateComparisonOperator | null} Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+ *   - (query) failed_at {DateComparisonOperator | null} Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+ *   - (query) canceled_at {DateComparisonOperator | null} Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
  *   - (query) order {string} Order used when retrieving batch jobs
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
- *   - (query) deleted_at {DateComparisonOperator} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
+ *   - (query) deleted_at {DateComparisonOperator | null} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
  * tags:
@@ -102,31 +101,35 @@ export class AdminGetBatchParams extends AdminGetBatchPaginationParams {
   type?: string[]
 
   @IsOptional()
+  @Transform(({ value }) => (value === "null" ? null : value))
   @Type(() => DateComparisonOperator)
-  confirmed_at?: DateComparisonOperator
+  confirmed_at?: DateComparisonOperator | null
 
   @IsOptional()
+  @Transform(({ value }) => (value === "null" ? null : value))
   @Type(() => DateComparisonOperator)
-  pre_processed_at?: DateComparisonOperator
+  pre_processed_at?: DateComparisonOperator | null
 
   @IsOptional()
+  @Transform(({ value }) => (value === "null" ? null : value))
   @Type(() => DateComparisonOperator)
-  completed_at?: DateComparisonOperator
+  completed_at?: DateComparisonOperator | null
 
   @IsOptional()
+  @Transform(({ value }) => (value === "null" ? null : value))
   @Type(() => DateComparisonOperator)
-  failed_at?: DateComparisonOperator
+  failed_at?: DateComparisonOperator | null
 
   @IsOptional()
+  @Transform(({ value }) => (value === "null" ? null : value))
   @Type(() => DateComparisonOperator)
-  canceled_at?: DateComparisonOperator
+  canceled_at?: DateComparisonOperator | null
 
   @IsType([DateComparisonOperator])
   @IsOptional()
   created_at?: DateComparisonOperator
 
   @IsOptional()
-  @ValidateNested()
   @Type(() => DateComparisonOperator)
   updated_at?: DateComparisonOperator
 }

@@ -43,6 +43,13 @@ const setupJobDb = async (dbConnection) => {
       status: "awaiting_confirmation",
       created_by: "member-user",
     })
+    await simpleBatchJobFactory(dbConnection, {
+      id: "job_5",
+      type: "product-export",
+      status: "completed",
+      completed_at: "2022-06-27T22:00:00.000Z",
+      created_by: "admin_user",
+    })
   } catch (err) {
     console.log(err)
     throw err
@@ -81,20 +88,59 @@ describe("/admin/batch-jobs", () => {
       const response = await api.get("/admin/batch-jobs", adminReqConfig)
 
       expect(response.status).toEqual(200)
+      expect(response.data.batch_jobs.length).toEqual(4)
+      expect(response.data).toMatchSnapshot({
+        batch_jobs: [
+          {
+            id: "job_5",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            created_by: "admin_user"
+          },
+          {
+            id: "job_3",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            created_by: "admin_user"
+          },
+          {
+            id: "job_2",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            created_by: "admin_user"
+          },
+          {
+            id: "job_1",
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+            created_by: "admin_user"
+          },
+        ],
+      })
+    })
+
+    it("lists batch jobs created by the user and where completed_at is null ", async () => {
+      const api = useApi()
+      const response = await api.get("/admin/batch-jobs?completed_at=null", adminReqConfig)
+
+      expect(response.status).toEqual(200)
       expect(response.data.batch_jobs.length).toEqual(3)
       expect(response.data).toMatchSnapshot({
         batch_jobs: [
           {
+            id: "job_3",
             created_at: expect.any(String),
             updated_at: expect.any(String),
             created_by: "admin_user"
           },
           {
+            id: "job_2",
             created_at: expect.any(String),
             updated_at: expect.any(String),
             created_by: "admin_user"
           },
           {
+            id: "job_1",
             created_at: expect.any(String),
             updated_at: expect.any(String),
             created_by: "admin_user"
