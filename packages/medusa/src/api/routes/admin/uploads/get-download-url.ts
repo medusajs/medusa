@@ -1,6 +1,5 @@
 import { IsString } from "class-validator"
 import { AbstractFileService } from "../../../../interfaces"
-import { validator } from "../../../../utils/validator"
 
 /**
  * [post] /uploads/download-url
@@ -29,8 +28,7 @@ export default async (req, res) => {
   const fileService: AbstractFileService<any> = req.scope.resolve("fileService")
 
   const url = await fileService.getPresignedDownloadUrl({
-    fileKey: (req.validatedBody as AdminCreateUploadsFileDownloadUrlReq)
-      .file_key,
+    fileKey: (req.validatedBody as AdminPostUploadsDownloadUrlReq).file_key,
   })
 
   res.status(200).send({ download_url: url })

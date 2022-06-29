@@ -1,9 +1,12 @@
 import {
-  AdminDeleteUploadReq,
-  AdminDeleteUploadRes,
-  AdminCreateUploadsFileDownloadUrlReq,
-  AdminCreateUploadsFileDownloadUrlRes,
+  AdminDeleteUploadsReq,
+  IAdminPostUploadsFileReq,
+  AdminDeleteUploadsRes,
+  AdminPostUploadsDownloadUrlReq,
+  AdminUploadsDownloadUrlRes,
+  AdminUploadsRes,
 } from "@medusajs/medusa"
+import FormData from "form-data"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
@@ -12,7 +15,7 @@ class AdminUploadsResource extends BaseResource {
     "Content-Type": "multipart/form-data",
   }
 
-  create(file: IAdminPostUploadsFile): ResponsePromise<AdminUploadRes> {
+  create(file: IAdminPostUploadsFileReq): ResponsePromise<AdminUploadsRes> {
     const path = `/admin/uploads`
 
     const payload = new FormData()
@@ -22,18 +25,18 @@ class AdminUploadsResource extends BaseResource {
   }
 
   delete(
-    payload: AdminDeleteUploadReq,
+    payload: AdminDeleteUploadsReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminDeleteUploadRes> {
+  ): ResponsePromise<AdminDeleteUploadsRes> {
     const path = `/admin/uploads`
 
     return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 
   getPresignedDownloadUrl(
-    payload: AdminCreateUploadsFileDownloadUrlReq,
+    payload: AdminPostUploadsDownloadUrlReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminCreateUploadsFileDownloadUrlRes> {
+  ): ResponsePromise<AdminUploadsDownloadUrlRes> {
     const path = `/admin/uploads/download-url`
 
     return this.client.request("POST", path, payload, {}, customHeaders)

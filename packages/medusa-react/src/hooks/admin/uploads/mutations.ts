@@ -1,8 +1,10 @@
 import {
-  AdminDeleteUploadRes,
-  AdminDeleteUploadReq,
-  AdminCreateUploadsFileDownloadUrlReq,
-  AdminCreateUploadsFileDownloadUrlRes,
+  AdminDeleteUploadsReq,
+  IAdminPostUploadsFileReq,
+  AdminDeleteUploadsRes,
+  AdminPostUploadsDownloadUrlReq,
+  AdminUploadsDownloadUrlRes,
+  AdminUploadsRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -11,31 +13,31 @@ import { buildOptions } from "../../utils/buildOptions"
 
 export const useAdminUploadFile = (
   options?: UseMutationOptions<
-    Response<AdminUploadRes>,
+    Response<AdminUploadsRes>,
     Error,
-    IAdminPostUploadsFile
+    IAdminPostUploadsFileReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
-  return useMutation((payload: IAdminPostUploadsFile) => {
+  return useMutation((payload: IAdminPostUploadsFileReq) => {
     return client.admin.uploads.create(payload)
   }, buildOptions(queryClient, [], options))
 }
 
 export const useAdminCreatePresignedDownloadUrl = (
   options?: UseMutationOptions<
-    Response<AdminCreateUploadsFileDownloadUrlRes>,
+    Response<AdminUploadsDownloadUrlRes>,
     Error,
-    AdminCreateUploadsFileDownloadUrlReq
+    AdminPostUploadsDownloadUrlReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminCreateUploadsFileDownloadUrlReq) =>
+    (payload: AdminPostUploadsDownloadUrlReq) =>
       client.admin.uploads.getPresignedDownloadUrl(payload),
     buildOptions(queryClient, [], options)
   )
@@ -43,16 +45,16 @@ export const useAdminCreatePresignedDownloadUrl = (
 
 export const useAdminDeleteFile = (
   options?: UseMutationOptions<
-    Response<AdminDeleteUploadRes>,
+    Response<AdminDeleteUploadsRes>,
     Error,
-    AdminDeleteUploadReq
+    AdminDeleteUploadsReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminDeleteUploadReq) => client.admin.uploads.delete(payload),
+    (payload: AdminDeleteUploadsReq) => client.admin.uploads.delete(payload),
     buildOptions(queryClient, [], options)
   )
 }

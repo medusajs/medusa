@@ -3,8 +3,8 @@ import multer from "multer"
 import { DeleteResponse } from "../../../../types/common"
 
 import middlewares, { transformBody } from "../../../middlewares"
-import { AdminDeleteUploadReq } from "./delete-upload"
-import { AdminCreateUploadsFileDownloadUrlReq } from "./get-download-url"
+import { AdminDeleteUploadsReq } from "./delete-upload"
+import { AdminPostUploadsDownloadUrlReq } from "./get-download-url"
 
 const route = Router()
 const upload = multer({ dest: "uploads/" })
@@ -20,24 +20,24 @@ export default (app) => {
 
   route.delete(
     "/",
-    transformBody(AdminDeleteUploadReq),
+    transformBody(AdminDeleteUploadsReq),
     middlewares.wrap(require("./delete-upload").default)
   )
 
   route.post(
     "/download-url",
-    transformBody(AdminCreateUploadsFileDownloadUrlReq),
+    transformBody(AdminPostUploadsDownloadUrlReq),
     middlewares.wrap(require("./get-download-url").default)
   )
 
   return app
 }
 
-export type AdminUploadRes = {
+export type AdminUploadsRes = {
   uploads: { url: string }[]
 }
 
-export type AdminDeleteUploadRes = DeleteResponse
+export type AdminDeleteUploadsRes = DeleteResponse
 
 export type AdminUploadsDownloadUrlRes = {
   download_url: string
