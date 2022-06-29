@@ -1258,6 +1258,9 @@
       "updated_at": "2021-03-16T21:24:00.389Z",
       "created_at": "2021-03-16T21:24:00.389Z",
       "deleted_at": null
+    },
+    "upload": {
+      "url": "test-url"
     }
   }
 }
