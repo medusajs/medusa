@@ -28,7 +28,7 @@ jobs:
       - name: Assert changed
         run: ./scripts/assert-changed-files-actions.sh "packages"
 
-      - name: Bootstrap packages
+      - name: Install dependencies
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: unit-tests
