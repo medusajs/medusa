@@ -489,8 +489,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   /**
    * Extend records used for creating variant options with corresponding product option ids.
    *
-   * @param variantOp Parsed row data form CSV
-   * @param productOptionRepo ProductOption repository
+   * @param variantOp - Parsed row data form CSV
+   * @param productOptionRepo - ProductOption repository
    */
   protected async prepareVariantOptions(
     variantOp,
@@ -545,6 +545,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     )
   }
 
+  /**
+   * Clear all batch job data set by the strategy.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   */
   async clearRedisRecords(batchJobId: string): Promise<number> {
     return await this.redisClient_.del(`pij_${batchJobId}:*`)
   }
