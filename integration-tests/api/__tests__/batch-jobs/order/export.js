@@ -103,7 +103,9 @@ describe("Batchjob with type order-export", () => {
       )
 
       batchJob = res.data.batch_job
-      shouldContinuePulling = !(batchJob.status === "completed")
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
 
       if (shouldContinuePulling) {
         await new Promise((resolve, _) => {
@@ -111,6 +113,10 @@ describe("Batchjob with type order-export", () => {
         })
       }
     }
+
+    expect(batchJob.status).toBe("completed")
+
+    expect(batchJob.status).toBe("completed")
 
     exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
     const isFileExists = (await fs.stat(exportFilePath)).isFile()
@@ -163,7 +169,9 @@ describe("Batchjob with type order-export", () => {
       )
 
       batchJob = res.data.batch_job
-      shouldContinuePulling = !(batchJob.status === "completed")
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
 
       if (shouldContinuePulling) {
         await new Promise((resolve, _) => {
@@ -212,7 +220,9 @@ describe("Batchjob with type order-export", () => {
       )
 
       batchJob = res.data.batch_job
-      shouldContinuePulling = !(batchJob.status === "completed")
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
 
       if (shouldContinuePulling) {
         await new Promise((resolve, _) => {
@@ -220,6 +230,8 @@ describe("Batchjob with type order-export", () => {
         })
       }
     }
+
+    expect(batchJob.status).toBe("completed")
 
     exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
     const isFileExists = (await fs.stat(exportFilePath)).isFile()

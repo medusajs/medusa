@@ -148,8 +148,12 @@ describe("Batch job of product-export type", () => {
       })
 
       batchJob = res.data.batch_job
-      shouldContinuePulling = !(batchJob.status === "completed")
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
     }
+
+    expect(batchJob.status).toBe("completed")
 
     exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
     const isFileExists = (await fs.stat(exportFilePath)).isFile()
@@ -207,8 +211,12 @@ describe("Batch job of product-export type", () => {
       })
 
       batchJob = res.data.batch_job
-      shouldContinuePulling = !(batchJob.status === "completed")
+      shouldContinuePulling = !(
+        batchJob.status === "completed" || batchJob.status === "failed"
+      )
     }
+
+    expect(batchJob.status).toBe("completed")
 
     exportFilePath = path.resolve(__dirname, batchJob.result.file_key)
     const isFileExists = (await fs.stat(exportFilePath)).isFile()
