@@ -1,5 +1,6 @@
 const path = require("path")
 const docsPath = path.join(__dirname, "../../docs/content")
+const apisPath = path.join(__dirname, "../../docs/api")
 
 const algoliaAppId = process.env.ALGOLIA_APP_ID || "temp"
 const algoliaApiKey = process.env.ALGOLIA_API_KEY || "temp"
@@ -65,13 +66,22 @@ module.exports = {
         },
         {
           type: 'dropdown',
-          label: 'References',
+          label: 'REST API Reference',
           items: [
             {
-              href: `https://docs.medusajs.com/api/store`,
-              target: "_self",
-              label: "API Reference",
+              label: 'Store',
+              href: '/api/store',
             },
+            {
+              label: 'Admin',
+              href: '/api/admin',
+            },
+          ],
+        },
+        {
+          type: 'dropdown',
+          label: 'References',
+          items: [
             {
               to: "cli/reference",
               label: "CLI Reference",
@@ -166,8 +176,36 @@ module.exports = {
           ]
         },
         theme: {
-          customCss: require.resolve("./src/css/custom.css"),
+          customCss: require.resolve("./src/css/custom.css")
         },
+      },
+    ],
+    [
+      'redocusaurus',
+      {
+        // Plugin Options for loading OpenAPI files
+        specs: [
+          {
+            spec: path.join(apisPath, 'store-spec3.yaml'),
+            route: '/api/store',
+            layout: {
+              noFooter: true
+            }
+          },
+          {
+            spec: path.join(apisPath, 'admin-spec3.yaml'),
+            route: '/api/admin',
+          },
+        ],
+        // Theme Options for modifying how redoc renders them
+        theme: {
+          options: {
+            disableSearch: true,
+            nativeScrollbars: true,
+            sortTagsAlphabetically: true,
+            hideDownloadButton: true
+          }
+        }
       },
     ],
   ],

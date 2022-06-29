@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useEffect } from "react"
+
 import RootLayout from "@theme/Layout"
 
 const Layout = ({ children, ...props }) => {
