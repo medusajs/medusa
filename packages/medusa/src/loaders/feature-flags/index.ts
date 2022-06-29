@@ -3,6 +3,7 @@ import glob from "glob"
 
 import { FlagSettings } from "../../types/feature-flags"
 import { FlagRouter } from "../../utils/flag-router"
+import { Logger } from "../../types/global"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {
   if (typeof val === "string") {
@@ -13,6 +14,7 @@ const isTruthy = (val: string | boolean | undefined): boolean => {
 
 export default async (
   configModule: { featureFlags: Record<string, string | boolean> },
+  logger: Logger,
   flagDirectory?: string
 ): Promise<FlagRouter> => {
   let { featureFlags: projectConfigFlags } = configModule
@@ -35,16 +37,29 @@ export default async (
 
     switch (true) {
       case typeof process.env[flagSettings.env_key] !== "undefined":
+        logger.info(
+          `Using flag ${flagSettings.env_key} from environment with value ${
+            process.env[flagSettings.env_key]
+          }`
+        )
         flagConfig[flagSettings.key] = isTruthy(
           process.env[flagSettings.env_key]
         )
         break
       case typeof projectConfigFlags[flagSettings.key] !== "undefined":
+        logger.info(
+          `Using flag ${flagSettings.key} from project config with value ${
+            projectConfigFlags[flagSettings.key]
+          }`
+        )
         flagConfig[flagSettings.key] = isTruthy(
           projectConfigFlags[flagSettings.key]
         )
         break
       default:
+        logger.info(
+          `Using flag ${flagSettings.key} with default value ${flagSettings.default_val}`
+        )
         flagConfig[flagSettings.key] = flagSettings.default_val
     }
   }

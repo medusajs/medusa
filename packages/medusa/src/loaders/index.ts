@@ -49,7 +49,7 @@ export default async ({
   const container = createContainer() as MedusaContainer
   container.register("configModule", asValue(configModule))
 
-  container.registerAdd = function(
+  container.registerAdd = function (
     this: MedusaContainer,
     name: string,
     registration: typeof asFunction | typeof asValue
@@ -81,7 +81,7 @@ export default async ({
     next()
   })
 
-  const featureFlagRouter = await featureFlagsLoader(configModule)
+  const featureFlagRouter = await featureFlagsLoader(configModule, Logger)
 
   container.register({
     logger: asValue(Logger),
