@@ -39,7 +39,7 @@ export type AdminUploadRes = {
 
 export type AdminDeleteUploadRes = DeleteResponse
 
-export type AdminCreateUploadsFileDownloadUrlRes = {
+export type AdminUploadsDownloadUrlRes = {
   download_url: string
 }
 

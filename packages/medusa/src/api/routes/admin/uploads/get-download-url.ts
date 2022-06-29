@@ -4,7 +4,7 @@ import { validator } from "../../../../utils/validator"
 
 /**
  * [post] /uploads/download-url
- * operationId: "CreateUploadsDownloadUrl"
+ * operationId: "PostUploadsDownloadUrl"
  * summary: "Creates a presigned download url for a file"
  * description: "Creates a presigned download url for a file"
  * x-authenticated: true
@@ -36,7 +36,7 @@ export default async (req, res) => {
   res.status(200).send({ download_url: url })
 }
 
-export class AdminCreateUploadsFileDownloadUrlReq {
+export class AdminPostUploadsDownloadUrlReq {
   @IsString()
   file_key: string
 }
