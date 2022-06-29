@@ -1,12 +1,8 @@
 import path from "path"
 import glob from "glob"
 
-export type FlagSettings = {
-  key: string
-  description: string
-  env_key: string
-  default_val: boolean
-}
+import { FlagSettings } from "../../types/feature-flags"
+import { FlagRouter } from "../../utils/flag-router"
 
 const isTruthy = (val: string | boolean | undefined): boolean => {
   if (typeof val === "string") {
@@ -15,27 +11,27 @@ const isTruthy = (val: string | boolean | undefined): boolean => {
   return !!val
 }
 
-export type FlagRouter = {
-  flags: Record<string, boolean>
-  featureIsEnabled: (key: string) => boolean
-}
-
-export default (
+export default async (
   configModule: { featureFlags: Record<string, string | boolean> },
   flagDirectory?: string
-): FlagRouter => {
+): Promise<FlagRouter> => {
   let { featureFlags: projectConfigFlags } = configModule
   projectConfigFlags = projectConfigFlags || {}
 
-  const flagDir = path.join(flagDirectory || __dirname, "*.ts")
+  const flagDir = path.join(flagDirectory || __dirname, "*.js")
   const supportedFlags = glob.sync(flagDir, {
-    ignore: ["**/index.ts"],
+    ignore: ["**/index.js"],
   })
 
   const flagConfig: Record<string, boolean> = {}
   for (const flag of supportedFlags) {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const flagSettings = require(flag).default as FlagSettings
+    let flagSettings: FlagSettings
+    const importedModule = await import(flag)
+    if (importedModule.default) {
+      flagSettings = importedModule.default
+    } else {
+      continue
+    }
 
     switch (true) {
       case typeof process.env[flagSettings.env_key] !== "undefined":
@@ -53,10 +49,5 @@ export default (
     }
   }
 
-  return {
-    flags: flagConfig,
-    featureIsEnabled: function (key: string): boolean {
-      return this.flags[key]
-    },
-  }
+  return new FlagRouter(flagConfig)
 }

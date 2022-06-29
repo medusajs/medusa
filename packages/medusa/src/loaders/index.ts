@@ -49,7 +49,7 @@ export default async ({
   const container = createContainer() as MedusaContainer
   container.register("configModule", asValue(configModule))
 
-  container.registerAdd = function (
+  container.registerAdd = function(
     this: MedusaContainer,
     name: string,
     registration: typeof asFunction | typeof asValue
@@ -75,14 +75,13 @@ export default async ({
   // Add additional information to context of request
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     const ipAddress = requestIp.getClientIp(req) as string
-
     ;(req as any).request_context = {
       ip_address: ipAddress,
     }
     next()
   })
 
-  const featureFlagRouter = featureFlagsLoader(configModule)
+  const featureFlagRouter = await featureFlagsLoader(configModule)
 
   container.register({
     logger: asValue(Logger),
