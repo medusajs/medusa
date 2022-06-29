@@ -19,6 +19,7 @@ class MinioService extends AbstractFileService {
     this.endpoint_ = options.endpoint
     this.s3ForcePathStyle_ = true
     this.signatureVersion_ = "v4"
+    this.downloadUrlDuration = options.download_url_duration ?? 60  // 60 seconds
   }
 
   upload(file) {
@@ -123,7 +124,7 @@ class MinioService extends AbstractFileService {
     const params = {
       Bucket: usePrivateBucket ? this.private_bucket_ : this.bucket_,
       Key: `${fileData.fileKey}`,
-      Expires: 60, // 60 seconds
+      Expires:  this.downloadUrlDuration,
     }
 
     return await s3.getSignedUrlPromise("getObject", params)
