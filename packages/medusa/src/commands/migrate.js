@@ -36,8 +36,8 @@ const t = async function ({ directory }) {
   })
 
   if (args[0] === "run") {
-    await connection?.runMigrations()
-    await connection?.close()
+    await connection.runMigrations()
+    await connection.close()
     Logger.info("Migrations completed.")
     process.exit()
   } else if (args[0] === "revert") {
