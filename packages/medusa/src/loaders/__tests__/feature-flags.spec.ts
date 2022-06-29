@@ -54,11 +54,11 @@ describe("feature flags", () => {
 
   it("should load the flag from project", async () => {
     writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.ts"),
+      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
       buildFeatureFlag("flag-1", true)
     )
 
-    const flags = loadFeatureFlags(
+    const flags = await loadFeatureFlags(
       { featureFlags: { flag_1: false } },
       getFolderTestTargetDirectoryPath("flags")
     )
@@ -70,11 +70,11 @@ describe("feature flags", () => {
 
   it("should load the default feature flags", async () => {
     writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.ts"),
+      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
       buildFeatureFlag("flag-1", true)
     )
 
-    const flags = loadFeatureFlags(
+    const flags = await loadFeatureFlags(
       {},
       getFolderTestTargetDirectoryPath("flags")
     )
@@ -88,11 +88,11 @@ describe("feature flags", () => {
     process.env.MEDUSA_FF_FLAG_1 = "false"
 
     writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.ts"),
+      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
       buildFeatureFlag("flag-1", true)
     )
 
-    const flags = loadFeatureFlags(
+    const flags = await loadFeatureFlags(
       {},
       getFolderTestTargetDirectoryPath("flags")
     )
@@ -106,21 +106,21 @@ describe("feature flags", () => {
     process.env.MEDUSA_FF_FLAG_3 = "false"
 
     writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.ts"),
+      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-1.js"),
       buildFeatureFlag("flag-1", true)
     )
 
     writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-2.ts"),
+      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-2.js"),
       buildFeatureFlag("flag-2", true)
     )
 
     writeFileSync(
-      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-3.ts"),
+      resolve(getFolderTestTargetDirectoryPath("flags"), "flag-3.js"),
       buildFeatureFlag("flag-3", true)
     )
 
-    const flags = loadFeatureFlags(
+    const flags = await loadFeatureFlags(
       { featureFlags: { flag_2: false } },
       getFolderTestTargetDirectoryPath("flags")
     )
