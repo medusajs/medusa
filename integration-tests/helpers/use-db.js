@@ -77,9 +77,21 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd, enabledFeatureFlags = [] }) {
+  initDb: async function ({ cwd }) {
     const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
-    // TODO try loading featureflags given the config
+    const { projectConfig, featureFlags } = require(configPath)
+
+    const featureFlagsLoader = require(path.join(
+      cwd,
+      `node_modules`,
+      `@medusajs`,
+      `medusa`,
+      `dist`,
+      `loaders`,
+      `feature-flags`
+    )).default
+
+    const featureFlagsRouter = featureFlagsLoader({ featureFlags })
 
     const modelsLoader = require(path.join(
       cwd,
@@ -93,7 +105,6 @@ module.exports = {
 
     const entities = modelsLoader({}, { register: false })
 
-    const { projectConfig } = require(configPath)
     if (projectConfig.database_type === "sqlite") {
       connectionType = "sqlite"
       const dbConnection = await createConnection({
@@ -136,9 +147,7 @@ module.exports = {
 
       const enabledMigrations = await getEnabledMigrations(
         [migrationDir],
-        (flag) =>
-          enabledFeatureFlags.length > 0 &&
-          enabledFeatureFlags.indexOf(flag) > -1
+        (flag) => featureFlagsRouter.featureIsEnabled(flag)
       )
 
       const enabledEntities = entities.filter(
