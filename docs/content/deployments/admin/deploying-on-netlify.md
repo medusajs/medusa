@@ -10,7 +10,7 @@ Alternatively, you can use this button to deploy the Medusa Admin to Netlify dir
 
 ### Medusa Components
 
-Before proceeding with this documentation, it is assumed you already have a Medusa Admin installed locally. If not, please go through the [quickstart guide](../admin/quickstart.md) first.
+Before proceeding with this documentation, it is assumed you already have a Medusa Admin installed locally. If not, please go through the [quickstart guide](../../admin/quickstart.md) first.
 
 Additionally, this documentation does not cover how to deploy the Medusa server. If you want to deploy the Medusa server, check out one of the [deployment documentation related to the Medusa server](../server/index.mdx).
 
@@ -163,7 +163,7 @@ In your terminal, run the following command:
 netlify init
 ```
 
-##### Step 1: Create Netlify Website
+##### **Step 1: Create Netlify Website**
 
 You’ll be asked to either connect to an existing Netlify website or create a new one. Choose the second option to create a new site:
 

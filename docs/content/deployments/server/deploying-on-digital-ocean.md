@@ -4,7 +4,7 @@ This is a guide for deploying a Medusa project on DigitalOcean App Platform.
 
 :::note
 
-It is assumed, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](../usage/create-medusa-app.mdx) for a small walkthrough.
+It is assumed, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](../../usage/create-medusa-app.mdx) for a small walkthrough.
 
 :::
 
@@ -175,5 +175,5 @@ You now have an application running on DigitalOcean. This can be scaled and conf
 
 Furthermore, you can deploy a Medusa Admin for your application, such that you can start managing your store from an interface.
 
-- [Deploy Admin on Netlify](https://docs.medusajs.com/how-to/deploying-admin-on-netlify)
+- [Deploy Admin on Netlify](../admin/deploying-on-netlify.md)
 - Deploy Admin on Gatsby Cloud (Coming soon)

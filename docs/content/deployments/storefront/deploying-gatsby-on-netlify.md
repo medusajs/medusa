@@ -6,7 +6,7 @@ title: "Deploying your Gatsby storefront on Netlify"
 
 This is a guide for deploying our [Gatsby storefront starter](https://github.com/medusajs/gatsby-starter-medusa) on Netlify. Netlify is a platform that offers hosting and backend services for applications and static websites. The steps in this guide will work for most Gatsby projects.
 
-> At this point, you should have a local Gatsby storefront project running. If not, check out [our starter](https://github.com/medusajs/gatsby-starter-medusa) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](../usage/create-medusa-app.mdx) for a small walkthrough.
+> At this point, you should have a local Gatsby storefront project running. If not, check out [our starter](https://github.com/medusajs/gatsby-starter-medusa) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](../../usage/create-medusa-app.mdx) for a small walkthrough.
 
 ### 1. Install the Netlify CLI
 
