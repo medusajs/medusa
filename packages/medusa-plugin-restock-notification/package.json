@@ -24,7 +24,6 @@
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__ --extensions \".ts,.js\"",
-    "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__",
     "test": "jest"
   },
