@@ -63,11 +63,11 @@ export type ConfigModule = {
     database_ssl?: DatabaseTlsOptions
     database_username?: string
     database_password?: string | (() => string) | (() => Promise<string>)
+    database_database?: string
 
     database_url?: string
     database_type: string
-    database_database?: string
-    database_logging: LoggerOptions
+    database_logging?: LoggerOptions
 
     database_extra?: Record<string, unknown> & {
       ssl: { rejectUnauthorized: false }
