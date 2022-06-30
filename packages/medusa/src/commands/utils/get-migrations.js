@@ -1,3 +1,4 @@
+import glob from "glob"
 import path from "path"
 import fs from "fs"
 import { isString } from "lodash"
@@ -33,7 +34,7 @@ function resolvePlugin(pluginName) {
           fs.readFileSync(`${resolvedPath}/package.json`, `utf-8`)
         )
         const name = packageJSON.name || pluginName
-        //warnOnIncompatiblePeerDependency(name, packageJSON)
+        // warnOnIncompatiblePeerDependency(name, packageJSON)
 
         return {
           resolve: resolvedPath,
@@ -86,11 +87,11 @@ function resolvePlugin(pluginName) {
   }
 }
 
-export default directory => {
+export default async (directory, featureFlagRouter) => {
   const { configModule } = getConfigFile(directory, `medusa-config`)
   const { plugins } = configModule
 
-  const resolved = plugins.map(plugin => {
+  const resolved = plugins.map((plugin) => {
     if (isString(plugin)) {
       return resolvePlugin(plugin)
     }
@@ -123,5 +124,41 @@ export default directory => {
     }
   }
 
-  return migrationDirs
+  return getEnabledMigrations(migrationDirs, featureFlagRouter.featureIsEnabled)
+  // return (
+  //   await Promise.all(
+  //     allMigrations.map(async (file) => {
+  //       const loaded = await import(file)
+  //       if (
+  //         typeof loaded.featureFlag === "undefined" ||
+  //         featureFlagRouter.featureIsEnabled(loaded.featureFlag)
+  //       ) {
+  //         return file
+  //       }
+
+  //       return false
+  //     })
+  //   )
+  // ).filter(Boolean)
+}
+
+export const getEnabledMigrations = async (migrationDirs, isFlagEnabled) => {
+  const allMigrations = migrationDirs.flatMap((dir) => {
+    return glob.sync(dir)
+  })
+  return (
+    await Promise.all(
+      allMigrations.map(async (file) => {
+        const loaded = await import(file)
+        if (
+          typeof loaded.featureFlag === "undefined" ||
+          isFlagEnabled(loaded.featureFlag)
+        ) {
+          return file
+        }
+
+        return false
+      })
+    )
+  ).filter(Boolean)
 }
