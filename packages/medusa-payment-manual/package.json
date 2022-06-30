@@ -29,8 +29,7 @@
   },
   "scripts": {
     "build": "babel src -d .",
-    "watch": "babel -w src --out-dir .",
-    "test": "jest"
+    "watch": "babel -w src --out-dir ."
   },
   "peerDependencies": {
     "medusa-interfaces": "1.x"

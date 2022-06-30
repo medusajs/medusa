@@ -9,7 +9,6 @@
     "directory": "packages/medusa-test-utils"
   },
   "scripts": {
-    "test": "jest",
     "build": "babel src --out-dir dist/",
     "watch": "babel -w src --out-dir dist/"
   },

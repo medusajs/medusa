@@ -8,8 +8,7 @@
     "dist/**/*"
   ],
   "scripts": {
-    "build": "tsc --build",
-    "test": "jest --config jestconfig.json"
+    "build": "tsc --build"
   },
   "author": "Oliver Juhl",
   "license": "MIT",
