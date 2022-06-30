@@ -13,7 +13,6 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "prepare": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "size": "size-limit",
