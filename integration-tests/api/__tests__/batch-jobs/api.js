@@ -49,14 +49,34 @@ const setupJobDb = async (dbConnection) => {
   }
 }
 
+const startServerWithEnv = async (cwd, env = {}) => {
+  Object.entries(env).forEach(([key, value]) => {
+    process.env[key] = value
+  })
+
+  const dbConnection = await initDb({
+    cwd,
+  })
+  const medusaProcess = await setupServer({
+    cwd,
+    verbose: true,
+    env,
+  })
+
+  return [medusaProcess, dbConnection]
+}
+
 describe("/admin/batch-jobs", () => {
   let medusaProcess
   let dbConnection
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: false })
+    const env = { MEDUSA_FF_CREATE_BATCHES: "true" }
+
+    const [process, connection] = await startServerWithEnv(cwd, env)
+    medusaProcess = process
+    dbConnection = connection
   })
 
   afterAll(async () => {
@@ -76,7 +96,7 @@ describe("/admin/batch-jobs", () => {
       await db.teardown()
     })
 
-    it("lists batch jobs created by the user", async () => {
+    it.only("lists batch jobs created by the user", async () => {
       const api = useApi()
       const response = await api.get("/admin/batch-jobs", adminReqConfig)
 
@@ -87,17 +107,17 @@ describe("/admin/batch-jobs", () => {
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
           {
             created_at: expect.any(String),
             updated_at: expect.any(String),
-            created_by: "admin_user"
+            created_by: "admin_user",
           },
         ],
       })
@@ -119,23 +139,24 @@ describe("/admin/batch-jobs", () => {
       const response = await api.get("/admin/batch-jobs/job_1", adminReqConfig)
 
       expect(response.status).toEqual(200)
-      expect(response.data.batch_job).toEqual(expect.objectContaining({
-        created_at: expect.any(String),
-        updated_at: expect.any(String),
-        created_by: "admin_user"
-      }))
+      expect(response.data.batch_job).toEqual(
+        expect.objectContaining({
+          created_at: expect.any(String),
+          updated_at: expect.any(String),
+          created_by: "admin_user",
+        })
+      )
     })
 
     it("should fail on batch job created by other user", async () => {
       const api = useApi()
-      await api.get("/admin/batch-jobs/job_4", adminReqConfig)
-        .catch((err) => {
-          expect(err.response.status).toEqual(400)
-          expect(err.response.data.type).toEqual("not_allowed")
-          expect(err.response.data.message).toEqual(
-            "Cannot access a batch job that does not belong to the logged in user"
-          )
-        })
+      await api.get("/admin/batch-jobs/job_4", adminReqConfig).catch((err) => {
+        expect(err.response.status).toEqual(400)
+        expect(err.response.data.type).toEqual("not_allowed")
+        expect(err.response.data.message).toEqual(
+          "Cannot access a batch job that does not belong to the logged in user"
+        )
+      })
     })
   })
 
@@ -149,7 +170,7 @@ describe("/admin/batch-jobs", () => {
       await db.teardown()
     })
 
-    it("Creates a batch job", async() => {
+    it("Creates a batch job", async () => {
       const api = useApi()
 
       const response = await api.post(
@@ -215,7 +236,7 @@ describe("/admin/batch-jobs", () => {
       }
     })
 
-    afterEach(async() => {
+    afterEach(async () => {
       const db = useDb()
       await db.teardown()
     })
