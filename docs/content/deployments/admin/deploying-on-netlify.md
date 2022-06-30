@@ -169,6 +169,8 @@ In your terminal, run the following command:
 netlify init
 ```
 
+You’ll have to follow 5 steps for the initialization:
+
 ##### **Step 1: Create Netlify Website**
 
 You’ll be asked to either connect to an existing Netlify website or create a new one. Choose the second option to create a new site:
@@ -198,9 +200,9 @@ oy Keys. What would you like to do? (Use arrow keys)
   Authorize with a GitHub personal access token
 ```
 
-If you picked the first option, a page in your browser will open where you have to grant authorization to your Git provider.
+If you pick the first option, a page in your browser will open where you have to grant authorization to your Git provider.
 
-If you picked the second option, you’ll need to create a personal access token on GitHub. You can follow [this guide in GitHub’s documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to learn how to do it.
+If you pick the second option, you’ll need to create a personal access token on GitHub. You can follow [this guide in GitHub’s documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) to learn how to do it.
 
 ##### Last Step: Steps with Default Values
 
@@ -208,7 +210,7 @@ For the rest of the steps, you can keep the default values provided by Netlify a
 
 #### Set Environment Variables
 
-After the previous command has finished running, your Netlify website is created. The next step is to add an environment variable that points to your Medusa server.
+After the previous command has finished running, your Netlify website will be created. The next step is to add an environment variable that points to your Medusa server.
 
 :::caution
 
