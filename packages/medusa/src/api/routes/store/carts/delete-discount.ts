@@ -1,6 +1,7 @@
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [delete] /carts/{id}/discounts/{code}
@@ -46,6 +47,7 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+  const data = await decorateLineItemsWithTotals(cart, req)
 
-  res.status(200).json({ cart })
+  res.status(200).json({ cart: data })
 }

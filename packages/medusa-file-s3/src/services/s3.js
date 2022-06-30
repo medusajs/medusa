@@ -4,7 +4,7 @@ import { AbstractFileService } from '@medusajs/medusa'
 
 class S3Service extends AbstractFileService {
   constructor({}, options) {
-    super()
+    super({}, options)
 
     this.bucket_ = options.bucket
     this.s3Url_ = options.s3_url

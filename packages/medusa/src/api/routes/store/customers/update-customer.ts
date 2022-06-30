@@ -93,5 +93,5 @@ export class StorePostCustomersCustomerReq {
 
   @IsOptional()
   @IsObject()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

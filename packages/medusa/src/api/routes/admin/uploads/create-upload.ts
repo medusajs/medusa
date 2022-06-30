@@ -37,7 +37,7 @@ export default async (req, res) => {
   }
 }
 
-export class IAdminPostUploadsFile {
+export class IAdminPostUploadsFileReq {
   originalName: string
   path: string
 }

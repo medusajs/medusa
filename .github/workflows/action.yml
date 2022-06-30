@@ -1,9 +1,9 @@
 name: Medusa Pipeline
-on: 
+on:
   pull_request:
     paths-ignore:
-      - 'docs/**'
-      - 'www/**'
+      - "docs/**"
+      - "www/**"
 
 jobs:
   unit-tests:
@@ -31,7 +31,7 @@ jobs:
       - name: Assert changed
         run: ./scripts/assert-changed-files-actions.sh "packages"
 
-      - name: Bootstrap packages
+      - name: Install dependencies
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: unit-tests
@@ -49,6 +49,15 @@ jobs:
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
       postgres:
         image: postgres
         env:
@@ -61,6 +70,10 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+
+    strategy:
+      matrix:
+        chunk: [0, 1, 2, 3]
 
     steps:
       - name: Cancel Previous Runs
@@ -93,6 +106,9 @@ jobs:
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
+      - name: use old yarn version
+        run: yarn set version 1.19.0
+
       - name: Force install API
         run: medusa-dev --force-install
         working-directory: integration-tests/api
@@ -101,10 +117,22 @@ jobs:
         run: yarn build
         working-directory: integration-tests/api
 
-      - name: Run API integration tests
-        run: yarn test:integration:api --maxWorkers=50% --silent=false
+      - name: Set Chunks
+        id: set-test-chunks
+        run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')"
+        working-directory: integration-tests/api
+
+      - name: Set Chunk IDs
+        run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
+        env:
+          CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
+
+      - name: Run integration tests
+        run: echo $CHUNKS | jq '.[${{ matrix.chunk }}] | .[] | @text' | xargs yarn test --maxWorkers=50%
+        working-directory: integration-tests/api
         env:
           DB_PASSWORD: postgres
+          CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
 
   integration-tests-plugins:
     runs-on: ubuntu-latest
@@ -156,6 +184,9 @@ jobs:
 
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
+
+      - name: use old yarn version
+        run: yarn set version 1.19.0
 
       - name: Force install
         run: medusa-dev --force-install

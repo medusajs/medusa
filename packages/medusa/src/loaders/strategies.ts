@@ -1,6 +1,6 @@
 import glob from "glob"
 import path from "path"
-import { AwilixContainer, asFunction, aliasTo } from "awilix"
+import { asFunction, aliasTo } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"
@@ -28,7 +28,7 @@ export default ({ container, configModule, isTest }: LoaderOptions): void => {
 
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: ["**/__fixtures__/**", "index.js", "index.ts"],
+    ignore: ["**/__fixtures__/**", "**/index.js", "**/index.ts"],
   })
 
   core.forEach((fn) => {

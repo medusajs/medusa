@@ -13,7 +13,6 @@
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
-    "prepare": "tsdx build",
     "test": "tsdx test --passWithNoTests",
     "lint": "tsdx lint",
     "size": "size-limit",
@@ -85,9 +84,6 @@
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "react-query": "^3.31.0"
-  },
-  "resolutions": {
-    "**/typescript": "^4.1.3"
   },
   "msw": {
     "workerDirectory": "public"

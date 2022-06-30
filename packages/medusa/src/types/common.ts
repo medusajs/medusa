@@ -46,6 +46,8 @@ export type ExtendedFindConfig<
     relations?: string[]
   }
 
+export type QuerySelector<TEntity> = Selector<TEntity> & { q?: string }
+
 export type Selector<TEntity> = {
   [key in keyof TEntity]?:
     | TEntity[key]
