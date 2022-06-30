@@ -1,4 +1,4 @@
-import styles from './deployment.module.css';
+import styles from '../deployment.module.css';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
@@ -16,7 +16,7 @@ In this document, you'll learn how to deploy your Medusa server on Heroku. Herok
 
 Before you start with this guide, you must have a Medusa server installed locally.
 
-To install a Medusa server, follow our [Quickstart guide](../quickstart/quick-start.md).
+To install a Medusa server, follow our [Quickstart guide](../../quickstart/quick-start.md).
 
 ## How to Deploy Your Medusa Server on Heroku
 
@@ -129,7 +129,7 @@ This uses the free plan of Upstash. Make sure to check out [more information reg
 
 ### 5. Configure Environment Variables on Heroku
 
-Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa Server](../usage/configurations.md) document.
+Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa Server](../../usage/configurations.md) document.
 
 Run the following commands in the root directory of your Medusa server to set some environment variables:
 
@@ -269,5 +269,5 @@ Where `<APP_NAME>` is the name of your Heroku app, and `<EMAIL>` and `<PASSWORD>
 
 ## What's Next :rocket:
 
-- Learn how to [deploy your Medusa admin on Netlify](deploying-admin-on-netlify.md).
-- Learn how to [deploy your Gatsby Storefront on Netlify](deploying-gatsby-on-netlify.md).
+- Learn how to [deploy your Medusa admin](../admin/index.mdx).
+- Learn how to [deploy your storefront](../storefront/index.mdx).
