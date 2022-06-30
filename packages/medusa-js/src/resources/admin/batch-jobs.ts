@@ -7,6 +7,7 @@ import {
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
+import { stringifyNullProperties } from "../../utils"
 
 class AdminBatchJobsResource extends BaseResource {
   create(
@@ -24,7 +25,7 @@ class AdminBatchJobsResource extends BaseResource {
     let path = `/admin/batch-jobs`
 
     if (query) {
-      const queryString = qs.stringify(query)
+      const queryString = qs.stringify(stringifyNullProperties(query))
       path = `/admin/batch-jobs?${queryString}`
     }
 
