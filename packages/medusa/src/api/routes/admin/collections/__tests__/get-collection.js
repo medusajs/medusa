@@ -1,4 +1,5 @@
 import { IdMap } from "medusa-test-utils"
+import { defaultAdminCollectionsRelations } from ".."
 import { request } from "../../../../../helpers/test-request"
 import { ProductCollectionServiceMock } from "../../../../../services/__mocks__/product-collection"
 
@@ -26,7 +27,8 @@ describe("GET /admin/categories/:id", () => {
     it("calls retrieve from product collection service", () => {
       expect(ProductCollectionServiceMock.retrieve).toHaveBeenCalledTimes(1)
       expect(ProductCollectionServiceMock.retrieve).toHaveBeenCalledWith(
-        IdMap.getId("col")
+        IdMap.getId("col"),
+        {relations: defaultAdminCollectionsRelations}
       )
     })
 

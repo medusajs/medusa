@@ -67,7 +67,7 @@ export const shippingOptions = {
 }
 
 export const ShippingOptionServiceMock = {
-  retrieve: jest.fn().mockImplementation(optionId => {
+  retrieve: jest.fn().mockImplementation((optionId) => {
     if (optionId === IdMap.getId("return-shipping")) {
       return Promise.resolve(shippingOptions.returnShipping)
     }
@@ -86,9 +86,21 @@ export const ShippingOptionServiceMock = {
     return Promise.resolve(undefined)
   }),
   update: jest.fn().mockReturnValue(Promise.resolve()),
-  list: jest.fn().mockImplementation(data => {
+  listAndCount: jest.fn().mockImplementation((data) => {
+    if (data.region_id === IdMap.getId("region-france")) {
+      return Promise.resolve([[shippingOptions.franceShipping], 1])
+    }
+    if (data.region_id === IdMap.getId("testRegion")) {
+      return Promise.resolve([
+        [shippingOptions.freeShipping, shippingOptions.expensiveShipping],
+        2,
+      ])
+    }
+    return Promise.resolve([[], 0])
+  }),
+  list: jest.fn().mockImplementation((data) => {
     if (!data) {
-      return Promise.resolve()
+      return Promise.resolve([])
     }
     if (data.region_id === IdMap.getId("region-france")) {
       return Promise.resolve([shippingOptions.franceShipping])
@@ -100,7 +112,7 @@ export const ShippingOptionServiceMock = {
       ])
     }
   }),
-  create: jest.fn().mockImplementation(data => {
+  create: jest.fn().mockImplementation((data) => {
     return Promise.resolve(data)
   }),
   validateFulfillmentData: jest

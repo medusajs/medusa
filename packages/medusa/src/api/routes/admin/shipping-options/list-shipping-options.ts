@@ -50,12 +50,12 @@ export default async (req, res) => {
   )
 
   const optionService = req.scope.resolve("shippingOptionService")
-  const data = await optionService.list(validatedParams, {
+  const [data, count] = await optionService.listAndCount(validatedParams, {
     select: defaultFields,
     relations: defaultRelations,
   })
 
-  res.status(200).json({ shipping_options: data })
+  res.status(200).json({ shipping_options: data, count })
 }
 
 export class AdminGetShippingOptionsParams {
@@ -66,10 +66,10 @@ export class AdminGetShippingOptionsParams {
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
-  is_return?: string
+  is_return?: boolean
 
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
-  admin_only?: string
+  admin_only?: boolean
 }

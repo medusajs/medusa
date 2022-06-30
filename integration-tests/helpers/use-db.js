@@ -16,6 +16,7 @@ const pgGodCredentials = {
 }
 
 const keepTables = [
+  "store",
   "staged_job",
   "shipping_profile",
   "fulfillment_provider",
@@ -37,7 +38,9 @@ const DbTestUtil = {
     this.db_.synchronize(true)
   },
 
-  teardown: async function () {
+  teardown: async function ({ forceDelete } = {}) {
+    forceDelete = forceDelete || []
+
     const entities = this.db_.entityMetadatas
     const manager = this.db_.manager
 
@@ -48,7 +51,10 @@ const DbTestUtil = {
     }
 
     for (const entity of entities) {
-      if (keepTables.includes(entity.tableName)) {
+      if (
+        keepTables.includes(entity.tableName) &&
+        !forceDelete.includes(entity.tableName)
+      ) {
         continue
       }
 

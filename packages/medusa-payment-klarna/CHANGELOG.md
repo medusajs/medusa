@@ -3,16 +3,61 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.36...medusa-payment-klarna@1.1.37) (2021-12-17)
+# [1.3.0](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.2.1...medusa-payment-klarna@1.3.0) (2022-05-01)
 
+**Note:** Version bump only for package medusa-payment-klarna
+
+
+
+
+
+## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.41...medusa-payment-klarna@1.2.1) (2022-02-28)
+
+
+### Features
+
+* new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([47588e7](https://github.com/medusajs/medusa/commit/47588e7a8d3b2ae2fed0c1e87fdf1ee2db6bcdc2)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
+
+
+
+
+
+# [1.2.0](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.41...medusa-payment-klarna@1.2.0) (2022-02-25)
+
+
+### Features
+
+* new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([c56660f](https://github.com/medusajs/medusa/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
+
+
+
+
+
+## [1.1.41](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.40...medusa-payment-klarna@1.1.41) (2022-02-06)
 
 ### Bug Fixes
 
-* **medusa-payment-klarna:** Default shipping fee name in Klarna plugin ([#926](https://github.com/medusajs/medusa/issues/926)) ([8782016](https://github.com/medusajs/medusa/commit/8782016095e82a21ac3e623f7d6fa0413d86ae1e))
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
 
+## [1.1.40](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.39...medusa-payment-klarna@1.1.40) (2022-02-06)
 
+### Features
 
+- medusa-react admin hooks ([#978](https://github.com/medusajs/medusa/issues/978)) ([2e38484](https://github.com/medusajs/medusa/commit/2e384842d5b2e9742a86b96f28a8f00357795b86)), closes [#1019](https://github.com/medusajs/medusa/issues/1019)
 
+## [1.1.39](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.38...medusa-payment-klarna@1.1.39) (2022-01-11)
+
+**Note:** Version bump only for package medusa-payment-klarna
+
+## [1.1.38](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.37...medusa-payment-klarna@1.1.38) (2021-12-29)
+
+**Note:** Version bump only for package medusa-payment-klarna
+
+## [1.1.37](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.36...medusa-payment-klarna@1.1.37) (2021-12-17)
+
+### Bug Fixes
+
+- **medusa-payment-klarna:** Default shipping fee name in Klarna plugin ([#926](https://github.com/medusajs/medusa/issues/926)) ([8782016](https://github.com/medusajs/medusa/commit/8782016095e82a21ac3e623f7d6fa0413d86ae1e))
 
 ## [1.1.36](https://github.com/medusajs/medusa/compare/medusa-payment-klarna@1.1.35...medusa-payment-klarna@1.1.36) (2021-12-08)
 

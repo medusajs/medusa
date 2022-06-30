@@ -3,16 +3,19 @@ export const ClaimServiceMock = {
   withTransaction: function() {
     return this
   },
-  retrieve: jest.fn().mockImplementation(data => {
+  retrieve: jest.fn().mockImplementation((data) => {
     return Promise.resolve({ order_id: IdMap.getId("test-order") })
   }),
 
-  cancel: jest.fn().mockImplementation(f => {
+  cancel: jest.fn().mockImplementation((f) => {
     return Promise.resolve({ f })
   }),
 
-  cancelFulfillment: jest.fn().mockImplementation(f => {
+  cancelFulfillment: jest.fn().mockImplementation((f) => {
     return Promise.resolve({ f })
+  }),
+  create: jest.fn().mockImplementation((f) => {
+    return Promise.resolve(f)
   }),
 }
 

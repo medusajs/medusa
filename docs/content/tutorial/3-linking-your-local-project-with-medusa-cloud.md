@@ -1,5 +1,5 @@
 ---
-title: 3. Linking your local project with Medusa Cloud
+title: Linking your local project with Medusa Cloud
 ---
 
 # Linking your local project with Medusa Cloud
@@ -36,13 +36,21 @@ Once you have authenticated your CLI for your Medusa Cloud account you are ready
 medusa link --develop
 ```
 
-The `link` command will first check that you have authenticated your CLI which we did in the previous step. Then it will perform the local linking, which essentially adds an admin user in the local database specified in `medusa-config.js`. Finally, your browser will open Medusa Cloud to perform the linking there, which tells Medusa Cloud where your local server is running. On succesful linking in the browser you will see a confirmation page with a "Go to orders" button. If you click this button you will be taken to an overview of the orders made in your local project.
+The `link` command will first check that you have authenticated your CLI which we did in the previous step. Then it will perform the local linking, which essentially adds an admin user in the local database specified in `medusa-config.js`. Finally, your browser will open Medusa Cloud to perform the linking there, which tells Medusa Cloud where your local server is running. On successful linking in the browser you will see a confirmation page with a "Go to orders" button. If you click this button you will be taken to an overview of the orders made in your local project.
 
 You should note that the `--develop` flag is optional for the `link` command. If provided it tells the CLI to start up your server after linking is completed; you may leave it out if you'd rather start your server separately.
 
-> Note: For local linking to work you must make sure to have your CORS settings configured correctly. This is done by adding `https://app.medusa-commerce.com` to your `cors_admin` config in `medusa-config.js`.
+:::note
 
-> Note: If you change the port that your local server is running on you will have to run `medusa link` again. `medusa link` uses your `PORT` environment variable to specify where Medusa Cloud should look for your local server.
+For local linking to work you must make sure to have your CORS settings configured correctly. This is done by adding `https://app.medusajs.com` to your `cors_admin` config in `medusa-config.js`.
+
+:::
+
+:::note
+
+If you change the port that your local server is running on you will have to run `medusa link` again. `medusa link` uses your `PORT` environment variable to specify where Medusa Cloud should look for your local server.
+
+:::
 
 ## Summary
 

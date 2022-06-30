@@ -124,7 +124,7 @@ describe("/admin/shipping-options", () => {
       expect(res.data.message).toEqual("ID does not exist")
     })
 
-    it("it succesfully updates a set of existing requirements", async () => {
+    it("it successfully updates a set of existing requirements", async () => {
       const api = useApi()
 
       const payload = {
@@ -156,7 +156,7 @@ describe("/admin/shipping-options", () => {
       expect(res.status).toEqual(200)
     })
 
-    it("it succesfully updates a set of existing requirements by updating one and deleting the other", async () => {
+    it("it successfully updates a set of existing requirements by updating one and deleting the other", async () => {
       const api = useApi()
 
       const payload = {
@@ -182,7 +182,7 @@ describe("/admin/shipping-options", () => {
       expect(res.status).toEqual(200)
     })
 
-    it("succesfully updates a set of requirements because max. subtotal >= min. subtotal", async () => {
+    it("successfully updates a set of requirements because max. subtotal >= min. subtotal", async () => {
       const api = useApi()
 
       const payload = {

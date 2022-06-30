@@ -24,6 +24,7 @@ export default (app) => {
 export const defaultAdminSwapRelations = [
   "order",
   "additional_items",
+  "additional_items.adjustments",
   "return_order",
   "fulfillments",
   "payment",
@@ -31,11 +32,7 @@ export const defaultAdminSwapRelations = [
   "shipping_methods",
   "cart",
   "cart.items",
-  "cart.region",
-  "cart.shipping_methods",
-  "cart.gift_cards",
-  "cart.discounts",
-  "cart.payment",
+  "cart.items.adjustments",
 ]
 
 export const defaultAdminSwapFields = [

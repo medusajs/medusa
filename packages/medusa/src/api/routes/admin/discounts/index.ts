@@ -1,6 +1,7 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Discount } from "../../../.."
+import { DiscountCondition } from "../../../../models"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
@@ -39,16 +40,6 @@ export default (app) => {
     middlewares.wrap(require("./delete-dynamic-code").default)
   )
 
-  // Discount valid variants management
-  route.post(
-    "/:discount_id/products/:product_id",
-    middlewares.wrap(require("./add-valid-product").default)
-  )
-  route.delete(
-    "/:discount_id/products/:product_id",
-    middlewares.wrap(require("./remove-valid-product").default)
-  )
-
   // Discount region management
   route.post(
     "/:discount_id/regions/:region_id",
@@ -59,10 +50,28 @@ export default (app) => {
     middlewares.wrap(require("./remove-region").default)
   )
 
+  // Discount condition management
+  route.get(
+    "/:discount_id/conditions/:condition_id",
+    middlewares.wrap(require("./get-condition").default)
+  )
+  route.post(
+    "/:discount_id/conditions/:condition_id",
+    middlewares.wrap(require("./update-condition").default)
+  )
+  route.post(
+    "/:discount_id/conditions",
+    middlewares.wrap(require("./create-condition").default)
+  )
+  route.delete(
+    "/:discount_id/conditions/:condition_id",
+    middlewares.wrap(require("./delete-condition").default)
+  )
+
   return app
 }
 
-export const defaultAdminDiscountsFields = [
+export const defaultAdminDiscountsFields: (keyof Discount)[] = [
   "id",
   "code",
   "is_dynamic",
@@ -84,11 +93,20 @@ export const defaultAdminDiscountsRelations = [
   "rule",
   "parent_discount",
   "regions",
-  "rule.valid_for",
+  "rule.conditions",
 ]
+
+export const defaultAdminDiscountConditionFields: (keyof DiscountCondition)[] =
+  ["id", "type", "operator", "discount_rule_id", "created_at", "updated_at"]
+
+export const defaultAdminDiscountConditionRelations = ["discount_rule"]
 
 export type AdminDiscountsRes = {
   discount: Discount
+}
+
+export type AdminDiscountConditionsRes = {
+  discount_condition: DiscountCondition
 }
 
 export type AdminDiscountsDeleteRes = DeleteResponse
@@ -98,14 +116,16 @@ export type AdminDiscountsListRes = PaginatedResponse & {
 }
 
 export * from "./add-region"
-export * from "./add-valid-product"
+export * from "./create-condition"
 export * from "./create-discount"
 export * from "./create-dynamic-code"
+export * from "./delete-condition"
 export * from "./delete-discount"
 export * from "./delete-dynamic-code"
+export * from "./get-condition"
 export * from "./get-discount"
 export * from "./get-discount-by-code"
 export * from "./list-discounts"
 export * from "./remove-region"
-export * from "./remove-valid-product"
+export * from "./update-condition"
 export * from "./update-discount"

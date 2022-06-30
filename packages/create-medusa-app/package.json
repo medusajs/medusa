@@ -1,6 +1,6 @@
 {
   "name": "create-medusa-app",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "dist/index.js",
   "bin": "cli.js",
   "license": "MIT",
@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "build": "microbundle -i src/index.ts --no-pkg-main --target=node -f=cjs --sourcemap=false --compress --alias worker_threads=@ascorbic/worker-threads-shim",
-    "watch": "microbundle -i src/index.ts --no-pkg-main --target=node -f=cjs --sourcemap=false --alias worker_threads=@ascorbic/worker-threads-shim --watch",
-    "prepare": "yarn build"
+    "watch": "microbundle -i src/index.ts --no-pkg-main --target=node -f=cjs --sourcemap=false --alias worker_threads=@ascorbic/worker-threads-shim --watch"
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4"

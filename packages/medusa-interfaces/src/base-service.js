@@ -21,7 +21,7 @@ class BaseService {
   buildQuery_(selector, config = {}) {
     const build = (obj) => {
       const where = Object.entries(obj).reduce((acc, [key, value]) => {
-        // Undefined values indicate that they have no significance to the query. 
+        // Undefined values indicate that they have no significance to the query.
         // If the query is looking for rows where a column is not set it should use null instead of undefined
         if (typeof value === "undefined") {
           return acc
@@ -50,16 +50,21 @@ class BaseService {
                 case "gte":
                   subquery.push({ operator: ">=", value: val })
                   break
+                default:
+                  acc[key] = value
+                  break
               }
             })
 
-            acc[key] = Raw(
-              (a) =>
-                subquery
-                  .map((s, index) => `${a} ${s.operator} :${index}`)
-                  .join(" AND "),
-              subquery.map((s) => s.value)
-            )
+            if (subquery.length) {
+              acc[key] = Raw(
+                (a) =>
+                  subquery
+                    .map((s, index) => `${a} ${s.operator} :${index}`)
+                    .join(" AND "),
+                subquery.map((s) => s.value)
+              )
+            }
             break
           default:
             acc[key] = value
@@ -68,14 +73,14 @@ class BaseService {
 
         return acc
       }, {})
-      
+
       return where
     }
 
     const query = {
       where: build(selector),
     }
-    
+
     if ("deleted_at" in selector) {
       query.withDeleted = true
     }
@@ -153,9 +158,41 @@ class BaseService {
    * @param {string} isolation - the isolation level to be used for the work.
    * @return {any} the result of the transactional work
    */
-  async atomicPhase_(work, isolation) {
+  async atomicPhase_(
+    work,
+    isolationOrErrorHandler,
+    maybeErrorHandlerOrDontFail
+  ) {
+    let errorHandler = maybeErrorHandlerOrDontFail
+    let isolation = isolationOrErrorHandler
+    let dontFail = false
+    if (typeof isolationOrErrorHandler === "function") {
+      isolation = null
+      errorHandler = isolationOrErrorHandler
+      dontFail = !!maybeErrorHandlerOrDontFail
+    }
+
     if (this.transactionManager_) {
-      return work(this.transactionManager_)
+      const doWork = async (m) => {
+        this.manager_ = m
+        this.transactionManager_ = m
+        try {
+          const result = await work(m)
+          return result
+        } catch (error) {
+          if (errorHandler) {
+            const queryRunner = this.transactionManager_.queryRunner
+            if (queryRunner.isTransactionActive) {
+              await queryRunner.rollbackTransaction()
+            }
+
+            await errorHandler(error)
+          }
+          throw error
+        }
+      }
+
+      return doWork(this.transactionManager_)
     } else {
       const temp = this.manager_
       const doWork = async (m) => {
@@ -182,11 +219,26 @@ class BaseService {
           if (this.shouldRetryTransaction(error)) {
             return this.manager_.transaction(isolation, (m) => doWork(m))
           } else {
+            if (errorHandler) {
+              await errorHandler(error)
+            }
             throw error
           }
         }
       }
-      return this.manager_.transaction((m) => doWork(m))
+
+      try {
+        return await this.manager_.transaction((m) => doWork(m))
+      } catch (error) {
+        if (errorHandler) {
+          const result = await errorHandler(error)
+          if (dontFail) {
+            return result
+          }
+        }
+
+        throw error
+      }
     }
   }
 

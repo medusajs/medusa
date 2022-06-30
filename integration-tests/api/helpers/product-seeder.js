@@ -17,7 +17,7 @@ module.exports = async (connection, data = {}) => {
     type: "default",
   })
 
-  const coll = manager.create(ProductCollection, {
+  const coll = await manager.create(ProductCollection, {
     id: "test-collection",
     handle: "test-collection",
     title: "Test collection",
@@ -25,7 +25,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(coll)
 
-  const coll1 = manager.create(ProductCollection, {
+  const coll1 = await manager.create(ProductCollection, {
     id: "test-collection1",
     handle: "test-collection1",
     title: "Test collection 1",
@@ -33,7 +33,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(coll1)
 
-  const coll2 = manager.create(ProductCollection, {
+  const coll2 = await manager.create(ProductCollection, {
     id: "test-collection2",
     handle: "test-collection2",
     title: "Test collection 2",
@@ -41,33 +41,40 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(coll2)
 
-  const tag = manager.create(ProductTag, {
+  const tag = await manager.create(ProductTag, {
     id: "tag1",
     value: "123",
   })
 
   await manager.save(tag)
 
-  const tag3 = manager.create(ProductTag, {
+  const tag3 = await manager.create(ProductTag, {
     id: "tag3",
-    value: "123",
+    value: "1235",
   })
 
   await manager.save(tag3)
 
-  const tag4 = manager.create(ProductTag, {
+  const tag4 = await manager.create(ProductTag, {
     id: "tag4",
-    value: "123",
+    value: "1234",
   })
 
   await manager.save(tag4)
 
-  const type = manager.create(ProductType, {
+  const type = await manager.create(ProductType, {
     id: "test-type",
     value: "test-type",
   })
 
   await manager.save(type)
+
+  const type2 = await manager.create(ProductType, {
+    id: "test-type-new",
+    value: "test-type-new",
+  })
+
+  await manager.save(type2)
 
   const image = manager.create(Image, {
     id: "test-image",
@@ -83,7 +90,7 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   })
 
-  const p = manager.create(Product, {
+  const p = await manager.create(Product, {
     id: "test-product",
     handle: "test-product",
     title: "Test product",
@@ -129,6 +136,34 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(variant1)
 
+  const sale = await manager.create(ProductVariant, {
+    id: "test-variant-sale",
+    inventory_quantity: 10,
+    title: "Test variant",
+    variant_rank: 3,
+    sku: "test-sku-sale",
+    ean: "test-ean-sale",
+    upc: "test-upc-sale",
+    barcode: "test-barcode-sale",
+    product_id: "test-product",
+    prices: [
+      {
+        id: "test-price-sale",
+        currency_code: "usd",
+        amount: 1000,
+      },
+    ],
+    options: [
+      {
+        id: "test-variant-option-sale",
+        value: "Default variant",
+        option_id: "test-option",
+      },
+    ],
+  })
+
+  await manager.save(sale)
+
   const variant2 = await manager.create(ProductVariant, {
     id: "test-variant_1",
     inventory_quantity: 10,
@@ -172,7 +207,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(variant3)
 
-  const p1 = manager.create(Product, {
+  const p1 = await manager.create(Product, {
     id: "test-product1",
     handle: "test-product1",
     title: "Test product1",
@@ -197,7 +232,15 @@ module.exports = async (connection, data = {}) => {
     ean: "test-ean3",
     upc: "test-upc3",
     product_id: "test-product1",
-    prices: [{ id: "test-price3", currency_code: "usd", amount: 100 }],
+    prices: [
+      {
+        id: "test-price3",
+        region_id: "test-region",
+        currency_code: "usd",
+        amount: 100,
+        type: "default",
+      },
+    ],
     options: [
       {
         id: "test-variant-option-3",
@@ -218,7 +261,9 @@ module.exports = async (connection, data = {}) => {
     ean: "test-ean4",
     upc: "test-upc4",
     product_id: "test-product1",
-    prices: [{ id: "test-price4", currency_code: "usd", amount: 100 }],
+    prices: [
+      { id: "test-price4", currency_code: "usd", amount: 100, type: "default" },
+    ],
     options: [
       {
         id: "test-variant-option-4",
@@ -230,7 +275,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(variant5)
 
-  const product1 = manager.create(Product, {
+  const product1 = await manager.create(Product, {
     id: "test-product_filtering_1",
     handle: "test-product_filtering_1",
     title: "Test product filtering 1",
@@ -244,7 +289,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(product1)
 
-  const product2 = manager.create(Product, {
+  const product2 = await manager.create(Product, {
     id: "test-product_filtering_2",
     handle: "test-product_filtering_2",
     title: "Test product filtering 2",
@@ -258,7 +303,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(product2)
 
-  const product3 = manager.create(Product, {
+  const product3 = await manager.create(Product, {
     id: "test-product_filtering_3",
     handle: "test-product_filtering_3",
     title: "Test product filtering 3",
@@ -272,7 +317,7 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(product3)
 
-  const product4 = manager.create(Product, {
+  const product4 = await manager.create(Product, {
     id: "test-product_filtering_4",
     handle: "test-product_filtering_4",
     title: "Test product filtering 4",

@@ -29,8 +29,22 @@ module.exports = {
       files: [`*.ts`],
       parser: `@typescript-eslint/parser`,
       plugins: [`@typescript-eslint/eslint-plugin`],
-      extends: [`plugin:@typescript-eslint/recommended`],
+      extends: [`plugin:@typescript-eslint/recommended`, "prettier"],
       rules: {
+        "valid-jsdoc": [
+          "error",
+          {
+            requireParamType: false,
+            requireReturnType: false,
+            prefer: {
+              arg: "param",
+              argument: "param",
+              class: "constructor",
+              return: "return",
+              virtual: "abstract",
+            },
+          },
+        ],
         "@typescript-eslint/explicit-function-return-type": ["error"],
         "@typescript-eslint/no-non-null-assertion": ["off"],
       },

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { zeroDecimalCurrencies, humanizeAmount } from "medusa-core-utils"
+import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 
 class SlackService extends BaseService {
@@ -41,7 +41,6 @@ class SlackService extends BaseService {
         "shipping_address",
         "discounts",
         "discounts.rule",
-        "discounts.rule.valid_for",
         "shipping_methods",
         "payments",
         "fulfillments",
@@ -61,8 +60,6 @@ class SlackService extends BaseService {
     const { subtotal, tax_total, discount_total, shipping_total, total } = order
 
     const currencyCode = order.currency_code.toUpperCase()
-    const taxRate = order.tax_rate / 100
-
     const getDisplayAmount = (amount) => {
       const humanAmount = humanizeAmount(amount, currencyCode)
       if (zeroDecimalCurrencies.includes(currencyCode.toLowerCase())) {
@@ -71,7 +68,7 @@ class SlackService extends BaseService {
       return humanAmount.toFixed(2)
     }
 
-    let blocks = [
+    const blocks = [
       {
         type: "section",
         text: {
@@ -141,13 +138,20 @@ class SlackService extends BaseService {
       type: "divider",
     })
 
-    order.items.forEach((lineItem) => {
-      let line = {
+    for (const lineItem of order.items) {
+      const totals = await this.totalsService_.getLineItemTotals(
+        lineItem,
+        order,
+        {
+          include_tax: true,
+        }
+      )
+      const line = {
         type: "section",
         text: {
           type: "mrkdwn",
           text: `*${lineItem.title}*\n${lineItem.quantity} x ${getDisplayAmount(
-            lineItem.unit_price * (1 + taxRate)
+            totals.original_total
           )} ${currencyCode}`,
         },
       }
@@ -170,7 +174,7 @@ class SlackService extends BaseService {
       blocks.push({
         type: "divider",
       })
-    })
+    }
 
     return axios.post(this.options_.slack_url, {
       text: `Order ${order.display_id} was processed`,

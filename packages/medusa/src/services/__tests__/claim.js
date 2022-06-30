@@ -5,13 +5,14 @@ import { InventoryServiceMock } from "../__mocks__/inventory"
 const withTransactionMock = jest.fn()
 const eventBusService = {
   emit: jest.fn(),
-  withTransaction: function() {
+  withTransaction: function () {
     withTransactionMock("eventBus")
     return this
   },
 }
 
 const totalsService = {
+  getCalculationContext: jest.fn(() => {}),
   getRefundTotal: jest.fn(() => 1000),
 }
 
@@ -54,12 +55,24 @@ describe("ClaimService", () => {
     }
 
     const claimRepo = MockRepository({
-      create: d => ({ id: "claim_134", ...d }),
+      create: (d) => ({ id: "claim_134", ...d }),
     })
+
+    const lineItemRepository = MockRepository({
+      create: (d) => ({ id: "claim_item_134", ...d }),
+    })
+
+    const taxProviderService = {
+      createTaxLines: jest.fn(),
+      withTransaction: function () {
+        withTransactionMock("return")
+        return this
+      },
+    }
 
     const returnService = {
       create: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("return")
         return this
       },
@@ -68,7 +81,8 @@ describe("ClaimService", () => {
     const lineItemService = {
       generate: jest.fn((d, _, q) => ({ variant_id: d, quantity: q })),
       retrieve: () => Promise.resolve({}),
-      withTransaction: function() {
+      list: () => Promise.resolve([{}]),
+      withTransaction: function () {
         withTransactionMock("lineItem")
         return this
       },
@@ -76,7 +90,7 @@ describe("ClaimService", () => {
 
     const inventoryService = {
       ...InventoryServiceMock,
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("inventory")
         return this
       },
@@ -84,7 +98,7 @@ describe("ClaimService", () => {
 
     const claimItemService = {
       create: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("claimItem")
         return this
       },
@@ -93,6 +107,8 @@ describe("ClaimService", () => {
     const claimService = new ClaimService({
       manager: MockManager,
       claimRepository: claimRepo,
+      lineItemRepository: lineItemRepository,
+      taxProviderService,
       totalsService,
       returnService,
       lineItemService,
@@ -303,7 +319,7 @@ describe("ClaimService", () => {
       createFulfillment: jest.fn((_, items) =>
         Promise.resolve([{ id: "ful", items }])
       ),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("fulfillment")
         return this
       },
@@ -339,7 +355,7 @@ describe("ClaimService", () => {
     const lineItemService = {
       update: jest.fn(),
       retrieve: () => Promise.resolve({}),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("lineItem")
         return this
       },
@@ -440,11 +456,11 @@ describe("ClaimService", () => {
   describe("cancelFulfillment", () => {
     const claimRepo = MockRepository({
       findOne: () => Promise.resolve({}),
-      save: f => Promise.resolve(f),
+      save: (f) => Promise.resolve(f),
     })
 
     const fulfillmentService = {
-      cancelFulfillment: jest.fn().mockImplementation(f => {
+      cancelFulfillment: jest.fn().mockImplementation((f) => {
         switch (f) {
           case IdMap.getId("no-claim"):
             return Promise.resolve({})
@@ -454,7 +470,7 @@ describe("ClaimService", () => {
             })
         }
       }),
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
     }
@@ -519,7 +535,7 @@ describe("ClaimService", () => {
           ],
         })
       }),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("fulfillment")
         return this
       },
@@ -528,7 +544,7 @@ describe("ClaimService", () => {
     const lineItemService = {
       update: jest.fn(),
       retrieve: () => Promise.resolve({}),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("lineItem")
         return this
       },
@@ -623,7 +639,7 @@ describe("ClaimService", () => {
   describe("cancel", () => {
     const fulfillmentService = {
       cancelFulfillment: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("fulfillment")
         return this
       },
@@ -631,7 +647,7 @@ describe("ClaimService", () => {
 
     const returnService = {
       cancel: jest.fn(),
-      withTransaction: function() {
+      withTransaction: function () {
         withTransactionMock("return")
         return this
       },
@@ -642,7 +658,7 @@ describe("ClaimService", () => {
     const fulfillment = { id: "ful_21", canceled_at: now }
 
     const claimRepo = MockRepository({
-      findOne: q => {
+      findOne: (q) => {
         const claim = {
           return_order: { ...ret_order },
           fulfillments: [{ ...fulfillment }],

@@ -1,6 +1,6 @@
+import { indexTypes } from "medusa-core-utils"
 import { SearchService } from "medusa-interfaces"
 import { MeiliSearch } from "meilisearch"
-import { indexTypes } from "medusa-core-utils"
 import { transformProduct } from "../utils/transform-product"
 
 class MeiliSearchService extends SearchService {

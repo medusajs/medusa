@@ -13,7 +13,6 @@ class ShippingOptionService extends BaseService {
     shippingMethodRepository,
     fulfillmentProviderService,
     regionService,
-    totalsService,
   }) {
     super()
 
@@ -34,9 +33,6 @@ class ShippingOptionService extends BaseService {
 
     /** @private @const {RegionService} */
     this.regionService_ = regionService
-
-    /** @private @const {TotalsService} */
-    this.totalsService_ = totalsService
   }
 
   withTransaction(transactionManager) {
@@ -51,7 +47,6 @@ class ShippingOptionService extends BaseService {
       shippingOptionRequirementRepository: this.requirementRepository_,
       fulfillmentProviderService: this.providerService_,
       regionService: this.regionService_,
-      totalsService: this.totalsService_,
     })
 
     cloned.transactionManager_ = transactionManager
@@ -133,6 +128,18 @@ class ShippingOptionService extends BaseService {
   }
 
   /**
+   * @param {Object} selector - the query object for find
+   * @param {object} config - config object
+   * @return {Promise} the result of the find operation
+   */
+  async listAndCount(selector, config = { skip: 0, take: 50 }) {
+    const optRepo = this.manager_.getCustomRepository(this.optionRepository_)
+
+    const query = this.buildQuery_(selector, config)
+    return await optRepo.findAndCount(query)
+  }
+
+  /**
    * Gets a profile by id.
    * Throws in case of DB Error and if profile was not found.
    * @param {string} optionId - the id of the profile to get.
@@ -201,12 +208,16 @@ class ShippingOptionService extends BaseService {
 
   /**
    * Removes a given shipping method
-   * @param {ShippingMethod} sm - the shipping method to remove
+   * @param {ShippingMethod | Array<ShippingMethod>} shippingMethods - the shipping method to remove
    */
-  async deleteShippingMethod(sm) {
+  async deleteShippingMethods(shippingMethods) {
+    if (!Array.isArray(shippingMethods)) {
+      shippingMethods = [shippingMethods]
+    }
+
     return this.atomicPhase_(async (manager) => {
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
-      return methodRepo.remove(sm)
+      return methodRepo.remove(shippingMethods)
     })
   }
 
@@ -236,7 +247,7 @@ class ShippingOptionService extends BaseService {
       )
 
       let methodPrice
-      if ("price" in config) {
+      if (typeof config.price === "number") {
         methodPrice = config.price
       } else {
         methodPrice = await this.getPrice_(option, validatedData, config.cart)
@@ -429,10 +440,7 @@ class ShippingOptionService extends BaseService {
     }
 
     if (priceType === "calculated") {
-      const canCalculate = await this.providerService_.canCalculate(
-        option.provider_id,
-        option.data
-      )
+      const canCalculate = await this.providerService_.canCalculate(option)
       if (!canCalculate) {
         throw new MedusaError(
           MedusaError.Types.INVALID_DATA,

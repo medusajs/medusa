@@ -1,27 +1,24 @@
 import {
-  Entity,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  Index,
   Column,
-  PrimaryColumn,
-  OneToOne,
-  OneToMany,
+  Entity,
+  Index,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
 
 import { Address } from "./address"
+import { CustomerGroup } from "./customer-group"
 import { Order } from "./order"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Entity()
-export class Customer {
-  @PrimaryColumn()
-  id: string
-
+export class Customer extends SoftDeletableEntity {
   @Index({ unique: true })
   @Column()
   email: string
@@ -34,16 +31,13 @@ export class Customer {
 
   @Index()
   @Column({ nullable: true })
-  billing_address_id: string
+  billing_address_id: string | null
 
   @OneToOne(() => Address)
   @JoinColumn({ name: "billing_address_id" })
   billing_address: Address
 
-  @OneToMany(
-    () => Address,
-    address => address.customer
-  )
+  @OneToMany(() => Address, (address) => address.customer)
   shipping_addresses: Address[]
 
   @Column({ nullable: true, select: false })
@@ -55,29 +49,31 @@ export class Customer {
   @Column({ default: false })
   has_account: boolean
 
-  @OneToMany(
-    () => Order,
-    order => order.customer
-  )
+  @OneToMany(() => Order, (order) => order.customer)
   orders: Order[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
+  @JoinTable({
+    name: "customer_group_customers",
+    inverseJoinColumn: {
+      name: "customer_group_id",
+      referencedColumnName: "id",
+    },
+    joinColumn: {
+      name: "customer_id",
+      referencedColumnName: "id",
+    },
+  })
+  @ManyToMany(() => CustomerGroup, (cg) => cg.customers, {
+    onDelete: "CASCADE",
+  })
+  groups: CustomerGroup[]
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `cus_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "cus")
   }
 }
 

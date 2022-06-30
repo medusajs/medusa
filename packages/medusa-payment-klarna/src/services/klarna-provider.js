@@ -5,7 +5,7 @@ import { PaymentService } from "medusa-interfaces"
 class KlarnaProviderService extends PaymentService {
   static identifier = "klarna"
 
-  constructor({ shippingProfileService }, options) {
+  constructor({ shippingProfileService, totalsService }, options) {
     super()
 
     /**
@@ -41,48 +41,66 @@ class KlarnaProviderService extends PaymentService {
 
     /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
+
+    /** @private @const {TotalsService} */
+    this.totalsService_ = totalsService
   }
 
-  async lineItemsToOrderLines_(cart, taxRate) {
+  async lineItemsToOrderLines_(cart) {
     let order_lines = []
 
-    const tax = taxRate / 100
-
-    cart.items.forEach((item) => {
+    for (const item of cart.items) {
       // Withdraw discount from the total item amount
       const quantity = item.quantity
-      const unit_price = item.unit_price * (tax + 1)
-      const total_amount = unit_price * quantity
-      const total_tax_amount = total_amount * (tax / (1 + tax))
+
+      const totals = await this.totalsService_.getLineItemTotals(item, cart, {
+        include_tax: true,
+      })
+
+      const tax =
+        totals.tax_lines.reduce((acc, next) => acc + next.rate, 0) / 100
 
       order_lines.push({
         name: item.title,
         tax_rate: tax * 10000,
         quantity,
-        unit_price,
-        total_amount,
-        total_tax_amount,
+        unit_price: Math.round(totals.original_total / item.quantity),
+        total_amount: totals.total - totals.gift_card_total,
+        total_tax_amount: totals.tax_total,
+        total_discount_amount:
+          totals.original_total - totals.total + totals.gift_card_total,
       })
-    })
+    }
 
     if (cart.shipping_methods.length) {
-      const { name, price } = cart.shipping_methods.reduce(
-        (acc, next) => {
-          acc.name = [...acc.name, next?.shipping_option.name]
-          acc.price += next.price
-          return acc
-        },
-        { name: [], price: 0 }
-      )
+      const name = []
+      let total = 0
+      let tax = 0
+
+      for (const next of cart.shipping_methods) {
+        const totals = await this.totalsService_.getShippingMethodTotals(
+          next,
+          cart,
+          {
+            include_tax: true,
+          }
+        )
+
+        name.push(next?.shipping_option.name)
+        total += totals.total
+        tax += totals.tax_total
+      }
+
+      const taxRate = tax / (total - tax)
 
       order_lines.push({
         name: name?.join(" + ") || "Shipping fee",
         quantity: 1,
         type: "shipping_fee",
-        unit_price: price * (1 + tax),
-        tax_rate: tax * 10000,
-        total_amount: price * (1 + tax),
-        total_tax_amount: price * tax,
+        unit_price: total,
+        tax_rate: taxRate * 10000,
+        total_amount: total,
+        total_tax_amount: tax,
       })
     }
 
@@ -96,45 +114,20 @@ class KlarnaProviderService extends PaymentService {
       locale: "en-US",
     }
 
-    const { region, gift_card_total, discount_total, tax_total, total } = cart
+    const { region, gift_card_total, tax_total, total } = cart
 
-    const taxRate = region.tax_rate / 100
+    order.order_lines = await this.lineItemsToOrderLines_(cart)
 
-    order.order_lines = await this.lineItemsToOrderLines_(cart, region.tax_rate)
-
-    if (discount_total > 0) {
-      order.order_lines.push({
-        name: `Discount`,
-        quantity: 1,
-        type: "discount",
-        unit_price: 0,
-        total_discount_amount: discount_total * (1 + taxRate),
-        tax_rate: taxRate * 10000,
-        total_amount: -discount_total * (1 + taxRate),
-        total_tax_amount: -discount_total * taxRate,
-      })
-    } else if (discount_total < 0) {
-      order.order_lines.push({
-        name: `Discount Payback`,
-        quantity: 1,
-        type: "surcharge",
-        unit_price: -discount_total * (1 + taxRate),
-        tax_rate: taxRate * 10000,
-        total_amount: -discount_total * (1 + taxRate),
-        total_tax_amount: -discount_total * taxRate,
-      })
-    }
-
-    if (gift_card_total) {
+    if (gift_card_total && !region.gift_cards_taxable) {
       order.order_lines.push({
         name: `Gift Card`,
         quantity: 1,
         type: "gift_card",
         unit_price: 0,
-        total_discount_amount: gift_card_total * (1 + taxRate),
-        tax_rate: taxRate * 10000,
-        total_amount: -gift_card_total * (1 + taxRate),
-        total_tax_amount: -gift_card_total * taxRate,
+        total_discount_amount: gift_card_total,
+        tax_rate: 0,
+        total_amount: -gift_card_total,
+        total_tax_amount: 0,
       })
     }
 
@@ -185,11 +178,20 @@ class KlarnaProviderService extends PaymentService {
       // shipping_options and set the selected shipping method
       if (cart.shipping_methods.length) {
         const shipping_method = cart.shipping_methods[0]
+        const totals = await this.totalsService_.getShippingMethodTotals(
+          shipping_method,
+          cart,
+          {
+            include_tax: true,
+          }
+        )
+
+        const taxRate = totals.tax_total / (totals.total - totals.tax_total)
         order.selected_shipping_option = {
           id: shipping_method.shipping_option.id,
           name: shipping_method.shipping_option.name,
-          price: shipping_method.price * (1 + taxRate),
-          tax_amount: shipping_method.price * taxRate,
+          price: totals.total,
+          tax_amount: total.tax_total,
           tax_rate: taxRate * 10000,
         }
       }
@@ -212,6 +214,8 @@ class KlarnaProviderService extends PaymentService {
 
       const methods = Object.keys(partitioned).map((k) => partitioned[k])
       const combinations = cartesian(...methods)
+
+      const taxRate = region.tax_rate / 100
 
       // Use the cartesian product of shipping methods to generate correct
       // format for the Klarna Widget

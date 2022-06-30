@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-restock-notification",
-  "version": "0.0.28",
+  "version": "0.0.32",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -18,13 +18,12 @@
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
     "jest": "^25.5.2",
-    "medusa-test-utils": "^1.1.35",
+    "medusa-test-utils": "^1.1.37",
     "pg": "^8.5.1",
     "ulid": "^2.3.0"
   },
   "scripts": {
     "build": "babel src -d . --ignore **/__tests__ --extensions \".ts,.js\"",
-    "prepare": "cross-env NODE_ENV=production npm run build",
     "watch": "babel -w src --out-dir . --ignore **/__tests__",
     "test": "jest"
   },
@@ -38,5 +37,5 @@
     "express": "^4.17.1",
     "medusa-core-utils": "^1.1.31"
   },
-  "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
+  "gitHead": "cd1f5afa5aa8c0b15ea957008ee19f1d695cbd2e"
 }

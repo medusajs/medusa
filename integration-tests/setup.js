@@ -11,9 +11,9 @@ const pgGodCredentials = {
   password: DB_PASSWORD,
 }
 
-afterAll(() => {
+afterAll(async () => {
   const workerId = parseInt(process.env.JEST_WORKER_ID || "1")
-  dropDatabase(
+  await dropDatabase(
     { databaseName: `medusa-integration-${workerId}` },
     pgGodCredentials
   )

@@ -1,41 +1,36 @@
 import {
-  Entity,
   BeforeInsert,
-  CreateDateColumn,
-  UpdateDateColumn,
   Check,
-  Index,
   Column,
-  PrimaryColumn,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
+  OneToMany,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
+import { LineItemTaxLine } from "./line-item-tax-line"
 import { Swap } from "./swap"
 import { Cart } from "./cart"
 import { Order } from "./order"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
+import { LineItemAdjustment } from "./line-item-adjustment"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Check(`"fulfilled_quantity" <= "quantity"`)
 @Check(`"shipped_quantity" <= "fulfilled_quantity"`)
 @Check(`"returned_quantity" <= "quantity"`)
 @Check(`"quantity" > 0`)
 @Entity()
-export class LineItem {
-  @PrimaryColumn()
-  id: string
-
+export class LineItem extends BaseEntity {
   @Index()
   @Column({ nullable: true })
   cart_id: string
 
-  @ManyToOne(
-    () => Cart,
-    cart => cart.items
-  )
+  @ManyToOne(() => Cart, (cart) => cart.items)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
@@ -43,10 +38,7 @@ export class LineItem {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(
-    () => Order,
-    order => order.items
-  )
+  @ManyToOne(() => Order, (order) => order.items)
   @JoinColumn({ name: "order_id" })
   order: Order
 
@@ -54,10 +46,7 @@ export class LineItem {
   @Column({ nullable: true })
   swap_id: string
 
-  @ManyToOne(
-    () => Swap,
-    swap => swap.additional_items
-  )
+  @ManyToOne(() => Swap, (swap) => swap.additional_items)
   @JoinColumn({ name: "swap_id" })
   swap: Swap
 
@@ -65,12 +54,17 @@ export class LineItem {
   @Column({ nullable: true })
   claim_order_id: string
 
-  @ManyToOne(
-    () => ClaimOrder,
-    co => co.additional_items
-  )
+  @ManyToOne(() => ClaimOrder, (co) => co.additional_items)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
+
+  @OneToMany(() => LineItemTaxLine, (tl) => tl.item, { cascade: ["insert"] })
+  tax_lines: LineItemTaxLine[]
+
+  @OneToMany(() => LineItemAdjustment, (lia) => lia.item, {
+    cascade: ["insert"],
+  })
+  adjustments: LineItemAdjustment[]
 
   @Column()
   title: string
@@ -78,8 +72,11 @@ export class LineItem {
   @Column({ nullable: true })
   description: string
 
-  @Column({ nullable: true })
-  thumbnail: string
+  @Column({ type: "text", nullable: true })
+  thumbnail: string | null
+
+  @Column({ default: false })
+  is_return: boolean
 
   @Column({ default: false })
   is_giftcard: boolean
@@ -116,22 +113,21 @@ export class LineItem {
   @Column({ nullable: true, type: "int" })
   shipped_quantity: number
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
-  refundable: number | null
+  refundable?: number | null
+  subtotal?: number | null
+  tax_total?: number | null
+  total?: number | null
+  original_total?: number | null
+  original_tax_total?: number | null
+  discount_total?: number | null
+  gift_card_total?: number | null
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `item_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "item")
   }
 }
 

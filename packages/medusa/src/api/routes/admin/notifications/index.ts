@@ -1,6 +1,5 @@
 import { Router } from "express"
 import { Notification } from "./../../../../"
-import { PaginatedResponse } from "./../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -53,6 +52,9 @@ export type AdminNotificationsListRes = {
   notifications: Notification[]
 }
 
-export type AdminNotificationsRes = PaginatedResponse & {
+export type AdminNotificationsRes = {
   notification: Notification
 }
+
+export * from "./list-notifications"
+export * from "./resend-notification"

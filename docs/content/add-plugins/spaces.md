@@ -2,9 +2,15 @@
 
 In order to work with images in Medusa, you need a file service plugin responsible for hosting. Following this guide will allow you to upload images to DigitalOcean Spaces.
 
+<div>
+  <video width="100%" height="100%" playsinline autoplay muted controls>
+    <source src="https://user-images.githubusercontent.com/59018053/154808767-7c030254-1879-41fd-a71c-b31c5508d8a4.mp4" type="video/mp4" />
+  </video>
+</div>
+
 ### Before you start
 
-At this point, you should have an instance of our store engine running. If not, we have a [full guide](https://docs.medusa-commerce.com/tutorial/set-up-your-development-environment) for setting up your local environment.
+At this point, you should have an instance of our store engine running. If not, we have a [full guide](https://docs.medusajs.com/tutorial/set-up-your-development-environment) for setting up your local environment.
 
 ### Set up DigitalOcean
 
@@ -20,8 +26,8 @@ Navigate to API in the left sidebar. Generate a new Spaces access key. This shou
 
 First, install the plugin using your preferred package manager:
 
-```
-yarn add medusa-file-spaces
+```bash npm2yarn
+npm install medusa-file-spaces
 ```
 
 Then configure your `medusa-config.js` to include the plugin alongside the required options:
@@ -41,7 +47,11 @@ Then configure your `medusa-config.js` to include the plugin alongside the requi
 
 In the above options, a `spaces_url` is included. This can be found in your Space overview. The `bucket` should point to the name you gave your Space. The `endpoint` identifies the region in which you created the Space. And finally the two keys are the ones created in the previous section.
 
-> Make sure to use an environment variable for the secret key in a live environment.
+:::tip
+
+Make sure to use an environment variable for the secret key in a live environment.
+
+:::
 
 ### Try it out!
 

@@ -68,7 +68,7 @@ class Client {
   }
 
   // Stolen from https://github.com/stripe/stripe-node/blob/fd0a597064289b8c82f374f4747d634050739043/lib/utils.js#L282
-  normalizeHeaders(obj: object): object {
+  normalizeHeaders(obj: object): Record<string, any> {
     if (!(obj && typeof obj === "object")) {
       return obj
     }
@@ -102,14 +102,16 @@ class Client {
    * @param {object} userHeaders user supplied headers
    * @param {Types.RequestMethod} method request method
    * @param {string} path request path
+   * @param {object} customHeaders user supplied headers
    * @return {object}
    */
   setHeaders(
     userHeaders: RequestOptions,
     method: RequestMethod,
-    path: string
+    path: string,
+    customHeaders: Record<string, any> = {}
   ): AxiosRequestHeaders {
-    let defaultHeaders: object = {
+    let defaultHeaders: Record<string, any> = {
       Accept: "application/json",
       "Content-Type": "application/json",
     }
@@ -126,7 +128,12 @@ class Client {
       defaultHeaders["Idempotency-Key"] = uuidv4()
     }
 
-    return Object.assign({}, defaultHeaders, this.normalizeHeaders(userHeaders))
+    return Object.assign(
+      {},
+      defaultHeaders,
+      this.normalizeHeaders(userHeaders),
+      customHeaders
+    )
   }
 
   /**
@@ -152,8 +159,8 @@ class Client {
         if (cfg) {
           return this.shouldRetryCondition(
             err,
-            cfg.currentRetryAttempt || 1,
-            cfg.retry || 3
+            cfg.currentRetryAttempt ?? 1,
+            cfg.retry ?? 3
           )
         } else {
           return false
@@ -170,21 +177,27 @@ class Client {
    * @param {string} path request path
    * @param {object} payload request payload
    * @param {RequestOptions} options axios configuration
+   * @param {object} customHeaders custom request headers
    * @return {object}
    */
   async request(
     method: RequestMethod,
     path: string,
-    payload: object = {},
-    options: RequestOptions = {}
+    payload: Record<string, any> | null = null,
+    options: RequestOptions = {},
+    customHeaders: Record<string, any> = {}
   ): Promise<any> {
+    if (method === "POST" && !payload) {
+      payload = {}
+    }
+
     const reqOpts = {
       method,
       withCredentials: true,
       url: path,
       data: payload,
       json: true,
-      headers: this.setHeaders(options, method, path),
+      headers: this.setHeaders(options, method, path, customHeaders),
     }
 
     // e.g. data = { cart: { ... } }, response = { status, headers, ... }

@@ -6,30 +6,33 @@ class AdminAuthResource extends BaseResource {
   /**
    * @description Retrieves an authenticated session
    * Usually used to check if authenticated session is alive.
+   * @param customHeaders
    * @return {ResponsePromise<AdminAuthRes>}
    */
-  getSession(): ResponsePromise<AdminAuthRes> {
+  getSession(customHeaders: Record<string, any> = {}): ResponsePromise<AdminAuthRes> {
     const path = `/admin/auth`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * @description destroys an authenticated session
+   * @param customHeaders
    * @return {ResponsePromise<void>}
    */
-  deleteSession(): ResponsePromise<void> {
+  deleteSession(customHeaders: Record<string, any> = {}): ResponsePromise<void> {
     const path = `/admin/auth`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
    * @description Creates an authenticated session
    * @param {AdminPostAuthReq} payload
+   * @param customHeaders
    * @return {ResponsePromise<AdminAuthRes>}
    */
-  createSession(payload: AdminPostAuthReq): ResponsePromise<AdminAuthRes> {
+  createSession(payload: AdminPostAuthReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminAuthRes> {
     const path = `/admin/auth`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 

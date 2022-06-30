@@ -3,23 +3,22 @@ import {
   IsArray,
   IsBoolean,
   IsEnum,
-  IsInt,
   IsNumber,
   IsObject,
   IsOptional,
   IsString,
-  Validate,
   ValidateNested,
 } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import {
   ProductService,
+  PricingService,
   ProductVariantService,
   ShippingProfileService,
 } from "../../../../services"
-import { ProductStatus } from "../../../../types/product"
-import { XorConstraint } from "../../../../types/validators/xor"
+import { ProductStatus } from "../../../../models"
+import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -213,6 +212,7 @@ export default async (req, res) => {
   const validated = await validator(AdminPostProductsReq, req.body)
 
   const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
   const productVariantService: ProductVariantService = req.scope.resolve(
     "productVariantService"
   )
@@ -272,10 +272,12 @@ export default async (req, res) => {
     }
   })
 
-  const product = await productService.retrieve(newProduct.id, {
+  const rawProduct = await productService.retrieve(newProduct.id, {
     select: defaultAdminProductFields,
     relations: defaultAdminProductRelations,
   })
+
+  const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
 }
@@ -306,21 +308,6 @@ class ProductVariantOptionReq {
 class ProductOptionReq {
   @IsString()
   title: string
-}
-
-class ProductVariantPricesReq {
-  @Validate(XorConstraint, ["currency_code"])
-  region_id?: string
-
-  @Validate(XorConstraint, ["region_id"])
-  currency_code?: string
-
-  @IsInt()
-  amount: number
-
-  @IsOptional()
-  @IsInt()
-  sale_amount?: number
 }
 
 class ProductVariantReq {
@@ -389,12 +376,12 @@ class ProductVariantReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => ProductVariantPricesReq)
-  prices: ProductVariantPricesReq[]
+  @Type(() => ProductVariantPricesCreateReq)
+  prices: ProductVariantPricesCreateReq[]
 
   @IsOptional()
   @Type(() => ProductVariantOptionReq)
@@ -450,7 +437,7 @@ export class AdminPostProductsReq {
   @Type(() => ProductTagReq)
   @ValidateNested({ each: true })
   @IsArray()
-  tags?: ProductTagReq
+  tags?: ProductTagReq[]
 
   @IsOptional()
   @Type(() => ProductOptionReq)
@@ -498,5 +485,5 @@ export class AdminPostProductsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }

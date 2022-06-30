@@ -2,7 +2,11 @@
 
 This is a guide for deploying a Medusa project on DigitalOcean App Platform.
 
-> It is assumed, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+:::note
+
+It is assumed, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+
+:::
 
 ### 1. Configure Medusa
 
@@ -83,7 +87,11 @@ Navigate to the top-right dropdown **Create** and select **Apps**.
 
 Choose **GitHub** or **GitLab** and select the repository that holds your Medusa project. Check **Autodeploy code changes**, if you want DigitalOcean to deploy on every push to your repository.
 
-> It's important, that DigitalOcean is pointing to the directory holding the Medusa store engine as it is only this which that will be deployed (If you followed the quickstart guide this will simply be the created project, and if you used the npx command this will be the backend folder inside of the newly created project).
+:::tip
+
+It's important, that DigitalOcean is pointing to the directory holding the Medusa store engine as it is only this which that will be deployed (If you followed the quickstart guide this will simply be the created project, and if you used the npx command this will be the backend folder inside of the newly created project).
+
+:::
 
 ### 5. Configure environment variables
 
@@ -100,7 +108,11 @@ JWT_SECRET=your-jwt-secret
 COOKIE_SECRET=your-cookie-secret
 ```
 
-> Make sure to use actual secrets in a production environment
+:::tip
+
+Make sure to use actual secrets in a production environment
+
+:::
 
 ### 6. Set up a Database
 

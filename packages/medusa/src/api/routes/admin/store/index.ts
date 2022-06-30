@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { Store, PaymentProvider } from "./../../../../"
+import { Store, PaymentProvider, TaxProvider } from "./../../../../"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -11,6 +11,10 @@ export default (app) => {
   route.get(
     "/payment-providers",
     middlewares.wrap(require("./list-payment-providers").default)
+  )
+  route.get(
+    "/tax-providers",
+    middlewares.wrap(require("./list-tax-providers").default)
   )
   route.post("/", middlewares.wrap(require("./update-store").default))
   route.post(
@@ -27,6 +31,10 @@ export default (app) => {
 
 export type AdminStoresRes = {
   store: Store
+}
+
+export type AdminTaxProvidersList = {
+  tax_providers: TaxProvider[]
 }
 
 export type AdminPaymentProvidersList = {

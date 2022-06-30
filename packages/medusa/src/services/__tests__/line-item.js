@@ -3,7 +3,9 @@ import LineItemService from "../line-item"
 
 describe("LineItemService", () => {
   describe("create", () => {
-    const lineItemRepository = MockRepository({})
+    const lineItemRepository = MockRepository({
+      create: (data) => data,
+    })
 
     const cartRepository = MockRepository({
       findOne: () =>
@@ -13,7 +15,7 @@ describe("LineItemService", () => {
     })
 
     const regionService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
       retrieve: () => {
@@ -24,10 +26,10 @@ describe("LineItemService", () => {
     }
 
     const productVariantService = {
-      withTransaction: function() {
+      withTransaction: function () {
         return this
       },
-      retrieve: query => {
+      retrieve: (query) => {
         if (query === IdMap.getId("test-giftcard")) {
           return {
             id: IdMap.getId("test-giftcard"),
@@ -52,8 +54,25 @@ describe("LineItemService", () => {
       getRegionPrice: () => 100,
     }
 
+    const pricingService = {
+      withTransaction: function () {
+        return this
+      },
+      getProductVariantPricingById: () => {
+        return {
+          calculated_price: 100,
+        }
+      },
+      getProductVariantPricing: () => {
+        return {
+          calculated_price: 100,
+        }
+      },
+    }
+
     const lineItemService = new LineItemService({
       manager: MockManager,
+      pricingService,
       lineItemRepository,
       productVariantService,
       regionService,
@@ -105,9 +124,10 @@ describe("LineItemService", () => {
     })
 
     it("successfully create a line item giftcard", async () => {
-      const line = await await lineItemService.generate(
+      const line = await lineItemService.generate(
         IdMap.getId("test-giftcard"),
-        IdMap.getId("test-region")
+        IdMap.getId("test-region"),
+        1
       )
 
       await lineItemService.create({
@@ -115,20 +135,23 @@ describe("LineItemService", () => {
         cart_id: IdMap.getId("test-cart"),
       })
 
-      expect(lineItemRepository.create).toHaveBeenCalledTimes(1)
-      expect(lineItemRepository.create).toHaveBeenCalledWith({
-        allow_discounts: false,
-        variant_id: IdMap.getId("test-giftcard"),
-        cart_id: IdMap.getId("test-cart"),
-        title: "Test product",
-        description: "Test variant",
-        thumbnail: "",
-        unit_price: 100,
-        quantity: 1,
-        is_giftcard: true,
-        should_merge: true,
-        metadata: {},
-      })
+      expect(lineItemRepository.create).toHaveBeenCalledTimes(2)
+      expect(lineItemRepository.create).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          allow_discounts: false,
+          variant_id: IdMap.getId("test-giftcard"),
+          cart_id: IdMap.getId("test-cart"),
+          title: "Test product",
+          description: "Test variant",
+          thumbnail: "",
+          unit_price: 100,
+          quantity: 1,
+          is_giftcard: true,
+          should_merge: true,
+          metadata: {},
+        })
+      )
     })
   })
 
