@@ -75,7 +75,5 @@
     "oas-normalize": "^5.0.1",
     "swagger-inline": "^3.2.2"
   },
-  "resolutions": {
-    "**/tsdx/typescript": "^4.5.0"
-  }
+  "packageManager": "yarn@3.2.1"
 }
