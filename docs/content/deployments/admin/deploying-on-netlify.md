@@ -91,7 +91,7 @@ You’ll then be asked to connect to a Git provider.
 
 Choose GitHub. You’ll then be redirected to GitHub’s website to give Netlify permissions if you haven’t done that before.
 
-After you’re authorized, you’ll be asked to pick the repository you want to deploy. Pick the repository you just created.
+After you authorize Netlify to use GitHub, you’ll be asked to pick the repository you want to deploy. Pick the repository you just created.
 
 ![Choose Repository](https://i.imgur.com/D0r6Q1e.png)
 
