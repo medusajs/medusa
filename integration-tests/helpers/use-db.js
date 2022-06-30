@@ -77,8 +77,9 @@ const DbTestUtil = {
 const instance = DbTestUtil
 
 module.exports = {
-  initDb: async function ({ cwd }) {
+  initDb: async function ({ cwd, enabledFeatureFlags = [] }) {
     const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    // TODO try loading featureflags given the config
 
     const modelsLoader = require(path.join(
       cwd,
@@ -89,6 +90,7 @@ module.exports = {
       `loaders`,
       `models`
     )).default
+
     const entities = modelsLoader({}, { register: false })
 
     const { projectConfig } = require(configPath)
@@ -108,11 +110,49 @@ module.exports = {
 
       await dbFactory.createFromTemplate(databaseName)
 
+      // get migraitons with enabled featureflags
+      const migrationDir = path.resolve(
+        path.join(
+          cwd,
+          `node_modules`,
+          `@medusajs`,
+          `medusa`,
+          `dist`,
+          `migrations`,
+          `*.js`
+        )
+      )
+
+      const { getEnabledMigrations } = require(path.join(
+        cwd,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `commands`,
+        `utils`,
+        `get-migrations`
+      ))
+
+      const enabledMigrations = await getEnabledMigrations(
+        [migrationDir],
+        (flag) =>
+          enabledFeatureFlags.length > 0 &&
+          enabledFeatureFlags.indexOf(flag) > -1
+      )
+
+      const enabledEntities = entities.filter(
+        (e) => typeof e.isEnabled === "undefined" || e.isEnabled()
+      )
+
       const dbConnection = await createConnection({
         type: "postgres",
         url: DB_URL,
-        entities,
+        entities: enabledEntities,
+        migrations: enabledMigrations,
       })
+
+      await dbConnection.runMigrations()
 
       instance.setDb(dbConnection)
       return dbConnection
