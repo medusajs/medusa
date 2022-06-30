@@ -1798,9 +1798,31 @@ describe("/admin/products", () => {
         })
         .catch((err) => console.log(err))
 
+      const insertedVariant = res.data.product.variants.find(
+        (v) => v.sku === "new-sku"
+      )
+
       expect(res.status).toEqual(200)
-      // TODO: investigate why ther is only one price returned in the response
-      // expect(res.data.product.variants[0].prices.length).toEqual(2)
+
+      expect(insertedVariant.prices).toEqual([
+        expect.objectContaining({
+          currency_code: "usd",
+          amount: 100,
+          min_quantity: null,
+          max_quantity: null,
+          variant_id: insertedVariant.id,
+          region_id: null,
+        }),
+        expect.objectContaining({
+          currency_code: "usd",
+          amount: 200,
+          min_quantity: null,
+          max_quantity: null,
+          price_list_id: null,
+          variant_id: insertedVariant.id,
+          region_id: "test-region",
+        }),
+      ])
     })
   })
 

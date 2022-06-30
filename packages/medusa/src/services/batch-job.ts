@@ -129,8 +129,6 @@ class BatchJobService extends TransactionBaseService<BatchJobService> {
           )
         }
 
-        // batchJob.loadStatus()
-
         return batchJob
       }
     )
