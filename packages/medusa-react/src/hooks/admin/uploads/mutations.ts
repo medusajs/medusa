@@ -23,7 +23,7 @@ export const useAdminUploadFile = (
 
   return useMutation((payload: IAdminPostUploadsFileReq) => {
     return client.admin.uploads.create(payload)
-  }, buildOptions(queryClient, [], options))
+  }, buildOptions(queryClient, undefined, options))
 }
 
 export const useAdminCreatePresignedDownloadUrl = (
@@ -39,7 +39,7 @@ export const useAdminCreatePresignedDownloadUrl = (
   return useMutation(
     (payload: AdminPostUploadsDownloadUrlReq) =>
       client.admin.uploads.getPresignedDownloadUrl(payload),
-    buildOptions(queryClient, [], options)
+    buildOptions(queryClient, undefined, options)
   )
 }
 
@@ -55,6 +55,6 @@ export const useAdminDeleteFile = (
 
   return useMutation(
     (payload: AdminDeleteUploadsReq) => client.admin.uploads.delete(payload),
-    buildOptions(queryClient, [], options)
+    buildOptions(queryClient, undefined, options)
   )
 }
