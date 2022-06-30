@@ -77,6 +77,12 @@ This section covers how to deploy Netlify either through the Netlify website or 
 
 After logging in with Netlify, go to the [dashboard](https://app.netlify.com/). Then, at the top right of the “Sites” section, click on “Add new site”, then click on “Import an existing project” from the dropdown.
 
+:::note
+
+Alternatively, if you don’t have any other websites, you’ll see a big button that says “Import an existing project”.
+
+:::
+
 ![Create a new website](https://i.imgur.com/IUUOzoW.png)
 
 You’ll then be asked to connect to a Git provider.
