@@ -95,10 +95,36 @@ export function FeatureFlagColumn(
   const featureFlagRouter = featureFlagsLoader(configModule)
 
   if (!featureFlagRouter.featureIsEnabled(featureFlag)) {
-    return (target: any): any => target
+    return (): void => {
+      // noop
+    }
   }
 
   return Column(columnOptions)
+}
+
+export function featureFlagColumn(
+  featureFlag: string,
+  decorators: PropertyDecorator[]
+): PropertyDecorator {
+  const { configModule } = getConfigFile(
+    path.resolve("."),
+    `medusa-config`
+  ) as { configModule: ConfigModule }
+
+  const featureFlagRouter = featureFlagsLoader(configModule)
+
+  if (!featureFlagRouter.featureIsEnabled(featureFlag)) {
+    return (): void => {
+      // noop
+    }
+  }
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  return (target: Object, propertyKey: string | symbol): void => {
+    decorators.forEach((decorator) => {
+      decorator(target, propertyKey)
+    })
+  }
 }
 
 export function FeatureFlagEntity(
@@ -106,28 +132,10 @@ export function FeatureFlagEntity(
   name?: string,
   options?: EntityOptions
 ): ClassDecorator {
-  console.log(`flag: ${featureFlag}`)
-  console.log("FF_Entity before config")
-
   const { configModule } = getConfigFile(
     path.resolve("."),
     `medusa-config`
   ) as { configModule: ConfigModule }
-
-  console.log("FF_Entity after config")
-  console.log(process.env["MEDUSA_FF_CREATE_BATCHES"])
-
-  const featureFlagRouter = featureFlagsLoader(configModule)
-
-  // console.log(process.env)
-
-  console.log("FF_Entity flags loaded")
-  console.log(JSON.stringify(featureFlagRouter.flags))
-  console.log(featureFlagRouter.featureIsEnabled(featureFlag))
-
-  // if (!featureFlagRouter.featureIsEnabled(featureFlag)) {
-  //   return (target: any): any => target
-  // }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
   return function (target: Function): void {
@@ -138,27 +146,3 @@ export function FeatureFlagEntity(
     Entity(name, options)(target)
   }
 }
-
-// export function Entity(
-//   nameOrOptions?: string | EntityOptions,
-//   maybeOptions?: EntityOptions
-// ): ClassDecorator {
-//   const options =
-//     (typeof nameOrOptions === "object"
-//       ? (nameOrOptions as EntityOptions)
-//       : maybeOptions) || {}
-//   const name = typeof nameOrOptions === "string" ? nameOrOptions : options.name\
-
-//   // eslint-disable-next-line @typescript-eslint/ban-types
-//   return function (target: Function): void {
-//     getMetadataArgsStorage().tables.push({
-//       target: target,
-//       name: name,
-//       type: "regular",
-//       orderBy: options.orderBy ? options.orderBy : undefined,
-//       engine: options.engine ? options.engine : undefined,
-//       database: options.database ? options.database : undefined,
-//       schema: options.schema ? options.schema : undefined,
-//       synchronize: options.synchronize,
-//     } as TableMetadataArgs)
-// }
