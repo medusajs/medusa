@@ -12,11 +12,11 @@ const isTruthy = (val: string | boolean | undefined): boolean => {
   return !!val
 }
 
-export default async (
+export default (
   configModule: { featureFlags: Record<string, string | boolean> },
-  logger: Logger,
+  logger?: Logger,
   flagDirectory?: string
-): Promise<FlagRouter> => {
+): FlagRouter => {
   let { featureFlags: projectConfigFlags } = configModule
   projectConfigFlags = projectConfigFlags || {}
 
@@ -28,7 +28,8 @@ export default async (
   const flagConfig: Record<string, boolean> = {}
   for (const flag of supportedFlags) {
     let flagSettings: FlagSettings
-    const importedModule = await import(flag)
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const importedModule = require(flag)
     if (importedModule.default) {
       flagSettings = importedModule.default
     } else {
@@ -37,29 +38,35 @@ export default async (
 
     switch (true) {
       case typeof process.env[flagSettings.env_key] !== "undefined":
-        logger.info(
-          `Using flag ${flagSettings.env_key} from environment with value ${
-            process.env[flagSettings.env_key]
-          }`
-        )
+        if (logger) {
+          logger.info(
+            `Using flag ${flagSettings.env_key} from environment with value ${
+              process.env[flagSettings.env_key]
+            }`
+          )
+        }
         flagConfig[flagSettings.key] = isTruthy(
           process.env[flagSettings.env_key]
         )
         break
       case typeof projectConfigFlags[flagSettings.key] !== "undefined":
-        logger.info(
-          `Using flag ${flagSettings.key} from project config with value ${
-            projectConfigFlags[flagSettings.key]
-          }`
-        )
+        if (logger) {
+          logger.info(
+            `Using flag ${flagSettings.key} from project config with value ${
+              projectConfigFlags[flagSettings.key]
+            }`
+          )
+        }
         flagConfig[flagSettings.key] = isTruthy(
           projectConfigFlags[flagSettings.key]
         )
         break
       default:
-        logger.info(
-          `Using flag ${flagSettings.key} with default value ${flagSettings.default_val}`
-        )
+        if (logger) {
+          logger.info(
+            `Using flag ${flagSettings.key} with default value ${flagSettings.default_val}`
+          )
+        }
         flagConfig[flagSettings.key] = flagSettings.default_val
     }
   }
