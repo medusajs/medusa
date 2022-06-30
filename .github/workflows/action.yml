@@ -67,7 +67,7 @@ jobs:
 
     strategy:
       matrix:
-        chunk: [0, 1]
+        chunk: [0, 1, 2, 3]
 
     steps:
       - name: Cancel Previous Runs
@@ -113,7 +113,7 @@ jobs:
 
       - name: Set Chunks
         id: set-test-chunks
-        run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | ceil)]')"
+        run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')"
         working-directory: integration-tests/api
 
       - name: Set Chunk IDs
