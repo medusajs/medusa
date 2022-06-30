@@ -15,12 +15,18 @@ export class GiftCardRepository extends Repository<GiftCard> {
     idsOrOptionsWithoutRelations:
       | Omit<FindManyOptions<GiftCard>, "relations">
       | string[] = {}
-  ): Promise<GiftCard[]> {
-    let entities
+  ): Promise<[GiftCard[], number]> {
+    let entities: GiftCard[] = []
+    let count = 0
     if (Array.isArray(idsOrOptionsWithoutRelations)) {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
+      count = idsOrOptionsWithoutRelations.length
     } else {
-      entities = await this.find(idsOrOptionsWithoutRelations)
+      const [results, num] = await this.findAndCount(
+        idsOrOptionsWithoutRelations
+      )
+      entities = results
+      count = num
     }
     const entitiesIds = entities.map(({ id }) => id)
 
@@ -45,15 +51,19 @@ export class GiftCardRepository extends Repository<GiftCard> {
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
 
     const entitiesAndRelationsById = groupBy(entitiesAndRelations, "id")
-    return Object.values(entitiesAndRelationsById).map((v) => merge({}, ...v))
+    return [
+      Object.values(entitiesAndRelationsById).map((v) => merge({}, ...v)),
+      count,
+    ]
   }
 
   protected async queryGiftCards(
     q: string,
     where: Partial<Writable<QuerySelector<GiftCard>>>,
-    rels: (keyof GiftCard | string)[]
-  ): Promise<GiftCard[]> {
-    const raw = await this.createQueryBuilder("gift_card")
+    rels: (keyof GiftCard | string)[],
+    shouldCount = false
+  ): Promise<[GiftCard[], number]> {
+    const qb = this.createQueryBuilder("gift_card")
       .leftJoinAndSelect("gift_card.order", "order")
       .select(["gift_card.id"])
       .where(where)
@@ -64,12 +74,37 @@ export class GiftCardRepository extends Repository<GiftCard> {
             .orWhere(`display_id::varchar(255) ILIKE :dId`, { dId: `${q}` })
         })
       )
-      .getMany()
 
-    return this.findWithRelations(
+    let raw: GiftCard[] = []
+    let count = 0
+    if (shouldCount) {
+      const [results, num] = await qb.getManyAndCount()
+      raw = results
+      count = num
+    } else {
+      raw = await qb.getMany()
+    }
+
+    const [results] = await this.findWithRelations(
       rels,
       raw.map((i) => i.id)
     )
+
+    return [results, count]
+  }
+
+  public async listGiftCardsAndCount(
+    query: ExtendedFindConfig<GiftCard, QuerySelector<GiftCard>>,
+    rels: (keyof GiftCard | string)[] = [],
+    q?: string
+  ): Promise<[GiftCard[], number]> {
+    if (q) {
+      const where = query.where
+      delete where.id
+
+      return await this.queryGiftCards(q, where, rels, true)
+    }
+    return this.findWithRelations(rels, query)
   }
 
   public async listGiftCards(
@@ -81,9 +116,12 @@ export class GiftCardRepository extends Repository<GiftCard> {
       const where = query.where
       delete where.id
 
-      return await this.queryGiftCards(q, where, rels)
+      const [result] = await this.queryGiftCards(q, where, rels)
+      return result
     }
-    return this.findWithRelations(rels, query)
+
+    const [results] = await this.findWithRelations(rels, query)
+    return results
   }
 
   public async findOneWithRelations(
@@ -93,7 +131,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
     // Limit 1
     optionsWithoutRelations.take = 1
 
-    const result = await this.findWithRelations(
+    const [result] = await this.findWithRelations(
       relations,
       optionsWithoutRelations
     )
