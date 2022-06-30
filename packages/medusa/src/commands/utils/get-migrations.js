@@ -124,41 +124,26 @@ export default async (directory, featureFlagRouter) => {
     }
   }
 
-  return getEnabledMigrations(migrationDirs, featureFlagRouter.featureIsEnabled)
-  // return (
-  //   await Promise.all(
-  //     allMigrations.map(async (file) => {
-  //       const loaded = await import(file)
-  //       if (
-  //         typeof loaded.featureFlag === "undefined" ||
-  //         featureFlagRouter.featureIsEnabled(loaded.featureFlag)
-  //       ) {
-  //         return file
-  //       }
-
-  //       return false
-  //     })
-  //   )
-  // ).filter(Boolean)
+  return getEnabledMigrations(migrationDirs, (flag) =>
+    featureFlagRouter.featureIsEnabled(flag)
+  )
 }
 
-export const getEnabledMigrations = async (migrationDirs, isFlagEnabled) => {
+export const getEnabledMigrations = (migrationDirs, isFlagEnabled) => {
   const allMigrations = migrationDirs.flatMap((dir) => {
     return glob.sync(dir)
   })
-  return (
-    await Promise.all(
-      allMigrations.map(async (file) => {
-        const loaded = await import(file)
-        if (
-          typeof loaded.featureFlag === "undefined" ||
-          isFlagEnabled(loaded.featureFlag)
-        ) {
-          return file
-        }
+  return allMigrations
+    .map((file) => {
+      const loaded = require(file)
+      if (
+        typeof loaded.featureFlag === "undefined" ||
+        isFlagEnabled(loaded.featureFlag)
+      ) {
+        return file
+      }
 
-        return false
-      })
-    )
-  ).filter(Boolean)
+      return false
+    })
+    .filter(Boolean)
 }

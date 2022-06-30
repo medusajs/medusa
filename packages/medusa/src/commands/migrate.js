@@ -13,7 +13,7 @@ const t = async function ({ directory }) {
 
   const { configModule } = getConfigFile(directory, `medusa-config`)
 
-  const featureFlagRouter = await featureFlagLoader(configModule)
+  const featureFlagRouter = featureFlagLoader(configModule)
 
   const enabledMigrations = await getMigrations(directory, featureFlagRouter)
 
