@@ -23,7 +23,7 @@ runs:
       # yarn install --frozen-lockfile
     - run: |
         if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]]; then
-          yarn install --frozen-lockfile
-          yarn bootstrap --concurrency=2
+          yarn cache clean
+          yarn install --immutable
         fi
       shell: bash
