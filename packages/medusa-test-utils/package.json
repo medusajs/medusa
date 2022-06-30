@@ -10,8 +10,8 @@
   },
   "scripts": {
     "test": "jest",
-    "build": "babel src --out-dir dist/ --ignore **/__tests__",
-    "watch": "babel -w src --out-dir dist/ --ignore **/__tests__"
+    "build": "babel src --out-dir dist/",
+    "watch": "babel -w src --out-dir dist/"
   },
   "author": "Sebastian Rindom",
   "license": "MIT",
