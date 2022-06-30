@@ -1,6 +1,16 @@
-import { getConfigFile } from "medusa-core-utils"
+import {
+  Column,
+  ColumnOptions,
+  ColumnType,
+  Entity,
+  EntityOptions,
+  getMetadataArgsStorage,
+} from "typeorm"
 import path from "path"
-import { Column, ColumnOptions, ColumnType } from "typeorm"
+import { getConfigFile } from "medusa-core-utils"
+import featureFlagsLoader from "../loaders/feature-flags"
+import { ConfigModule } from "../types/global"
+import { TableMetadataArgs } from "typeorm/metadata-args/TableMetadataArgs"
 
 const pgSqliteTypeMapping: { [key: string]: ColumnType } = {
   increment: "rowid",
@@ -72,3 +82,83 @@ export function DbAwareColumn(columnOptions: ColumnOptions): PropertyDecorator {
 
   return Column(columnOptions)
 }
+
+export function FeatureFlagColumn(
+  featureFlag: string,
+  columnOptions: ColumnOptions
+): PropertyDecorator {
+  const { configModule } = getConfigFile(
+    path.resolve("."),
+    `medusa-config`
+  ) as { configModule: ConfigModule }
+
+  const featureFlagRouter = featureFlagsLoader(configModule)
+
+  if (!featureFlagRouter.featureIsEnabled(featureFlag)) {
+    return (target: any): any => target
+  }
+
+  return Column(columnOptions)
+}
+
+export function FeatureFlagEntity(
+  featureFlag: string,
+  name?: string,
+  options?: EntityOptions
+): ClassDecorator {
+  console.log(`flag: ${featureFlag}`)
+  console.log("FF_Entity before config")
+
+  const { configModule } = getConfigFile(
+    path.resolve("."),
+    `medusa-config`
+  ) as { configModule: ConfigModule }
+
+  console.log("FF_Entity after config")
+  console.log(process.env["MEDUSA_FF_CREATE_BATCHES"])
+
+  const featureFlagRouter = featureFlagsLoader(configModule)
+
+  // console.log(process.env)
+
+  console.log("FF_Entity flags loaded")
+  console.log(JSON.stringify(featureFlagRouter.flags))
+  console.log(featureFlagRouter.featureIsEnabled(featureFlag))
+
+  // if (!featureFlagRouter.featureIsEnabled(featureFlag)) {
+  //   return (target: any): any => target
+  // }
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  return function (target: Function): void {
+    target["isEnabled"] = function (): boolean {
+      const featureFlagRouter = featureFlagsLoader(configModule)
+      return featureFlagRouter.featureIsEnabled(featureFlag)
+    }
+    Entity(name, options)(target)
+  }
+}
+
+// export function Entity(
+//   nameOrOptions?: string | EntityOptions,
+//   maybeOptions?: EntityOptions
+// ): ClassDecorator {
+//   const options =
+//     (typeof nameOrOptions === "object"
+//       ? (nameOrOptions as EntityOptions)
+//       : maybeOptions) || {}
+//   const name = typeof nameOrOptions === "string" ? nameOrOptions : options.name\
+
+//   // eslint-disable-next-line @typescript-eslint/ban-types
+//   return function (target: Function): void {
+//     getMetadataArgsStorage().tables.push({
+//       target: target,
+//       name: name,
+//       type: "regular",
+//       orderBy: options.orderBy ? options.orderBy : undefined,
+//       engine: options.engine ? options.engine : undefined,
+//       database: options.database ? options.database : undefined,
+//       schema: options.schema ? options.schema : undefined,
+//       synchronize: options.synchronize,
+//     } as TableMetadataArgs)
+// }
