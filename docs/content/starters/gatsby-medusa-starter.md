@@ -103,5 +103,5 @@ The Gatsby storefront comes with a lot of features out of the box including:
 ## What’s Next 🚀
 
 - Check the [Storefront API reference](https://docs.medusajs.com/api/store/auth) for a full list of REST APIs to use on your storefront.
-- Learn how to [deploy the Gatsby storefront on Netlify](../how-to/deploying-gatsby-on-netlify.md).
+- Learn how to [deploy the Gatsby storefront on Netlify](../deployments/storefront/deploying-gatsby-on-netlify.md).
 - Learn how to add [Stripe as a payment provider](../add-plugins/stripe.md#gatsby-storefront).

@@ -337,4 +337,4 @@ It is recommended to use environment variables to store values of options instea
 
 - Check out our [Next.js](../starters/nextjs-medusa-starter.md) and [Gatsby](../starters/gatsby-medusa-starter.md) starter storefronts.
 - Install the [Medusa admin](../admin/quickstart.md).
-- Learn about [deploying the Medusa server on Heroku](../how-to/deploying-on-heroku.mdx).
+- Learn about [deploying the Medusa server](../deployments/server/index.mdx).
