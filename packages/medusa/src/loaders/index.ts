@@ -81,7 +81,7 @@ export default async ({
     next()
   })
 
-  const featureFlagRouter = await featureFlagsLoader(configModule, Logger)
+  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
 
   container.register({
     logger: asValue(Logger),
