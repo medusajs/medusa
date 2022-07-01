@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "test": "jest --config jestconfig.json",
+    "test": "jest --passWithNoTests",
     "prepare": "cross-env NODE_ENV=production npm run build"
   },
   "author": "Oliver Juhl",

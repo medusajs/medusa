@@ -31,8 +31,7 @@
     "build": "babel src -d dist --ignore **/__tests__ --extensions \".ts,.js\"",
     "serve": "node dist/app.js",
     "postinstall": "node dist/postinstall.js || true",
-    "test": "jest",
-    "test:unit": "jest"
+    "test": "jest --passWithNoTests"
   },
   "dependencies": {
     "axios": "^0.21.1",

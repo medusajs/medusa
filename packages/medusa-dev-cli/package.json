@@ -25,7 +25,8 @@
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
     "babel-preset-medusa-package": "^1.1.19",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "jest": "^25.5.2"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
   "keywords": [
@@ -41,7 +42,7 @@
   "scripts": {
     "build": "babel src --out-dir dist --ignore \"**/__tests__\"",
     "prepare": "cross-env NODE_ENV=production npm run build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --passWithNoTests",
     "watch": "babel -w src --out-dir dist --ignore \"**/__tests__\""
   },
   "engines": {
