@@ -56,7 +56,7 @@ describe("/admin/batch-jobs", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const env = { MEDUSA_FF_CREATE_BATCHES: "true" }
+    const env = { MEDUSA_FF_BATCHES: "true" }
 
     const [process, connection] = await startServerWithEnvironment(cwd, env)
     medusaProcess = process
