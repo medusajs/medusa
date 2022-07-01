@@ -10,4 +10,8 @@ export class FlagRouter implements IFlagRouter {
   public featureIsEnabled(key: string): boolean {
     return !!this.flags[key]
   }
+
+  public setFlag(key: string, value = true): void {
+    this.flags[key] = value
+  }
 }
