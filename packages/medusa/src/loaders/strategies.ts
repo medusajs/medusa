@@ -84,18 +84,13 @@ export async function authStrategies({
   configModule,
   app,
 }: AuthLoaderOptions): Promise<void> {
-  const corePath = "../strategies/**/[!__]*.{j,t}s"
+  const corePath = "../strategies/**/[!__]*.js"
 
   const coreFull = path.join(__dirname, corePath)
 
   const core = glob.sync(coreFull, {
     cwd: __dirname,
-    ignore: [
-      "**/__fixtures__/**",
-      "**/__tests__/**",
-      "**/index.js",
-      "**/index.ts",
-    ],
+    ignore: ["**/__fixtures__/**", "**/__tests__/**", "**/index.js"],
   })
 
   for (const fn of core) {
