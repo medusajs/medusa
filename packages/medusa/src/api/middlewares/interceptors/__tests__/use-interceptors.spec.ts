@@ -6,7 +6,7 @@ import {
   buildFakeText,
   Test2Interceptor,
   TestInterceptor,
-} from "./__fixtures__"
+} from "../__fixtures__/interceptos"
 import errorHandler from "../../error-handler"
 import { asValue, createContainer } from "awilix"
 import Logger from "../../../../loaders/logger"
@@ -121,7 +121,6 @@ describe("useInterceptors", () => {
 
     expect(subject).toBeTruthy()
     expect(subject.status).toBe(200)
-    console.log(subject.body)
     expect(subject.body).toEqual({
       handler: "fakeHandler1",
       data: { prop: "fakeProp" },

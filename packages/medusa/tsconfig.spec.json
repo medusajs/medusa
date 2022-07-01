@@ -3,8 +3,11 @@
   "include": [
     "./src/**/*",
     "index.d.ts",
-    "./src/**/__tests__",
-    "./src/**/__mocks__"
+    "./src/**/__tests__"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "./src/**/__fixtures__",
+    "./src/**/__mocks__"
+  ]
 }
