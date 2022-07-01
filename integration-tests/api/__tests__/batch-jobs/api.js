@@ -80,7 +80,7 @@ describe("/admin/batch-jobs", () => {
       await db.teardown()
     })
 
-    it.only("lists batch jobs created by the user", async () => {
+    it("lists batch jobs created by the user", async () => {
       const api = useApi()
       const response = await api.get("/admin/batch-jobs", adminReqConfig)
 
