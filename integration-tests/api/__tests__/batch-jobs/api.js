@@ -1,9 +1,8 @@
 const path = require("path")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
+const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const userSeeder = require("../../helpers/user-seeder")
@@ -63,11 +62,8 @@ describe("/admin/batch-jobs", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const env = { MEDUSA_FF_BATCHES: "true" }
-
-    const [process, connection] = await startServerWithEnvironment(cwd, env)
-    medusaProcess = process
-    dbConnection = connection
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
