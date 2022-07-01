@@ -103,7 +103,7 @@ export function FeatureFlagColumn(
   return Column(columnOptions)
 }
 
-export function featureFlagColumn(
+export function featureFlagColumns(
   featureFlag: string,
   decorators: PropertyDecorator[]
 ): PropertyDecorator {
