@@ -26,6 +26,7 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *            cart:
  *              $ref: "#/components/schemas/cart"
  */
+
 export default async (req, res) => {
   const { id } = req.params
 
