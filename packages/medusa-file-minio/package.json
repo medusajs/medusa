@@ -29,7 +29,7 @@
     "build": "babel src -d .",
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "babel -w src --out-dir .",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
     "medusa-interfaces": "1.x"

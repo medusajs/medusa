@@ -13,3 +13,5 @@ lerna-debug.log
 .eslintcache
 
 .idea
+.turbo
+build/**

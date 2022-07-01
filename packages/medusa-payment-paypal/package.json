@@ -33,7 +33,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "babel src -d . --ignore **/__tests__",
     "watch": "babel -w src --out-dir . --ignore **/__tests__",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "peerDependencies": {
     "medusa-interfaces": "1.x"
