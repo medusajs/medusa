@@ -29,6 +29,7 @@ export default class AdminDefaultAuthenticationStrategy extends AbstractAuthStra
   constructor({ manager }: InjectedDependencies, configModule: ConfigModule) {
     super({ manager }, configModule)
     this.configModule_ = configModule
+    this.manager_ = manager
   }
 
   static async beforeInit(

@@ -12,7 +12,10 @@ import { ConfigModule, MedusaContainer } from "../types/global"
 import { validator } from "../utils/validator"
 import CustomerService from "../services/customer"
 import { StorePostAuthReq } from "../api/routes/store/auth"
-import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "../api/routes/store/customers"
+import {
+  defaultStoreCustomersFields,
+  defaultStoreCustomersRelations,
+} from "../api/routes/store/customers"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -29,6 +32,7 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
   constructor({ manager }: InjectedDependencies, configModule: ConfigModule) {
     super({ manager }, configModule)
     this.configModule_ = configModule
+    this.manager_ = manager
   }
 
   static async beforeInit(
@@ -107,13 +111,17 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
   }
 
   async authenticate(req: Request, res: Response): Promise<void> {
-    const validated = await validator(StorePostAuthReq, req.body)
+    const validated = await validator(StorePostAuthReq, req.body, {
+      whitelist: false,
+      forbidNonWhitelisted: false,
+    })
 
     const authService: AuthService = req.scope.resolve("authService")
     const result = await authService.authenticateCustomer(
       validated.email,
       validated.password
     )
+
     if (!result.success) {
       res.sendStatus(401)
       return

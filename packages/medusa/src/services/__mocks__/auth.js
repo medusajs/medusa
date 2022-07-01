@@ -20,6 +20,20 @@ const mock = jest.fn().mockImplementation(() => {
         user: adminUser,
       })
     }),
+    authenticateCustomer: jest.fn().mockImplementation((email) => {
+      if (email === "lebron@james.com") {
+        return Promise.resolve({
+          success: true,
+          customer: {
+            id: IdMap.getId("lebron"),
+            first_name: "LeBron",
+            last_name: "James",
+            email: "lebron@james.com",
+            password_hash: "1234",
+          }
+        })
+      }
+    }),
     retrieveAuthenticationStrategy: jest.fn().mockImplementation((req, scope) => {
         const strategyResolverService = req.scope.resolve(
           "strategyResolverService"
