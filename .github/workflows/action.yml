@@ -28,7 +28,7 @@ jobs:
       - name: Assert changed
         run: ./scripts/assert-changed-files-actions.sh "packages"
 
-      - name: Bootstrap packages
+      - name: Install dependencies
         uses: ./.github/actions/cache-bootstrap
         with:
           extension: unit-tests
@@ -65,6 +65,10 @@ jobs:
         ports:
           - 5432:5432
 
+    strategy:
+      matrix:
+        chunk: [0, 1]
+
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -88,7 +92,7 @@ jobs:
           extension: integration-tests
 
       - name: Build Packages
-        run: lerna run build
+        run: yarn build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
@@ -104,10 +108,22 @@ jobs:
         run: yarn build
         working-directory: integration-tests/api
 
-      - name: Run API integration tests
-        run: yarn test:integration:api --maxWorkers=50% --silent=false
+      - name: Set Chunks
+        id: set-test-chunks
+        run: echo "::set-output name=test-chunks::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | ceil)]')"
+        working-directory: integration-tests/api
+
+      - name: Set Chunk IDs
+        run: echo "::set-output name=test-chunk-ids::$(echo $CHUNKS | jq -cM 'to_entries | map(.key)')"
+        env:
+          CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
+
+      - name: Run integration tests
+        run: echo $CHUNKS | jq '.[${{ matrix.chunk }}] | .[] | @text' | xargs yarn test --maxWorkers=50%
+        working-directory: integration-tests/api
         env:
           DB_PASSWORD: postgres
+          CHUNKS: ${{ steps['set-test-chunks'].outputs['test-chunks'] }}
 
   integration-tests-plugins:
     runs-on: ubuntu-latest
