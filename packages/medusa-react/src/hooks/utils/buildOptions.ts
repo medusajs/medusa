@@ -8,7 +8,7 @@ export const buildOptions = <
   TKey extends Array<QueryKey>
 >(
   queryClient: QueryClient,
-  queryKey: TKey[] | TKey,
+  queryKey?: TKey[] | TKey,
   options?: UseMutationOptions<TData, TError, TVariables, TContext>
 ): UseMutationOptions<TData, TError, TVariables, TContext> => {
   return {
@@ -18,10 +18,12 @@ export const buildOptions = <
         return options.onSuccess(...args)
       }
 
-      if (queryKey.filter(Array.isArray).length > 0) {
-        queryKey.forEach(key => queryClient.invalidateQueries(key))
-      } else {
-        queryClient.invalidateQueries(queryKey)
+      if (queryKey !== undefined) {
+        if (queryKey.filter(Array.isArray).length > 0) {
+          queryKey.forEach(key => queryClient.invalidateQueries(key))
+        } else {
+          queryClient.invalidateQueries(queryKey)
+        }
       }
     },
   }

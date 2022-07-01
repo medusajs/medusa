@@ -2,13 +2,12 @@ import glob from "glob"
 import path from "path"
 import { asFunction } from "awilix"
 import formatRegistrationName from "../utils/format-registration-name"
-import { MedusaContainer } from "../types/global"
-import { ConfigModule } from "./index"
+import { ConfigModule, MedusaContainer } from "../types/global"
 
 type Options = {
   container: MedusaContainer;
   configModule: ConfigModule
-  isTest: boolean;
+  isTest?: boolean;
 }
 
 /**

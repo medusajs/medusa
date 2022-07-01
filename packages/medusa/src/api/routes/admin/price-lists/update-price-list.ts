@@ -128,10 +128,10 @@ export class AdminPostPriceListsPriceListPriceListReq {
   description?: string
 
   @IsOptional()
-  starts_at?: Date
+  starts_at?: Date | null
 
   @IsOptional()
-  ends_at?: Date
+  ends_at?: Date | null
 
   @IsOptional()
   @IsEnum(PriceListStatus)
@@ -145,11 +145,11 @@ export class AdminPostPriceListsPriceListPriceListReq {
   @IsArray()
   @Type(() => AdminPriceListPricesUpdateReq)
   @ValidateNested({ each: true })
-  prices: AdminPriceListPricesUpdateReq[]
+  prices?: AdminPriceListPricesUpdateReq[]
 
   @IsOptional()
   @IsArray()
   @Type(() => CustomerGroup)
   @ValidateNested({ each: true })
-  customer_groups: CustomerGroup[]
+  customer_groups?: CustomerGroup[]
 }

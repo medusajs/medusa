@@ -1,8 +1,4 @@
----
-title: Add Endpoint for Storefront
----
-
-# Add Endpoint for Storefront
+# Create Endpoint for Storefront
 
 In this document, you’ll learn how to add a custom endpoint in the Backend that you can use from the Storefront.
 
@@ -36,7 +32,43 @@ This exports a function that returns an Express router. In that function, you ca
 
 Now, if you run your server and send a request to `/store/hello`, you will receive a JSON response message.
 
-> Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run `npm run build`.
+:::note
+
+Custom endpoints are compiled into the `dist` directory of your Backend when you run your server using `medusa develop`, while it’s running, and when you run:
+
+```bash npm2yarn
+npm run build
+```
+
+:::
+
+## Accessing Endpoints from Storefront
+
+If you’re customizing one of our storefronts or creating your own, you need to use the `cors` library.
+
+First, you need to import your Medusa’s configurations along with the `cors` library:
+
+```js
+import cors from "cors"
+import { projectConfig } from "../../medusa-config"
+```
+
+Then, create an object that will hold the CORS configurations:
+
+```js
+const corsOptions = {
+  origin: projectConfig.store_cors.split(","),
+  credentials: true,
+}
+```
+
+Finally, for each route add `cors` as a middleware for the route passing it `corsOptions`:
+
+```js
+router.get("/store/hello", cors(corsOptions), (req, res) => {
+  //...
+})
+```
 
 ## Multiple Endpoints
 
@@ -167,6 +199,18 @@ const id = req.user.customer_id
 const customerService = req.scope.resolve("customerService")
 
 const customer = await customerService.retrieve(id)
+```
+
+### Route Parameters
+
+The routes you create receive 2 parameters. The first one is the absolute path to the root directory that your server is running from. The second one is an object that has your plugin's options. If your API route is not implemented in a plugin, then it will be an empty object.
+
+```js
+export default (rootDirectory, pluginOptions) => {
+  const router = Router()
+
+  //...
+}
 ```
 
 ## What’s Next :rocket:

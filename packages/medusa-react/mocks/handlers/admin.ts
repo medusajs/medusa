@@ -1,7 +1,57 @@
-import { fixtures } from "../data"
 import { rest } from "msw"
+import { body } from "msw/lib/types/context"
+import { fixtures } from "../data"
 
 export const adminHandlers = [
+  rest.post("/admin/batch-jobs/", (req, res, ctx) => {
+    const body = req.body as Record<string, any>
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: {
+          ...fixtures.get("batch_job"),
+          ...body,
+        },
+      })
+    )
+  }),
+
+  rest.get("/admin/batch-jobs/", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_jobs: fixtures.list("batch_job"),
+      })
+    )
+  }),
+
+  rest.get("/admin/batch-jobs/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: fixtures.get("batch_job"),
+      })
+    )
+  }),
+
+  rest.post("/admin/batch-jobs/:id/confirm", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: fixtures.get("batch_job"),
+      })
+    )
+  }),
+
+  rest.post("/admin/batch-jobs/:id/cancel", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        batch_job: fixtures.get("batch_job"),
+      })
+    )
+  }),
+
   rest.post("/admin/collections/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
     return res(
@@ -252,6 +302,34 @@ export const adminHandlers = [
       })
     )
   }),
+
+  rest.delete(
+    "/admin/price-lists/:id/products/:product_id/prices",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          ids: [],
+          object: "money-amount",
+          deleted: true,
+        })
+      )
+    }
+  ),
+
+  rest.delete(
+    "/admin/price-lists/:id/variants/:variant_id/prices",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          ids: [],
+          object: "money-amount",
+          deleted: true,
+        })
+      )
+    }
+  ),
 
   rest.post("/admin/return-reasons/", (req, res, ctx) => {
     const body = req.body as Record<string, any>
@@ -761,6 +839,56 @@ export const adminHandlers = [
       })
     )
   }),
+
+  rest.post("/admin/discounts/:id/conditions", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount: {
+          ...fixtures.get("discount"),
+        },
+      })
+    )
+  }),
+
+  rest.post("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount: {
+          ...fixtures.get("discount"),
+        },
+      })
+    )
+  }),
+
+  rest.get("/admin/discounts/:id/conditions/:conditionId", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        discount_condition: {
+          ...fixtures
+            .get("discount")
+            .rule.conditions.find(c => c.id === req.params.conditionId),
+        },
+      })
+    )
+  }),
+
+  rest.delete(
+    "/admin/discounts/:id/conditions/:conditionId",
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          id: req.params.conditionId,
+          object: "discount-condition",
+          deleted: true,
+          discount: fixtures.get("discount"),
+        })
+      )
+    }
+  ),
 
   rest.get("/admin/draft-orders/", (req, res, ctx) => {
     return res(
@@ -1523,5 +1651,25 @@ export const adminHandlers = [
 
   rest.delete("/admin/auth", (req, res, ctx) => {
     return res(ctx.status(200))
+  }),
+
+  rest.delete("/admin/uploads", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: (req.body as any).file_key,
+        object: "file",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.post("/admin/uploads/download-url", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        download_url: fixtures.get("upload").url,
+      })
+    )
   }),
 ]

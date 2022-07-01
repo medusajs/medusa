@@ -13,6 +13,7 @@ import {
   PriceListPriceCreateInput,
   PriceListPriceUpdateInput,
 } from "../types/price-list"
+import { QueryDeepPartialEntity } from "typeorm/query-builder/QueryPartialEntity"
 
 type Price = Partial<
   Omit<MoneyAmount, "created_at" | "updated_at" | "deleted_at">
@@ -84,7 +85,7 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .insert()
       .orIgnore(true)
       .into(MoneyAmount)
-      .values(toInsert)
+      .values(toInsert as QueryDeepPartialEntity<MoneyAmount>[])
       .execute()
 
     if (overrideExisting) {
@@ -116,6 +117,30 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
       .execute()
   }
 
+  public async findManyForVariantInPriceList(
+    variant_id: string,
+    price_list_id: string,
+    requiresPriceList = false
+  ): Promise<[MoneyAmount[], number]> {
+    const qb = this.createQueryBuilder("ma")
+      .leftJoinAndSelect("ma.price_list", "price_list")
+      .where("ma.variant_id = :variant_id", { variant_id })
+
+    const getAndWhere = (subQb) => {
+      const andWhere = subQb.where("ma.price_list_id = :price_list_id", {
+        price_list_id,
+      })
+      if (!requiresPriceList) {
+        andWhere.orWhere("ma.price_list_id IS NULL")
+      }
+      return andWhere
+    }
+
+    qb.andWhere(new Brackets(getAndWhere))
+
+    return await qb.getManyAndCount()
+  }
+
   public async findManyForVariantInRegion(
     variant_id: string,
     region_id?: string,
@@ -126,21 +151,17 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
     const date = new Date()
 
     const qb = this.createQueryBuilder("ma")
-      .leftJoinAndSelect(
-        "ma.price_list",
-        "price_list",
-        "ma.price_list_id = price_list.id "
-      )
+      .leftJoinAndSelect("ma.price_list", "price_list")
       .where({ variant_id: variant_id })
       .andWhere("(ma.price_list_id is null or price_list.status = 'active')")
       .andWhere(
-        "(price_list is null or price_list.ends_at is null OR price_list.ends_at > :date) ",
+        "(price_list.ends_at is null OR price_list.ends_at > :date)",
         {
           date: date.toUTCString(),
         }
       )
       .andWhere(
-        "(price_list is null or price_list.starts_at is null OR price_list.starts_at < :date)",
+        "(price_list.starts_at is null OR price_list.starts_at < :date)",
         {
           date: date.toUTCString(),
         }
@@ -155,23 +176,19 @@ export class MoneyAmountRepository extends Repository<MoneyAmount> {
         )
       )
     } else if (!customer_id && !include_discount_prices) {
-      qb.andWhere("price_list IS null")
+      qb.andWhere("price_list.id IS null")
     }
 
     if (customer_id) {
       qb.leftJoin("price_list.customer_groups", "cgroup")
-        .leftJoin(
-          "customer_group_customers",
-          "cgc",
-          "cgc.customer_group_id = cgroup.id"
-        )
-        .andWhere("(cgc is null OR cgc.customer_id = :customer_id)", {
+        .leftJoin("customer_group_customers", "cgc", "cgc.customer_group_id = cgroup.id")
+        .andWhere("(cgc.customer_group_id is null OR cgc.customer_id = :customer_id)", {
           customer_id,
         })
     } else {
-      qb.leftJoin("price_list.customer_groups", "cgroup").andWhere(
-        "cgroup.id is null"
-      )
+      qb
+        .leftJoin("price_list.customer_groups", "cgroup")
+        .andWhere("cgroup.id is null")
     }
     return await qb.getManyAndCount()
   }

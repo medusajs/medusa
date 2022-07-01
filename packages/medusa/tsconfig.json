@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6"],
+    "lib": [
+      "es5",
+      "es6"
+    ],
     "target": "es5",
     "outDir": "./dist",
     "esModuleInterop": true,
@@ -18,7 +21,10 @@
     "skipLibCheck": true,
     "downlevelIteration": true // to use ES5 specific tooling
   },
-  "include": ["./src/**/*", "index.d.ts"],
+  "include": [
+    "./src/**/*",
+    "index.d.ts"
+  ],
   "exclude": [
     "./dist/**/*",
     "./src/**/__tests__",

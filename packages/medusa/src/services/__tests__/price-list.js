@@ -1,41 +1,40 @@
 import { MedusaError } from "medusa-core-utils"
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import PriceListService from "../price-list"
+import { MoneyAmountRepository } from "../../repositories/money-amount"
+
+const priceListRepository = MockRepository({
+  findOne: (q) => {
+    if (q === IdMap.getId("batman")) {
+      return Promise.resolve(undefined)
+    }
+    return Promise.resolve({ id: IdMap.getId("ironman") })
+  },
+  create: (data) => {
+    return Promise.resolve({ id: IdMap.getId("ironman"), ...data })
+  },
+  save: (data) => Promise.resolve(data),
+})
+
+const customerGroupService = {
+  retrieve: jest.fn((id) => {
+    if (id === IdMap.getId("group")) {
+      return Promise.resolve({ id: IdMap.getId("group") })
+    }
+
+    throw new MedusaError(
+      MedusaError.Types.NOT_FOUND,
+      `CustomerGroup with id ${id} was not found`
+    )
+  }),
+}
 
 describe("PriceListService", () => {
-  const priceListRepository = MockRepository({
-    findOne: (q) => {
-      if (q === IdMap.getId("batman")) {
-        return Promise.resolve(undefined)
-      }
-      return Promise.resolve({ id: IdMap.getId("ironman") })
-    },
-    create: (data) => {
-      return Promise.resolve({ id: IdMap.getId("ironman"), ...data })
-    },
-    save: (data) => Promise.resolve(data),
-  })
-
-  const customerGroupService = {
-    retrieve: jest.fn((id) => {
-      if (id === IdMap.getId("group")) {
-        return Promise.resolve({ id: IdMap.getId("group") })
-      }
-
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `CustomerGroup with id ${id} was not found`
-      )
-    }),
-  }
-
   const moneyAmountRepository = MockRepository()
 
   moneyAmountRepository.addPriceListPrices = jest.fn(() => Promise.resolve())
   moneyAmountRepository.removePriceListPrices = jest.fn(() => Promise.resolve())
   moneyAmountRepository.updatePriceListPrices = jest.fn(() => Promise.resolve())
-
-  const defaultRelations = ["prices", "customer_groups"]
 
   const priceListService = new PriceListService({
     manager: MockManager,
@@ -73,7 +72,7 @@ describe("PriceListService", () => {
 
   describe("create", () => {
     it("creates a new Price List", async () => {
-      const result = await priceListService.create({
+      await priceListService.create({
         name: "VIP winter sale",
         description: "Winter sale for VIP customers. 25% off selected items.",
         type: "sale",
@@ -116,6 +115,64 @@ describe("PriceListService", () => {
           },
         ]
       )
+    })
+  })
+
+  describe("update", () => {
+    const updateRelatedMoneyAmountRepository = MockRepository()
+    updateRelatedMoneyAmountRepository.create = jest.fn().mockImplementation((rawEntity) => Promise.resolve(rawEntity))
+    updateRelatedMoneyAmountRepository.save = jest.fn().mockImplementation(() => Promise.resolve())
+    updateRelatedMoneyAmountRepository.updatePriceListPrices = (new MoneyAmountRepository()).updatePriceListPrices
+
+    const updateRelatedPriceListService = new PriceListService({
+      manager: MockManager,
+      customerGroupService,
+      priceListRepository,
+      moneyAmountRepository: updateRelatedMoneyAmountRepository,
+    })
+
+    it("update only existing price lists and related money amount", async () => {
+      await updateRelatedPriceListService.update(IdMap.getId("ironman"), {
+        description: "Updated description",
+        name: "Updated name",
+        prices: [
+          {
+            id: "pl_dakjn",
+            amount: 100,
+            currency_code: "usd",
+            min_quantity: 1,
+            max_quantity: 100,
+          },
+        ],
+      })
+
+      expect(updateRelatedMoneyAmountRepository.create).not.toHaveBeenCalled()
+      expect(updateRelatedMoneyAmountRepository.save).toHaveBeenCalled()
+    })
+
+    it("update only existing and create new price lists and related money amount", async () => {
+      await updateRelatedPriceListService.update(IdMap.getId("ironman"), {
+        description: "Updated description",
+        name: "Updated name",
+        prices: [
+          {
+            id: "pl_dakjn",
+            amount: 100,
+            currency_code: "usd",
+            min_quantity: 1,
+            max_quantity: 100,
+          },
+          {
+            amount: 100,
+            currency_code: "usd",
+            min_quantity: 1,
+            max_quantity: 100,
+          },
+        ],
+      })
+
+      expect(updateRelatedMoneyAmountRepository.create).toHaveBeenCalledTimes(1)
+      expect(updateRelatedMoneyAmountRepository.save).toHaveBeenCalled()
     })
   })
 })

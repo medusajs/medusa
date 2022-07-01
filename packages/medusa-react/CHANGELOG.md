@@ -3,6 +3,63 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.2](https://github.com/medusajs/medusa/compare/medusa-react@0.3.0...medusa-react@0.3.2) (2022-06-19)
+
+
+### Bug Fixes
+
+* **medusa-react:** Invalidate price list product cache on various price list updates ([#1503](https://github.com/medusajs/medusa/issues/1503)) ([79345d2](https://github.com/medusajs/medusa/commit/79345d27ec9a56fac3d49197ee9a785f24bfbad7))
+* **medusa-react:** useUpdatePaymentSession mutation ([#1522](https://github.com/medusajs/medusa/issues/1522)) ([b02f265](https://github.com/medusajs/medusa/commit/b02f2652be494b63e55b3720cdafa0d934737f72))
+
+
+### Features
+
+* **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
+* **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
+* **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
+
+
+
+
+
+## [0.3.1](https://github.com/medusajs/medusa/compare/medusa-react@0.3.0...medusa-react@0.3.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **medusa-react:** Invalidate price list product cache on various price list updates ([#1503](https://github.com/medusajs/medusa/issues/1503)) ([79345d2](https://github.com/medusajs/medusa/commit/79345d27ec9a56fac3d49197ee9a785f24bfbad7))
+* **medusa-react:** useUpdatePaymentSession mutation ([#1522](https://github.com/medusajs/medusa/issues/1522)) ([b02f265](https://github.com/medusajs/medusa/commit/b02f2652be494b63e55b3720cdafa0d934737f72))
+
+
+### Features
+
+* **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
+* **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
+* **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
+
+
+
+
+
+# [0.3.0](https://github.com/medusajs/medusa/compare/medusa-react@0.2.1...medusa-react@0.3.0) (2022-05-01)
+
+
+### Bug Fixes
+
+* **medusa:** Remove unsupported Discount endpoints ([#1367](https://github.com/medusajs/medusa/issues/1367)) ([9acee27](https://github.com/medusajs/medusa/commit/9acee2799ead683575edd0f7172f336878569dfe))
+* `CustomerGroups` missing  features in the clients ([#1159](https://github.com/medusajs/medusa/issues/1159)) ([218b20b](https://github.com/medusajs/medusa/commit/218b20b26db46f0a91736ece2530a83fa94aed97))
+* query key ([#1350](https://github.com/medusajs/medusa/issues/1350)) ([95ea8fa](https://github.com/medusajs/medusa/commit/95ea8fa38526b64989a1b22c015a9f129fb64b4c))
+
+
+### Features
+
+* customer group customers client endpoints ([#1221](https://github.com/medusajs/medusa/issues/1221)) ([b7f6996](https://github.com/medusajs/medusa/commit/b7f699654bd8c5b08919667d4e29c835901e1af9))
+* customer groups react hooks ([#1153](https://github.com/medusajs/medusa/issues/1153)) ([daf49bc](https://github.com/medusajs/medusa/commit/daf49bcaf31e6e86cfd13a24efd5b3de626617a4))
+
+
+
+
+
 ## [0.2.1](https://github.com/medusajs/medusa/compare/medusa-react@0.1.5...medusa-react@0.2.1) (2022-02-28)
 
 

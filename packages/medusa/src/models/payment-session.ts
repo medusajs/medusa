@@ -1,18 +1,16 @@
 import {
-  Entity,
-  CreateDateColumn,
-  UpdateDateColumn,
-  Index,
   BeforeInsert,
   Column,
-  PrimaryColumn,
-  ManyToOne,
+  Entity,
+  Index,
   JoinColumn,
+  ManyToOne,
   Unique,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { BaseEntity } from "../interfaces/models/base-entity"
+import { DbAwareColumn } from "../utils/db-aware-column"
 import { Cart } from "./cart"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",
@@ -24,10 +22,7 @@ export enum PaymentSessionStatus {
 
 @Unique("OneSelected", ["cart_id", "is_selected"])
 @Entity()
-export class PaymentSession {
-  @PrimaryColumn()
-  id: string
-
+export class PaymentSession extends BaseEntity {
   @Index()
   @Column()
   cart_id: string
@@ -47,22 +42,14 @@ export class PaymentSession {
   status: string
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
-
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
+  data: Record<string, unknown>
 
   @Column({ nullable: true })
   idempotency_key: string
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `ps_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "ps")
   }
 }
 

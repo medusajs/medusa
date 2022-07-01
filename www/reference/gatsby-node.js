@@ -20,8 +20,9 @@ const createCustomNode = ({ name, node, createNode }) => {
         let requestBodyValues = undefined
 
         if (values.requestBody && values.requestBody.content) {
-          requestBodyValues =
-            values.requestBody.content["application/json"].schema
+          requestBodyValues = values.requestBody.content.hasOwnProperty("application/json") ?
+            values.requestBody.content["application/json"].schema :
+            values.requestBody.content["multipart/form-data"].schema
         }
 
         return {
@@ -331,7 +332,7 @@ const createAllPages = (sections, api, siteData, createPage, template) => {
         api: api,
         title: edge.section.section_name,
         description: edge.section.schema ? edge.section.schema.description : "",
-        to: { section: baseURL, method: null },
+        to: { section: baseURL, method: null, sectionObj: edge.section },
       },
     })
     edge.section.paths.forEach(p => {
@@ -345,7 +346,7 @@ const createAllPages = (sections, api, siteData, createPage, template) => {
             api: api,
             title: method.summary,
             description: method.description || "",
-            to: { section: baseURL, method: methodURL },
+            to: { section: baseURL, method: methodURL, sectionObj: edge.section },
           },
         })
       })

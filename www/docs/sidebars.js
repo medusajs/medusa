@@ -27,6 +27,10 @@ module.exports = {
       label: "Quickstart Guide",
     },
     {
+      type: "doc",
+      id: "usage",
+    },
+    {
       type: "category",
       collapsed: false,
       label: "Usage Guides",
@@ -38,8 +42,8 @@ module.exports = {
         },
         {
           type: "doc",
-          id: "tutorial/creating-your-medusa-server",
-          label: "Create your Medusa Server"
+          id: "usage/configurations",
+          label: "Configure your Server"
         },
         {
           type: "category",
@@ -49,19 +53,18 @@ module.exports = {
             {
               type: "doc",
               id: "starters/gatsby-medusa-starter",
-              label: "Quickstart: Gatsby",
+              label: "Gatsby Storefront Quickstart",
             },
             {
               type: "doc",
               id: "starters/nextjs-medusa-starter",
-              label: "Quickstart: Next.js",
-            },
-            {
-              type: "doc",
-              id: "how-to/setting-up-a-nextjs-storefront-for-your-medusa-project",
-              label: "Set Up a Next.js Storefront for your Medusa Project"
+              label: "Next.js Storefront Quickstart",
             },
           ],
+        },
+        {
+          type: "doc",
+          id: "admin/quickstart",
         },
         {
           type: "doc",
@@ -118,51 +121,143 @@ module.exports = {
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-storefront",
-                  label: "Add Endpoint for Storefront"
+                  label: "Create Endpoint for Storefront"
                 },
                 {
                   type: "doc",
                   id: "advanced/backend/endpoints/add-admin",
-                  label: "Add Endpoint for Admin"
+                  label: "Create Endpoint for Admin"
+                },
+              ]
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/services/create-service",
+              label: "Create a Service"
+            },
+            {
+              type: "category",
+              label: 'Subscribers',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/subscribers/create-subscriber",
+                  label: "Create a Subscriber"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/subscribers/events-list",
+                  label: "List of Events"
+                },
+              ]
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/entities",
+              label: "Entities"
+            },
+            {
+              type: "category",
+              label: 'Shipping',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/shipping/overview",
+                  label: "Architecture Overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/shipping/add-fulfillment-provider",
+                  label: "Create a Fulfillment Provider"
+                }
+              ]
+            },
+            {
+              type: "category",
+              label: 'Payment',
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/payment/overview",
+                  label: "Architecture Overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/payment/how-to-create-payment-provider",
+                  label: "Create a Payment Provider"
                 },
               ]
             },
             {
               type: "category",
-              label: 'Services',
+              label: "Notification",
               collapsed: true,
               items: [
                 {
                   type: "doc",
-                  id: "advanced/backend/services/create-service",
-                  label: "Create a Service"
+                  id: "advanced/backend/notification/overview"
                 },
+                {
+                  type: "doc",
+                  id: "advanced/backend/notification/how-to-create-notification-provider",
+                  label: "Create a Notification Provider"
+                }
+              ]
+            },
+            {
+              type: "category",
+              label: "Plugins",
+              collapsed: true,
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/plugins/overview",
+                  label: "Overview"
+                },
+                {
+                  type: "doc",
+                  id: "advanced/backend/plugins/create",
+                }
               ]
             },
             {
               type: "doc",
-              id: "tutorial/adding-custom-functionality",
-              label: "Add Custom Functionality"
-            },
-            {
-              type: "doc",
-              id: "how-to/notification-api",
-            },
-            {
-              type: "doc",
-              id: "guides/fulfillment-api",
-            },
-            {
-              type: "doc",
-              id: "guides/plugins",
-            },
-            {
-              type: "doc",
-              id: "guides/checkouts",
-            },
-            {
-              type: "doc",
               id: "guides/carts-in-medusa",
+            },
+            {
+              type: "doc",
+              id: "advanced/backend/migrations",
+              label: "Migrations"
+            },
+            {
+              type: "category",
+              label: 'Upgrade Guides',
+              collapsed: true,
+              link: {
+                type: 'doc',
+                id: 'advanced/backend/upgrade-guides/index'
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "advanced/backend/upgrade-guides/1-3-0",
+                  label: "v1.3.0"
+                },
+              ]
+            },
+          ]
+        },
+        {
+          type: "category",
+          label: "Storefront",
+          collapsed: true,
+          items: [
+            {
+              type: "doc",
+              id: "advanced/storefront/how-to-implement-checkout-flow",
             },
           ]
         }
@@ -175,82 +270,134 @@ module.exports = {
       items: [
         {
           type: "category",
-          label: "Gatsby + Contentful + Medusa",
+          label: "Analytics",
           items: [
             {
               type: "doc",
-              id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
-            },
-            {
-              type: "doc",
-              id: "how-to/making-your-store-more-powerful-with-contentful",
+              id: "add-plugins/segment",
+              label: "Segment",
             },
           ],
         },
         {
-          type: "doc",
-          id: "add-plugins/contentful",
-          label: "CMS: Contentful",
+          type: "category",
+          label: "Bot",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/slack",
+              label: "Slack",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/strapi",
-          label: "CMS: Strapi",
+          type: "category",
+          label: "CMS",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/contentful",
+              label: "Contentful",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/strapi",
+              label: "Strapi",
+            },
+            {
+              type: "category",
+              label: "Gatsby + Contentful + Medusa",
+              items: [
+                {
+                  type: "doc",
+                  id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
+                },
+                {
+                  type: "doc",
+                  id: "how-to/making-your-store-more-powerful-with-contentful",
+                },
+              ],
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/segment",
-          label: "Analytics: Segment",
+          type: "category",
+          label: "Notifications",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/sendgrid",
+              label: "SendGrid",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/mailchimp",
+              label: "Mailchimp",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/twilio-sms",
+              label: "Twilio SMS",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/meilisearch",
-          label: "Search: MeiliSearch",
+          type: "category",
+          label: "Payment",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/klarna",
+              label: "Klarna",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/paypal",
+              label: "PayPal",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/stripe",
+              label: "Stripe",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/algolia",
-          label: "Search: Algolia",
+          type: "category",
+          label: "Search",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/algolia",
+              label: "Algolia",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/meilisearch",
+              label: "MeiliSearch",
+            },
+          ],
         },
         {
-          type: "doc",
-          id: "add-plugins/spaces",
-          label: "File: Spaces",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/s3",
-          label: "File: S3",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/minio",
-          label: "File: MinIO",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/stripe",
-          label: "Payment: Stripe",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/klarna",
-          label: "Payment: Klarna",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/paypal",
-          label: "Payment: PayPal",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/sendgrid",
-          label: "Notification: SendGrid",
-        },
-        {
-          type: "doc",
-          id: "add-plugins/slack",
-          label: "Bot: Slack",
+          type: "category",
+          label: "Storage",
+          items: [
+            {
+              type: "doc",
+              id: "add-plugins/minio",
+              label: "MinIO",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/s3",
+              label: "S3",
+            },
+            {
+              type: "doc",
+              id: "add-plugins/spaces",
+              label: "Spaces",
+            },
+          ],
         },
       ],
     },
@@ -283,7 +430,23 @@ module.exports = {
           id: "troubleshooting/signing-in-to-admin",
           label: "Signing in to Medusa Admin",
         },
+        {
+          type: "doc",
+          id: "troubleshooting/documentation-error",
+          label: "Documentation Error",
+        },
       ],
     },
+    {
+      type: "doc",
+      id: "contribution-guidelines",
+      label: "Contribution Guidelines",
+    },
   ],
+  servicesSidebar: [
+    {
+      type: 'autogenerated',
+      dirName: 'references/services/classes', // generate sidebar from the docs folder (or versioned_docs/<version>)
+    },
+  ]
 }

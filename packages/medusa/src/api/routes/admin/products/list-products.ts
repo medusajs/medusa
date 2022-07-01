@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -9,7 +9,7 @@ import {
   ValidateNested,
 } from "class-validator"
 import { omit } from "lodash"
-import { Product } from "../../../../models/product"
+import { Product, ProductStatus } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
 import {
   allowedAdminProductFields,
@@ -18,6 +18,7 @@ import {
 } from "."
 import listAndCount from "../../../../controllers/products/admin-list-products"
 import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /products
@@ -96,13 +97,6 @@ export default async (req, res) => {
   res.json(result)
 }
 
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
-}
-
 export class AdminGetProductsPaginationParams {
   @IsNumber()
   @IsOptional()
@@ -162,8 +156,8 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
 
   @IsBoolean()
   @IsOptional()
-  @Type(() => Boolean)
-  is_giftcard?: string
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  is_giftcard?: boolean
 
   @IsString()
   @IsOptional()

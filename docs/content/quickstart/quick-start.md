@@ -1,40 +1,81 @@
 # Quickstart
 
-This quickstart is intended for experienced developers, that are accustomed with concepts like JavaScript, Node.js, SQL and the command line. For a more gentle introduction, see our tutorial on [how to set up your development environment](https://docs.medusajs.com/tutorial/set-up-your-development-environment).
+This document will guide you through setting up your Medusa server in a few minutes.
 
-## Getting started
+:::tip
 
-1. **Install Medusa CLI**
-   ```bash
+For a more detailed guide on how to set up your local environment to work with Medusa, check out the documentation on [how to set up your development environment](/tutorial/set-up-your-development-environment).
+
+:::
+
+## Prerequisites
+
+Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:
+
+```bash
+node -v
+```
+
+You can install Node from the [official website](https://nodejs.org/en/).
+
+## Create a Medusa Server
+
+### 1. Install Medusa CLI
+
+   ```bash npm2yarn
    npm install -g @medusajs/medusa-cli
    ```
-2. **Create a new Medusa project**
-   ```
+
+### 2. Create a new Medusa project
+
+   ```bash
    medusa new my-medusa-store --seed
    ```
-3. **Start your Medusa engine**
+
+### 3. Start your Medusa server
+
    ```bash
+   cd my-medusa-store
    medusa develop
    ```
-4. **Use the API**
-   ```bash
-   curl localhost:9000/store/products | python -m json.tool
-   ```
 
-After these four steps and only a couple of minutes, you now have a complete commerce engine running locally. You may now explore [the documentation](https://docs.medusajs.com/api) to learn how to interact with the Medusa API. You may also add [plugins](https://github.com/medusajs/medusa/tree/master/packages) to your Medusa store by specifying them in your `medusa-config.js` file.
-We have a prebuilt admin dashboard that you can use to configure and manage your store find it here: [Medusa Admin](https://github.com/medusajs/admin)
+### Test Your Server
 
-## What's next?
+After these 3 steps and in only a couple of minutes, you now have a complete commerce engine running locally. You can test it out by sending a request using a tool like Postman or through the command line:
 
-### Set up a storefront for your Medusa project
+```bash
+curl localhost:9000/store/products | python -m json.tool
+```
 
-We have created two starters for you that can help you lay a foundation for your storefront. The starters work with your new server with minimal configuration simply clone the starters from here:
+:::note
 
-- [Nextjs Starter](https://github.com/medusajs/nextjs-starter-medusa)
-- [Gatsby Starter](https://github.com/medusajs/gatsby-starter-medusa)
+This command uses Python to format the result of the request better in your command line. If you don't want to use Python you can simply send a request without the formatting:
 
-> Note: Medusa runs on port 9000 by default and the storefront starters are both configured to run on port 8000. If you wish to run your storefront starter on another port you should update your CORS settings in your project's `medusa-config.js`.
+```bash
+curl localhost:9000/store/products
+```
 
-<!-- ### Link you local development to Medusa Cloud (Coming soon!)
+:::
 
-With your project in local development you can link your Medusa instance to Medusa Cloud - this will allow you to manage your store, view orders and test out the amazing functionalities that you are building. [Get started here](https://docs.medusajs.com/tutorial/linking-your-local-project-with-medusa-cloud). -->
+## Additional Steps
+
+### File Service Plugin
+
+To upload product images to your Medusa server, you must install and configure one of the following file service plugins:
+
+- [MinIO](../add-plugins/minio.md) (Recommended for local development)
+- [S3](../add-plugins/s3.md)
+- [DigitalOcean Spaces](../add-plugins/spaces.md)
+
+### Server Configurations
+
+It's important to configure your Medusa server properly and learn how environment variables are loaded.
+
+You can learn more about configuring your server and loading environment variables in the [Configure your Server documentation](../usage/configurations.md).
+
+## What's next :rocket:
+
+- Install our [Next.js](http://localhost:3000/starters/nextjs-medusa-starter) or [Gatsby](http://localhost:3000/starters/gatsby-medusa-starter) storefronts to set up your ecommerce storefront quickly.
+- Install the [Medusa Admin](../admin/quickstart.md) to supercharge your ecommerce experience with easy access to configurations and features.
+- Check our the [API reference](https://docs.medusajs.com/api) to learn more about available endpoints available on your Medusa server.
+- Install [plugins](https://github.com/medusajs/medusa/tree/master/packages) for features like Payment, CMS, Notifications, among other features.
