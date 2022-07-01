@@ -25,7 +25,7 @@
   "scripts": {
     "test": "jest",
     "build": "babel src -d .",
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "watch": "babel -w src --out-dir ."
   },
   "peerDependencies": {

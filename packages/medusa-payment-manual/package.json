@@ -28,7 +28,7 @@
     "medusa-test-utils": "^1.1.37"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "babel src -d .",
     "watch": "babel -w src --out-dir .",
     "test": "jest"

@@ -37,7 +37,7 @@
   "scripts": {
     "start": "nodemon --watch plugins/ --watch src/ --exec babel-node src/app.js",
     "watch": "tsc --build --watch",
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "tsc --build",
     "serve": "node dist/app.js",
     "test": "jest",

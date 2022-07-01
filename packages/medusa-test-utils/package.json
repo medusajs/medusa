@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "jest",
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "babel src --out-dir dist/",
     "watch": "babel -w src --out-dir dist/"
   },

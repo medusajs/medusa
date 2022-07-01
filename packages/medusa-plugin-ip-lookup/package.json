@@ -9,7 +9,7 @@
     "directory": "packages/medusa-plugin-ip-lookup"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "babel src --out-dir .",
     "watch": "babel -w src --out-dir .",
     "test": "jest"
