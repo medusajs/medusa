@@ -7,6 +7,7 @@ export { getRequestedBatchJob } from "./batch-job/get-requested-batch-job"
 export { canAccessBatchJob } from "./batch-job/can-access-batch-job"
 export { transformQuery } from "./pipes/transform-query"
 export { transformBody } from "./pipes/transform-body"
+export { useInterceptors } from "./interceptors/use-interceptors"
 
 export default {
   authenticate,
