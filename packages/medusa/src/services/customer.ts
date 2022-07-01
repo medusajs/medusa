@@ -258,6 +258,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
         this.customerRepository_
       )
 
+      customer.email = customer.email.toLowerCase()
       const { email, password } = customer
 
       const existing = await this.retrieveByEmail(email).catch(() => undefined)
@@ -289,7 +290,7 @@ class CustomerService extends TransactionBaseService<CustomerService> {
           delete customer.password
         }
 
-        const created = await customerRepository.create(customer)
+        const created = customerRepository.create(customer)
         const result = await customerRepository.save(created)
         await this.eventBusService_
           .withTransaction(manager)

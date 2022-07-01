@@ -1,6 +1,6 @@
 import glob from "glob"
 import path from "path"
-import { AwilixContainer, asFunction, aliasTo } from "awilix"
+import { asFunction, aliasTo } from "awilix"
 
 import formatRegistrationName from "../utils/format-registration-name"
 import { isBatchJobStrategy } from "../interfaces"

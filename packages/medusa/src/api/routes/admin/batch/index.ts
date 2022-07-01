@@ -24,12 +24,16 @@ export default (app) => {
   route.post("/", middlewares.wrap(require("./create-batch-job").default))
 
   const batchJobRouter = Router({ mergeParams: true })
+
   route.use("/:id", getRequestedBatchJob, canAccessBatchJob, batchJobRouter)
+
   batchJobRouter.get("/", middlewares.wrap(require("./get-batch-job").default))
+
   batchJobRouter.post(
     "/confirm",
     middlewares.wrap(require("./confirm-batch-job").default)
   )
+
   batchJobRouter.post(
     "/cancel",
     middlewares.wrap(require("./cancel-batch-job").default)
@@ -57,6 +61,13 @@ export const defaultAdminBatchFields = [
   "created_at",
   "updated_at",
   "deleted_at",
+  "confirmed_at",
+  "pre_processed_at",
+  "confirmed_at",
+  "processing_at",
+  "completed_at",
+  "canceled_at",
+  "failed_at",
 ]
 
 export * from "./cancel-batch-job"

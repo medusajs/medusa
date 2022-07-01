@@ -78,6 +78,44 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     return ""
   }
 
+  async prepareBatchJobForProcessing(
+    batchJob: CreateBatchJobInput,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    req: Express.Request
+  ): Promise<CreateBatchJobInput> {
+    const {
+      limit,
+      offset,
+      order,
+      fields,
+      expand,
+      filterable_fields,
+      ...context
+    } = (batchJob?.context ?? {}) as ProductExportBatchJobContext
+
+    const listConfig = prepareListQuery(
+      {
+        limit,
+        offset,
+        order,
+        fields,
+        expand,
+      },
+      {
+        isList: true,
+        defaultRelations: this.defaultRelations_,
+      }
+    )
+
+    batchJob.context = {
+      ...(context ?? {}),
+      list_config: listConfig,
+      filterable_fields,
+    }
+
+    return batchJob
+  }
+
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
       const batchJob = (await this.batchJobService_
@@ -128,7 +166,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             imageCount
           )
 
-          for (const variant of product.variants) {
+          for (const variant of product?.variants ?? []) {
             if (variant.prices?.length) {
               variant.prices.forEach((price) => {
                 pricesData.add(
@@ -177,49 +215,12 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
     })
   }
 
-  async prepareBatchJobForProcessing(
-    batchJob: CreateBatchJobInput,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    req: Express.Request
-  ): Promise<CreateBatchJobInput> {
-    const {
-      limit,
-      offset,
-      order,
-      fields,
-      expand,
-      filterable_fields,
-      ...context
-    } = (batchJob?.context ?? {}) as ProductExportBatchJobContext
-
-    const listConfig = prepareListQuery(
-      {
-        limit,
-        offset,
-        order,
-        fields,
-        expand,
-      },
-      {
-        isList: true,
-        defaultRelations: this.defaultRelations_,
-      }
-    )
-
-    batchJob.context = {
-      ...(context ?? {}),
-      list_config: listConfig,
-      filterable_fields,
-    }
-
-    return batchJob
-  }
-
   async processJob(batchJobId: string): Promise<void> {
     let offset = 0
     let limit = this.DEFAULT_LIMIT
     let advancementCount = 0
     let productCount = 0
+    let approximateFileSize = 0
 
     return await this.atomicPhase_(
       async (transactionManager) => {
@@ -230,11 +231,13 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         const { writeStream, fileKey, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: `product-export-${Date.now()}`,
+            name: `exports/products/product-export-${Date.now()}`,
             ext: "csv",
           })
 
         const header = await this.buildHeader(batchJob)
+
+        approximateFileSize += Buffer.from(header).byteLength
         writeStream.write(header)
 
         advancementCount =
@@ -267,7 +270,10 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
           products.forEach((product: Product) => {
             const lines = this.buildProductVariantLines(product)
-            lines.forEach((line) => writeStream.write(line))
+            lines.forEach((line) => {
+              approximateFileSize += Buffer.from(line).byteLength
+              writeStream.write(line)
+            })
           })
 
           advancementCount += products.length
@@ -279,6 +285,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             .update(batchJobId, {
               result: {
                 file_key: fileKey,
+                file_size: approximateFileSize,
                 count: productCount,
                 advancement_count: advancementCount,
                 progress: advancementCount / productCount,

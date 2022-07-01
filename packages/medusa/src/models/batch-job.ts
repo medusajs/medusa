@@ -1,5 +1,16 @@
-import { AfterLoad, BeforeInsert, Column, Entity, JoinColumn, ManyToOne } from "typeorm"
-import { BatchJobResultError, BatchJobResultStatDescriptor, BatchJobStatus } from "../types/batch-job"
+import {
+  AfterLoad,
+  BeforeInsert,
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+} from "typeorm"
+import {
+  BatchJobResultError,
+  BatchJobResultStatDescriptor,
+  BatchJobStatus,
+} from "../types/batch-job"
 import { DbAwareColumn, resolveDbType } from "../utils/db-aware-column"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
@@ -29,10 +40,11 @@ export class BatchJob extends SoftDeletableEntity {
     errors?: BatchJobResultError[]
     stat_descriptors?: BatchJobResultStatDescriptor[]
     file_key?: string
+    file_size?: number
   } & Record<string, unknown>
 
   @Column({ type: "boolean", nullable: false, default: false })
-  dry_run: boolean = false;
+  dry_run = false
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   pre_processed_at?: Date
@@ -140,7 +152,7 @@ export class BatchJob extends SoftDeletableEntity {
  *    description: "The date of the completion."
  *    type: string
  *    format: date-time
-  *  canceled_at:
+ *  canceled_at:
  *    description: "The date of the concellation."
  *    type: string
  *    format: date-time

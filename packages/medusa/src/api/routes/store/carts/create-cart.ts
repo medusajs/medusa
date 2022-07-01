@@ -15,6 +15,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { AddressPayload } from "../../../../types/common"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts
@@ -144,7 +145,9 @@ export default async (req, res) => {
       relations: defaultStoreCartRelations,
     })
 
-    res.status(200).json({ cart })
+    const data = await decorateLineItemsWithTotals(cart, req)
+
+    res.status(200).json({ cart: data })
   })
 }
 
