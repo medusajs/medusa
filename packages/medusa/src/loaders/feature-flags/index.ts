@@ -13,7 +13,7 @@ const isTruthy = (val: string | boolean | undefined): boolean => {
 }
 
 export default (
-  configModule: { featureFlags: Record<string, string | boolean> },
+  configModule: { featureFlags?: Record<string, string | boolean> } = {},
   logger?: Logger,
   flagDirectory?: string
 ): FlagRouter => {
