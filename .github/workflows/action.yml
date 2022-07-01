@@ -100,6 +100,9 @@ jobs:
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
+      - name: use old yarn version
+        run: yarn set version 1.19.0
+
       - name: Force install API
         run: medusa-dev --force-install
         working-directory: integration-tests/api
@@ -167,6 +170,9 @@ jobs:
 
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
+
+      - name: use old yarn version
+        run: yarn set version 1.19.0
 
       - name: Force install
         run: medusa-dev --force-install
