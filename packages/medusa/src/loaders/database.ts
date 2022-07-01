@@ -9,10 +9,7 @@ type Options = {
   container: AwilixContainer
 }
 
-export default async ({
-  container,
-  configModule,
-}: Options): Promise<Connection> => {
+export default async ({ container, configModule }: Options): Promise<Connection> => {
   const entities = container.resolve("db_entities")
 
   const isSqlite = configModule.projectConfig.database_type === "sqlite"

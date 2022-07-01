@@ -5,9 +5,9 @@ import formatRegistrationName from "../utils/format-registration-name"
 import { ConfigModule, MedusaContainer } from "../types/global"
 
 type Options = {
-  container: MedusaContainer
+  container: MedusaContainer;
   configModule: ConfigModule
-  isTest?: boolean
+  isTest?: boolean;
 }
 
 /**
