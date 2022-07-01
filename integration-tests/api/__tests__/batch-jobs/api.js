@@ -1,8 +1,9 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const { useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const userSeeder = require("../../helpers/user-seeder")
@@ -49,23 +50,6 @@ const setupJobDb = async (dbConnection) => {
   }
 }
 
-const startServerWithEnv = async (cwd, env = {}) => {
-  Object.entries(env).forEach(([key, value]) => {
-    process.env[key] = value
-  })
-
-  const dbConnection = await initDb({
-    cwd,
-  })
-  const medusaProcess = await setupServer({
-    cwd,
-    verbose: true,
-    env,
-  })
-
-  return [medusaProcess, dbConnection]
-}
-
 describe("/admin/batch-jobs", () => {
   let medusaProcess
   let dbConnection
@@ -74,7 +58,7 @@ describe("/admin/batch-jobs", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const env = { MEDUSA_FF_CREATE_BATCHES: "true" }
 
-    const [process, connection] = await startServerWithEnv(cwd, env)
+    const [process, connection] = await startServerWithEnvironment(cwd, env)
     medusaProcess = process
     dbConnection = connection
   })

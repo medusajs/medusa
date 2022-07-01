@@ -1,7 +1,7 @@
 import { IFlagRouter } from "../types/feature-flags"
 
 export class FlagRouter implements IFlagRouter {
-  public flags: Record<string, boolean> = {}
+  private flags: Record<string, boolean> = {}
 
   constructor(flags: Record<string, boolean>) {
     this.flags = flags
