@@ -1,14 +1,18 @@
 import { NextFunction, Request, Response } from "express"
-import { ClassConstructor } from "../../types/global"
-import { validator } from "../../utils/validator"
+import { ClassConstructor } from "../../../types/global"
+import { validator } from "../../../utils/validator"
 import { ValidatorOptions } from "class-validator"
-import { default as normalizeQuery } from "./normalized-query"
+import { default as normalizeQuery } from "../normalized-query"
 import {
   prepareListQuery,
   prepareRetrieveQuery,
-} from "../../utils/get-query-config"
-import { BaseEntity } from "../../interfaces/models/base-entity"
-import { FindConfig, QueryConfig, RequestQueryFields } from "../../types/common"
+} from "../../../utils/get-query-config"
+import { BaseEntity } from "../../../interfaces"
+import {
+  FindConfig,
+  QueryConfig,
+  RequestQueryFields,
+} from "../../../types/common"
 import { omit } from "lodash"
 
 export function transformQuery<

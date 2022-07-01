@@ -4,6 +4,8 @@ type handler = (req: Request, res: Response) => Promise<void>
 
 export default (fn: handler): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction) => {
-    return fn(req, res).catch(next)
+    return fn(req, res).catch((e) => {
+      next(e)
+    })
   }
 }
