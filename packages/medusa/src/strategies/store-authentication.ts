@@ -143,10 +143,7 @@ export default class StoreDefaultAuthenticationStrategy extends AbstractAuthStra
       req.scope.resolve("customerService")
     const customer = await customerService.retrieve(
       result.customer?.id || "",
-      req.retrieveConfig ?? {
-        relations: defaultStoreCustomersRelations,
-        select: defaultStoreCustomersFields,
-      }
+      req.retrieveConfig ?? {}
     )
 
     res.json({ customer })

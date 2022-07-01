@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken"
 import { validator } from "../../../../utils/validator"
 import { EntityManager } from "typeorm"
 import { AuthService } from "../../../../services"
+import { defaultStoreCustomersFields, defaultStoreCustomersRelations } from "./index"
 
 /**
  * @oas [post] /customers
@@ -136,6 +137,11 @@ export default async (req, res) => {
     req,
     "store"
   )
+
+  req.retrieveConfig = {
+    relations: defaultStoreCustomersRelations,
+    select: defaultStoreCustomersFields,
+  }
   await authStrategy.authenticate(req, res)
 
   res.status(200).json({ customer })

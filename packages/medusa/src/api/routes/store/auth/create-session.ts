@@ -62,6 +62,10 @@ export default async (req: Request, res: Response) => {
     req,
     "store"
   )
+
+  req.retrieveConfig = {
+    relations: ["orders", "orders.items"],
+  }
   await authStrategy.authenticate(req, res)
 }
 
