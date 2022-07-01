@@ -60,12 +60,11 @@ describe("feature flags", () => {
 
     const flags = await loadFeatureFlags(
       { featureFlags: { flag_1: false } },
+      undefined,
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.flags).toEqual({
-      flag_1: false,
-    })
+    expect(flags.featureIsEnabled("flag_1")).toEqual(false)
   })
 
   it("should load the default feature flags", async () => {
@@ -76,12 +75,14 @@ describe("feature flags", () => {
 
     const flags = await loadFeatureFlags(
       {},
+      undefined,
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.flags).toEqual({
-      flag_1: true,
-    })
+    expect(flags.featureIsEnabled("flag_1")).toEqual(true)
+    // expect(flags.flags).toEqual({
+    //   flag_1: true,
+    // })
   })
 
   it("should load the flag from env", async () => {
@@ -94,12 +95,11 @@ describe("feature flags", () => {
 
     const flags = await loadFeatureFlags(
       {},
+      undefined,
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.flags).toEqual({
-      flag_1: false,
-    })
+    expect(flags.featureIsEnabled("flag_1")).toEqual(false)
   })
 
   it("should load mix of flags", async () => {
@@ -122,15 +122,12 @@ describe("feature flags", () => {
 
     const flags = await loadFeatureFlags(
       { featureFlags: { flag_2: false } },
+      undefined,
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.flags).toEqual({
-      flag_1: true,
-      flag_2: false,
-      flag_3: false,
-    })
-
     expect(flags.featureIsEnabled("flag_1")).toEqual(true)
+    expect(flags.featureIsEnabled("flag_2")).toEqual(false)
+    expect(flags.featureIsEnabled("flag_3")).toEqual(false)
   })
 })
