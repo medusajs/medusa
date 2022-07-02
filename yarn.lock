@@ -30430,7 +30430,6 @@ __metadata:
     jest: ^25.5.2
     lodash: ^4.17.21
     medusa-core-utils: ^1.1.31
-    medusa-interfaces: ^1.3.0
     meilisearch: ^0.24.0
   peerDependencies:
     medusa-interfaces: 1.x
