@@ -4,7 +4,7 @@ This is a guide for deploying a Medusa project to Qovery. Qovery is a Continuous
 
 :::note
 
-We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](https://docs.medusajs.com/how-to/create-medusa-app) for a small walkthrough.
+We assume, that you are currently running a local instance of Medusa. If not, check out our [Quickstart](https://docs.medusajs.com/quickstart/quick-start) or use `npx create-medusa-app` to set up your application in a matter of minutes. For the latter, see [this guide](../usage/create-medusa-app.mdx) for a small walkthrough.
 
 :::
 

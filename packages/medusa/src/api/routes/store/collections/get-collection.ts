@@ -1,4 +1,5 @@
 import ProductCollectionService from "../../../../services/product-collection"
+
 /**
  * @oas [get] /collections/{id}
  * operationId: "GetCollectionsCollection"

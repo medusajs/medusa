@@ -50,6 +50,7 @@ module.exports = async (connection, data = {}) => {
   const r = manager.create(Region, {
     id: "test-region",
     name: "Test Region",
+    payment_providers: [{ id: "test-pay" }],
     currency_code: "usd",
     tax_rate: 0,
   })
@@ -819,6 +820,23 @@ module.exports = async (connection, data = {}) => {
     completed_at: null,
     items: [],
   })
+
+  await manager.save(cart3)
+
+  const ps = manager.create(PaymentSession, {
+    id: "test-cart-session",
+    cart_id: "test-cart-3",
+    provider_id: "test-pay",
+    is_selected: true,
+    data: {},
+    status: "authorized",
+  })
+
+  await manager.save(ps)
+
+  cart3.payment_sessions = [ps]
+  cart3.payment_session = ps
+
   await manager.save(cart3)
 
   await manager.insert(ShippingMethod, {
@@ -842,7 +860,7 @@ module.exports = async (connection, data = {}) => {
   await manager.save(li2)
 
   const cart4 = manager.create(Cart, {
-    id: "test-cart-3",
+    id: "test-cart-4",
     email: "some-customer@email.com",
     shipping_address: {
       id: "test-shipping-address",

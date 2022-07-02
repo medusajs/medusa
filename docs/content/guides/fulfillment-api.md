@@ -6,7 +6,7 @@ title: Fulfillment API
 
 This guide will give an overview of Medusa's Fulfillment API and how it can be implemented to work with different fulfillment providers. Before digging deeper into the API it should be clarified what is meant by a fulfillment provider; in Medusa a fulfillment provider is typically a 3rd party service that can handle order data for the purpose of shipping the items in the order to a customer. Examples of fulfillment providers are: a carrier like UPS, a logistics platform like ShipBob or a 3PL solution.
 
-Implementations of the Fulfillment API can be distributed as npm packages for easy installation through the plugin system, there are already a couple of examples of fulfillment plugins in the Medusa monorepo, you can identify these by looking for `medusa-fulfillment-*`. For further details on building and publishing plugins [please check this guide](https://docs.medusajs.com/guides/plugins).
+Implementations of the Fulfillment API can be distributed as npm packages for easy installation through the plugin system, there are already a couple of examples of fulfillment plugins in the Medusa monorepo, you can identify these by looking for `medusa-fulfillment-*`. For further details on building and publishing plugins [please check this guide](../advanced/backend/payment/overview.md).
 
 ## Fulfillment Service Interface
 
@@ -68,4 +68,4 @@ If the shipping option is configured to dynamically calculate the price of the t
 
 ## What's next?
 
-Now that you have an overview of the Fulfillment API you can start developing your own fulfillment plugin. For a guide on how to create plugins [check this guide](https://docs.medusajs.com/how-to/plugins). If you have questions or issues please feel free to [join our Discord server](https://discord.gg/medusajs) for direct access to the engineering team.
+Now that you have an overview of the Fulfillment API you can start developing your own fulfillment plugin. For a guide on how to create plugins [check this guide](../advanced/backend/payment/overview.md). If you have questions or issues please feel free to [join our Discord server](https://discord.gg/medusajs) for direct access to the engineering team.

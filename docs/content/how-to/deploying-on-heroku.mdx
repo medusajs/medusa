@@ -1,0 +1,273 @@
+import styles from './deployment.module.css';
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# Deploy Your Medusa Server on Heroku
+
+In this document, you'll learn how to deploy your Medusa server on Heroku. Heroku is a PaaS (Platform as a Service) that allows you to easily deploy your applications in the cloud.
+
+<div>
+  <video width="100%" height="100%" playsinline autoplay muted controls>
+    <source src="https://user-images.githubusercontent.com/59018053/154798681-37060f13-5248-47c5-97c5-81c06da301d4.mp4" type="video/mp4" />
+  </video>
+</div>
+
+## Prerequisites
+
+Before you start with this guide, you must have a Medusa server installed locally.
+
+To install a Medusa server, follow our [Quickstart guide](../quickstart/quick-start.md).
+
+## How to Deploy Your Medusa Server on Heroku
+
+### 1. Install the Heroku CLI
+
+Install the Heroku CLI tool using the instructions that belong to your operating system.
+
+<Tabs groupId="operating-systems" wrapperClassName={styles.osTabs}>
+<TabItem value="windows" label="Windows" default>
+
+Download the appropriate installer for your Windows installation:
+
+[64-bit installer](https://cli-assets.heroku.com/heroku-x64.exe)
+
+[32-bit installer](https://cli-assets.heroku.com/heroku-x86.exe)
+
+</TabItem>
+<TabItem value="linux" label="Linux">
+
+For Ubuntu, you can use the following command:
+
+```bash
+sudo snap install --classic heroku
+```
+
+As for other Linux distributions, please check [Heroku's guide](https://devcenter.heroku.com/articles/heroku-cli#standalone-installation-with-a-tarball).
+
+</TabItem>
+<TabItem value="macos" label="macOS">
+
+For macOS you can install Heroku's CLI tool using Homebrew:
+
+```bash
+brew tap heroku/brew && brew install heroku
+```
+
+For other installation options, please check [Heroku's guide](https://devcenter.heroku.com/articles/heroku-cli#standalone-installation-with-a-tarball)
+
+</TabItem>
+</Tabs>
+
+### 2. Login to Heroku from your CLI
+
+Before you can create an app with Heroku, you must login with the CLI tool:
+
+```bash
+heroku login
+```
+
+Depending on your operating system, you must follow either the instructions in your terminal or a page in your browser will open.
+
+### 3. Create an App with Heroku
+
+In the root directory of your Medusa server, run the following commands to create an app on Heroku and add it as a remote origin:
+
+```bash
+heroku create <APP_NAME>
+heroku git:remote -a <APP_NAME>
+```
+
+Where `<APP_NAME>` is the name of the app you'll create. You can use any name you want.
+
+### 4. Install Postgresql and Redis on Heroku
+
+Medusa requires a Postgres database and a Redis instance to work. You can add those to your Heroku app using Add-ons.
+
+:::tip
+
+In this section, the add-ons are used with a free plan. It's highly recommended that you don't use a free plan in a production environment.
+
+:::
+
+#### PostgreSQL
+
+Add a Postgres add-on to your Heroku app with the following command:
+
+:::note
+
+This add-on is added with a free plan. However, Heroku might require you to add a payment method to proceed.
+
+:::
+
+```bash
+heroku addons:create heroku-postgresql:hobby-dev
+```
+
+This uses the free plan of Heroku Postgres. Make sure to check out [more information regarding the plans and pricing of Heroku Postgres](https://elements.heroku.com/addons/heroku-postgresql#pricing).
+
+#### Redis
+
+:::note
+
+The Add-on used here for Redis is [Upstash](https://devcenter.heroku.com/articles/upstash-redis) which is currently in beta. However, it provides a generous free plan. You can alternatively go for [Stackhero](https://elements.heroku.com/addons/stackhero-redis) but it does not have a free plan.
+
+:::
+
+Add a Redis instance to your Heroku app with the following command:
+
+:::note
+
+This add-on is added with a free plan. However, Heroku might require you to add a payment method to proceed.
+
+:::
+
+```bash
+heroku addons:create upstash-redis
+```
+
+This uses the free plan of Upstash. Make sure to check out [more information regarding the plans and pricing of Upstash](https://elements.heroku.com/addons/upstash-redis#pricing).
+
+### 5. Configure Environment Variables on Heroku
+
+Medusa requires a set of environment variables to be configured. You can learn more about Medusa's configurations in the [Configure your Medusa Server](../usage/configurations.md) document.
+
+Run the following commands in the root directory of your Medusa server to set some environment variables:
+
+```bash
+heroku config:set NODE_ENV=production
+heroku config:set JWT_SECRET=your-super-secret
+heroku config:set COOKIE_SECRET=your-super-secret-pt2
+heroku config:set NPM_CONFIG_PRODUCTION=false
+```
+
+:::tip
+
+Make sure to replace `your-super-secret` and `your-super-secret-pt2` with actual secrets in a production environment.
+
+:::
+
+#### Set Buildpack
+
+Additionally, you need to set the buildpack to Node.js using the following command:
+
+```bash
+heroku buildpacks:set heroku/nodejs
+```
+
+#### Configure the Redis URL
+
+Upstash adds the Redis URL under the environment variable `UPSTASH_REDIS_URL`. However, Medusa looks for the `REDIS_URL` environment variable when initializing the connection with Redis.
+
+So, retrieve the value of `UPSTASH_REDIS_URL` with the following command:
+
+```bash
+heroku config:get UPSTASH_REDIS_URL
+```
+
+This prints the value of the environment variable which is a Redis connection string.
+
+Copy that value and use it to set the environment variable `REDIS_URL` with the following command:
+
+```bash
+heroku config:set REDIS_URL=<YOUR_REDIS_URL>
+```
+
+Where `<YOUR_REDIS_URL>` is the value you received from the previous command.
+
+#### Configure the PostgreSQL Database URL
+
+If you're using the Heroku PostgreSQL Add-on, it should configure the environment variable `DATABASE_URL`. So, you don't need to perform any additional actions.
+
+However, if you use another add-on, make sure to set the environment variable `DATABASE_URL` to the PostgreSQL Database URL.
+
+#### (Optional) Configure CORS Variables
+
+Optionally, if you've deployed the admin dashboard and you want to ensure it can use the server's REST APIs, you must set the following environment variable:
+
+```bash
+heroku config:set ADMIN_CORS=<YOUR_ADMIN_URL>
+```
+
+Where `<YOUR_ADMIN_URL>` is the URL of your admin dashboard.
+
+Similarly, if you've deployed the storefront and you want to ensure it can use the server's REST APIs, you must set the following environment variable:
+
+```bash
+heroku config:set STORE_CORS=<YOUR_STOREFRONT_URL>
+```
+
+Where `<YOUR_STOREFRONT_URL>` is the URL of your storefront.
+
+### 6. Configure Medusa Server
+
+Before jumping into the deployment, you need to configure your Medusa server to ensure it uses the previous environment variables and the recommended production configurations.
+
+#### medusa-config.js
+
+Update `module.exports` to include the following configurations:
+
+```js
+module.exports = {
+  projectConfig: {
+    redis_url: REDIS_URL,
+    database_url: DATABASE_URL,
+    database_type: "postgres",
+    store_cors: STORE_CORS,
+    admin_cors: ADMIN_CORS,
+    database_extra:
+      process.env.NODE_ENV !== "development"
+        ? { ssl: { rejectUnauthorized: false } }
+        : {},
+  },
+  plugins,
+};
+```
+
+#### package.json
+
+Update `scripts` to include the following scripts:
+
+```json
+"scripts": {
+    "serve": "medusa start",
+    "start": "medusa develop",
+    "heroku-postbuild": "medusa migrations run",
+    "prepare": "npm run build",
+    "build": "babel src -d dist --extensions \".ts,.js\""
+},
+```
+
+### 7. Launch your Medusa Server
+
+Finally, commit and push all changes to Heroku:
+
+```bash
+git add .
+git commit -m "Deploy Medusa Server on Heroku"
+git push heroku HEAD:master
+```
+
+This triggers a redeploy of the Medusa server with all the new configurations.
+
+## Troubleshooting: Inspect Build Logs
+
+If an error occurs during the deployment, you can explore your Heroku app build logs using the following command in the root directory of your Medusa server:
+
+```bash
+heroku logs -n 500000 --remote heroku --tail
+```
+
+## Create a User
+
+As an optional extra step, you can create a user to use when your admin dashboard is up and running:
+
+```bash
+heroku run -a <APP_NAME> -- medusa user -e "<EMAIL>" -p "<PASSWORD>"
+```
+
+Where `<APP_NAME>` is the name of your Heroku app, and `<EMAIL>` and `<PASSWORD>` are the credentials you want to use to log in to the Medusa admin dashboard.
+
+## What's Next :rocket:
+
+- Learn how to [deploy your Medusa admin on Netlify](deploying-admin-on-netlify.md).
+- Learn how to [deploy your Gatsby Storefront on Netlify](deploying-gatsby-on-netlify.md).
