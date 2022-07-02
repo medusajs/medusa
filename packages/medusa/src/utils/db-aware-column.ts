@@ -4,13 +4,11 @@ import {
   ColumnType,
   Entity,
   EntityOptions,
-  getMetadataArgsStorage,
 } from "typeorm"
 import path from "path"
 import { getConfigFile } from "medusa-core-utils"
 import featureFlagsLoader from "../loaders/feature-flags"
 import { ConfigModule } from "../types/global"
-import { TableMetadataArgs } from "typeorm/metadata-args/TableMetadataArgs"
 
 const pgSqliteTypeMapping: { [key: string]: ColumnType } = {
   increment: "rowid",
