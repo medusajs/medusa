@@ -27840,7 +27840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^26.6.3":
+"jest@npm:^26.5.2, jest@npm:^26.6.3":
   version: 26.6.3
   resolution: "jest@npm:26.6.3"
   dependencies:
@@ -30012,7 +30012,7 @@ __metadata:
     cross-env: ^5.2.1
     eslint: ^6.8.0
     express: ^4.17.1
-    jest: ^25.5.2
+    jest: ^26.5.2
     medusa-core-utils: ^1.1.31
   peerDependencies:
     medusa-interfaces: 1.x
