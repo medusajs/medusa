@@ -94,10 +94,12 @@ export class GiftCardRepository extends Repository<GiftCard> {
   }
 
   public async listGiftCardsAndCount(
-    query: ExtendedFindConfig<GiftCard, QuerySelector<GiftCard>>,
+    inputQuery: ExtendedFindConfig<GiftCard, QuerySelector<GiftCard>>,
     rels: (keyof GiftCard | string)[] = [],
     q?: string
   ): Promise<[GiftCard[], number]> {
+    const query = { ...inputQuery }
+
     if (q) {
       const where = query.where
       delete where.id
