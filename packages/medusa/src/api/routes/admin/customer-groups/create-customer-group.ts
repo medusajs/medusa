@@ -1,6 +1,7 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
 import { CustomerGroupService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { Request, Response } from "express"
 
 /**
  * @oas [post] /customer-groups
@@ -24,7 +25,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/customer_group"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const validated = await validator(AdminPostCustomerGroupsReq, req.body)
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
