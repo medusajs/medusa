@@ -283,6 +283,43 @@
         }
       }
     },
+    "/collections/{id}/products": {
+      "get": {
+        "operationId": "GetCollectionsCollectionProducts",
+        "summary": "Retrieve a Product Collection with Products",
+        "description": "Retrieves a Product Collection with Products.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",
@@ -4332,6 +4369,17 @@
           },
           "handle": {
             "description": "A unique string that identifies the Product Collection - can for example be used in slug structures.",
+            "type": "string"
+          },
+          "images": {
+            "description": "Images of the Product Collection",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/image"
+            }
+          },
+          "thumbnail": {
+            "description": "A URL to an image file that can be used to identify the Product Collection.",
             "type": "string"
           },
           "products": {
