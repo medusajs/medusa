@@ -29,7 +29,9 @@
     "cross-env": "^7.0.3"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
-  "keywords": ["medusa"],
+  "keywords": [
+    "medusa"
+  ],
   "license": "MIT",
   "main": "index.js",
   "repository": {
@@ -38,9 +40,9 @@
     "directory": "packages/medusa-dev-cli"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "test": "jest --passWithNoTests",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "babel src --out-dir dist",
-    "test": "jest",
     "watch": "babel -w src --out-dir dist"
   },
   "engines": {
