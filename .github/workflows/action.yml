@@ -100,6 +100,12 @@ jobs:
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
+      # Yarn berry breaks medusa-dev
+      # So before running medusa-dev downgrade to yarn v1.19.0
+      # Temporary solution before we release new version of medusa-dev
+      - name: use old yarn version
+        run: yarn set version 1.19.0
+
       - name: Force install API
         run: medusa-dev --force-install
         working-directory: integration-tests/api
@@ -167,6 +173,12 @@ jobs:
 
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
+
+      # Yarn berry breaks medusa-dev
+      # So before running medusa-dev downgrade to yarn v1.19.0
+      # Temporary solution before we release new version of medusa-dev
+      - name: use old yarn version
+        run: yarn set version 1.19.0
 
       - name: Force install
         run: medusa-dev --force-install

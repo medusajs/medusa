@@ -18,7 +18,6 @@ runs:
       # We want to only bootstrap and install if no cache is found.
     - run: |
         if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]]; then
-          yarn install --frozen-lockfile
-          yarn bootstrap --concurrency=2
+          yarn install --immutable
         fi
       shell: bash

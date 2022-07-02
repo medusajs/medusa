@@ -30,9 +30,9 @@
     "medusa-test-utils": "^1.1.37"
   },
   "scripts": {
-    "build": "babel src -d . --ignore **/__tests__,**/__mocks__",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__,**/__mocks__",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "build": "babel src -d . --ignore **/__tests__",
+    "watch": "babel -w src --out-dir . --ignore **/__tests__",
     "test": "jest"
   },
   "peerDependencies": {
