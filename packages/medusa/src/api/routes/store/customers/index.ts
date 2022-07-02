@@ -1,7 +1,12 @@
 import { Router } from "express"
 import { Customer, Order } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { StoreGetCustomersCustomerOrdersParams } from "./list-orders"
+import {
+  defaultStoreOrdersRelations,
+  defaultStoreOrdersFields,
+} from "../orders"
 
 const route = Router()
 
@@ -36,7 +41,11 @@ export default (app, container) => {
 
   route.get(
     "/me/orders",
-    middlewares.normalizeQuery(),
+    transformQuery(StoreGetCustomersCustomerOrdersParams, {
+      defaultFields: defaultStoreOrdersFields,
+      defaultRelations: defaultStoreOrdersRelations,
+      isList: true,
+    }),
     middlewares.wrap(require("./list-orders").default)
   )
 

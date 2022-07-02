@@ -170,6 +170,11 @@ class OrderService extends BaseService {
     )
   }
 
+  /**
+   * @param {Object} selector - the query object for find
+   * @param {Object} config - the config to be used for find
+   * @return {Promise} the result of the find operation
+   */
   async listAndCount(
     selector,
     config = { skip: 0, take: 50, order: { created_at: "DESC" } }

@@ -1,4 +1,6 @@
+import { Request, Response } from "express"
 import { Type } from "class-transformer"
+import { MedusaError } from "medusa-core-utils"
 import {
   IsEnum,
   IsNumber,
@@ -6,7 +8,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import _, { identity } from "lodash"
 import {
   FulfillmentStatus,
   OrderStatus,
@@ -14,11 +15,6 @@ import {
 } from "../../../../models/order"
 import OrderService from "../../../../services/order"
 import { DateComparisonOperator } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import {
-  allowedStoreOrdersFields,
-  allowedStoreOrdersRelations,
-} from "../orders"
 
 /**
  * @oas [get] /customers/me/orders
@@ -68,55 +64,31 @@ import {
  *               items:
  *                 $ref: "#/components/schemas/orders"
  */
-export default async (req, res) => {
-  const id: string = req.user.customer_id
+export default async (req: Request, res: Response) => {
+  const id: string | undefined = req.user?.customer_id
+
+  if (!id) {
+    throw new MedusaError(
+      MedusaError.Types.UNEXPECTED_STATE,
+      "Not authorized to list orders"
+    )
+  }
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const validated = await validator(
-    StoreGetCustomersCustomerOrdersParams,
-    req.query
-  )
-
-  validated["customer_id"] = id
-
-  let includeFields: string[] = []
-  if (validated.fields) {
-    includeFields = validated.fields.split(",")
-    includeFields = includeFields.filter((f) =>
-      allowedStoreOrdersFields.includes(f)
-    )
+  req.filterableFields = {
+    ...req.filterableFields,
+    customer_id: id,
   }
-
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-    expandFields = expandFields.filter((f) =>
-      allowedStoreOrdersRelations.includes(f)
-    )
-  }
-
-  const listConfig = {
-    select: includeFields.length ? includeFields : allowedStoreOrdersFields,
-    relations: expandFields.length ? expandFields : allowedStoreOrdersRelations,
-    skip: validated.offset,
-    take: validated.limit,
-    order: { created_at: "DESC" },
-  }
-
-  const filterableFields = _.omit(validated, [
-    "limit",
-    "offset",
-    "expand",
-    "fields",
-  ])
 
   const [orders, count] = await orderService.listAndCount(
-    _.pickBy(filterableFields, identity),
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
-  res.json({ orders, count, offset: validated.offset, limit: validated.limit })
+  const { limit, offset } = req.validatedQuery
+
+  res.json({ orders, count, offset: offset, limit: limit })
 }
 
 export class StoreGetCustomersCustomerOrdersPaginationParams {

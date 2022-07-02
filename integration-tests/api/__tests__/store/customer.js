@@ -19,7 +19,7 @@ describe("/store/customers", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: false })
   })
 
   afterAll(async () => {
@@ -89,12 +89,10 @@ describe("/store/customers", () => {
     })
   })
 
-  describe('GET /store/customers/me/orders', () => {
+  describe("GET /store/customers/me/orders", () => {
     beforeEach(async () => {
       const manager = dbConnection.manager
-      await manager.query(
-        `ALTER SEQUENCE order_display_id_seq RESTART WITH 1`
-      )
+      await manager.query(`ALTER SEQUENCE order_display_id_seq RESTART WITH 1`)
 
       await manager.insert(Address, {
         id: "addr_test",
@@ -138,9 +136,9 @@ describe("/store/customers", () => {
         id: "order_test_completed",
         email: "test1@email.com",
         display_id: 1,
-        customer_id: 'test_customer',
+        customer_id: "test_customer",
         region_id: "region",
-        status: 'completed',
+        status: "completed",
         tax_rate: 0,
         currency_code: "usd",
       })
@@ -149,9 +147,9 @@ describe("/store/customers", () => {
         id: "order_test_completed1",
         email: "test1@email.com",
         display_id: 2,
-        customer_id: 'test_customer1',
+        customer_id: "test_customer1",
         region_id: "region",
-        status: 'completed',
+        status: "completed",
         tax_rate: 0,
         currency_code: "usd",
       })
@@ -160,9 +158,9 @@ describe("/store/customers", () => {
         id: "order_test_canceled",
         email: "test1@email.com",
         display_id: 3,
-        customer_id: 'test_customer',
+        customer_id: "test_customer",
         region_id: "region",
-        status: 'canceled',
+        status: "canceled",
         tax_rate: 0,
         currency_code: "usd",
       })
@@ -180,17 +178,14 @@ describe("/store/customers", () => {
         password: "test",
       })
 
-      const customerId = authResponse.data.customer.id
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
-
       const response = await api
-        .get("/store/customers/me/orders?status[]=completed",
-          { headers: 
-            {
-              Cookie: authCookie,
-            }
-          },)
+        .get("/store/customers/me/orders?status[]=completed", {
+          headers: {
+            Cookie: authCookie,
+          },
+        })
         .catch((err) => {
           return err.response
         })
@@ -211,12 +206,14 @@ describe("/store/customers", () => {
       const [authCookie] = authResponse.headers["set-cookie"][0].split(";")
 
       const response = await api
-        .get("/store/customers/me/orders?status[]=completed,canceled",
-          { headers: 
-            {
+        .get(
+          "/store/customers/me/orders?status[]=completed&status[]=canceled",
+          {
+            headers: {
               Cookie: authCookie,
-            }
-          },)
+            },
+          }
+        )
         .catch((err) => {
           return console.log(err.response.data.message)
         })
@@ -225,16 +222,15 @@ describe("/store/customers", () => {
       expect(response.data.orders).toEqual([
         expect.objectContaining({
           display_id: 3,
-          status: 'canceled',
+          status: "canceled",
         }),
         expect.objectContaining({
           display_id: 1,
-          status: 'completed',
+          status: "completed",
         }),
       ])
       expect(response.data.orders.length).toEqual(2)
     })
-
   })
 
   describe("POST /store/customers/me", () => {
