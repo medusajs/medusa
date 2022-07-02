@@ -4,7 +4,7 @@ title: Create a file plugin
 
 # File Plugin
 
-This guide will give an introduction about the File Service and steps required to create a custom file uploader plugin for Medusa. It build on article about [creating custom plugins](https://docs.medusajs.com/guides/plugins). 
+This guide will give an introduction about the File Service and steps required to create a custom file uploader plugin for Medusa. It build on article about [creating custom plugins](../advanced/backend/payment/overview.md). 
 
 As an example, we will create a File plugin that uploads the product images to Cloudinary. 
 
@@ -62,7 +62,7 @@ api_secret: "xx"
 
 The first step in creating a plugin is to initialize the Node.js project:
 
-```bash
+```bash npm2yarn
 npm init
 ```
 
@@ -70,7 +70,7 @@ This command will ask you to fill out your project's metadata, which will eventu
 
 Next up, we need to install cloudinary's Node.js SDK.
 
-```bash
+```bash npm2yarn
 npm install cloudinary
 ```
 

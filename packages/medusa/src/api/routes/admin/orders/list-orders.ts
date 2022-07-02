@@ -1,7 +1,7 @@
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { validator } from "../../../../utils/validator"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import { identity, omit, pick, pickBy } from "lodash"
+import { omit, pick, pickBy } from "lodash"
 import { OrderService } from "../../../../services"
 import { AdminListOrdersSelector } from "../../../../types/orders"
 import { Type } from "class-transformer"
@@ -80,7 +80,7 @@ export default async (req, res) => {
   ])
 
   const [orders, count] = await orderService.listAndCount(
-    pickBy(filterableFields, identity),
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 

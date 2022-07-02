@@ -4,19 +4,20 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "jest --maxWorkers=50% --silent=false",
+    "test": "jest --silent=false",
     "build": "babel src -d dist --extensions \".ts,.js\""
   },
   "dependencies": {
-    "@medusajs/medusa": "1.1.59-dev-1639132284143",
-    "medusa-interfaces": "1.1.32-dev-1639132284143",
+    "@medusajs/medusa": "1.3.2-dev-1655728455189",
+    "faker": "^5.5.3",
+    "medusa-interfaces": "1.3.0-dev-1655728455189",
     "typeorm": "^0.2.31"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
     "@babel/core": "^7.12.10",
     "@babel/node": "^7.12.10",
-    "babel-preset-medusa-package": "1.1.19-dev-1639132284143",
+    "babel-preset-medusa-package": "1.1.19-dev-1655728455189",
     "jest": "^26.6.3"
   }
 }

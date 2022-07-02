@@ -19,7 +19,11 @@ describe("GET /store/products", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
         { status: ["published"] },
-        { relations: defaultStoreProductsRelations, skip: 0, take: 100 }
+        {
+          relations: defaultStoreProductsRelations,
+          skip: 0,
+          take: 100,
+        }
       )
     })
 
@@ -42,7 +46,11 @@ describe("GET /store/products", () => {
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledTimes(1)
       expect(ProductServiceMock.listAndCount).toHaveBeenCalledWith(
         { is_giftcard: true, status: ["published"] },
-        { relations: defaultStoreProductsRelations, skip: 0, take: 100 }
+        {
+          relations: defaultStoreProductsRelations,
+          skip: 0,
+          take: 100,
+        }
       )
     })
   })

@@ -1,15 +1,15 @@
 import {
-  Entity,
-  Check,
   BeforeInsert,
+  Check,
   Column,
-  PrimaryColumn,
-  ManyToOne,
-  OneToOne,
-  JoinColumn,
+  Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryColumn,
 } from "typeorm"
-import { ulid } from "ulid"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { ClaimOrder } from "./claim-order"
@@ -18,6 +18,8 @@ import { Cart } from "./cart"
 import { Swap } from "./swap"
 import { Return } from "./return"
 import { ShippingOption } from "./shipping-option"
+import { ShippingMethodTaxLine } from "./shipping-method-tax-line"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 @Check(
   `"claim_order_id" IS NOT NULL OR "order_id" IS NOT NULL OR "cart_id" IS NOT NULL OR "swap_id" IS NOT NULL OR "return_id" IS NOT NULL`
@@ -42,7 +44,7 @@ export class ShippingMethod {
 
   @Index()
   @Column({ nullable: true })
-  claim_order_id: string
+  claim_order_id: string | null
 
   @ManyToOne(() => ClaimOrder)
   @JoinColumn({ name: "claim_order_id" })
@@ -68,10 +70,7 @@ export class ShippingMethod {
   @Column({ nullable: true })
   return_id: string
 
-  @OneToOne(
-    () => Return,
-    ret => ret.shipping_method
-  )
+  @OneToOne(() => Return, (ret) => ret.shipping_method)
   @JoinColumn({ name: "return_id" })
   return_order: Return
 
@@ -79,17 +78,20 @@ export class ShippingMethod {
   @JoinColumn({ name: "shipping_option_id" })
   shipping_option: ShippingOption
 
+  @OneToMany(() => ShippingMethodTaxLine, (tl) => tl.shipping_method, {
+    cascade: ["insert"],
+  })
+  tax_lines: ShippingMethodTaxLine[]
+
   @Column({ type: "int" })
   price: number
 
   @DbAwareColumn({ type: "jsonb" })
-  data: any
+  data: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `sm_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "sm")
   }
 }
 

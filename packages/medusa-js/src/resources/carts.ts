@@ -18,14 +18,16 @@ class CartsResource extends BaseResource {
    * Adds a shipping method to cart
    * @param {string} cart_id Id of cart
    * @param {StorePostCartsCartShippingMethodReq} payload Containg id of shipping option and optional data
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
   addShippingMethod(
     cart_id: string,
-    payload: StorePostCartsCartShippingMethodReq
+    payload: StorePostCartsCartShippingMethodReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/shipping-methods`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
@@ -35,22 +37,30 @@ class CartsResource extends BaseResource {
    * The completion of a cart can be performed idempotently with a provided header Idempotency-Key.
    * If not provuided, we will generate one for the request.
    * @param {string} cart_id is required
+   * @param customHeaders
    * @return {ResponsePromise<StoreCompleteCartRes>}
    */
-  complete(cart_id: string): ResponsePromise<StoreCompleteCartRes> {
+  complete(
+    cart_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCompleteCartRes> {
     const path = `/store/carts/${cart_id}/complete`
-    return this.client.request("POST", path)
+    return this.client.request("POST", path, {}, {}, customHeaders)
   }
 
   /**
    * Creates a cart
    * @param {StorePostCartReq} payload is optional and can contain a region_id and items.
    * The cart will contain the payload, if provided. Otherwise it will be empty
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
-  create(payload?: StorePostCartReq): ResponsePromise<StoreCartsRes> {
+  create(
+    payload?: StorePostCartReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
@@ -58,25 +68,31 @@ class CartsResource extends BaseResource {
    * Initializes the payment sessions that can be used to pay for the items of the cart.
    * This is usually called when a customer proceeds to checkout.
    * @param {string} cart_id is required
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
-  createPaymentSessions(cart_id: string): ResponsePromise<StoreCartsRes> {
+  createPaymentSessions(
+    cart_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions`
-    return this.client.request("POST", path)
+    return this.client.request("POST", path, {}, {}, customHeaders)
   }
 
   /**
    * Removes a discount from cart.
    * @param {string} cart_id is required
    * @param {string} code discount code to remove
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
   deleteDiscount(
     cart_id: string,
-    code: string
+    code: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/discounts/${code}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
@@ -84,66 +100,78 @@ class CartsResource extends BaseResource {
    * Can be useful in case a payment has failed
    * @param {string} cart_id is required
    * @param {string} provider_id the provider id of the session e.g. "stripe"
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
   deletePaymentSession(
     cart_id: string,
-    provider_id: string
+    provider_id: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
   /**
    * Refreshes a payment session.
    * @param {string} cart_id is required
    * @param {string} provider_id the provider id of the session e.g. "stripe"
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
   refreshPaymentSession(
     cart_id: string,
-    provider_id: string
+    provider_id: string,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}/refresh`
-    return this.client.request("POST", path)
+    return this.client.request("POST", path, {}, {}, customHeaders)
   }
 
   /**
    * Retrieves a cart
    * @param {string} cart_id is required
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
-  retrieve(cart_id: string): ResponsePromise<StoreCartsRes> {
+  retrieve(
+    cart_id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
   /**
    * Refreshes a payment session.
    * @param {string} cart_id is required
    * @param {StorePostCartsCartPaymentSessionReq} payload the provider id of the session e.g. "stripe"
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
   setPaymentSession(
     cart_id: string,
-    payload: StorePostCartsCartPaymentSessionReq
+    payload: StorePostCartsCartPaymentSessionReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-session`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
    * Updates a cart
    * @param {string} cart_id is required
    * @param {StorePostCartsCartReq} payload is required and can contain region_id, email, billing and shipping address
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
   update(
     cart_id: string,
-    payload: StorePostCartsCartReq
+    payload: StorePostCartsCartReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /**
@@ -151,15 +179,17 @@ class CartsResource extends BaseResource {
    * @param {string} cart_id is required
    * @param {string} provider_id is required
    * @param {StorePostCartsCartPaymentSessionUpdateReq} payload is required
+   * @param customHeaders
    * @return {ResponsePromise<StoreCartsRes>}
    */
   updatePaymentSession(
     cart_id: string,
     provider_id: string,
-    payload: StorePostCartsCartPaymentSessionUpdateReq
+    payload: StorePostCartsCartPaymentSessionUpdateReq,
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<StoreCartsRes> {
     const path = `/store/carts/${cart_id}/payment-sessions/${provider_id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 

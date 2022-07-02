@@ -1,8 +1,9 @@
 import { Router } from "express"
-import { Product, ProductTag, ProductType } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
+import { PricedProduct } from "../../../../types/pricing"
+import { Product, ProductTag, ProductType } from "../../../.."
+import { PaginatedResponse } from "../../../../types/common"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -17,6 +18,11 @@ export default (app) => {
     middlewares.wrap(require("./list-tag-usage-count").default)
   )
 
+  route.get(
+    "/:id/variants",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./list-variants").default)
+  )
   route.post(
     "/:id/variants",
     middlewares.wrap(require("./create-variant").default)
@@ -69,10 +75,12 @@ export const defaultAdminProductRelations = [
   "collection",
 ]
 
-export const defaultAdminProductFields = [
+export const defaultAdminProductFields: (keyof Product)[] = [
   "id",
   "title",
   "subtitle",
+  "status",
+  "external_id",
   "description",
   "handle",
   "is_giftcard",
@@ -91,13 +99,18 @@ export const defaultAdminProductFields = [
   "material",
   "created_at",
   "updated_at",
+  "deleted_at",
   "metadata",
 ]
+
+export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 
 export const allowedAdminProductFields = [
   "id",
   "title",
   "subtitle",
+  "status",
+  "external_id",
   "description",
   "handle",
   "is_giftcard",
@@ -116,6 +129,7 @@ export const allowedAdminProductFields = [
   "material",
   "created_at",
   "updated_at",
+  "deleted_at",
   "metadata",
 ]
 
@@ -150,7 +164,7 @@ export type AdminProductsDeleteRes = {
 }
 
 export type AdminProductsListRes = PaginatedResponse & {
-  products: Product[]
+  products: (PricedProduct | Product)[]
 }
 
 export type AdminProductsListTypesRes = {
@@ -172,7 +186,7 @@ export * from "./delete-option"
 export * from "./delete-product"
 export * from "./delete-variant"
 export * from "./get-product"
-export * from "./get-variants"
+export * from "./list-variants"
 export * from "./list-products"
 export * from "./list-tag-usage-count"
 export * from "./list-types"

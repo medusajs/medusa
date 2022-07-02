@@ -1,119 +1,56 @@
-import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { CartServiceMock } from "../../../../../services/__mocks__/cart"
-import { OrderServiceMock } from "../../../../../services/__mocks__/order"
-import { SwapServiceMock } from "../../../../../services/__mocks__/swap"
+import { CompletionStrategyMock } from "../../../../../strategies/__mocks__/cart-completion"
 
-describe("POST /store/carts/:id", () => {
-  describe("successfully completes a normal cart", () => {
+describe("POST /store/carts/:id/complete", () => {
+  describe("successfully calls completion strategy - Legacy Endpoint", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/carts/${IdMap.getId("test-cart")}/complete-cart`
-      )
+      subject = await request("POST", `/store/carts/test-cart/complete-cart`)
     })
 
     afterAll(() => {
       jest.clearAllMocks()
     })
 
-    it("Call CartService authorizePayment", () => {
-      expect(CartServiceMock.authorizePayment).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.authorizePayment).toHaveBeenCalledWith(
-        IdMap.getId("test-cart"),
-        { idempotency_key: "testkey" }
+    it("calls completion strat", () => {
+      expect(CompletionStrategyMock.complete).toHaveBeenCalledTimes(1)
+      expect(CompletionStrategyMock.complete).toHaveBeenCalledWith(
+        "test-cart",
+        { idempotency_key: "testkey", recovery_point: "started" },
+        undefined
       )
     })
 
-    it("Call OrderService createFromCart", () => {
-      expect(OrderServiceMock.createFromCart).toHaveBeenCalledTimes(1)
-      expect(OrderServiceMock.createFromCart).toHaveBeenCalledWith(
-        IdMap.getId("test-cart")
-      )
-    })
-
-    it("returns 200", () => {
+    it("responds correctly", () => {
       expect(subject.status).toEqual(200)
-    })
-
-    it("returns the created order", () => {
-      expect(subject.body.data.id).toEqual(IdMap.getId("test-order"))
+      expect(subject.body).toEqual({})
     })
   })
 
-  describe("successfully completes a swap cart", () => {
+  describe("successfully calls completion strategy", () => {
     let subject
 
     beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/carts/${IdMap.getId("swap-cart")}/complete-cart`
-      )
+      subject = await request("POST", `/store/carts/test-cart/complete`)
     })
 
     afterAll(() => {
       jest.clearAllMocks()
     })
 
-    it("Call CartService authorizePayment", () => {
-      expect(CartServiceMock.authorizePayment).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.authorizePayment).toHaveBeenCalledWith(
-        IdMap.getId("swap-cart"),
-        { idempotency_key: "testkey" }
+    it("calls completion strat", () => {
+      expect(CompletionStrategyMock.complete).toHaveBeenCalledTimes(1)
+      expect(CompletionStrategyMock.complete).toHaveBeenCalledWith(
+        "test-cart",
+        { idempotency_key: "testkey", recovery_point: "started" },
+        undefined
       )
     })
 
-    it("Call SwapService registerCartCompletion", () => {
-      expect(SwapServiceMock.registerCartCompletion).toHaveBeenCalledTimes(1)
-      expect(SwapServiceMock.registerCartCompletion).toHaveBeenCalledWith(
-        "test-swap"
-      )
-    })
-
-    it("returns 200", () => {
+    it("responds correctly", () => {
       expect(subject.status).toEqual(200)
-    })
-
-    it("returns the created order", () => {
-      expect(subject.body.data.id).toEqual("test-swap")
-    })
-  })
-
-  describe("returns early if payment requires more work", () => {
-    let subject
-
-    beforeAll(async () => {
-      subject = await request(
-        "POST",
-        `/store/carts/${IdMap.getId("test-cart2")}/complete-cart`
-      )
-    })
-
-    afterAll(() => {
-      jest.clearAllMocks()
-    })
-
-    it("Call CartService authorizePayment", () => {
-      expect(CartServiceMock.authorizePayment).toHaveBeenCalledTimes(1)
-      expect(CartServiceMock.authorizePayment).toHaveBeenCalledWith(
-        IdMap.getId("test-cart2"),
-        { idempotency_key: "testkey" }
-      )
-    })
-
-    it("Call CartService retrieve 1 time", () => {
-      expect(CartServiceMock.retrieve).toHaveBeenCalledTimes(1)
-    })
-
-    it("returns 200", () => {
-      expect(subject.status).toEqual(200)
-    })
-
-    it("returns the created order", () => {
-      expect(subject.body.data.id).toEqual(IdMap.getId("test-cart2"))
-      expect(subject.body.data.payment_session.status).toEqual("requires_more")
+      expect(subject.body).toEqual({})
     })
   })
 })

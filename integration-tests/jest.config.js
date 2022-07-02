@@ -6,10 +6,15 @@ const pkgs = glob
 
 module.exports = {
   testEnvironment: `node`,
+  testTimeout: 10000,
   globalSetup: "<rootDir>/integration-tests/globalSetup.js",
   globalTeardown: "<rootDir>/integration-tests/globalTeardown.js",
   rootDir: `../`,
   roots: pkgs,
+  projects: [
+    "<rootDir>/integration-tests/api/jest.config.js",
+    "<rootDir>/integration-tests/plugins/jest.config.js",
+  ],
   testPathIgnorePatterns: [
     `/examples/`,
     `/www/`,

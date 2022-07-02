@@ -1,19 +1,21 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
-  IsOptional,
-  ValidateNested,
   IsBoolean,
-  IsObject,
-  IsString,
+  IsEnum,
   IsInt,
   IsNotEmpty,
-  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
 import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { ClaimTypeValue } from "../../../../types/claim"
+import { ClaimType, ClaimReason } from "../../../../models"
 
 /**
  * @oas [post] /order/{id}/claims
@@ -169,7 +171,21 @@ export default async (req, res) => {
             const order = await orderService
               .withTransaction(manager)
               .retrieve(id, {
-                relations: ["items", "discounts", "discounts.rule"],
+                relations: [
+                  "customer",
+                  "shipping_address",
+                  "region",
+                  "items",
+                  "items.tax_lines",
+                  "discounts",
+                  "discounts.rule",
+                  "claims",
+                  "claims.additional_items",
+                  "claims.additional_items.tax_lines",
+                  "swaps",
+                  "swaps.additional_items",
+                  "swaps.additional_items.tax_lines",
+                ],
               })
 
             await claimService.withTransaction(manager).create({
@@ -318,22 +334,10 @@ export default async (req, res) => {
   res.status(idempotencyKey.response_code).json(idempotencyKey.response_body)
 }
 
-enum ClaimTypes {
-  replace = "replace",
-  refund = "refund",
-}
-
-enum ClaimItemReason {
-  missing_item = "missing_item",
-  wrong_item = "wrong_item",
-  production_failure = "production_failure",
-  other = "other",
-}
-
 export class AdminPostOrdersOrderClaimsReq {
-  @IsEnum(ClaimTypes)
+  @IsEnum(ClaimType)
   @IsNotEmpty()
-  type: ClaimTypes
+  type: ClaimTypeValue
 
   @IsArray()
   @IsNotEmpty()
@@ -414,9 +418,9 @@ class Item {
   @IsOptional()
   note?: string
 
-  @IsEnum(ClaimItemReason)
+  @IsEnum(ClaimReason)
   @IsOptional()
-  reason?: ClaimItemReason
+  reason?: ClaimReason
 
   @IsArray()
   @IsOptional()

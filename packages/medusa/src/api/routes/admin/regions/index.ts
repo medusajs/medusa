@@ -77,6 +77,9 @@ export default (app) => {
 export const defaultAdminRegionFields = [
   "id",
   "name",
+  "automatic_taxes",
+  "gift_cards_taxable",
+  "tax_provider_id",
   "currency_code",
   "tax_rate",
   "tax_code",
@@ -104,7 +107,7 @@ export type AdminRegionsDeleteRes = DeleteResponse
 
 export class FulfillmentOption {
   provider_id: string
-  options: any[]
+  options: unknown[]
 }
 
 export class AdminGetRegionsRegionFulfillmentOptionsRes {

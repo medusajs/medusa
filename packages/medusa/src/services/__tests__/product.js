@@ -8,6 +8,23 @@ const eventBusService = {
   },
 }
 
+const mockUpsertTags = jest.fn().mockImplementation((data) =>
+  Promise.resolve(
+    data.map(({ value, id }) => ({
+      value,
+      id: id || (value === "title" ? "tag-1" : "tag-2"),
+    }))
+  )
+)
+
+const mockUpsertType = jest.fn().mockImplementation((value) => {
+  const productType = {
+    id: "type",
+    value: value,
+  }
+  return Promise.resolve(productType)
+})
+
 describe("ProductService", () => {
   describe("retrieve", () => {
     const productRepo = MockRepository({
@@ -54,7 +71,7 @@ describe("ProductService", () => {
 
   describe("create", () => {
     const productRepository = MockRepository({
-      create: product => ({
+      create: (product) => ({
         id: IdMap.getId("ironman"),
         title: "Suit",
         options: [],
@@ -71,7 +88,7 @@ describe("ProductService", () => {
 
     const productTagRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         if (data.value === "title") {
           return { id: "tag-1", value: "title" }
         }
@@ -81,18 +98,20 @@ describe("ProductService", () => {
         }
       },
     })
+    productTagRepository.upsertTags = mockUpsertTags
     const productTypeRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         return { id: "type", value: "type1" }
       },
     })
+    productTypeRepository.upsertType = mockUpsertType
 
     const productCollectionService = {
       withTransaction: function() {
         return this
       },
-      retrieve: id =>
+      retrieve: (id) =>
         Promise.resolve({ id: IdMap.getId("cat"), title: "Suits" }),
     }
 
@@ -148,13 +167,9 @@ describe("ProductService", () => {
         ],
       })
 
-      expect(productTagRepository.findOne).toHaveBeenCalledTimes(2)
-      // We add two tags, that does not exist therefore we make sure
-      // that create is also called
-      expect(productTagRepository.create).toHaveBeenCalledTimes(2)
+      expect(productTagRepository.upsertTags).toHaveBeenCalledTimes(1)
 
-      expect(productTypeRepository.findOne).toHaveBeenCalledTimes(1)
-      expect(productTypeRepository.create).toHaveBeenCalledTimes(1)
+      expect(productTypeRepository.upsertType).toHaveBeenCalledTimes(1)
 
       expect(productRepository.save).toHaveBeenCalledTimes(1)
       expect(productRepository.save).toHaveBeenCalledWith({
@@ -223,10 +238,11 @@ describe("ProductService", () => {
 
     const productTypeRepository = MockRepository({
       findOne: () => Promise.resolve(undefined),
-      create: data => {
+      create: (data) => {
         return { id: "type", value: "type1" }
       },
     })
+    productTypeRepository.upsertType = mockUpsertType
 
     const productVariantRepository = MockRepository()
 
@@ -243,7 +259,7 @@ describe("ProductService", () => {
     }
 
     const productTagRepository = MockRepository({
-      findOne: data => {
+      findOne: (data) => {
         if (data.where.value === "test") {
           return Promise.resolve({ id: IdMap.getId("test"), value: "test" })
         }
@@ -252,6 +268,26 @@ describe("ProductService", () => {
         }
       },
     })
+    productTagRepository.upsertTags = mockUpsertTags
+
+    const cartRepository = MockRepository({
+      findOne: (data) => {
+        return Promise.resolve({})
+      },
+    })
+
+    const priceSelectionStrategy = {
+      withTransaction: (manager) => {
+        return this
+      },
+      calculateVariantPrice: (variantId, context) => {
+        return {
+          originalPrice: null,
+          calculatedPrice: null,
+          prices: [],
+        }
+      },
+    }
 
     const productService = new ProductService({
       manager: MockManager,
@@ -261,6 +297,8 @@ describe("ProductService", () => {
       productTagRepository,
       productTypeRepository,
       eventBusService,
+      cartRepository,
+      priceSelectionStrategy,
     })
 
     beforeEach(() => {
@@ -440,7 +478,7 @@ describe("ProductService", () => {
 
   describe("addOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [{ title: "Color" }],
@@ -513,7 +551,7 @@ describe("ProductService", () => {
 
   describe("reorderVariants", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [{ id: IdMap.getId("green") }, { id: IdMap.getId("blue") }],
@@ -569,75 +607,9 @@ describe("ProductService", () => {
     })
   })
 
-  describe("reorderOptions", () => {
-    const productRepository = MockRepository({
-      findOneWithRelations: query =>
-        Promise.resolve({
-          id: IdMap.getId("ironman"),
-          options: [
-            { id: IdMap.getId("material") },
-            { id: IdMap.getId("color") },
-          ],
-        }),
-    })
-
-    const productService = new ProductService({
-      manager: MockManager,
-      productRepository,
-      eventBusService,
-    })
-
-    beforeEach(() => {
-      jest.clearAllMocks()
-    })
-
-    it("reorders options", async () => {
-      await productService.reorderOptions(IdMap.getId("ironman"), [
-        IdMap.getId("color"),
-        IdMap.getId("material"),
-      ])
-
-      expect(productRepository.save).toBeCalledTimes(1)
-      expect(productRepository.save).toBeCalledWith({
-        id: IdMap.getId("ironman"),
-        options: [
-          { id: IdMap.getId("color") },
-          { id: IdMap.getId("material") },
-        ],
-      })
-    })
-
-    it("throws if one option id is not in the product options", async () => {
-      try {
-        await productService.reorderOptions(IdMap.getId("ironman"), [
-          IdMap.getId("packaging"),
-          IdMap.getId("material"),
-        ])
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Product has no option with id: ${IdMap.getId("packaging")}`
-        )
-      }
-    })
-
-    it("throws if order length and product option lengths differ", async () => {
-      try {
-        await productService.reorderOptions(IdMap.getId("ironman"), [
-          IdMap.getId("size"),
-          IdMap.getId("color"),
-          IdMap.getId("material"),
-        ])
-      } catch (err) {
-        expect(err.message).toEqual(
-          `Product options and new options order differ in length.`
-        )
-      }
-    })
-  })
-
   describe("updateOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           options: [
@@ -712,7 +684,7 @@ describe("ProductService", () => {
 
   describe("deleteOption", () => {
     const productRepository = MockRepository({
-      findOneWithRelations: query =>
+      findOneWithRelations: (query) =>
         Promise.resolve({
           id: IdMap.getId("ironman"),
           variants: [
@@ -751,7 +723,7 @@ describe("ProductService", () => {
     })
 
     const productOptionRepository = MockRepository({
-      findOne: query => {
+      findOne: (query) => {
         if (query.where.id === IdMap.getId("material")) {
           return undefined
         }

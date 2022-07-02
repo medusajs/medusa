@@ -68,7 +68,7 @@ export const defaultStoreCustomersRelations = [
   "billing_address",
 ]
 
-export const defaultStoreCustomersFields = [
+export const defaultStoreCustomersFields: (keyof Customer)[] = [
   "id",
   "email",
   "first_name",

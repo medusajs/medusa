@@ -8,7 +8,11 @@ const route = Router()
 export default (app) => {
   app.use("/customers", route)
 
-  route.get("/", middlewares.wrap(require("./list-customers").default))
+  route.get(
+    "/",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./list-customers").default)
+  )
   route.get("/:id", middlewares.wrap(require("./get-customer").default))
 
   route.post("/", middlewares.wrap(require("./create-customer").default))
@@ -25,6 +29,8 @@ export type AdminCustomersDeleteRes = DeleteResponse
 export type AdminCustomersListRes = PaginatedResponse & {
   customers: Customer[]
 }
+
+export const defaultAdminCustomersRelations = ["orders", "shipping_addresses"]
 
 export * from "./create-customer"
 export * from "./get-customer"

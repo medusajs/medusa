@@ -45,7 +45,7 @@ export class Reporter {
     this.ora_ = activityLogger
   }
 
-  panic = data => {
+  panic = (data) => {
     const parsedPanic = panicHandler(data)
 
     this.loggerInstance_.log({
@@ -66,7 +66,7 @@ export class Reporter {
    * @param {string} level - the level to check if logger is configured for
    * @return {boolean} whether we should log
    */
-  shouldLog = level => {
+  shouldLog = (level) => {
     level = this.loggerInstance_.levels[level]
     const logLevel = this.loggerInstance_.levels[this.loggerInstance_.level]
     return level <= logLevel
@@ -76,7 +76,7 @@ export class Reporter {
    * Sets the log level of the logger.
    * @param {string} level - the level to set the logger to
    */
-  setLogLevel = level => {
+  setLogLevel = (level) => {
     this.loggerInstance_.level = level
   }
 
@@ -262,7 +262,18 @@ export class Reporter {
    * Logs a message at the info level.
    * @param {string} message - the message to log
    */
-  info = message => {
+  debug = (message) => {
+    this.loggerInstance_.log({
+      level: "debug",
+      message,
+    })
+  }
+
+  /**
+   * Logs a message at the info level.
+   * @param {string} message - the message to log
+   */
+  info = (message) => {
     this.loggerInstance_.log({
       level: "info",
       message,
@@ -273,7 +284,7 @@ export class Reporter {
    * Logs a message at the warn level.
    * @param {string} message - the message to log
    */
-  warn = message => {
+  warn = (message) => {
     this.loggerInstance_.warn({
       level: "warn",
       message,

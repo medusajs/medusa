@@ -32,7 +32,14 @@ const questions = {
     type: "select",
     name: "storefront",
     message: "Which storefront starter would you like to install?",
-    choices: ["Gatsby Starter", "Next.js Starter", "None"],
+    choices: [
+      "Gatsby Starter",
+      "Next.js Starter",
+      "medusa.express (Next.js)",
+      "medusa.express (Gatsby)",
+      "Gatsby Starter (Simple)",
+      "None",
+    ],
   },
 }
 
@@ -50,6 +57,24 @@ const program = new Commander.Command(pkg.name)
   )
   .option(`-v --verbose`, `Show all installation output`)
   .parse(process.argv)
+
+const getStorefrontStarter = (starter: string): string => {
+  const selected = starter.toLowerCase()
+  switch (selected) {
+    case "gatsby starter":
+      return "https://github.com/medusajs/gatsby-starter-medusa"
+    case "next.js starter":
+      return "https://github.com/medusajs/nextjs-starter-medusa"
+    case "medusa.express (next.js)":
+      return "https://github.com/medusajs/medusa-express-nextjs"
+    case "medusa.express (gatsby)":
+      return "https://github.com/medusajs/medusa-express-gatsby"
+    case "gatsby starter (simple)":
+      return "https://github.com/medusajs/gatsby-starter-medusa-simple"
+    default:
+      return ""
+  }
+}
 
 export const run = async (): Promise<void> => {
   track("CREATE_CLI")
@@ -94,10 +119,7 @@ export const run = async (): Promise<void> => {
 
   const hasStorefront = storefront.toLowerCase() !== "none"
   if (hasStorefront) {
-    const storefrontStarter =
-      storefront.toLowerCase() === "gatsby starter"
-        ? "https://github.com/medusajs/gatsby-starter-medusa"
-        : "https://github.com/medusajs/nextjs-starter-medusa"
+    const storefrontStarter = getStorefrontStarter(storefront)
     await newStarter({
       starter: storefrontStarter,
       root: path.join(projectRoot, `storefront`),

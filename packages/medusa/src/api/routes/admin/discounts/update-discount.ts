@@ -3,6 +3,7 @@ import {
   IsArray,
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -12,9 +13,14 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { AllocationType } from "../../../../models"
+import { Discount } from "../../../../models/discount"
+import { DiscountConditionOperator } from "../../../../models/discount-condition"
 import DiscountService from "../../../../services/discount"
-import { IsGreaterThan } from "../../../../utils/validators/greater-than"
+import { AdminUpsertConditionsReq } from "../../../../types/discount"
+import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
+import { IsGreaterThan } from "../../../../utils/validators/greater-than"
 import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration"
 
 /**
@@ -33,9 +39,6 @@ import { IsISO8601Duration } from "../../../../utils/validators/iso8601-duration
  *           code:
  *             type: string
  *             description: A unique code that will be used to redeem the Discount
- *           is_dynamic:
- *             type: string
- *             description: Whether the Discount should have multiple instances of itself, each with a different code. This can be useful for automatically generated codes that all have to follow a common set of rules.
  *           rule:
  *             description: The Discount Rule that defines how Discounts are calculated
  *             oneOf:
@@ -73,12 +76,24 @@ export default async (req, res) => {
   const { discount_id } = req.params
 
   const validated = await validator(AdminPostDiscountsDiscountReq, req.body)
+
+  const validatedParams = await validator(
+    AdminPostDiscountsDiscountParams,
+    req.query
+  )
+
   const discountService: DiscountService = req.scope.resolve("discountService")
+
   await discountService.update(discount_id, validated)
-  const discount = await discountService.retrieve(discount_id, {
-    select: defaultAdminDiscountsFields,
-    relations: defaultAdminDiscountsRelations,
-  })
+
+  const config = getRetrieveConfig<Discount>(
+    defaultAdminDiscountsFields,
+    defaultAdminDiscountsRelations,
+    validatedParams?.fields?.split(",") as (keyof Discount)[],
+    validatedParams?.expand?.split(",")
+  )
+
+  const discount = await discountService.retrieve(discount_id, config)
 
   res.status(200).json({ discount })
 }
@@ -95,10 +110,6 @@ export class AdminPostDiscountsDiscountReq {
 
   @IsBoolean()
   @IsOptional()
-  is_dynamic?: boolean
-
-  @IsBoolean()
-  @IsOptional()
   is_disabled?: boolean
 
   @IsDate()
@@ -110,16 +121,16 @@ export class AdminPostDiscountsDiscountReq {
   @IsOptional()
   @IsGreaterThan("starts_at")
   @Type(() => Date)
-  ends_at?: Date
+  ends_at?: Date | null
 
   @IsISO8601Duration()
   @IsOptional()
-  valid_duration?: string
+  valid_duration?: string | null
 
   @IsNumber()
   @IsOptional()
   @IsPositive()
-  usage_limit?: number
+  usage_limit?: number | null
 
   @IsArray()
   @IsOptional()
@@ -128,7 +139,7 @@ export class AdminPostDiscountsDiscountReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 export class AdminUpdateDiscountRule {
@@ -140,19 +151,39 @@ export class AdminUpdateDiscountRule {
   @IsOptional()
   description?: string
 
-  @IsString()
-  @IsNotEmpty()
-  type: string
-
   @IsNumber()
-  value: string
+  @IsOptional()
+  value?: number
+
+  @IsOptional()
+  @IsEnum(AllocationType, {
+    message: `Invalid allocation type, must be one of "total" or "item"`,
+  })
+  allocation?: AllocationType
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => AdminUpsertCondition)
+  conditions?: AdminUpsertCondition[]
+}
+
+export class AdminUpsertCondition extends AdminUpsertConditionsReq {
+  @IsString()
+  @IsOptional()
+  id?: string
 
   @IsString()
-  @IsNotEmpty()
-  allocation: string
-
-  @IsArray()
   @IsOptional()
-  @IsString({ each: true })
-  valid_for?: string
+  operator: DiscountConditionOperator
+}
+
+export class AdminPostDiscountsDiscountParams {
+  @IsString()
+  @IsOptional()
+  expand?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
 }

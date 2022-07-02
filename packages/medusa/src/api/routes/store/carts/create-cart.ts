@@ -15,6 +15,7 @@ import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { AddressPayload } from "../../../../types/common"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /carts
@@ -129,7 +130,9 @@ export default async (req, res) => {
         validated.items.map(async (i) => {
           const lineItem = await lineItemService
             .withTransaction(manager)
-            .generate(i.variant_id, regionId, i.quantity)
+            .generate(i.variant_id, regionId, i.quantity, {
+              customer_id: req.user?.customer_id,
+            })
           await cartService
             .withTransaction(manager)
             .addLineItem(cart.id, lineItem)
@@ -142,7 +145,9 @@ export default async (req, res) => {
       relations: defaultStoreCartRelations,
     })
 
-    res.status(200).json({ cart })
+    const data = await decorateLineItemsWithTotals(cart, req)
+
+    res.status(200).json({ cart: data })
   })
 }
 

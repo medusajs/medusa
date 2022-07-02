@@ -6,45 +6,43 @@ import {
   AdminPostNotesNoteReq,
   AdminPostNotesReq,
 } from "@medusajs/medusa"
+import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminNotesResource extends BaseResource {
-  create(payload: AdminPostNotesReq): ResponsePromise<AdminNotesRes> {
+  create(payload: AdminPostNotesReq, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesRes> {
     const path = `/admin/notes`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   update(
     id: string,
-    payload: AdminPostNotesNoteReq
-  ): ResponsePromise<AdminNotesRes> {
+    payload: AdminPostNotesNoteReq,
+    customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesRes> {
     const path = `/admin/notes/${id}`
-    return this.client.request("POST", path, payload)
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  delete(id: string): ResponsePromise<AdminNotesDeleteRes> {
+  delete(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesDeleteRes> {
     const path = `/admin/notes/${id}`
-    return this.client.request("DELETE", path)
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 
-  retrieve(id: string): ResponsePromise<AdminNotesRes> {
+  retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesRes> {
     const path = `/admin/notes/${id}`
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  list(query?: AdminGetNotesParams): ResponsePromise<AdminNotesListRes> {
+  list(query?: AdminGetNotesParams, customHeaders: Record<string, any> = {}): ResponsePromise<AdminNotesListRes> {
     let path = `/admin/notes/`
 
     if (query) {
-      const queryString = Object.entries(query).map(([key, value]) => {
-        return `${key}=${value}`
-      })
-
-      path = `/admin/notes?${queryString.join("&")}`
+      const queryString = qs.stringify(query)
+      path = `/admin/notes?${queryString}`
     }
 
-    return this.client.request("GET", path)
+    return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }
 

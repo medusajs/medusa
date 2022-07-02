@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { ShippingOption } from "../../../.."
-import { DeleteResponse } from "../../../../types/common"
+import { PaginatedResponse, DeleteResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 
 const route = Router()
@@ -46,7 +46,7 @@ export const defaultFields = [
 
 export const defaultRelations = ["region", "profile", "requirements"]
 
-export type AdminShippingOptionsListRes = {
+export type AdminShippingOptionsListRes = PaginatedResponse & {
   shipping_options: ShippingOption[]
 }
 

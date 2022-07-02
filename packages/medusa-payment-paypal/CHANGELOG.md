@@ -3,13 +3,73 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.0.36](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.35...medusa-payment-paypal@1.0.36) (2021-12-17)
+## [1.2.2](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.2.0...medusa-payment-paypal@1.2.2) (2022-06-19)
+
+
+### Bug Fixes
+
+* **medusa-payment-paypal:** Should not throw when canceling already canceled payment ([#1470](https://github.com/medusajs/medusa/issues/1470)) ([5838793](https://github.com/medusajs/medusa/commit/58387936c9c944e85c4e72144cf81a52d1f0e505))
+
+
+
+
+
+## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.2.0...medusa-payment-paypal@1.2.1) (2022-05-31)
+
+
+### Bug Fixes
+
+* **medusa-payment-paypal:** Should not throw when canceling already canceled payment ([#1470](https://github.com/medusajs/medusa/issues/1470)) ([5838793](https://github.com/medusajs/medusa/commit/58387936c9c944e85c4e72144cf81a52d1f0e505))
+
+
+
+
+
+# [1.2.0](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.1.1...medusa-payment-paypal@1.2.0) (2022-05-01)
 
 **Note:** Version bump only for package medusa-payment-paypal
 
 
 
 
+
+## [1.1.1](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.40...medusa-payment-paypal@1.1.1) (2022-02-28)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+
+
+
+
+# [1.1.0](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.40...medusa-payment-paypal@1.1.0) (2022-02-25)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+
+
+
+
+## [1.0.40](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.39...medusa-payment-paypal@1.0.40) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
+## [1.0.39](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.38...medusa-payment-paypal@1.0.39) (2022-02-06)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+## [1.0.38](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.37...medusa-payment-paypal@1.0.38) (2022-01-11)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+## [1.0.37](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.36...medusa-payment-paypal@1.0.37) (2021-12-29)
+
+**Note:** Version bump only for package medusa-payment-paypal
+
+## [1.0.36](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.35...medusa-payment-paypal@1.0.36) (2021-12-17)
+
+**Note:** Version bump only for package medusa-payment-paypal
 
 ## [1.0.35](https://github.com/medusajs/medusa/compare/medusa-payment-paypal@1.0.34...medusa-payment-paypal@1.0.35) (2021-12-08)
 

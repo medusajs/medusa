@@ -6,7 +6,7 @@ import {
   useSetPaymentSession,
   useUpdateCart,
   useCreatePaymentSession,
-} from "../hooks/carts"
+} from "../hooks/store/"
 import { Cart } from "../types"
 
 interface CartState {
@@ -75,7 +75,7 @@ export const CartProvider = ({
   const completeCheckout = useCompleteCart(cart?.id)
 
   const totalItems = cart?.items
-    .map((i) => i.quantity)
+    .map(i => i.quantity)
     .reduce((acc, curr) => acc + curr, 0)
 
   return (

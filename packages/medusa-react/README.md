@@ -9,9 +9,9 @@ The library uses [react-query](https://react-query.tanstack.com/overview) as a s
 In order to install the package, run the following
 
 ```bash
-npm install @medusajs/medusa-react react-query
+npm install medusa-react react-query
 # or
-yarn add @medusajs/medusa-react react-query
+yarn add medusa-react react-query
 ```
 
 ## Quick Start
@@ -62,7 +62,7 @@ The hooks exposed by `medusa-react` fall into two main categories: queries and m
 ```jsx
 // ./my-storefront.tsx
 import * as React from "react"
-import { useProducts } from "@medusajs/medusa-react"
+import { useProducts } from "medusa-react"
 
 const MyStorefront = () => {
   const { products, isLoading } = useProducts()
@@ -125,7 +125,7 @@ type QueryReturnType = APIResponse &
 
 ```jsx
 import * as React from "react"
-import { useCreateCart } from "@medusajs/medusa-react"
+import { useCreateCart } from "medusa-react"
 
 const CreateCartButton = () => {
   const createCart = useCreateCart()

@@ -1,7 +1,7 @@
-import { BaseService } from "medusa-interfaces"
-import { pager } from "../utils/pager"
-import { createClient } from "../utils/create-client"
 import { DataType } from "@shopify/shopify-api"
+import { BaseService } from "medusa-interfaces"
+import { createClient } from "../utils/create-client"
+import { pager } from "../utils/pager"
 
 class ShopifyClientService extends BaseService {
   // eslint-disable-next-line no-empty-pattern
@@ -23,7 +23,7 @@ class ShopifyClientService extends BaseService {
   }
 
   delete(params) {
-    return this.client_.post(params)
+    return this.client_.delete(params)
   }
 
   post(params) {

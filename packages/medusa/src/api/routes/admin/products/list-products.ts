@@ -1,4 +1,4 @@
-import { Type } from "class-transformer"
+import { Transform, Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -8,12 +8,17 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import * as _ from "lodash"
-import { identity } from "lodash"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
-import { ProductService } from "../../../../services"
+import { omit } from "lodash"
+import { Product, ProductStatus } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
+import {
+  allowedAdminProductFields,
+  defaultAdminProductFields,
+  defaultAdminProductRelations,
+} from "."
+import listAndCount from "../../../../controllers/products/admin-list-products"
 import { validator } from "../../../../utils/validator"
+import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
 /**
  * @oas [get] /products
@@ -66,28 +71,7 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validatedParams = await validator(AdminGetProductsParams, req.query)
 
-  const productService: ProductService = req.scope.resolve("productService")
-
-  let includeFields: string[] = []
-  if (validatedParams.fields) {
-    includeFields = validatedParams.fields!.split(",")
-  }
-
-  let expandFields: string[] = []
-  if (validatedParams.expand) {
-    expandFields = validatedParams.expand!.split(",")
-  }
-
-  const listConfig = {
-    select: includeFields.length ? includeFields : defaultAdminProductFields,
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminProductRelations,
-    skip: validatedParams.offset,
-    take: validatedParams.limit,
-  }
-
-  const filterableFields = _.omit(validatedParams, [
+  const filterableFields = omit(validatedParams, [
     "limit",
     "offset",
     "expand",
@@ -95,24 +79,22 @@ export default async (req, res) => {
     "order",
   ])
 
-  const [products, count] = await productService.listAndCount(
-    _.pickBy(filterableFields, identity),
-    listConfig
+  const result = await listAndCount(
+    req.scope,
+    filterableFields,
+    {},
+    {
+      limit: validatedParams.limit ?? 50,
+      offset: validatedParams.offset ?? 0,
+      expand: validatedParams.expand,
+      fields: validatedParams.fields,
+      allowedFields: allowedAdminProductFields,
+      defaultFields: defaultAdminProductFields as (keyof Product)[],
+      defaultRelations: defaultAdminProductRelations,
+    }
   )
 
-  res.json({
-    products,
-    count,
-    offset: validatedParams.offset,
-    limit: validatedParams.limit,
-  })
-}
-
-export enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
+  res.json(result)
 }
 
 export class AdminGetProductsPaginationParams {
@@ -156,6 +138,10 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
   @IsOptional()
   tags?: string[]
 
+  @IsArray()
+  @IsOptional()
+  price_list_id?: string[]
+
   @IsString()
   @IsOptional()
   title?: string
@@ -170,8 +156,8 @@ export class AdminGetProductsParams extends AdminGetProductsPaginationParams {
 
   @IsBoolean()
   @IsOptional()
-  @Type(() => Boolean)
-  is_giftcard?: string
+  @Transform(({ value }) => optionalBooleanMapper.get(value.toLowerCase()))
+  is_giftcard?: boolean
 
   @IsString()
   @IsOptional()

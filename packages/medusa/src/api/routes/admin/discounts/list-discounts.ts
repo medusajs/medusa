@@ -1,8 +1,17 @@
-import { Type, Transform } from "class-transformer"
-import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
+import { Transform, Type } from "class-transformer"
+import {
+  IsBoolean,
+  IsInt,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from "class-validator"
+import _, { pickBy } from "lodash"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
-import { ListSelector } from "../../../../types/discount"
+import { FindConfig } from "../../../../types/common"
+import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [get] /discounts
@@ -33,24 +42,22 @@ export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)
 
   const discountService: DiscountService = req.scope.resolve("discountService")
-  const selector: ListSelector = {}
 
-  if (validated.q) {
-    selector.q = validated.q
-  }
+  const relations =
+    validated.expand?.split(",") ?? defaultAdminDiscountsRelations
 
-  selector.is_disabled = validated.is_disabled
-  selector.is_dynamic = validated.is_dynamic
-
-  const listConfig = {
+  const listConfig: FindConfig<Discount> = {
     select: defaultAdminDiscountsFields,
-    relations: defaultAdminDiscountsRelations,
+    relations,
     skip: validated.offset,
     take: validated.limit,
     order: { created_at: "DESC" },
   }
+
+  const filterableFields = _.omit(validated, ["limit", "offset", "expand"])
+
   const [discounts, count] = await discountService.listAndCount(
-    selector,
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
     listConfig
   )
 
@@ -63,6 +70,11 @@ export default async (req, res) => {
 }
 
 export class AdminGetDiscountsParams {
+  @ValidateNested()
+  @IsOptional()
+  @Type(() => AdminGetDiscountsDiscountRuleParams)
+  rule?: AdminGetDiscountsDiscountRuleParams
+
   @IsString()
   @IsOptional()
   q?: string

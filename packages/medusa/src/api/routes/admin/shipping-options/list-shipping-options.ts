@@ -1,6 +1,7 @@
 import { Transform } from "class-transformer"
 import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { defaultFields, defaultRelations } from "."
+import { PricingService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
 
@@ -50,12 +51,15 @@ export default async (req, res) => {
   )
 
   const optionService = req.scope.resolve("shippingOptionService")
-  const data = await optionService.list(validatedParams, {
+  const pricingService: PricingService = req.scope.resolve("pricingService")
+  const [data, count] = await optionService.listAndCount(validatedParams, {
     select: defaultFields,
     relations: defaultRelations,
   })
 
-  res.status(200).json({ shipping_options: data })
+  const options = await pricingService.setShippingOptionPrices(data)
+
+  res.status(200).json({ shipping_options: options, count })
 }
 
 export class AdminGetShippingOptionsParams {
@@ -66,10 +70,10 @@ export class AdminGetShippingOptionsParams {
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
-  is_return?: string
+  is_return?: boolean
 
   @IsOptional()
   @IsBoolean()
   @Transform(({ value }) => optionalBooleanMapper.get(value))
-  admin_only?: string
+  admin_only?: boolean
 }

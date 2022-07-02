@@ -3,13 +3,57 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.1.41](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.40...medusa-plugin-brightpearl@1.1.41) (2021-12-17)
+# [1.3.0](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.2.1...medusa-plugin-brightpearl@1.3.0) (2022-05-01)
 
 **Note:** Version bump only for package medusa-plugin-brightpearl
 
 
 
 
+
+## [1.2.1](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.45...medusa-plugin-brightpearl@1.2.1) (2022-02-28)
+
+
+### Features
+
+* new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([47588e7](https://github.com/medusajs/medusa/commit/47588e7a8d3b2ae2fed0c1e87fdf1ee2db6bcdc2)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
+
+
+
+
+
+# [1.2.0](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.45...medusa-plugin-brightpearl@1.2.0) (2022-02-25)
+
+
+### Features
+
+* new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([c56660f](https://github.com/medusajs/medusa/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
+
+
+
+
+
+## [1.1.45](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.44...medusa-plugin-brightpearl@1.1.45) (2022-02-06)
+
+### Bug Fixes
+
+- release ([fc3fbc8](https://github.com/medusajs/medusa/commit/fc3fbc897fad5c8a5d3eea828ac7277fba9d70af))
+
+## [1.1.44](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.43...medusa-plugin-brightpearl@1.1.44) (2022-02-06)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+## [1.1.43](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.42...medusa-plugin-brightpearl@1.1.43) (2022-01-11)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+## [1.1.42](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.41...medusa-plugin-brightpearl@1.1.42) (2021-12-29)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
+
+## [1.1.41](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.40...medusa-plugin-brightpearl@1.1.41) (2021-12-17)
+
+**Note:** Version bump only for package medusa-plugin-brightpearl
 
 ## [1.1.40](https://github.com/medusajs/medusa/compare/medusa-plugin-brightpearl@1.1.39...medusa-plugin-brightpearl@1.1.40) (2021-12-08)
 

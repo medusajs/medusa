@@ -1,14 +1,14 @@
-import { BaseService } from "medusa-interfaces"
 import jwt, { JwtPayload } from "jsonwebtoken"
-import config from "../config"
 import { MedusaError } from "medusa-core-utils"
-import { User } from ".."
+import { BaseService } from "medusa-interfaces"
 import { EntityManager } from "typeorm"
 import { EventBusService, UserService } from "."
+import { User } from ".."
+import { UserRoles } from "../models/user"
 import { InviteRepository } from "../repositories/invite"
 import { UserRepository } from "../repositories/user"
 import { ListInvite } from "../types/invites"
-import { UserRoles } from "../models/user"
+import { ConfigModule } from "../types/global"
 
 // 7 days
 const DEFAULT_VALID_DURATION = 1000 * 60 * 60 * 24 * 7
@@ -32,14 +32,21 @@ class InviteService extends BaseService {
   private inviteRepository_: InviteRepository
   private eventBus_: EventBusService
 
-  constructor({
-    manager,
-    userService,
-    userRepository,
-    inviteRepository,
-    eventBusService,
-  }: InviteServiceProps) {
+  protected readonly configModule_: ConfigModule
+
+  constructor(
+    {
+      manager,
+      userService,
+      userRepository,
+      inviteRepository,
+      eventBusService,
+    }: InviteServiceProps,
+    configModule: ConfigModule
+  ) {
     super()
+
+    this.configModule_ = configModule
 
     /** @private @constant {EntityManager} */
     this.manager_ = manager
@@ -62,13 +69,16 @@ class InviteService extends BaseService {
       return this
     }
 
-    const cloned = new InviteService({
-      manager,
-      inviteRepository: this.inviteRepository_,
-      userService: this.userService_,
-      userRepository: this.userRepo_,
-      eventBusService: this.eventBus_,
-    })
+    const cloned = new InviteService(
+      {
+        manager,
+        inviteRepository: this.inviteRepository_,
+        userService: this.userService_,
+        userRepository: this.userRepo_,
+        eventBusService: this.eventBus_,
+      },
+      this.configModule_
+    )
 
     cloned.transactionManager_ = manager
 
@@ -76,12 +86,13 @@ class InviteService extends BaseService {
   }
 
   generateToken(data): string {
-    if (config.jwtSecret) {
-      return jwt.sign(data, config.jwtSecret)
+    const { jwt_secret } = this.configModule_.projectConfig
+    if (jwt_secret) {
+      return jwt.sign(data, jwt_secret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Please configure JwtSecret"
+      "Please configure jwt_secret"
     )
   }
 
@@ -160,6 +171,7 @@ class InviteService extends BaseService {
         .emit(InviteService.Events.CREATED, {
           id: invite.id,
           token: invite.token,
+          user_email: invite.user_email,
         })
     })
   }
@@ -247,16 +259,17 @@ class InviteService extends BaseService {
   }
 
   verifyToken(token): JwtPayload | string {
-    if (config.jwtSecret) {
-      return jwt.verify(token, config.jwtSecret)
+    const { jwt_secret } = this.configModule_.projectConfig
+    if (jwt_secret) {
+      return jwt.verify(token, jwt_secret)
     }
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      "Please configure JwtSecret"
+      "Please configure jwt_secret"
     )
   }
 
-  async resend(id): Promise<any> {
+  async resend(id): Promise<void> {
     const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
 
     const invite = await inviteRepo.findOne({ id })
@@ -284,6 +297,7 @@ class InviteService extends BaseService {
       .emit(InviteService.Events.CREATED, {
         id: invite.id,
         token: invite.token,
+        user_email: invite.user_email,
       })
   }
 }

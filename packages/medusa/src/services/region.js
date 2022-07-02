@@ -22,6 +22,7 @@ class RegionService extends BaseService {
     currencyRepository,
     paymentProviderRepository,
     fulfillmentProviderRepository,
+    taxProviderRepository,
     paymentProviderService,
     fulfillmentProviderService,
   }) {
@@ -54,6 +55,9 @@ class RegionService extends BaseService {
     /** @private @const {PaymentProviderService} */
     this.paymentProviderService_ = paymentProviderService
 
+    /** @private @const {typeof TaxProviderService} */
+    this.taxProviderRepository_ = taxProviderRepository
+
     /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
   }
@@ -72,6 +76,8 @@ class RegionService extends BaseService {
       eventBusService: this.eventBus_,
       paymentProviderRepository: this.paymentProviderRepository_,
       paymentProviderService: this.paymentProviderService_,
+      taxProviderRepository: this.taxProviderRepository_,
+      taxProviderService: this.taxProviderService_,
       fulfillmentProviderRepository: this.fulfillmentProviderRepository_,
       fulfillmentProviderService: this.fulfillmentProviderService_,
     })
@@ -211,6 +217,9 @@ class RegionService extends BaseService {
     const fpRepository = this.manager_.getCustomRepository(
       this.fulfillmentProviderRepository_
     )
+    const tpRepository = this.manager_.getCustomRepository(
+      this.taxProviderRepository_
+    )
 
     if (region.tax_rate) {
       this.validateTaxRate_(region.tax_rate)
@@ -224,6 +233,18 @@ class RegionService extends BaseService {
       ).catch((err) => {
         throw err
       })
+    }
+
+    if (region.tax_provider_id) {
+      const tp = await tpRepository.findOne({
+        where: { id: region.tax_provider_id },
+      })
+      if (!tp) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          "Tax provider not found"
+        )
+      }
     }
 
     if (region.payment_providers) {
@@ -281,7 +302,7 @@ class RegionService extends BaseService {
   async validateCurrency_(currencyCode) {
     const store = await this.storeService_
       .withTransaction(this.transactionManager_)
-      .retrieve(["currencies"])
+      .retrieve({ relations: ["currencies"] })
 
     const storeCurrencies = store.currencies.map((curr) => curr.code)
 
@@ -305,8 +326,10 @@ class RegionService extends BaseService {
     )
 
     const countryCode = code.toUpperCase()
-    const validCountry = countries.find((c) => c.alpha2 === countryCode)
-    if (!validCountry) {
+    const isCountryExists = countries.some(
+      (country) => country.alpha2 === countryCode
+    )
+    if (!isCountryExists) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
         "Invalid country code"
@@ -329,7 +352,7 @@ class RegionService extends BaseService {
     if (country.region_id && country.region_id !== regionId) {
       throw new MedusaError(
         MedusaError.Types.DUPLICATE_ERROR,
-        `${country.name} already exists in ${country.name}, delete it in that region before adding it`
+        `${country.display_name} already exists in region ${country.region_id}`
       )
     }
 
@@ -409,14 +432,16 @@ class RegionService extends BaseService {
   async delete(regionId) {
     return this.atomicPhase_(async (manager) => {
       const regionRepo = manager.getCustomRepository(this.regionRepository_)
+      const countryRepo = manager.getCustomRepository(this.countryRepository_)
 
-      const region = await regionRepo.findOne({ where: { id: regionId } })
+      const region = await this.retrieve(regionId, { relations: ["countries"] })
 
       if (!region) {
         return Promise.resolve()
       }
 
       await regionRepo.softRemove(region)
+      await countryRepo.update({ region_id: region.id }, { region_id: null })
 
       await this.eventBus_
         .withTransaction(manager)
