@@ -22,11 +22,11 @@ export class GiftCardRepository extends Repository<GiftCard> {
       entities = await this.findByIds(idsOrOptionsWithoutRelations)
       count = idsOrOptionsWithoutRelations.length
     } else {
-      const [results, num] = await this.findAndCount(
+      const [results, resultCount] = await this.findAndCount(
         idsOrOptionsWithoutRelations
       )
       entities = results
-      count = num
+      count = resultCount
     }
     const entitiesIds = entities.map(({ id }) => id)
 
@@ -78,9 +78,9 @@ export class GiftCardRepository extends Repository<GiftCard> {
     let raw: GiftCard[] = []
     let count = 0
     if (shouldCount) {
-      const [results, num] = await qb.getManyAndCount()
+      const [results, resultCount] = await qb.getManyAndCount()
       raw = results
-      count = num
+      count = resultCount
     } else {
       raw = await qb.getMany()
     }
@@ -104,7 +104,7 @@ export class GiftCardRepository extends Repository<GiftCard> {
 
       return await this.queryGiftCards(q, where, rels, true)
     }
-    return this.findWithRelations(rels, query)
+    return await this.findWithRelations(rels, query)
   }
 
   public async listGiftCards(
