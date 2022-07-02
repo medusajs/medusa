@@ -14,7 +14,7 @@ const adminSeeder = require("../../helpers/admin-seeder")
 
 jest.setTimeout(30000)
 
-describe("Cart Totals Calculations", () => {
+describe("Shipping Options Totals Calculations", () => {
   let medusaProcess
   let dbConnection
 
@@ -43,6 +43,39 @@ describe("Cart Totals Calculations", () => {
   afterEach(async () => {
     const db = useDb()
     await db.teardown()
+  })
+
+  it("admin gets correct shipping prices", async () => {
+    const api = useApi()
+
+    const region = await simpleRegionFactory(dbConnection, {
+      tax_rate: 25,
+    })
+    const so = await simpleShippingOptionFactory(dbConnection, {
+      region_id: region.id,
+      price: 100,
+    })
+    await simpleShippingTaxRateFactory(dbConnection, {
+      shipping_option_id: so.id,
+      rate: {
+        region_id: region.id,
+        rate: 10,
+      },
+    })
+
+    const res = await api.get(`/admin/shipping-options`, {
+      headers: {
+        Authorization: `Bearer test_token`,
+      },
+    })
+
+    expect(res.data.shipping_options).toEqual([
+      expect.objectContaining({
+        id: so.id,
+        amount: 100,
+        price_incl_tax: 110,
+      }),
+    ])
   })
 
   it("gets correct shipping prices", async () => {
