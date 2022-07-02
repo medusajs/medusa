@@ -1,7 +1,6 @@
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
-import { defaultAdminCustomerGroupsRelations } from "."
+import { Request, Response } from "express"
 
 /**
  * @oas [get] /customer-groups/{id}
@@ -23,30 +22,17 @@ import { defaultAdminCustomerGroupsRelations } from "."
  *             customer_group:
  *               $ref: "#/components/schemas/customer_group"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
-
-  const validated = await validator(
-    AdminGetCustomerGroupsGroupParams,
-    req.query
-  )
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const findConfig = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminCustomerGroupsRelations,
-  }
-
-  const customerGroup = await customerGroupService.retrieve(id, findConfig)
+  const customerGroup = await customerGroupService.retrieve(
+    id,
+    req.retrieveConfig
+  )
 
   res.json({ customer_group: customerGroup })
 }

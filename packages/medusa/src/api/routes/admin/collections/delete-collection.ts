@@ -1,4 +1,5 @@
 import ProductCollectionService from "../../../../services/product-collection"
+import { Request, Response } from "express"
 
 /**
  * @oas [delete] /collections/{id}
@@ -26,7 +27,7 @@ import ProductCollectionService from "../../../../services/product-collection"
  *            deleted:
  *              type: boolean
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
