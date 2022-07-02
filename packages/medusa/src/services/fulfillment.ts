@@ -1,11 +1,49 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+import { ShippingProfileService } from "."
+import { TransactionBaseService } from "../interfaces"
+import { Fulfillment, LineItem, ShippingMethod } from "../models"
+import { FulfillmentRepository } from "../repositories/fulfillment"
+import { LineItemRepository } from "../repositories/line-item"
+import { TrackingLinkRepository } from "../repositories/tracking-link"
+import { FindConfig } from "../types/common"
+import {
+  CreateFulfillmentOrder,
+  CreateShipmentConfig,
+  FulfillmentItemPartition,
+  FulFillmentItemType,
+} from "../types/fulfillment"
+import { buildQuery } from "../utils"
+import FulfillmentProviderService from "./fulfillment-provider"
+import LineItemService from "./line-item"
+import TotalsService from "./totals"
+
+type InjectedDependencies = {
+  manager: EntityManager
+  totalsService: TotalsService
+  shippingProfileService: ShippingProfileService
+  lineItemService: LineItemService
+  fulfillmentProviderService: FulfillmentProviderService
+  fulfillmentRepository: typeof FulfillmentRepository
+  trackingLinkRepository: typeof TrackingLinkRepository
+  lineItemRepository: typeof LineItemRepository
+}
 
 /**
  * Handles Fulfillments
- * @extends BaseService
  */
-class FulfillmentService extends BaseService {
+class FulfillmentService extends TransactionBaseService<FulfillmentService> {
+  protected manager_: EntityManager
+  protected transactionManager_: EntityManager | undefined
+
+  protected readonly totalsService_: TotalsService
+  protected readonly lineItemService_: LineItemService
+  protected readonly shippingProfileService_: ShippingProfileService
+  protected readonly fulfillmentProviderService_: FulfillmentProviderService
+  protected readonly fulfillmentRepository_: typeof FulfillmentRepository
+  protected readonly trackingLinkRepository_: typeof TrackingLinkRepository
+  protected readonly lineItemRepository_: typeof LineItemRepository
+
   constructor({
     manager,
     totalsService,
@@ -14,56 +52,33 @@ class FulfillmentService extends BaseService {
     shippingProfileService,
     lineItemService,
     fulfillmentProviderService,
-  }) {
-    super()
+    lineItemRepository,
+  }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    /** @private @const {EntityManager} */
     this.manager_ = manager
 
-    /** @private @const {TotalsService} */
+    this.lineItemRepository_ = lineItemRepository
     this.totalsService_ = totalsService
-
-    /** @private @const {FulfillmentRepository} */
     this.fulfillmentRepository_ = fulfillmentRepository
-
-    /** @private @const {TrackingLinkRepository} */
     this.trackingLinkRepository_ = trackingLinkRepository
-
-    /** @private @const {ShippingProfileService} */
     this.shippingProfileService_ = shippingProfileService
-
-    /** @private @const {LineItemService} */
     this.lineItemService_ = lineItemService
-
-    /** @private @const {FulfillmentProviderService} */
     this.fulfillmentProviderService_ = fulfillmentProviderService
   }
 
-  withTransaction(transactionManager) {
-    if (!transactionManager) {
-      return this
-    }
-
-    const cloned = new FulfillmentService({
-      manager: transactionManager,
-      totalsService: this.totalsService_,
-      trackingLinkRepository: this.trackingLinkRepository_,
-      fulfillmentRepository: this.fulfillmentRepository_,
-      shippingProfileService: this.shippingProfileService_,
-      lineItemService: this.lineItemService_,
-      fulfillmentProviderService: this.fulfillmentProviderService_,
-    })
-
-    cloned.transactionManager_ = transactionManager
-
-    return cloned
-  }
-
-  partitionItems_(shippingMethods, items) {
-    const partitioned = []
+  partitionItems_(
+    shippingMethods: ShippingMethod[],
+    items: LineItem[]
+  ): FulfillmentItemPartition[] {
+    const partitioned: FulfillmentItemPartition[] = []
     // partition order items to their dedicated shipping method
     for (const method of shippingMethods) {
-      const temp = { shipping_method: method }
+      const temp: FulfillmentItemPartition = {
+        shipping_method: method,
+        items: [],
+      }
 
       // for each method find the items in the order, that are associated
       // with the profile on the current shipping method
@@ -83,19 +98,22 @@ class FulfillmentService extends BaseService {
 
   /**
    * Retrieves the order line items, given an array of items.
-   * @param {Order} order - the order to get line items from
-   * @param {{ item_id: string, quantity: number }} items - the items to get
-   * @param {function} transformer - a function to apply to each of the items
+   * @param order - the order to get line items from
+   * @param items - the items to get
+   * @param transformer - a function to apply to each of the items
    *    retrieved from the order, should return a line item. If the transformer
    *    returns an undefined value the line item will be filtered from the
    *    returned array.
-   * @return {Promise<Array<LineItem>>} the line items generated by the transformer.
+   * @return the line items generated by the transformer.
    */
-  async getFulfillmentItems_(order, items, transformer) {
+  async getFulfillmentItems_(
+    order: CreateFulfillmentOrder,
+    items: FulFillmentItemType[]
+  ): Promise<(LineItem | null)[]> {
     const toReturn = await Promise.all(
       items.map(async ({ item_id, quantity }) => {
         const item = order.items.find((i) => i.id === item_id)
-        return transformer(item, quantity)
+        return this.validateFulfillmentLineItem_(item, quantity)
       })
     )
 
@@ -107,13 +125,19 @@ class FulfillmentService extends BaseService {
    * fulfillable quantity is lower than the requested fulfillment quantity.
    * Fulfillable quantity is calculated by subtracting the already fulfilled
    * quantity from the quantity that was originally purchased.
-   * @param {LineItem} item - the line item to check has sufficient fulfillable
+   * @param item - the line item to check has sufficient fulfillable
    *   quantity.
-   * @param {number} quantity - the quantity that is requested to be fulfilled.
-   * @return {LineItem} a line item that has the requested fulfillment quantity
+   * @param quantity - the quantity that is requested to be fulfilled.
+   * @return a line item that has the requested fulfillment quantity
    *   set.
    */
-  validateFulfillmentLineItem_(item, quantity) {
+  validateFulfillmentLineItem_(
+    item: LineItem | undefined,
+    quantity: number
+  ): LineItem | null {
+    const manager = this.transactionManager_ ?? this.manager_
+    const lineItemRepo = manager.getCustomRepository(this.lineItemRepository_)
+
     if (!item) {
       // This will in most cases be called by a webhook so to ensure that
       // things go through smoothly in instances where extra items outside
@@ -127,35 +151,39 @@ class FulfillmentService extends BaseService {
         "Cannot fulfill more items than have been purchased"
       )
     }
-    return {
+    return lineItemRepo.create({
       ...item,
       quantity,
-    }
+    })
   }
 
   /**
    * Retrieves a fulfillment by its id.
-   * @param {string} id - the id of the fulfillment to retrieve
-   * @param {object} config - optional values to include with fulfillmentRepository query
-   * @return {Fulfillment} the fulfillment
+   * @param id - the id of the fulfillment to retrieve
+   * @param config - optional values to include with fulfillmentRepository query
+   * @return the fulfillment
    */
-  async retrieve(id, config = {}) {
-    const fulfillmentRepository = this.manager_.getCustomRepository(
-      this.fulfillmentRepository_
-    )
-
-    const validatedId = this.validateId_(id)
-    const query = this.buildQuery_({ id: validatedId }, config)
-
-    const fulfillment = await fulfillmentRepository.findOne(query)
-
-    if (!fulfillment) {
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `Fulfillment with id: ${id} was not found`
+  async retrieve(
+    id: string,
+    config: FindConfig<Fulfillment> = {}
+  ): Promise<Fulfillment> {
+    return await this.atomicPhase_(async (manager) => {
+      const fulfillmentRepository = manager.getCustomRepository(
+        this.fulfillmentRepository_
       )
-    }
-    return fulfillment
+
+      const query = buildQuery({ id }, config)
+
+      const fulfillment = await fulfillmentRepository.findOne(query)
+
+      if (!fulfillment) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Fulfillment with id: ${id} was not found`
+        )
+      }
+      return fulfillment
+    })
   }
 
   /**
@@ -163,27 +191,30 @@ class FulfillmentService extends BaseService {
    * If items needs to be fulfilled by different provider, we make
    * sure to partition those items, and create fulfillment for
    * those partitions.
-   * @param {Order} order - order to create fulfillment for
-   * @param {{ item_id: string, quantity: number}[]} itemsToFulfill - the items in the order to fulfill
-   * @param {object} custom - potential custom values to add
-   * @return {Fulfillment[]} the created fulfillments
+   * @param order - order to create fulfillment for
+   * @param itemsToFulfill - the items in the order to fulfill
+   * @param custom - potential custom values to add
+   * @return the created fulfillments
    */
-  async createFulfillment(order, itemsToFulfill, custom = {}) {
-    return this.atomicPhase_(async (manager) => {
+  async createFulfillment(
+    order: CreateFulfillmentOrder,
+    itemsToFulfill: FulFillmentItemType[],
+    custom: Partial<Fulfillment> = {}
+  ): Promise<Fulfillment[]> {
+    return await this.atomicPhase_(async (manager) => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
       )
 
-      const lineItems = await this.getFulfillmentItems_(
-        order,
-        itemsToFulfill,
-        this.validateFulfillmentLineItem_
-      )
+      const lineItems = await this.getFulfillmentItems_(order, itemsToFulfill)
 
       const { shipping_methods } = order
 
       // partition order items to their dedicated shipping method
-      const fulfillments = this.partitionItems_(shipping_methods, lineItems)
+      const fulfillments = this.partitionItems_(
+        shipping_methods,
+        lineItems as LineItem[]
+      )
 
       const created = await Promise.all(
         fulfillments.map(async ({ shipping_method, items }) => {
@@ -216,16 +247,19 @@ class FulfillmentService extends BaseService {
    * Cancels a fulfillment with the fulfillment provider. Will decrement the
    * fulfillment_quantity on the line items associated with the fulfillment.
    * Throws if the fulfillment has already been shipped.
-   * @param {Fulfillment|string} fulfillmentOrId - the fulfillment object or id.
-   * @return {Promise} the result of the save operation
+   * @param fulfillmentOrId - the fulfillment object or id.
+   * @return the result of the save operation
    *
    */
-  cancelFulfillment(fulfillmentOrId) {
-    return this.atomicPhase_(async (manager) => {
-      let id = fulfillmentOrId
-      if (typeof fulfillmentOrId === "object") {
-        id = fulfillmentOrId.id
-      }
+  async cancelFulfillment(
+    fulfillmentOrId: Fulfillment | string
+  ): Promise<Fulfillment> {
+    return await this.atomicPhase_(async (manager) => {
+      const id =
+        typeof fulfillmentOrId === "string"
+          ? fulfillmentOrId
+          : fulfillmentOrId.id
+
       const fulfillment = await this.retrieve(id, {
         relations: ["items", "claim_order", "swap"],
       })
@@ -262,22 +296,22 @@ class FulfillmentService extends BaseService {
   /**
    * Creates a shipment by marking a fulfillment as shipped. Adds
    * tracking links and potentially more metadata.
-   * @param {Order} fulfillmentId - the fulfillment to ship
-   * @param {TrackingLink[]} trackingLinks - tracking links for the shipment
-   * @param {object} config - potential configuration settings, such as no_notification and metadata
-   * @return {Fulfillment} the shipped fulfillment
+   * @param fulfillmentId - the fulfillment to ship
+   * @param trackingLinks - tracking links for the shipment
+   * @param config - potential configuration settings, such as no_notification and metadata
+   * @return  the shipped fulfillment
    */
   async createShipment(
-    fulfillmentId,
-    trackingLinks,
-    config = {
+    fulfillmentId: string,
+    trackingLinks: { tracking_number: string }[],
+    config: CreateShipmentConfig = {
       metadata: {},
       no_notification: undefined,
     }
-  ) {
+  ): Promise<Fulfillment> {
     const { metadata, no_notification } = config
 
-    return this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager) => {
       const fulfillmentRepository = manager.getCustomRepository(
         this.fulfillmentRepository_
       )
@@ -303,7 +337,7 @@ class FulfillmentService extends BaseService {
         trackingLinkRepo.create(tl)
       )
 
-      if (no_notification) {
+      if (typeof no_notification !== "undefined") {
         fulfillment.no_notification = no_notification
       }
 
@@ -312,8 +346,7 @@ class FulfillmentService extends BaseService {
         ...metadata,
       }
 
-      const updated = fulfillmentRepository.save(fulfillment)
-      return updated
+      return await fulfillmentRepository.save(fulfillment)
     })
   }
 }
