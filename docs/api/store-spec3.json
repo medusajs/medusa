@@ -283,6 +283,43 @@
         }
       }
     },
+    "/collections/{id}/products": {
+      "get": {
+        "operationId": "GetCollectionsCollectionProducts",
+        "summary": "Retrieve a Product Collection with Products",
+        "description": "Retrieves a Product Collection with Products.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/carts/{id}/shipping-methods": {
       "post": {
         "operationId": "PostCartsCartShippingMethod",

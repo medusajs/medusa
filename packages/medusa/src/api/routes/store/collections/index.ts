@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { PaginatedResponse } from "./../../../../types/common"
+import { PaginatedResponse } from "../../../../types/common"
 import { ProductCollection } from "../../../../"
 import middlewares from "../../../middlewares"
 
@@ -10,6 +10,10 @@ export default (app) => {
 
   route.get("/", middlewares.wrap(require("./list-collections").default))
   route.get("/:id", middlewares.wrap(require("./get-collection").default))
+  route.get(
+    "/:id/products",
+    middlewares.wrap(require("./get-collection-products").default)
+  )
 
   return app
 }
@@ -27,3 +31,4 @@ export type StoreCollectionsRes = {
 
 export * from "./get-collection"
 export * from "./list-collections"
+export * from "./get-collection-products"

@@ -47,7 +47,7 @@ paths:
       description: >-
         Logs a Customer in and authorizes them to view their details. Successful
         authentication will set a session cookie in the Customer's browser.
-      parameters: []
+      parameters: [ ]
       tags:
         - Auth
       responses:
@@ -820,6 +820,29 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+  '/collections/{id}/products':
+    get:
+      operationId: GetCollectionsCollectionProducts
+      summary: Retrieve a Product Collection with Products
+      description: Retrieves a Product Collection with Products.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -853,7 +876,7 @@ paths:
       operationId: PostCustomers
       summary: Create a Customer
       description: Creates a Customer account.
-      parameters: []
+      parameters: [ ]
       tags:
         - Customer
       responses:
@@ -1102,7 +1125,7 @@ paths:
         Creates a reset password token to be used in a subsequent
         /reset-password request. The password token should be sent out of band
         e.g. via email and will not be returned.
-      parameters: []
+      parameters: [ ]
       tags:
         - Customer
       responses:
@@ -1126,7 +1149,7 @@ paths:
       description: >-
         Resets a Customer's password using a password token created by a
         previous /password-token request.
-      parameters: []
+      parameters: [ ]
       tags:
         - Customer
       responses:
