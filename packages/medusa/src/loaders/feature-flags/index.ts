@@ -62,11 +62,6 @@ export default (
         )
         break
       default:
-        if (logger) {
-          logger.info(
-            `Using flag ${flagSettings.key} with default value ${flagSettings.default_val}`
-          )
-        }
         flagConfig[flagSettings.key] = flagSettings.default_val
     }
   }

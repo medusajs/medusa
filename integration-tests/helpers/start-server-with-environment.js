@@ -12,6 +12,10 @@ const startServerWithEnvironment = async ({ cwd, verbose, env }) => {
     cwd,
   })
 
+  Object.entries(env).forEach(([key, value]) => {
+    delete process.env[key]
+  })
+
   const medusaProcess = await setupServer({
     cwd,
     verbose,
