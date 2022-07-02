@@ -57,9 +57,7 @@ export default async (req, res) => {
     relations: defaultRelations,
   })
 
-  const options = await pricingService.setShippingOptionPrices(data, {
-    region_id: validatedParams.region_id,
-  })
+  const options = await pricingService.setShippingOptionPrices(data)
 
   res.status(200).json({ shipping_options: options, count })
 }

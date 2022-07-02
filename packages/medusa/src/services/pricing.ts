@@ -1,10 +1,10 @@
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
 import { Product, ProductVariant, ShippingOption } from "../models"
 import { TaxServiceRate } from "../types/tax-service"
 import {
   ProductVariantPricing,
-  ShippingOptionPricing,
   TaxedPricing,
   PricingContext,
   PricedProduct,
@@ -444,14 +444,42 @@ class PricingService extends TransactionBaseService<PricingService> {
    */
   async setShippingOptionPrices(
     shippingOptions: ShippingOption[],
-    context: PriceSelectionContext
+    context: Omit<PriceSelectionContext, "region_id"> = {}
   ): Promise<PricedShippingOption[]> {
-    const pricingContext = await this.collectPricingContext(context)
+    const regions = new Set<string>()
+
+    for (const shippingOption of shippingOptions) {
+      regions.add(shippingOption.region_id)
+    }
+
+    const contexts = await Promise.all(
+      [...regions].map(async (regionId) => {
+        return {
+          context: await this.collectPricingContext({
+            ...context,
+            region_id: regionId,
+          }),
+          region_id: regionId,
+        }
+      })
+    )
+
     return await Promise.all(
       shippingOptions.map(async (shippingOption) => {
+        const pricingContext = contexts.find(
+          (c) => c.region_id === shippingOption.region_id
+        )
+
+        if (!pricingContext) {
+          throw new MedusaError(
+            MedusaError.Types.UNEXPECTED_STATE,
+            "Could not find pricing context for shipping option"
+          )
+        }
+
         const shippingOptionPricing = await this.getShippingOptionPricing(
           shippingOption,
-          pricingContext
+          pricingContext.context
         )
         return {
           ...shippingOption,

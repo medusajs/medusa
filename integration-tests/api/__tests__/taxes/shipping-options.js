@@ -1,0 +1,76 @@
+const path = require("path")
+
+const setupServer = require("../../../helpers/setup-server")
+const { useApi } = require("../../../helpers/use-api")
+const { useDb, initDb } = require("../../../helpers/use-db")
+const {
+  simpleRegionFactory,
+  simpleProductFactory,
+  simpleShippingTaxRateFactory,
+  simpleShippingOptionFactory,
+} = require("../../factories")
+
+const adminSeeder = require("../../helpers/admin-seeder")
+
+jest.setTimeout(30000)
+
+describe("Cart Totals Calculations", () => {
+  let medusaProcess
+  let dbConnection
+
+  beforeAll(async () => {
+    const cwd = path.resolve(path.join(__dirname, "..", ".."))
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
+  })
+
+  afterAll(async () => {
+    const db = useDb()
+    await db.shutdown()
+
+    medusaProcess.kill()
+  })
+
+  beforeEach(async () => {
+    try {
+      await adminSeeder(dbConnection)
+    } catch (err) {
+      console.log(err)
+      throw err
+    }
+  })
+
+  afterEach(async () => {
+    const db = useDb()
+    await db.teardown()
+  })
+
+  it("gets correct shipping prices", async () => {
+    const api = useApi()
+
+    const region = await simpleRegionFactory(dbConnection, {
+      tax_rate: 25,
+    })
+    const so = await simpleShippingOptionFactory(dbConnection, {
+      region_id: region.id,
+      price: 100,
+    })
+    await simpleShippingTaxRateFactory(dbConnection, {
+      shipping_option_id: so.id,
+      rate: {
+        region_id: region.id,
+        rate: 10,
+      },
+    })
+
+    const res = await api.get(`/store/shipping-options?region_id=${region.id}`)
+
+    expect(res.data.shipping_options).toEqual([
+      expect.objectContaining({
+        id: so.id,
+        amount: 100,
+        price_incl_tax: 110,
+      }),
+    ])
+  })
+})
