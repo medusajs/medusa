@@ -1,4 +1,3 @@
-import _ from "lodash"
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import PayPal from "@paypal/checkout-server-sdk"
 import { PaymentService } from "medusa-interfaces"
@@ -72,7 +71,6 @@ class PayPalProviderService extends PaymentService {
         return "requires_more"
       case "VOIDED":
         return "canceled"
-      // return "captured"
       default:
         return status
     }
@@ -284,11 +282,18 @@ class PayPalProviderService extends PaymentService {
   }
 
   /**
-   * Cancels payment for Stripe payment intent.
-   * @param {object} paymentData - payment method data from cart
+   * Cancels payment for paypal payment.
+   * @param {Payment} payment - payment object
    * @returns {Promise<object>} canceled payment intent
    */
   async cancelPayment(payment) {
+    const order = await this.retrievePayment(payment.data)
+    const isAlreadyCanceled = order.status === "VOIDED"
+    const isCanceledAndFullyRefund = order.status === "COMPLETED" && !!order.invoice_id
+    if (isAlreadyCanceled || isCanceledAndFullyRefund) {
+      return order
+    }
+
     try {
       const { purchase_units } = payment.data
       if (payment.captured_at) {
@@ -303,7 +308,7 @@ class PayPalProviderService extends PaymentService {
         await this.paypal_.execute(request)
       }
 
-      return this.retrievePayment(payment.data)
+      return await this.retrievePayment(payment.data)
     } catch (error) {
       throw error
     }

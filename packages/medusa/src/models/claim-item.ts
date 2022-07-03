@@ -1,26 +1,23 @@
 import {
-  Entity,
   BeforeInsert,
-  DeleteDateColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   Column,
-  PrimaryColumn,
+  Entity,
   Index,
+  JoinColumn,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
-  JoinColumn,
-  JoinTable,
 } from "typeorm"
-import { ulid } from "ulid"
-import { resolveDbType, DbAwareColumn } from "../utils/db-aware-column"
+import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { LineItem } from "./line-item"
 import { ClaimImage } from "./claim-image"
 import { ClaimTag } from "./claim-tag"
 import { ClaimOrder } from "./claim-order"
 import { ProductVariant } from "./product-variant"
+import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
+import { generateEntityId } from "../utils/generate-entity-id"
 
 export enum ClaimReason {
   MISSING_ITEM = "missing_item",
@@ -30,25 +27,17 @@ export enum ClaimReason {
 }
 
 @Entity()
-export class ClaimItem {
-  @PrimaryColumn()
-  id: string
-
-  @OneToMany(
-    () => ClaimImage,
-    ci => ci.claim_item,
-    { cascade: ["insert", "remove"] }
-  )
+export class ClaimItem extends SoftDeletableEntity {
+  @OneToMany(() => ClaimImage, (ci) => ci.claim_item, {
+    cascade: ["insert", "remove"],
+  })
   images: ClaimImage[]
 
   @Index()
   @Column()
   claim_order_id: string
 
-  @ManyToOne(
-    () => ClaimOrder,
-    co => co.claim_items
-  )
+  @ManyToOne(() => ClaimOrder, (co) => co.claim_items)
   @JoinColumn({ name: "claim_order_id" })
   claim_order: ClaimOrder
 
@@ -91,23 +80,12 @@ export class ClaimItem {
   })
   tags: ClaimTag[]
 
-  @CreateDateColumn({ type: resolveDbType("timestamptz") })
-  created_at: Date
-
-  @UpdateDateColumn({ type: resolveDbType("timestamptz") })
-  updated_at: Date
-
-  @DeleteDateColumn({ type: resolveDbType("timestamptz") })
-  deleted_at: Date
-
   @DbAwareColumn({ type: "jsonb", nullable: true })
-  metadata: any
+  metadata: Record<string, unknown>
 
   @BeforeInsert()
-  private beforeInsert() {
-    if (this.id) return
-    const id = ulid()
-    this.id = `citm_${id}`
+  private beforeInsert(): void {
+    this.id = generateEntityId(this.id, "citm")
   }
 }
 

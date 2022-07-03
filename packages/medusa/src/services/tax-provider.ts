@@ -1,7 +1,7 @@
 import { MedusaError } from "medusa-core-utils"
 import { AwilixContainer } from "awilix"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager } from "typeorm"
+import { EntityManager, UpdateResult } from "typeorm"
 import Redis from "ioredis"
 
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
@@ -15,6 +15,7 @@ import { ShippingMethod } from "../models/shipping-method"
 import { Region } from "../models/region"
 import { Cart } from "../models/cart"
 import { isCart } from "../types/cart"
+import { PostgresError } from "../utils/exception-formatter"
 import {
   ITaxService,
   ItemTaxCalculationLine,
@@ -26,6 +27,11 @@ import { TaxServiceRate } from "../types/tax-service"
 import TaxRateService from "./tax-rate"
 
 const CACHE_TIME = 30 // seconds
+
+type RegionDetails = {
+  id: string
+  tax_rate: number | null
+}
 
 /**
  * Finds tax providers and assists in tax related operations.
@@ -94,6 +100,18 @@ class TaxProviderService extends BaseService {
     return provider
   }
 
+  async clearTaxLines(cartId: string): Promise<void> {
+    const taxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
+    const shippingTaxRepo = this.manager_.getCustomRepository(
+      this.smTaxLineRepo_
+    )
+
+    await Promise.all([
+      taxLineRepo.deleteForCart(cartId),
+      shippingTaxRepo.deleteForCart(cartId),
+    ])
+  }
+
   /**
    * Persists the tax lines relevant for an order to the database.
    * @param cartOrLineItems - the cart or line items to create tax lines for
@@ -114,7 +132,33 @@ class TaxProviderService extends BaseService {
       taxLines = await this.getTaxLines(cartOrLineItems, calculationContext)
     }
 
-    return this.manager_.save(taxLines)
+    const itemTaxLineRepo = this.manager_.getCustomRepository(this.taxLineRepo_)
+    const shippingTaxLineRepo = this.manager_.getCustomRepository(
+      this.smTaxLineRepo_
+    )
+
+    const { shipping, lineItems } = taxLines.reduce<{
+      shipping: ShippingMethodTaxLine[]
+      lineItems: LineItemTaxLine[]
+    }>(
+      (acc, tl) => {
+        if ("item_id" in tl) {
+          acc.lineItems.push(tl)
+        } else {
+          acc.shipping.push(tl)
+        }
+
+        return acc
+      },
+      { shipping: [], lineItems: [] }
+    )
+
+    return (
+      await Promise.all([
+        itemTaxLineRepo.upsertLines(lineItems),
+        shippingTaxLineRepo.upsertLines(shipping),
+      ])
+    ).flat()
   }
 
   /**
@@ -282,22 +326,21 @@ class TaxProviderService extends BaseService {
    * Gets the tax rates configured for a shipping option. The rates are cached
    * between calls.
    * @param optionId - the option id of the shipping method.
-   * @param region - the region to get configured rates for.
+   * @param regionDetails - the region to get configured rates for.
    * @return the tax rates configured for the shipping option.
    */
   async getRegionRatesForShipping(
     optionId: string,
-    region: Region
+    regionDetails: RegionDetails
   ): Promise<TaxServiceRate[]> {
-    const cacheHit = await this.getCacheEntry(optionId, region.id)
+    const cacheHit = await this.getCacheEntry(optionId, regionDetails.id)
     if (cacheHit) {
       return cacheHit
     }
 
     let toReturn: TaxServiceRate[] = []
     const optionRates = await this.taxRateService_.listByShippingOption(
-      optionId,
-      { region_id: region.id }
+      optionId
     )
 
     if (optionRates.length > 0) {
@@ -313,14 +356,14 @@ class TaxProviderService extends BaseService {
     if (toReturn.length === 0) {
       toReturn = [
         {
-          rate: region.tax_rate,
+          rate: regionDetails.tax_rate,
           name: "default",
           code: "default",
         },
       ]
     }
 
-    await this.setCache(optionId, region.id, toReturn)
+    await this.setCache(optionId, regionDetails.id, toReturn)
 
     return toReturn
   }
@@ -334,7 +377,7 @@ class TaxProviderService extends BaseService {
    */
   async getRegionRatesForProduct(
     productId: string,
-    region: Region
+    region: RegionDetails
   ): Promise<TaxServiceRate[]> {
     const cacheHit = await this.getCacheEntry(productId, region.id)
     if (cacheHit) {
@@ -431,7 +474,8 @@ class TaxProviderService extends BaseService {
 
   async registerInstalledProviders(providers: string[]): Promise<void> {
     const model = this.manager_.getCustomRepository(this.taxProviderRepo_)
-    model.update({}, { is_installed: false })
+    await model.update({}, { is_installed: false })
+
     for (const p of providers) {
       const n = model.create({ id: p, is_installed: true })
       await model.save(n)

@@ -8,10 +8,11 @@ import {
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
-import { AddressPayload } from "../../../../types/common"
 import { CartUpdateProps } from "../../../../types/cart"
-import { IsType } from "../../../../utils/validators/is-type"
+import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
+import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 
 /**
  * @oas [post] /store/carts/{id}
@@ -90,23 +91,20 @@ export default async (req, res) => {
   // Update the cart
   const { shipping_address, billing_address, ...rest } = validated
 
-  const toUpdate: CartUpdateProps = {
-    ...rest,
-  }
-
+  const cartDataToUpdate: CartUpdateProps = { ...rest }
   if (typeof shipping_address === "string") {
-    toUpdate.shipping_address_id = shipping_address
+    cartDataToUpdate.shipping_address_id = shipping_address
   } else {
-    toUpdate.shipping_address = shipping_address
+    cartDataToUpdate.shipping_address = shipping_address
   }
 
   if (typeof billing_address === "string") {
-    toUpdate.billing_address_id = billing_address
+    cartDataToUpdate.billing_address_id = billing_address
   } else {
-    toUpdate.billing_address = billing_address
+    cartDataToUpdate.billing_address = billing_address
   }
 
-  await cartService.update(id, toUpdate)
+  await cartService.update(id, cartDataToUpdate)
 
   // If the cart has payment sessions update these
   const updated = await cartService.retrieve(id, {
@@ -121,8 +119,9 @@ export default async (req, res) => {
     select: defaultStoreCartFields,
     relations: defaultStoreCartRelations,
   })
+  const data = await decorateLineItemsWithTotals(cart, req)
 
-  res.json({ cart })
+  res.json({ cart: data })
 }
 
 class GiftCard {

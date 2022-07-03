@@ -1,5 +1,6 @@
 import { Router } from "express"
 import "reflect-metadata"
+import { PricedProduct } from "../../../../types/pricing"
 import { Product, ProductTag, ProductType } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
@@ -17,6 +18,11 @@ export default (app) => {
     middlewares.wrap(require("./list-tag-usage-count").default)
   )
 
+  route.get(
+    "/:id/variants",
+    middlewares.normalizeQuery(),
+    middlewares.wrap(require("./list-variants").default)
+  )
   route.post(
     "/:id/variants",
     middlewares.wrap(require("./create-variant").default)
@@ -69,7 +75,7 @@ export const defaultAdminProductRelations = [
   "collection",
 ]
 
-export const defaultAdminProductFields = [
+export const defaultAdminProductFields: (keyof Product)[] = [
   "id",
   "title",
   "subtitle",
@@ -96,6 +102,8 @@ export const defaultAdminProductFields = [
   "deleted_at",
   "metadata",
 ]
+
+export const defaultAdminGetProductsVariantsFields = ["id", "product_id"]
 
 export const allowedAdminProductFields = [
   "id",
@@ -156,7 +164,7 @@ export type AdminProductsDeleteRes = {
 }
 
 export type AdminProductsListRes = PaginatedResponse & {
-  products: Product[]
+  products: (PricedProduct | Product)[]
 }
 
 export type AdminProductsListTypesRes = {
@@ -178,7 +186,7 @@ export * from "./delete-option"
 export * from "./delete-product"
 export * from "./delete-variant"
 export * from "./get-product"
-export * from "./get-variants"
+export * from "./list-variants"
 export * from "./list-products"
 export * from "./list-tag-usage-count"
 export * from "./list-types"

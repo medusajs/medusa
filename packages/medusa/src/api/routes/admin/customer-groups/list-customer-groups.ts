@@ -1,12 +1,8 @@
 import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import omit from "lodash/omit"
-import { defaultAdminCustomerGroupsRelations } from "."
-import { CustomerGroup } from "../../../../models/customer-group"
 import { CustomerGroupService } from "../../../../services"
-import { FindConfig } from "../../../../types/common"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
-import { validator } from "../../../../utils/validator"
+import { Request, Response } from "express"
 
 /**
  * @oas [get] /customer-groups
@@ -37,53 +33,22 @@ import { validator } from "../../../../utils/validator"
  *             customerGroup:
  *               $ref: "#/components/schemas/customer_group"
  */
-export default async (req, res) => {
-  const validated = await validator(AdminGetCustomerGroupsParams, req.query)
-
+export default async (req: Request, res: Response) => {
   const customerGroupService: CustomerGroupService = req.scope.resolve(
     "customerGroupService"
   )
 
-  let expandFields: string[] = []
-  if (validated.expand) {
-    expandFields = validated.expand.split(",")
-  }
-
-  const listConfig: FindConfig<CustomerGroup> = {
-    relations: expandFields.length
-      ? expandFields
-      : defaultAdminCustomerGroupsRelations,
-    skip: validated.offset,
-    take: validated.limit,
-    order: { created_at: "DESC" } as { [k: string]: "DESC" },
-  }
-
-  if (typeof validated.order !== "undefined") {
-    if (validated.order.startsWith("-")) {
-      const [, field] = validated.order.split("-")
-      listConfig.order = { [field]: "DESC" }
-    } else {
-      listConfig.order = { [validated.order]: "ASC" }
-    }
-  }
-
-  const filterableFields = omit(validated, [
-    "limit",
-    "offset",
-    "expand",
-    "order",
-  ])
-
   const [data, count] = await customerGroupService.listAndCount(
-    filterableFields,
-    listConfig
+    req.filterableFields,
+    req.listConfig
   )
 
+  const { limit, offset } = req.validatedQuery
   res.json({
     count,
     customer_groups: data,
-    offset: validated.offset,
-    limit: validated.limit,
+    offset,
+    limit,
   })
 }
 

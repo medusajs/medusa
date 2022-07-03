@@ -28,7 +28,7 @@ export const simpleProductFactory = async (
   connection: Connection,
   data: ProductFactoryData = {},
   seed?: number
-): Promise<Product> => {
+): Promise<Product | undefined> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)
   }
@@ -47,11 +47,12 @@ export const simpleProductFactory = async (
   const productToCreate = {
     id: prodId,
     title: data.title || faker.commerce.productName(),
+    status: data.status,
     is_giftcard: data.is_giftcard || false,
     discountable: !data.is_giftcard,
-    tags: [],
-    profile_id: data.is_giftcard ? gcProfile.id : defaultProfile.id,
-  }
+    tags: [] as ProductTag[],
+    profile_id: data.is_giftcard ? gcProfile?.id : defaultProfile?.id,
+  } as Product
 
   if (typeof data.tags !== "undefined") {
     for (let i = 0; i < data.tags.length; i++) {
@@ -111,5 +112,5 @@ export const simpleProductFactory = async (
     await simpleProductVariantFactory(connection, factoryData)
   }
 
-  return await manager.findOne(Product, { id: prodId }, { relations: ["tags"] })
+  return manager.findOne(Product, { id: prodId }, { relations: ["tags", "variants", "variants.prices"] })
 }

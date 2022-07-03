@@ -1,18 +1,19 @@
+import { Box, Flex, Heading, Text } from "theme-ui"
 import React, { useContext, useEffect, useRef } from "react"
-import Markdown from "react-markdown"
-import { Flex, Text, Box, Heading } from "theme-ui"
-import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
-import Parameters from "./parameters"
-import Route from "./route"
-import JsonContainer from "./json-container"
-import Description from "./description"
-import ResponsiveContainer from "./responsive-container"
-import { formatMethodParams } from "../../utils/format-parameters"
-import useInView from "../../hooks/use-in-view"
-import NavigationContext from "../../context/navigation-context"
-import { formatRoute } from "../../utils/format-route"
 
-const Method = ({ data, section, pathname, api }) => {
+import Description from "./description"
+import JsonContainer from "./json-container"
+import Markdown from "react-markdown"
+import NavigationContext from "../../context/navigation-context"
+import Parameters from "./parameters"
+import ResponsiveContainer from "./responsive-container"
+import Route from "./route"
+import { convertToKebabCase } from "../../utils/convert-to-kebab-case"
+import { formatMethodParams } from "../../utils/format-parameters"
+import { formatRoute } from "../../utils/format-route"
+import useInView from "../../hooks/use-in-view"
+
+const Method = ({ data, section, sectionData, pathname, api }) => {
   const { parameters, requestBody, description, method, summary } = data
   const jsonResponse = data.responses[0].content?.[0].json
   const { updateHash, updateMetadata } = useContext(NavigationContext)
@@ -26,7 +27,7 @@ const Method = ({ data, section, pathname, api }) => {
 
   useEffect(() => {
     if (isInView) {
-      updateHash(section, convertToKebabCase(summary))
+      updateHash(section, convertToKebabCase(summary), sectionData)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView])
@@ -86,7 +87,7 @@ const Method = ({ data, section, pathname, api }) => {
   }
 
   const getCurlJson = (properties, prefix, bodyParameters) => {
-    if (!properties[0]) {
+    if (!properties[0] || !jsonResponse) {
       return
     }
     const jsonObject = JSON.parse(jsonResponse)

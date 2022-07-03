@@ -1,14 +1,16 @@
-# medusa-plugin-sendgrid
+# medusa-plugin-twilio-sms
 
 Twilio SMS / Messaging plugin.
 
-## Plugin Options
+Learn more about how you can use this plugin in the [documentaion](https://docs.medusajs.com/add-plugins/twilio-sms).
 
-```
+## Options
+
+```js
 {
-  account_sid: [twilio messaging account sid] (required),
-  auth_token: [twilio massaging authentication token] (required),
-  from_number: [the number used as sender SMS],
+  account_sid: "[twilio messaging account sid]", // required
+  auth_token: "[twilio massaging authentication token]", // required
+  from_number: "[the number used as sender SMS]",
 }
 ```
 

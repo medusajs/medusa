@@ -1,11 +1,18 @@
 import AuthService from "../auth"
+import { MockManager } from "medusa-test-utils"
 import { users, UserServiceMock } from "../__mocks__/user"
-import { customers, CustomerServiceMock } from "../__mocks__/customer"
+import { CustomerServiceMock } from "../__mocks__/customer"
+
+const managerMock = MockManager
 
 describe("AuthService", () => {
+  const authService = new AuthService({
+    manager: managerMock,
+    userService: UserServiceMock,
+    customerService: CustomerServiceMock
+  })
+
   describe("authenticate", () => {
-    let authService
-    authService = new AuthService({ userService: UserServiceMock })
     beforeEach(() => {
       jest.clearAllMocks()
     })
@@ -33,8 +40,6 @@ describe("AuthService", () => {
   })
 
   describe("authenticateCustomer", () => {
-    let authService
-    authService = new AuthService({ customerService: CustomerServiceMock })
     beforeEach(() => {
       jest.clearAllMocks()
     })
@@ -62,8 +67,6 @@ describe("AuthService", () => {
   })
 
   describe("authenticateAPIToken", () => {
-    let authService
-    authService = new AuthService({ userService: UserServiceMock })
     beforeEach(() => {
       jest.clearAllMocks()
     })

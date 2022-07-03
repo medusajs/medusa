@@ -1,0 +1,20 @@
+#.kodiak.toml
+version = 1
+
+[merge]
+automerge_label = "automerge"
+require_automerge_label = true
+blocking_labels = ["on hold", "wip", "blocked"]
+method = "squash"
+delete_branch_on_merge = true
+optimistic_updates = false
+prioritize_ready_to_merge = true
+notify_on_conflict = true
+
+[merge.message]
+title = "pull_request_title"
+body = "pull_request_body"
+include_coauthors= true
+include_pr_number = true
+body_type = "markdown"
+strip_html_comments = true

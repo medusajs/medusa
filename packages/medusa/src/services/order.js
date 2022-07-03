@@ -1,4 +1,4 @@
-import { MedusaError, Validator } from "medusa-core-utils"
+import { MedusaError } from "medusa-core-utils"
 import { BaseService } from "medusa-interfaces"
 import { Brackets } from "typeorm"
 
@@ -141,42 +141,6 @@ class OrderService extends BaseService {
   }
 
   /**
-   * Used to validate order addresses. Can be used to both
-   * validate shipping and billing address.
-   * @param {Address} address - the address to validate
-   * @return {Address} the validated address
-   */
-  validateAddress_(address) {
-    const { value, error } = Validator.address().validate(address)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "The address is not valid"
-      )
-    }
-
-    return value
-  }
-
-  /**
-   * Used to validate email.
-   * @param {string} email - the email to vaildate
-   * @return {string} the validate email
-   */
-  validateEmail_(email) {
-    const schema = Validator.string().email()
-    const { value, error } = schema.validate(email)
-    if (error) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_ARGUMENT,
-        "The email is not valid"
-      )
-    }
-
-    return value
-  }
-
-  /**
    * @param {Object} selector - the query object for find
    * @param {Object} config - the config to be used for find
    * @return {Promise} the result of the find operation
@@ -188,9 +152,8 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const query = this.buildQuery_(selector, config)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     if (select && select.length) {
       query.select = select
@@ -249,9 +212,8 @@ class OrderService extends BaseService {
       }
     }
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     if (select && select.length) {
       query.select = select
@@ -300,12 +262,15 @@ class OrderService extends BaseService {
       const relationSet = new Set(relations)
       relationSet.add("items")
       relationSet.add("items.tax_lines")
+      relationSet.add("items.adjustments")
       relationSet.add("swaps")
       relationSet.add("swaps.additional_items")
       relationSet.add("swaps.additional_items.tax_lines")
+      relationSet.add("swaps.additional_items.adjustments")
       relationSet.add("claims")
       relationSet.add("claims.additional_items")
       relationSet.add("claims.additional_items.tax_lines")
+      relationSet.add("claims.additional_items.adjustments")
       relationSet.add("discounts")
       relationSet.add("discounts.rule")
       relationSet.add("gift_cards")
@@ -341,9 +306,8 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     const query = {
       where: { id: validatedId },
@@ -379,9 +343,8 @@ class OrderService extends BaseService {
   async retrieveByCartId(cartId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     const query = {
       where: { cart_id: cartId },
@@ -417,9 +380,8 @@ class OrderService extends BaseService {
   async retrieveByExternalId(externalId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
-      config
-    )
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(config)
 
     const query = {
       where: { external_id: externalId },
@@ -875,7 +837,7 @@ class OrderService extends BaseService {
           ) {
             await this.shippingOptionService_
               .withTransaction(manager)
-              .deleteShippingMethod(sm)
+              .deleteShippingMethods(sm)
           } else {
             methods.push(sm)
           }
