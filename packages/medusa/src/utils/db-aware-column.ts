@@ -1,14 +1,6 @@
-import {
-  Column,
-  ColumnOptions,
-  ColumnType,
-  Entity,
-  EntityOptions,
-} from "typeorm"
+import { Column, ColumnOptions, ColumnType } from "typeorm"
 import path from "path"
 import { getConfigFile } from "medusa-core-utils"
-import featureFlagsLoader from "../loaders/feature-flags"
-import { ConfigModule } from "../types/global"
 
 const pgSqliteTypeMapping: { [key: string]: ColumnType } = {
   increment: "rowid",
