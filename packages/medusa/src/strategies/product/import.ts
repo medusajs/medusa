@@ -4,7 +4,6 @@ import { MedusaError } from "medusa-core-utils"
 import { FileService } from "medusa-interfaces"
 import * as IORedis from "ioredis"
 
-import { ProductVariantRepository } from "../../repositories/product-variant"
 import { ProductOptionRepository } from "../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
 import { CsvSchema } from "../../interfaces/csv-parser"
@@ -137,7 +136,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly regionService_: typeof RegionService
 
   protected readonly productOptionRepo_: typeof ProductOptionRepository
-  protected readonly productVariantRepo_: typeof ProductVariantRepository
 
   protected readonly csvParser_: CsvParser<
     ProductImportCsvSchema,
@@ -153,7 +151,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       productService,
       productOptionRepository,
       productVariantService,
-      productVariantRepository,
       shippingProfileService,
       regionService,
       fileService,
@@ -170,9 +167,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.productService_ = productService
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
-    this.productOptionRepo_ = productOptionRepository
-    this.productVariantRepo_ = productVariantRepository
     this.regionService_ = regionService
+
+    this.productOptionRepo_ = productOptionRepository
   }
 
   buildTemplate(): Promise<string> {
