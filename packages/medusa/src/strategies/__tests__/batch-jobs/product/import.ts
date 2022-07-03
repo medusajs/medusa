@@ -81,6 +81,32 @@ const productVariantServiceMock = {
   count: jest.fn().mockImplementation(() => Promise.resolve()),
 }
 
+const regionServiceMock = {
+  withTransaction: function () {
+    return this
+  },
+  retrieveByName: jest.fn().mockImplementation(() =>
+    Promise.resolve({
+      id: "reg_HMnixPlOicAs7aBlXuchAGxd",
+      name: "Denmark",
+      currency_code: "DKK",
+      currency: "DKK",
+      tax_rate: 0.25,
+      tax_code: null,
+      countries: [
+        {
+          id: "1001",
+          iso_2: "DK",
+          iso_3: "DNK",
+          num_code: "208",
+          name: "denmark",
+          display_name: "Denmark",
+        },
+      ],
+    })
+  ),
+}
+
 const managerMock = MockManager
 
 /* ******************** PRODUCT IMPORT STRATEGY TESTS ******************** */
@@ -103,6 +129,7 @@ describe("Product import strategy", () => {
     productService: productServiceMock as any,
     shippingProfileService: shippingProfileServiceMock as any,
     productVariantService: productVariantServiceMock,
+    regionService: regionServiceMock,
     redisClient,
   })
 
