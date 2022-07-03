@@ -17,6 +17,7 @@ export const buildFFCli = (cli) => {
           builder: {
             name: {
               demandOption: true,
+              coerce: (name) => kebabCase(name),
               description: "Name of the feature flag",
               type: "string",
             },
@@ -36,7 +37,8 @@ export const buildFFCli = (cli) => {
               return
             }
 
-            writeFeatureFlag(argv.name, argv.description, featureFlagPath)
+            const flagSettings = collectSettings(argv.name, argv.description)
+            writeFeatureFlag(flagSettings, featureFlagPath)
           },
         })
         .command({
@@ -45,6 +47,7 @@ export const buildFFCli = (cli) => {
           builder: {
             name: {
               demand: true,
+              coerce: (name) => kebabCase(name),
               description: "Name of the feature flag",
               type: "string",
             },
@@ -56,6 +59,8 @@ export const buildFFCli = (cli) => {
             if (fs.existsSync(featureFlagPath)) {
               fs.unlinkSync(featureFlagPath)
             }
+
+            console.log(`Feature flag deleted: ${featureFlagPath}`)
           },
         })
         .demandCommand(1, "Please specify an action")
@@ -93,15 +98,42 @@ const buildPath = (kebabCaseName, repoRoot) => {
   )
 }
 
-const writeFeatureFlag = (name, description, featureFlagPath) => {
+const collectSettings = (name, description) => {
   const snakeCaseName = snakeCase(name)
-
-  const featureFlag = featureFlagTemplate({
+  return {
     key: snakeCaseName,
     description: description,
     defaultValue: false,
     envKey: `MEDUSA_FF_${snakeCaseName.toUpperCase()}`,
-  })
+  }
+}
 
+const writeFeatureFlag = (settings, featureFlagPath) => {
+  const featureFlag = featureFlagTemplate(settings)
   fs.writeFileSync(featureFlagPath, featureFlag)
+  logFeatureFlagUsage(featureFlagPath, settings)
+}
+
+const logFeatureFlagUsage = (flagPath, flagSettings) => {
+  console.log(`Feature flag created: ${flagPath}`)
+  console.log(`
+To use this feature flag, add the following to your medusa-config.js:
+  
+  {
+    ...,
+    featureFlags: {
+      ${flagSettings.key}: true
+    }
+  }
+
+or set the environment variable:
+
+  export ${flagSettings.envKey}=true
+
+To add guarded code use the featureFlagRouter:
+
+  if (featureFlagRouter.isEnabled("${flagSettings.key}")) {
+    // do something
+  }
+  `)
 }
