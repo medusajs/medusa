@@ -24,7 +24,7 @@ export function FeatureFlagColumn(
   return Column(columnOptions)
 }
 
-export function featureFlagColumns(
+export function featureFlagDecorators(
   featureFlag: string,
   decorators: PropertyDecorator[]
 ): PropertyDecorator {
