@@ -546,6 +546,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       context: { progress: batchJob.context.total },
     })
 
+    const { fileKey } = batchJob.context as ImportJobContext
+
+    await this.fileService_.delete({ fileKey })
+
     await this.clearRedisRecords(batchJobId)
   }
 
