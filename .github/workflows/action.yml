@@ -73,7 +73,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [0, 1]
+        node: [0, 1, 2, 3]
 
     steps:
       - name: Cancel Previous Runs
@@ -122,7 +122,7 @@ jobs:
 
       - name: Split tests
         id: split-tests
-        run: echo "::set-output name=split::$(npx jest --listTests --json | jq -cM '[_nwise(length / 2 | ceil)]')"
+        run: echo "::set-output name=split::$(npx jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')"
         working-directory: integration-tests/api
 
       - name: Run integration tests
@@ -185,7 +185,7 @@ jobs:
 
       # Yarn berry breaks medusa-dev
       # So before running medusa-dev downgrade to yarn v1.19.0
-      # Temporary solution before we release new version of medusa-dev
+      # Temporary solution before we release new version of medusa-dev-cli
       - name: use old yarn version
         run: yarn set version 1.19.0
 
