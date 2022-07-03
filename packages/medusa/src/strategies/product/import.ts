@@ -220,7 +220,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     for (const row of csvData) {
       if ((row["variant.prices"] as object[]).length) {
-        await this.handleVariantPrices(row, regionRepo)
+        await this.prepareVariantPrices(row, regionRepo)
       }
 
       if (row["variant.id"]) {
@@ -232,7 +232,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       // save only first occurrence
       if (!seenProducts[row["product.handle"] as string]) {
         row["product.profile_id"] = shippingProfile
-        ;(row["product.product.id"] ? productsUpdate : productsCreate).push(row)
+        if (row["product.product.id"]) {
+          productsUpdate.push(row)
+        } else {
+          productsCreate.push(row)
+        }
 
         seenProducts[row["product.handle"] as string] = true
       }
@@ -252,32 +256,32 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * @param row - An object containing parsed row data.
    * @param regionRepo - Region repository.
    */
-  protected async handleVariantPrices(
+  protected async prepareVariantPrices(
     row,
     regionRepo: RegionRepository
   ): Promise<void> {
     const prices: Record<string, string | number>[] = []
 
-    for (const p of row["variant.prices"]) {
+    for (const price of row["variant.prices"]) {
       const record: Record<string, string | number> = {
-        amount: p.amount,
+        amount: price.amount,
       }
 
-      if (p.regionName) {
+      if (price.regionName) {
         const region = await regionRepo.findOne({
-          where: { name: p.regionName },
+          where: { name: price.regionName },
         })
 
         if (!region) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            `Trying to set a price for a region ${p.regionName} that doesn't exist`
+            `Trying to set a price for a region ${price.regionName} that doesn't exist`
           )
         }
 
         record.region_id = region!.id
       } else {
-        record.currency_code = p.currency_code
+        record.currency_code = price.currency_code
       }
 
       prices.push(record)
@@ -301,10 +305,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       fileKey: csvFileKey,
     })
 
-    const data = await this.csvParser_.parse(csvStream)
-    const results = await this.csvParser_.buildData(data)
+    const parsedData = await this.csvParser_.parse(csvStream)
+    const builtData = await this.csvParser_.buildData(parsedData)
 
-    const ops = await this.getImportInstructions(results)
+    const ops = await this.getImportInstructions(builtData)
 
     await this.setImportDataToRedis(batchJobId, ops)
 
@@ -323,13 +327,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * @param batchJobId - An id of a batch job that is being processed.
    */
   async processJob(batchJobId: string): Promise<void> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      await this.createProducts(batchJobId, transactionManager)
-      await this.updateProducts(batchJobId, transactionManager)
-      await this.createVariants(batchJobId, transactionManager)
-      await this.updateVariants(batchJobId, transactionManager)
+    return await this.atomicPhase_(async () => {
+      await this.createProducts(batchJobId)
+      await this.updateProducts(batchJobId)
+      await this.createVariants(batchJobId)
+      await this.updateVariants(batchJobId)
 
-      this.finalize_(batchJobId)
+      this.finalize(batchJobId)
     })
   }
 
@@ -337,12 +341,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * Method creates products using `ProductService` and parsed data from a CSV row.
    *
    * @param batchJobId - An id of the current batch job being processed.
-   * @param transactionManager - Transaction manager responsible for current batch import.
    */
-  private async createProducts(
-    batchJobId: string,
-    transactionManager: EntityManager
-  ): Promise<void> {
+  private async createProducts(batchJobId: string): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
     const productOps = await this.getImportDataFromRedis(
       batchJobId,
       OperationType.ProductCreate
@@ -359,7 +360,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         ProductImportStrategy.throwDescriptiveError(productOp)
       }
 
-      this.updateProgress_(batchJobId)
+      this.updateProgress(batchJobId)
     }
   }
 
@@ -367,12 +368,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * Method updates existing products in the DB using a CSV row data.
    *
    * @param batchJobId - An id of the current batch job being processed.
-   * @param transactionManager - Transaction manager responsible for current batch import.
    */
-  private async updateProducts(
-    batchJobId: string,
-    transactionManager: EntityManager
-  ): Promise<void> {
+  private async updateProducts(batchJobId: string): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
     const productOps = await this.getImportDataFromRedis(
       batchJobId,
       OperationType.ProductUpdate
@@ -390,7 +388,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         ProductImportStrategy.throwDescriptiveError(productOp)
       }
 
-      this.updateProgress_(batchJobId)
+      this.updateProgress(batchJobId)
     }
   }
 
@@ -399,12 +397,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * Method also handles processing of variant options.
    *
    * @param batchJobId - An id of the current batch job being processed.
-   * @param transactionManager - Transaction manager responsible for current batch import.
    */
-  private async createVariants(
-    batchJobId: string,
-    transactionManager: EntityManager
-  ): Promise<void> {
+  private async createVariants(batchJobId: string): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
     const productRepo = transactionManager.getCustomRepository(
       this.productRepo_
     )
@@ -442,7 +437,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
           .withTransaction(transactionManager)
           .create(product!, variant as unknown as CreateProductVariantInput)
 
-        this.updateProgress_(batchJobId)
+        this.updateProgress(batchJobId)
       } catch (e) {
         ProductImportStrategy.throwDescriptiveError(variantOp)
       }
@@ -453,12 +448,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * Method updates product variants from a CSV data.
    *
    * @param batchJobId - An id of the current batch job being processed.
-   * @param transactionManager - Transaction manager responsible for current batch import.
    */
-  private async updateVariants(
-    batchJobId: string,
-    transactionManager: EntityManager
-  ): Promise<void> {
+  private async updateVariants(batchJobId: string): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
     const productOptionRepo = this.manager_.getCustomRepository(
       this.productOptionRepo_
     )
@@ -482,7 +474,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         ProductImportStrategy.throwDescriptiveError(variantOp)
       }
 
-      this.updateProgress_(batchJobId)
+      this.updateProgress(batchJobId)
     }
   }
 
@@ -560,7 +552,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    *
    * @param batchJobId - An id of the current batch job being processed.
    */
-  private async finalize_(batchJobId: string): Promise<void> {
+  private async finalize(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
     await this.batchJobService_.update(batchJobId, {
@@ -577,7 +569,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    *
    * @param batchJobId - An id of the current batch job being processed.
    */
-  private async updateProgress_(batchJobId: string): Promise<void> {
+  private async updateProgress(batchJobId: string): Promise<void> {
     this.processedCounter += 1
 
     if (this.processedCounter % BATCH_SIZE !== 0) {
