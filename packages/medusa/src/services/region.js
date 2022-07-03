@@ -387,6 +387,16 @@ class RegionService extends BaseService {
     return await this.retrieve(country.region_id, config)
   }
 
+  async retrieveByName(name) {
+    const regionRepository = this.manager_.getCustomRepository(
+      this.regionRepository_
+    )
+
+    return await regionRepository.findOne({
+      where: { name },
+    })
+  }
+
   /**
    * Retrieves a region by its id.
    * @param {string} regionId - the id of the region to retrieve
