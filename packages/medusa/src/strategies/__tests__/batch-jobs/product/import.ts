@@ -1,7 +1,7 @@
 import { Readable } from "stream"
 import FakeRedis from "ioredis-mock"
 
-import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
+import { IdMap, MockManager } from "medusa-test-utils"
 
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
@@ -81,44 +81,7 @@ const productVariantServiceMock = {
   count: jest.fn().mockImplementation(() => Promise.resolve()),
 }
 
-/* ******************** REPOSITORY MOCK ******************** */
-
 const managerMock = MockManager
-
-const productRepositoryMock = {
-  ...MockRepository(),
-  save: () => {},
-  productWithHandleExists: () => false,
-}
-
-const productVariantRepositoryMock = {
-  ...MockRepository(),
-  save: () => {},
-}
-
-const regionRepositoryMock = {
-  ...MockRepository(),
-  findOne: jest.fn().mockImplementation(() =>
-    Promise.resolve({
-      id: "reg_HMnixPlOicAs7aBlXuchAGxd",
-      name: "Denmark",
-      currency_code: "DKK",
-      currency: "DKK",
-      tax_rate: 0.25,
-      tax_code: null,
-      countries: [
-        {
-          id: "1001",
-          iso_2: "DK",
-          iso_3: "DNK",
-          num_code: "208",
-          name: "denmark",
-          display_name: "Denmark",
-        },
-      ],
-    })
-  ),
-}
 
 /* ******************** PRODUCT IMPORT STRATEGY TESTS ******************** */
 
@@ -139,10 +102,7 @@ describe("Product import strategy", () => {
     batchJobService: batchJobServiceMock as any,
     productService: productServiceMock as any,
     shippingProfileService: shippingProfileServiceMock as any,
-    regionRepository: regionRepositoryMock,
-    productRepository: productRepositoryMock,
     productVariantService: productVariantServiceMock,
-    productVariantRepository: productVariantRepositoryMock,
     redisClient,
   })
 
