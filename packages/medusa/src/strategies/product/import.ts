@@ -7,7 +7,6 @@ import * as IORedis from "ioredis"
 import { ProductVariantRepository } from "../../repositories/product-variant"
 import { ProductOptionRepository } from "../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
-import { ProductRepository } from "../../repositories/product"
 import { CsvSchema } from "../../interfaces/csv-parser"
 import CsvParser from "../../services/csv-parser"
 import { ProductOption } from "../../models"
@@ -135,9 +134,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly batchJobService_: BatchJobService
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: typeof ShippingProfileService
-
   protected readonly regionService_: typeof RegionService
-  protected readonly productRepo_: typeof ProductRepository
+
   protected readonly productOptionRepo_: typeof ProductOptionRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
 
@@ -153,7 +151,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const {
       batchJobService,
       productService,
-      productRepository,
       productOptionRepository,
       productVariantService,
       productVariantRepository,
@@ -173,7 +170,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.productService_ = productService
     this.productVariantService_ = productVariantService
     this.shippingProfileService_ = shippingProfileService
-    this.productRepo_ = productRepository
     this.productOptionRepo_ = productOptionRepository
     this.productVariantRepo_ = productVariantRepository
     this.regionService_ = regionService
@@ -396,9 +392,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    */
   private async createVariants(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
-    const productRepo = transactionManager.getCustomRepository(
-      this.productRepo_
-    )
 
     const variantOps = await this.getImportDataFromRedis(
       batchJobId,
@@ -409,10 +402,11 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       try {
         const variant = transformVariantData(variantOp)
 
-        const product = await productRepo.findOne({
-          where: { handle: variantOp["product.handle"] },
-          relations: ["variants", "variants.options", "options"],
-        })
+        const product = await this.productService_
+          .withTransaction(transactionManager)
+          .retrieveByHandle(variantOp["product.handle"] as string, {
+            relations: ["variants", "variants.options", "options"],
+          })
 
         const optionIds =
           (variantOp["product.options"] as Record<string, string>[])?.map(
