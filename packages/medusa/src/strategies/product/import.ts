@@ -8,7 +8,6 @@ import { ProductVariantRepository } from "../../repositories/product-variant"
 import { ProductOptionRepository } from "../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
 import { ProductRepository } from "../../repositories/product"
-import { RegionRepository } from "../../repositories/region"
 import { CsvSchema } from "../../interfaces/csv-parser"
 import CsvParser from "../../services/csv-parser"
 import { ProductOption } from "../../models"
@@ -16,6 +15,7 @@ import {
   BatchJobService,
   ProductService,
   ProductVariantService,
+  RegionService,
   ShippingProfileService,
 } from "../../services"
 import { CreateProductInput } from "../../types/product"
@@ -136,7 +136,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected readonly productVariantService_: ProductVariantService
   protected readonly shippingProfileService_: typeof ShippingProfileService
 
-  protected readonly regionRepo_: typeof RegionRepository
+  protected readonly regionService_: typeof RegionService
   protected readonly productRepo_: typeof ProductRepository
   protected readonly productOptionRepo_: typeof ProductOptionRepository
   protected readonly productVariantRepo_: typeof ProductVariantRepository
@@ -158,7 +158,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       productVariantService,
       productVariantRepository,
       shippingProfileService,
-      regionRepository,
+      regionService,
       fileService,
       redisClient,
       manager,
@@ -176,7 +176,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     this.productRepo_ = productRepository
     this.productOptionRepo_ = productOptionRepository
     this.productVariantRepo_ = productVariantRepository
-    this.regionRepo_ = regionRepository
+    this.regionService_ = regionService
   }
 
   buildTemplate(): Promise<string> {
@@ -206,8 +206,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async getImportInstructions(
     csvData: TParsedRowData[]
   ): Promise<Record<OperationType, TParsedRowData[]>> {
-    const regionRepo = this.manager_.getCustomRepository(this.regionRepo_)
-
     const shippingProfile = await this.shippingProfileService_.retrieveDefault()
 
     const seenProducts = {}
@@ -220,7 +218,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     for (const row of csvData) {
       if ((row["variant.prices"] as object[]).length) {
-        await this.prepareVariantPrices(row, regionRepo)
+        await this.prepareVariantPrices(row)
       }
 
       if (row["variant.id"]) {
@@ -254,12 +252,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * Prepare prices records for insert - find and append region ids to records that contain a region name.
    *
    * @param row - An object containing parsed row data.
-   * @param regionRepo - Region repository.
    */
-  protected async prepareVariantPrices(
-    row,
-    regionRepo: RegionRepository
-  ): Promise<void> {
+  protected async prepareVariantPrices(row): Promise<void> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
     const prices: Record<string, string | number>[] = []
 
     for (const price of row["variant.prices"]) {
@@ -268,9 +264,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       }
 
       if (price.regionName) {
-        const region = await regionRepo.findOne({
-          where: { name: price.regionName },
-        })
+        const region = await this.regionService_
+          .withTransaction(transactionManager)
+          .retrieveByName(price.regionName)
 
         if (!region) {
           throw new MedusaError(
