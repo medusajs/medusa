@@ -29,9 +29,7 @@
     "cross-env": "^7.0.3"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
-  "keywords": [
-    "medusa"
-  ],
+  "keywords": ["medusa"],
   "license": "MIT",
   "main": "index.js",
   "repository": {
