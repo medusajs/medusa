@@ -5,7 +5,7 @@ import { IdMap, MockManager } from "medusa-test-utils"
 
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
-import ProductImportStrategy from "../../../product/import"
+import ProductImportStrategy from "../../../batch-jobs/product/import"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),

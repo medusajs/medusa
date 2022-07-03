@@ -4,23 +4,23 @@ import { MedusaError } from "medusa-core-utils"
 import { FileService } from "medusa-interfaces"
 import * as IORedis from "ioredis"
 
-import { ProductOptionRepository } from "../../repositories/product-option"
-import { AbstractBatchJobStrategy, IFileService } from "../../interfaces"
-import { CsvSchema } from "../../interfaces/csv-parser"
-import CsvParser from "../../services/csv-parser"
-import { ProductOption } from "../../models"
+import { ProductOptionRepository } from "../../../repositories/product-option"
+import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
+import { CsvSchema } from "../../../interfaces/csv-parser"
+import CsvParser from "../../../services/csv-parser"
+import { ProductOption } from "../../../models"
 import {
   BatchJobService,
   ProductService,
   ProductVariantService,
   RegionService,
   ShippingProfileService,
-} from "../../services"
-import { CreateProductInput } from "../../types/product"
+} from "../../../services"
+import { CreateProductInput } from "../../../types/product"
 import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
-} from "../../types/product-variant"
+} from "../../../types/product-variant"
 
 /* ******************** TYPES ******************** */
 
@@ -484,6 +484,54 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
       o.option_id = id
     }
+  }
+
+  // WIP
+  async uploadImportOpsFile(
+    batchJobId: string,
+    results: Record<OperationType, TParsedRowData[]>
+  ) {
+    const uploadPromises: Promise<void>[] = []
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
+    for (const op in results) {
+      if (results[op]?.length) {
+        const { writeStream, promise } = await this.fileService_
+          .withTransaction(transactionManager)
+          .getUploadStreamDescriptor({
+            name: `imports/products/import/ops/-${batchJobId}-${op}`,
+            ext: "json",
+          })
+
+        uploadPromises.push(promise)
+
+        writeStream.write(JSON.stringify(results[op]))
+      }
+    }
+
+    await Promise.all(uploadPromises)
+  }
+
+  // WIP
+  async downloadImportOpsFile(batchJobId: string, op: OperationType) {
+    let data = ""
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
+    const readableStream = await this.fileService_
+      .withTransaction(transactionManager)
+      .getDownloadStream({
+        fileKey: `imports/products/import/ops/-${batchJobId}-${op}`,
+      })
+
+    readableStream.on("data", (chunk) => {
+      data += chunk
+    })
+
+    await new Promise((resolve) => {
+      readableStream.on("end", () => {
+        resolve(JSON.parse(data))
+      })
+    })
   }
 
   /**
