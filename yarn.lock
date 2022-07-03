@@ -30518,6 +30518,7 @@ __metadata:
     react-json-view: ^1.21.3
     react-query: ^3.31.0
     size-limit: ^6.0.4
+    ts-jest: ^27.1.4
     tslib: ^2.3.1
   peerDependencies:
     "@medusajs/medusa": ^1.3.2
@@ -37352,6 +37353,7 @@ __metadata:
     resolve-cwd: ^3.0.0
     swagger-inline: ^3.2.2
     ts-jest: ^26.5.6
+    turbo: ^1.3.1
     typedoc: ^0.22.15
     typedoc-plugin-markdown: ^3.12.1
     typeorm: ^0.2.31
@@ -40262,7 +40264,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^27.1.3":
+"ts-jest@npm:^27.1.3, ts-jest@npm:^27.1.4":
   version: 27.1.5
   resolution: "ts-jest@npm:27.1.5"
   dependencies:
@@ -40535,6 +40537,157 @@ __metadata:
   dependencies:
     safe-buffer: ^5.0.1
   checksum: 4c7a1b813e7beae66fdbf567a65ec6d46313643753d0beefb3c7973d66fcec3a1e7f39759f0a0b4465883499c6dc8b0750ab8b287399af2e583823e40410a17a
+  languageName: node
+  linkType: hard
+
+"turbo-android-arm64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-android-arm64@npm:1.3.1"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-darwin-64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-darwin-64@npm:1.3.1"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-darwin-arm64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-darwin-arm64@npm:1.3.1"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-freebsd-64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-freebsd-64@npm:1.3.1"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-freebsd-arm64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-freebsd-arm64@npm:1.3.1"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-linux-32@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-linux-32@npm:1.3.1"
+  conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"turbo-linux-64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-linux-64@npm:1.3.1"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-linux-arm64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-linux-arm64@npm:1.3.1"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo-linux-arm@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-linux-arm@npm:1.3.1"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"turbo-linux-mips64le@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-linux-mips64le@npm:1.3.1"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
+"turbo-linux-ppc64le@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-linux-ppc64le@npm:1.3.1"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"turbo-windows-32@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-windows-32@npm:1.3.1"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
+"turbo-windows-64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-windows-64@npm:1.3.1"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"turbo-windows-arm64@npm:1.3.1":
+  version: 1.3.1
+  resolution: "turbo-windows-arm64@npm:1.3.1"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"turbo@npm:^1.3.1":
+  version: 1.3.1
+  resolution: "turbo@npm:1.3.1"
+  dependencies:
+    turbo-android-arm64: 1.3.1
+    turbo-darwin-64: 1.3.1
+    turbo-darwin-arm64: 1.3.1
+    turbo-freebsd-64: 1.3.1
+    turbo-freebsd-arm64: 1.3.1
+    turbo-linux-32: 1.3.1
+    turbo-linux-64: 1.3.1
+    turbo-linux-arm: 1.3.1
+    turbo-linux-arm64: 1.3.1
+    turbo-linux-mips64le: 1.3.1
+    turbo-linux-ppc64le: 1.3.1
+    turbo-windows-32: 1.3.1
+    turbo-windows-64: 1.3.1
+    turbo-windows-arm64: 1.3.1
+  dependenciesMeta:
+    turbo-android-arm64:
+      optional: true
+    turbo-darwin-64:
+      optional: true
+    turbo-darwin-arm64:
+      optional: true
+    turbo-freebsd-64:
+      optional: true
+    turbo-freebsd-arm64:
+      optional: true
+    turbo-linux-32:
+      optional: true
+    turbo-linux-64:
+      optional: true
+    turbo-linux-arm:
+      optional: true
+    turbo-linux-arm64:
+      optional: true
+    turbo-linux-mips64le:
+      optional: true
+    turbo-linux-ppc64le:
+      optional: true
+    turbo-windows-32:
+      optional: true
+    turbo-windows-64:
+      optional: true
+    turbo-windows-arm64:
+      optional: true
+  bin:
+    turbo: bin/turbo
+  checksum: 62093ccfb8cce6d8e6c7161f50660e8d5d1fbdbcf2e2f8514a001fdef7cdc9fa0f21013c4507b7020f2d66b4ab313a436b9d4a5aa10358ebe11b98acd7a939ea
   languageName: node
   linkType: hard
 

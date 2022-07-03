@@ -12,7 +12,7 @@
     "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "babel src --out-dir .",
     "watch": "babel -w src --out-dir .",
-    "test": "jest"
+    "test": "jest --passWithNoTests"
   },
   "author": "Oliver Juhl",
   "license": "MIT",
