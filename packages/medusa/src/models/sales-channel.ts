@@ -13,7 +13,7 @@ export class SalesChannel extends SoftDeletableEntity {
   @Column({ nullable: true })
   description: string
 
-  @Column({ default: true })
+  @Column({ default: false })
   is_disabled: boolean
 
   // @Column({ type: resolveDbType("timestamptz"), nullable: true })
