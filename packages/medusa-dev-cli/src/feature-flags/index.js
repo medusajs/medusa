@@ -1,4 +1,5 @@
 import path from "path"
+import glob from "glob"
 import fs from "fs"
 import Configstore from "configstore"
 import { kebabCase, snakeCase } from "lodash"
@@ -39,6 +40,27 @@ export const buildFFCli = (cli) => {
 
             const flagSettings = collectSettings(argv.name, argv.description)
             writeFeatureFlag(flagSettings, featureFlagPath)
+          },
+        })
+        .command({
+          command: "list",
+          desc: "List available feature flags",
+          handler: async () => {
+            const medusaLocation = getRepoRoot()
+            const flagGlob = buildFlagsGlob(medusaLocation)
+
+            const featureFlags = glob.sync(flagGlob, {
+              ignore: ["**/index.*"],
+            })
+            const flagData = featureFlags.map((flag) => {
+              const flagSettings = readFeatureFlag(flag)
+              return {
+                ...flagSettings,
+                file_name: path.basename(flag, ".js"),
+              }
+            })
+
+            console.table(flagData)
           },
         })
         .command({
@@ -84,6 +106,23 @@ medusa-dev --set-path-to-repo /path/to/my/cloned/version/medusa
   }
 
   return medusaLocation
+}
+
+const readFeatureFlag = (flagPath) => {
+  const flagSettings = require(flagPath).default
+  return flagSettings
+}
+
+const buildFlagsGlob = (repoRoot) => {
+  return path.join(
+    repoRoot,
+    "packages",
+    "medusa",
+    "dist",
+    "loaders",
+    "feature-flags",
+    `*.js`
+  )
 }
 
 const buildPath = (kebabCaseName, repoRoot) => {
