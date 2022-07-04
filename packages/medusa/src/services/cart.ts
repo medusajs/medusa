@@ -1200,7 +1200,12 @@ class CartService extends TransactionBaseService<CartService> {
 
         const cart = await this.retrieve(cartId, {
           select: ["total"],
-          relations: ["region", "payment_sessions"],
+          relations: [
+            "items",
+            "items.adjustments",
+            "region",
+            "payment_sessions",
+          ],
         })
 
         if (typeof cart.total === "undefined") {
