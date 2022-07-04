@@ -14,6 +14,9 @@ export class SalesChannel extends SoftDeletableEntity {
   @Column({ nullable: true })
   description: string
 
+  // @Column({ type: "boolean", default: false })
+  // disabled: boolean
+
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   disabled_at: Date | null
 

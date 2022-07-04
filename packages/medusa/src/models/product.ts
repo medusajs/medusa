@@ -163,7 +163,7 @@ export class Product extends SoftDeletableEntity {
       },
     }),
   ])
-  sales_channel: SalesChannel[]
+  sales_channels: SalesChannel[]
 
   @BeforeInsert()
   private beforeInsert(): void {
