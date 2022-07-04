@@ -235,7 +235,7 @@ export class Cart extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("sales-channels", {})
+  @FeatureFlagColumn("sales-channels", { nullable: true })
   sales_channel_id: string
 
   @FeatureFlagDecorators("sales-channels", [

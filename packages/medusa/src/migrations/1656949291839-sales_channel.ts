@@ -7,7 +7,7 @@ export class salesChannel1656949291839 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(
-      `CREATE TABLE "sales_channel" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "name" character varying NOT NULL, "description" character varying, "disabled_at" TIMESTAMP WITH TIME ZONE, CONSTRAINT "PK_d1eb0b923ea5a0eb1e0916191f1" PRIMARY KEY ("id"))`
+      `CREATE TABLE "sales_channel" ("id" character varying NOT NULL, "created_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "updated_at" TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "deleted_at" TIMESTAMP WITH TIME ZONE, "name" character varying NOT NULL, "description" character varying, "is_disabled" boolean NOT NULL DEFAULT true, CONSTRAINT "PK_d1eb0b923ea5a0eb1e0916191f1" PRIMARY KEY ("id"))`
     )
     await queryRunner.query(
       `CREATE TABLE "product_sales_channel" ("product_id" character varying NOT NULL, "sales_channel_id" character varying NOT NULL, CONSTRAINT "PK_fd29b6a8bd641052628dee19583" PRIMARY KEY ("product_id", "sales_channel_id"))`
@@ -21,10 +21,10 @@ export class salesChannel1656949291839 implements MigrationInterface {
     )
 
     await queryRunner.query(
-      `ALTER TABLE "public"."cart" ADD "sales_channel_id" character varying NOT NULL`
+      `ALTER TABLE "public"."cart" ADD "sales_channel_id" character varying`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."order" ADD "sales_channel_id" character varying NOT NULL`
+      `ALTER TABLE "public"."order" ADD "sales_channel_id" character varying`
     )
 
     await queryRunner.query(
