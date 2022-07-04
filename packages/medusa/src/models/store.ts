@@ -6,12 +6,18 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToOne,
 } from "typeorm"
 import { BaseEntity } from "../interfaces/models/base-entity"
 import { DbAwareColumn } from "../utils/db-aware-column"
 
 import { Currency } from "./currency"
 import { generateEntityId } from "../utils/generate-entity-id"
+import { SalesChannel } from "./sales-channel"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
 
 @Entity()
 export class Store extends BaseEntity {
@@ -50,6 +56,18 @@ export class Store extends BaseEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
+
+  // @FeatureFlagColumn("sales-channels", {})
+  @Column()
+  sales_channel_id: string
+
+  // @FeatureFlagDecorators("sales-channels", [
+  //   OneToOne(() => SalesChannel),
+  //   JoinColumn(),
+  // ])
+  @OneToOne(() => SalesChannel)
+  @JoinColumn()
+  sales_channel: SalesChannel
 
   @BeforeInsert()
   private beforeInsert(): void {
