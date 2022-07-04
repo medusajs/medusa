@@ -21,10 +21,10 @@ export class salesChannel1656949291839 implements MigrationInterface {
     )
 
     await queryRunner.query(
-      `ALTER TABLE "public"."cart" ADD "sales_channel_id" character varying NOT NULL`
+      `ALTER TABLE "public"."cart" ADD "sales_channel_id" character varying`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."order" ADD "sales_channel_id" character varying NOT NULL`
+      `ALTER TABLE "public"."order" ADD "sales_channel_id" character varying`
     )
 
     await queryRunner.query(
