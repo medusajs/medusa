@@ -125,7 +125,7 @@ export default async (directory, featureFlagRouter) => {
   }
 
   return getEnabledMigrations(migrationDirs, (flag) =>
-    featureFlagRouter.featureIsEnabled(flag)
+    featureFlagRouter.isFeatureEnabled(flag)
   )
 }
 

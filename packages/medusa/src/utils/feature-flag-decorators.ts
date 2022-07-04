@@ -3,19 +3,15 @@ import { Column, ColumnOptions, Entity, EntityOptions } from "typeorm"
 import featureFlagsLoader from "../loaders/feature-flags"
 import path from "path"
 import { ConfigModule } from "../types/global"
+import { FlagRouter } from "./flag-router"
 
 export function FeatureFlagColumn(
   featureFlag: string,
   columnOptions: ColumnOptions
 ): PropertyDecorator {
-  const { configModule } = getConfigFile(
-    path.resolve("."),
-    `medusa-config`
-  ) as { configModule: ConfigModule }
+  const featureFlagRouter = getFeatureFlagRouter()
 
-  const featureFlagRouter = featureFlagsLoader(configModule)
-
-  if (!featureFlagRouter.featureIsEnabled(featureFlag)) {
+  if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
     return (): void => {
       // noop
     }
@@ -24,18 +20,13 @@ export function FeatureFlagColumn(
   return Column(columnOptions)
 }
 
-export function featureFlagDecorators(
+export function FeatureFlagDecorators(
   featureFlag: string,
   decorators: PropertyDecorator[]
 ): PropertyDecorator {
-  const { configModule } = getConfigFile(
-    path.resolve("."),
-    `medusa-config`
-  ) as { configModule: ConfigModule }
+  const featureFlagRouter = getFeatureFlagRouter()
 
-  const featureFlagRouter = featureFlagsLoader(configModule)
-
-  if (!featureFlagRouter.featureIsEnabled(featureFlag)) {
+  if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
     return (): void => {
       // noop
     }
@@ -53,17 +44,23 @@ export function FeatureFlagEntity(
   name?: string,
   options?: EntityOptions
 ): ClassDecorator {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  return function (target: Function): void {
+    target["isFeatureEnabled"] = function (): boolean {
+      const featureFlagRouter = getFeatureFlagRouter()
+
+      // const featureFlagRouter = featureFlagsLoader(configModule)
+      return featureFlagRouter.isFeatureEnabled(featureFlag)
+    }
+    Entity(name, options)(target)
+  }
+}
+
+function getFeatureFlagRouter(): FlagRouter {
   const { configModule } = getConfigFile(
     path.resolve("."),
     `medusa-config`
   ) as { configModule: ConfigModule }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  return function (target: Function): void {
-    target["isEnabled"] = function (): boolean {
-      const featureFlagRouter = featureFlagsLoader(configModule)
-      return featureFlagRouter.featureIsEnabled(featureFlag)
-    }
-    Entity(name, options)(target)
-  }
+  return featureFlagsLoader(configModule)
 }

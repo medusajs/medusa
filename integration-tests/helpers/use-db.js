@@ -147,11 +147,11 @@ module.exports = {
 
       const enabledMigrations = await getEnabledMigrations(
         [migrationDir],
-        (flag) => featureFlagsRouter.featureIsEnabled(flag)
+        (flag) => featureFlagsRouter.isFeatureEnabled(flag)
       )
 
       const enabledEntities = entities.filter(
-        (e) => typeof e.isEnabled === "undefined" || e.isEnabled()
+        (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
       )
 
       const dbConnection = await createConnection({

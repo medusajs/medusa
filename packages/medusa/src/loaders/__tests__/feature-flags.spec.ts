@@ -26,7 +26,7 @@ const buildFeatureFlag = (
 }
 
 describe("feature flags", () => {
-  const OLD_ENV = process.env
+  const OLD_ENV = { ...process.env }
 
   beforeEach(() => {
     jest.resetModules()
@@ -64,7 +64,7 @@ describe("feature flags", () => {
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.featureIsEnabled("flag_1")).toEqual(false)
+    expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
   })
 
   it("should load the default feature flags", async () => {
@@ -79,10 +79,7 @@ describe("feature flags", () => {
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.featureIsEnabled("flag_1")).toEqual(true)
-    // expect(flags.flags).toEqual({
-    //   flag_1: true,
-    // })
+    expect(flags.isFeatureEnabled("flag_1")).toEqual(true)
   })
 
   it("should load the flag from env", async () => {
@@ -99,7 +96,7 @@ describe("feature flags", () => {
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.featureIsEnabled("flag_1")).toEqual(false)
+    expect(flags.isFeatureEnabled("flag_1")).toEqual(false)
   })
 
   it("should load mix of flags", async () => {
@@ -126,8 +123,8 @@ describe("feature flags", () => {
       getFolderTestTargetDirectoryPath("flags")
     )
 
-    expect(flags.featureIsEnabled("flag_1")).toEqual(true)
-    expect(flags.featureIsEnabled("flag_2")).toEqual(false)
-    expect(flags.featureIsEnabled("flag_3")).toEqual(false)
+    expect(flags.isFeatureEnabled("flag_1")).toEqual(true)
+    expect(flags.isFeatureEnabled("flag_2")).toEqual(false)
+    expect(flags.isFeatureEnabled("flag_3")).toEqual(false)
   })
 })

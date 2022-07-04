@@ -17,8 +17,7 @@ export default (
   logger?: Logger,
   flagDirectory?: string
 ): FlagRouter => {
-  let { featureFlags: projectConfigFlags } = configModule
-  projectConfigFlags = projectConfigFlags || {}
+  const { featureFlags: projectConfigFlags = {} } = configModule
 
   const flagDir = path.join(flagDirectory || __dirname, "*.js")
   const supportedFlags = glob.sync(flagDir, {
@@ -27,14 +26,13 @@ export default (
 
   const flagConfig: Record<string, boolean> = {}
   for (const flag of supportedFlags) {
-    let flagSettings: FlagSettings
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const importedModule = require(flag)
-    if (importedModule.default) {
-      flagSettings = importedModule.default
-    } else {
+    if (!importedModule.default) {
       continue
     }
+
+    const flagSettings: FlagSettings = importedModule.default
 
     switch (true) {
       case typeof process.env[flagSettings.env_key] !== "undefined":

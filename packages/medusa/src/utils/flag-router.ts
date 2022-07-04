@@ -7,7 +7,7 @@ export class FlagRouter implements IFlagRouter {
     this.flags = flags
   }
 
-  public featureIsEnabled(key: string): boolean {
+  public isFeatureEnabled(key: string): boolean {
     return !!this.flags[key]
   }
 

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
 import { FlagRouter } from "../../utils/flag-router"
 
-export function featureFlagEnabled(
+export function isFeatureFlagEnabled(
   flagKey: string
 ): (req: Request, res: Response, next: NextFunction) => Promise<void> {
   return async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +9,7 @@ export function featureFlagEnabled(
       "featureFlagRouter"
     ) as FlagRouter
 
-    if (!featureFlagRouter.featureIsEnabled(flagKey)) {
+    if (!featureFlagRouter.isFeatureEnabled(flagKey)) {
       res.sendStatus(404)
     } else {
       next()
