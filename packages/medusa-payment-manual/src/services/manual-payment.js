@@ -1,107 +1,93 @@
-import { AbstractPaymentService } from "@medusajs/medusa"
+import { PaymentService } from "medusa-interfaces"
 
-class ManualPaymentService extends AbstractPaymentService {
+class ManualPaymentService extends PaymentService {
   static identifier = "manual"
 
   constructor() {
-    super({})
+    super()
   }
 
   /**
    * Returns the currently held status.
-   * @param {PaymentSessionData} paymentSessionData - payment method data from cart
-   * @returns {Promise<PaymentSessionStatus>} the status of the payment
+   * @param {object} paymentData - payment method data from cart
+   * @returns {string} the status of the payment
    */
-  async getStatus(paymentSessionData) {
+  async getStatus(paymentData) {
     const { status } = paymentData
     return status
   }
 
   /**
    * Creates a manual payment with status "pending"
-   * @param {Cart} cart - cart to create a payment for
-   * @returns {Promise<{status: string}>} an object with status
+   * @param {object} cart - cart to create a payment for
+   * @returns {object} an object with staus
    */
-  async createPayment(cart) {
+  async createPayment() {
     return { status: "pending" }
   }
 
   /**
    * Retrieves payment
-   * @param {PaymentData} data - the data of the payment to retrieve
-   * @returns {Promise<Data>} returns data
+   * @param {object} data - the data of the payment to retrieve
+   * @returns {Promise<object>} returns data
    */
-  async retrievePayment(paymentData) {
-    return paymentData
+  async retrievePayment(data) {
+    return data
   }
 
   /**
    * Updates the payment status to authorized
-   * @param {PaymentSession} paymentSession
-   * @param {Data} context
-   * @returns {{ status: string, data: PaymentSessionStatus }} result with data and status
+   * @returns {Promise<{ status: string, data: object }>} result with data and status
    */
-  async authorizePayment(paymentSession, context) {
-    return {
-      status: PaymentSessionStatus.AUTHORIZED,
-      data: { status: PaymentSessionStatus.AUTHORIZED }
-    }
+  async authorizePayment() {
+    return { status: "authorized", data: { status: "authorized" } }
   }
 
   /**
    * Noop, simply returns existing data.
-   * @param {PaymentSessionData} sessionData - payment session data.
+   * @param {object} sessionData - payment session data.
    * @returns {object} same data
    */
-  async updatePayment(paymentSessionData, cart) {
-    return paymentSessionData
+  async updatePayment(sessionData) {
+    return sessionData.data
   }
 
-  async updatePaymentData(paymentSessionData, data) {
-    try {
-      return { ...paymentSessionData, ...data }
-    } catch (error) {
-      throw error
-    }
-  }
-
-  async deletePayment(paymentSession) {
+  async deletePayment() {
     return
   }
 
   /**
    * Updates the payment status to captured
-   * @param {Payment} payment - payment method data from cart
+   * @param {object} paymentData - payment method data from cart
    * @returns {object} object with updated status
    */
-  async capturePayment(payment) {
+  async capturePayment() {
     return { status: "captured" }
   }
 
   /**
    * Returns the data currently held in a status
-   * @param {PaymentSession} paymentSession - payment session from cart
+   * @param {object} paymentData - payment method data from cart
    * @returns {object} the current data
    */
-  async getPaymentData(paymentSession) {
-    return paymentSession.data
+  async getPaymentData(session) {
+    return session.data
   }
 
   /**
    * Noop, resolves to allow manual refunds.
-   * @param {Payment} payment - payment method data from cart
-   * @param {number} refundAmount
+   * @param {object} payment - payment method data from cart
    * @returns {string} same data
    */
-  async refundPayment(payment, refundAmount) {
+  async refundPayment(payment) {
     return payment.data
   }
 
   /**
    * Updates the payment status to cancled
-   * @returns {Payment} payment with canceled status
+   * @returns {object} object with canceled status
    */
-  async cancelPayment(payment) {
+  async cancelPayment() {
     return { status: "canceled" }
   }
 }
