@@ -1,59 +1,59 @@
-import { AbstractPaymentService } from "@medusajs/medusa"
+import _ from "lodash"
+import { PaymentService } from "medusa-interfaces"
 
-class MobilePayAdyenService extends AbstractPaymentService {
+class MobilePayAdyenService extends PaymentService {
   static identifier = "mobilepay-adyen"
 
   constructor({ adyenService }) {
-    super({ adyenService })
+    super()
 
     this.adyenService_ = adyenService
   }
 
-  async getStatus(paymentSessionData) {
-    return await this.adyenService_.getStatus(paymentSessionData)
+  async getStatus(paymentData) {
+    return this.adyenService_.getStatus(paymentData)
   }
 
-  async createPayment(cart) {
-    const raw = await this.adyenService_.createPayment(cart)
+  async createPayment(data) {
+    const raw = await this.adyenService_.createPayment(data)
     raw.type = "mobilepay"
     return raw
   }
 
-  async authorizePayment(paymentSessionData, context) {
-    return await this.adyenService_.authorizePayment(paymentSessionData, context)
+  async authorizePayment(sessionData, context) {
+    return this.adyenService_.authorizePayment(sessionData, context)
   }
 
-  async retrievePayment(paymentData) {
-    // TODO: This method does not exists on adyenService
-    return this.adyenService_.retrievePayment(paymentData)
+  async retrievePayment(data) {
+    return this.adyenService_.retrievePayment(data)
   }
 
-  async updatePayment(paymentSessionData, _) {
-    return await this.adyenService_.updatePayment(paymentSessionData)
+  async updatePayment(data, _) {
+    return this.adyenService_.updatePayment(data)
   }
 
-  async updatePaymentData(paymentSessionData, data) {
-    return await this.adyenService_.updatePaymentData(paymentSessionData, data)
+  async updatePaymentData(sessionData, update) {
+    return this.adyenService_.updatePaymentData(sessionData, update)
   }
 
-  async getPaymentData(paymentSession) {
-    return await this.adyenService_.getPaymentData(paymentSession)
+  async getPaymentData(data) {
+    return this.adyenService_.getPaymentData(data)
   }
 
-  async deletePayment(paymentSession) {
-    return await this.adyenService_.deletePayment(paymentSession)
+  async deletePayment(data) {
+    return this.adyenService_.deletePayment(data)
   }
 
-  async capturePayment(payment) {
-    return await this.adyenService_.capturePayment(payment)
+  async capturePayment(data) {
+    return this.adyenService_.capturePayment(data)
   }
 
-  async refundPayment(payment, amountToRefund) {
-    return await this.adyenService_.refundPayment(payment, amountToRefund)
+  async refundPayment(data, amountToRefund) {
+    return this.adyenService_.refundPayment(data, amountToRefund)
   }
 
-  async cancelPayment(payment) {
-    return await this.adyenService_.cancelPayment(payment)
+  async cancelPayment(data) {
+    return this.adyenService_.cancelPayment(data)
   }
 }
 
