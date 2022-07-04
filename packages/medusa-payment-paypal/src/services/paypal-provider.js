@@ -1,6 +1,10 @@
 import { humanizeAmount, zeroDecimalCurrencies } from "medusa-core-utils"
 import PayPal from "@paypal/checkout-server-sdk"
-import { PaymentSessionStatus, AbstractPaymentService, PaymentSessionData } from "@medusajs/medusa"
+import {
+  PaymentSessionStatus,
+  AbstractPaymentService,
+  PaymentSessionData,
+} from "@medusajs/medusa"
 
 function roundToTwo(num, currency) {
   if (zeroDecimalCurrencies.includes(currency.toLowerCase())) {
@@ -53,12 +57,12 @@ class PayPalProviderService extends AbstractPaymentService {
    * Fetches an open PayPal order and maps its status to Medusa payment
    * statuses.
    * @param {PaymentSessionData} paymentData - the data stored with the payment session
-   * @returns {Promise<PaymentSessionStatus>} the status of the order
+   * @return {Promise<PaymentSessionStatus>} the status of the order
    */
   async getStatus(paymentSessionData) {
     const order = await this.retrievePayment(paymentSessionData)
 
-    let status = PaymentSessionStatus.PENDING
+    const status = PaymentSessionStatus.PENDING
 
     switch (order.status) {
       case "CREATED":
@@ -88,7 +92,7 @@ class PayPalProviderService extends AbstractPaymentService {
    * support shipping details at the moment.
    * Reference docs: https://developer.paypal.com/docs/api/orders/v2/
    * @param {Cart} cart - cart to create a payment for
-   * @returns {Promise<{id: string}>} the data to be stored with the payment session.
+   * @return {Promise<{id: string}>} the data to be stored with the payment session.
    */
   async createPayment(cart) {
     const { region_id } = cart
@@ -124,7 +128,7 @@ class PayPalProviderService extends AbstractPaymentService {
   /**
    * Retrieves a PayPal order.
    * @param {PaymentData} paymentData - the data stored with the payment
-   * @returns {Promise<Data>} PayPal order
+   * @return {Promise<Data>} PayPal order
    */
   async retrievePayment(paymentData) {
     try {
@@ -139,7 +143,7 @@ class PayPalProviderService extends AbstractPaymentService {
   /**
    * Gets the payment data from a payment session
    * @param {PaymentSession} paymentSession - the session to fetch payment data for.
-   * @returns {Promise<object>} the PayPal order object
+   * @return {Promise<object>} the PayPal order object
    */
   async getPaymentData(paymentSession) {
     try {
@@ -154,7 +158,7 @@ class PayPalProviderService extends AbstractPaymentService {
    * status of the payment as it is expected to have been authorized client side.
    * @param {PaymentSession} session - payment session
    * @param {Data} context - properties relevant to current context
-   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   * @return {Promise<{ status: string, data: object }>} result with data and status
    */
   async authorizePayment(paymentSession, context = {}) {
     const stat = await this.getStatus(paymentSession.data)
@@ -170,7 +174,7 @@ class PayPalProviderService extends AbstractPaymentService {
    * Updates the data stored with the payment session.
    * @param {PaymentSessionData} paymentSessionData - the currently stored data.
    * @param {Data} data - the update data to store.
-   * @returns {object} the merged data of the two arguments.
+   * @return {object} the merged data of the two arguments.
    */
   async updatePaymentData(paymentSessionData, data) {
     try {
@@ -187,14 +191,16 @@ class PayPalProviderService extends AbstractPaymentService {
    * Updates the PayPal order.
    * @param {PaymentSessionData} paymentSessionData - payment session data.
    * @param {Cart} cart - the cart to update by.
-   * @returns {PaymentSessionData} the resulting order object.
+   * @return {PaymentSessionData} the resulting order object.
    */
   async updatePayment(paymentSessionData, cart) {
     try {
       const { region_id } = cart
       const { currency_code } = await this.regionService_.retrieve(region_id)
 
-      const request = new PayPal.orders.OrdersPatchRequest(paymentSessionData.id)
+      const request = new PayPal.orders.OrdersPatchRequest(
+        paymentSessionData.id
+      )
       request.requestBody([
         {
           op: "replace",
@@ -229,7 +235,7 @@ class PayPalProviderService extends AbstractPaymentService {
   /**
    * Captures a previously authorized order.
    * @param {Payment} payment - the payment to capture
-   * @returns {PaymentData} the PayPal order
+   * @return {PaymentData} the PayPal order
    */
   async capturePayment(payment) {
     const { purchase_units } = payment.data
@@ -249,7 +255,7 @@ class PayPalProviderService extends AbstractPaymentService {
    * Refunds a given amount.
    * @param {Payment} payment - payment to refund
    * @param {number} amountToRefund - amount to refund
-   * @returns {PaymentData} the resulting PayPal order
+   * @return {PaymentData} the resulting PayPal order
    */
   async refundPayment(payment, amountToRefund) {
     const { purchase_units } = payment.data
@@ -284,12 +290,13 @@ class PayPalProviderService extends AbstractPaymentService {
   /**
    * Cancels payment for paypal payment.
    * @param {Payment} payment - payment object
-   * @returns {Promise<object>} canceled payment intent
+   * @return {Promise<object>} canceled payment intent
    */
   async cancelPayment(payment) {
     const order = await this.retrievePayment(payment.data)
     const isAlreadyCanceled = order.status === "VOIDED"
-    const isCanceledAndFullyRefund = order.status === "COMPLETED" && !!order.invoice_id
+    const isCanceledAndFullyRefund =
+      order.status === "COMPLETED" && !!order.invoice_id
     if (isAlreadyCanceled || isCanceledAndFullyRefund) {
       return order
     }
@@ -318,7 +325,7 @@ class PayPalProviderService extends AbstractPaymentService {
    * Given a PayPal authorization object the method will find the order that
    * created the authorization, by following the HATEOAS link to the order.
    * @param {object} auth - the authorization object.
-   * @returns {Promise<object>} the PayPal order object
+   * @return {Promise<object>} the PayPal order object
    */
   async retrieveOrderFromAuth(auth) {
     const link = auth.links.find((l) => l.rel === "up")
@@ -332,7 +339,7 @@ class PayPalProviderService extends AbstractPaymentService {
   /**
    * Retrieves a PayPal authorization.
    * @param {string} id - the id of the authorization.
-   * @returns {Promise<object>} the authorization.
+   * @return {Promise<object>} the authorization.
    */
   async retrieveAuthorization(id) {
     const authReq = new PayPal.payments.AuthorizationsGetRequest(id)
@@ -343,7 +350,7 @@ class PayPalProviderService extends AbstractPaymentService {
   /**
    * Checks if a webhook is verified.
    * @param {object} data - the verficiation data.
-   * @returns {Promise<object>} the response of the verification request.
+   * @return {Promise<object>} the response of the verification request.
    */
   async verifyWebhook(data) {
     const verifyReq = {
