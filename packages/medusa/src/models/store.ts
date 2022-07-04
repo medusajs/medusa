@@ -57,17 +57,14 @@ export class Store extends BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  // @FeatureFlagColumn("sales-channels", {})
-  @Column()
-  sales_channel_id: string
+  @FeatureFlagColumn("sales-channels", { nullable: true })
+  default_sales_channel_id: string
 
-  // @FeatureFlagDecorators("sales-channels", [
-  //   OneToOne(() => SalesChannel),
-  //   JoinColumn(),
-  // ])
-  @OneToOne(() => SalesChannel)
-  @JoinColumn()
-  sales_channel: SalesChannel
+  @FeatureFlagDecorators("sales-channels", [
+    OneToOne(() => SalesChannel),
+    JoinColumn({ name: "sales_channel_id" }),
+  ])
+  default_sales_channel: SalesChannel
 
   @BeforeInsert()
   private beforeInsert(): void {

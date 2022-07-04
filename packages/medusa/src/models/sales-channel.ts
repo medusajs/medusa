@@ -5,14 +5,14 @@ import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
 
-// @FeatureFlagEntity("sales-channels")
-@Entity()
+// @Entity()
+@FeatureFlagEntity("sales-channels")
 export class SalesChannel extends SoftDeletableEntity {
   @Column()
   name: string
 
   @Column({ nullable: true })
-  description: string | null
+  description: string
 
   @Column({ type: resolveDbType("timestamptz"), nullable: true })
   disabled_at: Date | null

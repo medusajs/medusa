@@ -149,32 +149,20 @@ export class Product extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  // @FeatureFlagDecorators("sales-channels", [
-  //   ManyToMany(() => SalesChannel, { cascade: true }),
-  //   JoinTable({
-  //     name: "product_sales_channel",
-  //     joinColumn: {
-  //       name: "product_id",
-  //       referencedColumnName: "id",
-  //     },
-  //     inverseJoinColumn: {
-  //       name: "sales_channel_id",
-  //       referencedColumnName: "id",
-  //     },
-  //   }),
-  // ])
-  @ManyToMany(() => SalesChannel, { cascade: true })
-  @JoinTable({
-    name: "product_sales_channel",
-    joinColumn: {
-      name: "product_id",
-      referencedColumnName: "id",
-    },
-    inverseJoinColumn: {
-      name: "sales_channel_id",
-      referencedColumnName: "id",
-    },
-  })
+  @FeatureFlagDecorators("sales-channels", [
+    ManyToMany(() => SalesChannel, { cascade: true }),
+    JoinTable({
+      name: "product_sales_channel",
+      joinColumn: {
+        name: "product_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
   sales_channel: SalesChannel[]
 
   @BeforeInsert()

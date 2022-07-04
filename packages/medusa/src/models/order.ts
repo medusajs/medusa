@@ -230,16 +230,13 @@ export class Order extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   external_id: string | null
 
-  // @FeatureFlagColumn("sales-channels", {})
-  @Column()
+  @FeatureFlagColumn("sales-channels", {})
   sales_channel_id: string
 
-  // @FeatureFlagDecorators("sales-channels", [
-  //   OneToOne(() => SalesChannel),
-  //   JoinColumn(),
-  // ])
-  @OneToOne(() => SalesChannel)
-  @JoinColumn()
+  @FeatureFlagDecorators("sales-channels", [
+    ManyToOne(() => SalesChannel),
+    JoinColumn({ name: "sales_channel_id" }),
+  ])
   sales_channel: SalesChannel
 
   // Total fields
