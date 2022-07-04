@@ -62,7 +62,7 @@ export class Store extends BaseEntity {
 
   @FeatureFlagDecorators("sales-channels", [
     OneToOne(() => SalesChannel),
-    JoinColumn({ name: "sales_channel_id" }),
+    JoinColumn({ name: "default_sales_channel_id" }),
   ])
   default_sales_channel: SalesChannel
 
