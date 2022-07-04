@@ -622,7 +622,7 @@ class WebshipperFulfillmentService extends FulfillmentService {
     }
 
     if (this.options_.delete_on_cancel) {
-      return this.client_.orders.delete(data.id)
+      return await this.client_.orders.delete(data.id)
     }
 
     return await this.client_.orders.update(data.id, {
