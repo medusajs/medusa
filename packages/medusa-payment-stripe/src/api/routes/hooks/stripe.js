@@ -27,7 +27,7 @@ export default async (req, res) => {
         await orderService.capturePayment(order.id)
       }
       break
-    //case "payment_intent.canceled":
+    // case "payment_intent.canceled":
     //  if (order) {
     //    await orderService.update(order._id, {
     //      status: "canceled",

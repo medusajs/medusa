@@ -6,8 +6,14 @@ import { Cart } from "@medusajs/medusa/src/models"
 class BancontactProviderService extends AbstractPaymentService {
   static identifier = "stripe-bancontact"
 
-  constructor({ stripeProviderService, customerService, totalsService, regionService }, options) {
-    super({ stripeProviderService, customerService, totalsService, regionService }, options)
+  constructor(
+    { stripeProviderService, customerService, totalsService, regionService },
+    options
+  ) {
+    super(
+      { stripeProviderService, customerService, totalsService, regionService },
+      options
+    )
 
     /**
      * Required Stripe options:
@@ -40,7 +46,7 @@ class BancontactProviderService extends AbstractPaymentService {
    * Fetches Stripe payment intent. Check its status and returns the
    * corresponding Medusa status.
    * @param {PaymentSessionData} paymentSessionData - payment method data from cart
-   * @returns {string} the status of the payment intent
+   * @return {string} the status of the payment intent
    */
   async getStatus(paymentSessionData) {
     return await this.stripeProviderService_.getStatus(paymentSessionData)
@@ -49,7 +55,7 @@ class BancontactProviderService extends AbstractPaymentService {
   /**
    * Fetches a customers saved payment methods if registered in Stripe.
    * @param {object} customer - customer to fetch saved cards for
-   * @returns {Promise<Array<object>>} saved payments methods
+   * @return {Promise<Array<object>>} saved payments methods
    */
   async retrieveSavedMethods(customer) {
     return Promise.resolve([])
@@ -58,7 +64,7 @@ class BancontactProviderService extends AbstractPaymentService {
   /**
    * Fetches a Stripe customer
    * @param {string} customerId - Stripe customer id
-   * @returns {Promise<object>} Stripe customer
+   * @return {Promise<object>} Stripe customer
    */
   async retrieveCustomer(customerId) {
     return await this.stripeProviderService_.retrieveCustomer(customerId)
@@ -67,7 +73,7 @@ class BancontactProviderService extends AbstractPaymentService {
   /**
    * Creates a Stripe customer using a Medusa customer.
    * @param {object} customer - Customer data from Medusa
-   * @returns {Promise<object>} Stripe customer
+   * @return {Promise<object>} Stripe customer
    */
   async createCustomer(customer) {
     return await this.stripeProviderService_.createCustomer(customer)
@@ -77,7 +83,7 @@ class BancontactProviderService extends AbstractPaymentService {
    * Creates a Stripe payment intent.
    * If customer is not registered in Stripe, we do so.
    * @param {Cart} cart - cart to create a payment for
-   * @returns {object} Stripe payment intent
+   * @return {object} Stripe payment intent
    */
   async createPayment(cart) {
     const { customer_id, region_id, email } = cart
@@ -88,7 +94,8 @@ class BancontactProviderService extends AbstractPaymentService {
 
     const intentRequest = {
       amount: Math.round(amount),
-      description: cart?.context?.payment_description ?? this.options?.payment_description,
+      description:
+        cart?.context?.payment_description ?? this.options?.payment_description,
       currency: currency_code,
       payment_method_types: ["bancontact"],
       capture_method: "automatic",
@@ -116,15 +123,13 @@ class BancontactProviderService extends AbstractPaymentService {
       intentRequest.customer = stripeCustomer.id
     }
 
-    return await this.stripe_.paymentIntents.create(
-      intentRequest
-    )
+    return await this.stripe_.paymentIntents.create(intentRequest)
   }
 
   /**
    * Retrieves Stripe payment intent.
    * @param {PaymentData} paymentData - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * @return {Promise<object>} Stripe payment intent
    */
   async retrievePayment(paymentData) {
     return await this.stripeProviderService_.retrievePayment(paymentData)
@@ -133,7 +138,7 @@ class BancontactProviderService extends AbstractPaymentService {
   /**
    * Gets a Stripe payment intent and returns it.
    * @param {PaymentSession} paymentSession - the data of the payment to retrieve
-   * @returns {Promise<object>} Stripe payment intent
+   * @return {Promise<object>} Stripe payment intent
    */
   async getPaymentData(paymentSession) {
     return await this.stripeProviderService_.getPaymentData(paymentSession)
@@ -144,7 +149,7 @@ class BancontactProviderService extends AbstractPaymentService {
    * the status for the payment intent in use.
    * @param {PaymentSession} paymentSession - payment session data
    * @param {object} context - properties relevant to current context
-   * @returns {Promise<{ status: string, data: object }>} result with data and status
+   * @return {Promise<{ status: string, data: object }>} result with data and status
    */
   async authorizePayment(paymentSession, context = {}) {
     return await this.stripeProviderService_.authorizePayment(
@@ -164,7 +169,7 @@ class BancontactProviderService extends AbstractPaymentService {
    * Updates Stripe payment intent.
    * @param {PaymentSessionData} paymentSessionData - payment session data.
    * @param {Cart}
-   * @returns {object} Stripe payment intent
+   * @return {object} Stripe payment intent
    */
   async updatePayment(paymentSessionData, cart) {
     try {
@@ -173,7 +178,10 @@ class BancontactProviderService extends AbstractPaymentService {
       if (stripeId !== paymentSessionData.customer) {
         return this.createPayment(cart)
       } else {
-        if (cart.total && paymentSessionData.amount === Math.round(cart.total)) {
+        if (
+          cart.total &&
+          paymentSessionData.amount === Math.round(cart.total)
+        ) {
           return sessionData
         }
 
@@ -194,7 +202,7 @@ class BancontactProviderService extends AbstractPaymentService {
    * Updates customer of Stripe payment intent.
    * @param {string} paymentIntentId - id of payment intent to update
    * @param {string} customerId - id of new Stripe customer
-   * @returns {object} Stripe payment intent
+   * @return {object} Stripe payment intent
    */
   async updatePaymentIntentCustomer(paymentIntentId, customerId) {
     return await this.stripeProviderService_.updatePaymentIntentCustomer(
@@ -206,7 +214,7 @@ class BancontactProviderService extends AbstractPaymentService {
   /**
    * Captures payment for Stripe payment intent.
    * @param {Payment} payment - payment method data from cart
-   * @returns {PaymentData} Stripe payment intent
+   * @return {PaymentData} Stripe payment intent
    */
   async capturePayment(payment) {
     return await this.stripeProviderService_.capturePayment(payment)
@@ -216,7 +224,7 @@ class BancontactProviderService extends AbstractPaymentService {
    * Refunds payment for Stripe payment intent.
    * @param {Payment} payment - payment method data from cart
    * @param {number} refundAmount - amount to refund
-   * @returns {PaymentData} refunded payment intent
+   * @return {PaymentData} refunded payment intent
    */
   async refundPayment(payment, refundAmount) {
     return await this.stripeProviderService_.refundPayment(
@@ -228,7 +236,7 @@ class BancontactProviderService extends AbstractPaymentService {
   /**
    * Cancels payment for Stripe payment intent.
    * @param {Payment} payment - payment method data from cart
-   * @returns {PaymentData} canceled payment intent
+   * @return {PaymentData} canceled payment intent
    */
   async cancelPayment(payment) {
     return await this.stripeProviderService_.cancelPayment(payment)
