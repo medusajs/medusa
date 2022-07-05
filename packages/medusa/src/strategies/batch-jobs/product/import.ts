@@ -486,8 +486,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
   }
 
-  // WIP
-  async uploadImportOpsFile(
+  /**
+   * Store import ops JSON file to a bucket.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param results - An object containing parsed CSV data.
+   */
+  protected async uploadImportOpsFile(
     batchJobId: string,
     results: Record<OperationType, TParsedRowData[]>
   ): Promise<void> {
@@ -512,8 +517,13 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await Promise.all(uploadPromises)
   }
 
-  // WIP
-  async downloadImportOpsFile(
+  /**
+   * Remove parsed ops JSON file.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   * @param op - Type of import operation.
+   */
+  protected async downloadImportOpsFile(
     batchJobId: string,
     op: OperationType
   ): Promise<TParsedRowData[]> {
@@ -537,8 +547,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     })
   }
 
-  // WIP
-  async deleteOpsFiles(batchJobId: string): Promise<void> {
+  /**
+   * Delete parsed CSV ops files.
+   *
+   * @param batchJobId - An id of the current batch job being processed.
+   */
+  protected async deleteOpsFiles(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
     for (const op of Object.keys(OperationType)) {
@@ -550,53 +564,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         // noop
       }
     }
-  }
-
-  /**
-   * Store import ops JSON to Redis.
-   * Data will expire after an hour.
-   *
-   * @param batchJobId - An id of the current batch job being processed.
-   * @param results - An object containing parsed CSV data.
-   */
-  // async setImportDataToRedis(
-  //   batchJobId: string,
-  //   results: Record<OperationType, TParsedRowData[]>
-  // ): Promise<void> {
-  //   for (const op in results) {
-  //     if (results[op]?.length) {
-  //       await this.redisClient_.set(
-  //         `pij_${batchJobId}:${op}`,
-  //         JSON.stringify(results[op]),
-  //         "EX",
-  //         60 * 60
-  //       )
-  //     }
-  //   }
-  // }
-
-  /**
-   * Retrieve parsed CSV data from Redis.
-   *
-   * @param batchJobId - An id of the current batch job being processed.
-   * @param op - Type of import operation.
-   */
-  // async getImportDataFromRedis(
-  //   batchJobId: string,
-  //   op: OperationType
-  // ): Promise<TParsedRowData[]> {
-  //   return JSON.parse(
-  //     (await this.redisClient_.get(`pij_${batchJobId}:${op}`)) || "[]"
-  //   )
-  // }
-
-  /**
-   * Clear all batch job data set by the strategy.
-   *
-   * @param batchJobId - An id of the current batch job being processed.
-   */
-  async clearRedisRecords(batchJobId: string): Promise<number> {
-    return this.redisClient_.del(`pij_${batchJobId}:*`)
   }
 
   /**
@@ -616,7 +583,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     await this.fileService_.delete({ fileKey })
 
-    await this.clearRedisRecords(batchJobId)
+    await this.deleteOpsFiles(batchJobId)
   }
 
   /**
