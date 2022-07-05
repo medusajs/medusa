@@ -1,3 +1,6 @@
+import { Request } from "express"
+import { SalesChannel } from "../models/sales-channel"
+
 export type CreateSalesChannelInput = {
   name: string
   description?: string
@@ -5,3 +8,5 @@ export type CreateSalesChannelInput = {
 }
 
 export type UpdateSalesChannelInput = Partial<CreateSalesChannelInput>
+
+export type SalesChannelRequest = Request & { sales_channel: SalesChannel }
