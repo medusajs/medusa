@@ -1,5 +1,4 @@
 const path = require("path")
-const {} = require("@medusajs/medusa")
 
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
