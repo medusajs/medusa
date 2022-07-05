@@ -1,5 +1,4 @@
-import { Readable } from "stream"
-import FakeRedis from "ioredis-mock"
+import { Readable, PassThrough } from "stream"
 
 import { IdMap, MockManager } from "medusa-test-utils"
 
@@ -31,10 +30,17 @@ async function* generateCSVDataForStream() {
 /* ******************** SERVICES MOCK ******************** */
 
 const fileServiceMock = {
+  withTransaction: function () {
+    return this
+  },
   delete: jest.fn(),
   getDownloadStream: jest.fn().mockImplementation(() => {
     return Promise.resolve(Readable.from(generateCSVDataForStream()))
   }),
+  getUploadStreamDescriptor: jest.fn().mockImplementation(() => ({
+    writeStream: new PassThrough(),
+    promise: Promise.resolve(),
+  })),
 }
 
 const batchJobServiceMock = {
@@ -112,12 +118,6 @@ const managerMock = MockManager
 /* ******************** PRODUCT IMPORT STRATEGY TESTS ******************** */
 
 describe("Product import strategy", () => {
-  const redisClient = new FakeRedis()
-
-  beforeAll(() => {
-    redisClient.set = jest.fn().mockImplementation(() => Promise.resolve())
-  })
-
   afterAll(() => {
     jest.clearAllMocks()
   })
@@ -130,10 +130,9 @@ describe("Product import strategy", () => {
     shippingProfileService: shippingProfileServiceMock as any,
     productVariantService: productVariantServiceMock,
     regionService: regionServiceMock,
-    redisClient,
   })
 
-  it("`preProcessBatchJob` should generate import ops and store them in Redis", async () => {
+  it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
     const getImportInstructionsSpy = jest.spyOn(
       productImportStrategy,
       "getImportInstructions"
@@ -144,7 +143,22 @@ describe("Product import strategy", () => {
     expect(getImportInstructionsSpy).toBeCalledTimes(1)
     expect(getImportInstructionsSpy).toMatchSnapshot()
 
-    expect(redisClient.set).toBeCalledTimes(2) // only product/variant create ops
+    expect(fileServiceMock.getUploadStreamDescriptor).toBeCalledTimes(2)
+
+    expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
+      1,
+      {
+        ext: "json",
+        name: `imports/products/import/ops/${fakeJob.id}-PRODUCT_CREATE`,
+      }
+    )
+    expect(fileServiceMock.getUploadStreamDescriptor).toHaveBeenNthCalledWith(
+      2,
+      {
+        ext: "json",
+        name: `imports/products/import/ops/${fakeJob.id}-VARIANT_UPDATE`, // because row data has variant.id
+      }
+    )
 
     getImportInstructionsSpy.mockRestore()
   })
