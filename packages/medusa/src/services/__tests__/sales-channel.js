@@ -1,4 +1,5 @@
 import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 import SalesChannelService from "../sales-channel"
 
 describe("SalesChannelService", () => {
@@ -17,6 +18,7 @@ describe("SalesChannelService", () => {
 
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
+      eventBusService: EventBusServiceMock,
       salesChannelRepository: salesChannelRepository,
     })
 
