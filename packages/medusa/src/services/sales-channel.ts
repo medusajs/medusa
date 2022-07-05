@@ -1,4 +1,6 @@
+import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+
 import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
@@ -73,8 +75,22 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     throw new Error("Method not implemented.")
   }
 
+  /**
+   * Creates a SalesChannel
+   */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel> {
-    throw new Error("Method not implemented.")
+    try {
+      const salesChannelRepo: SalesChannelRepository =
+        this.manager_.getCustomRepository(this.salesChannelRepository_)
+
+      const salesChannel = salesChannelRepo.create(data)
+      return await salesChannelRepo.save(salesChannel)
+    } catch (err) {
+      if (err.code === "23505") {
+        throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
+      }
+      throw err
+    }
   }
 
   async update(
