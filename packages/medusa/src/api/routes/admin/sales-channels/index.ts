@@ -2,7 +2,7 @@ import { Router } from "express"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import "reflect-metadata"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-import { SalesChannel } from "../../../../models/sales-channel"
+import { SalesChannel } from "../../../../models"
 import middlewares, { getRequestedSalesChannel } from "../../../middlewares"
 
 const route = Router()
@@ -15,7 +15,7 @@ export default (app) => {
 
   salesChannelRouter.get(
     "/",
-    middlewares.wrap(require("./get-sales-channels").default)
+    middlewares.wrap(require("./get-sales-channel").default)
   )
 
   route.get("/", (req, res) => {})
@@ -39,7 +39,7 @@ export type AdminSalesChannelListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]
 }
 
-export * from "./get-sales-channels"
+export * from "./get-sales-channel"
 // export * from './'
 // export * from './'
 // export * from './'

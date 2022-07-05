@@ -10,10 +10,10 @@ class AdminSalesChannelsResource extends BaseResource {
    * @returns a medusa sales channel
    */
   retrieve(
-    id: string,
+    salesChannelId: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelRes> {
-    const path = `/admin/sales-channels/${id}`
+    const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 }

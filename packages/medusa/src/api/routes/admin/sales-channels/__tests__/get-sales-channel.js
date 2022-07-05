@@ -16,6 +16,7 @@ describe("GET /admin/sales-channels/:id", () => {
               userId: IdMap.getId("admin_user"),
             },
           },
+          flags: ["sales_channels"],
         }
       )
     })

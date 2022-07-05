@@ -1,6 +1,7 @@
 import SalesChannelService from "../../../services/sales-channel"
 import { NextFunction, Request, Response } from "express"
-import { SalesChannelRequest } from "../../../types/sales-channels"
+import { ExtendedRequest } from "../../../types/global"
+import { SalesChannel } from "../../../models"
 
 export async function getRequestedSalesChannel(
   req: Request,
@@ -13,7 +14,7 @@ export async function getRequestedSalesChannel(
   )
 
   try {
-    ;(req as SalesChannelRequest).sales_channel =
+    ;(req as ExtendedRequest<SalesChannel>).resource =
       await salesChannelService.retrieve(id)
   } catch (error) {
     return next(error)

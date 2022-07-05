@@ -1,5 +1,6 @@
 import { Response } from "express"
-import { SalesChannelRequest } from "../../../../types/sales-channels"
+import { ExtendedRequest } from "../../../../types/global"
+import { SalesChannel } from "../../../../models"
 
 /**
  * @oas [get] /sales-channels/{id}
@@ -22,8 +23,8 @@ import { SalesChannelRequest } from "../../../../types/sales-channels"
  *               $ref: "#/components/schemas/sales-channel"
  */
 export default async (
-  req: SalesChannelRequest,
+  req: ExtendedRequest<SalesChannel>,
   res: Response
 ): Promise<void> => {
-  res.status(200).json({ sales_channel: req.sales_channel })
+  res.status(200).json({ sales_channel: req.resource })
 }

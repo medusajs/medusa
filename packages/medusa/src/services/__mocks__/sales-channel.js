@@ -9,6 +9,10 @@ export const salesChannel1 = {
 
 
 export const SalesChannelServiceMock = {
+  withTransaction: function () {
+    return this
+  },
+
   retrieve: jest.fn().mockImplementation((id, config) => {
     if (id === IdMap.getId("sales_channel_1")) {
       return salesChannel1

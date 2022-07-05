@@ -54,19 +54,19 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
         config
       )
 
-      const saleChannel = await salesChannelRepo.findOneWithRelations(
+      const salesChannel = await salesChannelRepo.findOneWithRelations(
         relations,
         query as CustomFindOptions<SalesChannel, keyof SalesChannel>
       )
 
-      if (!saleChannel) {
+      if (!salesChannel) {
         throw new MedusaError(
           MedusaError.Types.NOT_FOUND,
-          `Sale channel with id ${salesChannelId} was not found`
+          `Sales channel with id ${salesChannelId} was not found`
         )
       }
 
-      return saleChannel
+      return salesChannel
     })
   }
 
