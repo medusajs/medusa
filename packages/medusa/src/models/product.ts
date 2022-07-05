@@ -9,6 +9,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
 } from "typeorm"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Image } from "./image"
@@ -20,6 +21,11 @@ import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
+import { SalesChannel } from "./sales-channel"
 
 export enum ProductStatus {
   DRAFT = "draft",
@@ -66,19 +72,12 @@ export class Product extends SoftDeletableEntity {
   @Column({ type: "text", nullable: true })
   thumbnail: string | null
 
-  @OneToMany(
-    () => ProductOption,
-    (productOption) => productOption.product
-  )
+  @OneToMany(() => ProductOption, (productOption) => productOption.product)
   options: ProductOption[]
 
-  @OneToMany(
-    () => ProductVariant,
-    (variant) => variant.product,
-    {
-      cascade: true,
-    }
-  )
+  @OneToMany(() => ProductVariant, (variant) => variant.product, {
+    cascade: true,
+  })
   variants: ProductVariant[]
 
   @Index()
@@ -149,6 +148,22 @@ export class Product extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
+
+  @FeatureFlagDecorators("sales_channels", [
+    ManyToMany(() => SalesChannel, { cascade: true }),
+    JoinTable({
+      name: "product_sales_channel",
+      joinColumn: {
+        name: "product_id",
+        referencedColumnName: "id",
+      },
+      inverseJoinColumn: {
+        name: "sales_channel_id",
+        referencedColumnName: "id",
+      },
+    }),
+  ])
+  sales_channels: SalesChannel[]
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -36,6 +36,11 @@ import { Return } from "./return"
 import { ShippingMethod } from "./shipping-method"
 import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
+import { SalesChannel } from "./sales-channel"
 
 export enum OrderStatus {
   PENDING = "pending",
@@ -224,6 +229,15 @@ export class Order extends BaseEntity {
 
   @Column({ type: "varchar", nullable: true })
   external_id: string | null
+
+  @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
+  sales_channel_id: string | null
+
+  @FeatureFlagDecorators("sales_channels", [
+    ManyToOne(() => SalesChannel),
+    JoinColumn({ name: "sales_channel_id" }),
+  ])
+  sales_channel: SalesChannel
 
   // Total fields
   shipping_total: number
