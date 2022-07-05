@@ -1,6 +1,6 @@
 import { Type } from "class-transformer"
 import { IsInt, IsOptional, IsString } from "class-validator"
-import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
+import { pickBy } from "lodash"
 import { GiftCardService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -27,25 +27,16 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminGetGiftCardsParams, req.query)
 
-  const selector = {}
-
-  if (validated.q && typeof validated.q !== "undefined") {
-    selector["q"] = validated.q
-  }
-
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
-  const giftCards = await giftCardService.list(selector, {
-    select: defaultAdminGiftCardFields,
-    relations: defaultAdminGiftCardRelations,
-    order: { created_at: "DESC" },
-    limit: validated.limit,
-    skip: validated.offset,
-  })
+  const [giftCards, count] = await giftCardService.listAndCount(
+    pickBy(req.filterableFields, (val) => typeof val !== "undefined"),
+    req.listConfig
+  )
 
   res.status(200).json({
     gift_cards: giftCards,
-    count: giftCards.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })

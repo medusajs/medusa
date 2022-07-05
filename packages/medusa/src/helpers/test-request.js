@@ -7,6 +7,7 @@ import supertest from "supertest"
 import querystring from "querystring"
 import apiLoader from "../loaders/api"
 import passportLoader from "../loaders/passport"
+import featureFlagLoader from "../loaders/feature-flags"
 import servicesLoader from "../loaders/services"
 import strategiesLoader from "../loaders/strategies"
 
@@ -24,17 +25,21 @@ const clientSessionOpts = {
 
 const config = {
   projectConfig: {
-    jwt_secret: 'supersecret',
-    cookie_secret: 'superSecret',
-    admin_cors: '',
-    store_cors: ''
-  }
+    jwt_secret: "supersecret",
+    cookie_secret: "superSecret",
+    admin_cors: "",
+    store_cors: "",
+  },
 }
 
 const testApp = express()
 
 const container = createContainer()
-container.register('configModule', asValue(config))
+
+const featureFlagRouter = featureFlagLoader(config)
+
+container.register("featureFlagRouter", asValue(featureFlagRouter))
+container.register("configModule", asValue(config))
 container.register({
   logger: asValue({
     error: () => {},
@@ -69,10 +74,16 @@ apiLoader({ container, app: testApp, configModule: config })
 const supertestRequest = supertest(testApp)
 
 export async function request(method, url, opts = {}) {
-  const { payload, query, headers = {} } = opts
+  const { payload, query, headers = {}, flags = [] } = opts
 
-  const queryParams = query && querystring.stringify(query);
-  const req = supertestRequest[method.toLowerCase()](`${url}${queryParams ? "?" + queryParams : ''}`)
+  flags.forEach((flag) => {
+    featureFlagRouter.setFlag(flag, true)
+  })
+
+  const queryParams = query && querystring.stringify(query)
+  const req = supertestRequest[method.toLowerCase()](
+    `${url}${queryParams ? "?" + queryParams : ""}`
+  )
   headers.Cookie = headers.Cookie || ""
   if (opts.adminSession) {
     if (opts.adminSession.jwt) {

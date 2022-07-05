@@ -1,5 +1,5 @@
 {
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -22,6 +22,7 @@
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
+    "@medusajs/medusa": "^1.3.2",
     "react": ">=16",
     "react-query": ">= 3.29.0"
   },
@@ -80,8 +81,7 @@
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "@medusajs/medusa": "^1.3.2",
-    "@medusajs/medusa-js": "^1.2.2",
+    "@medusajs/medusa-js": "^1.2.3",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "react-query": "^3.31.0"

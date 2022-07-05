@@ -18,7 +18,7 @@ import { Cart } from "./cart"
 import { Order } from "./order"
 import { generateEntityId } from "../utils/generate-entity-id"
 
-enum DraftOrderStatus {
+export enum DraftOrderStatus {
   OPEN = "open",
   COMPLETED = "completed",
 }

@@ -72,8 +72,8 @@ export class LineItem extends BaseEntity {
   @Column({ nullable: true })
   description: string
 
-  @Column({ nullable: true })
-  thumbnail: string
+  @Column({ type: "text", nullable: true })
+  thumbnail: string | null
 
   @Column({ default: false })
   is_return: boolean
@@ -116,7 +116,14 @@ export class LineItem extends BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  refundable: number | null
+  refundable?: number | null
+  subtotal?: number | null
+  tax_total?: number | null
+  total?: number | null
+  original_total?: number | null
+  original_tax_total?: number | null
+  discount_total?: number | null
+  gift_card_total?: number | null
 
   @BeforeInsert()
   private beforeInsert(): void {

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.3](https://github.com/medusajs/medusa/compare/medusa-file-s3@1.1.2...medusa-file-s3@1.1.3) (2022-07-05)
+
+
+### Bug Fixes
+
+* **medusa-file-spaces,medusa-file-s3,medusa-file-minio:** Add options to super call in file plugins ([#1714](https://github.com/medusajs/medusa/issues/1714)) ([a5f717b](https://github.com/medusajs/medusa/commit/a5f717be5ae1954f3dbf1e7b2edb35d11088a8c8))
+
+
+### Features
+
+* **medusa:** Extend file-service interface + move to core ([#1577](https://github.com/medusajs/medusa/issues/1577)) ([8e42d37](https://github.com/medusajs/medusa/commit/8e42d37e84e80c003b9c0311117ab8a8871aa61b))
+
+
+
+
+
 ## [1.1.2](https://github.com/medusajs/medusa/compare/medusa-file-s3@1.1.0...medusa-file-s3@1.1.2) (2022-06-19)
 
 **Note:** Version bump only for package medusa-file-s3

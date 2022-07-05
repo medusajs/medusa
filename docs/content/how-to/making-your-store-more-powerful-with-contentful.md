@@ -312,5 +312,5 @@ In this guide you created a new content model for Rich Text input in Contentful 
 
 In the next part of this guide you will learn how to implement further commerce functionalities to your site such as adding support for discount codes, region based shopping and more. (Coming soon)
 
-- [Deploying Medusa on Heroku](https://docs.medusajs.com/how-to/deploying-on-heroku)
-- [Deploying Medusa Admin on Netlify](https://docs.medusajs.com/how-to/deploying-admin-on-netlify)
+- [Deploying Medusa Server](../deployments/server/index.mdx)
+- [Deploying Medusa Admin](../deployments/admin/index.mdx)

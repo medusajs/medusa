@@ -1,4 +1,4 @@
-# Stripe not showing in checkout
+# Payment Provider (Stripe) not showing in checkout
 
 You add payment providers to your Medusa instance by adding them as plugins in `medusa-config.js`:
 
@@ -17,14 +17,19 @@ const plugins = [
 ];
 ```
 
-And installing them through your favourite package manager:
+And installing them with your favourite package manager:
 
 ```bash npm2yarn
 npm install medusa-payment-stripe
 ```
 
-Though, to be able to also show them as part of your checkout flow, you need to add them to your regions.
+However, to also show them as part of your checkout flow you need to add them to your regions.
 
-In Medusa Admin go to Settings -> Regions and select your newly added payment provider:
+In the Medusa Admin go to Settings > Regions and for each region scroll down to the Payment Provider input and choose the payment provider you want to use in that region:
 
-![](https://i.imgur.com/CfR9BCV.png)
+![Enable Payment Provider](https://i.imgur.com/FH5vgWh.png)
+
+## Additional Resources
+
+- Learn how to install [Stripe](../add-plugins/stripe.md) as a payment provider.
+- Learn more about the [Payment architecture](../advanced/backend/payment/overview.md).

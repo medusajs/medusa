@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.3.2...medusa-fulfillment-webshipper@1.3.3) (2022-07-05)
+
+
+### Bug Fixes
+
+* **webshipper:** allow cancelling WS orders with error status ([#1755](https://github.com/medusajs/medusa/issues/1755)) ([1d3032d](https://github.com/medusajs/medusa/commit/1d3032dc671b477654afd13a218caa772454bde0))
+* **webshipper:** only add invoices if invoice generator produces a file ([#1749](https://github.com/medusajs/medusa/issues/1749)) ([c0e18d4](https://github.com/medusajs/medusa/commit/c0e18d473c050d143f67ed2c76fa9ec9414daf1a))
+
+
+
+
+
 ## [1.3.2](https://github.com/medusajs/medusa/compare/medusa-fulfillment-webshipper@1.3.0...medusa-fulfillment-webshipper@1.3.2) (2022-06-19)
 
 **Note:** Version bump only for package medusa-fulfillment-webshipper

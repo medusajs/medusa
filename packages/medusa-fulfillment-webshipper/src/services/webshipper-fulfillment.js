@@ -287,19 +287,21 @@ class WebshipperFulfillmentService extends FulfillmentService {
           fulfillmentItems
         )
 
-        invoice = await this.client_.documents
-          .create({
-            type: "documents",
-            attributes: {
-              document_size: this.options_.document_size || "A4",
-              document_format: "PDF",
-              base64: base64Invoice,
-              document_type: "invoice",
-            },
-          })
-          .catch((err) => {
-            throw err
-          })
+        if (base64Invoice) {
+          invoice = await this.client_.documents
+            .create({
+              type: "documents",
+              attributes: {
+                document_size: this.options_.document_size || "A4",
+                document_format: "PDF",
+                base64: base64Invoice,
+                document_type: "invoice",
+              },
+            })
+            .catch((err) => {
+              throw err
+            })
+        }
 
         const cooCountries = this.options_.coo_countries
         if (
@@ -621,19 +623,17 @@ class WebshipperFulfillmentService extends FulfillmentService {
       return Promise.resolve()
     }
 
-    if (order) {
-      if (
-        order.data.attributes.status !== "pending" &&
-        order.data.attributes.status !== "missing_rate"
-      ) {
-        if (order.data.attributes.status === "cancelled") {
-          return Promise.resolve(order)
-        }
-        throw new Error("Cannot cancel order")
-      }
+    if (this.options_.delete_on_cancel) {
+      return await this.client_.orders.delete(data.id)
     }
 
-    return this.client_.orders.delete(data.id)
+    return await this.client_.orders.update(data.id, {
+      id: data.id,
+      type: "orders",
+      attributes: {
+        status: "cancelled",
+      },
+    })
   }
 }
 

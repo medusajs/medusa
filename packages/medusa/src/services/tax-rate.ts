@@ -329,13 +329,10 @@ class TaxRateService extends BaseService {
     })
   }
 
-  async listByShippingOption(
-    shippingOptionId: string,
-    config: TaxRateListByConfig
-  ): Promise<TaxRate[]> {
+  async listByShippingOption(shippingOptionId: string): Promise<TaxRate[]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
       const taxRateRepo = manager.getCustomRepository(this.taxRateRepository_)
-      return await taxRateRepo.listByShippingOption(shippingOptionId, config)
+      return await taxRateRepo.listByShippingOption(shippingOptionId)
     })
   }
 }
