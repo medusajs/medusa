@@ -299,7 +299,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     const ops = await this.getImportInstructions(builtData)
 
-    await this.setImportDataToRedis(batchJobId, ops)
+    await this.uploadImportOpsFile(batchJobId, ops)
 
     await this.batchJobService_.update(batchJobId, {
       context: {
@@ -333,7 +333,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    */
   private async createProducts(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
-    const productOps = await this.getImportDataFromRedis(
+    const productOps = await this.downloadImportOpsFile(
       batchJobId,
       OperationType.ProductCreate
     )
@@ -360,7 +360,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    */
   private async updateProducts(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
-    const productOps = await this.getImportDataFromRedis(
+    const productOps = await this.downloadImportOpsFile(
       batchJobId,
       OperationType.ProductUpdate
     )
@@ -390,7 +390,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   private async createVariants(batchJobId: string): Promise<void> {
     const transactionManager = this.transactionManager_ ?? this.manager_
 
-    const variantOps = await this.getImportDataFromRedis(
+    const variantOps = await this.downloadImportOpsFile(
       batchJobId,
       OperationType.VariantCreate
     )
@@ -442,7 +442,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       this.productOptionRepo_
     )
 
-    const variantOps = await this.getImportDataFromRedis(
+    const variantOps = await this.downloadImportOpsFile(
       batchJobId,
       OperationType.VariantUpdate
     )
@@ -490,7 +490,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   async uploadImportOpsFile(
     batchJobId: string,
     results: Record<OperationType, TParsedRowData[]>
-  ) {
+  ): Promise<void> {
     const uploadPromises: Promise<void>[] = []
     const transactionManager = this.transactionManager_ ?? this.manager_
 
