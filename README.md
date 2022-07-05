@@ -123,7 +123,7 @@ Check out [our available plugins](https://github.com/medusajs/medusa/tree/master
 
 ## Contributions
 
-Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market. ****
+Medusa is all about the community. Therefore, we would love for you to help us build the most robust and powerful commerce engine on the market.
 
 Whether it is fixing bugs, improving our documentation or simply spreading the word, please feel free to join in. Please check [our contribution guide](https://github.com/medusajs/medusa/blob/master/CONTRIBUTING.md) for further details about how to contribute.
 
