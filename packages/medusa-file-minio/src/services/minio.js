@@ -3,7 +3,7 @@ import aws from "aws-sdk"
 import fs from "fs"
 
 class MinioService extends AbstractFileService {
-  
+
   constructor({}, options) {
     super({}, options)
 
@@ -48,7 +48,8 @@ class MinioService extends AbstractFileService {
 
     const s3 = new aws.S3()
     const params = {
-      Key: `${file}`,
+      Bucket: this.bucket_,
+      Key: `${file.fileKey}`,
     }
 
     return await Promise.all(
