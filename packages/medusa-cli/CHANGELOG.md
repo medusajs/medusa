@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.3.0...@medusajs/medusa-cli@1.3.1) (2022-07-05)
+
+
+### Features
+
+* **medusa-cli:** Allow to revert migrations from the CLI ([#1353](https://github.com/medusajs/medusa/issues/1353)) ([012513b](https://github.com/medusajs/medusa/commit/012513b6a1e90169e9e0e53f7a59841a34fbaeb3))
+
+
+
+
+
 # [1.3.0](https://github.com/medusajs/medusa/compare/@medusajs/medusa-cli@1.2.1...@medusajs/medusa-cli@1.3.0) (2022-05-01)
 
 **Note:** Version bump only for package @medusajs/medusa-cli

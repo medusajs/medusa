@@ -1,6 +1,6 @@
 {
   "name": "medusa-fulfillment-webshipper",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "Webshipper Fulfillment provider for Medusa",
   "main": "index.js",
   "repository": {
@@ -18,7 +18,7 @@
     "@babel/plugin-transform-runtime": "^7.7.6",
     "@babel/preset-env": "^7.7.5",
     "@babel/runtime": "^7.9.6",
-    "@medusajs/medusa": "^1.3.2",
+    "@medusajs/medusa": "^1.3.3",
     "client-sessions": "^0.8.0",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",
@@ -40,5 +40,9 @@
     "express": "^4.17.1",
     "medusa-core-utils": "^1.1.31"
   },
-  "gitHead": "7770046479c361f375842a8605b15e5d7bc24624"
+  "gitHead": "7770046479c361f375842a8605b15e5d7bc24624",
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-fulfillment"
+  ]
 }

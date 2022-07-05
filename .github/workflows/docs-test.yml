@@ -1,0 +1,31 @@
+name: Docusaurus Documentation Test
+on: 
+  pull_request:
+    paths:
+      - docs/content/**
+      - www/docs/**
+jobs:
+  docs-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+        
+      - name: Build Docusaurus website
+        run: |
+          cd www/docs
+          yarn install
+          yarn build

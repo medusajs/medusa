@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/medusajs/medusa/compare/@medusajs/medusa-js@1.2.2...@medusajs/medusa-js@1.2.3) (2022-07-05)
+
+
+### Bug Fixes
+
+* **medusa-js:** Fix `stringifyNullProperties` util ([#1766](https://github.com/medusajs/medusa/issues/1766)) ([7bee57f](https://github.com/medusajs/medusa/commit/7bee57f7c55e15b6a6c847dfda433e67f258ef8e))
+
+
+### Features
+
+* **medusa-js:** Create utils to stringify null values and respect object types ([#1748](https://github.com/medusajs/medusa/issues/1748)) ([fc1cbe7](https://github.com/medusajs/medusa/commit/fc1cbe72c7b0cd2879a8b112a6f63fa94c728a19))
+* **medusa,medusa-js,medusa-react:** Add BatchJob API support in `medusa-js` + `medusa-react` ([#1704](https://github.com/medusajs/medusa/issues/1704)) ([7302d76](https://github.com/medusajs/medusa/commit/7302d76e12683c989f340d2fcfaf4338dca6554a))
+
+
+
+
+
 ## [1.2.2](https://github.com/medusajs/medusa/compare/@medusajs/medusa-js@1.2.0...@medusajs/medusa-js@1.2.2) (2022-06-19)
 
 

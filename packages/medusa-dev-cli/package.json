@@ -1,7 +1,7 @@
 {
   "name": "medusa-dev-cli",
   "description": "CLI helpers for contributors working on Medusa",
-  "version": "0.0.24",
+  "version": "0.0.26",
   "author": "Sebastian Rindom <skrindom@gmail.com>",
   "bin": {
     "medusa-dev": "./dist/index.js"
@@ -14,7 +14,7 @@
     "execa": "^4.1.0",
     "find-yarn-workspace-root": "^2.0.0",
     "fs-extra": "^9.0.1",
-    "got": "^10.7.0",
+    "got": "^11.8.5",
     "is-absolute": "^1.0.0",
     "jest": "^25.5.2",
     "lodash": "^4.17.21",

@@ -36,5 +36,9 @@
   "peerDependencies": {
     "medusa-interfaces": "1.x"
   },
-  "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808"
+  "gitHead": "81a7ff73d012fda722f6e9ef0bd9ba0232d37808",
+  "keywords": [
+    "medusa-plugin",
+    "medusa-plugin-payment"
+  ]
 }
