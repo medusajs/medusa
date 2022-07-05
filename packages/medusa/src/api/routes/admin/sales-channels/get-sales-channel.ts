@@ -1,6 +1,6 @@
-import { Response } from "express"
-import { ExtendedRequest } from "../../../../types/global"
+import { Request, Response } from "express"
 import { SalesChannel } from "../../../../models"
+import SalesChannelService from "../../../../services/sales-channel"
 
 /**
  * @oas [get] /sales-channels/{id}
@@ -22,9 +22,13 @@ import { SalesChannel } from "../../../../models"
  *             sales_channel:
  *               $ref: "#/components/schemas/sales-channel"
  */
-export default async (
-  req: ExtendedRequest<SalesChannel>,
-  res: Response
-): Promise<void> => {
-  res.status(200).json({ sales_channel: req.resource })
+export default async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params
+
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
+
+  const salesChannel = await salesChannelService.retrieve(id)
+  res.status(200).json({ sales_channel: salesChannel })
 }

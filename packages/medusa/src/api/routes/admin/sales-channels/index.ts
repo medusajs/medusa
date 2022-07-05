@@ -3,7 +3,7 @@ import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import "reflect-metadata"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
-import middlewares, { getRequestedSalesChannel } from "../../../middlewares"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
@@ -11,7 +11,7 @@ export default (app) => {
   app.use("/sales-channels", isFeatureFlagEnabled("sales_channels"), route)
 
   const salesChannelRouter = Router({ mergeParams: true })
-  route.use("/:id", getRequestedSalesChannel, salesChannelRouter)
+  route.use("/:id", salesChannelRouter)
 
   salesChannelRouter.get(
     "/",
