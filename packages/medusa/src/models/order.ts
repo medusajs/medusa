@@ -230,7 +230,7 @@ export class Order extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   external_id: string | null
 
-  @FeatureFlagColumn("sales_channels", { nullable: true })
+  @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
   sales_channel_id: string | null
 
   @FeatureFlagDecorators("sales_channels", [

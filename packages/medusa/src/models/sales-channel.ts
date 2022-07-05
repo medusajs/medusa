@@ -10,7 +10,7 @@ export class SalesChannel extends SoftDeletableEntity {
   @Column()
   name: string
 
-  @Column({ nullable: true })
+  @Column({ type: "varchar", nullable: true })
   description: string | null
 
   @Column({ default: false })
