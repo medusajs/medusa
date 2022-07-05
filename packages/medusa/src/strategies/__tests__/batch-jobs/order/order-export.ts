@@ -53,7 +53,7 @@ const fileServiceMock = {
         end: () => void 0,
       },
       promise: Promise.resolve(),
-      fileKey: "product-export.csv",
+      fileKey: "order-export.csv",
     })
   }),
 }
@@ -134,5 +134,6 @@ describe("Order export strategy", () => {
     await orderExportStrategy.processJob(fakeJob.id)
 
     expect(outputDataStorage).toMatchSnapshot()
+    expect((fakeJob.result as any).file_key).toBeDefined()
   })
 })

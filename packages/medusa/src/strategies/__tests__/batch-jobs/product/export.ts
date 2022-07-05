@@ -32,7 +32,7 @@ const fileServiceMock = {
         end: () => void 0
       },
       promise: Promise.resolve(),
-      url: 'product-export.csv'
+      fileKey: 'product-export.csv'
     })
   }),
   withTransaction: function () {
@@ -149,6 +149,7 @@ describe("Product export strategy", () => {
     await productExportStrategy.preProcessBatchJob(fakeJob.id)
     await productExportStrategy.processJob(fakeJob.id)
     expect(outputDataStorage).toMatchSnapshot()
+    expect((fakeJob.result as any).file_key).toBeDefined()
   })
 
   it('should prepare the job to be pre proccessed', async () => {

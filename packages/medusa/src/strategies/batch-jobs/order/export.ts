@@ -242,6 +242,15 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
 
         writeStream.end()
 
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            result: {
+              file_key: fileKey,
+              file_size: approximateFileSize,
+            },
+          })
+
         await promise
       },
       "REPEATABLE READ",

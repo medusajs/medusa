@@ -304,6 +304,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
         writeStream.end()
 
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            result: {
+              file_key: fileKey,
+              file_size: approximateFileSize,
+            },
+          })
+
         return await promise
       },
       "REPEATABLE READ",
