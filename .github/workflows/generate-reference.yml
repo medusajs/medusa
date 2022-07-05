@@ -38,6 +38,7 @@ jobs:
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with: 
+          token: ${{ secrets.REFERENCE_PAT }}
           commit_message: Automatically Generated Services Reference
           file_pattern: docs/content/*
           skip_dirty_check: false
