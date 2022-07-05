@@ -1,7 +1,7 @@
 import { MockManager, MockRepository, IdMap } from "medusa-test-utils"
 import SalesChannelService from "../sales-channel"
 
-describe("NoteService", () => {
+describe("SalesChannelService", () => {
   describe("update", () => {
     const salesChannelRepository = MockRepository({
       findOne: (id) => {
