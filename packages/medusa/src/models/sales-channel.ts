@@ -16,9 +16,6 @@ export class SalesChannel extends SoftDeletableEntity {
   @Column({ default: false })
   is_disabled: boolean
 
-  // @Column({ type: resolveDbType("timestamptz"), nullable: true })
-  // disabled_at: Date | null
-
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "sc")
