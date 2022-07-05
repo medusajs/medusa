@@ -4,6 +4,7 @@ import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares from "../../../middlewares"
 import "reflect-metadata"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
+import { SalesChannel } from "../../../../models/sales-channel"
 
 const route = Router()
 
@@ -24,13 +25,13 @@ export default (app) => {
 }
 
 export type AdminSalesChanenlRes = {
-  sales_channel: any
+  sales_channel: SalesChannel
 }
 
 export type AdminSalesChannelDeleteRes = DeleteResponse
 
 export type AdminSalesChannelListRes = PaginatedResponse & {
-  sales_channels: any[]
+  sales_channels: SalesChannel[]
 }
 
 // export * from './'
