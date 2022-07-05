@@ -340,8 +340,7 @@ class TaxProviderService extends BaseService {
 
     let toReturn: TaxServiceRate[] = []
     const optionRates = await this.taxRateService_.listByShippingOption(
-      optionId,
-      { region_id: regionDetails.id }
+      optionId
     )
 
     if (optionRates.length > 0) {

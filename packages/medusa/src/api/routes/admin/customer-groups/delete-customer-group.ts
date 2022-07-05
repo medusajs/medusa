@@ -1,4 +1,5 @@
 import { CustomerGroupService } from "../../../../services"
+import { Request, Response } from "express"
 
 /**
  * @oas [delete] /customer-groups/{id}
@@ -27,7 +28,7 @@ import { CustomerGroupService } from "../../../../services"
  *               type: boolean
  */
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const customerGroupService: CustomerGroupService = req.scope.resolve(

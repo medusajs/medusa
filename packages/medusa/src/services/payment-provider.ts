@@ -129,7 +129,7 @@ export default class PaymentProviderService extends TransactionBaseService<
         const payRepo = transactionManager.getCustomRepository(
           this.paymentRepository_
         )
-        const query = buildQuery<Payment>(selector, config)
+        const query = buildQuery(selector, config)
         return await payRepo.find(query)
       }
     )
@@ -580,7 +580,7 @@ export default class PaymentProviderService extends TransactionBaseService<
         const refRepo = transactionManager.getCustomRepository(
           this.refundRepository_
         )
-        const query = buildQuery<Refund>({ id }, config)
+        const query = buildQuery({ id }, config)
         const refund = await refRepo.findOne(query)
 
         if (!refund) {

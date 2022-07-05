@@ -65,6 +65,7 @@ export const defaultAdminDraftOrdersCartRelations = [
   "payment_sessions",
   "shipping_methods.shipping_option",
   "discounts",
+  "customer",
   "discounts.rule",
 ]
 

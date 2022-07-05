@@ -1,5 +1,3 @@
-import mongoose from "mongoose"
-import { IdMap } from "medusa-test-utils"
 import MiddlewareService from "../middleware"
 
 describe("MiddlewareService", () => {
