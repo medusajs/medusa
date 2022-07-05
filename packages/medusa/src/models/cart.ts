@@ -107,6 +107,11 @@ import { Region } from "./region"
 import { ShippingMethod } from "./shipping-method"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
+import {
+  FeatureFlagColumn,
+  FeatureFlagDecorators,
+} from "../utils/feature-flag-decorators"
+import { SalesChannel } from "./sales-channel"
 
 export enum CartType {
   DEFAULT = "default",
@@ -229,6 +234,15 @@ export class Cart extends SoftDeletableEntity {
 
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
+
+  @FeatureFlagColumn("sales_channels", { type: "varchar", nullable: true })
+  sales_channel_id: string | null
+
+  @FeatureFlagDecorators("sales_channels", [
+    ManyToOne(() => SalesChannel),
+    JoinColumn({ name: "sales_channel_id" }),
+  ])
+  sales_channel: SalesChannel
 
   shipping_total?: number
   discount_total?: number

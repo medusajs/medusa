@@ -7,7 +7,7 @@ import { FlagRouter } from "./flag-router"
 
 export function FeatureFlagColumn(
   featureFlag: string,
-  columnOptions: ColumnOptions
+  columnOptions: ColumnOptions = {}
 ): PropertyDecorator {
   const featureFlagRouter = getFeatureFlagRouter()
 
