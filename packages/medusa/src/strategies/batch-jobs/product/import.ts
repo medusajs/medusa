@@ -40,7 +40,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   static batchType = "product_import"
 
-  private processedCounter = 0
+  private processedCounter: Record<string, number> = {}
 
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
@@ -510,6 +510,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   private async finalize(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
+    delete this.processedCounter[batchJobId]
+
     await this.batchJobService_.update(batchJobId, {
       result: { progress: 1, advancement_count: batchJob.result.count },
     })
@@ -529,15 +531,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * @param batchJobId - An id of the current batch job being processed.
    */
   private async updateProgress(batchJobId: string): Promise<void> {
-    this.processedCounter += 1
+    const newCount = (this.processedCounter[batchJobId] || 0) + 1
+    this.processedCounter[batchJobId] = newCount
 
-    if (this.processedCounter % BATCH_SIZE !== 0) {
+    if (newCount % BATCH_SIZE !== 0) {
       return
     }
 
     await this.batchJobService_.update(batchJobId, {
       result: {
-        advancement_count: this.processedCounter,
+        advancement_count: newCount,
         // progress: this.processedCounter / ,
       },
     })
