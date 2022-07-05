@@ -11,6 +11,15 @@ export const SalesChannelServiceMock = {
       is_disabled: false,
     })
   }),
+  update: jest.fn().mockImplementation((id, data) => {
+    return Promise.resolve({ id, ...data })
+  }),
+
+  listAndCount: jest.fn().mockImplementation(() => {}),
+
+  create: jest.fn().mockImplementation(() => {}),
+
+  delete: jest.fn().mockImplementation(() => {}),
 }
 
 const mock = jest.fn().mockImplementation(() => {
