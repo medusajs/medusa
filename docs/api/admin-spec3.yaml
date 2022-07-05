@@ -97,7 +97,7 @@ paths:
       summary: Authenticate a User
       x-authenticated: false
       description: Logs a User in and authorizes them to manage Store settings.
-      parameters: []
+      parameters: [ ]
       tags:
         - Auth
       responses:
@@ -226,6 +226,14 @@ paths:
                   description: >-
                     An optional handle to be used in slugs, if none is provided
                     we will kebab-case the title.
+                images:
+                  description: Images of the Product Collection.
+                  type: array
+                  items:
+                    type: string
+                thumbnail:
+                  description: The thumbnail to use for the Product Collection.
+                  type: string
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -378,6 +386,14 @@ paths:
                   description: >-
                     An optional handle to be used in slugs, if none is provided
                     we will kebab-case the title.
+                images:
+                  description: Images of the Product Collection.
+                  type: array
+                  items:
+                    type: string
+                thumbnail:
+                  description: The thumbnail to use for the Product Collection.
+                  type: string
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -400,7 +416,7 @@ paths:
       summary: Create a CustomerGroup
       description: Creates a CustomerGroup.
       x-authenticated: true
-      parameters: []
+      parameters: [ ]
       tags:
         - CustomerGroup
       responses:
@@ -523,7 +539,7 @@ paths:
       summary: Create a Customer
       description: Creates a Customer.
       x-authenticated: true
-      parameters: []
+      parameters: [ ]
       tags:
         - Customer
       responses:
