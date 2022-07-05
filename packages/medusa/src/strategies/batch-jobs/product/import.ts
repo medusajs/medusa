@@ -2,7 +2,6 @@
 import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
 import { FileService } from "medusa-interfaces"
-import * as IORedis from "ioredis"
 
 import { ProductOptionRepository } from "../../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
@@ -122,8 +121,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
   private processedCounter = 0
 
-  protected readonly redisClient_: IORedis.Redis
-
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -154,14 +151,12 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       shippingProfileService,
       regionService,
       fileService,
-      redisClient,
       manager,
     } = container
 
     this.csvParser_ = new CsvParser(container, CSVSchema)
 
     this.manager_ = manager
-    this.redisClient_ = redisClient
     this.fileService_ = fileService
     this.batchJobService_ = batchJobService
     this.productService_ = productService
@@ -282,7 +277,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   /**
    * A worker method called after a batch job has been created.
    * The method parses a CSV file, generates sets of instructions
-   * for processing and stores these instructions to Redis.
+   * for processing and stores these instructions to a JSON file
+   * which is uploaded to a bucket.
    *
    * @param batchJobId . An id of a job that is being preprocessed.
    */
@@ -302,9 +298,27 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await this.uploadImportOpsFile(batchJobId, ops)
 
     await this.batchJobService_.update(batchJobId, {
-      context: {
+      result: {
+        progress: 0,
+        advancement_count: 0,
         // number of update/create operations to execute
-        total: Object.keys(ops).reduce((acc, k) => acc + ops[k].length, 0),
+        count: Object.keys(ops).reduce((acc, k) => acc + ops[k].length, 0),
+        stat_descriptors: [
+          {
+            key: "product-import-count",
+            name: "Products/variants to import",
+            message: `There will be ${
+              ops[OperationType.ProductCreate].length
+            } products created (${
+              ops[OperationType.ProductUpdate].length
+            }  updated).
+             ${
+               ops[OperationType.VariantCreate].length
+             } variants will be created and ${
+              ops[OperationType.VariantUpdate].length
+            } updated`,
+          },
+        ],
       },
     })
   }
@@ -567,8 +581,8 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   }
 
   /**
-   * Update count of processed data in the batch job context
-   * and cleanup Redis data.
+   * Update count of processed data in the batch job `result` column
+   * and cleanup temp JSON files.
    *
    * @param batchJobId - An id of the current batch job being processed.
    */
@@ -576,7 +590,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
 
     await this.batchJobService_.update(batchJobId, {
-      context: { progress: batchJob.context.total },
+      result: { progress: 1, advancement_count: batchJob.result.count },
     })
 
     const { fileKey } = batchJob.context as ImportJobContext
@@ -587,7 +601,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   }
 
   /**
-   * Store the progress in the batch job context.
+   * Store the progress in the batch job `result` column.
    * Method is called after every update/create operation,
    * but after every `BATCH_SIZE` processed rows info is written to the DB.
    *
@@ -601,7 +615,10 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     }
 
     await this.batchJobService_.update(batchJobId, {
-      context: { progress: this.processedCounter },
+      result: {
+        advancement_count: this.processedCounter,
+        // progress: this.processedCounter / ,
+      },
     })
   }
 }
