@@ -21,7 +21,7 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
-  // eslint-disable-next-line no-empty-pattern
+
   constructor({
     salesChannelRepository,
     eventBusService,
