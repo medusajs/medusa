@@ -236,9 +236,17 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
           })
 
         const header = await this.buildHeader(batchJob)
-
-        approximateFileSize += Buffer.from(header).byteLength
         writeStream.write(header)
+        approximateFileSize += Buffer.from(header).byteLength
+
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            result: {
+              file_key: fileKey,
+              file_size: approximateFileSize,
+            },
+          })
 
         advancementCount =
           batchJob.result?.advancement_count ?? advancementCount
@@ -284,7 +292,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
             .withTransaction(transactionManager)
             .update(batchJobId, {
               result: {
-                file_key: fileKey,
                 file_size: approximateFileSize,
                 count: productCount,
                 advancement_count: advancementCount,
@@ -303,15 +310,6 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
         }
 
         writeStream.end()
-
-        await this.batchJobService_
-          .withTransaction(transactionManager)
-          .update(batchJobId, {
-            result: {
-              file_key: fileKey,
-              file_size: approximateFileSize,
-            },
-          })
 
         return await promise
       },
