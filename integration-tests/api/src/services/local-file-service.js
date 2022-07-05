@@ -68,10 +68,7 @@ export default class LocalFileService extends AbstractFileService {
   }
 
   async getDownloadStream(fileData) {
-    const dir = (this.upload_dir_ =
-      process.env.UPLOAD_DIR ?? options.upload_dir ?? "uploads/images")
-
-    const filePath = path.resolve(dir, fileData.fileKey)
+    const filePath = path.resolve(this.upload_dir_, fileData.fileKey)
     return fs.createReadStream(filePath)
   }
 }

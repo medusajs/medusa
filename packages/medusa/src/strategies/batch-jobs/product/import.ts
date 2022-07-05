@@ -5,7 +5,6 @@ import { FileService } from "medusa-interfaces"
 
 import { ProductOptionRepository } from "../../../repositories/product-option"
 import { AbstractBatchJobStrategy, IFileService } from "../../../interfaces"
-import { CsvSchema } from "../../../interfaces/csv-parser"
 import CsvParser from "../../../services/csv-parser"
 import { ProductOption } from "../../../models"
 import {
@@ -20,96 +19,18 @@ import {
   CreateProductVariantInput,
   UpdateProductVariantInput,
 } from "../../../types/product-variant"
-
-/* ******************** TYPES ******************** */
-
-type ProductImportCsvSchema = CsvSchema<
-  Record<string, string>,
-  Record<string, string>
->
-
-type TParsedRowData = Record<
-  string,
-  string | number | (string | number | object)[]
->
-
-type ImportJobContext = {
-  total: number
-  progress: number
-  fileKey: string
-}
-
-/**
- * Supported batch job ops.
- */
-enum OperationType {
-  ProductCreate = "PRODUCT_CREATE",
-  ProductUpdate = "PRODUCT_UPDATE",
-  VariantCreate = "VARIANT_CREATE",
-  VariantUpdate = "VARIANT_UPDATE",
-}
+import {
+  ImportJobContext,
+  OperationType,
+  ProductImportCsvSchema,
+  TParsedRowData,
+} from "./types"
+import { transformProductData, transformVariantData } from "./utils"
 
 /**
  * Process this many variant rows before reporting progress.
  */
 const BATCH_SIZE = 100
-
-/* ******************** UTILS ******************** */
-
-/**
- * Pick keys for a new object by regex.
- * @param data - Initial data object
- * @param regex - A regex used to pick which keys are going to be copied in the new object
- */
-function pickObjectPropsByRegex(
-  data: TParsedRowData,
-  regex: RegExp
-): TParsedRowData {
-  const variantKeyPredicate = (key: string): boolean => regex.test(key)
-  const ret = {}
-
-  for (const k in data) {
-    if (variantKeyPredicate(k)) {
-      ret[k] = data[k]
-    }
-  }
-
-  return ret
-}
-
-/**
- * Pick data from parsed CSV object relevant for product create/update and remove prefixes from keys.
- */
-function transformProductData(data: TParsedRowData): TParsedRowData {
-  const ret = {}
-  const productData = pickObjectPropsByRegex(data, /product\./)
-
-  Object.keys(productData).forEach((k) => {
-    const key = k.split("product.")[1]
-    ret[key] = productData[k]
-  })
-
-  return ret
-}
-
-/**
- * Pick data from parsed CSV object relevant for variant create/update and remove prefixes from keys.
- */
-function transformVariantData(data: TParsedRowData): TParsedRowData {
-  const ret = {}
-  const productData = pickObjectPropsByRegex(data, /variant\./)
-
-  Object.keys(productData).forEach((k) => {
-    const key = k.split("variant.")[1]
-    ret[key] = productData[k]
-  })
-
-  // include product handle to keep track of associated product
-  ret["product.handle"] = data["product.handle"]
-  ret["product.options"] = data["product.options"]
-
-  return ret
-}
 
 /**
  * Default strategy class used for a batch import of products/variants.
