@@ -1,4 +1,4 @@
-name: cache-bootstrap
+name: cache-deps
 description: Creates a cache with the given extension for monorepo dependencies
 inputs:
   extension:

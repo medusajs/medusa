@@ -32,7 +32,7 @@ jobs:
         run: ./scripts/assert-changed-files-actions.sh "packages"
 
       - name: Install dependencies
-        uses: ./.github/actions/cache-bootstrap
+        uses: ./.github/actions/cache-deps
         with:
           extension: unit-tests
 
@@ -92,8 +92,8 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
         with:
           extension: integration-tests
 
@@ -168,8 +168,8 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
         with:
           extension: integration-tests
 
