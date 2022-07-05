@@ -21,27 +21,27 @@ export class salesChannel1656949291839 implements MigrationInterface {
     )
 
     await queryRunner.query(
-      `ALTER TABLE "public"."cart" ADD "sales_channel_id" character varying`
+      `ALTER TABLE "cart" ADD "sales_channel_id" character varying`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."order" ADD "sales_channel_id" character varying`
-    )
-
-    await queryRunner.query(
-      `ALTER TABLE "public"."store" ADD "default_sales_channel_id" character varying`
-    )
-    await queryRunner.query(
-      `ALTER TABLE "public"."store" ADD CONSTRAINT "UQ_61b0f48cccbb5f41c750bac7286" UNIQUE ("default_sales_channel_id")`
+      `ALTER TABLE "order" ADD "sales_channel_id" character varying`
     )
 
     await queryRunner.query(
-      `ALTER TABLE "public"."cart" ADD CONSTRAINT "FK_a2bd3c26f42e754b9249ba78fd6" FOREIGN KEY ("sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+      `ALTER TABLE "store" ADD "default_sales_channel_id" character varying`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."order" ADD CONSTRAINT "FK_6ff7e874f01b478c115fdd462eb" FOREIGN KEY ("sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+      `ALTER TABLE "store" ADD CONSTRAINT "UQ_61b0f48cccbb5f41c750bac7286" UNIQUE ("default_sales_channel_id")`
+    )
+
+    await queryRunner.query(
+      `ALTER TABLE "cart" ADD CONSTRAINT "FK_a2bd3c26f42e754b9249ba78fd6" FOREIGN KEY ("sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."store" ADD CONSTRAINT "FK_61b0f48cccbb5f41c750bac7286" FOREIGN KEY ("default_sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+      `ALTER TABLE "order" ADD CONSTRAINT "FK_6ff7e874f01b478c115fdd462eb" FOREIGN KEY ("sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
+    )
+    await queryRunner.query(
+      `ALTER TABLE "store" ADD CONSTRAINT "FK_61b0f48cccbb5f41c750bac7286" FOREIGN KEY ("default_sales_channel_id") REFERENCES "sales_channel"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`
     )
 
     await queryRunner.query(
@@ -61,14 +61,12 @@ export class salesChannel1656949291839 implements MigrationInterface {
     )
 
     await queryRunner.query(
-      `ALTER TABLE "public"."store" DROP COLUMN "default_sales_channel_id"`
+      `ALTER TABLE "store" DROP COLUMN "default_sales_channel_id"`
     )
     await queryRunner.query(
-      `ALTER TABLE "public"."order" DROP COLUMN "sales_channel_id"`
+      `ALTER TABLE "order" DROP COLUMN "sales_channel_id"`
     )
-    await queryRunner.query(
-      `ALTER TABLE "public"."cart" DROP COLUMN "sales_channel_id"`
-    )
+    await queryRunner.query(`ALTER TABLE "cart" DROP COLUMN "sales_channel_id"`)
     await queryRunner.query(`DROP TABLE "product_sales_channel"`)
     await queryRunner.query(`DROP TABLE "sales_channel"`)
   }

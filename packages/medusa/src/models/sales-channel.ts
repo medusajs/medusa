@@ -11,7 +11,7 @@ export class SalesChannel extends SoftDeletableEntity {
   name: string
 
   @Column({ nullable: true })
-  description: string
+  description: string | null
 
   @Column({ default: false })
   is_disabled: boolean
