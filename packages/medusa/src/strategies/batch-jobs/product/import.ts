@@ -504,7 +504,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
         const { writeStream, promise } = await this.fileService_
           .withTransaction(transactionManager)
           .getUploadStreamDescriptor({
-            name: `imports/products/import/ops/-${batchJobId}-${op}`,
+            name: `imports/products/import/ops/${batchJobId}-${op}`,
             ext: "json",
           })
 
@@ -533,7 +533,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const readableStream = await this.fileService_
       .withTransaction(transactionManager)
       .getDownloadStream({
-        fileKey: `imports/products/import/ops/-${batchJobId}-${op}`,
+        fileKey: `imports/products/import/ops/${batchJobId}-${op}`,
       })
 
     readableStream.on("data", (chunk) => {
