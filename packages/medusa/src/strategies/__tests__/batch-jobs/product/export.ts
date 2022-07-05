@@ -7,6 +7,7 @@ import { AdminPostBatchesReq } from "../../../../api/routes/admin/batch/create-b
 import { defaultAdminProductRelations } from "../../../../api/routes/admin/products"
 import { ProductExportBatchJob } from "../../../batch-jobs/product"
 import { Request } from "express"
+import OrderExportStrategy from "../../../batch-jobs/order/export"
 
 const outputDataStorage: string[] = []
 
@@ -75,6 +76,14 @@ const productServiceMock = {
   count: jest.fn().mockImplementation(() => Promise.resolve(productsToExport.length)),
   listAndCount: jest.fn().mockImplementation(() => {
     return Promise.resolve([productsToExport, productsToExport.length])
+  }),
+}
+const productServiceWithNoDataMock = {
+  ...productServiceMock,
+  list: jest.fn().mockImplementation(() => Promise.resolve([])),
+  count: jest.fn().mockImplementation(() => Promise.resolve(0)),
+  listAndCount: jest.fn().mockImplementation(() => {
+    return Promise.resolve([[], 0])
   }),
 }
 const managerMock = MockManager
@@ -206,5 +215,20 @@ describe("Product export strategy", () => {
       },
       filterable_fields: undefined
     }))
+  })
+
+  it("should always provide a file_key even with no data", async () => {
+    const productExportStrategy = new ProductExportStrategy({
+      batchJobService: batchJobServiceMock as any,
+      fileService: fileServiceMock as any,
+      productService: productServiceWithNoDataMock as any,
+      manager: MockManager,
+    })
+
+    await productExportStrategy.prepareBatchJobForProcessing(fakeJob, {} as Request)
+    await productExportStrategy.preProcessBatchJob(fakeJob.id)
+    await productExportStrategy.processJob(fakeJob.id)
+
+    expect((fakeJob.result as any).file_key).toBeDefined()
   })
 })
