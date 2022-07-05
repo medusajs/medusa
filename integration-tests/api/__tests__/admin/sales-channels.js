@@ -4,9 +4,8 @@ const {} = require("@medusajs/medusa")
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
 const adminSeeder = require("../../helpers/admin-seeder")
-const {
-  default: startServerWithEnvironment,
-} = require("../../../helpers/start-server-with-environment")
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 
 jest.setTimeout(30000)
 
