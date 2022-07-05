@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-meilisearch",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "A starter for Medusa projects.",
   "main": "index.js",
   "repository": {

@@ -1,6 +1,6 @@
 {
   "name": "medusa-payment-stripe",
-  "version": "1.1.40",
+  "version": "1.1.41",
   "description": "Stripe Payment provider for Meduas Commerce",
   "main": "index.js",
   "repository": {

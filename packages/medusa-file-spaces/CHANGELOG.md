@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.3](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.2...medusa-file-spaces@1.2.3) (2022-07-05)
+
+
+### Bug Fixes
+
+* **medusa-file-spaces,medusa-file-s3,medusa-file-minio:** Add options to super call in file plugins ([#1714](https://github.com/medusajs/medusa/issues/1714)) ([a5f717b](https://github.com/medusajs/medusa/commit/a5f717be5ae1954f3dbf1e7b2edb35d11088a8c8))
+
+
+### Features
+
+* **medusa:** Add batch strategy for order exports ([#1603](https://github.com/medusajs/medusa/issues/1603)) ([bf47d1a](https://github.com/medusajs/medusa/commit/bf47d1aecd74f4489667609444a8b09393e894d3))
+* **medusa:** Extend file-service interface + move to core ([#1577](https://github.com/medusajs/medusa/issues/1577)) ([8e42d37](https://github.com/medusajs/medusa/commit/8e42d37e84e80c003b9c0311117ab8a8871aa61b))
+* **medusa-file-spaces:** DigitalOcean fileservice streaming ([#1585](https://github.com/medusajs/medusa/issues/1585)) ([abaf10b](https://github.com/medusajs/medusa/commit/abaf10b31d1e9a60710da87cac5c9c869195660d)), closes [#1583](https://github.com/medusajs/medusa/issues/1583) [#1580](https://github.com/medusajs/medusa/issues/1580) [#1582](https://github.com/medusajs/medusa/issues/1582) [#1583](https://github.com/medusajs/medusa/issues/1583) [#1580](https://github.com/medusajs/medusa/issues/1580) [#1582](https://github.com/medusajs/medusa/issues/1582)
+
+
+
+
+
 ## [1.2.2](https://github.com/medusajs/medusa/compare/medusa-file-spaces@1.2.0...medusa-file-spaces@1.2.2) (2022-06-19)
 
 
