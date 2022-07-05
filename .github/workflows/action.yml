@@ -101,19 +101,18 @@ jobs:
         run: yarn build
 
       - name: Install dev cli
-        run: sudo npm i -g medusa-dev-cli
+        run: sudo npm i -g medusa-dev-cli@latest
 
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
-      # Yarn berry breaks medusa-dev
-      # So before running medusa-dev downgrade to yarn v1.19.0
-      # Temporary solution before we release new version of medusa-dev
-      - name: use old yarn version
-        run: yarn set version 1.19.0
+      - name: Set npm registry
+        run: |
+          yarn config set npmRegistryServer http://localhost:4873
+          echo -e 'unsafeHttpWhitelist:\n - "localhost"' >> .yarnrc.yml
 
-      - name: Force install API
-        run: medusa-dev --force-install
+      - name: Force install
+        run: medusa-dev --force-install --external-registry
         working-directory: integration-tests/api
 
       - name: Build integration tests
@@ -183,14 +182,13 @@ jobs:
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
-      # Yarn berry breaks medusa-dev
-      # So before running medusa-dev downgrade to yarn v1.19.0
-      # Temporary solution before we release new version of medusa-dev-cli
-      - name: use old yarn version
-        run: yarn set version 1.19.0
+      - name: Set npm registry
+        run: |
+          yarn config set npmRegistryServer http://localhost:4873
+          echo -e 'unsafeHttpWhitelist:\n - "localhost"' >> .yarnrc.yml
 
       - name: Force install
-        run: medusa-dev --force-install
+        run: medusa-dev --force-install --external-registry
         working-directory: integration-tests/plugins
 
       - name: Build plugin integration tests
