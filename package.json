@@ -41,9 +41,6 @@
     "lerna": "^3.22.1",
     "lint-staged": "^11.2.3",
     "microbundle": "^0.13.3",
-    "mongoose": "^5.10.15",
-    "openapi-typescript": "^5.2.0",
-    "orval": "^6.6.4",
     "pg-god": "^1.0.11",
     "prettier": "^2.1.1",
     "qs": "^6.10.3",
@@ -72,9 +69,12 @@
     "test:integration:plugins": "jest --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
     "openapi:generate": "node ./scripts/build-openapi.js",
-    "generate:services": "typedoc --options typedoc.services.js"
+    "generate:services": "typedoc --options typedoc.services.js",
+    "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot"
   },
   "dependencies": {
+    "@changesets/changelog-github": "^0.4.5",
+    "@changesets/cli": "^2.23.0",
     "global": "^4.4.0",
     "import-from": "^3.0.0",
     "oas-normalize": "^5.0.1",

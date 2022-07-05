@@ -1,23 +1,23 @@
-const startVerdaccio = require(`verdaccio`).default;
+const startVerdaccio = require(`verdaccio`).default
 
-const fs = require(`fs-extra`);
-const _ = require(`lodash`);
+const fs = require(`fs-extra`)
+const _ = require(`lodash`)
 
-let VerdaccioInitPromise = null;
+let VerdaccioInitPromise = null
 
-const { verdaccioConfig } = require(`./verdaccio-config`);
-const { publishPackage } = require(`./publish-package`);
-const { installPackages } = require(`./install-packages`);
+const { verdaccioConfig } = require(`./verdaccio-config`)
+const { publishPackage } = require(`./publish-package`)
+const { installPackages } = require(`./install-packages`)
 
 const startServer = () => {
   if (VerdaccioInitPromise) {
-    return VerdaccioInitPromise;
+    return VerdaccioInitPromise
   }
 
-  console.log(`Starting local verdaccio server`);
+  console.log(`Starting local verdaccio server`)
 
   // clear storage
-  fs.removeSync(verdaccioConfig.storage);
+  fs.removeSync(verdaccioConfig.storage)
 
   VerdaccioInitPromise = new Promise((resolve) => {
     startVerdaccio(
@@ -29,47 +29,49 @@ const startServer = () => {
       (webServer, addr, pkgName, pkgVersion) => {
         // console.log(webServer)
         webServer.listen(addr.port || addr.path, addr.host, () => {
-          console.log(`Started local verdaccio server`);
+          console.log(`Started local verdaccio server`)
 
-          resolve();
-        });
+          resolve()
+        })
       }
-    );
-  });
+    )
+  })
 
-  return VerdaccioInitPromise;
-};
+  return VerdaccioInitPromise
+}
 
-exports.startVerdaccio = startServer;
+exports.startVerdaccio = startServer
 
 exports.publishPackagesLocallyAndInstall = async ({
   packagesToPublish,
   localPackages,
-  root,
+  packageNameToPath,
   ignorePackageJSONChanges,
   yarnWorkspaceRoot,
+  externalRegistry,
 }) => {
-  await startServer();
+  await startServer()
 
-  const versionPostFix = Date.now();
+  const versionPostFix = Date.now()
 
-  const newlyPublishedPackageVersions = {};
+  const newlyPublishedPackageVersions = {}
 
   for (const packageName of packagesToPublish) {
     newlyPublishedPackageVersions[packageName] = await publishPackage({
       packageName,
       packagesToPublish,
-      root,
+      packageNameToPath,
       versionPostFix,
       ignorePackageJSONChanges,
-    });
+    })
   }
 
-  const packagesToInstall = _.intersection(packagesToPublish, localPackages);
+  const packagesToInstall = _.intersection(packagesToPublish, localPackages)
 
   await installPackages({
     packagesToInstall,
     yarnWorkspaceRoot,
     newlyPublishedPackageVersions,
-  });
-};
+    externalRegistry,
+  })
+}

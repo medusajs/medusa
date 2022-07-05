@@ -14,6 +14,12 @@ You should also have the Gatsby CLI installed:
 npm install gatsby-cli -g
 ```
 
+<!-- ## Instant Deployment to Netlify
+
+Instead of manually following this guide to install then later deploy the Gatsby Storefront, you can deploy the Gatsby Storefront to Netlify with this button:
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa) -->
+
 ## Installation
 
 1\. Create a new Gatsby project using the [Medusa starter template](https://github.com/medusajs/gatsby-starter-medusa):
@@ -103,5 +109,5 @@ The Gatsby storefront comes with a lot of features out of the box including:
 ## What’s Next 🚀
 
 - Check the [Storefront API reference](https://docs.medusajs.com/api/store/auth) for a full list of REST APIs to use on your storefront.
-- Learn how to [deploy the Gatsby storefront on Netlify](../how-to/deploying-gatsby-on-netlify.md).
+- Learn how to [deploy the Gatsby storefront on Netlify](../deployments/storefront/deploying-gatsby-on-netlify.md).
 - Learn how to add [Stripe as a payment provider](../add-plugins/stripe.md#gatsby-storefront).

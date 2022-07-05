@@ -1,12 +1,14 @@
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { ProductVariantService, RegionService, TaxProviderService } from "."
-import { Product, ProductVariant } from "../models"
+import { Product, ProductVariant, ShippingOption } from "../models"
 import { TaxServiceRate } from "../types/tax-service"
 import {
   ProductVariantPricing,
   TaxedPricing,
   PricingContext,
   PricedProduct,
+  PricedShippingOption,
   PricedVariant,
 } from "../types/pricing"
 import { TransactionBaseService } from "../interfaces"
@@ -381,6 +383,108 @@ class PricingService extends TransactionBaseService<PricingService> {
         }
 
         return pricedProduct
+      })
+    )
+  }
+
+  /**
+   * Gets the prices for a shipping option.
+   * @param shippingOption - the shipping option to get prices for
+   * @param context - the price selection context to use
+   * @return The shipping option prices
+   */
+  async getShippingOptionPricing(
+    shippingOption: ShippingOption,
+    context: PriceSelectionContext | PricingContext
+  ): Promise<PricedShippingOption> {
+    let pricingContext: PricingContext
+    if ("automatic_taxes" in context) {
+      pricingContext = context
+    } else {
+      pricingContext = await this.collectPricingContext(context)
+    }
+
+    let shippingOptionRates: TaxServiceRate[] = []
+    if (
+      pricingContext.automatic_taxes &&
+      pricingContext.price_selection.region_id
+    ) {
+      shippingOptionRates =
+        await this.taxProviderService.getRegionRatesForShipping(
+          shippingOption.id,
+          {
+            id: pricingContext.price_selection.region_id,
+            tax_rate: pricingContext.tax_rate,
+          }
+        )
+    }
+
+    const price = shippingOption.amount || 0
+    const rate = shippingOptionRates.reduce(
+      (accRate: number, nextTaxRate: TaxServiceRate) => {
+        return accRate + (nextTaxRate.rate || 0) / 100
+      },
+      0
+    )
+    const tax = Math.round(price * rate)
+    const total = price + tax
+
+    return {
+      ...shippingOption,
+      price_incl_tax: total,
+      tax_rates: shippingOptionRates,
+    }
+  }
+
+  /**
+   * Set additional prices on a list of shipping options.
+   * @param shippingOptions - list of shipping options on which to set additional prices
+   * @param context - the price selection context to use
+   * @return A list of shipping options with prices
+   */
+  async setShippingOptionPrices(
+    shippingOptions: ShippingOption[],
+    context: Omit<PriceSelectionContext, "region_id"> = {}
+  ): Promise<PricedShippingOption[]> {
+    const regions = new Set<string>()
+
+    for (const shippingOption of shippingOptions) {
+      regions.add(shippingOption.region_id)
+    }
+
+    const contexts = await Promise.all(
+      [...regions].map(async (regionId) => {
+        return {
+          context: await this.collectPricingContext({
+            ...context,
+            region_id: regionId,
+          }),
+          region_id: regionId,
+        }
+      })
+    )
+
+    return await Promise.all(
+      shippingOptions.map(async (shippingOption) => {
+        const pricingContext = contexts.find(
+          (c) => c.region_id === shippingOption.region_id
+        )
+
+        if (!pricingContext) {
+          throw new MedusaError(
+            MedusaError.Types.UNEXPECTED_STATE,
+            "Could not find pricing context for shipping option"
+          )
+        }
+
+        const shippingOptionPricing = await this.getShippingOptionPricing(
+          shippingOption,
+          pricingContext.context
+        )
+        return {
+          ...shippingOption,
+          ...shippingOptionPricing,
+        }
       })
     )
   }

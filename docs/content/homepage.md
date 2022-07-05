@@ -62,7 +62,7 @@ Alternatively, you can build your own storefront with any frontend framework of 
 
 - Customize your Medusa server by creating your own [endpoints](./advanced/backend/endpoints/add-storefront.md), [services](./advanced/backend/services/create-service.md), and [subscribers](./advanced/backend/subscribers/create-subscriber.md).
 - Check out guides under the Integrations section to install plugins for [CMS](./add-plugins/strapi.md), [Payment](./add-plugins/stripe.md), [Search Engines](./add-plugins/algolia.md), and more.
-- Deploy your Medusa server in seconds on [Heroku](./how-to/deploying-on-heroku.md), [Qovery](./how-to/deploying-on-qovery.md), or [Digital Ocean](./how-to/deploying-on-digital-ocean.md).
+- Deploy your Medusa server in seconds on [Heroku](deployments/server/deploying-on-heroku.mdx), [Qovery](deployments/server/deploying-on-qovery.md), or [Digital Ocean](deployments/server/deploying-on-digital-ocean.md).
 
 ## Open Source Contribution
 

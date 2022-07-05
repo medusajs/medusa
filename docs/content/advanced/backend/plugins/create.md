@@ -49,7 +49,6 @@ A basic Medusa server installed with the `medusa new` command has dependencies s
   "medusa-interfaces": "^1.3.0",
   "medusa-payment-manual": "^1.0.16",
   "medusa-payment-stripe": "^1.1.38",
-  "mongoose": "^5.13.3",
   "typeorm": "^0.2.36"
 },
 "devDependencies": {
@@ -169,10 +168,10 @@ const plugins = [
   {
     resolve: `medusa-plugin-custom`,
     options: {
-      name: 'My Store'
-    }
-  }
-];
+      name: "My Store",
+    },
+  },
+]
 ```
 
 Then, you can have access to your plugin configuration in the constructor of services in your plugin:
@@ -195,11 +194,11 @@ export default (rootDirectory, options) => {
 
   router.get("/hello-world", (req, res) => {
     res.json({
-      message: `Welcome to ${options.name ? options.name : 'Medusa'}!`
+      message: `Welcome to ${options.name ? options.name : "Medusa"}!`,
     })
   })
 
-  return router;
+  return router
 }
 ```
 
@@ -249,10 +248,10 @@ const plugins = [
     resolve: `medusa-plugin-custom`,
     //if your plugin has configurations
     options: {
-      name: 'My Store'
-    }
-  }
-];
+      name: "My Store",
+    },
+  },
+]
 ```
 
 :::note
@@ -269,7 +268,7 @@ npm run start
 
 ## NPM Ignore File
 
-Not all files that you use while developing your plugin are necessary to be published. 
+Not all files that you use while developing your plugin are necessary to be published.
 
 For example, the files you add in the `src` directory are compiled to a `dist` directory before publishing. Then, when a developer installs your plugin, they’ll just be using the files under the `dist` directory.
 

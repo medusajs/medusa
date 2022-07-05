@@ -1,7 +1,6 @@
 import { Type } from "class-transformer"
 import { IsInt, IsOptional, IsString } from "class-validator"
 import { pickBy } from "lodash"
-import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 import { GiftCardService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -30,14 +29,14 @@ export default async (req, res) => {
 
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
-  const giftCards = await giftCardService.list(
+  const [giftCards, count] = await giftCardService.listAndCount(
     pickBy(req.filterableFields, (val) => typeof val !== "undefined"),
     req.listConfig
   )
 
   res.status(200).json({
     gift_cards: giftCards,
-    count: giftCards.length,
+    count,
     offset: validated.offset,
     limit: validated.limit,
   })

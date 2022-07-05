@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import randomize from "randomatic"
-import { Brackets, EntityManager, FindOneOptions } from "typeorm"
+import { EntityManager } from "typeorm"
 import { EventBusService } from "."
 import { TransactionBaseService } from "../interfaces"
 import { GiftCard } from "../models"
@@ -81,6 +81,36 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
    * @param config - the configuration used to find the objects. contains relations, skip, and take.
    * @return the result of the find operation
    */
+  async listAndCount(
+    selector: QuerySelector<GiftCard> = {},
+    config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
+  ): Promise<[GiftCard[], number]> {
+    return await this.atomicPhase_(async (manager) => {
+      const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
+
+      let q: string | undefined
+      if (typeof selector.q !== "undefined") {
+        q = selector.q
+        delete selector.q
+      }
+
+      const query: ExtendedFindConfig<
+        GiftCard,
+        QuerySelector<GiftCard>
+      > = buildQuery<QuerySelector<GiftCard>, GiftCard>(selector, config)
+
+      const rels = query.relations
+      delete query.relations
+
+      return await giftCardRepo.listGiftCardsAndCount(query, rels, q)
+    })
+  }
+
+  /**
+   * @param selector - the query object for find
+   * @param config - the configuration used to find the objects. contains relations, skip, and take.
+   * @return the result of the find operation
+   */
   async list(
     selector: QuerySelector<GiftCard> = {},
     config: FindConfig<GiftCard> = { relations: [], skip: 0, take: 10 }
@@ -88,8 +118,8 @@ class GiftCardService extends TransactionBaseService<GiftCardService> {
     return await this.atomicPhase_(async (manager) => {
       const giftCardRepo = manager.getCustomRepository(this.giftCardRepository_)
 
-      let q
-      if ("q" in selector) {
+      let q: string | undefined
+      if (typeof selector.q !== "undefined") {
         q = selector.q
         delete selector.q
       }

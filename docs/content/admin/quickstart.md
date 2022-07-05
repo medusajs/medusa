@@ -1,10 +1,4 @@
----
-
-title: Medusa Admin Quickstart
-
----
-
-# Admin Quickstart
+# Medusa Admin Quickstart
 
 This document will guide you through setting up the Medusa admin in minutes, as well as some of its features.
 
@@ -17,6 +11,12 @@ The Medusa admin is connected to the Medusa server. So, make sure to install the
 If you’re not very familiar with Medusa’s architecture, you can learn more about it in the [Architecture Overview](../introduction#architecture-overview).
 
 :::
+
+<!-- ## Instant Deployment to Netlify
+
+Instead of manually following this guide to install then later deploy the Medusa Admin, you can deploy the Medusa Admin to Netlify with this button:
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/admin) -->
 
 ## Install the Admin
 
@@ -154,4 +154,4 @@ In the Medusa admin, you can manage your store’s overall settings. These inclu
 ## What’s Next 🚀
 
 - Install the [Next.js](../starters/nextjs-medusa-starter.md) or [Gatsby](../starters/gatsby-medusa-starter.md) storefront starters.
-- [Learn how you can use `create-medusa-app` to install all of Medusa’s 3 components.](../how-to/create-medusa-app.md)
+- [Learn how you can use `create-medusa-app` to install all of Medusa’s 3 components.](../usage/create-medusa-app.mdx)

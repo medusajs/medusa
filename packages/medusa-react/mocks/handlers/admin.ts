@@ -1,4 +1,5 @@
 import { rest } from "msw"
+import { body } from "msw/lib/types/context"
 import { fixtures } from "../data"
 
 export const adminHandlers = [
@@ -1650,5 +1651,25 @@ export const adminHandlers = [
 
   rest.delete("/admin/auth", (req, res, ctx) => {
     return res(ctx.status(200))
+  }),
+
+  rest.delete("/admin/uploads", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: (req.body as any).file_key,
+        object: "file",
+        deleted: true,
+      })
+    )
+  }),
+
+  rest.post("/admin/uploads/download-url", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        download_url: fixtures.get("upload").url,
+      })
+    )
   }),
 ]

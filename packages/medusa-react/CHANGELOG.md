@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.3.3](https://github.com/medusajs/medusa/compare/medusa-react@0.3.2...medusa-react@0.3.3) (2022-07-05)
+
+
+### Bug Fixes
+
+* **medusa-react:** Allow to not invalidate any cache ([#1756](https://github.com/medusajs/medusa/issues/1756)) ([9e0f65d](https://github.com/medusajs/medusa/commit/9e0f65dee3b3329eb4eabe093f44a8e3b7d6e820))
+
+
+### Features
+
+* **medusa,medusa-js,medusa-react:** Add BatchJob API support in `medusa-js` + `medusa-react` ([#1704](https://github.com/medusajs/medusa/issues/1704)) ([7302d76](https://github.com/medusajs/medusa/commit/7302d76e12683c989f340d2fcfaf4338dca6554a))
+
+
+
+
+
 ## [0.3.2](https://github.com/medusajs/medusa/compare/medusa-react@0.3.0...medusa-react@0.3.2) (2022-06-19)
 
 

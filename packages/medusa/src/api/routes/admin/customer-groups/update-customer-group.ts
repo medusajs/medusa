@@ -4,6 +4,7 @@ import { defaultAdminCustomerGroupsRelations } from "."
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
+import { Request, Response } from "express"
 
 /**
  * @oas [post] /customer-groups/{id}
@@ -28,7 +29,7 @@ import { validator } from "../../../../utils/validator"
  *               $ref: "#/components/schemas/customer_group"
  */
 
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
 
   const validatedBody = await validator(
