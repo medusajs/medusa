@@ -1,6 +1,6 @@
 # medusa-fulfillment-webshipper
 
-Adds Webshipper as a fulfilment provider in Medusa Commerce. 
+Adds Webshipper as a fulfilment provider in Medusa Commerce.
 
 On each new fulfillment an order is created in Webshipper. The plugin listens for shipment events and updated the shipment accordingly.
 A webhook listener is exposed at `/webshipper/shipments` to listen for shipment creations. You must create this webhook in Webshipper to have Medusa listen for shipment events.
@@ -13,4 +13,5 @@ A webhook listener is exposed at `/webshipper/shipments` to listen for shipment 
   order_channel_id: [the channel id to register orders on] (required)
   webhook_secret: [the webhook secret used to listen for shipments] (required)
   coo_countries: [an array of countries in which a Certificate of Origin will be attached] (default: "all")
+  delete_on_cancel [determines whether Webshipper orders are deleted when a Medusa fulfillment is canceled] (default: false)
 ```

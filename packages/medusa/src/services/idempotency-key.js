@@ -1,11 +1,11 @@
-import { BaseService } from "medusa-interfaces"
 import { MedusaError } from "medusa-core-utils"
+import { BaseService } from "medusa-interfaces"
 import { v4 } from "uuid"
 
 const KEY_LOCKED_TIMEOUT = 1000
 
 class IdempotencyKeyService extends BaseService {
-  constructor({ manager, idempotencyKeyRepository, transactionService }) {
+  constructor({ manager, idempotencyKeyRepository }) {
     super()
 
     /** @private @constant {EntityManager} */
@@ -13,9 +13,6 @@ class IdempotencyKeyService extends BaseService {
 
     /** @private @constant {IdempotencyKeyRepository} */
     this.idempotencyKeyRepository_ = idempotencyKeyRepository
-
-    /** @private @constant {TransactionService} */
-    this.transactionService_ = transactionService
   }
 
   /**
@@ -88,7 +85,6 @@ class IdempotencyKeyService extends BaseService {
   /**
    * Locks an idempotency.
    * @param {string} idempotencyKey - key to lock
-   * @param {object} session - mongoose transaction session
    * @return {Promise} result of the update operation
    */
   async lock(idempotencyKey) {

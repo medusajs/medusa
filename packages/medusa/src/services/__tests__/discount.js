@@ -761,7 +761,9 @@ describe("DiscountService", () => {
     let discountService
 
     beforeEach(async () => {
-      discountService = new DiscountService({})
+      discountService = new DiscountService({
+        manager: MockManager
+      })
       const hasReachedLimitMock = jest.fn().mockImplementation(() => false)
       const isDisabledMock = jest.fn().mockImplementation(() => false)
       const isValidForRegionMock = jest
@@ -1064,7 +1066,9 @@ describe("DiscountService", () => {
       }
     })
 
-    const discountService = new DiscountService({})
+    const discountService = new DiscountService({
+      manager: MockManager
+    })
     discountService.retrieve = retrieveMock
 
     beforeEach(() => {

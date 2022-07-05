@@ -4,25 +4,28 @@ import {
   Selector,
   Writable,
 } from "../types/common"
-import { FindOperator, In, Raw } from "typeorm"
+import { FindOperator, In, IsNull, Raw } from "typeorm"
 
 /**
-* Used to build TypeORM queries.
-* @param selector The selector
-* @param config The config
-* @return The QueryBuilderConfig
-*/
-export function buildQuery<TEntity = unknown>(
-  selector: Selector<TEntity>,
+ * Used to build TypeORM queries.
+ * @param selector The selector
+ * @param config The config
+ * @return The QueryBuilderConfig
+ */
+export function buildQuery<TWhereKeys, TEntity = unknown>(
+  selector: TWhereKeys,
   config: FindConfig<TEntity> = {}
-): ExtendedFindConfig<TEntity> {
-  const build = (
-    obj: Selector<TEntity>
-  ): Partial<Writable<TEntity>> => {
+): ExtendedFindConfig<TEntity, TWhereKeys> {
+  const build = (obj: Selector<TEntity>): Partial<Writable<TWhereKeys>> => {
     return Object.entries(obj).reduce((acc, [key, value]: any) => {
       // Undefined values indicate that they have no significance to the query.
       // If the query is looking for rows where a column is not set it should use null instead of undefined
       if (typeof value === "undefined") {
+        return acc
+      }
+
+      if (value === null) {
+        acc[key] = IsNull()
         return acc
       }
 
@@ -75,13 +78,10 @@ export function buildQuery<TEntity = unknown>(
       }
 
       return acc
-    }, {} as Partial<Writable<TEntity>>)
+    }, {} as Partial<Writable<TWhereKeys>>)
   }
 
-  const query: FindConfig<TEntity> & {
-    where: Partial<Writable<TEntity>>
-    withDeleted?: boolean
-  } = {
+  const query: ExtendedFindConfig<TEntity, TWhereKeys> = {
     where: build(selector),
   }
 

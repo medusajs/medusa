@@ -79,6 +79,19 @@ const instance = DbTestUtil
 module.exports = {
   initDb: async function ({ cwd }) {
     const configPath = path.resolve(path.join(cwd, `medusa-config.js`))
+    const { projectConfig, featureFlags } = require(configPath)
+
+    const featureFlagsLoader = require(path.join(
+      cwd,
+      `node_modules`,
+      `@medusajs`,
+      `medusa`,
+      `dist`,
+      `loaders`,
+      `feature-flags`
+    )).default
+
+    const featureFlagsRouter = featureFlagsLoader({ featureFlags })
 
     const modelsLoader = require(path.join(
       cwd,
@@ -89,9 +102,9 @@ module.exports = {
       `loaders`,
       `models`
     )).default
+
     const entities = modelsLoader({}, { register: false })
 
-    const { projectConfig } = require(configPath)
     if (projectConfig.database_type === "sqlite") {
       connectionType = "sqlite"
       const dbConnection = await createConnection({
@@ -108,11 +121,47 @@ module.exports = {
 
       await dbFactory.createFromTemplate(databaseName)
 
+      // get migraitons with enabled featureflags
+      const migrationDir = path.resolve(
+        path.join(
+          cwd,
+          `node_modules`,
+          `@medusajs`,
+          `medusa`,
+          `dist`,
+          `migrations`,
+          `*.js`
+        )
+      )
+
+      const { getEnabledMigrations } = require(path.join(
+        cwd,
+        `node_modules`,
+        `@medusajs`,
+        `medusa`,
+        `dist`,
+        `commands`,
+        `utils`,
+        `get-migrations`
+      ))
+
+      const enabledMigrations = await getEnabledMigrations(
+        [migrationDir],
+        (flag) => featureFlagsRouter.isFeatureEnabled(flag)
+      )
+
+      const enabledEntities = entities.filter(
+        (e) => typeof e.isFeatureEnabled === "undefined" || e.isFeatureEnabled()
+      )
+
       const dbConnection = await createConnection({
         type: "postgres",
         url: DB_URL,
-        entities,
+        entities: enabledEntities,
+        migrations: enabledMigrations,
       })
+
+      await dbConnection.runMigrations()
 
       instance.setDb(dbConnection)
       return dbConnection

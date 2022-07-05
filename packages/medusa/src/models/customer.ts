@@ -31,7 +31,7 @@ export class Customer extends SoftDeletableEntity {
 
   @Index()
   @Column({ nullable: true })
-  billing_address_id: string
+  billing_address_id: string | null
 
   @OneToOne(() => Address)
   @JoinColumn({ name: "billing_address_id" })

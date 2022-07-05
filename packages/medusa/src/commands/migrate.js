@@ -1,24 +1,27 @@
 import { createConnection } from "typeorm"
 import { getConfigFile } from "medusa-core-utils"
-
+import featureFlagLoader from "../loaders/feature-flags"
 import Logger from "../loaders/logger"
 
 import getMigrations from "./utils/get-migrations"
 
-const t = async function({ directory }) {
+const t = async function ({ directory }) {
   const args = process.argv
   args.shift()
   args.shift()
   args.shift()
 
   const { configModule } = getConfigFile(directory, `medusa-config`)
-  const migrationDirs = getMigrations(directory)
+
+  const featureFlagRouter = featureFlagLoader(configModule)
+
+  const enabledMigrations = await getMigrations(directory, featureFlagRouter)
 
   const connection = await createConnection({
     type: configModule.projectConfig.database_type,
     url: configModule.projectConfig.database_url,
     extra: configModule.projectConfig.database_extra || {},
-    migrations: migrationDirs,
+    migrations: enabledMigrations,
     logging: true,
   })
 
@@ -26,6 +29,11 @@ const t = async function({ directory }) {
     await connection.runMigrations()
     await connection.close()
     Logger.info("Migrations completed.")
+    process.exit()
+  } else if (args[0] === "revert") {
+    await connection.undoLastMigration({ transaction: "all" })
+    await connection.close()
+    Logger.info("Migrations reverted.")
     process.exit()
   } else if (args[0] === "show") {
     const unapplied = await connection.showMigrations()
