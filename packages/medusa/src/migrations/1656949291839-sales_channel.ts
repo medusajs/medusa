@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm"
 
-export const featureFlag = "sales-channels"
+export const featureFlag = "sales_channels"
 
 export class salesChannel1656949291839 implements MigrationInterface {
   name = "salesChannel1656949291839"

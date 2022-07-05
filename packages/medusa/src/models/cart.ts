@@ -235,10 +235,10 @@ export class Cart extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("sales-channels", { nullable: true })
+  @FeatureFlagColumn("sales_channels", { nullable: true })
   sales_channel_id: string
 
-  @FeatureFlagDecorators("sales-channels", [
+  @FeatureFlagDecorators("sales_channels", [
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])

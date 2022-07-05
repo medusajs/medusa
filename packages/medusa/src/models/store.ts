@@ -57,10 +57,10 @@ export class Store extends BaseEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown>
 
-  @FeatureFlagColumn("sales-channels", { nullable: true })
+  @FeatureFlagColumn("sales_channels", { nullable: true })
   default_sales_channel_id: string
 
-  @FeatureFlagDecorators("sales-channels", [
+  @FeatureFlagDecorators("sales_channels", [
     OneToOne(() => SalesChannel),
     JoinColumn({ name: "default_sales_channel_id" }),
   ])

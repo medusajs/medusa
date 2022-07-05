@@ -5,7 +5,7 @@ import { FeatureFlagEntity } from "../utils/feature-flag-decorators"
 import { resolveDbType } from "../utils/db-aware-column"
 import { generateEntityId } from "../utils"
 
-@FeatureFlagEntity("sales-channels")
+@FeatureFlagEntity("sales_channels")
 export class SalesChannel extends SoftDeletableEntity {
   @Column()
   name: string

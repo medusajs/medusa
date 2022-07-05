@@ -149,7 +149,7 @@ export class Product extends SoftDeletableEntity {
   @DbAwareColumn({ type: "jsonb", nullable: true })
   metadata: Record<string, unknown> | null
 
-  @FeatureFlagDecorators("sales-channels", [
+  @FeatureFlagDecorators("sales_channels", [
     ManyToMany(() => SalesChannel, { cascade: true }),
     JoinTable({
       name: "product_sales_channel",

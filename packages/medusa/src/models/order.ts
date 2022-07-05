@@ -230,10 +230,10 @@ export class Order extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   external_id: string | null
 
-  @FeatureFlagColumn("sales-channels", { nullable: true })
+  @FeatureFlagColumn("sales_channels", { nullable: true })
   sales_channel_id: string
 
-  @FeatureFlagDecorators("sales-channels", [
+  @FeatureFlagDecorators("sales_channels", [
     ManyToOne(() => SalesChannel),
     JoinColumn({ name: "sales_channel_id" }),
   ])
