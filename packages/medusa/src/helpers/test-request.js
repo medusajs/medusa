@@ -30,6 +30,9 @@ const config = {
     admin_cors: "",
     store_cors: "",
   },
+  featureFlags: {
+    sales_channels: true
+  }
 }
 
 const testApp = express()
