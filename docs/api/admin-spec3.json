@@ -275,395 +275,6 @@
         }
       }
     },
-    "/batch-jobs/{id}/cancel": {
-      "post": {
-        "operationId": "PostBatchJobsBatchJobCancel",
-        "summary": "Marks a batch job as canceled",
-        "description": "Marks a batch job as canceled",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the batch job.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroups",
-        "summary": "Retrieve a list of customer groups",
-        "description": "Retrieve a list of customer groups.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching user group names.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many groups to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Ids of the groups to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "to retrieve customer groups in.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of customer groups returned.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}/confirm": {
-      "post": {
-        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
-        "summary": "Confirm a batch job",
-        "description": "Confirms that a previously requested batch job should be executed.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the batch job.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs": {
-      "post": {
-        "operationId": "PostBatchJobs",
-        "summary": "Create a Batch Job",
-        "description": "Creates a Batch Job.",
-        "x-authenticated": true,
-        "parameters": [],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "201": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "type",
-                  "context",
-                  "dry_run"
-                ],
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "description": "The type of batch job to start."
-                  },
-                  "context": {
-                    "type": "string",
-                    "description": "Additional infomration regarding the batch to be used for processing."
-                  },
-                  "dry_run": {
-                    "type": "boolean",
-                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetBatchJobs",
-        "summary": "List Batch Jobs",
-        "description": "Retrieve a list of Batch Jobs.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The offset of collections to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "type",
-            "style": "form",
-            "explode": false,
-            "description": "Filter by the batch type",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "confirmed_at",
-            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "pre_processed_at",
-            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "completed_at",
-            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "failed_at",
-            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "canceled_at",
-            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "Order used when retrieving batch jobs",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}": {
-      "get": {
-        "operationId": "GetBatchJobsBatchJob",
-        "summary": "Retrieve a Batch Job",
-        "description": "Retrieves a Batch Job.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Batch Job",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/collections/{id}/products/batch": {
       "post": {
         "operationId": "PostProductsToCollection",
@@ -770,7 +381,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
                 "required": [
                   "title"
                 ],
@@ -911,39 +521,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
           }
         ],
         "tags": [
@@ -1060,6 +637,328 @@
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}/cancel": {
+      "post": {
+        "operationId": "PostBatchJobsBatchJobCancel",
+        "summary": "Marks a batch job as canceled",
+        "description": "Marks a batch job as canceled",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the batch job.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}/confirm": {
+      "post": {
+        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
+        "summary": "Confirm a batch job",
+        "description": "Confirms that a previously requested batch job should be executed.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the batch job.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs": {
+      "post": {
+        "operationId": "PostBatchJobs",
+        "summary": "Create a Batch Job",
+        "description": "Creates a Batch Job.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "type",
+                  "context",
+                  "dry_run"
+                ],
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "description": "The type of batch job to start."
+                  },
+                  "context": {
+                    "type": "string",
+                    "description": "Additional infomration regarding the batch to be used for processing."
+                  },
+                  "dry_run": {
+                    "type": "boolean",
+                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetBatchJobs",
+        "summary": "List Batch Jobs",
+        "description": "Retrieve a list of Batch Jobs.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "style": "form",
+            "explode": false,
+            "description": "Filter by the batch type",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "confirmed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "pre_processed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "completed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "failed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "canceled_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "Order used when retrieving batch jobs",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/batch-jobs/{id}": {
+      "get": {
+        "operationId": "GetBatchJobsBatchJob",
+        "summary": "Retrieve a Batch Job",
+        "description": "Retrieves a Batch Job.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Batch Job",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
                     }
                   }
                 }
@@ -2658,82 +2557,6 @@
         }
       }
     },
-    "/auth": {
-      "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate a User",
-        "x-authenticated": false,
-        "description": "Logs a User in and authorizes them to manage Store settings.",
-        "parameters": [],
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The User's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The User's password."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
-        "x-authenticated": true,
-        "description": "Gets the currently logged in User.",
-        "tags": [
-          "Auth"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/draft-orders": {
       "post": {
         "operationId": "PostDraftOrders",
@@ -3302,6 +3125,82 @@
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth": {
+      "post": {
+        "operationId": "PostAuth",
+        "summary": "Authenticate a User",
+        "x-authenticated": false,
+        "description": "Logs a User in and authorizes them to manage Store settings.",
+        "parameters": [],
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The User's email."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The User's password."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAuth",
+        "summary": "Get Session",
+        "x-authenticated": true,
+        "description": "Gets the currently logged in User.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/user"
                     }
                   }
                 }

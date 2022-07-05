@@ -1,9 +1,4 @@
-import {
-  IsArray,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from "class-validator"
+import { IsArray, IsNumber, IsOptional, IsString } from "class-validator"
 import { Transform, Type } from "class-transformer"
 
 import BatchJobService from "../../../../services/batch-job"
@@ -30,17 +25,73 @@ import { pickBy } from "lodash"
  *       type: array
  *       items:
  *         type: string
- *   - (query) confirmed_at {object} Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
- *   - (query) pre_processed_at {object} Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
- *   - (query) completed_at {object} Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
- *   - (query) failed_at {object} Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
- *   - (query) canceled_at {object} Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: confirmed_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
+ *   - in: query
+ *     name: pre_processed_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
+ *   - in: query
+ *     name: completed_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was completed, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
+ *   - in: query
+ *     name: failed_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was failed, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
+ *   - in: query
+ *     name: canceled_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
  *   - (query) order {string} Order used when retrieving batch jobs
  *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
  *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
- *   - (query) deleted_at {object} Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
- *   - (query) created_at {object} Date comparison for when resulting collections was created, i.e. less than, greater than etc.
- *   - (query) updated_at {object} Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *   - in: query
+ *     name: deleted_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
+ *   - in: query
+ *     name: created_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was created, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
+ *   - in: query
+ *     name: updated_at
+ *     style: form
+ *     explode: false
+ *     description: Date comparison for when resulting collections was updated, i.e. less than, greater than etc.
+ *     schema:
+ *       type: object
+ *       nullable: true
  * tags:
  *   - Batch Job
  * responses:

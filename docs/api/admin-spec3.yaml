@@ -417,39 +417,54 @@ paths:
               type: string
         - in: query
           name: confirmed_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was confirmed, i.e.
             less than, greater than etc.
           schema:
             type: object
+            nullable: true
         - in: query
           name: pre_processed_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was pre processed,
             i.e. less than, greater than etc.
           schema:
             type: object
+            nullable: true
         - in: query
           name: completed_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was completed, i.e.
             less than, greater than etc.
           schema:
             type: object
+            nullable: true
         - in: query
           name: failed_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was failed, i.e. less
             than, greater than etc.
           schema:
             type: object
+            nullable: true
         - in: query
           name: canceled_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was canceled, i.e.
             less than, greater than etc.
           schema:
             type: object
+            nullable: true
         - in: query
           name: order
           description: Order used when retrieving batch jobs
@@ -457,25 +472,34 @@ paths:
             type: string
         - in: query
           name: deleted_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was deleted, i.e.
             less than, greater than etc.
           schema:
             type: object
+            nullable: true
         - in: query
           name: created_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was created, i.e.
             less than, greater than etc.
           schema:
             type: object
+            nullable: true
         - in: query
           name: updated_at
+          style: form
+          explode: false
           description: >-
             Date comparison for when resulting collections was updated, i.e.
             less than, greater than etc.
           schema:
             type: object
+            nullable: true
       tags:
         - Batch Job
       responses:
