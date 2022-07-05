@@ -14,7 +14,7 @@ import { BatchJob } from "../../../../models"
  *   - (body) context=* {string} Additional infomration regarding the batch to be used for processing.
  *   - (body) dry_run=* {boolean} Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
  * tags:
- *   - Customer
+ *   - Batch Job
  * responses:
  *   201:
  *     description: OK
