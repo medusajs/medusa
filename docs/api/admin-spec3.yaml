@@ -140,6 +140,240 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+  '/batch-jobs/{id}/cancel':
+    post:
+      operationId: PostBatchJobsBatchJobCancel
+      summary: Marks a batch job as canceled
+      description: Marks a batch job as canceled
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the batch job.
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+  '/batch-jobs/{id}/confirm':
+    post:
+      operationId: PostBatchJobsBatchJobConfirmProcessing
+      summary: Confirm a batch job
+      description: Confirms that a previously requested batch job should be executed.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the batch job.
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+  /batch-jobs:
+    post:
+      operationId: PostBatchJobs
+      summary: Create a Batch Job
+      description: Creates a Batch Job.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Batch Job
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - type
+                - context
+                - dry_run
+              properties:
+                type:
+                  type: string
+                  description: The type of batch job to start.
+                context:
+                  type: string
+                  description: >-
+                    Additional infomration regarding the batch to be used for
+                    processing.
+                dry_run:
+                  type: boolean
+                  description: >-
+                    Set a batch job in dry_run mode to get some information on
+                    what will be done without applying any modifications.
+    get:
+      operationId: GetBatchJobs
+      summary: List Batch Jobs
+      description: Retrieve a list of Batch Jobs.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: The offset of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: type
+          style: form
+          explode: false
+          description: Filter by the batch type
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: confirmed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was confirmed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: pre_processed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was pre processed,
+            i.e. less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: completed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was completed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: failed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was failed, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: canceled_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was canceled, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: order
+          description: Order used when retrieving batch jobs
+          schema:
+            type: string
+        - in: query
+          name: deleted_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was deleted, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: created_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: updated_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+  '/batch-jobs/{id}':
+    get:
+      operationId: GetBatchJobsBatchJob
+      summary: Retrieve a Batch Job
+      description: Retrieves a Batch Job.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Batch Job
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
   '/collections/{id}/products/batch':
     post:
       operationId: PostProductsToCollection
@@ -394,6 +628,83 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+  '/customer-groups/{id}/customers/batch':
+    post:
+      operationId: PostCustomerGroupsGroupCustomersBatch
+      summary: 'Add a list of customers to a customer group '
+      description: 'Adds a list of customers, represented by id''s, to a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customers:
+                  description: The ids of the customers to add
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customerGroup:
+                    $ref: '#/components/schemas/customer_group'
+    delete:
+      operationId: DeleteCustomerGroupsGroupCustomerBatch
+      summary: 'Remove a list of customers from a customer group '
+      description: 'Removes a list of customers, represented by id''s, from a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customers:
+                  description: The ids of the customers to remove
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customerGroup:
+                    $ref: '#/components/schemas/customer_group'
   /customer-groups:
     post:
       operationId: PostCustomerGroups
@@ -426,6 +737,69 @@ paths:
                 metadata:
                   type: object
                   description: Metadata for the customer.
+    get:
+      operationId: GetCustomerGroups
+      summary: Retrieve a list of customer groups
+      description: Retrieve a list of customer groups.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching user group names.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many groups to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: id
+          description: Ids of the groups to search for.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: to retrieve customer groups in.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: >-
+            Date comparison for when resulting customer group was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: updated_at
+          description: >-
+            Date comparison for when resulting ustomer group was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: limit
+          description: Limit the number of customer groups returned.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each customer
+            groups of the result.
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customerGroup:
+                    $ref: '#/components/schemas/customer_group'
   '/customer-groups/{id}':
     delete:
       operationId: DeleteCustomerGroupsCustomerGroup
@@ -456,6 +830,29 @@ paths:
                     description: The type of the object that was deleted.
                   deleted:
                     type: boolean
+    get:
+      operationId: GetCustomerGroupsGroup
+      summary: Retrieve a CustomerGroup
+      description: Retrieves a Customer Group.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer Group.
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
     post:
       operationId: PostCustomerGroupsGroup
       summary: Update a CustomerGroup
@@ -493,21 +890,21 @@ paths:
                 metadata:
                   type: object
                   description: Metadata for the customer.
-  '/customer-group/{id}':
+  '/customer-groups/{id}/customers':
     get:
-      operationId: GetCustomerGroupsGroup
-      summary: Retrieve a CustomerGroup
-      description: Retrieves a Customer Group.
+      operationId: GetCustomerGroupsGroupCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
       x-authenticated: true
       parameters:
         - in: path
           name: id
           required: true
-          description: The id of the Customer Group.
+          description: The id of the customer group.
           schema:
             type: string
       tags:
-        - CustomerGroup
+        - Customer
       responses:
         '200':
           description: OK
@@ -515,8 +912,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
+                  customer:
+                    $ref: '#/components/schemas/customer'
   /customers:
     post:
       operationId: PostCustomers
@@ -727,56 +1124,58 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  '/discounts/{id}/products/{product_id}':
+  '/discounts/{discount_id}/conditions':
     post:
-      operationId: PostDiscountsDiscountProductsProduct
-      summary: Adds Product availability
-      description: Adds a Product to the list of Products that a Discount can be used for.
+      operationId: PostDiscountsDiscountConditions
+      summary: Creates a DiscountCondition
       x-authenticated: true
       parameters:
         - in: path
-          name: id
-          required: true
-          description: The id of the Discount.
-          schema:
-            type: string
-        - in: path
-          name: product_id
+          name: discount_id
           required: true
           description: The id of the Product.
           schema:
             type: string
-      tags:
-        - Discount
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  discount:
-                    $ref: '#/components/schemas/discount'
-    delete:
-      operationId: DeleteDiscountsDiscountProductsProduct
-      summary: Remove Product availability
-      description: >-
-        Removes a Product from the list of Products that a Discount can be used
-        for.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Discount.
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each product of
+            the result.
           schema:
             type: string
-        - in: path
-          name: product_id
-          required: true
-          description: The id of the Product.
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each product of
+            the result.
           schema:
             type: string
+      description: Creates a DiscountCondition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                operator:
+                  description: Operator of the condition
+                  type: string
+                items:
+                  properties:
+                    products:
+                      type: array
+                      description: list of products
+                    product_types:
+                      type: array
+                      description: list of product types
+                    product_collections:
+                      type: array
+                      description: list of product collections
+                    product_tags:
+                      type: array
+                      description: list of product tags
+                    customer_groups:
+                      type: array
+                      description: list of customer_groups
       tags:
         - Discount
       responses:
@@ -939,15 +1338,158 @@ paths:
               type: object
               required:
                 - code
+                - usage_limit
               properties:
                 code:
                   type: string
                   description: The unique code that will be used to redeem the Discount.
+                usage_limit:
+                  type: number
+                  description: amount of times the discount can be applied
                 metadata:
                   type: object
                   description: >-
                     An optional set of key-value paris to hold additional
                     information.
+  '/discounts/{discount_id}/conditions/{condition_id}':
+    delete:
+      operationId: DeleteDiscountsDiscountConditionsCondition
+      summary: Delete a DiscountCondition
+      description: Deletes a DiscountCondition
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Discount
+          schema:
+            type: string
+        - in: path
+          name: condition_id
+          required: true
+          description: The id of the DiscountCondition
+          schema:
+            type: string
+      tags:
+        - Discount
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted DiscountCondition
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                  discount:
+                    type: object
+                    description: The Discount to which the condition used to belong
+    get:
+      operationId: GetDiscountsDiscountConditionsCondition
+      summary: Gets a DiscountCondition
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: discount_id
+          required: true
+          description: The id of the Discount.
+          schema:
+            type: string
+        - in: path
+          name: condition_id
+          required: true
+          description: The id of the DiscountCondition.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
+      description: Gets a DiscountCondition
+      tags:
+        - DiscountCondition
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  discount_condition:
+                    $ref: '#/components/schemas/discount_condition'
+    post:
+      operationId: PostDiscountsDiscountConditionsCondition
+      summary: Updates a DiscountCondition
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: discount_id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each product of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each product of
+            the result.
+          schema:
+            type: string
+      description: Updates a DiscountCondition
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - id
+              properties:
+                items:
+                  properties:
+                    products:
+                      type: array
+                      description: list of products
+                    product_types:
+                      type: array
+                      description: list of product types
+                    product_collections:
+                      type: array
+                      description: list of product collections
+                    product_tags:
+                      type: array
+                      description: list of product tags
+                    customer_groups:
+                      type: array
+                      description: list of customer_groups
+      tags:
+        - Discount
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  discount:
+                    $ref: '#/components/schemas/discount'
   '/discounts/{id}':
     delete:
       operationId: DeleteDiscountsDiscount
@@ -990,6 +1532,16 @@ paths:
           description: The id of the Discount
           schema:
             type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
       tags:
         - Discount
       responses:
@@ -1023,13 +1575,6 @@ paths:
                 code:
                   type: string
                   description: A unique code that will be used to redeem the Discount
-                is_dynamic:
-                  type: string
-                  description: >-
-                    Whether the Discount should have multiple instances of
-                    itself, each with a different code. This can be useful for
-                    automatically generated codes that all have to follow a
-                    common set of rules.
                 rule:
                   description: The Discount Rule that defines how Discounts are calculated
                   oneOf:
@@ -3526,6 +4071,578 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
+  '/price-lists/{id}/prices/batch':
+    post:
+      operationId: PostPriceListsPriceListPricesBatch
+      summary: Batch update prices for a Price List
+      description: Batch update prices for a Price List
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Price List to update prices for.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                prices:
+                  description: The prices to update or add.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The id of the price.
+                        type: string
+                      status:
+                        description: The status of the Price List.
+                        type: string
+                        enum:
+                          - active
+                          - draft
+                      region_id:
+                        description: The id of the Region for which the price is used.
+                        type: string
+                      currency_code:
+                        description: >-
+                          The 3 character ISO currency code for which the price
+                          will be used.
+                        type: string
+                      amount:
+                        description: The amount of the price.
+                        type: number
+                      min_quantity:
+                        description: The minimum quantity for which the price will be used.
+                        type: number
+                      max_quantity:
+                        description: The maximum quantity for which the price will be used.
+                        type: number
+                override:
+                  description: >-
+                    If true the prices will replace all existing prices
+                    associated with the Price List.
+                  type: boolean
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Price List.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    delete:
+      operationId: DeletePriceListsPriceListPricesBatch
+      summary: Batch delete prices that belongs to a Price List
+      description: Batch delete prices that belongs to a Price List
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: >-
+            The id of the Price List that the Money Amounts that will be deleted
+            belongs to.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                price_ids:
+                  description: The price id's of the Money Amounts to delete.
+                  type: array
+                  items:
+                    type: string
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  ids:
+                    type: array
+                    items:
+                      type: string
+                      description: The id of the deleted Money Amount.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+  /price_lists:
+    post:
+      operationId: PostPriceListsPriceList
+      summary: Creates a Price List
+      description: Creates a Price List
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Price List
+                  type: string
+                description:
+                  description: A description of the Price List.
+                  type: string
+                type:
+                  description: The type of the Price List.
+                  type: string
+                  enum:
+                    - sale
+                    - override
+                status:
+                  description: The status of the Price List.
+                  type: string
+                  enum:
+                    - active
+                    - draft
+                prices:
+                  description: The prices of the Price List.
+                  type: array
+                  items:
+                    properties:
+                      region_id:
+                        description: The id of the Region for which the price is used.
+                        type: string
+                      currency_code:
+                        description: >-
+                          The 3 character ISO currency code for which the price
+                          will be used.
+                        type: string
+                      amount:
+                        description: The amount to charge for the Product Variant.
+                        type: integer
+                      min_quantity:
+                        description: The minimum quantity for which the price will be used.
+                        type: integer
+                      max_quantity:
+                        description: The maximum quantity for which the price will be used.
+                        type: integer
+                customer_groups:
+                  type: array
+                  description: A list of customer groups that the Price List applies to.
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of a customer group
+                        type: string
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/price_list'
+  '/price-lists/{id}':
+    delete:
+      operationId: DeletePriceListsPriceList
+      summary: Delete a Price List
+      description: Deletes a Price List
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Price List to delete.
+          schema:
+            type: string
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Price List.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetPriceListsPriceList
+      summary: Retrieve a Price List
+      description: Retrieves a Price List.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Price List.
+          schema:
+            type: string
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  price_list:
+                    $ref: '#/components/schemas/price_list'
+  '/price-lists/{id}/products/{product_id}/prices':
+    delete:
+      operationId: DeletePriceListsPriceListProductsProductPrices
+      summary: Delete all the prices related to a specific product in a price list
+      description: Delete all the prices related to a specific product in a price list
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: >-
+            The id of the Price List that the Money Amounts that will be deleted
+            belongs to.
+          schema:
+            type: string
+        - in: path
+          name: product_id
+          required: true
+          description: The id of the product from which the money amount will be deleted.
+          schema:
+            type: string
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  ids:
+                    type: number
+                    description: The price ids that have been deleted.
+                  count:
+                    type: number
+                    description: The number of prices that have been deleted.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+  '/price-lists/{id}/variants/{variant_id}/prices':
+    delete:
+      operationId: DeletePriceListsPriceListVariantsVariantPrices
+      summary: Delete all the prices related to a specific variant in a price list
+      description: Delete all the prices related to a specific variant in a price list
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: >-
+            The id of the Price List that the Money Amounts that will be deleted
+            belongs to.
+          schema:
+            type: string
+        - in: path
+          name: variant_id
+          required: true
+          description: The id of the variant from which the money amount will be deleted.
+          schema:
+            type: string
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  ids:
+                    type: number
+                    description: The price ids that have been deleted.
+                  count:
+                    type: number
+                    description: The number of prices that have been deleted.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+  '/price-lists/:id/products':
+    get:
+      operationId: GetPriceListsPriceListProducts
+      summary: List Product in a Price List
+      description: Retrieves a list of Product that are part of a Price List
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching products.
+          schema:
+            type: string
+        - in: query
+          name: id
+          description: Id of the product to search for.
+          schema:
+            type: string
+        - in: query
+          name: status
+          description: Status to search for
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: collection_id
+          description: Collection ids to search for
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: tags
+          description: Tags to search for
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: title
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: description
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: handle
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: is_giftcard
+          description: Search for giftcards using is_giftcard=true.
+          schema:
+            type: string
+        - in: query
+          name: type
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: to retrieve products in.
+          schema:
+            type: string
+        - in: query
+          name: deleted_at
+          description: >-
+            Date comparison for when resulting products was deleted, i.e. less
+            than, greater than etc.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: >-
+            Date comparison for when resulting products was created, i.e. less
+            than, greater than etc.
+          schema:
+            type: string
+        - in: query
+          name: updated_at
+          description: >-
+            Date comparison for when resulting products was updated, i.e. less
+            than, greater than etc.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many products to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit the number of products returned.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each product of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each product of
+            the result.
+          schema:
+            type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The number of Products.
+                    type: integer
+                  offset:
+                    description: The offset of the Product query.
+                    type: integer
+                  limit:
+                    description: The limit of the Product query.
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product'
+  /price-lists:
+    get:
+      operationId: GetPriceLists
+      summary: List Price Lists
+      description: Retrieves a list of Price Lists.
+      x-authenticated: true
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  price_lists:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/price_list'
+                  count:
+                    description: The number of Price Lists.
+                    type: integer
+                  offset:
+                    description: The offset of the Price List query.
+                    type: integer
+                  limit:
+                    description: The limit of the Price List query.
+                    type: integer
+  '/price_lists/{id}':
+    post:
+      operationId: PostPriceListsPriceListPriceList
+      summary: Update a Price List
+      description: Updates a Price List
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Price List.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  description: The name of the Price List
+                  type: string
+                description:
+                  description: A description of the Price List.
+                  type: string
+                type:
+                  description: The type of the Price List.
+                  type: string
+                  enum:
+                    - sale
+                    - override
+                status:
+                  description: The status of the Price List.
+                  type: string
+                  enum:
+                    - active
+                    - draft
+                prices:
+                  description: The prices of the Price List.
+                  type: array
+                  items:
+                    properties:
+                      id:
+                        description: The id of the price.
+                        type: string
+                      region_id:
+                        description: The id of the Region for which the price is used.
+                        type: string
+                      currency_code:
+                        description: >-
+                          The 3 character ISO currency code for which the price
+                          will be used.
+                        type: string
+                      amount:
+                        description: The amount to charge for the Product Variant.
+                        type: integer
+                      min_quantity:
+                        description: The minimum quantity for which the price will be used.
+                        type: integer
+                      max_quantity:
+                        description: The maximum quantity for which the price will be used.
+                        type: integer
+                customer_groups:
+                  type: array
+                  description: A list of customer groups that the Price List applies to.
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of a customer group
+                        type: string
+      tags:
+        - Price List
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/price_list'
   /product-tags:
     get:
       operationId: GetProductTags
@@ -4113,8 +5230,11 @@ paths:
                       amount:
                         description: The amount to charge for the Product Variant.
                         type: integer
-                      sale_amount:
-                        description: The sale amount to charge for the Product Variant.
+                      min_quantity:
+                        description: The minimum quantity for which the price will be used.
+                        type: integer
+                      max_quantity:
+                        description: The maximum quantity for which the price will be used.
                         type: integer
                 options:
                   type: array
@@ -4146,7 +5266,27 @@ paths:
         - in: path
           name: id
           required: true
-          description: The id of the Product.
+          description: Id of the product to search for the variants.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated string of the column to select.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: Comma separated string of the relations to include.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many products to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit the number of products returned.
           schema:
             type: string
       tags:
@@ -4629,6 +5769,9 @@ paths:
                   type: array
                   items:
                     properties:
+                      id:
+                        description: The id of the price.
+                        type: string
                       region_id:
                         description: The id of the Region for which the price is used.
                         type: string
@@ -4640,8 +5783,11 @@ paths:
                       amount:
                         description: The amount to charge for the Product Variant.
                         type: integer
-                      sale_amount:
-                        description: The sale amount to charge for the Product Variant.
+                      min_quantity:
+                        description: The minimum quantity for which the price will be used.
+                        type: integer
+                      max_quantity:
+                        description: The maximum quantity for which the price will be used.
                         type: integer
                 options:
                   type: array
@@ -6608,6 +7754,73 @@ components:
           type: string
         country:
           $ref: '#/components/schemas/country'
+    batch_job:
+      title: Batch Job
+      description: A Batch Job.
+      x-resourceId: batch_job
+      properties:
+        id:
+          description: The unique identifier for the batch job.
+          type: string
+        type:
+          description: The type of batch job.
+          type: string
+          enum:
+            - product_import
+            - product_export
+        status:
+          description: The status of the batch job.
+          type: string
+          enum:
+            - created
+            - pre_processed
+            - processing
+            - completed
+            - canceled
+            - failed
+        created_by:
+          description: The unique identifier of the user that created the batch job.
+          type: string
+        context:
+          description: >-
+            The context of the batch job, the type of the batch job determines
+            what the context should contain.
+          type: object
+        dry_run:
+          description: Specify if the job must apply the modifications or not.
+          type: boolean
+          default: false
+        result:
+          description: The result of the batch job.
+          type: object
+        pre_processed_at:
+          description: The date from which the job has been pre processed.
+          type: string
+          format: date-time
+        confirmed_at:
+          description: The date when the confirmation has been done.
+          type: string
+          format: date-time
+        completed_at:
+          description: The date of the completion.
+          type: string
+          format: date-time
+        canceled_at:
+          description: The date of the concellation.
+          type: string
+          format: date-time
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
     cart:
       title: Cart
       description: Represents a user cart
@@ -7031,6 +8244,168 @@ components:
           format: date-time
         metadata:
           type: object
+    discount_condition_customer_group:
+      title: Product Tag Discount Condition
+      description: Associates a discount condition with a customer group
+      x-resourceId: discount_condition_customer_group
+      properties:
+        customer_group_id:
+          description: The id of the Product Tag
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_collection:
+      title: Product Collection Discount Condition
+      description: Associates a discount condition with a product collection
+      x-resourceId: discount_condition_product_collection
+      properties:
+        product_collection_id:
+          description: The id of the Product Collection
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_tag:
+      title: Product Tag Discount Condition
+      description: Associates a discount condition with a product tag
+      x-resourceId: discount_condition_product_tag
+      properties:
+        product_tag_id:
+          description: The id of the Product Tag
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_type:
+      title: Product Type Discount Condition
+      description: Associates a discount condition with a product type
+      x-resourceId: discount_condition_product
+      properties:
+        product_type_id:
+          description: The id of the Product Type
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product:
+      title: Product Discount Condition
+      description: Associates a discount condition with a product
+      x-resourceId: discount_condition_product
+      properties:
+        product_id:
+          description: The id of the Product
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition:
+      title: Discount Condition
+      description: Holds rule conditions for when a discount is applicable
+      x-resourceId: discount_condition
+      properties:
+        id:
+          description: The id of the Discount Condition. Will be prefixed by `discon_`.
+          type: string
+        type:
+          description: The type of the Condition
+          type: string
+          enum:
+            - products
+            - product_types
+            - product_collections
+            - product_tags
+            - customer_groups
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        update_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
     discount_rule:
       title: Discount Rule
       description: >-
@@ -7065,11 +8440,13 @@ components:
           enum:
             - total
             - item
-        valid_for:
-          description: A set of Products that the discount can be used for.
+        conditions:
+          description: >-
+            A set of conditions that can be used to limit when  the discount can
+            be used
           type: array
           items:
-            $ref: '#/components/schemas/product'
+            $ref: '#/components/schemas/discount_condition'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -7565,10 +8942,15 @@ components:
             The amount in the smallest currecny unit (e.g. cents 100 cents to
             charge $1) that the Product Variant will cost.
           type: integer
-        sale_amount:
+        min_quantity:
           description: >-
-            An optional sale amount that the Product Variant will be available
-            for when defined.
+            The minimum quantity that the Money Amount applies to. If this value
+            is not set, the Money Amount applies to all quantities.
+          type: integer
+        max_quantity:
+          description: >-
+            The maximum quantity that the Money Amount applies to. If this value
+            is not set, the Money Amount applies to all quantities.
           type: integer
         variant_id:
           description: The id of the Product Variant that the Money Amount belongs to.
@@ -8047,6 +9429,49 @@ components:
         metadata:
           description: An optional key-value map with additional information.
           type: object
+    price_list:
+      title: Price List
+      description: >-
+        Price Lists represents a set of prices that overrides the default price
+        for one or more product variants.
+      x-resourceId: price_list
+      properties:
+        id:
+          description: The id of the Price List. This value will be prefixed by `pl_`.
+          type: string
+        type:
+          description: >-
+            The type of Price List. This can be one of either `sale` or
+            `override`.
+          type: string
+          enum:
+            - sale
+            - override
+        starts_at:
+          description: The date with timezone that the Price List starts being valid.
+          type: string
+          format: date-time
+        ends_at:
+          description: The date with timezone that the Price List stops being valid.
+          type: string
+          format: date-time
+        customer_groups:
+          description: The Customer Groups that the Price List applies to.
+          type: array
+          items:
+            $ref: '#/components/schemas/customer_group'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
     product_collection:
       title: Product Collection
       description: Product Collections represents a group of Products that are related.
