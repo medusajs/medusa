@@ -29,3 +29,23 @@ export const useAdminSalesChannel = (
   )
   return { ...data, ...rest } as const
 }
+
+/*
+export const useAdminSalesChannels = (
+  query?: AdminGetSalesChannelsParams,
+  options?: UseQueryOptionsWrapper<
+    Response<AdminProductsListRes>,
+    Error,
+    ReturnType<SalesChannelsQueryKeys["list"]>
+  >
+) => {
+  const { client } = useMedusa()
+  const { data, ...rest } = useQuery(
+    adminProductKeys.list(query),
+    () => client.admin.salesChannels.list(query),
+    options
+  )
+  return { ...data, ...rest } as const
+}
+*/
+
