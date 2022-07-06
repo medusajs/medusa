@@ -4,7 +4,7 @@ const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
-const salesChannelsSeeder = require("../../helpers/sales-channels-seeder")
+const { simpleSalesChannelFactory, } = require("../../factories")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -47,10 +47,15 @@ describe("sales channels", () => {
   describe("POST /admin/sales-channels", () => {})
 
   describe("GET /admin/sales-channels/:id", () => {
+    let salesChannel
+
     beforeEach(async() => {
       try {
         await adminSeeder(dbConnection)
-        await salesChannelsSeeder(dbConnection)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+        })
       } catch (e) {
         console.error(e)
       }
@@ -64,19 +69,18 @@ describe("sales channels", () => {
     it("should retrieve the requested sales channel", async() => {
       const api = useApi()
       const response = await api.get(
-        "/admin/sales-channels/sales_channel_1",
+        `/admin/sales-channels/${salesChannel.id}`,
         adminReqConfig
       )
 
       expect(response.status).toEqual(200)
       expect(response.data.sales_channel).toBeTruthy()
-      expect(response.data).toMatchSnapshot({
-        sales_channel: expect.objectContaining({
-          id: "sales_channel_1",
-          name: "sales channel 1 name",
-          description: "sales channel 1 description",
-          is_disabled: false
-        })
+      expect(response.data.sales_channel).toMatchSnapshot({
+        id: salesChannel.id,
+        name: salesChannel.name,
+        description: salesChannel.description,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
       })
     })
   })

@@ -47,17 +47,14 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
         this.salesChannelRepository_
       )
 
-      const { relations, ...query } = buildQuery(
+      const query = buildQuery(
         {
           id: salesChannelId,
         },
         config
       )
 
-      const salesChannel = await salesChannelRepo.findOneWithRelations(
-        relations,
-        query as CustomFindOptions<SalesChannel, keyof SalesChannel>
-      )
+      const salesChannel = await salesChannelRepo.findOne(query)
 
       if (!salesChannel) {
         throw new MedusaError(

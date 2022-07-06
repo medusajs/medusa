@@ -1,5 +1,4 @@
 import { Request, Response } from "express"
-import { SalesChannel } from "../../../../models"
 import SalesChannelService from "../../../../services/sales-channel"
 
 /**
