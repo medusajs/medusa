@@ -1,5 +1,6 @@
 import {
-  AdminSalesChannelRes,
+  AdminSalesChannelsRes,
+  AdminPostSalesChannelsSalesChannelReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -12,29 +13,35 @@ class AdminSalesChannelsResource extends BaseResource {
   retrieve(
     salesChannelId: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminSalesChannelRes> {
+  ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  /*create(
+  /* create(
     payload: any,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<any> {}*/
 
-  /*update(
-    id: string,
-    payload: any,
+  /** @description updates a sales channel
+   * @returns the updated medusa sales channel
+   */
+  update(
+    salesChannelId: string,
+    payload: AdminPostSalesChannelsSalesChannelReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<any> {}*/
+  ): ResponsePromise<AdminSalesChannelsRes> {
+    const path = `/admin/sales-channels/${salesChannelId}`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
 
-  /*delete(
+  /* delete(
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<any> {
   }*/
 
-  /*list(
+  /* list(
     query?: any,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<any> {

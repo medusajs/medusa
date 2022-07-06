@@ -3,7 +3,8 @@ import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import "reflect-metadata"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
-import middlewares from "../../../middlewares"
+import middlewares, { transformBody } from "../../../middlewares"
+import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 
 const route = Router()
 
@@ -22,14 +23,18 @@ export default (app) => {
 
   route.post("/", (req, res) => {})
 
-  route.post("/:id", (req, res) => {})
+  route.post(
+    "/:id",
+    transformBody(AdminPostSalesChannelsSalesChannelReq),
+    middlewares.wrap(require("./update-sales-channel").default)
+  )
 
   route.delete("/:id", (req, res) => {})
 
   return app
 }
 
-export type AdminSalesChannelRes = {
+export type AdminSalesChannelsRes = {
   sales_channel: SalesChannel
 }
 
@@ -42,5 +47,5 @@ export type AdminSalesChannelListRes = PaginatedResponse & {
 export * from "./get-sales-channel"
 // export * from './'
 // export * from './'
-// export * from './'
+export * from "./update-sales-channel"
 // export * from './'

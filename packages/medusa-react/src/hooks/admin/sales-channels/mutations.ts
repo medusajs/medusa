@@ -1,4 +1,34 @@
-export {}
+import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
+import {
+  AdminSalesChannelsRes,
+  AdminPostSalesChannelsSalesChannelReq,
+} from "@medusajs/medusa"
+import { Response } from "@medusajs/medusa-js"
+import { useMedusa } from "../../../contexts"
+import { buildOptions } from "../../utils/buildOptions"
+import { adminSalesChannelsKeys } from "./queries"
+
+export const useAdminUpdateSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    AdminPostSalesChannelsSalesChannelReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostSalesChannelsSalesChannelReq) =>
+      client.admin.salesChannels.update(id, payload),
+    buildOptions(
+      queryClient,
+      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
+      options
+    )
+  )
+}
+
 /*export const useAdminCreateSalesChannel = (
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
@@ -11,28 +41,6 @@ export {}
   return useMutation(
     (payload: AdminPostSalesChannelsReq) => client.admin.salesChannels.create(payload),
     buildOptions(queryClient, adminSalesChannelsKeys.lists(), options)
-  )
-}*/
-
-/*export const useAdminUpdateSalesChannel = (
-  id: string,
-  options?: UseMutationOptions<
-    Response<AdminSalesChannelsRes>,
-    Error,
-    AdminPostSalesChannelsSalesChannelReq
-  >
-) => {
-  const { client } = useMedusa()
-  const queryClient = useQueryClient()
-
-  return useMutation(
-    (payload: AdminPostSalesChannelsSalesChannelReq) =>
-      client.admin.salesChannels.update(id, payload),
-    buildOptions(
-      queryClient,
-      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
-      options
-    )
   )
 }*/
 

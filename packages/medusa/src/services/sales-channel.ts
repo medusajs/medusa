@@ -1,4 +1,5 @@
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
@@ -9,7 +10,6 @@ import {
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -18,6 +18,10 @@ type InjectedDependencies = {
 }
 
 class SalesChannelService extends TransactionBaseService<SalesChannelService> {
+  static Events = {
+    UPDATED: "sales_channel.updated",
+  }
+
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
 
@@ -78,10 +82,31 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   }
 
   async update(
-    id: string,
+    salesChannelId: string,
     data: UpdateSalesChannelInput
-  ): Promise<SalesChannel> {
-    throw new Error("Method not implemented.")
+  ): Promise<SalesChannel | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo: SalesChannelRepository =
+        transactionManager.getCustomRepository(this.salesChannelRepository_)
+
+      const salesChannel = await this.retrieve(salesChannelId)
+
+      for (const key of Object.keys(data)) {
+        if (typeof data[key] !== `undefined`) {
+          salesChannel[key] = data[key]
+        }
+      }
+
+      const result = await salesChannelRepo.save(salesChannel)
+
+      await this.eventBusService_
+        .withTransaction(transactionManager)
+        .emit(SalesChannelService.Events.UPDATED, {
+          id: result.id,
+        })
+
+      return result
+    })
   }
 
   async delete(id: string): Promise<void> {

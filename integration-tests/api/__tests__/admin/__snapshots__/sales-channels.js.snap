@@ -11,3 +11,15 @@ Object {
   "updated_at": Any<String>,
 }
 `;
+
+exports[`sales channels POST /admin/sales-channels/:id updates sales channel properties 1`] = `
+Object {
+  "created_at": Any<String>,
+  "deleted_at": null,
+  "description": "updated description",
+  "id": Any<String>,
+  "is_disabled": true,
+  "name": "updated name",
+  "updated_at": Any<String>,
+}
+`;
