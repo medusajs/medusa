@@ -37,7 +37,7 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ sales_channel: salesChannel })
 }
 
-export class AdminPostSalesChannelReq {
+export class AdminPostSalesChannelsReq {
   @IsString()
   name: string
 
