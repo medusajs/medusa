@@ -149,8 +149,13 @@ class ProductCollectionService extends BaseService {
         collection.thumbnail = images[0]
       }
 
+     // at top of method
+     const imageRepo = this.manager_.getCustomRepository(
+          this.imageRepository_
+      )
+    
       if (images) {
-        collection.images = await this.upsertImages_(images)
+          collection.images = await imageRepo.upsertImages_(images)
       }
 
       if (metadata) {
