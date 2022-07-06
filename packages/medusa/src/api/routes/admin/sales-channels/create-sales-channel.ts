@@ -13,7 +13,6 @@ import { CreateSalesChannelInput } from "../../../../types/sales-channels"
  * parameters:
  *   - (body) name=* {string} Name of the sales channel
  *   - (body) description=* {string} Description of the sales channel
- *   - (body) metadata {object} Metadata for the channel.
  * tags:
  *   - Sales Channels
  * responses:

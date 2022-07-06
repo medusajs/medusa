@@ -1687,6 +1687,7 @@ export const adminHandlers = [
       ctx.status(200),
       ctx.json({
         sales_channel: fixtures.get("sales_channel"),
+        ...(req.body as Record<string, unknown>),
       })
     )
   }),

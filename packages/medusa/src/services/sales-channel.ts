@@ -39,6 +39,13 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     this.eventBusService_ = eventBusService
   }
 
+  /**
+   * Retrieve a SalesChannel by id
+   *
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable the corresponding feature flag in your medusa backend project.
+   * @returns a sales channel
+   */
   async retrieve(
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
@@ -77,6 +84,10 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
   /**
    * Creates a SalesChannel
+   *
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable the corresponding feature flag in your medusa backend project.
+   * @returns the created channel
    */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
     return await this.atomicPhase_(

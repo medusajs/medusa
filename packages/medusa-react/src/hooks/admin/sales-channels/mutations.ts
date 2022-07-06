@@ -11,6 +11,9 @@ import { adminSalesChannelsKeys } from "./queries"
 
 /**
  * Hook provides a mutation function for creating sales channel.
+ *
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable the corresponding feature flag in your medusa backend project.
  */
 export const useAdminCreateSalesChannel = (
   options?: UseMutationOptions<
