@@ -6,30 +6,31 @@ import { FindConditions, FindOneOptions } from "typeorm"
 import { SalesChannel } from "../../models"
 
 describe("SalesChannelService", () => {
+  const salesChannelData = {
+    name: "sales channel 1 name",
+    description: "sales channel 1 description",
+    is_disabled: false,
+  }
+
+  const salesChannelRepositoryMock = MockRepository({
+    findOne: jest
+      .fn()
+      .mockImplementation(
+        (queryOrId: string | FindOneOptions<SalesChannel>): any => {
+          return Promise.resolve({
+            id:
+              typeof queryOrId === "string"
+                ? queryOrId
+                : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
+                  IdMap.getId("sc_adjhlukiaeswhfae"),
+            ...salesChannelData,
+          })
+        }
+      ),
+    save: (salesChannel) => Promise.resolve(salesChannel),
+  })
+
   describe("retrieve", () => {
-    const salesChannelData = {
-      name: "sales channel 1 name",
-      description: "sales channel 1 description",
-      is_disabled: false,
-    }
-
-    const salesChannelRepositoryMock = MockRepository({
-      findOne: jest
-        .fn()
-        .mockImplementation(
-          (queryOrId: string | FindOneOptions<SalesChannel>): any => {
-            return Promise.resolve({
-              id:
-                typeof queryOrId === "string"
-                  ? queryOrId
-                  : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
-                    IdMap.getId("sc_adjhlukiaeswhfae"),
-              ...salesChannelData,
-            })
-          }
-        ),
-    })
-
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
@@ -59,22 +60,10 @@ describe("SalesChannelService", () => {
   })
 
   describe("update", () => {
-    const salesChannelRepository = MockRepository({
-      findOne: (id) => {
-        return Promise.resolve({
-          id,
-          name: "some sc",
-          description: "just an sc",
-          is_disabled: false,
-        })
-      },
-      save: (salesChannel) => Promise.resolve(salesChannel),
-    })
-
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
-      eventBusService: EventBusServiceMock,
-      salesChannelRepository: salesChannelRepository,
+      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      salesChannelRepository: salesChannelRepositoryMock,
     })
 
     const update = {
@@ -89,7 +78,7 @@ describe("SalesChannelService", () => {
 
     it("calls save with the updated sales channel", async () => {
       await salesChannelService.update(IdMap.getId("sc"), update)
-      expect(salesChannelRepository.save).toHaveBeenCalledWith({
+      expect(salesChannelRepositoryMock.save).toHaveBeenCalledWith({
         id: IdMap.getId("sc"),
         ...update,
       })
