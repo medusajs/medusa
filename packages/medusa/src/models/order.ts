@@ -249,6 +249,7 @@ export class Order extends BaseEntity {
   paid_total: number
   refundable_amount: number
   gift_card_total: number
+  gift_card_tax_total: number
 
   @BeforeInsert()
   private async beforeInsert(): Promise<void> {

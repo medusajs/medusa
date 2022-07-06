@@ -27,7 +27,7 @@ describe("Order Totals", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd, verbose: true })
+      medusaProcess = await setupServer({ cwd })
     } catch (error) {
       console.log(error)
     }
@@ -100,6 +100,8 @@ describe("Order Totals", () => {
         tax_rate: null,
       }),
     ])
+    expect(data.order.gift_card_total).toEqual(160000)
+    expect(data.order.gift_card_tax_total).toEqual(0)
     expect(data.order.total).toEqual(59000)
   })
 
@@ -160,6 +162,9 @@ describe("Order Totals", () => {
         tax_rate: 25,
       }),
     ])
+    expect(data.order.gift_card_total).toEqual(160000)
+    expect(data.order.gift_card_tax_total).toEqual(40000)
+    expect(data.order.tax_total).toEqual(3800)
     expect(data.order.total).toEqual(19000)
   })
 })

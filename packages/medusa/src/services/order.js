@@ -1382,7 +1382,9 @@ class OrderService extends BaseService {
           break
         }
         case "gift_card_total": {
-          order.gift_card_total = this.totalsService_.getGiftCardTotal(order)
+          const giftCardBreakdown = this.totalsService_.getGiftCardTotal(order)
+          order.gift_card_total = giftCardBreakdown.total
+          order.gift_card_tax_total = giftCardBreakdown.tax_total
           break
         }
         case "discount_total": {
