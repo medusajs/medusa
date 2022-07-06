@@ -1,6 +1,6 @@
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { SalesChannel } from "../models/sales-channel"
+import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
 import { FindConfig, QuerySelector } from "../types/common"
 import {
@@ -8,6 +8,8 @@ import {
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
+import { buildQuery } from "../utils"
+import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -35,8 +37,33 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     this.eventBusService_ = eventBusService
   }
 
-  async retrieve(id: string): Promise<SalesChannel> {
-    throw new Error("Method not implemented.")
+  async retrieve(
+    salesChannelId: string,
+    config: FindConfig<SalesChannel> = {}
+  ): Promise<SalesChannel | never> {
+    return await this.atomicPhase_(async (manager) => {
+      const salesChannelRepo = manager.getCustomRepository(
+        this.salesChannelRepository_
+      )
+
+      const query = buildQuery(
+        {
+          id: salesChannelId,
+        },
+        config
+      )
+
+      const salesChannel = await salesChannelRepo.findOne(query)
+
+      if (!salesChannel) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Sales channel with id ${salesChannelId} was not found`
+        )
+      }
+
+      return salesChannel
+    })
   }
 
   async listAndCount(

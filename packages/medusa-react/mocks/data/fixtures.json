@@ -1261,6 +1261,15 @@
     },
     "upload": {
       "url": "test-url"
+    },
+    "sales_channel": {
+      "id": "sc_01F0YES4R67TXXC1QBQ8P54A8Y",
+      "name": "sales channel 1 name",
+      "description": "sales channel 1 description",
+      "is_disabled": false,
+      "updated_at": "2022-07-05T15:16:01.959Z",
+      "created_at": "2022-07-05T15:16:01.959Z",
+      "deleted_at": null
     }
   }
 }

@@ -1672,4 +1672,13 @@ export const adminHandlers = [
       })
     )
   }),
+
+  rest.get("/admin/sales-channels/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: fixtures.get("sales_channel"),
+      })
+    )
+  }),
 ]

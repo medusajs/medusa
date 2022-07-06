@@ -1,17 +1,22 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { Router } from "express"
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
 import "reflect-metadata"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
-import { SalesChannel } from "../../../../models/sales-channel"
+import { SalesChannel } from "../../../../models"
+import middlewares from "../../../middlewares"
 
 const route = Router()
 
 export default (app) => {
   app.use("/sales-channels", isFeatureFlagEnabled("sales_channels"), route)
 
-  route.get("/:id", (req, res) => {})
+  const salesChannelRouter = Router({ mergeParams: true })
+  route.use("/:id", salesChannelRouter)
+
+  salesChannelRouter.get(
+    "/",
+    middlewares.wrap(require("./get-sales-channel").default)
+  )
 
   route.get("/", (req, res) => {})
 
@@ -24,7 +29,7 @@ export default (app) => {
   return app
 }
 
-export type AdminSalesChanenlRes = {
+export type AdminSalesChannelRes = {
   sales_channel: SalesChannel
 }
 
@@ -34,7 +39,7 @@ export type AdminSalesChannelListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]
 }
 
-// export * from './'
+export * from "./get-sales-channel"
 // export * from './'
 // export * from './'
 // export * from './'
