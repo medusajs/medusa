@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsEmail,
@@ -7,17 +6,19 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
+
+import { AddressPayload } from "../../../../types/common"
 import { CartService } from "../../../../services"
 import { CartUpdateProps } from "../../../../types/cart"
-import { AddressPayload } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
+import { Type } from "class-transformer"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /store/carts/{id}
  * operationId: PostCartsCart
- * summary: Update a Cart"
+ * summary: Update a Cart
  * description: "Updates a Cart."
  * parameters:
  *   - (path) id=* {string} The id of the Cart.
