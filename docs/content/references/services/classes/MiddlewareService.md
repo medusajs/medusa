@@ -16,7 +16,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 #### Defined in
 
-[services/middleware.js:7](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L7)
+[services/middleware.js:7](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L7)
 
 ## Properties
 
@@ -26,7 +26,7 @@ Orchestrates dynamic middleware registered through the Medusa Middleware API
 
 #### Defined in
 
-[services/middleware.js:8](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L8)
+[services/middleware.js:8](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L8)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[services/middleware.js:9](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L9)
+[services/middleware.js:9](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L9)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[services/middleware.js:10](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L10)
+[services/middleware.js:10](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L10)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[services/middleware.js:11](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L11)
+[services/middleware.js:11](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L11)
 
 ## Methods
 
@@ -79,7 +79,7 @@ Adds a middleware function to be called after authentication is completed.
 
 #### Defined in
 
-[services/middleware.js:45](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L45)
+[services/middleware.js:45](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L45)
 
 ___
 
@@ -102,7 +102,7 @@ Adds a middleware function to be called before authentication is completed.
 
 #### Defined in
 
-[services/middleware.js:61](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L61)
+[services/middleware.js:61](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L61)
 
 ___
 
@@ -124,7 +124,7 @@ Adds a middleware function to be called before cart creation
 
 #### Defined in
 
-[services/middleware.js:75](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L75)
+[services/middleware.js:75](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L75)
 
 ___
 
@@ -145,7 +145,7 @@ ___
 
 #### Defined in
 
-[services/middleware.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L14)
+[services/middleware.js:14](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L14)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[services/middleware.js:19](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L19)
+[services/middleware.js:19](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L19)
 
 ___
 
@@ -187,7 +187,7 @@ Adds post authentication middleware to an express app.
 
 #### Defined in
 
-[services/middleware.js:85](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L85)
+[services/middleware.js:85](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L85)
 
 ___
 
@@ -209,7 +209,7 @@ Adds pre authentication middleware to an express app.
 
 #### Defined in
 
-[services/middleware.js:96](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L96)
+[services/middleware.js:96](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L96)
 
 ___
 
@@ -223,7 +223,7 @@ ___
 
 #### Defined in
 
-[services/middleware.js:102](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L102)
+[services/middleware.js:102](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L102)
 
 ___
 
@@ -245,4 +245,4 @@ Validates a middleware function, throws if fn is not of type function.
 
 #### Defined in
 
-[services/middleware.js:28](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/middleware.js#L28)
+[services/middleware.js:28](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/middleware.js#L28)

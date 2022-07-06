@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/idempotency-key.js:8](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L8)
+[services/idempotency-key.js:8](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L8)
 
 ## Methods
 
@@ -50,7 +50,7 @@ the created idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:55](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L55)
+[services/idempotency-key.js:52](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L52)
 
 ___
 
@@ -77,7 +77,7 @@ the existing or created idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:29](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L29)
+[services/idempotency-key.js:26](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L26)
 
 ___
 
@@ -101,7 +101,7 @@ result of the update operation
 
 #### Defined in
 
-[services/idempotency-key.js:94](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L94)
+[services/idempotency-key.js:90](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L90)
 
 ___
 
@@ -125,7 +125,7 @@ idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:76](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L76)
+[services/idempotency-key.js:73](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L73)
 
 ___
 
@@ -150,7 +150,7 @@ result of the update operation
 
 #### Defined in
 
-[services/idempotency-key.js:121](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L121)
+[services/idempotency-key.js:117](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L117)
 
 ___
 
@@ -179,4 +179,4 @@ new updated idempotency key
 
 #### Defined in
 
-[services/idempotency-key.js:148](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/idempotency-key.js#L148)
+[services/idempotency-key.js:144](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/idempotency-key.js#L144)

@@ -4,7 +4,7 @@ Can authenticate a user based on email password combination
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`AuthService`](AuthService.md)\>
 
   ↳ **`AuthService`**
 
@@ -18,17 +18,124 @@ Can authenticate a user based on email password combination
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;AuthService\&gt;.constructor
 
 #### Defined in
 
-[services/auth.ts:12](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L12)
+[services/auth.ts:25](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L25)
+
+## Properties
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+TransactionBaseService.container
+
+___
+
+### customerService\_
+
+• `Protected` `Readonly` **customerService\_**: [`CustomerService`](CustomerService.md)
+
+#### Defined in
+
+[services/auth.ts:23](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L23)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[services/auth.ts:20](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L20)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[services/auth.ts:21](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L21)
+
+___
+
+### userService\_
+
+• `Protected` `Readonly` **userService\_**: [`UserService`](UserService.md)
+
+#### Defined in
+
+[services/auth.ts:22](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L22)
 
 ## Methods
+
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
 
 ### authenticate
 
@@ -54,7 +161,7 @@ scrypt to match password with hashed value.
 
 #### Defined in
 
-[services/auth.ts:78](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L78)
+[services/auth.ts:98](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L98)
 
 ___
 
@@ -80,7 +187,7 @@ Authenticates a given user with an API token
 
 #### Defined in
 
-[services/auth.ts:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L41)
+[services/auth.ts:55](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L55)
 
 ___
 
@@ -108,13 +215,13 @@ scrypt to match password with hashed value.
 
 #### Defined in
 
-[services/auth.ts:123](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L123)
+[services/auth.ts:147](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L147)
 
 ___
 
 ### comparePassword\_
 
-▸ **comparePassword_**(`password`, `hash`): `Promise`<`boolean`\>
+▸ `Protected` **comparePassword_**(`password`, `hash`): `Promise`<`boolean`\>
 
 Verifies if a password is valid given the provided password hash
 
@@ -133,4 +240,52 @@ the result of the comparison
 
 #### Defined in
 
-[services/auth.ts:28](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/auth.ts#L28)
+[services/auth.ts:39](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/auth.ts#L39)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
+
+___
+
+### withTransaction
+
+▸ **withTransaction**(`transactionManager?`): [`AuthService`](AuthService.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
+
+#### Returns
+
+[`AuthService`](AuthService.md)
+
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
