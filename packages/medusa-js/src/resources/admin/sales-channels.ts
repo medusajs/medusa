@@ -16,6 +16,29 @@ class AdminSalesChannelsResource extends BaseResource {
     const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
+
+  /*create(
+    payload: any,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<any> {}*/
+
+  /*update(
+    id: string,
+    payload: any,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<any> {}*/
+
+  /*delete(
+    id: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<any> {
+  }*/
+
+  /*list(
+    query?: any,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<any> {
+  }*/
 }
 
 export default AdminSalesChannelsResource
