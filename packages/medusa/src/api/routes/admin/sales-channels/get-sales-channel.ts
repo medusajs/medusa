@@ -19,7 +19,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  *         schema:
  *           properties:
  *             sales_channel:
- *               $ref: "#/components/schemas/sales-channel"
+ *               $ref: "#/components/schemas/sales_channel"
  */
 export default async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params

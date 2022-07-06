@@ -869,7 +869,7 @@ export const adminHandlers = [
         discount_condition: {
           ...fixtures
             .get("discount")
-            .rule.conditions.find(c => c.id === req.params.conditionId),
+            .rule.conditions.find((c) => c.id === req.params.conditionId),
         },
       })
     )
@@ -1692,5 +1692,15 @@ export const adminHandlers = [
         },
       })
     )
-  })
+  }),
+
+  rest.post("/admin/sales-channels", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: fixtures.get("sales_channel"),
+        ...(req.body as Record<string, unknown>),
+      })
+    )
+  }),
 ]

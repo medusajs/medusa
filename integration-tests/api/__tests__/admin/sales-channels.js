@@ -26,6 +26,7 @@ describe("sales channels", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_SALES_CHANNELS: true },
+      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -37,14 +38,6 @@ describe("sales channels", () => {
 
     medusaProcess.kill()
   })
-
-  describe("GET /admin/sales-channels", () => {
-    it("is true", () => {
-      // dummy test to ensure test suite passes
-      expect(true).toBeTruthy()
-    })
-  })
-  describe("POST /admin/sales-channels", () => {})
 
   describe("GET /admin/sales-channels/:id", () => {
     let salesChannel
@@ -136,5 +129,49 @@ describe("sales channels", () => {
     })
   })
 
+
+  describe("POST /admin/sales-channels", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully creates a sales channel", async () => {
+      const api = useApi()
+
+      const newSalesChannel = {
+        name: "sales channel name",
+        description: "sales channel description",
+      }
+
+      const response = await api
+        .post("/admin/sales-channels", newSalesChannel, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channel).toBeTruthy()
+
+      expect(response.data).toMatchSnapshot({
+        sales_channel: expect.objectContaining({
+          name: newSalesChannel.name,
+          description: newSalesChannel.description,
+          is_disabled: false,
+        }),
+      })
+    })
+  })
+
+  describe("GET /admin/sales-channels/:id", () => {})
+  describe("POST /admin/sales-channels/:id", () => {})
   describe("DELETE /admin/sales-channels/:id", () => {})
 })

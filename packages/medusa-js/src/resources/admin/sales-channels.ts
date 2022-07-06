@@ -1,4 +1,5 @@
 import {
+  AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
 } from "@medusajs/medusa"
@@ -20,10 +21,17 @@ class AdminSalesChannelsResource extends BaseResource {
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  /* create(
-    payload: any,
+  /* *
+   * Create a medusa sales channel
+   * @returns the created channel
+   */
+  create(
+    payload: AdminPostSalesChannelsReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<any> {}*/
+  ): ResponsePromise<AdminSalesChannelsRes> {
+    const path = `/admin/sales-channels`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
 
   /** update a sales channel
    * @experimental This feature is under development and may change in the future.

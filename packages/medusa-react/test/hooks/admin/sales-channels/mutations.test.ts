@@ -1,9 +1,35 @@
-import { useAdminUpdateSalesChannel } from "../../../../src"
 import { renderHook } from "@testing-library/react-hooks"
+
+import { useAdminCreateSalesChannel, useAdminUpdateSalesChannel } from "../../../../src"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
-describe("useAdminUpdateStore hook", () => {
+describe("useAdminCreateSalesChannel hook", () => {
+  test("returns a sales channel", async () => {
+    const salesChannel = {
+      name: "sales channel 1 name",
+      description: "sales channel 1 description",
+    }
+
+    const { result, waitFor } = renderHook(() => useAdminCreateSalesChannel(), {
+      wrapper: createWrapper(),
+    })
+
+    result.current.mutate(salesChannel)
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.sales_channel).toEqual(
+      expect.objectContaining({
+        ...fixtures.get("sales_channel"),
+        ...salesChannel,
+      })
+    )
+  })
+})
+
+describe("useAdminUpdateSalesChannel hook", () => {
   test("updates a store", async () => {
     const salesChannel = {
       name: "medusa sales channel",

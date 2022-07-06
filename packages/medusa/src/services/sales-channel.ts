@@ -1,5 +1,6 @@
-import { EntityManager } from "typeorm"
 import { MedusaError } from "medusa-core-utils"
+import { EntityManager } from "typeorm"
+
 import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
@@ -10,6 +11,7 @@ import {
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
+import { PostgresError } from "../utils/exception-formatter"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -20,6 +22,7 @@ type InjectedDependencies = {
 class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   static Events = {
     UPDATED: "sales_channel.updated",
+    CREATED: "sales_channel.created",
   }
 
   protected manager_: EntityManager
@@ -41,6 +44,13 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     this.eventBusService_ = eventBusService
   }
 
+  /**
+   * Retrieve a SalesChannel by id
+   *
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable the corresponding feature flag in your medusa backend project.
+   * @returns a sales channel
+   */
   async retrieve(
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
@@ -77,8 +87,28 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     throw new Error("Method not implemented.")
   }
 
-  async create(data: CreateSalesChannelInput): Promise<SalesChannel> {
-    throw new Error("Method not implemented.")
+  /**
+   * Creates a SalesChannel
+   *
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable the corresponding feature flag in your medusa backend project.
+   * @returns the created channel
+   */
+  async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
+    return await this.atomicPhase_(async (manager) => {
+      const salesChannelRepo: SalesChannelRepository =
+        manager.getCustomRepository(this.salesChannelRepository_)
+
+      const salesChannel = salesChannelRepo.create(data)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(SalesChannelService.Events.CREATED, {
+          id: salesChannel.id,
+        })
+
+      return await salesChannelRepo.save(salesChannel)
+    })
   }
 
   async update(

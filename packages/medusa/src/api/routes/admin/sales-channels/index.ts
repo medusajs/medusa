@@ -5,6 +5,7 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
 import middlewares, { transformBody } from "../../../middlewares"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
+import { AdminPostSalesChannelsReq } from "./create-sales-channel"
 
 const route = Router()
 
@@ -21,7 +22,11 @@ export default (app) => {
 
   route.get("/", (req, res) => {})
 
-  route.post("/", (req, res) => {})
+  route.post(
+    "/",
+    transformBody(AdminPostSalesChannelsReq),
+    middlewares.wrap(require("./create-sales-channel").default)
+  )
 
   route.post(
     "/:id",
@@ -45,6 +50,7 @@ export type AdminSalesChannelListRes = PaginatedResponse & {
 }
 
 export * from "./get-sales-channel"
+export * from "./create-sales-channel"
 // export * from './'
 // export * from './'
 export * from "./update-sales-channel"

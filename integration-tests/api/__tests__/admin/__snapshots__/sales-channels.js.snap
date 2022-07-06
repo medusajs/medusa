@@ -12,6 +12,16 @@ Object {
 }
 `;
 
+exports[`sales channels POST /admin/sales-channels successfully creates a sales channel 1`] = `
+Object {
+  "sales_channel": ObjectContaining {
+    "description": "sales channel description",
+    "is_disabled": false,
+    "name": "sales channel name",
+  },
+}
+`;
+
 exports[`sales channels POST /admin/sales-channels/:id updates sales channel properties 1`] = `
 Object {
   "created_at": Any<String>,
