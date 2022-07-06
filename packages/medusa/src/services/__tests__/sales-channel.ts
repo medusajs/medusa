@@ -40,7 +40,7 @@ describe("SalesChannelService", () => {
       salesChannelRepository: salesChannelRepositoryMock,
     })
 
-    afterEach(() => {
+    beforeEach(() => {
       jest.clearAllMocks()
     })
 
@@ -103,7 +103,7 @@ describe("SalesChannelService", () => {
       salesChannelRepository: salesChannelRepositoryMock
     })
 
-    afterEach(() => {
+    beforeEach(() => {
       jest.clearAllMocks()
     })
 
