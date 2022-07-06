@@ -2,7 +2,7 @@ import {
   AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
-  AdminSalesChannelDeleteRes
+  AdminSalesChannelsDeleteRes
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -63,16 +63,20 @@ export const useAdminUpdateSalesChannel = (
 
 export const useAdminDeleteSalesChannel = (
   id: string,
-  options?: UseMutationOptions<Response<AdminSalesChannelDeleteRes>, Error, void>
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsDeleteRes>,
+    Error,
+    void
+  >
 ) => {
-    const { client } = useMedusa()
-    const queryClient = useQueryClient()
-    return useMutation(
-        () => client.admin.salesChannels.delete(id),
-        buildOptions(
-            queryClient,
-            [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
-            options
-        )
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    () => client.admin.salesChannels.delete(id),
+    buildOptions(
+      queryClient,
+      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
+      options
     )
+  )
 }
