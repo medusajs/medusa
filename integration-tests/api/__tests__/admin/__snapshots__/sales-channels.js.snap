@@ -4,7 +4,7 @@ exports[`sales channels DELETE /admin/sales-channels/:id should delete the reque
 Object {
   "deleted": true,
   "id": Any<String>,
-  "object": "salesChannel",
+  "object": "sales-channel",
 }
 `;
 
