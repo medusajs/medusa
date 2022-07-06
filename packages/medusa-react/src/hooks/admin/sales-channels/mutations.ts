@@ -9,8 +9,10 @@ import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminSalesChannelsKeys } from "./queries"
 
+/**
+ * Hook provides a mutation function for creating sales channel.
+ */
 export const useAdminCreateSalesChannel = (
-  id: string,
   options?: UseMutationOptions<
     Response<AdminSalesChannelRes>,
     Error,
@@ -21,11 +23,8 @@ export const useAdminCreateSalesChannel = (
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload) => client.admin.salesChannels.create(payload),
-    buildOptions(
-      queryClient,
-      [adminSalesChannelsKeys.detail(id), adminSalesChannelsKeys.list()],
-      options
-    )
+    (payload: AdminPostSalesChannelReq) =>
+      client.admin.salesChannels.create(payload),
+    buildOptions(queryClient, [adminSalesChannelsKeys.list()], options)
   )
 }

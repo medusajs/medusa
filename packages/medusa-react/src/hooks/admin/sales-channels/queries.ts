@@ -1,6 +1,4 @@
-import {
-  AdminSalesChannelRes
-} from "@medusajs/medusa"
+import { AdminSalesChannelRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
@@ -9,7 +7,9 @@ import { queryKeysFactory } from "../../utils"
 
 const ADMIN_SALES_CHANNELS_QUERY_KEY = `admin_sales_channels` as const
 
-export const adminSalesChannelsKeys = queryKeysFactory(ADMIN_SALES_CHANNELS_QUERY_KEY)
+export const adminSalesChannelsKeys = queryKeysFactory(
+  ADMIN_SALES_CHANNELS_QUERY_KEY
+)
 
 type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
 
@@ -48,4 +48,3 @@ export const useAdminSalesChannels = (
   return { ...data, ...rest } as const
 }
 */
-

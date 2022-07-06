@@ -5,7 +5,7 @@ import { validator } from "../../../../utils/validator"
 import SalesChannelService from "../../../../services/sales-channel"
 
 /**
- * @oas [post] /sales.channels
+ * @oas [post] /sales-channels
  * operationId: "PostSalesChannel"
  * summary: "Create a SalesChannel"
  * description: "Creates a SalesChannel."
