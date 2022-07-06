@@ -13,6 +13,12 @@ export const adminSalesChannelsKeys = queryKeysFactory(
 
 type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
 
+/** retrieve a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable the corresponding featureflag in your medusa backend project.
+ * @description gets a sales channel
+ * @returns a medusa sales channel
+ */
 export const useAdminSalesChannel = (
   id: string,
   options?: UseQueryOptionsWrapper<

@@ -8,6 +8,12 @@ import { useMedusa } from "../../../contexts"
 import { buildOptions } from "../../utils/buildOptions"
 import { adminSalesChannelsKeys } from "./queries"
 
+/** update a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable the corresponding featureflag in your medusa backend project.
+ * @description updates a sales channel
+ * @returns the updated medusa sales channel
+ */
 export const useAdminUpdateSalesChannel = (
   id: string,
   options?: UseMutationOptions<
