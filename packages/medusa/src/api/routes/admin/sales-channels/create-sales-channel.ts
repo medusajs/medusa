@@ -34,8 +34,8 @@ export default async (req: Request, res: Response) => {
     "salesChannelService"
   )
 
-  const customerGroup = await salesChannelService.create(validated)
-  res.status(200).json({ customer_group: customerGroup })
+  const salesChannel = await salesChannelService.create(validated)
+  res.status(200).json({ salesChannel: salesChannel })
 }
 
 export class AdminPostSalesChannelReq {

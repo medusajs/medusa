@@ -20,7 +20,7 @@ export default (app) => {
 
   route.get("/", (req, res) => {})
 
-  route.post("/", (req, res) => {})
+  route.post("/", middlewares.wrap(require("./create-sales-channel").default))
 
   route.post("/:id", (req, res) => {})
 
