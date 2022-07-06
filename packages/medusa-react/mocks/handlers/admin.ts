@@ -1681,4 +1681,16 @@ export const adminHandlers = [
       })
     )
   }),
+
+  rest.post("/admin/sales-channels/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: {
+          ...fixtures.get("sales_channel"),
+          ...(req.body as any),
+        },
+      })
+    )
+  })
 ]
