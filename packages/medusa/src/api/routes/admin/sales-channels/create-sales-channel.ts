@@ -1,21 +1,21 @@
 import { Request, Response } from "express"
 import { IsObject, IsOptional, IsString } from "class-validator"
 
-import { validator } from "../../../../utils/validator"
 import SalesChannelService from "../../../../services/sales-channel"
+import { CreateSalesChannelInput } from "../../../../types/sales-channels"
 
 /**
  * @oas [post] /sales-channels
- * operationId: "PostSalesChannel"
- * summary: "Create a SalesChannel"
- * description: "Creates a SalesChannel."
+ * operationId: "PostSalesChannels"
+ * summary: "Create a sales channel"
+ * description: "Creates a sales channel."
  * x-authenticated: true
  * parameters:
  *   - (body) name=* {string} Name of the sales channel
  *   - (body) description=* {string} Description of the sales channel
  *   - (body) metadata {object} Metadata for the channel.
  * tags:
- *   - SalesChannels
+ *   - Sales Channels
  * responses:
  *   200:
  *     description: OK
@@ -28,13 +28,13 @@ import SalesChannelService from "../../../../services/sales-channel"
  */
 
 export default async (req: Request, res: Response) => {
-  const validated = await validator(AdminPostSalesChannelReq, req.body)
-
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
 
-  const salesChannel = await salesChannelService.create(validated)
+  const salesChannel = await salesChannelService.create(
+    req.validatedBody as CreateSalesChannelInput
+  )
   res.status(200).json({ sales_channel: salesChannel })
 }
 
@@ -43,9 +43,6 @@ export class AdminPostSalesChannelReq {
   name: string
 
   @IsString()
-  description: string
-
-  @IsObject()
   @IsOptional()
-  metadata?: object
+  description: string
 }

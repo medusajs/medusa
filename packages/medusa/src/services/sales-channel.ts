@@ -11,6 +11,7 @@ import {
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
+import { PostgresError } from "../utils/exception-formatter"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -77,21 +78,24 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   /**
    * Creates a SalesChannel
    */
-  async create(data: CreateSalesChannelInput): Promise<SalesChannel> {
-    return await this.atomicPhase_(async (manager) => {
-      try {
+  async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
+    return await this.atomicPhase_(
+      async (manager) => {
         const salesChannelRepo: SalesChannelRepository =
           manager.getCustomRepository(this.salesChannelRepository_)
 
         const salesChannel = salesChannelRepo.create(data)
         return await salesChannelRepo.save(salesChannel)
-      } catch (err) {
-        if (err.code === "23505") {
-          throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
+      },
+      async (err: { code: string }) => {
+        if (err.code === PostgresError.DUPLICATE_ERROR) {
+          throw new MedusaError(
+            MedusaError.Types.DUPLICATE_ERROR,
+            `some message`
+          )
         }
-        throw err
       }
-    })
+    )
   }
 
   async update(
