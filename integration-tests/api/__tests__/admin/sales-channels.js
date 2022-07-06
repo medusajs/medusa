@@ -76,7 +76,7 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data.sales_channel).toBeTruthy()
       expect(response.data.sales_channel).toMatchSnapshot({
-        id: salesChannel.id,
+        id: expect.any(String),
         name: salesChannel.name,
         description: salesChannel.description,
         created_at: expect.any(String),

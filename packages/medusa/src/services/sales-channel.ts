@@ -1,16 +1,15 @@
 import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
-import { SalesChannel } from "../models/sales-channel"
+import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
-import { CustomFindOptions, FindConfig, QuerySelector } from "../types/common"
+import { FindConfig, QuerySelector } from "../types/common"
 import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
-import { FindWithoutRelationsOptions } from "../repositories/product"
-import { MedusaError } from "medusa-core-utils/dist"
+import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -41,7 +40,7 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   async retrieve(
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
-  ): Promise<SalesChannel> {
+  ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (manager) => {
       const salesChannelRepo = manager.getCustomRepository(
         this.salesChannelRepository_

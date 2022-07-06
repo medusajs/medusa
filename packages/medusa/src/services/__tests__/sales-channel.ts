@@ -1,61 +1,57 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import SalesChannelService from "../sales-channel"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
 import { EventBusService } from "../index"
-import { SalesChannel } from "../../models/sales-channel"
-import { salesChannel1 } from "../__mocks__/sales-channel"
-
-const eventBusServiceMock = {
-  emit: jest.fn(),
-  withTransaction: function() {
-    return this
-  },
-} as unknown as EventBusService
-
-const salesChannelRepositoryMock = MockRepository({
-  create: jest.fn().mockImplementation((data) => {
-    return Object.assign(new SalesChannel(), data)
-  }),
-  retrieve: jest.fn().mockImplementation((id: string): any => {
-    if (id === IdMap.getId("sales_channel_1")) {
-      return Promise.resolve(salesChannel1)
-    }
-    return Promise.resolve()
-  }),
-  findOneWithRelations: jest.fn().mockImplementation(
-    (relations: string[], config): Promise<SalesChannel | void> => {
-      if (config?.where?.id === IdMap.getId("sales_channel_1")) {
-        return Promise.resolve(salesChannel1 as SalesChannel)
-      }
-      return Promise.resolve()
-    }
-  ),
-})
+import { FindConditions, FindOneOptions } from "typeorm"
+import { SalesChannel } from "../../models"
 
 describe('SalesChannelService', () => {
-  const salesChannelService = new SalesChannelService({
-    manager: MockManager,
-    eventBusService: eventBusServiceMock,
-    salesChannelRepository: salesChannelRepositoryMock
-  })
+  describe("retrieve", () => {
+    const salesChannelData = {
+      name: "sales channel 1 name",
+      description: "sales channel 1 description",
+      is_disabled: false,
+    }
 
-  afterEach(() => {
-    jest.clearAllMocks()
-  })
+    const salesChannelRepositoryMock = MockRepository({
+      findOne: jest.fn().mockImplementation((queryOrId: string | FindOneOptions<SalesChannel>): any => {
+        return Promise.resolve({
+          id:
+            typeof queryOrId === "string"
+              ? queryOrId
+              : ((queryOrId?.where as FindConditions<SalesChannel>)?.id ?? IdMap.getId("sc_adjhlukiaeswhfae")),
+          ...salesChannelData
+        })
+      }),
+    })
 
-  it('should retrieve a sales channel', async () => {
-    const salesChannel = await salesChannelService.retrieve(
-      IdMap.getId("sales_channel_1")
-    )
+    const salesChannelService = new SalesChannelService({
+      manager: MockManager,
+      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      salesChannelRepository: salesChannelRepositoryMock
+    })
 
-    expect(salesChannel).toBeTruthy()
-    expect(salesChannel).toEqual(salesChannel1)
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
 
-    expect(salesChannelRepositoryMock.findOneWithRelations)
-      .toHaveBeenCalledTimes(1)
-    expect(salesChannelRepositoryMock.findOneWithRelations)
-      .toHaveBeenLastCalledWith(
-        undefined,
-        { where: { id: IdMap.getId("sales_channel_1") } },
-     )
+    it('should retrieve a sales channel', async () => {
+      const salesChannel = await salesChannelService.retrieve(
+        IdMap.getId("sales_channel_1")
+      )
+
+      expect(salesChannel).toBeTruthy()
+      expect(salesChannel).toEqual({
+        id:  IdMap.getId("sales_channel_1"),
+        ...salesChannelData
+      })
+
+      expect(salesChannelRepositoryMock.findOne)
+        .toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.findOne)
+        .toHaveBeenLastCalledWith(
+          { where: { id: IdMap.getId("sales_channel_1") } },
+       )
+    })
   })
 })

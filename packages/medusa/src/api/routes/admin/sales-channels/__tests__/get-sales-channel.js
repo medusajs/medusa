@@ -1,6 +1,6 @@
 import { IdMap } from "medusa-test-utils"
 import { request } from "../../../../../helpers/test-request"
-import { salesChannel1, SalesChannelServiceMock } from "../../../../../services/__mocks__/sales-channel"
+import { SalesChannelServiceMock } from "../../../../../services/__mocks__/sales-channel"
 
 describe("GET /admin/sales-channels/:id", () => {
   describe("successfully get a sales channel", () => {
@@ -33,7 +33,12 @@ describe("GET /admin/sales-channels/:id", () => {
     })
 
     it("returns the expected sales channel", () => {
-      expect(subject.body.sales_channel).toEqual(salesChannel1)
+      expect(subject.body.sales_channel).toEqual({
+        id: IdMap.getId("sales_channel_1"),
+        name: "sales channel 1 name",
+        description: "sales channel 1 description",
+        is_disabled: false,
+      })
     })
   })
 })
