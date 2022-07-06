@@ -26,6 +26,7 @@ describe("sales channels", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_SALES_CHANNELS: true },
+      verbose: false,
     })
     dbConnection = connection
     medusaProcess = process
@@ -100,11 +101,11 @@ describe("sales channels", () => {
         description: "sales channel description",
       }
 
-      const response = await api.post(
-        "/admin/sales-channels",
-        newSalesChannel,
-        adminReqConfig
-      )
+      const response = await api
+        .post("/admin/sales-channels", newSalesChannel, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
 
       expect(response.status).toEqual(200)
       expect(response.data.sales_channel).toBeTruthy()

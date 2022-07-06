@@ -40,6 +40,7 @@ export type AdminSalesChannelListRes = PaginatedResponse & {
 }
 
 export * from "./get-sales-channel"
+export * from "./create-sales-channel"
 // export * from './'
 // export * from './'
 // export * from './'

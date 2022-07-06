@@ -79,18 +79,20 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
    * Creates a SalesChannel
    */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel> {
-    try {
-      const salesChannelRepo: SalesChannelRepository =
-        this.manager_.getCustomRepository(this.salesChannelRepository_)
+    return await this.atomicPhase_(async (manager) => {
+      try {
+        const salesChannelRepo: SalesChannelRepository =
+          manager.getCustomRepository(this.salesChannelRepository_)
 
-      const salesChannel = salesChannelRepo.create(data)
-      return await salesChannelRepo.save(salesChannel)
-    } catch (err) {
-      if (err.code === "23505") {
-        throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
+        const salesChannel = salesChannelRepo.create(data)
+        return await salesChannelRepo.save(salesChannel)
+      } catch (err) {
+        if (err.code === "23505") {
+          throw new MedusaError(MedusaError.Types.DUPLICATE_ERROR, err.detail)
+        }
+        throw err
       }
-      throw err
-    }
+    })
   }
 
   async update(
