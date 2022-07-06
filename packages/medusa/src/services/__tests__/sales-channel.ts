@@ -92,4 +92,61 @@ describe("SalesChannelService", () => {
       })
     })
   })
+
+  describe("delete", () => {
+    const salesChannelData = {
+      name: "sales channel 1 name",
+      description: "sales channel 1 description",
+      is_disabled: false,
+    }
+
+    const salesChannelRepositoryMock = MockRepository({
+      findOne: jest.fn().mockImplementation((queryOrId: string | FindOneOptions<SalesChannel>): any => {
+        return Promise.resolve({
+          id:
+            typeof queryOrId === "string"
+              ? queryOrId
+              : ((queryOrId?.where as FindConditions<SalesChannel>)?.id ?? IdMap.getId("sc_adjhlukiaeswhfae")),
+          ...salesChannelData
+        })
+      }),
+      softRemove: jest.fn().mockImplementation((id: string): any => {
+        return Promise.resolve()
+      }),
+    })
+
+    const salesChannelService = new SalesChannelService({
+      manager: MockManager,
+      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      salesChannelRepository: salesChannelRepositoryMock
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should soft remove a sales channel', async () => {
+      const res = await salesChannelService.delete(
+        IdMap.getId("sales_channel_1")
+      )
+
+      expect(res).toBeUndefined()
+
+      expect(salesChannelRepositoryMock.softRemove)
+        .toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.softRemove)
+        .toHaveBeenLastCalledWith({
+          id: IdMap.getId("sales_channel_1"),
+          ...salesChannelData
+        })
+
+      expect(EventBusServiceMock.emit)
+        .toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit)
+        .toHaveBeenLastCalledWith(
+          SalesChannelService.Events.DELETED,
+          { "id": IdMap.getId("sales_channel_1") }
+        )
+    })
+  })
 })

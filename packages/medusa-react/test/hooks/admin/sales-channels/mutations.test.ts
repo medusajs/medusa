@@ -47,13 +47,28 @@ describe("useAdminUpdateSalesChannel hook", () => {
     )
 
     result.current.mutate(salesChannel)
+  })
+})
+
+describe("useAdminDeleteSalesChannel hook", () => {
+  test("deletes a sales channel", async () => {
+    const id = fixtures.get("sales_channel").id
+
+    const { result, waitFor } = renderHook(
+      () => useAdminDeleteSalesChannel(id),
+      { wrapper: createWrapper() }
+    )
+
+    result.current.mutate()
 
     await waitFor(() => result.current.isSuccess)
 
-    expect(result.current.data.response.status).toEqual(200)
-    expect(result.current.data.sales_channel).toEqual({
-      ...fixtures.get("sales_channel"),
-      ...salesChannel,
-    })
+    expect(result.current.data).toEqual(
+      expect.objectContaining({
+        id,
+        object: "sales-channel",
+        deleted: true,
+      })
+    )
   })
 })

@@ -174,4 +174,43 @@ describe("sales channels", () => {
   describe("GET /admin/sales-channels/:id", () => {})
   describe("POST /admin/sales-channels/:id", () => {})
   describe("DELETE /admin/sales-channels/:id", () => {})
+  describe("DELETE /admin/sales-channels/:id", () => {
+    let salesChannel
+
+    beforeEach(async() => {
+      try {
+        await adminSeeder(dbConnection)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+        })
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should delete the requested sales channel", async() => {
+      const api = useApi()
+      const response = await api.delete(
+        `/admin/sales-channels/${salesChannel.id}`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toMatchSnapshot({
+        id: expect.any(String),
+        object: "salesChannel",
+        deleted: true
+      })
+    })
+
+    /*it("should retrieve the deleted requested sales channel", async() => {
+      This test depends on the list sales channel pr
+    })*/
+  })
 })
