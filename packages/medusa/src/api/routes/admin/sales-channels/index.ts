@@ -34,7 +34,7 @@ export default (app) => {
   return app
 }
 
-export type AdminSalesChannelRes = {
+export type AdminSalesChannelsRes = {
   sales_channel: SalesChannel
 }
 

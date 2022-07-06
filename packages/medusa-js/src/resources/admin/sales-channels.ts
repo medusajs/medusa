@@ -1,5 +1,5 @@
 import {
-  AdminSalesChannelRes,
+  AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
@@ -13,7 +13,7 @@ class AdminSalesChannelsResource extends BaseResource {
   retrieve(
     salesChannelId: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminSalesChannelRes> {
+  ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -30,7 +30,7 @@ class AdminSalesChannelsResource extends BaseResource {
     salesChannelId: string,
     payload: AdminPostSalesChannelsSalesChannelReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminSalesChannelRes> {
+  ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

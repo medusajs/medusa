@@ -1,6 +1,6 @@
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
 import {
-  AdminSalesChannelRes,
+  AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
@@ -11,7 +11,7 @@ import { adminSalesChannelsKeys } from "./queries"
 export const useAdminUpdateSalesChannel = (
   id: string,
   options?: UseMutationOptions<
-    Response<AdminSalesChannelRes>,
+    Response<AdminSalesChannelsRes>,
     Error,
     AdminPostSalesChannelsSalesChannelReq
   >

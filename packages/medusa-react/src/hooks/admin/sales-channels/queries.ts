@@ -1,4 +1,4 @@
-import { AdminSalesChannelRes } from "@medusajs/medusa"
+import { AdminSalesChannelsRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
@@ -16,7 +16,7 @@ type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
 export const useAdminSalesChannel = (
   id: string,
   options?: UseQueryOptionsWrapper<
-    Response<AdminSalesChannelRes>,
+    Response<AdminSalesChannelsRes>,
     Error,
     ReturnType<SalesChannelsQueryKeys["detail"]>
   >
