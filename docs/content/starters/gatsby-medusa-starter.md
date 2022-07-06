@@ -4,6 +4,12 @@ This document guides you to install and set up the Gatsby Storefront for your Me
 
 ![Gatsby Storefront Quick Look](https://i.imgur.com/LcAsi8r.gif)
 
+## Instant Deployment to Netlify
+
+Instead of manually following this guide to install then later deploy the Gatsby Storefront, you can deploy the Gatsby Storefront to Netlify with this button:
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa)
+
 ## Prerequisites
 
 This document assumes you already have a Medusa server installed. If you don’t, please follow the [Quickstart guide for the Medusa server](../quickstart/quick-start.md) to learn how to do it.
@@ -13,12 +19,6 @@ You should also have the Gatsby CLI installed:
 ```bash npm2yarn
 npm install gatsby-cli -g
 ```
-
-<!-- ## Instant Deployment to Netlify
-
-Instead of manually following this guide to install then later deploy the Gatsby Storefront, you can deploy the Gatsby Storefront to Netlify with this button:
-
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/medusajs/gatsby-starter-medusa) -->
 
 ## Installation
 
