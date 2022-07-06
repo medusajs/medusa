@@ -1,3 +1,4 @@
+const fs = require("fs")
 const path = require("path")
 
 const setupServer = require("../../../../helpers/setup-server")
@@ -35,6 +36,16 @@ describe("Product import batch job", () => {
   afterAll(async () => {
     const db = useDb()
     await db.shutdown()
+
+    // cleanup tmp ops files
+    const opsFiles = path.resolve(
+      "__tests__",
+      "batch-jobs",
+      "product",
+      "imports"
+    )
+
+    fs.rmSync(opsFiles, { recursive: true, force: true })
 
     medusaProcess.kill()
   })
