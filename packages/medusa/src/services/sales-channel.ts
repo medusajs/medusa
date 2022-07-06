@@ -19,9 +19,7 @@ type InjectedDependencies = {
 
 class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   static Events = {
-    CREATED: "sales_channel.created",
     UPDATED: "sales_channel.updated",
-    DELETED: "sales_channel.deleted",
   }
 
   protected manager_: EntityManager
