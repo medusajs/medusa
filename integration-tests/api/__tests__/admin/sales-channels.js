@@ -127,6 +127,9 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data.sales_channel).toMatchSnapshot({
         id: expect.any(String),
+        name: payload.name,
+        description: payload.description,
+        is_disabled: payload.is_disabled,
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
