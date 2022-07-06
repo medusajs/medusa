@@ -1,4 +1,5 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
 import { SalesChannelService } from "../../../../services"
 
 /**
@@ -24,7 +25,7 @@ import { SalesChannelService } from "../../../../services"
  *             type: boolean
  *             description:  Indication of if the sales channel is active.
  * tags:
- *   - Customer
+ *   - Sales Channel
  * responses:
  *   200:
  *     description: OK
@@ -35,7 +36,7 @@ import { SalesChannelService } from "../../../../services"
  *             customer:
  *               $ref: "#/components/schemas/sales-channel"
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
   const { validatedBody } = req as {
     validatedBody: AdminPostSalesChannelsSalesChannelReq

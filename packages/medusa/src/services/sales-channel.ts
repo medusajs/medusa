@@ -84,21 +84,14 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   }
 
   async update(
-    id: string,
+    salesChannelId: string,
     data: UpdateSalesChannelInput
-  ): Promise<SalesChannel> {
+  ): Promise<SalesChannel | never> {
     return await this.atomicPhase_(async (transactionManager) => {
       const salesChannelRepo: SalesChannelRepository =
         transactionManager.getCustomRepository(this.salesChannelRepository_)
 
-      const salesChannel = await salesChannelRepo.findOne(id)
-
-      if (!salesChannel) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Sales Channel with ${id} was not found`
-        )
-      }
+      const salesChannel = await this.retrieve(salesChannelId)
 
       for (const key of Object.keys(data).filter(
         (k) => typeof data[k] !== `undefined`
