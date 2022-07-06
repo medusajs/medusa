@@ -5,7 +5,7 @@ import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
 describe("useAdminSalesChannel hook", () => {
-  test("returns a product", async () => {
+  test("returns a sales channel", async () => {
     const salesChannel = {
       name: "sales channel 1 name",
       description: "sales channel 1 description",
