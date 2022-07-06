@@ -2,16 +2,19 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
 import { TransactionBaseService } from "../interfaces"
-import { SalesChannel } from "../models"
+import { Product, SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
-import { FindConfig, QuerySelector } from "../types/common"
+import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
   CreateSalesChannelInput,
+  ListSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
 import { buildQuery } from "../utils"
 import EventBusService from "./event-bus"
 import StoreService from "./store"
+import { PostgresError } from "../utils/exception-formatter"
+import { DefaultWithoutRelations } from "../repositories/product"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -85,11 +88,35 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     })
   }
 
+  /**
+   * Lists sales channels based on the provided parameters and includes the count of
+   * sales channels that match the query.
+   * @param selector - an object that defines rules to filter the sales channels
+   * @param config - object that defines the scope for what should be returned
+   * @return an array containing the sales channels as
+   *   the first element and the total count of sales channels that matches the query
+   *   as the second element.
+   */
   async listAndCount(
-    selector: QuerySelector<any> = {},
-    config: FindConfig<any> = { relations: [], skip: 0, take: 10 }
+    selector: ListSalesChannelInput,
+    config: FindConfig<SalesChannel> = {
+      skip: 0,
+      take: 20,
+    }
   ): Promise<[SalesChannel[], number]> {
-    throw new Error("Method not implemented.")
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
+
+      const { q, query } = this.prepareListQuery_(selector, config)
+
+      if (q) {
+        return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)
+      }
+
+      return await salesChannelRepo.findAndCount(query)
+    })
   }
 
   /**
@@ -214,6 +241,53 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
       return defaultSalesChannel
     })
+  }
+
+  /**
+   * Creates a query object to be used for list queries.
+   * @param selector - the selector to create the query from
+   * @param config - the config to use for the query
+   * @return an object containing the query, relations and free-text
+   *   search param.
+   */
+  protected prepareListQuery_(
+    selector: Selector<SalesChannel> & { q?: string },
+    config: FindConfig<SalesChannel>
+  ): {
+    q?: string
+    relations: (keyof SalesChannel)[]
+    query: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>>
+  } {
+    const selector_ = { ...selector }
+    const config_ = { ...config }
+
+    let q: string | undefined
+    if ("q" in selector_) {
+      q = selector_.q
+      delete selector_.q
+    }
+
+    const query = buildQuery<Selector<SalesChannel>, SalesChannel>(
+      selector_,
+      config_
+    )
+
+    if (config_.relations && config_.relations.length > 0) {
+      query.relations = config_.relations
+    }
+
+    if (config_.select && config_.select.length > 0) {
+      query.select = config_.select
+    }
+
+    const rels = query.relations
+    delete query.relations
+
+    return {
+      query,
+      relations: rels as (keyof SalesChannel)[],
+      q,
+    }
   }
 }
 
