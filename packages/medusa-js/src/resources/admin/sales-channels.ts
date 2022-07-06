@@ -1,10 +1,12 @@
 import {
+  AdminPostSalesChannelReq,
   AdminSalesChannelRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminSalesChannelsResource extends BaseResource {
+
   /**
    * @description gets a sales channel
    * @returns a medusa sales channel
@@ -15,6 +17,18 @@ class AdminSalesChannelsResource extends BaseResource {
   ): ResponsePromise<AdminSalesChannelRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("GET", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * @description creates a sales channel
+   * @returns a medusa sales channel
+   */
+  create(
+    payload: AdminPostSalesChannelReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminSalesChannelRes> {
+    const path = `/admin/sales-channels`
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
   /*create(
