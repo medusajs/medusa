@@ -122,6 +122,37 @@ paths:
                 properties:
                   exists:
                     type: boolean
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: The id of the Gift Card
+                  code:
+                    description: The code of the Gift Card
+                  value:
+                    description: The original value of the Gift Card.
+                  balance:
+                    description: The current balanace of the Gift Card
+                  region:
+                    $ref: '#/components/schemas/region'
   '/collections/{id}':
     get:
       operationId: GetCollectionsCollection
@@ -176,37 +207,6 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
-  '/gift-cards/{code}':
-    get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    description: The id of the Gift Card
-                  code:
-                    description: The code of the Gift Card
-                  value:
-                    description: The original value of the Gift Card.
-                  balance:
-                    description: The current balanace of the Gift Card
-                  region:
-                    $ref: '#/components/schemas/region'
   /customers/me/addresses:
     post:
       operationId: PostCustomersCustomerAddresses
@@ -759,56 +759,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product'
-  '/regions/{id}':
-    get:
-      operationId: GetRegionsRegion
-      summary: Retrieves a Region
-      description: Retrieves a Region.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Region.
-          schema:
-            type: string
-      tags:
-        - Region
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  region:
-                    $ref: '#/components/schemas/region'
-  /regions:
-    get:
-      operationId: GetRegions
-      summary: List Regions
-      description: Retrieves a list of Regions.
-      tags:
-        - Region
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of regions.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of regions to return,'
-                    type: integer
-                  regions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/region'
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -1357,7 +1307,7 @@ paths:
   '/store/carts/{id}':
     post:
       operationId: PostCartsCart
-      summary: Update a Cart"
+      summary: Update a Cart
       description: Updates a Cart.
       parameters:
         - in: path
@@ -1425,6 +1375,56 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
+  '/regions/{id}':
+    get:
+      operationId: GetRegionsRegion
+      summary: Retrieves a Region
+      description: Retrieves a Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  /regions:
+    get:
+      operationId: GetRegions
+      summary: List Regions
+      description: Retrieves a list of Regions.
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of regions.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of regions to return,'
+                    type: integer
+                  regions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/region'
   '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason
