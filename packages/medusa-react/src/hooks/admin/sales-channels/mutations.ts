@@ -61,4 +61,27 @@ export const useAdminUpdateSalesChannel = (
   )
 }
 
-export const useAdminUpdateSalesChannel = (
+/**
+ * @experimental This feature is still under development and can't be used in production
+ * @param id
+ * @param options
+ */
+export const useAdminDeleteSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsDeleteRes>,
+    Error,
+    void
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    () => client.admin.salesChannels.delete(id),
+    buildOptions(
+      queryClient,
+      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
+      options
+    )
+  )
+}
