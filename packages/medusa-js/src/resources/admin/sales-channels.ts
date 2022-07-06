@@ -6,7 +6,9 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminSalesChannelsResource extends BaseResource {
-  /**
+  /** retrieve a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
    * @description gets a sales channel
    * @returns a medusa sales channel
    */
@@ -23,7 +25,10 @@ class AdminSalesChannelsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<any> {}*/
 
-  /** @description updates a sales channel
+  /** update a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+   * @description updates a sales channel
    * @returns the updated medusa sales channel
    */
   update(
