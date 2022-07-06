@@ -1,6 +1,6 @@
 import { Connection } from "typeorm"
 import faker from "faker"
-import { SalesChannel } from "@medusajs/medusa/dist/models/sales-channel"
+import { SalesChannel } from "@medusajs/medusa"
 
 export type SalesChannelFactoryData = {
   name?: string
