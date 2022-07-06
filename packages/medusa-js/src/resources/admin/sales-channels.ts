@@ -20,8 +20,8 @@ class AdminSalesChannelsResource extends BaseResource {
   }
 
   /**
-   * @description creates a sales channel
-   * @returns a medusa sales channel
+   * Create a medusa sales channel
+   * @returns the created channel
    */
   create(
     payload: AdminPostSalesChannelReq,
