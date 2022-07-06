@@ -1,25 +1,29 @@
 import {
   AdminPostSalesChannelReq,
   AdminSalesChannelRes,
+  AdminSalesChannelsRes,
+  AdminPostSalesChannelsSalesChannelReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminSalesChannelsResource extends BaseResource {
 
-  /**
+  /** retrieve a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
    * @description gets a sales channel
    * @returns a medusa sales channel
    */
   retrieve(
     salesChannelId: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminSalesChannelRes> {
+  ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
-  /**
+  /* *
    * Create a medusa sales channel
    * @returns the created channel
    */
@@ -31,24 +35,28 @@ class AdminSalesChannelsResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /*create(
-    payload: any,
+  /** update a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+   * @description updates a sales channel
+   * @returns the updated medusa sales channel
+   */
+  update(
+    salesChannelId: string,
+    payload: AdminPostSalesChannelsSalesChannelReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<any> {}*/
+  ): ResponsePromise<AdminSalesChannelsRes> {
+    const path = `/admin/sales-channels/${salesChannelId}`
+    return this.client.request("POST", path, payload, {}, customHeaders)
+  }
 
-  /*update(
-    id: string,
-    payload: any,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<any> {}*/
-
-  /*delete(
+  /* delete(
     id: string,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<any> {
   }*/
 
-  /*list(
+  /* list(
     query?: any,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<any> {

@@ -10,7 +10,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  * parameters:
  *   - (path) id=* {string} The id of the Sales channel.
  * tags:
- *   - Sales channel
+ *   - Sales Channel
  * responses:
  *   200:
  *     description: OK

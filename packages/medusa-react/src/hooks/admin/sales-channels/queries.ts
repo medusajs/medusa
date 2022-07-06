@@ -1,4 +1,5 @@
 import { AdminSalesChannelRes } from "@medusajs/medusa"
+import { AdminSalesChannelsRes } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
 import { useMedusa } from "../../../contexts"
@@ -13,10 +14,16 @@ export const adminSalesChannelsKeys = queryKeysFactory(
 
 type SalesChannelsQueryKeys = typeof adminSalesChannelsKeys
 
+/** retrieve a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+ * @description gets a sales channel
+ * @returns a medusa sales channel
+ */
 export const useAdminSalesChannel = (
   id: string,
   options?: UseQueryOptionsWrapper<
-    Response<AdminSalesChannelRes>,
+    Response<AdminSalesChannelsRes>,
     Error,
     ReturnType<SalesChannelsQueryKeys["detail"]>
   >

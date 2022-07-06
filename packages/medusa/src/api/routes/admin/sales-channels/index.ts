@@ -4,6 +4,7 @@ import "reflect-metadata"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
 import middlewares, { transformBody } from "../../../middlewares"
+import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 import { AdminPostSalesChannelReq } from "./create-sales-channel"
 
 const route = Router()
@@ -27,14 +28,18 @@ export default (app) => {
     middlewares.wrap(require("./create-sales-channel").default)
   )
 
-  route.post("/:id", (req, res) => {})
+  route.post(
+    "/:id",
+    transformBody(AdminPostSalesChannelsSalesChannelReq),
+    middlewares.wrap(require("./update-sales-channel").default)
+  )
 
   route.delete("/:id", (req, res) => {})
 
   return app
 }
 
-export type AdminSalesChannelRes = {
+export type AdminSalesChannelsRes = {
   sales_channel: SalesChannel
 }
 
@@ -48,5 +53,5 @@ export * from "./get-sales-channel"
 export * from "./create-sales-channel"
 // export * from './'
 // export * from './'
-// export * from './'
+export * from "./update-sales-channel"
 // export * from './'
