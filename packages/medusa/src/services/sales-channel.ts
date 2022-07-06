@@ -1,5 +1,5 @@
-import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
 import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
@@ -10,7 +10,6 @@ import {
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
