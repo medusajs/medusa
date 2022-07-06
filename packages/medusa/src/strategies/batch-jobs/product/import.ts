@@ -469,13 +469,16 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       .withTransaction(transactionManager)
       .getDownloadStream({
         fileKey: `imports/products/import/ops/${batchJobId}-${op}`,
+        ext: "json",
       })
 
-    readableStream.on("data", (chunk) => {
-      data += chunk
-    })
-
     return await new Promise((resolve) => {
+      readableStream.on("error", (a, b, c) => {
+        resolve([])
+      })
+      readableStream.on("data", (chunk) => {
+        data += chunk
+      })
       readableStream.on("end", () => {
         resolve(JSON.parse(data))
       })
