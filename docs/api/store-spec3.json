@@ -927,7 +927,7 @@
     "/store/carts/{id}": {
       "post": {
         "operationId": "PostCartsCart",
-        "summary": "Update a Cart\"",
+        "summary": "Update a Cart",
         "description": "Updates a Cart.",
         "parameters": [
           {
