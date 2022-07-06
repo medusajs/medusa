@@ -63,7 +63,7 @@
     "test": "jest",
     "prettier": "prettier",
     "test:integration": "jest --config=integration-tests/jest.config.js",
-    "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api -- integration-tests/api/__tests__/admin/sales-channels.js",
+    "test:integration:api": "jest --config=integration-tests/jest.config.js --projects=integration-tests/api",
     "test:integration:plugins": "jest --config=integration-tests/jest.config.js --projects=integration-tests/plugins",
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
     "generate:services": "typedoc --options typedoc.services.js",
