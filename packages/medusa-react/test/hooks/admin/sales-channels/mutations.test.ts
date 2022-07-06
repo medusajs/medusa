@@ -11,8 +11,10 @@ describe("useAdminUpdateStore hook", () => {
       is_disabled: true,
     }
 
+    const salesChannelId = fixtures.get("sales_channel").id
+
     const { result, waitFor } = renderHook(
-      () => useAdminUpdateSalesChannel("sc-id"),
+      () => useAdminUpdateSalesChannel(salesChannelId),
       {
         wrapper: createWrapper(),
       }

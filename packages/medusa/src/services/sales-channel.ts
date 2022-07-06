@@ -91,10 +91,10 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
       const salesChannel = await this.retrieve(salesChannelId)
 
-      for (const key of Object.keys(data).filter(
-        (k) => typeof data[k] !== `undefined`
-      )) {
-        salesChannel[key] = data[key]
+      for (const key of Object.keys(data)) {
+        if (typeof data[key] !== `undefined`) {
+          salesChannel[key] = data[key]
+        }
       }
 
       const result = await salesChannelRepo.save(salesChannel)

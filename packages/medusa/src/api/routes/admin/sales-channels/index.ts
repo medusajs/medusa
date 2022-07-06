@@ -4,7 +4,6 @@ import "reflect-metadata"
 import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
 import middlewares, { transformBody } from "../../../middlewares"
-import "reflect-metadata"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 
 const route = Router()
