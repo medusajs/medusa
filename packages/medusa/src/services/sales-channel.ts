@@ -11,7 +11,6 @@ import {
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
-import { MedusaError } from "medusa-core-utils"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
