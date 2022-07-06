@@ -47,7 +47,7 @@ export type AdminSalesChannelsRes = {
   sales_channel: SalesChannel
 }
 
-export type AdminSalesChannelDeleteRes = DeleteResponse
+export type AdminSalesChannelsDeleteRes = DeleteResponse
 
 export type AdminSalesChannelListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]

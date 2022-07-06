@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { SalesChannelService } from "../../../../services/";
+import { SalesChannelService } from "../../../../services/"
 
 /**
  * @oas [delete] /sales-channels/{id}
@@ -30,11 +30,13 @@ import { SalesChannelService } from "../../../../services/";
 export default async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params
 
-  const salesChannelService: SalesChannelService = req.scope.resolve("salesChannelService")
+  const salesChannelService: SalesChannelService = req.scope.resolve(
+    "salesChannelService"
+  )
   await salesChannelService.delete(id)
   res.json({
     id,
-    object: "salesChannel",
+    object: "sales-channel",
     deleted: true,
   })
 }

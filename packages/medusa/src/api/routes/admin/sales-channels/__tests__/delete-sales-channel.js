@@ -35,7 +35,7 @@ describe("DELETE /admin/sales-channels/:id", () => {
     it("returns the expected result", () => {
       expect(subject.body).toEqual({
         id: IdMap.getId("sales_channel_1"),
-        object: "salesChannel",
+        object: "sales-channel",
         deleted: true,
       })
     })

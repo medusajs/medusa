@@ -2,7 +2,7 @@ import {
   AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
-  AdminProductsDeleteRes,
+  AdminSalesChannelsDeleteRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -63,13 +63,13 @@ class AdminSalesChannelsResource extends BaseResource {
 
   /**
    * @description gets a sales channel
-   * @returns a medusa sales channel
+   * @returns an deletion result
    */
   delete(
-    id: string,
+    salesChannelId: string,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminProductsDeleteRes> {
-    const path = `/admin/sales-channels/${id}`
+  ): ResponsePromise<AdminSalesChannelsDeleteRes> {
+    const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 }

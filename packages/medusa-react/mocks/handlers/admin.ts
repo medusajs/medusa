@@ -1709,7 +1709,7 @@ export const adminHandlers = [
       ctx.status(200),
       ctx.json({
         id: req.params.id,
-        object: "salesChannel",
+        object: "sales-channel",
         deleted: true,
       })
     )

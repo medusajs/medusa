@@ -204,7 +204,7 @@ describe("sales channels", () => {
       expect(response.status).toEqual(200)
       expect(response.data).toMatchSnapshot({
         id: expect.any(String),
-        object: "salesChannel",
+        object: "sales-channel",
         deleted: true
       })
     })

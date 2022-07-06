@@ -1,6 +1,10 @@
 import { renderHook } from "@testing-library/react-hooks"
 
-import { useAdminCreateSalesChannel, useAdminUpdateSalesChannel } from "../../../../src"
+import {
+  useAdminDeleteSalesChannel,
+  useAdminCreateSalesChannel,
+  useAdminUpdateSalesChannel,
+} from "../../../../src"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
@@ -29,7 +33,7 @@ describe("useAdminCreateSalesChannel hook", () => {
   })
 })
 
-describe("useAdminUpdateSalesChannel hook", () => {
+describe("useAdminUpdateStore hook", () => {
   test("updates a store", async () => {
     const salesChannel = {
       name: "medusa sales channel",
@@ -47,6 +51,14 @@ describe("useAdminUpdateSalesChannel hook", () => {
     )
 
     result.current.mutate(salesChannel)
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data.response.status).toEqual(200)
+    expect(result.current.data.sales_channel).toEqual({
+      ...fixtures.get("sales_channel"),
+      ...salesChannel,
+    })
   })
 })
 

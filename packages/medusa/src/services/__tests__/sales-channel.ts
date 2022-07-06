@@ -28,6 +28,9 @@ describe("SalesChannelService", () => {
         }
       ),
     save: (salesChannel) => Promise.resolve(salesChannel),
+    softRemove: jest.fn().mockImplementation((id: string): any => {
+      return Promise.resolve()
+    }),
   })
 
   describe("retrieve", () => {
@@ -94,27 +97,6 @@ describe("SalesChannelService", () => {
   })
 
   describe("delete", () => {
-    const salesChannelData = {
-      name: "sales channel 1 name",
-      description: "sales channel 1 description",
-      is_disabled: false,
-    }
-
-    const salesChannelRepositoryMock = MockRepository({
-      findOne: jest.fn().mockImplementation((queryOrId: string | FindOneOptions<SalesChannel>): any => {
-        return Promise.resolve({
-          id:
-            typeof queryOrId === "string"
-              ? queryOrId
-              : ((queryOrId?.where as FindConditions<SalesChannel>)?.id ?? IdMap.getId("sc_adjhlukiaeswhfae")),
-          ...salesChannelData
-        })
-      }),
-      softRemove: jest.fn().mockImplementation((id: string): any => {
-        return Promise.resolve()
-      }),
-    })
-
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
