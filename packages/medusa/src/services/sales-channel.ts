@@ -22,6 +22,7 @@ type InjectedDependencies = {
 class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   static Events = {
     UPDATED: "sales_channel.updated",
+    CREATED: "sales_channel.created",
   }
 
   protected manager_: EntityManager
@@ -94,23 +95,20 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
    * @returns the created channel
    */
   async create(data: CreateSalesChannelInput): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(
-      async (manager) => {
-        const salesChannelRepo: SalesChannelRepository =
-          manager.getCustomRepository(this.salesChannelRepository_)
+    return await this.atomicPhase_(async (manager) => {
+      const salesChannelRepo: SalesChannelRepository =
+        manager.getCustomRepository(this.salesChannelRepository_)
 
-        const salesChannel = salesChannelRepo.create(data)
-        return await salesChannelRepo.save(salesChannel)
-      },
-      async (err: { code: string }) => {
-        if (err.code === PostgresError.DUPLICATE_ERROR) {
-          throw new MedusaError(
-            MedusaError.Types.DUPLICATE_ERROR,
-            `some message`
-          )
-        }
-      }
-    )
+      const salesChannel = salesChannelRepo.create(data)
+
+      await this.eventBusService_
+        .withTransaction(manager)
+        .emit(SalesChannelService.Events.CREATED, {
+          id: salesChannel.id,
+        })
+
+      return await salesChannelRepo.save(salesChannel)
+    })
   }
 
   async update(
