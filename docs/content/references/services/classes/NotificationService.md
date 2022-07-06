@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/notification.js:9](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L9)
+[services/notification.js:9](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L9)
 
 ## Properties
 
@@ -36,7 +36,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/notification.js:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L30)
+[services/notification.js:30](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L30)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[services/notification.js:19](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L19)
+[services/notification.js:19](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L19)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[services/notification.js:23](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L23)
+[services/notification.js:23](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L23)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[services/notification.js:27](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L27)
+[services/notification.js:27](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L27)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[services/notification.js:29](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L29)
+[services/notification.js:29](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L29)
 
 ## Methods
 
@@ -103,7 +103,7 @@ order to allow for resends. Will log any errors that are encountered.
 
 #### Defined in
 
-[services/notification.js:166](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L166)
+[services/notification.js:166](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L166)
 
 ___
 
@@ -128,7 +128,7 @@ the notifications that satisfy the query.
 
 #### Defined in
 
-[services/notification.js:84](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L84)
+[services/notification.js:84](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L84)
 
 ___
 
@@ -151,7 +151,7 @@ used to generate on demand invoices or other documents.
 
 #### Defined in
 
-[services/notification.js:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L38)
+[services/notification.js:38](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L38)
 
 ___
 
@@ -173,7 +173,7 @@ Takes a list of notification provider ids and persists them in the database.
 
 #### Defined in
 
-[services/notification.js:68](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L68)
+[services/notification.js:68](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L68)
 
 ___
 
@@ -199,7 +199,7 @@ the newly created notification
 
 #### Defined in
 
-[services/notification.js:237](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L237)
+[services/notification.js:237](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L237)
 
 ___
 
@@ -224,7 +224,7 @@ the notification
 
 #### Defined in
 
-[services/notification.js:101](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L101)
+[services/notification.js:101](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L101)
 
 ___
 
@@ -249,7 +249,7 @@ the notification provider
 
 #### Defined in
 
-[services/notification.js:147](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L147)
+[services/notification.js:147](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L147)
 
 ___
 
@@ -276,7 +276,7 @@ the created notification
 
 #### Defined in
 
-[services/notification.js:195](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L195)
+[services/notification.js:195](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L195)
 
 ___
 
@@ -299,7 +299,7 @@ Subscribes a given provider to an event.
 
 #### Defined in
 
-[services/notification.js:126](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L126)
+[services/notification.js:126](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L126)
 
 ___
 
@@ -323,4 +323,4 @@ a cloned notification service
 
 #### Defined in
 
-[services/notification.js:47](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/notification.js#L47)
+[services/notification.js:47](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/notification.js#L47)

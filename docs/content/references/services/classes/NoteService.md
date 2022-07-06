@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/note.js:12](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L12)
+[services/note.js:12](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L12)
 
 ## Properties
 
@@ -42,7 +42,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/note.js:6](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L6)
+[services/note.js:6](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L6)
 
 ## Methods
 
@@ -67,7 +67,7 @@ resolves to the creation result
 
 #### Defined in
 
-[services/note.js:98](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L98)
+[services/note.js:98](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L98)
 
 ___
 
@@ -89,7 +89,7 @@ Deletes a given note
 
 #### Defined in
 
-[services/note.js:154](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L154)
+[services/note.js:154](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L154)
 
 ___
 
@@ -117,7 +117,7 @@ notes related to the given search.
 
 #### Defined in
 
-[services/note.js:77](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L77)
+[services/note.js:77](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L77)
 
 ___
 
@@ -142,7 +142,7 @@ which resolves to the requested note.
 
 #### Defined in
 
-[services/note.js:51](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L51)
+[services/note.js:51](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L51)
 
 ___
 
@@ -167,7 +167,7 @@ resolves to the updated element
 
 #### Defined in
 
-[services/note.js:131](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L131)
+[services/note.js:131](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L131)
 
 ___
 
@@ -191,4 +191,4 @@ a cloned note service
 
 #### Defined in
 
-[services/note.js:30](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/note.js#L30)
+[services/note.js:30](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/note.js#L30)

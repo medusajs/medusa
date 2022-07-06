@@ -4,7 +4,7 @@ Handles Fulfillments
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`FulfillmentService`](FulfillmentService.md)\>
 
   ↳ **`FulfillmentService`**
 
@@ -18,21 +18,178 @@ Handles Fulfillments
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;FulfillmentService\&gt;.constructor
 
 #### Defined in
 
-[services/fulfillment.js:9](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L9)
+[services/fulfillment.ts:47](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L47)
+
+## Properties
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+TransactionBaseService.container
+
+___
+
+### fulfillmentProviderService\_
+
+• `Protected` `Readonly` **fulfillmentProviderService\_**: [`FulfillmentProviderService`](FulfillmentProviderService.md)
+
+#### Defined in
+
+[services/fulfillment.ts:42](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L42)
+
+___
+
+### fulfillmentRepository\_
+
+• `Protected` `Readonly` **fulfillmentRepository\_**: typeof `FulfillmentRepository`
+
+#### Defined in
+
+[services/fulfillment.ts:43](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L43)
+
+___
+
+### lineItemRepository\_
+
+• `Protected` `Readonly` **lineItemRepository\_**: typeof `LineItemRepository`
+
+#### Defined in
+
+[services/fulfillment.ts:45](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L45)
+
+___
+
+### lineItemService\_
+
+• `Protected` `Readonly` **lineItemService\_**: [`LineItemService`](LineItemService.md)
+
+#### Defined in
+
+[services/fulfillment.ts:40](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L40)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[services/fulfillment.ts:36](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L36)
+
+___
+
+### shippingProfileService\_
+
+• `Protected` `Readonly` **shippingProfileService\_**: [`ShippingProfileService`](ShippingProfileService.md)
+
+#### Defined in
+
+[services/fulfillment.ts:41](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L41)
+
+___
+
+### totalsService\_
+
+• `Protected` `Readonly` **totalsService\_**: [`TotalsService`](TotalsService.md)
+
+#### Defined in
+
+[services/fulfillment.ts:39](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L39)
+
+___
+
+### trackingLinkRepository\_
+
+• `Protected` `Readonly` **trackingLinkRepository\_**: typeof `TrackingLinkRepository`
+
+#### Defined in
+
+[services/fulfillment.ts:44](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L44)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[services/fulfillment.ts:37](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L37)
 
 ## Methods
 
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
+
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillmentOrId`): `Promise`<`any`\>
+▸ **cancelFulfillment**(`fulfillmentOrId`): `Promise`<`Fulfillment`\>
 
 Cancels a fulfillment with the fulfillment provider. Will decrement the
 fulfillment_quantity on the line items associated with the fulfillment.
@@ -42,23 +199,23 @@ Throws if the fulfillment has already been shipped.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `fulfillmentOrId` | `any` | the fulfillment object or id. |
+| `fulfillmentOrId` | `string` \| `Fulfillment` | the fulfillment object or id. |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`Fulfillment`\>
 
 the result of the save operation
 
 #### Defined in
 
-[services/fulfillment.js:223](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L223)
+[services/fulfillment.ts:254](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L254)
 
 ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`order`, `itemsToFulfill`, `custom?`): `Fulfillment`[]
+▸ **createFulfillment**(`order`, `itemsToFulfill`, `custom?`): `Promise`<`Fulfillment`[]\>
 
 Creates an order fulfillment
 If items needs to be fulfilled by different provider, we make
@@ -69,25 +226,25 @@ those partitions.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `order` | `Order` | order to create fulfillment for |
-| `itemsToFulfill` | { `item_id`: `string` ; `quantity`: `number`  }[] | - |
-| `custom` | `any` | potential custom values to add |
+| `order` | `CreateFulfillmentOrder` | order to create fulfillment for |
+| `itemsToFulfill` | `FulFillmentItemType`[] | the items in the order to fulfill |
+| `custom` | `Partial`<`Fulfillment`\> | potential custom values to add |
 
 #### Returns
 
-`Fulfillment`[]
+`Promise`<`Fulfillment`[]\>
 
 the created fulfillments
 
 #### Defined in
 
-[services/fulfillment.js:171](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L171)
+[services/fulfillment.ts:199](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L199)
 
 ___
 
 ### createShipment
 
-▸ **createShipment**(`fulfillmentId`, `trackingLinks`, `config?`): `Fulfillment`
+▸ **createShipment**(`fulfillmentId`, `trackingLinks`, `config?`): `Promise`<`Fulfillment`\>
 
 Creates a shipment by marking a fulfillment as shipped. Adds
 tracking links and potentially more metadata.
@@ -96,25 +253,25 @@ tracking links and potentially more metadata.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `fulfillmentId` | `Order` | the fulfillment to ship |
-| `trackingLinks` | `TrackingLink`[] | tracking links for the shipment |
-| `config` | `any` | potential configuration settings, such as no_notification and metadata |
+| `fulfillmentId` | `string` | the fulfillment to ship |
+| `trackingLinks` | { `tracking_number`: `string`  }[] | tracking links for the shipment |
+| `config` | `CreateShipmentConfig` | potential configuration settings, such as no_notification and metadata |
 
 #### Returns
 
-`Fulfillment`
+`Promise`<`Fulfillment`\>
 
 the shipped fulfillment
 
 #### Defined in
 
-[services/fulfillment.js:270](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L270)
+[services/fulfillment.ts:304](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L304)
 
 ___
 
 ### getFulfillmentItems\_
 
-▸ **getFulfillmentItems_**(`order`, `items`, `transformer`): `Promise`<`LineItem`[]\>
+▸ **getFulfillmentItems_**(`order`, `items`): `Promise`<(``null`` \| `LineItem`)[]\>
 
 Retrieves the order line items, given an array of items.
 
@@ -122,48 +279,45 @@ Retrieves the order line items, given an array of items.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `order` | `Order` | the order to get line items from |
-| `items` | `Object` | the items to get |
-| `items.item_id` | `string` | - |
-| `items.quantity` | `number` | - |
-| `transformer` | `Function` | a function to apply to each of the items    retrieved from the order, should return a line item. If the transformer    returns an undefined value the line item will be filtered from the    returned array. |
+| `order` | `CreateFulfillmentOrder` | the order to get line items from |
+| `items` | `FulFillmentItemType`[] | the items to get |
 
 #### Returns
 
-`Promise`<`LineItem`[]\>
+`Promise`<(``null`` \| `LineItem`)[]\>
 
 the line items generated by the transformer.
 
 #### Defined in
 
-[services/fulfillment.js:94](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L94)
+[services/fulfillment.ts:109](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L109)
 
 ___
 
 ### partitionItems\_
 
-▸ **partitionItems_**(`shippingMethods`, `items`): { `shipping_method`: `any` = method }[]
+▸ **partitionItems_**(`shippingMethods`, `items`): `FulfillmentItemPartition`[]
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `shippingMethods` | `any` |
-| `items` | `any` |
+| `shippingMethods` | `ShippingMethod`[] |
+| `items` | `LineItem`[] |
 
 #### Returns
 
-{ `shipping_method`: `any` = method }[]
+`FulfillmentItemPartition`[]
 
 #### Defined in
 
-[services/fulfillment.js:62](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L62)
+[services/fulfillment.ts:71](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L71)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`id`, `config?`): `Fulfillment`
+▸ **retrieve**(`id`, `config?`): `Promise`<`Fulfillment`\>
 
 Retrieves a fulfillment by its id.
 
@@ -172,23 +326,47 @@ Retrieves a fulfillment by its id.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | the id of the fulfillment to retrieve |
-| `config` | `any` | optional values to include with fulfillmentRepository query |
+| `config` | `FindConfig`<`Fulfillment`\> | optional values to include with fulfillmentRepository query |
 
 #### Returns
 
-`Fulfillment`
+`Promise`<`Fulfillment`\>
 
 the fulfillment
 
 #### Defined in
 
-[services/fulfillment.js:142](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L142)
+[services/fulfillment.ts:166](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L166)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
 ### validateFulfillmentLineItem\_
 
-▸ **validateFulfillmentLineItem_**(`item`, `quantity`): `LineItem`
+▸ **validateFulfillmentLineItem_**(`item`, `quantity`): ``null`` \| `LineItem`
 
 Checks that a given quantity of a line item can be fulfilled. Fails if the
 fulfillable quantity is lower than the requested fulfillment quantity.
@@ -199,36 +377,40 @@ quantity from the quantity that was originally purchased.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `item` | `LineItem` | the line item to check has sufficient fulfillable   quantity. |
+| `item` | `undefined` \| `LineItem` | the line item to check has sufficient fulfillable   quantity. |
 | `quantity` | `number` | the quantity that is requested to be fulfilled. |
 
 #### Returns
 
-`LineItem`
+``null`` \| `LineItem`
 
 a line item that has the requested fulfillment quantity
   set.
 
 #### Defined in
 
-[services/fulfillment.js:116](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L116)
+[services/fulfillment.ts:134](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/fulfillment.ts#L134)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`transactionManager`): [`FulfillmentService`](FulfillmentService.md)
+▸ **withTransaction**(`transactionManager?`): [`FulfillmentService`](FulfillmentService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `transactionManager` | `any` |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`FulfillmentService`](FulfillmentService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[services/fulfillment.js:42](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/fulfillment.js#L42)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

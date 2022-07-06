@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/swap.js:21](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L21)
+[services/swap.js:21](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L21)
 
 ## Properties
 
@@ -50,7 +50,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/swap.js:9](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L9)
+[services/swap.js:9](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L9)
 
 ## Methods
 
@@ -76,7 +76,7 @@ the canceled swap.
 
 #### Defined in
 
-[services/swap.js:790](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L790)
+[services/swap.js:790](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L790)
 
 ___
 
@@ -100,7 +100,7 @@ updated swap
 
 #### Defined in
 
-[services/swap.js:983](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L983)
+[services/swap.js:983](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L983)
 
 ___
 
@@ -129,7 +129,7 @@ the newly created swap.
 
 #### Defined in
 
-[services/swap.js:313](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L313)
+[services/swap.js:313](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L313)
 
 ___
 
@@ -158,7 +158,7 @@ the swap with its cart_id prop set to the id of
 
 #### Defined in
 
-[services/swap.js:544](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L544)
+[services/swap.js:544](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L544)
 
 ___
 
@@ -184,7 +184,7 @@ the updated swap with new status and fulfillments.
 
 #### Defined in
 
-[services/swap.js:848](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L848)
+[services/swap.js:848](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L848)
 
 ___
 
@@ -211,7 +211,7 @@ the updated swap with new fulfillments and status.
 
 #### Defined in
 
-[services/swap.js:1016](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L1016)
+[services/swap.js:1016](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L1016)
 
 ___
 
@@ -236,7 +236,7 @@ resolves to the updated result.
 
 #### Defined in
 
-[services/swap.js:1089](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L1089)
+[services/swap.js:1089](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L1089)
 
 ___
 
@@ -259,7 +259,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/swap.js:238](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L238)
+[services/swap.js:238](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L238)
 
 ___
 
@@ -279,7 +279,7 @@ ___
 
 #### Defined in
 
-[services/swap.js:395](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L395)
+[services/swap.js:395](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L395)
 
 ___
 
@@ -299,7 +299,7 @@ ___
 
 #### Defined in
 
-[services/swap.js:659](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L659)
+[services/swap.js:659](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L659)
 
 ___
 
@@ -324,7 +324,7 @@ the resulting order
 
 #### Defined in
 
-[services/swap.js:1114](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L1114)
+[services/swap.js:1114](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L1114)
 
 ___
 
@@ -349,7 +349,7 @@ the swap
 
 #### Defined in
 
-[services/swap.js:181](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L181)
+[services/swap.js:181](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L181)
 
 ___
 
@@ -374,7 +374,7 @@ the swap
 
 #### Defined in
 
-[services/swap.js:216](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L216)
+[services/swap.js:216](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L216)
 
 ___
 
@@ -394,7 +394,7 @@ ___
 
 #### Defined in
 
-[services/swap.js:114](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L114)
+[services/swap.js:114](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L114)
 
 ___
 
@@ -415,7 +415,7 @@ ___
 
 #### Defined in
 
-[services/swap.js:511](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L511)
+[services/swap.js:511](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L511)
 
 ___
 
@@ -442,7 +442,7 @@ the validated returnItems
 
 #### Defined in
 
-[services/swap.js:269](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L269)
+[services/swap.js:269](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L269)
 
 ___
 
@@ -462,4 +462,4 @@ ___
 
 #### Defined in
 
-[services/swap.js:86](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/swap.js#L86)
+[services/swap.js:86](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/swap.js#L86)

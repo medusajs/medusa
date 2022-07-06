@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`ClaimService`](ClaimService.md), `InjectedDependencies`\>
 
   ↳ **`ClaimService`**
 
@@ -16,161 +16,232 @@
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;
+  ClaimService,
+  InjectedDependencies
+\&gt;.constructor
 
 #### Defined in
 
-[services/claim.js:14](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L14)
+[services/claim.ts:85](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L85)
 
 ## Properties
 
-### addressRepo\_
+### addressRepository\_
 
-• **addressRepo\_**: `any`
+• `Protected` `Readonly` **addressRepository\_**: typeof `AddressRepository`
 
 #### Defined in
 
-[services/claim.js:36](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L36)
+[services/claim.ts:68](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L68)
 
 ___
 
 ### claimItemService\_
 
-• **claimItemService\_**: `any`
+• `Protected` `Readonly` **claimItemService\_**: [`ClaimItemService`](ClaimItemService.md)
 
 #### Defined in
 
-[services/claim.js:37](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L37)
+[services/claim.ts:72](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L72)
 
 ___
 
 ### claimRepository\_
 
-• **claimRepository\_**: `any`
+• `Protected` `Readonly` **claimRepository\_**: typeof `ClaimRepository`
 
 #### Defined in
 
-[services/claim.js:38](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L38)
+[services/claim.ts:69](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L69)
+
+___
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `InjectedDependencies`
+
+#### Inherited from
+
+TransactionBaseService.container
 
 ___
 
 ### eventBus\_
 
-• **eventBus\_**: `any`
+• `Protected` `Readonly` **eventBus\_**: [`EventBusService`](EventBusService.md)
 
 #### Defined in
 
-[services/claim.js:39](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L39)
+[services/claim.ts:73](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L73)
 
 ___
 
 ### fulfillmentProviderService\_
 
-• **fulfillmentProviderService\_**: `any`
+• `Protected` `Readonly` **fulfillmentProviderService\_**: [`FulfillmentProviderService`](FulfillmentProviderService.md)
 
 #### Defined in
 
-[services/claim.js:40](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L40)
+[services/claim.ts:74](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L74)
 
 ___
 
 ### fulfillmentService\_
 
-• **fulfillmentService\_**: `any`
+• `Protected` `Readonly` **fulfillmentService\_**: [`FulfillmentService`](FulfillmentService.md)
 
 #### Defined in
 
-[services/claim.js:41](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L41)
+[services/claim.ts:75](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L75)
 
 ___
 
 ### inventoryService\_
 
-• **inventoryService\_**: `any`
+• `Protected` `Readonly` **inventoryService\_**: [`InventoryService`](InventoryService.md)
 
 #### Defined in
 
-[services/claim.js:42](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L42)
+[services/claim.ts:76](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L76)
+
+___
+
+### lineItemRepository\_
+
+• `Protected` `Readonly` **lineItemRepository\_**: typeof `LineItemRepository`
+
+#### Defined in
+
+[services/claim.ts:71](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L71)
 
 ___
 
 ### lineItemService\_
 
-• **lineItemService\_**: `any`
+• `Protected` `Readonly` **lineItemService\_**: [`LineItemService`](LineItemService.md)
 
 #### Defined in
 
-[services/claim.js:43](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L43)
+[services/claim.ts:77](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L77)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[services/claim.ts:65](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L65)
 
 ___
 
 ### paymentProviderService\_
 
-• **paymentProviderService\_**: `any`
+• `Protected` `Readonly` **paymentProviderService\_**: [`PaymentProviderService`](PaymentProviderService.md)
 
 #### Defined in
 
-[services/claim.js:44](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L44)
+[services/claim.ts:78](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L78)
 
 ___
 
 ### regionService\_
 
-• **regionService\_**: `any`
+• `Protected` `Readonly` **regionService\_**: [`RegionService`](RegionService.md)
 
 #### Defined in
 
-[services/claim.js:45](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L45)
+[services/claim.ts:79](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L79)
 
 ___
 
 ### returnService\_
 
-• **returnService\_**: `any`
+• `Protected` `Readonly` **returnService\_**: [`ReturnService`](ReturnService.md)
 
 #### Defined in
 
-[services/claim.js:46](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L46)
+[services/claim.ts:80](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L80)
+
+___
+
+### shippingMethodRepository\_
+
+• `Protected` `Readonly` **shippingMethodRepository\_**: typeof `ShippingMethodRepository`
+
+#### Defined in
+
+[services/claim.ts:70](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L70)
 
 ___
 
 ### shippingOptionService\_
 
-• **shippingOptionService\_**: `any`
+• `Protected` `Readonly` **shippingOptionService\_**: [`ShippingOptionService`](ShippingOptionService.md)
 
 #### Defined in
 
-[services/claim.js:47](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L47)
+[services/claim.ts:81](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L81)
 
 ___
 
 ### taxProviderService\_
 
-• **taxProviderService\_**: `any`
+• `Protected` `Readonly` **taxProviderService\_**: [`TaxProviderService`](TaxProviderService.md)
 
 #### Defined in
 
-[services/claim.js:48](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L48)
+[services/claim.ts:82](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L82)
 
 ___
 
 ### totalsService\_
 
-• **totalsService\_**: `any`
+• `Protected` `Readonly` **totalsService\_**: [`TotalsService`](TotalsService.md)
 
 #### Defined in
 
-[services/claim.js:49](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L49)
+[services/claim.ts:83](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L83)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[services/claim.ts:66](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L66)
 
 ___
 
 ### Events
 
-▪ `Static` **Events**: `Object`
+▪ `Static` `Readonly` **Events**: `Object`
 
 #### Type declaration
 
@@ -185,53 +256,92 @@ ___
 
 #### Defined in
 
-[services/claim.js:5](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L5)
+[services/claim.ts:56](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L56)
 
 ## Methods
 
+### atomicPhase\_
+
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
+
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
+
 ### cancel
 
-▸ **cancel**(`id`): `Promise`<`any`\>
+▸ **cancel**(`id`): `Promise`<`ClaimOrder`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `any` |
+| `id` | `string` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`ClaimOrder`\>
 
 #### Defined in
 
-[services/claim.js:644](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L644)
+[services/claim.ts:753](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L753)
 
 ___
 
 ### cancelFulfillment
 
-▸ **cancelFulfillment**(`fulfillmentId`): `Promise`<`any`\>
+▸ **cancelFulfillment**(`fulfillmentId`): `Promise`<`ClaimOrder`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `fulfillmentId` | `any` |
+| `fulfillmentId` | `string` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`ClaimOrder`\>
 
 #### Defined in
 
-[services/claim.js:512](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L512)
+[services/claim.ts:602](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L602)
 
 ___
 
 ### create
 
-▸ **create**(`data`): `any`
+▸ **create**(`data`): `Promise`<`ClaimOrder`\>
 
 Creates a Claim on an Order. Claims consists of items that are claimed and
 optionally items to be sent as replacement for the claimed items. The
@@ -241,23 +351,23 @@ shipping address that the new items will be shipped to
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | `any` | the object containing all data required to create a claim |
+| `data` | `CreateClaimInput` | the object containing all data required to create a claim |
 
 #### Returns
 
-`any`
+`Promise`<`ClaimOrder`\>
 
 created claim
 
 #### Defined in
 
-[services/claim.js:159](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L159)
+[services/claim.ts:217](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L217)
 
 ___
 
 ### createFulfillment
 
-▸ **createFulfillment**(`id`, `config?`): `Claim`
+▸ **createFulfillment**(`id`, `config?`): `Promise`<`ClaimOrder`\>
 
 #### Parameters
 
@@ -265,117 +375,92 @@ ___
 | :------ | :------ | :------ |
 | `id` | `string` | the object containing all data required to create a claim |
 | `config` | `Object` | config object |
-| `config.metadata` | `any` | config metadata |
-| `config.no_notification` | `undefined` \| `boolean` | config no notification |
+| `config.metadata?` | `Record`<`string`, `unknown`\> | config metadata |
+| `config.no_notification?` | `boolean` | config no notification |
 
 #### Returns
 
-`Claim`
+`Promise`<`ClaimOrder`\>
 
 created claim
 
 #### Defined in
 
-[services/claim.js:378](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L378)
+[services/claim.ts:456](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L456)
 
 ___
 
 ### createShipment
 
-▸ **createShipment**(`id`, `fulfillmentId`, `trackingLinks`, `config?`): `Promise`<`any`\>
+▸ **createShipment**(`id`, `fulfillmentId`, `trackingLinks?`, `config?`): `Promise`<`ClaimOrder`\>
 
 #### Parameters
 
 | Name | Type | Default value |
 | :------ | :------ | :------ |
-| `id` | `any` | `undefined` |
-| `fulfillmentId` | `any` | `undefined` |
-| `trackingLinks` | `any` | `undefined` |
+| `id` | `string` | `undefined` |
+| `fulfillmentId` | `string` | `undefined` |
+| `trackingLinks` | { `tracking_number`: `string`  }[] | `[]` |
 | `config` | `Object` | `undefined` |
 | `config.metadata` | `Object` | `{}` |
 | `config.no_notification` | `undefined` | `undefined` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`ClaimOrder`\>
 
 #### Defined in
 
-[services/claim.js:577](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L577)
-
-___
-
-### deleteMetadata
-
-▸ **deleteMetadata**(`orderId`, `key`): `Promise`<`any`\>
-
-Dedicated method to delete metadata for an order.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `orderId` | `string` | the order to delete metadata from. |
-| `key` | `string` | key for metadata field |
-
-#### Returns
-
-`Promise`<`any`\>
-
-resolves to the updated result.
-
-#### Defined in
-
-[services/claim.js:734](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L734)
+[services/claim.ts:674](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L674)
 
 ___
 
 ### list
 
-▸ **list**(`selector`, `config?`): `Promise`<`any`\>
+▸ **list**(`selector`, `config?`): `Promise`<`ClaimOrder`[]\>
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `selector` | `any` | the query object for find |
-| `config` | `any` | the config object containing query settings |
+| `config` | `FindConfig`<`ClaimOrder`\> | the config object containing query settings |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`ClaimOrder`[]\>
 
 the result of the find operation
 
 #### Defined in
 
-[services/claim.js:696](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L696)
+[services/claim.ts:809](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L809)
 
 ___
 
 ### processRefund
 
-▸ **processRefund**(`id`): `Promise`<`any`\>
+▸ **processRefund**(`id`): `Promise`<`ClaimOrder`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `any` |
+| `id` | `string` |
 
 #### Returns
 
-`Promise`<`any`\>
+`Promise`<`ClaimOrder`\>
 
 #### Defined in
 
-[services/claim.js:535](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L535)
+[services/claim.ts:628](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L628)
 
 ___
 
 ### retrieve
 
-▸ **retrieve**(`claimId`, `config?`): `Promise`<`Order`\>
+▸ **retrieve**(`id`, `config?`): `Promise`<`ClaimOrder`\>
 
 Gets an order by id.
 
@@ -383,56 +468,84 @@ Gets an order by id.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `claimId` | `string` | id of order to retrieve |
-| `config` | `any` | the config object containing query settings |
+| `id` | `string` | id of the claim order to retrieve |
+| `config` | `FindConfig`<`ClaimOrder`\> | the config object containing query settings |
 
 #### Returns
 
-`Promise`<`Order`\>
+`Promise`<`ClaimOrder`\>
 
 the order document
 
 #### Defined in
 
-[services/claim.js:711](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L711)
+[services/claim.ts:834](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L834)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
 ### update
 
-▸ **update**(`id`, `data`): `any`
+▸ **update**(`id`, `data`): `Promise`<`ClaimOrder`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `id` | `any` |
-| `data` | `any` |
+| `id` | `string` |
+| `data` | `UpdateClaimInput` |
 
 #### Returns
 
-`any`
+`Promise`<`ClaimOrder`\>
 
 #### Defined in
 
-[services/claim.js:80](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L80)
+[services/claim.ts:127](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/claim.ts#L127)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`manager`): [`ClaimService`](ClaimService.md)
+▸ **withTransaction**(`transactionManager?`): [`ClaimService`](ClaimService.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `manager` | `any` |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`ClaimService`](ClaimService.md)
 
+#### Inherited from
+
+TransactionBaseService.withTransaction
+
 #### Defined in
 
-[services/claim.js:52](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/claim.js#L52)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L16)
