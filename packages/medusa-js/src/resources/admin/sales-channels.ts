@@ -1,6 +1,5 @@
 import {
   AdminPostSalesChannelsReq,
-  AdminSalesChannelRes,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
 } from "@medusajs/medusa"
@@ -29,7 +28,7 @@ class AdminSalesChannelsResource extends BaseResource {
   create(
     payload: AdminPostSalesChannelsReq,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminSalesChannelRes> {
+  ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }

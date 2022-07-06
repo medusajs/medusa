@@ -1,6 +1,5 @@
 import {
   AdminPostSalesChannelsReq,
-  AdminSalesChannelRes,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
 } from "@medusajs/medusa"
@@ -19,7 +18,7 @@ import { adminSalesChannelsKeys } from "./queries"
  */
 export const useAdminCreateSalesChannel = (
   options?: UseMutationOptions<
-    Response<AdminSalesChannelRes>,
+    Response<AdminSalesChannelsRes>,
     Error,
     AdminPostSalesChannelsReq
   >
