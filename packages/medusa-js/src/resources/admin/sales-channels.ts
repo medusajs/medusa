@@ -1,5 +1,5 @@
 import {
-  AdminPostSalesChannelReq,
+  AdminPostSalesChannelsReq,
   AdminSalesChannelRes,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
@@ -8,7 +8,6 @@ import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminSalesChannelsResource extends BaseResource {
-
   /** retrieve a sales channel
    * @experimental This feature is under development and may change in the future.
    * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
@@ -28,7 +27,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * @returns the created channel
    */
   create(
-    payload: AdminPostSalesChannelReq,
+    payload: AdminPostSalesChannelsReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelRes> {
     const path = `/admin/sales-channels`

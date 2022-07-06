@@ -5,7 +5,7 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
 import middlewares, { transformBody } from "../../../middlewares"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
-import { AdminPostSalesChannelReq } from "./create-sales-channel"
+import { AdminPostSalesChannelsReq } from "./create-sales-channel"
 
 const route = Router()
 
@@ -24,7 +24,7 @@ export default (app) => {
 
   route.post(
     "/",
-    transformBody(AdminPostSalesChannelReq),
+    transformBody(AdminPostSalesChannelsReq),
     middlewares.wrap(require("./create-sales-channel").default)
   )
 

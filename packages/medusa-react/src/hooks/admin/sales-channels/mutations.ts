@@ -1,5 +1,5 @@
 import {
-  AdminPostSalesChannelReq,
+  AdminPostSalesChannelsReq,
   AdminSalesChannelRes,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
@@ -21,19 +21,18 @@ export const useAdminCreateSalesChannel = (
   options?: UseMutationOptions<
     Response<AdminSalesChannelRes>,
     Error,
-    AdminPostSalesChannelReq
+    AdminPostSalesChannelsReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
 
   return useMutation(
-    (payload: AdminPostSalesChannelReq) =>
+    (payload: AdminPostSalesChannelsReq) =>
       client.admin.salesChannels.create(payload),
     buildOptions(queryClient, [adminSalesChannelsKeys.list()], options)
   )
 }
-
 
 /** update a sales channel
  * @experimental This feature is under development and may change in the future.
@@ -47,7 +46,7 @@ export const useAdminUpdateSalesChannel = (
     Response<AdminSalesChannelsRes>,
     Error,
     AdminPostSalesChannelsSalesChannelReq
-    >
+  >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
