@@ -106,17 +106,18 @@ class ProductCollectionService extends BaseService {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
+      const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
       const { images, ...rest } = collection
-      if (!rest.thumbnail && images && images.length) {
+      if (!rest.thumbnail && images?.length) {
         rest.thumbnail = images[0]
       }
 
       try {
         const productCollection = await collectionRepo.create(collection)
 
-        if (images) {
-          productCollection.images = await this.upsertImages_(images)
+        if (images?.length) {
+          productCollection.images = await imageRepo.upsertImages_(images)
         }
 
         return await collectionRepo.save(productCollection)
@@ -124,28 +125,6 @@ class ProductCollectionService extends BaseService {
         throw formatException(error)
       }
     })
-  }
-
-  async upsertImages_(images) {
-    const imageRepository = this.manager_.getCustomRepository(
-      this.imageRepository_
-    )
-
-    const productImages = []
-    for (const img of images) {
-      const existing = await imageRepository.findOne({
-        where: { url: img },
-      })
-
-      if (existing) {
-        productImages.push(existing)
-      } else {
-        const created = imageRepository.create({ url: img })
-        productImages.push(created)
-      }
-    }
-
-    return productImages
   }
 
   /**
