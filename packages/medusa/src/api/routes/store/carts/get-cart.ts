@@ -1,5 +1,3 @@
-import { IsString, IsOptional } from "class-validator"
-import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService } from "../../../../services"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 

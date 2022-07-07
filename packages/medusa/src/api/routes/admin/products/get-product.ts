@@ -1,5 +1,3 @@
-import { IsOptional, IsString } from "class-validator"
-import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, PricingService } from "../../../../services"
 
 /**
