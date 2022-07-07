@@ -30,13 +30,3 @@ export default async (req, res) => {
 
   res.json({ order })
 }
-
-export class AdminGetOrdersOrderParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}

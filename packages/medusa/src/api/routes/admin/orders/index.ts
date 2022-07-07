@@ -1,15 +1,24 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Order } from "../../../.."
-import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
+import {
+  DeleteResponse,
+  EmptyQueryParams,
+  PaginatedResponse,
+} from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
-import { AdminGetOrdersOrderParams } from "./get-order"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/orders", route)
+
+  let relations = [...defaultAdminOrdersRelations]
+  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+    relations = [...relations, "sales_channel"]
+  }
 
   /**
    * List orders
@@ -17,7 +26,7 @@ export default (app) => {
   route.get(
     "/",
     transformQuery(AdminGetOrdersParams, {
-      defaultRelations: defaultAdminOrdersRelations,
+      defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
       isList: true,
@@ -30,8 +39,8 @@ export default (app) => {
    */
   route.get(
     "/:id",
-    transformQuery(AdminGetOrdersOrderParams, {
-      defaultRelations: defaultAdminOrdersRelations,
+    transformQuery(EmptyQueryParams, {
+      defaultRelations: relations,
       defaultFields: defaultAdminOrdersFields,
       allowedFields: allowedAdminOrdersFields,
       isList: false,
@@ -352,7 +361,6 @@ export const allowedAdminOrdersRelations = [
   "swaps",
   "swaps.return_order",
   "swaps.additional_items",
-  "sales_channel",
 ]
 
 export const filterableAdminOrdersFields = [
