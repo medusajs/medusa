@@ -4,6 +4,7 @@ import { Order } from "../../../.."
 import { DeleteResponse, PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetOrdersParams } from "./list-orders"
+import { AdminGetOrdersOrderParams } from "./get-order"
 
 const route = Router()
 
@@ -29,7 +30,12 @@ export default (app) => {
    */
   route.get(
     "/:id",
-    middlewares.normalizeQuery(),
+    transformQuery(AdminGetOrdersOrderParams, {
+      defaultRelations: defaultAdminOrdersRelations,
+      defaultFields: defaultAdminOrdersFields,
+      allowedFields: allowedAdminOrdersFields,
+      isList: false,
+    }),
     middlewares.wrap(require("./get-order").default)
   )
 

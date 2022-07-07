@@ -1,4 +1,4 @@
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { IsOptional, IsString } from "class-validator"
 import { OrderService } from "../../../../services"
 
 /**
@@ -26,10 +26,17 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
-  })
+  const order = await orderService.retrieve(id, req.retrieveConfig)
 
   res.json({ order })
+}
+
+export class AdminGetOrdersOrderParams {
+  @IsString()
+  @IsOptional()
+  expand?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
 }
