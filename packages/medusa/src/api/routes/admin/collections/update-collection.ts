@@ -1,6 +1,7 @@
-import { IsObject, IsOptional, IsString } from "class-validator"
+import { IsArray, IsObject, IsOptional, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+
 /**
  * @oas [post] /collections/{id}
  * operationId: "PostCollectionsCollection"
@@ -23,6 +24,14 @@ import { Request, Response } from "express"
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ *           images:
+ *             description: Images of the Product Collection.
+ *             type: array
+ *             items:
+ *               type: string
+ *           thumbnail:
+ *             description: The thumbnail to use for the Product Collection.
+ *             type: string
  * tags:
  *   - Collection
  * responses:
@@ -61,4 +70,12 @@ export class AdminPostCollectionsCollectionReq {
   @IsObject()
   @IsOptional()
   metadata?: object
+
+  @IsArray()
+  @IsOptional()
+  images: string[]
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 }

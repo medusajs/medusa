@@ -138,6 +138,7 @@ class ProductCollectionService extends BaseService {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
+      const imageRepo = this.manager_.getCustomRepository(this.imageRepository_)
 
       const collection = await this.retrieve(collectionId, {
         relations: ["images"],
@@ -149,13 +150,8 @@ class ProductCollectionService extends BaseService {
         collection.thumbnail = images[0]
       }
 
-     // at top of method
-     const imageRepo = this.manager_.getCustomRepository(
-          this.imageRepository_
-      )
-    
       if (images) {
-          collection.images = await imageRepo.upsertImages_(images)
+        collection.images = await imageRepo.upsertImages_(images)
       }
 
       if (metadata) {
