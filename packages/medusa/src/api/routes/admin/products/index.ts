@@ -5,6 +5,8 @@ import { Product, ProductTag, ProductType } from "../../../.."
 import { PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetProductsParams } from "./list-products"
+import { AdminGetProductsProductParams } from "./get-product"
+
 const route = Router()
 
 export default (app) => {
@@ -53,8 +55,16 @@ export default (app) => {
     "/:id/metadata",
     middlewares.wrap(require("./set-metadata").default)
   )
-
-  route.get("/:id", middlewares.wrap(require("./get-product").default))
+  route.get(
+    "/:id",
+    transformQuery(AdminGetProductsProductParams, {
+      defaultRelations: defaultAdminProductRelations,
+      defaultFields: defaultAdminProductFields,
+      allowedFields: allowedAdminProductFields,
+      isList: false,
+    }),
+    middlewares.wrap(require("./get-product").default)
+  )
 
   route.get(
     "/",

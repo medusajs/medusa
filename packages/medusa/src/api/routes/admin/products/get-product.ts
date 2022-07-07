@@ -1,3 +1,4 @@
+import { IsOptional, IsString } from "class-validator"
 import { defaultAdminProductFields, defaultAdminProductRelations } from "."
 import { ProductService, PricingService } from "../../../../services"
 
@@ -27,12 +28,19 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  const rawProduct = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
-  })
+  const rawProduct = await productService.retrieve(id, req.retrieveConfig)
 
   const [product] = await pricingService.setProductPrices([rawProduct])
 
   res.json({ product })
+}
+
+export class AdminGetProductsProductParams {
+  @IsString()
+  @IsOptional()
+  expand?: string
+
+  @IsString()
+  @IsOptional()
+  fields?: string
 }
