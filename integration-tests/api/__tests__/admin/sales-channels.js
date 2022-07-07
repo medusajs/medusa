@@ -147,7 +147,7 @@ describe("sales channels", () => {
 
   describe("DELETE /admin/sales-channels/:id", () => {})
 
-  describe("GET /admin/orders/:id?expand=sales_channels", () => {
+  describe("GET /admin/orders/:id", () => {
     let order
     beforeEach(async () => {
       try {
@@ -173,7 +173,7 @@ describe("sales channels", () => {
       const api = useApi()
 
       const response = await api.get(
-        `/admin/orders/${order.id}?expand=sales_channel`,
+        `/admin/orders/${order.id}`,
         adminReqConfig
       )
 
@@ -230,7 +230,7 @@ describe("sales channels", () => {
     })
   })
 
-  describe("GET /admin/product/:id?expand=sales_channels", () => {
+  describe("GET /admin/product/:id", () => {
     let product
     beforeEach(async () => {
       try {
@@ -258,13 +258,12 @@ describe("sales channels", () => {
       await db.teardown()
     })
 
-    it("expands sales channel with parameter", async () => {
+    it("returns product with sales channel", async () => {
       const api = useApi()
 
-      const response = await api.get(
-        `/admin/products/${product.id}?expand=sales_channels`,
-        adminReqConfig
-      )
+      const response = await api
+        .get(`/admin/products/${product.id}`, adminReqConfig)
+        .catch((err) => console.log(err))
 
       expect(response.data.product.sales_channels).toBeTruthy()
       expect(response.data.product.sales_channels).toEqual(
@@ -337,7 +336,7 @@ describe("sales channels", () => {
     })
   })
 
-  describe("GET /store/cart/:id?expand[]=sales_channels", () => {
+  describe("GET /store/cart/:id with saleschannel", () => {
     let cart
     beforeEach(async () => {
       try {
@@ -359,13 +358,10 @@ describe("sales channels", () => {
       await db.teardown()
     })
 
-    it("expands sales channel for single cart with parameter", async () => {
+    it("returns cart with sales channel for single cart", async () => {
       const api = useApi()
 
-      const response = await api.get(
-        `/store/carts/${cart.id}?expand=sales_channel`,
-        adminReqConfig
-      )
+      const response = await api.get(`/store/carts/${cart.id}`, adminReqConfig)
 
       expect(response.data.cart.sales_channel).toBeTruthy()
       expect(response.data.cart.sales_channel).toMatchSnapshot({
