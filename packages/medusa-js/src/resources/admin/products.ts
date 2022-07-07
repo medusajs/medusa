@@ -14,7 +14,6 @@ import {
   AdminProductsListTagsRes,
   AdminProductsListTypesRes,
   AdminProductsRes,
-  AdminGetProductsProductParams,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
@@ -31,16 +30,9 @@ class AdminProductsResource extends BaseResource {
 
   retrieve(
     id: string,
-    customHeaders: Record<string, any> = {},
-    query?: AdminGetProductsProductParams
+    customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
-    let path = `/admin/products/${id}`
-
-    if (query) {
-      const queryString = qs.stringify(query)
-      path = `/admin/products/${id}?${queryString}`
-    }
-
+    const path = `/admin/products/${id}`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
