@@ -111,6 +111,8 @@ export type DeleteResponse = {
   deleted: boolean
 }
 
+export class EmptyQueryParams {}
+
 export class DateComparisonOperator {
   @IsOptional()
   @IsDate()
