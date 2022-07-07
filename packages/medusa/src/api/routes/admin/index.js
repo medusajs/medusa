@@ -78,7 +78,7 @@ export default (app, container, config) => {
   notificationRoutes(route)
   orderRoutes(route, featureFlagRouter)
   priceListRoutes(route)
-  productRoutes(route)
+  productRoutes(route, featureFlagRouter)
   productTagRoutes(route)
   productTypesRoutes(route)
   regionRoutes(route)
