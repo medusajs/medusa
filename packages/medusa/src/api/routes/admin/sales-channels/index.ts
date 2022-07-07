@@ -5,6 +5,7 @@ import { isFeatureFlagEnabled } from "../../../middlewares/feature-flag-enabled"
 import { SalesChannel } from "../../../../models"
 import middlewares, { transformBody } from "../../../middlewares"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
+import { AdminPostSalesChannelsReq } from "./create-sales-channel"
 
 const route = Router()
 
@@ -18,10 +19,18 @@ export default (app) => {
     "/",
     middlewares.wrap(require("./get-sales-channel").default)
   )
+  salesChannelRouter.delete(
+    "/",
+    middlewares.wrap(require("./delete-sales-channel").default)
+  )
 
   route.get("/", (req, res) => {})
 
-  route.post("/", (req, res) => {})
+  route.post(
+    "/",
+    transformBody(AdminPostSalesChannelsReq),
+    middlewares.wrap(require("./create-sales-channel").default)
+  )
 
   route.post(
     "/:id",
@@ -29,7 +38,7 @@ export default (app) => {
     middlewares.wrap(require("./update-sales-channel").default)
   )
 
-  route.delete("/:id", (req, res) => {})
+
 
   return app
 }
@@ -38,13 +47,14 @@ export type AdminSalesChannelsRes = {
   sales_channel: SalesChannel
 }
 
-export type AdminSalesChannelDeleteRes = DeleteResponse
+export type AdminSalesChannelsDeleteRes = DeleteResponse
 
 export type AdminSalesChannelListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]
 }
 
 export * from "./get-sales-channel"
+export * from "./create-sales-channel"
 // export * from './'
 // export * from './'
 export * from "./update-sales-channel"

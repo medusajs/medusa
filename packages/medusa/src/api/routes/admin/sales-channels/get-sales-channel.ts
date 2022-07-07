@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import SalesChannelService from "../../../../services/sales-channel"
+import { SalesChannelService } from "../../../../services"
 
 /**
  * @oas [get] /sales-channels/{id}
@@ -19,7 +19,7 @@ import SalesChannelService from "../../../../services/sales-channel"
  *         schema:
  *           properties:
  *             sales_channel:
- *               $ref: "#/components/schemas/sales-channel"
+ *               $ref: "#/components/schemas/sales_channel"
  */
 export default async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params

@@ -1,6 +1,7 @@
 const path = require("path")
-
 process.env["MEDUSA_FF_SALES_CHANNELS"] = true
+
+const { SalesChannel } = require("@medusajs/medusa")
 
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
@@ -23,7 +24,7 @@ const adminReqConfig = {
   },
 }
 
-jest.setTimeout(30000)
+jest.setTimeout(50000)
 
 describe("sales channels", () => {
   let medusaProcess
@@ -46,14 +47,6 @@ describe("sales channels", () => {
 
     medusaProcess.kill()
   })
-
-  describe("GET /admin/sales-channels", () => {
-    it("is true", () => {
-      // dummy test to ensure test suite passes
-      expect(true).toBeTruthy()
-    })
-  })
-  describe("POST /admin/sales-channels", () => {})
 
   describe("GET /admin/sales-channels/:id", () => {
     let salesChannel
@@ -145,7 +138,156 @@ describe("sales channels", () => {
     })
   })
 
-  describe("DELETE /admin/sales-channels/:id", () => {})
+  describe("POST /admin/sales-channels", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully creates a sales channel", async () => {
+      const api = useApi()
+
+      const newSalesChannel = {
+        name: "sales channel name",
+        description: "sales channel description",
+      }
+
+      const response = await api
+        .post("/admin/sales-channels", newSalesChannel, adminReqConfig)
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channel).toBeTruthy()
+
+      expect(response.data).toMatchSnapshot({
+        sales_channel: expect.objectContaining({
+          name: newSalesChannel.name,
+          description: newSalesChannel.description,
+          is_disabled: false,
+        }),
+      })
+    })
+  })
+
+  describe("DELETE /admin/sales-channels/:id", () => {
+    let salesChannel
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+        })
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+    it("should delete the requested sales channel", async () => {
+      const api = useApi()
+
+      let deletedSalesChannel = await dbConnection.manager.findOne(
+        SalesChannel,
+        {
+          where: { id: salesChannel.id },
+          withDeleted: true,
+        }
+      )
+
+      expect(deletedSalesChannel.id).toEqual(salesChannel.id)
+      expect(deletedSalesChannel.deleted_at).toEqual(null)
+
+      const response = await api.delete(
+        `/admin/sales-channels/${salesChannel.id}`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toMatchSnapshot({
+        deleted: true,
+        id: expect.any(String),
+        object: "sales-channel",
+      })
+
+      deletedSalesChannel = await dbConnection.manager.findOne(SalesChannel, {
+        where: { id: salesChannel.id },
+        withDeleted: true,
+      })
+
+      expect(deletedSalesChannel.id).toEqual(salesChannel.id)
+      expect(deletedSalesChannel.deleted_at).not.toEqual(null)
+    })
+
+    it("should delete the requested sales channel idempotently", async () => {
+      const api = useApi()
+
+      let deletedSalesChannel = await dbConnection.manager.findOne(
+        SalesChannel,
+        {
+          where: { id: salesChannel.id },
+          withDeleted: true,
+        }
+      )
+
+      expect(deletedSalesChannel.id).toEqual(salesChannel.id)
+      expect(deletedSalesChannel.deleted_at).toEqual(null)
+
+      let response = await api.delete(
+        `/admin/sales-channels/${salesChannel.id}`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual({
+        id: expect.any(String),
+        object: "sales-channel",
+        deleted: true,
+      })
+
+      deletedSalesChannel = await dbConnection.manager.findOne(SalesChannel, {
+        where: { id: salesChannel.id },
+        withDeleted: true,
+      })
+
+      expect(deletedSalesChannel.id).toEqual(salesChannel.id)
+      expect(deletedSalesChannel.deleted_at).not.toEqual(null)
+
+      response = await api.delete(
+        `/admin/sales-channels/${salesChannel.id}`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data).toEqual({
+        id: expect.any(String),
+        object: "sales-channel",
+        deleted: true,
+      })
+
+      deletedSalesChannel = await dbConnection.manager.findOne(SalesChannel, {
+        where: { id: salesChannel.id },
+        withDeleted: true,
+      })
+
+      expect(deletedSalesChannel.id).toEqual(salesChannel.id)
+      expect(deletedSalesChannel.deleted_at).not.toEqual(null)
+    })
+  })
 
   describe("GET /admin/orders/:id", () => {
     let order
@@ -162,11 +304,6 @@ describe("sales channels", () => {
       } catch (err) {
         console.log(err)
       }
-    })
-
-    afterEach(async () => {
-      const db = useDb()
-      await db.teardown()
     })
 
     it("expands sales channel for single", async () => {

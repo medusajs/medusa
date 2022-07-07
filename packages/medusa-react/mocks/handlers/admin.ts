@@ -1692,5 +1692,26 @@ export const adminHandlers = [
         },
       })
     )
-  })
+  }),
+
+  rest.post("/admin/sales-channels", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        sales_channel: fixtures.get("sales_channel"),
+        ...(req.body as Record<string, unknown>),
+      })
+    )
+  }),
+
+  rest.delete("/admin/sales-channels/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "sales-channel",
+        deleted: true,
+      })
+    )
+  }),
 ]
