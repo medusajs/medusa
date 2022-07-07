@@ -2,6 +2,7 @@ import {
   AdminOrdersListRes,
   AdminOrdersRes,
   AdminGetOrdersParams,
+  AdminGetOrdersOrderParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
@@ -34,6 +35,7 @@ export const useAdminOrders = (
 
 export const useAdminOrder = (
   id: string,
+  query?: AdminGetOrdersOrderParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminOrdersRes>,
     Error,
@@ -43,7 +45,7 @@ export const useAdminOrder = (
   const { client } = useMedusa()
   const { data, ...rest } = useQuery(
     adminOrderKeys.detail(id),
-    () => client.admin.orders.retrieve(id),
+    () => client.admin.orders.retrieve(id, query),
     options
   )
   return { ...data, ...rest } as const

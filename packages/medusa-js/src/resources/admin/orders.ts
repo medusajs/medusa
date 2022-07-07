@@ -1,4 +1,5 @@
 import {
+  AdminGetOrdersOrderParams,
   AdminGetOrdersParams,
   AdminOrdersListRes,
   AdminOrdersRes,
@@ -41,9 +42,16 @@ class AdminOrdersResource extends BaseResource {
 
   retrieve(
     id: string,
-    customHeaders: Record<string, any> = {}
+    customHeaders: Record<string, any> = {},
+    query?: AdminGetOrdersOrderParams
   ): ResponsePromise<AdminOrdersRes> {
-    const path = `/admin/orders/${id}`
+    let path = `/admin/orders/${id}`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path = `/admin/orders/${id}?${queryString}`
+    }
+
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
 
