@@ -3,11 +3,9 @@ import { IdMap, MockManager } from "medusa-test-utils"
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
 import { productsToExport } from "../../../__fixtures__/product-export-data"
-import { AdminPostBatchesReq } from "../../../../api/routes/admin/batch/create-batch-job"
-import { defaultAdminProductRelations } from "../../../../api/routes/admin/products"
+import { AdminPostBatchesReq, defaultAdminProductRelations } from "../../../../api"
 import { ProductExportBatchJob } from "../../../batch-jobs/product"
 import { Request } from "express"
-import OrderExportStrategy from "../../../batch-jobs/order/export"
 
 const outputDataStorage: string[] = []
 
@@ -21,6 +19,8 @@ let fakeJob = {
   dry_run: false,
   status: BatchJobStatus.PROCESSING as BatchJobStatus
 } as ProductExportBatchJob
+
+const failedBathJobId = "bj_failed"
 
 const fileServiceMock = {
   delete: jest.fn(),
@@ -44,12 +44,15 @@ const batchJobServiceMock = {
   withTransaction: function () {
     return this
   },
-  update: jest.fn().mockImplementation((job, data) => {
+  update: jest.fn().mockImplementation((jobOrId, data) => {
     fakeJob = {
       ...fakeJob,
       ...data,
       context: { ...fakeJob?.context, ...data?.context },
       result: { ...fakeJob?.result, ...data?.result }
+    }
+    if ((jobOrId?.id ?? jobOrId) === failedBathJobId) {
+      return Promise.resolve({ ...fakeJob, status: BatchJobStatus.CANCELED })
     }
     return Promise.resolve(fakeJob)
   }),
@@ -61,7 +64,10 @@ const batchJobServiceMock = {
     fakeJob.status = BatchJobStatus.COMPLETED
     return Promise.resolve(fakeJob)
   }),
-  retrieve: jest.fn().mockImplementation(() => {
+  retrieve: jest.fn().mockImplementation((id) => {
+    if (id === failedBathJobId) {
+      return Promise.resolve({ ...fakeJob, status: BatchJobStatus.CANCELED })
+    }
     return Promise.resolve(fakeJob)
   }),
   setFailed: jest.fn().mockImplementation((...args) => {
@@ -230,5 +236,22 @@ describe("Product export strategy", () => {
     await productExportStrategy.processJob(fakeJob.id)
 
     expect((fakeJob.result as any).file_key).toBeDefined()
+  })
+
+  it("should remove the file_key and file_size if the job is canceled", async () => {
+    const productExportStrategy = new ProductExportStrategy({
+      batchJobService: batchJobServiceMock as any,
+      fileService: fileServiceMock as any,
+      productService: productServiceMock as any,
+      manager: MockManager,
+    })
+
+    const canceledFakeJob = { id: failedBathJobId } as ProductExportBatchJob
+    await productExportStrategy.prepareBatchJobForProcessing(canceledFakeJob, {} as Request)
+    await productExportStrategy.preProcessBatchJob(canceledFakeJob.id)
+    await productExportStrategy.processJob(canceledFakeJob.id)
+
+    expect((fakeJob.result as any).file_key).not.toBeDefined()
+    expect((fakeJob.result as any).file_size).not.toBeDefined()
   })
 })
