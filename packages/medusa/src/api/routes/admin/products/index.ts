@@ -74,7 +74,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   route.get(
     "/",
     transformQuery(AdminGetProductsParams, {
-      defaultRelations: relations,
+      defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
       allowedFields: allowedAdminProductFields,
       isList: true,
