@@ -1,15 +1,20 @@
 import { Router } from "express"
 import "reflect-metadata"
 import { Cart, Order, Swap } from "../../../../"
-import { DeleteResponse } from "../../../../types/common"
+import { DeleteResponse, EmptyQueryParams } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
-import { StoreGetCartsCartParams } from "./get-cart"
 const route = Router()
 
 export default (app, container) => {
   const middlewareService = container.resolve("middlewareService")
+  const featureFlagRouter = container.resolve("featureFlagRouter")
 
   app.use("/carts", route)
+
+  let relations = [...defaultStoreCartRelations]
+  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+    relations = [...relations, "sales_channel"]
+  }
 
   // Inject plugin routes
   const routers = middlewareService.getRouters("store/carts")
@@ -19,9 +24,9 @@ export default (app, container) => {
 
   route.get(
     "/:id",
-    transformQuery(StoreGetCartsCartParams, {
+    transformQuery(EmptyQueryParams, {
+      defaultRelations: relations,
       defaultFields: defaultStoreCartFields,
-      defaultRelations: defaultStoreCartRelations,
       isList: false,
     }),
     middlewares.wrap(require("./get-cart").default)

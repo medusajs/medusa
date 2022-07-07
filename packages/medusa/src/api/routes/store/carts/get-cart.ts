@@ -49,13 +49,3 @@ export default async (req, res) => {
   const data = await decorateLineItemsWithTotals(cart, req)
   res.json({ cart: data })
 }
-
-export class StoreGetCartsCartParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}
