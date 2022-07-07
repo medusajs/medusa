@@ -34,13 +34,3 @@ export default async (req, res) => {
 
   res.json({ product })
 }
-
-export class AdminGetProductsProductParams {
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  fields?: string
-}

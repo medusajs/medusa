@@ -2,15 +2,20 @@ import { Router } from "express"
 import "reflect-metadata"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product, ProductTag, ProductType } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
+import { EmptyQueryParams, PaginatedResponse } from "../../../../types/common"
 import middlewares, { transformQuery } from "../../../middlewares"
 import { AdminGetProductsParams } from "./list-products"
-import { AdminGetProductsProductParams } from "./get-product"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/products", route)
+
+  let relations = [...defaultAdminProductRelations]
+  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+    relations = [...relations, "sales_channels"]
+  }
 
   route.post("/", middlewares.wrap(require("./create-product").default))
   route.post("/:id", middlewares.wrap(require("./update-product").default))
@@ -57,8 +62,8 @@ export default (app) => {
   )
   route.get(
     "/:id",
-    transformQuery(AdminGetProductsProductParams, {
-      defaultRelations: defaultAdminProductRelations,
+    transformQuery(EmptyQueryParams, {
+      defaultRelations: relations,
       defaultFields: defaultAdminProductFields,
       allowedFields: allowedAdminProductFields,
       isList: false,
@@ -69,7 +74,7 @@ export default (app) => {
   route.get(
     "/",
     transformQuery(AdminGetProductsParams, {
-      defaultRelations: defaultAdminProductRelations,
+      defaultRelations: relations,
       defaultFields: defaultAdminProductFields,
       allowedFields: allowedAdminProductFields,
       isList: true,
