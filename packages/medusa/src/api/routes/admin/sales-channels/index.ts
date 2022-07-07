@@ -9,7 +9,7 @@ import middlewares, {
 } from "../../../middlewares"
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 import { AdminPostSalesChannelsReq } from "./create-sales-channel"
-import { AdminGetSalesChannelsReq } from "./list-sales-channels"
+import { AdminGetSalesChannelsParams } from "./list-sales-channels"
 
 const route = Router()
 
@@ -18,7 +18,7 @@ export default (app) => {
 
   route.get(
     "/",
-    transformQuery(AdminGetSalesChannelsReq, {
+    transformQuery(AdminGetSalesChannelsParams, {
       isList: true,
     }),
     middlewares.wrap(require("./list-sales-channels").default)

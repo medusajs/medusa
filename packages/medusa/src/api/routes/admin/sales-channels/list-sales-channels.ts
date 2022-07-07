@@ -3,7 +3,10 @@ import { IsNumber, IsOptional, IsString, ValidateNested } from "class-validator"
 import { Type } from "class-transformer"
 import { removeUndefinedProperties } from "../../../../utils"
 import { SalesChannelService } from "../../../../services"
-import { DateComparisonOperator } from "../../../../types/common"
+import {
+  DateComparisonOperator,
+  extendedFindParamsMixin,
+} from "../../../../types/common"
 
 /**
  * @oas [get] /sales-channels
@@ -68,31 +71,7 @@ export default async (req: Request, res: Response) => {
   })
 }
 
-export class AdminGetSalesChannelsParams {
-  @IsString()
-  @IsOptional()
-  fields?: string
-
-  @IsString()
-  @IsOptional()
-  expand?: string
-
-  @IsString()
-  @IsOptional()
-  order?: string
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  offset?: number = 0
-
-  @IsNumber()
-  @IsOptional()
-  @Type(() => Number)
-  limit?: number = 20
-}
-
-export class AdminGetSalesChannelsReq extends AdminGetSalesChannelsParams {
+export class AdminGetSalesChannelsParams extends extendedFindParamsMixin() {
   @IsString()
   @IsOptional()
   id?: string
@@ -123,4 +102,8 @@ export class AdminGetSalesChannelsReq extends AdminGetSalesChannelsParams {
   @IsOptional()
   @Type(() => DateComparisonOperator)
   deleted_at?: DateComparisonOperator
+
+  @IsString()
+  @IsOptional()
+  order?: string
 }

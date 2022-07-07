@@ -1,7 +1,7 @@
 import {
   AdminSalesChannelsRes,
   AdminSalesChannelsListRes,
-  AdminGetSalesChannelsReq,
+  AdminGetSalesChannelsParams,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useQuery } from "react-query"
@@ -48,7 +48,7 @@ export const useAdminSalesChannel = (
  * @returns a list of sales channel as well as the pagination properties
  */
 export const useAdminSalesChannels = (
-  query?: AdminGetSalesChannelsReq,
+  query?: AdminGetSalesChannelsParams,
   options?: UseQueryOptionsWrapper<
     Response<AdminSalesChannelsListRes>,
     Error,

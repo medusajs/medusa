@@ -1,3 +1,5 @@
+import { SalesChannel } from "../models"
+
 export type CreateSalesChannelInput = {
   name: string
   description?: string
@@ -6,7 +8,6 @@ export type CreateSalesChannelInput = {
 
 export type UpdateSalesChannelInput = Partial<CreateSalesChannelInput>
 
-export type ListSalesChannelInput = Partial<CreateSalesChannelInput> & {
-  id?: string
+export type ListSalesChannelInput = Partial<SalesChannel> & {
   q?: string
 }

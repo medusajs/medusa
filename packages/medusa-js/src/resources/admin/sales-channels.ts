@@ -1,5 +1,5 @@
 import {
-  AdminGetSalesChannelsReq,
+  AdminGetSalesChannelsParams,
   AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
@@ -60,7 +60,7 @@ class AdminSalesChannelsResource extends BaseResource {
    * @returns the list of sales channel as well as the pagination properties
    */
   list(
-    query?: AdminGetSalesChannelsReq,
+    query?: AdminGetSalesChannelsParams,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsListRes> {
     let path = `/admin/sales-channels`
