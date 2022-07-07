@@ -2,7 +2,8 @@ import { Router } from "express"
 import "reflect-metadata"
 import { Cart, Order, Swap } from "../../../../"
 import { DeleteResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { StoreGetCartsCartParams } from "./get-cart"
 const route = Router()
 
 export default (app, container) => {
@@ -16,7 +17,15 @@ export default (app, container) => {
     route.use("/", router)
   }
 
-  route.get("/:id", middlewares.wrap(require("./get-cart").default))
+  route.get(
+    "/:id",
+    transformQuery(StoreGetCartsCartParams, {
+      defaultFields: defaultStoreCartFields,
+      defaultRelations: defaultStoreCartRelations,
+      isList: false,
+    }),
+    middlewares.wrap(require("./get-cart").default)
+  )
 
   route.post(
     "/",
