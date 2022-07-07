@@ -39,9 +39,14 @@ type InjectedDependencies = {
 }
 
 class ProductService extends TransactionBaseService<ProductService> {
+  static readonly IndexName = `products`
+  static readonly Events = {
+    UPDATED: "product.updated",
+    CREATED: "product.created",
+    DELETED: "product.deleted",
+  }
   protected manager_: EntityManager
   protected transactionManager_: EntityManager | undefined
-
   protected readonly productOptionRepository_: typeof ProductOptionRepository
   protected readonly productRepository_: typeof ProductRepository
   protected readonly productVariantRepository_: typeof ProductVariantRepository
@@ -51,13 +56,6 @@ class ProductService extends TransactionBaseService<ProductService> {
   protected readonly productVariantService_: ProductVariantService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
-
-  static readonly IndexName = `products`
-  static readonly Events = {
-    UPDATED: "product.updated",
-    CREATED: "product.created",
-    DELETED: "product.deleted",
-  }
 
   constructor({
     manager,
