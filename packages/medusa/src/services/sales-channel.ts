@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
 import { TransactionBaseService } from "../interfaces"
-import { Product, SalesChannel } from "../models"
+import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
 import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
 import {
@@ -91,8 +91,6 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   /**
    * Lists sales channels based on the provided parameters and includes the count of
    * sales channels that match the query.
-   * @param selector - an object that defines rules to filter the sales channels
-   * @param config - object that defines the scope for what should be returned
    * @return an array containing the sales channels as
    *   the first element and the total count of sales channels that matches the query
    *   as the second element.
