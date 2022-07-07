@@ -169,7 +169,7 @@ describe("sales channels", () => {
       await db.teardown()
     })
 
-    it("expands sales channel for single order with parameter", async () => {
+    it("expands sales channel for single", async () => {
       const api = useApi()
 
       const response = await api.get(
