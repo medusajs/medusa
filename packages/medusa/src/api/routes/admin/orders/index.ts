@@ -21,7 +21,6 @@ export default (app) => {
       allowedFields: allowedAdminOrdersFields,
       isList: true,
     }),
-    middlewares.normalizeQuery(),
     middlewares.wrap(require("./list-orders").default)
   )
 

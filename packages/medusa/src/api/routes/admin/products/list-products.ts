@@ -8,17 +8,11 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { omit } from "lodash"
 import { Product, ProductStatus } from "../../../../models/product"
 import { DateComparisonOperator } from "../../../../types/common"
-import {
-  allowedAdminProductFields,
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-} from "."
-import listAndCount from "../../../../controllers/products/admin-list-products"
-import { validator } from "../../../../utils/validator"
 import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
+import { PricedProduct } from "../../../../types/pricing"
+import { PricingService, ProductService } from "../../../../services"
 
 /**
  * @oas [get] /products
@@ -69,32 +63,31 @@ import { optionalBooleanMapper } from "../../../../utils/validators/is-boolean"
  *                 $ref: "#/components/schemas/product"
  */
 export default async (req, res) => {
-  const validatedParams = await validator(AdminGetProductsParams, req.query)
+  const productService: ProductService = req.scope.resolve("productService")
+  const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  const filterableFields = omit(validatedParams, [
-    "limit",
-    "offset",
-    "expand",
-    "fields",
-    "order",
-  ])
+  const { skip, take, relations } = req.listConfig
 
-  const result = await listAndCount(
-    req.scope,
-    filterableFields,
-    {},
-    {
-      limit: validatedParams.limit ?? 50,
-      offset: validatedParams.offset ?? 0,
-      expand: validatedParams.expand,
-      fields: validatedParams.fields,
-      allowedFields: allowedAdminProductFields,
-      defaultFields: defaultAdminProductFields as (keyof Product)[],
-      defaultRelations: defaultAdminProductRelations,
-    }
+  const [rawProducts, count] = await productService.listAndCount(
+    req.filterableFields,
+    req.listConfig
   )
 
-  res.json(result)
+  let products: (Product | PricedProduct)[] = rawProducts
+
+  const includesPricing = ["variants", "variants.prices"].every((relation) =>
+    relations?.includes(relation)
+  )
+  if (includesPricing) {
+    products = await pricingService.setProductPrices(rawProducts)
+  }
+
+  res.json({
+    products,
+    count,
+    offset: skip,
+    limit: take,
+  })
 }
 
 export class AdminGetProductsPaginationParams {
