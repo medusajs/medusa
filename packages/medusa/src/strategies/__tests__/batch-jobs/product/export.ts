@@ -20,7 +20,11 @@ let fakeJob = {
   status: BatchJobStatus.PROCESSING as BatchJobStatus
 } as ProductExportBatchJob
 
-const failedBathJobId = "bj_failed"
+let canceledFakeJob = {
+  ...fakeJob,
+  id: "bj_failed",
+  status: BatchJobStatus.CANCELED
+} as ProductExportBatchJob
 
 const fileServiceMock = {
   delete: jest.fn(),
@@ -45,15 +49,24 @@ const batchJobServiceMock = {
     return this
   },
   update: jest.fn().mockImplementation((jobOrId, data) => {
+    if ((jobOrId?.id ?? jobOrId) === "bj_failed") {
+      canceledFakeJob = {
+        ...canceledFakeJob,
+        ...data,
+        context: { ...canceledFakeJob?.context, ...data?.context },
+        result: { ...canceledFakeJob?.result, ...data?.result }
+      }
+
+      return Promise.resolve(canceledFakeJob)
+    }
+
     fakeJob = {
       ...fakeJob,
       ...data,
       context: { ...fakeJob?.context, ...data?.context },
       result: { ...fakeJob?.result, ...data?.result }
     }
-    if ((jobOrId?.id ?? jobOrId) === failedBathJobId) {
-      return Promise.resolve({ ...fakeJob, status: BatchJobStatus.CANCELED })
-    }
+
     return Promise.resolve(fakeJob)
   }),
   updateStatus: jest.fn().mockImplementation((status) => {
@@ -65,10 +78,10 @@ const batchJobServiceMock = {
     return Promise.resolve(fakeJob)
   }),
   retrieve: jest.fn().mockImplementation((id) => {
-    if (id === failedBathJobId) {
-      return Promise.resolve({ ...fakeJob, status: BatchJobStatus.CANCELED })
-    }
-    return Promise.resolve(fakeJob)
+    const targetFakeJob = id === "bj_failed"
+      ? canceledFakeJob
+      : fakeJob
+    return Promise.resolve(targetFakeJob)
   }),
   setFailed: jest.fn().mockImplementation((...args) => {
     console.error(...args)
@@ -246,12 +259,11 @@ describe("Product export strategy", () => {
       manager: MockManager,
     })
 
-    const canceledFakeJob = { id: failedBathJobId } as ProductExportBatchJob
     await productExportStrategy.prepareBatchJobForProcessing(canceledFakeJob, {} as Request)
     await productExportStrategy.preProcessBatchJob(canceledFakeJob.id)
     await productExportStrategy.processJob(canceledFakeJob.id)
 
-    expect((fakeJob.result as any).file_key).not.toBeDefined()
-    expect((fakeJob.result as any).file_size).not.toBeDefined()
+    expect((canceledFakeJob.result as any).file_key).not.toBeDefined()
+    expect((canceledFakeJob.result as any).file_size).not.toBeDefined()
   })
 })
