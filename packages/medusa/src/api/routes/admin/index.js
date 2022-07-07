@@ -44,6 +44,8 @@ export default (app, container, config) => {
     })
   )
 
+  const featureFlagRouter = container.resolve("featureFlagRouter")
+
   // Unauthenticated routes
   authRoutes(route)
 
@@ -74,7 +76,7 @@ export default (app, container, config) => {
   inviteRoutes(route)
   noteRoutes(route)
   notificationRoutes(route)
-  orderRoutes(route)
+  orderRoutes(route, featureFlagRouter)
   priceListRoutes(route)
   productRoutes(route)
   productTagRoutes(route)

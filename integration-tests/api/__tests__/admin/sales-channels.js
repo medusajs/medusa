@@ -1,10 +1,14 @@
 const path = require("path")
 
+process.env["MEDUSA_FF_SALES_CHANNELS"] = true
+
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
+
 const { simpleSalesChannelFactory } = require("../../factories")
+const { simpleOrderFactory } = require("../../factories")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -137,4 +141,45 @@ describe("sales channels", () => {
   })
 
   describe("DELETE /admin/sales-channels/:id", () => {})
+
+  describe("GET /admin/orders?expand[]=sales_channels", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        await simpleOrderFactory(dbConnection, {
+          sales_channel: {
+            name: "test name",
+            description: "test description",
+          },
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("expands sales channel with parameter", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/orders?expand=sales_channel",
+        adminReqConfig
+      )
+
+      expect(response.data.orders[0].sales_channel).toBeTruthy()
+      expect(response.data.orders[0].sales_channel).toMatchSnapshot({
+        id: expect.any(String),
+        name: "test name",
+        description: "test description",
+        is_disabled: false,
+        created_at: expect.any(String),
+        updated_at: expect.any(String),
+      })
+    })
+  })
 })
