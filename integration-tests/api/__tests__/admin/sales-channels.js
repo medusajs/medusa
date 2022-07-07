@@ -7,7 +7,10 @@ const { useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 
-const { simpleSalesChannelFactory } = require("../../factories")
+const {
+  simpleSalesChannelFactory,
+  simpleProductFactory,
+} = require("../../factories")
 const { simpleOrderFactory } = require("../../factories")
 
 const startServerWithEnvironment =
@@ -30,6 +33,7 @@ describe("sales channels", () => {
     const [process, connection] = await startServerWithEnvironment({
       cwd,
       env: { MEDUSA_FF_SALES_CHANNELS: true },
+      verbose: true,
     })
     dbConnection = connection
     medusaProcess = process
@@ -180,6 +184,59 @@ describe("sales channels", () => {
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
+    })
+  })
+
+  describe("GET /admin/products?expand[]=sales_channels", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        await simpleProductFactory(dbConnection, {
+          sales_channels: [
+            {
+              name: "webshop",
+              description: "Webshop sales channel",
+            },
+            {
+              name: "amazon",
+              description: "Amazon sales channel",
+            },
+          ],
+        })
+      } catch (err) {
+        console.log(err)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("expands sales channel with parameter", async () => {
+      const api = useApi()
+
+      const response = await api.get(
+        "/admin/products?expand=sales_channels",
+        adminReqConfig
+      )
+
+      expect(response.data.products[0].sales_channels).toBeTruthy()
+      expect(response.data.products[0].sales_channels).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            name: "webshop",
+            description: "Webshop sales channel",
+            is_disabled: false,
+          }),
+          expect.objectContaining({
+            name: "amazon",
+            description: "Amazon sales channel",
+            is_disabled: false,
+          }),
+        ])
+      )
     })
   })
 })
