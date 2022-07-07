@@ -19,6 +19,10 @@ export default (app) => {
     "/",
     middlewares.wrap(require("./get-sales-channel").default)
   )
+  salesChannelRouter.delete(
+    "/",
+    middlewares.wrap(require("./delete-sales-channel").default)
+  )
 
   route.get("/", (req, res) => {})
 
@@ -34,7 +38,7 @@ export default (app) => {
     middlewares.wrap(require("./update-sales-channel").default)
   )
 
-  route.delete("/:id", (req, res) => {})
+
 
   return app
 }
@@ -43,7 +47,7 @@ export type AdminSalesChannelsRes = {
   sales_channel: SalesChannel
 }
 
-export type AdminSalesChannelDeleteRes = DeleteResponse
+export type AdminSalesChannelsDeleteRes = DeleteResponse
 
 export type AdminSalesChannelListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]

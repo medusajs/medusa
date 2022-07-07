@@ -869,7 +869,7 @@ export const adminHandlers = [
         discount_condition: {
           ...fixtures
             .get("discount")
-            .rule.conditions.find((c) => c.id === req.params.conditionId),
+            .rule.conditions.find(c => c.id === req.params.conditionId),
         },
       })
     )
@@ -1700,6 +1700,17 @@ export const adminHandlers = [
       ctx.json({
         sales_channel: fixtures.get("sales_channel"),
         ...(req.body as Record<string, unknown>),
+      })
+    )
+  }),
+
+  rest.delete("/admin/sales-channels/:id", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        id: req.params.id,
+        object: "sales-channel",
+        deleted: true,
       })
     )
   }),

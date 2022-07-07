@@ -1,6 +1,10 @@
 import { renderHook } from "@testing-library/react-hooks"
 
-import { useAdminCreateSalesChannel, useAdminUpdateSalesChannel } from "../../../../src"
+import {
+  useAdminDeleteSalesChannel,
+  useAdminCreateSalesChannel,
+  useAdminUpdateSalesChannel,
+} from "../../../../src"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
 
@@ -30,7 +34,7 @@ describe("useAdminCreateSalesChannel hook", () => {
 })
 
 describe("useAdminUpdateSalesChannel hook", () => {
-  test("updates a store", async () => {
+  test("updates a sales channel", async () => {
     const salesChannel = {
       name: "medusa sales channel",
       description: "main sales channel for medusa",
@@ -55,5 +59,28 @@ describe("useAdminUpdateSalesChannel hook", () => {
       ...fixtures.get("sales_channel"),
       ...salesChannel,
     })
+  })
+})
+
+describe("useAdminDeleteSalesChannel hook", () => {
+  test("deletes a sales channel", async () => {
+    const id = fixtures.get("sales_channel").id
+
+    const { result, waitFor } = renderHook(
+      () => useAdminDeleteSalesChannel(id),
+      { wrapper: createWrapper() }
+    )
+
+    result.current.mutate()
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data).toEqual(
+      expect.objectContaining({
+        id,
+        object: "sales-channel",
+        deleted: true,
+      })
+    )
   })
 })

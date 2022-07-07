@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import SalesChannelService from "../../../../services/sales-channel"
+import { SalesChannelService } from "../../../../services"
 
 /**
  * @oas [get] /sales-channels/{id}

@@ -23,6 +23,7 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
   static Events = {
     UPDATED: "sales_channel.updated",
     CREATED: "sales_channel.created",
+    DELETED: "sales_channel.deleted",
   }
 
   protected manager_: EntityManager
@@ -55,8 +56,8 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(async (manager) => {
-      const salesChannelRepo = manager.getCustomRepository(
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
         this.salesChannelRepository_
       )
 
@@ -139,8 +140,35 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     })
   }
 
-  async delete(id: string): Promise<void> {
-    throw new Error("Method not implemented.")
+  /**
+   * Deletes a sales channel from
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable the corresponding feature flag in your medusa backend project.
+   * @param salesChannelId - the id of the sales channel to delete
+   * @return Promise<void>
+   */
+  async delete(salesChannelId: string): Promise<void> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
+
+      const salesChannel = await this.retrieve(salesChannelId).catch(
+        () => void 0
+      )
+
+      if (!salesChannel) {
+        return
+      }
+
+      await salesChannelRepo.softRemove(salesChannel)
+
+      await this.eventBusService_
+        .withTransaction(transactionManager)
+        .emit(SalesChannelService.Events.DELETED, {
+          id: salesChannelId,
+        })
+    })
   }
 }
 

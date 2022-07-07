@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`sales channels DELETE /admin/sales-channels/:id should delete the requested sales channel 1`] = `
+Object {
+  "deleted": true,
+  "id": Any<String>,
+  "object": "sales-channel",
+}
+`;
+
 exports[`sales channels GET /admin/sales-channels/:id should retrieve the requested sales channel 1`] = `
 Object {
   "created_at": Any<String>,
