@@ -2,7 +2,7 @@ import {
   AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
-  AdminSalesChannelsDeleteRes
+  AdminSalesChannelsDeleteRes,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -62,7 +62,9 @@ export const useAdminUpdateSalesChannel = (
 }
 
 /**
- * @experimental This feature is still under development and can't be used in production
+ * Delete a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
  * @param id
  * @param options
  */

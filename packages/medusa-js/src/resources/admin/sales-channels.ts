@@ -49,12 +49,6 @@ class AdminSalesChannelsResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /* delete(
-    id: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<any> {
-  }*/
-
   /* list(
     query?: any,
     customHeaders: Record<string, any> = {}
@@ -62,6 +56,9 @@ class AdminSalesChannelsResource extends BaseResource {
   }*/
 
   /**
+   * Delete a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
    * @description gets a sales channel
    * @returns an deletion result
    */

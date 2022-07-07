@@ -142,14 +142,20 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
   /**
    * Deletes a sales channel from
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable the corresponding feature flag in your medusa backend project.
    * @param salesChannelId - the id of the sales channel to delete
    * @return Promise<void>
    */
   async delete(salesChannelId: string): Promise<void> {
     return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(this.salesChannelRepository_)
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
 
-      const salesChannel = await this.retrieve(salesChannelId).catch(() => void 0)
+      const salesChannel = await this.retrieve(salesChannelId).catch(
+        () => void 0
+      )
 
       if (!salesChannel) {
         return

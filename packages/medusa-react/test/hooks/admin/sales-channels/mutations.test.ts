@@ -33,8 +33,8 @@ describe("useAdminCreateSalesChannel hook", () => {
   })
 })
 
-describe("useAdminUpdateStore hook", () => {
-  test("updates a store", async () => {
+describe("useAdminUpdateSalesChannel hook", () => {
+  test("updates a sales channel", async () => {
     const salesChannel = {
       name: "medusa sales channel",
       description: "main sales channel for medusa",
