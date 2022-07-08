@@ -8,7 +8,7 @@ Learn more about how you can use this plugin in the [documentaion](https://docs.
 
 ```js
 {
-    baseUrl: "http://localhost:9000", // default if not specified here or in .env
-    uploadDir: "static", // default if not specified here or in .env
+    base_url: "http://localhost:9000", // default if not specified here or in .env
+    upload_dir: "static", // default if not specified here or in .env
 }
 ```

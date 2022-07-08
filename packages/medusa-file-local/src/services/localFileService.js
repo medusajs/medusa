@@ -1,7 +1,7 @@
-import { FileService } from "medusa-interfaces"
+import { AbstractFileService } from '@medusajs/medusa'
 import fs from "fs"
 
-class LocalFileService extends FileService {
+class LocalFileService extends AbstractFileService {
   // eslint-disable-next-line no-empty-pattern
   constructor({}, options) {
     super()
