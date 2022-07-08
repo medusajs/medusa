@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+import { ProductCollectionInput } from "../../../../types/product-collection"
 
 /**
  * @oas [post] /collections
@@ -43,7 +44,9 @@ export default async (req: Request, res: Response) => {
     "productCollectionService"
   )
 
-  const created = await productCollectionService.create(validatedBody)
+  const created = await productCollectionService.create(
+    validatedBody as ProductCollectionInput
+  )
   const collection = await productCollectionService.retrieve(created.id)
 
   res.status(200).json({ collection })

@@ -1,16 +1,18 @@
 import { MedusaError } from "medusa-core-utils"
-import { BaseService } from "medusa-interfaces"
 import { Brackets, EntityManager, ILike, SelectQueryBuilder } from "typeorm"
 import { formatException } from "../utils/exception-formatter"
 import { ProductRepository } from "../repositories/product"
 import { ImageRepository } from "../repositories/image"
 import EventBusService from "./event-bus"
-import { ProductCollectionRepository } from "../repositories/product-collection"
+import {
+  FindWithoutRelationsOptions,
+  ProductCollectionRepository,
+  ProductCollectionSelector,
+} from "../repositories/product-collection"
 import { TransactionBaseService } from "../interfaces"
 import { ProductCollection } from "../models"
 import { buildQuery, setMetadata, validateId } from "../utils"
-import { FindConfig, Selector } from "../types/common"
-import { FindProductConfig } from "../types/product"
+import { FindConfig } from "../types/common"
 import {
   FilterableProductCollectionProps,
   ProductCollectionInput,
@@ -67,7 +69,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    */
   async retrieve(
     collectionId: string,
-    config: object = {}
+    config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async () => {
       const validatedId = validateId(collectionId)
@@ -84,16 +86,19 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    * @return the result of the find one operation.
    */
   async retrieve_(
-    selector: Selector<ProductCollection>,
-    config: object
+    selector: ProductCollectionSelector,
+    config: FindConfig<ProductCollection>
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
       )
 
-      const { ...query } = buildQuery(selector, config)
-      const collection = await collectionRepo.findOne(query)
+      const { relations, ...query } = buildQuery(selector, config)
+      const collection = await collectionRepo.findOneWithRelations(
+        relations,
+        query as FindWithoutRelationsOptions
+      )
 
       if (!collection) {
         const selectorConstraints = Object.entries(selector)
@@ -119,7 +124,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    */
   async retrieveByHandle(
     collectionHandle: string,
-    config: FindProductConfig = {}
+    config: FindConfig<ProductCollection> = {}
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async () => {
       return await this.retrieve_({ handle: collectionHandle }, config)
@@ -131,9 +136,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    * @param {object} collection - the collection to create
    * @return {Promise<ProductCollection>} created collection
    */
-  async create(
-    collection: ProductCollectionInput | any
-  ): Promise<ProductCollection> {
+  async create(collection: ProductCollectionInput): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.getCustomRepository(
         this.productCollectionRepository_
@@ -169,7 +172,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    */
   async update(
     collectionId: string,
-    update: ProductCollectionInput | any
+    update: ProductCollectionInput
   ): Promise<ProductCollection> {
     return await this.atomicPhase_(async (manager) => {
       const collectionRepo = manager.getCustomRepository(
@@ -204,7 +207,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
   }
 
   /**
-   * Deletes a product collection idempotently
+   * Deletes a product collection idempotent
    * @param {string} collectionId - id of collection to delete
    * @return {Promise} empty promise
    */
@@ -271,9 +274,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
    * @return {Promise} the result of the find operation
    */
   async list(
-    selector:
-      | FilterableProductCollectionProps
-      | Selector<ProductCollection> = {},
+    selector: FilterableProductCollectionProps | ProductCollectionSelector = {},
     config: object = {
       skip: 0,
       take: 20,
@@ -314,7 +315,7 @@ class ProductCollectionService extends TransactionBaseService<ProductCollectionS
         delete selector.q
       }
 
-      const query = buildQuery(selector as Selector<ProductCollection>, config)
+      const query = buildQuery(selector as ProductCollectionSelector, config)
 
       if (q) {
         const where = query.where

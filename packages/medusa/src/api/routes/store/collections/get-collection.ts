@@ -24,12 +24,12 @@ import { defaultStoreCollectionRelations } from "./index"
 export default async (req, res) => {
   const { id } = req.params
   const productCollectionService: ProductCollectionService = req.scope.resolve(
-    "productCollectionService",
-    {
-      relations: defaultStoreCollectionRelations,
-    }
+    "productCollectionService"
   )
 
-  const collection = await productCollectionService.retrieve(id)
+  const collection = await productCollectionService.retrieve(id, {
+    relations: defaultStoreCollectionRelations,
+  })
+
   res.status(200).json({ collection })
 }
