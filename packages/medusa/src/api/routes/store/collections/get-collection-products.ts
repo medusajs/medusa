@@ -1,5 +1,5 @@
 import ProductCollectionService from "../../../../services/product-collection"
-import { defaultStoreCollectionRelations } from "./index"
+import { allStoreCollectionRelations } from "./index"
 
 /**
  * @oas [get] /collections/{id}/products
@@ -28,7 +28,7 @@ export default async (req, res) => {
   )
 
   const collection = await productCollectionService.retrieve(id, {
-    relations: defaultStoreCollectionRelations,
+    relations: allStoreCollectionRelations,
   })
 
   res.status(200).json({ collection })

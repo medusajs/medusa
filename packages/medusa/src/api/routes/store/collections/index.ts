@@ -19,7 +19,8 @@ export default (app) => {
 }
 
 export const defaultStoreCollectionFields = ["id", "title", "handle"]
-export const defaultStoreCollectionRelations = ["products", "images"]
+export const allStoreCollectionRelations = ["products", "images"]
+export const defaultStoreCollectionRelations = ["images"]
 
 export type StoreCollectionsListRes = PaginatedResponse & {
   collections: ProductCollection[]
