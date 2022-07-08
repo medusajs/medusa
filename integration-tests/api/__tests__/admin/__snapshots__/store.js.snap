@@ -121,6 +121,7 @@ Object {
     "symbol_native": "$",
   },
   "default_currency_code": "usd",
+  "feature_flags": Array [],
   "fulfillment_providers": Array [
     Object {
       "id": "test-ful",
