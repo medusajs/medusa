@@ -16,6 +16,8 @@ export class FlagRouter implements IFlagRouter {
   }
 
   public getFlags(): string[] {
-    return Object.keys(this.flags).filter(this.isFeatureEnabled)
+    return Object.keys(this.flags || {}).filter((flag) =>
+      this.isFeatureEnabled(flag)
+    )
   }
 }

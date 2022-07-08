@@ -1,5 +1,6 @@
 export interface IFlagRouter {
   isFeatureEnabled: (key: string) => boolean
+  getFlags: () => string[]
 }
 
 export type FlagSettings = {
