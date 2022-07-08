@@ -1,19 +1,7 @@
 const path = require("path")
-process.env["MEDUSA_FF_SALES_CHANNELS"] = true
-
-const { SalesChannel } = require("@medusajs/medusa")
 
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
-
-const adminSeeder = require("../../helpers/admin-seeder")
-
-const {
-  simpleSalesChannelFactory,
-  simpleProductFactory,
-  simpleCartFactory,
-} = require("../../factories")
-const { simpleOrderFactory } = require("../../factories")
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -30,6 +18,14 @@ describe("sales channels", () => {
   let medusaProcess
   let dbConnection
 
+  // IMPORTS
+  let adminSeeder
+  let SalesChannel
+  let simpleSalesChannelFactory
+  let simpleProductFactory
+  let simpleCartFactory
+  let simpleOrderFactory
+
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     const [process, connection] = await startServerWithEnvironment({
@@ -38,7 +34,62 @@ describe("sales channels", () => {
       verbose: false,
     })
     dbConnection = connection
+
     medusaProcess = process
+
+    /**
+     * @srindom, @pKorsholm:
+     * The approach below is not pretty at all, but it is the best solution we
+     * could come up with to the following problem:
+     *
+     * - When creating "feature flagged" relationships on existing entities
+     *   (e.g. order.sales_channel_id) we use the FeatureFlagColumn decorator,
+     *   to communicate to TypeORM whether a column should exist or not.
+     * - When the decorator runs it checks if the required feature flag is
+     *   enabled and if so calls the typical TypeORM @Column decorator.
+     * - In a regular setting this happens when we call the modelsLoader on
+     *   bootstrap where all entities are imported. The decorator runs as soon
+     *   as an entity is imported.
+     * - In our testing setting we are not only starting the server, we are
+     *   also establishing a connection to the DB that we can use for seeding.
+     * - Currently, the DB connection is established when calling initDb in
+     *   startServerWithEnvironment. initDb itself runs the modelsLoader and as
+     *   such we would **expect** the decorator to evaluate feature flags at
+     *   this point in time. This expectation is also why we set feature flags
+     *   in initDb.
+     * - What we have found out, however, is that IF an entity at any point in
+     *   time is imported BEFORE the connection is established the require.cache
+     *   will be populated with the entity as it was at the time of the first
+     *   import. In most circumstances this will be WITHOUT the feature flag has
+     *   been set.
+     * - We made attempts to try to clear the cache before calling initDb, but
+     *   TypeORM is unfortunately not able to support this flow.
+     * - For this reason, we decided to opt for this "hack" instead where we
+     *   import the required modules to use in the testing setup AFTER they have
+     *   been imported in initDb (and as such has the feature flagged entity in
+     *   the require cache).
+     *
+     * It would be great to find a better approach at some point in time, but
+     * this is punted for now.
+     *
+     * Useful links:
+     * - https://github.com/typeorm/typeorm/issues/1318
+     */
+
+    const { SalesChannel: sc } = require("@medusajs/medusa")
+    const {
+      simpleSalesChannelFactory: sscf,
+      simpleProductFactory: spf,
+      simpleCartFactory: scf,
+      simpleOrderFactory: sof,
+    } = require("../../factories")
+    adminSeeder = require("../../helpers/admin-seeder")
+
+    SalesChannel = sc
+    simpleSalesChannelFactory = sscf
+    simpleProductFactory = spf
+    simpleCartFactory = scf
+    simpleOrderFactory = sof
   })
 
   afterAll(async () => {
@@ -304,6 +355,11 @@ describe("sales channels", () => {
       } catch (err) {
         console.log(err)
       }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
     })
 
     it("expands sales channel for single", async () => {
