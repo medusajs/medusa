@@ -10,8 +10,7 @@ export function FeatureFlagColumn(
   columnOptions: ColumnOptions = {}
 ): PropertyDecorator {
   return function (target, propertyName) {
-    const wrapper = getDecoratorWrapper()
-    wrapper((): any => {
+    setImmediate((): any => {
       const featureFlagRouter = getFeatureFlagRouter()
 
       if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
@@ -28,8 +27,7 @@ export function FeatureFlagDecorators(
   decorators: PropertyDecorator[]
 ): PropertyDecorator {
   return function (target, propertyName) {
-    const wrapper = getDecoratorWrapper()
-    wrapper((): any => {
+    setImmediate((): any => {
       const featureFlagRouter = getFeatureFlagRouter()
 
       if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
@@ -65,18 +63,4 @@ function getFeatureFlagRouter(): FlagRouter {
   ) as { configModule: ConfigModule }
 
   return featureFlagsLoader(configModule)
-}
-
- /**
-  * Seams like jest is treating the timer a bit differently than a real environment,
-  * therefore one approach is to mock the setImmediate in test env.
-  * If anybody has another idea that could solution that behavior that end up rejecting the tests with the folloowing
-  * error, it would be welcome:
-  * ReferenceError: You are trying to `import` a file after the Jest environment has been torn down.
-  */
- function getDecoratorWrapper() {
-  const wrapper = process.env.NODE === "test"
-      ? (callback) => callback()
-      : (callback) => setImmediate(callback)
-  return wrapper
 }

@@ -42,7 +42,7 @@
     "prepare": "cross-env NODE_ENV=production npm run build",
     "build": "tsc --build",
     "serve": "node dist/app.js",
-    "test": "NODE=test jest",
+    "test": "jest",
     "test:unit": "jest"
   },
   "peerDependencies": {
