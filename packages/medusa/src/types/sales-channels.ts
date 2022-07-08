@@ -7,7 +7,3 @@ export type CreateSalesChannelInput = {
 }
 
 export type UpdateSalesChannelInput = Partial<CreateSalesChannelInput>
-
-export type ListSalesChannelInput = Partial<SalesChannel> & {
-  q?: string
-}

@@ -4,7 +4,12 @@ import { EntityManager } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
-import { ExtendedFindConfig, FindConfig, Selector } from "../types/common"
+import {
+  ExtendedFindConfig,
+  FindConfig,
+  QuerySelector,
+  Selector,
+} from "../types/common"
 import {
   CreateSalesChannelInput,
   ListSalesChannelInput,
@@ -15,6 +20,7 @@ import EventBusService from "./event-bus"
 import StoreService from "./store"
 import { PostgresError } from "../utils/exception-formatter"
 import { DefaultWithoutRelations } from "../repositories/product"
+import salesChannels from "../loaders/feature-flags/sales-channels"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
@@ -96,7 +102,7 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
    *   as the second element.
    */
   async listAndCount(
-    selector: ListSalesChannelInput,
+    selector: QuerySelector<SalesChannel>,
     config: FindConfig<SalesChannel> = {
       skip: 0,
       take: 20,
@@ -107,7 +113,14 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
         this.salesChannelRepository_
       )
 
-      const { q, query } = this.prepareListQuery_(selector, config)
+      const selector_ = { ...selector }
+      let q: string | undefined
+      if ("q" in selector_) {
+        q = selector_.q
+        delete selector_.q
+      }
+
+      const query = buildQuery(selector_, config)
 
       if (q) {
         return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)

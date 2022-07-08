@@ -59,7 +59,7 @@ export default async (req: Request, res: Response) => {
   const filterableFields = req.filterableFields
 
   const [salesChannels, count] = await salesChannelService.listAndCount(
-    removeUndefinedProperties(filterableFields),
+    filterableFields,
     listConfig
   )
 
