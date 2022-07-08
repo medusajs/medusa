@@ -27996,12 +27996,31 @@ typedarray@^0.0.6:
   resolved "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
+"typedoc-frontmatter-plugin@link:docs-util/typedoc-plugins/typedoc-frontmatter-plugin":
+  version "0.0.0"
+  uid ""
+
+typedoc-monorepo-link-types@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/typedoc-monorepo-link-types/-/typedoc-monorepo-link-types-0.0.2.tgz#690d8d6ca219fe96a1ffd42940812936a418d237"
+  integrity sha512-ez5p1FTiId/Muya6KQPkYGksDhlwO5noo00MJZ1Rrp5ji2MHgfO9g1bHCK4Ygof1cFcI16s0uRvuAj/UR/uxrw==
+
 typedoc-plugin-markdown@^3.12.1:
   version "3.12.1"
   resolved "https://registry.yarnpkg.com/typedoc-plugin-markdown/-/typedoc-plugin-markdown-3.12.1.tgz#2a33ca0018bdd7ed512e29960d3eb344ecb65f4a"
   integrity sha512-gMntJq7+JlGJZ5sVjrkzO/rG2dsmNBbWk5ZkcKvYu6QOeBwGcK5tzEyS0aqnFTJj9GCHCB+brAnTuKtAyotNwA==
   dependencies:
     handlebars "^4.7.7"
+
+typedoc-plugin-merge-modules@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/typedoc-plugin-merge-modules/-/typedoc-plugin-merge-modules-3.1.0.tgz#60dbdbd2196c1bded8c9f0ff70c59ff34b4b7f80"
+  integrity sha512-DAHDZD+KG3mRm+hJFAMh/pO98CQ3W/BFA81FzWpc1kos66mLRIa7QVO30yBREkZNZMsTA7fgGEjEN2GO2cgi3A==
+
+typedoc-plugin-reference-excluder@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/typedoc-plugin-reference-excluder/-/typedoc-plugin-reference-excluder-1.0.0.tgz#a7b03669449249f449c0d4f30024df7acae2088b"
+  integrity sha512-M09tKr9/9+IWm2jWr2a7gdAuoB0OapfEqxlXt1I1PH8cL0cN0XuZ722oUlx+wYbQOfy5JDE+xza48iDAKYOQew==
 
 typedoc@^0.22.15:
   version "0.22.15"
