@@ -15,9 +15,9 @@ const route = Router()
 export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/orders", route)
 
-  let relations = [...defaultAdminOrdersRelations]
+  const relations = [...defaultAdminOrdersRelations]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
-    relations = [...relations, "sales_channel"]
+    relations.push("sales_channel")
   }
 
   /**

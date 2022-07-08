@@ -12,9 +12,9 @@ const route = Router()
 export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/products", route)
 
-  let relations = [...defaultAdminProductRelations]
+  const relations = [...defaultAdminProductRelations]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
-    relations = [...relations, "sales_channels"]
+    relations.push("sales_channels")
   }
 
   route.post("/", middlewares.wrap(require("./create-product").default))
