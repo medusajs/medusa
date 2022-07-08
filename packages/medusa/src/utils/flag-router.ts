@@ -14,4 +14,8 @@ export class FlagRouter implements IFlagRouter {
   public setFlag(key: string, value = true): void {
     this.flags[key] = value
   }
+
+  public getFlags(): string[] {
+    return Object.keys(this.flags).filter(this.isFeatureEnabled)
+  }
 }
