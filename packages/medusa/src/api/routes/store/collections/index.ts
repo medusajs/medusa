@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { PaginatedResponse } from "./../../../../types/common"
+import { PaginatedResponse } from "../../../../types/common"
 import { ProductCollection } from "../../../../"
 import middlewares from "../../../middlewares"
 
@@ -14,12 +14,17 @@ export default (app) => {
     "/:handle/handle",
     middlewares.wrap(require("./get-collection-by-handle").default)
   )
+  route.get(
+    "/:handle/handle/products",
+    middlewares.wrap(require("./get-collection-by-handle-products").default)
+  )
 
   return app
 }
 
 export const defaultStoreCollectionFields = ["id", "title", "handle"]
-export const defaultStoreCollectionRelations = ["products"]
+export const allStoreCollectionRelations = ["products", "images"]
+export const defaultStoreCollectionRelations = ["images"]
 
 export type StoreCollectionsListRes = PaginatedResponse & {
   collections: ProductCollection[]
@@ -31,3 +36,4 @@ export type StoreCollectionsRes = {
 
 export * from "./get-collection"
 export * from "./list-collections"
+export * from "./get-collection-by-handle-products"
