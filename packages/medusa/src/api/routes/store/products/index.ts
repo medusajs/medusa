@@ -12,6 +12,10 @@ export default (app) => {
   route.get("/", middlewares.wrap(require("./list-products").default))
   route.post("/search", middlewares.wrap(require("./search").default))
   route.get("/:id", middlewares.wrap(require("./get-product").default))
+  route.get(
+    "/:handle/handle",
+    middlewares.wrap(require("./get-product-by-handle").default)
+  )
 
   return app
 }

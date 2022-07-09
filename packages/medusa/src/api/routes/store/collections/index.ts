@@ -10,6 +10,10 @@ export default (app) => {
 
   route.get("/", middlewares.wrap(require("./list-collections").default))
   route.get("/:id", middlewares.wrap(require("./get-collection").default))
+  route.get(
+    "/:handle/handle",
+    middlewares.wrap(require("./get-collection-by-handle").default)
+  )
 
   return app
 }

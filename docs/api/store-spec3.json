@@ -237,6 +237,44 @@
         }
       }
     },
+    "/collections/{handle}/handle": {
+      "get": {
+        "operationId": "GetCollectionsCollectionByHandle",
+        "summary": "Retrieve a Product Collection by handle",
+        "description": "Retrieve a Product Collection by handle.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "handle",
+            "required": true,
+            "description": "The handle of the Product Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/collections": {
       "get": {
         "operationId": "GetCollections",
@@ -1747,6 +1785,44 @@
             "name": "id",
             "required": true,
             "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "product": {
+                      "$ref": "#/components/schemas/product"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{handle}/handle": {
+      "get": {
+        "operationId": "GetProductsProductByHandle",
+        "summary": "Retrieves a Product by handle",
+        "description": "Retrieves a Product by handle.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "handle",
+            "required": true,
+            "description": "The handle of the Product.",
             "schema": {
               "type": "string"
             }

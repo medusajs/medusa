@@ -18,6 +18,15 @@ endpoints:
         description: Id of the product.
     description: >
       Retrieves a product
+  - path: /:handle
+    method: GET
+    title: Retrieve product by handle
+    params:
+      - name: handle
+        type: String
+        description: Handle of the product.
+    description: >
+      Retrieves a product by handle
   - path: /
     method: GET
     title: List products
