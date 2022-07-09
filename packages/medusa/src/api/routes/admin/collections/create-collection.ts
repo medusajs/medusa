@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsArray,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
 import { ProductCollectionInput } from "../../../../types/product-collection"
@@ -25,6 +31,14 @@ import { ProductCollectionInput } from "../../../../types/product-collection"
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ *           images:
+ *             description: Images of the Product Collection.
+ *             type: array
+ *             items:
+ *               type: string
+ *           thumbnail:
+ *             description: The thumbnail to use for the Product Collection.
+ *             type: string
  * tags:
  *   - Collection
  * responses:
@@ -64,4 +78,12 @@ export class AdminPostCollectionsReq {
   @IsObject()
   @IsOptional()
   metadata?: object
+
+  @IsArray()
+  @IsOptional()
+  images: string[]
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 }
