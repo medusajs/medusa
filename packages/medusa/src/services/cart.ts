@@ -3,6 +3,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
+import { DiscountRuleType } from "../models"
 import { Address } from "../models/address"
 import { Cart } from "../models/cart"
 import { CustomShippingOption } from "../models/custom-shipping-option"
@@ -38,7 +39,6 @@ import RegionService from "./region"
 import ShippingOptionService from "./shipping-option"
 import TaxProviderService from "./tax-provider"
 import TotalsService from "./totals"
-import { DiscountRuleType } from "../models"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -766,17 +766,17 @@ class CartService extends TransactionBaseService<CartService> {
           }
         }
 
-        if (typeof data.region_id !== "undefined") {
-          const countryCode =
-            (data.country_code || data.shipping_address?.country_code) ?? null
-          await this.setRegion_(cart, data.region_id, countryCode)
-        }
-
         if (
           typeof data.customer_id !== "undefined" ||
           typeof data.region_id !== "undefined"
         ) {
           await this.updateUnitPrices_(cart, data.region_id, data.customer_id)
+        }
+
+        if (typeof data.region_id !== "undefined") {
+          const countryCode =
+            (data.country_code || data.shipping_address?.country_code) ?? null
+          await this.setRegion_(cart, data.region_id, countryCode)
         }
 
         const addrRepo = transactionManager.getCustomRepository(
@@ -1734,18 +1734,17 @@ class CartService extends TransactionBaseService<CartService> {
       )
     }
 
-    // Set the new region for the cart
     const region = await this.regionService_
-      .withTransaction(this.transactionManager_)
+      .withTransaction(transactionManager)
       .retrieve(regionId, {
         relations: ["countries"],
       })
-    const addrRepo = transactionManager.getCustomRepository(
-      this.addressRepository_
-    )
     cart.region = region
     cart.region_id = region.id
 
+    const addrRepo = transactionManager.getCustomRepository(
+      this.addressRepository_
+    )
     /*
      * When changing the region you are changing the set of countries that your
      * cart can be shipped to so we need to make sure that the current shipping
@@ -1826,6 +1825,12 @@ class CartService extends TransactionBaseService<CartService> {
       cart.discounts = cart.discounts.filter((discount) => {
         return discount.regions.find(({ id }) => id === regionId)
       })
+    }
+
+    if (cart?.items?.length) {
+      // line item adjustments should be refreshed on region change having
+      // filtered out discounts that are not applicable in region
+      await this.refreshAdjustments_(cart)
     }
 
     cart.gift_cards = []
