@@ -2,6 +2,7 @@ import { Customer } from "../../../.."
 import CustomerService from "../../../../services/customer"
 import PaymentProviderService from "../../../../services/payment-provider"
 import StoreService from "../../../../services/store"
+import { PaymentProvider } from "../../../../models"
 
 /**
  * @oas [get] /customers/me/payment-methods
@@ -32,8 +33,6 @@ import StoreService from "../../../../services/store"
 export default async (req, res) => {
   const id = req.user.customer_id
 
-  const storeService: StoreService = req.scope.resolve("storeService")
-
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
   )
@@ -42,15 +41,18 @@ export default async (req, res) => {
 
   const customer: Customer = await customerService.retrieve(id)
 
-  const store = await storeService.retrieve(["payment_providers"])
+  const paymentProviders: PaymentProvider[] =
+    await paymentProviderService.list()
 
   const methods = await Promise.all(
-    store.payment_providers.map(async (next: string) => {
-      const provider = paymentProviderService.retrieveProvider(next)
+    paymentProviders.map(async (paymentProvider: PaymentProvider) => {
+      const provider = paymentProviderService.retrieveProvider(
+        paymentProvider.id
+      )
 
       const pMethods = await provider.retrieveSavedMethods(customer)
       return pMethods.map((m) => ({
-        provider_id: next,
+        provider_id: paymentProvider.id,
         data: m,
       }))
     })

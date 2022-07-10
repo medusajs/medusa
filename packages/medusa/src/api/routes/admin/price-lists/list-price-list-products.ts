@@ -1,5 +1,5 @@
 import { Type } from "class-transformer"
-import { omit, pickBy } from "lodash"
+import { pickBy } from "lodash"
 import {
   IsArray,
   IsBoolean,
@@ -8,19 +8,12 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { Product } from "../../../../models"
+import { ProductStatus } from "../../../../models"
 import { DateComparisonOperator } from "../../../../types/common"
-import { validator } from "../../../../utils/validator"
 import { FilterableProductProps } from "../../../../types/product"
-import {
-  AdminGetProductsPaginationParams,
-  allowedAdminProductFields,
-  defaultAdminProductFields,
-  defaultAdminProductRelations,
-} from "../products"
-import { MedusaError } from "medusa-core-utils"
-import { getListConfig } from "../../../../utils/get-query-config"
+import { AdminGetProductsPaginationParams } from "../products"
 import PriceListService from "../../../../services/price-list"
+import { Request } from "express"
 
 /**
  * @oas [get] /price-lists/:id/products
@@ -70,81 +63,22 @@ import PriceListService from "../../../../services/price-list"
  *               items:
  *                 $ref: "#/components/schemas/product"
  */
-export default async (req, res) => {
+export default async (req: Request, res) => {
   const { id } = req.params
-
-  const validatedParams = await validator(
-    AdminGetPriceListsPriceListProductsParams,
-    req.query
-  )
-
-  req.query.price_list_id = [id]
-
-  const query: FilterableProductProps = omit(req.query, [
-    "limit",
-    "offset",
-    "expand",
-    "fields",
-    "order",
-  ])
-
-  const limit = validatedParams.limit ?? 50
-  const offset = validatedParams.offset ?? 0
-  const expand = validatedParams.expand
-  const fields = validatedParams.fields
-  const order = validatedParams.order
-  const allowedFields = allowedAdminProductFields
-  const defaultFields = defaultAdminProductFields as (keyof Product)[]
-  const defaultRelations = defaultAdminProductRelations.filter(
-    (r) => r !== "variants.prices"
-  )
+  const { offset, limit } = req.validatedQuery
 
   const priceListService: PriceListService =
     req.scope.resolve("priceListService")
 
-  let includeFields: (keyof Product)[] | undefined
-  if (fields) {
-    includeFields = fields.split(",") as (keyof Product)[]
+  const filterableFields: FilterableProductProps = {
+    ...req.filterableFields,
+    price_list_id: [id],
   }
-
-  let expandFields: string[] | undefined
-  if (expand) {
-    expandFields = expand.split(",")
-  }
-
-  let orderBy: { [k: symbol]: "DESC" | "ASC" } | undefined
-  if (typeof order !== "undefined") {
-    let orderField = order
-    if (order.startsWith("-")) {
-      const [, field] = order.split("-")
-      orderField = field
-      orderBy = { [field]: "DESC" }
-    } else {
-      orderBy = { [order]: "ASC" }
-    }
-
-    if (!(allowedFields || []).includes(orderField)) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        "Order field must be a valid product field"
-      )
-    }
-  }
-
-  const listConfig = getListConfig<Product>(
-    defaultFields ?? [],
-    defaultRelations ?? [],
-    includeFields,
-    expandFields,
-    limit,
-    offset,
-    orderBy
-  )
 
   const [products, count] = await priceListService.listProducts(
     id,
-    pickBy(query, (val) => typeof val !== "undefined"),
-    listConfig
+    pickBy(filterableFields, (val) => typeof val !== "undefined"),
+    req.listConfig
   )
 
   res.json({
@@ -153,13 +87,6 @@ export default async (req, res) => {
     offset,
     limit,
   })
-}
-
-enum ProductStatus {
-  DRAFT = "draft",
-  PROPOSED = "proposed",
-  PUBLISHED = "published",
-  REJECTED = "rejected",
 }
 
 export class AdminGetPriceListsPriceListProductsParams extends AdminGetProductsPaginationParams {

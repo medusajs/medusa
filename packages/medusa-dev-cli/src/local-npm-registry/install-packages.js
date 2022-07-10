@@ -8,10 +8,11 @@ const installPackages = async ({
   packagesToInstall,
   yarnWorkspaceRoot,
   newlyPublishedPackageVersions,
+  externalRegistry,
 }) => {
   console.log(
     `Installing packages from local registry:\n${packagesToInstall
-      .map(packageAndVersion => ` - ${packageAndVersion}`)
+      .map((packageAndVersion) => ` - ${packageAndVersion}`)
       .join(`\n`)}`
   )
   let installCmd
@@ -80,22 +81,22 @@ const installPackages = async ({
       process.exit(1)
     }
 
-    const handleDeps = deps => {
+    const handleDeps = (deps) => {
       if (!deps) {
         return false
       }
 
       let changed = false
-      Object.keys(deps).forEach(depName => {
+      Object.keys(deps).forEach((depName) => {
         if (packagesToInstall.includes(depName)) {
-          deps[depName] = `gatsby-dev`
+          deps[depName] = `medusa-dev`
           changed = true
         }
       })
       return changed
     }
 
-    Object.keys(workspacesLayout).forEach(workspaceName => {
+    Object.keys(workspacesLayout).forEach((workspaceName) => {
       const { location } = workspacesLayout[workspaceName]
       const pkgJsonPath = path.join(yarnWorkspaceRoot, location, `package.json`)
       if (!fs.existsSync(pkgJsonPath)) {
@@ -109,7 +110,7 @@ const installPackages = async ({
       changed |= handleDeps(pkg.peerDependencies)
 
       if (changed) {
-        console.log(`Changing deps in ${pkgJsonPath} to use @gatsby-dev`)
+        console.log(`Changing deps in ${pkgJsonPath} to use @medusa-dev`)
         fs.outputJSONSync(pkgJsonPath, pkg, {
           spaces: 2,
         })
@@ -118,24 +119,28 @@ const installPackages = async ({
 
     // package.json files are changed - so we just want to install
     // using verdaccio registry
-    installCmd = [
-      `yarn`,
-      [`install`, `--registry=${registryUrl}`, `--ignore-engines`],
-    ]
+    const yarnCommands = [`install`]
+
+    if (!externalRegistry) {
+      yarnCommands.push(`--registry=${registryUrl}`)
+    }
+
+    installCmd = [`yarn`, yarnCommands]
   } else {
-    installCmd = [
-      `yarn`,
-      [
-        `add`,
-        ...packagesToInstall.map(packageName => {
-          const packageVersion = newlyPublishedPackageVersions[packageName]
-          return `${packageName}@${packageVersion}`
-        }),
-        `--registry=${registryUrl}`,
-        `--exact`,
-        `--ignore-engines`,
-      ],
+    const yarnCommands = [
+      `add`,
+      ...packagesToInstall.map((packageName) => {
+        const packageVersion = newlyPublishedPackageVersions[packageName]
+        return `${packageName}@${packageVersion}`
+      }),
+      `--exact`,
     ]
+
+    if (!externalRegistry) {
+      yarnCommands.push(`--registry=${registryUrl}`)
+    }
+
+    installCmd = [`yarn`, yarnCommands]
   }
 
   try {

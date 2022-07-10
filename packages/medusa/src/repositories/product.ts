@@ -1,31 +1,33 @@
 import { flatten, groupBy, map, merge } from "lodash"
 import {
+  Brackets,
   EntityRepository,
-  FindManyOptions,
   FindOperator,
   In,
-  OrderByCondition,
   Repository,
 } from "typeorm"
-import { ProductTag } from ".."
-import { Product } from "../models/product"
 import { PriceList } from "../models/price-list"
+import { Product } from "../models/product"
+import {
+  ExtendedFindConfig,
+  Selector,
+  WithRequiredProperty,
+} from "../types/common"
 
-type DefaultWithoutRelations = Omit<FindManyOptions<Product>, "relations">
-
-type CustomOptions = {
-  select?: DefaultWithoutRelations["select"]
-  where?: DefaultWithoutRelations["where"] & {
-    tags?: FindOperator<ProductTag>
-    price_list_id?: FindOperator<PriceList>
-  }
-  order?: OrderByCondition
-  skip?: number
-  take?: number
-  withDeleted?: boolean
+export type ProductSelector = Omit<Selector<Product>, "tags"> & {
+  tags: FindOperator<string[]>
 }
 
-type FindWithRelationsOptions = CustomOptions
+export type DefaultWithoutRelations = Omit<
+  ExtendedFindConfig<Product, ProductSelector>,
+  "relations"
+>
+
+export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
+  where: DefaultWithoutRelations["where"] & {
+    price_list_id?: FindOperator<PriceList>
+  }
+}
 
 @EntityRepository(Product)
 export class ProductRepository extends Repository<Product> {
@@ -39,7 +41,7 @@ export class ProductRepository extends Repository<Product> {
   }
 
   private async queryProducts(
-    optionsWithoutRelations: FindWithRelationsOptions,
+    optionsWithoutRelations: FindWithoutRelationsOptions,
     shouldCount = false
   ): Promise<[Product[], number]> {
     const tags = optionsWithoutRelations?.where?.tags
@@ -103,7 +105,9 @@ export class ProductRepository extends Repository<Product> {
     return [entities, count]
   }
 
-  private getGroupedRelations(relations: Array<keyof Product>): {
+  private getGroupedRelations(
+    relations: string[]
+  ): {
     [toplevel: string]: string[]
   } {
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -185,8 +189,8 @@ export class ProductRepository extends Repository<Product> {
   }
 
   public async findWithRelationsAndCount(
-    relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = { where: {} }
+    relations: string[] = [],
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<[Product[], number]> {
     let count: number
     let entities: Product[]
@@ -227,15 +231,18 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+    const entitiesToReturn = this.mergeEntitiesWithRelations(
+      entitiesAndRelations
+    )
 
     return [entitiesToReturn, count]
   }
 
   public async findWithRelations(
-    relations: Array<keyof Product> = [],
-    idsOrOptionsWithoutRelations: FindWithRelationsOptions = {},
+    relations: string[] = [],
+    idsOrOptionsWithoutRelations: FindWithoutRelationsOptions | string[] = {
+      where: {},
+    },
     withDeleted = false
   ): Promise<Product[]> {
     let entities: Product[]
@@ -257,7 +264,10 @@ export class ProductRepository extends Repository<Product> {
       return []
     }
 
-    if (relations.length === 0) {
+    if (
+      relations.length === 0 &&
+      !Array.isArray(idsOrOptionsWithoutRelations)
+    ) {
       return await this.findByIds(entitiesIds, idsOrOptionsWithoutRelations)
     }
 
@@ -269,15 +279,16 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn =
-      this.mergeEntitiesWithRelations(entitiesAndRelations)
+    const entitiesToReturn = this.mergeEntitiesWithRelations(
+      entitiesAndRelations
+    )
 
     return entitiesToReturn
   }
 
   public async findOneWithRelations(
-    relations: Array<keyof Product> = [],
-    optionsWithoutRelations: FindWithRelationsOptions = { where: {} }
+    relations: string[] = [],
+    optionsWithoutRelations: FindWithoutRelationsOptions = { where: {} }
   ): Promise<Product> {
     // Limit 1
     optionsWithoutRelations.take = 1
@@ -313,5 +324,61 @@ export class ProductRepository extends Repository<Product> {
       .execute()
 
     return this.findByIds(productIds)
+  }
+
+  public async getFreeTextSearchResultsAndCount(
+    q: string,
+    options: FindWithoutRelationsOptions = { where: {} },
+    relations: string[] = []
+  ): Promise<[Product[], number]> {
+    const cleanedOptions = this._cleanOptions(options)
+
+    let qb = this.createQueryBuilder("product")
+      .leftJoinAndSelect("product.variants", "variant")
+      .leftJoinAndSelect("product.collection", "collection")
+      .select(["product.id"])
+      .where(cleanedOptions.where)
+      .andWhere(
+        new Brackets((qb) => {
+          qb.where(`product.description ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`product.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`variant.title ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`variant.sku ILIKE :q`, { q: `%${q}%` })
+            .orWhere(`collection.title ILIKE :q`, { q: `%${q}%` })
+        })
+      )
+      .skip(cleanedOptions.skip)
+      .take(cleanedOptions.take)
+
+    if (cleanedOptions.withDeleted) {
+      qb = qb.withDeleted()
+    }
+
+    const [results, count] = await qb.getManyAndCount()
+
+    const products = await this.findWithRelations(
+      relations,
+      results.map((r) => r.id),
+      cleanedOptions.withDeleted
+    )
+
+    return [products, count]
+  }
+
+  private _cleanOptions(
+    options: FindWithoutRelationsOptions
+  ): WithRequiredProperty<FindWithoutRelationsOptions, "where"> {
+    const where = options.where ?? {}
+    if ("description" in where) {
+      delete where.description
+    }
+    if ("title" in where) {
+      delete where.title
+    }
+
+    return {
+      ...options,
+      where,
+    }
   }
 }

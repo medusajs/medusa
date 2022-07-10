@@ -1,0 +1,219 @@
+---
+displayed_sidebar: jsClientSidebar
+---
+
+# Class: Address
+
+[internal](../modules/internal.md).Address
+
+## Hierarchy
+
+- [`SoftDeletableEntity`](internal.SoftDeletableEntity.md)
+
+  ↳ **`Address`**
+
+## Properties
+
+### address\_1
+
+• **address\_1**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:37
+
+___
+
+### address\_2
+
+• **address\_2**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:38
+
+___
+
+### beforeInsert
+
+• `Private` **beforeInsert**: `any`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:46
+
+___
+
+### city
+
+• **city**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:39
+
+___
+
+### company
+
+• **company**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:34
+
+___
+
+### country
+
+• **country**: ``null`` \| [`Country`](internal.Country.md)
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:41
+
+___
+
+### country\_code
+
+• **country\_code**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:40
+
+___
+
+### created\_at
+
+• **created\_at**: [`Date`](../modules/internal.md#date)
+
+#### Inherited from
+
+[SoftDeletableEntity](internal.SoftDeletableEntity.md).[created_at](internal.SoftDeletableEntity.md#created_at)
+
+#### Defined in
+
+packages/medusa/dist/interfaces/models/base-entity.d.ts:6
+
+___
+
+### customer
+
+• **customer**: ``null`` \| [`Customer`](internal.Customer.md)
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:33
+
+___
+
+### customer\_id
+
+• **customer\_id**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:32
+
+___
+
+### deleted\_at
+
+• **deleted\_at**: ``null`` \| [`Date`](../modules/internal.md#date)
+
+#### Inherited from
+
+[SoftDeletableEntity](internal.SoftDeletableEntity.md).[deleted_at](internal.SoftDeletableEntity.md#deleted_at)
+
+#### Defined in
+
+packages/medusa/dist/interfaces/models/soft-deletable-entity.d.ts:3
+
+___
+
+### first\_name
+
+• **first\_name**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:35
+
+___
+
+### id
+
+• **id**: `string`
+
+#### Inherited from
+
+[SoftDeletableEntity](internal.SoftDeletableEntity.md).[id](internal.SoftDeletableEntity.md#id)
+
+#### Defined in
+
+packages/medusa/dist/interfaces/models/base-entity.d.ts:5
+
+___
+
+### last\_name
+
+• **last\_name**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:36
+
+___
+
+### metadata
+
+• **metadata**: [`Record`](../modules/internal.md#record)<`string`, `unknown`\>
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:45
+
+___
+
+### phone
+
+• **phone**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:44
+
+___
+
+### postal\_code
+
+• **postal\_code**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:43
+
+___
+
+### province
+
+• **province**: ``null`` \| `string`
+
+#### Defined in
+
+packages/medusa/dist/models/address.d.ts:42
+
+___
+
+### updated\_at
+
+• **updated\_at**: [`Date`](../modules/internal.md#date)
+
+#### Inherited from
+
+[SoftDeletableEntity](internal.SoftDeletableEntity.md).[updated_at](internal.SoftDeletableEntity.md#updated_at)
+
+#### Defined in
+
+packages/medusa/dist/interfaces/models/base-entity.d.ts:7

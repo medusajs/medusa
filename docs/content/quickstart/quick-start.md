@@ -8,6 +8,10 @@ For a more detailed guide on how to set up your local environment to work with M
 
 :::
 
+Alternatively, you can use this button to deploy the Medusa server to Heroku directly:
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/medusajs/medusa-starter-default/tree/feat/deploy-heroku)
+
 ## Prerequisites
 
 Medusa supports Node versions 14 and 16. You can check which version of Node you have by running the following command:

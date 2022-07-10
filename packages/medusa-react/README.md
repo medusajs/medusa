@@ -9,9 +9,9 @@ The library uses [react-query](https://react-query.tanstack.com/overview) as a s
 In order to install the package, run the following
 
 ```bash
-npm install medusa-react react-query
+npm install medusa-react react-query @medusajs/medusa
 # or
-yarn add medusa-react react-query
+yarn add medusa-react react-query @medusajs/medusa
 ```
 
 ## Quick Start

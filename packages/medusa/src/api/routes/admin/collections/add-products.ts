@@ -1,6 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
-import { validator } from "../../../../utils/validator"
+import { Request, Response } from "express"
+
 /**
  * @oas [post] /collections/{id}/products/batch
  * operationId: "PostProductsToCollection"
@@ -28,10 +29,9 @@ import { validator } from "../../../../utils/validator"
  *  "200":
  *    description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
-
-  const validated = await validator(AdminPostProductsToCollectionReq, req.body)
+  const { validatedBody } = req as { validatedBody: AdminPostProductsToCollectionReq }
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
@@ -39,7 +39,7 @@ export default async (req, res) => {
 
   const collection = await productCollectionService.addProducts(
     id,
-    validated.product_ids
+    validatedBody.product_ids
   )
 
   res.status(200).json({ collection })

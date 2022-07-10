@@ -1,6 +1,7 @@
 import { ArrayNotEmpty, IsString } from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
-import { validator } from "../../../../utils/validator"
+import { Request, Response } from "express"
+
 /**
  * @oas [delete] /collections/{id}/products/batch
  * operationId: "DeleteProductsFromCollection"
@@ -28,24 +29,20 @@ import { validator } from "../../../../utils/validator"
  *  "200":
  *    description: OK
  */
-export default async (req, res) => {
+export default async (req: Request, res: Response) => {
   const { id } = req.params
-
-  const validated = await validator(
-    AdminDeleteProductsFromCollectionReq,
-    req.body
-  )
+  const { validatedBody } = req as { validatedBody: AdminDeleteProductsFromCollectionReq }
 
   const productCollectionService: ProductCollectionService = req.scope.resolve(
     "productCollectionService"
   )
 
-  await productCollectionService.removeProducts(id, validated.product_ids)
+  await productCollectionService.removeProducts(id, validatedBody.product_ids)
 
   res.json({
     id,
     object: "product-collection",
-    removed_products: validated.product_ids,
+    removed_products: validatedBody.product_ids,
   })
 }
 

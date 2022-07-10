@@ -1,10 +1,11 @@
-import loadConfig from './config'
+import loadConfig from "./config"
 import "reflect-metadata"
 import Logger from "./logger"
 import apiLoader from "./api"
+import featureFlagsLoader from "./feature-flags"
 import databaseLoader from "./database"
 import defaultsLoader from "./defaults"
-import expressLoader  from "./express"
+import expressLoader from "./express"
 import modelsLoader from "./models"
 import passportLoader from "./passport"
 import pluginsLoader, { registerPluginModels } from "./plugins"
@@ -18,35 +19,50 @@ import subscribersLoader from "./subscribers"
 import { ClassOrFunctionReturning } from "awilix/lib/container"
 import { Connection, getManager } from "typeorm"
 import { Express, NextFunction, Request, Response } from "express"
-import { asFunction, asValue, AwilixContainer, createContainer, Resolver } from "awilix"
+import {
+  asFunction,
+  asValue,
+  AwilixContainer,
+  createContainer,
+  Resolver,
+} from "awilix"
 import { track } from "medusa-telemetry"
 import { MedusaContainer } from "../types/global"
 
 type Options = {
-  directory: string;
-  expressApp: Express;
+  directory: string
+  expressApp: Express
   isTest: boolean
 }
 
-export default async (
-  {
-    directory: rootDirectory,
-    expressApp,
-    isTest
-  }: Options
-): Promise<{ container: MedusaContainer; dbConnection: Connection; app: Express }> => {
+export default async ({
+  directory: rootDirectory,
+  expressApp,
+  isTest,
+}: Options): Promise<{
+  container: MedusaContainer
+  dbConnection: Connection
+  app: Express
+}> => {
   const configModule = loadConfig(rootDirectory)
 
   const container = createContainer() as MedusaContainer
-  container.register('configModule', asValue(configModule))
+  container.register("configModule", asValue(configModule))
 
-  container.registerAdd = function (this: MedusaContainer, name: string, registration: typeof asFunction | typeof asValue) {
+  container.registerAdd = function (
+    this: MedusaContainer,
+    name: string,
+    registration: typeof asFunction | typeof asValue
+  ) {
     const storeKey = name + "_STORE"
 
     if (this.registrations[storeKey] === undefined) {
       this.register(storeKey, asValue([] as Resolver<unknown>[]))
     }
-    const store = this.resolve(storeKey) as (ClassOrFunctionReturning<unknown> | Resolver<unknown>)[]
+    const store = this.resolve(storeKey) as (
+      | ClassOrFunctionReturning<unknown>
+      | Resolver<unknown>
+    )[]
 
     if (this.registrations[name] === undefined) {
       this.register(name, asArray(store))
@@ -59,15 +75,17 @@ export default async (
   // Add additional information to context of request
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
     const ipAddress = requestIp.getClientIp(req) as string
-
-    (req as any).request_context = {
+    ;(req as any).request_context = {
       ip_address: ipAddress,
     }
     next()
   })
 
+  const featureFlagRouter = featureFlagsLoader(configModule, Logger)
+
   container.register({
-    logger: asValue(Logger)
+    logger: asValue(Logger),
+    featureFlagRouter: asValue(featureFlagRouter),
   })
 
   await redisLoader({ container, configModule, logger: Logger })
@@ -83,7 +101,7 @@ export default async (
   await registerPluginModels({
     rootDirectory,
     container,
-    configModule
+    configModule,
   })
   const pmAct = Logger.success(pmActivity, "Plugin models initialized") || {}
   track("PLUGIN_MODELS_INIT_COMPLETED", { duration: pmAct.duration })
@@ -100,7 +118,7 @@ export default async (
   const dbAct = Logger.success(dbActivity, "Database initialized") || {}
   track("DATABASE_INIT_COMPLETED", { duration: dbAct.duration })
 
-  container.register({ manager: asValue(dbConnection.manager), })
+  container.register({ manager: asValue(dbConnection.manager) })
 
   const stratActivity = Logger.activity("Initializing strategies")
   track("STRATEGIES_INIT_STARTED")
@@ -123,8 +141,8 @@ export default async (
 
   // Add the registered services to the request scope
   expressApp.use((req: Request, res: Response, next: NextFunction) => {
-    container.register({ manager: asValue(getManager()) });
-    (req as any).scope = container.createScope()
+    container.register({ manager: asValue(getManager()) })
+    ;(req as any).scope = container.createScope()
     next()
   })
 
