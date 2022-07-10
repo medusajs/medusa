@@ -52,6 +52,12 @@ describe("/admin/store", () => {
             code: "usd",
           },
         ],
+        feature_flags: [
+          {
+            key: "sales_channels",
+            value: false,
+          },
+        ],
         default_currency_code: "usd",
         created_at: expect.any(String),
         updated_at: expect.any(String),
