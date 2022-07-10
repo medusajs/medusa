@@ -1,4 +1,4 @@
-import { IFlagRouter } from "../types/feature-flags"
+import { FeatureFlagsResponse, IFlagRouter } from "../types/feature-flags"
 
 export class FlagRouter implements IFlagRouter {
   private flags: Record<string, boolean> = {}
@@ -15,9 +15,10 @@ export class FlagRouter implements IFlagRouter {
     this.flags[key] = value
   }
 
-  public getFlags(): string[] {
-    return Object.keys(this.flags || {}).filter((flag) =>
-      this.isFeatureEnabled(flag)
-    )
+  public listFlags(): FeatureFlagsResponse {
+    return Object.entries(this.flags || {}).map(([key, value]) => ({
+      key,
+      value,
+    }))
   }
 }

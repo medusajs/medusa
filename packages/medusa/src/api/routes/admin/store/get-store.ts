@@ -1,9 +1,10 @@
+import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
 import {
   FulfillmentProviderService,
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
-import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
+import { FeatureFlagsResponse } from "../../../../types/feature-flags"
 import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
@@ -40,10 +41,10 @@ export default async (req, res) => {
   })) as Store & {
     payment_providers: PaymentProvider[]
     fulfillment_providers: FulfillmentProvider[]
-    feature_flags: string[]
+    feature_flags: FeatureFlagsResponse
   }
 
-  data.feature_flags = featureFlagRouter.getFlags()
+  data.feature_flags = featureFlagRouter.listFlags()
 
   const paymentProviders = await paymentProviderService.list()
   const fulfillmentProviders = await fulfillmentProviderService.list()

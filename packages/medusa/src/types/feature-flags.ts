@@ -1,7 +1,12 @@
 export interface IFlagRouter {
   isFeatureEnabled: (key: string) => boolean
-  getFlags: () => string[]
+  listFlags: () => FeatureFlagsResponse
 }
+
+export type FeatureFlagsResponse = {
+  key: string
+  value: boolean
+}[]
 
 export type FlagSettings = {
   key: string
