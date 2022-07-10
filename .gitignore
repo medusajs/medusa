@@ -2,6 +2,7 @@ node_modules
 *yarn-error.log
 .pnp.*
 .yarn/*
+**.yarn
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
@@ -13,5 +14,5 @@ lerna-debug.log
 .eslintcache
 
 .idea
-.turbo
+**.turbo
 build/**
