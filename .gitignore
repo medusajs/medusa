@@ -10,6 +10,7 @@ node_modules
 !.yarn/versions
 
 packages/**/.yarn/*
+integration-tests/**/.yarn/*
 
 .DS_Store
 lerna-debug.log
