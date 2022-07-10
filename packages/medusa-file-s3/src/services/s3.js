@@ -43,7 +43,7 @@ class S3Service extends AbstractFileService {
     })
   }
 
-  delete(file) {
+  async delete(file) {
     aws.config.setPromisesDependency(null)
     aws.config.update({
       accessKeyId: this.accessKeyId_,
