@@ -26,10 +26,13 @@
     "@babel/cli": "^7.12.1",
     "@babel/core": "^7.12.3",
     "babel-preset-medusa-package": "^1.1.19",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "jest": "^25.5.2"
   },
   "homepage": "https://github.com/medusajs/medusa/tree/master/packages/medusa-dev-cli#readme",
-  "keywords": ["medusa"],
+  "keywords": [
+    "medusa"
+  ],
   "license": "MIT",
   "main": "index.js",
   "repository": {
@@ -38,10 +41,10 @@
     "directory": "packages/medusa-dev-cli"
   },
   "scripts": {
-    "prepare": "cross-env NODE_ENV=production npm run build",
+    "prepare": "cross-env NODE_ENV=production yarn run build",
     "build": "babel src --out-dir dist",
-    "test": "jest",
-    "watch": "babel -w src --out-dir dist"
+    "watch": "babel -w src --out-dir dist",
+    "test": "jest --passWithNoTests"
   },
   "engines": {
     "node": ">=12.13.0"
