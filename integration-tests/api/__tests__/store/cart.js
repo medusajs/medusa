@@ -1454,7 +1454,27 @@ describe("/store/carts", () => {
         .catch((error) => console.log(error))
 
       expect(withDiscount.data.cart.region_id).toEqual("test-region")
-      expect(withDiscount.data.cart.discount_total).toEqual(240)
+      expect(withDiscount.data.cart.discount_total).toEqual(2400)
+      expect(withDiscount.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant-sale-cg",
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                amount: 1200,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            variant_id: "test-variant",
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                amount: 1200,
+              }),
+            ]),
+          }),
+        ])
+      )
 
       const response = await api
         .post("/store/carts/test-cart-3", {
