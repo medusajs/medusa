@@ -1,6 +1,13 @@
-import { IsNotEmpty, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsArray,
+  IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+import { ProductCollectionInput } from "../../../../types/product-collection"
 
 /**
  * @oas [post] /collections
@@ -24,6 +31,14 @@ import { Request, Response } from "express"
  *           metadata:
  *             description: An optional set of key-value pairs to hold additional information.
  *             type: object
+ *           images:
+ *             description: Images of the Product Collection.
+ *             type: array
+ *             items:
+ *               type: string
+ *           thumbnail:
+ *             description: The thumbnail to use for the Product Collection.
+ *             type: string
  * tags:
  *   - Collection
  * responses:
@@ -43,7 +58,9 @@ export default async (req: Request, res: Response) => {
     "productCollectionService"
   )
 
-  const created = await productCollectionService.create(validatedBody)
+  const created = await productCollectionService.create(
+    validatedBody as ProductCollectionInput
+  )
   const collection = await productCollectionService.retrieve(created.id)
 
   res.status(200).json({ collection })
@@ -61,4 +78,12 @@ export class AdminPostCollectionsReq {
   @IsObject()
   @IsOptional()
   metadata?: object
+
+  @IsArray()
+  @IsOptional()
+  images: string[]
+
+  @IsString()
+  @IsOptional()
+  thumbnail?: string
 }
