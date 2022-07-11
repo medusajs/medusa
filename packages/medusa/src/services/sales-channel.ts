@@ -163,9 +163,9 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
           `sc.store`,
           Store,
           "store",
-          `store.default_sales_channel_id = :salesChannelId`,
-          { salesChannelId }
+          `store.default_sales_channel_id = sc.id`
         )
+        .where("sc.id = :id", { id: salesChannelId })
         .getOne()) as SalesChannel & { store?: Store }
 
       // if sales channel does not exist, return early
