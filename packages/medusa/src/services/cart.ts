@@ -288,11 +288,8 @@ class CartService extends TransactionBaseService<CartService> {
         )
         const validatedId = validateId(cartId)
 
-        const {
-          select,
-          relations,
-          totalsToSelect,
-        } = this.transformQueryForTotals_(options)
+        const { select, relations, totalsToSelect } =
+          this.transformQueryForTotals_(options)
 
         const query = buildQuery(
           { id: validatedId },
@@ -898,9 +895,7 @@ class CartService extends TransactionBaseService<CartService> {
   protected async createOrFetchUserFromEmail_(
     email: string
   ): Promise<Customer> {
-    const schema = Validator.string()
-      .email()
-      .required()
+    const schema = Validator.string().email().required()
     const { value, error } = schema.validate(email.toLowerCase())
     if (error) {
       throw new MedusaError(
@@ -1559,9 +1554,10 @@ class CartService extends TransactionBaseService<CartService> {
           ],
         })
 
-        const cartCustomShippingOptions = await this.customShippingOptionService_
-          .withTransaction(transactionManager)
-          .list({ cart_id: cart.id })
+        const cartCustomShippingOptions =
+          await this.customShippingOptionService_
+            .withTransaction(transactionManager)
+            .list({ cart_id: cart.id })
 
         const customShippingOption = this.findCustomShippingOption(
           cartCustomShippingOptions,
@@ -1828,8 +1824,7 @@ class CartService extends TransactionBaseService<CartService> {
     }
 
     if (cart?.items?.length) {
-      // line item adjustments should be refreshed on region change having
-      // filtered out discounts that are not applicable in region
+      // line item adjustments should be refreshed on region change after having filtered out inapplicable discounts
       await this.refreshAdjustments_(cart)
     }
 
