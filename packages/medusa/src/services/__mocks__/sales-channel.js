@@ -27,6 +27,14 @@ export const SalesChannelServiceMock = {
   delete: jest.fn().mockImplementation((id, config) => {
     return Promise.resolve()
   }),
+
+  createDefault: jest.fn().mockImplementation(() => {
+    return Promise.resolve({
+      name: "sales channel 1 name",
+      description: "sales channel 1 description",
+      is_disabled: false,
+    })
+  })
 }
 
 const mock = jest.fn().mockImplementation(() => {
