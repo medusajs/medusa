@@ -187,17 +187,26 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
           }
         )
 
+        orderCount = batchJob.context?.batch_size ?? count
+        let orders = []
+
         const lineDescriptor = this.getLineDescriptor(
           list_config.select as string[],
           list_config.relations as string[]
         )
 
         const header = this.buildHeader(lineDescriptor)
-        approximateFileSize += Buffer.from(header).byteLength
         writeStream.write(header)
+        approximateFileSize += Buffer.from(header).byteLength
 
-        orderCount = batchJob.context?.batch_size ?? count
-        let orders = []
+        await this.batchJobService_
+          .withTransaction(transactionManager)
+          .update(batchJobId, {
+            result: {
+              file_key: fileKey,
+              file_size: approximateFileSize,
+            },
+          })
 
         while (offset < orderCount) {
           orders = await this.orderService_
@@ -221,7 +230,6 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             .withTransaction(transactionManager)
             .update(batchJobId, {
               result: {
-                file_key: fileKey,
                 file_size: approximateFileSize,
                 count: orderCount,
                 advancement_count: advancementCount,

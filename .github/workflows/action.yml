@@ -8,6 +8,9 @@ on:
 jobs:
   unit-tests:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -28,8 +31,8 @@ jobs:
       - name: Assert changed
         run: ./scripts/assert-changed-files-actions.sh "packages"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
         with:
           extension: unit-tests
 
@@ -41,6 +44,9 @@ jobs:
 
   integration-tests-api:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     services:
       redis:
@@ -65,6 +71,10 @@ jobs:
         ports:
           - 5432:5432
 
+    strategy:
+      matrix:
+        node: [0, 1, 2, 3]
+
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -82,35 +92,50 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
         with:
           extension: integration-tests
 
       - name: Build Packages
-        run: lerna run build
+        run: yarn build
 
       - name: Install dev cli
-        run: sudo npm i -g medusa-dev-cli
+        run: sudo npm i -g medusa-dev-cli@latest
 
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
-      - name: Force install API
-        run: medusa-dev --force-install
+      - name: Set npm registry
+        run: |
+          yarn config set npmRegistryServer http://localhost:4873
+          echo -e 'unsafeHttpWhitelist:\n - "localhost"' >> .yarnrc.yml
+
+      - name: Force install
+        run: medusa-dev --force-install --external-registry
         working-directory: integration-tests/api
 
       - name: Build integration tests
         run: yarn build
         working-directory: integration-tests/api
 
-      - name: Run API integration tests
-        run: yarn test:integration:api --maxWorkers=50% --silent=false
+      - name: Split tests
+        id: split-tests
+        run: echo "::set-output name=split::$(npx jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')"
+        working-directory: integration-tests/api
+
+      - name: Run integration tests
+        run: echo $SPLIT | jq '.[${{ matrix.node }}] | .[] | @text' | xargs yarn test --maxWorkers=50%
+        working-directory: integration-tests/api
         env:
           DB_PASSWORD: postgres
+          SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-plugins:
     runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
 
     services:
       postgres:
@@ -143,13 +168,13 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
         with:
           extension: integration-tests
 
       - name: Build Packages
-        run: lerna run build
+        run: yarn build
 
       - name: Install dev cli
         run: sudo npm i -g medusa-dev-cli
@@ -157,8 +182,13 @@ jobs:
       - name: Set path to medusa repo
         run: medusa-dev --set-path-to-repo `pwd`
 
+      - name: Set npm registry
+        run: |
+          yarn config set npmRegistryServer http://localhost:4873
+          echo -e 'unsafeHttpWhitelist:\n - "localhost"' >> .yarnrc.yml
+
       - name: Force install
-        run: medusa-dev --force-install
+        run: medusa-dev --force-install --external-registry
         working-directory: integration-tests/plugins
 
       - name: Build plugin integration tests
