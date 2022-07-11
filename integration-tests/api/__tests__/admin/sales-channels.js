@@ -305,6 +305,11 @@ describe("sales channels", () => {
       }
     })
 
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
     it("expands sales channel for single", async () => {
       const api = useApi()
 
