@@ -69,7 +69,6 @@
     "axios": "^0.24.0",
     "babel-loader": "^8.2.3",
     "dts-cli": "^1.5.1",
-    "eslint-config-react-app": "^7.0.1",
     "husky": "^7.0.4",
     "msw": "^0.35.0",
     "msw-storybook-addon": "^1.5.0",
