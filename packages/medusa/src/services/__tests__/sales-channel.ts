@@ -43,14 +43,14 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      storeService: StoreServiceMock
+      storeService: StoreServiceMock as any
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it("should call the create method if the store does not have a default sales channel", async () => {
+    it("should call the save method if the store does not have a default sales channel", async () => {
       await salesChannelService.createDefault()
 
       expect(salesChannelRepositoryMock.save).toHaveBeenCalledTimes(1)
@@ -78,7 +78,7 @@ describe("SalesChannelService", () => {
               }
             })
           })
-        }
+        } as any
       })
 
       const salesChannel = await localSalesChannelService.createDefault()
