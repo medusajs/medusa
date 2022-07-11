@@ -180,6 +180,7 @@ describe("sales channels", () => {
 
   describe("DELETE /admin/sales-channels/:id", () => {
     let salesChannel
+    let defaultChannel
 
     beforeEach(async () => {
       try {
@@ -188,6 +189,14 @@ describe("sales channels", () => {
           name: "test name",
           description: "test description",
         })
+
+        defaultChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "Default channel",
+        })
+
+        await dbConnection.manager.query(
+          `UPDATE store SET default_sales_channel_id = ${defaultChannel.id}`
+        )
       } catch (e) {
         console.error(e)
       }
@@ -197,6 +206,7 @@ describe("sales channels", () => {
       const db = useDb()
       await db.teardown()
     })
+
     it("should delete the requested sales channel", async () => {
       const api = useApi()
 
@@ -285,6 +295,21 @@ describe("sales channels", () => {
 
       expect(deletedSalesChannel.id).toEqual(salesChannel.id)
       expect(deletedSalesChannel.deleted_at).not.toEqual(null)
+    })
+
+    it("should throw if we attempt to delete default channel", async () => {
+      const api = useApi()
+
+      try {
+        await api.delete(
+          `/admin/sales-channels/${defaultChannel.id}`,
+          adminReqConfig
+        )
+      } catch (error) {
+        expect(error.response.data.message).toEqual(
+          "You cannot delete the default sales channel"
+        )
+      }
     })
   })
 
