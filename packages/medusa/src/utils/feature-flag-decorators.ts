@@ -14,9 +14,12 @@ import { FlagRouter } from "./flag-router"
   */
 let setImmediate_
 try {
- setImmediate_ = setImmediate
+  setImmediate_ = setImmediate
 } catch (e) {
- setImmediate_ = ((callback: () => void | Promise<void>) => callback())
+  console.warn(
+    "[feature-flag-decorator.ts] setImmediate will use a mock, this happen when this file is required in a browser environment and should not impact you"
+  )
+  setImmediate_ = ((callback: () => void | Promise<void>) => callback())
 }
 
 export function FeatureFlagColumn(
