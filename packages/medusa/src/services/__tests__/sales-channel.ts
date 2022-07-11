@@ -1,10 +1,11 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import { FindConditions, FindOneOptions } from "typeorm"
-import { SalesChannel } from "../../models"
-import { EventBusService, StoreService } from "../index"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { store, StoreServiceMock } from "../__mocks__/store"
+import { EventBusService, ProductService, StoreService } from "../index"
+import { FindConditions, FindOneOptions } from "typeorm"
+import { SalesChannel } from "../../models"
+import { ProductServiceMock } from "../__mocks__/product";
+import { store, StoreServiceMock } from "../__mocks__/store";
 
 describe("SalesChannelService", () => {
   const salesChannelData = {
@@ -15,7 +16,10 @@ describe("SalesChannelService", () => {
 
   const salesChannelRepositoryMock = {
     ...MockRepository({
-      findOne: jest.fn().mockImplementation((queryOrId: string | FindOneOptions<SalesChannel>): any => {
+      findOne: jest
+      .fn()
+      .mockImplementation(
+        (queryOrId: string | FindOneOptions<SalesChannel>): any => {
           return Promise.resolve({
             id:
               typeof queryOrId === "string"
@@ -40,7 +44,7 @@ describe("SalesChannelService", () => {
         ...salesChannel
       }),
       softRemove: jest.fn().mockImplementation((id: string): any => {
-        return Promise.resolve()
+          return Promise.resolve()
       }),
     }),
     getFreeTextSearchResultsAndCount: jest.fn().mockImplementation(() =>
@@ -49,9 +53,17 @@ describe("SalesChannelService", () => {
           id: IdMap.getId("sales_channel_1"),
           ...salesChannelData
         },
-      ]),
+      ])
     ),
     removeProducts: jest.fn().mockImplementation((id: string, productIds: string[]): any => {
+      Promise.resolve([
+        {
+          id: IdMap.getId("sales_channel_1"),
+          ...salesChannelData
+        },
+      ])
+    }),
+    addProducts: jest.fn().mockImplementation((id: string, productIds: string[]): any => {
       return Promise.resolve()
     }),
   }
@@ -62,6 +74,7 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
+      productService: ProductServiceMock as unknown as ProductService,
     })
 
     beforeEach(() => {
@@ -84,6 +97,7 @@ describe("SalesChannelService", () => {
         manager: MockManager,
         eventBusService: EventBusServiceMock as unknown as EventBusService,
         salesChannelRepository: salesChannelRepositoryMock,
+        productService: ProductServiceMock as unknown as ProductService,
         storeService: {
           ...StoreServiceMock,
           retrieve: jest.fn().mockImplementation(() => {
@@ -116,6 +130,7 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
+      productService: ProductServiceMock as unknown as ProductService,
     })
 
     beforeEach(() => {
@@ -146,6 +161,7 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
+      productService: ProductServiceMock as unknown as ProductService,
     })
 
     const update = {
@@ -181,6 +197,7 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
+      productService: ProductServiceMock as unknown as ProductService,
     })
 
     afterEach(() => {
@@ -244,6 +261,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
+      productService: ProductServiceMock as unknown as ProductService,
       storeService: {
         ...StoreServiceMock,
         retrieve: jest.fn().mockImplementation(() => {
@@ -299,6 +317,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
+      productService: ProductServiceMock as unknown as ProductService,
       storeService: StoreServiceMock as unknown as StoreService,
     })
 
@@ -314,6 +333,38 @@ describe("SalesChannelService", () => {
 
       expect(salesChannelRepositoryMock.removeProducts).toHaveBeenCalledTimes(1)
       expect(salesChannelRepositoryMock.removeProducts).toHaveBeenCalledWith(
+        IdMap.getId("sales_channel_1"),
+        [IdMap.getId("sales_channel_1_product_1")]
+      )
+      expect(salesChannel).toBeTruthy()
+      expect(salesChannel).toEqual({
+        id: IdMap.getId("sales_channel_1"),
+        ...salesChannelData,
+      })
+    })
+  })
+
+  describe("Add products", () => {
+    const salesChannelService = new SalesChannelService({
+      manager: MockManager,
+      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService,
+      productService: ProductServiceMock as unknown as ProductService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should add a list of product to a sales channel', async () => {
+      const salesChannel = await salesChannelService.addProducts(
+        IdMap.getId("sales_channel_1"),
+        [IdMap.getId("sales_channel_1_product_1")]
+      )
+
+      expect(salesChannelRepositoryMock.addProducts).toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.addProducts).toHaveBeenCalledWith(
         IdMap.getId("sales_channel_1"),
         [IdMap.getId("sales_channel_1_product_1")]
       )

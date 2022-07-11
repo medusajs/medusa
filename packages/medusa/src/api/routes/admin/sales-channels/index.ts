@@ -11,6 +11,7 @@ import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 import { AdminPostSalesChannelsReq } from "./create-sales-channel"
 import { AdminGetSalesChannelsParams } from "./list-sales-channels"
 import { AdminDeleteSalesChannelsChannelProductsBatchReq } from "./delete-products-batch"
+import { AdminPostSalesChannelsChannelProductsBatchReq } from "./add-product-batch"
 
 const route = Router()
 
@@ -32,6 +33,11 @@ export default (app) => {
     "/",
     middlewares.wrap(require("./get-sales-channel").default)
   )
+  salesChannelRouter.post(
+    "/",
+    transformBody(AdminPostSalesChannelsSalesChannelReq),
+    middlewares.wrap(require("./update-sales-channel").default)
+  )
   salesChannelRouter.delete(
     "/",
     middlewares.wrap(require("./delete-sales-channel").default)
@@ -46,17 +52,16 @@ export default (app) => {
     transformBody(AdminDeleteSalesChannelsChannelProductsBatchReq),
     middlewares.wrap(require("./delete-products-batch").default)
   )
+  salesChannelRouter.post(
+    "/products/batch",
+    transformBody(AdminPostSalesChannelsChannelProductsBatchReq),
+    middlewares.wrap(require("./add-product-batch").default)
+  )
 
   route.post(
     "/",
     transformBody(AdminPostSalesChannelsReq),
     middlewares.wrap(require("./create-sales-channel").default)
-  )
-
-  route.post(
-    "/:id",
-    transformBody(AdminPostSalesChannelsSalesChannelReq),
-    middlewares.wrap(require("./update-sales-channel").default)
   )
 
   return app
@@ -68,10 +73,6 @@ export type AdminSalesChannelsRes = {
 
 export type AdminSalesChannelsDeleteRes = DeleteResponse
 
-export type AdminSalesChannelListRes = PaginatedResponse & {
-  sales_channels: SalesChannel[]
-}
-
 export type AdminSalesChannelsListRes = PaginatedResponse & {
   sales_channels: SalesChannel[]
 }
@@ -82,3 +83,4 @@ export * from "./list-sales-channels"
 export * from "./update-sales-channel"
 export * from "./delete-sales-channel"
 export * from "./delete-products-batch"
+export * from "./add-product-batch"

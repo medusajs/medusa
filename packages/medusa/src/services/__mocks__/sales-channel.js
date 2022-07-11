@@ -51,6 +51,10 @@ export const SalesChannelServiceMock = {
   removeProducts: jest.fn().mockImplementation((id, productIds) => {
     return Promise.resolve()
   }),
+
+  addProducts: jest.fn().mockImplementation((id, productIds) => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
