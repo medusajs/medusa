@@ -137,7 +137,7 @@ export default async ({ container }: { container: AwilixContainer }): Promise<vo
 
     const isSalesChannelEnabled = featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)
     if (isSalesChannelEnabled) {
-      await salesChannelService.createDefault()
+      await salesChannelService.withTransaction(manager).createDefault()
     }
   })
 }
