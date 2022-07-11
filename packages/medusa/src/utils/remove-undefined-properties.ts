@@ -3,12 +3,10 @@ export function removeUndefinedProperties<T extends object>(inputObj: T): T {
     const res = {} as T
 
     Object.keys(obj).reduce((acc: T, key: string) => {
-      if (typeof obj[key] !== "undefined") {
-        acc[key] = (obj[key] !== null && typeof obj[key] === "object")
-          ? removeProperties(obj[key])
-          : obj[key]
+      if (typeof obj[key] === "undefined") {
+        return acc
       }
-
+      acc[key] = removeUndefinedDeeply(obj[key])
       return acc
     }, res)
 
@@ -16,4 +14,26 @@ export function removeUndefinedProperties<T extends object>(inputObj: T): T {
   }
 
   return removeProperties(inputObj)
+}
+
+function removeUndefinedDeeply(input: unknown): any {
+  if (typeof input !== "undefined") {
+    if (input === null || input === "null") {
+      return null
+    } else if (Array.isArray(input)) {
+      return input.map((item) => {
+        return removeUndefinedDeeply(item)
+      }).filter(v => typeof v !== "undefined")
+    } else if (typeof input === "object") {
+       return Object.keys(input).reduce((acc: Record<string, unknown>, key: string) => {
+         if (typeof input[key] === "undefined") {
+           return acc
+         }
+         acc[key] = removeUndefinedDeeply(input[key])
+         return acc
+       }, {})
+    } else {
+      return input
+    }
+  }
 }

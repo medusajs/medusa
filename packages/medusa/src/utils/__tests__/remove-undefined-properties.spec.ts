@@ -10,7 +10,18 @@ describe("removeUndefinedProperties", ()  => {
         test3_1: undefined,
         test3_2: "test3_2",
         test3_3: null,
-      }
+      },
+      test4: [
+        undefined,
+        null,
+        "null",
+        [1, 2, undefined],
+        {
+          test4_1: undefined,
+          test4_2: "test4_2",
+          test4_3: null,
+        }
+      ]
     }
 
     const cleanObject = removeUndefinedProperties(inputObj)
@@ -21,7 +32,16 @@ describe("removeUndefinedProperties", ()  => {
       test3: {
         test3_2: "test3_2",
         test3_3: null,
-      }
+      },
+      test4: [
+        null,
+        null,
+        [1, 2],
+        {
+          test4_2: "test4_2",
+          test4_3: null
+        }
+      ]
     })
   })
 })
