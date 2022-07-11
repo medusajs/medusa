@@ -1,7 +1,7 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { EventBusService } from "../index"
+import { EventBusService, StoreService } from "../index"
 import { FindConditions, FindOneOptions } from "typeorm"
 import { SalesChannel } from "../../models"
 import { store, StoreServiceMock } from "../__mocks__/store";
@@ -43,7 +43,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      storeService: StoreServiceMock as any
+      storeService: StoreServiceMock as unknown as StoreService
     })
 
     beforeEach(() => {
@@ -97,6 +97,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService
     })
 
     beforeEach(() => {
@@ -126,6 +127,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService
     })
 
     const update = {
@@ -159,7 +161,8 @@ describe("SalesChannelService", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
-      salesChannelRepository: salesChannelRepositoryMock
+      salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService
     })
 
     beforeEach(() => {
