@@ -41,7 +41,7 @@ export const useAdminSalesChannel = (
 }
 
 /**
- * retrieve a list of sales channel
+ * retrieve a list of sales channels
  * @experimental This feature is under development and may change in the future.
  * To use this feature please enable feature flag `sales_channels` in your medusa backend project.
  * @description Retrieve a list of sales channel
