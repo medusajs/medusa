@@ -6,14 +6,15 @@ export class extendedBatchJob1657267320181 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // check if batch job table exists and status column exists
     // if that's the case, the previous migration has already been run
-    const batchJobTableExists = await queryRunner.query(`SELECT exists (
-            SELECT FROM information_schema.columns
-              WHERE  table_name = 'batch_job'
-              AND    column_name   = 'status'
-              )`)
+    const batchJobColumnStatusExists = await queryRunner.query(`
+      SELECT exists (
+        SELECT FROM information_schema.columns
+        WHERE  table_name = 'batch_job'
+        AND    column_name   = 'status'
+      )`)
 
     // if the table exists, we alter the table to add the new columns
-    if (batchJobTableExists[0].exists) {
+    if (batchJobColumnStatusExists[0].exists) {
       await queryRunner.query(`
         ALTER TABLE "batch_job" DROP COLUMN "status";
         DROP TYPE "public"."batch_job_status_enum";
