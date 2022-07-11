@@ -12,6 +12,10 @@ import {
   ProductVariantFactoryData,
   simpleProductVariantFactory,
 } from "./simple-product-variant-factory"
+import {
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "./simple-sales-channel-factory"
 
 export type ProductFactoryData = {
   id?: string
@@ -22,6 +26,7 @@ export type ProductFactoryData = {
   tags?: string[]
   options?: { id: string; title: string }[]
   variants?: ProductVariantFactoryData[]
+  sales_channels?: SalesChannelFactoryData[]
 }
 
 export const simpleProductFactory = async (
@@ -42,6 +47,16 @@ export const simpleProductFactory = async (
   const gcProfile = await manager.findOne(ShippingProfile, {
     type: ShippingProfileType.GIFT_CARD,
   })
+
+  let sales_channels
+  if (data.sales_channels) {
+    sales_channels = await Promise.all(
+      data.sales_channels.map(
+        async (salesChannel) =>
+          await simpleSalesChannelFactory(connection, salesChannel)
+      )
+    )
+  }
 
   const prodId = data.id || `simple-product-${Math.random() * 1000}`
   const productToCreate = {
@@ -76,6 +91,8 @@ export const simpleProductFactory = async (
   }
 
   const toSave = manager.create(Product, productToCreate)
+
+  toSave.sales_channels = sales_channels
 
   await manager.save(toSave)
 

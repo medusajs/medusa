@@ -2,13 +2,20 @@ import { Router } from "express"
 import "reflect-metadata"
 import { PricedProduct } from "../../../../types/pricing"
 import { Product, ProductTag, ProductType } from "../../../.."
-import { PaginatedResponse } from "../../../../types/common"
-import middlewares from "../../../middlewares"
+import { EmptyQueryParams, PaginatedResponse } from "../../../../types/common"
+import middlewares, { transformQuery } from "../../../middlewares"
+import { AdminGetProductsParams } from "./list-products"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 const route = Router()
 
-export default (app) => {
+export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/products", route)
+
+  const relations = [...defaultAdminProductRelations]
+  if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+    relations.push("sales_channels")
+  }
 
   route.post("/", middlewares.wrap(require("./create-product").default))
   route.post("/:id", middlewares.wrap(require("./update-product").default))
@@ -53,11 +60,25 @@ export default (app) => {
     "/:id/metadata",
     middlewares.wrap(require("./set-metadata").default)
   )
+  route.get(
+    "/:id",
+    transformQuery(EmptyQueryParams, {
+      defaultRelations: relations,
+      defaultFields: defaultAdminProductFields,
+      allowedFields: allowedAdminProductFields,
+      isList: false,
+    }),
+    middlewares.wrap(require("./get-product").default)
+  )
 
-  route.get("/:id", middlewares.wrap(require("./get-product").default))
   route.get(
     "/",
-    middlewares.normalizeQuery(),
+    transformQuery(AdminGetProductsParams, {
+      defaultRelations: defaultAdminProductRelations,
+      defaultFields: defaultAdminProductFields,
+      allowedFields: allowedAdminProductFields,
+      isList: true,
+    }),
     middlewares.wrap(require("./list-products").default)
   )
 
@@ -141,6 +162,7 @@ export const allowedAdminProductRelations = [
   "tags",
   "type",
   "collection",
+  "sales_channels",
 ]
 
 export type AdminProductsDeleteOptionRes = {

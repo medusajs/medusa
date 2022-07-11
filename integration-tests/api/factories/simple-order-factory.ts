@@ -6,7 +6,6 @@ import {
   PaymentStatus,
   FulfillmentStatus,
 } from "@medusajs/medusa"
-
 import {
   DiscountFactoryData,
   simpleDiscountFactory,
@@ -24,6 +23,10 @@ import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
+import {
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "./simple-sales-channel-factory"
 
 export type OrderFactoryData = {
   id?: string
@@ -37,6 +40,7 @@ export type OrderFactoryData = {
   discounts?: DiscountFactoryData[]
   shipping_address?: AddressFactoryData
   shipping_methods?: ShippingMethodFactoryData[]
+  sales_channel?: SalesChannelFactoryData
 }
 
 export const simpleOrderFactory = async (
@@ -79,6 +83,14 @@ export const simpleOrderFactory = async (
     )
   }
 
+  let sales_channel
+  if (typeof data.sales_channel !== "undefined") {
+    sales_channel = await simpleSalesChannelFactory(
+      connection,
+      data.sales_channel
+    )
+  }
+
   const id = data.id || `simple-order-${Math.random() * 1000}`
   const toSave = manager.create(Order, {
     id,
@@ -92,6 +104,7 @@ export const simpleOrderFactory = async (
     currency_code: currencyCode,
     tax_rate: taxRate,
     shipping_address_id: address.id,
+    sales_channel_id: sales_channel?.id ?? null,
   })
 
   const order = await manager.save(toSave)
@@ -101,16 +114,17 @@ export const simpleOrderFactory = async (
     await simpleShippingMethodFactory(connection, { ...sm, order_id: order.id })
   }
 
-  const items = data.line_items.map((item) => {
-    let adjustments = item?.adjustments || []
-    return {
-      ...item,
-      adjustments: adjustments.map((adj) => ({
-        ...adj,
-        discount_id: discounts.find((d) => d.code === adj?.discount_code),
-      })),
-    }
-  })
+  const items =
+    data.line_items?.map((item) => {
+      const adjustments = item?.adjustments || []
+      return {
+        ...item,
+        adjustments: adjustments.map((adj) => ({
+          ...adj,
+          discount_id: discounts.find((d) => d.code === adj?.discount_code),
+        })),
+      }
+    }) || []
 
   for (const item of items) {
     await simpleLineItemFactory(connection, { ...item, order_id: id })

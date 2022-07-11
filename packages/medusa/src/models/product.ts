@@ -9,7 +9,6 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
 } from "typeorm"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Image } from "./image"
@@ -21,10 +20,7 @@ import { ProductVariant } from "./product-variant"
 import { ShippingProfile } from "./shipping-profile"
 import { SoftDeletableEntity } from "../interfaces/models/soft-deletable-entity"
 import { generateEntityId } from "../utils/generate-entity-id"
-import {
-  FeatureFlagColumn,
-  FeatureFlagDecorators,
-} from "../utils/feature-flag-decorators"
+import { FeatureFlagDecorators } from "../utils/feature-flag-decorators"
 import { SalesChannel } from "./sales-channel"
 
 export enum ProductStatus {

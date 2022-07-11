@@ -12,6 +12,10 @@ import {
 } from "./simple-line-item-factory"
 import { RegionFactoryData, simpleRegionFactory } from "./simple-region-factory"
 import {
+  SalesChannelFactoryData,
+  simpleSalesChannelFactory,
+} from "./simple-sales-channel-factory"
+import {
   ShippingMethodFactoryData,
   simpleShippingMethodFactory,
 } from "./simple-shipping-method-factory"
@@ -24,6 +28,7 @@ export type CartFactoryData = {
   line_items?: LineItemFactoryData[]
   shipping_address?: AddressFactoryData
   shipping_methods?: ShippingMethodFactoryData[]
+  sales_channel?: SalesChannelFactoryData
 }
 
 export const simpleCartFactory = async (
@@ -62,6 +67,14 @@ export const simpleCartFactory = async (
 
   const address = await simpleAddressFactory(connection, data.shipping_address)
 
+  let sales_channel
+  if (typeof data.sales_channel !== "undefined") {
+    sales_channel = await simpleSalesChannelFactory(
+      connection,
+      data.sales_channel
+    )
+  }
+
   const id = data.id || `simple-cart-${Math.random() * 1000}`
   const toSave = manager.create(Cart, {
     id,
@@ -70,6 +83,7 @@ export const simpleCartFactory = async (
     region_id: regionId,
     customer_id: customerId,
     shipping_address_id: address.id,
+    sales_channel_id: sales_channel?.id ?? null,
   })
 
   const cart = await manager.save(toSave)
@@ -79,7 +93,7 @@ export const simpleCartFactory = async (
     await simpleShippingMethodFactory(connection, { ...sm, cart_id: id })
   }
 
-  const items = data.line_items
+  const items = data.line_items || []
   for (const item of items) {
     await simpleLineItemFactory(connection, { ...item, cart_id: id })
   }
