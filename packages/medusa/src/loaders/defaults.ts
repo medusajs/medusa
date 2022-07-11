@@ -9,8 +9,10 @@ import {
   FulfillmentProviderService,
   NotificationService,
   PaymentProviderService,
+  SalesChannelService,
   ShippingProfileService,
-  StoreService, TaxProviderService,
+  StoreService,
+  TaxProviderService,
 } from "../services"
 import { CurrencyRepository } from "../repositories/currency"
 import { AbstractTaxService } from "../interfaces"
@@ -49,6 +51,7 @@ export default async ({ container }: { container: AwilixContainer }): Promise<vo
   const currencyRepository = container.resolve<typeof CurrencyRepository>("currencyRepository")
   const countryRepository = container.resolve<typeof CountryRepository>("countryRepository")
   const profileService = container.resolve<ShippingProfileService>("shippingProfileService")
+  const salesChannelService = container.resolve<SalesChannelService>("salesChannelService")
   const logger = container.resolve<Logger>("logger")
 
   const entityManager = container.resolve<EntityManager>("manager")
@@ -97,7 +100,6 @@ export default async ({ container }: { container: AwilixContainer }): Promise<vo
   await entityManager.transaction(async (manager: EntityManager) => {
     await storeService.withTransaction(manager).create()
 
-
     const payProviders =
       silentResolution<typeof BasePaymentService[]>(container, "paymentProviders", logger) || []
     const payIds = payProviders.map((p) => p.getIdentifier())
@@ -129,5 +131,7 @@ export default async ({ container }: { container: AwilixContainer }): Promise<vo
 
     await profileService.withTransaction(manager).createDefault()
     await profileService.withTransaction(manager).createGiftCardDefault()
+
+    await salesChannelService.createDefault()
   })
 }

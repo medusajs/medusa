@@ -6,4 +6,5 @@ export type UpdateStoreInput = {
   default_currency_code?: string
   currencies?: string[]
   metadata?: Record<string, unknown>
+  default_sales_channel_id?: string
 }
