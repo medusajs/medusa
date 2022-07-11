@@ -5,12 +5,26 @@ import path from "path"
 import { ConfigModule } from "../types/global"
 import { FlagRouter } from "./flag-router"
 
+ /**
+  * If that file is required in a non node environment then the setImmediate timer does not exists.
+  * This can happen when a client package require a server based package and that one of the import
+  * require to import that file which is using the setImmediate.
+  * In order to take care of those cases, the setImmediate timer will use the one provided by the api (node)
+  * if possible and will provide a mock in a browser like environment.
+  */
+let setImmediate_
+try {
+ setImmediate_ = setImmediate
+} catch (e) {
+ setImmediate_ = ((callback: () => void | Promise<void>) => callback())
+}
+
 export function FeatureFlagColumn(
   featureFlag: string,
   columnOptions: ColumnOptions = {}
 ): PropertyDecorator {
   return function (target, propertyName) {
-    setImmediate((): any => {
+    setImmediate_((): any => {
       const featureFlagRouter = getFeatureFlagRouter()
 
       if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
@@ -27,7 +41,7 @@ export function FeatureFlagDecorators(
   decorators: PropertyDecorator[]
 ): PropertyDecorator {
   return function (target, propertyName) {
-    setImmediate((): any => {
+    setImmediate_((): any => {
       const featureFlagRouter = getFeatureFlagRouter()
 
       if (!featureFlagRouter.isFeatureEnabled(featureFlag)) {
