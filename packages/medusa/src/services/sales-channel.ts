@@ -192,8 +192,8 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
       }
 
       const defaultSalesChannel = await this.create({
-        description: "Default store sales channel",
-        name: "Default sales channel",
+        description: "Created by Medusa",
+        name: "Default Sales Channel",
         is_disabled: false,
       })
 
