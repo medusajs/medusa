@@ -55,8 +55,8 @@ describe("SalesChannelService", () => {
 
       expect(salesChannelRepositoryMock.save).toHaveBeenCalledTimes(1)
       expect(salesChannelRepositoryMock.save).toHaveBeenCalledWith({
-        description: "Default store sales channel",
-        name: "Default sales channel",
+        description: "Created by Medusa",
+        name: "Default Sales Channel",
         is_disabled: false,
       })
     })
