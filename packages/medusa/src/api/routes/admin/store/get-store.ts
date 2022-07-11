@@ -1,9 +1,11 @@
+import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
 import {
   FulfillmentProviderService,
   PaymentProviderService,
   StoreService,
 } from "../../../../services"
-import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
+import { FeatureFlagsResponse } from "../../../../types/feature-flags"
+import { FlagRouter } from "../../../../utils/flag-router"
 
 /**
  * @oas [get] /store
@@ -25,6 +27,9 @@ import { FulfillmentProvider, PaymentProvider, Store } from "../../../../models"
  */
 export default async (req, res) => {
   const storeService: StoreService = req.scope.resolve("storeService")
+
+  const featureFlagRouter: FlagRouter = req.scope.resolve("featureFlagRouter")
+
   const paymentProviderService: PaymentProviderService = req.scope.resolve(
     "paymentProviderService"
   )
@@ -36,7 +41,10 @@ export default async (req, res) => {
   })) as Store & {
     payment_providers: PaymentProvider[]
     fulfillment_providers: FulfillmentProvider[]
+    feature_flags: FeatureFlagsResponse
   }
+
+  data.feature_flags = featureFlagRouter.listFlags()
 
   const paymentProviders = await paymentProviderService.list()
   const fulfillmentProviders = await fulfillmentProviderService.list()

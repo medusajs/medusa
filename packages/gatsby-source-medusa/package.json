@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Gatsby source plugin for building websites using Medusa Commerce as a data source",
   "scripts": {
-    "test": "jest --watchAll",
+    "test": "jest --passWithNoTests",
     "watch": "tsc-watch --outDir .",
     "build": "tsc --outDir ."
   },

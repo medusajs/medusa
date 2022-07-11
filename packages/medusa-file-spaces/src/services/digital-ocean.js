@@ -14,6 +14,7 @@ class DigitalOceanService extends AbstractFileService {
     this.secretAccessKey_ = options.secret_access_key
     this.region_ = options.region
     this.endpoint_ = options.endpoint
+    this.downloadUrlDuration = options.download_url_duration ?? 60  // 60 seconds
   }
 
   upload(file) {
@@ -45,7 +46,7 @@ class DigitalOceanService extends AbstractFileService {
     })
   }
 
-  delete(file) {
+  async delete(file) {
     this.updateAwsConfig()
 
     const s3 = new aws.S3()
@@ -110,7 +111,7 @@ class DigitalOceanService extends AbstractFileService {
     const params = {
       Bucket: this.bucket_,
       Key: `${fileData.fileKey}`,
-      Expires: 60, // 60 seconds
+      Expires:  this.downloadUrlDuration
     }
 
     return await s3.getSignedUrlPromise("getObject", params)
