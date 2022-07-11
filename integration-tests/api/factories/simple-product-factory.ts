@@ -112,5 +112,9 @@ export const simpleProductFactory = async (
     await simpleProductVariantFactory(connection, factoryData)
   }
 
-  return manager.findOne(Product, { id: prodId }, { relations: ["tags", "variants", "variants.prices"] })
+  return manager.findOne(
+    Product,
+    { id: prodId },
+    { relations: ["tags", "variants", "variants.prices"] }
+  )
 }

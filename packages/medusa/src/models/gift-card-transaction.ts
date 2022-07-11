@@ -42,6 +42,12 @@ export class GiftCardTransaction {
   @CreateDateColumn({ type: resolveDbType("timestamptz") })
   created_at: Date
 
+  @Column({ nullable: true })
+  is_taxable: boolean
+
+  @Column({ type: "real", nullable: true })
+  tax_rate: number | null
+
   @BeforeInsert()
   private beforeInsert(): void {
     this.id = generateEntityId(this.id, "gct")

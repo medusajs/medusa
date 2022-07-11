@@ -252,6 +252,7 @@ export class Cart extends SoftDeletableEntity {
   subtotal?: number
   refundable_amount?: number
   gift_card_total?: number
+  gift_card_tax_total?: number
 
   @AfterLoad()
   private afterLoad(): void {

@@ -234,9 +234,12 @@ class CartService extends TransactionBaseService<CartService> {
             options.force_taxes
           )
           break
-        case "gift_card_total":
-          totals.gift_card_total = this.totalsService_.getGiftCardTotal(cart)
+        case "gift_card_total": {
+          const giftCardBreakdown = this.totalsService_.getGiftCardTotal(cart)
+          totals.gift_card_total = giftCardBreakdown.total
+          totals.gift_card_tax_total = giftCardBreakdown.tax_total
           break
+        }
         case "subtotal":
           totals.subtotal = this.totalsService_.getSubtotal(cart)
           break

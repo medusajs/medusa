@@ -1,3 +1,4 @@
+export * from "./simple-gift-card-factory"
 export * from "./simple-payment-factory"
 export * from "./simple-batch-job-factory"
 export * from "./simple-discount-factory"

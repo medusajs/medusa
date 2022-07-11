@@ -464,20 +464,21 @@ class OrderService extends BaseService {
    */
   async createFromCart(cartId) {
     return this.atomicPhase_(async (manager) => {
-      const cart = await this.cartService_
-        .withTransaction(manager)
-        .retrieve(cartId, {
-          select: ["subtotal", "total"],
-          relations: [
-            "region",
-            "payment",
-            "items",
-            "discounts",
-            "discounts.rule",
-            "gift_cards",
-            "shipping_methods",
-          ],
-        })
+      const cartService = this.cartService_.withTransaction(manager)
+      const inventoryService = this.inventoryService_.withTransaction(manager)
+
+      const cart = await cartService.retrieve(cartId, {
+        select: ["subtotal", "total"],
+        relations: [
+          "region",
+          "payment",
+          "items",
+          "discounts",
+          "discounts.rule",
+          "gift_cards",
+          "shipping_methods",
+        ],
+      })
 
       if (cart.items.length === 0) {
         throw new MedusaError(
@@ -490,18 +491,17 @@ class OrderService extends BaseService {
 
       for (const item of cart.items) {
         try {
-          await this.inventoryService_
-            .withTransaction(manager)
-            .confirmInventory(item.variant_id, item.quantity)
+          await inventoryService.confirmInventory(
+            item.variant_id,
+            item.quantity
+          )
         } catch (err) {
           if (payment) {
             await this.paymentProviderService_
               .withTransaction(manager)
               .cancelPayment(payment)
           }
-          await this.cartService_
-            .withTransaction(manager)
-            .update(cart.id, { payment_authorized_at: null })
+          await cartService.update(cart.id, { payment_authorized_at: null })
           throw err
         }
       }
@@ -564,8 +564,7 @@ class OrderService extends BaseService {
         toCreate.no_notification = draft.no_notification_order
       }
 
-      const o = await orderRepo.create(toCreate)
-
+      const o = orderRepo.create(toCreate)
       const result = await orderRepo.save(o)
 
       if (total !== 0) {
@@ -576,19 +575,25 @@ class OrderService extends BaseService {
           })
       }
 
-      let gcBalance = cart.subtotal
+      let gcBalance = await this.totalsService_.getGiftCardableAmount(cart)
+      const gcService = this.giftCardService_.withTransaction(manager)
+
       for (const g of cart.gift_cards) {
         const newBalance = Math.max(0, g.balance - gcBalance)
         const usage = g.balance - newBalance
-        await this.giftCardService_.withTransaction(manager).update(g.id, {
+        await gcService.update(g.id, {
           balance: newBalance,
           disabled: newBalance === 0,
         })
 
-        await this.giftCardService_.withTransaction(manager).createTransaction({
+        await gcService.createTransaction({
           gift_card_id: g.id,
           order_id: result.id,
           amount: usage,
+          is_taxable: cart.region.gift_cards_taxable,
+          tax_rate: cart.region.gift_cards_taxable
+            ? cart.region.tax_rate
+            : null,
         })
 
         gcBalance = gcBalance - usage
@@ -600,16 +605,13 @@ class OrderService extends BaseService {
           .updateShippingMethod(method.id, { order_id: result.id })
       }
 
+      const lineItemService = this.lineItemService_.withTransaction(manager)
       for (const item of cart.items) {
-        await this.lineItemService_
-          .withTransaction(manager)
-          .update(item.id, { order_id: result.id })
+        await lineItemService.update(item.id, { order_id: result.id })
       }
 
       for (const item of cart.items) {
-        await this.inventoryService_
-          .withTransaction(manager)
-          .adjustInventory(item.variant_id, -item.quantity)
+        await inventoryService.adjustInventory(item.variant_id, -item.quantity)
       }
 
       await this.eventBus_
@@ -619,9 +621,7 @@ class OrderService extends BaseService {
           no_notification: result.no_notification,
         })
 
-      await this.cartService_
-        .withTransaction(manager)
-        .update(cart.id, { completed_at: new Date() })
+      await cartService.update(cart.id, { completed_at: new Date() })
 
       return result
     })
@@ -1383,7 +1383,9 @@ class OrderService extends BaseService {
           break
         }
         case "gift_card_total": {
-          order.gift_card_total = this.totalsService_.getGiftCardTotal(order)
+          const giftCardBreakdown = this.totalsService_.getGiftCardTotal(order)
+          order.gift_card_total = giftCardBreakdown.total
+          order.gift_card_tax_total = giftCardBreakdown.tax_total
           break
         }
         case "discount_total": {
