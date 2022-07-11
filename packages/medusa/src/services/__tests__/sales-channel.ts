@@ -1,9 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
 import SalesChannelService from "../sales-channel"
 import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { EventBusService } from "../index"
+import { EventBusService, StoreService } from "../index"
 import { FindConditions, FindOneOptions } from "typeorm"
 import { SalesChannel } from "../../models"
+import { store, StoreServiceMock } from "../__mocks__/store";
 
 describe("SalesChannelService", () => {
   const salesChannelData = {
@@ -27,10 +28,68 @@ describe("SalesChannelService", () => {
           })
         }
       ),
-    save: (salesChannel) => Promise.resolve(salesChannel),
+    create: jest.fn().mockImplementation((data) => data),
+    save: (salesChannel) => Promise.resolve({
+      id: IdMap.getId("sales_channel_1"),
+      ...salesChannel
+    }),
     softRemove: jest.fn().mockImplementation((id: string): any => {
       return Promise.resolve()
     }),
+  })
+
+  describe("create default", async () => {
+    const salesChannelService = new SalesChannelService({
+      manager: MockManager,
+      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should call the save method if the store does not have a default sales channel", async () => {
+      await salesChannelService.createDefault()
+
+      expect(salesChannelRepositoryMock.save).toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.save).toHaveBeenCalledWith({
+        description: "Created by Medusa",
+        name: "Default Sales Channel",
+        is_disabled: false,
+      })
+    })
+
+    it("should return the default sales channel if it already exists", async () => {
+      const localSalesChannelService = new SalesChannelService({
+        manager: MockManager,
+        eventBusService: EventBusServiceMock as unknown as EventBusService,
+        salesChannelRepository: salesChannelRepositoryMock,
+        storeService: {
+          ...StoreServiceMock,
+          retrieve: jest.fn().mockImplementation(() => {
+            return Promise.resolve({
+              ...store,
+              default_sales_channel_id: IdMap.getId("sales_channel_1"),
+              default_sales_channel: {
+                id: IdMap.getId("sales_channel_1"),
+                ...salesChannelData,
+              }
+            })
+          })
+        } as any
+      })
+
+      const salesChannel = await localSalesChannelService.createDefault()
+
+      expect(salesChannelRepositoryMock.save).toHaveBeenCalledTimes(0)
+      expect(salesChannelRepositoryMock.save).not.toHaveBeenCalledTimes(1)
+      expect(salesChannel).toEqual({
+        id: IdMap.getId("sales_channel_1"),
+        ...salesChannelData,
+      })
+    })
   })
 
   describe("retrieve", () => {
@@ -38,6 +97,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService
     })
 
     beforeEach(() => {
@@ -67,6 +127,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService
     })
 
     const update = {
@@ -100,7 +161,8 @@ describe("SalesChannelService", () => {
     const salesChannelService = new SalesChannelService({
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
-      salesChannelRepository: salesChannelRepositoryMock
+      salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService
     })
 
     beforeEach(() => {

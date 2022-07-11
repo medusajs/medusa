@@ -11,12 +11,13 @@ import {
 } from "../types/sales-channels"
 import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
-import { PostgresError } from "../utils/exception-formatter"
+import StoreService from "./store"
 
 type InjectedDependencies = {
   salesChannelRepository: typeof SalesChannelRepository
   eventBusService: EventBusService
   manager: EntityManager
+  storeService: StoreService
 }
 
 class SalesChannelService extends TransactionBaseService<SalesChannelService> {
@@ -31,11 +32,13 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
   protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBusService_: EventBusService
+  protected readonly storeService_: StoreService
 
   constructor({
     salesChannelRepository,
     eventBusService,
     manager,
+    storeService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -43,6 +46,7 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     this.manager_ = manager
     this.salesChannelRepository_ = salesChannelRepository
     this.eventBusService_ = eventBusService
+    this.storeService_ = storeService
   }
 
   /**
@@ -168,6 +172,36 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
         .emit(SalesChannelService.Events.DELETED, {
           id: salesChannelId,
         })
+    })
+  }
+
+  /**
+   * Creates a default sales channel, if this does not already exist.
+   * @return the sales channel
+   */
+  async createDefault(): Promise<SalesChannel> {
+    return this.atomicPhase_(async (transactionManager) => {
+      const store = await this.storeService_
+        .withTransaction(transactionManager)
+        .retrieve({
+          relations: ["default_sales_channel"],
+        })
+
+      if (store.default_sales_channel_id) {
+        return store.default_sales_channel
+      }
+
+      const defaultSalesChannel = await this.create({
+        description: "Created by Medusa",
+        name: "Default Sales Channel",
+        is_disabled: false,
+      })
+
+      await this.storeService_.withTransaction(transactionManager).update({
+        default_sales_channel_id: defaultSalesChannel.id,
+      })
+
+      return defaultSalesChannel
     })
   }
 }
