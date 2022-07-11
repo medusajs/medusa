@@ -9,10 +9,10 @@
     "directory": "packages/medusa-plugin-ip-lookup"
   },
   "scripts": {
-    "build": "babel src --out-dir . --ignore **/__tests__",
-    "prepare": "cross-env NODE_ENV=production npm run build",
-    "watch": "babel -w src --out-dir . --ignore **/__tests__",
-    "test": "jest"
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "build": "babel src --out-dir .",
+    "watch": "babel -w src --out-dir .",
+    "test": "jest --passWithNoTests"
   },
   "author": "Oliver Juhl",
   "license": "MIT",
