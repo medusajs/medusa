@@ -18,6 +18,5 @@ module.exports = {
   transformIgnorePatterns: [`/dist`],
   transform: { "^.+\\.[jt]s$": `../../jest-transformer.js` },
   setupFilesAfterEnv: ["../setup.js"],
-  globalSetup: "../globalSetup.js",
-  globalTeardown: "../globalTeardown.js",
+  globalSetup: `../../globalSetup.js`,
 }
