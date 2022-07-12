@@ -473,9 +473,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
       })
 
     return await new Promise((resolve) => {
-      readableStream.on("error", (a, b, c) => {
-        resolve([])
-      })
       readableStream.on("data", (chunk) => {
         data += chunk
       })
