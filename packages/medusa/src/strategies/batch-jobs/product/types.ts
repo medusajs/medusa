@@ -27,19 +27,26 @@ export type InjectedProps = {
 }
 
 /**
- * Schema definition of for an import CSV file.
- */
-export type ProductImportCsvSchema = CsvSchema<
-  Record<string, string>,
-  Record<string, string>
->
-/**
  * Data shape returned by the CSVParser.
  */
-export type TParsedRowData = Record<
+export type TParsedProductImportRowData = Record<
   string,
   string | number | (string | number | object)[]
 >
+
+/**
+ * CSV parser's row reducer result data shape.
+ */
+export type TBuiltProductImportLine = Record<string, any>
+
+/**
+ * Schema definition of for an import CSV file.
+ */
+export type ProductImportCsvSchema = CsvSchema<
+  TParsedProductImportRowData,
+  TBuiltProductImportLine
+>
+
 /**
  * Import Batch job context column type.
  */
