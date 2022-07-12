@@ -126,7 +126,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     const variantsUpdate: TParsedRowData[] = []
 
     for (const row of csvData) {
-      if ((row["variant.prices"] as object[]).length) {
+      if ((row["variant.prices"] as Record<string, any>[]).length) {
         await this.prepareVariantPrices(row)
       }
 
@@ -350,7 +350,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
           ) || []
 
         variant.options =
-          (variant.options as object[])?.map((o, index) => ({
+          (variant.options as Record<string, any>[])?.map((o, index) => ({
             ...o,
             option_id: optionIds[index],
           })) || []
