@@ -1,4 +1,29 @@
+import { EntityManager } from "typeorm"
+import { FileService } from "medusa-interfaces"
+
+import {
+  BatchJobService,
+  ProductService,
+  ProductVariantService,
+  RegionService,
+  ShippingProfileService,
+} from "../../../services"
+import { ProductOptionRepository } from "../../../repositories/product-option"
 import { CsvSchema } from "../../../interfaces/csv-parser"
+
+/**
+ * DI props for the Product import strategy
+ */
+export type InjectedProps = {
+  batchJobService: BatchJobService
+  productService: ProductService
+  productOptionRepository: ProductOptionRepository
+  productVariantService: ProductVariantService
+  shippingProfileService: ShippingProfileService
+  regionService: RegionService
+  fileService: typeof FileService
+  manager: EntityManager
+}
 
 /**
  * Schema definition of for an import CSV file.

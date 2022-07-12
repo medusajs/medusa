@@ -21,6 +21,7 @@ import {
 } from "../../../types/product-variant"
 import {
   ImportJobContext,
+  InjectedProps,
   OperationType,
   ProductImportCsvSchema,
   TParsedRowData,
@@ -61,7 +62,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     Record<string, string>
   >
 
-  constructor(container) {
+  constructor(container: InjectedProps) {
     super(container)
 
     const {
@@ -201,7 +202,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * for processing and stores these instructions to a JSON file
    * which is uploaded to a bucket.
    *
-   * @param batchJobId . An id of a job that is being preprocessed.
+   * @param batchJobId - An id of a job that is being preprocessed.
    */
   async preProcessBatchJob(batchJobId: string): Promise<void> {
     const batchJob = await this.batchJobService_.retrieve(batchJobId)
