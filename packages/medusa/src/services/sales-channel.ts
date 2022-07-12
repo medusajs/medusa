@@ -2,7 +2,7 @@ import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 
 import { TransactionBaseService } from "../interfaces"
-import { SalesChannel, Store } from "../models"
+import { SalesChannel } from "../models"
 import { SalesChannelRepository } from "../repositories/sales-channel"
 import { FindConfig, QuerySelector } from "../types/common"
 import {
@@ -157,36 +157,28 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
         this.salesChannelRepository_
       )
 
-      const salesChannelAndStore = (await salesChannelRepo
-        .createQueryBuilder("sc")
-        .leftJoinAndMapOne(
-          `sc.store`,
-          Store,
-          "store",
-          `store.default_sales_channel_id = sc.id`
-        )
-        .where("sc.id = :id", { id: salesChannelId })
-        .getOne()) as SalesChannel & { store?: Store }
+      const salesChannel = await this.retrieve(salesChannelId).catch(
+        () => void 0
+      )
 
       // if sales channel does not exist, return early
-      if (!salesChannelAndStore?.id) {
+      if (!salesChannel) {
         return
       }
 
+      const store = await this.storeService_.retrieve({
+        select: ["default_sales_channel_id"],
+      })
+
       // if it exists, but is the default channel, throw error
-      if (
-        salesChannelAndStore.id ===
-        salesChannelAndStore?.store?.default_sales_channel_id
-      ) {
+      if (salesChannel.id === store?.default_sales_channel_id) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "You cannot delete the default sales channel"
         )
       }
 
-      delete salesChannelAndStore.store
-
-      await salesChannelRepo.softRemove(salesChannelAndStore)
+      await salesChannelRepo.softRemove(salesChannel)
 
       await this.eventBusService_
         .withTransaction(transactionManager)
