@@ -16,9 +16,9 @@ let fakeJob = {
   id: IdMap.getId("product-import-job"),
   type: "product-import",
   context: {
-    progress: undefined,
     csvFileKey: "csv.key",
   },
+  results: { progress: undefined },
   created_by: IdMap.getId("product-import-creator"),
   created_by_user: {} as User,
   result: {},
