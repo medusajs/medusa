@@ -3,12 +3,12 @@
  * @param data - Initial data object
  * @param regex - A regex used to pick which keys are going to be copied in the new object
  */
-import { TParsedRowData } from "./types"
+import { TParsedProductImportRowData } from "./types"
 
 export function pickObjectPropsByRegex(
-  data: TParsedRowData,
+  data: TParsedProductImportRowData,
   regex: RegExp
-): TParsedRowData {
+): TParsedProductImportRowData {
   const variantKeyPredicate = (key: string): boolean => regex.test(key)
   const ret = {}
 
@@ -24,7 +24,9 @@ export function pickObjectPropsByRegex(
 /**
  * Pick data from parsed CSV object relevant for product create/update and remove prefixes from keys.
  */
-export function transformProductData(data: TParsedRowData): TParsedRowData {
+export function transformProductData(
+  data: TParsedProductImportRowData
+): TParsedProductImportRowData {
   const ret = {}
   const productData = pickObjectPropsByRegex(data, /product\./)
 
@@ -39,7 +41,9 @@ export function transformProductData(data: TParsedRowData): TParsedRowData {
 /**
  * Pick data from parsed CSV object relevant for variant create/update and remove prefixes from keys.
  */
-export function transformVariantData(data: TParsedRowData): TParsedRowData {
+export function transformVariantData(
+  data: TParsedProductImportRowData
+): TParsedProductImportRowData {
   const ret = {}
   const productData = pickObjectPropsByRegex(data, /variant\./)
 

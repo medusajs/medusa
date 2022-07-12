@@ -24,7 +24,8 @@ import {
   InjectedProps,
   OperationType,
   ProductImportCsvSchema,
-  TParsedRowData,
+  TBuiltProductImportLine,
+  TParsedProductImportRowData,
 } from "./types"
 import { transformProductData, transformVariantData } from "./utils"
 
@@ -97,7 +98,9 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    *
    * @param row - Parsed CSV row data
    */
-  protected static throwDescriptiveError(row: TParsedRowData): never {
+  protected static throwDescriptiveError(
+    row: TParsedProductImportRowData
+  ): never {
     const message = `Error while processing row with:
       product id: ${row["product.id"]},
       product handle: ${row["product.handle"]},
@@ -113,17 +116,17 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    * @param csvData - An array of parsed CSV rows.
    */
   async getImportInstructions(
-    csvData: TParsedRowData[]
-  ): Promise<Record<OperationType, TParsedRowData[]>> {
+    csvData: TParsedProductImportRowData[]
+  ): Promise<Record<OperationType, TParsedProductImportRowData[]>> {
     const shippingProfile = await this.shippingProfileService_.retrieveDefault()
 
     const seenProducts = {}
 
-    const productsCreate: TParsedRowData[] = []
-    const productsUpdate: TParsedRowData[] = []
+    const productsCreate: TParsedProductImportRowData[] = []
+    const productsUpdate: TParsedProductImportRowData[] = []
 
-    const variantsCreate: TParsedRowData[] = []
-    const variantsUpdate: TParsedRowData[] = []
+    const variantsCreate: TParsedProductImportRowData[] = []
+    const variantsUpdate: TParsedProductImportRowData[] = []
 
     for (const row of csvData) {
       if ((row["variant.prices"] as Record<string, any>[]).length) {
@@ -429,7 +432,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
    */
   protected async uploadImportOpsFile(
     batchJobId: string,
-    results: Record<OperationType, TParsedRowData[]>
+    results: Record<OperationType, TParsedProductImportRowData[]>
   ): Promise<void> {
     const uploadPromises: Promise<void>[] = []
     const transactionManager = this.transactionManager_ ?? this.manager_
@@ -461,7 +464,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
   protected async downloadImportOpsFile(
     batchJobId: string,
     op: OperationType
-  ): Promise<TParsedRowData[]> {
+  ): Promise<TParsedProductImportRowData[]> {
     let data = ""
     const transactionManager = this.transactionManager_ ?? this.manager_
 
@@ -595,7 +598,7 @@ const CSVSchema: ProductImportCsvSchema = {
     // PRODUCT-SHIPPING_PROFILE
     { name: "Product Profile Name", mapTo: "product.profile.name" },
     { name: "Product Profile Type", mapTo: "product.profile.type" },
-    // Variants
+    // VARIANTS
     {
       name: "Variant id",
       mapTo: "variant.id",
@@ -621,8 +624,7 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Name",
       match: /Option \d+ Name/,
-      // @ts-ignore
-      reducer: (builtLine: TParsedRowData, key: string, value: string) => {
+      reducer: (builtLine, key, value): TBuiltProductImportLine => {
         builtLine["product.options"] = builtLine["product.options"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -638,13 +640,12 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Option Value",
       match: /Option \d+ Value/,
-      // @ts-ignore
       reducer: (
-        builtLine: TParsedRowData,
+        builtLine: TParsedProductImportRowData,
         key: string,
         value: string,
         context: any
-      ) => {
+      ): TBuiltProductImportLine => {
         builtLine["variant.options"] = builtLine["variant.options"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -661,12 +662,15 @@ const CSVSchema: ProductImportCsvSchema = {
         return builtLine
       },
     },
-    // Prices
+    // PRICES
     {
       name: "Price Region",
       match: /Price .* \[([A-Z]{2,4})\]/,
-      // @ts-ignore
-      reducer: (builtLine: TParsedRowData, key, value) => {
+      reducer: (
+        builtLine: TParsedProductImportRowData,
+        key,
+        value
+      ): TBuiltProductImportLine => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -688,8 +692,11 @@ const CSVSchema: ProductImportCsvSchema = {
     {
       name: "Price Currency",
       match: /Price [A-Z]{2,4}/,
-      // @ts-ignore
-      reducer: (builtLine: TParsedRowData, key, value) => {
+      reducer: (
+        builtLine: TParsedProductImportRowData,
+        key,
+        value
+      ): TBuiltProductImportLine => {
         builtLine["variant.prices"] = builtLine["variant.prices"] || []
 
         if (typeof value === "undefined" || value === null) {
@@ -708,12 +715,11 @@ const CSVSchema: ProductImportCsvSchema = {
         return builtLine
       },
     },
-    // Images
+    // IMAGES
     {
       name: "Image Url",
       match: /Image \d+ Url/,
-      // @ts-ignore
-      reducer: (builtLine: any, key, value) => {
+      reducer: (builtLine: any, key, value): TBuiltProductImportLine => {
         builtLine["product.images"] = builtLine["product.images"] || []
 
         if (typeof value === "undefined" || value === null) {
