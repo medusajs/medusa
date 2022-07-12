@@ -22,7 +22,7 @@ let fakeJob = {
   context: {
     csvFileKey: "csv.key",
   },
-  results: { progress: undefined },
+  results: { advancement_count: 0, count: 6 },
   created_by: IdMap.getId("product-import-creator"),
   created_by_user: {} as User,
   result: {},

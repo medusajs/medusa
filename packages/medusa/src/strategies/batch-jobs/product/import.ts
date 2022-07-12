@@ -223,7 +223,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
 
     await this.batchJobService_.update(batchJobId, {
       result: {
-        progress: 0,
         advancement_count: 0,
         // number of update/create operations to execute
         count: Object.keys(ops).reduce((acc, k) => acc + ops[k].length, 0),
@@ -516,7 +515,7 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     delete this.processedCounter[batchJobId]
 
     await this.batchJobService_.update(batchJobId, {
-      result: { progress: 1, advancement_count: batchJob.result.count },
+      result: { advancement_count: batchJob.result.count },
     })
 
     const { fileKey } = batchJob.context as ImportJobContext
@@ -544,7 +543,6 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     await this.batchJobService_.update(batchJobId, {
       result: {
         advancement_count: newCount,
-        // progress: this.processedCounter / ,
       },
     })
   }
