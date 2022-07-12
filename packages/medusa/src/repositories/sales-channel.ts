@@ -1,10 +1,10 @@
-import { Brackets, EntityRepository, Repository } from "typeorm"
+import { Brackets, DeleteResult, EntityRepository, In, Repository } from "typeorm"
 import { SalesChannel } from "../models"
 import { ExtendedFindConfig, Selector } from "../types/common";
 
 @EntityRepository(SalesChannel)
 export class SalesChannelRepository extends Repository<SalesChannel> {
-  public async getFreeTextSearchResultsAndCount(
+    public async getFreeTextSearchResultsAndCount(
     q: string,
     options: ExtendedFindConfig<SalesChannel, Selector<SalesChannel>> = { where: {} },
   ): Promise<[SalesChannel[], number]> {
@@ -29,5 +29,19 @@ export class SalesChannelRepository extends Repository<SalesChannel> {
     }
 
     return await qb.getManyAndCount()
+  }
+
+  async removeProducts(
+    salesChannelId: string,
+    productIds: string[]
+  ): Promise<DeleteResult> {
+    return await this.createQueryBuilder()
+      .delete()
+      .from("product_sales_channel")
+      .where({
+        sales_channel_id: salesChannelId,
+        product_id: In(productIds),
+      })
+      .execute()
   }
 }

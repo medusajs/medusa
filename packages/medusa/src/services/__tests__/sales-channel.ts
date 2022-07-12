@@ -44,13 +44,16 @@ describe("SalesChannelService", () => {
       }),
     }),
     getFreeTextSearchResultsAndCount: jest.fn().mockImplementation(() =>
-        Promise.resolve([
-          {
-            id: IdMap.getId("sales_channel_1"),
-            ...salesChannelData
-          },
-        ]),
-    )
+      Promise.resolve([
+        {
+          id: IdMap.getId("sales_channel_1"),
+          ...salesChannelData
+        },
+      ]),
+    ),
+    removeProducts: jest.fn().mockImplementation((id: string, productIds: string[]): any => {
+      return Promise.resolve()
+    }),
   }
 
   describe("create default", async () => {
@@ -288,6 +291,37 @@ describe("SalesChannelService", () => {
           "You cannot delete the default sales channel"
         )
       }
+    })
+  })
+
+  describe("Remove products", () => {
+    const salesChannelService = new SalesChannelService({
+      manager: MockManager,
+      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService,
+    })
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it('should remove a list of product to a sales channel', async () => {
+      const salesChannel = await salesChannelService.removeProducts(
+        IdMap.getId("sales_channel_1"),
+        [IdMap.getId("sales_channel_1_product_1")]
+      )
+
+      expect(salesChannelRepositoryMock.removeProducts).toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.removeProducts).toHaveBeenCalledWith(
+        IdMap.getId("sales_channel_1"),
+        [IdMap.getId("sales_channel_1_product_1")]
+      )
+      expect(salesChannel).toBeTruthy()
+      expect(salesChannel).toEqual({
+        id: IdMap.getId("sales_channel_1"),
+        ...salesChannelData,
+      })
     })
   })
 })
