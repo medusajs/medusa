@@ -26,7 +26,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/region.js:16](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L16)
+[services/region.js:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L16)
 
 ## Properties
 
@@ -44,7 +44,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/region.js:10](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L10)
+[services/region.js:10](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L10)
 
 ## Methods
 
@@ -69,7 +69,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/region.js:460](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L460)
+[services/region.js:462](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L462)
 
 ___
 
@@ -95,7 +95,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/region.js:580](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L580)
+[services/region.js:582](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L582)
 
 ___
 
@@ -121,7 +121,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/region.js:533](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L533)
+[services/region.js:535](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L535)
 
 ___
 
@@ -145,7 +145,7 @@ the newly created region
 
 #### Defined in
 
-[services/region.js:95](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L95)
+[services/region.js:95](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L95)
 
 ___
 
@@ -169,7 +169,7 @@ the result of the delete operation
 
 #### Defined in
 
-[services/region.js:430](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L430)
+[services/region.js:432](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L432)
 
 ___
 
@@ -194,7 +194,7 @@ result of the find operation
 
 #### Defined in
 
-[services/region.js:418](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L418)
+[services/region.js:420](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L420)
 
 ___
 
@@ -219,7 +219,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/region.js:497](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L497)
+[services/region.js:499](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L499)
 
 ___
 
@@ -244,7 +244,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/region.js:658](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L658)
+[services/region.js:660](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L660)
 
 ___
 
@@ -269,7 +269,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/region.js:624](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L624)
+[services/region.js:626](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L626)
 
 ___
 
@@ -294,7 +294,7 @@ the region
 
 #### Defined in
 
-[services/region.js:394](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L394)
+[services/region.js:396](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L396)
 
 ___
 
@@ -315,7 +315,7 @@ ___
 
 #### Defined in
 
-[services/region.js:360](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L360)
+[services/region.js:362](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L362)
 
 ___
 
@@ -340,7 +340,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/region.js:153](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L153)
+[services/region.js:153](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L153)
 
 ___
 
@@ -364,7 +364,7 @@ existence.
 
 #### Defined in
 
-[services/region.js:323](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L323)
+[services/region.js:323](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L323)
 
 ___
 
@@ -386,7 +386,7 @@ Validates a currency code. Will throw if the currency code doesn't exist.
 
 #### Defined in
 
-[services/region.js:302](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L302)
+[services/region.js:302](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L302)
 
 ___
 
@@ -412,7 +412,7 @@ the validated region data
 
 #### Defined in
 
-[services/region.js:213](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L213)
+[services/region.js:213](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L213)
 
 ___
 
@@ -434,7 +434,7 @@ Validates a tax rate. Will throw if the tax rate is not between 0 and 1.
 
 #### Defined in
 
-[services/region.js:289](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L289)
+[services/region.js:289](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L289)
 
 ___
 
@@ -454,4 +454,4 @@ ___
 
 #### Defined in
 
-[services/region.js:65](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/region.js#L65)
+[services/region.js:65](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/region.js#L65)
