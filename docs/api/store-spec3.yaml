@@ -38,7 +38,7 @@ tags:
   - name: Product Variant
     x-resourceId: product_variant
 servers:
-  - url: "https://api.medusa-commerce.com/store"
+  - url: 'https://api.medusa-commerce.com/store'
 paths:
   /auth:
     post:
@@ -51,14 +51,14 @@ paths:
       tags:
         - Auth
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
+                    $ref: '#/components/schemas/customer'
       requestBody:
         content:
           application/json:
@@ -81,7 +81,7 @@ paths:
       tags:
         - Auth
       responses:
-        "200":
+        '200':
           description: OK
     get:
       operationId: GetAuth
@@ -91,15 +91,15 @@ paths:
       tags:
         - Auth
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   customer:
-                    $ref: "#/components/schemas/customer"
-  "/auth/{email}":
+                    $ref: '#/components/schemas/customer'
+  '/auth/{email}':
     get:
       operationId: GetAuthEmail
       summary: Check if email has account
@@ -114,7 +114,7 @@ paths:
       tags:
         - Auth
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -122,6 +122,693 @@ paths:
                 properties:
                   exists:
                     type: boolean
+  '/collections/{id}':
+    get:
+      operationId: GetCollectionsCollection
+      summary: Retrieve a Product Collection
+      description: Retrieves a Product Collection.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product Collection
+          schema:
+            type: string
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+  /collections:
+    get:
+      operationId: GetCollections
+      summary: List Product Collections
+      description: Retrieve a list of Product Collection.
+      parameters:
+        - in: query
+          name: offset
+          description: >-
+            The number of collections to skip before starting to collect the
+            collections set
+          schema:
+            type: integer
+            default: 0
+        - in: query
+          name: limit
+          description: The number of collections to return
+          schema:
+            type: integer
+            default: 10
+      tags:
+        - Collection
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
+  '/gift-cards/{code}':
+    get:
+      operationId: GetGiftCardsCode
+      summary: Retrieve Gift Card by Code
+      description: Retrieves a Gift Card by its associated unqiue code.
+      parameters:
+        - in: path
+          name: code
+          required: true
+          description: The unique Gift Card code.
+          schema:
+            type: string
+      tags:
+        - Gift Card
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    description: The id of the Gift Card
+                  code:
+                    description: The code of the Gift Card
+                  value:
+                    description: The original value of the Gift Card.
+                  balance:
+                    description: The current balanace of the Gift Card
+                  region:
+                    $ref: '#/components/schemas/region'
+  /customers/me/addresses:
+    post:
+      operationId: PostCustomersCustomerAddresses
+      summary: Add a Shipping Address
+      description: Adds a Shipping Address to a Customer's saved addresses.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - address
+              properties:
+                address:
+                  description: The Address to add to the Customer.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: A successful response
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer account.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                password:
+                  type: string
+                  description: The Customer's password for login.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+  '/customers/me/addresses/{address_id}':
+    delete:
+      operationId: DeleteCustomersCustomerAddressesAddress
+      summary: Delete an Address
+      description: Removes an Address from the Customer's saved addresse.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to remove.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomerAddressesAddress
+      summary: Update a Shipping Address
+      description: Updates a Customer's saved Shipping Address.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: address_id
+          required: true
+          description: The id of the Address to update.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  description: The updated Address.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /customers/me:
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieves a Customer
+      description: >-
+        Retrieves a Customer - the Customer must be logged in to retrieve their
+        details.
+      x-authenticated: true
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update Customer details
+      description: Updates a Customer's saved details.
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                first_name:
+                  description: The Customer's first name.
+                  type: string
+                last_name:
+                  description: The Customer's last name.
+                  type: string
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                password:
+                  description: The Customer's password.
+                  type: string
+                phone:
+                  description: The Customer's phone number.
+                  type: string
+                email:
+                  description: The email of the customer.
+                  type: string
+                metadata:
+                  description: Metadata about the customer.
+                  type: object
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /customers/me/payment-methods:
+    get:
+      operationId: GetCustomersCustomerPaymentMethods
+      summary: Retrieve saved payment methods
+      description: >-
+        Retrieves a list of a Customer's saved payment methods. Payment methods
+        are saved with Payment Providers and it is their responsibility to fetch
+        saved methods.
+      x-authenticated: true
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  payment_methods:
+                    type: array
+                    items:
+                      properties:
+                        provider_id:
+                          type: string
+                          description: >-
+                            The id of the Payment Provider where the payment
+                            method is saved.
+                        data:
+                          type: object
+                          description: >-
+                            The data needed for the Payment Provider to use the
+                            saved payment method.
+  /customers/me/orders:
+    get:
+      operationId: GetCustomersCustomerOrders
+      summary: Retrieve Customer Orders
+      description: Retrieves a list of a Customer's Orders.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: How many addresses to return.
+          schema:
+            type: integer
+        - in: query
+          name: offset
+          description: The offset in the resulting addresses.
+          schema:
+            type: integer
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated string) Which fields should be included in the
+            resulting addresses.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated string) Which relations should be expanded in the
+            resulting addresses.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Orders.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of Orders to return,'
+                    type: integer
+                  orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
+  /customers/password-token:
+    post:
+      operationId: PostCustomersCustomerPasswordToken
+      summary: Creates a reset password token
+      description: >-
+        Creates a reset password token to be used in a subsequent
+        /reset-password request. The password token should be sent out of band
+        e.g. via email and will not be returned.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '204':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  description: Email of the user whose password should be reset.
+  /customers/reset-password:
+    post:
+      operationId: PostCustomersResetPassword
+      summary: Resets Customer password
+      description: >-
+        Resets a Customer's password using a password token created by a
+        previous /password-token request.
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - token
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email.
+                token:
+                  type: string
+                  description: The password token created by a /password-token request.
+                password:
+                  type: string
+                  description: The new password to set for the Customer.
+  '/orders/cart/{cart_id}':
+    get:
+      operationId: GetOrdersOrderCartId
+      summary: Retrieves Order by Cart id
+      description: >-
+        Retrieves an Order by the id of the Cart that was used to create the
+        Order.
+      parameters:
+        - in: path
+          name: cart_id
+          required: true
+          description: The id of Cart.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/orders/{id}':
+    get:
+      operationId: GetOrdersOrder
+      summary: Retrieves an Order
+      description: Retrieves an Order
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Order.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  /orders:
+    get:
+      operationId: GetOrders
+      summary: Look Up an Order
+      description: >-
+        Looks for an Order with a given `display_id`, `email` pair. The
+        `display_id`, `email` pair must match in order for the Order to be
+        returned.
+      parameters:
+        - in: query
+          name: display_id
+          required: true
+          description: The display id given to the Order.
+          schema:
+            type: number
+        - in: query
+          name: email
+          required: true
+          description: The email of the Order with the given display_id.
+          schema:
+            type: string
+      tags:
+        - Order
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  order:
+                    $ref: '#/components/schemas/order'
+  '/products/{id}':
+    get:
+      operationId: GetProductsProduct
+      summary: Retrieves a Product
+      description: Retrieves a Product.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Product.
+          schema:
+            type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  product:
+                    $ref: '#/components/schemas/product'
+  /products:
+    get:
+      operationId: GetProducts
+      summary: List Products
+      description: Retrieves a list of Products.
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching products.
+          schema:
+            type: string
+        - in: query
+          name: id
+          description: Id of the product to search for.
+          schema:
+            type: string
+        - in: query
+          name: collection_id
+          style: form
+          explode: false
+          description: Collection ids to search for
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: tags
+          style: form
+          explode: false
+          description: Tags to search for
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: title
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: description
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: handle
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: is_giftcard
+          description: Search for giftcards using is_giftcard=true.
+          schema:
+            type: string
+        - in: query
+          name: type
+          description: to search for.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: >-
+            Date comparison for when resulting products was created, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: updated_at
+          description: >-
+            Date comparison for when resulting products was updated, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: deleted_at
+          description: >-
+            Date comparison for when resulting products was deleted, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: offset
+          description: How many products to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit the number of products returned.
+          schema:
+            type: string
+      tags:
+        - Product
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of Products.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of Products to return,'
+                    type: integer
+                  products:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product'
+  '/regions/{id}':
+    get:
+      operationId: GetRegionsRegion
+      summary: Retrieves a Region
+      description: Retrieves a Region.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Region.
+          schema:
+            type: string
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  region:
+                    $ref: '#/components/schemas/region'
+  /regions:
+    get:
+      operationId: GetRegions
+      summary: List Regions
+      description: Retrieves a list of Regions.
+      tags:
+        - Region
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    description: The total number of regions.
+                    type: integer
+                  offset:
+                    description: The offset for pagination.
+                    type: integer
+                  limit:
+                    description: 'The maxmimum number of regions to return,'
+                    type: integer
+                  regions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/region'
   '/carts/{id}/shipping-methods':
     post:
       operationId: PostCartsCartShippingMethod
@@ -137,7 +824,7 @@ paths:
           schema:
             type: string
       responses:
-        "200":
+        '200':
           description: A successful response
           content:
             application/json:
@@ -303,7 +990,7 @@ paths:
       tags:
         - Cart
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -350,7 +1037,7 @@ paths:
       tags:
         - Cart
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -379,7 +1066,7 @@ paths:
       tags:
         - Cart
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -443,7 +1130,7 @@ paths:
               schema:
                 properties:
                   cart:
-                    $ref: "#/components/schemas/cart"
+                    $ref: '#/components/schemas/cart'
       requestBody:
         content:
           application/json:
@@ -600,14 +1287,14 @@ paths:
       tags:
         - Cart
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   cart:
-                    $ref: "#/components/schemas/cart"
+                    $ref: '#/components/schemas/cart'
       requestBody:
         content:
           application/json:
@@ -621,7 +1308,7 @@ paths:
                   description: The id of the Payment Provider.
   '/store/carts/{id}':
     post:
-      operationId: PostCartsCartPaymentMethodUpdate
+      operationId: PostCartsCart
       summary: Update a Cart"
       description: Updates a Cart.
       parameters:
@@ -635,19 +1322,54 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - provider_id
               properties:
-                provider_id:
+                region_id:
                   type: string
-                  description: The id of the Payment Provider.
-                data:
+                  description: The id of the Region to create the Cart in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO country code to create the Cart in.
+                email:
+                  type: string
+                  description: An email to be used on the Cart.
+                billing_address:
+                  description: The Address to be used for billing purposes.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                shipping_address:
+                  description: The Address to be used for shipping.
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
+                gift_cards:
+                  description: An array of Gift Card codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Gift Card is identified by.
+                        type: string
+                discounts:
+                  description: An array of Discount codes to add to the Cart.
+                  type: array
+                  items:
+                    required:
+                      - code
+                    properties:
+                      code:
+                        description: The code that a Discount is identifed by.
+                        type: string
+                customer_id:
+                  description: The id of the Customer to associate the Cart with.
+                  type: string
+                context:
+                  description: An optional object to provide context to the Cart.
                   type: object
-                  description: ''
       tags:
         - Cart
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -655,693 +1377,6 @@ paths:
                 properties:
                   cart:
                     $ref: '#/components/schemas/cart'
-  '/gift-cards/{code}':
-    get:
-      operationId: GetGiftCardsCode
-      summary: Retrieve Gift Card by Code
-      description: Retrieves a Gift Card by its associated unqiue code.
-      parameters:
-        - in: path
-          name: code
-          required: true
-          description: The unique Gift Card code.
-          schema:
-            type: string
-      tags:
-        - Gift Card
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    description: The id of the Gift Card
-                  code:
-                    description: The code of the Gift Card
-                  value:
-                    description: The original value of the Gift Card.
-                  balance:
-                    description: The current balanace of the Gift Card
-                  region:
-                    $ref: '#/components/schemas/region'
-  '/orders/cart/{cart_id}':
-    get:
-      operationId: GetOrdersOrderCartId
-      summary: Retrieves Order by Cart id
-      description: >-
-        Retrieves an Order by the id of the Cart that was used to create the
-        Order.
-      parameters:
-        - in: path
-          name: cart_id
-          required: true
-          description: The id of Cart.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/orders/{id}':
-    get:
-      operationId: GetOrdersOrder
-      summary: Retrieves an Order
-      description: Retrieves an Order
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Order.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  /orders:
-    get:
-      operationId: GetOrders
-      summary: Look Up an Order
-      description: >-
-        Looks for an Order with a given `display_id`, `email` pair. The
-        `display_id`, `email` pair must match in order for the Order to be
-        returned.
-      parameters:
-        - in: query
-          name: display_id
-          required: true
-          description: The display id given to the Order.
-          schema:
-            type: number
-        - in: query
-          name: email
-          required: true
-          description: The email of the Order with the given display_id.
-          schema:
-            type: string
-      tags:
-        - Order
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  order:
-                    $ref: '#/components/schemas/order'
-  '/collections/{id}':
-    get:
-      operationId: GetCollectionsCollection
-      summary: Retrieve a Product Collection
-      description: Retrieves a Product Collection.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product Collection
-          schema:
-            type: string
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-  /collections:
-    get:
-      operationId: GetCollections
-      summary: List Product Collections
-      description: Retrieve a list of Product Collection.
-      parameters:
-        - in: query
-          name: offset
-          description: >-
-            The number of collections to skip before starting to collect the
-            collections set
-          schema:
-            type: integer
-            default: 0
-        - in: query
-          name: limit
-          description: The number of collections to return
-          schema:
-            type: integer
-            default: 10
-      tags:
-        - Collection
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
-  /customers/me/addresses:
-    post:
-      operationId: PostCustomersCustomerAddresses
-      summary: Add a Shipping Address
-      description: Adds a Shipping Address to a Customer's saved addresses.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - address
-              properties:
-                address:
-                  description: The Address to add to the Customer.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: A successful response
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer account.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                password:
-                  type: string
-                  description: The Customer's password for login.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-  '/customers/me/addresses/{address_id}':
-    delete:
-      operationId: DeleteCustomersCustomerAddressesAddress
-      summary: Delete an Address
-      description: Removes an Address from the Customer's saved addresse.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to remove.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomerAddressesAddress
-      summary: Update a Shipping Address
-      description: Updates a Customer's saved Shipping Address.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: address_id
-          required: true
-          description: The id of the Address to update.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                address:
-                  description: The updated Address.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  /customers/me:
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieves a Customer
-      description: >-
-        Retrieves a Customer - the Customer must be logged in to retrieve their
-        details.
-      x-authenticated: true
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update Customer details
-      description: Updates a Customer's saved details.
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                first_name:
-                  description: The Customer's first name.
-                  type: string
-                last_name:
-                  description: The Customer's last name.
-                  type: string
-                billing_address:
-                  description: The Address to be used for billing purposes.
-                  anyOf:
-                    - $ref: '#/components/schemas/address'
-                password:
-                  description: The Customer's password.
-                  type: string
-                phone:
-                  description: The Customer's phone number.
-                  type: string
-                email:
-                  description: The email of the customer.
-                  type: string
-                metadata:
-                  description: Metadata about the customer.
-                  type: object
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  /customers/me/payment-methods:
-    get:
-      operationId: GetCustomersCustomerPaymentMethods
-      summary: Retrieve saved payment methods
-      description: >-
-        Retrieves a list of a Customer's saved payment methods. Payment methods
-        are saved with Payment Providers and it is their responsibility to fetch
-        saved methods.
-      x-authenticated: true
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  payment_methods:
-                    type: array
-                    items:
-                      properties:
-                        provider_id:
-                          type: string
-                          description: >-
-                            The id of the Payment Provider where the payment
-                            method is saved.
-                        data:
-                          type: object
-                          description: >-
-                            The data needed for the Payment Provider to use the
-                            saved payment method.
-  /customers/me/orders:
-    get:
-      operationId: GetCustomersCustomerOrders
-      summary: Retrieve Customer Orders
-      description: Retrieves a list of a Customer's Orders.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: How many addresses to return.
-          schema:
-            type: integer
-        - in: query
-          name: offset
-          description: The offset in the resulting addresses.
-          schema:
-            type: integer
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated string) Which fields should be included in the
-            resulting addresses.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated string) Which relations should be expanded in the
-            resulting addresses.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of Orders.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of Orders to return,'
-                    type: integer
-                  orders:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/order'
-  /customers/password-token:
-    post:
-      operationId: PostCustomersCustomerPasswordToken
-      summary: Creates a reset password token
-      description: >-
-        Creates a reset password token to be used in a subsequent
-        /reset-password request. The password token should be sent out of band
-        e.g. via email and will not be returned.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '204':
-          description: OK
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-              properties:
-                email:
-                  type: string
-                  description: Email of the user whose password should be reset.
-  /customers/reset-password:
-    post:
-      operationId: PostCustomersResetPassword
-      summary: Resets Customer password
-      description: >-
-        Resets a Customer's password using a password token created by a
-        previous /password-token request.
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - token
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email.
-                token:
-                  type: string
-                  description: The password token created by a /password-token request.
-                password:
-                  type: string
-                  description: The new password to set for the Customer.
-  '/regions/{id}':
-    get:
-      operationId: GetRegionsRegion
-      summary: Retrieves a Region
-      description: Retrieves a Region.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Region.
-          schema:
-            type: string
-      tags:
-        - Region
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  region:
-                    $ref: '#/components/schemas/region'
-  /regions:
-    get:
-      operationId: GetRegions
-      summary: List Regions
-      description: Retrieves a list of Regions.
-      tags:
-        - Region
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of regions.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: 'The maxmimum number of regions to return,'
-                    type: integer
-                  regions:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/region'
-  '/products/{id}':
-    get:
-      operationId: GetProductsProduct
-      summary: Retrieves a Product
-      description: Retrieves a Product.
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Product.
-          schema:
-            type: string
-      tags:
-        - Product
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  product:
-                    $ref: "#/components/schemas/product"
-  /products:
-    get:
-      operationId: GetProducts
-      summary: List Products
-      description: Retrieves a list of Products.
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching products.
-          schema:
-            type: string
-        - in: query
-          name: id
-          description: Id of the product to search for.
-          schema:
-            type: string
-        - in: query
-          name: collection_id
-          style: form
-          explode: false
-          description: Collection ids to search for
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: tags
-          style: form
-          explode: false
-          description: Tags to search for
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: title
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: description
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: handle
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: is_giftcard
-          description: Search for giftcards using is_giftcard=true.
-          schema:
-            type: string
-        - in: query
-          name: type
-          description: to search for.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: >-
-            Date comparison for when resulting products was created, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: updated_at
-          description: >-
-            Date comparison for when resulting products was updated, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: deleted_at
-          description: >-
-            Date comparison for when resulting products was deleted, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: offset
-          description: How many products to skip in the result.
-          schema:
-            type: string
-        - in: query
-          name: limit
-          description: Limit the number of products returned.
-          schema:
-            type: string
-      tags:
-        - Product
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  count:
-                    description: The total number of Products.
-                    type: integer
-                  offset:
-                    description: The offset for pagination.
-                    type: integer
-                  limit:
-                    description: "The maxmimum number of Products to return,"
-                    type: integer
-                  products:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product'
   '/return-reasons/{id}':
     get:
       operationId: GetReturnReasonsReason
@@ -1357,14 +1392,14 @@ paths:
       tags:
         - Return Reason
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   return_reason:
-                    $ref: "#/components/schemas/return_reason"
+                    $ref: '#/components/schemas/return_reason'
   /return-reasons:
     get:
       operationId: GetReturnReasons
@@ -1373,7 +1408,7 @@ paths:
       tags:
         - Return Reason
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1382,7 +1417,7 @@ paths:
                   return_reasons:
                     type: array
                     items:
-                      $ref: "#/components/schemas/return_reason"
+                      $ref: '#/components/schemas/return_reason'
   /returns:
     post:
       operationId: PostReturns
@@ -1430,14 +1465,14 @@ paths:
       tags:
         - Return
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   return:
-                    $ref: "#/components/schemas/return"
+                    $ref: '#/components/schemas/return'
   /shipping-options:
     get:
       operationId: GetShippingOptions
@@ -1464,7 +1499,7 @@ paths:
       tags:
         - Shipping Option
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1473,8 +1508,8 @@ paths:
                   shipping_options:
                     type: array
                     items:
-                      $ref: "#/components/schemas/shipping_option"
-  "/shipping-options/{cart_id}":
+                      $ref: '#/components/schemas/shipping_option'
+  '/shipping-options/{cart_id}':
     get:
       operationId: GetShippingOptionsCartId
       summary: Retrieve Shipping Options for Cart
@@ -1489,7 +1524,7 @@ paths:
       tags:
         - Shipping Option
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1498,7 +1533,7 @@ paths:
                   shipping_options:
                     type: array
                     items:
-                      $ref: "#/components/schemas/shipping_option"
+                      $ref: '#/components/schemas/shipping_option'
   /swaps:
     post:
       operationId: PostSwaps
@@ -1560,15 +1595,15 @@ paths:
       tags:
         - Swap
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   swap:
-                    $ref: "#/components/schemas/swap"
-  "/swaps/{cart_id}":
+                    $ref: '#/components/schemas/swap'
+  '/swaps/{cart_id}':
     get:
       operationId: GetSwapsSwapCartId
       summary: Retrieve Swap by Cart id
@@ -1583,15 +1618,15 @@ paths:
       tags:
         - Swap
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   swap:
-                    $ref: "#/components/schemas/swap"
-  "/variants/{variant_id}":
+                    $ref: '#/components/schemas/swap'
+  '/variants/{variant_id}':
     get:
       operationId: GetVariantsVariant
       summary: Retrieve a Product Variant
@@ -1606,14 +1641,14 @@ paths:
       tags:
         - Product Variant
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 properties:
                   variant:
-                    $ref: "#/components/schemas/product_variant"
+                    $ref: '#/components/schemas/product_variant'
   /variants:
     get:
       operationId: GetVariants
@@ -1642,7 +1677,7 @@ paths:
       tags:
         - Product Variant
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
@@ -1651,7 +1686,7 @@ paths:
                   variants:
                     type: array
                     items:
-                      $ref: "#/components/schemas/product_variant"
+                      $ref: '#/components/schemas/product_variant'
 components:
   schemas:
     address:
@@ -1678,7 +1713,74 @@ components:
         country_code:
           type: string
         country:
-          $ref: "#/components/schemas/country"
+          $ref: '#/components/schemas/country'
+    batch_job:
+      title: Batch Job
+      description: A Batch Job.
+      x-resourceId: batch_job
+      properties:
+        id:
+          description: The unique identifier for the batch job.
+          type: string
+        type:
+          description: The type of batch job.
+          type: string
+          enum:
+            - product_import
+            - product_export
+        status:
+          description: The status of the batch job.
+          type: string
+          enum:
+            - created
+            - pre_processed
+            - processing
+            - completed
+            - canceled
+            - failed
+        created_by:
+          description: The unique identifier of the user that created the batch job.
+          type: string
+        context:
+          description: >-
+            The context of the batch job, the type of the batch job determines
+            what the context should contain.
+          type: object
+        dry_run:
+          description: Specify if the job must apply the modifications or not.
+          type: boolean
+          default: false
+        result:
+          description: The result of the batch job.
+          type: object
+        pre_processed_at:
+          description: The date from which the job has been pre processed.
+          type: string
+          format: date-time
+        confirmed_at:
+          description: The date when the confirmation has been done.
+          type: string
+          format: date-time
+        completed_at:
+          description: The date of the completion.
+          type: string
+          format: date-time
+        canceled_at:
+          description: The date of the concellation.
+          type: string
+          format: date-time
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
     cart:
       title: Cart
       description: Represents a user cart
@@ -1691,43 +1793,43 @@ components:
         billing_address_id:
           type: string
         billing_address:
-          $ref: "#/components/schemas/address"
+          $ref: '#/components/schemas/address'
         shipping_address_id:
           type: string
         shipping_address:
-          $ref: "#/components/schemas/address"
+          $ref: '#/components/schemas/address'
         items:
           type: array
           items:
-            $ref: "#/components/schemas/line_item"
+            $ref: '#/components/schemas/line_item'
         region_id:
           type: string
         region:
-          $ref: "#/components/schemas/region"
+          $ref: '#/components/schemas/region'
         discounts:
           type: array
           items:
-            $ref: "#/components/schemas/region"
+            $ref: '#/components/schemas/region'
         gift_cards:
           type: array
           items:
-            $ref: "#/components/schemas/gift_card"
+            $ref: '#/components/schemas/gift_card'
         customer_id:
           type: string
         customer:
-          $ref: "#/components/schemas/customer"
+          $ref: '#/components/schemas/customer'
         payment_session:
-          $ref: "#/components/schemas/payment_session"
+          $ref: '#/components/schemas/payment_session'
         payment_sessions:
           type: array
           items:
-            $ref: "#/components/schemas/payment_session"
+            $ref: '#/components/schemas/payment_session'
         payment:
-          $ref: "#/components/schemas/payment"
+          $ref: '#/components/schemas/payment'
         shipping_methods:
           type: array
           items:
-            $ref: "#/components/schemas/shipping_method"
+            $ref: '#/components/schemas/shipping_method'
         type:
           type: string
           enum:
@@ -1794,19 +1896,19 @@ components:
         images:
           type: array
           items:
-            $ref: "#/components/schemas/claim_image"
+            $ref: '#/components/schemas/claim_image'
         claim_order_id:
           type: string
         item_id:
           type: string
         item:
           description: The Line Item that the claim refers to
-          $ref: "#/components/schemas/line_item"
+          $ref: '#/components/schemas/line_item'
         variant_id:
           type: string
         variant:
           description: The Product Variant that is claimed.
-          $ref: "#/components/schemas/product_variant"
+          $ref: '#/components/schemas/product_variant'
         reason:
           description: The reason for the claim
           type: string
@@ -1816,7 +1918,7 @@ components:
             - production_failure
             - other
         note:
-          description: "An optional note about the claim, for additional information"
+          description: 'An optional note about the claim, for additional information'
           type: string
         quantity:
           description: >-
@@ -1827,7 +1929,7 @@ components:
           description: User defined tags for easy filtering and grouping.
           type: array
           items:
-            $ref: "#/components/schemas/claim_tag"
+            $ref: '#/components/schemas/claim_tag'
         created_at:
           type: string
           format: date-time
@@ -1876,36 +1978,36 @@ components:
           description: The items that have been claimed
           type: array
           items:
-            $ref: "#/components/schemas/claim_item"
+            $ref: '#/components/schemas/claim_item'
         additional_items:
           description: >-
             Refers to the new items to be shipped when the claim order has the
             type `replace`
           type: array
           items:
-            $ref: "#/components/schemas/line_item"
+            $ref: '#/components/schemas/line_item'
         order_id:
           description: The id of the order that the claim comes from.
           type: string
         return_order:
           description: Holds information about the return if the claim is to be returned
-          $ref: "#/components/schemas/return"
+          $ref: '#/components/schemas/return'
         shipping_address_id:
           description: The id of the address that the new items should be shipped to
           type: string
         shipping_address:
           description: The address that the new items should be shipped to
-          $ref: "#/components/schemas/address"
+          $ref: '#/components/schemas/address'
         shipping_methods:
           description: The shipping methods that the claim order will be shipped with.
           type: array
           items:
-            $ref: "#/components/schemas/shipping_method"
+            $ref: '#/components/schemas/shipping_method'
         fulfillments:
           description: The fulfillments of the new items to be shipped
           type: array
           items:
-            $ref: "#/components/schemas/fulfillment"
+            $ref: '#/components/schemas/fulfillment'
         refund_amount:
           description: The amount that will be refunded in conjunction with the claim
           type: integer
@@ -2020,11 +2122,11 @@ components:
             The id of the Shipping Option that the custom shipping option
             overrides
           anyOf:
-            - $ref: "#/components/schemas/shipping_option"
+            - $ref: '#/components/schemas/shipping_option'
         cart_id:
           description: The id of the Cart that the custom shipping option is attached to
           anyOf:
-            - $ref: "#/components/schemas/cart"
+            - $ref: '#/components/schemas/cart'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -2078,11 +2180,11 @@ components:
         billing_address:
           description: The Customer's billing address.
           anyOf:
-            - $ref: "#/components/schemas/address"
+            - $ref: '#/components/schemas/address'
         shipping_addresses:
           type: array
           items:
-            $ref: "#/components/schemas/address"
+            $ref: '#/components/schemas/address'
         first_name:
           type: string
         last_name:
@@ -2101,6 +2203,168 @@ components:
           type: string
           format: date-time
         metadata:
+          type: object
+    discount_condition_customer_group:
+      title: Product Tag Discount Condition
+      description: Associates a discount condition with a customer group
+      x-resourceId: discount_condition_customer_group
+      properties:
+        customer_group_id:
+          description: The id of the Product Tag
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_collection:
+      title: Product Collection Discount Condition
+      description: Associates a discount condition with a product collection
+      x-resourceId: discount_condition_product_collection
+      properties:
+        product_collection_id:
+          description: The id of the Product Collection
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_tag:
+      title: Product Tag Discount Condition
+      description: Associates a discount condition with a product tag
+      x-resourceId: discount_condition_product_tag
+      properties:
+        product_tag_id:
+          description: The id of the Product Tag
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product_type:
+      title: Product Type Discount Condition
+      description: Associates a discount condition with a product type
+      x-resourceId: discount_condition_product
+      properties:
+        product_type_id:
+          description: The id of the Product Type
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition_product:
+      title: Product Discount Condition
+      description: Associates a discount condition with a product
+      x-resourceId: discount_condition_product
+      properties:
+        product_id:
+          description: The id of the Product
+          type: string
+        condition_id:
+          description: The id of the Discount Condition
+          type: string
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
+          type: object
+    discount_condition:
+      title: Discount Condition
+      description: Holds rule conditions for when a discount is applicable
+      x-resourceId: discount_condition
+      properties:
+        id:
+          description: The id of the Discount Condition. Will be prefixed by `discon_`.
+          type: string
+        type:
+          description: The type of the Condition
+          type: string
+          enum:
+            - products
+            - product_types
+            - product_collections
+            - product_tags
+            - customer_groups
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        update_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
+        metadata:
+          description: An optional key-value map with additional information.
           type: object
     discount_rule:
       title: Discount Rule
@@ -2136,11 +2400,13 @@ components:
           enum:
             - total
             - item
-        valid_for:
-          description: A set of Products that the discount can be used for.
+        conditions:
+          description: >-
+            A set of conditions that can be used to limit when  the discount can
+            be used
           type: array
           items:
-            $ref: "#/components/schemas/product"
+            $ref: '#/components/schemas/discount_condition'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -2179,7 +2445,7 @@ components:
         rule:
           description: The Discount Rule that governs the behaviour of the Discount
           anyOf:
-            - $ref: "#/components/schemas/discount_rule"
+            - $ref: '#/components/schemas/discount_rule'
         is_disabled:
           description: >-
             Whether the Discount has been disabled. Disabled discounts cannot be
@@ -2202,7 +2468,7 @@ components:
           description: The Regions in which the Discount can be used
           type: array
           items:
-            $ref: "#/components/schemas/region"
+            $ref: '#/components/schemas/region'
         usage_limit:
           description: The maximum number of times that a discount can be used.
           type: integer
@@ -2242,12 +2508,12 @@ components:
           type: string
         cart:
           anyOf:
-            - $ref: "#/components/schemas/cart"
+            - $ref: '#/components/schemas/cart'
         order_id:
           type: string
         order:
           anyOf:
-            - $ref: "#/components/schemas/order"
+            - $ref: '#/components/schemas/order'
         canceled_at:
           type: string
           format: date-time
@@ -2285,7 +2551,7 @@ components:
         item:
           description: The Line Item that the Fulfillment Item references.
           anyOf:
-            - $ref: "#/components/schemas/line_item"
+            - $ref: '#/components/schemas/line_item'
         quantity:
           description: The quantity of the Line Item that is included in the Fulfillment.
           type: integer
@@ -2340,7 +2606,7 @@ components:
             about how many of each Line Item has been fulfilled.
           type: array
           items:
-            $ref: "#/components/schemas/fulfillment_item"
+            $ref: '#/components/schemas/fulfillment_item'
         tracking_links:
           description: >-
             The Tracking Links that can be used to track the status of the
@@ -2348,7 +2614,7 @@ components:
             Provider.
           type: array
           items:
-            $ref: "#/components/schemas/tracking_link"
+            $ref: '#/components/schemas/tracking_link'
         tracking_numbers:
           deprecated: true
           description: >-
@@ -2399,7 +2665,7 @@ components:
         gift_card:
           description: The Gift Card that was used in the transaction.
           anyOf:
-            - $ref: "#/components/schemas/gift_card"
+            - $ref: '#/components/schemas/gift_card'
         order_id:
           description: The id of the Order that the Gift Card was used to pay for.
           type: string
@@ -2437,7 +2703,7 @@ components:
         region:
           description: The Region in which the Gift Card is available.
           anyOf:
-            - $ref: "#/components/schemas/region"
+            - $ref: '#/components/schemas/region'
         order_id:
           description: The id of the Order that the Gift Card was purchased in.
           type: string
@@ -2585,7 +2851,7 @@ components:
         variant:
           description: The Product Variant contained in the Line Item.
           anyOf:
-            - $ref: "#/components/schemas/product_variant"
+            - $ref: '#/components/schemas/product_variant'
         quantity:
           description: The quantity of the content in the Line Item.
           type: integer
@@ -2636,10 +2902,15 @@ components:
             The amount in the smallest currecny unit (e.g. cents 100 cents to
             charge $1) that the Product Variant will cost.
           type: integer
-        sale_amount:
+        min_quantity:
           description: >-
-            An optional sale amount that the Product Variant will be available
-            for when defined.
+            The minimum quantity that the Money Amount applies to. If this value
+            is not set, the Money Amount applies to all quantities.
+          type: integer
+        max_quantity:
+          description: >-
+            The maximum quantity that the Money Amount applies to. If this value
+            is not set, the Money Amount applies to all quantities.
           type: integer
         variant_id:
           description: The id of the Product Variant that the Money Amount belongs to.
@@ -2650,7 +2921,7 @@ components:
         region:
           description: The Region that the Money Amount is defined for.
           anyOf:
-            - $ref: "#/components/schemas/region"
+            - $ref: '#/components/schemas/region'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -2686,7 +2957,7 @@ components:
         author:
           description: The author of the note.
           anyOf:
-            - $ref: "#/components/schemas/user"
+            - $ref: '#/components/schemas/user'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -2745,7 +3016,7 @@ components:
         customer:
           description: The Customer that the Notification was sent to.
           anyOf:
-            - $ref: "#/components/schemas/customer"
+            - $ref: '#/components/schemas/customer'
         to:
           description: >-
             The address that the Notification was sent to. This will usually be
@@ -2766,7 +3037,7 @@ components:
             Notification.
           type: array
           items:
-            $ref: "#/components/schemas/notification_resend"
+            $ref: '#/components/schemas/notification_resend'
         provider_id:
           description: The id of the Notification Provider that handles the Notification.
           type: string
@@ -2885,76 +3156,76 @@ components:
         discounts:
           type: array
           items:
-            $ref: "#/components/schemas/discount"
+            $ref: '#/components/schemas/discount'
         email:
           type: string
         billing_address_id:
           type: string
         billing_address:
           anyOf:
-            - $ref: "#/components/schemas/address"
+            - $ref: '#/components/schemas/address'
         shipping_address_id:
           type: string
         shipping_address:
           anyOf:
-            - $ref: "#/components/schemas/address"
+            - $ref: '#/components/schemas/address'
         items:
           type: array
           items:
-            $ref: "#/components/schemas/line_item"
+            $ref: '#/components/schemas/line_item'
         region_id:
           type: string
         region:
           anyOf:
-            - $ref: "#/components/schemas/region"
+            - $ref: '#/components/schemas/region'
         gift_cards:
           type: array
           items:
-            $ref: "#/components/schemas/gift_card"
+            $ref: '#/components/schemas/gift_card'
         customer_id:
           type: string
         customer:
           anyOf:
-            - $ref: "#/components/schemas/customer"
+            - $ref: '#/components/schemas/customer'
         payment_session:
           anyOf:
-            - $ref: "#/components/schemas/payment_session"
+            - $ref: '#/components/schemas/payment_session'
         payment_sessions:
           type: array
           items:
-            $ref: "#/components/schemas/payment_session"
+            $ref: '#/components/schemas/payment_session'
         payments:
           type: array
           items:
-            $ref: "#/components/schemas/payment"
+            $ref: '#/components/schemas/payment'
         shipping_methods:
           type: array
           items:
-            $ref: "#/components/schemas/shipping_method"
+            $ref: '#/components/schemas/shipping_method'
         fulfillments:
           type: array
           items:
-            $ref: "#/components/schemas/fulfillment"
+            $ref: '#/components/schemas/fulfillment'
         returns:
           type: array
           items:
-            $ref: "#/components/schemas/return"
+            $ref: '#/components/schemas/return'
         claims:
           type: array
           items:
-            $ref: "#/components/schemas/claim_order"
+            $ref: '#/components/schemas/claim_order'
         refunds:
           type: array
           items:
-            $ref: "#/components/schemas/refund"
+            $ref: '#/components/schemas/refund'
         swaps:
           type: array
           items:
-            $ref: "#/components/schemas/refund"
+            $ref: '#/components/schemas/refund'
         gift_card_transactions:
           type: array
           items:
-            $ref: "#/components/schemas/gift_card_transaction"
+            $ref: '#/components/schemas/gift_card_transaction'
         canceled_at:
           type: string
           format: date-time
@@ -3118,6 +3389,49 @@ components:
         metadata:
           description: An optional key-value map with additional information.
           type: object
+    price_list:
+      title: Price List
+      description: >-
+        Price Lists represents a set of prices that overrides the default price
+        for one or more product variants.
+      x-resourceId: price_list
+      properties:
+        id:
+          description: The id of the Price List. This value will be prefixed by `pl_`.
+          type: string
+        type:
+          description: >-
+            The type of Price List. This can be one of either `sale` or
+            `override`.
+          type: string
+          enum:
+            - sale
+            - override
+        starts_at:
+          description: The date with timezone that the Price List starts being valid.
+          type: string
+          format: date-time
+        ends_at:
+          description: The date with timezone that the Price List stops being valid.
+          type: string
+          format: date-time
+        customer_groups:
+          description: The Customer Groups that the Price List applies to.
+          type: array
+          items:
+            $ref: '#/components/schemas/customer_group'
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
     product_collection:
       title: Product Collection
       description: Product Collections represents a group of Products that are related.
@@ -3220,7 +3534,7 @@ components:
           description: The Product Option Values that are defined for the Product Option.
           type: array
           items:
-            $ref: "#/components/schemas/product_option_value"
+            $ref: '#/components/schemas/product_option_value'
         product_id:
           description: The id of the Product that the Product Option is defined for.
           type: string
@@ -3380,7 +3694,7 @@ components:
             Region.
           type: array
           items:
-            $ref: "#/components/schemas/money_amount"
+            $ref: '#/components/schemas/money_amount'
         sku:
           description: >-
             The unique stock keeping unit used to identify the Product Variant.
@@ -3461,7 +3775,7 @@ components:
           description: The Product Option Values specified for the Product Variant.
           type: array
           items:
-            $ref: "#/components/schemas/product_option_value"
+            $ref: '#/components/schemas/product_option_value'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -3519,7 +3833,7 @@ components:
           description: Images of the Product
           type: array
           items:
-            $ref: "#/components/schemas/image"
+            $ref: '#/components/schemas/image'
         thumbnail:
           description: A URL to an image file that can be used to identify the Product.
           type: string
@@ -3530,14 +3844,14 @@ components:
             Option Values.
           type: array
           items:
-            $ref: "#/components/schemas/product_option"
+            $ref: '#/components/schemas/product_option'
         variants:
           description: >-
             The Product Variants that belong to the Product. Each will have a
             unique combination of Product Option Values.
           type: array
           items:
-            $ref: "#/components/schemas/product_variant"
+            $ref: '#/components/schemas/product_variant'
         profile_id:
           description: >-
             The id of the Shipping Profile that the Product belongs to. Shipping
@@ -3591,16 +3905,16 @@ components:
         type:
           description: The Product Type of the Product (e.g. "Clothing")
           anyOf:
-            - $ref: "#/components/schemas/product_type"
+            - $ref: '#/components/schemas/product_type'
         collection:
           description: The Product Collection that the Product belongs to (e.g. "SS20")
           anyOf:
-            - $ref: "#/components/schemas/product_collection"
+            - $ref: '#/components/schemas/product_collection'
         tags:
           description: The Product Tags assigned to the Product.
           type: array
           items:
-            $ref: "#/components/schemas/product_tag"
+            $ref: '#/components/schemas/product_tag'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -3692,21 +4006,21 @@ components:
           description: The countries that are included in the Region.
           type: array
           items:
-            $ref: "#/components/schemas/country"
+            $ref: '#/components/schemas/country'
         payment_providers:
           description: >-
             The Payment Providers that can be used to process Payments in the
             Region.
           type: array
           items:
-            $ref: "#/components/schemas/payment_provider"
+            $ref: '#/components/schemas/payment_provider'
         fulfillment_providers:
           description: >-
             The Fulfillment Providers that can be used to fulfill orders in the
             Region.
           type: array
           items:
-            $ref: "#/components/schemas/fulfillment_provider"
+            $ref: '#/components/schemas/fulfillment_provider'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -3738,7 +4052,7 @@ components:
         item:
           description: The Line Item that the Return Item references.
           anyOf:
-            - $ref: "#/components/schemas/line_item"
+            - $ref: '#/components/schemas/line_item'
         quantity:
           description: The quantity of the Line Item that is included in the Return.
           type: integer
@@ -3756,7 +4070,7 @@ components:
         reason:
           description: The reason for returning the item.
           anyOf:
-            - $ref: "#/components/schemas/return_reason"
+            - $ref: '#/components/schemas/return_reason'
         note:
           description: An optional note with additional details about the Return.
           type: string
@@ -3818,7 +4132,7 @@ components:
         items:
           description: >-
             The Return Items that will be shipped back to the warehouse. type:
-            array items: $ref:
+            array items: $ref: 
         swap_id:
           description: The id of the Swap that the Return is a part of.
           type: string
@@ -3833,7 +4147,7 @@ components:
             The Shipping Method that will be used to send the Return back. Can
             be null if the Customer facilitates the return shipment themselves.
           anyOf:
-            - $ref: "#/components/schemas/shipping_method"
+            - $ref: '#/components/schemas/shipping_method'
         shipping_data:
           description: >-
             Data about the return shipment as provided by the Fulfilment
@@ -3884,7 +4198,7 @@ components:
         shipping_option:
           description: The Shipping Option that the Shipping Method is built from.
           anyOf:
-            - $ref: "#/components/schemas/shipping_option"
+            - $ref: '#/components/schemas/shipping_option'
         order_id:
           description: The id of the Order that the Shipping Method is used on.
           type: string
@@ -3970,7 +4284,7 @@ components:
         region:
           description: The id of the Region that the Shipping Option belongs to.
           anyOf:
-            - $ref: "#/components/schemas/region"
+            - $ref: '#/components/schemas/region'
         profile_id:
           description: >-
             The id of the Shipping Profile that the Shipping Option belongs to.
@@ -4008,7 +4322,7 @@ components:
             be available for a Cart.
           type: array
           items:
-            $ref: "#/components/schemas/shipping_option_requirement"
+            $ref: '#/components/schemas/shipping_option_requirement'
         data:
           description: >-
             The data needed for the Fulfillment Provider to identify the
@@ -4059,7 +4373,7 @@ components:
           description: The Products that the Shipping Profile defines Shipping Options for.
           type: array
           items:
-            $ref: "#/components/schemas/product"
+            $ref: '#/components/schemas/product'
         shipping_options:
           description: >-
             The Shipping Options that can be used to fulfill the Products in the
@@ -4067,7 +4381,7 @@ components:
           type: array
           items:
             anyOf:
-              - $ref: "#/components/schemas/shipping_option"
+              - $ref: '#/components/schemas/shipping_option'
         created_at:
           description: The date with timezone at which the resource was created.
           type: string
@@ -4113,7 +4427,7 @@ components:
           type: object
     store:
       title: Store
-      description: "Holds settings for the Store, such as name, currencies, etc."
+      description: 'Holds settings for the Store, such as name, currencies, etc.'
       x-resourceId: store
       properties:
         id:
@@ -4131,7 +4445,7 @@ components:
           description: The currencies that are enabled for the Store.
           type: array
           items:
-            $ref: "#/components/schemas/currency"
+            $ref: '#/components/schemas/currency'
         swap_link_template:
           description: >-
             A template to generate Swap links from use {{cart_id}} to include
@@ -4197,22 +4511,22 @@ components:
           description: The new Line Items to ship to the Customer.
           type: array
           items:
-            $ref: "#/components/schemas/line_item"
+            $ref: '#/components/schemas/line_item'
         return_order:
           description: The Return that is issued for the return part of the Swap.
           anyOf:
-            - $ref: "#/components/schemas/return"
+            - $ref: '#/components/schemas/return'
         fulfillments:
           description: The Fulfillments used to send the new Line Items.
           type: array
           items:
-            $ref: "#/components/schemas/fulfillment"
+            $ref: '#/components/schemas/fulfillment'
         payment:
           description: >-
             The Payment authorized when the Swap requires an additional amount
             to be charged from the Customer.
           anyOf:
-            - $ref: "#/components/schemas/payment"
+            - $ref: '#/components/schemas/payment'
         difference_due:
           description: >-
             The difference that is paid or refunded as a result of the Swap. May
@@ -4224,17 +4538,17 @@ components:
             The Address to send the new Line Items to - in most cases this will
             be the same as the shipping address on the Order.
           anyOf:
-            - $ref: "#/components/schemas/address"
+            - $ref: '#/components/schemas/address'
         shipping_methods:
           description: The Shipping Methods used to fulfill the addtional items purchased.
           type: array
           items:
-            $ref: "#/components/schemas/shipping_method"
+            $ref: '#/components/schemas/shipping_method'
         cart_id:
           description: The id of the Cart that the Customer will use to confirm the Swap.
           type: string
         allow_backorder:
-          description: "If true, swaps can be completed with items out of stock"
+          description: 'If true, swaps can be completed with items out of stock'
           type: boolean
         confirmed_at:
           description: >-
@@ -4255,7 +4569,7 @@ components:
           type: string
           format: date-time
         no_notification:
-          description: "If set to true, no notification will be sent related to this swap"
+          description: 'If set to true, no notification will be sent related to this swap'
           type: boolean
         metadata:
           description: An optional key-value map with additional information.
@@ -4393,7 +4707,7 @@ components:
         last_name:
           description: The Customer's billing address.
           anyOf:
-            - $ref: "#/components/schemas/address"
+            - $ref: '#/components/schemas/address'
         created_at:
           type: string
           format: date-time

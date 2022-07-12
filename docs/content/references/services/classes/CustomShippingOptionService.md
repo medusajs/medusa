@@ -2,7 +2,7 @@
 
 ## Hierarchy
 
-- `"medusa-interfaces"`
+- `TransactionBaseService`<[`CustomShippingOptionService`](CustomShippingOptionService.md)\>
 
   ↳ **`CustomShippingOptionService`**
 
@@ -16,30 +16,126 @@
 
 | Name | Type |
 | :------ | :------ |
-| `__namedParameters` | `Object` |
+| `__namedParameters` | `InjectedDependencies` |
 
 #### Overrides
 
-BaseService.constructor
+TransactionBaseService&lt;CustomShippingOptionService\&gt;.constructor
 
 #### Defined in
 
-[services/custom-shipping-option.js:5](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L5)
+[services/custom-shipping-option.ts:19](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/custom-shipping-option.ts#L19)
+
+## Properties
+
+### configModule
+
+• `Protected` `Optional` `Readonly` **configModule**: `Record`<`string`, `unknown`\>
+
+#### Inherited from
+
+TransactionBaseService.configModule
+
+___
+
+### container
+
+• `Protected` `Readonly` **container**: `unknown`
+
+#### Inherited from
+
+TransactionBaseService.container
+
+___
+
+### customShippingOptionRepository\_
+
+• `Protected` **customShippingOptionRepository\_**: typeof `CustomShippingOptionRepository`
+
+#### Defined in
+
+[services/custom-shipping-option.ts:17](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/custom-shipping-option.ts#L17)
+
+___
+
+### manager\_
+
+• `Protected` **manager\_**: `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.manager\_
+
+#### Defined in
+
+[services/custom-shipping-option.ts:15](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/custom-shipping-option.ts#L15)
+
+___
+
+### transactionManager\_
+
+• `Protected` **transactionManager\_**: `undefined` \| `EntityManager`
+
+#### Overrides
+
+TransactionBaseService.transactionManager\_
+
+#### Defined in
+
+[services/custom-shipping-option.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/custom-shipping-option.ts#L16)
 
 ## Methods
 
-### create
+### atomicPhase\_
 
-▸ **create**(`data`, `config?`): `Promise`<`CustomShippingOption`\>
+▸ `Protected` **atomicPhase_**<`TResult`, `TError`\>(`work`, `isolationOrErrorHandler?`, `maybeErrorHandlerOrDontFail?`): `Promise`<`TResult`\>
 
-Creates a custom shipping option associated with a given author
+Wraps some work within a transactional block. If the service already has
+a transaction manager attached this will be reused, otherwise a new
+transaction manager is created.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `TResult` |
+| `TError` |
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | `any` | the custom shipping option to create |
-| `config` | `any` | any configurations if needed, including meta data |
+| `work` | (`transactionManager`: `EntityManager`) => `Promise`<`TResult`\> | the transactional work to be done |
+| `isolationOrErrorHandler?` | `IsolationLevel` \| (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | the isolation level to be used for the work. |
+| `maybeErrorHandlerOrDontFail?` | (`error`: `TError`) => `Promise`<`void` \| `TResult`\> | Potential error handler |
+
+#### Returns
+
+`Promise`<`TResult`\>
+
+the result of the transactional work
+
+#### Inherited from
+
+TransactionBaseService.atomicPhase\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:53](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L53)
+
+___
+
+### create
+
+▸ **create**(`data`): `Promise`<`CustomShippingOption`\>
+
+Creates a custom shipping option
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `CreateCustomShippingOptionInput` | the custom shipping option to create |
 
 #### Returns
 
@@ -49,7 +145,7 @@ resolves to the creation result
 
 #### Defined in
 
-[services/custom-shipping-option.js:88](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L88)
+[services/custom-shipping-option.ts:90](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/custom-shipping-option.ts#L90)
 
 ___
 
@@ -57,14 +153,14 @@ ___
 
 ▸ **list**(`selector`, `config?`): `Promise`<`CustomShippingOption`[]\>
 
-Fetches all custom shipping options related to the given selector
+Fetches all custom shipping options based on the given selector
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `selector` | `any` | the query object for find |
-| `config` | `any` | the configuration used to find the objects. contains relations, skip, and take. |
+| `selector` | `Selector`<`CustomShippingOption`\> | the query object for find |
+| `config` | `FindConfig`<`CustomShippingOption`\> | the configuration used to find the objects. contains relations, skip, and take. |
 
 #### Returns
 
@@ -74,7 +170,7 @@ custom shipping options matching the query
 
 #### Defined in
 
-[services/custom-shipping-option.js:65](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L65)
+[services/custom-shipping-option.ts:65](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/custom-shipping-option.ts#L65)
 
 ___
 
@@ -89,38 +185,62 @@ Retrieves a specific shipping option.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | the id of the custom shipping option to retrieve. |
-| `config` | `any` | any options needed to query for the result. |
+| `config` | `FindConfig`<`CustomShippingOption`\> | any options needed to query for the result. |
 
 #### Returns
 
 `Promise`<`CustomShippingOption`\>
 
-which resolves to the requested custom shipping option.
+the requested custom shipping option.
 
 #### Defined in
 
-[services/custom-shipping-option.js:40](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L40)
+[services/custom-shipping-option.ts:36](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/custom-shipping-option.ts#L36)
+
+___
+
+### shouldRetryTransaction\_
+
+▸ `Protected` **shouldRetryTransaction_**(`err`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `err` | `Record`<`string`, `unknown`\> \| { `code`: `string`  } |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+TransactionBaseService.shouldRetryTransaction\_
+
+#### Defined in
+
+[interfaces/transaction-base-service.ts:34](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L34)
 
 ___
 
 ### withTransaction
 
-▸ **withTransaction**(`manager`): [`CustomShippingOptionService`](CustomShippingOptionService.md)
-
-Sets the service's manager to a given transaction manager
+▸ **withTransaction**(`transactionManager?`): [`CustomShippingOptionService`](CustomShippingOptionService.md)
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `manager` | `EntityManager` | the manager to use |
+| Name | Type |
+| :------ | :------ |
+| `transactionManager?` | `EntityManager` |
 
 #### Returns
 
 [`CustomShippingOptionService`](CustomShippingOptionService.md)
 
-a cloned CustomShippingOption service
+#### Inherited from
+
+TransactionBaseService.withTransaction
 
 #### Defined in
 
-[services/custom-shipping-option.js:20](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/custom-shipping-option.js#L20)
+[interfaces/transaction-base-service.ts:16](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/interfaces/transaction-base-service.ts#L16)

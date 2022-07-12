@@ -24,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/order.js:25](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L25)
+[services/order.js:25](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L25)
 
 ## Properties
 
@@ -55,7 +55,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/order.js:6](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L6)
+[services/order.js:6](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L6)
 
 ## Methods
 
@@ -78,7 +78,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/order.js:806](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L806)
+[services/order.js:806](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L806)
 
 ___
 
@@ -103,7 +103,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/order.js:1301](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1301)
+[services/order.js:1301](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1301)
 
 ___
 
@@ -129,7 +129,7 @@ result of the update operation.
 
 #### Defined in
 
-[services/order.js:952](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L952)
+[services/order.js:952](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L952)
 
 ___
 
@@ -153,7 +153,7 @@ updated order
 
 #### Defined in
 
-[services/order.js:1242](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1242)
+[services/order.js:1242](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1242)
 
 ___
 
@@ -177,7 +177,7 @@ result of the update operation.
 
 #### Defined in
 
-[services/order.js:1021](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1021)
+[services/order.js:1021](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1021)
 
 ___
 
@@ -199,7 +199,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/order.js:429](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L429)
+[services/order.js:429](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L429)
 
 ___
 
@@ -223,7 +223,7 @@ resolves to the creation result.
 
 #### Defined in
 
-[services/order.js:723](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L723)
+[services/order.js:723](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L723)
 
 ___
 
@@ -247,7 +247,7 @@ resolves to the creation result.
 
 #### Defined in
 
-[services/order.js:465](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L465)
+[services/order.js:465](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L465)
 
 ___
 
@@ -276,7 +276,7 @@ result of the update operation.
 
 #### Defined in
 
-[services/order.js:1121](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1121)
+[services/order.js:1121](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1121)
 
 ___
 
@@ -304,7 +304,7 @@ the result of the refund operation.
 
 #### Defined in
 
-[services/order.js:1328](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1328)
+[services/order.js:1328](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1328)
 
 ___
 
@@ -333,7 +333,7 @@ the resulting order following the update.
 
 #### Defined in
 
-[services/order.js:643](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L643)
+[services/order.js:643](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L643)
 
 ___
 
@@ -354,7 +354,7 @@ ___
 
 #### Defined in
 
-[services/order.js:1377](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1377)
+[services/order.js:1377](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1377)
 
 ___
 
@@ -379,7 +379,7 @@ resolves to the updated result.
 
 #### Defined in
 
-[services/order.js:1550](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1550)
+[services/order.js:1550](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1550)
 
 ___
 
@@ -403,7 +403,7 @@ the order document
 
 #### Defined in
 
-[services/order.js:417](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L417)
+[services/order.js:417](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L417)
 
 ___
 
@@ -431,7 +431,7 @@ the line items generated by the transformer.
 
 #### Defined in
 
-[services/order.js:1284](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1284)
+[services/order.js:1284](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1284)
 
 ___
 
@@ -454,7 +454,7 @@ the result of the find operation
 
 #### Defined in
 
-[services/order.js:148](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L148)
+[services/order.js:148](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L148)
 
 ___
 
@@ -479,7 +479,7 @@ ___
 
 #### Defined in
 
-[services/order.js:173](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L173)
+[services/order.js:173](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L173)
 
 ___
 
@@ -511,7 +511,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/order.js:1473](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1473)
+[services/order.js:1473](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1473)
 
 ___
 
@@ -536,7 +536,7 @@ the order document
 
 #### Defined in
 
-[services/order.js:305](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L305)
+[services/order.js:305](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L305)
 
 ___
 
@@ -561,7 +561,7 @@ the order document
 
 #### Defined in
 
-[services/order.js:343](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L343)
+[services/order.js:343](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L343)
 
 ___
 
@@ -586,7 +586,7 @@ the order document
 
 #### Defined in
 
-[services/order.js:380](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L380)
+[services/order.js:380](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L380)
 
 ___
 
@@ -606,7 +606,7 @@ ___
 
 #### Defined in
 
-[services/order.js:234](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L234)
+[services/order.js:234](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L234)
 
 ___
 
@@ -633,7 +633,7 @@ resolves to the update result.
 
 #### Defined in
 
-[services/order.js:864](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L864)
+[services/order.js:864](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L864)
 
 ___
 
@@ -658,7 +658,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/order.js:744](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L744)
+[services/order.js:744](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L744)
 
 ___
 
@@ -683,7 +683,7 @@ the result of the update operation
 
 #### Defined in
 
-[services/order.js:779](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L779)
+[services/order.js:779](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L779)
 
 ___
 
@@ -712,7 +712,7 @@ a line item that has the requested fulfillment quantity
 
 #### Defined in
 
-[services/order.js:1091](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L1091)
+[services/order.js:1091](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L1091)
 
 ___
 
@@ -736,7 +736,7 @@ the validated id
 
 #### Defined in
 
-[services/order.js:139](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L139)
+[services/order.js:139](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L139)
 
 ___
 
@@ -756,4 +756,4 @@ ___
 
 #### Defined in
 
-[services/order.js:102](https://github.com/medusajs/medusa/blob/2d3e404f/packages/medusa/src/services/order.js#L102)
+[services/order.js:102](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/order.js#L102)
