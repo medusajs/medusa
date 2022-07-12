@@ -17,11 +17,12 @@ import { CsvSchema } from "../../../interfaces/csv-parser"
 export type InjectedProps = {
   batchJobService: BatchJobService
   productService: ProductService
-  productOptionRepository: ProductOptionRepository
   productVariantService: ProductVariantService
-  shippingProfileService: ShippingProfileService
-  regionService: RegionService
+  shippingProfileService: typeof ShippingProfileService
+  regionService: typeof RegionService
   fileService: typeof FileService
+
+  productOptionRepository: typeof ProductOptionRepository
   manager: EntityManager
 }
 

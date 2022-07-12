@@ -62,21 +62,20 @@ class ProductImportStrategy extends AbstractBatchJobStrategy<ProductImportStrate
     Record<string, string>
   >
 
-  constructor(container: InjectedProps) {
-    super(container)
+  constructor({
+    batchJobService,
+    productService,
+    productOptionRepository,
+    productVariantService,
+    shippingProfileService,
+    regionService,
+    fileService,
+    manager,
+  }: InjectedProps) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    const {
-      batchJobService,
-      productService,
-      productOptionRepository,
-      productVariantService,
-      shippingProfileService,
-      regionService,
-      fileService,
-      manager,
-    } = container
-
-    this.csvParser_ = new CsvParser(container, CSVSchema)
+    this.csvParser_ = new CsvParser(CSVSchema)
 
     this.manager_ = manager
     this.fileService_ = fileService
