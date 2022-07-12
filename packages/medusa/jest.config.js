@@ -15,8 +15,11 @@ module.exports = {
       isolatedModules: false
     }
   },
-  transform: {
+  /*transform: {
     "^.+\\.[jt]s?$": `../../jest-transformer.js`,
+  },*/
+  "transform": {
+    "^.+\\.[jt]s?$": "ts-jest"
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
