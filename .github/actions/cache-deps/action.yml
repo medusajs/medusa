@@ -16,6 +16,5 @@ runs:
           ${{ runner.os }}-yarn-${{inputs.extension}}-v8
       # We want to only bootstrap and install if no cache is found.
     - run: |
-        yarn install --immutable
-        yarn workspaces foreach -Rpt install --immutable
+        yarn install --immutable && yarn workspaces foreach -Rpt install --immutable
       shell: bash
