@@ -161,7 +161,6 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
         () => void 0
       )
 
-      // if sales channel does not exist, return early
       if (!salesChannel) {
         return
       }
@@ -170,7 +169,6 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
         select: ["default_sales_channel_id"],
       })
 
-      // if it exists, but is the default channel, throw error
       if (salesChannel.id === store?.default_sales_channel_id) {
         throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,

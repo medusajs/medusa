@@ -163,7 +163,19 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      storeService: StoreServiceMock as unknown as StoreService,
+      storeService: {
+        ...StoreServiceMock,
+        retrieve: jest.fn().mockImplementation(() => {
+          return Promise.resolve({
+            ...store,
+            default_sales_channel_id: "default_channel",
+            default_sales_channel: {
+              id: "default_channel",
+              ...salesChannelData,
+            },
+          })
+        }),
+      } as any,
     })
 
     beforeEach(() => {
@@ -188,6 +200,16 @@ describe("SalesChannelService", () => {
         SalesChannelService.Events.DELETED,
         { id: IdMap.getId("sales_channel_1") }
       )
+    })
+
+    it("should fail if delete of the default channel is attempted", async () => {
+      try {
+        await salesChannelService.delete("default_channel")
+      } catch (error) {
+        expect(error.message).toEqual(
+          "You cannot delete the default sales channel"
+        )
+      }
     })
   })
 })

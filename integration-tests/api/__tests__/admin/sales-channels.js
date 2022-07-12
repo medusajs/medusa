@@ -299,15 +299,16 @@ describe("sales channels", () => {
 
     it("should throw if we attempt to delete default channel", async () => {
       const api = useApi()
-      expect.assertions(1)
+      expect.assertions(2)
 
-      try {
-        await api.delete(`/admin/sales-channels/test-channel`, adminReqConfig)
-      } catch (error) {
-        expect(error.response.data.message).toEqual(
-          "You cannot delete the default sales channel"
-        )
-      }
+      const res = await api
+        .delete(`/admin/sales-channels/test-channel`, adminReqConfig)
+        .catch((err) => err)
+
+      expect(res.response.status).toEqual(400)
+      expect(res.response.data.message).toEqual(
+        "You cannot delete the default sales channel"
+      )
     })
   })
 
