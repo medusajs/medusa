@@ -10,14 +10,11 @@ runs:
       id: cache
       with:
         path: |
-          node_modules
-          */*/node_modules
+          .yarn/cache
         key: ${{ runner.os }}-yarn-${{inputs.extension}}-v8-${{ hashFiles('**/yarn.lock') }}
         restore-keys: |
           ${{ runner.os }}-yarn-${{inputs.extension}}-v8
       # We want to only bootstrap and install if no cache is found.
     - run: |
-        if [[ "${{steps.cache.outputs.cache-hit}}" != "true" ]]; then
-          yarn install --immutable
-        fi
+        yarn install --immutable
       shell: bash

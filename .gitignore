@@ -3,7 +3,6 @@ node_modules
 *yarn-error.log
 .pnp.*
 .yarn/*
-!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
