@@ -24,6 +24,8 @@ function removeUndefinedDeeply(input: unknown): any {
       return input.map((item) => {
         return removeUndefinedDeeply(item)
       }).filter(v => typeof v !== "undefined")
+    } else if (Object.prototype.toString.call(input) === '[object Date]') {
+      return input
     } else if (typeof input === "object") {
        return Object.keys(input).reduce((acc: Record<string, unknown>, key: string) => {
          if (typeof input[key] === "undefined") {
