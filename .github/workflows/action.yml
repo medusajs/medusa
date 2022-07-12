@@ -12,10 +12,24 @@ jobs:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
       TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files-actions.sh "packages"
+
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: integration-tests
+          extension: pipeline
 
   unit-tests:
     needs: setup
@@ -46,7 +60,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: unit-tests
+          extension: pipeline
 
       - name: Build Packages
         run: yarn build
@@ -108,7 +122,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: integration-tests
+          extension: pipeline
 
       - name: Build Packages
         run: yarn build
@@ -185,7 +199,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: integration-tests
+          extension: pipeline
 
       - name: Build Packages
         run: yarn build
