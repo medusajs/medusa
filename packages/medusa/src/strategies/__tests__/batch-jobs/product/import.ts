@@ -1,16 +1,20 @@
 import { Readable, PassThrough } from "stream"
+import { EntityManager } from "typeorm"
 
+import { FileService } from "medusa-interfaces"
 import { IdMap, MockManager } from "medusa-test-utils"
 
 import { User } from "../../../../models"
 import { BatchJobStatus } from "../../../../types/batch-job"
 import ProductImportStrategy from "../../../batch-jobs/product/import"
-import { FileService } from "medusa-interfaces"
 import {
   BatchJobService,
   ProductService,
+  ProductVariantService,
+  RegionService,
   ShippingProfileService,
 } from "../../../../services"
+import { InjectedProps } from "../../../batch-jobs/product/types"
 
 let fakeJob = {
   id: IdMap.getId("product-import-job"),
@@ -129,15 +133,16 @@ describe("Product import strategy", () => {
   })
 
   const productImportStrategy = new ProductImportStrategy({
-    manager: managerMock,
+    manager: managerMock as EntityManager,
     fileService: fileServiceMock as typeof FileService,
     batchJobService: batchJobServiceMock as unknown as BatchJobService,
     productService: productServiceMock as unknown as ProductService,
     shippingProfileService:
-      shippingProfileServiceMock as unknown as ShippingProfileService,
-    productVariantService: productVariantServiceMock,
-    regionService: regionServiceMock,
-  })
+      shippingProfileServiceMock as unknown as typeof ShippingProfileService,
+    productVariantService:
+      productVariantServiceMock as unknown as ProductVariantService,
+    regionService: regionServiceMock as unknown as typeof RegionService,
+  } as InjectedProps)
 
   it("`preProcessBatchJob` should generate import ops and upload them to a bucket using the file service", async () => {
     const getImportInstructionsSpy = jest.spyOn(
