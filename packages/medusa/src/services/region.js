@@ -387,14 +387,29 @@ class RegionService extends BaseService {
     return await this.retrieve(country.region_id, config)
   }
 
-  async retrieveByName(name) {
+  /**
+   * Retrieves a region by name.
+   * @param {string} name - the name of the region to retrieve
+   * @param {object} config - configuration settings
+   * @return {Region} - region with the matching name
+   */
+  async retrieveByName(name, config = {}) {
     const regionRepository = this.manager_.getCustomRepository(
       this.regionRepository_
     )
 
-    return await regionRepository.findOne({
-      where: { name },
-    })
+    const query = this.buildQuery_({ name }, config)
+
+    const region = await regionRepository.findOne(query)
+
+    if (!region) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Region "${name}" was not found`
+      )
+    }
+
+    return region
   }
 
   /**
