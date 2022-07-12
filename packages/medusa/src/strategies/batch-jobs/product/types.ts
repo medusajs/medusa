@@ -52,7 +52,6 @@ export type ProductImportCsvSchema = CsvSchema<
  */
 export type ImportJobContext = {
   total: number
-  progress: number
   fileKey: string
 }
 
