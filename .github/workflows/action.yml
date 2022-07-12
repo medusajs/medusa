@@ -6,7 +6,33 @@ on:
       - "www/**"
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Assert changed
+        run: ./scripts/assert-changed-files-actions.sh "packages"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: pipeline
+
   unit-tests:
+    needs: setup
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -34,7 +60,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: unit-tests
+          extension: pipeline
 
       - name: Build Packages
         run: yarn build
@@ -43,6 +69,7 @@ jobs:
         run: yarn test
 
   integration-tests-api:
+    needs: setup
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -71,10 +98,6 @@ jobs:
         ports:
           - 5432:5432
 
-    strategy:
-      matrix:
-        node: [0, 1, 2, 3]
-
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -95,7 +118,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: integration-tests
+          extension: pipeline
 
       - name: Build Packages
         run: yarn build
@@ -119,19 +142,15 @@ jobs:
         run: yarn build
         working-directory: integration-tests/api
 
-      - name: Split tests
-        id: split-tests
-        run: echo "::set-output name=split::$(npx jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')"
-        working-directory: integration-tests/api
-
       - name: Run integration tests
-        run: echo $SPLIT | jq '.[${{ matrix.node }}] | .[] | @text' | xargs yarn test --maxWorkers=50%
+        run: yarn test --maxWorkers=50%
         working-directory: integration-tests/api
         env:
           DB_PASSWORD: postgres
           SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-plugins:
+    needs: setup
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -171,7 +190,7 @@ jobs:
       - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: integration-tests
+          extension: pipeline
 
       - name: Build Packages
         run: yarn build

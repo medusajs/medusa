@@ -10,15 +10,15 @@ module.exports = {
   //    )
   //  : [`default`].concat(useCoverage ? `jest-junit` : []),
   globals: {
-    'ts-jest': {
-      tsConfig: 'tsconfig.spec.json',
-      isolatedModules: false
-    }
+    "ts-jest": {
+      tsConfig: "tsconfig.spec.json",
+      isolatedModules: false,
+    },
   },
   transform: {
-    "^.+\\.[jt]s?$": `../../jest-transformer.js`,
+    "^.+\\.[jt]s?$": "ts-jest",
   },
   testEnvironment: `node`,
   moduleFileExtensions: [`js`, `jsx`, `ts`, `tsx`, `json`],
-  "setupFilesAfterEnv": ["<rootDir>/setupTests.js"]
+  setupFilesAfterEnv: ["<rootDir>/setupTests.js"],
 }
