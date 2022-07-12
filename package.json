@@ -4,10 +4,6 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/tsdx",
-      "**/tsdx/**"
     ]
   },
   "devDependencies": {

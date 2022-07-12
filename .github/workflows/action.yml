@@ -98,10 +98,6 @@ jobs:
         ports:
           - 5432:5432
 
-    strategy:
-      matrix:
-        node: [0, 1, 2, 3]
-
     steps:
       - name: Cancel Previous Runs
         uses: styfle/cancel-workflow-action@0.9.1
@@ -146,13 +142,8 @@ jobs:
         run: yarn build
         working-directory: integration-tests/api
 
-      - name: Split tests
-        id: split-tests
-        run: echo "::set-output name=split::$(npx jest --listTests --json | jq -cM '[_nwise(length / 4 | ceil)]')"
-        working-directory: integration-tests/api
-
       - name: Run integration tests
-        run: echo $SPLIT | jq '.[${{ matrix.node }}] | .[] | @text' | xargs yarn test --maxWorkers=50%
+        run: yarn test --maxWorkers=50%
         working-directory: integration-tests/api
         env:
           DB_PASSWORD: postgres
