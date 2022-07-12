@@ -6,7 +6,19 @@ on:
       - "www/**"
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ secrets.TURBO_TEAM }}
+    steps:
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: integration-tests
+
   unit-tests:
+    needs: setup
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -43,6 +55,7 @@ jobs:
         run: yarn test
 
   integration-tests-api:
+    needs: setup
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
@@ -132,6 +145,7 @@ jobs:
           SPLIT: ${{ steps['split-tests'].outputs['split'] }}
 
   integration-tests-plugins:
+    needs: setup
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
