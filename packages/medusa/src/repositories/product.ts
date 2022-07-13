@@ -105,9 +105,7 @@ export class ProductRepository extends Repository<Product> {
     return [entities, count]
   }
 
-  private getGroupedRelations(
-    relations: string[]
-  ): {
+  private getGroupedRelations(relations: string[]): {
     [toplevel: string]: string[]
   } {
     const groupedRelations: { [toplevel: string]: string[] } = {}
@@ -231,9 +229,8 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn = this.mergeEntitiesWithRelations(
-      entitiesAndRelations
-    )
+    const entitiesToReturn =
+      this.mergeEntitiesWithRelations(entitiesAndRelations)
 
     return [entitiesToReturn, count]
   }
@@ -279,9 +276,8 @@ export class ProductRepository extends Repository<Product> {
     )
 
     const entitiesAndRelations = entitiesIdsWithRelations.concat(entities)
-    const entitiesToReturn = this.mergeEntitiesWithRelations(
-      entitiesAndRelations
-    )
+    const entitiesToReturn =
+      this.mergeEntitiesWithRelations(entitiesAndRelations)
 
     return entitiesToReturn
   }
@@ -374,6 +370,10 @@ export class ProductRepository extends Repository<Product> {
     }
     if ("title" in where) {
       delete where.title
+    }
+
+    if ("price_list_id" in where) {
+      delete where?.price_list_id
     }
 
     return {

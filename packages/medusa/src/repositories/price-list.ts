@@ -8,7 +8,6 @@ import {
 } from "typeorm"
 import { PriceList } from "../models/price-list"
 import { CustomFindOptions, ExtendedFindConfig } from "../types/common"
-import { CustomerGroup } from "../models"
 import { FilterablePriceListProps } from "../types/price-list"
 
 export type PriceListFindOptions = CustomFindOptions<
@@ -111,10 +110,10 @@ export class PriceListRepository extends Repository<PriceList> {
       .take(query.take)
 
     if (groups) {
-      qb.leftJoinAndSelect(
-        "price_list.customer_groups",
-        "group"
-      ).andWhere("group.id IN (:...ids)", { ids: groups.value })
+      qb.leftJoinAndSelect("price_list.customer_groups", "group").andWhere(
+        "group.id IN (:...ids)",
+        { ids: groups.value }
+      )
     }
 
     if (query.relations?.length) {
