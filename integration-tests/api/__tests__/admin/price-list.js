@@ -471,7 +471,7 @@ describe("/admin/price-lists", () => {
         status: "draft",
         starts_at: "2022-09-01T00:00:00.000Z",
         ends_at: "2022-12-31T00:00:00.000Z",
-        prices: [
+        prices: expect.arrayContaining([
           {
             id: expect.any(String),
             amount: 100,
@@ -483,6 +483,7 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            deleted_at: null,
           },
           {
             id: expect.any(String),
@@ -495,6 +496,7 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            deleted_at: null,
           },
           {
             id: expect.any(String),
@@ -507,6 +509,7 @@ describe("/admin/price-lists", () => {
             region_id: null,
             created_at: expect.any(String),
             updated_at: expect.any(String),
+            deleted_at: null,
           },
           {
             id: expect.any(String),
@@ -534,7 +537,7 @@ describe("/admin/price-lists", () => {
             updated_at: expect.any(String),
             deleted_at: null,
           },
-        ],
+        ]),
         customer_groups: [
           {
             id: "customer-group-1",
