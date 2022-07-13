@@ -75,7 +75,7 @@ Object {
   "ends_at": "2022-12-31T00:00:00.000Z",
   "id": "pl_no_customer_groups",
   "name": "Loyalty Reward - Winter Sale",
-  "prices": Array [
+  "prices": ArrayContaining [
     Object {
       "amount": 100,
       "created_at": Any<String>,
