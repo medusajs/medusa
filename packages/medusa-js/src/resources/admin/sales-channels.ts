@@ -5,7 +5,7 @@ import {
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
   AdminSalesChannelsListRes,
-  AdminDeleteSalesChannelsSalesChannelProductsBatchReq,
+  AdminDeleteSalesChannelsChannelProductsBatchReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -98,7 +98,7 @@ class AdminSalesChannelsResource extends BaseResource {
    */
   removeProducts(
     salesChannelId: string,
-    payload: AdminDeleteSalesChannelsSalesChannelProductsBatchReq,
+    payload: AdminDeleteSalesChannelsChannelProductsBatchReq,
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}/products/batch`

@@ -34,7 +34,7 @@ export default async (req: Request, res: Response) => {
   )
 
   const validatedBody =
-    req.validatedBody as AdminDeleteSalesChannelsSalesChannelProductsBatchReq
+    req.validatedBody as AdminDeleteSalesChannelsChannelProductsBatchReq
   const salesChannel = await salesChannelService.removeProducts(
     id,
     validatedBody.product_ids.map((p) => p.id)
@@ -42,7 +42,7 @@ export default async (req: Request, res: Response) => {
   res.status(200).json({ sales_channel: salesChannel })
 }
 
-export class AdminDeleteSalesChannelsSalesChannelProductsBatchReq {
+export class AdminDeleteSalesChannelsChannelProductsBatchReq {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ProductBatchSalesChannel)

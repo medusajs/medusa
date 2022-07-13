@@ -710,7 +710,15 @@ describe("sales channels", () => {
         product_ids: [{ id: product.id }]
       }
 
-      let response = await api.delete(
+      await api.delete(
+        `/admin/sales-channels/${salesChannel.id}/products/batch`,
+          {
+            ...adminReqConfig,
+            data: payload,
+          },
+      )
+      // Validate idempotency
+      const response = await api.delete(
         `/admin/sales-channels/${salesChannel.id}/products/batch`,
           {
             ...adminReqConfig,

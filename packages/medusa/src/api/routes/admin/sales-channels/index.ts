@@ -10,7 +10,7 @@ import middlewares, {
 import { AdminPostSalesChannelsSalesChannelReq } from "./update-sales-channel"
 import { AdminPostSalesChannelsReq } from "./create-sales-channel"
 import { AdminGetSalesChannelsParams } from "./list-sales-channels"
-import { AdminDeleteSalesChannelsSalesChannelProductsBatchReq } from "./delete-products-batch"
+import { AdminDeleteSalesChannelsChannelProductsBatchReq } from "./delete-products-batch"
 
 const route = Router()
 
@@ -43,7 +43,7 @@ export default (app) => {
   )
   salesChannelRouter.delete(
     "/products/batch",
-    transformBody(AdminDeleteSalesChannelsSalesChannelProductsBatchReq),
+    transformBody(AdminDeleteSalesChannelsChannelProductsBatchReq),
     middlewares.wrap(require("./delete-products-batch").default)
   )
 

@@ -3,7 +3,7 @@ import {
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
-  AdminDeleteSalesChannelsSalesChannelProductsBatchReq
+  AdminDeleteSalesChannelsChannelProductsBatchReq
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -102,13 +102,13 @@ export const useAdminDeleteProductsFromSalesChannel = (
   options?: UseMutationOptions<
     Response<AdminSalesChannelsRes>,
     Error,
-    AdminDeleteSalesChannelsSalesChannelProductsBatchReq
+    AdminDeleteSalesChannelsChannelProductsBatchReq
   >
 ) => {
   const { client } = useMedusa()
   const queryClient = useQueryClient()
   return useMutation(
-    (payload: AdminDeleteSalesChannelsSalesChannelProductsBatchReq) => {
+    (payload: AdminDeleteSalesChannelsChannelProductsBatchReq) => {
       return client.admin.salesChannels.removeProducts(id, payload)
     },
     buildOptions(
