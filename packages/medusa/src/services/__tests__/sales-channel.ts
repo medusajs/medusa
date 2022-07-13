@@ -16,23 +16,23 @@ describe("SalesChannelService", () => {
   const salesChannelRepositoryMock = {
     ...MockRepository({
       findOne: jest.fn().mockImplementation((queryOrId: string | FindOneOptions<SalesChannel>): any => {
-            return Promise.resolve({
-              id:
-                typeof queryOrId === "string"
-                  ? queryOrId
-                  : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
-                    IdMap.getId("sc_adjhlukiaeswhfae"),
-              ...salesChannelData,
-            })
-          }
-        ),
+          return Promise.resolve({
+            id:
+              typeof queryOrId === "string"
+                ? queryOrId
+                : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
+                IdMap.getId("sc_adjhlukiaeswhfae"),
+            ...salesChannelData,
+          })
+        }
+      ),
       findAndCount: jest.fn().mockImplementation(() =>
-          Promise.resolve([
-            {
-              id: IdMap.getId("sales_channel_1"),
-              ...salesChannelData
-            },
-          ]),
+        Promise.resolve([
+          {
+            id: IdMap.getId("sales_channel_1"),
+            ...salesChannelData
+          },
+        ]),
       ),
       create: jest.fn().mockImplementation((data) => data),
       save: (salesChannel) => Promise.resolve({
@@ -42,15 +42,15 @@ describe("SalesChannelService", () => {
       softRemove: jest.fn().mockImplementation((id: string): any => {
         return Promise.resolve()
       }),
-      getFreeTextSearchResultsAndCount: jest.fn().mockImplementation(() =>
-          Promise.resolve([
-            {
-              id: IdMap.getId("sales_channel_1"),
-              ...salesChannelData
-            },
-          ]),
-      )
     }),
+    getFreeTextSearchResultsAndCount: jest.fn().mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("sales_channel_1"),
+            ...salesChannelData
+          },
+        ]),
+    )
   }
 
   describe("create default", async () => {
