@@ -6,7 +6,7 @@ import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
 
 /**
  * @oas [delete] /sales-channels/{id}/products/batch
- * operationId: "DeleteSalesChannelsSalesChannelProductBatch"
+ * operationId: "DeleteSalesChannelsChannelProductsBatch"
  * summary: "Remove a list of products from a sales channel"
  * description: "Remove a list of products from a sales channel."
  * x-authenticated: true
