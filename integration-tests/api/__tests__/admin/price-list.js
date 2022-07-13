@@ -1244,6 +1244,29 @@ describe("/admin/price-lists", () => {
         expect.objectContaining({ id: "test-prod-2" }),
       ])
     })
+
+    it("lists products using free text search", async () => {
+      const api = useApi()
+
+      const response = await api
+        .get(`/admin/price-lists/test-list/products?q=MedusaHeadphones`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.warn(err.response.data)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.count).toEqual(1)
+      expect(response.data.products).toEqual([
+        expect.objectContaining({
+          id: "test-prod-1",
+          title: "MedusaHeadphones",
+        }),
+      ])
+    })
   })
 
   describe("delete prices from price list related to the specified product or variant", () => {
