@@ -85,11 +85,40 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     })
   }
 
+  /**
+   * Lists sales channels based on the provided parameters and includes the count of
+   * sales channels that match the query.
+   * @return an array containing the sales channels as
+   *   the first element and the total count of sales channels that matches the query
+   *   as the second element.
+   */
   async listAndCount(
-    selector: QuerySelector<any> = {},
-    config: FindConfig<any> = { relations: [], skip: 0, take: 10 }
+    selector: QuerySelector<SalesChannel>,
+    config: FindConfig<SalesChannel> = {
+      skip: 0,
+      take: 20,
+    }
   ): Promise<[SalesChannel[], number]> {
-    throw new Error("Method not implemented.")
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
+
+      const selector_ = { ...selector }
+      let q: string | undefined
+      if ("q" in selector_) {
+        q = selector_.q
+        delete selector_.q
+      }
+
+      const query = buildQuery(selector_, config)
+
+      if (q) {
+        return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)
+      }
+
+      return await salesChannelRepo.findAndCount(query)
+    })
   }
 
   /**

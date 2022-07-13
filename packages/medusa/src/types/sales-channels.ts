@@ -1,3 +1,5 @@
+import { SalesChannel } from "../models"
+
 export type CreateSalesChannelInput = {
   name: string
   description?: string

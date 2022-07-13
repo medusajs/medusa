@@ -13,31 +13,45 @@ describe("SalesChannelService", () => {
     is_disabled: false,
   }
 
-  const salesChannelRepositoryMock = MockRepository({
-    findOne: jest
-      .fn()
-      .mockImplementation(
-        (queryOrId: string | FindOneOptions<SalesChannel>): any => {
+  const salesChannelRepositoryMock = {
+    ...MockRepository({
+      findOne: jest.fn().mockImplementation((queryOrId: string | FindOneOptions<SalesChannel>): any => {
           return Promise.resolve({
             id:
               typeof queryOrId === "string"
                 ? queryOrId
                 : (queryOrId?.where as FindConditions<SalesChannel>)?.id ??
-                  IdMap.getId("sc_adjhlukiaeswhfae"),
+                IdMap.getId("sc_adjhlukiaeswhfae"),
             ...salesChannelData,
           })
         }
       ),
-    create: jest.fn().mockImplementation((data) => data),
-    save: (salesChannel) =>
-      Promise.resolve({
+      findAndCount: jest.fn().mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("sales_channel_1"),
+            ...salesChannelData
+          },
+        ]),
+      ),
+      create: jest.fn().mockImplementation((data) => data),
+      save: (salesChannel) => Promise.resolve({
         id: IdMap.getId("sales_channel_1"),
-        ...salesChannel,
+        ...salesChannel
       }),
-    softRemove: jest.fn().mockImplementation((id: string): any => {
-      return Promise.resolve()
+      softRemove: jest.fn().mockImplementation((id: string): any => {
+        return Promise.resolve()
+      }),
     }),
-  })
+    getFreeTextSearchResultsAndCount: jest.fn().mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: IdMap.getId("sales_channel_1"),
+            ...salesChannelData
+          },
+        ]),
+    )
+  }
 
   describe("create default", async () => {
     const salesChannelService = new SalesChannelService({
@@ -155,6 +169,70 @@ describe("SalesChannelService", () => {
         id: IdMap.getId("sc"),
         ...update,
       })
+    })
+  })
+
+  describe("list", () => {
+    const salesChannelService = new SalesChannelService({
+      manager: MockManager,
+      eventBusService: EventBusServiceMock as unknown as EventBusService,
+      salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService,
+    })
+
+    afterEach(() => {
+      jest.clearAllMocks()
+    })
+
+    it("should retrieve a sales channel using free text search", async () => {
+      const q = "free search text"
+
+      const salesChannel = await salesChannelService.listAndCount({ q })
+
+      expect(salesChannel).toBeTruthy()
+      expect(salesChannel).toEqual(
+        expect.arrayContaining([{
+          id: IdMap.getId("sales_channel_1"),
+          ...salesChannelData,
+        }])
+      )
+
+      expect(salesChannelRepositoryMock.findAndCount).toHaveBeenCalledTimes(0)
+      expect(salesChannelRepositoryMock.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.getFreeTextSearchResultsAndCount).toHaveBeenLastCalledWith(
+        q,
+        {
+          skip: 0,
+          take: 20,
+          where: {},
+        }
+      )
+    })
+
+    it("should retrieve a sales channel using find and count", async () => {
+      const salesChannel = await salesChannelService.listAndCount({
+        id: IdMap.getId("sales_channel_1")
+      })
+
+      expect(salesChannel).toBeTruthy()
+      expect(salesChannel).toEqual(
+        expect.arrayContaining([{
+          id: IdMap.getId("sales_channel_1"),
+          ...salesChannelData,
+        }])
+      )
+
+      expect(salesChannelRepositoryMock.getFreeTextSearchResultsAndCount).toHaveBeenCalledTimes(0)
+      expect(salesChannelRepositoryMock.findAndCount).toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.findAndCount).toHaveBeenLastCalledWith(
+        {
+          skip: 0,
+          take: 20,
+          where: {
+            id: IdMap.getId("sales_channel_1"),
+          },
+        }
+      )
     })
   })
 

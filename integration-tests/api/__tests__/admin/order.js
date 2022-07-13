@@ -1521,7 +1521,7 @@ describe("/admin/orders", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
-      expect(response.data.orders).toEqual([
+      expect(response.data.orders).toEqual(expect.arrayContaining([
         expect.objectContaining({
           id: "test-order",
           shipping_address: expect.objectContaining({ first_name: "lebron" }),
@@ -1530,7 +1530,7 @@ describe("/admin/orders", () => {
           id: "discount-order",
           shipping_address: expect.objectContaining({ first_name: "lebron" }),
         }),
-      ])
+      ]))
     })
 
     it("successfully lists orders with greater than", async () => {

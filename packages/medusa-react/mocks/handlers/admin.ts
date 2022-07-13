@@ -1682,6 +1682,18 @@ export const adminHandlers = [
     )
   }),
 
+  rest.get("/admin/sales-channels", (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        count: 1,
+        limit: 20,
+        offset: 20,
+        sales_channels: fixtures.get("sales_channels"),
+      })
+    )
+  }),
+
   rest.post("/admin/sales-channels/:id", (req, res, ctx) => {
     return res(
       ctx.status(200),

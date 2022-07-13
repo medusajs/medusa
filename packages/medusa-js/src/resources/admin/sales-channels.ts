@@ -1,11 +1,14 @@
 import {
+  AdminGetSalesChannelsParams,
   AdminPostSalesChannelsReq,
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
+  AdminSalesChannelsListRes,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
+import qs from "qs"
 
 class AdminSalesChannelsResource extends BaseResource {
   /** retrieve a sales channel
@@ -49,11 +52,26 @@ class AdminSalesChannelsResource extends BaseResource {
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
 
-  /* list(
-    query?: any,
+  /**
+   * Retrieve a list of sales channels
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+   * @description Retrieve a list of sales channels
+   * @returns the list of sales channel as well as the pagination properties
+   */
+  list(
+    query?: AdminGetSalesChannelsParams,
     customHeaders: Record<string, any> = {}
-  ): ResponsePromise<any> {
-  }*/
+  ): ResponsePromise<AdminSalesChannelsListRes> {
+    let path = `/admin/sales-channels`
+
+    if (query) {
+      const queryString = qs.stringify(query)
+      path += `?${queryString}`
+    }
+
+    return this.client.request("GET", path, {}, {}, customHeaders)
+  }
 
   /**
    * Delete a sales channel
