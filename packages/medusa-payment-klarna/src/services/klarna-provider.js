@@ -76,22 +76,26 @@ class KlarnaProviderService extends PaymentService {
       const name = []
       let total = 0
       let tax = 0
+      let taxRate = 0
 
-      for (const next of cart.shipping_methods) {
-        const totals = await this.totalsService_.getShippingMethodTotals(
-          next,
-          cart,
-          {
-            include_tax: true,
-          }
-        )
+      if (cart.shipping_total > 0) {
+        for (const next of cart.shipping_methods) {
+          const totals = await this.totalsService_.getShippingMethodTotals(
+            next,
+            cart,
+            {
+              include_tax: true,
+            }
+          )
 
-        name.push(next?.shipping_option.name)
-        total += totals.total
-        tax += totals.tax_total
+          const methodTaxRate =
+            totals.tax_lines.reduce((acc, next) => acc + next.rate, 0) / 100
+
+          name.push(next?.shipping_option.name)
+          taxRate += (totals.total / cart.shipping_total) * methodTaxRate
+          tax += totals.tax_total
+        }
       }
-
-      const taxRate = tax / (total - tax)
 
       order_lines.push({
         name: name?.join(" + ") || "Shipping fee",
@@ -99,7 +103,7 @@ class KlarnaProviderService extends PaymentService {
         type: "shipping_fee",
         unit_price: total,
         tax_rate: taxRate * 10000,
-        total_amount: total,
+        total_amount: cart.shipping_total,
         total_tax_amount: tax,
       })
     }

@@ -86,6 +86,124 @@ describe("sales channels", () => {
     })
   })
 
+  describe("GET /admin/sales-channels", () => {
+    let salesChannel1, salesChannel2
+
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+        salesChannel1 = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+        })
+        salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name 2",
+          description: "test description 2",
+        })
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should list the sales channel", async () => {
+      const api = useApi()
+      const response = await api.get(
+        `/admin/sales-channels/`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channels).toBeTruthy()
+      expect(response.data.sales_channels.length).toBe(2)
+      expect(response.data).toMatchSnapshot({
+        count: 2,
+        limit: 20,
+        offset: 0,
+        sales_channels: expect.arrayContaining([
+          {
+            id: expect.any(String),
+            name: salesChannel1.name,
+            description: salesChannel1.description,
+            is_disabled: false,
+            deleted_at: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+          {
+            id: expect.any(String),
+            name: salesChannel2.name,
+            description: salesChannel2.description,
+            is_disabled: false,
+            deleted_at: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ])
+      })
+    })
+
+    it("should list the sales channel using free text search", async () => {
+      const api = useApi()
+      const response = await api.get(
+        `/admin/sales-channels/?q=2`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channels).toBeTruthy()
+      expect(response.data.sales_channels.length).toBe(1)
+      expect(response.data).toMatchSnapshot({
+        count: 1,
+        limit: 20,
+        offset: 0,
+        sales_channels: expect.arrayContaining([
+          {
+            id: expect.any(String),
+            name: salesChannel2.name,
+            description: salesChannel2.description,
+            is_disabled: false,
+            deleted_at: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ])
+      })
+    })
+
+    it("should list the sales channel using properties filters", async () => {
+      const api = useApi()
+      const response = await api.get(
+        `/admin/sales-channels/?name=test+name`,
+        adminReqConfig
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channels).toBeTruthy()
+      expect(response.data.sales_channels.length).toBe(1)
+      expect(response.data).toMatchSnapshot({
+        count: 1,
+        limit: 20,
+        offset: 0,
+        sales_channels: expect.arrayContaining([
+          {
+            id: expect.any(String),
+            name: salesChannel1.name,
+            description: salesChannel1.description,
+            is_disabled: false,
+            deleted_at: null,
+            created_at: expect.any(String),
+            updated_at: expect.any(String),
+          },
+        ])
+      })
+    })
+  })
+
   describe("POST /admin/sales-channels/:id", () => {
     let sc
 

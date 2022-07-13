@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { IsObject, IsOptional, IsString } from "class-validator"
+import { IsOptional, IsString } from "class-validator"
 
 import SalesChannelService from "../../../../services/sales-channel"
 import { CreateSalesChannelInput } from "../../../../types/sales-channels"
@@ -14,7 +14,7 @@ import { CreateSalesChannelInput } from "../../../../types/sales-channels"
  *   - (body) name=* {string} Name of the sales channel
  *   - (body) description=* {string} Description of the sales channel
  * tags:
- *   - Sales Channels
+ *   - Sales Channel
  * responses:
  *   200:
  *     description: OK
