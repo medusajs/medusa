@@ -11,6 +11,7 @@ import {
   createRemoteFileNode,
   CreateRemoteFileNodeArgs,
 } from "gatsby-source-filesystem"
+import { sourceAllNodes, sourceUpdatedNodes } from "./source-nodes"
 
 export function pluginOptionsSchema({ Joi }: PluginOptionsSchemaArgs): any {
   return Joi.object({
