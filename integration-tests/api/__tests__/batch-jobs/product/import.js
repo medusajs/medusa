@@ -52,6 +52,7 @@ describe("Product import batch job", () => {
 
   beforeEach(async () => {
     try {
+      await batchJobSeeder(dbConnection)
       await adminSeeder(dbConnection)
       await userSeeder(dbConnection)
     } catch (e) {
