@@ -177,6 +177,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
+      storeService: StoreServiceMock as unknown as StoreService,
     })
 
     afterEach(() => {
