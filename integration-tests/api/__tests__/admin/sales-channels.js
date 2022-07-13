@@ -1,6 +1,6 @@
 const path = require("path")
 
-const { SalesChannel } = require("@medusajs/medusa")
+const { SalesChannel, Product } = require("@medusajs/medusa")
 
 const { useApi } = require("../../../helpers/use-api")
 const { useDb } = require("../../../helpers/use-db")
@@ -655,6 +655,93 @@ describe("sales channels", () => {
         created_at: expect.any(String),
         updated_at: expect.any(String),
       })
+    })
+  })
+
+  describe("DELETE /admin/sales-channels/:id/products/batch", () => {
+    let salesChannel
+    let product
+
+    beforeEach(async() => {
+      try {
+        await adminSeeder(dbConnection)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+        })
+        product = await simpleProductFactory(dbConnection, {
+          id: "product_1",
+          title: "test title",
+        })
+        await dbConnection.manager.query(`
+          INSERT INTO product_sales_channel VALUES ('${product.id}', '${salesChannel.id}')
+        `)
+      } catch (e) {
+        console.error(e)
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("should remove products from a sales channel", async() => {
+      const api = useApi()
+
+      let attachedProduct = await dbConnection.manager.findOne(Product, {
+        where: { id: product.id },
+        relations: ["sales_channels"]
+      })
+
+      expect(attachedProduct.sales_channels.length).toBe(1)
+      expect(attachedProduct.sales_channels).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: "test name",
+            description: "test description",
+            is_disabled: false,
+          })
+        ])
+      )
+
+      const payload = {
+        product_ids: [{ id: product.id }]
+      }
+
+      await api.delete(
+        `/admin/sales-channels/${salesChannel.id}/products/batch`,
+          {
+            ...adminReqConfig,
+            data: payload,
+          },
+      )
+      // Validate idempotency
+      const response = await api.delete(
+        `/admin/sales-channels/${salesChannel.id}/products/batch`,
+          {
+            ...adminReqConfig,
+            data: payload,
+          },
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.sales_channel).toEqual(
+        expect.objectContaining({
+          id: expect.any(String),
+          name: "test name",
+          description: "test description",
+          is_disabled: false,
+        })
+      )
+
+      attachedProduct = await dbConnection.manager.findOne(Product, {
+        where: { id: product.id },
+        relations: ["sales_channels"]
+      })
+
+      expect(attachedProduct.sales_channels.length).toBe(0)
     })
   })
 })

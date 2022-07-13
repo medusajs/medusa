@@ -3,6 +3,7 @@ import {
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
+  AdminDeleteSalesChannelsChannelProductsBatchReq
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -80,6 +81,36 @@ export const useAdminDeleteSalesChannel = (
   const queryClient = useQueryClient()
   return useMutation(
     () => client.admin.salesChannels.delete(id),
+    buildOptions(
+      queryClient,
+      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
+      options
+    )
+  )
+}
+
+/**
+ * Remove products from a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+ * @description remove products from a sales channel
+ * @param id
+ * @param options
+ */
+export const useAdminDeleteProductsFromSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    AdminDeleteSalesChannelsChannelProductsBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminDeleteSalesChannelsChannelProductsBatchReq) => {
+      return client.admin.salesChannels.removeProducts(id, payload)
+    },
     buildOptions(
       queryClient,
       [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],

@@ -244,6 +244,27 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
       return defaultSalesChannel
     })
   }
+
+  /**
+   * Remove a batch of product from a sales channel
+   * @param salesChannelId - The id of the sales channel on which to remove the products
+   * @param productIds - The products ids to remove from the sales channel
+   * @return the sales channel on which the products have been removed
+   */
+  async removeProducts(
+    salesChannelId: string,
+    productIds: string[]
+  ): Promise<SalesChannel | never> {
+    return await this.atomicPhase_(async (transactionManager) => {
+      const salesChannelRepo = transactionManager.getCustomRepository(
+        this.salesChannelRepository_
+      )
+
+      await salesChannelRepo.removeProducts(salesChannelId, productIds)
+
+      return await this.retrieve(salesChannelId)
+    })
+  }
 }
 
 export default SalesChannelService

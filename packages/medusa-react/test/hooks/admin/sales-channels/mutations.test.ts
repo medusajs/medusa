@@ -4,6 +4,7 @@ import {
   useAdminDeleteSalesChannel,
   useAdminCreateSalesChannel,
   useAdminUpdateSalesChannel,
+  useAdminDeleteProductsFromSalesChannel,
 } from "../../../../src"
 import { fixtures } from "../../../../mocks/data"
 import { createWrapper } from "../../../utils"
@@ -82,5 +83,27 @@ describe("useAdminDeleteSalesChannel hook", () => {
         deleted: true,
       })
     )
+  })
+})
+
+describe("useAdminDeleteProductsFromSalesChannel hook", () => {
+  test("remove products from a sales channel", async () => {
+    const id = fixtures.get("sales_channel").id
+    const productId = fixtures.get("product").id
+
+    const { result, waitFor } = renderHook(
+      () => useAdminDeleteProductsFromSalesChannel(id),
+      { wrapper: createWrapper() }
+    )
+
+    result.current.mutate({ product_ids: [
+      { id: productId }
+    ]})
+
+    await waitFor(() => result.current.isSuccess)
+
+    expect(result.current.data).toEqual(expect.objectContaining({
+      sales_channel: fixtures.get("sales_channel"),
+    }))
   })
 })

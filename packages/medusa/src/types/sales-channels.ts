@@ -1,4 +1,4 @@
-import { SalesChannel } from "../models"
+import { IsString } from "class-validator"
 
 export type CreateSalesChannelInput = {
   name: string
@@ -7,3 +7,8 @@ export type CreateSalesChannelInput = {
 }
 
 export type UpdateSalesChannelInput = Partial<CreateSalesChannelInput>
+
+export class ProductBatchSalesChannel {
+  @IsString()
+  id: string
+}

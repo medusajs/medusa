@@ -5,6 +5,7 @@ import {
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
   AdminSalesChannelsListRes,
+  AdminDeleteSalesChannelsChannelProductsBatchReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -86,6 +87,22 @@ class AdminSalesChannelsResource extends BaseResource {
   ): ResponsePromise<AdminSalesChannelsDeleteRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
     return this.client.request("DELETE", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * Remove products from a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+   * @description Remove products from a sales channel
+   * @returns a medusa sales channel
+   */
+  removeProducts(
+    salesChannelId: string,
+    payload: AdminDeleteSalesChannelsChannelProductsBatchReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminSalesChannelsRes> {
+    const path = `/admin/sales-channels/${salesChannelId}/products/batch`
+    return this.client.request("DELETE", path, payload, {}, customHeaders)
   }
 }
 

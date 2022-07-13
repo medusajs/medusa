@@ -46,7 +46,11 @@ export const SalesChannelServiceMock = {
       description: "sales channel 1 description",
       is_disabled: false,
     })
-  })
+  }),
+
+  removeProducts: jest.fn().mockImplementation((id, productIds) => {
+    return Promise.resolve()
+  }),
 }
 
 const mock = jest.fn().mockImplementation(() => {
