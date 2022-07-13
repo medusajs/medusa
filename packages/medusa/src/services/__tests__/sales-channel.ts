@@ -1,10 +1,10 @@
 import { IdMap, MockManager, MockRepository } from "medusa-test-utils"
-import SalesChannelService from "../sales-channel"
-import { EventBusServiceMock } from "../__mocks__/event-bus"
-import { EventBusService, StoreService } from "../index"
 import { FindConditions, FindOneOptions } from "typeorm"
 import { SalesChannel } from "../../models"
-import { store, StoreServiceMock } from "../__mocks__/store";
+import { EventBusService, StoreService } from "../index"
+import SalesChannelService from "../sales-channel"
+import { EventBusServiceMock } from "../__mocks__/event-bus"
+import { store, StoreServiceMock } from "../__mocks__/store"
 
 describe("SalesChannelService", () => {
   const salesChannelData = {
@@ -29,10 +29,11 @@ describe("SalesChannelService", () => {
         }
       ),
     create: jest.fn().mockImplementation((data) => data),
-    save: (salesChannel) => Promise.resolve({
-      id: IdMap.getId("sales_channel_1"),
-      ...salesChannel
-    }),
+    save: (salesChannel) =>
+      Promise.resolve({
+        id: IdMap.getId("sales_channel_1"),
+        ...salesChannel,
+      }),
     softRemove: jest.fn().mockImplementation((id: string): any => {
       return Promise.resolve()
     }),
@@ -43,7 +44,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      storeService: StoreServiceMock as unknown as StoreService
+      storeService: StoreServiceMock as unknown as StoreService,
     })
 
     beforeEach(() => {
@@ -75,10 +76,10 @@ describe("SalesChannelService", () => {
               default_sales_channel: {
                 id: IdMap.getId("sales_channel_1"),
                 ...salesChannelData,
-              }
+              },
             })
-          })
-        } as any
+          }),
+        } as any,
       })
 
       const salesChannel = await localSalesChannelService.createDefault()
@@ -97,7 +98,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      storeService: StoreServiceMock as unknown as StoreService
+      storeService: StoreServiceMock as unknown as StoreService,
     })
 
     beforeEach(() => {
@@ -127,7 +128,7 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      storeService: StoreServiceMock as unknown as StoreService
+      storeService: StoreServiceMock as unknown as StoreService,
     })
 
     const update = {
@@ -162,35 +163,53 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      storeService: StoreServiceMock as unknown as StoreService
+      storeService: {
+        ...StoreServiceMock,
+        retrieve: jest.fn().mockImplementation(() => {
+          return Promise.resolve({
+            ...store,
+            default_sales_channel_id: "default_channel",
+            default_sales_channel: {
+              id: "default_channel",
+              ...salesChannelData,
+            },
+          })
+        }),
+      } as any,
     })
 
     beforeEach(() => {
       jest.clearAllMocks()
     })
 
-    it('should soft remove a sales channel', async () => {
+    it("should soft remove a sales channel", async () => {
       const res = await salesChannelService.delete(
         IdMap.getId("sales_channel_1")
       )
 
       expect(res).toBeUndefined()
 
-      expect(salesChannelRepositoryMock.softRemove)
-        .toHaveBeenCalledTimes(1)
-      expect(salesChannelRepositoryMock.softRemove)
-        .toHaveBeenLastCalledWith({
-          id: IdMap.getId("sales_channel_1"),
-          ...salesChannelData
-        })
+      expect(salesChannelRepositoryMock.softRemove).toHaveBeenCalledTimes(1)
+      expect(salesChannelRepositoryMock.softRemove).toHaveBeenLastCalledWith({
+        id: IdMap.getId("sales_channel_1"),
+        ...salesChannelData,
+      })
 
-      expect(EventBusServiceMock.emit)
-        .toHaveBeenCalledTimes(1)
-      expect(EventBusServiceMock.emit)
-        .toHaveBeenLastCalledWith(
-          SalesChannelService.Events.DELETED,
-          { "id": IdMap.getId("sales_channel_1") }
+      expect(EventBusServiceMock.emit).toHaveBeenCalledTimes(1)
+      expect(EventBusServiceMock.emit).toHaveBeenLastCalledWith(
+        SalesChannelService.Events.DELETED,
+        { id: IdMap.getId("sales_channel_1") }
+      )
+    })
+
+    it("should fail if delete of the default channel is attempted", async () => {
+      try {
+        await salesChannelService.delete("default_channel")
+      } catch (error) {
+        expect(error.message).toEqual(
+          "You cannot delete the default sales channel"
         )
+      }
     })
   })
 })

@@ -9,8 +9,8 @@ import {
   CreateSalesChannelInput,
   UpdateSalesChannelInput,
 } from "../types/sales-channels"
-import EventBusService from "./event-bus"
 import { buildQuery } from "../utils"
+import EventBusService from "./event-bus"
 import StoreService from "./store"
 
 type InjectedDependencies = {
@@ -163,6 +163,17 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
 
       if (!salesChannel) {
         return
+      }
+
+      const store = await this.storeService_.retrieve({
+        select: ["default_sales_channel_id"],
+      })
+
+      if (salesChannel.id === store?.default_sales_channel_id) {
+        throw new MedusaError(
+          MedusaError.Types.NOT_ALLOWED,
+          "You cannot delete the default sales channel"
+        )
       }
 
       await salesChannelRepo.softRemove(salesChannel)
