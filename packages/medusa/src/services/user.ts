@@ -253,7 +253,7 @@ class UserService extends TransactionBaseService<UserService> {
 
       await this.eventBus_
         .withTransaction(manager)
-        .emit(UserService.Events.CREATED, { id: updatedUser.id })
+        .emit(UserService.Events.UPDATED, { id: updatedUser.id })
 
       return updatedUser
     })
