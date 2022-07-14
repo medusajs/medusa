@@ -12,6 +12,7 @@ import { CreateCustomerInput, UpdateCustomerInput } from "../types/customers"
 import { buildQuery, setMetadata } from "../utils"
 import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
+import { UseAtomicPhase } from "../utils/decorators/atomic-phase"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -297,61 +298,55 @@ class CustomerService extends TransactionBaseService<CustomerService> {
    * @param {object} update - an object with the update values.
    * @return {Promise} resolves to the update result.
    */
+  @UseAtomicPhase()
   async update(
     customerId: string,
     update: UpdateCustomerInput
   ): Promise<Customer> {
-    return await this.atomicPhase_(
-      async (manager) => {
-        const customerRepository = manager.getCustomRepository(
-          this.customerRepository_
-        )
-
-        const customer = await this.retrieve(customerId)
-
-        const {
-          password,
-          metadata,
-          billing_address,
-          billing_address_id,
-          groups,
-          ...rest
-        } = update
-
-        if (metadata) {
-          customer.metadata = setMetadata(customer, metadata)
-        }
-
-        if ("billing_address_id" in update || "billing_address" in update) {
-          const address = billing_address_id || billing_address
-          if (typeof address !== "undefined") {
-            await this.updateBillingAddress_(customer, address)
-          }
-        }
-
-        for (const [key, value] of Object.entries(rest)) {
-          customer[key] = value
-        }
-
-        if (password) {
-          customer.password_hash = await this.hashPassword_(password)
-        }
-
-        if (groups) {
-          customer.groups = groups as CustomerGroup[]
-        }
-
-        const updated = await customerRepository.save(customer)
-
-        await this.eventBusService_
-          .withTransaction(manager)
-          .emit(CustomerService.Events.UPDATED, updated)
-        return updated
-      },
-      async (error) => {
-        throw formatException(error)
-      }
+    const customerRepository = this.manager_.getCustomRepository(
+      this.customerRepository_
     )
+
+    const customer = await this.retrieve(customerId)
+
+    const {
+      password,
+      metadata,
+      billing_address,
+      billing_address_id,
+      groups,
+      ...rest
+    } = update
+
+    if (metadata) {
+      customer.metadata = setMetadata(customer, metadata)
+    }
+
+    if ("billing_address_id" in update || "billing_address" in update) {
+      const address = billing_address_id || billing_address
+      if (typeof address !== "undefined") {
+        await this.updateBillingAddress_(customer, address)
+      }
+    }
+
+    for (const [key, value] of Object.entries(rest)) {
+      customer[key] = value
+    }
+
+    if (password) {
+      customer.password_hash = await this.hashPassword_(password)
+    }
+
+    if (groups) {
+      customer.groups = groups as CustomerGroup[]
+    }
+
+    const updated = await customerRepository.save(customer)
+
+    await this.eventBusService_
+      .withTransaction(this.manager_)
+      .emit(CustomerService.Events.UPDATED, updated)
+    return updated
   }
 
   /**
