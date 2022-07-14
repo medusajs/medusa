@@ -148,9 +148,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
     const manager = this.manager_
-    const optRepo = transactionManager.getCustomRepository(
-      this.optionRepository_
-    )
+    const optRepo = manager.getCustomRepository(this.optionRepository_)
 
     const query = buildQuery(selector, config)
     return await optRepo.findAndCount(query)

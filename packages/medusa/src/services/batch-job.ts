@@ -10,7 +10,7 @@ import {
   FilterableBatchJobProps,
 } from "../types/batch-job"
 import { FindConfig } from "../types/common"
-import { AbstractBatchJobStrategy, TransactionBaseService } from "../interfaces"
+import { TransactionBaseService } from "../interfaces"
 import { buildQuery } from "../utils"
 import { MedusaError } from "medusa-core-utils"
 import { EventBusService, StrategyResolverService } from "./index"

@@ -63,7 +63,6 @@ class PricingService extends TransactionBaseService<PricingService> {
   async collectPricingContext(
     context: PriceSelectionContext
   ): Promise<PricingContext> {
-    const manager = this.manager_
     let automaticTaxes = false
     let taxRate = null
     let currencyCode = context.currency_code

@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken"
-import _ from "lodash"
 import { MedusaError } from "medusa-core-utils"
 import Scrypt from "scrypt-kdf"
 import { DeepPartial, EntityManager } from "typeorm"
