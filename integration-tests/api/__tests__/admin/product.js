@@ -12,6 +12,7 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
+const { simpleProductFactory } = require("../../factories")
 
 jest.setTimeout(50000)
 
@@ -1425,7 +1426,16 @@ describe("/admin/products", () => {
   describe("DELETE /admin/products/:id/options/:option_id", () => {
     beforeEach(async () => {
       try {
-        await productSeeder(dbConnection)
+        await simpleProductFactory(dbConnection, {
+          id: "test-product-without-variants",
+          variants: [],
+          options: [
+            {
+              id: "test-product-option",
+              title: "Test option",
+            },
+          ],
+        })
         await adminSeeder(dbConnection)
       } catch (err) {
         console.log(err)
@@ -1443,7 +1453,7 @@ describe("/admin/products", () => {
 
       const response = await api
         .delete(
-          "/admin/products/test-product-without-variants/options/another-test-option",
+          "/admin/products/test-product-without-variants/options/test-product-option",
           {
             headers: {
               Authorization: "Bearer test_token",

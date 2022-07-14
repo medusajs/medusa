@@ -99,6 +99,7 @@ export const simpleProductFactory = async (
   const optionId = `${prodId}-option`
   const options = data.options || [{ id: optionId, title: "Size" }]
   for (const o of options) {
+    console.log(o)
     await manager.insert(ProductOption, {
       id: o.id,
       title: o.title,
