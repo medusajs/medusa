@@ -90,6 +90,16 @@ module.exports = async (connection, data = {}) => {
     tax_rate: 0,
   })
 
+  const pWithoutVariants = await manager.create(Product, {
+    id: "test-product-without-variants",
+    handle: "test-product-without-variants",
+    title: "Test product",
+    profile_id: defaultProfile.id,
+    description: "test-product-description",
+  })
+
+  await manager.save(pWithoutVariants)
+
   const p = await manager.create(Product, {
     id: "test-product",
     handle: "test-product",
@@ -112,6 +122,12 @@ module.exports = async (connection, data = {}) => {
     id: "test-option",
     title: "test-option",
     product_id: "test-product",
+  })
+
+  await manager.save(ProductOption, {
+    id: "another-test-option",
+    title: "test-option",
+    product_id: "test-product-without-variants",
   })
 
   const variant1 = await manager.create(ProductVariant, {

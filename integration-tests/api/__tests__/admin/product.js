@@ -1422,6 +1422,49 @@ describe("/admin/products", () => {
     })
   })
 
+  describe("DELETE /admin/products/:id/options/:option_id", () => {
+    beforeEach(async () => {
+      try {
+        await productSeeder(dbConnection)
+        await adminSeeder(dbConnection)
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("deletes a product option", async () => {
+      const api = useApi()
+
+      const response = await api
+        .delete(
+          "/admin/products/test-product-without-variants/options/another-test-option",
+          {
+            headers: {
+              Authorization: "Bearer test_token",
+            },
+          }
+        )
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.product).toEqual(
+        expect.objectContaining({
+          options: [],
+          id: "test-product-without-variants",
+          variants: [],
+        })
+      )
+    })
+  })
+
   describe("GET /admin/products/:id/variants", () => {
     beforeEach(async () => {
       try {
