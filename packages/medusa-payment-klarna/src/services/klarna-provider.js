@@ -92,7 +92,9 @@ class KlarnaProviderService extends PaymentService {
             totals.tax_lines.reduce((acc, next) => acc + next.rate, 0) / 100
 
           name.push(next?.shipping_option.name)
-          taxRate += (totals.total / cart.shipping_total) * methodTaxRate
+
+          total += totals.total
+          taxRate += (totals.price / cart.shipping_total) * methodTaxRate
           tax += totals.tax_total
         }
       }
@@ -103,7 +105,7 @@ class KlarnaProviderService extends PaymentService {
         type: "shipping_fee",
         unit_price: total,
         tax_rate: taxRate * 10000,
-        total_amount: cart.shipping_total,
+        total_amount: total,
         total_tax_amount: tax,
       })
     }
