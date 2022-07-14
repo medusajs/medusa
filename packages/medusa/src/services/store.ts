@@ -89,24 +89,16 @@ class StoreService extends TransactionBaseService<StoreService> {
    * @return the store
    */
   async retrieve(config: FindConfig<Store> = {}): Promise<Store> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const storeRepo = transactionManager.getCustomRepository(
-          this.storeRepository_
-        )
-        const query = buildQuery({}, config)
-        const store = await storeRepo.findOne(query)
+    const manager = this.manager_
+    const storeRepo = manager.getCustomRepository(this.storeRepository_)
+    const query = buildQuery({}, config)
+    const store = await storeRepo.findOne(query)
 
-        if (!store) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            "Store does not exist"
-          )
-        }
+    if (!store) {
+      throw new MedusaError(MedusaError.Types.NOT_FOUND, "Store does not exist")
+    }
 
-        return store
-      }
-    )
+    return store
   }
 
   protected getDefaultCurrency_(code: string): Partial<Currency> {

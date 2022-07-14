@@ -63,34 +63,29 @@ class PricingService extends TransactionBaseService<PricingService> {
   async collectPricingContext(
     context: PriceSelectionContext
   ): Promise<PricingContext> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        let automaticTaxes = false
-        let taxRate = null
-        let currencyCode = context.currency_code
+    const manager = this.manager_
+    let automaticTaxes = false
+    let taxRate = null
+    let currencyCode = context.currency_code
 
-        if (context.region_id) {
-          const region = await this.regionService
-            .withTransaction(transactionManager)
-            .retrieve(context.region_id, {
-              select: ["id", "currency_code", "automatic_taxes", "tax_rate"],
-            })
+    if (context.region_id) {
+      const region = await this.regionService.retrieve(context.region_id, {
+        select: ["id", "currency_code", "automatic_taxes", "tax_rate"],
+      })
 
-          currencyCode = region.currency_code
-          automaticTaxes = region.automatic_taxes
-          taxRate = region.tax_rate
-        }
+      currencyCode = region.currency_code
+      automaticTaxes = region.automatic_taxes
+      taxRate = region.tax_rate
+    }
 
-        return {
-          price_selection: {
-            ...context,
-            currency_code: currencyCode,
-          },
-          automatic_taxes: automaticTaxes,
-          tax_rate: taxRate,
-        }
-      }
-    )
+    return {
+      price_selection: {
+        ...context,
+        currency_code: currencyCode,
+      },
+      automatic_taxes: automaticTaxes,
+      tax_rate: taxRate,
+    }
   }
 
   /**
