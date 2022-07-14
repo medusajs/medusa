@@ -5,18 +5,18 @@ import { formatException } from "../exception-formatter";
 
 export type CustomAtomicPhaseExceptionHandler = <T>(this: T, error: unknown) => unknown | Promise<unknown>
 
-export function UseAtomicPhase(customAtomicPhaseExceptionHandler?: CustomAtomicPhaseExceptionHandler) {
+export function UseAtomicPhase(customAtomicPhaseExceptionHandler?: CustomAtomicPhaseExceptionHandler): MethodDecorator {
   return function <T extends TransactionBaseService<T>>(
-    target: T,
+    target: object,
     propertyKey: string | symbol,
     descriptor: TypedPropertyDescriptor<any>
-  ): any {
-    customAtomicPhaseExceptionHandler = customAtomicPhaseExceptionHandler ?? (async (error) => {
+  ): void {
+    customAtomicPhaseExceptionHandler = customAtomicPhaseExceptionHandler ?? (async (error: unknown) => {
       throw formatException(error)
     })
 
     const originalMethod = descriptor.value
-    descriptor.value = async function (...args: any[]) {
+    descriptor.value = async function (...args: unknown[]) {
       return await atomicPhase_.call(this, () => {
         return originalMethod.apply(this, args)
       }, customAtomicPhaseExceptionHandler)
