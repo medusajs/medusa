@@ -3,7 +3,7 @@ import {
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
-  AdminDeleteSalesChannelsChannelProductsBatchReq
+  AdminDeleteSalesChannelsChannelProductsBatchReq,
   AdminPostSalesChannelsChannelProductsBatchReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
