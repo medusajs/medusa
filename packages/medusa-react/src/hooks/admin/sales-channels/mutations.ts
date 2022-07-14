@@ -3,7 +3,8 @@ import {
   AdminSalesChannelsRes,
   AdminPostSalesChannelsSalesChannelReq,
   AdminSalesChannelsDeleteRes,
-  AdminDeleteSalesChannelsChannelProductsBatchReq
+  AdminDeleteSalesChannelsChannelProductsBatchReq,
+  AdminPostSalesChannelsChannelProductsBatchReq,
 } from "@medusajs/medusa"
 import { Response } from "@medusajs/medusa-js"
 import { useMutation, UseMutationOptions, useQueryClient } from "react-query"
@@ -110,6 +111,36 @@ export const useAdminDeleteProductsFromSalesChannel = (
   return useMutation(
     (payload: AdminDeleteSalesChannelsChannelProductsBatchReq) => {
       return client.admin.salesChannels.removeProducts(id, payload)
+    },
+    buildOptions(
+      queryClient,
+      [adminSalesChannelsKeys.lists(), adminSalesChannelsKeys.detail(id)],
+      options
+    )
+  )
+}
+
+/**
+ * Add products to a sales channel
+ * @experimental This feature is under development and may change in the future.
+ * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+ * @description Add products to a sales channel
+ * @param id
+ * @param options
+ */
+export const useAdminAddProductsToSalesChannel = (
+  id: string,
+  options?: UseMutationOptions<
+    Response<AdminSalesChannelsRes>,
+    Error,
+    AdminPostSalesChannelsChannelProductsBatchReq
+  >
+) => {
+  const { client } = useMedusa()
+  const queryClient = useQueryClient()
+  return useMutation(
+    (payload: AdminPostSalesChannelsChannelProductsBatchReq) => {
+      return client.admin.salesChannels.addProducts(id, payload)
     },
     buildOptions(
       queryClient,

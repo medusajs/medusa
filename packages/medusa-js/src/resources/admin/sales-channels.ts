@@ -6,6 +6,7 @@ import {
   AdminSalesChannelsDeleteRes,
   AdminSalesChannelsListRes,
   AdminDeleteSalesChannelsChannelProductsBatchReq,
+  AdminPostSalesChannelsChannelProductsBatchReq,
 } from "@medusajs/medusa"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
@@ -103,6 +104,22 @@ class AdminSalesChannelsResource extends BaseResource {
   ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}/products/batch`
     return this.client.request("DELETE", path, payload, {}, customHeaders)
+  }
+
+  /**
+   * Add products to a sales channel
+   * @experimental This feature is under development and may change in the future.
+   * To use this feature please enable featureflag `sales_channels` in your medusa backend project.
+   * @description Add products to a sales channel
+   * @returns a medusa sales channel
+   */
+  addProducts(
+    salesChannelId: string,
+    payload: AdminPostSalesChannelsChannelProductsBatchReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<AdminSalesChannelsRes> {
+    const path = `/admin/sales-channels/${salesChannelId}/products/batch`
+    return this.client.request("POST", path, payload, {}, customHeaders)
   }
 }
 
