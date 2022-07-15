@@ -70,6 +70,8 @@ export default async (req, res) => {
       .withTransaction(manager)
       .setPaymentSession(cart.id, "system")
 
+    await cartService.createTaxLines(cart.id)
+
     await cartService.withTransaction(manager).authorizePayment(cart.id)
 
     result = await orderService.withTransaction(manager).createFromCart(cart.id)
