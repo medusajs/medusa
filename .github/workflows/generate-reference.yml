@@ -44,3 +44,4 @@ jobs:
           commit_message: "docs: automatically Generated Services Reference"
           file_pattern: docs/content/*
           skip_dirty_check: false
+          branch: master
