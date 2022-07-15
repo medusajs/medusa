@@ -326,42 +326,42 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     },
     requiresPriceList = false
   ): Promise<[Product[], number]> {
-    const manager = this.manager_
-    const productVariantRepo = manager.getCustomRepository(
-      this.productVariantRepo_
-    )
-    const [products, count] = await this.productService_.listAndCount(
-      selector,
-      config
-    )
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const productVariantRepo = manager.getCustomRepository(
+        this.productVariantRepo_
+      )
+      const [products, count] = await this.productService_
+        .withTransaction(manager)
+        .listAndCount(selector, config)
 
-    const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
-    const productsWithPrices = await Promise.all(
-      products.map(async (p) => {
-        if (p.variants?.length) {
-          p.variants = await Promise.all(
-            p.variants.map(async (v) => {
-              const [prices] =
-                await moneyAmountRepo.findManyForVariantInPriceList(
-                  v.id,
-                  priceListId,
-                  requiresPriceList
-                )
+      const productsWithPrices = await Promise.all(
+        products.map(async (p) => {
+          if (p.variants?.length) {
+            p.variants = await Promise.all(
+              p.variants.map(async (v) => {
+                const [prices] =
+                  await moneyAmountRepo.findManyForVariantInPriceList(
+                    v.id,
+                    priceListId,
+                    requiresPriceList
+                  )
 
-              return productVariantRepo.create({
-                ...v,
-                prices,
+                return productVariantRepo.create({
+                  ...v,
+                  prices,
+                })
               })
-            })
-          )
-        }
+            )
+          }
 
-        return p
-      })
-    )
+          return p
+        })
+      )
 
-    return [productsWithPrices, count]
+      return [productsWithPrices, count]
+    })
   }
 
   async listVariants(
