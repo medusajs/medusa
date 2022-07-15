@@ -40,25 +40,21 @@ export default async (req, res) => {
   let id: string | undefined
   await manager.transaction(async (tx) => {
     const txRateService = rateService.withTransaction(tx)
-    const created = await txRateService
-      .withTransaction(tx)
-      .create(omit(value, ["products", "product_types", "shipping_options"]))
+    const created = await txRateService.create(
+      omit(value, ["products", "product_types", "shipping_options"])
+    )
     id = created.id
 
     if (typeof value.products !== "undefined") {
-      await txRateService.withTransaction(tx).addToProduct(id, value.products)
+      await txRateService.addToProduct(id, value.products)
     }
 
     if (typeof value.product_types !== "undefined") {
-      await txRateService
-        .withTransaction(tx)
-        .addToProductType(id, value.product_types)
+      await txRateService.addToProductType(id, value.product_types)
     }
 
     if (typeof value.shipping_options !== "undefined") {
-      await txRateService
-        .withTransaction(tx)
-        .addToShippingOption(id, value.shipping_options)
+      await txRateService.addToShippingOption(id, value.shipping_options)
     }
   })
 
