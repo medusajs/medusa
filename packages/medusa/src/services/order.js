@@ -152,8 +152,9 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const query = this.buildQuery_(selector, config)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     if (select && select.length) {
       query.select = select
@@ -212,8 +213,9 @@ class OrderService extends BaseService {
       }
     }
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     if (select && select.length) {
       query.select = select
@@ -222,7 +224,7 @@ class OrderService extends BaseService {
     const rels = relations
     delete query.relations
 
-    const raw = await orderRepo.findWithRelations(rels, query)
+    const raw = await orderRepo.findWithRelations(rels, query, true)
     const count = await orderRepo.count(query)
     const orders = await Promise.all(
       raw.map(async (r) => await this.decorateTotals_(r, totalsToSelect))
@@ -306,8 +308,9 @@ class OrderService extends BaseService {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
     const validatedId = this.validateId_(orderId)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { id: validatedId },
@@ -323,7 +326,7 @@ class OrderService extends BaseService {
 
     const rels = query.relations
     delete query.relations
-    const raw = await orderRepo.findOneWithRelations(rels, query)
+    const raw = await orderRepo.findOneWithRelations(rels, query, true)
     if (!raw) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
@@ -343,8 +346,9 @@ class OrderService extends BaseService {
   async retrieveByCartId(cartId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { cart_id: cartId },
@@ -380,8 +384,9 @@ class OrderService extends BaseService {
   async retrieveByExternalId(externalId, config = {}) {
     const orderRepo = this.manager_.getCustomRepository(this.orderRepository_)
 
-    const { select, relations, totalsToSelect } =
-      this.transformQueryForTotals_(config)
+    const { select, relations, totalsToSelect } = this.transformQueryForTotals_(
+      config
+    )
 
     const query = {
       where: { external_id: externalId },

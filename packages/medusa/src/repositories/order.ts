@@ -6,7 +6,8 @@ import { Order } from "../models/order"
 export class OrderRepository extends Repository<Order> {
   public async findWithRelations(
     relations: Array<keyof Order> = [],
-    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
+    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {},
+    withDeleted = false
   ): Promise<Order[]> {
     const entities = await this.find(optionsWithoutRelations)
     const entitiesIds = entities.map(({ id }) => id)
@@ -26,6 +27,7 @@ export class OrderRepository extends Repository<Order> {
         return this.findByIds(entitiesIds, {
           select: ["id"],
           relations: rels as string[],
+          withDeleted,
         })
       })
     ).then(flatten)
@@ -39,14 +41,16 @@ export class OrderRepository extends Repository<Order> {
 
   public async findOneWithRelations(
     relations: Array<keyof Order> = [],
-    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
+    optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {},
+    withDeleted = false
   ): Promise<Order> {
     // Limit 1
     optionsWithoutRelations.take = 1
 
     const result = await this.findWithRelations(
       relations,
-      optionsWithoutRelations
+      optionsWithoutRelations,
+      withDeleted
     )
     return result[0]
   }

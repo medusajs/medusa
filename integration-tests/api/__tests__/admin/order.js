@@ -15,6 +15,7 @@ const orderSeeder = require("../../helpers/order-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
 const adminSeeder = require("../../helpers/admin-seeder")
 const claimSeeder = require("../../helpers/claim-seeder")
+const { simpleOrderFactory } = require("../../factories/simple-order-factory")
 
 const {
   expectPostCallToReturn,
@@ -71,6 +72,55 @@ describe("/admin/orders", () => {
           console.log(err)
         })
       expect(response.status).toEqual(200)
+    })
+  })
+
+  describe("GET /admin/orders/:id", () => {
+    beforeEach(async () => {
+      try {
+        await adminSeeder(dbConnection)
+
+        await simpleOrderFactory(dbConnection, {
+          id: "order-with-null-tax-rate",
+          tax_rate: null,
+          region: {
+            id: "test-reg",
+          },
+        })
+      } catch (err) {
+        console.log(err)
+        throw err
+      }
+    })
+
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("successfully gets order with null tax rate", async () => {
+      const api = useApi()
+
+      const res = await api.delete("/admin/regions/test-reg", {
+        headers: {
+          authorization: "Bearer test_token",
+        },
+      })
+
+      const response = await api
+        .get("/admin/orders/order-with-null-tax-rate", {
+          headers: {
+            authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => console.log(err))
+
+      expect(response.status).toEqual(200)
+      expect(response.data.order).toEqual(
+        expect.objectContaining({
+          id: "order-with-null-tax-rate",
+        })
+      )
     })
   })
 
@@ -1521,16 +1571,18 @@ describe("/admin/orders", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.count).toEqual(2)
-      expect(response.data.orders).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          id: "test-order",
-          shipping_address: expect.objectContaining({ first_name: "lebron" }),
-        }),
-        expect.objectContaining({
-          id: "discount-order",
-          shipping_address: expect.objectContaining({ first_name: "lebron" }),
-        }),
-      ]))
+      expect(response.data.orders).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: "test-order",
+            shipping_address: expect.objectContaining({ first_name: "lebron" }),
+          }),
+          expect.objectContaining({
+            id: "discount-order",
+            shipping_address: expect.objectContaining({ first_name: "lebron" }),
+          }),
+        ])
+      )
     })
 
     it("successfully lists orders with greater than", async () => {
