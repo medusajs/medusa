@@ -16,6 +16,7 @@ import { Order } from "./order"
 import { Swap } from "./swap"
 import { generateEntityId } from "../utils/generate-entity-id"
 
+@Index(["cart_id"], { where: "canceled_at IS NOT NULL" })
 @Entity()
 export class Payment extends BaseEntity {
   @Index()
@@ -30,7 +31,7 @@ export class Payment extends BaseEntity {
   @Column({ nullable: true })
   cart_id: string
 
-  @OneToOne(() => Cart)
+  @ManyToOne(() => Cart)
   @JoinColumn({ name: "cart_id" })
   cart: Cart
 
@@ -38,7 +39,10 @@ export class Payment extends BaseEntity {
   @Column({ nullable: true })
   order_id: string
 
-  @ManyToOne(() => Order, (order) => order.payments)
+  @ManyToOne(
+    () => Order,
+    (order) => order.payments
+  )
   @JoinColumn({ name: "order_id" })
   order: Order
 

@@ -12,9 +12,7 @@ const {
 const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
 const { initDb, useDb } = require("../../../helpers/use-db")
-
-const swapSeeder = require("../../helpers/swap-seeder")
-const cartSeeder = require("../../helpers/cart-seeder")
+const { simpleRegionFactory, simpleProductFactory } = require("../../factories")
 
 jest.setTimeout(30000)
 
@@ -25,7 +23,7 @@ describe("/store/carts", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: true })
   })
 
   afterAll(async () => {
@@ -145,6 +143,84 @@ describe("/store/carts", () => {
         })
 
       expect(response.status).toEqual(404)
+    })
+  })
+
+  describe("Cart Completion with INSUFFICIENT_INVENTORY", () => {
+    afterEach(async () => {
+      const db = useDb()
+      await db.teardown()
+    })
+
+    it("recovers from failed copmletion", async () => {
+      const api = useApi()
+
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+
+      const cartRes = await api
+        .post("/store/carts", {
+          region_id: region.id,
+        })
+        .catch((err) => {
+          return err.response
+        })
+
+      const cartId = cartRes.data.cart.id
+
+      await api.post(`/store/carts/${cartId}/line-items`, {
+        variant_id: product.variants[0].id,
+        quantity: 1,
+      })
+      await api.post(`/store/carts/${cartId}`, {
+        email: "testmailer@medusajs.com",
+      })
+      await api.post(`/store/carts/${cartId}/payment-sessions`)
+
+      const manager = dbConnection.manager
+      await manager.update(
+        ProductVariant,
+        { id: product.variants[0].id },
+        {
+          inventory_quantity: 0,
+        }
+      )
+
+      let response = await api
+        .post(`/store/carts/${cartId}/complete`)
+        .catch((err) => {
+          return err.response
+        })
+
+      await manager.update(
+        ProductVariant,
+        { id: product.variants[0].id },
+        {
+          inventory_quantity: 1,
+        }
+      )
+
+      response = await api
+        .post(`/store/carts/${cartId}/complete`)
+        .catch((err) => {
+          return err.response
+        })
+
+      const payment = await manager.find(Payment, { cart_id: cartId })
+
+      expect(payment).toContainEqual(
+        expect.objectContaining({
+          canceled_at: expect.any(Date),
+        })
+      )
+      expect(payment).toContainEqual(
+        expect.objectContaining({
+          canceled_at: null,
+        })
+      )
+
+      expect(response.status).toEqual(200)
+      expect(response.data.type).toEqual("order")
     })
   })
 })
