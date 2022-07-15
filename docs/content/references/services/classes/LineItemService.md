@@ -1,7 +1,5 @@
 # Class: LineItemService
 
-Provides layer to manipulate line items.
-
 ## Hierarchy
 
 - `"medusa-interfaces"`
@@ -26,7 +24,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/line-item.ts:44](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L44)
+[services/line-item.ts:44](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L44)
 
 ## Properties
 
@@ -36,7 +34,7 @@ BaseService.constructor
 
 #### Defined in
 
-[services/line-item.ts:38](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L38)
+[services/line-item.ts:38](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L38)
 
 ___
 
@@ -46,7 +44,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:37](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L37)
+[services/line-item.ts:37](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L37)
 
 ___
 
@@ -56,7 +54,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:42](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L42)
+[services/line-item.ts:42](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L42)
 
 ___
 
@@ -66,7 +64,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:36](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L36)
+[services/line-item.ts:36](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L36)
 
 ___
 
@@ -76,7 +74,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:35](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L35)
+[services/line-item.ts:35](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L35)
 
 ___
 
@@ -86,7 +84,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:40](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L40)
+[services/line-item.ts:40](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L40)
 
 ___
 
@@ -96,7 +94,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:39](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L39)
+[services/line-item.ts:39](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L39)
 
 ___
 
@@ -106,7 +104,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:41](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L41)
+[services/line-item.ts:41](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L41)
 
 ## Methods
 
@@ -114,23 +112,19 @@ ___
 
 ▸ **create**(`data`): `Promise`<`LineItem`\>
 
-Create a line item
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `data` | `Partial`<`LineItem`\> | the line item object to create |
+| `data` | `Partial`<`LineItem`\> |  |
 
 #### Returns
 
 `Promise`<`LineItem`\>
 
-the created line item
-
 #### Defined in
 
-[services/line-item.ts:270](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L270)
+[services/line-item.ts:270](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L270)
 
 ___
 
@@ -138,25 +132,20 @@ ___
 
 ▸ **createReturnLines**(`returnId`, `cartId`): `Promise`<`LineItem`[]\>
 
-Creates return line items for a given cart based on the return items in a
-return.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `returnId` | `string` | the id to generate return items from. |
-| `cartId` | `string` | the cart to assign the return line items to. |
+| `returnId` | `string` |  |
+| `cartId` | `string` |  |
 
 #### Returns
 
 `Promise`<`LineItem`[]\>
 
-the created line items
-
 #### Defined in
 
-[services/line-item.ts:142](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L142)
+[services/line-item.ts:142](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L142)
 
 ___
 
@@ -164,23 +153,19 @@ ___
 
 ▸ **delete**(`id`): `Promise`<`undefined` \| `LineItem`\>
 
-Deletes a line item.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | the id of the line item to delete |
+| `id` | `string` |  |
 
 #### Returns
 
 `Promise`<`undefined` \| `LineItem`\>
 
-the result of the delete operation
-
 #### Defined in
 
-[services/line-item.ts:318](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L318)
+[services/line-item.ts:318](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L318)
 
 ___
 
@@ -207,7 +192,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:195](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L195)
+[services/line-item.ts:195](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L195)
 
 ___
 
@@ -232,7 +217,7 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:90](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L90)
+[services/line-item.ts:90](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L90)
 
 ___
 
@@ -240,24 +225,20 @@ ___
 
 ▸ **retrieve**(`id`, `config?`): `Promise`<`LineItem`\>
 
-Retrieves a line item by its id.
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | the id of the line item to retrieve |
-| `config` | `Object` | the config to be used at query building |
+| `id` | `string` |  |
+| `config` | `Object` |  |
 
 #### Returns
 
 `Promise`<`LineItem`\>
 
-the line item
-
 #### Defined in
 
-[services/line-item.ts:111](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L111)
+[services/line-item.ts:111](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L111)
 
 ___
 
@@ -265,24 +246,20 @@ ___
 
 ▸ **update**(`id`, `data`): `Promise`<`LineItem`\>
 
-Updates a line item
-
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | the id of the line item to update |
-| `data` | `Partial`<`LineItem`\> | the properties to update on line item |
+| `id` | `string` |  |
+| `data` | `Partial`<`LineItem`\> |  |
 
 #### Returns
 
 `Promise`<`LineItem`\>
 
-the update line item
-
 #### Defined in
 
-[services/line-item.ts:289](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L289)
+[services/line-item.ts:289](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L289)
 
 ___
 
@@ -302,4 +279,4 @@ ___
 
 #### Defined in
 
-[services/line-item.ts:68](https://github.com/medusajs/medusa/blob/ae5c88b89/packages/medusa/src/services/line-item.ts#L68)
+[services/line-item.ts:68](https://github.com/medusajs/medusa/blob/32b066d92/packages/medusa/src/services/line-item.ts#L68)
