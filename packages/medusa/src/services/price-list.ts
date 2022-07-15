@@ -374,28 +374,28 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     },
     requiresPriceList = false
   ): Promise<[ProductVariant[], number]> {
-    const manager = this.manager_
-    const [variants, count] = await this.variantService_.listAndCount(
-      selector,
-      config
-    )
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const [variants, count] = await this.variantService_
+        .withTransaction(manager)
+        .listAndCount(selector, config)
 
-    const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
+      const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
-    const variantsWithPrices = await Promise.all(
-      variants.map(async (variant) => {
-        const [prices] = await moneyAmountRepo.findManyForVariantInPriceList(
-          variant.id,
-          priceListId,
-          requiresPriceList
-        )
+      const variantsWithPrices = await Promise.all(
+        variants.map(async (variant) => {
+          const [prices] = await moneyAmountRepo.findManyForVariantInPriceList(
+            variant.id,
+            priceListId,
+            requiresPriceList
+          )
 
-        variant.prices = prices
-        return variant
-      })
-    )
+          variant.prices = prices
+          return variant
+        })
+      )
 
-    return [variantsWithPrices, count]
+      return [variantsWithPrices, count]
+    })
   }
 
   public async deleteProductPrices(
