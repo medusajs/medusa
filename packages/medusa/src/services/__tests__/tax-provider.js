@@ -193,6 +193,9 @@ describe("TaxProviderService", () => {
 
     test("success - with product rates", async () => {
       container.taxRateService = {
+        withTransaction: function () {
+          return this
+        },
         listByProduct: jest.fn(() =>
           Promise.resolve([
             {
