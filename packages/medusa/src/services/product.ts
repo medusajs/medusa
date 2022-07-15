@@ -712,7 +712,8 @@ class ProductService extends TransactionBaseService<ProductService> {
       }
 
       // In case the product does not contain variants, we can safely delete the option
-      // If it does contain variants, we need to make sure no variant exist for the product option to delete
+      // If it does contain variants, we need to make sure no variant exist for the
+      // product option to delete
       if (product?.variants?.length) {
         // For the option we want to delete, make sure that all variants have the
         // same option values. The reason for doing is, that we want to avoid

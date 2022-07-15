@@ -2,4 +2,4 @@
 "@medusajs/medusa": patch
 ---
 
-Fixes an error thrown when deleing product options on a product without variants
+Fixes an error thrown when deleting product options on a product without variants
