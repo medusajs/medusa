@@ -39,8 +39,8 @@ export default async (req: Request, res: Response) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transaction) => {
-    return await productCollectionService.withTransaction(transaction).removeProducts(id, validatedBody.product_ids)
+  await manager.transaction(async (transactionManager) => {
+    return await productCollectionService.withTransaction(transactionManager).removeProducts(id, validatedBody.product_ids)
   })
 
   res.json({

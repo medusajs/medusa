@@ -85,9 +85,9 @@ export default async (req, res) => {
   const discountService: DiscountService = req.scope.resolve("discountService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transaction) => {
+  await manager.transaction(async (transactionManager) => {
     return await discountService
-      .withTransaction(transaction)
+      .withTransaction(transactionManager)
       .update(discount_id, validated)
   })
 

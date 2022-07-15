@@ -26,8 +26,10 @@ export default async (req, res) => {
 
   const batchJobService: BatchJobService = req.scope.resolve("batchJobService")
   const manager: EntityManager = req.scope.resolve("manager")
-  batch_job = await manager.transaction(async (transaction) => {
-    return await batchJobService.withTransaction(transaction).cancel(batch_job)
+  batch_job = await manager.transaction(async (transactionManager) => {
+    return await batchJobService
+      .withTransaction(transactionManager)
+      .cancel(batch_job)
   })
 
   res.json({ batch_job })

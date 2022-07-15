@@ -38,8 +38,8 @@ export default async (req, res) => {
   const userId = req.user.id ?? req.user.userId
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const batch_job = await manager.transaction(async (transaction) => {
-    return await batchJobService.withTransaction(transaction).create({
+  const batch_job = await manager.transaction(async (transactionManager) => {
+    return await batchJobService.withTransaction(transactionManager).create({
       ...toCreate,
       created_by: userId,
     })

@@ -45,8 +45,8 @@ export default async (req: Request, res: Response) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const created = await manager.transaction(async (transaction) => {
-    return await productCollectionService.withTransaction(transaction).create(validatedBody)
+  const created = await manager.transaction(async (transactionManager) => {
+    return await productCollectionService.withTransaction(transactionManager).create(validatedBody)
   })
 
   const collection = await productCollectionService.retrieve(created.id)

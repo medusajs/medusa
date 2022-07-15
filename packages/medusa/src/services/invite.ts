@@ -270,35 +270,37 @@ class InviteService extends BaseService {
   }
 
   async resend(id): Promise<void> {
-    const inviteRepo = this.manager_.getCustomRepository(InviteRepository)
+    return await this.atomicPhase_(async (manager) => {
+      const inviteRepo = manager.getCustomRepository(InviteRepository)
 
-    const invite = await inviteRepo.findOne({ id })
+      const invite = await inviteRepo.findOne({ id })
 
-    if (!invite) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `Invite doesn't exist`
-      )
-    }
+      if (!invite) {
+        throw new MedusaError(
+          MedusaError.Types.INVALID_DATA,
+          `Invite doesn't exist`
+        )
+      }
 
-    invite.token = this.generateToken({
-      invite_id: invite.id,
-      role: invite.role,
-      user_email: invite.user_email,
-    })
-
-    invite.expires_at = new Date()
-    invite.expires_at.setDate(invite.expires_at.getDate() + 7)
-
-    await inviteRepo.save(invite)
-
-    await this.eventBus_
-      .withTransaction(this.manager_)
-      .emit(InviteService.Events.CREATED, {
-        id: invite.id,
-        token: invite.token,
+      invite.token = this.generateToken({
+        invite_id: invite.id,
+        role: invite.role,
         user_email: invite.user_email,
       })
+
+      invite.expires_at = new Date()
+      invite.expires_at.setDate(invite.expires_at.getDate() + 7)
+
+      await inviteRepo.save(invite)
+
+      await this.eventBus_
+        .withTransaction(this.manager_)
+        .emit(InviteService.Events.CREATED, {
+          id: invite.id,
+          token: invite.token,
+          user_email: invite.user_email,
+        })
+    })
   }
 }
 

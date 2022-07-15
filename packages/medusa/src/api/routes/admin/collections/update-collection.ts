@@ -45,8 +45,8 @@ export default async (req: Request, res: Response) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const updated = await manager.transaction(async (transaction) => {
-    return await productCollectionService.withTransaction(transaction).update(id, validatedBody)
+  const updated = await manager.transaction(async (transactionManager) => {
+    return await productCollectionService.withTransaction(transactionManager).update(id, validatedBody)
   })
 
   const collection = await productCollectionService.retrieve(updated.id)

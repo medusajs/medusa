@@ -32,8 +32,10 @@ export default async (req, res) => {
 
   const customerService: CustomerService = req.scope.resolve("customerService")
   const manager: EntityManager = req.scope.resolve("manager")
-  const customer = await manager.transaction(async (transaction) => {
-    return await customerService.withTransaction(transaction).create(validated)
+  const customer = await manager.transaction(async (transactionManager) => {
+    return await customerService
+      .withTransaction(transactionManager)
+      .create(validated)
   })
   res.status(201).json({ customer })
 }

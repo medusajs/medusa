@@ -39,8 +39,8 @@ export default async (req, res) => {
 
   const authService: AuthService = req.scope.resolve("authService")
   const manager: EntityManager = req.scope.resolve("manager")
-  const result = await manager.transaction(async (transaction) => {
-     return await authService.withTransaction(transaction).authenticate(
+  const result = await manager.transaction(async (transactionManager) => {
+     return await authService.withTransaction(transactionManager).authenticate(
       validated.email,
       validated.password
     )

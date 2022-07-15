@@ -3,6 +3,7 @@ import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from "class-validator"
 import { defaultAdminGiftCardFields, defaultAdminGiftCardRelations } from "."
 import { GiftCardService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /gift-cards
@@ -50,9 +51,12 @@ export default async (req, res) => {
 
   const giftCardService: GiftCardService = req.scope.resolve("giftCardService")
 
-  const newly = await giftCardService.create({
-    ...validated,
-    balance: validated.value,
+  const manager: EntityManager = req.scope.resolve("manager")
+  const newly = await manager.transaction(async (transactionManager) => {
+    return await giftCardService.withTransaction(transactionManager).create({
+      ...validated,
+      balance: validated.value,
+    })
   })
 
   const giftCard = await giftCardService.retrieve(newly.id, {

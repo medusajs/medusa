@@ -42,9 +42,9 @@ export default async (req, res) => {
 
   const discountService: DiscountService = req.scope.resolve("discountService")
   const manager: EntityManager = req.scope.resolve("manager")
-  const created = await manager.transaction(async (transaction) => {
+  const created = await manager.transaction(async (transactionManager) => {
     return await discountService
-      .withTransaction(transaction)
+      .withTransaction(transactionManager)
       .createDynamicCode(discount_id, validated)
   })
 

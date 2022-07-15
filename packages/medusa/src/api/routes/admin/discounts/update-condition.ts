@@ -84,9 +84,9 @@ export default async (req, res) => {
   }
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transaction) => {
+  await manager.transaction(async (transactionManager) => {
     return await conditionService
-      .withTransaction(transaction)
+      .withTransaction(transactionManager)
       .upsertCondition(updateObj)
   })
 

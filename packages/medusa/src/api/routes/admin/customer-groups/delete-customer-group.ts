@@ -37,8 +37,10 @@ export default async (req: Request, res: Response) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transaction) => {
-    return await customerGroupService.withTransaction(transaction).delete(id)
+  await manager.transaction(async (transactionManager) => {
+    return await customerGroupService
+      .withTransaction(transactionManager)
+      .delete(id)
   })
 
   res.json({

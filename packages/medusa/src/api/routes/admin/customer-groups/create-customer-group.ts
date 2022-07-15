@@ -34,11 +34,13 @@ export default async (req: Request, res: Response) => {
   )
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const customerGroup = await manager.transaction(async (transaction) => {
-    return await customerGroupService
-      .withTransaction(transaction)
-      .create(validated)
-  })
+  const customerGroup = await manager.transaction(
+    async (transactionManager) => {
+      return await customerGroupService
+        .withTransaction(transactionManager)
+        .create(validated)
+    }
+  )
 
   res.status(200).json({ customer_group: customerGroup })
 }

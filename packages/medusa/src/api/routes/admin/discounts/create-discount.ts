@@ -97,8 +97,10 @@ export default async (req, res) => {
   const discountService: DiscountService = req.scope.resolve("discountService")
 
   const manager: EntityManager = req.scope.resolve("manager")
-  const created = await manager.transaction(async (transaction) => {
-    return await discountService.withTransaction(transaction).create(validated)
+  const created = await manager.transaction(async (transactionManager) => {
+    return await discountService
+      .withTransaction(transactionManager)
+      .create(validated)
   })
 
   const config = getRetrieveConfig<Discount>(

@@ -75,11 +75,13 @@ export default async (req, res) => {
   let discount = await discountService.retrieve(discount_id)
 
   const manager: EntityManager = req.scope.resolve("manager")
-  await manager.transaction(async (transaction) => {
-    return await conditionService.withTransaction(transaction).upsertCondition({
-      ...validatedCondition,
-      rule_id: discount.rule_id,
-    })
+  await manager.transaction(async (transactionManager) => {
+    return await conditionService
+      .withTransaction(transactionManager)
+      .upsertCondition({
+        ...validatedCondition,
+        rule_id: discount.rule_id,
+      })
   })
 
   const config = getRetrieveConfig<Discount>(
