@@ -3,9 +3,9 @@ import { EntityManager } from "typeorm";
 import { IsolationLevel } from "typeorm/driver/types/IsolationLevel";
 import { formatException } from "../exception-formatter";
 
-export type CustomAtomicPhaseExceptionHandler = <T>(this: T, error: unknown) => unknown | Promise<unknown>
+export type CustomAtomicPhaseExceptionHandler = <T>(this: T, error: unknown) => never | Promise<never>
 
-export function UseAtomicPhase(customAtomicPhaseExceptionHandler?: CustomAtomicPhaseExceptionHandler): MethodDecorator {
+export function AtomicPhase(customAtomicPhaseExceptionHandler?: CustomAtomicPhaseExceptionHandler): MethodDecorator {
   return function <T extends TransactionBaseService<T>>(
     target: object,
     propertyKey: string | symbol,
