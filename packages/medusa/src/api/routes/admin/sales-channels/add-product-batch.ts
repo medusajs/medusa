@@ -3,6 +3,7 @@ import { SalesChannelService } from "../../../../services"
 import { IsArray, ValidateNested } from "class-validator"
 import { Type } from "class-transformer"
 import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /sales-channels/{id}/products/batch
@@ -32,12 +33,18 @@ export default async (req: Request, res: Response): Promise<void> => {
     "salesChannelService"
   )
 
-  const validatedBody =
-    req.validatedBody as AdminPostSalesChannelsChannelProductsBatchReq
-  const salesChannel = await salesChannelService.addProducts(
-    id,
-    validatedBody.product_ids.map((p) => p.id)
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const salesChannel = await manager.transaction(async (transactionManager) => {
+    const validatedBody =
+      req.validatedBody as AdminPostSalesChannelsChannelProductsBatchReq
+    return await salesChannelService
+      .withTransaction(transactionManager)
+      .addProducts(
+        id,
+        validatedBody.product_ids.map((p) => p.id)
+      )
+  })
+
   res.status(200).json({ sales_channel: salesChannel })
 }
 

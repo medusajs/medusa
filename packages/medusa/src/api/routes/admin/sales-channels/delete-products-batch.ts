@@ -3,6 +3,7 @@ import { IsArray, ValidateNested } from "class-validator"
 import { SalesChannelService } from "../../../../services"
 import { Request, Response } from "express"
 import { ProductBatchSalesChannel } from "../../../../types/sales-channels"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /sales-channels/{id}/products/batch
@@ -33,12 +34,18 @@ export default async (req: Request, res: Response) => {
     "salesChannelService"
   )
 
-  const validatedBody =
-    req.validatedBody as AdminDeleteSalesChannelsChannelProductsBatchReq
-  const salesChannel = await salesChannelService.removeProducts(
-    id,
-    validatedBody.product_ids.map((p) => p.id)
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const salesChannel = await manager.transaction(async (transactionManager) => {
+    const validatedBody =
+      req.validatedBody as AdminDeleteSalesChannelsChannelProductsBatchReq
+    return await salesChannelService
+      .withTransaction(transactionManager)
+      .removeProducts(
+        id,
+        validatedBody.product_ids.map((p) => p.id)
+      )
+  })
+
   res.status(200).json({ sales_channel: salesChannel })
 }
 

@@ -3,6 +3,7 @@ import { IsBoolean, IsOptional, IsString } from "class-validator"
 
 import SalesChannelService from "../../../../services/sales-channel"
 import { CreateSalesChannelInput } from "../../../../types/sales-channels"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /sales-channels
@@ -31,9 +32,13 @@ export default async (req: Request, res: Response) => {
     "salesChannelService"
   )
 
-  const salesChannel = await salesChannelService.create(
-    req.validatedBody as CreateSalesChannelInput
-  )
+  const manager: EntityManager = req.scope.resolve("manager")
+  const salesChannel = await manager.transaction(async (transactionManager) => {
+    return await salesChannelService
+      .withTransaction(transactionManager)
+      .create(req.validatedBody as CreateSalesChannelInput)
+  })
+
   res.status(200).json({ sales_channel: salesChannel })
 }
 
