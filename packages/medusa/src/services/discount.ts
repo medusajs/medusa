@@ -711,23 +711,24 @@ class DiscountService extends TransactionBaseService<DiscountService> {
     discountRuleId: string,
     customerId: string | undefined
   ): Promise<boolean> {
-    const manager = this.manager_
-    const discountConditionRepo: DiscountConditionRepository =
-      manager.getCustomRepository(this.discountConditionRepository_)
+    return await this.atomicPhase_(async (manager: EntityManager) => {
+      const discountConditionRepo: DiscountConditionRepository =
+        manager.getCustomRepository(this.discountConditionRepository_)
 
-    // Instead of throwing on missing customer id, we simply invalidate the discount
-    if (!customerId) {
-      return false
-    }
+      // Instead of throwing on missing customer id, we simply invalidate the discount
+      if (!customerId) {
+        return false
+      }
 
-    const customer = await this.customerService_.retrieve(customerId, {
-      relations: ["groups"],
+      const customer = await this.customerService_.retrieve(customerId, {
+        relations: ["groups"],
+      })
+
+      return await discountConditionRepo.canApplyForCustomer(
+        discountRuleId,
+        customer.id
+      )
     })
-
-    return await discountConditionRepo.canApplyForCustomer(
-      discountRuleId,
-      customer.id
-    )
   }
 }
 
