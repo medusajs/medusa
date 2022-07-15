@@ -13,6 +13,7 @@ import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { EntityManager } from "typeorm";
 
 /**
  * @oas [post] /store/carts/{id}
@@ -104,16 +105,19 @@ export default async (req, res) => {
     cartDataToUpdate.billing_address = billing_address
   }
 
-  await cartService.update(id, cartDataToUpdate)
+  const manager: EntityManager = req.scope.resolve("manager")
+  await manager.transaction(async (transactionManager) => {
+    await cartService.withTransaction(transactionManager).update(id, cartDataToUpdate)
 
-  // If the cart has payment sessions update these
-  const updated = await cartService.retrieve(id, {
-    relations: ["payment_sessions", "shipping_methods"],
+    // If the cart has payment sessions update these
+    const updated = await cartService.withTransaction(transactionManager).retrieve(id, {
+      relations: ["payment_sessions", "shipping_methods"],
+    })
+
+    if (updated.payment_sessions?.length && !validated.region_id) {
+      await cartService.withTransaction(transactionManager).setPaymentSessions(id)
+    }
   })
-
-  if (updated.payment_sessions?.length && !validated.region_id) {
-    await cartService.setPaymentSessions(id)
-  }
 
   const cart = await cartService.retrieve(id, {
     select: defaultStoreCartFields,
