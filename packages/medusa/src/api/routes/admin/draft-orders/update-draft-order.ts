@@ -102,16 +102,14 @@ export default async (req, res) => {
     await cartService
       .withTransaction(transactionManager)
       .update(draftOrder.cart_id, validated)
-
-    draftOrder.cart = await cartService
-      .withTransaction(transactionManager)
-      .retrieve(draftOrder.cart_id, {
-        relations: defaultAdminDraftOrdersCartRelations,
-        select: defaultAdminDraftOrdersCartFields,
-      })
-
-    res.status(200).json({ draft_order: draftOrder })
   })
+
+  draftOrder.cart = await cartService.retrieve(draftOrder.cart_id, {
+    relations: defaultAdminDraftOrdersCartRelations,
+    select: defaultAdminDraftOrdersCartFields,
+  })
+
+  res.status(200).json({ draft_order: draftOrder })
 }
 
 export class AdminPostDraftOrdersDraftOrderReq {
