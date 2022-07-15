@@ -720,9 +720,11 @@ class DiscountService extends TransactionBaseService<DiscountService> {
         return false
       }
 
-      const customer = await this.customerService_.retrieve(customerId, {
-        relations: ["groups"],
-      })
+      const customer = await this.customerService_
+        .withTransaction(manager)
+        .retrieve(customerId, {
+          relations: ["groups"],
+        })
 
       return await discountConditionRepo.canApplyForCustomer(
         discountRuleId,
