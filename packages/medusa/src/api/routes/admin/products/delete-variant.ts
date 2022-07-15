@@ -4,6 +4,7 @@ import {
   PricingService,
   ProductVariantService,
 } from "../../../../services"
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [delete] /products/{id}/variants/{variant_id}
@@ -41,13 +42,23 @@ export default async (req, res) => {
   const productService: ProductService = req.scope.resolve("productService")
   const pricingService: PricingService = req.scope.resolve("pricingService")
 
-  await productVariantService.delete(variant_id)
+  const manager: EntityManager = req.scope.resolve("manager")
+  const product = await manager.transaction(async (transactionManager) => {
+    await productVariantService
+      .withTransaction(transactionManager)
+      .delete(variant_id)
 
-  const data = await productService.retrieve(id, {
-    select: defaultAdminProductFields,
-    relations: defaultAdminProductRelations,
+    const data = await productService
+      .withTransaction(transactionManager)
+      .retrieve(id, {
+        select: defaultAdminProductFields,
+        relations: defaultAdminProductRelations,
+      })
+    const [product] = await pricingService
+      .withTransaction(transactionManager)
+      .setProductPrices([data])
+    return product
   })
-  const [product] = await pricingService.setProductPrices([data])
 
   res.json({
     variant_id,
