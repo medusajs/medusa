@@ -1,11 +1,10 @@
 import path from "path"
-import { execSync } from "child_process"
-import spawn from "cross-spawn"
+import { fork, execSync } from "child_process"
 import chokidar from "chokidar"
 
 import Logger from "../loaders/logger"
 
-export default async function ({ port, directory }) {
+export default async function({ port, directory }) {
   const args = process.argv
   args.shift()
   args.shift()
@@ -19,10 +18,8 @@ export default async function ({ port, directory }) {
   })
 
   const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
-  let child = spawn(cliPath, [`start`, ...args], {
-    cwd: directory,
-    env: process.env,
-    stdio: ["pipe", process.stdout, process.stderr],
+  let child = fork(cliPath, [`start`, ...args], {
+    execArgv: ["--preserve-symlinks", ...process.execArgv],
   })
 
   chokidar.watch(`${directory}/src`).on("change", (file) => {
@@ -37,10 +34,8 @@ export default async function ({ port, directory }) {
 
     Logger.info("Rebuilt")
 
-    child = spawn(cliPath, [`start`, ...args], {
-      cwd: directory,
-      env: process.env,
-      stdio: ["pipe", process.stdout, process.stderr],
+    child = fork(cliPath, [`start`, ...args], {
+      execArgv: ["--preserve-symlinks", ...process.execArgv],
     })
   })
 }
