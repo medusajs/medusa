@@ -19,8 +19,10 @@ export default async function ({ port, directory }) {
 
   const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
   let child = fork(cliPath, [`start`, ...args], {
-    execArgv: ["--preserve-symlinks", ...process.execArgv],
+    detached: true,
   })
+
+  child.unref()
 
   chokidar.watch(`${directory}/src`).on("change", (file) => {
     const f = file.split("src")[1]
@@ -35,7 +37,9 @@ export default async function ({ port, directory }) {
     Logger.info("Rebuilt")
 
     child = fork(cliPath, [`start`, ...args], {
-      execArgv: ["--preserve-symlinks", ...process.execArgv],
+      detached: true,
     })
+
+    child.unref()
   })
 }
