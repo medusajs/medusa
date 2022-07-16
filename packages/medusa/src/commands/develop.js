@@ -4,7 +4,7 @@ import chokidar from "chokidar"
 
 import Logger from "../loaders/logger"
 
-export default async function({ port, directory }) {
+export default async function ({ port, directory }) {
   const args = process.argv
   args.shift()
   args.shift()
