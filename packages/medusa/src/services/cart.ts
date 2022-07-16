@@ -183,6 +183,7 @@ class CartService extends TransactionBaseService<CartService> {
     if (totalsToSelect.length > 0) {
       const relationSet = new Set(relations)
       relationSet.add("items")
+      relationSet.add("items.adjustments")
       relationSet.add("items.tax_lines")
       relationSet.add("gift_cards")
       relationSet.add("discounts")
@@ -291,8 +292,11 @@ class CartService extends TransactionBaseService<CartService> {
         )
         const validatedId = validateId(cartId)
 
-        const { select, relations, totalsToSelect } =
-          this.transformQueryForTotals_(options)
+        const {
+          select,
+          relations,
+          totalsToSelect,
+        } = this.transformQueryForTotals_(options)
 
         const query = buildQuery(
           { id: validatedId },
@@ -898,7 +902,9 @@ class CartService extends TransactionBaseService<CartService> {
   protected async createOrFetchUserFromEmail_(
     email: string
   ): Promise<Customer> {
-    const schema = Validator.string().email().required()
+    const schema = Validator.string()
+      .email()
+      .required()
     const { value, error } = schema.validate(email.toLowerCase())
     if (error) {
       throw new MedusaError(
@@ -1557,10 +1563,9 @@ class CartService extends TransactionBaseService<CartService> {
           ],
         })
 
-        const cartCustomShippingOptions =
-          await this.customShippingOptionService_
-            .withTransaction(transactionManager)
-            .list({ cart_id: cart.id })
+        const cartCustomShippingOptions = await this.customShippingOptionService_
+          .withTransaction(transactionManager)
+          .list({ cart_id: cart.id })
 
         const customShippingOption = this.findCustomShippingOption(
           cartCustomShippingOptions,
