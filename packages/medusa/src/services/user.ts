@@ -27,6 +27,9 @@ type UserServiceProps = {
 class UserService extends TransactionBaseService<UserService> {
   static Events = {
     PASSWORD_RESET: "user.password_reset",
+    CREATED: "user.created",
+    UPDATED: "user.updated",
+    DELETED: "user.deleted",
   }
 
   protected manager_: EntityManager
@@ -48,7 +51,9 @@ class UserService extends TransactionBaseService<UserService> {
    * @return {string} the validated email
    */
   validateEmail_(email: string): string {
-    const schema = Validator.string().email().required()
+    const schema = Validator.string()
+      .email()
+      .required()
     const { value, error } = schema.validate(email)
     if (error) {
       throw new MedusaError(
@@ -198,7 +203,13 @@ class UserService extends TransactionBaseService<UserService> {
 
       const created = userRepo.create(createData)
 
-      return await userRepo.save(created)
+      const newUser = await userRepo.save(created)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(UserService.Events.CREATED, { id: newUser.id })
+
+      return newUser
     })
   }
 
@@ -238,7 +249,13 @@ class UserService extends TransactionBaseService<UserService> {
         user[key as keyof User] = value
       }
 
-      return await userRepo.save(user)
+      const updatedUser = await userRepo.save(user)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(UserService.Events.UPDATED, { id: updatedUser.id })
+
+      return updatedUser
     })
   }
 
@@ -260,6 +277,8 @@ class UserService extends TransactionBaseService<UserService> {
       }
 
       await userRepo.softRemove(user)
+
+      await this.eventBus_.emit(UserService.Events.DELETED, { id: user.id })
 
       return Promise.resolve()
     })
