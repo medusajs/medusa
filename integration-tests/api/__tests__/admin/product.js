@@ -1,8 +1,10 @@
 const path = require("path")
 
-const setupServer = require("../../../helpers/setup-server")
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
+
 const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const { useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
@@ -12,6 +14,7 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
+const { simpleSalesChannelFactory, simpleProductFactory } = require("../../factories");
 
 jest.setTimeout(50000)
 
@@ -21,8 +24,13 @@ describe("/admin/products", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    dbConnection = await initDb({ cwd })
-    medusaProcess = await setupServer({ cwd, verbose: false })
+    const [serverProcess, connection] = await startServerWithEnvironment({
+      cwd,
+      env: { MEDUSA_FF_SALES_CHANNELS: true },
+      verbose: false,
+    })
+    medusaProcess = serverProcess
+    dbConnection = connection
   })
 
   afterAll(async () => {
@@ -844,6 +852,45 @@ describe("/admin/products", () => {
           updated_at: expect.any(String),
         },
       ])
+    })
+
+    it("returns a list of products that belongs to the requested sales channels", async () => {
+      const api = useApi()
+
+      const productSalesChannelData = {
+        id: "product-sales-channel-1",
+        title: "test description",
+      }
+
+      const productSalesChannel = await simpleProductFactory(dbConnection, productSalesChannelData)
+      const salesChannel = await simpleSalesChannelFactory(dbConnection, {
+        name: "test name",
+        description: "test description",
+      })
+      await dbConnection.manager.query(`
+        INSERT INTO product_sales_channel VALUES ('${productSalesChannel.id}', '${salesChannel.id}')
+      `)
+
+      const response = await api
+        .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {
+          headers: {
+            Authorization: "Bearer test_token",
+          },
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+
+      expect(response.status).toEqual(200)
+      expect(response.data.products.length).toEqual(1)
+      expect(response.data.products).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: productSalesChannel.id,
+            title: productSalesChannel.title
+          }),
+        ])
+      )
     })
   })
 
