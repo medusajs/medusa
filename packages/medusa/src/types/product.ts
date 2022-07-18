@@ -152,6 +152,7 @@ export type CreateProductInput = {
   tags?: CreateProductProductTagInput[]
   options?: CreateProductProductOption[]
   variants?: CreateProductProductVariantInput[]
+  sales_channels?: CreateProductProductSalesChannelInput[] | null
   weight?: number
   length?: number
   height?: number
@@ -166,6 +167,10 @@ export type CreateProductInput = {
 export type CreateProductProductTagInput = {
   id?: string
   value: string
+}
+
+export type CreateProductProductSalesChannelInput = {
+  id: string
 }
 
 export type CreateProductProductTypeInput = {
