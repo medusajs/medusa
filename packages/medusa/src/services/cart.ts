@@ -260,16 +260,11 @@ class CartService extends TransactionBaseService<CartService> {
     selector: FilterableCartProps,
     config: FindConfig<Cart> = {}
   ): Promise<Cart[]> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.getCustomRepository(
-          this.cartRepository_
-        )
+    const manager = this.manager_
+    const cartRepo = manager.getCustomRepository(this.cartRepository_)
 
-        const query = buildQuery(selector, config)
-        return await cartRepo.find(query)
-      }
-    )
+    const query = buildQuery(selector, config)
+    return await cartRepo.find(query)
   }
 
   /**
@@ -284,46 +279,41 @@ class CartService extends TransactionBaseService<CartService> {
     options: FindConfig<Cart> = {},
     totalsConfig: TotalsConfig = {}
   ): Promise<Cart> {
-    return await this.atomicPhase_(
-      async (transactionManager: EntityManager) => {
-        const cartRepo = transactionManager.getCustomRepository(
-          this.cartRepository_
-        )
-        const validatedId = validateId(cartId)
+    const manager = this.manager_
+    const cartRepo = manager.getCustomRepository(this.cartRepository_)
+    const validatedId = validateId(cartId)
 
-        const { select, relations, totalsToSelect } =
-          this.transformQueryForTotals_(options)
+    const { select, relations, totalsToSelect } =
+      this.transformQueryForTotals_(options)
 
-        const query = buildQuery(
-          { id: validatedId },
-          { ...options, select, relations }
-        )
-
-        if (relations && relations.length > 0) {
-          query.relations = relations
-        }
-
-        if (select && select.length > 0) {
-          query.select = select
-        } else {
-          query.select = undefined
-        }
-
-        const queryRelations = query.relations
-        query.relations = undefined
-
-        const raw = await cartRepo.findOneWithRelations(queryRelations, query)
-
-        if (!raw) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Cart with ${cartId} was not found`
-          )
-        }
-
-        return await this.decorateTotals_(raw, totalsToSelect, totalsConfig)
-      }
+    const query = buildQuery(
+      { id: validatedId },
+      { ...options, select, relations }
     )
+
+    if (relations && relations.length > 0) {
+      query.relations = relations
+    }
+
+    if (select && select.length > 0) {
+      query.select = select
+    } else {
+      query.select = undefined
+    }
+
+    const queryRelations = query.relations
+    query.relations = undefined
+
+    const raw = await cartRepo.findOneWithRelations(queryRelations, query)
+
+    if (!raw) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Cart with ${cartId} was not found`
+      )
+    }
+
+    return await this.decorateTotals_(raw, totalsToSelect, totalsConfig)
   }
 
   /**
