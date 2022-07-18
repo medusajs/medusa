@@ -1,4 +1,4 @@
-import { SalesChannel } from "@medusajs/medusa"
+import { Product, SalesChannel } from "@medusajs/medusa"
 import faker from "faker"
 import { Connection } from "typeorm"
 
@@ -7,6 +7,7 @@ export type SalesChannelFactoryData = {
   description?: string
   is_disabled?: boolean
   id?: string
+  products?: Product[],
 }
 
 export const simpleSalesChannelFactory = async (
@@ -27,6 +28,17 @@ export const simpleSalesChannelFactory = async (
     is_disabled:
       typeof data.is_disabled !== undefined ? data.is_disabled : false,
   })
+
+  if (data.products) {
+    const promises = []
+    for (const product of data.products) {
+      product.sales_channels = [salesChannel]
+      promises.push(
+        manager.save(product)
+      )
+    }
+    await Promise.all(promises)
+  }
 
   return await manager.save(salesChannel)
 }

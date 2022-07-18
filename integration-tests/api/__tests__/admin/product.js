@@ -866,10 +866,8 @@ describe("/admin/products", () => {
       const salesChannel = await simpleSalesChannelFactory(dbConnection, {
         name: "test name",
         description: "test description",
+        products: [productSalesChannel]
       })
-      await dbConnection.manager.query(`
-        INSERT INTO product_sales_channel VALUES ('${productSalesChannel.id}', '${salesChannel.id}')
-      `)
 
       const response = await api
         .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {

@@ -664,17 +664,15 @@ describe("sales channels", () => {
     beforeEach(async() => {
       try {
         await adminSeeder(dbConnection)
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
         product = await simpleProductFactory(dbConnection, {
           id: "product_1",
           title: "test title",
         })
-        await dbConnection.manager.query(`
-          INSERT INTO product_sales_channel VALUES ('${product.id}', '${salesChannel.id}')
-        `)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+          products: [product]
+        })
       } catch (e) {
         console.error(e)
       }
