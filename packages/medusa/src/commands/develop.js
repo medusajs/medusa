@@ -17,12 +17,16 @@ export default async function ({ port, directory }) {
     stdio: ["ignore", process.stdout, process.stderr],
   })
 
-  const cliPath = path.join(directory, "node_modules", ".bin", "medusa")
-  let child = fork(cliPath, [`start`, ...args], {
-    detached: true,
-  })
-
-  child.unref()
+  const cliPath = path.join(
+    directory,
+    "node_modules",
+    "@medusajs",
+    "medusa",
+    "dist",
+    "bin",
+    "medusa.js"
+  )
+  let child = fork(cliPath, [`start`, ...args], { cwd: directory })
 
   chokidar.watch(`${directory}/src`).on("change", (file) => {
     const f = file.split("src")[1]
@@ -36,10 +40,6 @@ export default async function ({ port, directory }) {
 
     Logger.info("Rebuilt")
 
-    child = fork(cliPath, [`start`, ...args], {
-      detached: true,
-    })
-
-    child.unref()
+    child = fork(cliPath, [`start`, ...args], { cwd: directory })
   })
 }
