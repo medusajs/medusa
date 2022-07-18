@@ -292,9 +292,11 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
       },
       async (error: { code: string }) => {
         if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          const existingProducts = await this.productService_.list({
-            id: productIds,
-          })
+          const existingProducts = await this.productService_
+            .withTransaction(this.manager_)
+            .list({
+              id: productIds,
+            })
 
           const nonExistingProducts = productIds.filter(
             (cId) => existingProducts.findIndex((el) => el.id === cId) === -1

@@ -238,6 +238,11 @@ class ProductTagReq {
   value: string
 }
 
+class ProductSalesChannelReq {
+  @IsString()
+  id: string
+}
+
 class ProductVariantOptionReq {
   @IsString()
   value: string
@@ -380,6 +385,12 @@ export class AdminPostProductsProductReq {
   @ValidateNested({ each: true })
   @IsArray()
   tags?: ProductTagReq[]
+
+  @IsOptional()
+  @Type(() => ProductSalesChannelReq)
+  @ValidateNested({ each: true })
+  @IsArray()
+  sales_channels: ProductSalesChannelReq[] | null
 
   @IsOptional()
   @Type(() => ProductVariantReq)

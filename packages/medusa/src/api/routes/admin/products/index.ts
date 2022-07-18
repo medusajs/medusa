@@ -12,9 +12,8 @@ const route = Router()
 export default (app, featureFlagRouter: FlagRouter) => {
   app.use("/products", route)
 
-  const relations = [...defaultAdminProductRelations]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
-    relations.push("sales_channels")
+    defaultAdminProductRelations.push("sales_channels")
   }
 
   route.post("/", middlewares.wrap(require("./create-product").default))
@@ -63,7 +62,7 @@ export default (app, featureFlagRouter: FlagRouter) => {
   route.get(
     "/:id",
     transformQuery(EmptyQueryParams, {
-      defaultRelations: relations,
+      defaultRelations: defaultAdminProductRelations,
       defaultFields: defaultAdminProductFields,
       allowedFields: allowedAdminProductFields,
       isList: false,
