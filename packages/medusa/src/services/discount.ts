@@ -115,14 +115,11 @@ class DiscountService extends TransactionBaseService<DiscountService> {
     selector: FilterableDiscountProps = {},
     config: FindConfig<Discount> = { relations: [], skip: 0, take: 10 }
   ): Promise<Discount[]> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const discountRepo = transactionManager.getCustomRepository(
-        this.discountRepository_
-      )
+    const manager = this.manager_
+    const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-      const query = buildQuery(selector as Selector<Discount>, config)
-      return await discountRepo.find(query)
-    })
+    const query = buildQuery(selector as Selector<Discount>, config)
+    return await discountRepo.find(query)
   }
 
   /**
@@ -138,39 +135,36 @@ class DiscountService extends TransactionBaseService<DiscountService> {
       order: { created_at: "DESC" },
     }
   ): Promise<[Discount[], number]> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const discountRepo = transactionManager.getCustomRepository(
-        this.discountRepository_
-      )
+    const manager = this.manager_
+    const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-      let q
-      if ("q" in selector) {
-        q = selector.q
-        delete selector.q
+    let q
+    if ("q" in selector) {
+      q = selector.q
+      delete selector.q
+    }
+
+    const query = buildQuery(selector as Selector<Discount>, config)
+
+    if (q) {
+      const where = query.where
+
+      delete where.code
+
+      query.where = (qb: SelectQueryBuilder<Discount>): void => {
+        qb.where(where)
+
+        qb.andWhere(
+          new Brackets((qb) => {
+            qb.where({ code: ILike(`%${q}%`) })
+          })
+        )
       }
+    }
 
-      const query = buildQuery(selector as Selector<Discount>, config)
+    const [discounts, count] = await discountRepo.findAndCount(query)
 
-      if (q) {
-        const where = query.where
-
-        delete where.code
-
-        query.where = (qb: SelectQueryBuilder<Discount>): void => {
-          qb.where(where)
-
-          qb.andWhere(
-            new Brackets((qb) => {
-              qb.where({ code: ILike(`%${q}%`) })
-            })
-          )
-        }
-      }
-
-      const [discounts, count] = await discountRepo.findAndCount(query)
-
-      return [discounts, count]
-    })
+    return [discounts, count]
   }
 
   /**
@@ -248,23 +242,20 @@ class DiscountService extends TransactionBaseService<DiscountService> {
     discountId: string,
     config: FindConfig<Discount> = {}
   ): Promise<Discount> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const discountRepo = transactionManager.getCustomRepository(
-        this.discountRepository_
+    const manager = this.manager_
+    const discountRepo = manager.getCustomRepository(this.discountRepository_)
+
+    const query = buildQuery({ id: discountId }, config)
+    const discount = await discountRepo.findOne(query)
+
+    if (!discount) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Discount with ${discountId} was not found`
       )
+    }
 
-      const query = buildQuery({ id: discountId }, config)
-      const discount = await discountRepo.findOne(query)
-
-      if (!discount) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Discount with ${discountId} was not found`
-        )
-      }
-
-      return discount
-    })
+    return discount
   }
 
   /**
@@ -277,28 +268,25 @@ class DiscountService extends TransactionBaseService<DiscountService> {
     discountCode: string,
     config: FindConfig<Discount> = {}
   ): Promise<Discount> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const discountRepo = transactionManager.getCustomRepository(
-        this.discountRepository_
-      )
+    const manager = this.manager_
+    const discountRepo = manager.getCustomRepository(this.discountRepository_)
 
-      let query = buildQuery({ code: discountCode, is_dynamic: false }, config)
-      let discount = await discountRepo.findOne(query)
+    let query = buildQuery({ code: discountCode, is_dynamic: false }, config)
+    let discount = await discountRepo.findOne(query)
+
+    if (!discount) {
+      query = buildQuery({ code: discountCode, is_dynamic: true }, config)
+      discount = await discountRepo.findOne(query)
 
       if (!discount) {
-        query = buildQuery({ code: discountCode, is_dynamic: true }, config)
-        discount = await discountRepo.findOne(query)
-
-        if (!discount) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            `Discount with code ${discountCode} was not found`
-          )
-        }
+        throw new MedusaError(
+          MedusaError.Types.NOT_FOUND,
+          `Discount with code ${discountCode} was not found`
+        )
       }
+    }
 
-      return discount
-    })
+    return discount
   }
 
   /**
@@ -562,9 +550,11 @@ class DiscountService extends TransactionBaseService<DiscountService> {
         return false
       }
 
-      const product = await this.productService_.retrieve(productId, {
-        relations: ["tags"],
-      })
+      const product = await this.productService_
+        .withTransaction(manager)
+        .retrieve(productId, {
+          relations: ["tags"],
+        })
 
       return await discountConditionRepo.isValidForProduct(
         discountRuleId,
@@ -721,7 +711,7 @@ class DiscountService extends TransactionBaseService<DiscountService> {
     discountRuleId: string,
     customerId: string | undefined
   ): Promise<boolean> {
-    return await this.atomicPhase_(async (manager) => {
+    return await this.atomicPhase_(async (manager: EntityManager) => {
       const discountConditionRepo: DiscountConditionRepository =
         manager.getCustomRepository(this.discountConditionRepository_)
 
@@ -730,9 +720,11 @@ class DiscountService extends TransactionBaseService<DiscountService> {
         return false
       }
 
-      const customer = await this.customerService_.retrieve(customerId, {
-        relations: ["groups"],
-      })
+      const customer = await this.customerService_
+        .withTransaction(manager)
+        .retrieve(customerId, {
+          relations: ["groups"],
+        })
 
       return await discountConditionRepo.canApplyForCustomer(
         discountRuleId,

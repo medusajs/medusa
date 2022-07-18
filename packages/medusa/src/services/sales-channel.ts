@@ -66,29 +66,28 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
     salesChannelId: string,
     config: FindConfig<SalesChannel> = {}
   ): Promise<SalesChannel | never> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
-        this.salesChannelRepository_
+    const manager = this.manager_
+    const salesChannelRepo = manager.getCustomRepository(
+      this.salesChannelRepository_
+    )
+
+    const query = buildQuery(
+      {
+        id: salesChannelId,
+      },
+      config
+    )
+
+    const salesChannel = await salesChannelRepo.findOne(query)
+
+    if (!salesChannel) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Sales channel with id ${salesChannelId} was not found`
       )
+    }
 
-      const query = buildQuery(
-        {
-          id: salesChannelId,
-        },
-        config
-      )
-
-      const salesChannel = await salesChannelRepo.findOne(query)
-
-      if (!salesChannel) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Sales channel with id ${salesChannelId} was not found`
-        )
-      }
-
-      return salesChannel
-    })
+    return salesChannel
   }
 
   /**
@@ -105,26 +104,25 @@ class SalesChannelService extends TransactionBaseService<SalesChannelService> {
       take: 20,
     }
   ): Promise<[SalesChannel[], number]> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const salesChannelRepo = transactionManager.getCustomRepository(
-        this.salesChannelRepository_
-      )
+    const manager = this.manager_
+    const salesChannelRepo = manager.getCustomRepository(
+      this.salesChannelRepository_
+    )
 
-      const selector_ = { ...selector }
-      let q: string | undefined
-      if ("q" in selector_) {
-        q = selector_.q
-        delete selector_.q
-      }
+    const selector_ = { ...selector }
+    let q: string | undefined
+    if ("q" in selector_) {
+      q = selector_.q
+      delete selector_.q
+    }
 
-      const query = buildQuery(selector_, config)
+    const query = buildQuery(selector_, config)
 
-      if (q) {
-        return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)
-      }
+    if (q) {
+      return await salesChannelRepo.getFreeTextSearchResultsAndCount(q, query)
+    }
 
-      return await salesChannelRepo.findAndCount(query)
-    })
+    return await salesChannelRepo.findAndCount(query)
   }
 
   /**
