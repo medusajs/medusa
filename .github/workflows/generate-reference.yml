@@ -28,10 +28,10 @@ jobs:
           node-version: "14"
           cache: "yarn"
 
-      - name: Install packages
+      - name: Install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          extension: unit-tests
+          extension: reference
 
       - name: Build Packages
         run: yarn build
