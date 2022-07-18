@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.0.0-klarna-shipping-fix-20220718161248
+
+### Patch Changes
+
+- [#1852](https://github.com/medusajs/medusa/pull/1852) [`dafbfa779`](https://github.com/medusajs/medusa/commit/dafbfa7799410a95f9a1ca02d1db718d1f8693eb) Thanks [@olivermrbl](https://github.com/olivermrbl)! - When marking a Draft Order as paid, we should generate tax lines before completing it
+
+* [#1843](https://github.com/medusajs/medusa/pull/1843) [`716297231`](https://github.com/medusajs/medusa/commit/71629723185739a97fc2cf8eaa9029f7963bb120) Thanks [@olivermrbl](https://github.com/olivermrbl)! - Fixes free text search for PriceList Products
+
+- [#1851](https://github.com/medusajs/medusa/pull/1851) [`c148064b4`](https://github.com/medusajs/medusa/commit/c148064b4abdc4447d8216a6de0a6ce84e3a061c) Thanks [@srindom](https://github.com/srindom)! - Allow an array of region ids in list orders endpoint
+
 ## 1.3.4
 
 ### Patch Changes
