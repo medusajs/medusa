@@ -64,19 +64,29 @@ module.exports = {
           label: "Docs"
         },
         {
-          type: "docSidebar",
-          sidebarId: "servicesSidebar",
-          label: "Services Reference",
-        },
-        {
-          type: "docSidebar",
-          sidebarId: "jsClientSidebar",
-          label: "JS Client Reference",
-        },
-        {
-          href: `https://docs.medusajs.com/api/store`,
-          target: "_self",
-          label: "API Reference",
+          type: 'dropdown',
+          label: 'References',
+          items: [
+            {
+              href: `https://docs.medusajs.com/api/store`,
+              target: "_self",
+              label: "API Reference",
+            },
+            {
+              to: "advanced/backend/subscribers/events-list",
+              label: "Events Reference",
+            },
+            {
+              type: "docSidebar",
+              sidebarId: "jsClientSidebar",
+              label: "JS Client Reference",
+            },
+            {
+              type: "docSidebar",
+              sidebarId: "servicesSidebar",
+              label: "Services Reference",
+            },
+          ]
         },
         {
           href: "https://github.com/medusajs/medusa",
