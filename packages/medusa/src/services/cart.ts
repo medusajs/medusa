@@ -3,7 +3,7 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
-import { DiscountRuleType } from "../models"
+import { DiscountRuleType, SalesChannel } from "../models"
 import { Address } from "../models/address"
 import { Cart } from "../models/cart"
 import { CustomShippingOption } from "../models/custom-shipping-option"
@@ -339,7 +339,9 @@ class CartService extends TransactionBaseService<CartService> {
           )
         }
 
-        const rawCart: DeepPartial<Cart> = {}
+        const rawCart: DeepPartial<Cart> = {
+          sales_channel_id: data.sales_channel_id,
+        }
 
         if (data.email) {
           const customer = await this.createOrFetchUserFromEmail_(data.email)
@@ -721,6 +723,25 @@ class CartService extends TransactionBaseService<CartService> {
         const cartRepo = transactionManager.getCustomRepository(
           this.cartRepository_
         )
+        const relations = [
+          "items",
+          "shipping_methods",
+          "shipping_address",
+          "billing_address",
+          "gift_cards",
+          "customer",
+          "region",
+          "payment_sessions",
+          "region.countries",
+          "discounts",
+          "discounts.rule",
+          "discounts.regions",
+        ]
+
+        if (data.sales_channel_id) {
+          relations.push("items.variant", "items.variant.product")
+        }
+
         const cart = await this.retrieve(cartId, {
           select: [
             "subtotal",
@@ -729,20 +750,7 @@ class CartService extends TransactionBaseService<CartService> {
             "discount_total",
             "total",
           ],
-          relations: [
-            "items",
-            "shipping_methods",
-            "shipping_address",
-            "billing_address",
-            "gift_cards",
-            "customer",
-            "region",
-            "payment_sessions",
-            "region.countries",
-            "discounts",
-            "discounts.rule",
-            "discounts.regions",
-          ],
+          relations,
         })
 
         if (data.customer_id) {
@@ -782,6 +790,14 @@ class CartService extends TransactionBaseService<CartService> {
           data.shipping_address_id ?? data.shipping_address
         if (shippingAddress !== undefined) {
           await this.updateShippingAddress_(cart, shippingAddress, addrRepo)
+        }
+
+        if (
+          typeof data.sales_channel_id !== "undefined" &&
+          data.sales_channel_id != cart.sales_channel_id
+        ) {
+          await this.onSalesChannelChange(cart, data.sales_channel_id)
+          cart.sales_channel_id = data.sales_channel_id
         }
 
         if (typeof data.discounts !== "undefined") {
@@ -859,6 +875,48 @@ class CartService extends TransactionBaseService<CartService> {
         return updatedCart
       }
     )
+  }
+
+  /**
+   * Remove the cart line item that does not belongs to the newly assigned sales channel
+   * @param cart - The cart being updated
+   * @param newSalesChannelId - The new sales channel being assigned to the cart
+   * @protected
+   */
+  protected async onSalesChannelChange(
+    cart: Cart,
+    newSalesChannelId: string
+  ): Promise<void> {
+    const products = await this.productService_
+      .withTransaction(this.manager_)
+      .list(
+        {
+          id: cart.items.map((item) => item.variant.product_id),
+        },
+        {
+          select: ["id", "sales_channels"],
+          relations: ["sales_channels"],
+        }
+      )
+    const productSalesChannelsMap = new Map<string, SalesChannel[]>(
+      products.map((product) => [product.id, product.sales_channels])
+    )
+    const itemsToRemove = cart.items.filter((item, index) => {
+      const shouldRemove = productSalesChannelsMap
+        .get(item.variant.product_id)
+        ?.some((psc) => psc.id !== newSalesChannelId)
+      if (shouldRemove) {
+        cart.items.splice(index, 1)
+      }
+      return shouldRemove
+    })
+
+    if (itemsToRemove.length) {
+      const lineItemRepository = this.manager_.getCustomRepository(
+        this.lineItemRepository_
+      )
+      await lineItemRepository.remove(itemsToRemove)
+    }
   }
 
   /**

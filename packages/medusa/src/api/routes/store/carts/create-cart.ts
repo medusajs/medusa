@@ -12,10 +12,11 @@ import reqIp from "request-ip"
 import { EntityManager } from "typeorm"
 
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService, LineItemService } from "../../../../services"
+import { CartService, LineItemService, SalesChannelService, StoreService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 import { AddressPayload } from "../../../../types/common"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { SalesChannel } from "../../../../models";
 
 /**
  * @oas [post] /carts
@@ -33,6 +34,9 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *           region_id:
  *             type: string
  *             description: The id of the Region to create the Cart in.
+ *          sales_channel_id:
+ *             type: string
+ *             description: The id of the Sales channel to create the Cart in.
  *           country_code:
  *             type: string
  *             description: "The 2 character ISO country code to create the Cart in."
@@ -124,6 +128,26 @@ export default async (req, res) => {
       }
     }
 
+    let salesChannel: SalesChannel
+    if (typeof validated.sales_channel_id !== "undefined") {
+      const salesChannelService: SalesChannelService = req.scope.resolve("salesChannelService")
+      salesChannel = await salesChannelService.withTransaction(manager).retrieve(validated.sales_channel_id)
+    } else {
+      const storeService: StoreService = req.scope.resolve("storeService")
+      salesChannel = (await storeService.withTransaction(manager).retrieve({
+        relations: ["default_sales_channel"],
+      })).default_sales_channel
+    }
+
+    if (salesChannel.is_disabled) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The given sales channel "${salesChannel.name}" is disabled and cannot be assign to a cart.`
+      )
+    }
+
+    toCreate["sales_channel_id"] = salesChannel.id
+
     let cart = await cartService.withTransaction(manager).create(toCreate)
     if (validated.items) {
       await Promise.all(
@@ -160,6 +184,7 @@ export class Item {
   @IsInt()
   quantity: number
 }
+
 export class StorePostCartReq {
   @IsOptional()
   @IsString()
@@ -177,4 +202,8 @@ export class StorePostCartReq {
 
   @IsOptional()
   context?: object
+
+  @IsString()
+  @IsOptional()
+  sales_channel_id?: string
 }

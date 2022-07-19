@@ -11,9 +11,8 @@ export default (app, container) => {
 
   app.use("/carts", route)
 
-  const relations = [...defaultStoreCartRelations]
   if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
-    relations.push("sales_channel")
+    defaultStoreCartRelations.push("sales_channel")
   }
 
   // Inject plugin routes
@@ -25,7 +24,7 @@ export default (app, container) => {
   route.get(
     "/:id",
     transformQuery(EmptyQueryParams, {
-      defaultRelations: relations,
+      defaultRelations: defaultStoreCartRelations,
       defaultFields: defaultStoreCartFields,
       isList: false,
     }),

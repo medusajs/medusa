@@ -7,12 +7,14 @@ import {
   ValidateNested,
 } from "class-validator"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
-import { CartService } from "../../../../services"
+import { CartService, SalesChannelService, StoreService } from "../../../../services"
 import { CartUpdateProps } from "../../../../types/cart"
 import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
+import { SalesChannel } from "../../../../models";
+import { MedusaError } from "medusa-core-utils";
 
 /**
  * @oas [post] /store/carts/{id}
@@ -35,6 +37,9 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
  *           email:
  *             type: string
  *             description: "An email to be used on the Cart."
+ *          sales_channel_id:
+ *             type: string
+ *             description: The id of the Sales channel to update the Cart with.
  *           billing_address:
  *             description: "The Address to be used for billing purposes."
  *             anyOf:
@@ -102,6 +107,18 @@ export default async (req, res) => {
     cartDataToUpdate.billing_address_id = billing_address
   } else {
     cartDataToUpdate.billing_address = billing_address
+  }
+
+  if (typeof validated.sales_channel_id !== "undefined") {
+    const salesChannelService: SalesChannelService = req.scope.resolve("salesChannelService")
+    const salesChannel = await salesChannelService.retrieve(validated.sales_channel_id)
+    if (salesChannel.is_disabled) {
+      throw new MedusaError(
+        MedusaError.Types.INVALID_DATA,
+        `The given sales channel "${salesChannel.name}" is disabled and cannot be assign to a cart.`
+      )
+    }
+    cartDataToUpdate["sales_channel_id"] = salesChannel.id
   }
 
   await cartService.update(id, cartDataToUpdate)
@@ -173,4 +190,8 @@ export class StorePostCartsCartReq {
 
   @IsOptional()
   context?: object
+
+  @IsString()
+  @IsOptional()
+  sales_channel_id?: string
 }
