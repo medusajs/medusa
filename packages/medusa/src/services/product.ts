@@ -451,8 +451,14 @@ class ProductService extends TransactionBaseService<
         )
         const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
+        const relations = ["variants", "tags", "images"]
+
+        if (typeof update.sales_channels !== "undefined") {
+          relations.push("sales_channels")
+        }
+
         const product = await this.retrieve(productId, {
-          relations: ["variants", "tags", "images", "sales_channels"],
+          relations,
         })
 
         const {
