@@ -99,6 +99,10 @@ export class AdminListOrdersSelector {
   @IsOptional()
   tax_rate?: string
 
+  @IsArray()
+  @IsOptional()
+  sales_channel_id?: string[]
+
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)

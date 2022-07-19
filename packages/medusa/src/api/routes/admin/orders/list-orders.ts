@@ -23,6 +23,7 @@ import { Type } from "class-transformer"
  *   - (query) region_id {string} to search for.
  *   - (query) currency_code {string} to search for.
  *   - (query) tax_rate {string} to search for.
+ *   - (query) sales_chanel_id {string[]} to retrieve products in.
  *   - (query) cancelled_at {DateComparisonOperator} Date comparison for when resulting orders was cancelled, i.e. less than, greater than etc.
  *   - (query) created_at {DateComparisonOperator} Date comparison for when resulting orders was created, i.e. less than, greater than etc.
  *   - (query) updated_at {DateComparisonOperator} Date comparison for when resulting orders was updated, i.e. less than, greater than etc.
