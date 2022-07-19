@@ -461,20 +461,25 @@ class ShippingProfileService extends BaseService {
       })
     }
 
-    const options = []
-
-    for (const o of rawOpts) {
-      try {
-        const option = this.shippingOptionService_.validateCartOption(o, cart)
-        if (option) {
-          options.push(option)
+    const options = await Promise.all(
+      rawOpts.map(async (so) => {
+        try {
+          const option = await this.shippingOptionService_.validateCartOption(
+            so,
+            cart
+          )
+          if (option) {
+            return option
+          }
+          return null
+        } catch (err) {
+          // if validateCartOption fails it means the option is not valid
+          return null
         }
-      } catch (ex) {
-        // catch the error, but intentionally do not break the iterations
-      }
-    }
+      })
+    )
 
-    return options
+    return options.filter(Boolean)
   }
 }
 

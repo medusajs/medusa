@@ -328,10 +328,10 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  validateCartOption(
+  async validateCartOption(
     option: ShippingOption,
     cart: Cart
-  ): ShippingOption | null {
+  ): Promise<ShippingOption | null> {
     if (option.is_return) {
       return null
     }
@@ -364,6 +364,8 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         "The Cart does not satisfy the shipping option's requirements"
       )
     }
+
+    option.amount = await this.getPrice_(option, option.data, cart)
 
     return option
   }
