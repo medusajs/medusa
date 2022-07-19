@@ -18,6 +18,7 @@ import { AddressPayload } from "../../../../types/common"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { SalesChannel } from "../../../../models";
 import { Request } from "express";
+import { IFlagRouter } from "../../../../types/feature-flags";
 
 /**
  * @oas [post] /carts
@@ -129,7 +130,10 @@ export default async (req, res) => {
       }
     }
 
-    if (typeof validated.sales_channel_id !== "undefined") {
+    const featureFlagRouter: IFlagRouter = req.scope.resolve("featureFlagRouter")
+
+
+    if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
       toCreate["sales_channel_id"] = await getSalesChannel(req, manager, validated)
     }
 

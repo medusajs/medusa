@@ -901,21 +901,19 @@ class CartService extends TransactionBaseService<CartService> {
     const productSalesChannelsMap = new Map<string, SalesChannel[]>(
       products.map((product) => [product.id, product.sales_channels])
     )
-    const itemsToRemove = cart.items.filter((item, index) => {
-      const shouldRemove = productSalesChannelsMap
+    const itemsToRemove = cart.items.filter((item) => {
+      return productSalesChannelsMap
         .get(item.variant.product_id)
         ?.some((psc) => psc.id !== newSalesChannelId)
-      if (shouldRemove) {
-        cart.items.splice(index, 1)
-      }
-      return shouldRemove
     })
 
     if (itemsToRemove.length) {
-      const lineItemRepository = this.manager_.getCustomRepository(
-        this.lineItemRepository_
+      const results = await Promise.all(
+        itemsToRemove.map((item) => {
+          return this.removeLineItem(cart.id, item.id)
+        })
       )
-      await lineItemRepository.remove(itemsToRemove)
+      cart.items = results.pop()?.items ?? []
     }
   }
 
