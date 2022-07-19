@@ -129,8 +129,9 @@ export default async (req, res) => {
       }
     }
 
-
-    toCreate["sales_channel_id"] = await getSalesChannel(req, manager, validated)
+    if (typeof validated.sales_channel_id !== "undefined") {
+      toCreate["sales_channel_id"] = await getSalesChannel(req, manager, validated)
+    }
 
     let cart = await cartService.withTransaction(manager).create(toCreate)
     if (validated.items) {
