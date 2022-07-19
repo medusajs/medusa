@@ -1,67 +1,24 @@
-import ProductService from "../services/product"
-import { indexTypes } from "medusa-core-utils"
 import { MedusaContainer } from "../types/global"
 import DefaultSearchService from "../services/search"
 import { Logger } from "../types/global"
+import { EventBusService } from "../services"
 
-async function loadProductsIntoSearchEngine(
-  container: MedusaContainer
-): Promise<void> {
-  const searchService = container.resolve<DefaultSearchService>("searchService")
-  const productService = container.resolve<ProductService>("productService")
+export const SEARCH_INDEX_EVENT = "SEARCH_INDEX_EVENT"
 
-  const TAKE = 20
-  let hasMore = true
-
-  let lastSeenId = ""
-
-  while (hasMore) {
-    const products = await productService.list(
-      { id: { gt: lastSeenId } },
-      {
-        select: [
-          "id",
-          "title",
-          "status",
-          "subtitle",
-          "description",
-          "handle",
-          "is_giftcard",
-          "discountable",
-          "thumbnail",
-          "profile_id",
-          "collection_id",
-          "type_id",
-          "origin_country",
-          "created_at",
-          "updated_at",
-        ],
-        relations: [
-          "variants",
-          "tags",
-          "type",
-          "collection",
-          "variants.prices",
-          "images",
-          "variants.options",
-          "options",
-        ],
-        take: TAKE,
-        order: { id: "ASC" },
-      }
-    )
-
-    if (products.length > 0) {
-      await searchService.addDocuments(
-        ProductService.IndexName,
-        products,
-        indexTypes.products
+function loadProductsIntoSearchEngine(container: MedusaContainer): void {
+  const logger: Logger = container.resolve<Logger>("logger")
+  const eventBusService: EventBusService = container.resolve("eventBusService")
+  eventBusService
+    .emit(SEARCH_INDEX_EVENT, {})
+    .then(() => {
+      logger.info("Product indexed to the seach engine done.")
+    })
+    .catch((err) => {
+      logger.error(err)
+      logger.error(
+        "Something went wrong while indexing the product into the seach engine."
       )
-      lastSeenId = products[products.length - 1].id
-    } else {
-      hasMore = false
-    }
-  }
+    })
 }
 
 export default async ({
