@@ -78,6 +78,14 @@ import { validator } from "../../../../utils/validator"
  *                 value:
  *                   description: The value of the Tag, these will be upserted.
  *                   type: string
+ *         sales_channels:
+ *             description: Sales channels to associate the Product with.
+ *             type: array
+ *             items:
+ *               properties:
+ *                 id:
+ *                   description: The id of an existing Sales channel.
+ *                   type: string
  *           options:
  *             description: The Options that the Product should have. These define on which properties the Product's Product Variants will differ.
  *             type: array
