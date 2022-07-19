@@ -311,11 +311,8 @@ describe("sales channels", () => {
         await simpleSalesChannelFactory(dbConnection, {
           name: "Default channel",
           id: "test-channel",
+          is_default: true,
         })
-
-        await dbConnection.manager.query(
-          `UPDATE store SET default_sales_channel_id = 'test-channel'`
-        )
       } catch (e) {
         console.error(e)
       }
