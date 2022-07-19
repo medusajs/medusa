@@ -7,11 +7,9 @@ const {
   ShippingMethod,
 } = require("@medusajs/medusa")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-
+const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { initDb, useDb } = require("../../../helpers/use-db")
 
 const orderSeeder = require("../../helpers/order-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
@@ -24,7 +22,6 @@ const {
   callGet,
   partial,
 } = require("../../helpers/call-helpers")
-const { simpleProductFactory, simpleSalesChannelFactory, simpleOrderFactory } = require("../../factories");
 
 jest.setTimeout(30000)
 
@@ -34,13 +31,8 @@ describe("/admin/orders", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [serverProcess, connection] = await startServerWithEnvironment({
-      cwd,
-      env: { MEDUSA_FF_SALES_CHANNELS: true },
-      verbose: false,
-    })
-    medusaProcess = serverProcess
-    dbConnection = connection
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd })
   })
 
   afterAll(async () => {
@@ -1677,36 +1669,6 @@ describe("/admin/orders", () => {
         }),
         expect.objectContaining({
           id: "discount-order",
-        }),
-      ])
-    })
-
-    it("successfully lists orders that belongs to the requested sales channels", async () => {
-      const api = useApi()
-
-      const salesChannel = await simpleSalesChannelFactory(dbConnection, {
-        name: "test name",
-        description: "test description",
-      })
-      await simpleOrderFactory(dbConnection, {
-        id: "order-sales-channel-1",
-        sales_channel: salesChannel,
-      })
-
-      const response = await api.get(
-        `/admin/orders?sales_channel_id[]=${salesChannel.id}`,
-        {
-          headers: {
-            authorization: "Bearer test_token",
-          },
-        }
-      )
-
-      expect(response.status).toEqual(200)
-      expect(response.data.orders.length).toEqual(1)
-      expect(response.data.orders).toEqual([
-        expect.objectContaining({
-          id: "order-sales-channel-1",
         }),
       ])
     })

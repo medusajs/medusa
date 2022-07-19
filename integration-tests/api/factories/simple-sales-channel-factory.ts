@@ -21,7 +21,7 @@ export const simpleSalesChannelFactory = async (
 
   const manager = connection.manager
 
-  const salesChannel = manager.create(SalesChannel, {
+  let salesChannel = manager.create(SalesChannel, {
     id: data.id ?? `simple-id-${Math.random() * 1000}`,
     name: data.name || faker.name.firstName(),
     description: data.description || faker.name.lastName(),
@@ -29,16 +29,19 @@ export const simpleSalesChannelFactory = async (
       typeof data.is_disabled !== undefined ? data.is_disabled : false,
   })
 
+  salesChannel = await manager.save(salesChannel)
+
   if (data.products) {
     const promises = []
     for (const product of data.products) {
-      product.sales_channels = [salesChannel]
       promises.push(
-        manager.save(product)
+        manager.query(`
+          INSERT INTO product_sales_channel (product_id, sales_channel_id) VALUES ('${product.id}', '${salesChannel.id}');
+        `)
       )
     }
     await Promise.all(promises)
   }
 
-  return await manager.save(salesChannel)
+  return salesChannel
 }
