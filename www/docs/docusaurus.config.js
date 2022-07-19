@@ -73,6 +73,10 @@ module.exports = {
               label: "API Reference",
             },
             {
+              to: "cli/reference",
+              label: "CLI Reference",
+            },
+            {
               to: "advanced/backend/subscribers/events-list",
               label: "Events Reference",
             },
