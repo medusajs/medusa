@@ -47,6 +47,7 @@ import SalesChannelFeatureFlag from "../loaders/feature-flags/sales-channels"
 import { FlagRouter } from "../utils/flag-router"
 import SalesChannelService from "./sales-channel"
 import StoreService from "./store"
+import { SalesChannelRepository } from "../repositories/sales-channel"
 
 type InjectedDependencies = {
   manager: EntityManager
@@ -55,6 +56,7 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   paymentSessionRepository: typeof PaymentSessionRepository
   lineItemRepository: typeof LineItemRepository
+  salesChannelRepository: SalesChannelRepository
   eventBusService: EventBusService
   salesChannelService: SalesChannelService
   taxProviderService: TaxProviderService
@@ -98,6 +100,7 @@ class CartService extends TransactionBaseService<CartService> {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
   protected readonly lineItemRepository_: typeof LineItemRepository
+  protected readonly salesChannelRepository_: SalesChannelRepository
   protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
@@ -137,6 +140,7 @@ class CartService extends TransactionBaseService<CartService> {
     totalsService,
     addressRepository,
     paymentSessionRepository,
+    salesChannelRepository,
     inventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
@@ -164,6 +168,7 @@ class CartService extends TransactionBaseService<CartService> {
     this.giftCardService_ = giftCardService
     this.totalsService_ = totalsService
     this.addressRepository_ = addressRepository
+    this.salesChannelRepository_ = salesChannelRepository
     this.paymentSessionRepository_ = paymentSessionRepository
     this.inventoryService_ = inventoryService
     this.customShippingOptionService_ = customShippingOptionService
@@ -567,6 +572,30 @@ class CartService extends TransactionBaseService<CartService> {
   }
 
   /**
+   * Check if line item's variant belongs to the cart's sales channel.
+   *
+   * @param lineItem - the line item being added
+   * @param cart - the cart for the line item
+   */
+  protected async validateLineItemSalesChannel_(
+    cart: Cart,
+    lineItem: LineItem
+  ): Promise<boolean> {
+    const transactionManager = this.transactionManager_ ?? this.manager_
+
+    const salesChannelRepo: SalesChannelRepository =
+      transactionManager.getCustomRepository(this.salesChannelRepository_)
+
+    const salesChannel = cart.sales_channel
+    const productId = lineItem.variant.product_id
+
+    return await salesChannelRepo.isProductInSalesChannel(
+      salesChannel.id,
+      productId
+    )
+  }
+
+  /**
    * Adds a line item to the cart.
    * @param cartId - the id of the cart that we will add to
    * @param lineItem - the line item to add.
@@ -585,8 +614,16 @@ class CartService extends TransactionBaseService<CartService> {
             "items.variant.product",
             "discounts",
             "discounts.rule",
+            "sales_channels",
           ],
         })
+
+        if (!(await this.validateLineItemSalesChannel_(cart, lineItem))) {
+          throw new MedusaError(
+            MedusaError.Types.INVALID_DATA,
+            "Variant being added to the cart doesn't belong to current sales channel that is set on the cart."
+          )
+        }
 
         let currentItem: LineItem | undefined
         if (lineItem.should_merge) {
