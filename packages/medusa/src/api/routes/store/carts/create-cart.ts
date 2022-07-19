@@ -17,6 +17,7 @@ import { validator } from "../../../../utils/validator"
 import { AddressPayload } from "../../../../types/common"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { SalesChannel } from "../../../../models";
+import { Request } from "express";
 
 /**
  * @oas [post] /carts
@@ -128,25 +129,8 @@ export default async (req, res) => {
       }
     }
 
-    let salesChannel: SalesChannel
-    if (typeof validated.sales_channel_id !== "undefined") {
-      const salesChannelService: SalesChannelService = req.scope.resolve("salesChannelService")
-      salesChannel = await salesChannelService.withTransaction(manager).retrieve(validated.sales_channel_id)
-    } else {
-      const storeService: StoreService = req.scope.resolve("storeService")
-      salesChannel = (await storeService.withTransaction(manager).retrieve({
-        relations: ["default_sales_channel"],
-      })).default_sales_channel
-    }
 
-    if (salesChannel.is_disabled) {
-      throw new MedusaError(
-        MedusaError.Types.INVALID_DATA,
-        `The given sales channel "${salesChannel.name}" is disabled and cannot be assign to a cart.`
-      )
-    }
-
-    toCreate["sales_channel_id"] = salesChannel.id
+    toCreate["sales_channel_id"] = await getSalesChannel(req, manager, validated)
 
     let cart = await cartService.withTransaction(manager).create(toCreate)
     if (validated.items) {
@@ -173,6 +157,28 @@ export default async (req, res) => {
 
     res.status(200).json({ cart: data })
   })
+}
+
+async function getSalesChannel(req: Request, manager: EntityManager, data: StorePostCartReq): Promise<string> {
+  let salesChannel: SalesChannel
+  if (typeof data.sales_channel_id !== "undefined") {
+    const salesChannelService: SalesChannelService = req.scope.resolve("salesChannelService")
+    salesChannel = await salesChannelService.withTransaction(manager).retrieve(data.sales_channel_id)
+  } else {
+    const storeService: StoreService = req.scope.resolve("storeService")
+    salesChannel = (await storeService.withTransaction(manager).retrieve({
+      relations: ["default_sales_channel"],
+    })).default_sales_channel
+  }
+
+  if (salesChannel.is_disabled) {
+    throw new MedusaError(
+      MedusaError.Types.INVALID_DATA,
+      `The given sales channel "${salesChannel.name}" is disabled and cannot be assign to a cart.`
+    )
+  }
+
+  return salesChannel.id
 }
 
 export class Item {
