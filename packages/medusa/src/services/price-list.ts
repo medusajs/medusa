@@ -248,19 +248,18 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     selector: FilterablePriceListProps = {},
     config: FindConfig<FilterablePriceListProps> = { skip: 0, take: 20 }
   ): Promise<PriceList[]> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
+    const manager = this.manager_
+    const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
 
-      const { q, ...priceListSelector } = selector
-      const query = buildQuery(priceListSelector, config)
+    const { q, ...priceListSelector } = selector
+    const query = buildQuery(priceListSelector, config)
 
-      const groups = query.where.customer_groups as FindOperator<string[]>
-      query.where.customer_groups = undefined
+    const groups = query.where.customer_groups as FindOperator<string[]>
+    query.where.customer_groups = undefined
 
-      const [priceLists] = await priceListRepo.listAndCount(query, groups)
+    const [priceLists] = await priceListRepo.listAndCount(query, groups)
 
-      return priceLists
-    })
+    return priceLists
   }
 
   /**
@@ -276,27 +275,26 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       take: 20,
     }
   ): Promise<[PriceList[], number]> {
-    return await this.atomicPhase_(async (manager: EntityManager) => {
-      const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
-      const { q, ...priceListSelector } = selector
-      const { relations, ...query } = buildQuery<
-        FilterablePriceListProps,
-        FilterablePriceListProps
-      >(priceListSelector, config)
+    const manager = this.manager_
+    const priceListRepo = manager.getCustomRepository(this.priceListRepo_)
+    const { q, ...priceListSelector } = selector
+    const { relations, ...query } = buildQuery<
+      FilterablePriceListProps,
+      FilterablePriceListProps
+    >(priceListSelector, config)
 
-      const groups = query.where.customer_groups as FindOperator<string[]>
-      delete query.where.customer_groups
+    const groups = query.where.customer_groups as FindOperator<string[]>
+    delete query.where.customer_groups
 
-      if (q) {
-        return await priceListRepo.getFreeTextSearchResultsAndCount(
-          q,
-          query as PriceListFindOptions,
-          groups,
-          relations
-        )
-      }
-      return await priceListRepo.listAndCount({ ...query, relations }, groups)
-    })
+    if (q) {
+      return await priceListRepo.getFreeTextSearchResultsAndCount(
+        q,
+        query as PriceListFindOptions,
+        groups,
+        relations
+      )
+    }
+    return await priceListRepo.listAndCount({ ...query, relations }, groups)
   }
 
   protected async upsertCustomerGroups_(
@@ -332,10 +330,9 @@ class PriceListService extends TransactionBaseService<PriceListService> {
       const productVariantRepo = manager.getCustomRepository(
         this.productVariantRepo_
       )
-      const [products, count] = await this.productService_.listAndCount(
-        selector,
-        config
-      )
+      const [products, count] = await this.productService_
+        .withTransaction(manager)
+        .listAndCount(selector, config)
 
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
@@ -378,10 +375,9 @@ class PriceListService extends TransactionBaseService<PriceListService> {
     requiresPriceList = false
   ): Promise<[ProductVariant[], number]> {
     return await this.atomicPhase_(async (manager: EntityManager) => {
-      const [variants, count] = await this.variantService_.listAndCount(
-        selector,
-        config
-      )
+      const [variants, count] = await this.variantService_
+        .withTransaction(manager)
+        .listAndCount(selector, config)
 
       const moneyAmountRepo = manager.getCustomRepository(this.moneyAmountRepo_)
 
