@@ -455,12 +455,9 @@ class ProductService extends TransactionBaseService<
         }
 
         if (typeof salesChannels !== "undefined") {
-          product.sales_channels =
-            salesChannels === null || salesChannels?.length === 0
-              ? []
-              : (product.sales_channels = salesChannels?.map(
-                  (sc) => ({ id: sc.id } as SalesChannel)
-                ))
+          product.sales_channels = salesChannels?.length
+            ? salesChannels?.map((sc) => ({ id: sc.id } as SalesChannel))
+            : []
         }
 
         if (variants) {

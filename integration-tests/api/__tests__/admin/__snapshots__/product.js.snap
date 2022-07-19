@@ -50,7 +50,6 @@ Array [
     ],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
-    "sales_channels": Array [],
     "status": "draft",
     "subtitle": null,
     "tags": Array [
@@ -345,7 +344,6 @@ Array [
     "options": Array [],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
-    "sales_channels": Array [],
     "status": "draft",
     "subtitle": null,
     "tags": Array [
@@ -514,7 +512,6 @@ Array [
     "options": Any<Array>,
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
-    "sales_channels": Array [],
     "status": "proposed",
     "subtitle": null,
     "tags": Any<Array>,
@@ -548,7 +545,6 @@ Array [
     "options": Any<Array>,
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
-    "sales_channels": Array [],
     "status": "published",
     "subtitle": null,
     "tags": Any<Array>,
@@ -582,7 +578,6 @@ Array [
     "options": Any<Array>,
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
-    "sales_channels": Array [],
     "status": "draft",
     "subtitle": null,
     "tags": Any<Array>,
@@ -631,7 +626,6 @@ Array [
     ],
     "origin_country": null,
     "profile_id": StringMatching /\\^sp_\\*/,
-    "sales_channels": Array [],
     "status": "draft",
     "subtitle": null,
     "tags": Array [],
@@ -773,7 +767,6 @@ Object {
   ],
   "origin_country": null,
   "profile_id": StringMatching /\\^sp_\\*/,
-  "sales_channels": Array [],
   "status": "draft",
   "subtitle": null,
   "tags": Array [
@@ -951,7 +944,6 @@ Object {
   ],
   "origin_country": null,
   "profile_id": StringMatching /\\^sp_\\*/,
-  "sales_channels": Array [],
   "status": "published",
   "subtitle": null,
   "tags": Array [
