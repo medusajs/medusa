@@ -1,10 +1,8 @@
 const path = require("path")
 
-const startServerWithEnvironment =
-  require("../../../helpers/start-server-with-environment").default
-
+const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
-const { useDb } = require("../../../helpers/use-db")
+const { initDb, useDb } = require("../../../helpers/use-db")
 
 const adminSeeder = require("../../helpers/admin-seeder")
 const productSeeder = require("../../helpers/product-seeder")
@@ -14,7 +12,6 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 const priceListSeeder = require("../../helpers/price-list-seeder")
-const { simpleSalesChannelFactory } = require("../../factories");
 
 jest.setTimeout(50000)
 
@@ -24,13 +21,8 @@ describe("/admin/products", () => {
 
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
-    const [serverProcess, connection] = await startServerWithEnvironment({
-      cwd,
-      env: { MEDUSA_FF_SALES_CHANNELS: true },
-      verbose: false,
-    })
-    medusaProcess = serverProcess
-    dbConnection = connection
+    dbConnection = await initDb({ cwd })
+    medusaProcess = await setupServer({ cwd, verbose: false })
   })
 
   afterAll(async () => {
@@ -856,17 +848,10 @@ describe("/admin/products", () => {
   })
 
   describe("POST /admin/products", () => {
-    let salesChannel
-    let salesChannelData = {
-      name: "test name",
-      description: "test description",
-    }
-
     beforeEach(async () => {
       try {
         await productSeeder(dbConnection)
         await adminSeeder(dbConnection)
-        salesChannel = await simpleSalesChannelFactory(dbConnection, salesChannelData)
       } catch (err) {
         console.log(err)
         throw err
@@ -1434,153 +1419,6 @@ describe("/admin/products", () => {
           ]),
         })
       )
-    })
-
-    it("should creates a product that is assigned to a sales_channel", async () => {
-      const api = useApi()
-
-      const payload = {
-        title: "Test",
-        description: "test-product-description",
-        type: { value: "test-type" },
-        options: [{ title: "size" }, { title: "color" }],
-        variants: [
-          {
-            title: "Test variant",
-            inventory_quantity: 10,
-            prices: [{ currency_code: "usd", amount: 100 }],
-            options: [{ value: "large" }, { value: "green" }],
-          },
-        ],
-        sales_channels: [{ id: salesChannel.id }]
-      }
-
-      const response = await api
-        .post("/admin/products", payload, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          sales_channels: [
-            expect.objectContaining({
-              id: salesChannel.id,
-              name: salesChannel.name,
-            })
-          ],
-        })
-      )
-    })
-
-    it("should update a product sales channels assignation with either a sales channel, null, [] or undefined", async () => {
-      const api = useApi()
-
-      let response = await api
-        .post("/admin/products/test-product", {
-          sales_channels: null,
-        }, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          sales_channels: [],
-        })
-      )
-
-      response = await api
-        .post("/admin/products/test-product", {
-          sales_channels: [{ id: salesChannel.id }],
-        }, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          sales_channels: [
-            expect.objectContaining({
-              id: salesChannel.id,
-              name: salesChannel.name,
-            })
-          ],
-        })
-      )
-
-      response = await api
-        .post("/admin/products/test-product", {}, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          sales_channels: [
-            expect.objectContaining({
-              id: salesChannel.id,
-              name: salesChannel.name,
-            })
-          ],
-        })
-      )
-
-      response = await api
-        .post("/admin/products/test-product", {
-          sales_channels: [],
-        }, {
-          headers: {
-            Authorization: "Bearer test_token",
-          },
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-
-      expect(response.status).toEqual(200)
-      expect(response.data.product).toEqual(
-        expect.objectContaining({
-          sales_channels: [],
-        })
-      )
-    })
-
-    it("should throw on update if the sales channels does not exists", async () => {
-      const api = useApi()
-
-      const err = await api
-          .post("/admin/products/test-product", {
-            sales_channels: [{ id: "fake_id" }],
-          }, {
-            headers: {
-              Authorization: "Bearer test_token",
-            },
-          })
-          .catch((err) => err)
-
-      expect(err.response.status).toEqual(404)
-      expect(err.response.data.message).toBe("The following sales channels ids do not exist: \"fake_id\"")
     })
   })
 
