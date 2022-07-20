@@ -24,12 +24,11 @@ class TestFulService extends FulfillmentService {
   }
 
   canCalculate() {
-    return false
+    return true
   }
 
   calculatePrice(data) {
     return data.price
-    throw Error("Manual Fulfillment service cannot calculatePrice")
   }
 
   createOrder() {
