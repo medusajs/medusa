@@ -7,6 +7,7 @@ import DiscountConditionService from "../../../../services/discount-condition"
 import { DiscountService } from "../../../../services"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /discounts/{discount_id}/conditions/{condition_id}
  * operationId: "PostDiscountsDiscountConditionsCondition"
@@ -14,6 +15,7 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * parameters:
  *   - (path) discount_id=* {string} The id of the Product.
+ *   - (path) condition_id=* {string} The id of the DiscountCondition.
  *   - (query) expand {string} (Comma separated) Which fields should be expanded in each product of the result.
  *   - (query) fields {string} (Comma separated) Which fields should be included in each product of the result.
  * description: "Updates a DiscountCondition"

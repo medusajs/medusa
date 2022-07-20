@@ -14,7 +14,7 @@ import { CreateSalesChannelInput } from "../../../../types/sales-channels"
  *   - (body) name=* {string} Name of the sales channel
  *   - (body) description=* {string} Description of the sales channel
  * tags:
- *   - Sales Channels
+ *   - Sales Channel
  * responses:
  *   200:
  *     description: OK

@@ -81,8 +81,7 @@
     "test:fixtures": "jest --config=docs-util/jest.config.js --runInBand",
     "generate:services": "typedoc --options typedoc.services.js",
     "generate:js-client": "typedoc --options typedoc.js-client.js",
-    "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot",
-    "openapi:generate": "node ./scripts/build-openapi.js"
+    "release:snapshot": "changeset publish --no-git-tags --snapshot --tag snapshot"
   },
   "dependencies": {
     "@changesets/changelog-github": "^0.4.5",
