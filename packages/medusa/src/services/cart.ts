@@ -3,14 +3,16 @@ import { MedusaError, Validator } from "medusa-core-utils"
 import { DeepPartial, EntityManager, In } from "typeorm"
 import { TransactionBaseService } from "../interfaces"
 import { IPriceSelectionStrategy } from "../interfaces/price-selection-strategy"
-import { DiscountRuleType, SalesChannel } from "../models"
-import { Address } from "../models/address"
-import { Cart } from "../models/cart"
-import { CustomShippingOption } from "../models/custom-shipping-option"
-import { Customer } from "../models/customer"
-import { Discount } from "../models/discount"
-import { LineItem } from "../models/line-item"
-import { ShippingMethod } from "../models/shipping-method"
+import {
+  DiscountRuleType,
+  Address,
+  Cart,
+  CustomShippingOption,
+  Customer,
+  Discount,
+  LineItem,
+  ShippingMethod,
+} from "../models"
 import { AddressRepository } from "../repositories/address"
 import { CartRepository } from "../repositories/cart"
 import { LineItemRepository } from "../repositories/line-item"
@@ -887,24 +889,20 @@ class CartService extends TransactionBaseService<CartService> {
     cart: Cart,
     newSalesChannelId: string
   ): Promise<void> {
-    const products = await this.productService_
+    const productsToKeep = await this.productService_
       .withTransaction(this.manager_)
-      .list(
-        {
-          id: cart.items.map((item) => item.variant.product_id),
-        },
+      .filterProductsBySalesChannel(
+        cart.items.map((item) => item.variant.product_id),
+        newSalesChannelId,
         {
           select: ["id", "sales_channels"],
-          relations: ["sales_channels"],
         }
       )
-    const productSalesChannelsMap = new Map<string, SalesChannel[]>(
-      products.map((product) => [product.id, product.sales_channels])
+    const productToKeepIds = new Set<string>(
+      productsToKeep.map((product) => product.id)
     )
     const itemsToRemove = cart.items.filter((item) => {
-      return productSalesChannelsMap
-        .get(item.variant.product_id)
-        ?.some((psc) => psc.id !== newSalesChannelId)
+      return !productToKeepIds.has(item.variant.product_id)
     })
 
     if (itemsToRemove.length) {
