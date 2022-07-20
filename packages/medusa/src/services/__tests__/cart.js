@@ -354,6 +354,13 @@ describe("CartService", () => {
       },
     }
 
+    const productVariantService = {
+      retrieve: jest.fn(),
+      withTransaction: function () {
+        return this
+      },
+    }
+
     const inventoryService = {
       ...InventoryServiceMock,
       confirmInventory: jest.fn().mockImplementation((variantId, _quantity) => {
@@ -406,6 +413,7 @@ describe("CartService", () => {
       eventBusService,
       shippingOptionService,
       inventoryService,
+      productVariantService,
       lineItemAdjustmentService: LineItemAdjustmentServiceMock,
       featureFlagRouter: new FlagRouter({}),
     })
@@ -523,6 +531,31 @@ describe("CartService", () => {
       ).toHaveBeenCalledWith(
         expect.objectContaining({ id: IdMap.getId("cartWithLine") })
       )
+    })
+
+    it("validates if chart nad variant's product belong to the same sales channel if flag is passed", async () => {
+      const validateSpy = jest
+        .spyOn(cartService, "validateLineItemSalesChannel_")
+        .mockImplementation(() => Promise.resolve(true))
+
+      const lineItem = {
+        title: "New Line",
+        description: "This is a new line",
+        thumbnail: "test-img-yeah.com/thumb",
+        variant_id: IdMap.getId("can-cover"),
+        unit_price: 123,
+        quantity: 10,
+      }
+
+      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem)
+
+      expect(cartService.validateLineItemSalesChannel_).not.toHaveBeenCalled()
+
+      await cartService.addLineItem(IdMap.getId("cartWithLine"), lineItem, true)
+
+      expect(cartService.validateLineItemSalesChannel_).toHaveBeenCalledTimes(1)
+
+      validateSpy.mockClear()
     })
 
     it("throws if inventory isn't covered", async () => {

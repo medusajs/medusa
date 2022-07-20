@@ -495,7 +495,7 @@ describe("/store/carts", () => {
         .post(
           "/store/carts/test-cart-with-sales-channel/line-items",
           {
-            variant_id: "test-variant-quantity",
+            variant_id: "test-variant-quantity", // variant's product doesn't belong to a sales channel
             validateSalesChannels: true,
             quantity: 1,
           },
