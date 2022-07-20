@@ -8,17 +8,12 @@ export const SEARCH_INDEX_EVENT = "SEARCH_INDEX_EVENT"
 function loadProductsIntoSearchEngine(container: MedusaContainer): void {
   const logger: Logger = container.resolve<Logger>("logger")
   const eventBusService: EventBusService = container.resolve("eventBusService")
-  eventBusService
-    .emit(SEARCH_INDEX_EVENT, {})
-    .then(() => {
-      logger.info("Product indexed to the seach engine done.")
-    })
-    .catch((err) => {
-      logger.error(err)
-      logger.error(
-        "Something went wrong while indexing the product into the seach engine."
-      )
-    })
+  eventBusService.emit(SEARCH_INDEX_EVENT, {}).catch((err) => {
+    logger.error(err)
+    logger.error(
+      "Something went wrong while indexing the product into the searchedusa engine."
+    )
+  })
 }
 
 export default async ({
