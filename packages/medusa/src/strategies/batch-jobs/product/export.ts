@@ -53,7 +53,7 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
   protected readonly columnDescriptors: Map<
     string,
     ProductExportColumnSchemaDescriptor
-  > = productExportSchemaDescriptors
+  > = new Map(productExportSchemaDescriptors)
 
   private readonly NEWLINE_ = "\r\n"
   private readonly DELIMITER_ = ";"
@@ -270,11 +270,15 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
           }
 
           products.forEach((product: Product) => {
-            const lines = this.buildProductVariantLines(product)
-            lines.forEach((line) => {
-              approximateFileSize += Buffer.from(line).byteLength
-              writeStream.write(line)
-            })
+            try {
+              const lines = this.buildProductVariantLines(product)
+              lines.forEach((line) => {
+                approximateFileSize += Buffer.from(line).byteLength
+                writeStream.write(line)
+              })
+            } catch (e) {
+              console.error(e)
+            }
           })
 
           advancementCount += products.length
@@ -342,11 +346,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
 
   private appendSalesChannelsDescriptors(maxScCount: number): void {
     for (let i = 0; i < maxScCount; ++i) {
-      this.columnDescriptors.set(`Sales channel ${i + 1} name`, {
+      this.columnDescriptors.set(`Sales channel ${i + 1} Name`, {
         accessor: (product: Product) => product?.sales_channels[i]?.name ?? "",
         entityName: "product",
       })
-      this.columnDescriptors.set(`Sales channel ${i + 1} description`, {
+      this.columnDescriptors.set(`Sales channel ${i + 1} Description`, {
         accessor: (product: Product) =>
           product?.sales_channels[i]?.description ?? "",
         entityName: "product",
