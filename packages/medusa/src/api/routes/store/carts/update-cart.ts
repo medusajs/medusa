@@ -13,8 +13,9 @@ import { AddressPayload } from "../../../../types/common"
 import { validator } from "../../../../utils/validator"
 import { IsType } from "../../../../utils/validators/is-type"
 import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
-import { SalesChannel } from "../../../../models";
 import { MedusaError } from "medusa-core-utils";
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
 
 /**
  * @oas [post] /store/carts/{id}
@@ -191,7 +192,9 @@ export class StorePostCartsCartReq {
   @IsOptional()
   context?: object
 
-  @IsString()
-  @IsOptional()
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
+    IsString,
+    IsOptional,
+  ])
   sales_channel_id?: string
 }

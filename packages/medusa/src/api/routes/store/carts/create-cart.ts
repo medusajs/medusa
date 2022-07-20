@@ -19,6 +19,8 @@ import { decorateLineItemsWithTotals } from "./decorate-line-items-with-totals"
 import { SalesChannel } from "../../../../models";
 import { Request } from "express";
 import { IFlagRouter } from "../../../../types/feature-flags";
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels";
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators";
 
 /**
  * @oas [post] /carts
@@ -133,7 +135,7 @@ export default async (req, res) => {
     const featureFlagRouter: IFlagRouter = req.scope.resolve("featureFlagRouter")
 
 
-    if (featureFlagRouter.isFeatureEnabled("sales_channels")) {
+    if (featureFlagRouter.isFeatureEnabled(SalesChannelFeatureFlag.key)) {
       toCreate["sales_channel_id"] = await getSalesChannel(req, manager, validated)
     }
 
@@ -214,7 +216,9 @@ export class StorePostCartReq {
   @IsOptional()
   context?: object
 
-  @IsString()
-  @IsOptional()
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
+    IsString,
+    IsOptional,
+  ])
   sales_channel_id?: string
 }
