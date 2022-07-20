@@ -75,15 +75,41 @@
     }
   ],
   "paths": {
-    "/auth": {
+    "/apps": {
       "post": {
-        "operationId": "PostAuth",
-        "summary": "Authenticate a User",
-        "x-authenticated": false,
-        "description": "Logs a User in and authorizes them to manage Store settings.",
-        "parameters": [],
+        "operationId": "PostApps",
+        "summary": "Generates a token for an application.",
+        "description": "Generates a token for an application.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "application_name",
+                  "state",
+                  "code"
+                ],
+                "properties": {
+                  "application_name": {
+                    "type": "string",
+                    "description": "Name of the application for the token to be generated for."
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "State of the application."
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The code for the generated token."
+                  }
+                }
+              }
+            }
+          }
+        },
         "tags": [
-          "Auth"
+          "Apps"
         ],
         "responses": {
           "200": {
@@ -92,32 +118,9 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
+                    "apps": {
+                      "$ref": "#/components/schemas/OAuth"
                     }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "password"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The User's email."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The User's password."
                   }
                 }
               }
@@ -126,12 +129,12 @@
         }
       },
       "get": {
-        "operationId": "GetAuth",
-        "summary": "Get Session",
+        "operationId": "GetApps",
+        "summary": "List applications",
+        "description": "Retrieve a list of applications.",
         "x-authenticated": true,
-        "description": "Gets the currently logged in User.",
         "tags": [
-          "Auth"
+          "Apps"
         ],
         "responses": {
           "200": {
@@ -140,132 +143,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "user": {
-                      "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers/batch": {
-      "post": {
-        "operationId": "PostCustomerGroupsGroupCustomersBatch",
-        "summary": "Add a list of customers to a customer group ",
-        "description": "Adds a list of customers, represented by id's, to a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to add",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
-        "summary": "Remove a list of customers from a customer group ",
-        "description": "Removes a list of customers, represented by id's, from a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to remove",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
+                    "collection": {
+                      "$ref": "#/components/schemas/OAuth"
                     }
                   }
                 }
@@ -342,97 +221,6 @@
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroups",
-        "summary": "Retrieve a list of customer groups",
-        "description": "Retrieve a list of customer groups.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching user group names.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many groups to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Ids of the groups to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "to retrieve customer groups in.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of customer groups returned.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
                     }
                   }
                 }
@@ -723,28 +511,6 @@
               }
             }
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -892,7 +658,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
                 "required": [
                   "title"
                 ],
@@ -1033,39 +798,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
           }
         ],
         "tags": [
@@ -1130,14 +862,6 @@
               }
             }
           }
-        },
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
         }
       },
       "post": {
@@ -1190,6 +914,449 @@
                   "properties": {
                     "collection": {
                       "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}/customers/batch": {
+      "post": {
+        "operationId": "PostCustomerGroupsGroupCustomersBatch",
+        "summary": "Add a list of customers to a customer group ",
+        "description": "Adds a list of customers, represented by id's, to a customer group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customers": {
+                    "description": "The ids of the customers to add",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customerGroup": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
+        "summary": "Remove a list of customers from a customer group ",
+        "description": "Removes a list of customers, represented by id's, from a customer group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customers": {
+                    "description": "The ids of the customers to remove",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customerGroup": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups": {
+      "post": {
+        "operationId": "PostCustomerGroups",
+        "summary": "Create a CustomerGroup",
+        "description": "Creates a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the customer group"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomerGroups",
+        "summary": "Retrieve a list of customer groups",
+        "description": "Retrieve a list of customer groups.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching user group names.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many groups to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Ids of the groups to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "to retrieve customer groups in.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of customer groups returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customerGroup": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}": {
+      "delete": {
+        "operationId": "DeleteCustomerGroupsCustomerGroup",
+        "summary": "Delete a CustomerGroup",
+        "description": "Deletes a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted customer group."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomerGroupsGroup",
+        "summary": "Retrieve a CustomerGroup",
+        "description": "Retrieves a Customer Group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomerGroupsGroup",
+        "summary": "Update a CustomerGroup",
+        "description": "Update a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the customer group"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}/customers": {
+      "get": {
+        "operationId": "GetCustomerGroupsGroupCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -1842,7 +2009,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "discount_id",
             "required": true,
             "description": "The id of the Discount",
             "schema": {
@@ -1956,13 +2123,21 @@
         "operationId": "PostDiscountsDiscountConditionsCondition",
         "summary": "Updates a DiscountCondition",
         "x-authenticated": true,
-        "description": "Removes a Region from the list of Regions that a Discount can be used in.",
         "parameters": [
           {
             "in": "path",
             "name": "discount_id",
             "required": true,
             "description": "The id of the Product.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "condition_id",
+            "required": true,
+            "description": "The id of the DiscountCondition.",
             "schema": {
               "type": "string"
             }
@@ -2021,7 +2196,7 @@
               }
             }
           }
-        ],
+        },
         "tags": [
           "Discount"
         ],
@@ -2052,7 +2227,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "discount_id",
+            "name": "id",
             "required": true,
             "description": "The id of the Discount",
             "schema": {
@@ -2230,7 +2405,6 @@
         "summary": "Delete a dynamic code",
         "description": "Deletes a dynamic code from a Discount.",
         "x-authenticated": true,
-        "description": "Retrieves a list of Discounts",
         "parameters": [
           {
             "in": "path",
@@ -2307,476 +2481,6 @@
               }
             }
           }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "code",
-                  "usage_limit"
-                ],
-                "properties": {
-                  "code": {
-                    "type": "string",
-                    "description": "The unique code that will be used to redeem the Discount."
-                  },
-                  "usage_limit": {
-                    "type": "number",
-                    "description": "amount of times the discount can be applied"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "An optional set of key-value paris to hold additional information."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers/batch": {
-      "post": {
-        "operationId": "PostCustomerGroupsGroupCustomersBatch",
-        "summary": "Add a list of customers to a customer group ",
-        "description": "Adds a list of customers, represented by id's, to a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to add",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
-        "summary": "Remove a list of customers from a customer group ",
-        "description": "Removes a list of customers, represented by id's, from a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customers": {
-                    "description": "The ids of the customers to remove",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups": {
-      "post": {
-        "operationId": "PostCustomerGroups",
-        "summary": "Create a CustomerGroup",
-        "description": "Creates a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroups",
-        "summary": "Retrieve a list of customer groups",
-        "description": "Retrieve a list of customer groups.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching user group names.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many groups to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "id",
-            "description": "Ids of the groups to search for.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "to retrieve customer groups in.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of customer groups returned.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}": {
-      "delete": {
-        "operationId": "DeleteCustomerGroupsCustomerGroup",
-        "summary": "Delete a CustomerGroup",
-        "description": "Deletes a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer Group",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted customer group."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomerGroupsGroup",
-        "summary": "Retrieve a CustomerGroup",
-        "description": "Retrieves a Customer Group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer Group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomerGroupsGroup",
-        "summary": "Update a CustomerGroup",
-        "description": "Update a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "name"
-                ],
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers": {
-      "get": {
-        "operationId": "GetCustomerGroupsGroupCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Discount"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
-                    }
-                  }
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -2786,17 +2490,6 @@
         "summary": "Create a Draft Order",
         "description": "Creates a Draft Order",
         "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Discount.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -3039,7 +2732,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "code",
+            "name": "id",
             "required": true,
             "description": "The id of the Draft Order.",
             "schema": {
@@ -3083,7 +2776,7 @@
         "parameters": [
           {
             "in": "path",
-            "name": "code",
+            "name": "id",
             "required": true,
             "description": "The id of the Draft Order.",
             "schema": {
@@ -3370,12 +3063,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "required": [
-                  "email",
-                  "items",
-                  "region_id",
-                  "shipping_methods"
-                ],
                 "properties": {
                   "value": {
                     "type": "integer",
@@ -3838,9 +3525,8 @@
         "description": "Retrieves a list of notes",
         "parameters": [
           {
-            "in": "path",
+            "in": "query",
             "name": "limit",
-            "required": true,
             "description": "The number of notes to get",
             "schema": {
               "type": "number",
@@ -3848,9 +3534,8 @@
             }
           },
           {
-            "in": "path",
+            "in": "query",
             "name": "offset",
-            "required": true,
             "description": "The offset at which to get notes",
             "schema": {
               "type": "number",
@@ -3858,9 +3543,8 @@
             }
           },
           {
-            "in": "path",
+            "in": "query",
             "name": "resource_id",
-            "required": true,
             "description": "The id which the notes belongs to",
             "schema": {
               "type": "string",
@@ -3909,60 +3593,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "region_id": {
-                    "type": "string",
-                    "description": "The id of the Region to create the Draft Order in."
-                  },
-                  "email": {
-                    "type": "string",
-                    "description": "An email to be used on the Draft Order."
-                  },
-                  "billing_address": {
-                    "description": "The Address to be used for billing purposes.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "shipping_address": {
-                    "description": "The Address to be used for shipping.",
-                    "anyOf": [
-                      {
-                        "$ref": "#/components/schemas/address"
-                      }
-                    ]
-                  },
-                  "discounts": {
-                    "description": "An array of Discount codes to add to the Draft Order.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "code": {
-                          "description": "The code that a Discount is identifed by.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  },
-                  "no_notification_order": {
-                    "description": "An optional flag passed to the resulting order to determine use of notifications.",
-                    "type": "boolean"
-                  },
-                  "customer_id": {
-                    "description": "The id of the Customer to associate the Draft Order with.",
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Note"
         ],
@@ -4003,13 +3633,7 @@
               "type": "string"
             }
           }
-        }
-      },
-      "get": {
-        "operationId": "GetGiftCards",
-        "summary": "List Gift Cards",
-        "description": "Retrieves a list of Gift Cards.",
-        "x-authenticated": true,
+        ],
         "tags": [
           "Note"
         ],
@@ -4108,15 +3732,7 @@
               "type": "integer",
               "default": 50
             }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostGiftCardsGiftCard",
-        "summary": "Create a Gift Card",
-        "description": "Creates a Gift Card that can redeemed by its unique code. The Gift Card is only valid within 1 region.",
-        "x-authenticated": true,
-        "parameters": [
+          },
           {
             "in": "query",
             "name": "fields",
@@ -4130,14 +3746,14 @@
             "name": "expand",
             "description": "The fields to populate",
             "schema": {
-              "type": "object"
+              "type": "string"
             }
           },
           {
             "in": "query",
             "name": "event_name",
             "schema": {
-              "type": "object"
+              "type": "string"
             }
           },
           {
@@ -4263,34 +3879,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "fulfillment_id"
-                ],
-                "properties": {
-                  "fulfillment_id": {
-                    "description": "The id of the Fulfillment.",
-                    "type": "string"
-                  },
-                  "tracking_numbers": {
-                    "description": "The tracking numbers for the shipment.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "no_notification": {
-                    "description": "If set to true no notification will be send related to this Shipment.",
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Order"
         ],
@@ -4357,34 +3945,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "fulfillment_id"
-                ],
-                "properties": {
-                  "fulfillment_id": {
-                    "description": "The id of the Fulfillment.",
-                    "type": "string"
-                  },
-                  "tracking_numbers": {
-                    "description": "The tracking numbers for the shipment.",
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "no_notification": {
-                    "description": "If set to true no notification will be send related to this Claim.",
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Order"
         ],
@@ -4432,101 +3992,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "return_items"
-                ],
-                "properties": {
-                  "return_items": {
-                    "description": "The Line Items to return as part of the Swap.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "item_id",
-                        "quantity"
-                      ],
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item that will be claimed.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The number of items that will be returned",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "return_shipping": {
-                    "description": "How the Swap will be returned.",
-                    "type": "object",
-                    "properties": {
-                      "option_id": {
-                        "type": "string",
-                        "description": "The id of the Shipping Option to create the Shipping Method from."
-                      },
-                      "price": {
-                        "type": "integer",
-                        "description": "The price to charge for the Shipping Method."
-                      }
-                    }
-                  },
-                  "additional_items": {
-                    "description": "The new items to send to the Customer.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "variant_id",
-                        "quantity"
-                      ],
-                      "properties": {
-                        "variant_id": {
-                          "description": "The id of the Product Variant to ship.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Product Variant to ship.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "custom_shipping_options": {
-                    "description": "The custom shipping options to potentially create a Shipping Method from.",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "option_id",
-                        "price"
-                      ],
-                      "properties": {
-                        "option_id": {
-                          "description": "The id of the Shipping Option to override with a custom price.",
-                          "type": "string"
-                        },
-                        "price": {
-                          "description": "The custom price of the Shipping Option.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "no_notification": {
-                    "description": "If set to true no notification will be send related to this Swap.",
-                    "type": "boolean"
-                  },
-                  "allow_backorder": {
-                    "description": "If true, swaps can be completed with items out of stock",
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Claim"
         ],
@@ -4578,15 +4043,6 @@
             "name": "fulfillment_id",
             "required": true,
             "description": "The id of the Fulfillment.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "path",
-            "name": "key",
-            "required": true,
-            "description": "The metadata key.",
             "schema": {
               "type": "string"
             }
@@ -6623,38 +6079,7 @@
                     "description": "The price id's of the Money Amounts to delete.",
                     "type": "array",
                     "items": {
-                      "properties": {
-                        "item_id": {
-                          "description": "The id of the Line Item.",
-                          "type": "string"
-                        },
-                        "reason_id": {
-                          "description": "The id of the Return Reason to use.",
-                          "type": "string"
-                        },
-                        "note": {
-                          "description": "An optional note with information about the Return.",
-                          "type": "string"
-                        },
-                        "quantity": {
-                          "description": "The quantity of the Line Item.",
-                          "type": "integer"
-                        }
-                      }
-                    }
-                  },
-                  "return_shipping": {
-                    "description": "The Shipping Method to be used to handle the return shipment.",
-                    "type": "object",
-                    "properties": {
-                      "option_id": {
-                        "type": "string",
-                        "description": "The id of the Shipping Option to create the Shipping Method from."
-                      },
-                      "price": {
-                        "type": "integer",
-                        "description": "The price to charge for the Shipping Method."
-                      }
+                      "type": "string"
                     }
                   }
                 }
@@ -6815,60 +6240,6 @@
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "prices": {
-                    "description": "The prices to update or add.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The id of the price.",
-                          "type": "string"
-                        },
-                        "status": {
-                          "description": "The status of the Price List.",
-                          "type": "string",
-                          "enum": [
-                            "active",
-                            "draft"
-                          ]
-                        },
-                        "region_id": {
-                          "description": "The id of the Region for which the price is used.",
-                          "type": "string"
-                        },
-                        "currency_code": {
-                          "description": "The 3 character ISO currency code for which the price will be used.",
-                          "type": "string"
-                        },
-                        "amount": {
-                          "description": "The amount of the price.",
-                          "type": "number"
-                        },
-                        "min_quantity": {
-                          "description": "The minimum quantity for which the price will be used.",
-                          "type": "number"
-                        },
-                        "max_quantity": {
-                          "description": "The maximum quantity for which the price will be used.",
-                          "type": "number"
-                        }
-                      }
-                    }
-                  },
-                  "override": {
-                    "description": "If true the prices will replace all existing prices associated with the Price List.",
-                    "type": "boolean"
-                  }
-                }
-              }
-            }
-          }
-        },
         "tags": [
           "Price List"
         ],
@@ -7394,7 +6765,7 @@
               }
             }
           }
-        ],
+        },
         "tags": [
           "Price List"
         ],
@@ -10170,18 +9541,16 @@
         "description": "Retrieves a list of Returns",
         "parameters": [
           {
-            "in": "path",
+            "in": "query",
             "name": "limit",
-            "required": true,
             "description": "The upper limit for the amount of responses returned.",
             "schema": {
               "type": "number"
             }
           },
           {
-            "in": "path",
+            "in": "query",
             "name": "offset",
-            "required": true,
             "description": "The offset of the list returned.",
             "schema": {
               "type": "number"
@@ -10290,7 +9659,7 @@
         "x-authenticated": true,
         "parameters": [],
         "tags": [
-          "Sales Channels"
+          "Sales Channel"
         ],
         "responses": {
           "200": {

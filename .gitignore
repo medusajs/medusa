@@ -20,3 +20,4 @@ lerna-debug.log
 .idea
 .turbo
 build/**
+nm

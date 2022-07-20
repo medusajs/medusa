@@ -1,9 +1,10 @@
 import { IsOptional, IsString } from "class-validator"
-import { MedusaError } from "medusa-core-utils"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
 import { Discount } from "../../../../models"
-import { DiscountService } from "../../../../services"
 import DiscountConditionService from "../../../../services/discount-condition"
+import { DiscountService } from "../../../../services"
+import { MedusaError } from "medusa-core-utils"
 import { getRetrieveConfig } from "../../../../utils/get-query-config"
 import { validator } from "../../../../utils/validator"
 
@@ -14,7 +15,7 @@ import { validator } from "../../../../utils/validator"
  * description: "Deletes a DiscountCondition"
  * x-authenticated: true
  * parameters:
- *   - (path) id=* {string} The id of the Discount
+ *   - (path) discount_id=* {string} The id of the Discount
  *   - (path) condition_id=* {string} The id of the DiscountCondition
  * tags:
  *   - Discount

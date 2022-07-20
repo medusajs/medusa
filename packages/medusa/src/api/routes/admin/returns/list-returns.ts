@@ -1,6 +1,7 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional } from "class-validator"
+
 import { ReturnService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -9,8 +10,8 @@ import { validator } from "../../../../utils/validator"
  * summary: "List Returns"
  * description: "Retrieves a list of Returns"
  * parameters:
- *   - (path) limit {number} The upper limit for the amount of responses returned.
- *   - (path) offset {number} The offset of the list returned.
+ *   - (query) limit {number} The upper limit for the amount of responses returned.
+ *   - (query) offset {number} The offset of the list returned.
  * tags:
  *   - Return
  * responses:
