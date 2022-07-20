@@ -1,5 +1,6 @@
 import { IsBoolean, IsOptional, IsString } from "class-validator"
 import { Request, Response } from "express"
+
 import { SalesChannelService } from "../../../../services"
 
 /**
@@ -33,8 +34,8 @@ import { SalesChannelService } from "../../../../services"
  *       application/json:
  *         schema:
  *           properties:
- *             customer:
- *               $ref: "#/components/schemas/sales-channel"
+ *             sales_channel:
+ *               $ref: "#/components/schemas/sales_channel"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params
