@@ -3,6 +3,7 @@ import { SEARCH_INDEX_EVENT } from "../loaders/search-index"
 import ProductService from "../services/product"
 import { indexTypes } from "medusa-core-utils"
 import { SearchService } from "../services"
+import { Product } from "../models"
 
 type InjectedDependencies = {
   eventBusService: EventBusService
@@ -34,40 +35,7 @@ class BatchJobSubscriber {
     let lastSeenId = ""
 
     while (hasMore) {
-      const products = await this.productService_.list(
-        { id: { gt: lastSeenId } },
-        {
-          select: [
-            "id",
-            "title",
-            "status",
-            "subtitle",
-            "description",
-            "handle",
-            "is_giftcard",
-            "discountable",
-            "thumbnail",
-            "profile_id",
-            "collection_id",
-            "type_id",
-            "origin_country",
-            "created_at",
-            "updated_at",
-          ],
-          relations: [
-            "variants",
-            "tags",
-            "type",
-            "collection",
-            "variants.prices",
-            "images",
-            "variants.options",
-            "options",
-          ],
-          take: TAKE,
-          order: { id: "ASC" },
-        }
-      )
+      const products = await this.retrieveNextProducts(lastSeenId, TAKE)
 
       if (products.length > 0) {
         await this.searchService_.addDocuments(
@@ -80,6 +48,46 @@ class BatchJobSubscriber {
         hasMore = false
       }
     }
+  }
+
+  protected async retrieveNextProducts(
+    lastSeenId: string,
+    take: number
+  ): Promise<Product[]> {
+    return await this.productService_.list(
+      { id: { gt: lastSeenId } },
+      {
+        select: [
+          "id",
+          "title",
+          "status",
+          "subtitle",
+          "description",
+          "handle",
+          "is_giftcard",
+          "discountable",
+          "thumbnail",
+          "profile_id",
+          "collection_id",
+          "type_id",
+          "origin_country",
+          "created_at",
+          "updated_at",
+        ],
+        relations: [
+          "variants",
+          "tags",
+          "type",
+          "collection",
+          "variants.prices",
+          "images",
+          "variants.options",
+          "options",
+        ],
+        take: take,
+        order: { id: "ASC" },
+      }
+    )
   }
 }
 
