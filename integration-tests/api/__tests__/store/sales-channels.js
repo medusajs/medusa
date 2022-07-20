@@ -122,7 +122,7 @@ describe("sales channels", () => {
   })
 
   describe("POST /store/cart/:id", () => {
-    let salesChannel1, salesChannel2
+    let salesChannel1, salesChannel2, disabledSalesChannel
     let product1, product2
     let cart
 
@@ -142,6 +142,11 @@ describe("sales channels", () => {
         salesChannel2 = await simpleSalesChannelFactory(dbConnection, {
           name: "salesChannel2",
           description: "salesChannel2",
+        })
+        disabledSalesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "disabled cart sales channel",
+          description: "disabled cart sales channel description",
+          is_disabled: true,
         })
 
         product1 = await simpleProductFactory(
@@ -238,6 +243,19 @@ describe("sales channels", () => {
         expect(response.data.cart.items.length).toBe(0)
       }
     )
+
+    it("throw if the given sales channel is disabled", async () => {
+      const api = useApi()
+
+      const err = await api.post(
+        `/store/carts/${cart.id}`,
+        { sales_channel_id: disabledSalesChannel.id },
+        adminReqConfig
+      ).catch(err => err)
+
+      expect(err.response.status).toEqual(400)
+      expect(err.response.data.message).toBe(`The given sales channel "${disabledSalesChannel.name}" is disabled and cannot be assign to a cart.`)
+    })
   })
 
   describe("GET /store/cart/:id", () => {
