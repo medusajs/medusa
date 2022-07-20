@@ -33,10 +33,17 @@ export default async (req, res) => {
 
   const cart = await cartService.retrieve(cart_id, {
     select: ["subtotal"],
-    relations: ["region", "items", "items.variant", "items.variant.product"],
+    relations: [
+      "region",
+      "items",
+      "items.adjustments",
+      "items.variant",
+      "items.variant.product",
+    ],
   })
 
   const options = await shippingProfileService.fetchCartOptions(cart)
+
   const data = await pricingService.setShippingOptionPrices(options, {
     cart_id,
   })

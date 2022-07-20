@@ -16,7 +16,13 @@ const { initDb, useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const productSeeder = require("../../helpers/product-seeder")
 const swapSeeder = require("../../helpers/swap-seeder")
-const { simpleCartFactory, simpleLineItemFactory } = require("../../factories")
+const {
+  simpleCartFactory,
+  simpleRegionFactory,
+  simpleProductFactory,
+  simpleShippingOptionFactory,
+  simpleLineItemFactory,
+} = require("../../factories")
 const {
   simpleDiscountFactory,
 } = require("../../factories/simple-discount-factory")
@@ -42,7 +48,7 @@ describe("/store/carts", () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
       dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      medusaProcess = await setupServer({ cwd, verbose: false })
     } catch (error) {
       console.log(error)
     }
@@ -2101,6 +2107,86 @@ describe("/store/carts", () => {
 
       expect(status).toEqual(200)
       expect(data.cart.shipping_address).toEqual(null)
+    })
+  })
+
+  describe("calculated prices for shipping option", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("it fetches prices with calculated amount", async () => {
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "calculated",
+        data: { price: 123 },
+      })
+
+      const api = useApi()
+
+      const { data, status } = await api
+        .get(`/store/shipping-options/${cart.id}`)
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.shipping_options[0].amount).toEqual(123)
+    })
+  })
+
+  describe("mix of calculated and flat rate prices", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("it fetches prices with calculated amount", async () => {
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "flat_rate",
+        data: { price: 123 },
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "calculated",
+        data: { price: 123 },
+      })
+
+      const api = useApi()
+
+      const { data, status } = await api
+        .get(`/store/shipping-options/${cart.id}`)
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 123,
+            price_type: "calculated",
+          }),
+          expect.objectContaining({
+            amount: 500,
+            price_type: "flat_rate",
+          }),
+        ])
+      )
     })
   })
 })

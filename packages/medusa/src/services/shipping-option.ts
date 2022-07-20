@@ -263,7 +263,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
 
       if (typeof config.cart !== "undefined") {
-        this.validateCartOption(option, config.cart)
+        await this.validateCartOption(option, config.cart)
       }
 
       const validatedData = await this.providerService_.validateFulfillmentData(
@@ -328,10 +328,10 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  validateCartOption(
+  async validateCartOption(
     option: ShippingOption,
     cart: Cart
-  ): ShippingOption | null {
+  ): Promise<ShippingOption | null> {
     if (option.is_return) {
       return null
     }
@@ -364,6 +364,8 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         "The Cart does not satisfy the shipping option's requirements"
       )
     }
+
+    option.amount = await this.getPrice_(option, option.data, cart)
 
     return option
   }
