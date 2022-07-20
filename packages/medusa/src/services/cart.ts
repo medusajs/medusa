@@ -574,41 +574,42 @@ class CartService extends TransactionBaseService<CartService> {
   /**
    * Check if line item's variant belongs to the cart's sales channel.
    *
-   * @param lineItem - the line item being added
    * @param cart - the cart for the line item
+   * @param lineItem - the line item being added
    */
   protected async validateLineItemSalesChannel_(
     cart: Cart,
     lineItem: LineItem
   ): Promise<boolean> {
-    const transactionManager = this.transactionManager_ ?? this.manager_
-
-    const salesChannelRepo: SalesChannelRepository =
-      transactionManager.getCustomRepository(this.salesChannelRepository_)
-
     const lineItemVariant = await this.productVariantService_.retrieve(
       lineItem.variant_id
     )
-
-    // console.log({ cart, lineItem, lineItemVariant })
 
     if (!cart.sales_channel_id) {
       return true
     }
 
-    return await salesChannelRepo.isProductInSalesChannel(
-      cart.sales_channel_id,
-      lineItemVariant.product_id
-    )
+    return !!(
+      await this.productService_.filterProductsBySalesChannel(
+        [lineItemVariant.product_id],
+        cart.sales_channel_id
+      )
+    ).length
   }
 
   /**
    * Adds a line item to the cart.
    * @param cartId - the id of the cart that we will add to
    * @param lineItem - the line item to add.
+   * @param validateSalesChannels - should check if product belongs to the same sales chanel as cart
+   *  (if cart has associated sales channel)
    * @return the result of the update operation
    */
-  async addLineItem(cartId: string, lineItem: LineItem): Promise<Cart> {
+  async addLineItem(
+    cartId: string,
+    lineItem: LineItem,
+    validateSalesChannels = false
+  ): Promise<Cart> {
     return await this.atomicPhase_(
       async (transactionManager: EntityManager) => {
         const cart = await this.retrieve(cartId, {
@@ -624,7 +625,11 @@ class CartService extends TransactionBaseService<CartService> {
           ],
         })
 
-        if (!(await this.validateLineItemSalesChannel_(cart, lineItem))) {
+        const isValid = validateSalesChannels
+          ? await this.validateLineItemSalesChannel_(cart, lineItem)
+          : true
+
+        if (!isValid) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "Variant being added to the cart doesn't belong to current sales channel that is set on the cart."

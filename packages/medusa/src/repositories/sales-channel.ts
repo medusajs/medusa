@@ -70,17 +70,4 @@ export class SalesChannelRepository extends Repository<SalesChannel> {
       .orIgnore()
       .execute()
   }
-
-  async isProductInSalesChannel(
-    salesChannelId: string,
-    productId: string
-  ): Promise<boolean> {
-    return !!(await this.createQueryBuilder("product_sales_channel")
-      .select()
-      .where({
-        sales_channel_id: salesChannelId,
-        product_id: productId,
-      })
-      .getOne())
-  }
 }

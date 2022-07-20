@@ -1,4 +1,4 @@
-import { IsInt, IsOptional, IsString } from "class-validator"
+import { IsBoolean, IsInt, IsOptional, IsString } from "class-validator"
 import { EntityManager } from "typeorm"
 import { defaultStoreCartFields, defaultStoreCartRelations } from "."
 import { CartService, LineItemService } from "../../../../services"
@@ -48,7 +48,8 @@ export default async (req, res) => {
         customer_id: customerId || cart.customer_id,
         metadata: validated.metadata,
       })
-    await txCartService.addLineItem(id, line)
+
+    await txCartService.addLineItem(id, line, validated.validateSalesChannels)
 
     const updated = await txCartService.retrieve(id, {
       relations: ["payment_sessions"],
@@ -78,4 +79,8 @@ export class StorePostCartsCartLineItemsReq {
 
   @IsOptional()
   metadata?: Record<string, unknown> | undefined
+
+  @IsBoolean()
+  @IsOptional()
+  validateSalesChannels = false
 }

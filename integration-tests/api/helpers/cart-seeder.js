@@ -730,6 +730,23 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(salesChannel)
 
+  const scProduct = await manager.create(Product, {
+    id: "test-product-in-sales-channel",
+    title: "test product belonging to a channel",
+    profile_id: defaultProfile.id,
+  })
+
+  scProduct.sales_channels = [salesChannel]
+
+  await manager.save(scProduct)
+
+  await manager.insert(ProductVariant, {
+    id: "test-variant-sales-channel",
+    title: "test variant in sales channel",
+    product_id: "test-product-in-sales-channel",
+    inventory_quantity: 1000,
+  })
+
   const cartWithSalesChannel = manager.create(Cart, {
     id: "test-cart-with-sales-channel",
     sales_channel: {
@@ -958,7 +975,16 @@ module.exports = async (connection, data = {}) => {
     currency_code: "eur",
     amount: 700,
   })
+
   await manager.save(ma_sale_cg_new_region)
+
+  const ma_sc_variant = manager.create(MoneyAmount, {
+    variant_id: "test-variant-sales-channel",
+    currency_code: "usd",
+    amount: 59,
+  })
+
+  await manager.save(ma_sc_variant)
 
   const li3 = await manager.create(LineItem, {
     id: "test-item3",

@@ -488,30 +488,58 @@ describe("/store/carts", () => {
       ])
     })
 
-    it("adds line item to a cart with sales channel validation", async () => {
+    it("adding line item to a cart with associated sales channel returns 400", async () => {
       const api = useApi()
 
-      // Add standard line item to cart
       const response = await api
         .post(
           "/store/carts/test-cart-with-sales-channel/line-items",
           {
             variant_id: "test-variant-quantity",
+            validateSalesChannels: true,
+            quantity: 1,
+          },
+          { withCredentials: true }
+        )
+        .catch((err) => err.response)
+
+      expect(response.status).toEqual(400)
+      expect(response.data.type).toEqual("invalid_data")
+      expect(response.data.message).toEqual(
+        "Variant being added to the cart doesn't belong to current sales channel that is set on the cart."
+      )
+    })
+
+    it("adding line item successfully if product and cart belong to the same sales channel", async () => {
+      const api = useApi()
+
+      const response = await api
+        .post(
+          "/store/carts/test-cart-with-sales-channel/line-items",
+          {
+            variant_id: "test-variant-sales-channel",
+            validateSalesChannels: true,
             quantity: 1,
           },
           { withCredentials: true }
         )
         .catch((err) => console.log(err))
 
-      expect(response.data.cart.items).toEqual([
+      expect(response.status).toEqual(200)
+      expect(response.data.cart).toEqual(
         expect.objectContaining({
-          cart_id: "test-cart",
-          unit_price: 1000,
-          variant_id: "test-variant-quantity",
-          quantity: 1,
-          adjustments: [],
-        }),
-      ])
+          id: "test-cart-with-sales-channel",
+          items: [
+            expect.objectContaining({
+              cart_id: "test-cart-with-sales-channel",
+              description: "test variant in sales channel",
+              title: "test product belonging to a channel",
+              variant_id: "test-variant-sales-channel",
+            }),
+          ],
+          sales_channel_id: "main-sales-channel",
+        })
+      )
     })
 
     describe("ensures correct line item adjustment generation", () => {
