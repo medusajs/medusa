@@ -31912,7 +31912,6 @@ __metadata:
     oas-normalize: ^5.0.1
     pg-god: ^1.0.11
     prettier: ^2.1.1
-    qs: ^6.10.3
     resolve-cwd: ^3.0.0
     swagger-inline: ^3.2.2
     ts-jest: ^26.5.6
