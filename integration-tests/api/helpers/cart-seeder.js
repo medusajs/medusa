@@ -17,6 +17,7 @@ const {
   CustomerGroup,
   PriceList,
 } = require("@medusajs/medusa")
+const { SalesChannel } = require("@medusajs/medusa/dist")
 
 module.exports = async (connection, data = {}) => {
   const yesterday = ((today) => new Date(today.setDate(today.getDate() - 1)))(
@@ -719,6 +720,37 @@ module.exports = async (connection, data = {}) => {
   })
 
   await manager.save(cartWithItemPercDiscount)
+
+  const salesChannel = manager.create(SalesChannel, {
+    id: "main-sales-channel",
+    name: "Main sales channel",
+    description: "Main sales channel",
+    is_disabled: false,
+  })
+
+  await manager.save(salesChannel)
+
+  const cartWithSalesChannel = manager.create(Cart, {
+    id: "test-cart-with-sales-channel",
+    sales_channel: {
+      id: "main-sales-channel",
+      name: "Main sales channel",
+      description: "Main sales channel",
+      is_disabled: false,
+    },
+    customer_id: "some-customer",
+    email: "some-customer@email.com",
+    shipping_address: {
+      id: "test-shipping-address",
+      first_name: "lebron",
+      country_code: "us",
+    },
+    region_id: "test-region",
+    currency_code: "usd",
+    items: [],
+  })
+
+  await manager.save(cartWithSalesChannel)
 
   const cart2 = manager.create(Cart, {
     id: "test-cart-2",

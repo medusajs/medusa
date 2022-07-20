@@ -586,13 +586,19 @@ class CartService extends TransactionBaseService<CartService> {
     const salesChannelRepo: SalesChannelRepository =
       transactionManager.getCustomRepository(this.salesChannelRepository_)
 
+    const lineItemVariant = await this.productVariantService_.retrieve(
+      lineItem.variant_id
+    )
+
+    // console.log({ cart, lineItem, lineItemVariant })
+
     if (!cart.sales_channel_id) {
       return true
     }
 
     return await salesChannelRepo.isProductInSalesChannel(
       cart.sales_channel_id,
-      lineItem.variant.product_id
+      lineItemVariant.product_id
     )
   }
 
