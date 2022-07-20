@@ -11,7 +11,7 @@ function loadProductsIntoSearchEngine(container: MedusaContainer): void {
   eventBusService.emit(SEARCH_INDEX_EVENT, {}).catch((err) => {
     logger.error(err)
     logger.error(
-      "Something went wrong while indexing the product into the searchedusa engine."
+      "Something went wrong while emitting the search indexing event."
     )
   })
 }

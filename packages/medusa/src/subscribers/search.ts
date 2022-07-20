@@ -11,7 +11,7 @@ type InjectedDependencies = {
   productService: ProductService
 }
 
-class BatchJobSubscriber {
+class SearchIndexingSubscriber {
   private readonly eventBusService_: EventBusService
   private readonly searchService_: SearchService
   private readonly productService_: ProductService
@@ -29,7 +29,7 @@ class BatchJobSubscriber {
   }
 
   indexDocuments = async (): Promise<void> => {
-    const TAKE = 20
+    const TAKE = 1000
     let hasMore = true
 
     let lastSeenId = ""
@@ -91,4 +91,4 @@ class BatchJobSubscriber {
   }
 }
 
-export default BatchJobSubscriber
+export default SearchIndexingSubscriber
