@@ -53,7 +53,7 @@ describe("/store/carts", () => {
       const [process, connection] = await startServerWithEnvironment({
         cwd,
         env: { MEDUSA_FF_SALES_CHANNELS: true },
-        verbose: false,
+        verbose: true,
       })
       dbConnection = connection
       medusaProcess = process
@@ -496,7 +496,7 @@ describe("/store/carts", () => {
           "/store/carts/test-cart-with-sales-channel/line-items",
           {
             variant_id: "test-variant-quantity", // variant's product doesn't belong to a sales channel
-            validateSalesChannels: true,
+            validate_sales_channels: true,
             quantity: 1,
           },
           { withCredentials: true }
@@ -518,7 +518,7 @@ describe("/store/carts", () => {
           "/store/carts/test-cart-with-sales-channel/line-items",
           {
             variant_id: "test-variant-sales-channel",
-            validateSalesChannels: true,
+            validate_sales_channels: true,
             quantity: 1,
           },
           { withCredentials: true }

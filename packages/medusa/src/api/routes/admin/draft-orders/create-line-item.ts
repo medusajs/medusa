@@ -1,4 +1,10 @@
-import { IsInt, IsObject, IsOptional, IsString } from "class-validator"
+import {
+  IsBoolean,
+  IsInt,
+  IsObject,
+  IsOptional,
+  IsString,
+} from "class-validator"
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
 import {
@@ -136,7 +142,7 @@ export class AdminPostDraftOrdersDraftOrderLineItemsReq {
   @IsInt()
   quantity: number
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
   validate_sales_channels = false
 

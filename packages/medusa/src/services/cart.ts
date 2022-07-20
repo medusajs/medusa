@@ -625,11 +625,11 @@ class CartService extends TransactionBaseService<CartService> {
           ],
         })
 
-        const isValid = validateSalesChannels
+        const isSalesChannelAssociationValid = validateSalesChannels
           ? await this.validateLineItemSalesChannel_(cart, lineItem)
           : true
 
-        if (!isValid) {
+        if (!isSalesChannelAssociationValid) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             "Variant being added to the cart doesn't belong to current sales channel that is set on the cart."

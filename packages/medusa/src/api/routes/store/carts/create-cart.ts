@@ -1,6 +1,7 @@
 import { Type } from "class-transformer"
 import {
   IsArray,
+  IsBoolean,
   IsInt,
   IsNotEmpty,
   IsOptional,
@@ -157,7 +158,7 @@ export class StorePostCartReq {
   @Type(() => Item)
   items?: Item[]
 
-  @IsString()
+  @IsBoolean()
   @IsOptional()
   validate_sales_channels = false
 
