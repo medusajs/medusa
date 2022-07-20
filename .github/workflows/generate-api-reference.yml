@@ -1,0 +1,47 @@
+name: Generate API Reference
+on: 
+  pull_request:
+    types:
+      - closed
+    branches:
+      - "master"
+    paths:
+      - packages/medusa/src/api/routes/**
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2.3.5
+        with:
+          token: ${{ secrets.REFERENCE_PAT }}
+          fetch-depth: 0
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: "14"
+          cache: "yarn"
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: reference
+
+      - name: Build Packages
+        run: yarn build
+
+      - name: Generate API Reference
+        run: yarn openapi:generate
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with: 
+          commit_message: "docs: automatically Generated Services Reference"
+          file_pattern: docs/api/*
+          skip_dirty_check: false
+          branch: master
