@@ -2141,4 +2141,52 @@ describe("/store/carts", () => {
       expect(data.shipping_options[0].amount).toEqual(123)
     })
   })
+
+  describe("mix of calculated and flat rate prices", () => {
+    afterEach(async () => {
+      await doAfterEach()
+    })
+
+    it("it fetches prices with calculated amount", async () => {
+      const region = await simpleRegionFactory(dbConnection)
+      const product = await simpleProductFactory(dbConnection)
+      const cart = await simpleCartFactory(dbConnection, {
+        region: region.id,
+        line_items: [{ variant_id: product.variants[0].id, quantity: 1 }],
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "flat_rate",
+        data: { price: 123 },
+      })
+      await simpleShippingOptionFactory(dbConnection, {
+        region_id: region.id,
+        price_type: "calculated",
+        data: { price: 123 },
+      })
+
+      const api = useApi()
+
+      const { data, status } = await api
+        .get(`/store/shipping-options/${cart.id}`)
+        .catch((err) => {
+          console.log(err)
+          throw err
+        })
+
+      expect(status).toEqual(200)
+      expect(data.shipping_options).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            amount: 123,
+            price_type: "calculated",
+          }),
+          expect.objectContaining({
+            amount: 500,
+            price_type: "flat_rate",
+          }),
+        ])
+      )
+    })
+  })
 })
