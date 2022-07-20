@@ -91,55 +91,6 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/OAuth'
-  /auth:
-    post:
-      operationId: PostAuth
-      summary: Authenticate a User
-      x-authenticated: false
-      description: Logs a User in and authorizes them to manage Store settings.
-      parameters: []
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  user:
-                    $ref: '#/components/schemas/user'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: The User's email.
-                password:
-                  type: string
-                  description: The User's password.
-    get:
-      operationId: GetAuth
-      summary: Get Session
-      x-authenticated: true
-      description: Gets the currently logged in User.
-      tags:
-        - Auth
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  user:
-                    $ref: '#/components/schemas/user'
   '/batch-jobs/{id}/cancel':
     post:
       operationId: PostBatchJobsBatchJobCancel
@@ -1554,37 +1505,23 @@ paths:
                   discount:
                     $ref: '#/components/schemas/discount'
     post:
-      operationId: PostDiscountsDiscountConditionsCondition
-      summary: Updates a DiscountCondition
+      operationId: PostDiscountsDiscount
+      summary: Update a Discount
+      description: >-
+        Updates a Discount with a given set of rules that define how the
+        Discount behaves.
       x-authenticated: true
       parameters:
         - in: path
-          name: discount_id
+          name: id
           required: true
-          description: The id of the Product.
+          description: The id of the Discount.
           schema:
             type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each product of
-            the result.
-          schema:
-            type: string
-        - in: query
-          name: fields
-          description: >-
-            (Comma separated) Which fields should be included in each product of
-            the result.
-          schema:
-            type: string
-      description: Updates a DiscountCondition
       requestBody:
         content:
           application/json:
             schema:
-              required:
-                - id
               properties:
                 code:
                   type: string
@@ -1683,6 +1620,55 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  /auth:
+    post:
+      operationId: PostAuth
+      summary: Authenticate a User
+      x-authenticated: false
+      description: Logs a User in and authorizes them to manage Store settings.
+      parameters: []
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: The User's email.
+                password:
+                  type: string
+                  description: The User's password.
+    get:
+      operationId: GetAuth
+      summary: Get Session
+      x-authenticated: true
+      description: Gets the currently logged in User.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  user:
+                    $ref: '#/components/schemas/user'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -6668,6 +6654,129 @@ paths:
                 properties:
                   return:
                     $ref: '#/components/schemas/return'
+  /sales-channels:
+    post:
+      operationId: PostSalesChannels
+      summary: Create a sales channel
+      description: Creates a sales channel.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Sales Channels
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/sales_channel'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+              properties:
+                name:
+                  type: string
+                  description: Name of the sales channel
+                description:
+                  type: string
+                  description: Description of the sales channel
+  '/sales-channels/{id}':
+    delete:
+      operationId: DeleteSalesChannelsSalesChannel
+      summary: Delete a sales channel
+      description: Deletes the sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Sales channel.
+          schema:
+            type: string
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Sales Channel.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetSalesChannelsSalesChannel
+      summary: Retrieve a sales channel
+      description: Retrieves the sales channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Sales channel.
+          schema:
+            type: string
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/sales_channel'
+    post:
+      operationId: PostSalesChannelsSalesChannel
+      summary: Update a Sales Channel
+      description: Updates a Sales Channel.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Sales Channel.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                name:
+                  type: string
+                  description: Name of the sales channel.
+                description:
+                  type: string
+                  description: Sales Channel description.
+                is_disabled:
+                  type: boolean
+                  description: Indication of if the sales channel is active.
+      tags:
+        - Sales Channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  sales_channel:
+                    $ref: '#/components/schemas/sales_channel'
   /shipping-options:
     post:
       operationId: PostShippingOptions
@@ -7513,6 +7622,41 @@ paths:
                     type: array
                     items:
                       type: string
+  /variants:
+    get:
+      operationId: GetVariants
+      summary: List Product Variants.
+      description: Retrieves a list of Product Variants
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching variants.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many variants to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: limit
+          description: Limit the number of variants returned.
+          schema:
+            type: string
+      tags:
+        - Product Variant
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  variants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_variant'
   /users:
     post:
       operationId: PostUsers
@@ -7706,41 +7850,6 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
-  /variants:
-    get:
-      operationId: GetVariants
-      summary: List Product Variants.
-      description: Retrieves a list of Product Variants
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching variants.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many variants to skip in the result.
-          schema:
-            type: string
-        - in: query
-          name: limit
-          description: Limit the number of variants returned.
-          schema:
-            type: string
-      tags:
-        - Product Variant
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  variants:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/product_variant'
 components:
   schemas:
     address:
@@ -10230,6 +10339,36 @@ components:
         metadata:
           description: An optional key-value map with additional information.
           type: object
+    sales_channel:
+      title: Sales Channel
+      description: A Sales Channel
+      x-resourceId: sales_channel
+      properties:
+        id:
+          description: The unique identifier for the sales channel.
+          type: string
+        name:
+          description: The name of the sales channel.
+          type: string
+        description:
+          description: The description of the sales channel.
+          type: string
+        is_disabled:
+          description: Specify if the sales channel is enabled or disabled.
+          type: boolean
+          default: false
+        created_at:
+          description: The date with timezone at which the resource was created.
+          type: string
+          format: date-time
+        updated_at:
+          description: The date with timezone at which the resource was last updated.
+          type: string
+          format: date-time
+        deleted_at:
+          description: The date with timezone at which the resource was deleted.
+          type: string
+          format: date-time
     shipping_method:
       title: Shipping Method
       description: >-

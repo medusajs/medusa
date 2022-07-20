@@ -1037,89 +1037,6 @@
         }
       }
     },
-    "/collections/{id}": {
-      "get": {
-        "operationId": "GetCollectionsCollection",
-        "summary": "Retrieve a Product Collection",
-        "description": "Retrieves a Product Collection.",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product Collection",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections": {
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "parameters": [
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The number of collections to skip before starting to collect the collections set",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return",
-            "schema": {
-              "type": "integer",
-              "default": 10
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/gift-cards/{code}": {
       "get": {
         "operationId": "GetGiftCardsCode",
@@ -1663,6 +1580,89 @@
                   "password": {
                     "type": "string",
                     "description": "The new password to set for the Customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{id}": {
+      "get": {
+        "operationId": "GetCollectionsCollection",
+        "summary": "Retrieve a Product Collection",
+        "description": "Retrieves a Product Collection.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections": {
+      "get": {
+        "operationId": "GetCollections",
+        "summary": "List Product Collections",
+        "description": "Retrieve a list of Product Collection.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The number of collections to skip before starting to collect the collections set",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
                   }
                 }
               }
@@ -5522,6 +5522,45 @@
           "metadata": {
             "description": "An optional key-value map with additional information.",
             "type": "object"
+          }
+        }
+      },
+      "sales_channel": {
+        "title": "Sales Channel",
+        "description": "A Sales Channel",
+        "x-resourceId": "sales_channel",
+        "properties": {
+          "id": {
+            "description": "The unique identifier for the sales channel.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the sales channel.",
+            "type": "string"
+          },
+          "description": {
+            "description": "The description of the sales channel.",
+            "type": "string"
+          },
+          "is_disabled": {
+            "description": "Specify if the sales channel is enabled or disabled.",
+            "type": "boolean",
+            "default": false
+          },
+          "created_at": {
+            "description": "The date with timezone at which the resource was created.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "description": "The date with timezone at which the resource was last updated.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "deleted_at": {
+            "description": "The date with timezone at which the resource was deleted.",
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
