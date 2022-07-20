@@ -116,7 +116,7 @@ export default async (req, res) => {
             })
           await cartService
             .withTransaction(manager)
-            .addLineItem(cart.id, lineItem)
+            .addLineItem(cart.id, lineItem, validated.validate_sales_channels)
         })
       )
     }
@@ -156,6 +156,10 @@ export class StorePostCartReq {
   @ValidateNested({ each: true })
   @Type(() => Item)
   items?: Item[]
+
+  @IsString()
+  @IsOptional()
+  validate_sales_channels = false
 
   @IsOptional()
   context?: object

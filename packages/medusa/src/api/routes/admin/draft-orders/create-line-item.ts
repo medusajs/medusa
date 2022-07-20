@@ -92,7 +92,11 @@ export default async (req, res) => {
 
       await cartService
         .withTransaction(manager)
-        .addLineItem(draftOrder.cart_id, line)
+        .addLineItem(
+          draftOrder.cart_id,
+          line,
+          validated.validate_sales_channels
+        )
     } else {
       // custom line items can be added to a draft order
       await lineItemService.withTransaction(manager).create({
@@ -131,6 +135,10 @@ export class AdminPostDraftOrdersDraftOrderLineItemsReq {
 
   @IsInt()
   quantity: number
+
+  @IsString()
+  @IsOptional()
+  validate_sales_channels = false
 
   @IsObject()
   @IsOptional()

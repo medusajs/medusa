@@ -49,7 +49,7 @@ export default async (req, res) => {
         metadata: validated.metadata,
       })
 
-    await txCartService.addLineItem(id, line, validated.validateSalesChannels)
+    await txCartService.addLineItem(id, line, validated.validate_sales_channels)
 
     const updated = await txCartService.retrieve(id, {
       relations: ["payment_sessions"],
@@ -82,5 +82,5 @@ export class StorePostCartsCartLineItemsReq {
 
   @IsBoolean()
   @IsOptional()
-  validateSalesChannels = false
+  validate_sales_channels = false
 }
