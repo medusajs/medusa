@@ -217,8 +217,8 @@ export class StorePostCartReq {
   context?: object
 
   @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
-    IsString,
-    IsOptional,
+    IsString(),
+    IsOptional(),
   ])
   sales_channel_id?: string
 }
