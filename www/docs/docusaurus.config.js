@@ -103,6 +103,20 @@ module.exports = {
           ]
         },
         {
+          type: 'dropdown',
+          label: 'REST API Reference',
+          items: [
+            {
+              label: 'Store',
+              href: '/api/store',
+            },
+            {
+              label: 'Admin',
+              href: '/api/admin',
+            },
+          ],
+        },
+        {
           href: "https://github.com/medusajs/medusa",
           className: "navbar-github-link",
           position: "right",
