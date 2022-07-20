@@ -545,7 +545,7 @@ class CartService extends TransactionBaseService<CartService> {
    * shipping methods.
    * @param shippingMethods - the set of shipping methods to check from
    * @param lineItem - the line item
-   * @return boolean representing wheter shipping method is validated
+   * @return boolean representing whether shipping method is validated
    */
   protected validateLineItemShipping_(
     shippingMethods: ShippingMethod[],
