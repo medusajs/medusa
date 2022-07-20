@@ -4,7 +4,7 @@ on:
     types:
       - closed
     branches:
-      - 'master'
+      - "master"
     paths:
       - packages/medusa/src/services/**
 jobs:
@@ -27,11 +27,11 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
-        
-      - name: Bootstrap packages
-        uses: ./.github/actions/cache-bootstrap
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
         with:
-          extension: unit-tests
+          extension: reference
 
       - name: Build Packages
         run: yarn build
@@ -44,3 +44,4 @@ jobs:
           commit_message: "docs: automatically Generated Services Reference"
           file_pattern: docs/content/*
           skip_dirty_check: false
+          branch: master

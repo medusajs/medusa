@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "build": "tsc --build",
-    "test": "jest --config jestconfig.json",
-    "prepare": "cross-env NODE_ENV=production npm run build"
+    "prepare": "cross-env NODE_ENV=production yarn run build",
+    "test": "jest --passWithNoTests"
   },
   "author": "Oliver Juhl",
   "license": "MIT",

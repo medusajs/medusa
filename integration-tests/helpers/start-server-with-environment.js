@@ -12,7 +12,7 @@ const startServerWithEnvironment = async ({ cwd, verbose, env }) => {
     cwd,
   })
 
-  Object.entries(env).forEach(([key, value]) => {
+  Object.entries(env).forEach(([key]) => {
     delete process.env[key]
   })
 

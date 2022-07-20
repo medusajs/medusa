@@ -53,7 +53,7 @@ const fileServiceMock = {
         end: () => void 0,
       },
       promise: Promise.resolve(),
-      fileKey: "product-export.csv",
+      fileKey: "order-export.csv",
     })
   }),
 }
@@ -61,19 +61,17 @@ const batchJobServiceMock = {
   withTransaction: function (): any {
     return this
   },
-  update: jest.fn().mockImplementation(async (data) => {
+  update: jest.fn().mockImplementation(async (job, data) => {
     fakeJob = {
       ...fakeJob,
       ...data,
+      context: { ...fakeJob?.context, ...data?.context },
+      result: { ...fakeJob?.result, ...data?.result }
     }
-    return fakeJob
+    return Promise.resolve(fakeJob)
   }),
   complete: jest.fn().mockImplementation(async () => {
     fakeJob.status = BatchJobStatus.COMPLETED
-    return fakeJob
-  }),
-  ready: jest.fn().mockImplementation(async () => {
-    fakeJob.status = BatchJobStatus.READY
     return fakeJob
   }),
   retrieve: jest.fn().mockImplementation(async () => {
@@ -90,6 +88,15 @@ const orderServiceMock = {
       Promise.resolve([ordersToExport, ordersToExport.length])
     ),
   list: jest.fn().mockImplementation(() => Promise.resolve(ordersToExport)),
+}
+const orderServiceWithoutDataMock = {
+  ...orderServiceMock,
+  listAndCount: jest
+    .fn()
+    .mockImplementation(() =>
+      Promise.resolve([[], 0])
+    ),
+  list: jest.fn().mockImplementation(() => Promise.resolve([])),
 }
 
 describe("Order export strategy", () => {
@@ -134,5 +141,19 @@ describe("Order export strategy", () => {
     await orderExportStrategy.processJob(fakeJob.id)
 
     expect(outputDataStorage).toMatchSnapshot()
+    expect((fakeJob.result as any).file_key).toBeDefined()
+  })
+
+  it("should always provide a file_key even with no data", async () => {
+    const orderExportStrategy = new OrderExportStrategy({
+      batchJobService: batchJobServiceMock as any,
+      fileService: fileServiceMock as any,
+      orderService: orderServiceWithoutDataMock as any,
+      manager: MockManager,
+    })
+
+    await orderExportStrategy.processJob(fakeJob.id)
+
+    expect((fakeJob.result as any).file_key).toBeDefined()
   })
 })

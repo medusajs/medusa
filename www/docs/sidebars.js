@@ -85,17 +85,26 @@ module.exports = {
                 {
                   type: "doc",
                   id: "deployments/server/deploying-on-heroku",
-                  label: "Deploy on Heroku"
+                  label: "Deploy on Heroku",
+                  customProps: {
+                    image: 'https://i.imgur.com/xNvxSkf.png'
+                  }
                 },
                 {
                   type: "doc",
                   id: "deployments/server/deploying-on-digital-ocean",
-                  label: "Deploy on DigitalOcean"
+                  label: "Deploy on DigitalOcean",
+                  customProps: {
+                    image: 'https://i.imgur.com/aahqJp4.png'
+                  }
                 },
                 {
                   type: "doc",
                   id: "deployments/server/deploying-on-qovery",
-                  label: "Deploy on Qovery"
+                  label: "Deploy on Qovery",
+                  customProps: {
+                    image: 'https://i.imgur.com/qOvY2dN.png'
+                  }
                 }
               ]
             },
@@ -110,7 +119,10 @@ module.exports = {
                 {
                   type: "doc",
                   id: "deployments/admin/deploying-on-netlify",
-                  label: "Deploy on Netlify"
+                  label: "Deploy on Netlify",
+                  customProps: {
+                    image: 'https://i.imgur.com/gCbsCvX.png'
+                  }
                 },
               ]
             },
@@ -125,7 +137,10 @@ module.exports = {
                 {
                   type: "doc",
                   id: "deployments/storefront/deploying-gatsby-on-netlify",
-                  label: "Deploy Gatsby on Netlify"
+                  label: "Deploy Gatsby on Netlify",
+                  customProps: {
+                    image: 'https://i.imgur.com/gCbsCvX.png'
+                  }
                 },
               ]
             },

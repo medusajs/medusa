@@ -89,10 +89,10 @@ The endpoint for Stripe’s webhook on your Medusa server is `{SERVER_URL}/strip
 
 Then, you can add a description. You must select at least one event to listen to. Once you’re done, click “Add endpoint”.
 
-After the Webhook is created, you’ll see a key at the top right that starts with `we_...`. Copy that key and in your Medusa server add the Webhook secret environment variable:
+After the Webhook is created, you’ll see "Signing secret" in the Webhook details. Click on "Reveal" to reveal the secret key. Copy that key and in your Medusa server add the Webhook secret environment variable:
 
 ```jsx
-STRIPE_WEBHOOK_SECRET=we_...
+STRIPE_WEBHOOK_SECRET=whsec_...
 ```
 
 ## Admin Setup

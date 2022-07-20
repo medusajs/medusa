@@ -57,6 +57,16 @@ module.exports = async (connection, data = {}) => {
 
   await manager.save(r)
 
+  const europeRegion = manager.create(Region, {
+    id: "eur-region",
+    name: "Europe Region",
+    payment_providers: [{ id: "test-pay" }],
+    currency_code: "eur",
+    tax_rate: 0,
+  })
+
+  await manager.save(europeRegion)
+
   // Region with multiple countries
   const regionWithMultipleCoutries = manager.create(Region, {
     id: "test-region-multiple",
@@ -141,7 +151,7 @@ module.exports = async (connection, data = {}) => {
     ends_at: tenDaysFromToday,
   })
 
-  tenPercent.regions = [r]
+  tenPercent.regions = [r, europeRegion]
   tenPercent.rule = tenPercentRule
   await manager.save(tenPercent)
 
@@ -532,6 +542,14 @@ module.exports = async (connection, data = {}) => {
     amount: 1000,
   })
   await manager.save(ma)
+
+  const maEur = manager.create(MoneyAmount, {
+    variant_id: "test-variant",
+    currency_code: "eur",
+    type: "default",
+    amount: 2000,
+  })
+  await manager.save(maEur)
 
   const ma_sale = manager.create(MoneyAmount, {
     variant_id: "test-variant-sale",

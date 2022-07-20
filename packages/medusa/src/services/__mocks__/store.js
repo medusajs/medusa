@@ -7,6 +7,12 @@ export const store = {
 }
 
 export const StoreServiceMock = {
+  withTransaction: function () {
+    return this
+  },
+  create: jest.fn().mockImplementation(data => {
+    return Promise.resolve(data)
+  }),
   addCurrency: jest.fn().mockImplementation(data => {
     return Promise.resolve()
   }),

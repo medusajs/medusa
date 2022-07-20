@@ -1,112 +1,85 @@
 # Change Log
 
+## 0.3.4
+
+### Patch Changes
+
+- [#1832](https://github.com/medusajs/medusa/pull/1832) [`fb4cfc3c`](https://github.com/medusajs/medusa/commit/fb4cfc3c3c190d54202a3719017e67a895870a4d) Thanks [@kasperkristensen](https://github.com/kasperkristensen)! - Fixes useAdminCreateDraftOrder so it uses the correct payload type, and updates relevant test.
+
+- Updated dependencies [[`3e197e3a`](https://github.com/medusajs/medusa/commit/3e197e3adf0bcd39cdcf30c7dda381cc4b7ac779), [`39f2c0c1`](https://github.com/medusajs/medusa/commit/39f2c0c15ee05b5b6941ea2ef16f0b4b1512ce4f), [`4d15e01c`](https://github.com/medusajs/medusa/commit/4d15e01c3ebbc341113505d3c2f60c0e082943ae), [`fb82d3dd`](https://github.com/medusajs/medusa/commit/fb82d3dd221efeba5b0110bd00908faecbdb30d7)]:
+  - @medusajs/medusa@1.3.4
+
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
 ## [0.3.3](https://github.com/medusajs/medusa/compare/medusa-react@0.3.2...medusa-react@0.3.3) (2022-07-05)
 
-
 ### Bug Fixes
 
-* **medusa-react:** Allow to not invalidate any cache ([#1756](https://github.com/medusajs/medusa/issues/1756)) ([9e0f65d](https://github.com/medusajs/medusa/commit/9e0f65dee3b3329eb4eabe093f44a8e3b7d6e820))
-
+- **medusa-react:** Allow to not invalidate any cache ([#1756](https://github.com/medusajs/medusa/issues/1756)) ([9e0f65d](https://github.com/medusajs/medusa/commit/9e0f65dee3b3329eb4eabe093f44a8e3b7d6e820))
 
 ### Features
 
-* **medusa,medusa-js,medusa-react:** Add BatchJob API support in `medusa-js` + `medusa-react` ([#1704](https://github.com/medusajs/medusa/issues/1704)) ([7302d76](https://github.com/medusajs/medusa/commit/7302d76e12683c989f340d2fcfaf4338dca6554a))
-
-
-
-
+- **medusa,medusa-js,medusa-react:** Add BatchJob API support in `medusa-js` + `medusa-react` ([#1704](https://github.com/medusajs/medusa/issues/1704)) ([7302d76](https://github.com/medusajs/medusa/commit/7302d76e12683c989f340d2fcfaf4338dca6554a))
 
 ## [0.3.2](https://github.com/medusajs/medusa/compare/medusa-react@0.3.0...medusa-react@0.3.2) (2022-06-19)
 
-
 ### Bug Fixes
 
-* **medusa-react:** Invalidate price list product cache on various price list updates ([#1503](https://github.com/medusajs/medusa/issues/1503)) ([79345d2](https://github.com/medusajs/medusa/commit/79345d27ec9a56fac3d49197ee9a785f24bfbad7))
-* **medusa-react:** useUpdatePaymentSession mutation ([#1522](https://github.com/medusajs/medusa/issues/1522)) ([b02f265](https://github.com/medusajs/medusa/commit/b02f2652be494b63e55b3720cdafa0d934737f72))
-
+- **medusa-react:** Invalidate price list product cache on various price list updates ([#1503](https://github.com/medusajs/medusa/issues/1503)) ([79345d2](https://github.com/medusajs/medusa/commit/79345d27ec9a56fac3d49197ee9a785f24bfbad7))
+- **medusa-react:** useUpdatePaymentSession mutation ([#1522](https://github.com/medusajs/medusa/issues/1522)) ([b02f265](https://github.com/medusajs/medusa/commit/b02f2652be494b63e55b3720cdafa0d934737f72))
 
 ### Features
 
-* **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
-* **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
-* **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
-
-
-
-
+- **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
+- **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
+- **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
 
 ## [0.3.1](https://github.com/medusajs/medusa/compare/medusa-react@0.3.0...medusa-react@0.3.1) (2022-05-31)
 
-
 ### Bug Fixes
 
-* **medusa-react:** Invalidate price list product cache on various price list updates ([#1503](https://github.com/medusajs/medusa/issues/1503)) ([79345d2](https://github.com/medusajs/medusa/commit/79345d27ec9a56fac3d49197ee9a785f24bfbad7))
-* **medusa-react:** useUpdatePaymentSession mutation ([#1522](https://github.com/medusajs/medusa/issues/1522)) ([b02f265](https://github.com/medusajs/medusa/commit/b02f2652be494b63e55b3720cdafa0d934737f72))
-
+- **medusa-react:** Invalidate price list product cache on various price list updates ([#1503](https://github.com/medusajs/medusa/issues/1503)) ([79345d2](https://github.com/medusajs/medusa/commit/79345d27ec9a56fac3d49197ee9a785f24bfbad7))
+- **medusa-react:** useUpdatePaymentSession mutation ([#1522](https://github.com/medusajs/medusa/issues/1522)) ([b02f265](https://github.com/medusajs/medusa/commit/b02f2652be494b63e55b3720cdafa0d934737f72))
 
 ### Features
 
-* **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
-* **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
-* **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
-
-
-
-
+- **medusa:** Add endpoint for retrieving a DiscountCondition ([#1525](https://github.com/medusajs/medusa/issues/1525)) ([a87e1cd](https://github.com/medusajs/medusa/commit/a87e1cdf6558fd56bd91540853ca0bb715eda46e))
+- **medusa:** Add endpoints specific to DiscountConditions ([#1355](https://github.com/medusajs/medusa/issues/1355)) ([9ca45ea](https://github.com/medusajs/medusa/commit/9ca45ea492e755a88737322f900d60abdfa64024))
+- **medusa:** Support deleting prices from a price list by product or variant ([#1555](https://github.com/medusajs/medusa/issues/1555)) ([fa031fd](https://github.com/medusajs/medusa/commit/fa031fd28be8b12ff38eaec6e56c373324e0beed))
 
 # [0.3.0](https://github.com/medusajs/medusa/compare/medusa-react@0.2.1...medusa-react@0.3.0) (2022-05-01)
 
-
 ### Bug Fixes
 
-* **medusa:** Remove unsupported Discount endpoints ([#1367](https://github.com/medusajs/medusa/issues/1367)) ([9acee27](https://github.com/medusajs/medusa/commit/9acee2799ead683575edd0f7172f336878569dfe))
-* `CustomerGroups` missing  features in the clients ([#1159](https://github.com/medusajs/medusa/issues/1159)) ([218b20b](https://github.com/medusajs/medusa/commit/218b20b26db46f0a91736ece2530a83fa94aed97))
-* query key ([#1350](https://github.com/medusajs/medusa/issues/1350)) ([95ea8fa](https://github.com/medusajs/medusa/commit/95ea8fa38526b64989a1b22c015a9f129fb64b4c))
-
+- **medusa:** Remove unsupported Discount endpoints ([#1367](https://github.com/medusajs/medusa/issues/1367)) ([9acee27](https://github.com/medusajs/medusa/commit/9acee2799ead683575edd0f7172f336878569dfe))
+- `CustomerGroups` missing features in the clients ([#1159](https://github.com/medusajs/medusa/issues/1159)) ([218b20b](https://github.com/medusajs/medusa/commit/218b20b26db46f0a91736ece2530a83fa94aed97))
+- query key ([#1350](https://github.com/medusajs/medusa/issues/1350)) ([95ea8fa](https://github.com/medusajs/medusa/commit/95ea8fa38526b64989a1b22c015a9f129fb64b4c))
 
 ### Features
 
-* customer group customers client endpoints ([#1221](https://github.com/medusajs/medusa/issues/1221)) ([b7f6996](https://github.com/medusajs/medusa/commit/b7f699654bd8c5b08919667d4e29c835901e1af9))
-* customer groups react hooks ([#1153](https://github.com/medusajs/medusa/issues/1153)) ([daf49bc](https://github.com/medusajs/medusa/commit/daf49bcaf31e6e86cfd13a24efd5b3de626617a4))
-
-
-
-
+- customer group customers client endpoints ([#1221](https://github.com/medusajs/medusa/issues/1221)) ([b7f6996](https://github.com/medusajs/medusa/commit/b7f699654bd8c5b08919667d4e29c835901e1af9))
+- customer groups react hooks ([#1153](https://github.com/medusajs/medusa/issues/1153)) ([daf49bc](https://github.com/medusajs/medusa/commit/daf49bcaf31e6e86cfd13a24efd5b3de626617a4))
 
 ## [0.2.1](https://github.com/medusajs/medusa/compare/medusa-react@0.1.5...medusa-react@0.2.1) (2022-02-28)
 
-
 ### Bug Fixes
 
-* use /admin/returns/:id/receive for swap returns ([#1041](https://github.com/medusajs/medusa/issues/1041)) ([7a3a183](https://github.com/medusajs/medusa/commit/7a3a1837a1db067c3629f1dfd7c6a95a56d649ca))
-
+- use /admin/returns/:id/receive for swap returns ([#1041](https://github.com/medusajs/medusa/issues/1041)) ([7a3a183](https://github.com/medusajs/medusa/commit/7a3a1837a1db067c3629f1dfd7c6a95a56d649ca))
 
 ### Features
 
-* new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([47588e7](https://github.com/medusajs/medusa/commit/47588e7a8d3b2ae2fed0c1e87fdf1ee2db6bcdc2)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
-
-
-
-
+- new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([47588e7](https://github.com/medusajs/medusa/commit/47588e7a8d3b2ae2fed0c1e87fdf1ee2db6bcdc2)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
 
 # [0.2.0](https://github.com/medusajs/medusa/compare/medusa-react@0.1.5...medusa-react@0.2.0) (2022-02-25)
 
-
 ### Bug Fixes
 
-* use /admin/returns/:id/receive for swap returns ([#1041](https://github.com/medusajs/medusa/issues/1041)) ([7ae754b](https://github.com/medusajs/medusa/commit/7ae754bb6187db17c45b2cfadc625df8f997f5ab))
-
+- use /admin/returns/:id/receive for swap returns ([#1041](https://github.com/medusajs/medusa/issues/1041)) ([7ae754b](https://github.com/medusajs/medusa/commit/7ae754bb6187db17c45b2cfadc625df8f997f5ab))
 
 ### Features
 
-* new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([c56660f](https://github.com/medusajs/medusa/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
-
-
-
-
+- new tax api ([#979](https://github.com/medusajs/medusa/issues/979)) ([c56660f](https://github.com/medusajs/medusa/commit/c56660fca9921a3f3637bc137d9794781c5b090f)), closes [#885](https://github.com/medusajs/medusa/issues/885) [#896](https://github.com/medusajs/medusa/issues/896) [#911](https://github.com/medusajs/medusa/issues/911) [#945](https://github.com/medusajs/medusa/issues/945) [#950](https://github.com/medusajs/medusa/issues/950) [#951](https://github.com/medusajs/medusa/issues/951) [#954](https://github.com/medusajs/medusa/issues/954) [#969](https://github.com/medusajs/medusa/issues/969) [#998](https://github.com/medusajs/medusa/issues/998) [#1017](https://github.com/medusajs/medusa/issues/1017) [#1110](https://github.com/medusajs/medusa/issues/1110)
 
 ## [0.1.5](https://github.com/medusajs/medusa/compare/medusa-react@0.1.4...medusa-react@0.1.5) (2022-02-06)
 

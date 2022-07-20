@@ -67,6 +67,7 @@ export type TotalField =
   | "subtotal"
   | "refundable_amount"
   | "gift_card_total"
+  | "gift_card_tax_total"
 
 export interface FindConfig<Entity> {
   select?: (keyof Entity)[]
@@ -110,6 +111,8 @@ export type DeleteResponse = {
   object: string
   deleted: boolean
 }
+
+export class EmptyQueryParams {}
 
 export class DateComparisonOperator {
   @IsOptional()

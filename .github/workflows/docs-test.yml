@@ -23,7 +23,12 @@ jobs:
         with:
           node-version: "14"
           cache: "yarn"
-        
+
+      - name: Install dependencies
+        uses: ./.github/actions/cache-deps
+        with:
+          extension: docs
+
       - name: Build Docusaurus website
         run: |
           cd www/docs

@@ -31,6 +31,9 @@ export const PaymentProviderServiceMock = {
   list: jest.fn().mockImplementation(() => {
     return Promise.resolve()
   }),
+  registerInstalledProviders: jest.fn().mockImplementation(() => {
+    return Promise.resolve()
+  }),
   createSession: jest.fn().mockImplementation((providerId, cart) => {
     return Promise.resolve({
       id: `${providerId}_session`,

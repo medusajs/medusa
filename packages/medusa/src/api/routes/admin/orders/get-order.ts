@@ -1,4 +1,3 @@
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService } from "../../../../services"
 
 /**
@@ -26,10 +25,7 @@ export default async (req, res) => {
 
   const orderService: OrderService = req.scope.resolve("orderService")
 
-  const order = await orderService.retrieve(id, {
-    select: defaultAdminOrdersFields,
-    relations: defaultAdminOrdersRelations,
-  })
+  const order = await orderService.retrieve(id, req.retrieveConfig)
 
   res.json({ order })
 }

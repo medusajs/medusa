@@ -1376,7 +1376,7 @@ describe("/store/carts", () => {
       )
     })
 
-    it("updates prices when cart region id is updated", async () => {
+    it("on region update: updates line item prices", async () => {
       const api = useApi()
 
       const beforeUpdate = await api
@@ -1394,7 +1394,108 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(200)
       expect(response.data.cart.region_id).toEqual("test-region-multiple")
-      expect(response.data.cart.items[0].unit_price).toEqual(700)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            unit_price: 2000,
+            variant_id: "test-variant",
+          }),
+          expect.objectContaining({
+            unit_price: 700,
+            variant_id: "test-variant-sale-cg",
+          }),
+        ])
+      )
+    })
+
+    it("on region update: refreshes line item adjustments", async () => {
+      const api = useApi()
+
+      const usdRegion = await api
+        .post(`/store/carts/test-cart-3/`, {
+          discounts: [{ code: "10PERCENT" }],
+        })
+        .catch((error) => console.log(error))
+
+      // current state of the cart:
+      // - currency -> USD
+      // - items -> [{ unit_price: 8000, ... }, { unit_price: 8000, ... }]
+      // - discount -> 10%
+      // - discount total -> 1600
+
+      expect(usdRegion.data.cart.region_id).toEqual("test-region")
+      expect(usdRegion.data.cart.discount_total).toEqual(1600)
+
+      // now, we change the region to one operating in EUR
+      // this should trigger a refresh of the line item adjustments
+      const eurRegion = await api
+        .post("/store/carts/test-cart-3", {
+          region_id: "eur-region",
+        })
+        .catch((error) => console.log(error))
+
+      // state of the cart after update:
+      // - currency -> EUR
+      // - items -> [{ unit_price: 2000, ... }, { unit_price: 700, ... }]
+      // - discount -> 10%
+      // - discount total -> 270
+
+      expect(eurRegion.data.cart.region_id).toEqual("eur-region")
+      expect(eurRegion.data.cart.discount_total).toEqual(270)
+    })
+
+    it("on region update: removes line item adjustment if discount is not applicable in region", async () => {
+      const api = useApi()
+
+      const withDiscount = await api
+        .post(`/store/carts/test-cart-3/`, {
+          discounts: [{ code: "15PERCENT" }],
+        })
+        .catch((error) => console.log(error))
+
+      expect(withDiscount.data.cart.region_id).toEqual("test-region")
+      expect(withDiscount.data.cart.discount_total).toEqual(2400)
+      expect(withDiscount.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant-sale-cg",
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                amount: 1200,
+              }),
+            ]),
+          }),
+          expect.objectContaining({
+            variant_id: "test-variant",
+            adjustments: expect.arrayContaining([
+              expect.objectContaining({
+                amount: 1200,
+              }),
+            ]),
+          }),
+        ])
+      )
+
+      const response = await api
+        .post("/store/carts/test-cart-3", {
+          region_id: "eur-region",
+        })
+        .catch((error) => console.log(error))
+
+      expect(response.data.cart.region_id).toEqual("eur-region")
+      expect(response.data.cart.discount_total).toEqual(0)
+      expect(response.data.cart.items).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            variant_id: "test-variant-sale-cg",
+            adjustments: [],
+          }),
+          expect.objectContaining({
+            variant_id: "test-variant",
+            adjustments: [],
+          }),
+        ])
+      )
     })
 
     it("updates address using string id", async () => {
