@@ -56,7 +56,6 @@ type InjectedDependencies = {
   addressRepository: typeof AddressRepository
   paymentSessionRepository: typeof PaymentSessionRepository
   lineItemRepository: typeof LineItemRepository
-  salesChannelRepository: typeof SalesChannelRepository
   eventBusService: EventBusService
   salesChannelService: SalesChannelService
   taxProviderService: TaxProviderService
@@ -100,7 +99,6 @@ class CartService extends TransactionBaseService<CartService> {
   protected readonly addressRepository_: typeof AddressRepository
   protected readonly paymentSessionRepository_: typeof PaymentSessionRepository
   protected readonly lineItemRepository_: typeof LineItemRepository
-  protected readonly salesChannelRepository_: typeof SalesChannelRepository
   protected readonly eventBus_: EventBusService
   protected readonly productVariantService_: ProductVariantService
   protected readonly productService_: ProductService
@@ -140,7 +138,6 @@ class CartService extends TransactionBaseService<CartService> {
     totalsService,
     addressRepository,
     paymentSessionRepository,
-    salesChannelRepository,
     inventoryService,
     customShippingOptionService,
     lineItemAdjustmentService,
@@ -168,7 +165,6 @@ class CartService extends TransactionBaseService<CartService> {
     this.giftCardService_ = giftCardService
     this.totalsService_ = totalsService
     this.addressRepository_ = addressRepository
-    this.salesChannelRepository_ = salesChannelRepository
     this.paymentSessionRepository_ = paymentSessionRepository
     this.inventoryService_ = inventoryService
     this.customShippingOptionService_ = customShippingOptionService
@@ -581,19 +577,21 @@ class CartService extends TransactionBaseService<CartService> {
     cart: Cart,
     lineItem: LineItem
   ): Promise<boolean> {
-    const lineItemVariant = await this.productVariantService_.retrieve(
-      lineItem.variant_id
-    )
-
     if (!cart.sales_channel_id) {
       return true
     }
 
+    const lineItemVariant = await this.productVariantService_
+      .withTransaction(this.manager_)
+      .retrieve(lineItem.variant_id)
+
     return !!(
-      await this.productService_.filterProductsBySalesChannel(
-        [lineItemVariant.product_id],
-        cart.sales_channel_id
-      )
+      await this.productService_
+        .withTransaction(this.manager_)
+        .filterProductsBySalesChannel(
+          [lineItemVariant.product_id],
+          cart.sales_channel_id
+        )
     ).length
   }
 
