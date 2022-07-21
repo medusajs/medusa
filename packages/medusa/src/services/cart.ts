@@ -889,20 +889,18 @@ class CartService extends TransactionBaseService<CartService> {
     cart: Cart,
     newSalesChannelId: string
   ): Promise<void> {
+    const productIds = cart.items.map((item) => item.variant.product_id)
     const productsToKeep = await this.productService_
       .withTransaction(this.manager_)
-      .filterProductsBySalesChannel(
-        cart.items.map((item) => item.variant.product_id),
-        newSalesChannelId,
-        {
-          select: ["id", "sales_channels"],
-        }
-      )
-    const productToKeepIds = new Set<string>(
+      .filterProductsBySalesChannel(productIds, newSalesChannelId, {
+        select: ["id", "sales_channels"],
+        take: productIds.length,
+      })
+    const productIdsToKeep = new Set<string>(
       productsToKeep.map((product) => product.id)
     )
     const itemsToRemove = cart.items.filter((item) => {
-      return !productToKeepIds.has(item.variant.product_id)
+      return !productIdsToKeep.has(item.variant.product_id)
     })
 
     if (itemsToRemove.length) {
