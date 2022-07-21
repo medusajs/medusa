@@ -25,7 +25,7 @@ If you want to use another Git Provider supported by DigitalOcean, it’s possib
 
 ### Required Tools
 
-- Git’s CLI tool. You can follow this documentation to learn how to install it for your operating system.
+- Git’s CLI tool. You can follow [this documentation to learn how to install it for your operating system](../../tutorial/0-set-up-your-development-environment.mdx#git).
 
 ## Create GitHub Repository
 
