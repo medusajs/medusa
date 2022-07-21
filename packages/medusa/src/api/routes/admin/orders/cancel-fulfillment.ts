@@ -1,6 +1,7 @@
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { FulfillmentService, OrderService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/{id}/fulfillments/{fulfillment_id}/cancel
@@ -20,8 +21,8 @@ import { FulfillmentService, OrderService } from "../../../../services"
  *       application/json:
  *         schema:
  *           properties:
- *             fulfillment:
- *               $ref: "#/components/schemas/fulfillment"
+ *             order:
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id, fulfillment_id } = req.params

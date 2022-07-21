@@ -1,4 +1,9 @@
-import { Type } from "class-transformer"
+import {
+  AdminPriceListPricesCreateReq,
+  CreatePriceListInput,
+  PriceListStatus,
+  PriceListType,
+} from "../../../../types/price-list"
 import {
   IsArray,
   IsEnum,
@@ -6,14 +11,10 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+
 import PriceListService from "../../../../services/price-list"
-import {
-  AdminPriceListPricesCreateReq,
-  CreatePriceListInput,
-  PriceListStatus,
-  PriceListType,
-} from "../../../../types/price-list"
 import { Request } from "express"
+import { Type } from "class-transformer"
 
 /**
  * @oas [post] /price_lists
@@ -83,7 +84,7 @@ import { Request } from "express"
  *       application/json:
  *         schema:
  *           properties:
- *             product:
+ *             price_list:
  *               $ref: "#/components/schemas/price_list"
  */
 export default async (req: Request, res) => {

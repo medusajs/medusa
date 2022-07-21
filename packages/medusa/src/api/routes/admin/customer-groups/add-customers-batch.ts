@@ -1,9 +1,10 @@
-import { Type } from "class-transformer"
-import { ValidateNested } from "class-validator"
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { CustomerGroupsBatchCustomer } from "../../../../types/customer-groups"
+import { Type } from "class-transformer"
+import { ValidateNested } from "class-validator"
 import { validator } from "../../../../utils/validator"
-import { Request, Response } from "express"
 
 /**
  * @oas [post] /customer-groups/{id}/customers/batch
@@ -37,7 +38,7 @@ import { Request, Response } from "express"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
+ *             customer_group:
  *               $ref: "#/components/schemas/customer_group"
  */
 

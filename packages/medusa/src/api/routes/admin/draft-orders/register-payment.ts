@@ -1,4 +1,3 @@
-import { EntityManager } from "typeorm"
 import {
   CartService,
   DraftOrderService,
@@ -9,6 +8,8 @@ import {
   defaultAdminOrdersFields as defaultOrderFields,
   defaultAdminOrdersRelations as defaultOrderRelations,
 } from "../orders/index"
+
+import { EntityManager } from "typeorm"
 
 /**
  * @oas [post] /draft-orders/{id}/register-payment
@@ -27,7 +28,7 @@ import {
  *       application/json:
  *         schema:
  *           properties:
- *             draft_order:
+ *             order:
  *               $ref: "#/components/schemas/draft-order"
  */
 

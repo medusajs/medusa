@@ -1,8 +1,9 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
+import { Request, Response } from "express"
+
 import { CustomerGroupService } from "../../../../services"
 import { FilterableCustomerGroupProps } from "../../../../types/customer-groups"
-import { Request, Response } from "express"
+import { Type } from "class-transformer"
 
 /**
  * @oas [get] /customer-groups
@@ -29,8 +30,10 @@ import { Request, Response } from "express"
  *       application/json:
  *         schema:
  *           properties:
- *             customerGroup:
- *               $ref: "#/components/schemas/customer_group"
+ *             customer_groups:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/customer_group"
  */
 export default async (req: Request, res: Response) => {
   const customerGroupService: CustomerGroupService = req.scope.resolve(

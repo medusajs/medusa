@@ -13,6 +13,19 @@ import InviteService from "../../../../services/invite"
  * responses:
  *   200:
  *     description: OK
+ *     content:
+ *       application/json:
+ *         schema:
+ *           properties:
+ *             id:
+ *               type: string
+ *               description: The id of the deleted Invite.
+ *             object:
+ *               type: string
+ *               description: The type of the object that was deleted.
+ *             deleted:
+ *               type: boolean
+ *               description: Whether or not the Invite was deleted.
  */
 export default async (req, res) => {
   const { invite_id } = req.params
