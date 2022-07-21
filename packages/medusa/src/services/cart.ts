@@ -630,7 +630,7 @@ class CartService extends TransactionBaseService<CartService> {
         if (!isSalesChannelAssociationValid) {
           throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
-            "Variant being added to the cart doesn't belong to current sales channel that is set on the cart."
+            `The product "${lineItem.title}" must belongs to the sales channel on which the cart has been created.`
           )
         }
 

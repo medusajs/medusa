@@ -504,9 +504,6 @@ describe("/store/carts", () => {
 
       expect(response.status).toEqual(400)
       expect(response.data.type).toEqual("invalid_data")
-      expect(response.data.message).toEqual(
-        "Variant being added to the cart doesn't belong to current sales channel that is set on the cart."
-      )
     })
 
     it("adding line item successfully if product and cart belong to the same sales channel", async () => {
