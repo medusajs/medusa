@@ -15,7 +15,7 @@ import { OauthService } from "../../../../services"
  *      application/json:
  *        schema:
  *          properties:
- *            collection:
+ *            apps:
  *              $ref: "#/components/schemas/OAuth"
  */
 export default async (req, res) => {

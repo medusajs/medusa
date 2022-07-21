@@ -1,8 +1,9 @@
 import { IsNotEmpty, IsString } from "class-validator"
+
 import { OauthService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 /**
- * @oas [post] /apps
+ * @oas [post] /apps/authorize-app
  * operationId: "PostApps"
  * summary: "Generates a token for an application."
  * description: "Generates a token for an application."
