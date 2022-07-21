@@ -1,4 +1,3 @@
-import { Transform, Type } from "class-transformer"
 import {
   IsBoolean,
   IsInt,
@@ -6,13 +5,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
+import { Transform, Type } from "class-transformer"
 import _, { pickBy } from "lodash"
 import { defaultAdminDiscountsFields, defaultAdminDiscountsRelations } from "."
+
+import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 import { Discount } from "../../../.."
 import DiscountService from "../../../../services/discount"
 import { FindConfig } from "../../../../types/common"
-import { AdminGetDiscountsDiscountRuleParams } from "../../../../types/discount"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /discounts
  * operationId: "GetDiscounts"
@@ -35,8 +37,10 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             discount:
- *               $ref: "#/components/schemas/discount"
+ *             discounts:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/discount"
  */
 export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)

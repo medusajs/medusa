@@ -146,602 +146,10 @@
                 "schema": {
                   "properties": {
                     "apps": {
-                      "$ref": "#/components/schemas/OAuth"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections/{id}/products/batch": {
-      "post": {
-        "operationId": "PostProductsToCollection",
-        "summary": "Updates products associated with a Product Collection",
-        "description": "Updates products associated with a Product Collection",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Collection.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "product_ids": {
-                    "description": "An array of Product IDs to add to the Product Collection.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The ID of a Product to add to the Product Collection.",
-                          "type": "string"
-                        }
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/OAuth"
                       }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteProductsFromCollection",
-        "summary": "Removes products associated with a Product Collection",
-        "description": "Removes products associated with a Product Collection",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Collection.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "product_ids": {
-                    "description": "An array of Product IDs to remove from the Product Collection.",
-                    "type": "array",
-                    "items": {
-                      "properties": {
-                        "id": {
-                          "description": "The ID of a Product to remove from the Product Collection.",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/collections": {
-      "post": {
-        "operationId": "PostCollections",
-        "summary": "Create a Product Collection",
-        "description": "Creates a Product Collection.",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "title"
-                ],
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "The title to identify the Collection by."
-                  },
-                  "handle": {
-                    "type": "string",
-                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCollections",
-        "summary": "List Product Collections",
-        "description": "Retrieve a list of Product Collection.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of collections to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The offset of collections to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "title",
-            "description": "The title of collections to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "handle",
-            "description": "The handle of collections to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/collections/{id}": {
-      "delete": {
-        "operationId": "DeleteCollectionsCollection",
-        "summary": "Delete a Product Collection",
-        "description": "Deletes a Product Collection.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Collection.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Collection"
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCollectionsCollection",
-        "summary": "Retrieve a Product Collection",
-        "description": "Retrieves a Product Collection.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Product Collection",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCollectionsCollection",
-        "summary": "Update a Product Collection",
-        "description": "Updates a Product Collection.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Collection.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "The title to identify the Collection by."
-                  },
-                  "handle": {
-                    "type": "string",
-                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
-                  },
-                  "metadata": {
-                    "description": "An optional set of key-value pairs to hold additional information.",
-                    "type": "object"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Collection"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "collection": {
-                      "$ref": "#/components/schemas/product_collection"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers": {
-      "post": {
-        "operationId": "PostCustomers",
-        "summary": "Create a Customer",
-        "description": "Creates a Customer.",
-        "x-authenticated": true,
-        "parameters": [],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "email",
-                  "first_name",
-                  "last_name"
-                ],
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email address."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "x-authenticated": true,
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customers/{id}": {
-      "get": {
-        "operationId": "GetCustomersCustomer",
-        "summary": "Retrieve a Customer",
-        "description": "Retrieves a Customer.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomersCustomer",
-        "summary": "Update a Customer",
-        "description": "Updates a Customer.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "style": "form",
-            "explode": false,
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "description": "The Customer's email. Only providable if user not registered."
-                  },
-                  "first_name": {
-                    "type": "string",
-                    "description": "The Customer's first name."
-                  },
-                  "last_name": {
-                    "type": "string",
-                    "description": "The Customer's last name."
-                  },
-                  "phone": {
-                    "type": "string",
-                    "description": "The Customer's phone number."
-                  },
-                  "password": {
-                    "type": "string",
-                    "description": "The Customer's password."
-                  },
-                  "groups": {
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "The id of a customer group",
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "description": "A list of customer groups to which the customer belongs."
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer": {
-                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -798,6 +206,20 @@
                 }
               }
             }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteAuth",
+        "summary": "Delete Session",
+        "x-authenticated": true,
+        "description": "Deletes the current session for the logged in user.",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       },
@@ -1100,8 +522,11 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
+                    "batch_jobs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/batch_job"
+                      }
                     }
                   }
                 }
@@ -1140,6 +565,607 @@
                   "properties": {
                     "batch_job": {
                       "$ref": "#/components/schemas/batch_job"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{id}/products/batch": {
+      "post": {
+        "operationId": "PostProductsToCollection",
+        "summary": "Updates products associated with a Product Collection",
+        "description": "Updates products associated with a Product Collection",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "product_ids": {
+                    "description": "An array of Product IDs to add to the Product Collection.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The ID of a Product to add to the Product Collection.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteProductsFromCollection",
+        "summary": "Removes products associated with a Product Collection",
+        "description": "Removes products associated with a Product Collection",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "product_ids": {
+                    "description": "An array of Product IDs to remove from the Product Collection.",
+                    "type": "array",
+                    "items": {
+                      "properties": {
+                        "id": {
+                          "description": "The ID of a Product to remove from the Product Collection.",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/collections": {
+      "post": {
+        "operationId": "PostCollections",
+        "summary": "Create a Product Collection",
+        "description": "Creates a Product Collection.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title to identify the Collection by."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCollections",
+        "summary": "List Product Collections",
+        "description": "Retrieve a list of Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "The number of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "The offset of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "description": "The title of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "handle",
+            "description": "The handle of collections to return.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collections": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product_collection"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collections/{id}": {
+      "delete": {
+        "operationId": "DeleteCollectionsCollection",
+        "summary": "Delete a Product Collection",
+        "description": "Deletes a Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Collection"
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCollectionsCollection",
+        "summary": "Retrieve a Product Collection",
+        "description": "Retrieves a Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Product Collection",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCollectionsCollection",
+        "summary": "Update a Product Collection",
+        "description": "Updates a Product Collection.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Collection.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "description": "The title to identify the Collection by."
+                  },
+                  "handle": {
+                    "type": "string",
+                    "description": "An optional handle to be used in slugs, if none is provided we will kebab-case the title."
+                  },
+                  "metadata": {
+                    "description": "An optional set of key-value pairs to hold additional information.",
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Collection"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "collection": {
+                      "$ref": "#/components/schemas/product_collection"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers": {
+      "post": {
+        "operationId": "PostCustomers",
+        "summary": "Create a Customer",
+        "description": "Creates a Customer.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "first_name",
+                  "last_name"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email address."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "x-authenticated": true,
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/customer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{id}": {
+      "get": {
+        "operationId": "GetCustomersCustomer",
+        "summary": "Retrieve a Customer",
+        "description": "Retrieves a Customer.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomersCustomer",
+        "summary": "Update a Customer",
+        "description": "Updates a Customer.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "style": "form",
+            "explode": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The Customer's email. Only providable if user not registered."
+                  },
+                  "first_name": {
+                    "type": "string",
+                    "description": "The Customer's first name."
+                  },
+                  "last_name": {
+                    "type": "string",
+                    "description": "The Customer's last name."
+                  },
+                  "phone": {
+                    "type": "string",
+                    "description": "The Customer's phone number."
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The Customer's password."
+                  },
+                  "groups": {
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "The id of a customer group",
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "description": "A list of customer groups to which the customer belongs."
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer": {
+                      "$ref": "#/components/schemas/customer"
                     }
                   }
                 }
@@ -1483,8 +1509,11 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "discount": {
-                      "$ref": "#/components/schemas/discount"
+                    "discounts": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/discount"
+                      }
                     }
                   }
                 }
@@ -2095,7 +2124,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customerGroup": {
+                    "customer_group": {
                       "$ref": "#/components/schemas/customer_group"
                     }
                   }
@@ -2156,7 +2185,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customerGroup": {
+                    "customer_group": {
                       "$ref": "#/components/schemas/customer_group"
                     }
                   }
@@ -2297,8 +2326,11 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customerGroup": {
-                      "$ref": "#/components/schemas/customer_group"
+                    "customer_groups": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/customer_group"
+                      }
                     }
                   }
                 }
@@ -2643,8 +2675,11 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "draft_order": {
-                      "$ref": "#/components/schemas/draft-order"
+                    "draft_orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/draft-order"
+                      }
                     }
                   }
                 }
@@ -2952,7 +2987,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "draft_order": {
+                    "order": {
                       "$ref": "#/components/schemas/draft-order"
                     }
                   }
@@ -3440,7 +3475,27 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted Invite."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether or not the Invite was deleted."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4060,8 +4115,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "fulfillment": {
-                      "$ref": "#/components/schemas/fulfillment"
+                    "order": {
+                      "$ref": "#/components/schemas/order"
                     }
                   }
                 }
@@ -4116,8 +4171,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "fulfillment": {
-                      "$ref": "#/components/schemas/fulfillment"
+                    "order": {
+                      "$ref": "#/components/schemas/order"
                     }
                   }
                 }
@@ -4163,8 +4218,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "fulfillment": {
-                      "$ref": "#/components/schemas/fulfillment"
+                    "order": {
+                      "$ref": "#/components/schemas/order"
                     }
                   }
                 }
@@ -6038,16 +6093,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted Price List."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean"
+                    "price_list": {
+                      "$ref": "#/components/schemas/price_list"
                     }
                   }
                 }
@@ -6214,7 +6261,7 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "product": {
+                    "price_list": {
                       "$ref": "#/components/schemas/price_list"
                     }
                   }
@@ -11116,62 +11163,6 @@
         }
       }
     },
-    "/variants": {
-      "get": {
-        "operationId": "GetVariants",
-        "summary": "List Product Variants.",
-        "description": "Retrieves a list of Product Variants",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "q",
-            "description": "Query used for searching variants.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "How many variants to skip in the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of variants returned.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Product Variant"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "variants": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/product_variant"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/users": {
       "post": {
         "operationId": "PostUsers",
@@ -11459,6 +11450,62 @@
                   "properties": {
                     "user": {
                       "$ref": "#/components/schemas/user"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/variants": {
+      "get": {
+        "operationId": "GetVariants",
+        "summary": "List Product Variants.",
+        "description": "Retrieves a list of Product Variants",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching variants.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many variants to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of variants returned.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Product Variant"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "variants": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/product_variant"
+                      }
                     }
                   }
                 }

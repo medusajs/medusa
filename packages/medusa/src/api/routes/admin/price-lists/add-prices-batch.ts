@@ -1,9 +1,10 @@
-import { Type } from "class-transformer"
 import { IsArray, IsBoolean, IsOptional, ValidateNested } from "class-validator"
 import { defaultAdminPriceListFields, defaultAdminPriceListRelations } from "."
+
+import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
 import { PriceList } from "../../../.."
 import PriceListService from "../../../../services/price-list"
-import { AdminPriceListPricesUpdateReq } from "../../../../types/price-list"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
 
 /**
@@ -60,14 +61,8 @@ import { validator } from "../../../../utils/validator"
  *       application/json:
  *         schema:
  *           properties:
- *             id:
- *               type: string
- *               description: The id of the deleted Price List.
- *             object:
- *               type: string
- *               description: The type of the object that was deleted.
- *             deleted:
- *               type: boolean
+ *             price_list:
+ *               $ref: "#/components/schemas/price_list"
  */
 export default async (req, res) => {
   const { id } = req.params

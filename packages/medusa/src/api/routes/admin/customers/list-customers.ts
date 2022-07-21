@@ -1,7 +1,9 @@
-import { Type } from "class-transformer"
 import { IsNumber, IsOptional, IsString } from "class-validator"
-import customerController from "../../../../controllers/customers"
+
 import { AdminListCustomerSelector } from "../../../../types/customers"
+import { Type } from "class-transformer"
+import customerController from "../../../../controllers/customers"
+
 /**
  * @oas [get] /customers
  * operationId: "GetCustomers"
@@ -17,8 +19,10 @@ import { AdminListCustomerSelector } from "../../../../types/customers"
  *       application/json:
  *         schema:
  *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *             customers:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/customer"
  */
 export default async (req, res) => {
   const result = await customerController.listAndCount(

@@ -91,7 +91,9 @@ paths:
               schema:
                 properties:
                   apps:
-                    $ref: '#/components/schemas/OAuth'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OAuth'
   /auth:
     post:
       operationId: PostAuth
@@ -125,6 +127,16 @@ paths:
                 password:
                   type: string
                   description: The User's password.
+    delete:
+      operationId: DeleteAuth
+      summary: Delete Session
+      x-authenticated: true
+      description: Deletes the current session for the logged in user.
+      tags:
+        - Auth
+      responses:
+        '200':
+          description: OK
     get:
       operationId: GetAuth
       summary: Get Session
@@ -141,6 +153,242 @@ paths:
                 properties:
                   user:
                     $ref: '#/components/schemas/user'
+  '/batch-jobs/{id}/cancel':
+    post:
+      operationId: PostBatchJobsBatchJobCancel
+      summary: Marks a batch job as canceled
+      description: Marks a batch job as canceled
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the batch job.
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+  '/batch-jobs/{id}/confirm':
+    post:
+      operationId: PostBatchJobsBatchJobConfirmProcessing
+      summary: Confirm a batch job
+      description: Confirms that a previously requested batch job should be executed.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the batch job.
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+  /batch-jobs:
+    post:
+      operationId: PostBatchJobs
+      summary: Create a Batch Job
+      description: Creates a Batch Job.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Batch Job
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - type
+                - context
+                - dry_run
+              properties:
+                type:
+                  type: string
+                  description: The type of batch job to start.
+                context:
+                  type: string
+                  description: >-
+                    Additional infomration regarding the batch to be used for
+                    processing.
+                dry_run:
+                  type: boolean
+                  description: >-
+                    Set a batch job in dry_run mode to get some information on
+                    what will be done without applying any modifications.
+    get:
+      operationId: GetBatchJobs
+      summary: List Batch Jobs
+      description: Retrieve a list of Batch Jobs.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: The offset of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: type
+          style: form
+          explode: false
+          description: Filter by the batch type
+          schema:
+            type: array
+            items:
+              type: string
+        - in: query
+          name: confirmed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was confirmed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: pre_processed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was pre processed,
+            i.e. less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: completed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was completed, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: failed_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was failed, i.e. less
+            than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: canceled_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was canceled, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: order
+          description: Order used when retrieving batch jobs
+          schema:
+            type: string
+        - in: query
+          name: deleted_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was deleted, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: created_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+        - in: query
+          name: updated_at
+          style: form
+          explode: false
+          description: >-
+            Date comparison for when resulting collections was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+            nullable: true
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_jobs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/batch_job'
+  '/batch-jobs/{id}':
+    get:
+      operationId: GetBatchJobsBatchJob
+      summary: Retrieve a Batch Job
+      description: Retrieves a Batch Job.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Batch Job
+          schema:
+            type: string
+      tags:
+        - Batch Job
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  batch_job:
+                    $ref: '#/components/schemas/batch_job'
   '/collections/{id}/products/batch':
     post:
       operationId: PostProductsToCollection
@@ -299,8 +547,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  collection:
-                    $ref: '#/components/schemas/product_collection'
+                  collections:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/product_collection'
   '/collections/{id}':
     delete:
       operationId: DeleteCollectionsCollection
@@ -452,8 +702,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
   '/customers/{id}':
     get:
       operationId: GetCustomersCustomer
@@ -533,6 +785,294 @@ paths:
                 metadata:
                   type: object
                   description: Metadata for the customer.
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+  '/customer-groups/{id}/customers/batch':
+    post:
+      operationId: PostCustomerGroupsGroupCustomersBatch
+      summary: 'Add a list of customers to a customer group '
+      description: 'Adds a list of customers, represented by id''s, to a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customers:
+                  description: The ids of the customers to add
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    delete:
+      operationId: DeleteCustomerGroupsGroupCustomerBatch
+      summary: 'Remove a list of customers from a customer group '
+      description: 'Removes a list of customers, represented by id''s, from a customer group.'
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                customers:
+                  description: The ids of the customers to remove
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: Id of the customer
+                        type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+  /customer-groups:
+    post:
+      operationId: PostCustomerGroups
+      summary: Create a CustomerGroup
+      description: Creates a CustomerGroup.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the customer group
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomerGroups
+      summary: Retrieve a list of customer groups
+      description: Retrieve a list of customer groups.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: q
+          description: Query used for searching user group names.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: How many groups to skip in the result.
+          schema:
+            type: string
+        - in: query
+          name: id
+          description: Ids of the groups to search for.
+          schema:
+            type: string
+        - in: query
+          name: order
+          description: to retrieve customer groups in.
+          schema:
+            type: string
+        - in: query
+          name: created_at
+          description: >-
+            Date comparison for when resulting customer group was created, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: updated_at
+          description: >-
+            Date comparison for when resulting ustomer group was updated, i.e.
+            less than, greater than etc.
+          schema:
+            type: object
+        - in: query
+          name: limit
+          description: Limit the number of customer groups returned.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each customer
+            groups of the result.
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_groups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer_group'
+  '/customer-groups/{id}':
+    delete:
+      operationId: DeleteCustomerGroupsCustomerGroup
+      summary: Delete a CustomerGroup
+      description: Deletes a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer Group
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted customer group.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+    get:
+      operationId: GetCustomerGroupsGroup
+      summary: Retrieve a CustomerGroup
+      description: Retrieves a Customer Group.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer Group.
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+    post:
+      operationId: PostCustomerGroupsGroup
+      summary: Update a CustomerGroup
+      description: Update a CustomerGroup.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
+      tags:
+        - CustomerGroup
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer_group:
+                    $ref: '#/components/schemas/customer_group'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                  description: Name of the customer group
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+  '/customer-groups/{id}/customers':
+    get:
+      operationId: GetCustomerGroupsGroupCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the customer group.
+          schema:
+            type: string
       tags:
         - Customer
       responses:
@@ -784,8 +1324,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  discount:
-                    $ref: '#/components/schemas/discount'
+                  discounts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/discount'
   '/discounts/{id}/dynamic-codes':
     post:
       operationId: PostDiscountsDiscountDynamicCodes
@@ -1156,526 +1698,6 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  '/customer-groups/{id}/customers/batch':
-    post:
-      operationId: PostCustomerGroupsGroupCustomersBatch
-      summary: 'Add a list of customers to a customer group '
-      description: 'Adds a list of customers, represented by id''s, to a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                customers:
-                  description: The ids of the customers to add
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: Id of the customer
-                        type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customerGroup:
-                    $ref: '#/components/schemas/customer_group'
-    delete:
-      operationId: DeleteCustomerGroupsGroupCustomerBatch
-      summary: 'Remove a list of customers from a customer group '
-      description: 'Removes a list of customers, represented by id''s, from a customer group.'
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                customers:
-                  description: The ids of the customers to remove
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: Id of the customer
-                        type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customerGroup:
-                    $ref: '#/components/schemas/customer_group'
-  /customer-groups:
-    post:
-      operationId: PostCustomerGroups
-      summary: Create a CustomerGroup
-      description: Creates a CustomerGroup.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Name of the customer group
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomerGroups
-      summary: Retrieve a list of customer groups
-      description: Retrieve a list of customer groups.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: q
-          description: Query used for searching user group names.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: How many groups to skip in the result.
-          schema:
-            type: string
-        - in: query
-          name: id
-          description: Ids of the groups to search for.
-          schema:
-            type: string
-        - in: query
-          name: order
-          description: to retrieve customer groups in.
-          schema:
-            type: string
-        - in: query
-          name: created_at
-          description: >-
-            Date comparison for when resulting customer group was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: updated_at
-          description: >-
-            Date comparison for when resulting ustomer group was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-        - in: query
-          name: limit
-          description: Limit the number of customer groups returned.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: >-
-            (Comma separated) Which fields should be expanded in each customer
-            groups of the result.
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customerGroup:
-                    $ref: '#/components/schemas/customer_group'
-  '/customer-groups/{id}':
-    delete:
-      operationId: DeleteCustomerGroupsCustomerGroup
-      summary: Delete a CustomerGroup
-      description: Deletes a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer Group
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted customer group.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-    get:
-      operationId: GetCustomerGroupsGroup
-      summary: Retrieve a CustomerGroup
-      description: Retrieves a Customer Group.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer Group.
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-    post:
-      operationId: PostCustomerGroupsGroup
-      summary: Update a CustomerGroup
-      description: Update a CustomerGroup.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      tags:
-        - CustomerGroup
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer_group:
-                    $ref: '#/components/schemas/customer_group'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - name
-              properties:
-                name:
-                  type: string
-                  description: Name of the customer group
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-  '/customer-groups/{id}/customers':
-    get:
-      operationId: GetCustomerGroupsGroupCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the customer group.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-  '/batch-jobs/{id}/cancel':
-    post:
-      operationId: PostBatchJobsBatchJobCancel
-      summary: Marks a batch job as canceled
-      description: Marks a batch job as canceled
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the batch job.
-          schema:
-            type: string
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-  '/batch-jobs/{id}/confirm':
-    post:
-      operationId: PostBatchJobsBatchJobConfirmProcessing
-      summary: Confirm a batch job
-      description: Confirms that a previously requested batch job should be executed.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the batch job.
-          schema:
-            type: string
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-  /batch-jobs:
-    post:
-      operationId: PostBatchJobs
-      summary: Create a Batch Job
-      description: Creates a Batch Job.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Batch Job
-      responses:
-        '201':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - type
-                - context
-                - dry_run
-              properties:
-                type:
-                  type: string
-                  description: The type of batch job to start.
-                context:
-                  type: string
-                  description: >-
-                    Additional infomration regarding the batch to be used for
-                    processing.
-                dry_run:
-                  type: boolean
-                  description: >-
-                    Set a batch job in dry_run mode to get some information on
-                    what will be done without applying any modifications.
-    get:
-      operationId: GetBatchJobs
-      summary: List Batch Jobs
-      description: Retrieve a list of Batch Jobs.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: The offset of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: type
-          style: form
-          explode: false
-          description: Filter by the batch type
-          schema:
-            type: array
-            items:
-              type: string
-        - in: query
-          name: confirmed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was confirmed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: pre_processed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was pre processed,
-            i.e. less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: completed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was completed, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: failed_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was failed, i.e. less
-            than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: canceled_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was canceled, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: order
-          description: Order used when retrieving batch jobs
-          schema:
-            type: string
-        - in: query
-          name: deleted_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was deleted, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: created_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was created, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-        - in: query
-          name: updated_at
-          style: form
-          explode: false
-          description: >-
-            Date comparison for when resulting collections was updated, i.e.
-            less than, greater than etc.
-          schema:
-            type: object
-            nullable: true
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
-  '/batch-jobs/{id}':
-    get:
-      operationId: GetBatchJobsBatchJob
-      summary: Retrieve a Batch Job
-      description: Retrieves a Batch Job.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Batch Job
-          schema:
-            type: string
-      tags:
-        - Batch Job
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  batch_job:
-                    $ref: '#/components/schemas/batch_job'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -1795,8 +1817,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  draft_order:
-                    $ref: '#/components/schemas/draft-order'
+                  draft_orders:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/draft-order'
   '/draft-orders/{id}/line-items':
     post:
       operationId: PostDraftOrdersDraftOrderLineItems
@@ -2000,7 +2024,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  draft_order:
+                  order:
                     $ref: '#/components/schemas/draft-order'
   '/admin/draft-orders/{id}':
     post:
@@ -2337,6 +2361,19 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Invite.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Invite was deleted.
   '/invites/{invite_id}/resend':
     post:
       operationId: PostInvitesInviteResend
@@ -2749,8 +2786,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  fulfillment:
-                    $ref: '#/components/schemas/fulfillment'
+                  order:
+                    $ref: '#/components/schemas/order'
   '/orders/{id}/swaps/{swap_id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersSwapFulfillmentsCancel
@@ -2785,8 +2822,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  fulfillment:
-                    $ref: '#/components/schemas/fulfillment'
+                  order:
+                    $ref: '#/components/schemas/order'
   '/orders/{id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersOrderFulfillmentsCancel
@@ -2815,8 +2852,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  fulfillment:
-                    $ref: '#/components/schemas/fulfillment'
+                  order:
+                    $ref: '#/components/schemas/order'
   '/orders/{id}/cancel':
     post:
       operationId: PostOrdersOrderCancel
@@ -4138,14 +4175,8 @@ paths:
             application/json:
               schema:
                 properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Price List.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
+                  price_list:
+                    $ref: '#/components/schemas/price_list'
     delete:
       operationId: DeletePriceListsPriceListPricesBatch
       summary: Batch delete prices that belongs to a Price List
@@ -4259,7 +4290,7 @@ paths:
             application/json:
               schema:
                 properties:
-                  product:
+                  price_list:
                     $ref: '#/components/schemas/price_list'
   '/price-lists/{id}':
     delete:

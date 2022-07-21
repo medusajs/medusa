@@ -101,8 +101,10 @@ import { pickBy } from "lodash"
  *      application/json:
  *        schema:
  *          properties:
- *            batch_job:
- *              $ref: "#/components/schemas/batch_job"
+ *            batch_jobs:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/batch_job"
  */
 export default async (req: Request, res) => {
   const batchService: BatchJobService = req.scope.resolve("batchJobService")

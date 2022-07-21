@@ -1,14 +1,16 @@
+import { IsNumber, IsOptional, IsString } from "class-validator"
 import {
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
 } from "."
-import { DraftOrderService } from "../../../../services"
-import { IsNumber, IsOptional, IsString } from "class-validator"
-import { validator } from "../../../../utils/validator"
-import { Type } from "class-transformer"
-import { DraftOrderListSelector } from "../../../../types/draft-orders"
-import { FindConfig } from "../../../../types/common"
+
 import { DraftOrder } from "../../../../models"
+import { DraftOrderListSelector } from "../../../../types/draft-orders"
+import { DraftOrderService } from "../../../../services"
+import { FindConfig } from "../../../../types/common"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /draft-orders
  * operationId: "GetDraftOrders"
@@ -24,8 +26,10 @@ import { DraftOrder } from "../../../../models"
  *       application/json:
  *         schema:
  *           properties:
- *             draft_order:
- *               $ref: "#/components/schemas/draft-order"
+ *             draft_orders:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/draft-order"
  */
 
 export default async (req, res) => {
