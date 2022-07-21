@@ -9,9 +9,8 @@ const {
   MoneyAmount,
 } = require("@medusajs/medusa")
 
-const setupServer = require("../../../helpers/setup-server")
 const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const { useDb } = require("../../../helpers/use-db")
 
 const cartSeeder = require("../../helpers/cart-seeder")
 const productSeeder = require("../../helpers/product-seeder")
@@ -53,7 +52,7 @@ describe("/store/carts", () => {
       const [process, connection] = await startServerWithEnvironment({
         cwd,
         env: { MEDUSA_FF_SALES_CHANNELS: true },
-        verbose: true,
+        verbose: false,
       })
       dbConnection = connection
       medusaProcess = process

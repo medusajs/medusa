@@ -533,7 +533,7 @@ describe("CartService", () => {
       )
     })
 
-    it("validates if chart nad variant's product belong to the same sales channel if flag is passed", async () => {
+    it("validates if cart and variant's product belong to the same sales channel if flag is passed", async () => {
       const validateSpy = jest
         .spyOn(cartService, "validateLineItemSalesChannel_")
         .mockImplementation(() => Promise.resolve(true))

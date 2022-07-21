@@ -1,13 +1,14 @@
 const path = require("path")
 const { LineItemAdjustment } = require("@medusajs/medusa")
-const setupServer = require("../../../helpers/setup-server")
-const { useApi } = require("../../../helpers/use-api")
-const { initDb, useDb } = require("../../../helpers/use-db")
+const { useDb } = require("../../../helpers/use-db")
 const cartSeeder = require("../../helpers/cart-seeder")
 const { simpleCartFactory, simpleLineItemFactory } = require("../../factories")
 const {
   simpleDiscountFactory,
 } = require("../../factories/simple-discount-factory")
+
+const startServerWithEnvironment =
+  require("../../../helpers/start-server-with-environment").default
 
 jest.setTimeout(30000)
 
@@ -23,8 +24,13 @@ describe("Line Item Adjustments", () => {
   beforeAll(async () => {
     const cwd = path.resolve(path.join(__dirname, "..", ".."))
     try {
-      dbConnection = await initDb({ cwd })
-      medusaProcess = await setupServer({ cwd })
+      const [process, connection] = await startServerWithEnvironment({
+        cwd,
+        env: { MEDUSA_FF_SALES_CHANNELS: true },
+        verbose: false,
+      })
+      dbConnection = connection
+      medusaProcess = process
     } catch (error) {
       console.log(error)
     }
