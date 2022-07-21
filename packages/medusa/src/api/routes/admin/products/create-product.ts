@@ -20,6 +20,8 @@ import {
 import { ProductStatus } from "../../../../models"
 import { ProductVariantPricesCreateReq } from "../../../../types/product-variant"
 import { validator } from "../../../../utils/validator"
+import SalesChannelFeatureFlag from "../../../../loaders/feature-flags/sales-channels"
+import { FeatureFlagDecorators } from "../../../../utils/feature-flag-decorators"
 
 /**
  * @oas [post] /products
@@ -452,10 +454,12 @@ export class AdminPostProductsReq {
   @IsArray()
   tags?: ProductTagReq[]
 
-  @IsOptional()
-  @Type(() => ProductSalesChannelReq)
-  @ValidateNested({ each: true })
-  @IsArray()
+  @FeatureFlagDecorators(SalesChannelFeatureFlag.key, [
+    IsOptional(),
+    Type(() => ProductSalesChannelReq),
+    ValidateNested({ each: true }),
+    IsArray(),
+  ])
   sales_channels?: ProductSalesChannelReq[]
 
   @IsOptional()
