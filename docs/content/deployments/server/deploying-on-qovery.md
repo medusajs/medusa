@@ -487,7 +487,12 @@ qovery shell
 
 You’ll be asked to either confirm the existing context or choose a new context.
 
-After choosing your Medusa app in the context, you should be able to execute any command in the directory of your Medusa server. For example, you can run the [`user` command using Medusa’s CLI tool to create a new user](../../cli/reference.md#user).
+After choosing your Medusa app in the context, you should be able to execute any command in the directory of your Medusa server. For example, you can run the [`user` command using Medusa’s CLI tool to create a new user](../../cli/reference.md#user):
+
+```bash
+npm install @medusajs/medusa-cli -g
+medusa user --email <EMAIL> --password <PASSWORD>
+```
 
 ## Add Environment Variables
 
