@@ -270,15 +270,11 @@ export default class ProductExportStrategy extends AbstractBatchJobStrategy<
           }
 
           products.forEach((product: Product) => {
-            try {
-              const lines = this.buildProductVariantLines(product)
-              lines.forEach((line) => {
-                approximateFileSize += Buffer.from(line).byteLength
-                writeStream.write(line)
-              })
-            } catch (e) {
-              console.error(e)
-            }
+            const lines = this.buildProductVariantLines(product)
+            lines.forEach((line) => {
+              approximateFileSize += Buffer.from(line).byteLength
+              writeStream.write(line)
+            })
           })
 
           advancementCount += products.length
