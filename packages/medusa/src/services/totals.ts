@@ -344,7 +344,7 @@ class TotalsService extends TransactionBaseService<TotalsService> {
       }
     } else {
       taxLines = await this.taxProviderService_
-        .withTransction(this.manager_)
+        .withTransaction(this.manager_)
         .getTaxLines(cartOrOrder.items, calculationContext)
 
       if (cartOrOrder.type === "swap") {
