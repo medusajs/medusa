@@ -5231,7 +5231,6 @@ __metadata:
     core-js: ^3.6.5
     cors: ^2.8.5
     cross-env: ^5.2.1
-    cross-spawn: ^7.0.3
     eslint: ^7.32.0
     express: ^4.17.1
     express-session: ^1.17.1
