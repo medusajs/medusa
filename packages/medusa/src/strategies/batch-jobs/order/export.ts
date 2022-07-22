@@ -15,6 +15,7 @@ import { BatchJobStatus } from "../../../types/batch-job"
 import { prepareListQuery } from "../../../utils/get-query-config"
 import { FlagRouter } from "../../../utils/flag-router"
 import SalesChannelFeatureFlag from "../../../loaders/feature-flags/sales-channels"
+import { FindConfig } from "../../../types/common"
 
 type InjectedDependencies = {
   fileService: IFileService<never>
@@ -146,7 +147,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             skip: offset as number,
             order: { created_at: "DESC" },
             take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
-          })
+          } as FindConfig<Order>)
         count = orderCount
       }
 
@@ -199,11 +200,11 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
             order: { created_at: "DESC" },
             skip: offset,
             take: Math.min(batchJob.context.batch_size ?? Infinity, limit),
-          }
+          } as FindConfig<Order>
         )
 
         orderCount = batchJob.context?.batch_size ?? count
-        let orders = []
+        let orders: Order[] = []
 
         const lineDescriptor = this.getLineDescriptor(
           list_config.select as string[],
@@ -230,7 +231,7 @@ class OrderExportStrategy extends AbstractBatchJobStrategy<OrderExportStrategy> 
               ...list_config,
               skip: offset,
               take: Math.min(orderCount - offset, limit),
-            })
+            } as FindConfig<Order>)
 
           orders.forEach((order) => {
             const line = this.buildCSVLine(order, lineDescriptor)

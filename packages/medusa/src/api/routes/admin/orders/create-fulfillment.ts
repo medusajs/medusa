@@ -92,7 +92,7 @@ export class AdminPostOrdersOrderFulfillmentsReq {
 
   @IsObject()
   @IsOptional()
-  metadata?: object
+  metadata?: Record<string, unknown>
 }
 
 class Item {

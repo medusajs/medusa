@@ -5,7 +5,7 @@ import { Order } from "../models"
 @EntityRepository(Order)
 export class OrderRepository extends Repository<Order> {
   public async findWithRelations(
-    relations: Array<keyof Order> = [],
+    relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order[]> {
     const entities = await this.find(optionsWithoutRelations)
@@ -38,7 +38,7 @@ export class OrderRepository extends Repository<Order> {
   }
 
   public async findOneWithRelations(
-    relations: Array<keyof Order> = [],
+    relations: string[] = [],
     optionsWithoutRelations: Omit<FindManyOptions<Order>, "relations"> = {}
   ): Promise<Order> {
     // Limit 1

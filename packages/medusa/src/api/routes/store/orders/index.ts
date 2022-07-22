@@ -65,7 +65,7 @@ export const defaultStoreOrdersFields = [
   "gift_card_total",
   "subtotal",
   "total",
-]
+] as (keyof Order)[]
 
 export const allowedStoreOrdersRelations = [
   "shipping_address",

@@ -7,13 +7,14 @@ import {
   ManyToOne,
   Unique,
 } from "typeorm"
-import { BaseEntity } from "../interfaces/models/base-entity"
+import { BaseEntity } from "../interfaces"
 import { DbAwareColumn } from "../utils/db-aware-column"
 import { Cart } from "./cart"
-import { generateEntityId } from "../utils/generate-entity-id"
+import { generateEntityId } from "../utils"
 
 export enum PaymentSessionStatus {
   AUTHORIZED = "authorized",
+  SUCCEEDED = "succeeded",
   PENDING = "pending",
   REQUIRES_MORE = "requires_more",
   ERROR = "error",

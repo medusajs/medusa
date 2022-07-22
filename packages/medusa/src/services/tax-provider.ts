@@ -1,26 +1,27 @@
 import { MedusaError } from "medusa-core-utils"
 import { AwilixContainer } from "awilix"
 import { BaseService } from "medusa-interfaces"
-import { EntityManager, UpdateResult } from "typeorm"
+import { EntityManager } from "typeorm"
 import Redis from "ioredis"
 
 import { LineItemTaxLineRepository } from "../repositories/line-item-tax-line"
 import { ShippingMethodTaxLineRepository } from "../repositories/shipping-method-tax-line"
 import { TaxProviderRepository } from "../repositories/tax-provider"
-import { LineItemTaxLine } from "../models/line-item-tax-line"
-import { TaxProvider } from "../models/tax-provider"
-import { LineItem } from "../models/line-item"
-import { ShippingMethodTaxLine } from "../models/shipping-method-tax-line"
-import { ShippingMethod } from "../models/shipping-method"
-import { Region } from "../models/region"
-import { Cart } from "../models/cart"
+import {
+  LineItemTaxLine,
+  TaxProvider,
+  LineItem,
+  ShippingMethodTaxLine,
+  ShippingMethod,
+  Region,
+  Cart,
+} from "../models"
 import { isCart } from "../types/cart"
-import { PostgresError } from "../utils/exception-formatter"
 import {
   ITaxService,
   ItemTaxCalculationLine,
   TaxCalculationContext,
-} from "../interfaces/tax-service"
+} from "../interfaces"
 
 import { TaxServiceRate } from "../types/tax-service"
 

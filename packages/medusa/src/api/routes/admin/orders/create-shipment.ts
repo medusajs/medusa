@@ -8,6 +8,7 @@ import {
 import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
+import { TrackingLink } from "../../../../models"
 /**
  * @oas [post] /orders/{id}/shipment
  * operationId: "PostOrdersOrderShipment"
@@ -56,8 +57,13 @@ export default async (req, res) => {
   await orderService.createShipment(
     id,
     validated.fulfillment_id,
-    validated.tracking_numbers?.map((n) => ({ tracking_number: n })),
-    { no_notification: validated.no_notification }
+    validated.tracking_numbers?.map((n) => ({
+      tracking_number: n,
+    })) as TrackingLink[],
+    {
+      metadata: {},
+      no_notification: validated.no_notification,
+    }
   )
 
   const order = await orderService.retrieve(id, {
