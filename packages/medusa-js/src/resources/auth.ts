@@ -13,7 +13,10 @@ class AuthResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreAuthRes>}
    */
-  authenticate(payload: StorePostAuthReq, customHeaders: Record<string, any> = {}): ResponsePromise<StoreAuthRes> {
+  authenticate(
+    payload: StorePostAuthReq,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreAuthRes> {
     const path = `/store/auth`
     return this.client.request("POST", path, payload, {}, customHeaders)
   }
@@ -24,7 +27,9 @@ class AuthResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreAuthRes>}
    */
-  getSession(customHeaders: Record<string, any> = {}): ResponsePromise<StoreAuthRes> {
+  getSession(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreAuthRes> {
     const path = `/store/auth`
     return this.client.request("GET", path, {}, {}, customHeaders)
   }
@@ -35,9 +40,24 @@ class AuthResource extends BaseResource {
    * @param customHeaders
    * @return {ResponsePromise<StoreGetAuthEmailRes>}
    */
-  exists(email: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreGetAuthEmailRes> {
+  exists(
+    email: string,
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreGetAuthEmailRes> {
     const path = `/store/auth/${email}`
     return this.client.request("GET", path, {}, {}, customHeaders)
+  }
+
+  /**
+   * @description Destroys a customer's authenticated session.
+   * @param customHeaders
+   * @return {ResponsePromise<StoreGetAuthEmailRes>}
+   */
+  logout(
+    customHeaders: Record<string, any> = {}
+  ): ResponsePromise<StoreGetAuthEmailRes> {
+    const path = `/store/auth`
+    return this.client.request("DELETE", path, {}, {}, customHeaders)
   }
 }
 

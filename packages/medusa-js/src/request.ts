@@ -11,7 +11,8 @@ const unAuthenticatedAdminEndpoints = {
 export interface Config {
   baseUrl: string
   maxRetries: number
-  apiKey?: string
+  apiKey?: string,
+  headers?: AxiosRequestHeaders,
 }
 export interface RequestOptions {
   timeout?: number
@@ -146,6 +147,7 @@ class Client {
   createClient(config: Config): AxiosInstance {
     const client = axios.create({
       baseURL: config.baseUrl,
+      headers: config.headers
     })
 
     rax.attach(client)
