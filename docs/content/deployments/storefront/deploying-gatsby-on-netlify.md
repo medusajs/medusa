@@ -110,6 +110,12 @@ If you haven’t deployed your Medusa server yet, you can leave the value blank 
 
 ![Environment Variable](https://i.imgur.com/DnutZfT.png)
 
+:::note
+
+If you use more environment variables in your storefront be sure to add them here.
+
+:::
+
 Once you’re done, scroll down and click on Deploy site.
 
 You’ll be then redirected to the dashboard of the new website. Netlify will build your website in the background. You should see “Site deploy in progress” on the top card.
@@ -236,6 +242,12 @@ netlify env:set GATSBY_MEDUSA_BACKEND_URL "<YOUR_SERVER_URL>"
 ```
 
 Where `<YOUR_SERVER_URL>` is the URL of your Medusa server.
+
+:::note
+
+If you use more environment variables in your storefront be sure to add them here.
+
+:::
 
 #### Check deployment status
 

@@ -329,28 +329,24 @@ module.exports = {
           label: "CMS",
           items: [
             {
-              type: "doc",
-              id: "add-plugins/contentful",
+              type: "category",
               label: "Contentful",
+              link: {
+                type: "doc",
+                id: "add-plugins/contentful/index",
+              },
+              items: [
+                {
+                  type: "doc",
+                  id: "add-plugins/contentful/customize-contentful",
+                  label: "Customize Contentful Integration",
+                },
+              ]
             },
             {
               type: "doc",
               id: "add-plugins/strapi",
               label: "Strapi",
-            },
-            {
-              type: "category",
-              label: "Gatsby + Contentful + Medusa",
-              items: [
-                {
-                  type: "doc",
-                  id: "how-to/headless-ecommerce-store-with-gatsby-contentful-medusa",
-                },
-                {
-                  type: "doc",
-                  id: "how-to/making-your-store-more-powerful-with-contentful",
-                },
-              ],
             },
           ],
         },
