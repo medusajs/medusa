@@ -30,7 +30,6 @@ import {
   Order,
   OrderStatus,
   Payment,
-  PaymentSession,
   PaymentStatus,
   Return,
   Swap,
@@ -546,12 +545,12 @@ class OrderService extends TransactionBaseService<OrderService> {
           )
         }
 
-        const paymentSession = cart.payment_sessions.find(
+        const paymentSession = cart.payment_sessions?.find(
           ({ provider_id }) => provider_id === payment.provider_id
         )
         const paymentStatus = await this.paymentProviderService_
           .withTransaction(manager)
-          .getStatus(paymentSession)
+          .getStatus(paymentSession ?? {})
 
         // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {

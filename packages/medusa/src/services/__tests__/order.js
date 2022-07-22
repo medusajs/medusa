@@ -4,6 +4,9 @@ import { InventoryServiceMock } from "../__mocks__/inventory"
 
 describe("OrderService", () => {
   const totalsService = {
+    withTransaction: function () {
+      return this
+    },
     getLineItemRefund: () => {},
     getTotal: (o) => {
       return o.total || 0
