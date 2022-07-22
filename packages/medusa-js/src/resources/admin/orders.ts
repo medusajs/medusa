@@ -15,21 +15,12 @@ import {
   AdminPostOrdersOrderSwapsReq,
   AdminPostOrdersOrderSwapsSwapFulfillmentsReq,
   AdminPostOrdersOrderSwapsSwapShipmentsReq,
-  AdminPostOrdersReq,
 } from "@medusajs/medusa"
 import qs from "qs"
 import { ResponsePromise } from "../../typings"
 import BaseResource from "../base"
 
 class AdminOrdersResource extends BaseResource {
-  create(
-    payload: AdminPostOrdersReq,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminOrdersRes> {
-    const path = `/admin/orders`
-    return this.client.request("POST", path, payload, {}, customHeaders)
-  }
-
   update(
     id: string,
     payload: AdminPostOrdersOrderReq,
@@ -260,15 +251,6 @@ class AdminOrdersResource extends BaseResource {
   ): ResponsePromise<AdminOrdersRes> {
     const path = `/admin/orders/${id}/claims/${claimId}/shipments`
     return this.client.request("POST", path, payload, {}, customHeaders)
-  }
-
-  deleteMetadata(
-    id: string,
-    key: string,
-    customHeaders: Record<string, any> = {}
-  ): ResponsePromise<AdminOrdersRes> {
-    const path = `/admin/orders/${id}/metadata/${key}`
-    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 }
 
