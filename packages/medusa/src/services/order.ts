@@ -546,10 +546,12 @@ class OrderService extends TransactionBaseService<OrderService> {
           )
         }
 
-        // TODO: Here the method expect a PaymentSession instead of a Payment
+        const paymentSession = cart.payment_sessions.find(
+          ({ provider_id }) => provider_id === payment.provider_id
+        )
         const paymentStatus = await this.paymentProviderService_
           .withTransaction(manager)
-          .getStatus(payment as unknown as PaymentSession)
+          .getStatus(paymentSession)
 
         // If payment status is not authorized, we throw
         if (paymentStatus !== "authorized" && paymentStatus !== "succeeded") {
