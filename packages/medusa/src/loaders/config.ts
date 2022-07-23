@@ -51,6 +51,7 @@ export default (rootDirectory: string): ConfigModule => {
   }
 
   return {
+    ...configModule,
     projectConfig: {
       jwt_secret: jwt_secret ?? "supersecret",
       cookie_secret: cookie_secret ?? "supersecret",
