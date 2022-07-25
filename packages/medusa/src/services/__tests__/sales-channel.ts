@@ -74,7 +74,6 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
-      productService: ProductServiceMock as unknown as ProductService,
     })
 
     beforeEach(() => {
@@ -97,7 +96,6 @@ describe("SalesChannelService", () => {
         manager: MockManager,
         eventBusService: EventBusServiceMock as unknown as EventBusService,
         salesChannelRepository: salesChannelRepositoryMock,
-        productService: ProductServiceMock as unknown as ProductService,
         storeService: {
           ...StoreServiceMock,
           retrieve: jest.fn().mockImplementation(() => {
@@ -130,7 +128,6 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
-      productService: ProductServiceMock as unknown as ProductService,
     })
 
     beforeEach(() => {
@@ -161,7 +158,6 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
-      productService: ProductServiceMock as unknown as ProductService,
     })
 
     const update = {
@@ -197,7 +193,6 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
-      productService: ProductServiceMock as unknown as ProductService,
     })
 
     afterEach(() => {
@@ -261,7 +256,6 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      productService: ProductServiceMock as unknown as ProductService,
       storeService: {
         ...StoreServiceMock,
         retrieve: jest.fn().mockImplementation(() => {
@@ -317,7 +311,6 @@ describe("SalesChannelService", () => {
       manager: MockManager,
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
-      productService: ProductServiceMock as unknown as ProductService,
       storeService: StoreServiceMock as unknown as StoreService,
     })
 
@@ -350,7 +343,6 @@ describe("SalesChannelService", () => {
       eventBusService: EventBusServiceMock as unknown as EventBusService,
       salesChannelRepository: salesChannelRepositoryMock,
       storeService: StoreServiceMock as unknown as StoreService,
-      productService: ProductServiceMock as unknown as ProductService,
     })
 
     beforeEach(() => {

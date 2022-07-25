@@ -1,6 +1,6 @@
 import { MedusaError } from "medusa-core-utils"
 import { EntityManager } from "typeorm"
-import { SalesChannelService, SearchService, ProductVariantService } from "."
+import { SearchService, ProductVariantService } from "."
 import { TransactionBaseService } from "../interfaces"
 import {
   Product,
@@ -27,7 +27,7 @@ import {
   UpdateProductInput,
 } from "../types/product"
 import { buildQuery, setMetadata } from "../utils"
-import { formatException, PostgresError } from "../utils/exception-formatter"
+import { formatException } from "../utils/exception-formatter"
 import EventBusService from "./event-bus"
 
 type InjectedDependencies = {
@@ -39,7 +39,6 @@ type InjectedDependencies = {
   productTagRepository: typeof ProductTagRepository
   imageRepository: typeof ImageRepository
   productVariantService: ProductVariantService
-  salesChannelService: SalesChannelService
   searchService: SearchService
   eventBusService: EventBusService
 }
@@ -58,7 +57,6 @@ class ProductService extends TransactionBaseService<
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
   protected readonly productVariantService_: ProductVariantService
-  protected readonly salesChannelService_: SalesChannelService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
 
@@ -80,7 +78,6 @@ class ProductService extends TransactionBaseService<
     productTagRepository,
     imageRepository,
     searchService,
-    salesChannelService,
   }: InjectedDependencies) {
     // eslint-disable-next-line prefer-rest-params
     super(arguments[0])
@@ -95,7 +92,6 @@ class ProductService extends TransactionBaseService<
     this.productTagRepository_ = productTagRepository
     this.imageRepository_ = imageRepository
     this.searchService_ = searchService
-    this.salesChannelService_ = salesChannelService
   }
 
   /**
@@ -310,100 +306,94 @@ class ProductService extends TransactionBaseService<
    * @return resolves to the creation result.
    */
   async create(productObject: CreateProductInput): Promise<Product> {
-    return await this.atomicPhase_(
-      async (manager) => {
-        const productRepo = manager.getCustomRepository(this.productRepository_)
-        const productTagRepo = manager.getCustomRepository(
-          this.productTagRepository_
-        )
-        const productTypeRepo = manager.getCustomRepository(
-          this.productTypeRepository_
-        )
-        const imageRepo = manager.getCustomRepository(this.imageRepository_)
-        const optionRepo = manager.getCustomRepository(
-          this.productOptionRepository_
-        )
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productTagRepo = manager.getCustomRepository(
+        this.productTagRepository_
+      )
+      const productTypeRepo = manager.getCustomRepository(
+        this.productTypeRepository_
+      )
+      const imageRepo = manager.getCustomRepository(this.imageRepository_)
+      const optionRepo = manager.getCustomRepository(
+        this.productOptionRepository_
+      )
 
-        const {
-          options,
-          tags,
-          type,
-          images,
-          sales_channels: salesChannels,
-          ...rest
-        } = productObject
+      const {
+        options,
+        tags,
+        type,
+        images,
+        sales_channels: salesChannels,
+        ...rest
+      } = productObject
 
-        if (!rest.thumbnail && images?.length) {
-          rest.thumbnail = images[0]
+      if (!rest.thumbnail && images?.length) {
+        rest.thumbnail = images[0]
+      }
+
+      // if product is a giftcard, we should disallow discounts
+      if (rest.is_giftcard) {
+        rest.discountable = false
+      }
+
+      try {
+        let product = productRepo.create(rest)
+
+        if (images?.length) {
+          product.images = await imageRepo.upsertImages(images)
         }
 
-        // if product is a giftcard, we should disallow discounts
-        if (rest.is_giftcard) {
-          rest.discountable = false
+        if (tags?.length) {
+          product.tags = await productTagRepo.upsertTags(tags)
         }
 
-        try {
-          let product = productRepo.create(rest)
+        if (typeof type !== `undefined`) {
+          product.type_id = (await productTypeRepo.upsertType(type))?.id || null
+        }
 
-          if (images?.length) {
-            product.images = await imageRepo.upsertImages(images)
+        if (typeof salesChannels !== "undefined") {
+          product.sales_channels = []
+
+          if (salesChannels?.length) {
+            const salesChannelIds = salesChannels?.map((sc) => sc.id)
+            await productRepo.validateAllItemExistsOrThrow(
+              SalesChannel,
+              salesChannelIds
+            )
+            product.sales_channels = salesChannelIds?.map(
+              (id) => ({ id } as SalesChannel)
+            )
           }
+        }
 
-          if (tags?.length) {
-            product.tags = await productTagRepo.upsertTags(tags)
-          }
+        product = await productRepo.save(product)
 
-          if (typeof type !== `undefined`) {
-            product.type_id =
-              (await productTypeRepo.upsertType(type))?.id || null
-          }
-
-          if (typeof salesChannels !== "undefined") {
-            product.sales_channels = []
-
-            if (salesChannels?.length) {
-              product.sales_channels = salesChannels?.map(
-                (sc) => ({ id: sc.id } as SalesChannel)
-              ) as SalesChannel[]
-            }
-          }
-
-          product = await productRepo.save(product)
-
-          product.options = await Promise.all(
-            (options ?? []).map(async (option) => {
-              const res = optionRepo.create({
-                ...option,
-                product_id: product.id,
-              })
-              await optionRepo.save(res)
-              return res
+        product.options = await Promise.all(
+          (options ?? []).map(async (option) => {
+            const res = optionRepo.create({
+              ...option,
+              product_id: product.id,
             })
-          )
-
-          const result = await this.retrieve(product.id, {
-            relations: ["options"],
+            await optionRepo.save(res)
+            return res
           })
+        )
 
-          await this.eventBus_
-            .withTransaction(manager)
-            .emit(ProductService.Events.CREATED, {
-              id: result.id,
-            })
-          return result
-        } catch (error) {
-          throw formatException(error)
-        }
-      },
-      async (error: { code: string }) => {
-        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          await this.findAndThrowOnNonExistingSalesChannels(
-            productObject.sales_channels?.map((sc) => sc.id) ?? []
-          )
-        }
+        const result = await this.retrieve(product.id, {
+          relations: ["options"],
+        })
+
+        await this.eventBus_
+          .withTransaction(manager)
+          .emit(ProductService.Events.CREATED, {
+            id: result.id,
+          })
+        return result
+      } catch (error) {
         throw formatException(error)
       }
-    )
+    })
   }
 
   /**
@@ -419,144 +409,140 @@ class ProductService extends TransactionBaseService<
     productId: string,
     update: UpdateProductInput
   ): Promise<Product> {
-    return await this.atomicPhase_(
-      async (manager) => {
-        const productRepo = manager.getCustomRepository(this.productRepository_)
-        const productVariantRepo = manager.getCustomRepository(
-          this.productVariantRepository_
-        )
-        const productTagRepo = manager.getCustomRepository(
-          this.productTagRepository_
-        )
-        const productTypeRepo = manager.getCustomRepository(
-          this.productTypeRepository_
-        )
-        const imageRepo = manager.getCustomRepository(this.imageRepository_)
+    return await this.atomicPhase_(async (manager) => {
+      const productRepo = manager.getCustomRepository(this.productRepository_)
+      const productVariantRepo = manager.getCustomRepository(
+        this.productVariantRepository_
+      )
+      const productTagRepo = manager.getCustomRepository(
+        this.productTagRepository_
+      )
+      const productTypeRepo = manager.getCustomRepository(
+        this.productTypeRepository_
+      )
+      const imageRepo = manager.getCustomRepository(this.imageRepository_)
 
-        const relations = ["variants", "tags", "images"]
+      const relations = ["variants", "tags", "images"]
 
-        if (typeof update.sales_channels !== "undefined") {
-          relations.push("sales_channels")
-        }
+      if (typeof update.sales_channels !== "undefined") {
+        relations.push("sales_channels")
+      }
 
-        const product = await this.retrieve(productId, {
-          relations,
-        })
+      const product = await this.retrieve(productId, {
+        relations,
+      })
 
-        const {
-          variants,
-          metadata,
-          images,
-          tags,
-          type,
-          sales_channels: salesChannels,
-          ...rest
-        } = update
+      const {
+        variants,
+        metadata,
+        images,
+        tags,
+        type,
+        sales_channels: salesChannels,
+        ...rest
+      } = update
 
-        if (!product.thumbnail && !update.thumbnail && images?.length) {
-          product.thumbnail = images[0]
-        }
+      if (!product.thumbnail && !update.thumbnail && images?.length) {
+        product.thumbnail = images[0]
+      }
 
-        if (images) {
-          product.images = await imageRepo.upsertImages(images)
-        }
+      if (images) {
+        product.images = await imageRepo.upsertImages(images)
+      }
 
-        if (metadata) {
-          product.metadata = setMetadata(product, metadata)
-        }
+      if (metadata) {
+        product.metadata = setMetadata(product, metadata)
+      }
 
-        if (typeof type !== `undefined`) {
-          product.type_id = (await productTypeRepo.upsertType(type))?.id || null
-        }
+      if (typeof type !== `undefined`) {
+        product.type_id = (await productTypeRepo.upsertType(type))?.id || null
+      }
 
-        if (tags) {
-          product.tags = await productTagRepo.upsertTags(tags)
-        }
+      if (tags) {
+        product.tags = await productTagRepo.upsertTags(tags)
+      }
 
-        if (typeof salesChannels !== "undefined") {
-          product.sales_channels = salesChannels?.length
-            ? salesChannels?.map((sc) => ({ id: sc.id } as SalesChannel))
-            : []
-        }
-
-        if (variants) {
-          // Iterate product variants and update their properties accordingly
-          for (const variant of product.variants) {
-            const exists = variants.find((v) => v.id && variant.id === v.id)
-            if (!exists) {
-              await productVariantRepo.remove(variant)
-            }
-          }
-
-          const newVariants: ProductVariant[] = []
-          for (const [i, newVariant] of variants.entries()) {
-            const variant_rank = i
-
-            if (newVariant.id) {
-              const variant = product.variants.find(
-                (v) => v.id === newVariant.id
-              )
-
-              if (!variant) {
-                throw new MedusaError(
-                  MedusaError.Types.NOT_FOUND,
-                  `Variant with id: ${newVariant.id} is not associated with this product`
-                )
-              }
-
-              const saved = await this.productVariantService_
-                .withTransaction(manager)
-                .update(variant, {
-                  ...newVariant,
-                  variant_rank,
-                  product_id: variant.product_id,
-                })
-
-              newVariants.push(saved)
-            } else {
-              // If the provided variant does not have an id, we assume that it
-              // should be created
-              const created = await this.productVariantService_
-                .withTransaction(manager)
-                .create(product.id, {
-                  ...newVariant,
-                  variant_rank,
-                  options: newVariant.options || [],
-                  prices: newVariant.prices || [],
-                })
-
-              newVariants.push(created)
-            }
-          }
-
-          product.variants = newVariants
-        }
-
-        for (const [key, value] of Object.entries(rest)) {
-          if (typeof value !== `undefined`) {
-            product[key] = value
-          }
-        }
-
-        const result = await productRepo.save(product)
-
-        await this.eventBus_
-          .withTransaction(manager)
-          .emit(ProductService.Events.UPDATED, {
-            id: result.id,
-            fields: Object.keys(update),
-          })
-        return result
-      },
-      async (error: { code: string }) => {
-        if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          await this.findAndThrowOnNonExistingSalesChannels(
-            update.sales_channels?.map((sc) => sc.id) ?? []
+      if (typeof salesChannels !== "undefined") {
+        product.sales_channels = []
+        if (salesChannels?.length) {
+          const salesChannelIds = salesChannels?.map((sc) => sc.id)
+          await productRepo.validateAllItemExistsOrThrow(
+            SalesChannel,
+            salesChannelIds
+          )
+          product.sales_channels = salesChannelIds?.map(
+            (id) => ({ id } as SalesChannel)
           )
         }
-        throw formatException(error)
       }
-    )
+
+      if (variants) {
+        // Iterate product variants and update their properties accordingly
+        for (const variant of product.variants) {
+          const exists = variants.find((v) => v.id && variant.id === v.id)
+          if (!exists) {
+            await productVariantRepo.remove(variant)
+          }
+        }
+
+        const newVariants: ProductVariant[] = []
+        for (const [i, newVariant] of variants.entries()) {
+          const variant_rank = i
+
+          if (newVariant.id) {
+            const variant = product.variants.find((v) => v.id === newVariant.id)
+
+            if (!variant) {
+              throw new MedusaError(
+                MedusaError.Types.NOT_FOUND,
+                `Variant with id: ${newVariant.id} is not associated with this product`
+              )
+            }
+
+            const saved = await this.productVariantService_
+              .withTransaction(manager)
+              .update(variant, {
+                ...newVariant,
+                variant_rank,
+                product_id: variant.product_id,
+              })
+
+            newVariants.push(saved)
+          } else {
+            // If the provided variant does not have an id, we assume that it
+            // should be created
+            const created = await this.productVariantService_
+              .withTransaction(manager)
+              .create(product.id, {
+                ...newVariant,
+                variant_rank,
+                options: newVariant.options || [],
+                prices: newVariant.prices || [],
+              })
+
+            newVariants.push(created)
+          }
+        }
+
+        product.variants = newVariants
+      }
+
+      for (const [key, value] of Object.entries(rest)) {
+        if (typeof value !== `undefined`) {
+          product[key] = value
+        }
+      }
+
+      const result = await productRepo.save(product)
+
+      await this.eventBus_
+        .withTransaction(manager)
+        .emit(ProductService.Events.UPDATED, {
+          id: result.id,
+          fields: Object.keys(update),
+        })
+      return result
+    })
   }
 
   /**
@@ -838,29 +824,6 @@ class ProductService extends TransactionBaseService<
       query: query as FindWithoutRelationsOptions,
       relations: rels as (keyof Product)[],
       q,
-    }
-  }
-
-  private async findAndThrowOnNonExistingSalesChannels(
-    salesChannelIds: string[]
-  ): Promise<never | void> {
-    if (salesChannelIds.length) {
-      const [existingSalesChannels] = await this.salesChannelService_
-        .withTransaction(this.manager_)
-        .listAndCount({
-          id: salesChannelIds,
-        })
-
-      const nonExistingSalesChannels = salesChannelIds.filter(
-        (scId) => existingSalesChannels.findIndex((sc) => sc.id === scId) === -1
-      )
-
-      throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        `The following sales channels ids do not exist: ${nonExistingSalesChannels.join(
-          ", "
-        )}`
-      )
     }
   }
 }

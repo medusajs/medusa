@@ -1104,7 +1104,7 @@ describe("sales channels", () => {
             .catch((err) => err)
 
         expect(err.response.status).toEqual(404)
-        expect(err.response.data.message).toBe("The following sales channels ids do not exist: \"fake_id\"")
+        expect(err.response.data.message).toBe("The following sales channels ids do not exist: fake_id")
       })
     })
   })
