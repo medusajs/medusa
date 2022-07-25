@@ -176,7 +176,7 @@ export default async ({
   const dAct = Logger.success(defaultsActivity, "Defaults initialized") || {}
   track("DEFAULTS_INIT_COMPLETED", { duration: dAct.duration })
 
-  const searchActivity = Logger.activity("Emitting search engine indexing event")
+  const searchActivity = Logger.activity("Initializing search engine indexing")
   track("SEARCH_ENGINE_INDEXING_STARTED")
   await searchIndexLoader({ container })
   const searchAct = Logger.success(searchActivity, "Indexing event emitted") || {}
