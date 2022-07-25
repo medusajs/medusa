@@ -696,6 +696,192 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: The offset of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'a search term to search email, first_name, and last_name.'
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: >-
+                    The Customer's email. Only providable if user not
+                    registered.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -1807,192 +1993,6 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      parameters:
-        - in: query
-          name: limit
-          description: The number of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: offset
-          description: The offset of collections to return.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in each customer.
-          schema:
-            type: string
-        - in: query
-          name: q
-          description: 'a search term to search email, first_name, and last_name.'
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
-                  count:
-                    type: integer
-                    description: The total number of items available
-                  offset:
-                    type: integer
-                    description: The number of items skipped before these items
-                  limit:
-                    type: integer
-                    description: The number of items per page
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          description: (Comma separated) Which fields should be expanded in the customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          style: form
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: >-
-                    The Customer's email. Only providable if user not
-                    registered.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The id of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -2426,6 +2426,142 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
+  /invites/accept:
+    post:
+      operationId: PostInvitesInviteAccept
+      summary: Accept an Invite
+      description: Accepts an Invite and creates a corresponding user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - token
+                - user
+              properties:
+                token:
+                  description: The invite token provided by the admin.
+                  type: string
+                user:
+                  description: The User to create.
+                  type: object
+                  required:
+                    - first_name
+                    - last_name
+                    - password
+                  properties:
+                    first_name:
+                      type: string
+                      description: the first name of the User
+                    last_name:
+                      type: string
+                      description: the last name of the User
+                    password:
+                      description: The desired password for the User
+                      type: string
+                      format: password
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+  /invites:
+    post:
+      operationId: PostInvites
+      summary: Create an Invite
+      description: Creates an Invite and triggers an 'invite' created event
+      x-authenticated: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - user
+                - role
+              properties:
+                user:
+                  description: The email for the user to be created.
+                  type: string
+                  format: email
+                role:
+                  description: The role of the user to be created.
+                  type: string
+                  enum:
+                    - admin
+                    - member
+                    - developer
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+    get:
+      operationId: GetInvites
+      summary: Lists all Invites
+      description: Lists all Invites
+      x-authenticated: true
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  invites:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/invite'
+  '/invites/{invite_id}':
+    delete:
+      operationId: DeleteInvitesInvite
+      summary: Create an Invite
+      description: Creates an Invite and triggers an 'invite' created event
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: invite_id
+          required: true
+          description: The id of the Invite
+          schema:
+            type: string
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The id of the deleted Invite.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
+                  deleted:
+                    type: boolean
+                    description: Whether or not the Invite was deleted.
+  '/invites/{invite_id}/resend':
+    post:
+      operationId: PostInvitesInviteResend
+      summary: Resend an Invite
+      description: Resends an Invite by triggering the 'invite' created event again
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: invite_id
+          required: true
+          description: The id of the Invite
+          schema:
+            type: string
+      tags:
+        - Invites
+      responses:
+        '200':
+          description: OK
   /gift-cards:
     post:
       operationId: PostGiftCards
@@ -2628,142 +2764,6 @@ paths:
                 properties:
                   gift_card:
                     $ref: '#/components/schemas/gift_card'
-  /invites/accept:
-    post:
-      operationId: PostInvitesInviteAccept
-      summary: Accept an Invite
-      description: Accepts an Invite and creates a corresponding user
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - token
-                - user
-              properties:
-                token:
-                  description: The invite token provided by the admin.
-                  type: string
-                user:
-                  description: The User to create.
-                  type: object
-                  required:
-                    - first_name
-                    - last_name
-                    - password
-                  properties:
-                    first_name:
-                      type: string
-                      description: the first name of the User
-                    last_name:
-                      type: string
-                      description: the last name of the User
-                    password:
-                      description: The desired password for the User
-                      type: string
-                      format: password
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-  /invites:
-    post:
-      operationId: PostInvites
-      summary: Create an Invite
-      description: Creates an Invite and triggers an 'invite' created event
-      x-authenticated: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              required:
-                - user
-                - role
-              properties:
-                user:
-                  description: The email for the user to be created.
-                  type: string
-                  format: email
-                role:
-                  description: The role of the user to be created.
-                  type: string
-                  enum:
-                    - admin
-                    - member
-                    - developer
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-    get:
-      operationId: GetInvites
-      summary: Lists all Invites
-      description: Lists all Invites
-      x-authenticated: true
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  invites:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/invite'
-  '/invites/{invite_id}':
-    delete:
-      operationId: DeleteInvitesInvite
-      summary: Create an Invite
-      description: Creates an Invite and triggers an 'invite' created event
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: invite_id
-          required: true
-          description: The id of the Invite
-          schema:
-            type: string
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  id:
-                    type: string
-                    description: The id of the deleted Invite.
-                  object:
-                    type: string
-                    description: The type of the object that was deleted.
-                  deleted:
-                    type: boolean
-                    description: Whether or not the Invite was deleted.
-  '/invites/{invite_id}/resend':
-    post:
-      operationId: PostInvitesInviteResend
-      summary: Resend an Invite
-      description: Resends an Invite by triggering the 'invite' created event again
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: invite_id
-          required: true
-          description: The id of the Invite
-          schema:
-            type: string
-      tags:
-        - Invites
-      responses:
-        '200':
-          description: OK
   /notes:
     post:
       operationId: PostNotes

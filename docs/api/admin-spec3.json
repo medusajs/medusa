@@ -75,6 +75,90 @@
     }
   ],
   "paths": {
+    "/apps/authorize-app": {
+      "post": {
+        "operationId": "PostApps",
+        "summary": "Generates a token for an application.",
+        "description": "Generates a token for an application.",
+        "x-authenticated": true,
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "application_name",
+                  "state",
+                  "code"
+                ],
+                "properties": {
+                  "application_name": {
+                    "type": "string",
+                    "description": "Name of the application for the token to be generated for."
+                  },
+                  "state": {
+                    "type": "string",
+                    "description": "State of the application."
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The code for the generated token."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Apps"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "apps": {
+                      "$ref": "#/components/schemas/OAuth"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apps": {
+      "get": {
+        "operationId": "GetApps",
+        "summary": "List applications",
+        "description": "Retrieve a list of applications.",
+        "x-authenticated": true,
+        "tags": [
+          "Apps"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "apps": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/OAuth"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/auth": {
       "post": {
         "operationId": "PostAuth",
@@ -165,50 +249,25 @@
         }
       }
     },
-    "/customer-groups/{id}/customers/batch": {
+    "/batch-jobs/{id}/cancel": {
       "post": {
-        "operationId": "PostCustomerGroupsGroupCustomersBatch",
-        "summary": "Add a list of customers to a customer group ",
-        "description": "Adds a list of customers, represented by id's, to a customer group.",
+        "operationId": "PostBatchJobsBatchJobCancel",
+        "summary": "Marks a batch job as canceled",
+        "description": "Marks a batch job as canceled",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the customer group.",
+            "description": "The id of the batch job.",
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customer_ids": {
-                    "description": "The ids of the customers to add",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "tags": [
-          "CustomerGroup"
+          "Batch Job"
         ],
         "responses": {
           "200": {
@@ -217,69 +276,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
-        "summary": "Remove a list of customers from a customer group ",
-        "description": "Removes a list of customers, represented by id's, from a customer group.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "customer_ids": {
-                    "description": "The ids of the customers to remove",
-                    "type": "array",
-                    "items": {
-                      "required": [
-                        "id"
-                      ],
-                      "properties": {
-                        "id": {
-                          "description": "Id of the customer",
-                          "type": "string"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
                     }
                   }
                 }
@@ -289,15 +287,25 @@
         }
       }
     },
-    "/customer-groups": {
+    "/batch-jobs/{id}/confirm": {
       "post": {
-        "operationId": "PostCustomerGroups",
-        "summary": "Create a CustomerGroup",
-        "description": "Creates a CustomerGroup.",
+        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
+        "summary": "Confirm a batch job",
+        "description": "Confirms that a previously requested batch job should be executed.",
         "x-authenticated": true,
-        "parameters": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the batch job.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "tags": [
-          "CustomerGroup"
+          "Batch Job"
         ],
         "responses": {
           "200": {
@@ -306,31 +314,62 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
                     }
                   }
                 }
               }
             }
           }
-        },
+        }
+      }
+    },
+    "/batch-jobs": {
+      "post": {
+        "operationId": "PostBatchJobs",
+        "summary": "Create a Batch Job",
+        "description": "Creates a Batch Job.",
+        "x-authenticated": true,
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
                 "required": [
-                  "name"
+                  "type",
+                  "context"
                 ],
                 "properties": {
-                  "name": {
+                  "type": {
                     "type": "string",
-                    "description": "Name of the customer group"
+                    "description": "The type of batch job to start."
                   },
-                  "metadata": {
+                  "context": {
                     "type": "object",
-                    "description": "Metadata for the customer."
+                    "description": "Additional infomration regarding the batch to be used for processing."
+                  },
+                  "dry_run": {
+                    "type": "boolean",
+                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Batch Job"
+        ],
+        "responses": {
+          "201": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
+                    }
                   }
                 }
               }
@@ -339,15 +378,15 @@
         }
       },
       "get": {
-        "operationId": "GetCustomerGroups",
-        "summary": "Retrieve a list of customer groups",
-        "description": "Retrieve a list of customer groups.",
+        "operationId": "GetBatchJobs",
+        "summary": "List Batch Jobs",
+        "description": "Retrieve a list of Batch Jobs.",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "query",
-            "name": "q",
-            "description": "Query used for searching user group names.",
+            "name": "limit",
+            "description": "The number of batch jobs to return.",
             "schema": {
               "type": "string"
             }
@@ -355,47 +394,83 @@
           {
             "in": "query",
             "name": "offset",
-            "description": "How many groups to skip in the result.",
+            "description": "The offset of batch jobs to return.",
             "schema": {
               "type": "string"
             }
           },
           {
             "in": "query",
-            "name": "id",
-            "description": "Ids of the groups to search for.",
+            "name": "type",
+            "style": "form",
+            "explode": false,
+            "description": "Filter by the batch type",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "in": "query",
+            "name": "confirmed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "pre_processed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "completed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "failed_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "canceled_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
             }
           },
           {
             "in": "query",
             "name": "order",
-            "description": "the field used to order the customer groups.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object"
-            }
-          },
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "Limit the number of customer groups returned.",
+            "description": "Order used when retrieving batch jobs",
             "schema": {
               "type": "string"
             }
@@ -403,14 +478,55 @@
           {
             "in": "query",
             "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
+            "description": "(Comma separated) Which fields should be expanded in each order of the result.",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "fields",
+            "description": "(Comma separated) Which fields should be included in each order of the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "style": "form",
+            "explode": false,
+            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object",
+              "nullable": true
             }
           }
         ],
         "tags": [
-          "CustomerGroup"
+          "Batch Job"
         ],
         "responses": {
           "200": {
@@ -419,10 +535,10 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer_groups": {
+                    "batch_jobs": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/customer_group"
+                        "$ref": "#/components/schemas/batch_job"
                       }
                     },
                     "count": {
@@ -445,70 +561,25 @@
         }
       }
     },
-    "/customer-groups/{id}": {
-      "delete": {
-        "operationId": "DeleteCustomerGroupsCustomerGroup",
-        "summary": "Delete a CustomerGroup",
-        "description": "Deletes a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Customer Group",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "The id of the deleted customer group."
-                    },
-                    "object": {
-                      "type": "string",
-                      "description": "The type of the object that was deleted."
-                    },
-                    "deleted": {
-                      "type": "boolean",
-                      "description": "Whether the customer group was deleted successfully or not."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
+    "/batch-jobs/{id}": {
       "get": {
-        "operationId": "GetCustomerGroupsGroup",
-        "summary": "Retrieve a CustomerGroup",
-        "description": "Retrieves a Customer Group.",
+        "operationId": "GetBatchJobsBatchJob",
+        "summary": "Retrieve a Batch Job",
+        "description": "Retrieves a Batch Job.",
         "x-authenticated": true,
         "parameters": [
           {
             "in": "path",
             "name": "id",
             "required": true,
-            "description": "The id of the Customer Group.",
+            "description": "The id of the Batch Job",
             "schema": {
               "type": "string"
             }
           }
         ],
         "tags": [
-          "CustomerGroup"
+          "Batch Job"
         ],
         "responses": {
           "200": {
@@ -517,104 +588,8 @@
               "application/json": {
                 "schema": {
                   "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "operationId": "PostCustomerGroupsGroup",
-        "summary": "Update a CustomerGroup",
-        "description": "Update a CustomerGroup.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "CustomerGroup"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customer_group": {
-                      "$ref": "#/components/schemas/customer_group"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "description": "Name of the customer group"
-                  },
-                  "metadata": {
-                    "type": "object",
-                    "description": "Metadata for the customer."
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/customer-groups/{id}/customers": {
-      "get": {
-        "operationId": "GetCustomerGroupsGroupCustomers",
-        "summary": "List Customers",
-        "description": "Retrieves a list of Customers.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the customer group.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Customer"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "customers": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/customer"
-                      }
+                    "batch_job": {
+                      "$ref": "#/components/schemas/batch_job"
                     }
                   }
                 }
@@ -1318,90 +1293,6 @@
                   "properties": {
                     "customer": {
                       "$ref": "#/components/schemas/customer"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/apps/authorize-app": {
-      "post": {
-        "operationId": "PostApps",
-        "summary": "Generates a token for an application.",
-        "description": "Generates a token for an application.",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "application_name",
-                  "state",
-                  "code"
-                ],
-                "properties": {
-                  "application_name": {
-                    "type": "string",
-                    "description": "Name of the application for the token to be generated for."
-                  },
-                  "state": {
-                    "type": "string",
-                    "description": "State of the application."
-                  },
-                  "code": {
-                    "type": "string",
-                    "description": "The code for the generated token."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Apps"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "apps": {
-                      "$ref": "#/components/schemas/OAuth"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/apps": {
-      "get": {
-        "operationId": "GetApps",
-        "summary": "List applications",
-        "description": "Retrieve a list of applications.",
-        "x-authenticated": true,
-        "tags": [
-          "Apps"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "apps": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/OAuth"
-                      }
                     }
                   }
                 }
@@ -2520,6 +2411,465 @@
         }
       }
     },
+    "/customer-groups/{id}/customers/batch": {
+      "post": {
+        "operationId": "PostCustomerGroupsGroupCustomersBatch",
+        "summary": "Add a list of customers to a customer group ",
+        "description": "Adds a list of customers, represented by id's, to a customer group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customer_ids": {
+                    "description": "The ids of the customers to add",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "DeleteCustomerGroupsGroupCustomerBatch",
+        "summary": "Remove a list of customers from a customer group ",
+        "description": "Removes a list of customers, represented by id's, from a customer group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "customer_ids": {
+                    "description": "The ids of the customers to remove",
+                    "type": "array",
+                    "items": {
+                      "required": [
+                        "id"
+                      ],
+                      "properties": {
+                        "id": {
+                          "description": "Id of the customer",
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups": {
+      "post": {
+        "operationId": "PostCustomerGroups",
+        "summary": "Create a CustomerGroup",
+        "description": "Creates a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the customer group"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomerGroups",
+        "summary": "Retrieve a list of customer groups",
+        "description": "Retrieve a list of customer groups.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "description": "Query used for searching user group names.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "description": "How many groups to skip in the result.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "description": "Ids of the groups to search for.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "order",
+            "description": "the field used to order the customer groups.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_at",
+            "description": "Date comparison for when resulting customer group was created, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "updated_at",
+            "description": "Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.",
+            "schema": {
+              "type": "object"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "description": "Limit the number of customer groups returned.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expand",
+            "description": "(Comma separated) Which fields should be expanded in each customer groups of the result.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_groups": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/customer_group"
+                      }
+                    },
+                    "count": {
+                      "type": "integer",
+                      "description": "The total number of items available"
+                    },
+                    "offset": {
+                      "type": "integer",
+                      "description": "The number of items skipped before these items"
+                    },
+                    "limit": {
+                      "type": "integer",
+                      "description": "The number of items per page"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}": {
+      "delete": {
+        "operationId": "DeleteCustomerGroupsCustomerGroup",
+        "summary": "Delete a CustomerGroup",
+        "description": "Deletes a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "The id of the deleted customer group."
+                    },
+                    "object": {
+                      "type": "string",
+                      "description": "The type of the object that was deleted."
+                    },
+                    "deleted": {
+                      "type": "boolean",
+                      "description": "Whether the customer group was deleted successfully or not."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetCustomerGroupsGroup",
+        "summary": "Retrieve a CustomerGroup",
+        "description": "Retrieves a Customer Group.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the Customer Group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "PostCustomerGroupsGroup",
+        "summary": "Update a CustomerGroup",
+        "description": "Update a CustomerGroup.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "CustomerGroup"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customer_group": {
+                      "$ref": "#/components/schemas/customer_group"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the customer group"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Metadata for the customer."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customer-groups/{id}/customers": {
+      "get": {
+        "operationId": "GetCustomerGroupsGroupCustomers",
+        "summary": "List Customers",
+        "description": "Retrieves a list of Customers.",
+        "x-authenticated": true,
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "The id of the customer group.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": [
+          "Customer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "customers": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/customer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/draft-orders": {
       "post": {
         "operationId": "PostDraftOrders",
@@ -3146,356 +3496,6 @@
                   "properties": {
                     "draft_order": {
                       "$ref": "#/components/schemas/draft-order"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}/cancel": {
-      "post": {
-        "operationId": "PostBatchJobsBatchJobCancel",
-        "summary": "Marks a batch job as canceled",
-        "description": "Marks a batch job as canceled",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the batch job.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}/confirm": {
-      "post": {
-        "operationId": "PostBatchJobsBatchJobConfirmProcessing",
-        "summary": "Confirm a batch job",
-        "description": "Confirms that a previously requested batch job should be executed.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the batch job.",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs": {
-      "post": {
-        "operationId": "PostBatchJobs",
-        "summary": "Create a Batch Job",
-        "description": "Creates a Batch Job.",
-        "x-authenticated": true,
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "required": [
-                  "type",
-                  "context"
-                ],
-                "properties": {
-                  "type": {
-                    "type": "string",
-                    "description": "The type of batch job to start."
-                  },
-                  "context": {
-                    "type": "object",
-                    "description": "Additional infomration regarding the batch to be used for processing."
-                  },
-                  "dry_run": {
-                    "type": "boolean",
-                    "description": "Set a batch job in dry_run mode to get some information on what will be done without applying any modifications."
-                  }
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "201": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "operationId": "GetBatchJobs",
-        "summary": "List Batch Jobs",
-        "description": "Retrieve a list of Batch Jobs.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "query",
-            "name": "limit",
-            "description": "The number of batch jobs to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "offset",
-            "description": "The offset of batch jobs to return.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "type",
-            "style": "form",
-            "explode": false,
-            "description": "Filter by the batch type",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "in": "query",
-            "name": "confirmed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was confirmed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "pre_processed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was pre processed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "completed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was completed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "failed_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was failed, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "canceled_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was canceled, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "order",
-            "description": "Order used when retrieving batch jobs",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "expand",
-            "description": "(Comma separated) Which fields should be expanded in each order of the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "fields",
-            "description": "(Comma separated) Which fields should be included in each order of the result.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "in": "query",
-            "name": "deleted_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was deleted, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "created_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was created, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          },
-          {
-            "in": "query",
-            "name": "updated_at",
-            "style": "form",
-            "explode": false,
-            "description": "Date comparison for when resulting collections was updated, i.e. less than, greater than etc.",
-            "schema": {
-              "type": "object",
-              "nullable": true
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_jobs": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/batch_job"
-                      }
-                    },
-                    "count": {
-                      "type": "integer",
-                      "description": "The total number of items available"
-                    },
-                    "offset": {
-                      "type": "integer",
-                      "description": "The number of items skipped before these items"
-                    },
-                    "limit": {
-                      "type": "integer",
-                      "description": "The number of items per page"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/batch-jobs/{id}": {
-      "get": {
-        "operationId": "GetBatchJobsBatchJob",
-        "summary": "Retrieve a Batch Job",
-        "description": "Retrieves a Batch Job.",
-        "x-authenticated": true,
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "description": "The id of the Batch Job",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "tags": [
-          "Batch Job"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "batch_job": {
-                      "$ref": "#/components/schemas/batch_job"
                     }
                   }
                 }
