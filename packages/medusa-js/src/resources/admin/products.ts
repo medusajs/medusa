@@ -33,7 +33,7 @@ class AdminProductsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsRes> {
     const path = `/admin/products/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   update(
@@ -50,7 +50,7 @@ class AdminProductsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsDeleteRes> {
     const path = `/admin/products/${id}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   list(
@@ -64,21 +64,21 @@ class AdminProductsResource extends BaseResource {
       path = `/admin/products?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   listTypes(
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsListTypesRes> {
     const path = `/admin/products/types`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   listTags(
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsListTagsRes> {
     const path = `/admin/products/tag-usage`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   setMetadata(
@@ -115,7 +115,7 @@ class AdminProductsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsDeleteVariantRes> {
     const path = `/admin/products/${id}/variants/${variantId}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   addOption(
@@ -143,7 +143,7 @@ class AdminProductsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminProductsDeleteOptionRes> {
     const path = `/admin/products/${id}/options/${optionId}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 }
 

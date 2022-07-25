@@ -13,6 +13,7 @@ import {
   Selector,
   WithRequiredProperty,
 } from "../types/common"
+import { SalesChannel } from "../models";
 
 export type ProductSelector = Omit<Selector<Product>, "tags"> & {
   tags: FindOperator<string[]>
@@ -26,6 +27,7 @@ export type DefaultWithoutRelations = Omit<
 export type FindWithoutRelationsOptions = DefaultWithoutRelations & {
   where: DefaultWithoutRelations["where"] & {
     price_list_id?: FindOperator<PriceList>
+    sales_channel_id?: FindOperator<SalesChannel>
   }
 }
 
@@ -49,6 +51,9 @@ export class ProductRepository extends Repository<Product> {
 
     const price_lists = optionsWithoutRelations?.where?.price_list_id
     delete optionsWithoutRelations?.where?.price_list_id
+
+    const sales_channels = optionsWithoutRelations?.where?.sales_channel_id
+    delete optionsWithoutRelations?.where?.sales_channel_id
 
     const qb = this.createQueryBuilder("product")
       .select(["product.id"])
@@ -86,6 +91,15 @@ export class ProductRepository extends Repository<Product> {
         .andWhere("ma.price_list_id IN (:...price_list_ids)", {
           price_list_ids: price_lists.value,
         })
+    }
+
+    if (sales_channels) {
+      qb.innerJoin(
+        "product.sales_channels",
+        "sales_channels",
+        "sales_channels.id IN (:...sales_channels_ids)",
+        { sales_channels_ids: sales_channels.value }
+      )
     }
 
     if (optionsWithoutRelations.withDeleted) {

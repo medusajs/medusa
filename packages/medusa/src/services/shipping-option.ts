@@ -131,14 +131,11 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     selector: Selector<ShippingMethod>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<ShippingOption[]> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const optRepo = transactionManager.getCustomRepository(
-        this.optionRepository_
-      )
+    const manager = this.manager_
+    const optRepo = manager.getCustomRepository(this.optionRepository_)
 
-      const query = buildQuery(selector, config)
-      return optRepo.find(query)
-    })
+    const query = buildQuery(selector, config)
+    return optRepo.find(query)
   }
 
   /**
@@ -150,14 +147,11 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     selector: Selector<ShippingMethod>,
     config: FindConfig<ShippingOption> = { skip: 0, take: 50 }
   ): Promise<[ShippingOption[], number]> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const optRepo = transactionManager.getCustomRepository(
-        this.optionRepository_
-      )
+    const manager = this.manager_
+    const optRepo = manager.getCustomRepository(this.optionRepository_)
 
-      const query = buildQuery(selector, config)
-      return await optRepo.findAndCount(query)
-    })
+    const query = buildQuery(selector, config)
+    return await optRepo.findAndCount(query)
   }
 
   /**
@@ -171,33 +165,33 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
     optionId,
     options: { select?: (keyof ShippingOption)[]; relations?: string[] } = {}
   ): Promise<ShippingOption> {
-    return await this.atomicPhase_(async (transactionManager) => {
-      const soRepo: ShippingOptionRepository =
-        transactionManager.getCustomRepository(this.optionRepository_)
+    const manager = this.manager_
+    const soRepo: ShippingOptionRepository = manager.getCustomRepository(
+      this.optionRepository_
+    )
 
-      const query: ExtendedFindConfig<ShippingOption> = {
-        where: { id: optionId },
-      }
+    const query: ExtendedFindConfig<ShippingOption> = {
+      where: { id: optionId },
+    }
 
-      if (options.select) {
-        query.select = options.select
-      }
+    if (options.select) {
+      query.select = options.select
+    }
 
-      if (options.relations) {
-        query.relations = options.relations
-      }
+    if (options.relations) {
+      query.relations = options.relations
+    }
 
-      const option = await soRepo.findOne(query)
+    const option = await soRepo.findOne(query)
 
-      if (!option) {
-        throw new MedusaError(
-          MedusaError.Types.NOT_FOUND,
-          `Shipping Option with ${optionId} was not found`
-        )
-      }
+    if (!option) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `Shipping Option with ${optionId} was not found`
+      )
+    }
 
-      return option
-    })
+    return option
   }
 
   /**
@@ -269,7 +263,7 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
       const methodRepo = manager.getCustomRepository(this.methodRepository_)
 
       if (typeof config.cart !== "undefined") {
-        this.validateCartOption(option, config.cart)
+        await this.validateCartOption(option, config.cart)
       }
 
       const validatedData = await this.providerService_.validateFulfillmentData(
@@ -334,10 +328,10 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
    * @param {Cart} cart - the cart object to check against
    * @return {ShippingOption} the validated shipping option
    */
-  validateCartOption(
+  async validateCartOption(
     option: ShippingOption,
     cart: Cart
-  ): ShippingOption | null {
+  ): Promise<ShippingOption | null> {
     if (option.is_return) {
       return null
     }
@@ -370,6 +364,8 @@ class ShippingOptionService extends TransactionBaseService<ShippingOptionService
         "The Cart does not satisfy the shipping option's requirements"
       )
     }
+
+    option.amount = await this.getPrice_(option, option.data, cart)
 
     return option
   }
