@@ -24,7 +24,7 @@ class AdminSalesChannelsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /* *
@@ -72,7 +72,7 @@ class AdminSalesChannelsResource extends BaseResource {
       path += `?${queryString}`
     }
 
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**
@@ -87,7 +87,7 @@ class AdminSalesChannelsResource extends BaseResource {
     customHeaders: Record<string, any> = {}
   ): ResponsePromise<AdminSalesChannelsDeleteRes> {
     const path = `/admin/sales-channels/${salesChannelId}`
-    return this.client.request("DELETE", path, {}, {}, customHeaders)
+    return this.client.request("DELETE", path, undefined, {}, customHeaders)
   }
 
   /**
