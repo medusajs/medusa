@@ -75,7 +75,7 @@ export class SalesChannelRepository extends Repository<SalesChannel> {
 
   protected async findNonExistingProductAndThrow(productIds: string[]): Promise<void | never> {
       const existingProducts = await this.manager.createQueryBuilder()
-      .select()
+      .select("id")
       .from(Product, "product")
       .where("product.id IN (...ids)", {
         ids: In(productIds)
