@@ -862,7 +862,7 @@ class ProductService extends TransactionBaseService<
   private async handleCreateOrUpdateWithSalesChannelErrorIfNecessary(
     salesChannelIds: string[]
   ): Promise<never | void> {
-    if (salesChannelIds?.length) {
+    if (salesChannelIds.length) {
       const [existingSalesChannels] = await this.salesChannelService_
         .withTransaction(this.manager_)
         .listAndCount({
@@ -875,8 +875,8 @@ class ProductService extends TransactionBaseService<
 
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `The following sales channels ids do not exist: ${JSON.stringify(
-          nonExistingSalesChannels.join(", ")
+        `The following sales channels ids do not exist: ${nonExistingSalesChannels.join(
+          ", "
         )}`
       )
     }
