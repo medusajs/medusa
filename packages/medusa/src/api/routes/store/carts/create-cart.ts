@@ -181,7 +181,7 @@ async function getSalesChannel(req: Request, manager: EntityManager, data: Store
   if (salesChannel.is_disabled) {
     throw new MedusaError(
       MedusaError.Types.INVALID_DATA,
-      `The given sales channel "${salesChannel.name}" is disabled and cannot be assign to a cart.`
+      `The given sales channel "${salesChannel.name}" is disabled and the cart cannot be assigned to a it.`
     )
   }
 
