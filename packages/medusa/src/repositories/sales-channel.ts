@@ -5,8 +5,9 @@ import {
   In,
   Repository,
 } from "typeorm"
-import { SalesChannel } from "../models"
-import { ExtendedFindConfig, Selector } from "../types/common"
+import { Product, SalesChannel } from "../models"
+import { ExtendedFindConfig, Selector } from "../types/common";
+import { MedusaError } from "medusa-core-utils";
 
 @EntityRepository(SalesChannel)
 export class SalesChannelRepository extends Repository<SalesChannel> {
@@ -58,6 +59,7 @@ export class SalesChannelRepository extends Repository<SalesChannel> {
     salesChannelId: string,
     productIds: string[]
   ): Promise<void> {
+    await this.findNonExistingProductAndThrow(productIds)
     await this.createQueryBuilder()
       .insert()
       .into("product_sales_channel")
@@ -69,5 +71,28 @@ export class SalesChannelRepository extends Repository<SalesChannel> {
       )
       .orIgnore()
       .execute()
+  }
+
+  protected async findNonExistingProductAndThrow(productIds: string[]): Promise<void | never> {
+      const existingProducts = await this.manager.createQueryBuilder()
+      .select()
+      .from(Product, "product")
+      .where("product.id IN (...ids)", {
+        ids: In(productIds)
+      })
+      .getMany()
+
+    const nonExistingProducts = productIds.filter(
+      (cId) => existingProducts.findIndex((el) => el.id === cId) === -1
+    )
+
+    if (nonExistingProducts.length) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_FOUND,
+        `The following product ids do not exist: ${JSON.stringify(
+          nonExistingProducts.join(", ")
+        )}`
+      )
+    }
   }
 }
