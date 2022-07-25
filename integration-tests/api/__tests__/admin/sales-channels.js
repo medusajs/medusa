@@ -12,6 +12,8 @@ const {
   simpleCartFactory,
 } = require("../../factories")
 const { simpleOrderFactory } = require("../../factories")
+const orderSeeder = require("../../helpers/order-seeder");
+const productSeeder = require("../../helpers/product-seeder");
 
 const startServerWithEnvironment =
   require("../../../helpers/start-server-with-environment").default
@@ -664,17 +666,15 @@ describe("sales channels", () => {
     beforeEach(async() => {
       try {
         await adminSeeder(dbConnection)
-        salesChannel = await simpleSalesChannelFactory(dbConnection, {
-          name: "test name",
-          description: "test description",
-        })
         product = await simpleProductFactory(dbConnection, {
           id: "product_1",
           title: "test title",
         })
-        await dbConnection.manager.query(`
-          INSERT INTO product_sales_channel VALUES ('${product.id}', '${salesChannel.id}')
-        `)
+        salesChannel = await simpleSalesChannelFactory(dbConnection, {
+          name: "test name",
+          description: "test description",
+          products: [product]
+        })
       } catch (e) {
         console.error(e)
       }
@@ -809,6 +809,110 @@ describe("sales channels", () => {
           })
         ])
       )
+    })
+  })
+
+  describe("/admin/orders using sales channels", () => {
+    describe("GET /admin/orders", () => {
+      let order
+
+      beforeEach(async() => {
+        try {
+          await adminSeeder(dbConnection)
+          order = await simpleOrderFactory(dbConnection, {
+            sales_channel: {
+              name: "test name",
+              description: "test description",
+            },
+          })
+          await orderSeeder(dbConnection)
+        } catch (err) {
+          console.log(err)
+          throw err
+        }
+      })
+
+      afterEach(async() => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("should successfully lists orders that belongs to the requested sales channels", async() => {
+        const api = useApi()
+
+        const response = await api.get(
+            `/admin/orders?sales_channel_id[]=${order.sales_channel_id}`,
+            {
+              headers: {
+                authorization: "Bearer test_token",
+              },
+            }
+        )
+
+        expect(response.status).toEqual(200)
+        expect(response.data.orders.length).toEqual(1)
+        expect(response.data.orders).toEqual([
+          expect.objectContaining({
+            id: order.id,
+          }),
+        ])
+      })
+    })
+  })
+
+  describe("/admin/products using sales channels", () => {
+    describe("GET /admin/products", () => {
+      const productData = {
+        id: "product-sales-channel-1",
+        title: "test description",
+      }
+      let salesChannel
+
+      beforeEach(async () => {
+        try {
+          await productSeeder(dbConnection)
+          await adminSeeder(dbConnection)
+          const product = await simpleProductFactory(dbConnection, productData)
+          salesChannel = await simpleSalesChannelFactory(dbConnection, {
+            name: "test name",
+            description: "test description",
+            products: [product]
+          })
+        } catch (err) {
+          console.log(err)
+          throw err
+        }
+      })
+
+      afterEach(async() => {
+        const db = useDb()
+        await db.teardown()
+      })
+
+      it("should returns a list of products that belongs to the requested sales channels", async() => {
+        const api = useApi()
+
+        const response = await api
+            .get(`/admin/products?sales_channel_id[]=${salesChannel.id}`, {
+              headers: {
+                Authorization: "Bearer test_token",
+              },
+            })
+            .catch((err) => {
+              console.log(err)
+            })
+
+        expect(response.status).toEqual(200)
+        expect(response.data.products.length).toEqual(1)
+        expect(response.data.products).toEqual(
+            expect.arrayContaining([
+              expect.objectContaining({
+                id: productData.id,
+                title: productData.title
+              }),
+            ])
+        )
+      })
     })
   })
 })

@@ -46,7 +46,7 @@ export type OrderFactoryData = {
 export const simpleOrderFactory = async (
   connection: Connection,
   data: OrderFactoryData = {},
-  seed: number
+  seed?: number
 ): Promise<Order> => {
   if (typeof seed !== "undefined") {
     faker.seed(seed)

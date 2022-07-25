@@ -16,7 +16,7 @@ class ProductVariantsResource extends BaseResource {
    */
   retrieve(id: string, customHeaders: Record<string, any> = {}): ResponsePromise<StoreVariantsRes> {
     const path = `/store/variants/${id}`
-    return this.client.request("GET", path, {}, {}, customHeaders)
+    return this.client.request("GET", path, undefined, {}, customHeaders)
   }
 
   /**

@@ -146,7 +146,7 @@ export class Product extends SoftDeletableEntity {
   metadata: Record<string, unknown> | null
 
   @FeatureFlagDecorators("sales_channels", [
-    ManyToMany(() => SalesChannel, { cascade: true }),
+    ManyToMany(() => SalesChannel, { cascade: ["remove", "soft-remove"] }),
     JoinTable({
       name: "product_sales_channel",
       joinColumn: {

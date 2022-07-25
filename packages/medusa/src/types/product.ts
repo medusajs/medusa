@@ -68,6 +68,10 @@ export class FilterableProductProps {
   @IsOptional()
   type?: string
 
+  @IsArray()
+  @IsOptional()
+  sales_channel_id?: string[]
+
   @IsOptional()
   @ValidateNested()
   @Type(() => DateComparisonOperator)
