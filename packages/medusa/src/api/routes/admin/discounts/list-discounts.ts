@@ -22,7 +22,21 @@ import { validator } from "../../../../utils/validator"
  * x-authenticated: true
  * description: "Retrieves a list of Discounts"
  * parameters:
- *   - (query) q {string} Search query applied on results.
+ *   - (query) q {string} Search query applied on the code field.
+ *   - in: query
+ *     name: rule
+ *     description: Discount Rules filters to apply on the search
+ *     schema:
+ *       type: object
+ *       properties:
+ *         type:
+ *           type: string
+ *           enum: [fixed, percentage, free_shipping]
+ *           description: "The type of the Discount, can be `fixed` for discounts that reduce the price by a fixed amount, `percentage` for percentage reductions or `free_shipping` for shipping vouchers."
+ *         allocation:
+ *           type: string
+ *           enum: [total, item]
+ *           description: "The value that the discount represents; this will depend on the type of the discount"
  *   - (query) is_dynamic {boolean} Return only dynamic discounts.
  *   - (query) is_disabled {boolean} Return only disabled discounts.
  *   - (query) limit {number} The number of items in the response
@@ -41,6 +55,15 @@ import { validator } from "../../../../utils/validator"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/discount"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const validated = await validator(AdminGetDiscountsParams, req.query)

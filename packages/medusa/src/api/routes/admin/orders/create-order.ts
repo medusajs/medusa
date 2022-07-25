@@ -1,18 +1,20 @@
-import { Type } from "class-transformer"
 import {
-  IsEmail,
-  IsOptional,
-  ValidateNested,
   IsArray,
-  IsString,
   IsBoolean,
-  IsObject,
+  IsEmail,
   IsInt,
   IsNotEmpty,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
 } from "class-validator"
-import { OrderService } from "../../../../services"
+
 import { AddressPayload } from "../../../../types/common"
+import { OrderService } from "../../../../services"
+import { Type } from "class-transformer"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [post] /orders
  * operationId: "PostOrders"
@@ -36,9 +38,11 @@ import { validator } from "../../../../utils/validator"
  *           status:
  *             description: status of the order
  *             type: string
+ *             enum: [pending, completed, archived, canceled, requires_action]
  *           email:
  *             description: the email for the order
  *             type: string
+ *             format: email
  *           billing_address:
  *             description: Billing address
  *             anyOf:
@@ -53,15 +57,15 @@ import { validator } from "../../../../utils/validator"
  *             items:
  *               $ref: "#/components/schemas/line_item"
  *           region:
- *             description: Region where the order belongs
+ *             description: ID of Region where the order belongs
  *             type: string
  *           discounts:
  *             description: Discounts applied to the order
  *             type: array
  *             items:
- *               $ref: "#/components/schemas/line_item"
+ *               $ref: "#/components/schemas/discount"
  *           customer_id:
- *             description: id of the customer
+ *             description: ID of the customer
  *             type: string
  *           payment_method:
  *             description: payment method chosen for the order

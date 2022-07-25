@@ -1,10 +1,10 @@
 import { IsObject, IsOptional, IsString } from "class-validator"
-import { defaultAdminCustomerGroupsRelations } from "."
+import { Request, Response } from "express"
 
 import { CustomerGroupService } from "../../../../services"
 import { FindParams } from "../../../../types/common"
+import { defaultAdminCustomerGroupsRelations } from "."
 import { validator } from "../../../../utils/validator"
-import { Request, Response } from "express"
 
 /**
  * @oas [post] /customer-groups/{id}
@@ -14,7 +14,7 @@ import { Request, Response } from "express"
  * x-authenticated: true
  * parameters:
  *   - (path) id=* {string} The id of the customer group.
- *   - (body) name=* {string} Name of the customer group
+ *   - (body) name {string} Name of the customer group
  *   - (body) metadata {object} Metadata for the customer.
  * tags:
  *   - CustomerGroup

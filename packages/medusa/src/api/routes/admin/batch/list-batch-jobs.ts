@@ -14,8 +14,8 @@ import { pickBy } from "lodash"
  * description: "Retrieve a list of Batch Jobs."
  * x-authenticated: true
  * parameters:
- *   - (query) limit {string} The number of collections to return.
- *   - (query) offset {string} The offset of collections to return.
+ *   - (query) limit {string} The number of batch jobs to return.
+ *   - (query) offset {string} The offset of batch jobs to return.
  *   - in: query
  *     name: type
  *     style: form
@@ -66,8 +66,8 @@ import { pickBy } from "lodash"
  *       type: object
  *       nullable: true
  *   - (query) order {string} Order used when retrieving batch jobs
- *   - (query) expand[] {string} (Comma separated) Which fields should be expanded in each order of the result.
- *   - (query) fields[] {string} (Comma separated) Which fields should be included in each order of the result.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each order of the result.
+ *   - (query) fields {string} (Comma separated) Which fields should be included in each order of the result.
  *   - in: query
  *     name: deleted_at
  *     style: form
@@ -105,6 +105,15 @@ import { pickBy } from "lodash"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/batch_job"
+ *            count:
+ *               type: integer
+ *               description: The total number of items available
+ *            offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *            limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res) => {
   const batchService: BatchJobService = req.scope.resolve("batchJobService")

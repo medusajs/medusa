@@ -1,5 +1,6 @@
-import ProductCollectionService from "../../../../services/product-collection"
 import { Request, Response } from "express"
+
+import ProductCollectionService from "../../../../services/product-collection"
 
 /**
  * @oas [delete] /collections/{id}
@@ -26,6 +27,7 @@ import { Request, Response } from "express"
  *              description: The type of the object that was deleted.
  *            deleted:
  *              type: boolean
+ *              description: Whether the collection was deleted successfully or not.
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

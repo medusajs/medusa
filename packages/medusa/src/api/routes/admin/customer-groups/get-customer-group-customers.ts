@@ -1,5 +1,6 @@
-import CustomerController from "../../../../controllers/customers"
 import { Request, Response } from "express"
+
+import CustomerController from "../../../../controllers/customers"
 
 /**
  * @oas [get] /customer-groups/{id}/customers
@@ -18,8 +19,10 @@ import { Request, Response } from "express"
  *       application/json:
  *         schema:
  *           properties:
- *             customer:
- *               $ref: "#/components/schemas/customer"
+ *             customers:
+ *               type: array
+ *               items:
+ *                  $ref: "#/components/schemas/customer"
  */
 export default async (req: Request, res: Response) => {
   const { id } = req.params

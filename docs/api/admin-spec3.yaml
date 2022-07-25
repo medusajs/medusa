@@ -207,7 +207,27 @@ paths:
       summary: Create a Batch Job
       description: Creates a Batch Job.
       x-authenticated: true
-      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - type
+                - context
+              properties:
+                type:
+                  type: string
+                  description: The type of batch job to start.
+                context:
+                  type: object
+                  description: >-
+                    Additional infomration regarding the batch to be used for
+                    processing.
+                dry_run:
+                  type: boolean
+                  description: >-
+                    Set a batch job in dry_run mode to get some information on
+                    what will be done without applying any modifications.
       tags:
         - Batch Job
       responses:
@@ -219,29 +239,6 @@ paths:
                 properties:
                   batch_job:
                     $ref: '#/components/schemas/batch_job'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - type
-                - context
-                - dry_run
-              properties:
-                type:
-                  type: string
-                  description: The type of batch job to start.
-                context:
-                  type: string
-                  description: >-
-                    Additional infomration regarding the batch to be used for
-                    processing.
-                dry_run:
-                  type: boolean
-                  description: >-
-                    Set a batch job in dry_run mode to get some information on
-                    what will be done without applying any modifications.
     get:
       operationId: GetBatchJobs
       summary: List Batch Jobs
@@ -250,12 +247,12 @@ paths:
       parameters:
         - in: query
           name: limit
-          description: The number of collections to return.
+          description: The number of batch jobs to return.
           schema:
             type: string
         - in: query
           name: offset
-          description: The offset of collections to return.
+          description: The offset of batch jobs to return.
           schema:
             type: string
         - in: query
@@ -323,6 +320,20 @@ paths:
           schema:
             type: string
         - in: query
+          name: expand
+          description: >-
+            (Comma separated) Which fields should be expanded in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: >-
+            (Comma separated) Which fields should be included in each order of
+            the result.
+          schema:
+            type: string
+        - in: query
           name: deleted_at
           style: form
           explode: false
@@ -365,6 +376,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/batch_job'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/batch-jobs/{id}':
     get:
       operationId: GetBatchJobsBatchJob
@@ -411,15 +431,19 @@ paths:
                   description: An array of Product IDs to add to the Product Collection.
                   type: array
                   items:
-                    properties:
-                      id:
-                        description: The ID of a Product to add to the Product Collection.
-                        type: string
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
       tags:
         - Collection
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  collection:
+                    $ref: '#/components/schemas/product_collection'
     delete:
       operationId: DeleteProductsFromCollection
       summary: Removes products associated with a Product Collection
@@ -443,17 +467,29 @@ paths:
                     Collection.
                   type: array
                   items:
-                    properties:
-                      id:
-                        description: >-
-                          The ID of a Product to remove from the Product
-                          Collection.
-                        type: string
+                    description: The ID of a Product to add to the Product Collection.
+                    type: string
       tags:
         - Collection
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: string
+                    description: The ID of the collection
+                  object:
+                    type: string
+                    description: The type of object the removal was executed on
+                  removed_products:
+                    description: The IDs of the products removed from the collection
+                    type: array
+                    items:
+                      description: The ID of a Product to add to the Product Collection.
+                      type: string
   /collections:
     post:
       operationId: PostCollections
@@ -518,6 +554,11 @@ paths:
           schema:
             type: string
         - in: query
+          name: q
+          description: a search term to search titles and handles.
+          schema:
+            type: string
+        - in: query
           name: deleted_at
           description: >-
             Date comparison for when resulting collections was deleted, i.e.
@@ -551,6 +592,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/product_collection'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/collections/{id}':
     delete:
       operationId: DeleteCollectionsCollection
@@ -581,6 +631,7 @@ paths:
                     description: The type of the object that was deleted.
                   deleted:
                     type: boolean
+                    description: Whether the collection was deleted successfully or not.
     get:
       operationId: GetCollectionsCollection
       summary: Retrieve a Product Collection
@@ -645,157 +696,6 @@ paths:
                 properties:
                   collection:
                     $ref: '#/components/schemas/product_collection'
-  /customers:
-    post:
-      operationId: PostCustomers
-      summary: Create a Customer
-      description: Creates a Customer.
-      x-authenticated: true
-      parameters: []
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - email
-                - first_name
-                - last_name
-              properties:
-                email:
-                  type: string
-                  description: The Customer's email address.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-    get:
-      operationId: GetCustomers
-      summary: List Customers
-      description: Retrieves a list of Customers.
-      x-authenticated: true
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customers:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/customer'
-  '/customers/{id}':
-    get:
-      operationId: GetCustomersCustomer
-      summary: Retrieve a Customer
-      description: Retrieves a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
-    post:
-      operationId: PostCustomersCustomer
-      summary: Update a Customer
-      description: Updates a Customer.
-      x-authenticated: true
-      parameters:
-        - in: path
-          name: id
-          required: true
-          description: The id of the Customer.
-          schema:
-            type: string
-        - in: query
-          name: expand
-          style: form
-          explode: false
-          schema:
-            type: array
-            items:
-              type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                email:
-                  type: string
-                  description: >-
-                    The Customer's email. Only providable if user not
-                    registered.
-                first_name:
-                  type: string
-                  description: The Customer's first name.
-                last_name:
-                  type: string
-                  description: The Customer's last name.
-                phone:
-                  type: string
-                  description: The Customer's phone number.
-                password:
-                  type: string
-                  description: The Customer's password.
-                groups:
-                  type: array
-                  items:
-                    required:
-                      - id
-                    properties:
-                      id:
-                        description: The id of a customer group
-                        type: string
-                  description: A list of customer groups to which the customer belongs.
-                metadata:
-                  type: object
-                  description: Metadata for the customer.
-      tags:
-        - Customer
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
   '/customer-groups/{id}/customers/batch':
     post:
       operationId: PostCustomerGroupsGroupCustomersBatch
@@ -814,7 +714,7 @@ paths:
           application/json:
             schema:
               properties:
-                customers:
+                customer_ids:
                   description: The ids of the customers to add
                   type: array
                   items:
@@ -852,7 +752,7 @@ paths:
           application/json:
             schema:
               properties:
-                customers:
+                customer_ids:
                   description: The ids of the customers to remove
                   type: array
                   items:
@@ -928,7 +828,7 @@ paths:
             type: string
         - in: query
           name: order
-          description: to retrieve customer groups in.
+          description: the field used to order the customer groups.
           schema:
             type: string
         - in: query
@@ -970,6 +870,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/customer_group'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/customer-groups/{id}':
     delete:
       operationId: DeleteCustomerGroupsCustomerGroup
@@ -1000,6 +909,9 @@ paths:
                     description: The type of the object that was deleted.
                   deleted:
                     type: boolean
+                    description: >-
+                      Whether the customer group was deleted successfully or
+                      not.
     get:
       operationId: GetCustomerGroupsGroup
       summary: Retrieve a CustomerGroup
@@ -1051,8 +963,7 @@ paths:
           application/json:
             schema:
               type: object
-              required:
-                - name
+              required: !<tag:yaml.org,2002:js/undefined> ''
               properties:
                 name:
                   type: string
@@ -1082,8 +993,10 @@ paths:
             application/json:
               schema:
                 properties:
-                  customer:
-                    $ref: '#/components/schemas/customer'
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
   '/discounts/{id}/regions/{region_id}':
     post:
       operationId: PostDiscountsDiscountRegionsRegion
@@ -1180,25 +1093,44 @@ paths:
                 operator:
                   description: Operator of the condition
                   type: string
-                items:
-                  properties:
-                    products:
-                      type: array
-                      description: list of products
-                    product_types:
-                      type: array
-                      description: list of product types
-                    product_collections:
-                      type: array
-                      description: list of product collections
-                    product_tags:
-                      type: array
-                      description: list of product tags
-                    customer_groups:
-                      type: array
-                      description: list of customer_groups
+                  enum:
+                    - in
+                    - not_in
+                products:
+                  type: array
+                  description: list of product IDs if the condition is applied on products.
+                  items:
+                    type: string
+                product_types:
+                  type: array
+                  description: >-
+                    list of product type IDs if the condition is applied on
+                    product types.
+                  items:
+                    type: string
+                product_collections:
+                  type: array
+                  description: >-
+                    list of product collection IDs if the condition is applied
+                    on product collections.
+                  items:
+                    type: string
+                product_tags:
+                  type: array
+                  description: >-
+                    list of product tag IDs if the condition is applied on
+                    product tags.
+                  items:
+                    type: string
+                customer_groups:
+                  type: array
+                  description: >-
+                    list of customer group IDs if the condition is applied on
+                    customer groups.
+                  items:
+                    type: string
       tags:
-        - Discount
+        - DiscountCondition
       responses:
         '200':
           description: OK
@@ -1236,8 +1168,53 @@ paths:
                     common set of rules.
                 rule:
                   description: The Discount Rule that defines how Discounts are calculated
-                  oneOf:
-                    - $ref: '#/components/schemas/discount_rule'
+                  type: object
+                  required:
+                    - type
+                    - value
+                    - allocation
+                  properties:
+                    description:
+                      type: string
+                      description: A short description of the discount
+                    type:
+                      type: string
+                      description: >-
+                        The type of the Discount, can be `fixed` for discounts
+                        that reduce the price by a fixed amount, `percentage`
+                        for percentage reductions or `free_shipping` for
+                        shipping vouchers.
+                      enum:
+                        - fixed
+                        - percentage
+                        - free_shipping
+                    value:
+                      type: number
+                      description: >-
+                        The value that the discount represents; this will depend
+                        on the type of the discount
+                    allocation:
+                      type: string
+                      description: The scope that the discount should apply to.
+                      enum:
+                        - total
+                        - item
+                    conditions:
+                      type: array
+                      description: >-
+                        A set of conditions that can be used to limit when  the
+                        discount can be used
+                      items:
+                        type: object
+                        required:
+                          - operator
+                        properties:
+                          operator:
+                            type: string
+                            description: Operator of the condition
+                            enum:
+                              - in
+                              - not_in
                 is_disabled:
                   type: boolean
                   description: >-
@@ -1253,6 +1230,10 @@ paths:
                   description: >-
                     The time at which the Discount should no longer be
                     available.
+                valid_duration:
+                  type: string
+                  description: Duration the discount runs between
+                  example: P3Y6M4DT12H30M5S
                 regions:
                   description: >-
                     A list of Region ids representing the Regions in which the
@@ -1287,9 +1268,34 @@ paths:
       parameters:
         - in: query
           name: q
-          description: Search query applied on results.
+          description: Search query applied on the code field.
           schema:
             type: string
+        - in: query
+          name: rule
+          description: Discount Rules filters to apply on the search
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - fixed
+                  - percentage
+                  - free_shipping
+                description: >-
+                  The type of the Discount, can be `fixed` for discounts that
+                  reduce the price by a fixed amount, `percentage` for
+                  percentage reductions or `free_shipping` for shipping
+                  vouchers.
+              allocation:
+                type: string
+                enum:
+                  - total
+                  - item
+                description: >-
+                  The value that the discount represents; this will depend on
+                  the type of the discount
         - in: query
           name: is_dynamic
           description: Return only dynamic discounts.
@@ -1328,6 +1334,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/discount'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/discounts/{id}/dynamic-codes':
     post:
       operationId: PostDiscountsDiscountDynamicCodes
@@ -1361,14 +1376,14 @@ paths:
               type: object
               required:
                 - code
-                - usage_limit
               properties:
                 code:
                   type: string
                   description: The unique code that will be used to redeem the Discount.
                 usage_limit:
                   type: number
-                  description: amount of times the discount can be applied
+                  default: '1'
+                  description: amount of times the discount can be applied.
                 metadata:
                   type: object
                   description: >-
@@ -1393,8 +1408,18 @@ paths:
           description: The id of the DiscountCondition
           schema:
             type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
       tags:
-        - Discount
+        - DiscountCondition
       responses:
         '200':
           description: OK
@@ -1410,9 +1435,12 @@ paths:
                     description: The type of the object that was deleted.
                   deleted:
                     type: boolean
+                    description: >-
+                      Whether the discount condition was deleted successfully or
+                      not.
                   discount:
-                    type: object
                     description: The Discount to which the condition used to belong
+                    $ref: '#/components/schemas/discount'
     get:
       operationId: GetDiscountsDiscountConditionsCondition
       summary: Gets a DiscountCondition
@@ -1488,26 +1516,40 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - id
               properties:
-                items:
-                  properties:
-                    products:
-                      type: array
-                      description: list of products
-                    product_types:
-                      type: array
-                      description: list of product types
-                    product_collections:
-                      type: array
-                      description: list of product collections
-                    product_tags:
-                      type: array
-                      description: list of product tags
-                    customer_groups:
-                      type: array
-                      description: list of customer_groups
+                products:
+                  type: array
+                  description: list of product IDs if the condition is applied on products.
+                  items:
+                    type: string
+                product_types:
+                  type: array
+                  description: >-
+                    list of product type IDs if the condition is applied on
+                    product types.
+                  items:
+                    type: string
+                product_collections:
+                  type: array
+                  description: >-
+                    list of product collection IDs if the condition is applied
+                    on product collections.
+                  items:
+                    type: string
+                product_tags:
+                  type: array
+                  description: >-
+                    list of product tag IDs if the condition is applied on
+                    product tags.
+                  items:
+                    type: string
+                customer_groups:
+                  type: array
+                  description: >-
+                    list of customer group IDs if the condition is applied on
+                    customer groups.
+                  items:
+                    type: string
       tags:
         - Discount
       responses:
@@ -1549,6 +1591,7 @@ paths:
                     description: The type of the object that was deleted.
                   deleted:
                     type: boolean
+                    description: Whether the discount was deleted successfully or not.
     get:
       operationId: GetDiscountsDiscount
       summary: Retrieve a Discount
@@ -1606,8 +1649,57 @@ paths:
                   description: A unique code that will be used to redeem the Discount
                 rule:
                   description: The Discount Rule that defines how Discounts are calculated
-                  oneOf:
-                    - $ref: '#/components/schemas/discount_rule'
+                  type: object
+                  required:
+                    - id
+                  properties:
+                    id:
+                      type: string
+                      description: The ID of the Rule
+                    description:
+                      type: string
+                      description: A short description of the discount
+                    type:
+                      type: string
+                      description: >-
+                        The type of the Discount, can be `fixed` for discounts
+                        that reduce the price by a fixed amount, `percentage`
+                        for percentage reductions or `free_shipping` for
+                        shipping vouchers.
+                      enum:
+                        - fixed
+                        - percentage
+                        - free_shipping
+                    value:
+                      type: number
+                      description: >-
+                        The value that the discount represents; this will depend
+                        on the type of the discount
+                    allocation:
+                      type: string
+                      description: The scope that the discount should apply to.
+                      enum:
+                        - total
+                        - item
+                    conditions:
+                      type: array
+                      description: >-
+                        A set of conditions that can be used to limit when  the
+                        discount can be used
+                      items:
+                        type: object
+                        required:
+                          - operator
+                        properties:
+                          id:
+                            type: string
+                            description: The ID of the Rule
+                          operator:
+                            type: string
+                            description: Operator of the condition
+                            enum:
+                              - in
+                              - not_in
                 is_disabled:
                   type: boolean
                   description: >-
@@ -1623,6 +1715,13 @@ paths:
                   description: >-
                     The time at which the Discount should no longer be
                     available.
+                valid_duration:
+                  type: string
+                  description: Duration the discount runs between
+                  example: P3Y6M4DT12H30M5S
+                usage_limit:
+                  type: number
+                  description: Maximum times the discount can be used
                 regions:
                   description: >-
                     A list of Region ids representing the Regions in which the
@@ -1687,6 +1786,16 @@ paths:
           description: The code of the Discount
           schema:
             type: string
+        - in: query
+          name: expand
+          description: Comma separated list of relations to include in the results.
+          schema:
+            type: string
+        - in: query
+          name: fields
+          description: Comma separated list of fields to include in the results.
+          schema:
+            type: string
       tags:
         - Discount
       responses:
@@ -1698,6 +1807,192 @@ paths:
                 properties:
                   discount:
                     $ref: '#/components/schemas/discount'
+  /customers:
+    post:
+      operationId: PostCustomers
+      summary: Create a Customer
+      description: Creates a Customer.
+      x-authenticated: true
+      parameters: []
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - first_name
+                - last_name
+              properties:
+                email:
+                  type: string
+                  description: The Customer's email address.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+    get:
+      operationId: GetCustomers
+      summary: List Customers
+      description: Retrieves a list of Customers.
+      x-authenticated: true
+      parameters:
+        - in: query
+          name: limit
+          description: The number of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: offset
+          description: The offset of collections to return.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in each customer.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: 'a search term to search email, first_name, and last_name.'
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/customer'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
+  '/customers/{id}':
+    get:
+      operationId: GetCustomersCustomer
+      summary: Retrieve a Customer
+      description: Retrieves a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          description: (Comma separated) Which fields should be expanded in the customer.
+          schema:
+            type: string
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
+    post:
+      operationId: PostCustomersCustomer
+      summary: Update a Customer
+      description: Updates a Customer.
+      x-authenticated: true
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The id of the Customer.
+          schema:
+            type: string
+        - in: query
+          name: expand
+          style: form
+          explode: false
+          schema:
+            type: array
+            items:
+              type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  description: >-
+                    The Customer's email. Only providable if user not
+                    registered.
+                first_name:
+                  type: string
+                  description: The Customer's first name.
+                last_name:
+                  type: string
+                  description: The Customer's last name.
+                phone:
+                  type: string
+                  description: The Customer's phone number.
+                password:
+                  type: string
+                  description: The Customer's password.
+                groups:
+                  type: array
+                  items:
+                    required:
+                      - id
+                    properties:
+                      id:
+                        description: The id of a customer group
+                        type: string
+                  description: A list of customer groups to which the customer belongs.
+                metadata:
+                  type: object
+                  description: Metadata for the customer.
+      tags:
+        - Customer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  customer:
+                    $ref: '#/components/schemas/customer'
   /draft-orders:
     post:
       operationId: PostDraftOrders
@@ -1717,6 +2012,9 @@ paths:
                 status:
                   description: The status of the draft order
                   type: string
+                  enum:
+                    - open
+                    - completed
                 email:
                   description: The email of the customer of the draft order
                   type: string
@@ -1732,6 +2030,9 @@ paths:
                   description: The Line Items that have been received.
                   type: array
                   items:
+                    type: object
+                    required:
+                      - quantity
                     properties:
                       variant_id:
                         description: >-
@@ -1759,6 +2060,9 @@ paths:
                   description: The discounts to add on the draft order
                   type: array
                   items:
+                    type: object
+                    required:
+                      - code
                     properties:
                       code:
                         description: The code of the discount to apply
@@ -1775,6 +2079,9 @@ paths:
                   description: The shipping methods for the draft order
                   type: array
                   items:
+                    type: object
+                    required:
+                      - option_id
                     properties:
                       option_id:
                         description: The id of the shipping option in use
@@ -1808,6 +2115,24 @@ paths:
       summary: List Draft Orders
       description: Retrieves an list of Draft Orders
       x-authenticated: true
+      parameters:
+        - in: query
+          name: offset
+          description: The number of items to skip.
+          schema:
+            type: number
+        - in: query
+          name: limit
+          description: Limit the number of items returned.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: >-
+            a search term to search emails in carts associated with draft orders
+            and display IDs of draft orders
+          schema:
+            type: string
       tags:
         - Draft Order
       responses:
@@ -1821,6 +2146,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/draft-order'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/draft-orders/{id}/line-items':
     post:
       operationId: PostDraftOrdersDraftOrderLineItems
@@ -1901,6 +2235,7 @@ paths:
                     description: The type of the object that was deleted.
                   deleted:
                     type: boolean
+                    description: Whether the draft order was deleted successfully or not.
     get:
       operationId: GetDraftOrdersDraftOrder
       summary: Retrieve a Draft Order
@@ -2002,7 +2337,7 @@ paths:
                 properties:
                   draft_order:
                     $ref: '#/components/schemas/draft-order'
-  '/draft-orders/{id}/register-payment':
+  '/draft-orders/{id}/pay':
     post:
       summary: Registers a payment for a Draft Order
       operationId: PostDraftOrdersDraftOrderRegisterPayment
@@ -2047,6 +2382,9 @@ paths:
                 region_id:
                   type: string
                   description: The id of the Region to create the Draft Order in.
+                country_code:
+                  type: string
+                  description: The 2 character ISO code for the Country.
                 email:
                   type: string
                   description: An email to be used on the Draft Order.
@@ -2062,6 +2400,9 @@ paths:
                   description: An array of Discount codes to add to the Draft Order.
                   type: array
                   items:
+                    type: object
+                    required:
+                      - code
                     properties:
                       code:
                         description: The code that a Discount is identifed by.
@@ -2097,6 +2438,9 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - region_id
+                - value
               properties:
                 value:
                   type: integer
@@ -2116,9 +2460,7 @@ paths:
                     available.
                 region_id:
                   description: The id of the Region in which the Gift Card can be used.
-                  type: array
-                  items:
-                    type: string
+                  type: string
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -2140,6 +2482,22 @@ paths:
       summary: List Gift Cards
       description: Retrieves a list of Gift Cards.
       x-authenticated: true
+      parameters:
+        - in: query
+          name: offset
+          description: The number of items to skip.
+          schema:
+            type: number
+        - in: query
+          name: limit
+          description: Limit the number of items returned.
+          schema:
+            type: string
+        - in: query
+          name: q
+          description: a search term to search by code or display ID
+          schema:
+            type: string
       tags:
         - Gift Card
       responses:
@@ -2153,6 +2511,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/gift_card'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/gift-cards/{id}':
     delete:
       operationId: DeleteGiftCardsGiftCard
@@ -2183,6 +2550,7 @@ paths:
                     description: The type of the object that was deleted.
                   deleted:
                     type: boolean
+                    description: Whether the gift card was deleted successfully or not.
     get:
       operationId: GetGiftCardsGiftCard
       summary: Retrieve a Gift Card
@@ -2243,9 +2611,7 @@ paths:
                     available.
                 region_id:
                   description: The id of the Region in which the Gift Card can be used.
-                  type: array
-                  items:
-                    type: string
+                  type: string
                 metadata:
                   description: >-
                     An optional set of key-value pairs to hold additional
@@ -2295,6 +2661,7 @@ paths:
                     password:
                       description: The desired password for the User
                       type: string
+                      format: password
       tags:
         - Invites
       responses:
@@ -2317,9 +2684,14 @@ paths:
                 user:
                   description: The email for the user to be created.
                   type: string
+                  format: email
                 role:
                   description: The role of the user to be created.
                   type: string
+                  enum:
+                    - admin
+                    - member
+                    - developer
       tags:
         - Invites
       responses:
@@ -2402,6 +2774,10 @@ paths:
         content:
           application/json:
             schema:
+              required:
+                - resource_id
+                - resource_type
+                - value
               properties:
                 resource_id:
                   type: string
@@ -2460,6 +2836,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/note'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/notes/{id}':
     delete:
       operationId: DeleteNotesNote
@@ -2485,6 +2870,9 @@ paths:
                   id:
                     type: string
                     description: The id of the deleted Note.
+                  object:
+                    type: string
+                    description: The type of the object that was deleted.
                   deleted:
                     type: boolean
                     description: Whether or not the Note was deleted.
@@ -2567,28 +2955,35 @@ paths:
             default: 50
         - in: query
           name: fields
-          description: The fields to include in the result set
+          description: Comma separated fields to include in the result set
           schema:
             type: string
         - in: query
           name: expand
-          description: The fields to populate
+          description: Comma separated fields to populate
           schema:
             type: string
         - in: query
           name: event_name
+          description: The name of the event that the notification was sent for.
           schema:
             type: string
         - in: query
           name: resource_type
+          description: The type of resource that the Notification refers to.
           schema:
             type: string
         - in: query
           name: resource_id
+          description: The id of the resource that the Notification refers to.
           schema:
             type: string
         - in: query
           name: to
+          description: >-
+            The address that the Notification was sent to. This will usually be
+            an email address, but represent other addresses such as a chat bot
+            user id
           schema:
             type: string
         - in: query
@@ -2631,8 +3026,8 @@ paths:
               properties:
                 to:
                   description: >-
-                    The address or user identifier that the Notification was
-                    sent to
+                    A new address or user identifier that the Notification
+                    should be sent to
                   type: string
       tags:
         - Notification
@@ -2680,7 +3075,6 @@ paths:
               required:
                 - price
                 - option_id
-                - data
               properties:
                 price:
                   type: integer
@@ -2751,7 +3145,7 @@ paths:
               schema:
                 properties:
                   order:
-                    $ref: '#/components/schemas/claim_order'
+                    $ref: '#/components/schemas/order'
   '/orders/{id}/claims/{claim_id}/fulfillments/{fulfillment_id}/cancel':
     post:
       operationId: PostOrdersClaimFulfillmentsCancel
@@ -2910,7 +3304,7 @@ paths:
               schema:
                 properties:
                   order:
-                    $ref: '#/components/schemas/swap'
+                    $ref: '#/components/schemas/order'
   '/orders/{id}/capture':
     post:
       operationId: PostOrdersOrderCapture
@@ -2994,7 +3388,7 @@ paths:
                   items:
                     type: string
       tags:
-        - Order
+        - Claim
       responses:
         '200':
           description: OK
@@ -3039,6 +3433,9 @@ paths:
                   description: The Claim Items that the Claim will consist of.
                   type: array
                   items:
+                    required:
+                      - item_id
+                      - quantity
                     properties:
                       item_id:
                         description: The id of the Line Item that will be claimed.
@@ -3118,6 +3515,8 @@ paths:
                   description: >-
                     An optional shipping address to send the claim to. Defaults
                     to the parent order's shipping address
+                  anyOf:
+                    - $ref: '#/components/schemas/address'
                 refund_amount:
                   description: >-
                     The amount to refund the Customer when the Claim type is
@@ -3134,7 +3533,7 @@ paths:
                     information.
                   type: object
       tags:
-        - Order
+        - Claim
       responses:
         '200':
           description: OK
@@ -3144,7 +3543,7 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-  '/orders/{id}/fulfillments':
+  '/orders/{id}/fulfillment':
     post:
       operationId: PostOrdersOrderFulfillments
       summary: Create a Fulfillment
@@ -3170,6 +3569,9 @@ paths:
                   description: The Line Items to include in the Fulfillment.
                   type: array
                   items:
+                    required:
+                      - item_id
+                      - quantity
                     properties:
                       item_id:
                         description: The id of Line Item to fulfill.
@@ -3188,7 +3590,7 @@ paths:
                     information.
                   type: object
       tags:
-        - Order
+        - Fulfillment
       responses:
         '200':
           description: OK
@@ -3221,9 +3623,16 @@ paths:
                 status:
                   description: status of the order
                   type: string
+                  enum:
+                    - pending
+                    - completed
+                    - archived
+                    - canceled
+                    - requires_action
                 email:
                   description: the email for the order
                   type: string
+                  format: email
                 billing_address:
                   description: Billing address
                   anyOf:
@@ -3238,15 +3647,15 @@ paths:
                   items:
                     $ref: '#/components/schemas/line_item'
                 region:
-                  description: Region where the order belongs
+                  description: ID of Region where the order belongs
                   type: string
                 discounts:
                   description: Discounts applied to the order
                   type: array
                   items:
-                    $ref: '#/components/schemas/line_item'
+                    $ref: '#/components/schemas/discount'
                 customer_id:
-                  description: id of the customer
+                  description: ID of the customer
                   type: string
                 payment_method:
                   description: payment method chosen for the order
@@ -3309,7 +3718,9 @@ paths:
       parameters:
         - in: query
           name: q
-          description: Query used for searching orders.
+          description: >-
+            Query used for searching orders by shipping address first name,
+            orders' email, and orders' display ID
           schema:
             type: string
         - in: query
@@ -3326,16 +3737,48 @@ paths:
             type: array
             items:
               type: string
+              enum:
+                - pending
+                - completed
+                - archived
+                - canceled
+                - requires_action
         - in: query
           name: fulfillment_status
+          style: form
+          explode: false
           description: Fulfillment status to search for.
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+              enum:
+                - not_fulfilled
+                - fulfilled
+                - partially_fulfilled
+                - shipped
+                - partially_shipped
+                - canceled
+                - returned
+                - partially_returned
+                - requires_action
         - in: query
           name: payment_status
+          style: form
+          explode: false
           description: Payment status to search for.
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+              enum:
+                - captured
+                - awaiting
+                - not_paid
+                - refunded
+                - partially_refunded
+                - canceled
+                - requires_action
         - in: query
           name: display_id
           description: Display id to search for.
@@ -3397,11 +3840,13 @@ paths:
           description: How many orders to skip in the result.
           schema:
             type: string
+            default: '0'
         - in: query
           name: limit
           description: Limit the number of orders returned.
           schema:
             type: string
+            default: '50'
         - in: query
           name: expand
           description: >-
@@ -3429,6 +3874,15 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/order'
+                  count:
+                    type: integer
+                    description: The total number of items available
+                  offset:
+                    type: integer
+                    description: The number of items skipped before these items
+                  limit:
+                    type: integer
+                    description: The number of items per page
   '/orders/{id}/shipment':
     post:
       operationId: PostOrdersOrderShipment
@@ -3513,7 +3967,7 @@ paths:
                     Claim.
                   type: boolean
       tags:
-        - Order
+        - Swap
       responses:
         '200':
           description: OK
@@ -3559,9 +4013,17 @@ paths:
                       quantity:
                         description: The number of items that will be returned
                         type: integer
+                      reason_id:
+                        description: The id of the Return Reason to use.
+                        type: string
+                      note:
+                        description: An optional note with information about the Return.
+                        type: string
                 return_shipping:
                   description: How the Swap will be returned.
                   type: object
+                  required:
+                    - option_id
                   properties:
                     option_id:
                       type: string
@@ -3611,8 +4073,9 @@ paths:
                 allow_backorder:
                   description: 'If true, swaps can be completed with items out of stock'
                   type: boolean
+                  default: true
       tags:
-        - Order
+        - Swap
       responses:
         '200':
           description: OK
@@ -3687,7 +4150,7 @@ paths:
                     Claim.
                   type: boolean
       tags:
-        - Order
+        - Fulfillment
       responses:
         '200':
           description: OK
@@ -3732,7 +4195,7 @@ paths:
                     Claim.
                   type: boolean
       tags:
-        - Order
+        - Fulfillment
       responses:
         '200':
           description: OK
@@ -3800,13 +4263,13 @@ paths:
                   items:
                     $ref: '#/components/schemas/line_item'
                 region:
-                  description: Region where the order belongs
+                  description: ID of the region where the order belongs
                   type: string
                 discounts:
                   description: Discounts applied to the order
                   type: array
                   items:
-                    $ref: '#/components/schemas/line_item'
+                    $ref: '#/components/schemas/discount'
                 customer_id:
                   description: id of the customer
                   type: string
@@ -3880,7 +4343,7 @@ paths:
           schema:
             type: string
       tags:
-        - Order
+        - Swap
       responses:
         '200':
           description: OK
@@ -3890,7 +4353,7 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-  '/orders/{id}/refunds':
+  '/orders/{id}/refund':
     post:
       operationId: PostOrdersOrderRefunds
       summary: Create a Refund
@@ -3918,7 +4381,7 @@ paths:
                   description: The reason for the Refund.
                   type: string
                 note:
-                  description: A not with additional details about the Refund.
+                  description: A note with additional details about the Refund.
                   type: string
                 no_notification:
                   description: >-
@@ -3936,7 +4399,7 @@ paths:
                 properties:
                   order:
                     $ref: '#/components/schemas/order'
-  '/orders/{id}/returns':
+  '/orders/{id}/return':
     post:
       operationId: PostOrdersOrderReturns
       summary: Request a Return
@@ -3962,6 +4425,9 @@ paths:
                   description: The Line Items that will be returned.
                   type: array
                   items:
+                    required:
+                      - item_id
+                      - quantity
                     properties:
                       item_id:
                         description: The id of the Line Item.
@@ -3989,11 +4455,15 @@ paths:
                     price:
                       type: integer
                       description: The price to charge for the Shipping Method.
+                note:
+                  description: An optional note with information about the Return.
+                  type: string
                 receive_now:
                   description: >-
                     A flag to indicate if the Return should be registerd as
                     received immediately.
                   type: boolean
+                  default: false
                 no_notification:
                   description: >-
                     A flag to indicate if no notifications should be emitted
@@ -4041,6 +4511,10 @@ paths:
                   description: The Claim Items that the Claim will consist of.
                   type: array
                   items:
+                    required:
+                      - id
+                      - images
+                      - tags
                     properties:
                       id:
                         description: The id of the Claim Item.
@@ -4068,13 +4542,33 @@ paths:
                         description: A list o tags to add to the Claim Item
                         type: array
                         items:
-                          type: string
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              description: Tag ID
+                            value:
+                              type: string
+                              description: Tag value
                       images:
                         description: >-
                           A list of image URL's that will be associated with the
                           Claim
+                        type: array
                         items:
-                          type: string
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              description: Image ID
+                            url:
+                              type: string
+                              description: Image URL
+                      metadata:
+                        description: >-
+                          An optional set of key-value pairs to hold additional
+                          information.
+                        type: object
                 shipping_methods:
                   description: The Shipping Methods to send the additional Line Items with.
                   type: array
@@ -4102,7 +4596,7 @@ paths:
                     information.
                   type: object
       tags:
-        - Order
+        - Claim
       responses:
         '200':
           description: OK

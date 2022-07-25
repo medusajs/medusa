@@ -1,5 +1,6 @@
-import { CustomerGroupService } from "../../../../services"
 import { Request, Response } from "express"
+
+import { CustomerGroupService } from "../../../../services"
 
 /**
  * @oas [delete] /customer-groups/{id}
@@ -26,6 +27,7 @@ import { Request, Response } from "express"
  *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
+ *               description: Whether the customer group was deleted successfully or not.
  */
 
 export default async (req: Request, res: Response) => {

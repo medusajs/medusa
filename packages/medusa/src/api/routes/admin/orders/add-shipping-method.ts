@@ -6,6 +6,7 @@ import {
   IsString,
 } from "class-validator"
 import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
@@ -19,7 +20,7 @@ import { validator } from "../../../../utils/validator"
  *   - (path) id=* {string} The id of the Order.
  *   - (body) price=* {integer} The price (excluding VAT) that should be charged for the Shipping Method
  *   - (body) option_id=* {string} The id of the Shipping Option to create the Shipping Method from.
- *   - (body) data=* {object} The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
+ *   - (body) data {object} The data required for the Shipping Option to create a Shipping Method. This will depend on the Fulfillment Provider.
  * tags:
  *   - Order
  * responses:

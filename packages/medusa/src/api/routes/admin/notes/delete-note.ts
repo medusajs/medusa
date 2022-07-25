@@ -20,6 +20,9 @@ import NoteService from "../../../../services/note"
  *             id:
  *               type: string
  *               description: The id of the deleted Note.
+ *             object:
+ *               type: string
+ *               description: The type of the object that was deleted.
  *             deleted:
  *               type: boolean
  *               description: Whether or not the Note was deleted.

@@ -1,6 +1,7 @@
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
 import { ClaimService, OrderService } from "../../../../services"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
+import { MedusaError } from "medusa-core-utils"
 
 /**
  * @oas [post] /orders/{id}/claims/{claim_id}/cancel
@@ -21,7 +22,7 @@ import { ClaimService, OrderService } from "../../../../services"
  *         schema:
  *           properties:
  *             order:
- *               $ref: "#/components/schemas/claim_order"
+ *               $ref: "#/components/schemas/order"
  */
 export default async (req, res) => {
   const { id, claim_id } = req.params

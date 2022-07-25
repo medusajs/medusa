@@ -23,26 +23,32 @@ import { validator } from "../../../../utils/validator"
  *   content:
  *     application/json:
  *       schema:
- *         required:
- *           - id
  *         properties:
- *           items:
- *              properties:
- *                products:
- *                  type: array
- *                  description: list of products
- *                product_types:
- *                  type: array
- *                  description: list of product types
- *                product_collections:
- *                  type: array
- *                  description: list of product collections
- *                product_tags:
- *                  type: array
- *                  description: list of product tags
- *                customer_groups:
- *                  type: array
- *                  description: list of customer_groups
+ *           products:
+ *              type: array
+ *              description: list of product IDs if the condition is applied on products.
+ *              items:
+ *                type: string
+ *           product_types:
+ *              type: array
+ *              description: list of product type IDs if the condition is applied on product types.
+ *              items:
+ *                type: string
+ *           product_collections:
+ *              type: array
+ *              description: list of product collection IDs if the condition is applied on product collections.
+ *              items:
+ *                type: string
+ *           product_tags:
+ *              type: array
+ *              description: list of product tag IDs if the condition is applied on product tags.
+ *              items:
+ *                type: string
+ *           customer_groups:
+ *              type: array
+ *              description: list of customer group IDs if the condition is applied on customer groups.
+ *              items:
+ *                type: string
  * tags:
  *   - Discount
  * responses:

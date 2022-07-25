@@ -1,26 +1,27 @@
-import { Type } from "class-transformer"
-import {
-  Min,
-  IsOptional,
-  IsArray,
-  IsString,
-  IsBoolean,
-  IsObject,
-  IsInt,
-  IsNotEmpty,
-  IsNumber,
-  ValidateNested,
-} from "class-validator"
-import { MedusaError } from "medusa-core-utils"
-import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
 import {
   IdempotencyKeyService,
   OrderService,
   ReturnService,
   SwapService,
 } from "../../../../services"
-import { validator } from "../../../../utils/validator"
+import {
+  IsArray,
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  Min,
+  ValidateNested,
+} from "class-validator"
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { EntityManager } from "typeorm"
+import { MedusaError } from "medusa-core-utils"
+import { Type } from "class-transformer"
+import { validator } from "../../../../utils/validator"
 
 /**
  * @oas [post] /order/{id}/swaps
@@ -51,9 +52,17 @@ import { EntityManager } from "typeorm"
  *                 quantity:
  *                   description: The number of items that will be returned
  *                   type: integer
+ *                 reason_id:
+ *                   description: The id of the Return Reason to use.
+ *                   type: string
+ *                 note:
+ *                   description: An optional note with information about the Return.
+ *                   type: string
  *           return_shipping:
  *             description: How the Swap will be returned.
  *             type: object
+ *             required:
+ *               - option_id
  *             properties:
  *               option_id:
  *                 type: string
@@ -95,8 +104,9 @@ import { EntityManager } from "typeorm"
  *           allow_backorder:
  *             description: If true, swaps can be completed with items out of stock
  *             type: boolean
+ *             default: true
  * tags:
- *   - Order
+ *   - Swap
  * responses:
  *   200:
  *     description: OK

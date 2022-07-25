@@ -1,4 +1,3 @@
-import { Type } from "class-transformer"
 import {
   IsArray,
   IsBoolean,
@@ -11,14 +10,16 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { transformIdableFields } from "medusa-core-utils"
 import {
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
 } from "."
+
+import { AddressPayload } from "../../../../types/common"
 import { DraftOrder } from "../../../.."
 import { DraftOrderService } from "../../../../services"
-import { AddressPayload } from "../../../../types/common"
+import { Type } from "class-transformer"
+import { transformIdableFields } from "medusa-core-utils"
 import { validator } from "../../../../utils/validator"
 /**
  * @oas [post] /draft-orders
@@ -39,6 +40,7 @@ import { validator } from "../../../../utils/validator"
  *           status:
  *             description: "The status of the draft order"
  *             type: string
+ *             enum: [open, completed]
  *           email:
  *             description: "The email of the customer of the draft order"
  *             type: string
@@ -54,6 +56,9 @@ import { validator } from "../../../../utils/validator"
  *             description: The Line Items that have been received.
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                 - quantity
  *               properties:
  *                 variant_id:
  *                   description: The id of the Product Variant to generate the Line Item from.
@@ -77,6 +82,9 @@ import { validator } from "../../../../utils/validator"
  *             description: The discounts to add on the draft order
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                 - code
  *               properties:
  *                 code:
  *                   description: The code of the discount to apply
@@ -91,6 +99,9 @@ import { validator } from "../../../../utils/validator"
  *             description: The shipping methods for the draft order
  *             type: array
  *             items:
+ *               type: object
+ *               required:
+ *                  - option_id
  *               properties:
  *                 option_id:
  *                   description: The id of the shipping option in use

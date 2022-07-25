@@ -5,12 +5,13 @@ import {
   IsOptional,
   IsString,
 } from "class-validator"
-import { defaultAdminOrdersRelations, defaultAdminOrdersFields } from "."
+import { defaultAdminOrdersFields, defaultAdminOrdersRelations } from "."
+
 import { OrderService } from "../../../../services"
 import { validator } from "../../../../utils/validator"
 
 /**
- * @oas [post] /orders/{id}/refunds
+ * @oas [post] /orders/{id}/refund
  * operationId: "PostOrdersOrderRefunds"
  * summary: "Create a Refund"
  * description: "Issues a Refund."
@@ -32,7 +33,7 @@ import { validator } from "../../../../utils/validator"
  *             description: The reason for the Refund.
  *             type: string
  *           note:
- *             description: A not with additional details about the Refund.
+ *             description: A note with additional details about the Refund.
  *             type: string
  *           no_notification:
  *             description: If set to true no notification will be send related to this Refund.

@@ -1,7 +1,8 @@
 import { IsBoolean, IsObject, IsOptional, IsString } from "class-validator"
+
+import { BatchJob } from "../../../../models"
 import BatchJobService from "../../../../services/batch-job"
 import { validator } from "../../../../utils/validator"
-import { BatchJob } from "../../../../models"
 
 /**
  * @oas [post] /batch-jobs
@@ -9,10 +10,23 @@ import { BatchJob } from "../../../../models"
  * summary: "Create a Batch Job"
  * description: "Creates a Batch Job."
  * x-authenticated: true
- * parameters:
- *   - (body) type=* {string} The type of batch job to start.
- *   - (body) context=* {string} Additional infomration regarding the batch to be used for processing.
- *   - (body) dry_run=* {boolean} Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
+ * requestBody:
+ *   content:
+ *    application/json:
+ *      schema:
+ *        required:
+ *          - type
+ *          - context
+ *        properties:
+ *          type:
+ *            type: string
+ *            description: The type of batch job to start.
+ *          context:
+ *            type: object
+ *            description: Additional infomration regarding the batch to be used for processing.
+ *          dry_run:
+ *            type: boolean
+ *            description: Set a batch job in dry_run mode to get some information on what will be done without applying any modifications.
  * tags:
  *   - Batch Job
  * responses:

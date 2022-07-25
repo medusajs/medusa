@@ -15,7 +15,7 @@ import { Type } from "class-transformer"
  *   - (query) q {string} Query used for searching user group names.
  *   - (query) offset {string} How many groups to skip in the result.
  *   - (query) id {string} Ids of the groups to search for.
- *   - (query) order {string} to retrieve customer groups in.
+ *   - (query) order {string} the field used to order the customer groups.
  *   - (query) created_at {object} Date comparison for when resulting customer group was created, i.e. less than, greater than etc.
  *   - (query) updated_at {object} Date comparison for when resulting ustomer group was updated, i.e. less than, greater than etc.
  *   - (query) limit {string} Limit the number of customer groups returned.
@@ -34,6 +34,15 @@ import { Type } from "class-transformer"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/customer_group"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req: Request, res: Response) => {
   const customerGroupService: CustomerGroupService = req.scope.resolve(

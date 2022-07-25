@@ -4,6 +4,7 @@ import NoteService from "../../../../services/note"
 import { Type } from "class-transformer"
 import { selector } from "../../../../types/note"
 import { validator } from "../../../../utils/validator"
+
 /**
  * @oas [get] /notes
  * operationId: "GetNotes"
@@ -27,6 +28,15 @@ import { validator } from "../../../../utils/validator"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/note"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const validated = await validator(AdminGetNotesParams, req.query)

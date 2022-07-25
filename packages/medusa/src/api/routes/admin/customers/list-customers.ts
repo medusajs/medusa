@@ -10,6 +10,12 @@ import customerController from "../../../../controllers/customers"
  * summary: "List Customers"
  * description: "Retrieves a list of Customers."
  * x-authenticated: true
+ * parameters:
+ *   - (query) limit {string} The number of collections to return.
+ *   - (query) offset {string} The offset of collections to return.
+ *   - (query) expand {string} (Comma separated) Which fields should be expanded in each customer.
+ *   - (query) q {string} a search term to search email, first_name, and last_name.
+ *   - (query) groups[] {string} group IDs to search customers by.
  * tags:
  *   - Customer
  * responses:
@@ -23,6 +29,15 @@ import customerController from "../../../../controllers/customers"
  *               type: array
  *               items:
  *                 $ref: "#/components/schemas/customer"
+ *             count:
+ *               type: integer
+ *               description: The total number of items available
+ *             offset:
+ *               type: integer
+ *               description: The number of items skipped before these items
+ *             limit:
+ *               type: integer
+ *               description: The number of items per page
  */
 export default async (req, res) => {
   const result = await customerController.listAndCount(
