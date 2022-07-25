@@ -116,7 +116,7 @@ export default async (req, res) => {
     if (salesChannel.is_disabled) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
-        `The given sales channel "${salesChannel.name}" is disabled and cannot be assign to a cart.`
+        `The given sales channel "${salesChannel.name}" is disabled and the cart cannot be assigned to a it.`
       )
     }
     cartDataToUpdate["sales_channel_id"] = salesChannel.id

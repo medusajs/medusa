@@ -117,7 +117,7 @@ describe("sales channels", () => {
       ).catch(err => err)
 
       expect(err.response.status).toEqual(400)
-      expect(err.response.data.message).toBe(`The given sales channel "${disabledSalesChannel.name}" is disabled and cannot be assign to a cart.`)
+      expect(err.response.data.message).toBe(`The given sales channel "${disabledSalesChannel.name}" is disabled and the cart cannot be assigned to a it.`)
     })
   })
 
@@ -254,7 +254,7 @@ describe("sales channels", () => {
       ).catch(err => err)
 
       expect(err.response.status).toEqual(400)
-      expect(err.response.data.message).toBe(`The given sales channel "${disabledSalesChannel.name}" is disabled and cannot be assign to a cart.`)
+      expect(err.response.data.message).toBe(`The given sales channel "${disabledSalesChannel.name}" is disabled and the cart cannot be assigned to a it.`)
     })
   })
 
