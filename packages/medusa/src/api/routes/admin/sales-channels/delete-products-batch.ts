@@ -28,6 +28,8 @@ import { EntityManager } from "typeorm"
  */
 
 export default async (req: Request, res: Response) => {
+  const validatedBody =
+    req.validatedBody as AdminDeleteSalesChannelsChannelProductsBatchReq
   const { id } = req.params
 
   const salesChannelService: SalesChannelService = req.scope.resolve(
@@ -36,8 +38,6 @@ export default async (req: Request, res: Response) => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const salesChannel = await manager.transaction(async (transactionManager) => {
-    const validatedBody =
-      req.validatedBody as AdminDeleteSalesChannelsChannelProductsBatchReq
     return await salesChannelService
       .withTransaction(transactionManager)
       .removeProducts(

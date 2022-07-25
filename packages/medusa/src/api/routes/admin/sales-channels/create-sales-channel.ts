@@ -28,6 +28,7 @@ import { EntityManager } from "typeorm"
  */
 
 export default async (req: Request, res: Response) => {
+  const validatedBody = req.validatedBody as CreateSalesChannelInput
   const salesChannelService: SalesChannelService = req.scope.resolve(
     "salesChannelService"
   )
@@ -36,7 +37,7 @@ export default async (req: Request, res: Response) => {
   const salesChannel = await manager.transaction(async (transactionManager) => {
     return await salesChannelService
       .withTransaction(transactionManager)
-      .create(req.validatedBody as CreateSalesChannelInput)
+      .create(validatedBody)
   })
 
   res.status(200).json({ sales_channel: salesChannel })

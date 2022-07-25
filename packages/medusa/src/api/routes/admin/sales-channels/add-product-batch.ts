@@ -27,6 +27,9 @@ import { EntityManager } from "typeorm"
  *               $ref: "#/components/schemas/sales_channel"
  */
 export default async (req: Request, res: Response): Promise<void> => {
+  const validatedBody =
+    req.validatedBody as AdminPostSalesChannelsChannelProductsBatchReq
+
   const { id } = req.params
 
   const salesChannelService: SalesChannelService = req.scope.resolve(
@@ -35,8 +38,6 @@ export default async (req: Request, res: Response): Promise<void> => {
 
   const manager: EntityManager = req.scope.resolve("manager")
   const salesChannel = await manager.transaction(async (transactionManager) => {
-    const validatedBody =
-      req.validatedBody as AdminPostSalesChannelsChannelProductsBatchReq
     return await salesChannelService
       .withTransaction(transactionManager)
       .addProducts(
