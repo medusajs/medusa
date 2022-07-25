@@ -14,12 +14,17 @@ export abstract class BaseRepository<TEntity> extends Repository<TEntity> {
       (cId) => existingItems.findIndex((el) => el.id === cId) === -1
     )
 
+    const formattedEntityName = (entity as ClassConstructor<Entity>).name
+      .split(/(?=[A-Z])/)
+      .map((v) => v.toLowerCase())
+      .join(" ")
+
     if (nonExistingItems.length) {
       throw new MedusaError(
         MedusaError.Types.NOT_FOUND,
-        `The following ${(
-          entity as ClassConstructor<Entity>
-        ).name.toLowerCase()} ids do not exist: ${nonExistingItems.join(", ")}`
+        `The following ${formattedEntityName}s ids do not exist: ${nonExistingItems.join(
+          ", "
+        )}`
       )
     }
   }
