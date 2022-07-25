@@ -52,6 +52,7 @@ describe("StripeProviderService", () => {
       },
       {
         api_key: "test",
+        payment_description: "test options description"
       }
     )
 
@@ -77,6 +78,17 @@ describe("StripeProviderService", () => {
         customer: "cus_lebron",
         amount: 100,
         description: 'some description',
+      })
+    })
+
+    it("returns created stripe payment intent for cart with no customer and the options default description", async () => {
+      carts.frCart.customer_id = ""
+      result = await stripeProviderService.createPayment(carts.frCart)
+      expect(result).toEqual({
+        id: "pi_lebron",
+        customer: "cus_lebron",
+        amount: 100,
+        description: "test options description",
       })
     })
   })
