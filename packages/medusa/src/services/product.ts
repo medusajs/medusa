@@ -58,9 +58,7 @@ class ProductService extends TransactionBaseService<
   protected readonly productTagRepository_: typeof ProductTagRepository
   protected readonly imageRepository_: typeof ImageRepository
   protected readonly productVariantService_: ProductVariantService
-  protected get salesChannelService_(): SalesChannelService {
-    return this.container.salesChannelService
-  }
+  protected readonly salesChannelService_: SalesChannelService
   protected readonly searchService_: SearchService
   protected readonly eventBus_: EventBusService
 
@@ -71,19 +69,33 @@ class ProductService extends TransactionBaseService<
     DELETED: "product.deleted",
   }
 
-  constructor(container: InjectedDependencies) {
-    super(container)
+  constructor({
+    manager,
+    productOptionRepository,
+    productRepository,
+    productVariantRepository,
+    eventBusService,
+    productVariantService,
+    productTypeRepository,
+    productTagRepository,
+    imageRepository,
+    searchService,
+    salesChannelService,
+  }: InjectedDependencies) {
+    // eslint-disable-next-line prefer-rest-params
+    super(arguments[0])
 
-    this.manager_ = container.manager
-    this.productOptionRepository_ = container.productOptionRepository
-    this.productRepository_ = container.productRepository
-    this.productVariantRepository_ = container.productVariantRepository
-    this.eventBus_ = container.eventBusService
-    this.productVariantService_ = container.productVariantService
-    this.productTypeRepository_ = container.productTypeRepository
-    this.productTagRepository_ = container.productTagRepository
-    this.imageRepository_ = container.imageRepository
-    this.searchService_ = container.searchService
+    this.manager_ = manager
+    this.productOptionRepository_ = productOptionRepository
+    this.productRepository_ = productRepository
+    this.productVariantRepository_ = productVariantRepository
+    this.eventBus_ = eventBusService
+    this.productVariantService_ = productVariantService
+    this.productTypeRepository_ = productTypeRepository
+    this.productTagRepository_ = productTagRepository
+    this.imageRepository_ = imageRepository
+    this.searchService_ = searchService
+    this.salesChannelService_ = salesChannelService
   }
 
   /**
@@ -378,12 +390,13 @@ class ProductService extends TransactionBaseService<
           }
 
           if (typeof salesChannels !== "undefined") {
-            product.sales_channels =
-              salesChannels === null || salesChannels?.length === 0
-                ? []
-                : (product.sales_channels = salesChannels?.map(
-                    (sc) => ({ id: sc.id } as SalesChannel)
-                  ))
+            product.sales_channels = []
+
+            if (salesChannels?.length) {
+              product.sales_channels = salesChannels?.map(
+                (sc) => ({ id: sc.id } as SalesChannel)
+              ) as SalesChannel[]
+            }
           }
 
           product = await productRepo.save(product)
@@ -415,7 +428,7 @@ class ProductService extends TransactionBaseService<
       },
       async (error: { code: string }) => {
         if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          await this.handleCreateOrUpdateWithSalesChannelErrorIfNecessary(
+          await this.findAndThrowOnNonExistingSalesChannels(
             productObject.sales_channels?.map((sc) => sc.id) ?? []
           )
         }
@@ -568,7 +581,7 @@ class ProductService extends TransactionBaseService<
       },
       async (error: { code: string }) => {
         if (error.code === PostgresError.FOREIGN_KEY_ERROR) {
-          await this.handleCreateOrUpdateWithSalesChannelErrorIfNecessary(
+          await this.findAndThrowOnNonExistingSalesChannels(
             update.sales_channels?.map((sc) => sc.id) ?? []
           )
         }
@@ -859,7 +872,7 @@ class ProductService extends TransactionBaseService<
     }
   }
 
-  private async handleCreateOrUpdateWithSalesChannelErrorIfNecessary(
+  private async findAndThrowOnNonExistingSalesChannels(
     salesChannelIds: string[]
   ): Promise<never | void> {
     if (salesChannelIds.length) {
