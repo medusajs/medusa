@@ -11,7 +11,6 @@ import {
   IsString,
   ValidateNested,
 } from "class-validator"
-import { transformIdableFields } from "medusa-core-utils"
 import {
   defaultAdminDraftOrdersFields,
   defaultAdminDraftOrdersRelations,
@@ -19,7 +18,9 @@ import {
 import { DraftOrder } from "../../../.."
 import { DraftOrderService } from "../../../../services"
 import { AddressPayload } from "../../../../types/common"
+import { DraftOrderCreateProps } from "../../../../types/draft-orders"
 import { validator } from "../../../../utils/validator"
+import { IsType } from "../../../../utils/validators/is-type"
 /**
  * @oas [post] /draft-orders
  * operationId: "PostDraftOrders"
@@ -120,14 +121,26 @@ import { validator } from "../../../../utils/validator"
 export default async (req, res) => {
   const validated = await validator(AdminPostDraftOrdersReq, req.body)
 
-  const value = transformIdableFields(validated, [
-    "shipping_address",
-    "billing_address",
-  ])
+  const { shipping_address, billing_address, ...rest } = validated
+
+  const draftOrderDataToUpdate: DraftOrderCreateProps = { ...rest }
+  if (typeof shipping_address === "string") {
+    draftOrderDataToUpdate.shipping_address_id = shipping_address
+  } else {
+    draftOrderDataToUpdate.shipping_address = shipping_address
+  }
+
+  if (typeof billing_address === "string") {
+    draftOrderDataToUpdate.billing_address_id = billing_address
+  } else {
+    draftOrderDataToUpdate.billing_address = billing_address
+  }
 
   const draftOrderService: DraftOrderService =
     req.scope.resolve("draftOrderService")
-  let draftOrder: DraftOrder = await draftOrderService.create(value)
+  let draftOrder: DraftOrder = await draftOrderService.create(
+    draftOrderDataToUpdate
+  )
 
   draftOrder = await draftOrderService.retrieve(draftOrder.id, {
     relations: defaultAdminDraftOrdersRelations,
@@ -151,12 +164,12 @@ export class AdminPostDraftOrdersReq {
   email: string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  billing_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  billing_address?: AddressPayload | string
 
   @IsOptional()
-  @Type(() => AddressPayload)
-  shipping_address?: AddressPayload
+  @IsType([AddressPayload, String])
+  shipping_address?: AddressPayload | string
 
   @IsArray()
   @Type(() => Item)
